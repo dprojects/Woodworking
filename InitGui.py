@@ -23,6 +23,9 @@ class WoodworkingWorkbench (Workbench):
 		self.appendToolbar("Transformations", loadToolbar.getItems("Transformations"))
 		self.appendToolbar("Operations", loadToolbar.getItems("Operations"))
 		
+		import loadMenu
+		self.appendMenu("Woodworking", loadMenu.getItems())
+		
 	def Activated(self):
 		# not needed now, maybe in the future
 		return
