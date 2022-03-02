@@ -19,7 +19,7 @@ This is Woodworking workbench for FreeCAD.
 
 # Macro tools - how to update
 
-Macro tools included in this workbench may not be upd-to-date. All the macro tools will be developed separately because You may not want to use whole workbench to use only one macro tool.
+Macro tools included in this workbench may not be up-to-date. All the macro tools will be developed separately because You may not want to use whole woodworking workbench to use only one macro tool.
 
 To update macro tools You can:
 * Use option from `Woodworking` menu.

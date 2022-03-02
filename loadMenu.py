@@ -32,57 +32,61 @@ FreeCADGui.addCommand("DOCS", DOCS())
 # ######################################################################################################################
 class AUTOUPDATE():
 
+	gUpdated = ""
+	gSkipped = ""
+
+	def updateTool(self, iTool, iRoot="https://raw.githubusercontent.com/dprojects/"):
+		
+		import urllib.request
+		
+		try:
+			module = iTool
+		
+			filePath = os.path.join(path, "Tools")
+			filePath = os.path.join(filePath, module)
+			filePath = os.path.join(filePath, module+".py")
+			
+			httplink = iRoot
+			httplink += module + "/master/" + module + ".py"
+			urllib.request.urlretrieve(httplink, filePath)
+			
+			self.gUpdated += "\t • " + module + "\t\n"
+		except:
+			self.gSkipped += "\t • " + module + "\t\n"
+		
+		return
+
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "autoupdate.xpm"),
 				"Accel"   : "",
-				"MenuText": "Download and update all macro tools (experimental)",
-				"ToolTip" : "Download latest versions for all macro tools (experimental)."}
+				"MenuText": "Download and update all macro tools",
+				"ToolTip" : "Download latest versions for all macro tools."}
 
 	def Activated(self):
 
-		import FreeCAD
+		self.gUpdated = ""
+		self.gSkipped = ""
 
-		module = "getDimensions"
-		FreeCAD.Console.PrintMessage("\n")
-		FreeCAD.Console.PrintMessage("Update: "+module+" ...")
+		self.updateTool("getDimensions")
+		self.updateTool("sheet2export")
+		self.updateTool("scanObjects")
 
-		filePath = os.path.join(path, "Tools")
-		filePath = os.path.join(filePath, module)
-		filePath = os.path.join(filePath, module+".py")
-
-		import urllib.request
-		httplink = "https://raw.githubusercontent.com/dprojects/"
-		httplink += module + "/master/" + module + ".py"
-		urllib.request.urlretrieve(httplink, filePath)
-		FreeCAD.Console.PrintMessage("done.")
-
-		module = "sheet2export"
-		FreeCAD.Console.PrintMessage("\n")
-		FreeCAD.Console.PrintMessage("Update: "+module+" ...")
-
-		filePath = os.path.join(path, "Tools")
-		filePath = os.path.join(filePath, module)
-		filePath = os.path.join(filePath, module+".py")
-
-		import urllib.request
-		httplink = "https://raw.githubusercontent.com/dprojects/"
-		httplink += module + "/master/" + module + ".py"
-		urllib.request.urlretrieve(httplink, filePath)
-		FreeCAD.Console.PrintMessage("done.")
-
-		module = "scanObjects"
-		FreeCAD.Console.PrintMessage("\n")
-		FreeCAD.Console.PrintMessage("Update: "+module+" ...")
-
-		filePath = os.path.join(path, "Tools")
-		filePath = os.path.join(filePath, module)
-		filePath = os.path.join(filePath, module+".py")
-
-		import urllib.request
-		httplink = "https://raw.githubusercontent.com/dprojects/"
-		httplink += module + "/master/" + module + ".py"
-		urllib.request.urlretrieve(httplink, filePath)
-		FreeCAD.Console.PrintMessage("done.")
+		info = ""
+		
+		if self.gUpdated != "":
+			info += "Updated macro tools:"
+			info += "\n\n"
+			info += self.gUpdated
+			info += "\n\n"
+		
+		if self.gSkipped != "":
+			info += "Skipped macro tools:"
+			info += "\n\n"
+			info += self.gSkipped
+			info += "\n\n"
+		
+		from PySide import QtGui, QtCore
+		QtGui.QMessageBox.information(None,"Macro tools - autoupdate",str(info))
 		
 		return
 
