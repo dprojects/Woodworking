@@ -50,9 +50,9 @@ class AUTOUPDATE():
 			httplink += module + "/master/" + module + ".py"
 			urllib.request.urlretrieve(httplink, filePath)
 			
-			self.gUpdated += "\t • " + module + "\t\n"
+			self.gUpdated += "\t + " + module + "\t\n"
 		except:
-			self.gSkipped += "\t • " + module + "\t\n"
+			self.gSkipped += "\t - " + module + "\t\n"
 		
 		return
 
