@@ -18,20 +18,22 @@ def getItems(iType):
 	
 	if iType == "Transformations":
 		
-		parts = [ 
-			"Part_Mirror",
+		parts = [
+			"Spreadsheet_CreateSheet",
 			"Draft_Array",
 			"Draft_PolarArray",
-			"Draft_Clone",
-			"PartDesign_Hole",
 			"PartDesign_LinearPattern",
+			"PartDesign_Plane",
+			"Part_Mirror",
 			"PartDesign_Mirrored",
-			"PartDesign_MultiTransform"
+			"PartDesign_MultiTransform",
+			"Draft_Clone"
 		]
 		
 	if iType == "Operations":
 		
 		parts = [
+			"PartDesign_Hole",
 			"Part_Boolean"
 		]
 

@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2022.02.01
+# Version: 2022.03.05
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, Draft, Spreadsheet
@@ -1185,6 +1185,10 @@ def selectFurniturePart(iObj, iPlace):
 	# skip main scan loop
 	if iPlace != "main":
 
+		# support for LinkGroup but called only from transformations
+		if iObj.isDerivedFrom("App::LinkGroup"):
+			setAppLinkGroup(iObj)
+
 		# support for Mirror on Body
 		if iObj.isDerivedFrom("PartDesign::Body") and iObj.Name.startswith("Body"):
 			setPartMirroringBody(iObj)
@@ -1201,6 +1205,52 @@ def selectFurniturePart(iObj, iPlace):
 # ###################################################################################################################
 # Support for transformations of base furniture parts
 # ###################################################################################################################
+
+
+# ###################################################################################################################
+def setAppLinkGroup(iObj):
+
+	# support for LinkGroup
+	if iObj.isDerivedFrom("App::LinkGroup"):
+
+		try:
+
+			# set reference point to the objects list
+			key = iObj.ElementList
+
+			# call scan for each object at the list
+			scanObjects(key)
+		
+		except:
+			
+			# if there is wrong structure
+			showError(iObj, "setAppLinkGroup", "wrong structure")
+			return -1
+	
+	return 0
+
+
+# ###################################################################################################################
+def setAppLink(iObj):
+
+	# support for Link
+	if iObj.isDerivedFrom("App::Link"):
+
+		try:
+
+			# set reference point to the objects list
+			key = iObj.LinkedObject
+
+			# select and add furniture part
+			selectFurniturePart(key, "transform")
+		
+		except:
+			
+			# if there is wrong structure
+			showError(iObj, "setAppLink", "wrong structure")
+			return -1
+	
+	return 0
 
 
 # ###################################################################################################################
@@ -1464,6 +1514,7 @@ def scanObjects(iOBs):
 		setPartDesignMirrored(obj)
 		setPartDesignMultiTransform(obj)
 		setPartDesignLinearPattern(obj)
+		setAppLink(obj)
 
 
 # ###################################################################################################################

@@ -11,7 +11,7 @@ class WoodworkingWorkbench (Workbench):
 
 	def Initialize(self):
 
-		import FreeCADGui, PartGui, PartDesignGui, SketcherGui
+		import FreeCADGui, PartGui, PartDesignGui, SketcherGui, SpreadsheetGui
 		import DraftTools
 
 		import loadTools
