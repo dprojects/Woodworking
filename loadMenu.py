@@ -30,6 +30,29 @@ FreeCADGui.addCommand("DOCS", DOCS())
 
 
 # ######################################################################################################################
+class EXAMPLES():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "Docs.xpm"),
+				"Accel"   : "",
+				"MenuText": "Fully parametric furniture examples",
+				"ToolTip" : "Opens web browser with external link."}
+
+	def Activated(self):
+
+		import webbrowser
+		webbrowser.open("https://github.com/dprojects/Woodworking/tree/master/Examples")
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("EXAMPLES", EXAMPLES())
+
+
+# ######################################################################################################################
 class AUTOUPDATE():
 
 	gUpdated = ""
@@ -104,6 +127,7 @@ def getItems():
 
 	parts = [ 
 		"DOCS",
+		"EXAMPLES",
 		"AUTOUPDATE"
 	]
 
