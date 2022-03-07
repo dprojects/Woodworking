@@ -5,17 +5,22 @@ Idea behind this examples folder is to have fully parametric furniture examples 
 # Table of Contents
 
 1. [Bookcase_001](#bookcase_001)
-2. [Drawer_001](#drawer_001)
-3. [Table_001](#table_001)
+2. [Cabinet_modular_001](#cabinet_modular_001)
+3. [Drawer_001](#drawer_001)
+4. [Table_001](#table_001)
 
-## Bookcase_001
+# Bookcase_001
 
 ![Bookcase_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Bookcase_001.png)
 
-## Drawer_001
+# Cabinet_modular_001
+
+![Cabinet_modular_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Cabinet_modular_001.png)
+
+# Drawer_001
 
 ![Drawer_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Drawer_001.png)
 
-## Table_001
+# Table_001
 
 ![Table_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Table_001.png)
