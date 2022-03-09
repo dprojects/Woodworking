@@ -7,6 +7,7 @@ Idea behind this examples folder is to have fully parametric furniture examples 
 1. [Bookcase_001](#bookcase_001)
 2. [Cabinet_modular_001](#cabinet_modular_001)
 3. [Drawer_001](#drawer_001)
+4. [StorageBox_001](#storagebox_001)
 4. [Table_001](#table_001)
 
 # Bookcase_001
@@ -20,6 +21,10 @@ Idea behind this examples folder is to have fully parametric furniture examples 
 # Drawer_001
 
 ![Drawer_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Drawer_001.png)
+
+# StorageBox_001
+
+![StorageBox_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_001.png)
 
 # Table_001
 

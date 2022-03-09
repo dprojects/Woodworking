@@ -2,7 +2,7 @@
 
 # FreeCAD macro for spreadsheet export
 # Author: Darek L (aka dprojects)
-# Version: 2022.01.19
+# Version: 2022.03.07
 # Latest version: https://github.com/dprojects/sheet2export
 
 import FreeCAD, Draft, Spreadsheet
@@ -166,8 +166,13 @@ def showQtMain():
 			# text input
 			self.fPathTi = QtGui.QLineEdit(self)
 			self.fPathTi.setText(str(sFilePath))
-			self.fPathTi.setFixedWidth(230)
+			self.fPathTi.setFixedWidth(300)
 			self.fPathTi.move(100, 40)
+
+			# button
+			self.fPathB = QtGui.QPushButton("...", self)
+			self.fPathB.clicked.connect(self.loadCustomDir)
+			self.fPathB.move(410, 40)
 
 			# ############################################################################
 			# file type
@@ -272,6 +277,10 @@ def showQtMain():
 		# actions
 		# ############################################################################
 
+		def loadCustomDir(self):
+			sFilePath = str(QtGui.QFileDialog.getExistingDirectory())
+			self.fPathTi.setText(sFilePath)
+		
 		def setFileType(self, selectedText):
 			global sFileType
 
@@ -347,7 +356,7 @@ def showQtMain():
 				self.customCSSti.setText(str(sCustomCSS))
 			if selectedText == "3d effect":
 				sCustomCSS = "border-bottom:5px solid #D1D1D1;"
-				sCustomCSS += "border-right:5px solid #D1D1D1;"
+				sCustomCSS += "border-right:1px solid #D1D1D1;"
 				sCustomCSS += "padding:5px 10px;"
 				self.customCSSti.setText(str(sCustomCSS))
 
