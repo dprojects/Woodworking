@@ -2,10 +2,10 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2022.03.05
+# Version: 2022.03.11
 # Latest version: https://github.com/dprojects/getDimensions
 
-import FreeCAD, Draft, Spreadsheet
+import FreeCAD, FreeCADGui, Draft, Spreadsheet
 from PySide import QtGui, QtCore
 
 # ###################################################################################################################

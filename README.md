@@ -4,6 +4,10 @@ This is Woodworking workbench for FreeCAD.
 
 ![001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/001.png)
 
+![002](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/002.png)
+
+![003](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/003.png)
+
 # Install
 
 * Download and unpack `Woodworking` repository.

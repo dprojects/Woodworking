@@ -1,6 +1,12 @@
-# Woodworking at FreeCAD - examples
+# Woodworking at FreeCAD - fully parametric examples
 
-Idea behind this examples folder is to have fully parametric furniture examples that can be quickly resized via `settings` spreadsheet and adopted to the current project. You can change any size at `settings` spreadsheet and the furniture will change dimensions automatically (in some cases recompute might be needed). All the examples are built in the supported way by [getDimensions](https://github.com/dprojects/getDimensions) macro tool. So, You can generate new report with new dimensions. This approach will be more useful for future projects than static examples, I guess.
+Idea behind this examples folder is to have fully parametric furniture examples that can be quickly resized via `settings` spreadsheet and adopted to the current project. You can change any size at `settings` spreadsheet and the furniture will change dimensions automatically (in some cases recompute might be needed). Also, You can generate new report with new dimensions.
+
+All the examples here should follow the rules:
+* Fully parametric as much as possible.
+* Should be built in the supported way by [getDimensions](https://github.com/dprojects/getDimensions) macro tool. 
+
+This approach will be more useful for future projects than static examples, I guess.
 
 # Table of Contents
 
@@ -8,7 +14,8 @@ Idea behind this examples folder is to have fully parametric furniture examples 
 2. [Cabinet_modular_001](#cabinet_modular_001)
 3. [Drawer_001](#drawer_001)
 4. [StorageBox_001](#storagebox_001)
-4. [Table_001](#table_001)
+5. [StorageBox_002](#storagebox_002)
+6. [Table_001](#table_001)
 
 # Bookcase_001
 
@@ -25,6 +32,10 @@ Idea behind this examples folder is to have fully parametric furniture examples 
 # StorageBox_001
 
 ![StorageBox_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_001.png)
+
+# StorageBox_002
+
+![StorageBox_002](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_002.png)
 
 # Table_001
 
