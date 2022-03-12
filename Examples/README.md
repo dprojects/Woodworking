@@ -17,6 +17,7 @@ This approach will be more useful for future projects than static examples, I gu
 	* [StorageBox_001](#storagebox_001) - Box Joint
 	* [StorageBox_002](#storagebox_002) - Dovetail Joint simple
 	* [StorageBox_003](#storagebox_003) - Dovetail Joint advanced
+	* [StorageBox_004](#storagebox_004) - Pin Joint
 
 # Furniture
 
@@ -49,3 +50,7 @@ This approach will be more useful for future projects than static examples, I gu
 ## StorageBox_003
 
 ![StorageBox_003](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_003.png)
+
+## StorageBox_004
+
+![StorageBox_004](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_004.png)
