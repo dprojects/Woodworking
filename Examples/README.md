@@ -13,7 +13,7 @@ This approach will be more useful for future projects than static examples, I gu
 	* [Cabinet_modular_001](#cabinet_modular_001)
 	* [Drawer_001](#drawer_001)
 	* [Table_001](#table_001)
-* [Storage boxes](#storage_boxes)
+* [Storage boxes](#storage-boxes)
 	* [StorageBox_001](#storagebox_001) - Box Joint
 	* [StorageBox_002](#storagebox_002) - Dovetail Joint simple
 	* [StorageBox_003](#storagebox_003) - Dovetail Joint advanced
@@ -32,7 +32,7 @@ This approach will be more useful for future projects than static examples, I gu
 
 ![Drawer_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Drawer_001.png)
 
-# Table_001
+## Table_001
 
 ![Table_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Table_001.png)
 
