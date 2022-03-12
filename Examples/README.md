@@ -8,35 +8,44 @@ All the examples here should follow the rules:
 
 This approach will be more useful for future projects than static examples, I guess.
 
-# Table of Contents
+* [Furniture](#furniture)
+	* [Bookcase_001](#bookcase_001)
+	* [Cabinet_modular_001](#cabinet_modular_001)
+	* [Drawer_001](#drawer_001)
+	* [Table_001](#table_001)
+* [Storage boxes](#storage_boxes)
+	* [StorageBox_001](#storagebox_001) - Box Joint
+	* [StorageBox_002](#storagebox_002) - Dovetail Joint simple
+	* [StorageBox_003](#storagebox_003) - Dovetail Joint advanced
 
-1. [Bookcase_001](#bookcase_001)
-2. [Cabinet_modular_001](#cabinet_modular_001)
-3. [Drawer_001](#drawer_001)
-4. [StorageBox_001](#storagebox_001)
-5. [StorageBox_002](#storagebox_002)
-6. [Table_001](#table_001)
+# Furniture
 
-# Bookcase_001
+## Bookcase_001
 
 ![Bookcase_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Bookcase_001.png)
 
-# Cabinet_modular_001
+## Cabinet_modular_001
 
 ![Cabinet_modular_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Cabinet_modular_001.png)
 
-# Drawer_001
+## Drawer_001
 
 ![Drawer_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Drawer_001.png)
-
-# StorageBox_001
-
-![StorageBox_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_001.png)
-
-# StorageBox_002
-
-![StorageBox_002](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_002.png)
 
 # Table_001
 
 ![Table_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Table_001.png)
+
+# Storage boxes
+
+## StorageBox_001
+
+![StorageBox_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_001.png)
+
+## StorageBox_002
+
+![StorageBox_002](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_002.png)
+
+## StorageBox_003
+
+![StorageBox_003](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_003.png)
