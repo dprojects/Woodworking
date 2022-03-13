@@ -44,7 +44,7 @@ def showQtGUI():
 		gDefaultRoot = ""
 		gModeType = "normal"
 		gW = 1200 # width
-		gH = 600 # hight
+		gH = 600 # height
 
 		# ############################################################################
 		# errors & info
