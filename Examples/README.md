@@ -8,6 +8,8 @@ All the examples here should follow the rules:
 
 This approach will be more useful for future projects than static examples, I guess.
 
+**Note:** Storage boxes based on `Sketch` pattern (StorageBox_003+) are partially supported by [getDimensions](https://github.com/dprojects/getDimensions) macro tool. This is because there is [bug related to named constraints and expressions](https://forum.freecadweb.org/viewtopic.php?f=10&t=67042). If the bug will be solved all needed constraints will be named so You will be able to get `c - report type` as well. Now, You can check settings spreadsheet or automatic report for dimensions. Also, for Your project You can throw out expressions and name needed constraints. Named constraints works with values fine at FreeCAD. Good Luck, and Have Fun !
+
 * [Furniture](#furniture)
 	* [Bookcase_001](#bookcase_001)
 	* [Cabinet_modular_001](#cabinet_modular_001)
@@ -19,6 +21,7 @@ This approach will be more useful for future projects than static examples, I gu
 	* [StorageBox_003](#storagebox_003) - Dovetail Joint advanced
 	* [StorageBox_004](#storagebox_004) - Pin Joint
 	* [StorageBox_005](#storagebox_005) - Slot Joint
+	* [StorageBox_006](#storagebox_006) - Love Joint
 
 # Furniture
 
@@ -59,3 +62,7 @@ This approach will be more useful for future projects than static examples, I gu
 ## StorageBox_005
 
 ![StorageBox_005](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_005.png)
+
+## StorageBox_006
+
+![StorageBox_006](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_006.png)
