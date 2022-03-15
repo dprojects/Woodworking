@@ -22,6 +22,7 @@ This approach will be more useful for future projects than static examples, I gu
 	* [StorageBox_004](#storagebox_004) - Pin Joint
 	* [StorageBox_005](#storagebox_005) - Slot Joint
 	* [StorageBox_006](#storagebox_006) - Love Joint
+	* [StorageBox_007](#storagebox_007) - X, Sew Joint
 
 # Furniture
 
@@ -66,3 +67,7 @@ This approach will be more useful for future projects than static examples, I gu
 ## StorageBox_006
 
 ![StorageBox_006](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_006.png)
+
+## StorageBox_007
+
+![StorageBox_007](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_007.png)
