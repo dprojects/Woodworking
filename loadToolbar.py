@@ -6,7 +6,7 @@ def getItems(iType):
 		
 		parts = [ 
 			"PartDesign_Body", 
-			"Sketcher_NewSketch", 
+			"PartDesign_NewSketch", 
 			"PartDesign_Pad" 
 		]
 		

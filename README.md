@@ -13,7 +13,11 @@ This is Woodworking workbench for FreeCAD.
 * Download and unpack `Woodworking` repository.
 * Copy the folder `Woodworking` to the FreeCAD module directory.
 
-**Note:** Under Ubuntu this is `~.FreeCAD/Mod/` folder.
+**Note:** 
+
+* Ubuntu:
+	* FreeCAD version < 0.20.27936: `~.FreeCAD/Mod/Woodworking`
+	* FreeCAD version >= 0.20.27936: `~.local/share/FreeCAD/Mod/Woodworking`
 
 # Macro tools - included
 
