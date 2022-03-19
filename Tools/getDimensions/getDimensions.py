@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2022.03.11
+# Version: 2022.03.18
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, FreeCADGui, Draft, Spreadsheet
@@ -565,7 +565,7 @@ def showQtGUI():
 
 		# here is different you set description to variable
 		def setFColor(self, selectedText):
-			# the varable will be set at OK button click from text form
+			# the variable will be set at OK button click from text form
 			tmpColor = sFColorDsc[str(selectedText)]
 			self.fcti.setText(str(tmpColor))
 
@@ -860,7 +860,7 @@ def getEdgeBand(iObj, iW, iH, iL):
 				a = [ iW, iH, iL ]
 				a.sort()
 
-				# check if this is correct egde
+				# check if this is correct edge
 				if int(vEdge) == int(a[1]) or int(vEdge) == int(a[2]):
 					vFaceN[i] = gLang12
 					vFaceD[i] = getUnit(vEdge, "d")
@@ -934,7 +934,7 @@ def setDB(iObj, iW, iH, iL):
 			dbTA[vKeyT] = vArea
 
 		# check visibility for edge if visibility feature is "edge"
-		# if visibility feature is "on" the whole obejct is skipped
+		# if visibility feature is "on" the whole object is skipped
 		# so never run this part for such object
 		vSkip = 0
 		if sTVF == "edge":
@@ -1085,7 +1085,18 @@ def setConstraints(iObj):
 
 		for c in vCons:
 			if c.Name != "":
-				
+
+				# workaround for FreeCAD constraints name bug
+				# https://forum.freecadweb.org/viewtopic.php?f=10&t=67042
+
+				# numbers way of encoding
+				c.Name = c.Name.replace("00",", ")
+				c.Name = c.Name.replace("0"," ")
+
+				# underscores way of encoding
+				c.Name = c.Name.replace("__",", ")
+				c.Name = c.Name.replace("_"," ")
+
 				# set Constraint Name
 				vNames += str(c.Name) + ":"
 	

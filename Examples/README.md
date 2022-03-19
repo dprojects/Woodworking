@@ -1,14 +1,12 @@
 # Woodworking at FreeCAD - fully parametric examples
 
-Idea behind this examples folder is to have fully parametric furniture examples that can be quickly resized via `settings` spreadsheet and adopted to the current project. You can change any size at `settings` spreadsheet and the furniture will change dimensions automatically (in some cases recompute might be needed). Also, You can generate new report with new dimensions.
+Idea behind this examples folder is to have fully parametric furniture examples that can be quickly resized via `settings` spreadsheet and adopted to the current project. You can change any size at `settings` spreadsheet and the furniture will change dimensions automatically. Also, You can generate new report with new dimensions.
 
 All the examples here should follow the rules:
 * Fully parametric as much as possible.
 * Should be built in the supported way by [getDimensions](https://github.com/dprojects/getDimensions) macro tool. 
 
 This approach will be more useful for future projects than static examples, I guess.
-
-**Note:** Storage boxes based on `Sketch` pattern (StorageBox_003+) are partially supported by [getDimensions](https://github.com/dprojects/getDimensions) macro tool. This is because there is [bug related to named constraints and expressions](https://forum.freecadweb.org/viewtopic.php?f=10&t=67042). If the bug will be solved all needed constraints will be named so You will be able to get `c - report type` as well. Now, You can check settings spreadsheet or automatic report for dimensions. Also, for Your project You can throw out expressions and name needed constraints. Named constraints works with values fine at FreeCAD. Good Luck, and Have Fun !
 
 * [Furniture](#furniture)
 	* [Bookcase_001](#bookcase_001)
