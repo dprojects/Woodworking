@@ -12,9 +12,11 @@ This approach will be more useful for future projects than static examples, I gu
 	* [Bookcase_001](#bookcase_001)
 	* [Cabinet_modular_001](#cabinet_modular_001)
 	* [Drawer_001](#drawer_001)
+* [Tables](#tables)
 	* [Table_001](#table_001) - simple rectangular table
 	* [Table_002](#table_002) - simple oval table
 	* [Table_003](#table_003) - simple oval table with little decoration
+	* [Table_004](#table_004) - luxury oval table
 * [Storage boxes](#storage-boxes)
 	* [StorageBox_001](#storagebox_001) - Box Joint
 	* [StorageBox_002](#storagebox_002) - Dovetail Joint simple
@@ -32,7 +34,7 @@ This approach will be more useful for future projects than static examples, I gu
 |   |   |
 |:--|:--|
 | **Supported reports:** | `All` |
-| **FreeCAD version:** | `0.19.24367 (Git) AppImage` |
+| **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
 
 ![Bookcase_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Bookcase_001.png)
@@ -42,7 +44,7 @@ This approach will be more useful for future projects than static examples, I gu
 |   |   |
 |:--|:--|
 | **Supported reports:** | `All` |
-| **FreeCAD version:** | `0.19.24367 (Git) AppImage` |
+| **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
 
 ![Cabinet_modular_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Cabinet_modular_001.png)
@@ -52,17 +54,19 @@ This approach will be more useful for future projects than static examples, I gu
 |   |   |
 |:--|:--|
 | **Supported reports:** | `All` |
-| **FreeCAD version:** | `0.19.24367 (Git) AppImage` |
+| **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
 
 ![Drawer_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Drawer_001.png)
+
+# Tables
 
 ## Table_001
 
 |   |   |
 |:--|:--|
 | **Supported reports:** | `All` |
-| **FreeCAD version:** | `0.18.4` |
+| **FreeCAD version:** | `0.18.4 (Stable, Linux, x86_64, Natively installed)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
 
 ![Table_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Table_001.png)
@@ -72,7 +76,7 @@ This approach will be more useful for future projects than static examples, I gu
 |   |   |
 |:--|:--|
 | **Supported reports:** | `All` |
-| **FreeCAD version:** | `0.19.24367 (Git) AppImage` |
+| **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
 
 ![Table_002](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Table_002.png)
@@ -82,10 +86,20 @@ This approach will be more useful for future projects than static examples, I gu
 |   |   |
 |:--|:--|
 | **Supported reports:** | `All` |
-| **FreeCAD version:** | `0.19.24367 (Git) AppImage` |
+| **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
 
 ![Table_003](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Table_003.png)
+
+## Table_004
+
+|   |   |
+|:--|:--|
+| **Supported reports:** | `c - report type` |
+| **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
+| **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+
+![Table_004](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Table_004.png)
 
 # Storage boxes
 
@@ -94,7 +108,7 @@ This approach will be more useful for future projects than static examples, I gu
 |   |   |
 |:--|:--|
 | **Supported reports:** | `All` |
-| **FreeCAD version:** | `0.19.24367 (Git) AppImage` |
+| **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
 
 ![StorageBox_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_001.png)
@@ -104,7 +118,7 @@ This approach will be more useful for future projects than static examples, I gu
 |   |   |
 |:--|:--|
 | **Supported reports:** | `All` |
-| **FreeCAD version:** | `0.19.24367 (Git) AppImage` |
+| **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
 
 ![StorageBox_002](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_002.png)
@@ -114,7 +128,7 @@ This approach will be more useful for future projects than static examples, I gu
 |   |   |
 |:--|:--|
 | **Supported reports:** | `c - report type` |
-| **FreeCAD version:** | `0.19.24367 (Git) AppImage` |
+| **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
 
 ![StorageBox_003](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_003.png)
@@ -124,7 +138,7 @@ This approach will be more useful for future projects than static examples, I gu
 |   |   |
 |:--|:--|
 | **Supported reports:** | `c - report type` |
-| **FreeCAD version:** | `0.19.24367 (Git) AppImage` |
+| **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
 
 ![StorageBox_004](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_004.png)
@@ -134,7 +148,7 @@ This approach will be more useful for future projects than static examples, I gu
 |   |   |
 |:--|:--|
 | **Supported reports:** | `c - report type` |
-| **FreeCAD version:** | `0.19.24367 (Git) AppImage` |
+| **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
 
 ![StorageBox_005](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_005.png)
@@ -144,7 +158,7 @@ This approach will be more useful for future projects than static examples, I gu
 |   |   |
 |:--|:--|
 | **Supported reports:** | `c - report type` |
-| **FreeCAD version:** | `0.19.24367 (Git) AppImage` |
+| **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
 
 ![StorageBox_006](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_006.png)
@@ -154,7 +168,7 @@ This approach will be more useful for future projects than static examples, I gu
 |   |   |
 |:--|:--|
 | **Supported reports:** | `c - report type` |
-| **FreeCAD version:** | `0.19.24367 (Git) AppImage` |
+| **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
 
 ![StorageBox_007](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_007.png)
@@ -164,7 +178,7 @@ This approach will be more useful for future projects than static examples, I gu
 |   |   |
 |:--|:--|
 | **Supported reports:** | `c - report type` |
-| **FreeCAD version:** | `0.19.24367 (Git) AppImage` |
+| **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
 
 ![StorageBox_008](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_008.png)
