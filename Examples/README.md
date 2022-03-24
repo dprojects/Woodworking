@@ -8,7 +8,7 @@ All the examples here should follow the rules:
 
 This approach will be more useful for future projects than static examples, I guess.
 
-You can merge more examples into one projects and map texture:
+You can merge more examples into one project and map texture:
 
 ![main_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/main_001.png)
 

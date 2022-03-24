@@ -23,7 +23,7 @@ class WoodworkingWorkbench (Workbench):
 		self.appendToolbar("Furniture Parts", loadToolbar.getItems("Furniture Parts"))
 		self.appendToolbar("Transformations", loadToolbar.getItems("Transformations"))
 		self.appendToolbar("Operations", loadToolbar.getItems("Operations"))
-		self.appendToolbar("Preview", loadToolbar.getItems("Preview"))
+		self.appendToolbar("Manage", loadToolbar.getItems("Manage"))
 		
 		import loadMenu
 		self.appendMenu("Woodworking", loadMenu.getItems())

@@ -9,17 +9,12 @@ def getItems(iType):
 			"Spreadsheet_MergeCells"
 		]
 
-	if iType == "Structure":
-		
-		parts = [
-			"Std_LinkMakeGroup",
-			"PartDesign_Body", 
-			"PartDesign_NewSketch"
-		]
-		
 	if iType == "Furniture Parts":
 		
-		parts = [ 
+		parts = [
+			"Std_Part",
+			"PartDesign_Body", 
+			"PartDesign_NewSketch",
 			"PartDesign_Pad", 
 			"Part_Box" 
 		]
@@ -44,9 +39,13 @@ def getItems(iType):
 			"Part_Boolean"
 		]
 
-	if iType == "Preview":
+	if iType == "Manage":
 		
 		parts = [
+			"Std_Group",
+			"Std_LinkMakeGroup",
+			"Std_LinkMake",
+			"Std_MergeProjects",
 			"Std_TextureMapping"
 		]
 
