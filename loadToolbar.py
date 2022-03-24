@@ -2,24 +2,31 @@ def getItems(iType):
 
 	parts = []
 
+	if iType == "Parameterization":
+		
+		parts = [
+			"Spreadsheet_CreateSheet",
+			"Spreadsheet_MergeCells"
+		]
+
 	if iType == "Structure":
 		
-		parts = [ 
+		parts = [
+			"Std_LinkMakeGroup",
 			"PartDesign_Body", 
-			"PartDesign_NewSketch", 
-			"PartDesign_Pad" 
+			"PartDesign_NewSketch"
 		]
 		
 	if iType == "Furniture Parts":
 		
 		parts = [ 
-			"Part_Box", 
+			"PartDesign_Pad", 
+			"Part_Box" 
 		]
 	
 	if iType == "Transformations":
 		
 		parts = [
-			"Spreadsheet_CreateSheet",
 			"Draft_Array",
 			"Draft_PolarArray",
 			"PartDesign_LinearPattern",
@@ -29,7 +36,7 @@ def getItems(iType):
 			"PartDesign_MultiTransform",
 			"Draft_Clone"
 		]
-		
+
 	if iType == "Operations":
 		
 		parts = [
@@ -37,5 +44,10 @@ def getItems(iType):
 			"Part_Boolean"
 		]
 
-	return parts
+	if iType == "Preview":
+		
+		parts = [
+			"Std_TextureMapping"
+		]
 
+	return parts

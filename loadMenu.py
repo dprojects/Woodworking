@@ -12,7 +12,7 @@ class DOCS():
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "Docs.xpm"),
 				"Accel"   : "",
-				"MenuText": "Basic tutorial for FreeCAD woodworking",
+				"MenuText": "Woodworking at FreeCAD - basic tutorial (getDimensions Docs)",
 				"ToolTip" : "Opens web browser with external link."}
 
 	def Activated(self):
@@ -35,7 +35,7 @@ class EXAMPLES():
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "Docs.xpm"),
 				"Accel"   : "",
-				"MenuText": "Fully parametric furniture examples",
+				"MenuText": "Woodworking at FreeCAD - fully parametric examples",
 				"ToolTip" : "Opens web browser with external link."}
 
 	def Activated(self):
@@ -50,6 +50,29 @@ class EXAMPLES():
 		return True
 
 FreeCADGui.addCommand("EXAMPLES", EXAMPLES())
+
+
+# ######################################################################################################################
+class TEXTURES():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "Docs.xpm"),
+				"Accel"   : "",
+				"MenuText": "Woodworking at FreeCAD - free woodworking textures",
+				"ToolTip" : "Opens web browser with external link."}
+
+	def Activated(self):
+
+		import webbrowser
+		webbrowser.open("https://commons.wikimedia.org/w/index.php?title=Special:ListFiles/Dprojects&ilshowall=1")
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("TEXTURES", TEXTURES())
 
 
 # ######################################################################################################################
@@ -128,6 +151,7 @@ def getItems():
 	parts = [ 
 		"DOCS",
 		"EXAMPLES",
+		"TEXTURES",
 		"AUTOUPDATE"
 	]
 

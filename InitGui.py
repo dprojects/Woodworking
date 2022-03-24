@@ -18,10 +18,12 @@ class WoodworkingWorkbench (Workbench):
 		self.appendToolbar("Macro tools", [ "BOM", "HTML", "CODE" ])
 		
 		import loadToolbar
+		self.appendToolbar("Parameterization", loadToolbar.getItems("Parameterization"))
 		self.appendToolbar("Structure", loadToolbar.getItems("Structure"))
 		self.appendToolbar("Furniture Parts", loadToolbar.getItems("Furniture Parts"))
 		self.appendToolbar("Transformations", loadToolbar.getItems("Transformations"))
 		self.appendToolbar("Operations", loadToolbar.getItems("Operations"))
+		self.appendToolbar("Preview", loadToolbar.getItems("Preview"))
 		
 		import loadMenu
 		self.appendMenu("Woodworking", loadMenu.getItems())
