@@ -8,6 +8,12 @@ All the examples here should follow the rules:
 
 This approach will be more useful for future projects than static examples, I guess.
 
+You can merge more examples into one projects and map texture:
+
+![main_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/main_001.png)
+
+![main_002](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/main_002.png)
+
 * [Furniture](#furniture)
 	* [Bookcase_001](#bookcase_001)
 	* [Cabinet_modular_001](#cabinet_modular_001)
@@ -66,7 +72,7 @@ This approach will be more useful for future projects than static examples, I gu
 |   |   |
 |:--|:--|
 | **Supported reports:** | `All` |
-| **FreeCAD version:** | `0.18.4 (Stable, Linux, x86_64, Natively installed)` |
+| **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
 
 ![Table_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Table_001.png)
