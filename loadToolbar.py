@@ -42,6 +42,7 @@ def getItems(iType):
 	if iType == "Manage":
 		
 		parts = [
+			"Std_ViewFitAll",
 			"Std_Group",
 			"Std_LinkMakeGroup",
 			"Std_LinkMake",
