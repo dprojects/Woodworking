@@ -50,4 +50,13 @@ def getItems(iType):
 			"Std_TextureMapping"
 		]
 
+	if iType == "Coding":
+		
+		parts = [
+			"Std_DlgMacroExecute",
+			"Std_DlgMacroExecuteDirect",
+			"Std_About",
+			"Std_DependencyGraph"
+		]
+		
 	return parts
