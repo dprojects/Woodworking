@@ -15,9 +15,11 @@ class WoodworkingWorkbench (Workbench):
 		import DraftTools
 
 		import loadTools
-		self.appendToolbar("Cut list", [ "BOM", "HTML" ])
-		
 		import loadToolbar
+		import loadMenu
+		
+		self.appendToolbar("Cut list", [ "BOM", "HTML" ])
+
 		self.appendToolbar("Parameterization", loadToolbar.getItems("Parameterization"))
 		self.appendToolbar("Structure", loadToolbar.getItems("Structure"))
 		self.appendToolbar("Furniture Parts", loadToolbar.getItems("Furniture Parts"))
@@ -25,9 +27,10 @@ class WoodworkingWorkbench (Workbench):
 		self.appendToolbar("Operations", loadToolbar.getItems("Operations"))
 		self.appendToolbar("Manage", loadToolbar.getItems("Manage"))
 		self.appendToolbar("Coding", loadToolbar.getItems("Coding"))
-		self.appendToolbar("Coding", ["CODE"] )
 		
-		import loadMenu
+		self.appendToolbar("Coding", ["CODE"] )
+		self.appendToolbar("Manage", ["SETTEXTURES"] )
+
 		self.appendMenu("Woodworking", loadMenu.getItems())
 		
 	def Activated(self):

@@ -46,8 +46,7 @@ def getItems(iType):
 			"Std_Group",
 			"Std_LinkMakeGroup",
 			"Std_LinkMake",
-			"Std_MergeProjects",
-			"Std_TextureMapping"
+			"Std_MergeProjects"
 		]
 
 	if iType == "Coding":

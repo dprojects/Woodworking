@@ -116,6 +116,7 @@ class AUTOUPDATE():
 		self.updateTool("getDimensions")
 		self.updateTool("sheet2export")
 		self.updateTool("scanObjects")
+		self.updateTool("setTextures")
 
 		info = ""
 		

@@ -24,6 +24,7 @@ This is Woodworking workbench for FreeCAD.
 * [getDimensions](https://github.com/dprojects/getDimensions) - creates spreadsheet with dimensions to cut (BOM button).
 * [sheet2export](https://github.com/dprojects/sheet2export) - export spreadsheet to chosen file format (HTML button).
 * [scanObjects](https://github.com/dprojects/scanObjects) - inspection tool for FreeCAD macro development & project debug (CODE button).
+* [setTextures](https://github.com/dprojects/setTextures) - set textures from URL stored at objects (SETTEXTURES button).
 
 # Macro tools - how to update
 
