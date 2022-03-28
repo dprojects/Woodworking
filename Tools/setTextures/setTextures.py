@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking to apply and store textures
 # Author: Darek L (aka dprojects)
-# Version: 2.0 (improved locations)
+# Version: 3.0
 # Latest version: https://github.com/dprojects/setTextures
 
 import FreeCAD, FreeCADGui
@@ -12,83 +12,222 @@ import urllib.request
 import tempfile
 import os
 
-empty = ""
 
-# create temp directory
-with tempfile.TemporaryDirectory() as tmpDir:
+# ###################################################################################################################
+# Support for Qt GUI
+# ###################################################################################################################
 
-	FreeCAD.Console.PrintMessage("\n\n")
-	FreeCAD.Console.PrintMessage("Directory: "+tmpDir)
 
-	# search all objects
-	for obj in FreeCAD.activeDocument().Objects:
-		
-		textureURL = ""
+def showQtMain():
 
-		try:
+	global gExecute
+
+	# ############################################################################
+	# Qt Main Class
+	# ############################################################################
+	
+	class QtMainClass(QtGui.QDialog):
+
+		# init 
+		def __init__(self):
+			super(QtMainClass, self).__init__()
+			self.initUI()
+
+		def initUI(self):
 			
-			# support for texture URL stored at objects description
-			if textureURL == "":
-				ref = str(obj.Label2)
-				if ref != "" and ref.startswith("http"):
-					textureURL = ref
+			# window
+			self.result = userCancelled
+			self.setGeometry(400, 250, 800, 250)
+			self.setWindowTitle("setTextures")
+			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
-			# support for texture URL stored at objects Texture property	
-			if textureURL == "":
-				ref = str(obj.Texture)
-				if ref != "" and ref.startswith("http"):
-					textureURL = ref
+			# ############################################################################
+			# texture URL path
+			# ############################################################################
 
-			# support for texture URL stored at Material Card TexturePath
-			if textureURL == "":
-				ref = str(obj.Material.Material["TexturePath"])
-				if ref != "" and ref.startswith("http"):
-					textureURL = ref
+			# label
+			self.pathL = QtGui.QLabel("Texture URL path:", self)
+			self.pathL.move(10, 40)
 
-		except:
-			textureURL = ""
+			# text input
+			self.pathI = QtGui.QLineEdit(self)
+			self.pathI.setText(str(""))
+			self.pathI.setFixedWidth(750)
+			self.pathI.move(10, 63)
 
-		# if no texture found for object skip it
-		if str(textureURL) == "":
-			continue
+			# label
+			self.pathSL = QtGui.QLabel("Store given URL to all selected objects at property named Texture.", self)
+			self.pathSL.move(100, 103)
 
-		# mark found
-		empty = textureURL
+			# button
+			self.pathS = QtGui.QPushButton("store", self)
+			self.pathS.clicked.connect(self.setTextureProperty)
+			self.pathS.move(10, 100)
 
-		# get image from URL
-		data = urllib.request.urlopen(textureURL)
+			# label
+			self.pathGL = QtGui.QLabel("Download and apply textures from stored URLs.", self)
+			self.pathGL.move(100, 133)
 
-		# create temp file with image
-		texFilename = os.path.join(tmpDir, obj.Label)
-		out = open(str(texFilename), "wb")
-		out.write(data.read())
-		out.close()
+			# button
+			self.pathG = QtGui.QPushButton("load", self)
+			self.pathG.clicked.connect(self.loadStoredTextures)
+			self.pathG.move(10, 130)
 
-		FreeCAD.Console.PrintMessage("\n")	
-		FreeCAD.Console.PrintMessage("File: "+texFilename)
+			# label
+			space = ""
+			space += "                                                                                        "
+			space += "                                                                                        "
+			space += "                                                                                        "
+			self.Status = QtGui.QLabel(space, self)
+			self.Status.move(10, 200)
 
-		# apply texture
-		rootnode = obj.ViewObject.RootNode
-		texture =  coin.SoTexture2()
-		texture.filename = texFilename
+			# ############################################################################
+			# show
+			# ############################################################################
 
-		# check if already texure is applied
-		skip = 0
-		for i in rootnode.getChildren():
-			if hasattr(i, "filename"):
-				
-				# replace texure
-				i.filename = ""
-				i.filename = texFilename
-				skip = 1
+			self.show()
 
-		# set texture as new if not applied
-		if skip == 0:
-			rootnode.insertChild(texture, 1)
+		# ############################################################################
+		# actions
+		# ############################################################################
+		
+		def onCancel(self):
+			self.result = userCancelled
+			self.close()
+		def onOk(self):
+			self.result = userOK
+			self.close()
 
-# if no textures show info
-if empty == ""	:
-	iText = ""
-	iText += "No textures URLs found. \n" 
-	iText += "Please see the documentation to find out how to store textures. \n"
-	QtGui.QMessageBox.information(None,"setTextures",str(iText))
+		def showStatus(self, iText):
+		
+			# show info
+			QtGui.QMessageBox.information(None,"setTextures",str(iText))
+
+		def setTextureProperty(self):
+
+			selected = FreeCADGui.Selection.getSelection()
+			selectedLen = len(selected)
+
+			if selectedLen == 0:
+				iText = ""
+				iText += "No selected objects found. \n" 
+				iText += "Please select objects to add property. \n"
+				self.showStatus(iText)
+		
+			textureURL = self.pathI.text()
+
+			for obj in selected:
+				try:
+					if not hasattr(obj, "Texture"):
+						obj.addProperty("App::PropertyString", "Texture", "Base", "")
+					
+					obj.Texture = str(textureURL)
+				except:
+					skip = 1
+		
+			self.Status.setText("You should find the given URL at Texture property for all selected objects.")
+		
+		def loadStoredTextures(self):
+		
+			# set flag
+			empty = ""
+
+			# create temp directory
+			with tempfile.TemporaryDirectory() as tmpDir:
+			
+				# search all objects
+				for obj in FreeCAD.activeDocument().Objects:
+					
+					textureURL = ""
+		
+					# support for texture URL stored at objects description	
+					try:
+						if textureURL == "":
+							ref = str(obj.Label2)
+							if ref != "" and ref.startswith("http"):
+								textureURL = ref
+					except:
+						textureURL = ""
+		
+					# support for texture URL stored at objects Texture property
+					try:
+						if textureURL == "":
+							ref = str(obj.Texture)
+							if ref != "" and ref.startswith("http"):
+								textureURL = ref
+					except:
+						textureURL = ""
+		
+					# support for texture URL stored at Material Card TexturePath
+					try:
+						if textureURL == "":
+							ref = str(obj.Material.Material["TexturePath"])
+							if ref != "" and ref.startswith("http"):
+								textureURL = ref
+					except:
+						textureURL = ""
+			
+					# if no texture found for object skip it
+					if str(textureURL) == "":
+						continue
+			
+					# mark found
+					empty = textureURL
+			
+					# get image from URL
+					data = urllib.request.urlopen(textureURL)
+			
+					# create temp file with image
+					texFilename = os.path.join(tmpDir, obj.Label)
+					out = open(str(texFilename), "wb")
+					out.write(data.read())
+					out.close()
+			
+					# apply texture
+					rootnode = obj.ViewObject.RootNode
+					texture =  coin.SoTexture2()
+					texture.filename = texFilename
+			
+					# check if already texure is applied
+					skip = 0
+					for i in rootnode.getChildren():
+						if hasattr(i, "filename"):
+							
+							# replace texure
+							i.filename = ""
+							i.filename = texFilename
+							skip = 1
+			
+					# set texture as new if not applied
+					if skip == 0:
+						rootnode.insertChild(texture, 1)
+
+				if empty == "":
+					iText = ""
+					iText += "No textures URLs found. \n" 
+					iText += "Please see the documentation to find out how to store textures. \n"
+					self.showStatus(iText)
+				else:
+					self.Status.setText("All textures has been loaded from stored URLs.")
+
+	# ############################################################################
+	# final settings
+	# ############################################################################
+
+	userCancelled = "Cancelled"
+	userOK = "OK"
+	
+	form = QtMainClass()
+	form.exec_()
+	
+	if form.result == userCancelled:
+		pass
+	
+	if form.result == userOK:
+		pass
+
+# ###################################################################################################################
+# Main
+# ###################################################################################################################
+
+showQtMain()
