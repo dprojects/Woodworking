@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking to apply and store textures
 # Author: Darek L (aka dprojects)
-# Version: 3.0
+# Version: 4.0
 # Latest version: https://github.com/dprojects/setTextures
 
 import FreeCAD, FreeCADGui
@@ -56,7 +56,7 @@ def showQtMain():
 			self.pathI.move(10, 63)
 
 			# label
-			self.pathSL = QtGui.QLabel("Store given URL to all selected objects at property named Texture.", self)
+			self.pathSL = QtGui.QLabel("Store given URL to all selected objects at property named Texture (if no URL this property will be empty).", self)
 			self.pathSL.move(100, 103)
 
 			# button
@@ -65,7 +65,7 @@ def showQtMain():
 			self.pathS.move(10, 100)
 
 			# label
-			self.pathGL = QtGui.QLabel("Download and apply textures from stored URLs.", self)
+			self.pathGL = QtGui.QLabel("Download and apply textures from stored URLs (for all objects or selected only).", self)
 			self.pathGL.move(100, 133)
 
 			# button
@@ -128,87 +128,106 @@ def showQtMain():
 			self.Status.setText("You should find the given URL at Texture property for all selected objects.")
 		
 		def loadStoredTextures(self):
-		
+
 			# set flag
 			empty = ""
 
 			# create temp directory
-			with tempfile.TemporaryDirectory() as tmpDir:
-			
-				# search all objects
-				for obj in FreeCAD.activeDocument().Objects:
-					
+			tmpDir = tempfile.gettempdir()
+			tmpDir = os.path.join(tmpDir, "FreeCAD_Textures")
+			if not os.path.exists(tmpDir):
+				os.makedirs(tmpDir)
+
+			# check if load for selected only or all
+			selected = FreeCADGui.Selection.getSelection()
+			selectedLen = len(selected)
+
+			if selectedLen > 0:
+				searchObjects = selected
+			else:
+				searchObjects = FreeCAD.activeDocument().Objects
+
+			# search all objects
+			for obj in searchObjects:
+				
+				textureURL = ""
+	
+				# support for texture URL stored at objects description	
+				try:
+					if textureURL == "":
+						ref = str(obj.Label2)
+						if ref != "" and ref.startswith("http"):
+							textureURL = ref
+				except:
+					textureURL = ""
+	
+				# support for texture URL stored at objects Texture property
+				try:
+					if textureURL == "":
+						ref = str(obj.Texture)
+						if ref != "" and ref.startswith("http"):
+							textureURL = ref
+				except:
+					textureURL = ""
+	
+				# support for texture URL stored at Material Card TexturePath
+				try:
+					if textureURL == "":
+						ref = str(obj.Material.Material["TexturePath"])
+						if ref != "" and ref.startswith("http"):
+							textureURL = ref
+				except:
 					textureURL = ""
 		
-					# support for texture URL stored at objects description	
-					try:
-						if textureURL == "":
-							ref = str(obj.Label2)
-							if ref != "" and ref.startswith("http"):
-								textureURL = ref
-					except:
-						textureURL = ""
+				# if no texture found for object skip it
+				if str(textureURL) == "":
+					continue
 		
-					# support for texture URL stored at objects Texture property
-					try:
-						if textureURL == "":
-							ref = str(obj.Texture)
-							if ref != "" and ref.startswith("http"):
-								textureURL = ref
-					except:
-						textureURL = ""
-		
-					# support for texture URL stored at Material Card TexturePath
-					try:
-						if textureURL == "":
-							ref = str(obj.Material.Material["TexturePath"])
-							if ref != "" and ref.startswith("http"):
-								textureURL = ref
-					except:
-						textureURL = ""
-			
-					# if no texture found for object skip it
-					if str(textureURL) == "":
-						continue
-			
-					# mark found
-					empty = textureURL
-			
+				# mark found
+				empty = textureURL
+
+				# get texture filename
+				textureFilename = os.path.basename(textureURL)
+				textureFilePath = os.path.join(tmpDir, textureFilename)
+
+				# check if file already exists and skip slow downloading
+				if not os.path.exists(textureFilePath):
+
 					# get image from URL
 					data = urllib.request.urlopen(textureURL)
 			
 					# create temp file with image
-					texFilename = os.path.join(tmpDir, obj.Label)
-					out = open(str(texFilename), "wb")
+					out = open(str(textureFilePath), "wb")
 					out.write(data.read())
 					out.close()
-			
-					# apply texture
-					rootnode = obj.ViewObject.RootNode
-					texture =  coin.SoTexture2()
-					texture.filename = texFilename
-			
-					# check if already texure is applied
-					skip = 0
-					for i in rootnode.getChildren():
-						if hasattr(i, "filename"):
-							
-							# replace texure
-							i.filename = ""
-							i.filename = texFilename
-							skip = 1
-			
-					# set texture as new if not applied
-					if skip == 0:
-						rootnode.insertChild(texture, 1)
+		
+				# apply texture
+				rootnode = obj.ViewObject.RootNode
+				texture =  coin.SoTexture2()
+				texture.filename = textureFilePath
+		
+				# check if already texure is applied
+				skip = 0
+				for i in rootnode.getChildren():
+					if hasattr(i, "filename"):
+						
+						# replace texure
+						i.filename = ""
+						i.filename = textureFilePath
+						skip = 1
+		
+				# set texture as new if not applied
+				if skip == 0:
+					rootnode.insertChild(texture, 1)
 
-				if empty == "":
-					iText = ""
-					iText += "No textures URLs found. \n" 
-					iText += "Please see the documentation to find out how to store textures. \n"
-					self.showStatus(iText)
-				else:
-					self.Status.setText("All textures has been loaded from stored URLs.")
+			if empty == "":
+				iText = ""
+				iText += "No textures URLs found. \n" 
+				iText += "Please see the documentation to find out how to store textures. \n"
+				self.showStatus(iText)
+			else:
+				self.Status.setText("All textures has been loaded from stored URLs.")
+
 
 	# ############################################################################
 	# final settings

@@ -43,10 +43,12 @@ def getItems(iType):
 		
 		parts = [
 			"Std_ViewFitAll",
+			"Part_Measure_Linear",
 			"Std_Group",
 			"Std_LinkMakeGroup",
 			"Std_LinkMake",
-			"Std_MergeProjects"
+			"Std_MergeProjects",
+			"Std_TextureMapping"
 		]
 
 	if iType == "Coding":

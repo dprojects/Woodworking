@@ -130,7 +130,7 @@ class SETTEXTURES():
 		return {"Pixmap"  : os.path.join(iconPath, "setTextures.xpm"),
 				"Accel"   : "",
 				"MenuText": "SETTEXTURES",
-				"ToolTip" : "set textures stored as URL at objects"}
+				"ToolTip" : "store textures URL or load stored"}
 
 	def Activated(self):
 
