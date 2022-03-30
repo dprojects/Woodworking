@@ -161,3 +161,41 @@ class SETTEXTURES():
 
 FreeCADGui.addCommand("SETTEXTURES", SETTEXTURES())
 
+# ######################################################################################################################
+class DEBUGINFO():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "debugInfo.xpm"),
+				"Accel"   : "",
+				"MenuText": "DEBUGINFO",
+				"ToolTip" : "copy platform details to clipboard for bug report purposes"}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "debugInfo"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, module)
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("DEBUGINFO", DEBUGINFO())
+

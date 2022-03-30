@@ -29,6 +29,7 @@ class WoodworkingWorkbench (Workbench):
 		self.appendToolbar("Coding", loadToolbar.getItems("Coding"))
 		
 		self.appendToolbar("Coding", ["CODE"] )
+		self.appendToolbar("Coding", ["DEBUGINFO"] )
 		self.appendToolbar("Manage", ["SETTEXTURES"] )
 
 		self.appendMenu("Woodworking", loadMenu.getItems())

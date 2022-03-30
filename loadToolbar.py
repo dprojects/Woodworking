@@ -56,7 +56,6 @@ def getItems(iType):
 		parts = [
 			"Std_DlgMacroExecute",
 			"Std_DlgMacroExecuteDirect",
-			"Std_About",
 			"Std_DependencyGraph"
 		]
 		
