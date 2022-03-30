@@ -18,6 +18,9 @@ You can merge more examples into one project and map texture:
 	* [Bookcase_001](#bookcase_001)
 	* [Cabinet_modular_001](#cabinet_modular_001)
 	* [Drawer_001](#drawer_001)
+* [Picture frames](#picture-frames)
+	* [PictureFrame_001](#pictureframe_001) - Half-lap Joint, simple
+	* [PictureFrame_002](#pictureframe_002) - Half-lap Joint, by picture size
 * [Tables](#tables)
 	* [Table_001](#table_001) - simple rectangular table
 	* [Table_002](#table_002) - simple oval table
@@ -42,6 +45,7 @@ You can merge more examples into one project and map texture:
 | **Supported reports:** | `All` |
 | **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Not stored, open `setTextures` tool to set |
 
 ![Bookcase_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Bookcase_001.png)
 
@@ -52,6 +56,7 @@ You can merge more examples into one project and map texture:
 | **Supported reports:** | `All` |
 | **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Not stored, open `setTextures` tool to set |
 
 ![Cabinet_modular_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Cabinet_modular_001.png)
 
@@ -62,8 +67,33 @@ You can merge more examples into one project and map texture:
 | **Supported reports:** | `All` |
 | **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Not stored, open `setTextures` tool to set |
 
 ![Drawer_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Drawer_001.png)
+
+# Picture frames
+
+## PictureFrame_001
+
+|   |   |
+|:--|:--|
+| **Supported reports:** | `All` |
+| **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
+| **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Stored, open `setTextures` tool and click `load` button to see them |
+
+![PictureFrame_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/PictureFrame_001.png)
+
+## PictureFrame_002
+
+|   |   |
+|:--|:--|
+| **Supported reports:** | `All` |
+| **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
+| **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Stored, open `setTextures` tool and click `load` button to see them |
+
+![PictureFrame_002](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/PictureFrame_002.png)
 
 # Tables
 
@@ -74,6 +104,7 @@ You can merge more examples into one project and map texture:
 | **Supported reports:** | `All` |
 | **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Not stored, open `setTextures` tool to set |
 
 ![Table_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Table_001.png)
 
@@ -84,6 +115,7 @@ You can merge more examples into one project and map texture:
 | **Supported reports:** | `All` |
 | **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Not stored, open `setTextures` tool to set |
 
 ![Table_002](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Table_002.png)
 
@@ -94,6 +126,7 @@ You can merge more examples into one project and map texture:
 | **Supported reports:** | `All` |
 | **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Not stored, open `setTextures` tool to set |
 
 ![Table_003](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Table_003.png)
 
@@ -104,6 +137,7 @@ You can merge more examples into one project and map texture:
 | **Supported reports:** | `c - report type` |
 | **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Not stored, open `setTextures` tool to set |
 
 ![Table_004](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Table_004.png)
 
@@ -116,6 +150,7 @@ You can merge more examples into one project and map texture:
 | **Supported reports:** | `All` |
 | **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Not stored, open `setTextures` tool to set |
 
 ![StorageBox_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_001.png)
 
@@ -126,6 +161,7 @@ You can merge more examples into one project and map texture:
 | **Supported reports:** | `All` |
 | **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Not stored, open `setTextures` tool to set |
 
 ![StorageBox_002](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_002.png)
 
@@ -136,6 +172,7 @@ You can merge more examples into one project and map texture:
 | **Supported reports:** | `c - report type` |
 | **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Not stored, open `setTextures` tool to set |
 
 ![StorageBox_003](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_003.png)
 
@@ -146,6 +183,7 @@ You can merge more examples into one project and map texture:
 | **Supported reports:** | `c - report type` |
 | **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Not stored, open `setTextures` tool to set |
 
 ![StorageBox_004](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_004.png)
 
@@ -156,6 +194,7 @@ You can merge more examples into one project and map texture:
 | **Supported reports:** | `c - report type` |
 | **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Not stored, open `setTextures` tool to set |
 
 ![StorageBox_005](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_005.png)
 
@@ -166,6 +205,7 @@ You can merge more examples into one project and map texture:
 | **Supported reports:** | `c - report type` |
 | **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Not stored, open `setTextures` tool to set |
 
 ![StorageBox_006](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_006.png)
 
@@ -176,6 +216,7 @@ You can merge more examples into one project and map texture:
 | **Supported reports:** | `c - report type` |
 | **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Not stored, open `setTextures` tool to set |
 
 ![StorageBox_007](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_007.png)
 
@@ -186,5 +227,6 @@ You can merge more examples into one project and map texture:
 | **Supported reports:** | `c - report type` |
 | **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Not stored, open `setTextures` tool to set |
 
 ![StorageBox_008](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_008.png)
