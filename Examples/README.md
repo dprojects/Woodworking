@@ -18,6 +18,8 @@ You can merge more examples into one project and map texture:
 	* [Bookcase_001](#bookcase_001)
 	* [Cabinet_modular_001](#cabinet_modular_001)
 	* [Drawer_001](#drawer_001)
+* [Chairs](#chairs)
+	* [Chair_001](#chair_001) - simple
 * [Picture frames](#picture-frames)
 	* [PictureFrame_001](#pictureframe_001) - Half-lap Joint, simple
 	* [PictureFrame_002](#pictureframe_002) - Half-lap Joint, by picture size
@@ -70,6 +72,19 @@ You can merge more examples into one project and map texture:
 | **Textures:** | Not stored, open `setTextures` tool to set |
 
 ![Drawer_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Drawer_001.png)
+
+# Chairs
+
+## Chair_001
+
+|   |   |
+|:--|:--|
+| **Supported reports:** | `c - report type` |
+| **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
+| **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Stored, open `setTextures` tool and click `load` button to see them |
+
+![Chair_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Chair_001.png)
 
 # Picture frames
 
