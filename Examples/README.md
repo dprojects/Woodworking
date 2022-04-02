@@ -41,7 +41,7 @@
 
 |   |   |
 |:--|:--|
-| ![Merged_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Merged_001.png) | ![Merged_002](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Merged_002.png) |
+| ![Merged_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Merged_001_1.png) | ![Merged_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Merged_001_2.png) |
 
 # Furniture
 
