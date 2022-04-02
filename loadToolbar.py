@@ -36,6 +36,7 @@ def getItems(iType):
 		
 		parts = [
 			"PartDesign_Hole",
+			"Part_Torus",
 			"Part_Boolean"
 		]
 

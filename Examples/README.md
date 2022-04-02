@@ -1,25 +1,14 @@
 # Woodworking at FreeCAD - fully parametric examples
 
-Idea behind this examples folder is to have fully parametric furniture examples that can be quickly resized via `settings` spreadsheet and adopted to the current project. You can change any size at `settings` spreadsheet and the furniture will change dimensions automatically. Also, You can generate new report with new dimensions.
-
-All the examples here should follow the rules:
-* Fully parametric as much as possible.
-* Should be built in the supported way by [getDimensions](https://github.com/dprojects/getDimensions) macro tool. 
-
-This approach will be more useful for future projects than static examples, I guess.
-
-You can merge more examples into one project and map texture:
-
-![main_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/main_001.png)
-
-![main_002](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/main_002.png)
-
+* [Merged](#merged)
+	* [Merged_001](#merged_001) - Dining table with chairs
 * [Furniture](#furniture)
 	* [Bookcase_001](#bookcase_001)
 	* [Cabinet_modular_001](#cabinet_modular_001)
 	* [Drawer_001](#drawer_001)
 * [Chairs](#chairs)
 	* [Chair_001](#chair_001) - simple
+	* [Chair_002](#chair_002) - throne style
 * [Picture frames](#picture-frames)
 	* [PictureFrame_001](#pictureframe_001) - Half-lap Joint, simple
 	* [PictureFrame_002](#pictureframe_002) - Half-lap Joint, by picture size
@@ -37,6 +26,22 @@ You can merge more examples into one project and map texture:
 	* [StorageBox_006](#storagebox_006) - Love Joint
 	* [StorageBox_007](#storagebox_007) - X, Sew Joint
 	* [StorageBox_008](#storagebox_008) - Slant Pin Stitch, Simple Overlock, Sew Joint
+* [Final notes](#final-notes)
+
+# Merged
+
+## Merged_001
+
+|   |   |
+|:--|:--|
+| **Supported reports:** | `All` |
+| **FreeCAD version:** | `0.20.27936 (Weekly, Linux, x86_64, Conda, AppImage)` |
+| **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Stored, open `setTextures` tool and click `load` button to see them |
+
+|   |   |
+|:--|:--|
+| ![Merged_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Merged_001.png) | ![Merged_002](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Merged_002.png) |
 
 # Furniture
 
@@ -80,11 +85,22 @@ You can merge more examples into one project and map texture:
 |   |   |
 |:--|:--|
 | **Supported reports:** | `c - report type` |
-| **FreeCAD version:** | `0.19.3 (Stable, Linux, x86_64, Conda, AppImage)` |
+| **FreeCAD version:** | `0.20.27936 (Weekly, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
 | **Textures:** | Stored, open `setTextures` tool and click `load` button to see them |
 
 ![Chair_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Chair_001.png)
+
+## Chair_002
+
+|   |   |
+|:--|:--|
+| **Supported reports:** | `c - report type` |
+| **FreeCAD version:** | `0.20.27936 (Weekly, Linux, x86_64, Conda, AppImage)` |
+| **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Stored, open `setTextures` tool and click `load` button to see them |
+
+![Chair_002](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Chair_002.png)
 
 # Picture frames
 
@@ -245,3 +261,13 @@ You can merge more examples into one project and map texture:
 | **Textures:** | Not stored, open `setTextures` tool to set |
 
 ![StorageBox_008](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/StorageBox_008.png)
+
+# Final notes
+
+Idea behind this examples folder is to have fully parametric furniture examples that can be quickly resized via `settings` spreadsheet and adopted to the current project. You can change any size at `settings` spreadsheet and the furniture will change dimensions automatically. Also, You can generate new report with new dimensions.
+
+All the examples here should follow the rules:
+* Fully parametric as much as possible.
+* Should be built in the supported way by [getDimensions](https://github.com/dprojects/getDimensions) macro tool. 
+
+This approach will be more useful for future projects than static examples, I guess.
