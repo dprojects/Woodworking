@@ -2,7 +2,7 @@
 
 # Inspection tool for FreeCAD macro development.
 # Author: Darek L (aka dprojects)
-# Version: 3.0
+# Version: 4.0
 # Latest version: https://github.com/dprojects/scanObjects
 
 import FreeCAD
@@ -44,7 +44,7 @@ def showQtGUI():
 		gDefaultRoot = ""
 		gModeType = "normal"
 		gW = 1200 # width
-		gH = 600 # hight
+		gH = 600 # height
 
 		# ############################################################################
 		# errors & info
@@ -117,7 +117,8 @@ def showQtGUI():
 				"Path", 
 				"Draft", 
 				"TechDraw", 
-				"Spreadsheet"
+				"Spreadsheet",
+				"coin"
 			)
 
 			self.rootO = QtGui.QComboBox(self)
@@ -493,6 +494,14 @@ def showQtGUI():
 				rootS= "Spreadsheet"
 				self.addSelection(Spreadsheet, root, rootS, -1)
 
+			if selectedText == "coin":
+
+				from pivy import coin
+
+				root = dir(coin)
+				rootS= "coin"
+				self.addSelection(coin, root, rootS, -1)
+
 		def loadCustomModule(self):
 
 			try:
@@ -513,6 +522,10 @@ def showQtGUI():
 				
 		def setOutput(self, iObj):
 
+			# reset outpust before set new values
+			self.resetOutputs()
+
+			# get selected item index
 			index = iObj.indexes()[0].row()
 
 			# ########################################				
@@ -655,6 +668,20 @@ def showQtGUI():
 					
 					self.o6.setPlainText(o6)
 
+				# getChildren()
+				elif skip == 0:
+
+					try:
+						r = result.getChildren()
+						o6 = ""
+						for row in r:
+							o6 += str(row) + "\n"
+													
+						self.o6.setPlainText(o6)
+					except:
+						self.o6.setPlainText(str(result))
+						skip = 1
+
 				# show raw object
 				else:
 					self.o6.setPlainText(str(result))
@@ -734,6 +761,8 @@ def showQtGUI():
 				self.list.setModel(model)
 
 			self.list.selectionModel().selectionChanged.connect(self.setOutput)
+			
+			# reset outputs and show info screen
 			self.resetOutputs()
 
 		def removeSelection(self):
@@ -774,20 +803,18 @@ def showQtGUI():
 			tmpO = []
 			tmpL = []
 
-			# init selection view
-			if iObj == "":
+			# init selection view (compare strings only)
+			if str(iObj) == "":
 				tmpO = iList
 				tmpL = [ o.Label for o in tmpO ]
 
 			# if object is list (eg. faces, edges)
 			elif isinstance(iObj, list):
-
 				tmpO = iObj
 				tmpL = iObj
 
 			# all objects types
 			else:
-
 				for o in iList:
 					try:
 						if hasattr(iObj, o):
@@ -833,7 +860,7 @@ def showQtGUI():
 				index = selected.row()
 				Obj = self.dbSO[self.dbSI][index]
 				path = str(self.dbSL[self.dbSI][index])
-				
+
 				if isinstance(Obj, str):
 					skip = 1
 				elif isinstance(Obj, float):
@@ -842,8 +869,15 @@ def showQtGUI():
 					newList = Obj
 					self.addSelection(Obj, newList, path, selected)
 				else:
-					newList = dir(Obj)
-					self.addSelection(Obj, newList, path, selected)
+					try:
+						newList = []
+						for n in Obj.getChildren():
+							newList.append(n)
+	
+						self.addSelection(newList, newList, path, selected)
+					except:
+						newList = dir(Obj)
+						self.addSelection(Obj, newList, path, selected)
 			except:
 				skip = 1
 	

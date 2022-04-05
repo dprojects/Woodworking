@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking to apply and store textures
 # Author: Darek L (aka dprojects)
-# Version: 5.0
+# Version: 6.2
 # Latest version: https://github.com/dprojects/setTextures
 
 import FreeCAD, FreeCADGui
@@ -14,40 +14,34 @@ import os
 
 
 # ###################################################################################################################
-# Support for Qt GUI
+# Qt GUI
 # ###################################################################################################################
-
 
 def showQtMain():
 
-	# ############################################################################
-	# Qt Main Class
-	# ############################################################################
-	
 	class QtMainClass(QtGui.QDialog):
 
-		# init 
 		def __init__(self):
 			super(QtMainClass, self).__init__()
 			self.initUI()
 
 		def initUI(self):
 			
-			# window
-			self.result = userCancelled
-			self.setGeometry(400, 250, 800, 350)
+			# main window
+			self.setGeometry(400, 250, 800, 450)
 			self.setWindowTitle("setTextures")
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
-			# ############################################################################
-			# texture URL path
-			# ############################################################################
-
-			# label
+			# info
 			info = ""
-			info += "If you want to load all stored textures, please go to Step 3, without selection, and click load button."
+			info += "If you want to load all stored textures, please go to Step 4 "
+			info += "and click \"load - all objects\" button."
 			self.step0 = QtGui.QLabel(info, self)
 			self.step0.move(10, 10)
+
+			# ############################################################
+			# step 1
+			# ############################################################
 
 			# label
 			info = ""
@@ -61,56 +55,99 @@ def showQtMain():
 			self.pathI.setFixedWidth(750)
 			self.pathI.move(10, 60)
 
+			# ############################################################
+			# step 2
+			# ############################################################
+
 			# label
 			info = ""
-			info += "Step 2. Store given URL at property named Texture"
-			info += ", if no URL this property will be set to empty string:"
+			info += "Step 2. Set texture properties:"
 			self.step2 = QtGui.QLabel(info, self)
 			self.step2.move(10, 100)
 
-			# button
-			self.pathS = QtGui.QPushButton("store", self)
-			self.pathS.clicked.connect(self.setTextureProperty)
-			self.pathS.move(10, 120)
-			self.pathS.resize(80, 40)
+			# text input
+			self.factorX = QtGui.QLineEdit(self)
+			self.factorX.setText(str("1.0"))
+			self.factorX.setFixedWidth(50)
+			self.factorX.move(10, 120)
 
 			# label
 			info = ""
-			info += "- Selected objects - if objects selected e.g. good to change texture for single object only"
+			info += " - repeat X direction fator, leave it 1.0, if you do not want to repeat texture"
 			self.step2a = QtGui.QLabel(info, self)
-			self.step2a.move(100, 123)
+			self.step2a.move(70, 123)
+
+			# text input
+			self.factorY = QtGui.QLineEdit(self)
+			self.factorY.setText(str("1.0"))
+			self.factorY.setFixedWidth(50)
+			self.factorY.move(10, 150)
 
 			# label
 			info = ""
-			info += "- All objects - if no objects selected e.g. good for merged projects and many objects"
+			info += " - repeat Y direction fator, leave it 1.0, if you do not want to repeat texture"
 			self.step2b = QtGui.QLabel(info, self)
-			self.step2b.move(100, 143)
+			self.step2b.move(70, 153)
 
+			# text input
+			self.factorRotation = QtGui.QLineEdit(self)
+			self.factorRotation.setText(str("0.0"))
+			self.factorRotation.setFixedWidth(50)
+			self.factorRotation.move(10, 180)
 
 			# label
 			info = ""
-			info += "Step 3. Download and apply textures from stored URLs:"
+			info += " - rotation texture factor, leave it 0.0, if you do not want to rotate texture"
+			self.step2c = QtGui.QLabel(info, self)
+			self.step2c.move(70, 183)
+
+			# ############################################################
+			# step 3
+			# ############################################################
+
+			# label
+			info = ""
+			info += "Step 3. Store texture properties, if no URL this property will be set to empty string:"
 			self.step3 = QtGui.QLabel(info, self)
-			self.step3.move(10, 200)
+			self.step3.move(10, 230)
 
 			# button
-			self.pathG = QtGui.QPushButton("load", self)
-			self.pathG.clicked.connect(self.loadStoredTextures)
-			self.pathG.move(10, 220)
-			self.pathG.resize(80, 40)
+			self.step3a = QtGui.QPushButton("store - selected objects only", self)
+			self.step3a.clicked.connect(lambda: self.checkSelected("store", "selected"))
+			self.step3a.move(100, 250)
+			self.step3a.resize(200, 40)
+
+			# button
+			self.step3b = QtGui.QPushButton("store - all objects", self)
+			self.step3b.clicked.connect(lambda: self.checkSelected("store", "all"))
+			self.step3b.move(400, 250)
+			self.step3b.resize(200, 40)
+
+			# ############################################################
+			# step 4
+			# ############################################################
 
 			# label
 			info = ""
-			info += "- Selected objects - if objects selected e.g. good to refresh changed textures"
-			self.step3a = QtGui.QLabel(info, self)
-			self.step3a.move(100, 223)
+			info += "Step 4. Download and apply textures from stored URLs:"
+			self.step4 = QtGui.QLabel(info, self)
+			self.step4.move(10, 300)
 
-			# label
-			info = ""
-			info += "- All objects - if no objects selected e.g. good to load all stored textures"
-			self.step3b = QtGui.QLabel(info, self)
-			self.step3b.move(100, 243)
+			# button
+			self.step4a = QtGui.QPushButton("load - selected objects only", self)
+			self.step4a.clicked.connect(lambda: self.checkSelected("load", "selected"))
+			self.step4a.move(100, 320)
+			self.step4a.resize(200, 40)
 
+			# button
+			self.step4b = QtGui.QPushButton("load - all objects", self)
+			self.step4b.clicked.connect(lambda: self.checkSelected("load", "all"))
+			self.step4b.move(400, 320)
+			self.step4b.resize(200, 40)
+
+			# ############################################################
+			# status
+			# ############################################################
 
 			# label
 			space = ""
@@ -118,66 +155,73 @@ def showQtMain():
 			space += "                                                                                        "
 			space += "                                                                                        "
 			self.Status = QtGui.QLabel(space, self)
-			self.Status.move(10, 320)
+			self.Status.move(10, 420)
 
-			# ############################################################################
-			# show
-			# ############################################################################
+			# ############################################################
+			# show all
+			# ############################################################
 
 			self.show()
 
-		# ############################################################################
-		# actions
-		# ############################################################################
+		# ############################################################
+		# actions - status
+		# ############################################################
 		
-		def onCancel(self):
-			self.result = userCancelled
-			self.close()
-		def onOk(self):
-			self.result = userOK
-			self.close()
-
 		def showStatus(self, iText):
+			self.Status.setText(str(iText))
+
+		# ############################################################
+		# actions - store
+		# ############################################################
 		
-			# show info
-			QtGui.QMessageBox.information(None,"setTextures",str(iText))
+		def setTextureProperty(self, iSearch, iSelect):
 
-		def setTextureProperty(self):
+			# set flag
+			skip = 0
 
-			# check if for selected only or all
-			selected = FreeCADGui.Selection.getSelection()
-			selectedLen = len(selected)
-
-			if selectedLen > 0:
-				searchObjects = selected
-			else:
-				searchObjects = FreeCAD.activeDocument().Objects
-
-		
+			# get texture URL from GUI text form
 			textureURL = self.pathI.text()
 
-			for obj in searchObjects:
+			# scan all given objects and set all properties
+			for obj in iSearch:
 
 				# skip everything except furniture parts if for all
 				if (
-					selectedLen == 0 and
+					iSelect == "selected" and
 					not obj.isDerivedFrom("Part::Box") and 
 					not obj.isDerivedFrom("PartDesign::Pad")
 				):
 					continue
 
-				# set property
+				# set properties
 				try:
-					if not hasattr(obj, "Texture"):
-						obj.addProperty("App::PropertyString", "Texture", "Base", "")
+					if not hasattr(obj, "Texture_URL"):
+						obj.addProperty("App::PropertyString", "Texture_URL", "Texture", "Texture URL, need to star with http, cannot be disk file.")
+					if not hasattr(obj, "Texture_Repeat_X"):
+						obj.addProperty("App::PropertyFloat", "Texture_Repeat_X", "Texture", "How many times reapeat the texture to X direction. Float 1.0 is default value for no repeat.")
+					if not hasattr(obj, "Texture_Repeat_Y"):
+						obj.addProperty("App::PropertyFloat", "Texture_Repeat_Y", "Texture", "How many times reapeat the texture to Y direction. Float 1.0 is default value for no repeat.")
+					if not hasattr(obj, "Texture_Rotation"):
+						obj.addProperty("App::PropertyFloat", "Texture_Rotation", "Texture", "Texture rotation. Float 0 is default value for no rotation.")
 					
-					obj.Texture = str(textureURL)
+					obj.Texture_URL = str(textureURL)
+					obj.Texture_Repeat_X = float(self.factorX.text())
+					obj.Texture_Repeat_Y = float(self.factorY.text())
+					obj.Texture_Rotation = float(self.factorRotation.text())
 				except:
 					skip = 1
 		
-			self.Status.setText("You should find the given URL at Texture property for all selected objects.")
+			# show status
+			if skip == 0:
+				self.showStatus("Texture properties has been stored.")
+			else:
+				self.showStatus("Error during setting properties.")
 		
-		def loadStoredTextures(self):
+		# ############################################################
+		# actions - load
+		# ############################################################
+		
+		def loadStoredTextures(self, iSearch):
 
 			# set flag
 			empty = ""
@@ -188,19 +232,18 @@ def showQtMain():
 			if not os.path.exists(tmpDir):
 				os.makedirs(tmpDir)
 
-			# check if for selected only or all
-			selected = FreeCADGui.Selection.getSelection()
-			selectedLen = len(selected)
-
-			if selectedLen > 0:
-				searchObjects = selected
-			else:
-				searchObjects = FreeCAD.activeDocument().Objects
-
 			# search all objects
-			for obj in searchObjects:
+			for obj in iSearch:
 				
 				textureURL = ""
+
+				# support for texture URL stored at objects Texture_URL property
+				try:
+					ref = str(obj.Texture_URL)
+					if ref != "" and ref.startswith("http"):
+						textureURL = ref
+				except:
+					skip = 1
 	
 				# support for texture URL stored at objects description	
 				try:
@@ -210,7 +253,7 @@ def showQtMain():
 				except:
 					skip = 1
 	
-				# support for texture URL stored at objects Texture property
+				# backward compatibility and support for manually added to Texture property
 				try:
 					ref = str(obj.Texture)
 					if ref != "" and ref.startswith("http"):
@@ -248,36 +291,98 @@ def showQtMain():
 					out.write(data.read())
 					out.close()
 		
-				# apply texture
+				# set search reference
 				rootnode = obj.ViewObject.RootNode
-				texture =  coin.SoTexture2()
-				texture.filename = textureFilePath
-		
+
+				# set flag
+				setTrans = 0
+
+				# set X repeat factor
+				if hasattr(obj, "Texture_Repeat_X"):
+					if isinstance(obj.Texture_Repeat_X, float):
+						repeatX = float(obj.Texture_Repeat_X)
+						setTrans = setTrans + 1
+
+				# set Y repeat factor
+				if hasattr(obj, "Texture_Repeat_Y"):
+					if isinstance(obj.Texture_Repeat_Y, float):
+						repeatY = float(obj.Texture_Repeat_Y)
+						setTrans = setTrans + 1
+
+				# set rotation factor
+				if hasattr(obj, "Texture_Rotation"):
+					if isinstance(obj.Texture_Rotation, float):
+						rotation = float(obj.Texture_Rotation)
+						setTrans = setTrans + 1
+
 				# check if already texure is applied
 				skip = 0
+				counter = 0
 				for i in rootnode.getChildren():
 					if hasattr(i, "filename"):
-						
-						# replace texure
+
+						# replace texure URL
 						i.filename = ""
 						i.filename = textureFilePath
 						skip = 1
+
+					if hasattr(i, "scaleFactor") and hasattr(i, "rotation"):
+						counter = counter + 1
+						if counter == 2:
+							if setTrans == 3:
+								i.scaleFactor.setValue(repeatX, repeatY)
+								i.rotation.setValue(rotation)
 		
 				# set texture as new if not applied
 				if skip == 0:
-					rootnode.insertChild(texture, 1)
+
+					# set texture transformation
+					trans = coin.SoTexture2Transform()
+					if setTrans == 3:
+						trans.scaleFactor.setValue(repeatX, repeatY)
+						trans.rotation.setValue(rotation)
+
+					rootnode.insertChild(trans, 1)
+
+					# set texture with URL
+					texture =  coin.SoTexture2()
+					texture.filename = textureFilePath
+					rootnode.insertChild(texture, 2)
 
 			if empty == "":
-				iText = ""
-				iText += "No textures URLs found. \n" 
-				iText += "Please see the documentation to find out how to store textures. \n"
+				iText = "No textures URLs found. " 
 				self.showStatus(iText)
 			else:
-				self.Status.setText("All textures has been loaded from stored URLs.")
+				self.showStatus("Textures has been loaded from stored URLs.")
 
+		# ############################################################
+		# actions - caller selection
+		# ############################################################
+		
+		def checkSelected(self, iOperation, iSelection):
+
+			# check selected
+			selected = FreeCADGui.Selection.getSelection()
+			selectedLen = len(selected)
+
+			if iSelection == "selected" and selectedLen == 0:
+				iText = "No objects selected. Please select objects and try again."
+				self.showStatus(iText)
+			else:
+
+				# set objects to search
+				if iSelection == "selected":
+					searchObjects = selected
+				else:
+					searchObjects = FreeCAD.activeDocument().Objects
+
+				if iOperation == "store":
+					self.setTextureProperty(searchObjects, iSelection)
+				if iOperation == "load":
+					self.loadStoredTextures(searchObjects)
 
 	# ############################################################################
-	# final settings
+	# final settings, if needed
 	# ############################################################################
 
 	userCancelled = "Cancelled"
