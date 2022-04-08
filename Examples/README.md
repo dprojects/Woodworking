@@ -5,7 +5,9 @@
 * [Furniture](#furniture)
 	* [Bookcase_001](#bookcase_001)
 	* [Cabinet_modular_001](#cabinet_modular_001)
-	* [Drawer_001](#drawer_001)
+* [Drawers](#drawers)
+	* [Drawer_001](#drawer_001) - simple
+	* [Drawer_002](#drawer_002) - with decoration
 * [Chairs](#chairs)
 	* [Chair_001](#chair_001) - simple
 	* [Chair_002](#chair_002) - throne style
@@ -67,6 +69,8 @@
 
 ![Cabinet_modular_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Cabinet_modular_001.png)
 
+# Drawers
+
 ## Drawer_001
 
 |   |   |
@@ -77,6 +81,17 @@
 | **Textures:** | Not stored, open `setTextures` tool to set |
 
 ![Drawer_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Drawer_001.png)
+
+## Drawer_002
+
+|   |   |
+|:--|:--|
+| **Supported reports:** | `All` |
+| **FreeCAD version:** | `0.20.27936 (Weekly, Linux, x86_64, Conda, AppImage)` |
+| **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Stored, open `setTextures` tool and click `load` button to see them |
+
+![Drawer_002](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Drawer_002.png)
 
 # Chairs
 

@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking to apply and store textures
 # Author: Darek L (aka dprojects)
-# Version: 6.2
+# Version: 6.3
 # Latest version: https://github.com/dprojects/setTextures
 
 import FreeCAD, FreeCADGui
@@ -187,7 +187,7 @@ def showQtMain():
 
 				# skip everything except furniture parts if for all
 				if (
-					iSelect == "selected" and
+					iSelect != "selected" and
 					not obj.isDerivedFrom("Part::Box") and 
 					not obj.isDerivedFrom("PartDesign::Pad")
 				):
@@ -195,12 +195,16 @@ def showQtMain():
 
 				# set properties
 				try:
+
 					if not hasattr(obj, "Texture_URL"):
 						obj.addProperty("App::PropertyString", "Texture_URL", "Texture", "Texture URL, need to star with http, cannot be disk file.")
+
 					if not hasattr(obj, "Texture_Repeat_X"):
 						obj.addProperty("App::PropertyFloat", "Texture_Repeat_X", "Texture", "How many times reapeat the texture to X direction. Float 1.0 is default value for no repeat.")
+
 					if not hasattr(obj, "Texture_Repeat_Y"):
 						obj.addProperty("App::PropertyFloat", "Texture_Repeat_Y", "Texture", "How many times reapeat the texture to Y direction. Float 1.0 is default value for no repeat.")
+
 					if not hasattr(obj, "Texture_Rotation"):
 						obj.addProperty("App::PropertyFloat", "Texture_Rotation", "Texture", "Texture rotation. Float 0 is default value for no rotation.")
 					
