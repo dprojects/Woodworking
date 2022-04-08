@@ -5,6 +5,9 @@
 * [Furniture](#furniture)
 	* [Bookcase_001](#bookcase_001)
 	* [Cabinet_modular_001](#cabinet_modular_001)
+* [Furniture elements](#furniture-elements)
+	* [Front_001](#front_001) - open to right
+	* [Front_002](#front_002) - open to left
 * [Drawers](#drawers)
 	* [Drawer_001](#drawer_001) - simple
 	* [Drawer_002](#drawer_002) - with decoration
@@ -68,6 +71,30 @@
 | **Textures:** | Not stored, open `setTextures` tool to set |
 
 ![Cabinet_modular_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Cabinet_modular_001.png)
+
+# Furniture elements
+
+## Front_001
+
+|   |   |
+|:--|:--|
+| **Supported reports:** | `All` |
+| **FreeCAD version:** | `0.20.27936 (Weekly, Linux, x86_64, Conda, AppImage)` |
+| **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Stored, open `setTextures` tool and click `load` button to see them |
+
+![Front_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Front_001.png)
+
+## Front_002
+
+|   |   |
+|:--|:--|
+| **Supported reports:** | `All` |
+| **FreeCAD version:** | `0.20.27936 (Weekly, Linux, x86_64, Conda, AppImage)` |
+| **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Stored, open `setTextures` tool and click `load` button to see them |
+
+![Front_002](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Front_002.png)
 
 # Drawers
 
