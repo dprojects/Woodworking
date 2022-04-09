@@ -2,10 +2,12 @@
 
 * [Merged](#merged)
 	* [Merged_001](#merged_001) - Dining table with chairs
-* [Furniture](#furniture)
-	* [Bookcase_001](#bookcase_001)
-	* [Cabinet_modular_001](#cabinet_modular_001)
-* [Furniture elements](#furniture-elements)
+* [Bookcases](#bookcases)
+	* [Bookcase_001](#bookcase_001) - simple
+	* [Bookcase_002](#bookcase_002) - simple with custom shelfs number
+* [Cabinets](#cabinets)
+	* [Cabinet_modular_001](#cabinet_modular_001) - simple I made in my garage ;-)
+* [Fronts](#fronts)
 	* [Front_001](#front_001) - open to right
 	* [Front_002](#front_002) - open to left
 * [Drawers](#drawers)
@@ -48,7 +50,7 @@
 |:--|:--|
 | ![Merged_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Merged_001_1.png) | ![Merged_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Merged_001_2.png) |
 
-# Furniture
+# Bookcases
 
 ## Bookcase_001
 
@@ -61,6 +63,19 @@
 
 ![Bookcase_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Bookcase_001.png)
 
+## Bookcase_002
+
+|   |   |
+|:--|:--|
+| **Supported reports:** | `All` |
+| **FreeCAD version:** | `0.20.27936 (Weekly, Linux, x86_64, Conda, AppImage)` |
+| **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Stored, open `setTextures` tool and click `load` button to see them |
+
+![Bookcase_002](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Bookcase_002.png)
+
+# Cabinets
+
 ## Cabinet_modular_001
 
 |   |   |
@@ -72,7 +87,7 @@
 
 ![Cabinet_modular_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Cabinet_modular_001.png)
 
-# Furniture elements
+# Fronts
 
 ## Front_001
 
