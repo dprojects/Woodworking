@@ -2,6 +2,7 @@
 
 * [Merged](#merged)
 	* [Merged_001](#merged_001) - Dining table with chairs
+	* [Merged_002](#merged_002) - Wardrobe with decoration
 * [Bookcases](#bookcases)
 	* [Bookcase_001](#bookcase_001) - simple
 	* [Bookcase_002](#bookcase_002) - simple with custom shelfs number
@@ -51,6 +52,17 @@
 |   |   |
 |:--|:--|
 | ![Merged_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Merged_001_1.png) | ![Merged_001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Merged_001_2.png) |
+
+## Merged_002
+
+|   |   |
+|:--|:--|
+| **Supported reports:** | `All` |
+| **FreeCAD version:** | `0.20.27936 (Weekly, Linux, x86_64, Conda, AppImage)` |
+| **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
+| **Textures:** | Stored, open `setTextures` tool and click `load` button to see them |
+
+![Merged_002](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Screenshots/Merged_002.png)
 
 # Bookcases
 
