@@ -14,23 +14,17 @@ class WoodworkingWorkbench (Workbench):
 		import FreeCADGui, PartGui, PartDesignGui, SketcherGui, SpreadsheetGui
 		import DraftTools
 
-		import loadTools
 		import loadToolbar
 		import loadMenu
 		
-		self.appendToolbar("Cut list", [ "BOM", "HTML" ])
-
+		self.appendToolbar("Project manage", loadToolbar.getItems("Project manage"))
+		self.appendToolbar("Code and Debug", loadToolbar.getItems("Code and Debug"))
 		self.appendToolbar("Parameterization", loadToolbar.getItems("Parameterization"))
-		self.appendToolbar("Structure", loadToolbar.getItems("Structure"))
 		self.appendToolbar("Furniture Parts", loadToolbar.getItems("Furniture Parts"))
 		self.appendToolbar("Transformations", loadToolbar.getItems("Transformations"))
-		self.appendToolbar("Operations", loadToolbar.getItems("Operations"))
-		self.appendToolbar("Manage", loadToolbar.getItems("Manage"))
-		self.appendToolbar("Coding", loadToolbar.getItems("Coding"))
-		
-		self.appendToolbar("Coding", ["CODE"] )
-		self.appendToolbar("Coding", ["DEBUGINFO"] )
-		self.appendToolbar("Manage", ["SETTEXTURES"] )
+		self.appendToolbar("Decorations", loadToolbar.getItems("Decorations"))
+		self.appendToolbar("Dimensions", loadToolbar.getItems("Dimensions"))
+		self.appendToolbar("Preview", loadToolbar.getItems("Preview"))
 
 		self.appendMenu("Woodworking", loadMenu.getItems())
 		

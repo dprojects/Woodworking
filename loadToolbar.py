@@ -1,3 +1,5 @@
+import loadTools
+
 def getItems(iType):
 
 	parts = []
@@ -32,32 +34,54 @@ def getItems(iType):
 			"Draft_Clone"
 		]
 
-	if iType == "Operations":
+	if iType == "Decorations":
 		
 		parts = [
 			"PartDesign_Hole",
 			"Part_Torus",
+			"Part_Cone",
+			"Part_Sphere",
+			"Part_Cylinder",
 			"Part_Boolean"
 		]
 
-	if iType == "Manage":
+	if iType == "Dimensions":
+		
+		parts = [
+			"Part_Measure_Linear",
+			"BOM",
+			"Std_Print",
+			"HTML"
+		]
+
+	if iType == "Project manage":
+		
+		parts = [
+			"Std_New",
+			"Std_Save",
+			"Std_Open",
+			"Std_MergeProjects",
+			"Std_Group",
+			"Std_LinkMakeGroup",
+			"Std_LinkMake"
+		]
+
+	if iType == "Preview":
 		
 		parts = [
 			"Std_ViewFitAll",
-			"Part_Measure_Linear",
-			"Std_Group",
-			"Std_LinkMakeGroup",
-			"Std_LinkMake",
-			"Std_MergeProjects",
-			"Std_TextureMapping"
+			"Std_TextureMapping",
+			"SETTEXTURES"
 		]
 
-	if iType == "Coding":
+	if iType == "Code and Debug":
 		
 		parts = [
 			"Std_DlgMacroExecute",
 			"Std_DlgMacroExecuteDirect",
-			"Std_DependencyGraph"
+			"Std_DependencyGraph",
+			"CODE",
+			"DEBUGINFO"
 		]
 		
 	return parts

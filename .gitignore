@@ -1,6 +1,2 @@
 __pycache__
-Tools/getDimensions/__pycache__
-Tools/scanObjects/__pycache__
-Tools/sheet2export/__pycache__
-Tools/setTextures/__pycache__
-Tools/debugInfo/__pycache__
+Tools/__pycache__

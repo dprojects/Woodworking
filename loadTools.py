@@ -26,7 +26,6 @@ class BOM():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, module)
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -65,7 +64,6 @@ class HTML():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, module)
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -104,7 +102,6 @@ class CODE():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, module)
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -143,7 +140,6 @@ class SETTEXTURES():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, module)
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -181,7 +177,6 @@ class DEBUGINFO():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, module)
 		sys.path.append(path)
 
 		if module in sys.modules:

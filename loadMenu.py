@@ -89,7 +89,6 @@ class AUTOUPDATE():
 			module = iTool
 		
 			filePath = os.path.join(path, "Tools")
-			filePath = os.path.join(filePath, module)
 			filePath = os.path.join(filePath, module+".py")
 			
 			httplink = iRoot

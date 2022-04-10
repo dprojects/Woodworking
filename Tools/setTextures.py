@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking to apply and store textures
 # Author: Darek L (aka dprojects)
-# Version: 6.3
+# Version: 6.4
 # Latest version: https://github.com/dprojects/setTextures
 
 import FreeCAD, FreeCADGui
@@ -227,8 +227,9 @@ def showQtMain():
 		
 		def loadStoredTextures(self, iSearch):
 
-			# set flag
+			# variables
 			empty = ""
+			brokenURL = dict()
 
 			# create temp directory
 			tmpDir = tempfile.gettempdir()
@@ -287,9 +288,14 @@ def showQtMain():
 				# check if file already exists and skip slow downloading
 				if not os.path.exists(textureFilePath):
 
-					# get image from URL
-					data = urllib.request.urlopen(textureURL)
-			
+					try:
+						# get image from URL
+						data = urllib.request.urlopen(textureURL)
+					except:
+						# if broken URL or removed image
+						brokenURL[str(obj.Label)] = textureURL
+						continue
+
 					# create temp file with image
 					out = open(str(textureFilePath), "wb")
 					out.write(data.read())
@@ -357,7 +363,22 @@ def showQtMain():
 				iText = "No textures URLs found. " 
 				self.showStatus(iText)
 			else:
-				self.showStatus("Textures has been loaded from stored URLs.")
+				if len(brokenURL) == 0:
+					self.showStatus("All textures has been loaded from stored URLs.")
+				else:
+					FreeCAD.Console.PrintMessage("\n ====================== \n")
+					for n, b in brokenURL.items():
+						FreeCAD.Console.PrintMessage("\n")
+						FreeCAD.Console.PrintMessage("Object Label: "+n)
+						FreeCAD.Console.PrintMessage("\n")
+						FreeCAD.Console.PrintMessage("Broken URL: "+b)
+						FreeCAD.Console.PrintMessage("\n")
+					FreeCAD.Console.PrintMessage("\n ====================== \n")
+
+					info = ""
+					info += "Some textures has been removed or URL is broken. "
+					info += "See Report view (Console) for more info."
+					self.showStatus(info)
 
 		# ############################################################
 		# actions - caller selection
