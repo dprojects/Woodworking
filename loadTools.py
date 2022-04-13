@@ -415,3 +415,114 @@ class panelYZFace():
 		return True
 
 FreeCADGui.addCommand("panelYZFace", panelYZFace())
+
+# ######################################################################################################################
+class panelXYBetween():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelXYBetween.xpm"),
+				"Accel"   : "",
+				"MenuText": "panelXYBetween",
+				"ToolTip" : "Creates XY panel between 2 selected faces. Dimensions are taken from selected object. Adjust dimensions and position at object property window, if needed."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelXYBetween"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelXYBetween", panelXYBetween())
+
+# ######################################################################################################################
+class panelXZBetween():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelXZBetween.xpm"),
+				"Accel"   : "",
+				"MenuText": "panelXZBetween",
+				"ToolTip" : "Creates XZ panel between 2 selected faces. Dimensions are taken from selected object. Adjust dimensions and position at object property window, if needed."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelXZBetween"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelXZBetween", panelXZBetween())
+
+# ######################################################################################################################
+class panelYZBetween():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelYZBetween.xpm"),
+				"Accel"   : "",
+				"MenuText": "panelYZBetween",
+				"ToolTip" : "Creates YZ panel between 2 selected faces. Dimensions are taken from selected object. Adjust dimensions and position at object property window, if needed."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelYZBetween"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelYZBetween", panelYZBetween())
