@@ -11,6 +11,17 @@ def getItems(iType):
 			"Spreadsheet_MergeCells"
 		]
 
+	if iType == "Magic Panels":
+		
+		parts = [
+			"panelXY",
+			"panelXZ",
+			"panelYZ",
+			"panelXYFace",
+			"panelXZFace",
+			"panelYZFace"
+		]
+
 	if iType == "Furniture Parts":
 		
 		parts = [

@@ -20,6 +20,7 @@ class WoodworkingWorkbench (Workbench):
 		self.appendToolbar("Project manage", loadToolbar.getItems("Project manage"))
 		self.appendToolbar("Code and Debug", loadToolbar.getItems("Code and Debug"))
 		self.appendToolbar("Parameterization", loadToolbar.getItems("Parameterization"))
+		self.appendToolbar("Magic Panels", loadToolbar.getItems("Magic Panels"))
 		self.appendToolbar("Furniture Parts", loadToolbar.getItems("Furniture Parts"))
 		self.appendToolbar("Transformations", loadToolbar.getItems("Transformations"))
 		self.appendToolbar("Decorations", loadToolbar.getItems("Decorations"))

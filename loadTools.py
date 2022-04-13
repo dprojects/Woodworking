@@ -194,3 +194,224 @@ class DEBUGINFO():
 
 FreeCADGui.addCommand("DEBUGINFO", DEBUGINFO())
 
+# ######################################################################################################################
+class panelXY():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelXY.xpm"),
+				"Accel"   : "",
+				"MenuText": "panelXY",
+				"ToolTip" : "Creates default XY panel. Change dimensions at object property window, if needed."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelXY"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelXY", panelXY())
+
+# ######################################################################################################################
+class panelXZ():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelXZ.xpm"),
+				"Accel"   : "",
+				"MenuText": "panelXZ",
+				"ToolTip" : "Creates default XZ panel. Change dimensions at object property window, if needed."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelXZ"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelXZ", panelXZ())
+
+# ######################################################################################################################
+class panelYZ():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelYZ.xpm"),
+				"Accel"   : "",
+				"MenuText": "panelYZ",
+				"ToolTip" : "Creates default YZ panel. Change dimensions at object property window, if needed."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelYZ"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelYZ", panelYZ())
+
+# ######################################################################################################################
+class panelXYFace():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelXYFace.xpm"),
+				"Accel"   : "",
+				"MenuText": "panelXYFace",
+				"ToolTip" : "Creates XY panel at selected face. Dimensions are taken from selected object. Adjust dimensions and position at object property window, if needed."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelXYFace"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelXYFace", panelXYFace())
+
+# ######################################################################################################################
+class panelXZFace():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelXZFace.xpm"),
+				"Accel"   : "",
+				"MenuText": "panelXZFace",
+				"ToolTip" : "Creates XZ panel at selected face. Dimensions are taken from selected object. Adjust dimensions and position at object property window, if needed."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelXZFace"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelXZFace", panelXZFace())
+
+# ######################################################################################################################
+class panelYZFace():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelYZFace.xpm"),
+				"Accel"   : "",
+				"MenuText": "panelYZFace",
+				"ToolTip" : "Creates YZ panel at selected face. Dimensions are taken from selected object. Adjust dimensions and position at object property window, if needed."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelYZFace"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelYZFace", panelYZFace())
