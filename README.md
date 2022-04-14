@@ -6,14 +6,14 @@ This is Woodworking workbench for FreeCAD.
 
 # Main features
 
-* `Magic panels` - to create panels more quickly. **Note:** They are called `magic` because they are designed for specific situation but they have also `side effect`, you never now how the panel will be created. Sometimes the effect can be surprisingly good and very useful, sometimes not. So, you have to play with it little bit more to find out how to use it at your project effectively.
-* [Fully parametric examples](https://github.com/dprojects/Woodworking/tree/master/Examples) - you can adopt it to your current project.
-* [getDimensions](https://github.com/dprojects/getDimensions) - creates spreadsheet with dimensions to cut.
-* [sheet2export](https://github.com/dprojects/sheet2export) - export spreadsheet to chosen file format.
-* [scanObjects](https://github.com/dprojects/scanObjects) - inspection tool for FreeCAD macro development & project debug.
-* [setTextures](https://github.com/dprojects/setTextures) - store and load textures from URL.
+* `Magic panels` - allow to create woodworking project more quickly. **Note:** They are named `magic` because they are designed for specific situation but they have also `side effect`, you never know how the panel will be created ;-) This depends from selection order and referenced object. Sometimes the effect can be surprisingly good and very useful, sometimes not. So, you have to play with it little bit more to find out how to use it at your project effectively.
+* Contains [fully parametric examples](https://github.com/dprojects/Woodworking/tree/master/Examples) - you can adopt it to your current project, without designing e.g. bookcase from scratch. You can also add decoration, if needed.
+* Allows to create spreadsheet with dimensions to cut, cutlist, BOM (via [getDimensions](https://github.com/dprojects/getDimensions)).
+* Allows to export spreadsheets to chosen file format (via [sheet2export](https://github.com/dprojects/sheet2export)).
+* Allows to store, load, repeat and rotate textures from URL (via [setTextures](https://github.com/dprojects/setTextures)).
+* Allows to live inspect and debug project, view FreeCAD or any other module API (via [scanObjects](https://github.com/dprojects/scanObjects)).
+* Allows to get quick and simple debug info for bug report (via `debugInfo` button).
 * Clean toolbar, with sections adjusted for woodworking.
-* `debugInfo` - quick and simple debug info for bug report.
 
 # Install
 
