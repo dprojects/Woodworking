@@ -312,7 +312,7 @@ class panelXYFace():
 		return {"Pixmap"  : os.path.join(iconPath, "panelXYFace.xpm"),
 				"Accel"   : "",
 				"MenuText": "panelXYFace",
-				"ToolTip" : "Creates XY panel at selected face. Dimensions are taken from selected object. Adjust dimensions and position at object property window, if needed."}
+				"ToolTip" : "Creates XY panel at selected face. Dimensions are taken from 1st selected object. So, the selection order is important to get desired result. Adjust dimensions and position at object property window, if needed."}
 
 	def Activated(self):
 
@@ -349,7 +349,7 @@ class panelXZFace():
 		return {"Pixmap"  : os.path.join(iconPath, "panelXZFace.xpm"),
 				"Accel"   : "",
 				"MenuText": "panelXZFace",
-				"ToolTip" : "Creates XZ panel at selected face. Dimensions are taken from selected object. Adjust dimensions and position at object property window, if needed."}
+				"ToolTip" : "Creates XZ panel at selected face. Dimensions are taken from 1st selected object. So, the selection order is important to get desired result. Adjust dimensions and position at object property window, if needed."}
 
 	def Activated(self):
 
@@ -386,7 +386,7 @@ class panelYZFace():
 		return {"Pixmap"  : os.path.join(iconPath, "panelYZFace.xpm"),
 				"Accel"   : "",
 				"MenuText": "panelYZFace",
-				"ToolTip" : "Creates YZ panel at selected face. Dimensions are taken from selected object. Adjust dimensions and position at object property window, if needed."}
+				"ToolTip" : "Creates YZ panel at selected face. Dimensions are taken from 1st selected object. So, the selection order is important to get desired result. Adjust dimensions and position at object property window, if needed."}
 
 	def Activated(self):
 
@@ -423,7 +423,7 @@ class panelXYBetween():
 		return {"Pixmap"  : os.path.join(iconPath, "panelXYBetween.xpm"),
 				"Accel"   : "",
 				"MenuText": "panelXYBetween",
-				"ToolTip" : "Creates XY panel between 2 selected faces. Dimensions are taken from selected object. Adjust dimensions and position at object property window, if needed."}
+				"ToolTip" : "Creates XY panel between 2 selected faces. Dimensions are taken from 1st selected object. So, the selection order is important to get desired result. Adjust dimensions and position at object property window, if needed."}
 
 	def Activated(self):
 
@@ -460,7 +460,7 @@ class panelXZBetween():
 		return {"Pixmap"  : os.path.join(iconPath, "panelXZBetween.xpm"),
 				"Accel"   : "",
 				"MenuText": "panelXZBetween",
-				"ToolTip" : "Creates XZ panel between 2 selected faces. Dimensions are taken from selected object. Adjust dimensions and position at object property window, if needed."}
+				"ToolTip" : "Creates XZ panel between 2 selected faces. Dimensions are taken from 1st selected object. So, the selection order is important to get desired result. Adjust dimensions and position at object property window, if needed."}
 
 	def Activated(self):
 
@@ -497,7 +497,7 @@ class panelYZBetween():
 		return {"Pixmap"  : os.path.join(iconPath, "panelYZBetween.xpm"),
 				"Accel"   : "",
 				"MenuText": "panelYZBetween",
-				"ToolTip" : "Creates YZ panel between 2 selected faces. Dimensions are taken from selected object. Adjust dimensions and position at object property window, if needed."}
+				"ToolTip" : "Creates YZ panel between 2 selected faces. Dimensions are taken from 1st selected object. So, the selection order is important to get desired result. Adjust dimensions and position at object property window, if needed."}
 
 	def Activated(self):
 
@@ -526,3 +526,114 @@ class panelYZBetween():
 		return True
 
 FreeCADGui.addCommand("panelYZBetween", panelYZBetween())
+
+# ######################################################################################################################
+class panelXYCover():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelXYCover.xpm"),
+				"Accel"   : "",
+				"MenuText": "panelXYCover",
+				"ToolTip" : "Creates XY panel on top of 3 selected faces. Dimensions are taken from 1st and 3rd selected object. So, the selection order is important to get desired result. Adjust dimensions and position at object property window, if needed."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelXYCover"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelXYCover", panelXYCover())
+
+# ######################################################################################################################
+class panelXZCover():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelXZCover.xpm"),
+				"Accel"   : "",
+				"MenuText": "panelXZCover",
+				"ToolTip" : "Creates XZ panel on top of 3 selected faces. Dimensions are taken from 1st and 3rd selected object. So, the selection order is important to get desired result. Adjust dimensions and position at object property window, if needed."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelXZCover"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelXZCover", panelXZCover())
+
+# ######################################################################################################################
+class panelYZCover():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelYZCover.xpm"),
+				"Accel"   : "",
+				"MenuText": "panelYZCover",
+				"ToolTip" : "Creates YZ panel on top of 3 selected faces. Dimensions are taken from 1st and 3rd selected object. So, the selection order is important to get desired result. Adjust dimensions and position at object property window, if needed."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelYZCover"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelYZCover", panelYZCover())

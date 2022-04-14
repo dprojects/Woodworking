@@ -22,7 +22,10 @@ def getItems(iType):
 			"panelYZFace",
 			"panelXYBetween",
 			"panelXZBetween",
-			"panelYZBetween"
+			"panelYZBetween",
+			"panelXYCover",
+			"panelXZCover",
+			"panelYZCover"
 		]
 
 	if iType == "Furniture Parts":
