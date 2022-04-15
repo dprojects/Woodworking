@@ -15,6 +15,8 @@ This is Woodworking workbench for FreeCAD.
 * Allows to get quick and simple debug info for bug report (via `debugInfo` button).
 * Clean toolbar, with sections adjusted for woodworking.
 
+![MagicPanels](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/MagicPanels.gif)
+
 # Install
 
 * Download and unpack `Woodworking` repository.
