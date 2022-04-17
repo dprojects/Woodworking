@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2022.03.26
+# Version: 2022.04.17
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, FreeCADGui, Draft, Spreadsheet
@@ -56,7 +56,8 @@ sLTFDsc = {
 	"g" : "group, grandparent or parent folder name first",
 	"e" : "edgeband, extended edge",
 	"d" : "detailed, edgeband, drill holes, countersinks",
-	"c" : "constraints names, totally custom report"
+	"c" : "constraints names, totally custom report",
+	"p" : "pads, show list of all constraints"
 }
 
 # Units for area:
@@ -536,7 +537,7 @@ def showQtGUI():
 			self.rcIS.setText(str(sLTFDsc[sLTF]) + sEmptyDsc)
 
 			# submenu for report type
-			if selectedText == "c":
+			if selectedText == "c" or selectedText == "p":
 				self.setSubmenu("hide")
 			else:
 				self.setSubmenu("show")
@@ -889,6 +890,30 @@ def getEdgeBand(iObj, iW, iH, iL, iCaller="getEdgeBand"):
 
 
 # ###################################################################################################################
+def getConstraintName(iObj, iName, iCaller="getConstraintName"):
+
+	try:
+
+		# workaround for FreeCAD constraints name bug
+		# https://forum.freecadweb.org/viewtopic.php?f=10&t=67042
+		
+		# numbers way of encoding
+		iName = iName.replace("00",", ")
+		iName = iName.replace("0"," ")
+		
+		# underscores way of encoding
+		iName = iName.replace("__",", ")
+		iName = iName.replace("_"," ")
+
+	except:
+
+		showError(iCaller, iObj, "getConstraintName", "getting constraint name error")
+		return -1
+
+	return str(iName)
+
+
+# ###################################################################################################################
 # Database controllers - set db only via this controllers
 # ###################################################################################################################
 
@@ -1018,6 +1043,53 @@ def setDBConstraints(iObj, iL, iN, iV, iHoleObj, iCaller="setDBConstraints"):
 
 
 # ###################################################################################################################
+def setDBAllConstraints(iObj, iL, iN, iV, iCaller="setDBAllConstraints"):
+
+	try:
+
+		# make values sorted copy
+		vValues = iV.copy()
+		vValues.sort()
+		vVal = str(":".join(map(str, vValues)))
+
+		# get group name for base element
+		vGroup = getGroup(iObj, iCaller)
+
+		# set key
+		vKey = vGroup
+		vKey += ":" + vVal
+		vKey += ":" + iL
+
+		# set quantity
+		if vKey in dbCNQ:
+
+			# increase quantity only
+			dbCNQ[vKey] = dbCNQ[vKey] + 1
+
+			# show only one object at report
+			return 0
+			
+		# init quantity
+		dbCNQ[vKey] = 1
+		
+		# set names and values
+		dbCNN[vKey] = str(":".join(map(str, iN)))
+		dbCNV[vKey] = str(":".join(map(str, iV)))
+
+		# set length
+		dbCNL[vKey] = iL
+		dbCNH[vKey] = gLang9
+
+	except:
+
+		# set db error
+		showError(iCaller, iObj, "setDBAllConstraints", "set db error")
+		return -1
+
+	return 0
+
+
+# ###################################################################################################################
 # Support for base furniture parts
 # ###################################################################################################################
 
@@ -1088,16 +1160,8 @@ def setConstraints(iObj, iCaller="setConstraints"):
 		for c in vCons:
 			if c.Name != "":
 
-				# workaround for FreeCAD constraints name bug
-				# https://forum.freecadweb.org/viewtopic.php?f=10&t=67042
-
-				# numbers way of encoding
-				c.Name = c.Name.replace("00",", ")
-				c.Name = c.Name.replace("0"," ")
-
-				# underscores way of encoding
-				c.Name = c.Name.replace("__",", ")
-				c.Name = c.Name.replace("_"," ")
+				# decode
+				c.Name = getConstraintName(iObj, c.Name, iCaller)
 
 				# set Constraint Name
 				vNames += str(c.Name) + ":"
@@ -1162,6 +1226,55 @@ def setConstraints(iObj, iCaller="setConstraints"):
 
 
 # ###################################################################################################################
+def setAllConstraints(iObj, iCaller="setAllConstraints"):
+
+	try:
+
+		# init variables
+		vArrNames = []
+		vArrValues = []
+
+		# set reference point
+		vCons = iObj.Profile[0].Constraints
+
+		for c in vCons:
+		
+			if c.Value != 0:
+
+				# assign values to the Fake Cube dimensions
+				gFakeCube.Width = c.Value
+				
+				# get values as the correct dimensions
+				vArrValues.append(gFakeCube.Width.getValueAs(gUnitC).Value)
+
+				# set Constraint Name
+				if c.Name != "":
+	
+					# decode
+					c.Name = getConstraintName(iObj, c.Name, iCaller)
+
+				else:
+					c.Name = ""
+
+				vArrNames.append(str(c.Name))
+			
+		# convert float to the correct dimension
+		gFakeCube.Length = iObj.Length.Value
+		vLength = str(gFakeCube.Length.getValueAs(gUnitC).Value)
+
+		# set db for Constraints
+		setDBAllConstraints(iObj, vLength, vArrNames, vArrValues, iCaller)
+
+	except:
+		
+		# if there is wrong structure
+		showError(iCaller, iObj, "setAllConstraints", "wrong structure")
+		return -1
+
+	return 0
+
+
+# ###################################################################################################################
 # Furniture parts selector - add objects to db only via this selector
 # ###################################################################################################################
 
@@ -1169,8 +1282,8 @@ def setConstraints(iObj, iCaller="setConstraints"):
 # ###################################################################################################################
 def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 
-	# normal report
-	if sLTF != "c":
+	# normal reports
+	if sLTF != "c" and sLTF != "p":
 
 		# support for Cube furniture part
 		if iObj.isDerivedFrom("Part::Box"):
@@ -1180,12 +1293,18 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 		if iObj.isDerivedFrom("PartDesign::Pad"):
 			setPad(iObj, iCaller)
 
-	# constraints report
+	# constraints reports
 	else:
 
-		# support for Pad furniture part with constraints
-		if iObj.isDerivedFrom("PartDesign::Pad"):
-			setConstraints(iObj, iCaller)
+		# only named constraints
+		if sLTF == "c":
+			if iObj.isDerivedFrom("PartDesign::Pad"):
+				setConstraints(iObj, iCaller)
+
+		# pads (all constraints)
+		if sLTF == "p":
+			if iObj.isDerivedFrom("PartDesign::Pad"):
+				setAllConstraints(iObj, iCaller)
 
 	# constraints or detailed
 	if sLTF == "c" or sLTF == "d":
@@ -1211,6 +1330,10 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 
 		# support for Mirror on Clone
 		if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Name.startswith("Clone"):
+			setDraftClone(iObj, iCaller)
+
+		# support for Clone as PartDesign :: FeatureBase
+		if iObj.isDerivedFrom("PartDesign::FeatureBase") and iObj.Name.startswith("Clone"):
 			setDraftClone(iObj, iCaller)
 
 	# skip not supported furniture parts with no error
@@ -1379,20 +1502,25 @@ def setDraftArray(iObj, iCaller="setDraftArray"):
 # ###################################################################################################################
 def setDraftClone(iObj, iCaller="setDraftClone"):
 
-	# support for Draft :: Clone FreeCAD feature
-	if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Name.startswith("Clone"):
+	# support for Clone FreeCAD feature
+	if iObj.Name.startswith("Clone"):
 
 		try:
 
 			# set reference point to the Clone objects list
 			try:
 
-				# for group clone
-				key = iObj.Objects[0].Group
+				# for group Clone
+				if iObj.isDerivedFrom("Part::FeaturePython"):
+					key = iObj.Objects[0].Group
+
+				# for Clone as PartDesign :: FeatureBase
+				if iObj.isDerivedFrom("PartDesign::FeatureBase"):
+					key = [ iObj.BaseFeature ]
 
 			except:
 
-				# for single object clone
+				# for single object Clone
 				key = iObj.Objects
 
 			# call scanner for each object at the list
@@ -2550,6 +2678,101 @@ def setViewC(iCaller="setViewC"):
 
 
 # ###################################################################################################################
+def setViewP(iCaller="setViewP"):
+
+	global gSheet
+	global gSheetRow
+
+	# search objects for constraints (custom report)
+	for vKey in dbCNQ.keys():
+
+		# split key and get the group name
+		vArr = vKey.split(":")
+		vGroup = vArr[0]
+
+		# set object header
+		vCell = "A" + str(gSheetRow)
+		vStr = str(dbCNQ[vKey]) + " x "
+		gSheet.set(vCell, vStr)
+		gSheet.setAlignment(vCell, "right", "keep")
+		gSheet.setStyle(vCell, "bold", "add")
+		gSheet.setBackground(vCell, gHeadCS)
+
+		vCell = "B" + str(gSheetRow) + ":G" + str(gSheetRow)
+		vStr = str(vGroup)
+		gSheet.set(vCell, vStr)
+		gSheet.mergeCells(vCell)	
+		gSheet.setAlignment(vCell, "left", "keep")
+		gSheet.setStyle(vCell, "bold", "add")
+		gSheet.setBackground(vCell, gHeadCS)
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+		# set object length
+		vCell = "A" + str(gSheetRow)
+		gSheet.setBackground(vCell, (1,1,1))
+
+		vCell = "B" + str(gSheetRow) + ":F" + str(gSheetRow)
+		gSheet.set(vCell, dbCNH[vKey])
+		gSheet.mergeCells(vCell)	
+		gSheet.setAlignment(vCell, "left", "keep")
+		gSheet.setStyle(vCell, "bold", "add")
+		gSheet.setBackground(vCell, gHeadCW)
+
+		vCell = "G" + str(gSheetRow)
+		vStr = getUnit(dbCNL[vKey], "d", iCaller)
+		gSheet.set(vCell, vStr)
+		gSheet.setAlignment(vCell, "right", "keep")
+		gSheet.setStyle(vCell, "bold", "add")
+		gSheet.setBackground(vCell, gHeadCW)
+
+		# create constraints lists
+		keyN = dbCNN[vKey].split(":")
+		keyV = dbCNV[vKey].split(":")
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+		# set all constraints
+		k = 0
+		while k < len(keyV): 
+	
+			# the first A column is empty for better look
+			vCell = "A" + str(gSheetRow)
+			gSheet.setBackground(vCell, (1,1,1))
+
+			# set constraint name
+			vCell = "B" + str(gSheetRow) + ":F" + str(gSheetRow)
+			gSheet.set(vCell, "'" + str(keyN[k]))
+			gSheet.mergeCells(vCell)
+			gSheet.setAlignment(vCell, "left", "keep")
+
+			# set dimension
+			vCell = "G" + str(gSheetRow)
+			gSheet.set(vCell, getUnit(keyV[k], "d", iCaller))
+			gSheet.setAlignment(vCell, "right", "keep")
+
+			# go to next spreadsheet row
+			gSheetRow = gSheetRow + 1
+
+			# go to next constraint
+			k = k + 1
+			
+	# set cell width
+	gSheet.setColumnWidth("A", 60)
+	gSheet.setColumnWidth("B", 155)
+	gSheet.setColumnWidth("C", 120)
+	gSheet.setColumnWidth("D", 80)
+	gSheet.setColumnWidth("E", 100)
+	gSheet.setColumnWidth("F", 100)
+	gSheet.setColumnWidth("G", 100)
+
+	# remove empty line separator
+	gSheetRow = gSheetRow - 1
+
+
+# ###################################################################################################################
 def setViewEdge(iCaller="setViewEdge"):
 
 	global gSheet
@@ -2706,6 +2929,10 @@ def selectView(iCaller="selectView"):
 	# main report - constraints (custom report)
 	if sLTF == "c":
 		setViewC(iCaller)
+
+	# main report - pads (all constraints report)
+	if sLTF == "p":
+		setViewP(iCaller)
 		
 	codeLink(iCaller)
 

@@ -201,7 +201,7 @@ class panelXY():
 		return {"Pixmap"  : os.path.join(iconPath, "panelXY.xpm"),
 				"Accel"   : "",
 				"MenuText": "panelXY",
-				"ToolTip" : "Creates default XY panel. Change dimensions at object property window, if needed."}
+				"ToolTip" : "Creates default XY panel. If You select any Cube object this panel get the dimensions from this object and transform them into described direction. This can be some kind of copy with exact rotation. Change dimensions at object property window, if needed."}
 
 	def Activated(self):
 
@@ -238,7 +238,7 @@ class panelXZ():
 		return {"Pixmap"  : os.path.join(iconPath, "panelXZ.xpm"),
 				"Accel"   : "",
 				"MenuText": "panelXZ",
-				"ToolTip" : "Creates default XZ panel. Change dimensions at object property window, if needed."}
+				"ToolTip" : "Creates default XZ panel. If You select any Cube object this panel get the dimensions from this object and transform them into described direction. This can be some kind of copy with exact rotation. Change dimensions at object property window, if needed."}
 
 	def Activated(self):
 
@@ -275,7 +275,7 @@ class panelYZ():
 		return {"Pixmap"  : os.path.join(iconPath, "panelYZ.xpm"),
 				"Accel"   : "",
 				"MenuText": "panelYZ",
-				"ToolTip" : "Creates default YZ panel. Change dimensions at object property window, if needed."}
+				"ToolTip" : "Creates default YZ panel. If You select any Cube object this panel get the dimensions from this object and transform them into described direction. This can be some kind of copy with exact rotation. Change dimensions at object property window, if needed."}
 
 	def Activated(self):
 
@@ -312,7 +312,7 @@ class panelXYFace():
 		return {"Pixmap"  : os.path.join(iconPath, "panelXYFace.xpm"),
 				"Accel"   : "",
 				"MenuText": "panelXYFace",
-				"ToolTip" : "Creates XY panel at selected face. Dimensions are taken from 1st selected object. So, the selection order is important to get desired result. Adjust dimensions and position at object property window, if needed."}
+				"ToolTip" : "Creates XY panel at selected face. Dimensions are taken from selected object. So, the selection is important to get desired result. Adjust dimensions and position at object property window, if needed."}
 
 	def Activated(self):
 
@@ -349,7 +349,7 @@ class panelXZFace():
 		return {"Pixmap"  : os.path.join(iconPath, "panelXZFace.xpm"),
 				"Accel"   : "",
 				"MenuText": "panelXZFace",
-				"ToolTip" : "Creates XZ panel at selected face. Dimensions are taken from 1st selected object. So, the selection order is important to get desired result. Adjust dimensions and position at object property window, if needed."}
+				"ToolTip" : "Creates XZ panel at selected face. Dimensions are taken from selected object. So, the selection is important to get desired result. Adjust dimensions and position at object property window, if needed."}
 
 	def Activated(self):
 
@@ -386,7 +386,7 @@ class panelYZFace():
 		return {"Pixmap"  : os.path.join(iconPath, "panelYZFace.xpm"),
 				"Accel"   : "",
 				"MenuText": "panelYZFace",
-				"ToolTip" : "Creates YZ panel at selected face. Dimensions are taken from 1st selected object. So, the selection order is important to get desired result. Adjust dimensions and position at object property window, if needed."}
+				"ToolTip" : "Creates YZ panel at selected face. Dimensions are taken from selected object. So, the selection is important to get desired result. Adjust dimensions and position at object property window, if needed."}
 
 	def Activated(self):
 
