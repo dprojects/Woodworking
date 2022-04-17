@@ -637,3 +637,151 @@ class panelYZCover():
 		return True
 
 FreeCADGui.addCommand("panelYZCover", panelYZCover())
+
+# ######################################################################################################################
+class panelSideLeft():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelSideLeft.xpm"),
+				"Accel"   : "",
+				"MenuText": "panelSideLeft",
+				"ToolTip" : "Creates furniture left side at selected face. Dimensions are taken from selected object. Adjust dimensions and position at object property window, if needed."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelSideLeft"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelSideLeft", panelSideLeft())
+
+# ######################################################################################################################
+class panelSideLeftUP():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelSideLeftUP.xpm"),
+				"Accel"   : "",
+				"MenuText": "panelSideLeftUP",
+				"ToolTip" : "Creates furniture left side at selected face but raised up. Dimensions are taken from selected object. Adjust dimensions and position at object property window, if needed."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelSideLeftUP"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelSideLeftUP", panelSideLeftUP())
+
+# ######################################################################################################################
+class panelSideRight():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelSideRight.xpm"),
+				"Accel"   : "",
+				"MenuText": "panelSideRight",
+				"ToolTip" : "Creates furniture right side at selected face. Dimensions are taken from selected object. Adjust dimensions and position at object property window, if needed."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelSideRight"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelSideRight", panelSideRight())
+
+# ######################################################################################################################
+class panelSideRightUP():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelSideRightUP.xpm"),
+				"Accel"   : "",
+				"MenuText": "panelSideRightUP",
+				"ToolTip" : "Creates furniture right side at selected face but raised up. Dimensions are taken from selected object. Adjust dimensions and position at object property window, if needed."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelSideRightUP"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelSideRightUP", panelSideRightUP())
