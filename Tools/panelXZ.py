@@ -1,4 +1,4 @@
-import FreeCAD
+import FreeCAD, FreeCADGui
 
 panel = FreeCAD.activeDocument().addObject("Part::Box", "panelXZ")
 
