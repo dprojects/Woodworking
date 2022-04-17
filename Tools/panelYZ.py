@@ -2,10 +2,7 @@ import FreeCAD
 
 panel = FreeCAD.activeDocument().addObject("Part::Box", "panelYZ")
 
-selected = FreeCADGui.Selection.getSelection()
-selectedLen = len(selected)
-
-if selectedLen == 1:
+try:
 
 	obj = FreeCADGui.Selection.getSelection()[0]
 	sizes = [ obj.Length.Value, obj.Width.Value, obj.Height.Value ]
@@ -15,7 +12,7 @@ if selectedLen == 1:
 	panel.Width = sizes[2]
 	panel.Height = sizes[1]
 	
-else: 
+except:
 
 	panel.Length = 18
 	panel.Width = 600
