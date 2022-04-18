@@ -201,7 +201,7 @@ class panelXY():
 		return {"Pixmap"  : os.path.join(iconPath, "panelXY.xpm"),
 				"Accel"   : "",
 				"MenuText": "panelXY",
-				"ToolTip" : "Creates default XY panel. If You select any Cube object this panel get the dimensions from this object and transform them into described direction. This can be some kind of copy with exact rotation. Change dimensions at object property window, if needed."}
+				"ToolTip" : "Creates default XY panel. If You select any Cube object this panel will get the dimensions from this object and will transform them into described direction. This can be some kind of copy with exact rotation. Change dimensions at object property window, if needed."}
 
 	def Activated(self):
 
@@ -238,7 +238,7 @@ class panelXZ():
 		return {"Pixmap"  : os.path.join(iconPath, "panelXZ.xpm"),
 				"Accel"   : "",
 				"MenuText": "panelXZ",
-				"ToolTip" : "Creates default XZ panel. If You select any Cube object this panel get the dimensions from this object and transform them into described direction. This can be some kind of copy with exact rotation. Change dimensions at object property window, if needed."}
+				"ToolTip" : "Creates default XZ panel. If You select any Cube object this panel will get the dimensions from this object and will transform them into described direction. This can be some kind of copy with exact rotation. Change dimensions at object property window, if needed."}
 
 	def Activated(self):
 
@@ -275,7 +275,7 @@ class panelYZ():
 		return {"Pixmap"  : os.path.join(iconPath, "panelYZ.xpm"),
 				"Accel"   : "",
 				"MenuText": "panelYZ",
-				"ToolTip" : "Creates default YZ panel. If You select any Cube object this panel get the dimensions from this object and transform them into described direction. This can be some kind of copy with exact rotation. Change dimensions at object property window, if needed."}
+				"ToolTip" : "Creates default YZ panel. If You select any Cube object this panel will get the dimensions from this object and will transform them into described direction. This can be some kind of copy with exact rotation. Change dimensions at object property window, if needed."}
 
 	def Activated(self):
 
@@ -304,6 +304,117 @@ class panelYZ():
 		return True
 
 FreeCADGui.addCommand("panelYZ", panelYZ())
+
+# ######################################################################################################################
+class panelYX():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelYX.xpm"),
+				"Accel"   : "",
+				"MenuText": "panelYX",
+				"ToolTip" : "Creates default YX panel. If You select any Cube object this panel will get the dimensions from this object and will transform them into described direction. This can be some kind of copy with exact rotation. Change dimensions at object property window, if needed."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelYX"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelYX", panelYX())
+
+# ######################################################################################################################
+class panelZX():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelZX.xpm"),
+				"Accel"   : "",
+				"MenuText": "panelZX",
+				"ToolTip" : "Creates default ZX panel. If You select any Cube object this panel will get the dimensions from this object and will transform them into described direction. This can be some kind of copy with exact rotation. Change dimensions at object property window, if needed."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelZX"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelZX", panelZX())
+
+# ######################################################################################################################
+class panelZY():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelZY.xpm"),
+				"Accel"   : "",
+				"MenuText": "panelZY",
+				"ToolTip" : "Creates default ZY panel. If You select any Cube object this panel will get the dimensions from this object and will transform them into described direction. This can be some kind of copy with exact rotation. Change dimensions at object property window, if needed."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelZY"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelZY", panelZY())
 
 # ######################################################################################################################
 class panelXYFace():

@@ -15,8 +15,11 @@ def getItems(iType):
 		
 		parts = [
 			"panelXY",
+			"panelYX",
 			"panelXZ",
+			"panelZX",
 			"panelYZ",
+			"panelZY",
 			"panelXYFace",
 			"panelXZFace",
 			"panelYZFace",
