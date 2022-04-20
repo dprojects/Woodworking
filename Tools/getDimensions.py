@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2022.04.17
+# Version: 2022.04.20
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, FreeCADGui, Draft, Spreadsheet
@@ -695,24 +695,11 @@ def getGroup(iObj, iCaller="getGroup"):
 	# init variable
 	vGroup = ""
 
-	# support for Cube furniture part
-	if iObj.isDerivedFrom("Part::Box"):
-		
-		# get grandparent
-		try:
-			vGroup = iObj.getParentGroup().getParentGroup().Label
-		except:
-			vGroup = ""
-		
-		# get parent
-		if vGroup == "":
-			try:
-				vGroup = iObj.getParentGroup().Label
-			except:
-				vGroup = ""
-			
-	# support for Pad furniture part
-	elif iObj.isDerivedFrom("PartDesign::Pad"):
+	# support for Pad furniture part and Pockets
+	if (
+		iObj.isDerivedFrom("PartDesign::Pad") or 
+		iObj.isDerivedFrom("PartDesign::Pocket")
+		):
 		
 		# get grandparent
 		try:
@@ -727,6 +714,22 @@ def getGroup(iObj, iCaller="getGroup"):
 			except:
 				vGroup = ""
 
+	# support for Cube furniture part and other calls
+	else:
+		
+		# get grandparent
+		try:
+			vGroup = iObj.getParentGroup().getParentGroup().Label
+		except:
+			vGroup = ""
+		
+		# get parent
+		if vGroup == "":
+			try:
+				vGroup = iObj.getParentGroup().Label
+			except:
+				vGroup = ""
+	
 	return vGroup
 
 
@@ -1298,12 +1301,18 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 
 		# only named constraints
 		if sLTF == "c":
-			if iObj.isDerivedFrom("PartDesign::Pad"):
+			if (
+				iObj.isDerivedFrom("PartDesign::Pad") or
+				iObj.isDerivedFrom("PartDesign::Pocket")
+				):
 				setConstraints(iObj, iCaller)
 
 		# pads (all constraints)
 		if sLTF == "p":
-			if iObj.isDerivedFrom("PartDesign::Pad"):
+			if (
+				iObj.isDerivedFrom("PartDesign::Pad") or
+				iObj.isDerivedFrom("PartDesign::Pocket")
+				):
 				setAllConstraints(iObj, iCaller)
 
 	# constraints or detailed

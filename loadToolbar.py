@@ -62,6 +62,7 @@ def getItems(iType):
 		
 		parts = [
 			"PartDesign_Hole",
+			"PartDesign_Pocket",
 			"Part_Torus",
 			"Part_Cone",
 			"Part_Sphere",
