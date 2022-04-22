@@ -2,7 +2,7 @@
 
 # FreeCAD macro for woodworking
 # Author: Darek L (aka dprojects)
-# Version: 2022.04.20
+# Version: 2022.04.22
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, FreeCADGui, Draft, Spreadsheet
@@ -194,6 +194,11 @@ dbCNN = dict() # names
 dbCNV = dict() # values
 dbCNH = dict() # header
 dbCNOH = dict() # objects for hole
+
+# init database for pad decoration
+dbPDQ = dict() # quantity
+dbPDN = dict() # names
+dbPDV = dict() # values
 
 
 # ###################################################################################################################
@@ -695,7 +700,7 @@ def getGroup(iObj, iCaller="getGroup"):
 	# init variable
 	vGroup = ""
 
-	# support for Pad furniture part and Pockets
+	# support for Pad and Pocket
 	if (
 		iObj.isDerivedFrom("PartDesign::Pad") or 
 		iObj.isDerivedFrom("PartDesign::Pocket")
@@ -714,7 +719,7 @@ def getGroup(iObj, iCaller="getGroup"):
 			except:
 				vGroup = ""
 
-	# support for Cube furniture part and other calls
+	# support for Cube and other calls
 	else:
 		
 		# get grandparent
@@ -1093,6 +1098,42 @@ def setDBAllConstraints(iObj, iL, iN, iV, iCaller="setDBAllConstraints"):
 
 
 # ###################################################################################################################
+def setDBPadDecoration(iObj, iType, iN, iV, iCaller="setDBPadDecoration"):
+
+	try:
+
+		# set key
+		vV = str(":".join(map(str, iV)))
+		vKey = iType + ", "
+		vKey += iObj.Base[0].Label + ", " + ', '.join(map(str, iObj.Base[1]))
+		vKey += ":" + vV
+	
+		# set quantity
+		if vKey in dbPDQ:
+	
+			# increase quantity only
+			dbPDQ[vKey] = dbPDQ[vKey] + 1
+	
+			# show only one object at report
+			return 0
+			
+		# init quantity
+		dbPDQ[vKey] = 1
+		
+		# set names and values
+		dbPDN[vKey] = str(":".join(map(str, iN)))
+		dbPDV[vKey] = vV
+
+	except:
+
+		# set db error
+		showError(iCaller, iObj, "setDBPadDecoration", "set db error")
+		return -1
+
+	return 0
+
+
+# ###################################################################################################################
 # Support for base furniture parts
 # ###################################################################################################################
 
@@ -1278,6 +1319,84 @@ def setAllConstraints(iObj, iCaller="setAllConstraints"):
 
 
 # ###################################################################################################################
+def setPadDecoration(iObj, iCaller="setPadDecoration"):
+
+	try:
+
+		# init variables
+		vArrNames = []
+		vArrValues = []
+		vType = ""
+
+		if iObj.isDerivedFrom("PartDesign::Fillet"):
+			
+			vType = "Fillet"
+
+			vArrNames.append("Radius")
+			gFakeCube.Width = iObj.Radius
+			v = gFakeCube.Width.getValueAs(gUnitC).Value
+			vArrValues.append(getUnit(v, "d", iCaller))
+
+		if iObj.isDerivedFrom("PartDesign::Chamfer"):
+
+			vType = "Chamfer"
+
+			vArrNames.append("ChamferType")
+			vArrValues.append(str(iObj.ChamferType))
+
+			vArrNames.append("FlipDirection")
+			vArrValues.append(str(iObj.FlipDirection))
+
+			vArrNames.append("Refine")
+			vArrValues.append(str(iObj.Refine))
+
+			vArrNames.append("Size 1")
+			gFakeCube.Width = iObj.Size
+			v = gFakeCube.Width.getValueAs(gUnitC).Value
+			vArrValues.append(getUnit(v, "d", iCaller))
+
+			vArrNames.append("Size 2")
+			gFakeCube.Width = iObj.Size2
+			v = gFakeCube.Width.getValueAs(gUnitC).Value
+			vArrValues.append(getUnit(v, "d", iCaller))
+
+		if iObj.isDerivedFrom("PartDesign::Thickness"):
+
+			vType = "Thickness"
+
+			vArrNames.append("Intersection")
+			vArrValues.append(str(iObj.Intersection))
+
+			vArrNames.append("Join")
+			vArrValues.append(str(iObj.Join))
+
+			vArrNames.append("Mode")
+			vArrValues.append(str(iObj.Mode))
+
+			vArrNames.append("Refine")
+			vArrValues.append(str(iObj.Refine))
+
+			vArrNames.append("Reversed")
+			vArrValues.append(str(iObj.Reversed))
+
+			vArrNames.append("Value")
+			gFakeCube.Width = iObj.Value
+			v = gFakeCube.Width.getValueAs(gUnitC).Value
+			vArrValues.append(getUnit(v, "d", iCaller))
+
+		# set db for decoration
+		setDBPadDecoration(iObj, vType, vArrNames, vArrValues, iCaller)
+
+	except:
+		
+		# if there is wrong structure
+		showError(iCaller, iObj, "setPadDecoration", "wrong structure")
+		return -1
+
+	return 0
+
+
+# ###################################################################################################################
 # Furniture parts selector - add objects to db only via this selector
 # ###################################################################################################################
 
@@ -1314,6 +1433,12 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 				iObj.isDerivedFrom("PartDesign::Pocket")
 				):
 				setAllConstraints(iObj, iCaller)
+			if (
+				iObj.isDerivedFrom("PartDesign::Fillet") or
+				iObj.isDerivedFrom("PartDesign::Chamfer") or
+				iObj.isDerivedFrom("PartDesign::Thickness")
+				):				
+				setPadDecoration(iObj, iCaller)
 
 	# constraints or detailed
 	if sLTF == "c" or sLTF == "d":
@@ -2692,6 +2817,10 @@ def setViewP(iCaller="setViewP"):
 	global gSheet
 	global gSheetRow
 
+        # ########################################################
+	# Pads
+        # ########################################################
+
 	# search objects for constraints (custom report)
 	for vKey in dbCNQ.keys():
 
@@ -2760,6 +2889,66 @@ def setViewP(iCaller="setViewP"):
 			# set dimension
 			vCell = "G" + str(gSheetRow)
 			gSheet.set(vCell, getUnit(keyV[k], "d", iCaller))
+			gSheet.setAlignment(vCell, "right", "keep")
+
+			# go to next spreadsheet row
+			gSheetRow = gSheetRow + 1
+
+			# go to next constraint
+			k = k + 1
+			
+        # ########################################################
+	# Decoration
+        # ########################################################
+
+	# search objects for constraints (custom report)
+	for vKey in dbPDQ.keys():
+
+		# split key and get the group name
+		vArr = vKey.split(":")
+		vGroup = vArr[0]
+
+		# set object header
+		vCell = "A" + str(gSheetRow)
+		vStr = str(dbPDQ[vKey]) + " x "
+		gSheet.set(vCell, vStr)
+		gSheet.setAlignment(vCell, "right", "keep")
+		gSheet.setStyle(vCell, "bold", "add")
+		gSheet.setBackground(vCell, gHeadCS)
+
+		vCell = "B" + str(gSheetRow) + ":G" + str(gSheetRow)
+		vStr = str(vGroup)
+		gSheet.set(vCell, vStr)
+		gSheet.mergeCells(vCell)	
+		gSheet.setAlignment(vCell, "left", "keep")
+		gSheet.setStyle(vCell, "bold", "add")
+		gSheet.setBackground(vCell, gHeadCS)
+
+		# create constraints lists
+		keyN = dbPDN[vKey].split(":")
+		keyV = dbPDV[vKey].split(":")
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+		# set all constraints
+		k = 0
+		while k < len(keyV): 
+	
+			# the first A column is empty for better look
+			vCell = "A" + str(gSheetRow)
+			gSheet.setBackground(vCell, (1,1,1))
+
+			# set constraint name
+			vCell = "B" + str(gSheetRow) + ":D" + str(gSheetRow)
+			gSheet.set(vCell, "'" + str(keyN[k]))
+			gSheet.mergeCells(vCell)
+			gSheet.setAlignment(vCell, "left", "keep")
+
+			# set dimension
+			vCell = "E" + str(gSheetRow) + ":G" + str(gSheetRow)
+			gSheet.set(vCell, keyV[k])
+			gSheet.mergeCells(vCell)
 			gSheet.setAlignment(vCell, "right", "keep")
 
 			# go to next spreadsheet row
