@@ -11,28 +11,85 @@ def getItems(iType):
 			"Spreadsheet_MergeCells"
 		]
 
-	if iType == "Magic Panels":
+	if iType == "Magic Panels - default":
 		
 		parts = [
-			"panelXY",
-			"panelYX",
-			"panelXZ",
-			"panelZX",
-			"panelYZ",
-			"panelZY",
-			"panelXYFace",
-			"panelXZFace",
-			"panelYZFace",
-			"panelXYBetween",
-			"panelXZBetween",
-			"panelYZBetween",
-			"panelXYCover",
-			"panelXZCover",
-			"panelYZCover",
+			"panelDefaultXY",
+			"panelDefaultYX",
+			"panelDefaultXZ",
+			"panelDefaultZX",
+			"panelDefaultYZ",
+			"panelDefaultZY"
+		]
+
+	if iType == "Magic Panels - copy":
+		
+		parts = [
+			"panelCopyXY",
+			"panelCopyYX",
+			"panelCopyXZ",
+			"panelCopyZX",
+			"panelCopyYZ",
+			"panelCopyZY"
+		]
+
+	if iType == "Magic Panels - move":
+		
+		parts = [
+			"panelMoveXp",
+			"panelMoveXm",
+			"panelMoveYp",
+			"panelMoveYm",
+			"panelMoveZp",
+			"panelMoveZm"
+		]
+
+	if iType == "Magic Panels - resize":
+		
+		parts = [
+			"panelResize1",
+			"panelResize2",
+			"panelResize3",
+			"panelResize4"
+		]
+
+	if iType == "Magic Panels - face":
+		
+		parts = [
+			"panelFaceXY",
+			"panelFaceYX",
+			"panelFaceXZ",
+			"panelFaceZX",
+			"panelFaceYZ",
+			"panelFaceZY"
+		]
+
+	if iType == "Magic Panels - between":
+		
+		parts = [
+			"panelBetweenXY",
+			"panelBetweenYX",
+			"panelBetweenXZ",
+			"panelBetweenZX",
+			"panelBetweenYZ",
+			"panelBetweenZY"
+		]
+		
+	if iType == "Magic Panels - special":
+		
+		parts = [
 			"panelSideLeft",
 			"panelSideRight",
 			"panelSideLeftUP",
-			"panelSideRightUP"
+			"panelSideRightUP",
+			"panelBackOut",
+			"panelCoverXY"
+		]
+
+	if iType == "Magic Panels - replace":
+		
+		parts = [
+			"rpanelPad"
 		]
 
 	if iType == "Furniture Parts":
@@ -77,9 +134,9 @@ def getItems(iType):
 		
 		parts = [
 			"Part_Measure_Linear",
-			"BOM",
+			"getDimensions",
 			"Std_Print",
-			"HTML"
+			"sheet2export"
 		]
 
 	if iType == "Project manage":
@@ -99,7 +156,7 @@ def getItems(iType):
 		parts = [
 			"Std_ViewFitAll",
 			"Std_TextureMapping",
-			"SETTEXTURES"
+			"setTextures"
 		]
 
 	if iType == "Code and Debug":
@@ -108,8 +165,8 @@ def getItems(iType):
 			"Std_DlgMacroExecute",
 			"Std_DlgMacroExecuteDirect",
 			"Std_DependencyGraph",
-			"CODE",
-			"DEBUGINFO"
+			"scanObjects",
+			"debugInfo"
 		]
 		
 	return parts

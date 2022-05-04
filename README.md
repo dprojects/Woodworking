@@ -6,7 +6,9 @@ This is Woodworking workbench for FreeCAD.
 
 # Main features
 
-* `Magic Panels` - allow to create woodworking project more quickly, especially simplifies positioning process and thickness recognition, You see clearly where is the thickness in object property window. Base panels have default dimensions but if You select any `Cube` object, the panels get the dimensions from it. **Note:** They are named `magic` because they are designed for specific situation but they have also side effect, You never know how the panel will be created ;-) This depends on selection order and referenced object. Sometimes the effect can be surprisingly good and very useful, sometimes not. So, you have to play with the `Magic Panels` little bit more to use it at your project effectively.
+![MagicPanels](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/MagicPanels.gif)
+
+* `Magic Panels` - allow to create woodworking project more quickly, especially simplifies positioning process and thickness recognition, You see clearly where is the thickness in object property window. **Note:** They are named `magic` because they are designed for specific situation but they have also side effect, You never know how the panel will be created ;-) This depends on selection order and referenced object. Sometimes the effect can be surprisingly good and very useful, sometimes not. So, you have to play with the `Magic Panels` little bit more to use it at your project effectively.
 * [Fully parametric examples](https://github.com/dprojects/Woodworking/tree/master/Examples) - you can adopt it to your current project, merge them, without designing from scratch e.g. bookcase. You can also add decoration, if needed.
 * [getDimensions](https://github.com/dprojects/getDimensions) - allows to create spreadsheet with dimensions to cut, cutlist, BOM.
 * [sheet2export](https://github.com/dprojects/sheet2export) - allows to export spreadsheets to chosen file format.
@@ -14,8 +16,6 @@ This is Woodworking workbench for FreeCAD.
 * [scanObjects](https://github.com/dprojects/scanObjects) - allows to live inspect and debug project, also view FreeCAD or any other module API.
 * [debugInfo](https://github.com/dprojects/Woodworking/blob/master/Tools/debugInfo.py) - allows to get quick and simple debug info for bug report.
 * Also clean toolbar, with sections adjusted for woodworking.
-
-![MagicPanels](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/MagicPanels.gif)
 
 # Install
 
