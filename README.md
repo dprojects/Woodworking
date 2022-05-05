@@ -2,13 +2,11 @@
 
 This is Woodworking workbench for FreeCAD.
 
-![000](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/000.png)
-
 # Main features
 
 ![MagicPanels](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/MagicPanels.gif)
 
-* `Magic Panels` - allow to create woodworking project more quickly, especially simplifies positioning process and thickness recognition, You see clearly where is the thickness in object property window. **Note:** They are named `magic` because they are designed for specific situation but they have also side effect, You never know how the panel will be created ;-) This depends on selection order and referenced object. Sometimes the effect can be surprisingly good and very useful, sometimes not. So, you have to play with the `Magic Panels` little bit more to use it at your project effectively.
+* [Magic Panels](#magic-panels) - allow to create woodworking project more quickly, especially simplifies the positioning process and thickness recognition. You see clearly where is the thickness in object property window, so it can be changed quickly, if needed.
 * [Fully parametric examples](https://github.com/dprojects/Woodworking/tree/master/Examples) - you can adopt it to your current project, merge them, without designing from scratch e.g. bookcase. You can also add decoration, if needed.
 * [getDimensions](https://github.com/dprojects/getDimensions) - allows to create spreadsheet with dimensions to cut, cutlist, BOM.
 * [sheet2export](https://github.com/dprojects/sheet2export) - allows to export spreadsheets to chosen file format.
@@ -16,6 +14,8 @@ This is Woodworking workbench for FreeCAD.
 * [scanObjects](https://github.com/dprojects/scanObjects) - allows to live inspect and debug project, also view FreeCAD or any other module API.
 * [debugInfo](https://github.com/dprojects/Woodworking/blob/master/Tools/debugInfo.py) - allows to get quick and simple debug info for bug report.
 * Also clean toolbar, with sections adjusted for woodworking.
+
+![000](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/000.png)
 
 # Install
 
@@ -27,6 +27,20 @@ This is Woodworking workbench for FreeCAD.
 * Ubuntu:
 	* FreeCAD version < 0.20.27936: `~.FreeCAD/Mod/Woodworking`
 	* FreeCAD version >= 0.20.27936: `~.local/share/FreeCAD/Mod/Woodworking`
+
+# Magic Panels
+
+Currently the `Magic Panels` allow to:
+* Create default panel `600 mm x 300 mm x 18 mm`.
+* Copy any panel based on `Cube` or `Pad`. If you want copy any other object, select base object.
+* Move any panel based on `Cube` or `Pad`.
+* Resize any panel based on `Cube` or `Pad`.
+* Add special parts of the furniture: Side, Back, Top, Shelf. Mostly for `Cube`.
+* Apply panel at face in any direction. Mostly for `Cube`, for `Pad` may not be positioned well, because of different vertex handling ;-)
+* Apply panel between 2 faces in any direction. Mostly for `Cube`, for `Pad` may not be positioned well, because of different vertex handling ;-)
+* Change any panel based on `Cube` into `Pad`. 
+
+**Note:** The `Magic Panels` are named `magic` because they are designed for specific situation but they have also side effect, You never know how the panel will be created ;-) This depends on selection order and referenced object. Sometimes the effect can be surprisingly good and very useful, sometimes not. So, you have to play with the `Magic Panels` little bit more to use it at your project effectively.
 
 # Macro tools - how to update
 

@@ -727,7 +727,7 @@ def panelResize(iType):
 		
 		info += '<b>Note:</b>' + ' '
 		info += 'Panel is resized into direction described by the icon for XY panel. However, in some cases the '
-		info += 'panel may be resized into opposite direction, if the panel is not supported.'
+		info += 'panel may be resized into opposite direction, if the panel is not supported or the sides are equal.'
 	
 		showInfo("panelResize"+iType, info)
 

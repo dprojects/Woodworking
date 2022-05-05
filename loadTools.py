@@ -1416,7 +1416,7 @@ class panelResize1():
 		return {"Pixmap"  : os.path.join(iconPath, "panelResize1.xpm"),
 				"Accel"   : "",
 				"MenuText": "panel, bigger, long+",
-				"ToolTip" : "Allow to increase panel size at the described direction. The resize step is the selected panel thickness."}
+				"ToolTip" : "Allow to make bigger the long side of the panel. The resize step is the selected panel thickness."}
 
 	def Activated(self):
 
@@ -1456,7 +1456,7 @@ class panelResize2():
 		return {"Pixmap"  : os.path.join(iconPath, "panelResize2.xpm"),
 				"Accel"   : "",
 				"MenuText": "panel, smaller, long-",
-				"ToolTip" : "Allow to increase panel size at the described direction. The resize step is the selected panel thickness."}
+				"ToolTip" : "Allow to make smaller the long side of the panel. The resize step is the selected panel thickness."}
 
 	def Activated(self):
 
@@ -1496,7 +1496,7 @@ class panelResize3():
 		return {"Pixmap"  : os.path.join(iconPath, "panelResize3.xpm"),
 				"Accel"   : "",
 				"MenuText": "panel, bigger, short+",
-				"ToolTip" : "Allow to increase panel size at the described direction. The resize step is the selected panel thickness."}
+				"ToolTip" : "Allow to make bigger the short side of the panel. The resize step is the selected panel thickness."}
 
 	def Activated(self):
 
@@ -1536,7 +1536,7 @@ class panelResize4():
 		return {"Pixmap"  : os.path.join(iconPath, "panelResize4.xpm"),
 				"Accel"   : "",
 				"MenuText": "panel, smaller, short-",
-				"ToolTip" : "Allow to increase panel size at the described direction. The resize step is the selected panel thickness."}
+				"ToolTip" : "Allow to make smaller the short side of the panel. The resize step is the selected panel thickness."}
 
 	def Activated(self):
 

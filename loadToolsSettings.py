@@ -106,13 +106,13 @@ Tools = [
 	# Magic Panels - resize
 	# #################################################################################################################################
 	
-	"panelResize1", "MagicPanels", "panelResize1", "panel, bigger, long+", "Allow to increase panel size at the described direction. The resize step is the selected panel thickness.",
+	"panelResize1", "MagicPanels", "panelResize1", "panel, bigger, long+", "Allow to make bigger the long side of the panel. The resize step is the selected panel thickness.",
 
-	"panelResize2", "MagicPanels", "panelResize2", "panel, smaller, long-", "Allow to increase panel size at the described direction. The resize step is the selected panel thickness.",
+	"panelResize2", "MagicPanels", "panelResize2", "panel, smaller, long-", "Allow to make smaller the long side of the panel. The resize step is the selected panel thickness.",
 
-	"panelResize3", "MagicPanels", "panelResize3", "panel, bigger, short+", "Allow to increase panel size at the described direction. The resize step is the selected panel thickness.",
+	"panelResize3", "MagicPanels", "panelResize3", "panel, bigger, short+", "Allow to make bigger the short side of the panel. The resize step is the selected panel thickness.",
 
-	"panelResize4", "MagicPanels", "panelResize4", "panel, smaller, short-", "Allow to increase panel size at the described direction. The resize step is the selected panel thickness.",
+	"panelResize4", "MagicPanels", "panelResize4", "panel, smaller, short-", "Allow to make smaller the short side of the panel. The resize step is the selected panel thickness.",
 
 	# #################################################################################################################################
 	# Magic Panels - special
