@@ -13,6 +13,7 @@ This is Woodworking workbench for FreeCAD.
 * [setTextures](https://github.com/dprojects/setTextures) - allows to store, load, repeat and rotate textures from URL.
 * [scanObjects](https://github.com/dprojects/scanObjects) - allows to live inspect and debug project, also view FreeCAD or any other module API.
 * [debugInfo](https://github.com/dprojects/Woodworking/blob/master/Tools/debugInfo.py) - allows to get quick and simple debug info for bug report.
+* [makeTransparent](https://github.com/dprojects/Woodworking/blob/master/Tools/makeTransparent.py) - allows to make all parts at transparent and back to normal. You can preview all pilot holes, countersinks or any other joints like that, very simply.
 * Also clean toolbar, with sections adjusted for woodworking.
 
 ![000](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/000.png)

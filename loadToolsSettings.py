@@ -21,6 +21,8 @@ Tools = [
 	"setTextures", "", "setTextures", "setTextures", "Store textures URL at object's property and allows to load textures from stored URL.",
 	
 	"debugInfo", "", "debugInfo", "debugInfo", "Copy platform details to clipboard for bug report purposes.",
+
+	"makeTransparent", "", "makeTransparent", "transparent or normal mode", "Make all parts transparent, so you can see all the joints, pilot holes, screws, countersinks. If you click senond one all parts will back to normal. The transparent default is 83, so do not set any part to this number if you want e.g. to keep glass part of the furniture transparent after this preview.",
 	
 	# #################################################################################################################################
 	# Magic Panels - default

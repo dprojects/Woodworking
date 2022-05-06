@@ -210,6 +210,46 @@ FreeCADGui.addCommand("debugInfo", debugInfo())
 	
 
 # ######################################################################################################################
+class makeTransparent():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "makeTransparent.xpm"),
+				"Accel"   : "",
+				"MenuText": "transparent or normal mode",
+				"ToolTip" : "Make all parts transparent, so you can see all the joints, pilot holes, screws, countersinks. If you click senond one all parts will back to normal. The transparent default is 83, so do not set any part to this number if you want e.g. to keep glass part of the furniture transparent after this preview."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "makeTransparent"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("makeTransparent", makeTransparent())
+
+	
+
+# ######################################################################################################################
 class panelDefaultXY():
 
 	def GetResources(self):

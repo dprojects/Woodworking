@@ -156,7 +156,8 @@ def getItems(iType):
 		parts = [
 			"Std_ViewFitAll",
 			"Std_TextureMapping",
-			"setTextures"
+			"setTextures",
+			"makeTransparent"
 		]
 
 	if iType == "Code and Debug":
