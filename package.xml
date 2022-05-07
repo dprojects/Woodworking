@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
+  <name>Woodworking</name>
+  <description>FreeCAD workbench for woodworking purposes.</description>
+  <version>1.0</version>
+  <date>2022-05-07</date>
+  <author>Darek L (https://github.com/dprojects)</author>
+  <maintainer email="you@null.com">If you fork and copy to FreeCAD repository, add your name here and keep author tag without change.</maintainer>
+  <license file="LICENSE">MIT</license>
+  <url type="repository" branch="main">https://github.com/dprojects/Woodworking</url>
+  <icon>Icons/Woodworking.xpm</icon>
+
+  <content>
+    <workbench>
+      <classname>WoodworkingWorkbench</classname>
+      <subdirectory>./</subdirectory>
+    </workbench>
+  </content>
+
+</package>
