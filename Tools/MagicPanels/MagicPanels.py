@@ -143,6 +143,35 @@ def getDirection(iObj):
 
 
 # ###################################################################################################################
+def getVertex(iFace, iEdge, iVertex):
+	'''
+	Get vertex position.
+	
+	getVertex(iFace, iEdge, iVertex)
+	
+	Args:
+	
+		iFace: face object
+		iEdge: edge array index
+		iVertex: vertex array index (0 or 1)
+	
+	Usage:
+	
+		[ x, y, z ] = getVertex(gFace, 0, 1)
+		
+	Result:
+	
+		Return vertex position.
+	'''
+	
+	# I like such typos, I would make the same ;-)
+	typo = "Vertex"+"es"
+	vertexArr = getattr(iFace.Edges[iEdge], typo)
+
+	return [ vertexArr[iVertex].X, vertexArr[iVertex].Y, vertexArr[iVertex].Z ]
+
+
+# ###################################################################################################################
 def convertPosition(iObj, iX, iY, iZ):
 	'''
 	Convert given position vector to correct position values according to the direction (Plane).
@@ -764,21 +793,11 @@ def panelFace(iType):
 		[ panel.Length, panel.Width, panel.Height ] = sizesToCubePanel(gObj, iType)
 
 		if gObj.isDerivedFrom("Part::Box"):
-
-			vertexArr = gFace.Edges[0].Vertexes
-			x = vertexArr[1].X
-			y = vertexArr[1].Y
-			z = vertexArr[1].Z
-			
+			[ x, y, z ] = getVertex(gFace, 0, 1)
 		else:
-		
-			vertexArr = gFace.Edges[1].Vertexes
-			x = vertexArr[0].X
-			y = vertexArr[0].Y
-			z = vertexArr[0].Z
+			[ x, y, z ] = getVertex(gFace, 1, 0)
 
 		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
-
 		FreeCAD.activeDocument().recompute()
 		
 	except:
@@ -827,15 +846,8 @@ def panelBetween(iType):
 		gFace1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 		gFace2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
 	
-		vertexArr1 = gFace1.Edges[0].Vertexes
-		x1 = vertexArr1[1].X
-		y1 = vertexArr1[1].Y
-		z1 = vertexArr1[1].Z
-
-		vertexArr2 = gFace2.Edges[0].Vertexes
-		x2 = vertexArr2[1].X
-		y2 = vertexArr2[1].Y
-		z2 = vertexArr2[1].Z
+		[ x1, y1, z1 ] = getVertex(gFace1, 0, 1)
+		[ x2, y2, z2 ] = getVertex(gFace2, 0, 1)
 
 		x = abs(x2 - x1)
 		y = abs(y2 - y1)
@@ -856,7 +868,6 @@ def panelBetween(iType):
 			panel.Height = z
 
 		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x1, y1, z1), FreeCAD.Rotation(0, 0, 0))
-
 		FreeCAD.activeDocument().recompute()
 
 	except:
@@ -908,27 +919,15 @@ def panelSide(iType):
 		[ Length, Width, Height ] = sizesToCubePanel(gObj, "ZY")
 
 		if gObj.isDerivedFrom("Part::Box"):
-
-			vertexArr = gFace.Edges[0].Vertexes
-			x = vertexArr[1].X
-			y = vertexArr[1].Y
-			z = vertexArr[1].Z
+			[ x, y, z ] = getVertex(gFace, 0, 1)
 
 		else:
 
 			if iType == "1" or iType == "2":
-				
-				vertexArr = gFace.Edges[0].Vertexes
-				x = vertexArr[0].X
-				y = vertexArr[0].Y
-				z = vertexArr[0].Z
-		
-			if iType == "3" or iType == "4":
+				[ x, y, z ] = getVertex(gFace, 0, 0)
 
-				vertexArr = gFace.Edges[1].Vertexes
-				x = vertexArr[0].X
-				y = vertexArr[0].Y
-				z = vertexArr[0].Z
+			if iType == "3" or iType == "4":
+				[ x, y, z ] = getVertex(gFace, 1, 0)
 
 		if iType == "1":
 			x = x - Length
@@ -951,7 +950,6 @@ def panelSide(iType):
 		panel.Height = Height
 		
 		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
-		
 		FreeCAD.activeDocument().recompute()
 
 	except:
@@ -1001,20 +999,9 @@ def panelBackOut():
 
 		[ x, y, z ] = sizesToCubePanel(gObj, "ZX")
 
-		vertexArr1 = gFace1.Edges[0].Vertexes
-		x1 = vertexArr1[1].X
-		y1 = vertexArr1[1].Y
-		z1 = vertexArr1[1].Z
-
-		vertexArr2 = gFace2.Edges[0].Vertexes
-		x2 = vertexArr2[0].X
-		y2 = vertexArr2[0].Y
-		z2 = vertexArr2[0].Z
-
-		vertexArr3 = gFace3.Edges[0].Vertexes
-		x3 = vertexArr3[1].X
-		y3 = vertexArr3[1].Y
-		z3 = vertexArr3[1].Z
+		[ x1, y1, z1 ] = getVertex(gFace1, 0, 1)
+		[ x2, y2, z2 ] = getVertex(gFace2, 0, 0)
+		[ x3, y3, z3 ] = getVertex(gFace3, 0, 1)
 
 		x = abs(x2 - x1)
 		z = z - z3
@@ -1027,7 +1014,6 @@ def panelBackOut():
 			panel.Height = z
 
 			panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x1, y1, z3), FreeCAD.Rotation(0, 0, 0))
-			
 			FreeCAD.activeDocument().recompute()
 			
 		else:
@@ -1083,20 +1069,9 @@ def panelCover(iType):
 
 		[ x, y, z ] = sizesToCubePanel(gObj, iType)
 
-		vertexArr1 = gFace1.Edges[0].Vertexes
-		x1 = vertexArr1[1].X
-		y1 = vertexArr1[1].Y
-		z1 = vertexArr1[1].Z
-
-		vertexArr2 = gFace2.Edges[2].Vertexes
-		x2 = vertexArr2[1].X
-		y2 = vertexArr2[1].Y
-		z2 = vertexArr2[1].Z
-
-		vertexArr3 = gFace3.Edges[0].Vertexes
-		x3 = vertexArr3[1].X
-		y3 = vertexArr3[1].Y
-		z3 = vertexArr3[1].Z
+		[ x1, y1, z1 ] = getVertex(gFace1, 0, 1)
+		[ x2, y2, z2 ] = getVertex(gFace2, 2, 1)
+		[ x3, y3, z3 ] = getVertex(gFace3, 0, 1)
 
 		x = abs(x2 - x1)
 		y = y + z
@@ -1109,7 +1084,6 @@ def panelCover(iType):
 			panel.Height = z
 
 			panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x1, y1, z3), FreeCAD.Rotation(0, 0, 0))
-			
 			FreeCAD.activeDocument().recompute()
 
 	except:

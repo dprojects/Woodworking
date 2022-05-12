@@ -2,25 +2,27 @@
 
 # Inspection tool for FreeCAD macro development.
 # Author: Darek L (aka dprojects)
-# Version: 4.0
+# Version: 5.0
 # Latest version: https://github.com/dprojects/scanObjects
 
-import FreeCAD
+import FreeCAD, FreeCADGui
 from PySide import QtGui, QtCore
 
 
 # ############################################################################
 # Qt Main
 # ############################################################################
-	
+
 
 def showQtGUI():
 	
 	class QtMainClass(QtGui.QDialog):
 		
+
 		# ############################################################################
 		# database
 		# ############################################################################
+
 
 		# database for selection
 		dbSO = [] # objects
@@ -37,18 +39,35 @@ def showQtGUI():
 			self.dbSP = [] # path
 			self.dbSLI = [] # last index
 
+
 		# ############################################################################
 		# globals
 		# ############################################################################
 
+
 		gDefaultRoot = ""
 		gModeType = "normal"
-		gW = 1200 # width
-		gH = 600 # height
+
+		# set display grid
+		try:
+			gW = FreeCADGui.getMainWindow().width()
+			gH = FreeCADGui.getMainWindow().height()
+	
+			# avoid double click and FreeCAD close
+			gW = gW - 20
+
+		except:
+			gW = 1300
+			gH = 700
+
+		gGridCol = int(gW / 5)
+		gGridRow = int(gH / 5)
+
 
 		# ############################################################################
 		# errors & info
 		# ############################################################################
+
 
 		def showMsg(self, iMsg, iType = "error"):
 		
@@ -68,9 +87,11 @@ def showQtGUI():
 			except:
 				self.o5.setPlainText("kernel panic or even FreeCAD panic :-)")
 
+
 		# ############################################################################
 		# init
 		# ############################################################################
+
 
 		def __init__(self):
 			super(QtMainClass, self).__init__()
@@ -78,47 +99,54 @@ def showQtGUI():
 
 		def initUI(self):
 
-			# set default 
+
+			# ############################################################################
+			# defaults
+			# ############################################################################
+
+
 			try:
 				test = FreeCAD.activeDocument().Objects
 				self.gDefaultRoot = "project"
 			except:
 				self.gDefaultRoot = "FreeCAD"
 
+
+			# ############################################################################
 			# main window
+			# ############################################################################
+			
+
 			self.result = userCancelled
-			self.setGeometry(10, 10, self.gW, self.gH)
+			self.setGeometry(0, 0, self.gW, self.gH)
 			self.setWindowTitle("scanObjects - inspection tool for macro development")
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
-			# ############################################################################
-			# selection view
-			# ############################################################################
-
-			self.list = QtGui.QListView()
-			self.listsw = QtGui.QMdiSubWindow(self)
-			self.listsw.setWindowTitle("Select object :")
-			self.listsw.setWidget(self.list)
 
 			# ############################################################################
-			# select root path
+			# options
 			# ############################################################################
 
+
+			# scan root
+			# ############################################################################
+			
 			# label
-			self.rootL = QtGui.QLabel("Select root path:", self)
-			self.rootL.move(10, 440)
+			self.rootL = QtGui.QLabel("Select scan root path:", self)
 			
 			# options
 			self.rootList = (
 				"my project root",
-				"FreeCAD", 
-				"QtGui", 
-				"QtCore", 
-				"Path", 
-				"Draft", 
-				"TechDraw", 
-				"Spreadsheet",
-				"coin"
+				"Module: FreeCAD",
+				"Module: QtGui", 
+				"Module: QtCore",
+				"Module: coin",
+				"Module: Path", 
+				"Module: Draft", 
+				"Module: TechDraw", 
+				"Module: Spreadsheet",
+				"custom module",
+				"custom command result"
 			)
 
 			self.rootO = QtGui.QComboBox(self)
@@ -126,36 +154,31 @@ def showQtGUI():
 			if self.gDefaultRoot == "project":
 				self.rootO.setCurrentIndex(self.rootList.index("my project root"))
 			else:
-				self.rootO.setCurrentIndex(self.rootList.index("FreeCAD"))
+				self.rootO.setCurrentIndex(self.rootList.index("Module: FreeCAD"))
 			self.rootO.activated[str].connect(self.setRootPath)
-			self.rootO.move(10, 460)
-
-			# ############################################################################
+			self.rootO.setFixedWidth((1*self.gGridCol)-20)
+			
 			# custom module
 			# ############################################################################
 
 			# label
-			self.rootCL = QtGui.QLabel("Custom module:", self)
-			self.rootCL.move(10, 490)
-
+			self.rootCL = QtGui.QLabel("Custom module name:", self)
+			
 			# text input
 			self.rootCO = QtGui.QLineEdit(self)
 			self.rootCO.setText("")
-			self.rootCO.setFixedWidth(70)
-			self.rootCO.move(10, 510)
+			self.rootCO.setFixedWidth((1*self.gGridCol)-20)
 			
 			# button
-			self.rootCLoad = QtGui.QPushButton("load", self)
+			self.rootCLoad = QtGui.QPushButton("load custom module", self)
 			self.rootCLoad.clicked.connect(self.loadCustomModule)
-			self.rootCLoad.move(85, 510)
-
-			# ############################################################################
+			self.rootCLoad.setFixedWidth((1*self.gGridCol)-20)
+			
 			# select windows layout
 			# ############################################################################
 
 			# label
 			self.layL = QtGui.QLabel("Select windows layout:", self)
-			self.layL.move(10, 540)
 			
 			# options
 			self.layList = (
@@ -164,17 +187,129 @@ def showQtGUI():
 				"content", 
 				"docs", 
 				"object",
-				"matrix red pill",
-				"matrix blue pill",
+				"command"
 			)
 
 			self.layO = QtGui.QComboBox(self)
 			self.layO.addItems(self.layList)
 			self.layO.setCurrentIndex(self.layList.index("all windows"))
 			self.layO.activated[str].connect(self.setWindowsLayout)
-			self.layO.move(10, 560)
+			self.layO.setFixedWidth((1*self.gGridCol)-20)
+
+			# select windows colors
+			# ############################################################################
+
+			# label
+			self.colorsL = QtGui.QLabel("Select colors:", self)
+			
+			# options
+			self.colorsList = (
+				"matrix blue pill",
+				"beautiful pinky world",
+				"the sky is blue",
+				"my world is gray",
+				"I like winter more",
+				"matrix red pill"
+			)
+
+			self.colorsO = QtGui.QComboBox(self)
+			self.colorsO.addItems(self.colorsList)
+			self.colorsO.setCurrentIndex(self.colorsList.index("matrix blue pill"))
+			self.colorsO.activated[str].connect(self.setWindowsColors)
+			self.colorsO.setFixedWidth((1*self.gGridCol)-20)
+			
+			# custom command execute
+			# ############################################################################
+
+			# label
+			self.oCommandL = QtGui.QLabel("Custom command execute:", self)
+			
+			# text input
+			self.oCommandI = QtGui.QLineEdit(self)
+			self.oCommandI.setText("FreeCADGui.getMainWindow().children()")
+			self.oCommandI.setFixedWidth((1*self.gGridCol)-20)
+			
+			# button
+			self.oCommandB = QtGui.QPushButton("load command result", self)
+			self.oCommandB.clicked.connect(self.executeCustomCommand)
+			self.oCommandB.setFixedWidth((1*self.gGridCol)-20)
+			
+			# options sub-window
+			# ############################################################################
+
+			# label
+			self.OPTLabel = QtGui.QLabel("Select options type to show:", self)
+			
+			# options
+			self.OPTList = (
+				"scan root",
+				"layout & colors"
+			)
+
+			self.OPTListQ = QtGui.QComboBox(self)
+			self.OPTListQ.addItems(self.OPTList)
+			self.OPTListQ.setCurrentIndex(self.OPTList.index("scan root"))
+			self.OPTListQ.activated[str].connect(self.setOptionsVisibility)
+			self.OPTListQ.setFixedWidth((1*self.gGridCol)-20)
+			
+			self.OPTlayout = QtGui.QVBoxLayout()
+			self.OPTlayout.setAlignment(QtGui.Qt.AlignTop)
+			
+			self.OPTlayout.addWidget(self.OPTLabel)
+			self.OPTlayout.addWidget(self.OPTListQ)
+			self.OPTseparator = QtGui.QLabel("", self)
+			self.OPTlayout.addWidget(self.OPTseparator)
+
+			self.OPTlayout.addWidget(self.rootL)
+			self.OPTlayout.addWidget(self.rootO)
+			self.OPTlayout.addWidget(self.rootCL)
+			self.OPTlayout.addWidget(self.rootCO)
+			self.OPTlayout.addWidget(self.rootCLoad)
+			self.OPTlayout.addWidget(self.layL)
+			self.OPTlayout.addWidget(self.layO)
+			self.OPTlayout.addWidget(self.colorsL)
+			self.OPTlayout.addWidget(self.colorsO)
+			self.OPTlayout.addWidget(self.oCommandL)
+			self.OPTlayout.addWidget(self.oCommandI)
+			self.OPTlayout.addWidget(self.oCommandB)
+
+			self.rootL.show()
+			self.rootO.show()
+			self.rootCL.hide()
+			self.rootCO.hide()
+			self.rootCLoad.hide()
+			self.oCommandL.hide()
+			self.oCommandI.hide()
+			self.oCommandB.hide()
+			self.layL.hide()
+			self.layO.hide()
+			self.colorsL.hide()
+			self.colorsO.hide()
+			
+			self.OPTwidget = QtGui.QWidget()
+			self.OPTwidget.setLayout(self.OPTlayout)
+
+			self.OPTsw = QtGui.QMdiSubWindow(self)
+			self.OPTsw.setWindowTitle("Options :")
+			self.OPTsw.setWidget(self.OPTwidget)
+
 
 			# ############################################################################
+			# selection view
+			# ############################################################################
+
+
+			self.list = QtGui.QListView()
+			self.listsw = QtGui.QMdiSubWindow(self)
+			self.listsw.setWindowTitle("Select object :")
+			self.listsw.setWidget(self.list)
+
+
+			# ############################################################################
+			# outputs
+			# ############################################################################
+
+
 			# output 1
 			# ############################################################################
 
@@ -183,7 +318,6 @@ def showQtGUI():
 			self.o1sw.setWindowTitle("Help Window & dir() :")
 			self.o1sw.setWidget(self.o1)
 
-			# ############################################################################
 			# output 2
 			# ############################################################################
 			
@@ -192,7 +326,6 @@ def showQtGUI():
 			self.o2sw.setWindowTitle("__dict__ :")
 			self.o2sw.setWidget(self.o2)
 			
-			# ############################################################################
 			# output 3
 			# ############################################################################
 
@@ -201,7 +334,6 @@ def showQtGUI():
 			self.o3sw.setWindowTitle("__doc__ :")
 			self.o3sw.setWidget(self.o3)
 
-			# ############################################################################
 			# output 4
 			# ############################################################################
 
@@ -210,7 +342,6 @@ def showQtGUI():
 			self.o4sw.setWindowTitle("getAllDerivedFrom() :")
 			self.o4sw.setWidget(self.o4)
 
-			# ############################################################################
 			# output 5
 			# ############################################################################
 
@@ -219,7 +350,6 @@ def showQtGUI():
 			self.o5sw.setWindowTitle("Content & Error Console :")
 			self.o5sw.setWidget(self.o5)
 
-			# ############################################################################
 			# output 6
 			# ############################################################################
 
@@ -228,22 +358,26 @@ def showQtGUI():
 			self.o6sw.setWindowTitle("Object parse view :")
 			self.o6sw.setWidget(self.o6)
 
+
 			# ############################################################################
 			# keyboard keys
 			# ############################################################################
 
+
 			QtGui.QShortcut(QtGui.QKeySequence("left"), self, self.keyLeft)
 			QtGui.QShortcut(QtGui.QKeySequence("right"), self, self.keyRight)
+
 
 			# ############################################################################
 			# show & init defaults
 			# ############################################################################
 
+
 			# init default selection db
 			if self.gDefaultRoot == "project":
 				self.setRootPath("my project root")
 			else:
-				self.setRootPath("FreeCAD")
+				self.setRootPath("Module: FreeCAD")
 
 			# show window
 			self.show()
@@ -251,284 +385,23 @@ def showQtGUI():
 			# set default layout
 			self.setWindowsLayout("all windows")
 
-			# init colors
-			self.setWindowsLayout("matrix blue pill")
-			
+			# set default colors
+			self.setWindowsColors("matrix blue pill")
+
 		# ############################################################################
-		# actions
+		# actions - function for actions
 		# ############################################################################
 
-		def setWindowsLayout(self, selectedText):
 
-			if selectedText == "all windows":
-
-				self.listsw.setGeometry(0, 0, 180, 430) # select
-				self.listsw.show()
-				self.list.show()
-				self.o1sw.setGeometry(180, 0, 260, 430) # dir
-				self.o1sw.show()
-				self.o1.show()
-				self.o2sw.setGeometry(440, 0, 220, 430) # __dict__
-				self.o2sw.show()
-				self.o2.show()
-				self.o3sw.setGeometry(660, 0, 540, 150) # __doc__
-				self.o3sw.show()
-				self.o3.show()
-				self.o4sw.setGeometry(660, 330, 540, 100) # getAllDerivedFrom
-				self.o4sw.show()
-				self.o4.show()
-				self.o5sw.setGeometry(180, 430, 1020, 170) # content
-				self.o5sw.show()
-				self.o5.show()
-				self.o6sw.setGeometry(660, 150, 540, 180) # object
-				self.o6sw.show()
-				self.o6.show()
-
-			if selectedText == "modules":
-				self.listsw.setGeometry(0, 0, 260, 430)
-				self.listsw.show()
-				self.list.show()
-				self.o1sw.setGeometry(260, 0, 260, 500)
-				self.o1sw.show()
-				self.o1.show()
-				self.o2sw.setGeometry(520, 0, 220, 500)
-				self.o2sw.show()
-				self.o2.show()
-				self.o3sw.setGeometry(740, 0, 460, 500)
-				self.o3sw.show()
-				self.o3.show()
-
-				self.o4sw.hide()
-				self.o4.hide()
-
-				self.o5sw.setGeometry(260, 500, 940, 100)
-				self.o5sw.show()
-				self.o5.show()
-
-				self.o6sw.hide()
-				self.o6.hide()
-
-			if selectedText == "content":
-				self.listsw.setGeometry(0, 0, 180, 430)
-				self.listsw.show()
-				self.list.show()
-
-				self.o1sw.hide()
-				self.o1.hide()
-				self.o2sw.hide()
-				self.o2.hide()
-				self.o3sw.hide()
-				self.o3.hide()
-				self.o4sw.hide()
-				self.o4.hide()
-
-				self.o5sw.setGeometry(180, 0, 1020, 600)
-				self.o5sw.show()
-				self.o5.show()
-
-				self.o6sw.hide()
-				self.o6.hide()
-
-			if selectedText == "docs":
-				self.listsw.setGeometry(0, 0, 180, 430)
-				self.listsw.show()
-				self.list.show()
-
-				self.o1sw.hide()
-				self.o1.hide()
-				self.o2sw.hide()
-				self.o2.hide()
-
-				self.o3sw.setGeometry(180, 0, 1020, 600)
-				self.o3sw.show()
-				self.o3.show()
-
-				self.o4sw.hide()
-				self.o4.hide()
-				self.o5sw.hide()
-				self.o5.hide()
-				self.o6sw.hide()
-				self.o6.hide()
-
-			if selectedText == "object":
-				self.listsw.setGeometry(0, 0, 180, 430)
-				self.listsw.show()
-				self.list.show()
-
-				self.o1sw.hide()
-				self.o1.hide()
-				self.o2sw.hide()
-				self.o2.hide()
-				self.o3sw.hide()
-				self.o3.hide()
-				self.o4sw.hide()
-				self.o4.hide()
-				self.o5sw.hide()
-				self.o5.hide()
-				self.o6sw.setGeometry(180, 0, 1020, 600)
-				self.o6sw.show()
-				self.o6.show()
-
-			if selectedText == "matrix red pill":
-
-				# decoration 
-				QtCSS =  '''
-					QDialog, QScrollBar {
-						background-color: black;
-					}
-
-					QMdiSubWindow {
-						color: green;
-						background-color: black;
-						selection-color: white;
-						selection-background-color: black;
-					}
-
-					QTextEdit, QListView, QComboBox {
-						color: green;
-						background-color: qlineargradient( 
-							x1: 0, y1: 0, 
-							x2: 15, y2: 15,
-							stop: 0 #000000, stop: 1 #00FF00
-						);
-						border: 0px;
-						border-right: 1px dotted green;
-						border-bottom: 1px dotted green;
-						selection-color: white;
-						selection-background-color: black;
-					}
-
-					QLabel { 
-						color: white;
-						background-color: black;
-					}
-										
-					QLineEdit, QPushButton {
-						color: green;
-						background-color: qlineargradient( 
-							x1: 0, y1: 0, 
-							x2: 10, y2: 10,
-							stop: 0 #000000, stop: 1 #00FF00
-						);
-						border: 1px dotted green;
-					}
-				'''
-
-				self.setStyleSheet(QtCSS)
-				self.gModeType = "matrix"
-				self.resetOutputs()
-				
-			if selectedText == "matrix blue pill":
-				self.setStyleSheet("")
-				self.gModeType = "normal"
-				self.resetOutputs()
-
-		def setRootPath(self, selectedText):
-
-			# clear db before root set
-			self.clearDB()
-
-			if selectedText == "my project root":
-					
-				try:
-					root = FreeCAD.activeDocument().Objects
-					rootS= "FreeCAD.activeDocument().Objects"
-					self.addSelection("", root, rootS, -1)
-				except:
-					if self.gModeType == "matrix":
-						self.showMsg("You need to release project first to enter the matrix ;-)")
-					else:
-						self.showMsg("You have to set active document (project) to use this root path.")
-
-			if selectedText == "FreeCAD":
-
-				root = dir(FreeCAD)
-				rootS= "FreeCAD"
-				self.addSelection(FreeCAD, root, rootS, -1)
-
-			if selectedText == "QtGui":
-
-				from PySide import QtGui
-
-				root = dir(QtGui)
-				rootS= "QtGui"
-				self.addSelection(QtGui, root, rootS, -1)
-
-			if selectedText == "QtCore":
-
-				from PySide import QtCore
-
-				root = dir(QtCore)
-				rootS= "QtCore"
-				self.addSelection(QtCore, root, rootS, -1)
-
-			if selectedText == "Path":
-
-				import Path
-
-				root = dir(Path)
-				rootS= "Path"
-				self.addSelection(Path, root, rootS, -1)
-
-			if selectedText == "Draft":
-
-				import Draft
-
-				root = dir(Draft)
-				rootS= "Draft"
-				self.addSelection(Draft, root, rootS, -1)
-
-			if selectedText == "TechDraw":
-
-				import TechDraw
-
-				root = dir(TechDraw)
-				rootS= "TechDraw"
-				self.addSelection(TechDraw, root, rootS, -1)
-
-			if selectedText == "Spreadsheet":
-
-				import Spreadsheet
-
-				root = dir(Spreadsheet)
-				rootS= "Spreadsheet"
-				self.addSelection(Spreadsheet, root, rootS, -1)
-
-			if selectedText == "coin":
-
-				from pivy import coin
-
-				root = dir(coin)
-				rootS= "coin"
-				self.addSelection(coin, root, rootS, -1)
-
-		def loadCustomModule(self):
-
-			try:
-				rootS = str(self.rootCO.text())
-				module = __import__(rootS, globals(), locals(), [], 0)
-				root = dir(module)
-
-				# clear db before root set
-				self.clearDB()
-				
-				self.addSelection(module, root, rootS, -1)
-
-			except:
-				if self.gModeType == "matrix":
-					self.showMsg("This module is outside the matrix: "+rootS)
-				else:
-					self.showMsg("Can't load module: "+rootS)
-				
+		# ############################################################################
 		def setOutput(self, iObj):
 
-			# reset outpust before set new values
+			# reset outputs before set new values
 			self.resetOutputs()
 
 			# get selected item index
 			index = iObj.indexes()[0].row()
 
-			# ########################################				
 			# output 1
 			# ########################################
 
@@ -552,7 +425,6 @@ def showQtGUI():
 			except:
 				skip = 1
 
-			# ########################################				
 			# output 2
 			# ########################################
 
@@ -576,7 +448,6 @@ def showQtGUI():
 			except:
 				skip = 1
 
-			# ########################################				
 			# output 3
 			# ########################################
 
@@ -595,7 +466,6 @@ def showQtGUI():
 			except:
 				skip = 1
 
-			# ########################################				
 			# output 4
 			# ########################################
 
@@ -619,7 +489,6 @@ def showQtGUI():
 			except:
 				skip = 1
 
-			# ########################################				
 			# output 5
 			# ########################################
 
@@ -638,7 +507,6 @@ def showQtGUI():
 			except:
 				skip = 1
 
-			# ########################################				
 			# output 6 - object window
 			# ########################################
 
@@ -693,10 +561,7 @@ def showQtGUI():
 				skip = 1
 
 
-		# ########################################				
-		# selection path
-		# ########################################
-	
+		# ############################################################################	
 		def getSelectionPath(self):
 
 			path = ""
@@ -705,6 +570,8 @@ def showQtGUI():
 
 			return str(path)[1:]
 
+
+		# ############################################################################
 		def resetOutputs(self):
 
 			path = self.getSelectionPath()
@@ -747,10 +614,8 @@ def showQtGUI():
 			self.o5.setPlainText("")
 			self.o6.setPlainText("")
 
-		# ########################################				
-		# selection
-		# ########################################
 
+		# ############################################################################
 		def updateSelection(self):
 
 			model = QtGui.QStandardItemModel(self.list)
@@ -765,6 +630,8 @@ def showQtGUI():
 			# reset outputs and show info screen
 			self.resetOutputs()
 
+
+		# ############################################################################
 		def removeSelection(self):
 
 			# stop remove if there is only init objects list
@@ -796,8 +663,11 @@ def showQtGUI():
 			if self.dbSI > 0:
 				self.dbSLI.pop()
 
+			# reset outputs
 			self.resetOutputs()
 
+
+		# ############################################################################
 		def addSelection(self, iObj, iList, iPath, iSelected):
 
 			tmpO = []
@@ -846,8 +716,517 @@ def showQtGUI():
 				else:
 					self.showMsg("Can't parse this object structure deeper. Check deeper at the python console.", "info")
 
+
 		# ############################################################################
-		# actions for keyboard keys
+		# actions - options menu
+		# ############################################################################
+
+
+		# ############################################################################
+		def setOptionsVisibility(self, selectedText):
+
+			if selectedText == "scan root":
+				self.rootL.show()
+				self.rootO.show()
+				
+				self.rootCL.hide()
+				self.rootCO.hide()
+				self.rootCLoad.hide()
+				self.oCommandL.hide()
+				self.oCommandI.hide()
+				self.oCommandB.hide()
+				self.layL.hide()
+				self.layO.hide()
+				self.colorsL.hide()
+				self.colorsO.hide()
+			
+			if selectedText == "layout & colors":
+				self.rootL.hide()
+				self.rootO.hide()
+				self.rootCL.hide()
+				self.rootCO.hide()
+				self.rootCLoad.hide()
+				self.oCommandL.hide()
+				self.oCommandI.hide()
+				self.oCommandB.hide()
+				
+				self.layL.show()
+				self.layO.show()
+				self.colorsL.show()
+				self.colorsO.show()
+
+
+		# ############################################################################
+		def setRootPath(self, selectedText):
+
+			# clear db before root set
+			self.clearDB()
+
+			if selectedText == "my project root":
+					
+				try:
+					root = FreeCAD.activeDocument().Objects
+					rootS = "FreeCAD.activeDocument().Objects"
+					self.addSelection("", root, rootS, -1)
+				except:
+					if self.gModeType == "matrix":
+						self.showMsg("You need to release project first to enter the matrix ;-)")
+					else:
+						self.showMsg("You have to set active document (project) to use this root path.")
+
+			if selectedText == "Module: FreeCAD":
+
+				root = dir(FreeCAD)
+				rootS = "FreeCAD"
+				self.addSelection(FreeCAD, root, rootS, -1)
+
+			if selectedText == "Module: QtGui":
+
+				from PySide import QtGui
+
+				root = dir(QtGui)
+				rootS = "QtGui"
+				self.addSelection(QtGui, root, rootS, -1)
+
+			if selectedText == "Module: QtCore":
+
+				from PySide import QtCore
+
+				root = dir(QtCore)
+				rootS = "QtCore"
+				self.addSelection(QtCore, root, rootS, -1)
+
+			if selectedText == "Module: Path":
+
+				import Path
+
+				root = dir(Path)
+				rootS = "Path"
+				self.addSelection(Path, root, rootS, -1)
+
+			if selectedText == "Module: Draft":
+
+				import Draft
+
+				root = dir(Draft)
+				rootS = "Draft"
+				self.addSelection(Draft, root, rootS, -1)
+
+			if selectedText == "Module: TechDraw":
+
+				import TechDraw
+
+				root = dir(TechDraw)
+				rootS = "TechDraw"
+				self.addSelection(TechDraw, root, rootS, -1)
+
+			if selectedText == "Module: Spreadsheet":
+
+				import Spreadsheet
+
+				root = dir(Spreadsheet)
+				rootS = "Spreadsheet"
+				self.addSelection(Spreadsheet, root, rootS, -1)
+
+			if selectedText == "Module: coin":
+
+				from pivy import coin
+
+				root = dir(coin)
+				rootS = "coin"
+				self.addSelection(coin, root, rootS, -1)
+
+			if selectedText == "custom module":
+				self.rootL.show()
+				self.rootO.show()
+				self.rootCL.show()
+				self.rootCO.show()
+				self.rootCLoad.show()
+				
+				self.oCommandL.hide()
+				self.oCommandI.hide()
+				self.oCommandB.hide()
+				self.layL.hide()
+				self.layO.hide()
+				self.colorsL.hide()
+				self.colorsO.hide()
+			
+			if selectedText == "custom command result":
+				self.rootL.show()
+				self.rootO.show()
+				self.oCommandL.show()
+				self.oCommandI.show()
+				self.oCommandB.show()
+				
+				self.rootCL.hide()
+				self.rootCO.hide()
+				self.rootCLoad.hide()
+				self.layL.hide()
+				self.layO.hide()
+				self.colorsL.hide()
+				self.colorsO.hide()
+
+
+		# ############################################################################
+		def setWindowsLayout(self, selectedText):
+
+			if selectedText == "all windows":
+
+				# options
+				self.OPTsw.setGeometry(0, (3*self.gGridRow), (1*self.gGridCol), (2*self.gGridRow))
+				self.OPTsw.show()
+
+				# select
+				self.listsw.setGeometry(0, 0, (1*self.gGridCol), (3*self.gGridRow))
+				self.listsw.show()
+				self.list.show()
+
+				# dir
+				self.o1sw.setGeometry((1*self.gGridCol), 0, (1*self.gGridCol), (3*self.gGridRow))
+				self.o1sw.show()
+				self.o1.show()
+
+				# __dict__
+				self.o2sw.setGeometry((2*self.gGridCol), 0, (1*self.gGridCol), (3*self.gGridRow))
+				self.o2sw.show()
+				self.o2.show()
+
+				# __doc__
+				self.o3sw.setGeometry((3*self.gGridCol), 0, (2*self.gGridCol), (1*self.gGridRow))
+				self.o3sw.show()
+				self.o3.show()
+
+				# getAllDerivedFrom
+				self.o4sw.setGeometry((3*self.gGridCol), (1*self.gGridRow), (2*self.gGridCol), (1*self.gGridRow))
+				self.o4sw.show()
+				self.o4.show()
+
+				# content
+				self.o5sw.setGeometry((1*self.gGridCol), (3*self.gGridRow), (4*self.gGridCol), (2*self.gGridRow))
+				self.o5sw.show()
+				self.o5.show()
+
+				# object
+				self.o6sw.setGeometry((3*self.gGridCol), (2*self.gGridRow), (2*self.gGridCol), (1*self.gGridRow))
+				self.o6sw.show()
+				self.o6.show()
+
+			if selectedText == "modules":
+				self.OPTsw.setGeometry(0, (3*self.gGridRow), (1*self.gGridCol), (2*self.gGridRow))
+				self.OPTsw.show()
+				self.listsw.setGeometry(0, 0, (1*self.gGridCol), (3*self.gGridRow))
+				self.listsw.show()
+				self.list.show()
+				self.o1sw.setGeometry((1*self.gGridCol), 0, (1*self.gGridCol), (3*self.gGridRow))
+				self.o1sw.show()
+				self.o1.show()
+				self.o2sw.setGeometry((2*self.gGridCol), 0, (1*self.gGridCol), (3*self.gGridRow))
+				self.o2sw.show()
+				self.o2.show()
+				self.o3sw.setGeometry((3*self.gGridCol), 0, (2*self.gGridCol), (2*self.gGridRow))
+				self.o3sw.show()
+				self.o3.show()
+
+				self.o4sw.hide()
+				self.o4.hide()
+
+				self.o5sw.setGeometry((1*self.gGridCol), (3*self.gGridRow), (4*self.gGridCol), (2*self.gGridRow))
+				self.o5sw.show()
+				self.o5.show()
+
+				self.o6sw.setGeometry((3*self.gGridCol), (2*self.gGridRow), (2*self.gGridCol), (1*self.gGridRow))
+				self.o6sw.show()
+				self.o6.show()
+
+			if selectedText == "content":
+				self.OPTsw.setGeometry(0, (3*self.gGridRow), (1*self.gGridCol), (2*self.gGridRow))
+				self.OPTsw.show()
+				self.listsw.setGeometry(0, 0, (1*self.gGridCol), (3*self.gGridRow))
+				self.listsw.show()
+				self.list.show()
+
+				self.o1sw.hide()
+				self.o1.hide()
+				self.o2sw.hide()
+				self.o2.hide()
+				self.o3sw.hide()
+				self.o3.hide()
+				self.o4sw.hide()
+				self.o4.hide()
+
+				self.o5sw.setGeometry((1*self.gGridCol), 0, (4*self.gGridCol), (5*self.gGridRow))
+				self.o5sw.show()
+				self.o5.show()
+
+				self.o6sw.hide()
+				self.o6.hide()
+
+			if selectedText == "docs":
+				self.OPTsw.setGeometry(0, (3*self.gGridRow), (1*self.gGridCol), (2*self.gGridRow))
+				self.OPTsw.show()
+				self.listsw.setGeometry(0, 0, (1*self.gGridCol), (3*self.gGridRow))
+				self.listsw.show()
+				self.list.show()
+
+				self.o1sw.hide()
+				self.o1.hide()
+				self.o2sw.hide()
+				self.o2.hide()
+
+				self.o3sw.setGeometry((1*self.gGridCol), 0, (4*self.gGridCol), (5*self.gGridRow))
+				self.o3sw.show()
+				self.o3.show()
+
+				self.o4sw.hide()
+				self.o4.hide()
+				self.o5sw.hide()
+				self.o5.hide()
+				self.o6sw.hide()
+				self.o6.hide()
+
+			if selectedText == "object":
+				self.OPTsw.setGeometry(0, (3*self.gGridRow), (1*self.gGridCol), (2*self.gGridRow))
+				self.OPTsw.show()
+				self.listsw.setGeometry(0, 0, (1*self.gGridCol), (3*self.gGridRow))
+				self.listsw.show()
+				self.list.show()
+
+				self.o1sw.hide()
+				self.o1.hide()
+				self.o2sw.hide()
+				self.o2.hide()
+				self.o3sw.hide()
+				self.o3.hide()
+				self.o4sw.hide()
+				self.o4.hide()
+				self.o5sw.hide()
+				self.o5.hide()
+				self.o6sw.setGeometry((1*self.gGridCol), 0, (4*self.gGridCol), (5*self.gGridRow))
+				self.o6sw.show()
+				self.o6.show()
+
+			if selectedText == "command":
+				self.OPTsw.setGeometry(0, (3*self.gGridRow), (1*self.gGridCol), (2*self.gGridRow))
+				self.OPTsw.show()
+				self.listsw.setGeometry(0, 0, (2*self.gGridCol), (3*self.gGridRow))
+				self.listsw.show()
+				self.list.show()
+				self.o1sw.setGeometry((2*self.gGridCol), 0, (1*self.gGridCol), (3*self.gGridRow))
+				self.o1sw.show()
+				self.o1.show()
+				self.o2sw.setGeometry((3*self.gGridCol), 0, (1*self.gGridCol), (3*self.gGridRow))
+				self.o2sw.show()
+				self.o2.show()
+				self.o3sw.setGeometry((4*self.gGridCol), 0, (1*self.gGridCol), (2*self.gGridRow))
+				self.o3sw.show()
+				self.o3.show()
+
+				self.o4sw.hide()
+				self.o4.hide()
+
+				self.o5sw.setGeometry((1*self.gGridCol), (3*self.gGridRow), (4*self.gGridCol), (2*self.gGridRow))
+				self.o5sw.show()
+				self.o5.show()
+
+				self.o6sw.setGeometry((4*self.gGridCol), (2*self.gGridRow), (1*self.gGridCol), (1*self.gGridRow))
+				self.o6sw.show()
+				self.o6.show()
+
+
+		# ############################################################################
+		def setWindowsColors(self, selectedText):
+
+			if selectedText == "matrix blue pill":
+
+				self.setStyleSheet("")
+				self.gModeType = "normal"
+			
+			if (
+				selectedText == "my world is gray" or
+				selectedText == "beautiful pinky world" or
+				selectedText == "the sky is blue" or
+				selectedText == "I like winter more"
+				):
+
+				if selectedText == "my world is gray":
+					color1 = "#A1A1A1"
+					color2 = "#D1D1D1"
+					color3 = "#A1A1A1"
+
+				if selectedText == "beautiful pinky world":
+					color1 = "#FF00EE"
+					color2 = "#FFFFFF"
+					color3 = "#FF00EE"
+
+				if selectedText == "the sky is blue":
+					color1 = "#AAAAFF"
+					color2 = "#FFFFFF"
+					color3 = "#AAAAFF"
+
+				if selectedText == "I like winter more":
+					color1 = "#E1E1E1"
+					color2 = "#FFFFFF"
+					color3 = "#E1E1E1"
+
+				QtCSS =  '''
+					QDialog, QScrollBar {
+						background-color: '''+color1+''';
+					}
+
+					QMdiSubWindow {
+						color: #000000;
+						background-color: '''+color1+''';
+						border: 1px solid transparent;
+						selection-color: '''+color1+''';
+						selection-background-color: '''+color1+''';
+					}
+
+					QTextEdit, QListView, QComboBox {
+						color: #000000;
+						background-color: qlineargradient( 
+							x1: 0, y1: 0, 
+							x2: 2, y2: 2,
+							stop: 0 '''+color2+''', stop: 1 '''+color1+'''
+						);
+						border: 0px;
+						border-right: 1px dotted '''+color1+''';
+						border-bottom: 1px dotted '''+color1+''';
+						selection-color: #000000;
+						selection-background-color: '''+color3+''';
+					}
+
+					QLabel { 
+						color: #000000;
+						background-color: '''+color1+''';
+					}
+										
+					QLineEdit, QPushButton {
+						color: #000000;
+						background-color: qlineargradient( 
+							x1: 0, y1: 0, 
+							x2: 2, y2: 2,
+							stop: 0 '''+color2+''', stop: 1 '''+color1+'''
+						);
+						border: 1px dotted '''+color1+''';
+					}
+				'''
+
+				self.setStyleSheet(QtCSS)
+				self.gModeType = "normal"
+
+			if selectedText == "matrix red pill":
+
+				QtCSS =  '''
+					QDialog, QScrollBar {
+						background-color: black;
+					}
+
+					QMdiSubWindow {
+						color: green;
+						background-color: black;
+						border: 1px solid transparent;
+						selection-color: white;
+						selection-background-color: black;
+					}
+
+					QTextEdit, QListView, QComboBox {
+						color: green;
+						background-color: qlineargradient( 
+							x1: 0, y1: 0, 
+							x2: 15, y2: 15,
+							stop: 0 #000000, stop: 1 #00FF00
+						);
+						border: 0px;
+						border-right: 1px dotted green;
+						border-bottom: 1px dotted green;
+						selection-color: white;
+						selection-background-color: black;
+					}
+
+					QLabel { 
+						color: white;
+						background-color: black;
+					}
+										
+					QLineEdit, QPushButton {
+						color: green;
+						background-color: qlineargradient( 
+							x1: 0, y1: 0, 
+							x2: 10, y2: 10,
+							stop: 0 #000000, stop: 1 #00FF00
+						);
+						border: 1px dotted green;
+					}
+
+					QScrollBar {
+						border: 0px;
+					}
+					
+					QScrollBar::handle {
+						border: 1px dotted #FFFFFF;
+					}
+				'''
+				
+				self.setStyleSheet(QtCSS)
+				self.gModeType = "matrix"
+
+
+		# ############################################################################
+		# actions - other
+		# ############################################################################
+
+
+		# ############################################################################
+		def loadCustomModule(self):
+
+			try:
+				rootS = str(self.rootCO.text())				
+
+				import sys
+				if rootS in sys.modules:
+					del sys.modules[rootS]
+
+				module = __import__(rootS, globals(), locals(), [], 0)
+				root = dir(module)
+
+				self.clearDB()
+				self.addSelection(module, root, rootS, -1)
+
+			except:
+
+				if self.gModeType == "matrix":
+					self.showMsg("This module is outside the matrix: "+rootS)
+				else:
+					self.showMsg("Can't load module: "+rootS)
+		
+		
+		# ############################################################################
+		def executeCustomCommand(self):
+			try:
+				command = self.oCommandI.text()
+				result = eval(str(command))
+	
+				if isinstance(result, list):
+					self.clearDB()
+					self.addSelection(result, result, command, -1)
+
+				else:
+	
+					if self.gModeType == "matrix":
+						self.showMsg("You calling wrong number to the matrix: "+command)
+					else:
+						self.showMsg("To scan command the result of command should be list type: "+command)
+
+			except:
+
+				if self.gModeType == "matrix":
+					self.showMsg("This command is outside the matrix: "+command)
+				else:
+					self.showMsg("Can't evaluate command: "+command)
+
+
+		# ############################################################################
+		# actions - for keyboard keys
 		# ############################################################################
 
 		def keyLeft(self):
@@ -880,10 +1259,12 @@ def showQtGUI():
 						self.addSelection(Obj, newList, path, selected)
 			except:
 				skip = 1
-	
+
+
 	# ############################################################################
 	# final settings
 	# ############################################################################
+
 
 	userCancelled = "Cancelled"
 	userOK = "OK"
@@ -893,6 +1274,7 @@ def showQtGUI():
 	
 	if form.result == userCancelled:
 		pass
+
 
 # ###################################################################################################################
 # MAIN
