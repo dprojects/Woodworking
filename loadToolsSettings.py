@@ -24,6 +24,8 @@ Tools = [
 
 	"makeTransparent", "", "makeTransparent", "transparent or normal mode", "Make all parts transparent, so you can see all the joints, pilot holes, screws, countersinks. If you click senond one all parts will back to normal. The transparent default is 83, so do not set any part to this number if you want e.g. to keep glass part of the furniture transparent after this preview.",
 	
+	"colorManager", "", "colorManager", "colorManager", "Allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected face or object and see the effect at 3D model in real-time.",
+	
 	# #################################################################################################################################
 	# Magic Panels - default
 	# #################################################################################################################################

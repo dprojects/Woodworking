@@ -14,6 +14,7 @@ This is Woodworking workbench for FreeCAD.
 * [scanObjects](https://github.com/dprojects/scanObjects) - allows to live inspect and debug project, also view FreeCAD or any other module API.
 * [debugInfo](https://github.com/dprojects/Woodworking/blob/master/Tools/debugInfo.py) - allows to get quick and simple debug info for bug report.
 * [makeTransparent](https://github.com/dprojects/Woodworking/blob/master/Tools/makeTransparent.py) - allows to make all parts at transparent and back to normal. You can preview all pilot holes, countersinks or any other joints like that, very simply.
+* [colorManager](https://github.com/dprojects/Woodworking/blob/master/Tools/colorManager.py) - allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected face or object and see the effect at 3D model in real-time.
 * Also clean toolbar, with sections adjusted for woodworking.
 
 ![000](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/000.png)

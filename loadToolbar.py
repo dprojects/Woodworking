@@ -157,6 +157,7 @@ def getItems(iType):
 			"Std_ViewFitAll",
 			"Std_TextureMapping",
 			"setTextures",
+			"colorManager",
 			"makeTransparent"
 		]
 
