@@ -212,9 +212,11 @@ def showQtGUI():
 		# ############################################################################
 		def resetFaces(self):
 
+			resetColor = self.gObj.ViewObject.ShapeColor
 			faceArr = []
+			
 			for f in self.gObj.Shape.Faces:
-				faceArr.append((0.800000011920929, 0.800000011920929, 0.800000011920929, 0.0))
+				faceArr.append(resetColor)
 
 			self.gObj.ViewObject.DiffuseColor = faceArr
 
@@ -328,7 +330,7 @@ def showQtGUI():
 					raise
 
 				self.gMode = "Face"
-				self.s1S.setText(str(self.gMode)+", "+str(self.gMode)+str(self.gFaceIndex))
+				self.s1S.setText(str(self.gObj.Label)+", Face"+str(self.gFaceIndex))
 				self.getColor()
 
 				return 1
@@ -340,7 +342,7 @@ def showQtGUI():
 				FreeCADGui.Selection.clearSelection()
 
 				self.gMode = "Object"
-				self.s1S.setText(str(self.gMode)+", "+str(self.gObj.Label))
+				self.s1S.setText(str(self.gObj.Label))
 				self.getColor()
 
 				return 2
