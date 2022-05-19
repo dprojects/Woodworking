@@ -24,7 +24,7 @@ def showQtGUI():
 		gObj = ""
 		gMode = ""
 		gFaceIndex = -1
-		gStep = 10
+		gStep = 5
 
 		# ############################################################################
 		# init
@@ -202,7 +202,7 @@ def showQtGUI():
 
 			index = 1
 			for f in self.gObj.Shape.Faces:
-				if str(f.BoundBox)  == str(self.gFace.BoundBox):
+				if str(f.BoundBox) == str(self.gFace.BoundBox):
 					return index
 
 				index = index + 1
@@ -325,7 +325,6 @@ def showQtGUI():
 
 				self.gFaceIndex = self.getFaceIndex()
 				if self.gFaceIndex == -1:
-					FreeCAD.Console.PrintMessage("\n hello")
 					raise
 
 				self.gMode = "Face"
@@ -354,60 +353,72 @@ def showQtGUI():
 		# ############################################################################
 		def setColorO1B1(self):
 			value = int(self.o1E.text())
-			if value <= 0:
+			step = int(self.o4E.text())
+			
+			if value - step <= 0:
 				value = 255
 			else:
-				value = value - int(self.o4E.text())
+				value = value - step
 
 			self.o1E.setText(str(value)) 
 			self.setColor()
 
 		def setColorO1B2(self):
 			value = int(self.o1E.text())
-			if value >= 255:
+			step = int(self.o4E.text())
+			
+			if value + step >= 255:
 				value = 0
 			else:
-				value = value + int(self.o4E.text())
+				value = value + step
 
 			self.o1E.setText(str(value)) 
 			self.setColor()
 			
 		def setColorO2B1(self):
 			value = int(self.o2E.text())
-			if value <= 0:
+			step = int(self.o4E.text())
+			
+			if value - step <= 0:
 				value = 255
 			else:
-				value = value - int(self.o4E.text())
+				value = value - step
 
 			self.o2E.setText(str(value)) 
 			self.setColor()		
 		
 		def setColorO2B2(self):
 			value = int(self.o2E.text())
-			if value >= 255:
+			step = int(self.o4E.text())
+			
+			if value + step >= 255:
 				value = 0
 			else:
-				value = value + int(self.o4E.text())
+				value = value + step
 
 			self.o2E.setText(str(value)) 
 			self.setColor()
 
 		def setColorO3B1(self):
 			value = int(self.o3E.text())
-			if value <= 0:
+			step = int(self.o4E.text())
+			
+			if value - step <= 0:
 				value = 255
 			else:
-				value = value - int(self.o4E.text())
+				value = value - step
 
 			self.o3E.setText(str(value)) 
 			self.setColor()		
 		
 		def setColorO3B2(self):
 			value = int(self.o3E.text())
-			if value >= 255:
+			step = int(self.o4E.text())
+			
+			if value + step >= 255:
 				value = 0
 			else:
-				value = value + int(self.o4E.text())
+				value = value + step
 
 			self.o3E.setText(str(value)) 
 			self.setColor()
@@ -428,37 +439,56 @@ def showQtGUI():
 			if skip == 1:
 				sheet = FreeCAD.ActiveDocument.addObject("Spreadsheet::Sheet","faceColors")
 
-				sheet.set("A1",str("Rows number"))
-				sheet.set("A2",str("Face1"))
-				sheet.set("A3",str("Face2"))
-				sheet.set("A4",str("Face3"))
-				sheet.set("A5",str("Face4"))
-				sheet.set("A6",str("Face5"))
-				sheet.set("A7",str("Face6"))
+				sheet.set("A1",str("Face1"))
+				sheet.set("A2",str("Face2"))
+				sheet.set("A3",str("Face3"))
+				sheet.set("A4",str("Face4"))
+				sheet.set("A5",str("Face5"))
+				sheet.set("A6",str("Face6"))
 
-				sheet.set("B1",str("6"))
-				sheet.set("B2",str("black"))
-				sheet.set("B3",str("blue"))
-				sheet.set("B4",str("red"))
-				sheet.set("B5",str("yellow"))
-				sheet.set("B6",str("white"))
-				sheet.set("B7",str("green"))
+				sheet.set("B1",str("black"))
+				sheet.set("B2",str("blue"))
+				sheet.set("B3",str("red"))
+				sheet.set("B4",str("yellow"))
+				sheet.set("B5",str("white"))
+				sheet.set("B6",str("green"))
+
+				info = ""
+				info += "The colorManager tool search all faces at object and try to read "
+				info += "exact B row with color name. For example: for Face3 the color at B3 cell will be searched, "
+				info += "for Face5 the color at B5 cell will be set. If there is no cell with color, this "
+				info += "face will not be set. If you have Array object with 24 faces you need to set 24 rows. "
+				info += "by default only first 6 faces will be set, usually it is base element. So you can quickly "
+				info += "see where is the default element. You don't have to set A column, only B column is important "
+				info += "for the tool. The A column is description for you. Currently only the 6 visible color names are "
+				info += "supported. "
+				
+				sheet.mergeCells("C1:G6")
+				sheet.set("D1", info)
 
 				FreeCAD.ActiveDocument.recompute()
 
 			# set colors from shpreadsheet
 			for obj in FreeCAD.ActiveDocument.Objects:
+				
 				try:
 					self.gObj = obj
 					self.resetFaces()
 
-					for i in range( 2, int(sheet.get("B1"))+2 ):
-						faceColor = sheet.get("B"+str(i))
-						color = self.gObj.ViewObject.DiffuseColor
-						color[i-2] = self.convertFromName(str(faceColor))
-						self.gObj.ViewObject.DiffuseColor = color
+					i = 1
+					for f in self.gObj.Shape.Faces:
+						
+						try:
+							faceColor = sheet.get("B"+str(i))
+							color = self.gObj.ViewObject.DiffuseColor
+							color[i-1] = self.convertFromName(str(faceColor))
+							self.gObj.ViewObject.DiffuseColor = color
+						except:
+							skipFace = 1 # without color at exact sheet row
+							
+						i = i + 1 # go to next face
 				except:
-					skip = 2
+					skipObject = 1 # spreadsheet, group
 
 			self.s1S.setText("colors from faceColors")
 
