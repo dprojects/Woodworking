@@ -23,9 +23,11 @@ def showQtGUI():
 		gFace = ""
 		gObj = ""
 		gMode = ""
+		gObjArr = []
+		gFaceArr = dict()
 		gFaceIndex = -1
 		gStep = 5
-
+		
 		# ############################################################################
 		# init
 		# ############################################################################
@@ -65,13 +67,9 @@ def showQtGUI():
 			# options - selection mode
 			# ############################################################################
 			
-			# label
-			self.s1L = QtGui.QLabel("Selected: ", self)
-			self.s1L.move(10, 10)
-
 			# screen
-			self.s1S = QtGui.QLabel("please select object or face", self)
-			self.s1S.move(70, 10)
+			self.s1S = QtGui.QLabel("                                             ", self)
+			self.s1S.move(10, 10)
 
 			# button
 			self.s1B1 = QtGui.QPushButton("refresh selection", self)
@@ -98,6 +96,7 @@ def showQtGUI():
 			self.o1B1.clicked.connect(self.setColorO1B1)
 			self.o1B1.setFixedWidth(50)
 			self.o1B1.move(100, 110)
+			self.o1B1.setAutoRepeat(True)
 			
 			# text input
 			self.o1E = QtGui.QLineEdit(self)
@@ -110,6 +109,7 @@ def showQtGUI():
 			self.o1B2.clicked.connect(self.setColorO1B2)
 			self.o1B2.setFixedWidth(50)
 			self.o1B2.move(200, 110)
+			self.o1B2.setAutoRepeat(True)
 			
 			# ############################################################################
 			# options - green color
@@ -124,6 +124,7 @@ def showQtGUI():
 			self.o2B1.clicked.connect(self.setColorO2B1)
 			self.o2B1.setFixedWidth(50)
 			self.o2B1.move(100, 140)
+			self.o2B1.setAutoRepeat(True)
 			
 			# text input
 			self.o2E = QtGui.QLineEdit(self)
@@ -136,6 +137,7 @@ def showQtGUI():
 			self.o2B2.clicked.connect(self.setColorO2B2)
 			self.o2B2.setFixedWidth(50)
 			self.o2B2.move(200, 140)
+			self.o2B2.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - blue color
@@ -150,6 +152,7 @@ def showQtGUI():
 			self.o3B1.clicked.connect(self.setColorO3B1)
 			self.o3B1.setFixedWidth(50)
 			self.o3B1.move(100, 170)
+			self.o3B1.setAutoRepeat(True)
 			
 			# text input
 			self.o3E = QtGui.QLineEdit(self)
@@ -162,7 +165,8 @@ def showQtGUI():
 			self.o3B2.clicked.connect(self.setColorO3B2)
 			self.o3B2.setFixedWidth(50)
 			self.o3B2.move(200, 170)
-
+			self.o3B2.setAutoRepeat(True)
+			
 			# ############################################################################
 			# options - update color
 			# ############################################################################
@@ -256,13 +260,20 @@ def showQtGUI():
 
 			if self.gMode == "Face":
 
+				# object has single color
 				if len(self.gObj.ViewObject.DiffuseColor) == 1:
-					self.resetFaces()
+					
+					r = self.gObj.ViewObject.ShapeColor[0]
+					g = self.gObj.ViewObject.ShapeColor[1]
+					b = self.gObj.ViewObject.ShapeColor[2]
 
-				index = self.gFaceIndex
-				r = self.gObj.ViewObject.DiffuseColor[index-1][0]
-				g = self.gObj.ViewObject.DiffuseColor[index-1][1]
-				b = self.gObj.ViewObject.DiffuseColor[index-1][2]
+				# faces has its own colors
+				else:
+
+					index = self.gFaceIndex
+					r = self.gObj.ViewObject.DiffuseColor[index-1][0]
+					g = self.gObj.ViewObject.DiffuseColor[index-1][1]
+					b = self.gObj.ViewObject.DiffuseColor[index-1][2]
 
 			if self.gMode == "Object":
 
@@ -270,6 +281,33 @@ def showQtGUI():
 				g = self.gObj.ViewObject.ShapeColor[1]
 				b = self.gObj.ViewObject.ShapeColor[2]
 
+
+			if self.gMode == "Multi":
+
+				# first face selected
+				if self.gFace == "":
+
+					r = self.gObj.ViewObject.ShapeColor[0]
+					g = self.gObj.ViewObject.ShapeColor[1]
+					b = self.gObj.ViewObject.ShapeColor[2]
+
+				# first object selected, no face
+				else:
+
+					if len(self.gObj.ViewObject.DiffuseColor) == 1:
+						
+						r = self.gObj.ViewObject.ShapeColor[0]
+						g = self.gObj.ViewObject.ShapeColor[1]
+						b = self.gObj.ViewObject.ShapeColor[2]
+
+					else:
+
+						index = self.gFaceIndex
+						r = self.gObj.ViewObject.DiffuseColor[index-1][0]
+						g = self.gObj.ViewObject.DiffuseColor[index-1][1]
+						b = self.gObj.ViewObject.DiffuseColor[index-1][2]
+
+			# set GUI form with RGB color values
 			cR = self.convertToRGB(r)
 			cG = self.convertToRGB(g)
 			cB = self.convertToRGB(b)
@@ -282,7 +320,11 @@ def showQtGUI():
 		def setColor(self):
 
 			try:
+			
 				if self.gMode == "Face":
+
+					if len(self.gObj.ViewObject.DiffuseColor) == 1:
+						self.resetFaces()
 
 					index = self.gFaceIndex
 					color = self.gObj.ViewObject.DiffuseColor
@@ -305,9 +347,62 @@ def showQtGUI():
 					color = (c1, c2, c3, 0.0)
 					self.gObj.ViewObject.ShapeColor = color
 
-				self.getColor()
+				if self.gMode == "Multi":
 
+					# save base selected color
+					refObj = self.gObj
+					refFace = self.gFace
+					refFaceIndex = self.gFaceIndex
+					
+					for o in self.gObjArr:
+						
+						# set current object for other functions
+						self.gObj = o
+						
+						# all object, no single faces
+						if len(self.gFaceArr[o]) == 0:
+							
+							color = self.gObj.ViewObject.ShapeColor
+
+							c1 = self.convertToFreeCADColor( int(self.o1E.text()) )
+							c2 = self.convertToFreeCADColor( int(self.o2E.text()) )
+							c3 = self.convertToFreeCADColor( int(self.o3E.text()) )
+
+							color = (c1, c2, c3, 0.0)
+							self.gObj.ViewObject.ShapeColor = color
+
+						# faces selected for object
+						else:
+
+							i = 0
+							for f in self.gFaceArr[o]:
+
+								# set current face for other functions
+								self.gFace = self.gFaceArr[o][i]
+								self.gFaceIndex = self.getFaceIndex()
+							
+								if len(self.gObj.ViewObject.DiffuseColor) == 1:
+									self.resetFaces()
+
+								index = self.gFaceIndex
+								color = self.gObj.ViewObject.DiffuseColor
+
+								c1 = self.convertToFreeCADColor( int(self.o1E.text()) )
+								c2 = self.convertToFreeCADColor( int(self.o2E.text()) )
+								c3 = self.convertToFreeCADColor( int(self.o3E.text()) )
+
+								color[index-1] = (c1, c2, c3, 0.0)
+								self.gObj.ViewObject.DiffuseColor = color
+
+								i = i + 1
+
+					# get back base color
+					self.gObj = refObj
+					self.gFace = refFace
+					self.gFaceIndex = refFaceIndex
+				
 			except:
+			
 				skip = 1
 
 		# ############################################################################
@@ -317,40 +412,69 @@ def showQtGUI():
 		# ############################################################################
 		def getSelected(self):
 
-			global gMode
-			global gFaceIndex
-
 			try:
-				self.gFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-				self.gObj = FreeCADGui.Selection.getSelection()[0]
-				FreeCADGui.Selection.clearSelection()
 
-				self.gFaceIndex = self.getFaceIndex()
-				if self.gFaceIndex == -1:
-					raise
+				self.gObjArr = []
+				self.gFaceArr = dict()
+				
+				self.gObjArr = FreeCADGui.Selection.getSelection()
 
-				self.gMode = "Face"
-				self.s1S.setText(str(self.gObj.Label)+", Face"+str(self.gFaceIndex))
-				self.getColor()
+				i = 0
+				for o in self.gObjArr:
+					self.gFaceArr[o] = FreeCADGui.Selection.getSelectionEx()[i].SubObjects
+					i = i + 1
+			
+				if len(self.gObjArr) == 1 and len(self.gFaceArr[self.gObjArr[0]]) == 1:
+					
+					self.gMode = "Face"
+					self.gObj = self.gObjArr[0]
+					self.gFace = self.gFaceArr[self.gObj][0]
+					FreeCADGui.Selection.clearSelection()
+					
+					self.gFaceIndex = self.getFaceIndex()
+					if self.gFaceIndex == -1:
+						raise
+					
+					self.s1S.setText(str(self.gObj.Label)+", Face"+str(self.gFaceIndex))
+					self.getColor()
+					return 1
+				
+				if len(self.gObjArr) == 1 and len(self.gFaceArr[self.gObjArr[0]]) == 0:
+					
+					self.gMode = "Object"
+					self.gObj = self.gObjArr[0]
+					self.gFace = ""
+					FreeCADGui.Selection.clearSelection()
+					
+					self.s1S.setText(str(self.gObj.Label))
+					self.getColor()
+					return 2
+				
+				if len(self.gObjArr) > 1 or len(self.gFaceArr[self.gObjArr[0]]) > 1:
+					
+					self.gMode = "Multi"
+					self.gObj = self.gObjArr[0]
+					try:
+						self.gFace = self.gFaceArr[self.gObj][0]
+						self.gFaceIndex = self.getFaceIndex()
+						if self.gFaceIndex == -1:
+							raise
+					except:
+						self.gFace = ""
 
-				return 1
+					FreeCADGui.Selection.clearSelection()
+					
+					self.s1S.setText(str(self.gMode))
+					self.getColor()
+					return 3
+
+				# something other not supported
+				raise
+				
 			except:
-				skip = 1
 
-			try:
-				self.gObj = FreeCADGui.Selection.getSelection()[0]
-				FreeCADGui.Selection.clearSelection()
-
-				self.gMode = "Object"
-				self.s1S.setText(str(self.gObj.Label))
-				self.getColor()
-
-				return 2
-			except:
-				skip = 1
-
-			self.s1S.setText("please select object or face")
-			return -1
+				self.s1S.setText("please select objects or faces")
+				return -1
 
 		# ############################################################################
 		def setColorO1B1(self):
@@ -427,8 +551,6 @@ def showQtGUI():
 
 		# ############################################################################
 		def setSheet(self):
-
-			global gObj
 
 			skip = 0
 			sheet = ""
