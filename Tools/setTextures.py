@@ -2,193 +2,255 @@
 
 # FreeCAD macro for woodworking to apply and store textures
 # Author: Darek L (aka dprojects)
-# Version: 6.4
+# Version: 7.0
 # Latest version: https://github.com/dprojects/setTextures
 
 import FreeCAD, FreeCADGui
 from PySide import QtGui, QtCore
 from pivy import coin
-import urllib.request
-import tempfile
-import os
 
 
 # ###################################################################################################################
 # Qt GUI
 # ###################################################################################################################
 
+
 def showQtMain():
 
 	class QtMainClass(QtGui.QDialog):
 
+		# ############################################################################
+		# globals
+		# ############################################################################
+
+		gFit = ""
+		gBrokenURL = dict()
+
+		# ############################################################################
+		# init
+		# ############################################################################
+			
 		def __init__(self):
 			super(QtMainClass, self).__init__()
 			self.initUI()
 
 		def initUI(self):
 			
+			# ############################################################################
+			# set screen
+			# ############################################################################
+			
+			# tool screen size
+			toolSW = 300
+			toolSH = 450
+			
+			# active screen size - FreeCAD main window
+			gSW = FreeCADGui.getMainWindow().width()
+			gSH = FreeCADGui.getMainWindow().height()
+
+			# tool screen position
+			gPW = int( gSW - toolSW )
+			gPH = int( gSH - toolSH )
+
+			# ############################################################################
 			# main window
-			self.setGeometry(400, 250, 800, 450)
+			# ############################################################################
+			
+			self.result = userCancelled
+			self.setGeometry(gPW, gPH, toolSW, toolSH)
 			self.setWindowTitle("setTextures")
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
-			# info
-			info = ""
-			info += "If you want to load all stored textures, please go to Step 4 "
-			info += "and click \"load - all objects\" button."
-			self.step0 = QtGui.QLabel(info, self)
-			self.step0.move(10, 10)
-
-			# ############################################################
-			# step 1
-			# ############################################################
-
-			# label
-			info = ""
-			info += "Step 1. Add texture URL path:"
-			self.step1 = QtGui.QLabel(info, self)
-			self.step1.move(10, 40)
-
-			# text input
-			self.pathI = QtGui.QLineEdit(self)
-			self.pathI.setText(str(""))
-			self.pathI.setFixedWidth(750)
-			self.pathI.move(10, 60)
-
-			# ############################################################
-			# step 2
-			# ############################################################
-
-			# label
-			info = ""
-			info += "Step 2. Set texture properties:"
-			self.step2 = QtGui.QLabel(info, self)
-			self.step2.move(10, 100)
-
-			# text input
-			self.factorX = QtGui.QLineEdit(self)
-			self.factorX.setText(str("1.0"))
-			self.factorX.setFixedWidth(50)
-			self.factorX.move(10, 120)
-
-			# label
-			info = ""
-			info += " - repeat X direction fator, leave it 1.0, if you do not want to repeat texture"
-			self.step2a = QtGui.QLabel(info, self)
-			self.step2a.move(70, 123)
-
-			# text input
-			self.factorY = QtGui.QLineEdit(self)
-			self.factorY.setText(str("1.0"))
-			self.factorY.setFixedWidth(50)
-			self.factorY.move(10, 150)
-
-			# label
-			info = ""
-			info += " - repeat Y direction fator, leave it 1.0, if you do not want to repeat texture"
-			self.step2b = QtGui.QLabel(info, self)
-			self.step2b.move(70, 153)
-
-			# text input
-			self.factorRotation = QtGui.QLineEdit(self)
-			self.factorRotation.setText(str("0.0"))
-			self.factorRotation.setFixedWidth(50)
-			self.factorRotation.move(10, 180)
-
-			# label
-			info = ""
-			info += " - rotation texture factor, leave it 0.0, if you do not want to rotate texture"
-			self.step2c = QtGui.QLabel(info, self)
-			self.step2c.move(70, 183)
-
-			# ############################################################
-			# step 3
-			# ############################################################
-
-			# label
-			info = ""
-			info += "Step 3. Store texture properties, if no URL this property will be set to empty string:"
-			self.step3 = QtGui.QLabel(info, self)
-			self.step3.move(10, 230)
+			# ############################################################################
+			# options - init button
+			# ############################################################################
 
 			# button
-			self.step3a = QtGui.QPushButton("store - selected objects only", self)
-			self.step3a.clicked.connect(lambda: self.checkSelected("store", "selected"))
-			self.step3a.move(100, 250)
-			self.step3a.resize(200, 40)
+			self.initBA = QtGui.QPushButton("show stored textures for all objects", self)
+			self.initBA.clicked.connect(self.loadAll)
+			self.initBA.resize(280, 40)
+			self.initBA.move(10, 10)
 
-			# button
-			self.step3b = QtGui.QPushButton("store - all objects", self)
-			self.step3b.clicked.connect(lambda: self.checkSelected("store", "all"))
-			self.step3b.move(400, 250)
-			self.step3b.resize(200, 40)
-
-			# ############################################################
-			# step 4
-			# ############################################################
+			# ############################################################################
+			# options - store textures
+			# ############################################################################
 
 			# label
 			info = ""
-			info += "Step 4. Download and apply textures from stored URLs:"
-			self.step4 = QtGui.QLabel(info, self)
-			self.step4.move(10, 300)
+			info += "Set new textures or change:"
+			self.storeL = QtGui.QLabel(info, self)
+			self.storeL.move(10, 100)
+
+			# URL
+			# ############################################################################
+
+			# label
+			info = ""
+			info += "Texture URL path:"
+			self.urlL = QtGui.QLabel(info, self)
+			self.urlL.move(10, 130)
+
+			# text input
+			self.urlO = QtGui.QLineEdit(self)
+			self.urlO.setText(str(""))
+			self.urlO.setFixedWidth(280)
+			self.urlO.move(10, 150)
+
+			# repeat
+			# ############################################################################
+
+			# text input
+			self.repeatXO = QtGui.QLineEdit(self)
+			self.repeatXO.setText(str("1.0"))
+			self.repeatXO.setFixedWidth(50)
+			self.repeatXO.move(10, 180)
+
+			# label
+			info = ""
+			info += "- repeat X, set 1 to not repeat"
+			self.repeatXL = QtGui.QLabel(info, self)
+			self.repeatXL.move(70, 183)
+
+			# text input
+			self.repeatYO = QtGui.QLineEdit(self)
+			self.repeatYO.setText(str("1.0"))
+			self.repeatYO.setFixedWidth(50)
+			self.repeatYO.move(10, 200)
+
+			# label
+			info = ""
+			info += "- repeat Y, set 1 to not repeat"
+			self.repeatYL = QtGui.QLabel(info, self)
+			self.repeatYL.move(70, 203)
+
+			# rotation
+			# ############################################################################
+
+			# text input
+			self.rotateO = QtGui.QLineEdit(self)
+			self.rotateO.setText(str("0.0"))
+			self.rotateO.setFixedWidth(50)
+			self.rotateO.move(10, 220)
+
+			# label
+			info = ""
+			info += "- rotation, set 0 to not rotate"
+			self.rotateL = QtGui.QLabel(info, self)
+			self.rotateL.move(70, 223)
+
+			# fit mode
+			# ############################################################################
+
+			# options
+			self.fitList = (
+				"biggest surface",
+				"fit to Cube",
+				"fit to Cylinder",
+				"fit to Sphere",
+				"auto fit",
+				"glass mirror effect"
+			)
+			self.gFit = "biggest surface"
+			
+			self.fitO = QtGui.QComboBox(self)
+			self.fitO.addItems(self.fitList)
+			self.fitO.setCurrentIndex(self.fitList.index(self.gFit))
+			self.fitO.activated[str].connect(self.setCoordinate)
+			self.fitO.setFixedWidth(150)
+			self.fitO.move(10, 250)
+			
+			# label
+			self.fitL = QtGui.QLabel("- fit mode", self)
+			self.fitL.move(170, 253)
+			
+			# store & load buttons
+			# ############################################################################
+
+			# label
+			info = ""
+			info += "Store texture properties for:"
+			self.storeL = QtGui.QLabel(info, self)
+			self.storeL.move(10, 280)
 
 			# button
-			self.step4a = QtGui.QPushButton("load - selected objects only", self)
-			self.step4a.clicked.connect(lambda: self.checkSelected("load", "selected"))
-			self.step4a.move(100, 320)
-			self.step4a.resize(200, 40)
+			self.storeBS = QtGui.QPushButton("selected objects only", self)
+			self.storeBS.clicked.connect(self.storeSelected)
+			self.storeBS.resize(150, 40)
+			self.storeBS.move(10, 300)
 
 			# button
-			self.step4b = QtGui.QPushButton("load - all objects", self)
-			self.step4b.clicked.connect(lambda: self.checkSelected("load", "all"))
-			self.step4b.move(400, 320)
-			self.step4b.resize(200, 40)
+			self.storeBA = QtGui.QPushButton("all objects", self)
+			self.storeBA.clicked.connect(self.storeAll)
+			self.storeBA.resize(100, 40)
+			self.storeBA.move(190, 300)
 
-			# ############################################################
+			# label
+			info = ""
+			info += "Refresh texture for:"
+			self.loadL = QtGui.QLabel(info, self)
+			self.loadL.move(10, 350)
+
+			# button
+			self.loadBS = QtGui.QPushButton("selected objects only", self)
+			self.loadBS.clicked.connect(self.loadSelected)
+			self.loadBS.resize(150, 40)
+			self.loadBS.move(10, 370)
+
+			# button
+			self.loadBA = QtGui.QPushButton("all objects", self)
+			self.loadBA.clicked.connect(self.loadAll)
+			self.loadBA.resize(100, 40)
+			self.loadBA.move(190, 370)
+
+			# ############################################################################
 			# status
-			# ############################################################
+			# ############################################################################
 
 			# label
 			space = ""
-			space += "                                                                                        "
-			space += "                                                                                        "
-			space += "                                                                                        "
-			self.Status = QtGui.QLabel(space, self)
-			self.Status.move(10, 420)
+			space += "                                                "
+			space += "                                                "
+			space += "                                                "
+			space += "                                                "
+			space += "                                                "
+			space += "                                                "
+			self.status = QtGui.QLabel(space, self)
+			self.status.move(10, 420)
 
-			# ############################################################
+			# ############################################################################
 			# show all
-			# ############################################################
+			# ############################################################################
 
 			self.show()
 
-		# ############################################################
+		# ############################################################################
 		# actions - status
-		# ############################################################
+		# ############################################################################
 		
 		def showStatus(self, iText):
-			self.Status.setText(str(iText))
+			self.status.setText(str(iText))
 
-		# ############################################################
+		# ############################################################################
 		# actions - store
-		# ############################################################
+		# ############################################################################
 		
-		def setTextureProperty(self, iSearch, iSelect):
+		def storeTextures(self, iSearch, iSelect):
 
 			# set flag
 			skip = 0
 
 			# get texture URL from GUI text form
-			textureURL = self.pathI.text()
+			textureURL = self.urlO.text()
 
 			# scan all given objects and set all properties
 			for obj in iSearch:
 
-				# skip everything except furniture parts if for all
+				# skip everything except supported parts
 				if (
-					iSelect != "selected" and
+					iSelect != "selected" and 
 					not obj.isDerivedFrom("Part::Box") and 
+					not obj.isDerivedFrom("Part::Cylinder") and 
+					not obj.isDerivedFrom("Part::Sphere") and 
 					not obj.isDerivedFrom("PartDesign::Pad")
 				):
 					continue
@@ -197,21 +259,39 @@ def showQtMain():
 				try:
 
 					if not hasattr(obj, "Texture_URL"):
-						obj.addProperty("App::PropertyString", "Texture_URL", "Texture", "Texture URL, need to star with http, cannot be disk file.")
+						info = "Texture URL, need to star with http, cannot be disk file."
+						obj.addProperty("App::PropertyString", "Texture_URL", "Texture", info)
 
 					if not hasattr(obj, "Texture_Repeat_X"):
-						obj.addProperty("App::PropertyFloat", "Texture_Repeat_X", "Texture", "How many times reapeat the texture to X direction. Float 1.0 is default value for no repeat.")
+						info = "How many times reapeat the texture to X direction. Float 1.0 is default value for no repeat."
+						obj.addProperty("App::PropertyFloat", "Texture_Repeat_X", "Texture", info)
 
 					if not hasattr(obj, "Texture_Repeat_Y"):
-						obj.addProperty("App::PropertyFloat", "Texture_Repeat_Y", "Texture", "How many times reapeat the texture to Y direction. Float 1.0 is default value for no repeat.")
+						info = "How many times reapeat the texture to Y direction. Float 1.0 is default value for no repeat."
+						obj.addProperty("App::PropertyFloat", "Texture_Repeat_Y", "Texture", info)
 
 					if not hasattr(obj, "Texture_Rotation"):
-						obj.addProperty("App::PropertyFloat", "Texture_Rotation", "Texture", "Texture rotation. Float 0 is default value for no rotation.")
+						info = "Texture rotation. Float 0 is default value for no rotation."
+						obj.addProperty("App::PropertyFloat", "Texture_Rotation", "Texture", info)
 					
-					obj.Texture_URL = str(textureURL)
-					obj.Texture_Repeat_X = float(self.factorX.text())
-					obj.Texture_Repeat_Y = float(self.factorY.text())
-					obj.Texture_Rotation = float(self.factorRotation.text())
+					if not hasattr(obj, "Texture_Fit"):
+						info = "Texture coordinate to fit object shape better."
+						obj.addProperty("App::PropertyString", "Texture_Fit", "Texture", info)
+
+					if str(textureURL) != "":
+						obj.Texture_URL = str(textureURL)
+						
+					if str(self.repeatXO.text()) != "":
+						obj.Texture_Repeat_X = float(self.repeatXO.text())
+						
+					if str(self.repeatYO.text()) != "":
+						obj.Texture_Repeat_Y = float(self.repeatYO.text())
+						
+					if str(self.rotateO.text()) != "":
+						obj.Texture_Rotation = float(self.rotateO.text())
+					
+					obj.Texture_Fit = str(self.gFit)
+					
 				except:
 					skip = 1
 		
@@ -220,154 +300,247 @@ def showQtMain():
 				self.showStatus("Texture properties has been stored.")
 			else:
 				self.showStatus("Error during setting properties.")
-		
-		# ############################################################
-		# actions - load
-		# ############################################################
-		
-		def loadStoredTextures(self, iSearch):
 
-			# variables
-			empty = ""
-			brokenURL = dict()
 
+		# ############################################################################
+		# actions - load internal functions
+		# ############################################################################
+
+
+		def getChildPosition(self, iRootnode):
+			
+			pos = 0
+			for c in iRootnode.getChildren():
+				if str(c).find("SoSwitch") != -1:
+					return pos
+					break
+
+				pos = pos + 1
+
+			return -1
+			
+			
+		def getTextureURL(self, iObj):
+			
+			# support for texture URL stored at objects Texture_URL property
+			try:
+				textureURL = str(iObj.Texture_URL)
+				if textureURL != "" and textureURL.startswith("http"):
+					return textureURL
+			except:
+				skip = 1
+
+			# support for texture URL stored at objects description
+			try:
+				textureURL = str(iObj.Label2)
+				if textureURL != "" and textureURL.startswith("http"):
+					return textureURL
+			except:
+				skip = 1
+
+			# backward compatibility and support for manually added to Texture property
+			try:
+				textureURL = str(iObj.Texture)
+				if textureURL != "" and textureURL.startswith("http"):
+					return textureURL
+			except:
+				skip = 1
+
+			# support for texture URL stored at Material Card TexturePath
+			try:
+				textureURL = str(iObj.Material.Material["TexturePath"])
+				if textureURL != "" and textureURL.startswith("http"):
+					return textureURL
+			except:
+				skip = 1
+		
+			# no texture URL set
+			return ""
+			
+		
+		def downloadTexture(self, iObj, iURL):
+			
+			import urllib.request
+			import tempfile
+			import os
+			
 			# create temp directory
 			tmpDir = tempfile.gettempdir()
 			tmpDir = os.path.join(tmpDir, "FreeCAD_Textures")
 			if not os.path.exists(tmpDir):
 				os.makedirs(tmpDir)
 
-			# search all objects
+			# get texture filename
+			textureFilename = os.path.basename(iURL)
+			textureFilePath = os.path.join(tmpDir, textureFilename)
+
+			# check if file already exists and skip slow downloading
+			if not os.path.exists(textureFilePath):
+
+				try:
+					# get image from URL
+					data = urllib.request.urlopen(iURL)
+				except:
+					# if broken URL or removed image
+					self.gBrokenURL[str(iObj.Label)] = iURL
+					return ""
+
+				# create temp file with image
+				out = open(str(textureFilePath), "wb")
+				out.write(data.read())
+				out.close()
+
+			return textureFilePath
+
+		
+		def setTexture(self, iObj, iFile):
+		
+			rootnode = iObj.ViewObject.RootNode
+			
+			# set flag
+			setTrans = 0
+
+			# set X repeat factor
+			if hasattr(iObj, "Texture_Repeat_X"):
+				if isinstance(iObj.Texture_Repeat_X, float):
+					repeatX = float(iObj.Texture_Repeat_X)
+					setTrans = setTrans + 1
+
+			# set Y repeat factor
+			if hasattr(iObj, "Texture_Repeat_Y"):
+				if isinstance(iObj.Texture_Repeat_Y, float):
+					repeatY = float(iObj.Texture_Repeat_Y)
+					setTrans = setTrans + 1
+
+			# set rotation factor
+			if hasattr(iObj, "Texture_Rotation"):
+				if isinstance(iObj.Texture_Rotation, float):
+					rotation = float(iObj.Texture_Rotation)
+					setTrans = setTrans + 1
+
+			# update if there is transformation child
+			skip = 0
+			counter = 0
+			
+			for i in rootnode.getChildren():
+				
+				if hasattr(i, "filename"):
+
+					# replace texure URL
+					i.filename = ""
+					i.filename = iFile
+					skip = 1
+
+				if hasattr(i, "scaleFactor") and hasattr(i, "rotation"):
+					counter = counter + 1
+					if counter == 2:
+						if setTrans == 3:
+							i.scaleFactor.setValue(repeatX, repeatY)
+							i.rotation.setValue(rotation)
+
+			# add new if there is no transformation child
+			if skip == 0:
+
+				if setTrans == 3:
+					# set transform
+					trans = coin.SoTexture2Transform()
+					trans.scaleFactor.setValue(repeatX, repeatY)
+					trans.rotation.setValue(rotation)
+					rootnode.insertChild(trans, 1)
+
+				# set texture with URL
+				texture =  coin.SoTexture2()
+				texture.filename = iFile
+				rootnode.insertChild(texture, 2)
+
+
+		def fitTexture(self, iObj):
+		
+			rootnode = iObj.ViewObject.RootNode
+		
+			if hasattr(iObj, "Texture_Fit"):
+				if isinstance(iObj.Texture_Fit, str):
+					cr = str(iObj.Texture_Fit)
+					
+					coordinate = ""
+					
+					if cr == "biggest surface":
+						coordinate = coin.SoTextureCoordinateDefault()
+					
+					if cr == "fit to Cube":
+						coordinate = coin.SoTextureCoordinateCube()
+
+					if cr == "fit to Cylinder":
+						coordinate = coin.SoTextureCoordinateCylinder()
+					
+					if cr == "fit to Sphere":
+						coordinate = coin.SoTextureCoordinateSphere()
+					
+					if cr == "glass mirror effect":
+						coordinate = coin.SoTextureCoordinateEnvironment()
+					
+					if cr == "auto fit":
+						
+						coordinate = coin.SoTextureCoordinateDefault()
+						
+						if iObj.isDerivedFrom("Part::Box"):
+							coordinate = coin.SoTextureCoordinateCube()
+			
+						if iObj.isDerivedFrom("Part::Cylinder"):
+							coordinate = coin.SoTextureCoordinateCylinder()
+						
+						if iObj.isDerivedFrom("Part::Sphere"):
+							coordinate = coin.SoTextureCoordinateSphere()
+
+					# add fit texture
+					pos = self.getChildPosition(rootnode)
+					rootnode.insertChild(coordinate, pos)
+					
+
+		# ############################################################################
+		# actions - load
+		# ############################################################################
+
+
+		def loadTextures(self, iSearch):
+
+			self.gBrokenURL = dict()
+			empty = ""
+			
+			# search all objects and set URL
 			for obj in iSearch:
 				
-				textureURL = ""
+				textureURL = self.getTextureURL(obj)
 
-				# support for texture URL stored at objects Texture_URL property
-				try:
-					ref = str(obj.Texture_URL)
-					if ref != "" and ref.startswith("http"):
-						textureURL = ref
-				except:
-					skip = 1
-	
-				# support for texture URL stored at objects description	
-				try:
-					ref = str(obj.Label2)
-					if ref != "" and ref.startswith("http"):
-						textureURL = ref
-				except:
-					skip = 1
-	
-				# backward compatibility and support for manually added to Texture property
-				try:
-					ref = str(obj.Texture)
-					if ref != "" and ref.startswith("http"):
-						textureURL = ref
-				except:
-					skip = 1
-	
-				# support for texture URL stored at Material Card TexturePath
-				try:
-					ref = str(obj.Material.Material["TexturePath"])
-					if ref != "" and ref.startswith("http"):
-						textureURL = ref
-				except:
-					skip = 1
-		
 				# if no texture found for object skip it
 				if str(textureURL) == "":
 					continue
-		
-				# mark found
-				empty = textureURL
-
-				# get texture filename
-				textureFilename = os.path.basename(textureURL)
-				textureFilePath = os.path.join(tmpDir, textureFilename)
-
-				# check if file already exists and skip slow downloading
-				if not os.path.exists(textureFilePath):
-
-					try:
-						# get image from URL
-						data = urllib.request.urlopen(textureURL)
-					except:
-						# if broken URL or removed image
-						brokenURL[str(obj.Label)] = textureURL
-						continue
-
-					# create temp file with image
-					out = open(str(textureFilePath), "wb")
-					out.write(data.read())
-					out.close()
-		
-				# set search reference
-				rootnode = obj.ViewObject.RootNode
-
-				# set flag
-				setTrans = 0
-
-				# set X repeat factor
-				if hasattr(obj, "Texture_Repeat_X"):
-					if isinstance(obj.Texture_Repeat_X, float):
-						repeatX = float(obj.Texture_Repeat_X)
-						setTrans = setTrans + 1
-
-				# set Y repeat factor
-				if hasattr(obj, "Texture_Repeat_Y"):
-					if isinstance(obj.Texture_Repeat_Y, float):
-						repeatY = float(obj.Texture_Repeat_Y)
-						setTrans = setTrans + 1
-
-				# set rotation factor
-				if hasattr(obj, "Texture_Rotation"):
-					if isinstance(obj.Texture_Rotation, float):
-						rotation = float(obj.Texture_Rotation)
-						setTrans = setTrans + 1
-
-				# check if already texure is applied
-				skip = 0
-				counter = 0
-				for i in rootnode.getChildren():
-					if hasattr(i, "filename"):
-
-						# replace texure URL
-						i.filename = ""
-						i.filename = textureFilePath
-						skip = 1
-
-					if hasattr(i, "scaleFactor") and hasattr(i, "rotation"):
-						counter = counter + 1
-						if counter == 2:
-							if setTrans == 3:
-								i.scaleFactor.setValue(repeatX, repeatY)
-								i.rotation.setValue(rotation)
-		
-				# set texture as new if not applied
-				if skip == 0:
-
-					# set texture transformation
-					trans = coin.SoTexture2Transform()
-					if setTrans == 3:
-						trans.scaleFactor.setValue(repeatX, repeatY)
-						trans.rotation.setValue(rotation)
-
-					rootnode.insertChild(trans, 1)
-
-					# set texture with URL
-					texture =  coin.SoTexture2()
-					texture.filename = textureFilePath
-					rootnode.insertChild(texture, 2)
-
-			if empty == "":
-				iText = "No textures URLs found. " 
-				self.showStatus(iText)
-			else:
-				if len(brokenURL) == 0:
-					self.showStatus("All textures has been loaded from stored URLs.")
 				else:
+					empty = "no"
+
+				filename = self.downloadTexture(obj, textureURL)
+				if str(filename) == "":
+					continue
+
+				self.setTexture(obj, filename)
+				self.fitTexture(obj)
+
+			# set status
+			if empty == "":
+				
+				iText = "No textures URLs found." 
+				self.showStatus(iText)
+			
+			else:
+			
+				if len(self.gBrokenURL) == 0:
+					
+					self.showStatus("All textures has been loaded.")
+				
+				else:
+					
 					FreeCAD.Console.PrintMessage("\n ====================== \n")
-					for n, b in brokenURL.items():
+					for n, b in self.gBrokenURL.items():
 						FreeCAD.Console.PrintMessage("\n")
 						FreeCAD.Console.PrintMessage("Object Label: "+n)
 						FreeCAD.Console.PrintMessage("\n")
@@ -376,14 +549,15 @@ def showQtMain():
 					FreeCAD.Console.PrintMessage("\n ====================== \n")
 
 					info = ""
-					info += "Some textures has been removed or URL is broken. "
-					info += "See Report view (Console) for more info."
+					info += "See console for broken URLs. "
 					self.showStatus(info)
 
-		# ############################################################
+
+		# ############################################################################
 		# actions - caller selection
-		# ############################################################
-		
+		# ############################################################################
+
+
 		def checkSelected(self, iOperation, iSelection):
 
 			# check selected
@@ -391,7 +565,7 @@ def showQtMain():
 			selectedLen = len(selected)
 
 			if iSelection == "selected" and selectedLen == 0:
-				iText = "No objects selected. Please select objects and try again."
+				iText = "Please select objects and try again."
 				self.showStatus(iText)
 			else:
 
@@ -402,13 +576,46 @@ def showQtMain():
 					searchObjects = FreeCAD.activeDocument().Objects
 
 				if iOperation == "store":
-					self.setTextureProperty(searchObjects, iSelection)
+					self.storeTextures(searchObjects, iSelection)
+				
 				if iOperation == "load":
-					self.loadStoredTextures(searchObjects)
+					if iSelection == "selected":
+						FreeCADGui.Selection.clearSelection()
+					
+					self.loadTextures(searchObjects)
+
+
+		# ############################################################################
+		# actions - select
+		# ############################################################################
+
+
+		def storeSelected(self):
+			self.checkSelected("store", "selected")
+
+		def storeAll(self):
+			self.checkSelected("store", "all")
+
+		def loadSelected(self):
+			self.checkSelected("load", "selected")
+
+		def loadAll(self):
+			self.checkSelected("load", "all")
+
+
+		# ############################################################################
+		# actions - Coordinate
+		# ############################################################################
+
+
+		def setCoordinate(self, selectedText):
+			self.gFit = str(selectedText)
+
 
 	# ############################################################################
 	# final settings, if needed
 	# ############################################################################
+
 
 	userCancelled = "Cancelled"
 	userOK = "OK"
@@ -422,8 +629,13 @@ def showQtMain():
 	if form.result == userOK:
 		pass
 
+
 # ###################################################################################################################
 # Main
 # ###################################################################################################################
 
+
 showQtMain()
+
+
+# ###################################################################################################################
