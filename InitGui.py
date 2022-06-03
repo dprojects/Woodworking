@@ -16,28 +16,25 @@ class WoodworkingWorkbench (Workbench):
 
 		import loadToolbar
 		import loadMenu
+
+		self.appendToolbar("Woodworking - Magic Panels - default", loadToolbar.getItems("Magic Panels - default"))
+		self.appendToolbar("Woodworking - Magic Panels - copy", loadToolbar.getItems("Magic Panels - copy"))
+		self.appendToolbar("Woodworking - Magic Panels - move", loadToolbar.getItems("Magic Panels - move"))
+		self.appendToolbar("Woodworking - Magic Panels - resize", loadToolbar.getItems("Magic Panels - resize"))
+		self.appendToolbar("Woodworking - Magic Panels - special", loadToolbar.getItems("Magic Panels - special"))
+		self.appendToolbar("Woodworking - Magic Panels - face", loadToolbar.getItems("Magic Panels - face"))
+		self.appendToolbar("Woodworking - Magic Panels - between", loadToolbar.getItems("Magic Panels - between"))
+		self.appendToolbar("Woodworking - Magic Panels - replace", loadToolbar.getItems("Magic Panels - replace"))
 		
-		self.appendToolbar("Project manage", loadToolbar.getItems("Project manage"))
-		self.appendToolbar("Code and Debug", loadToolbar.getItems("Code and Debug"))
-		self.appendToolbar("Dimensions", loadToolbar.getItems("Dimensions"))
-		self.appendToolbar("Preview", loadToolbar.getItems("Preview"))
-		
-		
-		
-		self.appendToolbar("Magic Panels - default", loadToolbar.getItems("Magic Panels - default"))
-		self.appendToolbar("Magic Panels - copy", loadToolbar.getItems("Magic Panels - copy"))
-		self.appendToolbar("Magic Panels - special", loadToolbar.getItems("Magic Panels - special"))
-		self.appendToolbar("Furniture Parts", loadToolbar.getItems("Furniture Parts"))
-		
-		self.appendToolbar("Magic Panels - move", loadToolbar.getItems("Magic Panels - move"))
-		self.appendToolbar("Magic Panels - resize", loadToolbar.getItems("Magic Panels - resize"))
-		self.appendToolbar("Magic Panels - face", loadToolbar.getItems("Magic Panels - face"))
-		self.appendToolbar("Magic Panels - between", loadToolbar.getItems("Magic Panels - between"))
-		self.appendToolbar("Magic Panels - replace", loadToolbar.getItems("Magic Panels - replace"))
-		self.appendToolbar("Parameterization", loadToolbar.getItems("Parameterization"))
-		self.appendToolbar("Transformations", loadToolbar.getItems("Transformations"))
-		self.appendToolbar("Decorations", loadToolbar.getItems("Decorations"))
-		
+		self.appendToolbar("Woodworking - Project manage", loadToolbar.getItems("Project manage"))
+		self.appendToolbar("Woodworking - Code and Debug", loadToolbar.getItems("Code and Debug"))
+		self.appendToolbar("Woodworking - Dimensions", loadToolbar.getItems("Dimensions"))
+		self.appendToolbar("Woodworking - Preview", loadToolbar.getItems("Preview"))
+				
+		self.appendToolbar("Woodworking - Furniture Parts", loadToolbar.getItems("Furniture Parts"))
+		self.appendToolbar("Woodworking - Parameterization", loadToolbar.getItems("Parameterization"))
+		self.appendToolbar("Woodworking - Transformations", loadToolbar.getItems("Transformations"))
+		self.appendToolbar("Woodworking - Decorations", loadToolbar.getItems("Decorations"))
 
 		self.appendMenu("Woodworking", loadMenu.getItems())
 		

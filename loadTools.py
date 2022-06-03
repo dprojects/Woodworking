@@ -96,7 +96,7 @@ class scanObjects():
 		return {"Pixmap"  : os.path.join(iconPath, "scanObjects.xpm"),
 				"Accel"   : "",
 				"MenuText": "scanObjects",
-				"ToolTip" : "Inspection tool for FreeCAD macro development & project debug."}
+				"ToolTip" : "Inspection tool for FreeCAD macro development & project debug (live API)."}
 
 	def Activated(self):
 
@@ -136,7 +136,7 @@ class setTextures():
 		return {"Pixmap"  : os.path.join(iconPath, "setTextures.xpm"),
 				"Accel"   : "",
 				"MenuText": "setTextures",
-				"ToolTip" : "Store textures URL at object's property and allows to load textures from stored URL."}
+				"ToolTip" : "Store textures information at object's property and allows to load textures from stored URL. Solves problem with texture sharing, no huge project file size."}
 
 	def Activated(self):
 
@@ -216,7 +216,7 @@ class makeTransparent():
 		return {"Pixmap"  : os.path.join(iconPath, "makeTransparent.xpm"),
 				"Accel"   : "",
 				"MenuText": "transparent or normal mode",
-				"ToolTip" : "Make all parts transparent, so you can see all the joints, pilot holes, screws, countersinks. If you click senond one all parts will back to normal. The transparent default is 83, so do not set any part to this number if you want e.g. to keep glass part of the furniture transparent after this preview."}
+				"ToolTip" : "Make all parts transparent, so you can see all the joints, pilot holes, screws, countersinks. If you click next one all parts will back to normal. The transparent default is 83, so do not set any part to this number if you want e.g. to keep glass part of the furniture transparent after this preview."}
 
 	def Activated(self):
 
@@ -256,7 +256,7 @@ class colorManager():
 		return {"Pixmap"  : os.path.join(iconPath, "colorManager.xpm"),
 				"Accel"   : "",
 				"MenuText": "colorManager",
-				"ToolTip" : "Allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected face or object and see the effect at 3D model in real-time."}
+				"ToolTip" : "Allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected face, object or many faces or objects and see the effect at 3D model in real-time."}
 
 	def Activated(self):
 
@@ -286,6 +286,46 @@ class colorManager():
 		return True
 
 FreeCADGui.addCommand("colorManager", colorManager())
+
+	
+
+# ######################################################################################################################
+class magicManager():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "magicManager.xpm"),
+				"Accel"   : "",
+				"MenuText": "magicManager",
+				"ToolTip" : "If you have problem with unexpected result of Magic Panels, you can use this tool to preview panel before creation. It may take more time to create panel, but you can select exact panel to apply, also the edge and vertex position. This tool allows to create panel at selected face or between two faces."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "magicManager"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("magicManager", magicManager())
 
 	
 

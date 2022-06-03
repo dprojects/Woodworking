@@ -68,7 +68,11 @@ def showQtGUI():
 			# ############################################################################
 			
 			# screen
-			self.s1S = QtGui.QLabel("                                             ", self)
+			info = ""
+			info += "                                             "
+			info += "                                             "
+			info += "                                             "
+			self.s1S = QtGui.QLabel(info, self)
 			self.s1S.move(10, 10)
 
 			# button

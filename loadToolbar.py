@@ -78,6 +78,7 @@ def getItems(iType):
 	if iType == "Magic Panels - special":
 		
 		parts = [
+			"magicManager",
 			"panelSideLeft",
 			"panelSideRight",
 			"panelSideLeftUP",
