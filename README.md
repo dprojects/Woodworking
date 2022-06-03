@@ -2,11 +2,11 @@
 
 This is Woodworking workbench for FreeCAD. 
 
-![MagicPanels](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/MagicPanels.gif)
+![features](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/features.gif)
 
 **Note:**
 
-It has been created because of my woodworking and coding hobby. Everything started from [getDimensions](https://github.com/dprojects/getDimensions/commits/master) project long time ago. I wanted to have [simple cut-list for chipboards order](https://github.com/dprojects/getDimensions/commit/a6f0a2221e90f717be95bd0dc1cc9f1ede95a329) and I found FreeCAD with low-level hardware requirements and ability to implement this cut-list. Now it has been transformed into whole Woodworking workbench.
+It has been created because of my woodworking and coding hobby. Everything started from [getDimensions](https://github.com/dprojects/getDimensions/commits/master) project long time ago. I wanted to have [simple cut-list for chipboards order](https://github.com/dprojects/getDimensions/commit/a6f0a2221e90f717be95bd0dc1cc9f1ede95a329) and I found FreeCAD with low hardware requirements and posibility to implement the cut-list. Now it has been transformed into whole Woodworking workbench.
 
 Currently the Woodworking workbench is one-man project, mostly private but I share it with others. There is no huge coorporation behind it, so this workbench may not be so advanced like well-paid projects, there is no 24/7 support plans to buy. 
 
