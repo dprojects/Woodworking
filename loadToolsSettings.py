@@ -26,8 +26,10 @@ Tools = [
 	
 	"colorManager", "", "colorManager", "colorManager", "Allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected face, object or many faces or objects and see the effect at 3D model in real-time.",
 	
-	"magicManager", "MagicPanels", "magicManager", "magicManager", "If you have problem with unexpected result of Magic Panels, you can use this tool to preview panel before creation. It may take more time to create panel, but you can select exact panel to apply, also the edge and vertex position. This tool allows to create panel at selected face or between two faces.",
+	"fitModel", "", "fitModel", "fitModel", "Fit 3D model to the screen and set base orientation (XY, 0 key).",
 	
+	"magicManager", "MagicPanels", "magicManager", "magicManager", "If you have problem with unexpected result of Magic Panels, you can use this tool to preview panel before creation. It may take more time to create panel, but you can select exact panel to apply, also the edge and vertex position. This tool allows to create panel at selected face or between two faces.",
+
 	# #################################################################################################################################
 	# Magic Panels - default
 	# #################################################################################################################################
@@ -96,17 +98,17 @@ Tools = [
 	# Magic Panels - move
 	# #################################################################################################################################
 	
-	"panelMoveXp", "MagicPanels", "panelMoveXp", "panel, move, X+", "Allow to move panel in the described direction. The move step is the selected panel thickness.",
+	"panelMoveXp", "MagicPanels", "panelMoveXp", "panel, move, back", "Allow to move back selected panel. The move step is the selected panel thickness.",
 
-	"panelMoveXm", "MagicPanels", "panelMoveXm", "panel, move, X-", "Allow to move panel in the described direction. The move step is the selected panel thickness.",
+	"panelMoveXm", "MagicPanels", "panelMoveXm", "panel, move, forward", "Allow to move forward selected panel. The move step is the selected panel thickness.",
 	
-	"panelMoveYp", "MagicPanels", "panelMoveYp", "panel, move, Y+", "Allow to move panel in the described direction. The move step is the selected panel thickness.",
+	"panelMoveYp", "MagicPanels", "panelMoveYp", "panel, move, right", "Allow to move right selected panel. The move step is the selected panel thickness.",
 
-	"panelMoveYm", "MagicPanels", "panelMoveYm", "panel, move, Y-", "Allow to move panel in the described direction. The move step is the selected panel thickness.",
+	"panelMoveYm", "MagicPanels", "panelMoveYm", "panel, move, left", "Allow to move left selected panel. The move step is the selected panel thickness.",
 	
-	"panelMoveZp", "MagicPanels", "panelMoveZp", "panel, move, Z+", "Allow to move panel in the described direction. The move step is the selected panel thickness.",
+	"panelMoveZp", "MagicPanels", "panelMoveZp", "panel, move, up", "Allow to move up selected panel. The move step is the selected panel thickness.",
 
-	"panelMoveZm", "MagicPanels", "panelMoveZm", "panel, move, Z-", "Allow to move panel in the described direction. The move step is the selected panel thickness.",
+	"panelMoveZm", "MagicPanels", "panelMoveZm", "panel, move, down", "Allow to move down selected panel. The move step is the selected panel thickness.",
 
 	# #################################################################################################################################
 	# Magic Panels - resize

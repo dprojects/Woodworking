@@ -41,7 +41,8 @@ def getItems(iType):
 			"panelMoveYp",
 			"panelMoveYm",
 			"panelMoveZp",
-			"panelMoveZm"
+			"panelMoveZm",
+			"fitModel"
 		]
 
 	if iType == "Magic Panels - resize":
@@ -155,7 +156,6 @@ def getItems(iType):
 	if iType == "Preview":
 		
 		parts = [
-			"Std_ViewFitAll",
 			"Std_TextureMapping",
 			"setTextures",
 			"colorManager",

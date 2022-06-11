@@ -290,6 +290,46 @@ FreeCADGui.addCommand("colorManager", colorManager())
 	
 
 # ######################################################################################################################
+class fitModel():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "fitModel.xpm"),
+				"Accel"   : "",
+				"MenuText": "fitModel",
+				"ToolTip" : "Fit 3D model to the screen and set base orientation (XY, 0 key)."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "fitModel"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("fitModel", fitModel())
+
+	
+
+# ######################################################################################################################
 class magicManager():
 
 	def GetResources(self):
@@ -1295,8 +1335,8 @@ class panelMoveXp():
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelMoveXp.xpm"),
 				"Accel"   : "",
-				"MenuText": "panel, move, X+",
-				"ToolTip" : "Allow to move panel in the described direction. The move step is the selected panel thickness."}
+				"MenuText": "panel, move, back",
+				"ToolTip" : "Allow to move back selected panel. The move step is the selected panel thickness."}
 
 	def Activated(self):
 
@@ -1335,8 +1375,8 @@ class panelMoveXm():
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelMoveXm.xpm"),
 				"Accel"   : "",
-				"MenuText": "panel, move, X-",
-				"ToolTip" : "Allow to move panel in the described direction. The move step is the selected panel thickness."}
+				"MenuText": "panel, move, forward",
+				"ToolTip" : "Allow to move forward selected panel. The move step is the selected panel thickness."}
 
 	def Activated(self):
 
@@ -1375,8 +1415,8 @@ class panelMoveYp():
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelMoveYp.xpm"),
 				"Accel"   : "",
-				"MenuText": "panel, move, Y+",
-				"ToolTip" : "Allow to move panel in the described direction. The move step is the selected panel thickness."}
+				"MenuText": "panel, move, right",
+				"ToolTip" : "Allow to move right selected panel. The move step is the selected panel thickness."}
 
 	def Activated(self):
 
@@ -1415,8 +1455,8 @@ class panelMoveYm():
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelMoveYm.xpm"),
 				"Accel"   : "",
-				"MenuText": "panel, move, Y-",
-				"ToolTip" : "Allow to move panel in the described direction. The move step is the selected panel thickness."}
+				"MenuText": "panel, move, left",
+				"ToolTip" : "Allow to move left selected panel. The move step is the selected panel thickness."}
 
 	def Activated(self):
 
@@ -1455,8 +1495,8 @@ class panelMoveZp():
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelMoveZp.xpm"),
 				"Accel"   : "",
-				"MenuText": "panel, move, Z+",
-				"ToolTip" : "Allow to move panel in the described direction. The move step is the selected panel thickness."}
+				"MenuText": "panel, move, up",
+				"ToolTip" : "Allow to move up selected panel. The move step is the selected panel thickness."}
 
 	def Activated(self):
 
@@ -1495,8 +1535,8 @@ class panelMoveZm():
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelMoveZm.xpm"),
 				"Accel"   : "",
-				"MenuText": "panel, move, Z-",
-				"ToolTip" : "Allow to move panel in the described direction. The move step is the selected panel thickness."}
+				"MenuText": "panel, move, down",
+				"ToolTip" : "Allow to move down selected panel. The move step is the selected panel thickness."}
 
 	def Activated(self):
 

@@ -11,8 +11,220 @@ from PySide import QtCore
 
 
 # ###################################################################################################################
-# For this library purposes
+# Functions - for this library purposes
 # ###################################################################################################################
+
+# ###################################################################################################################
+def getModelRotation(iX, iY, iZ):
+	'''
+	Transform given iX, iY, iZ values to the correct vector, if the user rotated 3D model.
+	
+	getModelRotation()
+	
+	Args:
+	
+		iX: X value to transform
+		iY: Y value to transform
+		iY: Z value to transform
+	
+	Usage:
+	
+		[x, y, z ] = getModelRotation(x, y, z)
+		
+	Result:
+	
+		[ X, Y, Z ] - transformed vector of given values
+
+	'''
+
+	[ x, y, z ] = FreeCADGui.ActiveDocument.ActiveView.getViewDirection()
+	[ px, py, pz ] = FreeCADGui.ActiveDocument.ActiveView.viewPosition().Rotation.getYawPitchRoll()
+	
+	# init 0 key
+	X = iX
+	Y = iY
+	Z = iZ
+
+	# X axis invert
+	if x > 0:
+		X = -iX
+	
+	# Y axis invert
+	if y < 0:
+		Y = -iY
+		
+	# Z axis invert
+	if z > 0:
+		Z = -iZ
+
+	# did I say rotation? ;-) they see me rolling ;-)
+
+	# ##################################################
+	# Z up, X rotation
+	# ##################################################
+
+	# Z up, X rotate 0
+	# is base state
+
+	# Z up, X rotate 1
+	if x < 0 and y < 0 and z < 0 and py < 0 and pz > 0:
+		X = -iY
+		Y = iX
+		Z = iZ
+		
+	# Z up, X rotate 2
+	if x > 0 and y < 0 and z < 0 and py < 0 and pz > 0:
+		X = -iX
+		Y = -iY
+		Z = iZ
+
+	# Z up, X rotate 3
+	if x > 0 and y > 0 and z < 0 and py < 0 and pz > 0:
+		X = iY
+		Y = -iX
+		Z = iZ
+
+	# ##################################################
+	# Z down, X rotation
+	# ##################################################
+
+	# Z down, X rotate 0
+	if x < 0 and y < 0 and z > 0 and py > 0 and pz < 0:
+		X = iX
+		Y = -iY
+		Z = -iZ
+
+	# Z down, X rotate 1
+	if x < 0 and y > 0 and z > 0 and py > 0 and pz < 0:
+		X = -iY
+		Y = -iX
+		Z = -iZ
+
+	# Z down, X rotate 2
+	if x > 0 and y > 0 and z > 0 and py > 0 and pz < 0:
+		X = -iX
+		Y = iY
+		Z = -iZ
+
+	# Z down, X rotate 3
+	if x > 0 and y < 0 and z > 0 and py > 0 and pz < 0:
+		X = iY
+		Y = iX
+		Z = -iZ
+
+	# ##################################################
+	# X up, Y rotation
+	# ##################################################
+
+	# X up, Y rotate 0
+	if x < 0 and y > 0 and z > 0 and py > 0 and pz > 0:
+		X = iZ
+		Y = iY
+		Z = -iX
+	
+	# X up, Y rotate 1
+	if x < 0 and y < 0 and z > 0 and py < 0 and pz > 0:
+		X = iZ
+		Y = iX
+		Z = iY
+		
+	# X up, Y rotate 2
+	if x < 0 and y < 0 and z < 0 and py < 0 and pz < 0:
+		X = iZ
+		Y = -iY
+		Z = iX
+
+	# X up, Y rotate 3
+	if x < 0 and y > 0 and z < 0 and py > 0 and pz < 0:
+		X = iZ
+		Y = -iX
+		Z = -iY
+
+	# ##################################################
+	# X down, Y rotation
+	# ##################################################
+
+	# X down, Y rotate 0
+	if x > 0 and y > 0 and z < 0 and py < 0 and pz < 0:
+		X = -iZ
+		Y = iY
+		Z = iX
+	
+	# X down, Y rotate 1
+	if x > 0 and y < 0 and z < 0 and py > 0 and pz < 0:
+		X = -iZ
+		Y = iX
+		Z = -iY
+	
+	# X down, Y rotate 2
+	if x > 0 and y < 0 and z > 0 and py > 0 and pz > 0:
+		X = -iZ
+		Y = -iY
+		Z = -iX
+	
+	# X down, Y rotate 3
+	if x > 0 and y > 0 and z > 0 and py < 0 and pz > 0:
+		X = -iZ
+		Y = -iX
+		Z = iY
+
+	# ##################################################
+	# Y up, X rotation
+	# ##################################################
+
+	# Y up, X rotate 0
+	if x < 0 and y < 0 and z < 0 and py > 0 and pz < 0:
+		X = iX
+		Y = iZ
+		Z = -iY
+	
+	# Y up, X rotate 1
+	if x < 0 and y < 0 and z > 0 and py > 0 and pz > 0:
+		X = -iY
+		Y = iZ
+		Z = -iX
+
+	# Y up, X rotate 2
+	if x > 0 and y < 0 and z > 0 and py < 0 and pz > 0:
+		X = -iX
+		Y = iZ
+		Z = iY
+	
+	# Y up, X rotate 3
+	if x > 0 and y < 0 and z < 0 and py < 0 and pz < 0:
+		X = iY
+		Y = iZ
+		Z = iX
+	
+	# ##################################################
+	# Y down, X rotation
+	# ##################################################
+
+	# Y down, X rotate 0
+	if x < 0 and y > 0 and z > 0 and py < 0 and pz > 0:
+		X = iX
+		Y = -iZ
+		Z = iY
+
+	# Y down, X rotate 1
+	if x < 0 and y > 0 and z < 0 and py < 0 and pz < 0:
+		X = -iY
+		Y = -iZ
+		Z = iX
+	
+	# Y down, X rotate 2
+	if x > 0 and y > 0 and z < 0 and py > 0 and pz < 0:
+		X = -iX
+		Y = -iZ
+		Z = -iY
+	
+	# Y down, X rotate 3
+	if x > 0 and y > 0 and z > 0 and py > 0 and pz > 0:
+		X = iY
+		Y = -iZ
+		Z = -iX
+	
+	return [ X, Y, Z ]
 
 
 # ###################################################################################################################
@@ -234,7 +446,6 @@ def sizesToCubePanel(iObj, iType):
 		Returns [ Length, Width, Height ] for YZ object placement".
 	'''
 
-
 	if iObj.isDerivedFrom("Part::Box"):
 
 		sizes = [ iObj.Length.Value, iObj.Width.Value, iObj.Height.Value ]
@@ -284,7 +495,6 @@ def sizesToCubePanel(iObj, iType):
 		Length = sizes[0]
 		Width = sizes[1]
 		Height = sizes[2]
-
 
 	return [ Length, Width, Height ]
 
@@ -414,7 +624,7 @@ def showInfo(iCaller, iInfo):
 
 
 # ###################################################################################################################
-# For external usage
+# Functions - for external usage
 # ###################################################################################################################
 
 
@@ -439,7 +649,6 @@ def panelDefault(iType):
 
 		Created panel 600 x 300 x 18 with correct direction XY.
 	'''
-
 
 	try:
 
@@ -509,7 +718,6 @@ def panelCopy(iType):
 		Created panel with correct direction XY.
 	'''
 
-
 	try:
 
 		gObj = FreeCADGui.Selection.getSelection()[0]
@@ -555,7 +763,9 @@ def panelMove(iType):
 		
 	Result:
 	
-		Panel will be moved into X+ direction.
+		Panel will be moved into X+ direction for 0 key view position. 
+		If user rotated 3D model this should adjust to the model position.
+		
 	'''
 
 	try:
@@ -589,6 +799,7 @@ def panelMove(iType):
 			z = - sizes[0]
 
 		[ x, y, z ] = convertPosition(gObj, x, y, z)
+		[ x, y, z ] = getModelRotation(x, y, z)
 
 		if gObj.isDerivedFrom("Part::Box"):
 			ref = gObj.Placement
@@ -656,7 +867,6 @@ def panelResize(iType):
 		sizes = []
 		sizes = getSizes(gObj)
 		sizes.sort()
-		
 		thick = sizes[0]
 
 		if gObj.isDerivedFrom("Part::Box"):
@@ -676,15 +886,18 @@ def panelResize(iType):
 
 			if iType == "2":
 				if gObj.Length.Value == sizes[2]:
-					gObj.Length = gObj.Length.Value - thick
+					if gObj.Length.Value - thick > 0:
+						gObj.Length = gObj.Length.Value - thick
 					return
 					
 				if gObj.Width.Value == sizes[2]:
-					gObj.Width = gObj.Width.Value - thick
+					if gObj.Width.Value - thick > 0:
+						gObj.Width = gObj.Width.Value - thick
 					return
 					
 				if gObj.Height.Value == sizes[2]:
-					gObj.Height = gObj.Height.Value - thick
+					if gObj.Height.Value - thick > 0:
+						gObj.Height = gObj.Height.Value - thick
 					return
 
 			if iType == "3":
@@ -702,15 +915,18 @@ def panelResize(iType):
 
 			if iType == "4":
 				if gObj.Length.Value == sizes[1]:
-					gObj.Length = gObj.Length.Value - thick
+					if gObj.Length.Value - thick > 0:
+						gObj.Length = gObj.Length.Value - thick
 					return
 					
 				if gObj.Width.Value == sizes[1]:
-					gObj.Width = gObj.Width.Value - thick
+					if gObj.Width.Value - thick > 0:
+						gObj.Width = gObj.Width.Value - thick
 					return
 					
 				if gObj.Height.Value == sizes[1]:
-					gObj.Height = gObj.Height.Value - thick
+					if gObj.Height.Value - thick > 0:
+						gObj.Height = gObj.Height.Value - thick
 					return
 
 		else:
@@ -723,27 +939,31 @@ def panelResize(iType):
 					gObj.Profile[0].setDatum(9, FreeCAD.Units.Quantity(sizes[2] + thick))
 				else:
 					gObj.Profile[0].setDatum(10, FreeCAD.Units.Quantity(sizes[2] + thick))
-			
-			if iType == "2":
+		
+			if sizes[2] - thick > 0:
+
+				if iType == "2":
 				
-				if direction == "XY" or direction == "XZ" or direction == "YZ":
-					gObj.Profile[0].setDatum(9, FreeCAD.Units.Quantity(sizes[2] - thick))
-				else:
-					gObj.Profile[0].setDatum(10, FreeCAD.Units.Quantity(sizes[2] - thick))
-			
+					if direction == "XY" or direction == "XZ" or direction == "YZ":
+						gObj.Profile[0].setDatum(9, FreeCAD.Units.Quantity(sizes[2] - thick))
+					else:
+						gObj.Profile[0].setDatum(10, FreeCAD.Units.Quantity(sizes[2] - thick))
+
 			if iType == "3":
 				
 				if direction == "XY" or direction == "XZ" or direction == "YZ":
 					gObj.Profile[0].setDatum(10, FreeCAD.Units.Quantity(sizes[1] + thick))
 				else:
 					gObj.Profile[0].setDatum(9, FreeCAD.Units.Quantity(sizes[1] + thick))
+
+			if sizes[1] - thick > 0:
 				
-			if iType == "4":
+				if iType == "4":
 				
-				if direction == "XY" or direction == "XZ" or direction == "YZ":
-					gObj.Profile[0].setDatum(10, FreeCAD.Units.Quantity(sizes[1] - thick))
-				else:
-					gObj.Profile[0].setDatum(9, FreeCAD.Units.Quantity(sizes[1] - thick))
+					if direction == "XY" or direction == "XZ" or direction == "YZ":
+						gObj.Profile[0].setDatum(10, FreeCAD.Units.Quantity(sizes[1] - thick))
+					else:
+						gObj.Profile[0].setDatum(9, FreeCAD.Units.Quantity(sizes[1] - thick))
 
 		FreeCAD.activeDocument().recompute()
 
@@ -782,7 +1002,6 @@ def panelFace(iType):
 	
 		Created panel at selected face with correct placement.
 	'''
-
 
 	try:
 
@@ -1058,7 +1277,6 @@ def panelCover(iType):
 		Created panel on top of 3 selected faces with correct placement.
 	'''
 
-
 	try:
 
 		gObj = FreeCADGui.Selection.getSelection()[0]
@@ -1125,7 +1343,6 @@ def panelReplacePad():
 		Selected Cube panel will be replaced with Pad.
 	'''
 
-
 	try:
 
 		gObj = FreeCADGui.Selection.getSelection()[0]
@@ -1167,3 +1384,5 @@ def panelReplacePad():
 	
 		showInfo("rpanelPad", info)
 
+
+# ###################################################################################################################
