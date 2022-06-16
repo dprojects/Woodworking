@@ -2,8 +2,8 @@
 <package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
   <name>Woodworking</name>
   <description>FreeCAD workbench for woodworking purposes.</description>
-  <version>2.0</version>
-  <date>2022-06-09</date>
+  <version>0.20.0</version>
+  <date>2022-06-16</date>
   <author>Darek L (https://github.com/dprojects)</author>
   <maintainer email="you@null.com">If you fork and copy to FreeCAD repository, add your name here and keep author tag without change.</maintainer>
   <license file="LICENSE">MIT</license>

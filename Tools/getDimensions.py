@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 # FreeCAD macro for woodworking
-# Author: Darek L (aka dprojects)
-# Version: 2022.04.22
+# Author: Darek L (github.com/dprojects)
+# Tested FreeCAD version: 0.20.0
 # Latest version: https://github.com/dprojects/getDimensions
 
 import FreeCAD, FreeCADGui, Draft, Spreadsheet
@@ -58,6 +58,27 @@ sLTFDsc = {
 	"d" : "detailed, edgeband, drill holes, countersinks",
 	"c" : "constraints names, totally custom report",
 	"p" : "pads, show list of all constraints"
+}
+
+# Additional report - decoration
+sARD = "decoration"
+sARDsc = {
+	"decoration" : "",
+	"no decoration" : ""
+}
+
+# Additional report - mounting
+sARM = "mounting"
+sARMsc = {
+	"mounting" : "",
+	"no mounting" : ""
+}
+
+# Additional report - profiles
+sARP = "profiles"
+sARPsc = {
+	"profiles" : "",
+	"no profiles" : ""
 }
 
 # Units for area:
@@ -145,6 +166,12 @@ gLang12 = ""
 gLang13 = ""
 gLang14 = ""
 gLang15 = ""
+gLang16 = ""
+gLang17 = ""
+gLang18 = ""
+gLang19 = ""
+gLang20 = ""
+gLang21 = ""
 
 # spreadsheet result
 gSheet = gAD
@@ -186,19 +213,19 @@ dbEFN = dict() # array names
 dbEFD = dict() # array dimensions
 dbEFV = dict() # array veneers
 
-# init database for constraints named
+# init database for constraints
 dbCNO = [] # objects
-dbCNL = dict() # length
 dbCNQ = dict() # quantity
 dbCNN = dict() # names
 dbCNV = dict() # values
+dbCNL = dict() # length
 dbCNH = dict() # header
 dbCNOH = dict() # objects for hole
 
-# init database for pad decoration
-dbPDQ = dict() # quantity
-dbPDN = dict() # names
-dbPDV = dict() # values
+# init database for additional reports
+dbARQ = dict() # quantity
+dbARN = dict() # names
+dbARV = dict() # values
 
 
 # ###################################################################################################################
@@ -223,9 +250,28 @@ def showQtGUI():
 
 		def initUI(self):
 
-			# window
+# ############################################################################
+			# set screen
+			# ############################################################################
+			
+			# tool screen size
+			toolSW = 600
+			toolSH = 550
+			
+			# active screen size - FreeCAD main window
+			gSW = FreeCADGui.getMainWindow().width()
+			gSH = FreeCADGui.getMainWindow().height()
+
+			# tool screen position
+			gPW = int( ( gSW - toolSW ) / 2 )
+			gPH = int( ( gSH - toolSH ) / 2 )
+
+			# ############################################################################
+			# main window
+			# ############################################################################
+			
 			self.result = userCancelled
-			self.setGeometry(400, 100, 600, 600)
+			self.setGeometry(gPW, gPH, toolSW, toolSH)
 			self.setWindowTitle("getDimensions - default settings")
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
@@ -235,8 +281,69 @@ def showQtGUI():
 			vLineOffset = 60
 
 			# ############################################################################
+			# report customization (Label Type Feature)
+			# ############################################################################
+
+			# label
+			self.rcL = QtGui.QLabel("Report type:", self)
+			self.rcL.move(10, vLine + 3)
+			
+			# options
+			self.rcList = tuple(sLTFDsc.keys())
+			self.rcO = QtGui.QComboBox(self)
+			self.rcO.addItems(self.rcList)
+			self.rcO.setCurrentIndex(self.rcList.index(str(sLTF)))
+			self.rcO.activated[str].connect(self.setRC)
+			self.rcO.move(10, vLine + vLineNextRow)
+
+			# info screen
+			self.rcIS = QtGui.QLabel(str(sLTFDsc[sLTF]) + sEmptyDsc, self)
+			self.rcIS.move(70, vLine + vLineNextRow + 3)
+
+			# ############################################################################
+			# additional reports
+			# ############################################################################
+
+			# set line separator
+			vLine = vLine + vLineOffset
+
+			# label
+			self.ardL = QtGui.QLabel("Additional reports:", self)
+			self.ardL.move(10, vLine + 3)
+			
+			# decoration
+			self.ardList = tuple(sARDsc.keys())
+			self.ardO = QtGui.QComboBox(self)
+			self.ardO.addItems(self.ardList)
+			self.ardO.setCurrentIndex(self.ardList.index(str(sARD)))
+			self.ardO.activated[str].connect(self.setARD)
+			self.ardO.setFixedWidth(110)
+			self.ardO.move(10, vLine + vLineNextRow)
+			
+			# mounting
+			self.armList = tuple(sARMsc.keys())
+			self.armO = QtGui.QComboBox(self)
+			self.armO.addItems(self.armList)
+			self.armO.setCurrentIndex(self.armList.index(str(sARM)))
+			self.armO.activated[str].connect(self.setARM)
+			self.armO.setFixedWidth(110)
+			self.armO.move(130, vLine + vLineNextRow)
+			
+			# profiles
+			self.arpList = tuple(sARPsc.keys())
+			self.arpO = QtGui.QComboBox(self)
+			self.arpO.addItems(self.arpList)
+			self.arpO.setCurrentIndex(self.arpList.index(str(sARP)))
+			self.arpO.activated[str].connect(self.setARP)
+			self.arpO.setFixedWidth(110)
+			self.arpO.move(250, vLine + vLineNextRow)
+
+			# ############################################################################
 			# languages
 			# ############################################################################
+
+			# set line separator
+			vLine = vLine + vLineOffset
 
 			# label
 			self.LangL = QtGui.QLabel("Report language:", self)
@@ -324,38 +431,12 @@ def showQtGUI():
 			self.ufdIS.move(70, vLine + vLineNextRow + 3)
 
 			# ############################################################################
-			# report customization (Label Type Feature)
-			# ############################################################################
-
-			# set line separator
-			vLine = vLine + vLineOffset
-
-			# label
-			self.rcL = QtGui.QLabel("Report type:", self)
-			self.rcL.move(10, vLine + 3)
-			
-			# options
-			self.rcList = tuple(sLTFDsc.keys())
-			self.rcO = QtGui.QComboBox(self)
-			self.rcO.addItems(self.rcList)
-			self.rcO.setCurrentIndex(self.rcList.index(str(sLTF)))
-			self.rcO.activated[str].connect(self.setRC)
-			self.rcO.move(10, vLine + vLineNextRow)
-
-			# info screen
-			self.rcIS = QtGui.QLabel(str(sLTFDsc[sLTF]) + sEmptyDsc, self)
-			self.rcIS.move(70, vLine + vLineNextRow + 3)
-
-			# ############################################################################
 			# units for area
 			# ############################################################################
 
-			# set line separator
-			vLine = vLine + vLineOffset
-
 			# label
 			self.ufaL = QtGui.QLabel("Units for area:", self)
-			self.ufaL.move(10, vLine + 3)
+			self.ufaL.move(170, vLine + 3)
 			
 			# options
 			self.ufaList = tuple(sUnitsAreaDsc.keys())
@@ -363,22 +444,19 @@ def showQtGUI():
 			self.ufaO.addItems(self.ufaList)
 			self.ufaO.setCurrentIndex(self.ufaList.index(str(sUnitsArea)))
 			self.ufaO.activated[str].connect(self.setUFA)
-			self.ufaO.move(10, vLine + vLineNextRow)
+			self.ufaO.move(170, vLine + vLineNextRow)
 
 			# info screen
 			self.ufaIS = QtGui.QLabel(str(sUnitsAreaDsc[sUnitsArea]) + sEmptyDsc, self)
-			self.ufaIS.move(70, vLine + vLineNextRow + 3)
+			self.ufaIS.move(230, vLine + vLineNextRow + 3)
 
 			# ############################################################################
 			# units for edge size
 			# ############################################################################
 
-			# set line separator
-			vLine = vLine + vLineOffset
-
 			# label
 			self.ufsL = QtGui.QLabel("Units for edge size:", self)
-			self.ufsL.move(10, vLine + 3)
+			self.ufsL.move(410, vLine + 3)
 			
 			# options
 			self.ufsList = tuple(sUnitsEdgeDsc.keys())
@@ -386,11 +464,11 @@ def showQtGUI():
 			self.ufsO.addItems(self.ufsList)
 			self.ufsO.setCurrentIndex(self.ufsList.index(str(sUnitsEdge)))
 			self.ufsO.activated[str].connect(self.setUFS)
-			self.ufsO.move(10, vLine + vLineNextRow)
+			self.ufsO.move(410, vLine + vLineNextRow)
 
 			# info screen
 			self.ufsIS = QtGui.QLabel(str(sUnitsEdgeDsc[sUnitsEdge]) + sEmptyDsc, self)
-			self.ufsIS.move(70, vLine + vLineNextRow + 3)
+			self.ufsIS.move(470, vLine + vLineNextRow + 3)
 
 			# ############################################################################
 			# furniture color
@@ -463,15 +541,17 @@ def showQtGUI():
 			# ############################################################################
 
 			# button - cancel
-			cancelButton = QtGui.QPushButton('Cancel', self)
-			cancelButton.clicked.connect(self.onCancel)
-			cancelButton.setAutoDefault(True)
-			cancelButton.move(120, 550)
+			self.cancelButton = QtGui.QPushButton('Cancel', self)
+			self.cancelButton.clicked.connect(self.onCancel)
+			self.cancelButton.setAutoDefault(True)
+			self.cancelButton.resize(200, 40)
+			self.cancelButton.move(50, toolSH-50)
 			
 			# button - ok
-			okButton = QtGui.QPushButton('OK', self)
-			okButton.clicked.connect(self.onOk)
-			okButton.move(400, 550)
+			self.okButton = QtGui.QPushButton('OK', self)
+			self.okButton.clicked.connect(self.onOk)
+			self.okButton.resize(200, 40)
+			self.okButton.move(toolSW-250, toolSH-50)
 
 			# ############################################################################
 			# show
@@ -558,6 +638,18 @@ def showQtGUI():
 				self.ecO.hide()
 				self.ectiL.hide()
 				self.ecti.hide()
+
+		def setARD(self, selectedText):
+			global sARD
+			sARD = selectedText
+
+		def setARM(self, selectedText):
+			global sARM
+			sARM = selectedText
+
+		def setARP(self, selectedText):
+			global sARP
+			sARP = selectedText
 
 		def setUFA(self, selectedText):
 			global sUnitsArea
@@ -653,44 +745,89 @@ def showError(iCaller, iObj, iPlace, iError):
 # ###################################################################################################################
 def getUnit(iValue, iType, iCaller="getUnit"):
 
-	iValue = float(iValue)
-
 	# for dimensions
 	if iType == "d":
-		
+	
+		gFakeCube.Length = float(iValue)
+		v = gFakeCube.Length.getValueAs(gUnitC).Value
+
 		if sUnitsMetric == "mm":
-			return "'" + str( int(round(iValue, 0)) ) + " " + sUnitsMetric
+			return str( int(round(v, 0)) )
 		
 		if sUnitsMetric == "m":
-			return "'" + str( round(iValue * float(0.001), 3) ) + " " + sUnitsMetric
+			return str( round(v * float(0.001), 3) )
 		
 		if sUnitsMetric == "in":
-			return "'" + str( round(iValue * float(0.0393700787), 3) ) + " " + sUnitsMetric
+			return str( round(v * float(0.0393700787), 3) )
 	
 	# for edge
 	if iType == "edge":
 		
+		gFakeCube.Length = float(iValue)
+		v = gFakeCube.Length.getValueAs(gUnitC).Value
+
 		if sUnitsEdge == "mm":
-			return "'" + str( int(round(iValue, 0)) ) + " " + sUnitsEdge
+			return str( int(round(v, 0)) )
 		
 		if sUnitsEdge == "m":
-			return "'" + str( round(iValue * float(0.001), 3) ) + " " + sUnitsEdge
+			return str( round(v * float(0.001), 3) )
 		
 		if sUnitsEdge == "in":
-			return "'" + str( round(iValue * float(0.0393700787), 3) ) + " " + sUnitsEdge
+			return str( round(v * float(0.0393700787), 3) )
 	
 	# for area
 	if iType == "area":
 		
+		gFakeCube.Length = float(iValue)
+		v = gFakeCube.Length.getValueAs(gUnitC).Value
+		
 		if sUnitsArea == "mm":
-			return "'" + str( int(round(iValue, 0)) )
+			return str( int(round(v, 0)) )
 		
 		if sUnitsArea == "m":
-			return "'" + str( round(iValue * float(0.000001), 6) )
+			return str( round(v * float(0.000001), 6) )
 		
 		if sUnitsArea == "in":
-			return "'" + str( round(iValue * float(0.0015500031), 6) )
+			return str( round(v * float(0.0015500031), 6) )
+	
+	# for to-angle conversion
+	if iType == "to-angle":
 		
+		gFakeCube.Placement.Rotation.Angle = float(iValue)
+		return str( int( gFakeCube.Placement.Rotation.getYawPitchRoll()[0] ) )
+	
+	return -1
+
+
+# ###################################################################################################################
+def toSheet(iValue, iType, iCaller="toSheet"):
+
+	# prevent FreeCAD to change "18 mm" string into "18.0 mm"
+	
+	# for dimensions
+	if iType == "d":
+		return  "=<<" + getUnit(iValue, iType, iCaller) + " " + sUnitsMetric + ">>"
+
+	# for edge
+	if iType == "edge":
+		return  "=<<" + getUnit(iValue, iType, iCaller) + " " + sUnitsEdge + ">>"
+
+	# for area
+	if iType == "area":
+		return  getUnit(iValue, iType, iCaller)
+
+	# for raw angle
+	if iType == "to-angle":
+		return  getUnit(iValue, iType, iCaller)
+	
+	# for raw angle
+	if iType == "raw-angle":
+		return str( int(round(float(iValue), 0)) )
+		
+	# for string
+	if iType == "string":
+		return str(iValue)
+
 	return -1
 
 
@@ -834,7 +971,7 @@ def getEdgeBand(iObj, iW, iH, iL, iCaller="getEdgeBand"):
 		vFacesColors = iObj.ViewObject.DiffuseColor
 
 		# edgeband for given object
-		vEdgeSum = 0	
+		vEdgeSum = 0
 
 		# there can be more faces than 6 (Array Cube)
 		vFaceN = []
@@ -852,13 +989,9 @@ def getEdgeBand(iObj, iW, iH, iL, iCaller="getEdgeBand"):
 
 			# if the edge face color is different than default furniture color 
 			# it means this edge is covered by user
-			if str(c)  != str(sFColor):
-	
-				# assign value to the Fake Cube dimensions
-				gFakeCube.Length = iObj.Shape.Faces[i].Length
-			
-				# get value as the correct dimensions
-				vFaceEdge = gFakeCube.Length.getValueAs(gUnitC).Value
+			if str(c) != str(sFColor):
+				
+				vFaceEdge = iObj.Shape.Faces[i].Length
 	
 				# get the thickness dimension
 				vT = getKey(iObj, iW, iH, iL, "thick", iCaller)
@@ -866,19 +999,22 @@ def getEdgeBand(iObj, iW, iH, iL, iCaller="getEdgeBand"):
 				# if you know the thickness you can 
 				# calculate the edge for the face
 				vEdge = ( vFaceEdge - (2 * vT)) / 2
-	
+
 				# sort thickness
 				a = [ iW, iH, iL ]
 				a.sort()
 
 				# check if this is correct edge
 				if int(vEdge) == int(a[1]) or int(vEdge) == int(a[2]):
+					
 					vFaceN[i] = gLang12
-					vFaceD[i] = getUnit(vEdge, "d", iCaller)
+					vFaceD[i] = vEdge
 					vFaceV[i] = str(sEColor)
+				
 				else:
+				
 					vFaceN[i] = gLang13
-					vFaceD[i] = gLang14 # colomn width is too small
+					vFaceD[i] = -1
 					vFaceV[i] = str(sEColor)
 					vEdge = 0
 
@@ -886,7 +1022,7 @@ def getEdgeBand(iObj, iW, iH, iL, iCaller="getEdgeBand"):
 				vEdgeSum = vEdgeSum + vEdge
 
 			# next face index
-			i = i +1
+			i = i + 1
 
 	except:
 
@@ -983,9 +1119,12 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 			vEdge = getEdge(iObj, iW, iH, iL, iCaller)
 			dbE["total"] = dbE["total"] + vEdge
 
-			# set edge db for edgeband edge size & faces
-			vEdge , dbEFN[vKey], dbEFD[vKey], dbEFV[vKey] = getEdgeBand(iObj, iW, iH, iL, iCaller)
-			dbE["edgeband"] = dbE["edgeband"] + vEdge
+			# if color faces, not whole object color
+			if len(iObj.ViewObject.DiffuseColor) != 1:
+				
+				# set edge db for edgeband edge size & faces
+				vEdge , dbEFN[vKey], dbEFD[vKey], dbEFV[vKey] = getEdgeBand(iObj, iW, iH, iL, iCaller)
+				dbE["edgeband"] = dbE["edgeband"] + vEdge
 
 			# set edge db for empty edge size
 			dbE["empty"] = dbE["total"] - dbE["edgeband"]
@@ -1079,7 +1218,7 @@ def setDBAllConstraints(iObj, iL, iN, iV, iCaller="setDBAllConstraints"):
 			
 		# init quantity
 		dbCNQ[vKey] = 1
-		
+
 		# set names and values
 		dbCNN[vKey] = str(":".join(map(str, iN)))
 		dbCNV[vKey] = str(":".join(map(str, iV)))
@@ -1098,36 +1237,46 @@ def setDBAllConstraints(iObj, iL, iN, iV, iCaller="setDBAllConstraints"):
 
 
 # ###################################################################################################################
-def setDBPadDecoration(iObj, iType, iN, iV, iCaller="setDBPadDecoration"):
+def setDBAdditional(iObj, iType, iN, iV, iCaller="setDBAdditional"):
 
 	try:
 
 		# set key
 		vV = str(":".join(map(str, iV)))
-		vKey = iType + ", "
-		vKey += iObj.Base[0].Label + ", " + ', '.join(map(str, iObj.Base[1]))
-		vKey += ":" + vV
-	
+		
+		if (
+			iType == "Fillet" or
+			iType == "Chamfer"
+			):
+		
+			vKey = iType + ", "
+			vKey += iObj.Base[0].Label + ", " + ', '.join(map(str, iObj.Base[1]))
+			vKey += ":" + vV
+		
+		else:
+			vKey = iType
+			vKey += ":" + vV
+		
 		# set quantity
-		if vKey in dbPDQ:
+		if vKey in dbARQ:
 	
 			# increase quantity only
-			dbPDQ[vKey] = dbPDQ[vKey] + 1
+			dbARQ[vKey] = dbARQ[vKey] + 1
 	
 			# show only one object at report
 			return 0
 			
 		# init quantity
-		dbPDQ[vKey] = 1
+		dbARQ[vKey] = 1
 		
 		# set names and values
-		dbPDN[vKey] = str(":".join(map(str, iN)))
-		dbPDV[vKey] = vV
+		dbARN[vKey] = str(":".join(map(str, iN)))
+		dbARV[vKey] = vV
 
 	except:
 
 		# set db error
-		showError(iCaller, iObj, "setDBPadDecoration", "set db error")
+		showError(iCaller, iObj, "setDBAdditional", "set db error")
 		return -1
 
 	return 0
@@ -1144,9 +1293,9 @@ def setCube(iObj, iCaller="setCube"):
 	try:
 
 		# get correct dimensions as values
-		vW = iObj.Width.getValueAs(gUnitC).Value
-		vH = iObj.Height.getValueAs(gUnitC).Value
-		vL = iObj.Length.getValueAs(gUnitC).Value
+		vW = iObj.Width.Value
+		vH = iObj.Height.Value
+		vL = iObj.Length.Value
 
 		# set db for quantity & area & edge size
 		setDB(iObj, vW, vH, vL, iCaller)
@@ -1165,16 +1314,11 @@ def setPad(iObj, iCaller="setPad"):
 
 	try:
 		
-		# assign values to the Fake Cube dimensions
-		gFakeCube.Width = iObj.Profile[0].Shape.OrderedEdges[0].Length
-		gFakeCube.Height = iObj.Profile[0].Shape.OrderedEdges[1].Length
-		gFakeCube.Length = iObj.Length.Value
+		# get values
+		vW = iObj.Profile[0].Shape.OrderedEdges[0].Length
+		vH = iObj.Profile[0].Shape.OrderedEdges[1].Length
+		vL = iObj.Length.Value
 		
-		# get values as the correct dimensions
-		vW = gFakeCube.Width.getValueAs(gUnitC).Value
-		vH = gFakeCube.Height.getValueAs(gUnitC).Value
-		vL = gFakeCube.Length.getValueAs(gUnitC).Value
-
 		# set db for quantity & area & edge size
 		setDB(iObj, vW, vH, vL, iCaller)
 
@@ -1209,12 +1353,14 @@ def setConstraints(iObj, iCaller="setConstraints"):
 
 				# set Constraint Name
 				vNames += str(c.Name) + ":"
-	
-				# assign values to the Fake Cube dimensions
-				gFakeCube.Width = c.Value
+
+				if str(c.Type) == "Angle":
+					v = "to-angle;" + str(c.Value)
+				else:
+					v = "d;" + str(c.Value)
 				
 				# get values as the correct dimensions
-				vValues += str(gFakeCube.Width.getValueAs(gUnitC).Value) + ":"
+				vValues += v + ":"
 	
 				# non empty names, so object can be set
 				isSet = 1
@@ -1223,19 +1369,13 @@ def setConstraints(iObj, iCaller="setConstraints"):
 	
 			# support for Pad furniture part
 			if iObj.isDerivedFrom("PartDesign::Pad"):
-
-				# convert float to the correct dimension
-				gFakeCube.Length = iObj.Length.Value
-				vLength = str(gFakeCube.Length.getValueAs(gUnitC).Value)
+				vLength = "d;" + str(iObj.Length.Value)
 
 			# support for pilot hole and countersink
 			if iObj.isDerivedFrom("PartDesign::Hole"):
 
 				if iObj.DepthType == "Dimension":
-
-					# convert float to the correct dimension
-					gFakeCube.Length = iObj.Depth.Value
-					vLength = str(gFakeCube.Length.getValueAs(gUnitC).Value)
+					vLength = "d;" + str(iObj.Depth.Value)
 				else:
 					# no length header
 					vLength = ""
@@ -1285,11 +1425,12 @@ def setAllConstraints(iObj, iCaller="setAllConstraints"):
 		
 			if c.Value != 0:
 
-				# assign values to the Fake Cube dimensions
-				gFakeCube.Width = c.Value
+				if str(c.Type) == "Angle":
+					v = "to-angle;" + str(c.Value)
+				else:
+					v = "d;" + str(c.Value)
 				
-				# get values as the correct dimensions
-				vArrValues.append(gFakeCube.Width.getValueAs(gUnitC).Value)
+				vArrValues.append(v)
 
 				# set Constraint Name
 				if c.Name != "":
@@ -1298,13 +1439,14 @@ def setAllConstraints(iObj, iCaller="setAllConstraints"):
 					c.Name = getConstraintName(iObj, c.Name, iCaller)
 
 				else:
-					c.Name = ""
+					
+					# avoid FreeCAD crash bug at empty string
+					c.Name = "-"
 
 				vArrNames.append(str(c.Name))
 			
 		# convert float to the correct dimension
-		gFakeCube.Length = iObj.Length.Value
-		vLength = str(gFakeCube.Length.getValueAs(gUnitC).Value)
+		vLength = "d;" + str(iObj.Length.Value)
 
 		# set db for Constraints
 		setDBAllConstraints(iObj, vLength, vArrNames, vArrValues, iCaller)
@@ -1319,7 +1461,7 @@ def setAllConstraints(iObj, iCaller="setAllConstraints"):
 
 
 # ###################################################################################################################
-def setPadDecoration(iObj, iCaller="setPadDecoration"):
+def setDecoration(iObj, iCaller="setDecoration"):
 
 	try:
 
@@ -1333,64 +1475,214 @@ def setPadDecoration(iObj, iCaller="setPadDecoration"):
 			vType = "Fillet"
 
 			vArrNames.append("Radius")
-			gFakeCube.Width = iObj.Radius
-			v = gFakeCube.Width.getValueAs(gUnitC).Value
-			vArrValues.append(getUnit(v, "d", iCaller))
+			v = "d;" + str(iObj.Radius.Value)
+			vArrValues.append(v)
 
 		if iObj.isDerivedFrom("PartDesign::Chamfer"):
 
 			vType = "Chamfer"
 
 			vArrNames.append("ChamferType")
-			vArrValues.append(str(iObj.ChamferType))
+			v = "string;" + str(iObj.ChamferType)
+			vArrValues.append(v)
 
 			vArrNames.append("FlipDirection")
-			vArrValues.append(str(iObj.FlipDirection))
-
+			v = "string;" + str(iObj.FlipDirection)
+			vArrValues.append(v)
+			
 			vArrNames.append("Refine")
-			vArrValues.append(str(iObj.Refine))
-
+			v = "string;" + str(iObj.Refine)
+			vArrValues.append(v)
+			
 			vArrNames.append("Size 1")
-			gFakeCube.Width = iObj.Size
-			v = gFakeCube.Width.getValueAs(gUnitC).Value
-			vArrValues.append(getUnit(v, "d", iCaller))
+			v = "d;" + str(iObj.Size.Value)
+			vArrValues.append(v)
 
 			vArrNames.append("Size 2")
-			gFakeCube.Width = iObj.Size2
-			v = gFakeCube.Width.getValueAs(gUnitC).Value
-			vArrValues.append(getUnit(v, "d", iCaller))
+			v = "d;" + str(iObj.Size2.Value)
+			vArrValues.append(v)
 
-		if iObj.isDerivedFrom("PartDesign::Thickness"):
+		if iObj.isDerivedFrom("Part::Sphere"):
 
-			vType = "Thickness"
+			vType = "Sphere"
 
-			vArrNames.append("Intersection")
-			vArrValues.append(str(iObj.Intersection))
+			vArrNames.append("Radius")
+			v = "d;" + str(iObj.Radius.Value)
+			vArrValues.append(v)
 
-			vArrNames.append("Join")
-			vArrValues.append(str(iObj.Join))
+		if iObj.isDerivedFrom("Part::Cone"):
 
-			vArrNames.append("Mode")
-			vArrValues.append(str(iObj.Mode))
+			vType = "Cone"
 
-			vArrNames.append("Refine")
-			vArrValues.append(str(iObj.Refine))
+			vArrNames.append("Radius1")
+			v = "d;" + str(iObj.Radius1.Value)
+			vArrValues.append(v)
 
-			vArrNames.append("Reversed")
-			vArrValues.append(str(iObj.Reversed))
+			vArrNames.append("Radius2")
+			v = "d;" + str(iObj.Radius2.Value)
+			vArrValues.append(v)
+			
+			vArrNames.append("Height")
+			v = "d;" + str(iObj.Height.Value)
+			vArrValues.append(v)
 
-			vArrNames.append("Value")
-			gFakeCube.Width = iObj.Value
-			v = gFakeCube.Width.getValueAs(gUnitC).Value
-			vArrValues.append(getUnit(v, "d", iCaller))
 
-		# set db for decoration
-		setDBPadDecoration(iObj, vType, vArrNames, vArrValues, iCaller)
+		if iObj.isDerivedFrom("Part::Torus"):
+
+			vType = "Torus"
+
+			vArrNames.append("Radius1")
+			v = "d;" + str(iObj.Radius1.Value)
+			vArrValues.append(v)
+
+			vArrNames.append("Radius2")
+			v = "d;" + str(iObj.Radius2.Value)
+			vArrValues.append(v)
+			
+			vArrNames.append("Angle1")
+			v = "raw-angle;" + str(iObj.Angle1.Value)
+			vArrValues.append(v)
+
+			vArrNames.append("Angle2")
+			v = "raw-angle;" + str(iObj.Angle2.Value)
+			vArrValues.append(v)
+			
+			vArrNames.append("Angle3")
+			v = "raw-angle;" + str(iObj.Angle3.Value)
+			vArrValues.append(v)
+
+		# set db for additional report
+		if vType != "":
+			setDBAdditional(iObj, vType, vArrNames, vArrValues, iCaller)
 
 	except:
 		
 		# if there is wrong structure
-		showError(iCaller, iObj, "setPadDecoration", "wrong structure")
+		showError(iCaller, iObj, "setDecoration", "wrong structure")
+		return -1
+
+	return 0
+
+
+# ###################################################################################################################
+def setMounting(iObj, iCaller="setMounting"):
+
+	#try:
+
+	# init variables
+	vArrNames = []
+	vArrValues = []
+	vType = ""
+
+	if iObj.isDerivedFrom("Part::Cylinder"):
+
+		vType = gLang19 + " " + str(int(2 * iObj.Radius))
+
+		vArrNames.append(gLang20)
+		v = "d;" + str(2 * iObj.Radius.Value)
+		vArrValues.append(v)
+
+		vArrNames.append(gLang21)
+		v = "d;" + str(iObj.Height.Value)
+		vArrValues.append(v)
+
+	# set db for additional report
+	if vType != "":
+		setDBAdditional(iObj, vType, vArrNames, vArrValues, iCaller)
+		
+	'''
+	except:
+		
+		# if there is wrong structure
+		showError(iCaller, iObj, "setMounting", "wrong structure")
+		return -1
+	'''
+	return 0
+
+
+# ###################################################################################################################
+def setProfiles(iObj, iCaller="setProfiles"):
+
+	try:
+
+		# init variables
+		vArrNames = []
+		vArrValues = []
+		vType = ""
+
+		if iObj.isDerivedFrom("PartDesign::Thickness"):
+
+			vType = gLang16
+
+			# thickness
+			vArrNames.append(gLang17)
+			
+			v = "d;" + str(iObj.Value.Value)
+			vArrValues.append(v)
+			
+			# sizes
+			vArrNames.append(gLang18)
+			
+			v1 = getUnit(iObj.Base[0].Profile[0].Constraints[10].Value, "d", iCaller)
+			v2 = getUnit(iObj.Base[0].Length.Value, "d", iCaller)
+			v3 = getUnit(iObj.Base[0].Profile[0].Constraints[9].Value, "d", iCaller)
+			
+			v = ""
+			v += v1 + " " + sUnitsMetric
+			v += " x "
+			v += v2 + " " + sUnitsMetric
+			v += " x "
+			v += v3 + " " + sUnitsMetric
+			
+			v = "string;" + v
+			
+			vArrValues.append(v)
+
+		if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Name.startswith("Structure"):
+
+			vType = gLang16
+
+			# thickness
+			vArrNames.append(gLang17)
+
+			v1 = getUnit(iObj.Base.t1.Value, "d", iCaller)
+			v2 = getUnit(iObj.Base.t2.Value, "d", iCaller)
+			
+			v = ""
+			v += v1 + " " + sUnitsMetric
+			v += " x "
+			v += v2 + " " + sUnitsMetric
+			
+			v = "string;" + v
+			
+			vArrValues.append(v)
+			
+			# sizes
+			vArrNames.append(gLang18)
+			
+			v1 = getUnit(iObj.Base.W.Value, "d", iCaller)
+			v2 = getUnit(iObj.Base.H.Value, "d", iCaller)
+			v3 = getUnit(iObj.ComputedLength.Value, "d", iCaller)
+			
+			v = ""
+			v += v1 + " " + sUnitsMetric
+			v += " x "
+			v += v2 + " " + sUnitsMetric
+			v += " x "
+			v += v3 + " " + sUnitsMetric
+			
+			v = "string;" + v
+			
+			vArrValues.append(v)
+
+		# set db for additional report
+		if vType != "":
+			setDBAdditional(iObj, vType, vArrNames, vArrValues, iCaller)
+
+	except:
+		
+		# if there is wrong structure
+		showError(iCaller, iObj, "setProfiles", "wrong structure")
 		return -1
 
 	return 0
@@ -1433,12 +1725,6 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 				iObj.isDerivedFrom("PartDesign::Pocket")
 				):
 				setAllConstraints(iObj, iCaller)
-			if (
-				iObj.isDerivedFrom("PartDesign::Fillet") or
-				iObj.isDerivedFrom("PartDesign::Chamfer") or
-				iObj.isDerivedFrom("PartDesign::Thickness")
-				):				
-				setPadDecoration(iObj, iCaller)
 
 	# constraints or detailed
 	if sLTF == "c" or sLTF == "d":
@@ -1470,9 +1756,21 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 		if iObj.isDerivedFrom("PartDesign::FeatureBase") and iObj.Name.startswith("Clone"):
 			setDraftClone(iObj, iCaller)
 
+	# additional report - decoration
+	if sARD == "decoration":
+		setDecoration(iObj, iCaller)
+
+	# additional report - mounting
+	if sARM == "mounting":
+		setMounting(iObj, iCaller)
+		
+	# additional report - profiles
+	if sARP == "profiles":
+		setProfiles(iObj, iCaller)
+
 	# skip not supported furniture parts with no error
 	# Sheet, Transformations will be handling later
-	return 0	
+	return 0
 
 
 # ###################################################################################################################
@@ -1841,6 +2139,12 @@ def initLang():
 	global gLang13
 	global gLang14
 	global gLang15
+	global gLang16
+	global gLang17
+	global gLang18
+	global gLang19
+	global gLang20
+	global gLang21
 
 	# Polish language
 	if sLang  == "pl":
@@ -1867,6 +2171,12 @@ def initLang():
 		gLang13 = "wierzch"
 		gLang14 = "wymiary"
 		gLang15 = "Głębokość"
+		gLang16 = "Profil konstrukcyjny"
+		gLang17 = "Grubość"
+		gLang18 = "Wymiary"
+		gLang19 = "Kołek"
+		gLang20 = "Średnica"
+		gLang21 = "Długość"
 
 	# English language
 	else:
@@ -1893,7 +2203,12 @@ def initLang():
 		gLang13 = "surface"
 		gLang14 = "dimensions"
 		gLang15 = "Depth"
-
+		gLang16 = "Construction profile"
+		gLang17 = "Thickness"
+		gLang18 = "Dimensions"
+		gLang19 = "Dowel"
+		gLang20 = "Diameter"
+		gLang21 = "Length"
 
 # ###################################################################################################################
 def setViewQ(iCaller="setViewQ"):
@@ -1926,12 +2241,12 @@ def setViewQ(iCaller="setViewQ"):
 
 		a = key.split(":")
 
-		gSheet.set("A" + str(gSheetRow), "'" + str(dbDQ[key])+" x")
-		gSheet.set("C" + str(gSheetRow), getUnit(a[1], "d", iCaller))
-		gSheet.set("D" + str(gSheetRow), "'" + "x")
-		gSheet.set("E" + str(gSheetRow), getUnit(a[2], "d", iCaller))
-		gSheet.set("F" + str(gSheetRow), getUnit(a[0], "d", iCaller))
-		gSheet.set("G" + str(gSheetRow), getUnit(dbDA[key], "area", iCaller))
+		gSheet.set("A" + str(gSheetRow), toSheet(dbDQ[key], "string", iCaller) + " x")
+		gSheet.set("C" + str(gSheetRow), toSheet(a[1], "d", iCaller))
+		gSheet.set("D" + str(gSheetRow), "x")
+		gSheet.set("E" + str(gSheetRow), toSheet(a[2], "d", iCaller))
+		gSheet.set("F" + str(gSheetRow), toSheet(a[0], "d", iCaller))
+		gSheet.set("G" + str(gSheetRow), toSheet(dbDA[key], "area", iCaller))
 
 		# merge cells
 		vCell = "A" + str(gSheetRow) + ":B" + str(gSheetRow)	
@@ -1963,9 +2278,9 @@ def setViewQ(iCaller="setViewQ"):
 	gSheet.setAlignment("D1:D1", "center", "keep")
 	gSheet.setAlignment("E1:E1", "center", "keep")
 
-         # ########################################################
+	# ########################################################
 	# thickness part - depends on view columns order, so better here
-         # ########################################################
+	# ########################################################
 
 	# add summary title for thickness
 	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
@@ -1980,9 +2295,9 @@ def setViewQ(iCaller="setViewQ"):
 	
 	for key in dbTQ.keys():
 
-		gSheet.set("A" + str(gSheetRow), "'" + str(dbTQ[key])+" x")
-		gSheet.set("F" + str(gSheetRow), getUnit(key, "d", iCaller))
-		gSheet.set("G" + str(gSheetRow), getUnit(dbTA[key], "area", iCaller))
+		gSheet.set("A" + str(gSheetRow), toSheet(dbTQ[key], "string", iCaller) + " x")
+		gSheet.set("F" + str(gSheetRow), toSheet(key, "d", iCaller))
+		gSheet.set("G" + str(gSheetRow), toSheet(dbTA[key], "area", iCaller))
 		gSheet.setAlignment("A" + str(gSheetRow), "right", "keep")
 		gSheet.setAlignment("B" + str(gSheetRow), "right", "keep")
 		gSheet.setAlignment("F" + str(gSheetRow), "right", "keep")
@@ -2027,13 +2342,13 @@ def setViewN(iCaller="setViewN"):
 
 		a = key.split(":")
 
-		gSheet.set("A" + str(gSheetRow), "'" + str(a[3]))
-		gSheet.set("B" + str(gSheetRow), getUnit(a[1], "d", iCaller))
-		gSheet.set("C" + str(gSheetRow), "'" + "x")
-		gSheet.set("D" + str(gSheetRow), getUnit(a[2], "d", iCaller))
-		gSheet.set("E" + str(gSheetRow), getUnit(a[0], "d", iCaller))
-		gSheet.set("F" + str(gSheetRow), "'" + str(dbDQ[key]))
-		gSheet.set("G" + str(gSheetRow), getUnit(dbDA[key], "area", iCaller))
+		gSheet.set("A" + str(gSheetRow), toSheet(a[3], "string", iCaller))
+		gSheet.set("B" + str(gSheetRow), toSheet(a[1], "d", iCaller))
+		gSheet.set("C" + str(gSheetRow), "x")
+		gSheet.set("D" + str(gSheetRow), toSheet(a[2], "d", iCaller))
+		gSheet.set("E" + str(gSheetRow), toSheet(a[0], "d", iCaller))
+		gSheet.set("F" + str(gSheetRow), toSheet(dbDQ[key], "string", iCaller))
+		gSheet.set("G" + str(gSheetRow), toSheet(dbDA[key], "area", iCaller))
 
 		# go to next spreadsheet row
 		gSheetRow = gSheetRow + 1
@@ -2061,9 +2376,9 @@ def setViewN(iCaller="setViewN"):
 	gSheet.setAlignment("C1:C1", "center", "keep")
 	gSheet.setAlignment("D1:D1", "center", "keep")
 
-         # ########################################################
+	# ########################################################
 	# thickness part - depends on view columns order, so better here
-         # ########################################################
+	# ########################################################
 
 	# add summary title for thickness
 	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
@@ -2078,9 +2393,9 @@ def setViewN(iCaller="setViewN"):
 	
 	for key in dbTQ.keys():
 
-		gSheet.set("E" + str(gSheetRow), getUnit(key, "d", iCaller))
-		gSheet.set("F" + str(gSheetRow), "'" + str(dbTQ[key]))
-		gSheet.set("G" + str(gSheetRow), getUnit(dbTA[key], "area", iCaller))
+		gSheet.set("E" + str(gSheetRow), toSheet(key, "d", iCaller))
+		gSheet.set("F" + str(gSheetRow), toSheet(dbTQ[key], "string", iCaller))
+		gSheet.set("G" + str(gSheetRow), toSheet(dbTA[key], "area", iCaller))
 		gSheet.setAlignment("E" + str(gSheetRow), "right", "keep")
 		gSheet.setAlignment("F" + str(gSheetRow), "right", "keep")
 		gSheet.setAlignment("G" + str(gSheetRow), "right", "keep")
@@ -2120,13 +2435,13 @@ def setViewG(iCaller="setViewG"):
 
 		a = key.split(":")
 
-		gSheet.set("A" + str(gSheetRow), "'" + str(a[3]))
-		gSheet.set("B" + str(gSheetRow), getUnit(a[0], "d", iCaller))
-		gSheet.set("C" + str(gSheetRow), getUnit(a[1], "d", iCaller))
-		gSheet.set("D" + str(gSheetRow), "'" + "x")
-		gSheet.set("E" + str(gSheetRow), getUnit(a[2], "d", iCaller))
-		gSheet.set("F" + str(gSheetRow), "'" + str(dbDQ[key]))
-		gSheet.set("G" + str(gSheetRow), getUnit(dbDA[key], "area", iCaller))
+		gSheet.set("A" + str(gSheetRow), toSheet(a[3], "string", iCaller))
+		gSheet.set("B" + str(gSheetRow), toSheet(a[0], "d", iCaller))
+		gSheet.set("C" + str(gSheetRow), toSheet(a[1], "d", iCaller))
+		gSheet.set("D" + str(gSheetRow), "x")
+		gSheet.set("E" + str(gSheetRow), toSheet(a[2], "d", iCaller))
+		gSheet.set("F" + str(gSheetRow), toSheet(dbDQ[key], "string", iCaller))
+		gSheet.set("G" + str(gSheetRow), toSheet(dbDA[key], "area", iCaller))
 
 		# go to next spreadsheet row
 		gSheetRow = gSheetRow + 1
@@ -2154,9 +2469,9 @@ def setViewG(iCaller="setViewG"):
 	gSheet.setAlignment("D1:D1", "center", "keep")
 	gSheet.setAlignment("E1:E1", "center", "keep")
 
-         # ########################################################
+	# ########################################################
 	# thickness part - depends on view columns order, so better here
-         # ########################################################
+	# ########################################################
 
 	# add summary title for thickness
 	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
@@ -2171,9 +2486,9 @@ def setViewG(iCaller="setViewG"):
 	
 	for key in dbTQ.keys():
 
-		gSheet.set("B" + str(gSheetRow), getUnit(key, "d", iCaller))
-		gSheet.set("F" + str(gSheetRow), "'" + str(dbTQ[key]))
-		gSheet.set("G" + str(gSheetRow), getUnit(dbTA[key], "area", iCaller))
+		gSheet.set("B" + str(gSheetRow), toSheet(key, "d", iCaller))
+		gSheet.set("F" + str(gSheetRow), toSheet(dbTQ[key], "string", iCaller))
+		gSheet.set("G" + str(gSheetRow), toSheet(dbTA[key], "area", iCaller))
 		gSheet.setAlignment("B" + str(gSheetRow), "right", "keep")
 		gSheet.setAlignment("F" + str(gSheetRow), "right", "keep")
 		gSheet.setAlignment("G" + str(gSheetRow), "right", "keep")
@@ -2227,112 +2542,140 @@ def setViewE(iCaller="setViewE"):
 
 		a = key.split(":")
 
-		gSheet.set("A" + str(gSheetRow), "'" + str(a[3]))
-		gSheet.set("B" + str(gSheetRow), getUnit(a[1], "d", iCaller))
-		gSheet.set("C" + str(gSheetRow), "'" + "x")
-		gSheet.set("D" + str(gSheetRow), getUnit(a[2], "d", iCaller))
-		gSheet.set("E" + str(gSheetRow), getUnit(a[0], "d", iCaller))
-		gSheet.set("F" + str(gSheetRow), "'" + str(dbDQ[key]))
-		gSheet.set("G" + str(gSheetRow), getUnit(dbDA[key], "area", iCaller))
+		gSheet.set("A" + str(gSheetRow), toSheet(a[3], "string", iCaller))
+		gSheet.set("B" + str(gSheetRow), toSheet(a[1], "d", iCaller))
+		gSheet.set("C" + str(gSheetRow), "x")
+		gSheet.set("D" + str(gSheetRow), toSheet(a[2], "d", iCaller))
+		gSheet.set("E" + str(gSheetRow), toSheet(a[0], "d", iCaller))
+		gSheet.set("F" + str(gSheetRow), toSheet(dbDQ[key], "string", iCaller))
+		gSheet.set("G" + str(gSheetRow), toSheet(dbDA[key], "area", iCaller))
 
 		# alignment
 		gSheet.setAlignment("A" + str(gSheetRow), "left", "keep")
 		vCell = "B" + str(gSheetRow) + ":G" + str(gSheetRow)
 		gSheet.setAlignment(vCell, "right", "keep")
 
-		# go to next spreadsheet row
-		gSheetRow = gSheetRow + 1
+		# if there are faces with edgeband
+		faces = 0
+		try:
+			faces = str(dbEFD[key])
+		except:
+			faces = 0
 		
-		# ####################################################
-		# faces numbers
-		# ####################################################
+		if faces != 0:
+		
+			# go to next spreadsheet row
+			gSheetRow = gSheetRow + 1
+		
+			# ####################################################
+			# faces numbers
+			# ####################################################
 
-		# set header
-		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
-		gSheet.setBackground(vCell, gHeadCS)
-		gSheet.setStyle(vCell, "bold", "add")
+			# set header
+			vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+			gSheet.setBackground(vCell, gHeadCS)
+			gSheet.setStyle(vCell, "bold", "add")
 
-		gSheet.set("A" + str(gSheetRow), "5")
-		gSheet.set("B" + str(gSheetRow), "6")
-		gSheet.set("D" + str(gSheetRow), "1")
-		gSheet.set("E" + str(gSheetRow), "2")
-		gSheet.set("F" + str(gSheetRow), "3")
-		gSheet.set("G" + str(gSheetRow), "4")
+			gSheet.set("A" + str(gSheetRow), "5")
+			gSheet.set("B" + str(gSheetRow), "6")
+			gSheet.set("D" + str(gSheetRow), "1")
+			gSheet.set("E" + str(gSheetRow), "2")
+			gSheet.set("F" + str(gSheetRow), "3")
+			gSheet.set("G" + str(gSheetRow), "4")
 
-		# alignment
-		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
-		gSheet.setAlignment(vCell, "right", "keep")
+			# alignment
+			vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+			gSheet.setAlignment(vCell, "right", "keep")
 
-		# go to next spreadsheet row
-		gSheetRow = gSheetRow + 1
+			# go to next spreadsheet row
+			gSheetRow = gSheetRow + 1
 
-		# ####################################################
-		# faces names
-		# ####################################################
+			# ####################################################
+			# faces names
+			# ####################################################
 
-		try:
-			# try get values
-			gSheet.set("A" + str(gSheetRow), "'" + str(dbEFN[key][4]))
-			gSheet.set("B" + str(gSheetRow), "'" + str(dbEFN[key][5]))
-			gSheet.set("D" + str(gSheetRow), "'" + str(dbEFN[key][0]))
-			gSheet.set("E" + str(gSheetRow), "'" + str(dbEFN[key][1]))
-			gSheet.set("F" + str(gSheetRow), "'" + str(dbEFN[key][2]))
-			gSheet.set("G" + str(gSheetRow), "'" + str(dbEFN[key][3]))
+			try:
+				# try get values
+				gSheet.set("A" + str(gSheetRow), toSheet(dbEFN[key][4], "string", iCaller))
+				gSheet.set("B" + str(gSheetRow), toSheet(dbEFN[key][5], "string", iCaller))
+				gSheet.set("D" + str(gSheetRow), toSheet(dbEFN[key][0], "string", iCaller))
+				gSheet.set("E" + str(gSheetRow), toSheet(dbEFN[key][1], "string", iCaller))
+				gSheet.set("F" + str(gSheetRow), toSheet(dbEFN[key][2], "string", iCaller))
+				gSheet.set("G" + str(gSheetRow), toSheet(dbEFN[key][3], "string", iCaller))
 
-		except:
-			skip = 1
+			except:
+				skip = 1
 
-		# alignment
-		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
-		gSheet.setAlignment(vCell, "right", "keep")
+			# alignment
+			vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+			gSheet.setAlignment(vCell, "right", "keep")
 
-		# go to next spreadsheet row
-		gSheetRow = gSheetRow + 1
+			# go to next spreadsheet row
+			gSheetRow = gSheetRow + 1
 
-		# ####################################################
-		# faces dimensions
-		# ####################################################
+			# ####################################################
+			# faces dimensions
+			# ####################################################
 
-		try:
-			# try get values
-			if dbEFD[key][4] != 0:
-				gSheet.set("A" + str(gSheetRow), dbEFD[key][4])
-			if dbEFD[key][5] != 0:
-				gSheet.set("B" + str(gSheetRow), dbEFD[key][5])
-			if dbEFD[key][0] != 0:
-				gSheet.set("D" + str(gSheetRow), dbEFD[key][0])
-			if dbEFD[key][1] != 0:
-				gSheet.set("E" + str(gSheetRow), dbEFD[key][1])
-			if dbEFD[key][2] != 0:
-				gSheet.set("F" + str(gSheetRow), dbEFD[key][2])
-			if dbEFD[key][3] != 0:
-				gSheet.set("G" + str(gSheetRow), dbEFD[key][3])
+			try:
+			
+				# try get values
+				if dbEFD[key][4] > 0:
+					gSheet.set("A" + str(gSheetRow), toSheet(dbEFD[key][4], "d", iCaller))
+				if dbEFD[key][4] == -1:
+					gSheet.set("A" + str(gSheetRow), gLang14)
+				
+				if dbEFD[key][5] > 0:
+					gSheet.set("B" + str(gSheetRow), toSheet(dbEFD[key][5], "d", iCaller))
+				if dbEFD[key][5] == -1:
+					gSheet.set("B" + str(gSheetRow), gLang14)
+					
+				if dbEFD[key][0] > 0:
+					gSheet.set("D" + str(gSheetRow), toSheet(dbEFD[key][0], "d", iCaller))
+				if dbEFD[key][0] == -1:
+					gSheet.set("D" + str(gSheetRow), gLang14)
+				
+				if dbEFD[key][1] > 0:
+					gSheet.set("E" + str(gSheetRow), toSheet(dbEFD[key][1], "d", iCaller))
+				if dbEFD[key][1] == -1:
+					gSheet.set("E" + str(gSheetRow), gLang14)
+					
+				if dbEFD[key][2] > 0:
+					gSheet.set("F" + str(gSheetRow), toSheet(dbEFD[key][2], "d", iCaller))
+				if dbEFD[key][2] == -1:
+					gSheet.set("F" + str(gSheetRow), gLang14)
+					
+				if dbEFD[key][3] > 0:
+					gSheet.set("G" + str(gSheetRow), toSheet(dbEFD[key][3], "d", iCaller))
+				if dbEFD[key][3] == -1:
+					gSheet.set("G" + str(gSheetRow), gLang14)
 
-		except:
-			skip = 1
+			except:
+				skip = 1
 
-		# alignment
-		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
-		gSheet.setAlignment(vCell, "right", "keep")
+			# alignment
+			vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+			gSheet.setAlignment(vCell, "right", "keep")
 
-		# go to next spreadsheet row
-		gSheetRow = gSheetRow + 1
+			# go to next spreadsheet row
+			gSheetRow = gSheetRow + 1
 
-		# ####################################################
-		# faces veneers
-		# ####################################################
+			# ####################################################
+			# faces veneers
+			# ####################################################
 
-		try:
-			# try get values
-			gSheet.set("A" + str(gSheetRow), "'" + str(dbEFV[key][4]))
-			gSheet.set("B" + str(gSheetRow), "'" + str(dbEFV[key][5]))
-			gSheet.set("D" + str(gSheetRow), "'" + str(dbEFV[key][0]))
-			gSheet.set("E" + str(gSheetRow), "'" + str(dbEFV[key][1]))
-			gSheet.set("F" + str(gSheetRow), "'" + str(dbEFV[key][2]))
-			gSheet.set("G" + str(gSheetRow), "'" + str(dbEFV[key][3]))
+			try:
+				# try get values
+				gSheet.set("A" + str(gSheetRow), toSheet(dbEFV[key][4], "string", iCaller))
+				gSheet.set("B" + str(gSheetRow), toSheet(dbEFV[key][5], "string", iCaller))
+				gSheet.set("D" + str(gSheetRow), toSheet(dbEFV[key][0], "string", iCaller))
+				gSheet.set("E" + str(gSheetRow), toSheet(dbEFV[key][1], "string", iCaller))
+				gSheet.set("F" + str(gSheetRow), toSheet(dbEFV[key][2], "string", iCaller))
+				gSheet.set("G" + str(gSheetRow), toSheet(dbEFV[key][3], "string", iCaller))
 
-		except:
-			skip = 1
+			except:
+				skip = 1
+
 
 		# alignment
 		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
@@ -2348,9 +2691,9 @@ def setViewE(iCaller="setViewE"):
 		# next entry or thickness summary
 		gSheetRow = gSheetRow + 1
 
-         # ########################################################
+	# ########################################################
 	# width part
-         # ########################################################
+	# ########################################################
 
 	# cell sizes
 	gSheet.setColumnWidth("A", 215)
@@ -2361,9 +2704,9 @@ def setViewE(iCaller="setViewE"):
 	gSheet.setColumnWidth("F", 80)
 	gSheet.setColumnWidth("G", 120)
 
-         # ########################################################
+	# ########################################################
 	# thickness part - depends on view columns order, so better here
-         # ########################################################
+	# ########################################################
 
 	# add summary title for thickness
 	vCell = "A" + str(gSheetRow) + ":D" + str(gSheetRow)
@@ -2391,9 +2734,9 @@ def setViewE(iCaller="setViewE"):
 	
 	for key in dbTQ.keys():
 
-		gSheet.set("E" + str(gSheetRow), getUnit(key, "d", iCaller))
-		gSheet.set("F" + str(gSheetRow), "'" + str(dbTQ[key]))
-		gSheet.set("G" + str(gSheetRow), getUnit(dbTA[key], "area", iCaller))
+		gSheet.set("E" + str(gSheetRow), toSheet(key, "d", iCaller))
+		gSheet.set("F" + str(gSheetRow), toSheet(dbTQ[key], "string", iCaller))
+		gSheet.set("G" + str(gSheetRow), toSheet(dbTA[key], "area", iCaller))
 		gSheet.setAlignment("E" + str(gSheetRow), "right", "keep")
 		gSheet.setAlignment("F" + str(gSheetRow), "right", "keep")
 		gSheet.setAlignment("G" + str(gSheetRow), "right", "keep")
@@ -2420,7 +2763,7 @@ def setViewD(iCaller="setViewD"):
 		gSheet.mergeCells(vCell)
 
 		# set group name
-		gSheet.set("A" + str(gSheetRow), "'" + str(a[4]))
+		gSheet.set("A" + str(gSheetRow), toSheet(a[4], "string", iCaller))
 
 		# go to next spreadsheet row
 		gSheetRow = gSheetRow + 1
@@ -2457,117 +2800,147 @@ def setViewD(iCaller="setViewD"):
 		# go to next spreadsheet row
 		gSheetRow = gSheetRow + 1
 
-		gSheet.set("B" + str(gSheetRow), getUnit(a[1], "d", iCaller))
-		gSheet.set("C" + str(gSheetRow), "'" + "x")
-		gSheet.set("D" + str(gSheetRow), getUnit(a[2], "d", iCaller))
-		gSheet.set("E" + str(gSheetRow), getUnit(a[0], "d", iCaller))
-		gSheet.set("F" + str(gSheetRow), "'" + str(dbDQ[key]))
-		gSheet.set("G" + str(gSheetRow), getUnit(dbDA[key], "area", iCaller))
+		gSheet.set("B" + str(gSheetRow), toSheet(a[1], "d", iCaller))
+		gSheet.set("C" + str(gSheetRow), "x")
+		gSheet.set("D" + str(gSheetRow), toSheet(a[2], "d", iCaller))
+		gSheet.set("E" + str(gSheetRow), toSheet(a[0], "d", iCaller))
+		gSheet.set("F" + str(gSheetRow), toSheet(dbDQ[key], "string", iCaller))
+		gSheet.set("G" + str(gSheetRow), toSheet(dbDA[key], "area", iCaller))
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
 
 		# alignment
 		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
 		gSheet.setAlignment(vCell, "right", "keep")
 
-		# go to next spreadsheet row
-		gSheetRow = gSheetRow + 1
+		# if there are faces with edgeband
+		faces = 0
+		try:
+			faces = str(dbEFD[key])
+		except:
+			faces = 0
 		
-		# ####################################################
-		# faces numbers
-		# ####################################################
+		if faces != 0:
 
-		# set header
-		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
-		gSheet.setBackground(vCell, gHeadCW)
-		gSheet.setStyle(vCell, "bold", "add")
+			# go to next spreadsheet row
+			gSheetRow = gSheetRow + 1
+			
+			# ####################################################
+			# faces numbers
+			# ####################################################
 
-		gSheet.set("A" + str(gSheetRow), "5")
-		gSheet.set("B" + str(gSheetRow), "6")
-		gSheet.set("D" + str(gSheetRow), "1")
-		gSheet.set("E" + str(gSheetRow), "2")
-		gSheet.set("F" + str(gSheetRow), "3")
-		gSheet.set("G" + str(gSheetRow), "4")
+			# set header
+			vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+			gSheet.setBackground(vCell, gHeadCW)
+			gSheet.setStyle(vCell, "bold", "add")
 
-		# alignment
-		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
-		gSheet.setAlignment(vCell, "right", "keep")
+			gSheet.set("A" + str(gSheetRow), "5")
+			gSheet.set("B" + str(gSheetRow), "6")
+			gSheet.set("D" + str(gSheetRow), "1")
+			gSheet.set("E" + str(gSheetRow), "2")
+			gSheet.set("F" + str(gSheetRow), "3")
+			gSheet.set("G" + str(gSheetRow), "4")
 
-		# go to next spreadsheet row
-		gSheetRow = gSheetRow + 1
+			# alignment
+			vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+			gSheet.setAlignment(vCell, "right", "keep")
 
-		# ####################################################
-		# faces names
-		# ####################################################
+			# go to next spreadsheet row
+			gSheetRow = gSheetRow + 1
 
-		try:
-			# try get values
-			gSheet.set("A" + str(gSheetRow), "'" + str(dbEFN[key][4]))
-			gSheet.set("B" + str(gSheetRow), "'" + str(dbEFN[key][5]))
-			gSheet.set("D" + str(gSheetRow), "'" + str(dbEFN[key][0]))
-			gSheet.set("E" + str(gSheetRow), "'" + str(dbEFN[key][1]))
-			gSheet.set("F" + str(gSheetRow), "'" + str(dbEFN[key][2]))
-			gSheet.set("G" + str(gSheetRow), "'" + str(dbEFN[key][3]))
+			# ####################################################
+			# faces names
+			# ####################################################
 
-		except:
-			skip = 1
+			try:
+				# try get values
+				gSheet.set("A" + str(gSheetRow), toSheet(dbEFN[key][4], "string", iCaller))
+				gSheet.set("B" + str(gSheetRow), toSheet(dbEFN[key][5], "string", iCaller))
+				gSheet.set("D" + str(gSheetRow), toSheet(dbEFN[key][0], "string", iCaller))
+				gSheet.set("E" + str(gSheetRow), toSheet(dbEFN[key][1], "string", iCaller))
+				gSheet.set("F" + str(gSheetRow), toSheet(dbEFN[key][2], "string", iCaller))
+				gSheet.set("G" + str(gSheetRow), toSheet(dbEFN[key][3], "string", iCaller))
 
-		# alignment
-		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
-		gSheet.setAlignment(vCell, "right", "keep")
+			except:
+				skip = 1
 
-		# go to next spreadsheet row
-		gSheetRow = gSheetRow + 1
+			# alignment
+			vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+			gSheet.setAlignment(vCell, "right", "keep")
 
-		# ####################################################
-		# faces dimensions
-		# ####################################################
+			# go to next spreadsheet row
+			gSheetRow = gSheetRow + 1
 
-		try:
-			# try get values
-			if dbEFD[key][4] != 0:
-				gSheet.set("A" + str(gSheetRow), dbEFD[key][4])
-			if dbEFD[key][5] != 0:
-				gSheet.set("B" + str(gSheetRow), dbEFD[key][5])
-			if dbEFD[key][0] != 0:
-				gSheet.set("D" + str(gSheetRow), dbEFD[key][0])
-			if dbEFD[key][1] != 0:
-				gSheet.set("E" + str(gSheetRow), dbEFD[key][1])
-			if dbEFD[key][2] != 0:
-				gSheet.set("F" + str(gSheetRow), dbEFD[key][2])
-			if dbEFD[key][3] != 0:
-				gSheet.set("G" + str(gSheetRow), dbEFD[key][3])
+			# ####################################################
+			# faces dimensions
+			# ####################################################
 
-		except:
-			skip = 1
+			try:
+			
+				# try get values
+				if dbEFD[key][4] > 0:
+					gSheet.set("A" + str(gSheetRow), toSheet(dbEFD[key][4], "d", iCaller))
+				if dbEFD[key][4] == -1:
+					gSheet.set("A" + str(gSheetRow), gLang14)
+				
+				if dbEFD[key][5] > 0:
+					gSheet.set("B" + str(gSheetRow), toSheet(dbEFD[key][5], "d", iCaller))
+				if dbEFD[key][5] == -1:
+					gSheet.set("B" + str(gSheetRow), gLang14)
+					
+				if dbEFD[key][0] > 0:
+					gSheet.set("D" + str(gSheetRow), toSheet(dbEFD[key][0], "d", iCaller))
+				if dbEFD[key][0] == -1:
+					gSheet.set("D" + str(gSheetRow), gLang14)
+				
+				if dbEFD[key][1] > 0:
+					gSheet.set("E" + str(gSheetRow), toSheet(dbEFD[key][1], "d", iCaller))
+				if dbEFD[key][1] == -1:
+					gSheet.set("E" + str(gSheetRow), gLang14)
+					
+				if dbEFD[key][2] > 0:
+					gSheet.set("F" + str(gSheetRow), toSheet(dbEFD[key][2], "d", iCaller))
+				if dbEFD[key][2] == -1:
+					gSheet.set("F" + str(gSheetRow), gLang14)
+					
+				if dbEFD[key][3] > 0:
+					gSheet.set("G" + str(gSheetRow), toSheet(dbEFD[key][3], "d", iCaller))
+				if dbEFD[key][3] == -1:
+					gSheet.set("G" + str(gSheetRow), gLang14)
 
-		# alignment
-		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
-		gSheet.setAlignment(vCell, "right", "keep")
+			except:
+				skip = 1
 
-		# go to next spreadsheet row
-		gSheetRow = gSheetRow + 1
+			# alignment
+			vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+			gSheet.setAlignment(vCell, "right", "keep")
 
-		# ####################################################
-		# faces veneers
-		# ####################################################
+			# go to next spreadsheet row
+			gSheetRow = gSheetRow + 1
 
-		try:
-			# try get values
-			gSheet.set("A" + str(gSheetRow), "'" + str(dbEFV[key][4]))
-			gSheet.set("B" + str(gSheetRow), "'" + str(dbEFV[key][5]))
-			gSheet.set("D" + str(gSheetRow), "'" + str(dbEFV[key][0]))
-			gSheet.set("E" + str(gSheetRow), "'" + str(dbEFV[key][1]))
-			gSheet.set("F" + str(gSheetRow), "'" + str(dbEFV[key][2]))
-			gSheet.set("G" + str(gSheetRow), "'" + str(dbEFV[key][3]))
+			# ####################################################
+			# faces veneers
+			# ####################################################
 
-		except:
-			skip = 1
+			try:
+				# try get values
+				gSheet.set("A" + str(gSheetRow), toSheet(dbEFV[key][4], "string", iCaller))
+				gSheet.set("B" + str(gSheetRow), toSheet(dbEFV[key][5], "string", iCaller))
+				gSheet.set("D" + str(gSheetRow), toSheet(dbEFV[key][0], "string", iCaller))
+				gSheet.set("E" + str(gSheetRow), toSheet(dbEFV[key][1], "string", iCaller))
+				gSheet.set("F" + str(gSheetRow), toSheet(dbEFV[key][2], "string", iCaller))
+				gSheet.set("G" + str(gSheetRow), toSheet(dbEFV[key][3], "string", iCaller))
 
-		# alignment
-		vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
-		gSheet.setAlignment(vCell, "right", "keep")
+			except:
+				skip = 1
 
-		# go to next spreadsheet row
-		gSheetRow = gSheetRow + 1
+			# alignment
+			vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+			gSheet.setAlignment(vCell, "right", "keep")
+
+			# go to next spreadsheet row
+			gSheetRow = gSheetRow + 1
 
 		# ########################################################
 		# holes constraints part
@@ -2578,6 +2951,9 @@ def setViewD(iCaller="setViewD"):
 			vHoles = dbCNOH[str(a[3])][:-1].split(":")
 	
 			for vKey in vHoles:
+				
+				# go to next spreadsheet row
+				gSheetRow = gSheetRow + 1
 			
 				# set object header
 				vCell = "A" + str(gSheetRow)
@@ -2606,15 +2982,15 @@ def setViewD(iCaller="setViewD"):
 					gSheet.setBackground(vCell, (1,1,1))
 		
 					vCell = "B" + str(gSheetRow) + ":F" + str(gSheetRow)
-					gSheet.set(vCell, dbCNH[vKey])
-					gSheet.mergeCells(vCell)	
+					gSheet.set(vCell, toSheet(dbCNH[vKey], "string", iCaller))
+					gSheet.mergeCells(vCell)
 					gSheet.setAlignment(vCell, "left", "keep")
 					gSheet.setStyle(vCell, "bold", "add")
 					gSheet.setBackground(vCell, gHeadCW)
 			
 					vCell = "G" + str(gSheetRow)
-					vStr = getUnit(dbCNL[vKey], "d", iCaller)
-					gSheet.set(vCell, vStr)
+					v = dbCNL[vKey].split(";")
+					gSheet.set(vCell, toSheet(v[1], v[0], iCaller))
 					gSheet.setAlignment(vCell, "right", "keep")
 					gSheet.setStyle(vCell, "bold", "add")
 					gSheet.setBackground(vCell, gHeadCW)
@@ -2636,13 +3012,14 @@ def setViewD(iCaller="setViewD"):
 		
 					# set constraint name
 					vCell = "B" + str(gSheetRow) + ":F" + str(gSheetRow)
-					gSheet.set(vCell, "'" + str(keyN[k]))
+					gSheet.set(vCell, toSheet(keyN[k], "string", iCaller))
 					gSheet.mergeCells(vCell)
 					gSheet.setAlignment(vCell, "left", "keep")
 		
 					# set dimension
 					vCell = "G" + str(gSheetRow)
-					gSheet.set(vCell, getUnit(keyV[k], "d", iCaller))
+					v = keyV[k].split(";")
+					gSheet.set(vCell, toSheet(v[1], v[0], iCaller))
 					gSheet.setAlignment(vCell, "right", "keep")
 		
 					# go to next spreadsheet row
@@ -2660,9 +3037,9 @@ def setViewD(iCaller="setViewD"):
 		# next entry or thickness summary
 		gSheetRow = gSheetRow + 1
 
-         # ########################################################
+	# ########################################################
 	# width part
-         # ########################################################
+	# ########################################################
 
 	# cell sizes
 	gSheet.setColumnWidth("A", 215)
@@ -2673,9 +3050,9 @@ def setViewD(iCaller="setViewD"):
 	gSheet.setColumnWidth("F", 80)
 	gSheet.setColumnWidth("G", 120)
 
-         # ########################################################
+	# ########################################################
 	# thickness part - depends on view columns order, so better here
-         # ########################################################
+	# ########################################################
 
 	# add summary title for thickness
 	vCell = "A" + str(gSheetRow) + ":D" + str(gSheetRow)
@@ -2703,9 +3080,9 @@ def setViewD(iCaller="setViewD"):
 	
 	for key in dbTQ.keys():
 
-		gSheet.set("E" + str(gSheetRow), getUnit(key, "d", iCaller))
-		gSheet.set("F" + str(gSheetRow), "'" + str(dbTQ[key]))
-		gSheet.set("G" + str(gSheetRow), getUnit(dbTA[key], "area", iCaller))
+		gSheet.set("E" + str(gSheetRow), toSheet(key, "d", iCaller))
+		gSheet.set("F" + str(gSheetRow), toSheet(dbTQ[key], "string", iCaller))
+		gSheet.set("G" + str(gSheetRow), toSheet(dbTA[key], "area", iCaller))
 		gSheet.setAlignment("E" + str(gSheetRow), "right", "keep")
 		gSheet.setAlignment("F" + str(gSheetRow), "right", "keep")
 		gSheet.setAlignment("G" + str(gSheetRow), "right", "keep")
@@ -2737,7 +3114,7 @@ def setViewC(iCaller="setViewC"):
 		vCell = "B" + str(gSheetRow) + ":G" + str(gSheetRow)
 		vStr = str(vKey)
 		gSheet.set(vCell, vStr)
-		gSheet.mergeCells(vCell)	
+		gSheet.mergeCells(vCell)
 		gSheet.setAlignment(vCell, "left", "keep")
 		gSheet.setStyle(vCell, "bold", "add")
 		gSheet.setBackground(vCell, gHeadCS)
@@ -2753,15 +3130,15 @@ def setViewC(iCaller="setViewC"):
 			gSheet.setBackground(vCell, (1,1,1))
 
 			vCell = "B" + str(gSheetRow) + ":F" + str(gSheetRow)
-			gSheet.set(vCell, dbCNH[vKey])
-			gSheet.mergeCells(vCell)	
+			gSheet.set(vCell, toSheet(dbCNH[vKey], "string", iCaller))
+			gSheet.mergeCells(vCell)
 			gSheet.setAlignment(vCell, "left", "keep")
 			gSheet.setStyle(vCell, "bold", "add")
 			gSheet.setBackground(vCell, gHeadCW)
 	
 			vCell = "G" + str(gSheetRow)
-			vStr = getUnit(dbCNL[vKey], "d", iCaller)
-			gSheet.set(vCell, vStr)
+			v = dbCNL[vKey].split(";")
+			gSheet.set(vCell, toSheet(v[1], v[0], iCaller))
 			gSheet.setAlignment(vCell, "right", "keep")
 			gSheet.setStyle(vCell, "bold", "add")
 			gSheet.setBackground(vCell, gHeadCW)
@@ -2783,13 +3160,14 @@ def setViewC(iCaller="setViewC"):
 
 			# set constraint name
 			vCell = "B" + str(gSheetRow) + ":F" + str(gSheetRow)
-			gSheet.set(vCell, "'" + str(keyN[k]))
+			gSheet.set(vCell, toSheet(keyN[k], "string", iCaller))
 			gSheet.mergeCells(vCell)
 			gSheet.setAlignment(vCell, "left", "keep")
 
 			# set dimension
 			vCell = "G" + str(gSheetRow)
-			gSheet.set(vCell, getUnit(keyV[k], "d", iCaller))
+			v = keyV[k].split(";")
+			gSheet.set(vCell, toSheet(v[1], v[0], iCaller))
 			gSheet.setAlignment(vCell, "right", "keep")
 
 			# go to next spreadsheet row
@@ -2817,11 +3195,7 @@ def setViewP(iCaller="setViewP"):
 	global gSheet
 	global gSheetRow
 
-        # ########################################################
-	# Pads
-        # ########################################################
-
-	# search objects for constraints (custom report)
+	# search objects for constraints
 	for vKey in dbCNQ.keys():
 
 		# split key and get the group name
@@ -2852,15 +3226,15 @@ def setViewP(iCaller="setViewP"):
 		gSheet.setBackground(vCell, (1,1,1))
 
 		vCell = "B" + str(gSheetRow) + ":F" + str(gSheetRow)
-		gSheet.set(vCell, dbCNH[vKey])
-		gSheet.mergeCells(vCell)	
+		gSheet.set(vCell, toSheet(dbCNH[vKey], "string", iCaller))
+		gSheet.mergeCells(vCell)
 		gSheet.setAlignment(vCell, "left", "keep")
 		gSheet.setStyle(vCell, "bold", "add")
 		gSheet.setBackground(vCell, gHeadCW)
 
 		vCell = "G" + str(gSheetRow)
-		vStr = getUnit(dbCNL[vKey], "d", iCaller)
-		gSheet.set(vCell, vStr)
+		v = dbCNL[vKey].split(";")
+		gSheet.set(vCell, toSheet(v[1], v[0], iCaller))
 		gSheet.setAlignment(vCell, "right", "keep")
 		gSheet.setStyle(vCell, "bold", "add")
 		gSheet.setBackground(vCell, gHeadCW)
@@ -2882,13 +3256,20 @@ def setViewP(iCaller="setViewP"):
 
 			# set constraint name
 			vCell = "B" + str(gSheetRow) + ":F" + str(gSheetRow)
-			gSheet.set(vCell, "'" + str(keyN[k]))
+			
+			# fix for FreeCAD crash on empty string
+			if str(keyN[k]) == "-":
+				gSheet.set(vCell, "")
+			else:
+				gSheet.set(vCell, toSheet(keyN[k], "string", iCaller))
+				
 			gSheet.mergeCells(vCell)
 			gSheet.setAlignment(vCell, "left", "keep")
 
 			# set dimension
 			vCell = "G" + str(gSheetRow)
-			gSheet.set(vCell, getUnit(keyV[k], "d", iCaller))
+			v = keyV[k].split(";")
+			gSheet.set(vCell, toSheet(v[1], v[0], iCaller))
 			gSheet.setAlignment(vCell, "right", "keep")
 
 			# go to next spreadsheet row
@@ -2896,67 +3277,7 @@ def setViewP(iCaller="setViewP"):
 
 			# go to next constraint
 			k = k + 1
-			
-        # ########################################################
-	# Decoration
-        # ########################################################
-
-	# search objects for constraints (custom report)
-	for vKey in dbPDQ.keys():
-
-		# split key and get the group name
-		vArr = vKey.split(":")
-		vGroup = vArr[0]
-
-		# set object header
-		vCell = "A" + str(gSheetRow)
-		vStr = str(dbPDQ[vKey]) + " x "
-		gSheet.set(vCell, vStr)
-		gSheet.setAlignment(vCell, "right", "keep")
-		gSheet.setStyle(vCell, "bold", "add")
-		gSheet.setBackground(vCell, gHeadCS)
-
-		vCell = "B" + str(gSheetRow) + ":G" + str(gSheetRow)
-		vStr = str(vGroup)
-		gSheet.set(vCell, vStr)
-		gSheet.mergeCells(vCell)	
-		gSheet.setAlignment(vCell, "left", "keep")
-		gSheet.setStyle(vCell, "bold", "add")
-		gSheet.setBackground(vCell, gHeadCS)
-
-		# create constraints lists
-		keyN = dbPDN[vKey].split(":")
-		keyV = dbPDV[vKey].split(":")
-
-		# go to next spreadsheet row
-		gSheetRow = gSheetRow + 1
-
-		# set all constraints
-		k = 0
-		while k < len(keyV): 
 	
-			# the first A column is empty for better look
-			vCell = "A" + str(gSheetRow)
-			gSheet.setBackground(vCell, (1,1,1))
-
-			# set constraint name
-			vCell = "B" + str(gSheetRow) + ":D" + str(gSheetRow)
-			gSheet.set(vCell, "'" + str(keyN[k]))
-			gSheet.mergeCells(vCell)
-			gSheet.setAlignment(vCell, "left", "keep")
-
-			# set dimension
-			vCell = "E" + str(gSheetRow) + ":G" + str(gSheetRow)
-			gSheet.set(vCell, keyV[k])
-			gSheet.mergeCells(vCell)
-			gSheet.setAlignment(vCell, "right", "keep")
-
-			# go to next spreadsheet row
-			gSheetRow = gSheetRow + 1
-
-			# go to next constraint
-			k = k + 1
-			
 	# set cell width
 	gSheet.setColumnWidth("A", 60)
 	gSheet.setColumnWidth("B", 155)
@@ -2966,7 +3287,7 @@ def setViewP(iCaller="setViewP"):
 	gSheet.setColumnWidth("F", 100)
 	gSheet.setColumnWidth("G", 100)
 
-	# remove empty line separator
+	# remove row
 	gSheetRow = gSheetRow - 1
 
 
@@ -2991,7 +3312,7 @@ def setViewEdge(iCaller="setViewEdge"):
 	gSheet.setAlignment(vCell, "left", "keep")
 
 	vCell = "G" + str(gSheetRow)
-	gSheet.set(vCell, getUnit(dbE["total"], "edge", iCaller))
+	gSheet.set(vCell, toSheet(dbE["total"], "edge", iCaller))
 	gSheet.setAlignment(vCell, "right", "keep")
 
 	vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
@@ -3011,7 +3332,7 @@ def setViewEdge(iCaller="setViewEdge"):
 		gSheet.setAlignment(vCell, "left", "keep")
 	
 		vCell = "G" + str(gSheetRow)
-		gSheet.set(vCell, getUnit(dbE["empty"], "edge", iCaller))
+		gSheet.set(vCell, toSheet(dbE["empty"], "edge", iCaller))
 		gSheet.setAlignment(vCell, "right", "keep")
 	
 		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
@@ -3028,7 +3349,7 @@ def setViewEdge(iCaller="setViewEdge"):
 		gSheet.setAlignment(vCell, "left", "keep")
 	
 		vCell = "G" + str(gSheetRow)
-		gSheet.set(vCell, getUnit(dbE["edgeband"], "edge", iCaller))
+		gSheet.set(vCell, toSheet(dbE["edgeband"], "edge", iCaller))
 		gSheet.setAlignment(vCell, "right", "keep")
 	
 		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
@@ -3036,18 +3357,82 @@ def setViewEdge(iCaller="setViewEdge"):
 
 
 # ###################################################################################################################
-def finalViewSettings(iCaller="finalViewSettings"):
+def setViewAdditional(iCaller="setViewAdditional"):
 
 	global gSheet
 	global gSheetRow
 
-	# colors
-	gSheet.setForeground("A1:G" + str(gSheetRow), (0,0,0))
+	startRow = gSheetRow
+
+	# add empty line separator & merge for better look
+	gSheetRow = gSheetRow + 1
+	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+
+	# go to next row
+	gSheetRow = gSheetRow + 1
+
+	# search objects for constraints (custom report)
+	for vKey in dbARQ.keys():
+
+		# split key and get the group name
+		vArr = vKey.split(":")
+		vGroup = vArr[0]
+
+		# set object header
+		vCell = "A" + str(gSheetRow)
+		vStr = str(dbARQ[vKey]) + " x "
+		gSheet.set(vCell, vStr)
+		gSheet.setAlignment(vCell, "right", "keep")
+		gSheet.setStyle(vCell, "bold", "add")
+		gSheet.setBackground(vCell, gHeadCS)
+
+		vCell = "B" + str(gSheetRow) + ":G" + str(gSheetRow)
+		vStr = str(vGroup)
+		gSheet.set(vCell, vStr)
+		gSheet.mergeCells(vCell)	
+		gSheet.setAlignment(vCell, "left", "keep")
+		gSheet.setStyle(vCell, "bold", "add")
+		gSheet.setBackground(vCell, gHeadCS)
+
+		# create constraints lists
+		keyN = dbARN[vKey].split(":")
+		keyV = dbARV[vKey].split(":")
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+		# set all constraints
+		k = 0
+		while k < len(keyV): 
 	
-	# reset settings for eco mode
-	if sRPQ == "eco":
-		vCell = "A1" + ":G" + str(gSheetRow)
-		gSheet.setBackground(vCell, (1,1,1))
+			# the first A column is empty for better look
+			vCell = "A" + str(gSheetRow)
+			gSheet.setBackground(vCell, (1,1,1))
+
+			# set constraint name
+			vCell = "B" + str(gSheetRow) + ":D" + str(gSheetRow)
+			gSheet.set(vCell, toSheet(keyN[k], "string", iCaller))
+			gSheet.mergeCells(vCell)
+			gSheet.setAlignment(vCell, "left", "keep")
+
+			# set dimension
+			vCell = "E" + str(gSheetRow) + ":G" + str(gSheetRow)
+			v = keyV[k].split(";")
+			gSheet.set(vCell, toSheet(v[1], v[0], iCaller))
+			gSheet.mergeCells(vCell)
+			gSheet.setAlignment(vCell, "right", "keep")
+
+			# go to next spreadsheet row
+			gSheetRow = gSheetRow + 1
+
+			# go to next constraint
+			k = k + 1
+	
+	if startRow + 2 == gSheetRow:
+		gSheetRow = gSheetRow - 2
+	else:
+		gSheetRow = gSheetRow - 1
 
 
 # ###################################################################################################################
@@ -3066,19 +3451,27 @@ def codeLink(iCaller="codeLink"):
 	# add empty line separator
 	gSheetRow = gSheetRow + 1
 
-	# merge cells for better look line separation
-	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
-	gSheet.mergeCells(vCell)
-
-	# add empty line separator
-	gSheetRow = gSheetRow + 1
-
 	# add link 
 	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
 	gSheet.mergeCells(vCell)
 	gSheet.set(vCell, "Generated by FreeCAD macro: github.com/dprojects/getDimensions")
 	gSheet.setAlignment(vCell, "left", "keep")
 	gSheet.setBackground(vCell, gHeadCW)
+
+
+# ###################################################################################################################
+def finalViewSettings(iCaller="finalViewSettings"):
+
+	global gSheet
+	global gSheetRow
+
+	# colors
+	gSheet.setForeground("A1:G" + str(gSheetRow), (0,0,0))
+	
+	# reset settings for eco mode
+	if sRPQ == "eco":
+		vCell = "A1" + ":G" + str(gSheetRow)
+		gSheet.setBackground(vCell, (1,1,1))
 
 
 # ###################################################################################################################
@@ -3131,7 +3524,8 @@ def selectView(iCaller="selectView"):
 	# main report - pads (all constraints report)
 	if sLTF == "p":
 		setViewP(iCaller)
-		
+	
+	setViewAdditional(iCaller)
 	codeLink(iCaller)
 
 	finalViewSettings(iCaller)
@@ -3217,15 +3611,15 @@ if gExecute == "yes":
 	# main loop for calculations
 	scanObjects(gOBs, "main")
 
-	# remove existing fake Cube object before recompute
-	if gAD.getObject("gFakeCube"):
-		gAD.removeObject("gFakeCube")
-
 	# select and set view
 	selectView("main")
 
 	# set TechDraw page
 	setTechDraw("main")
+
+	# remove existing fake Cube object before recompute
+	if gAD.getObject("gFakeCube"):
+		gAD.removeObject("gFakeCube")
 
 	# reload to see changes
 	gAD.recompute()

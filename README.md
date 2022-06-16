@@ -39,6 +39,8 @@ Sorry, for that.
 	* FreeCAD version < 0.20.27936: `~.FreeCAD/Mod/Woodworking`
 	* FreeCAD version >= 0.20.27936: `~.local/share/FreeCAD/Mod/Woodworking`
 
+**Tested FreeCAD version:** [FreeCAD-0.20.0-Linux-x86_64.AppImage](https://github.com/FreeCAD/FreeCAD/releases/download/0.20/FreeCAD-0.20.0-Linux-x86_64.AppImage)
+
 # Screenshots
 
 ![001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/001.png)
