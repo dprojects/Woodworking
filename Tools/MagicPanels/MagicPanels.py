@@ -15,6 +15,38 @@ from PySide import QtCore
 # ###################################################################################################################
 
 # ###################################################################################################################
+def getReference():
+	'''
+	Get reference to the selected object.
+	
+	getReference()
+	
+	Args:
+	
+		none
+	
+	Usage:
+	
+		gObj = getReference()
+		
+	Result:
+	
+		obj - reference to the base panel object
+
+	'''
+
+	obj = FreeCADGui.Selection.getSelection()[0]
+
+	if obj.isDerivedFrom("Part::Box") or obj.isDerivedFrom("PartDesign::Pad"):
+		return obj
+	
+	if obj.isDerivedFrom("PartDesign::Thickness"):
+		return obj.Base[0]
+	
+	return -1
+
+
+# ###################################################################################################################
 def getModelRotation(iX, iY, iZ):
 	'''
 	Transform given iX, iY, iZ values to the correct vector, if the user rotated 3D model.
@@ -324,6 +356,17 @@ def getDirection(iObj):
 			):
 			return "ZY"
 
+		# for profiles with 2 equal sizes
+		
+		if iObj.Height.Value == iObj.Width.Value and iObj.Length.Value >= iObj.Height.Value:
+			return "XY"
+			
+		if iObj.Length.Value == iObj.Height.Value and iObj.Width.Value > iObj.Height.Value:
+			return "YX"
+			
+		if iObj.Length.Value == iObj.Width.Value and iObj.Height.Value > iObj.Width.Value:
+			return "ZX"
+
 	else:
 		
 		ref = iObj.Profile[0].Support[0][0]
@@ -588,6 +631,8 @@ def makePad(iSize1, iSize2, iSize3, iX, iY, iZ, iType, iPadName="Pad"):
 
 	doc.recompute()
 
+	return [ part, body, sketch, pad ]
+
 
 # ###################################################################################################################
 def showInfo(iCaller, iInfo):
@@ -770,7 +815,7 @@ def panelMove(iType):
 
 	try:
 
-		gObj = FreeCADGui.Selection.getSelection()[0]
+		gObj = getReference()
 
 		sizes = []
 		sizes = getSizes(gObj)
@@ -820,7 +865,7 @@ def panelMove(iType):
 			gObj.Profile[0].AttachmentOffset = FreeCAD.Placement(v, r)
 		
 		FreeCAD.activeDocument().recompute()
-
+	
 	except:
 		
 		info = ""
@@ -862,7 +907,7 @@ def panelResize(iType):
 
 	try:
 
-		gObj = FreeCADGui.Selection.getSelection()[0]
+		gObj = getReference()
 
 		sizes = []
 		sizes = getSizes(gObj)
@@ -1322,7 +1367,7 @@ def panelCover(iType):
 
 
 # ###################################################################################################################
-def panelReplacePad():
+def panelReplacePad(iLabel="rpanelPad"):
 	'''
 	Allow to replace Cube panel with the same panel but Pad.
 
@@ -1330,7 +1375,7 @@ def panelReplacePad():
 
 	Args:
 
-		no args
+		iLabel (optional): name all parts with given string
 
 	Usage:
 
@@ -1371,18 +1416,126 @@ def panelReplacePad():
 		if direction == "YZ" or direction == "ZY":
 			[ x, y, z ] = [ Y, Z, X ]
 
-		makePad(s[0], s[1], s[2], x, y, z, direction, "rpanelPad")
+		[ part, body, sketch, pad ] = makePad(s[0], s[1], s[2], x, y, z, direction, iLabel)
 
 		FreeCAD.ActiveDocument.removeObject(gObj.Name)
+		FreeCAD.activeDocument().recompute()
 		
+		return [ part, body, sketch, pad ]
+
 	except:
 		
 		info = ""
 		
-		info += '<b>If you have active document, please select Cube panel you want to replace with the same Pad panel.</b>' + ' '
-		info += '<br>'
+		info += '<b>If you have active document, please select Cube panel you want to replace with the same Pad panel.</b>'
+		info += '<br><br>'
+	
+		info += '<b>Note:</b>' + ' '
+		info += 'The replace features are considered for final stage of furniture designing. '
+		info += 'Some kind of detailed preview stage. To keep furniture designing process quick and simple, '
+		info += 'first You should create full furniture model with the basic Cube panels. '
+		info += 'Then, if the model is acceptable for You and You want to make it more detailed You '
+		info += 'can replace all the needed furniture elements with Pad just by single click and make it more detailed. '
+		info += '<br><br>'
+		info += 'Do not use the replace feature at the beginning because the Magic Panels may stop working '
+		info += 'and the furniture designing process will be much longer and more complicated. '
+		info += 'If You create Pad by mistake, You can move it and resize but it is better '
+		info += 'to not keep furniture designing process like this. '
 	
 		showInfo("rpanelPad", info)
+	
+
+# ###################################################################################################################
+def panel2profile():
+	'''
+	Allow to replace Pad panel with construction profile made from Thickness.
+
+	panel2profile()
+
+	Args:
+
+		no args
+
+	Usage:
+
+		import MagicPanels
+		
+		MagicPanels.panel2profile()
+		
+	Result:
+
+		Selected Pad panel will be changed into Thickness construction profile.
+	'''
+
+	try:
+
+		gObj = FreeCADGui.Selection.getSelection()[0]
+		
+		sizes = getSizes(gObj)
+		sizes.sort()
+		if sizes[0] != sizes[1]:
+			raise
+		
+		[ part, body, sketch, pad ] = panelReplacePad("Construction")
+		profile = body.newObject('PartDesign::Thickness','Profile')
+		
+		faces = []
+		i = 0
+		for f in pad.Shape.Faces:
+			if int(round(pad.Shape.Faces[i].Length)) == int(round(4 * sizes[0])):
+				faces.append("Face"+str(i+1))
+
+			i = i + 1
+			
+		profile.Base = (pad, faces)
+		profile.Value = 1
+		profile.Reversed = 1
+		profile.Mode = 0
+		profile.Intersection = 0
+		profile.Join = 0
+
+		pad.Visibility = False
+
+		FreeCAD.activeDocument().recompute()
+		
+		colors = [ (0.0, 0.0, 0.0, 0.0),
+			(0.0, 0.0, 0.0, 0.0),
+			(0.0, 0.0, 0.0, 0.0),
+			(0.0, 0.0, 0.0, 0.0),
+			(0.0, 0.0, 0.0, 0.0),
+			(0.0, 1.0, 0.0, 0.0),
+			(0.0, 0.0, 0.0, 0.0),
+			(0.0, 1.0, 0.0, 0.0),
+			(0.0, 1.0, 0.0, 0.0),
+			(0.0, 1.0, 0.0, 0.0) ]
+
+		profile.ViewObject.DiffuseColor = colors
+
+		FreeCAD.activeDocument().recompute()
+		
+		return profile
+	
+	except:
+		
+		info = ""
+		
+		info += '<b>If you have active document, please select panel (Cube) with 2 equal sizes e.g. '
+		info += '20 mm x 20 mm x 300 mm to replace it with construction profile.</b>' + '<br><br>'
+		
+		info += '<b>Note:</b>' + ' '
+		info += 'The replace features are considered for final stage of furniture designing. '
+		info += 'Some kind of detailed preview stage. To keep furniture designing process quick and simple, '
+		info += 'first You should create full furniture model with the basic Cube panels. '
+		info += 'Then, if the model is acceptable for You and You want to make it more detailed You '
+		info += 'can replace all the needed furniture elements with construction profiles just by single click. '
+		info += '<br><br>'
+		info += 'Do not use the replace feature at the beginning because the Magic Panels stop working '
+		info += 'and the furniture designing process will be much longer and more complicated. '
+		info += 'If You create construction profile by mistake, You can move it and resize but it is better '
+		info += 'to not keep furniture designing process like this. If You need make operation at final object, '
+		info += 'better find base object e.g. base Pad object in Thickness, and apply the operation on it. '
+
+		showInfo("panel2profile", info)
 
 
 # ###################################################################################################################

@@ -1567,36 +1567,35 @@ def setDecoration(iObj, iCaller="setDecoration"):
 # ###################################################################################################################
 def setMounting(iObj, iCaller="setMounting"):
 
-	#try:
+	try:
 
-	# init variables
-	vArrNames = []
-	vArrValues = []
-	vType = ""
+		# init variables
+		vArrNames = []
+		vArrValues = []
+		vType = ""
 
-	if iObj.isDerivedFrom("Part::Cylinder"):
+		if iObj.isDerivedFrom("Part::Cylinder"):
 
-		vType = gLang19 + " " + str(int(2 * iObj.Radius))
+			vType = gLang19 + " " + str(int(2 * iObj.Radius))
 
-		vArrNames.append(gLang20)
-		v = "d;" + str(2 * iObj.Radius.Value)
-		vArrValues.append(v)
+			vArrNames.append(gLang20)
+			v = "d;" + str(2 * iObj.Radius.Value)
+			vArrValues.append(v)
 
-		vArrNames.append(gLang21)
-		v = "d;" + str(iObj.Height.Value)
-		vArrValues.append(v)
+			vArrNames.append(gLang21)
+			v = "d;" + str(iObj.Height.Value)
+			vArrValues.append(v)
 
-	# set db for additional report
-	if vType != "":
-		setDBAdditional(iObj, vType, vArrNames, vArrValues, iCaller)
+		# set db for additional report
+		if vType != "":
+			setDBAdditional(iObj, vType, vArrNames, vArrValues, iCaller)
 		
-	'''
 	except:
 		
 		# if there is wrong structure
 		showError(iCaller, iObj, "setMounting", "wrong structure")
 		return -1
-	'''
+
 	return 0
 
 
@@ -1623,9 +1622,14 @@ def setProfiles(iObj, iCaller="setProfiles"):
 			# sizes
 			vArrNames.append(gLang18)
 			
-			v1 = getUnit(iObj.Base[0].Profile[0].Constraints[10].Value, "d", iCaller)
-			v2 = getUnit(iObj.Base[0].Length.Value, "d", iCaller)
-			v3 = getUnit(iObj.Base[0].Profile[0].Constraints[9].Value, "d", iCaller)
+			s = [ iObj.Base[0].Profile[0].Constraints[10].Value, 
+				iObj.Base[0].Length.Value, 
+				iObj.Base[0].Profile[0].Constraints[9].Value ]
+			s.sort()
+			
+			v1 = getUnit(s[0], "d", iCaller)
+			v2 = getUnit(s[1], "d", iCaller)
+			v3 = getUnit(s[2], "d", iCaller)
 			
 			v = ""
 			v += v1 + " " + sUnitsMetric
@@ -1660,9 +1664,14 @@ def setProfiles(iObj, iCaller="setProfiles"):
 			# sizes
 			vArrNames.append(gLang18)
 			
-			v1 = getUnit(iObj.Base.W.Value, "d", iCaller)
-			v2 = getUnit(iObj.Base.H.Value, "d", iCaller)
-			v3 = getUnit(iObj.ComputedLength.Value, "d", iCaller)
+			s = [ iObj.Base.W.Value, 
+				iObj.Base.H.Value, 
+				iObj.ComputedLength.Value ]
+			s.sort()
+			
+			v1 = getUnit(s[0], "d", iCaller)
+			v2 = getUnit(s[1], "d", iCaller)
+			v3 = getUnit(s[2], "d", iCaller)
 			
 			v = ""
 			v += v1 + " " + sUnitsMetric

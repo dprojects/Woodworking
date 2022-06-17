@@ -91,7 +91,8 @@ def getItems(iType):
 	if iType == "Magic Panels - replace":
 		
 		parts = [
-			"rpanelPad"
+			"rpanelPad",
+			"panel2profile"
 		]
 
 	if iType == "Furniture Parts":

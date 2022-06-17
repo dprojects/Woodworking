@@ -142,6 +142,9 @@ Tools = [
 	# Magic Panels - replace
 	# #################################################################################################################################
 	
-	"rpanelPad", "MagicPanels", "rpanelPad", "panel, replace Cube to Pad", "This is replace panel and it will remove the selected Cube object and replace it with exactly the same Pad object. So, you will be able to use more transformations on that Pad."
+	"rpanelPad", "MagicPanels", "rpanelPad", "panel, replace Cube to Pad", "This is replace panel and it will remove the selected Cube object and replace it with exactly the same Pad object. So, you will be able to use more transformations on that Pad.",
+	
+	"panel2profile", "MagicPanels", "panel2profile", "panel to construction profile, 1 mm", "Replace selected Cube panel with construction profile."
+	
 ]
 
