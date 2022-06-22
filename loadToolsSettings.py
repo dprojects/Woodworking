@@ -28,7 +28,11 @@ Tools = [
 	
 	"fitModel", "", "fitModel", "fitModel", "Fit 3D model to the screen and set base orientation (XY, 0 key).",
 	
+	"magicAngle", "", "magicAngle", "magicAngle", "Allows to rotate panels and even other more complicated objects, like construction profiles.",
+
 	"magicManager", "MagicPanels", "magicManager", "magicManager", "If you have problem with unexpected result of Magic Panels, you can use this tool to preview panel before creation. It may take more time to create panel, but you can select exact panel to apply, also the edge and vertex position. This tool allows to create panel at selected face or between two faces.",
+
+	"magicMove", "MagicPanels", "magicMove", "magicMove", "If you have problem with unexpected result of panel movements via dedicated icons, you can use this tool to precisely move panel into desired direction. This tool allow to turn off and on axis cross and resize corner cross size.",
 
 	# #################################################################################################################################
 	# Magic Panels - default
@@ -62,38 +66,6 @@ Tools = [
 
 	"panelCopyZY", "MagicPanels", "panelCopyZY", "copy panel to ZY", "Copy selected panel to ZY direction, described by the icon.  If you select any supported panel in other direction, e.g. XY, this will be some kind of copy panel with exact rotation. Change dimensions and placement at object property window, if needed.",
 
-	# #################################################################################################################################
-	# Magic Panels - face
-	# #################################################################################################################################
-	
-	"panelFaceXY", "MagicPanels", "panelFaceXY", "copy panel at face to XY", "Copy selected panel at selected face to XY direction, described by the icon.",
-
-	"panelFaceYX", "MagicPanels", "panelFaceYX", "copy panel at face to YX", "Copy selected panel at selected face to YX direction, described by the icon.",
-	
-	"panelFaceXZ", "MagicPanels", "panelFaceXZ", "copy panel at face to XZ", "Copy selected panel at selected face to XZ direction, described by the icon.",
-
-	"panelFaceZX", "MagicPanels", "panelFaceZX", "copy panel at face to ZX", "Copy selected panel at selected face to ZX direction, described by the icon.",
-	
-	"panelFaceYZ", "MagicPanels", "panelFaceYZ", "copy panel at face to YZ", "Copy selected panel at selected face to YZ direction, described by the icon.",
-
-	"panelFaceZY", "MagicPanels", "panelFaceZY", "copy panel at face to ZY", "Copy selected panel at selected face to ZY direction, described by the icon.",
-		
-	# #################################################################################################################################
-	# Magic Panels - between
-	# #################################################################################################################################
-	
-	"panelBetweenXY", "MagicPanels", "panelBetweenXY", "panel between 2 faces to XY", "Copy 1st selected panel between 1st and 2nd selected faces according to the XY direction, described by the icon.",
-
-	"panelBetweenYX", "MagicPanels", "panelBetweenYX", "panel between 2 faces to YX", "Copy 1st selected panel between 1st and 2nd selected faces according to the YX direction, described by the icon.",
-	
-	"panelBetweenXZ", "MagicPanels", "panelBetweenXZ", "panel between 2 faces to XZ", "Copy 1st selected panel between 1st and 2nd selected faces according to the XZ direction, described by the icon.",
-
-	"panelBetweenZX", "MagicPanels", "panelBetweenZX", "panel between 2 faces to ZX", "Copy 1st selected panel between 1st and 2nd selected faces according to the ZX direction, described by the icon.",
-	
-	"panelBetweenYZ", "MagicPanels", "panelBetweenYZ", "panel between 2 faces to YZ", "Copy 1st selected panel between 1st and 2nd selected faces according to the YZ direction, described by the icon.",
-
-	"panelBetweenZY", "MagicPanels", "panelBetweenZY", "panel between 2 faces to ZY", "Copy 1st selected panel between 1st and 2nd selected faces according to the ZY direction, described by the icon.",
-	
 	# #################################################################################################################################
 	# Magic Panels - move
 	# #################################################################################################################################
@@ -144,7 +116,41 @@ Tools = [
 	
 	"rpanelPad", "MagicPanels", "rpanelPad", "panel, replace Cube to Pad", "This is replace panel and it will remove the selected Cube object and replace it with exactly the same Pad object. So, you will be able to use more transformations on that Pad.",
 	
-	"panel2profile", "MagicPanels", "panel2profile", "panel to construction profile, 1 mm", "Replace selected Cube panel with construction profile."
+	"panel2profile", "MagicPanels", "panel2profile", "panel to construction profile, 1 mm", "Replace selected Cube panel with construction profile.",
+	
+	# #################################################################################################################################
+	# Magic Panels - face
+	# #################################################################################################################################
+	
+	"panelFaceXY", "MagicPanels", "panelFaceXY", "copy panel at face to XY", "Copy selected panel at selected face to XY direction, described by the icon.",
+
+	"panelFaceYX", "MagicPanels", "panelFaceYX", "copy panel at face to YX", "Copy selected panel at selected face to YX direction, described by the icon.",
+	
+	"panelFaceXZ", "MagicPanels", "panelFaceXZ", "copy panel at face to XZ", "Copy selected panel at selected face to XZ direction, described by the icon.",
+
+	"panelFaceZX", "MagicPanels", "panelFaceZX", "copy panel at face to ZX", "Copy selected panel at selected face to ZX direction, described by the icon.",
+	
+	"panelFaceYZ", "MagicPanels", "panelFaceYZ", "copy panel at face to YZ", "Copy selected panel at selected face to YZ direction, described by the icon.",
+
+	"panelFaceZY", "MagicPanels", "panelFaceZY", "copy panel at face to ZY", "Copy selected panel at selected face to ZY direction, described by the icon.",
+		
+	# #################################################################################################################################
+	# Magic Panels - between
+	# #################################################################################################################################
+	
+	"panelBetweenXY", "MagicPanels", "panelBetweenXY", "panel between 2 faces to XY", "Copy 1st selected panel between 1st and 2nd selected faces according to the XY direction, described by the icon.",
+
+	"panelBetweenYX", "MagicPanels", "panelBetweenYX", "panel between 2 faces to YX", "Copy 1st selected panel between 1st and 2nd selected faces according to the YX direction, described by the icon.",
+	
+	"panelBetweenXZ", "MagicPanels", "panelBetweenXZ", "panel between 2 faces to XZ", "Copy 1st selected panel between 1st and 2nd selected faces according to the XZ direction, described by the icon.",
+
+	"panelBetweenZX", "MagicPanels", "panelBetweenZX", "panel between 2 faces to ZX", "Copy 1st selected panel between 1st and 2nd selected faces according to the ZX direction, described by the icon.",
+	
+	"panelBetweenYZ", "MagicPanels", "panelBetweenYZ", "panel between 2 faces to YZ", "Copy 1st selected panel between 1st and 2nd selected faces according to the YZ direction, described by the icon.",
+
+	"panelBetweenZY", "MagicPanels", "panelBetweenZY", "panel between 2 faces to ZY", "Copy 1st selected panel between 1st and 2nd selected faces according to the ZY direction, described by the icon."
+	
+
 	
 ]
 

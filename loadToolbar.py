@@ -7,8 +7,7 @@ def getItems(iType):
 	if iType == "Parameterization":
 		
 		parts = [
-			"Spreadsheet_CreateSheet",
-			"Spreadsheet_MergeCells"
+			"Spreadsheet_CreateSheet"
 		]
 
 	if iType == "Magic Panels - default":
@@ -42,7 +41,9 @@ def getItems(iType):
 			"panelMoveYm",
 			"panelMoveZp",
 			"panelMoveZm",
-			"fitModel"
+			"magicMove",
+			"magicAngle",
+			"fitModel",
 		]
 
 	if iType == "Magic Panels - resize":
@@ -166,6 +167,8 @@ def getItems(iType):
 	if iType == "Code and Debug":
 		
 		parts = [
+			"Std_DlgMacroRecord",
+			"Std_MacroStopRecord",
 			"Std_DlgMacroExecute",
 			"Std_DlgMacroExecuteDirect",
 			"Std_DependencyGraph",

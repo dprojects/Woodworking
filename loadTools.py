@@ -330,6 +330,46 @@ FreeCADGui.addCommand("fitModel", fitModel())
 	
 
 # ######################################################################################################################
+class magicAngle():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "magicAngle.xpm"),
+				"Accel"   : "",
+				"MenuText": "magicAngle",
+				"ToolTip" : "Allows to rotate panels and even other more complicated objects, like construction profiles."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "magicAngle"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("magicAngle", magicAngle())
+
+	
+
+# ######################################################################################################################
 class magicManager():
 
 	def GetResources(self):
@@ -366,6 +406,46 @@ class magicManager():
 		return True
 
 FreeCADGui.addCommand("magicManager", magicManager())
+
+	
+
+# ######################################################################################################################
+class magicMove():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "magicMove.xpm"),
+				"Accel"   : "",
+				"MenuText": "magicMove",
+				"ToolTip" : "If you have problem with unexpected result of panel movements via dedicated icons, you can use this tool to precisely move panel into desired direction. This tool allow to turn off and on axis cross and resize corner cross size."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "magicMove"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("magicMove", magicMove())
 
 	
 
@@ -846,486 +926,6 @@ class panelCopyZY():
 		return True
 
 FreeCADGui.addCommand("panelCopyZY", panelCopyZY())
-
-	
-
-# ######################################################################################################################
-class panelFaceXY():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "panelFaceXY.xpm"),
-				"Accel"   : "",
-				"MenuText": "copy panel at face to XY",
-				"ToolTip" : "Copy selected panel at selected face to XY direction, described by the icon."}
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "panelFaceXY"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("panelFaceXY", panelFaceXY())
-
-	
-
-# ######################################################################################################################
-class panelFaceYX():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "panelFaceYX.xpm"),
-				"Accel"   : "",
-				"MenuText": "copy panel at face to YX",
-				"ToolTip" : "Copy selected panel at selected face to YX direction, described by the icon."}
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "panelFaceYX"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("panelFaceYX", panelFaceYX())
-
-	
-
-# ######################################################################################################################
-class panelFaceXZ():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "panelFaceXZ.xpm"),
-				"Accel"   : "",
-				"MenuText": "copy panel at face to XZ",
-				"ToolTip" : "Copy selected panel at selected face to XZ direction, described by the icon."}
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "panelFaceXZ"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("panelFaceXZ", panelFaceXZ())
-
-	
-
-# ######################################################################################################################
-class panelFaceZX():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "panelFaceZX.xpm"),
-				"Accel"   : "",
-				"MenuText": "copy panel at face to ZX",
-				"ToolTip" : "Copy selected panel at selected face to ZX direction, described by the icon."}
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "panelFaceZX"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("panelFaceZX", panelFaceZX())
-
-	
-
-# ######################################################################################################################
-class panelFaceYZ():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "panelFaceYZ.xpm"),
-				"Accel"   : "",
-				"MenuText": "copy panel at face to YZ",
-				"ToolTip" : "Copy selected panel at selected face to YZ direction, described by the icon."}
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "panelFaceYZ"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("panelFaceYZ", panelFaceYZ())
-
-	
-
-# ######################################################################################################################
-class panelFaceZY():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "panelFaceZY.xpm"),
-				"Accel"   : "",
-				"MenuText": "copy panel at face to ZY",
-				"ToolTip" : "Copy selected panel at selected face to ZY direction, described by the icon."}
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "panelFaceZY"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("panelFaceZY", panelFaceZY())
-
-	
-
-# ######################################################################################################################
-class panelBetweenXY():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "panelBetweenXY.xpm"),
-				"Accel"   : "",
-				"MenuText": "panel between 2 faces to XY",
-				"ToolTip" : "Copy 1st selected panel between 1st and 2nd selected faces according to the XY direction, described by the icon."}
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "panelBetweenXY"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("panelBetweenXY", panelBetweenXY())
-
-	
-
-# ######################################################################################################################
-class panelBetweenYX():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "panelBetweenYX.xpm"),
-				"Accel"   : "",
-				"MenuText": "panel between 2 faces to YX",
-				"ToolTip" : "Copy 1st selected panel between 1st and 2nd selected faces according to the YX direction, described by the icon."}
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "panelBetweenYX"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("panelBetweenYX", panelBetweenYX())
-
-	
-
-# ######################################################################################################################
-class panelBetweenXZ():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "panelBetweenXZ.xpm"),
-				"Accel"   : "",
-				"MenuText": "panel between 2 faces to XZ",
-				"ToolTip" : "Copy 1st selected panel between 1st and 2nd selected faces according to the XZ direction, described by the icon."}
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "panelBetweenXZ"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("panelBetweenXZ", panelBetweenXZ())
-
-	
-
-# ######################################################################################################################
-class panelBetweenZX():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "panelBetweenZX.xpm"),
-				"Accel"   : "",
-				"MenuText": "panel between 2 faces to ZX",
-				"ToolTip" : "Copy 1st selected panel between 1st and 2nd selected faces according to the ZX direction, described by the icon."}
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "panelBetweenZX"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("panelBetweenZX", panelBetweenZX())
-
-	
-
-# ######################################################################################################################
-class panelBetweenYZ():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "panelBetweenYZ.xpm"),
-				"Accel"   : "",
-				"MenuText": "panel between 2 faces to YZ",
-				"ToolTip" : "Copy 1st selected panel between 1st and 2nd selected faces according to the YZ direction, described by the icon."}
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "panelBetweenYZ"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("panelBetweenYZ", panelBetweenYZ())
-
-	
-
-# ######################################################################################################################
-class panelBetweenZY():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "panelBetweenZY.xpm"),
-				"Accel"   : "",
-				"MenuText": "panel between 2 faces to ZY",
-				"ToolTip" : "Copy 1st selected panel between 1st and 2nd selected faces according to the ZY direction, described by the icon."}
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "panelBetweenZY"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("panelBetweenZY", panelBetweenZY())
 
 	
 
@@ -2046,5 +1646,485 @@ class panel2profile():
 		return True
 
 FreeCADGui.addCommand("panel2profile", panel2profile())
+
+	
+
+# ######################################################################################################################
+class panelFaceXY():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelFaceXY.xpm"),
+				"Accel"   : "",
+				"MenuText": "copy panel at face to XY",
+				"ToolTip" : "Copy selected panel at selected face to XY direction, described by the icon."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelFaceXY"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelFaceXY", panelFaceXY())
+
+	
+
+# ######################################################################################################################
+class panelFaceYX():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelFaceYX.xpm"),
+				"Accel"   : "",
+				"MenuText": "copy panel at face to YX",
+				"ToolTip" : "Copy selected panel at selected face to YX direction, described by the icon."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelFaceYX"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelFaceYX", panelFaceYX())
+
+	
+
+# ######################################################################################################################
+class panelFaceXZ():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelFaceXZ.xpm"),
+				"Accel"   : "",
+				"MenuText": "copy panel at face to XZ",
+				"ToolTip" : "Copy selected panel at selected face to XZ direction, described by the icon."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelFaceXZ"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelFaceXZ", panelFaceXZ())
+
+	
+
+# ######################################################################################################################
+class panelFaceZX():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelFaceZX.xpm"),
+				"Accel"   : "",
+				"MenuText": "copy panel at face to ZX",
+				"ToolTip" : "Copy selected panel at selected face to ZX direction, described by the icon."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelFaceZX"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelFaceZX", panelFaceZX())
+
+	
+
+# ######################################################################################################################
+class panelFaceYZ():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelFaceYZ.xpm"),
+				"Accel"   : "",
+				"MenuText": "copy panel at face to YZ",
+				"ToolTip" : "Copy selected panel at selected face to YZ direction, described by the icon."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelFaceYZ"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelFaceYZ", panelFaceYZ())
+
+	
+
+# ######################################################################################################################
+class panelFaceZY():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelFaceZY.xpm"),
+				"Accel"   : "",
+				"MenuText": "copy panel at face to ZY",
+				"ToolTip" : "Copy selected panel at selected face to ZY direction, described by the icon."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelFaceZY"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelFaceZY", panelFaceZY())
+
+	
+
+# ######################################################################################################################
+class panelBetweenXY():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelBetweenXY.xpm"),
+				"Accel"   : "",
+				"MenuText": "panel between 2 faces to XY",
+				"ToolTip" : "Copy 1st selected panel between 1st and 2nd selected faces according to the XY direction, described by the icon."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelBetweenXY"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelBetweenXY", panelBetweenXY())
+
+	
+
+# ######################################################################################################################
+class panelBetweenYX():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelBetweenYX.xpm"),
+				"Accel"   : "",
+				"MenuText": "panel between 2 faces to YX",
+				"ToolTip" : "Copy 1st selected panel between 1st and 2nd selected faces according to the YX direction, described by the icon."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelBetweenYX"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelBetweenYX", panelBetweenYX())
+
+	
+
+# ######################################################################################################################
+class panelBetweenXZ():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelBetweenXZ.xpm"),
+				"Accel"   : "",
+				"MenuText": "panel between 2 faces to XZ",
+				"ToolTip" : "Copy 1st selected panel between 1st and 2nd selected faces according to the XZ direction, described by the icon."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelBetweenXZ"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelBetweenXZ", panelBetweenXZ())
+
+	
+
+# ######################################################################################################################
+class panelBetweenZX():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelBetweenZX.xpm"),
+				"Accel"   : "",
+				"MenuText": "panel between 2 faces to ZX",
+				"ToolTip" : "Copy 1st selected panel between 1st and 2nd selected faces according to the ZX direction, described by the icon."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelBetweenZX"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelBetweenZX", panelBetweenZX())
+
+	
+
+# ######################################################################################################################
+class panelBetweenYZ():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelBetweenYZ.xpm"),
+				"Accel"   : "",
+				"MenuText": "panel between 2 faces to YZ",
+				"ToolTip" : "Copy 1st selected panel between 1st and 2nd selected faces according to the YZ direction, described by the icon."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelBetweenYZ"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelBetweenYZ", panelBetweenYZ())
+
+	
+
+# ######################################################################################################################
+class panelBetweenZY():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelBetweenZY.xpm"),
+				"Accel"   : "",
+				"MenuText": "panel between 2 faces to ZY",
+				"ToolTip" : "Copy 1st selected panel between 1st and 2nd selected faces according to the ZY direction, described by the icon."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelBetweenZY"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelBetweenZY", panelBetweenZY())
 
 	

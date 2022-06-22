@@ -1,7 +1,7 @@
 # ###################################################################################################################
 
-__doc__ = "This is FreeCAD library for Magic Panels"
-__author__ = "Darek L (aka dprojects)"
+__doc__ = "This is FreeCAD library for Magic Panels at Woodworking workbench."
+__author__ = "Darek L (github.com/dprojects)"
 
 # ###################################################################################################################
 
@@ -44,6 +44,80 @@ def getReference():
 		return obj.Base[0]
 	
 	return -1
+
+
+# ###################################################################################################################
+def getPlacement(iObj):
+	'''
+	Get placement with rotation info for given object.
+	
+	getPlacement(iObj)
+	
+	Args:
+	
+		iObj: object to get placement
+
+	Usage:
+	
+		[ x, y, z, r ] = getPlacement(gObj)
+		
+	Result:
+	
+		return [ x, y, z, r ] array with placement info, where:
+		
+		x: X Axis object position
+		y: Y Axis object position
+		z: Z Axis object position
+		r: Rotation object
+
+	'''
+
+	if iObj.isDerivedFrom("Part::Box"):
+		ref = iObj.Placement
+	
+	if iObj.isDerivedFrom("PartDesign::Pad"):
+		ref = iObj.Profile[0].AttachmentOffset
+
+	x = ref.Base.x
+	y = ref.Base.y
+	z = ref.Base.z
+	r = ref.Rotation
+
+	return [ x, y, z, r ]
+
+
+# ###################################################################################################################
+def setPlacement(iObj, iX, iY, iZ, iR):
+	'''
+	Set placement with rotation for given object.
+	
+	setPlacement(iObj, iX, iY, iZ, iR)
+	
+	Args:
+	
+		iObj: object to set custom placement and rotation
+		iX: X Axis object position
+		iX: Y Axis object position
+		iZ: Z Axis object position
+		iR: Rotation object
+
+	Usage:
+	
+		setPlacement(gObj, 100, 100, 200, r)
+		
+	Result:
+	
+		Object gObj should be moved into 100, 100, 200 position without rotation.
+
+	'''
+
+	if iObj.isDerivedFrom("Part::Box"):
+		iObj.Placement.Base = FreeCAD.Vector(iX, iY, iZ)
+		iObj.Placement.Rotation = iR
+	
+	if iObj.isDerivedFrom("PartDesign::Pad"):
+		iObj.Profile[0].AttachmentOffset.Base = FreeCAD.Vector(iX, iY, iZ)
+		iObj.Profile[0].AttachmentOffset.Rotation = iR
 
 
 # ###################################################################################################################
@@ -543,7 +617,7 @@ def sizesToCubePanel(iObj, iType):
 
 
 # ###################################################################################################################
-def makePad(iSize1, iSize2, iSize3, iX, iY, iZ, iType, iPadName="Pad"):
+def makePad(iSize1, iSize2, iSize3, iX, iY, iZ, iRotation, iType, iPadName="Pad"):
 	'''
 	Allow to create Part, Plane, Body, Pad, Sketch objects.
 	
@@ -554,17 +628,21 @@ def makePad(iSize1, iSize2, iSize3, iX, iY, iZ, iType, iPadName="Pad"):
 		iSize1: SizeX
 		iSize2: SizeY
 		iSize3: Pad Length
+		
 		iX: Sketch AttachmentOffset X
 		iY: Sketch AttachmentOffset Y
 		iZ: Sketch AttachmentOffset Z
-		iPadName="Pad": Label for created Pad and other parts
+		iRotation: rotation object
+		
 		iType: "XY", "YX", "XZ", "ZX", "YZ", "ZY"
+		iPadName="Pad": Label for created Pad and other parts
 	
 	Usage:
 	
 		import MagicPanels
 		
-		MagicPanels.makePad("600", "300", "18", 0, 0, 0, "XY", iPadName="Pad"):
+		r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 0.00)
+		MagicPanels.makePad("600", "300", "18", 0, 0, 0, r, "XY", iPadName="Pad"):
 		
 	Result:
 	
@@ -590,7 +668,7 @@ def makePad(iSize1, iSize2, iSize3, iX, iY, iZ, iType, iPadName="Pad"):
 		sketch.Support = (body.Origin.OriginFeatures[4])
 	if iType == "YZ" or iType == "ZY":
 		sketch.Support = (body.Origin.OriginFeatures[5])
-		
+
 	sketch.MapMode = 'FlatFace'
 
 	geoList = []
@@ -621,8 +699,7 @@ def makePad(iSize1, iSize2, iSize3, iX, iY, iZ, iType, iPadName="Pad"):
 	sketch.renameConstraint(10, u'SizeY')
 
 	position = FreeCAD.Vector(iX, iY, iZ)
-	rotation = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 0.00)
-	sketch.AttachmentOffset = FreeCAD.Placement(position, rotation)
+	sketch.AttachmentOffset = FreeCAD.Placement(position, iRotation)
 
 	pad = body.newObject('PartDesign::Pad', iPadName)
 	pad.Profile = sketch
@@ -846,24 +923,9 @@ def panelMove(iType):
 		[ x, y, z ] = convertPosition(gObj, x, y, z)
 		[ x, y, z ] = getModelRotation(x, y, z)
 
-		if gObj.isDerivedFrom("Part::Box"):
-			ref = gObj.Placement
-		else:
-			ref = gObj.Profile[0].AttachmentOffset
-		
-		x = ref.Base.x + x
-		y = ref.Base.y + y
-		z = ref.Base.z + z
+		[ px, py, pz, r ] = getPlacement(gObj)
+		setPlacement(gObj, px+x, py+y, pz+z, r)
 
-		if gObj.isDerivedFrom("Part::Box"):
-			gObj.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
-		
-		else:
-
-			v = FreeCAD.Vector(x, y, z)
-			r = FreeCAD.Rotation(FreeCAD.Vector(0.00,0.00,1.00), 0.00)
-			gObj.Profile[0].AttachmentOffset = FreeCAD.Placement(v, r)
-		
 		FreeCAD.activeDocument().recompute()
 	
 	except:
@@ -1403,9 +1465,7 @@ def panelReplacePad(iLabel="rpanelPad"):
 		if direction == "YX" or direction == "ZX" or direction == "ZY":
 			s = [ sizes[1], sizes[2], sizes[0] ]
 
-		X = gObj.Placement.Base.x
-		Y = gObj.Placement.Base.y
-		Z = gObj.Placement.Base.z
+		[ X, Y, Z, r ] = getPlacement(gObj)
 		
 		if direction == "XY" or direction == "YX":
 			[ x, y, z ] = [ X, Y, Z ]
@@ -1415,9 +1475,9 @@ def panelReplacePad(iLabel="rpanelPad"):
 
 		if direction == "YZ" or direction == "ZY":
 			[ x, y, z ] = [ Y, Z, X ]
-
-		[ part, body, sketch, pad ] = makePad(s[0], s[1], s[2], x, y, z, direction, iLabel)
-
+			
+		[ part, body, sketch, pad ] = makePad(s[0], s[1], s[2], x, y, z, r, direction, iLabel)
+		
 		FreeCAD.ActiveDocument.removeObject(gObj.Name)
 		FreeCAD.activeDocument().recompute()
 		
@@ -1469,58 +1529,64 @@ def panel2profile():
 
 	try:
 
-		gObj = FreeCADGui.Selection.getSelection()[0]
-		
-		sizes = getSizes(gObj)
-		sizes.sort()
-		if sizes[0] != sizes[1]:
+		profiles = []
+		objects = FreeCADGui.Selection.getSelection()
+		if len(objects) == 0:
 			raise
-		
-		[ part, body, sketch, pad ] = panelReplacePad("Construction")
-		profile = body.newObject('PartDesign::Thickness','Profile')
-		
-		faces = []
-		i = 0
-		for f in pad.Shape.Faces:
-			if int(round(pad.Shape.Faces[i].Length)) == int(round(4 * sizes[0])):
-				faces.append("Face"+str(i+1))
-
-			i = i + 1
 			
-		profile.Base = (pad, faces)
-		profile.Value = 1
-		profile.Reversed = 1
-		profile.Mode = 0
-		profile.Intersection = 0
-		profile.Join = 0
-
-		pad.Visibility = False
-
-		FreeCAD.activeDocument().recompute()
+		for gObj in objects:
 		
-		colors = [ (0.0, 0.0, 0.0, 0.0),
-			(0.0, 0.0, 0.0, 0.0),
-			(0.0, 0.0, 0.0, 0.0),
-			(0.0, 0.0, 0.0, 0.0),
-			(0.0, 0.0, 0.0, 0.0),
-			(0.0, 1.0, 0.0, 0.0),
-			(0.0, 0.0, 0.0, 0.0),
-			(0.0, 1.0, 0.0, 0.0),
-			(0.0, 1.0, 0.0, 0.0),
-			(0.0, 1.0, 0.0, 0.0) ]
+			sizes = getSizes(gObj)
+			sizes.sort()
+			if sizes[0] != sizes[1]:
+				raise
+			
+			[ part, body, sketch, pad ] = panelReplacePad("Construction")
+			profile = body.newObject('PartDesign::Thickness','Profile')
+			
+			faces = []
+			i = 0
+			for f in pad.Shape.Faces:
+				if int(round(pad.Shape.Faces[i].Length)) == int(round(4 * sizes[0])):
+					faces.append("Face"+str(i+1))
 
-		profile.ViewObject.DiffuseColor = colors
+				i = i + 1
+				
+			profile.Base = (pad, faces)
+			profile.Value = 1
+			profile.Reversed = 1
+			profile.Mode = 0
+			profile.Intersection = 0
+			profile.Join = 0
 
-		FreeCAD.activeDocument().recompute()
+			pad.Visibility = False
+
+			FreeCAD.activeDocument().recompute()
+			
+			colors = [ (0.0, 0.0, 0.0, 0.0),
+				(0.0, 0.0, 0.0, 0.0),
+				(0.0, 0.0, 0.0, 0.0),
+				(0.0, 0.0, 0.0, 0.0),
+				(0.0, 0.0, 0.0, 0.0),
+				(0.0, 1.0, 0.0, 0.0),
+				(0.0, 0.0, 0.0, 0.0),
+				(0.0, 1.0, 0.0, 0.0),
+				(0.0, 1.0, 0.0, 0.0),
+				(0.0, 1.0, 0.0, 0.0) ]
+
+			profile.ViewObject.DiffuseColor = colors
+
+			FreeCAD.activeDocument().recompute()
+			profiles.append(profile)
 		
-		return profile
+		return profiles
 	
 	except:
 		
 		info = ""
 		
-		info += '<b>If you have active document, please select panel (Cube) with 2 equal sizes e.g. '
-		info += '20 mm x 20 mm x 300 mm to replace it with construction profile.</b>' + '<br><br>'
+		info += '<b>If you have active document, please select panels (Cubes) with 2 equal sizes e.g. '
+		info += '20 mm x 20 mm x 300 mm to replace it with construction profiles.</b>' + '<br><br>'
 		
 		info += '<b>Note:</b>' + ' '
 		info += 'The replace features are considered for final stage of furniture designing. '
