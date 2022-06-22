@@ -46,16 +46,16 @@ Sorry, for that.
 
 **Current development platform:**
 
-OS: Ubuntu 22.04 LTS (XFCE/xubuntu)
-Word size of FreeCAD: 64-bit
-Version: **0.20.29177** (Git) AppImage
-Build type: Release
-Branch: (HEAD detached at 0.20)
-Hash: 68e337670e227889217652ddac593c93b5e8dc94
-Python 3.9.13, Qt 5.12.9, Coin 4.0.0, Vtk 9.1.0, OCC 7.5.3
-Locale: English/United States (en_US)
-Installed mods: 
-* Woodworking **0.20.29177**
+	OS: Ubuntu 22.04 LTS (XFCE/xubuntu)
+	Word size of FreeCAD: 64-bit
+	Version: 0.20.29177 (Git) AppImage
+	Build type: Release
+	Branch: (HEAD detached at 0.20)
+	Hash: 68e337670e227889217652ddac593c93b5e8dc94
+	Python 3.9.13, Qt 5.12.9, Coin 4.0.0, Vtk 9.1.0, OCC 7.5.3
+	Locale: English/United States (en_US)
+	Installed mods: 
+	* Woodworking 0.20.29177
 
 **Note:** Make sure Your current Woodworking workbench version has the same version number as the FreeCAD version. To get better workbench stability the further Woodworking workbench will be developed according to the specified FreeCAD version, that will never change. Woodworking workbench version will get always the same version number as the approved FreeCAD build, so You will be sure they should work with each other.
 
