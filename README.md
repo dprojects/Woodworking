@@ -29,9 +29,7 @@ Sorry, for that.
 
 ![000](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/000.png)
 
-# Install
-
-### Setup
+# How to install
 
 * Download and unpack `Woodworking` repository.
 * Copy the folder `Woodworking` to the FreeCAD module directory.
@@ -42,26 +40,26 @@ Sorry, for that.
 	* FreeCAD version < 0.20.27936: `~.FreeCAD/Mod/Woodworking`
 	* FreeCAD version >= 0.20.27936: `~.local/share/FreeCAD/Mod/Woodworking`
 
-### Certified platforms
+# Certified platforms
 
 **FreeCAD version:** [FreeCAD-0.20.0-Linux-x86_64.AppImage](https://github.com/FreeCAD/FreeCAD/releases/download/0.20/FreeCAD-0.20.0-Linux-x86_64.AppImage)
 
-**Development platform:**
+**Current development platform:**
 
-	OS: Ubuntu 22.04 LTS (XFCE/xubuntu)
-	Word size of FreeCAD: 64-bit
-	Version: **0.20.29177** (Git) AppImage
-	Build type: Release
-	Branch: (HEAD detached at 0.20)
-	Hash: 68e337670e227889217652ddac593c93b5e8dc94
-	Python 3.9.13, Qt 5.12.9, Coin 4.0.0, Vtk 9.1.0, OCC 7.5.3
-	Locale: English/United States (en_US)
-	Installed mods: 
-	* Woodworking **0.20.29177**
+OS: Ubuntu 22.04 LTS (XFCE/xubuntu)
+Word size of FreeCAD: 64-bit
+Version: **0.20.29177** (Git) AppImage
+Build type: Release
+Branch: (HEAD detached at 0.20)
+Hash: 68e337670e227889217652ddac593c93b5e8dc94
+Python 3.9.13, Qt 5.12.9, Coin 4.0.0, Vtk 9.1.0, OCC 7.5.3
+Locale: English/United States (en_US)
+Installed mods: 
+* Woodworking **0.20.29177**
 
 **Note:** Make sure Your current Woodworking workbench version has the same version number as the FreeCAD version. To get better workbench stability the further Woodworking workbench will be developed according to the specified FreeCAD version, that will never change. Woodworking workbench version will get always the same version number as the approved FreeCAD build, so You will be sure they should work with each other.
 
-I do not have Windows or macOS, so I am not able to say if this work or not. Should work everywhere with AppImage but... You never know, this is why this section is here, to create stable Woodworking platform.
+I do not have `Windows` or `macOS`, so I am not able to say if this work or not. Should work everywhere with AppImage but... You never know, this is why this section is here, to create stable Woodworking platform.
 
 # Screenshots
 
