@@ -8,7 +8,7 @@ This is Woodworking workbench for FreeCAD.
 
 It has been created because of my woodworking and coding hobby. Everything started from [getDimensions](https://github.com/dprojects/getDimensions/commits/master) project long time ago. I wanted to have [simple cut-list for chipboards order](https://github.com/dprojects/getDimensions/commit/a6f0a2221e90f717be95bd0dc1cc9f1ede95a329) and I found FreeCAD with low hardware requirements and possibility to implement the cut-list. Now it has been transformed into whole Woodworking workbench.
 
-Currently the Woodworking workbench is one-man project, mostly private but I share it with others. There is no huge corporation behind it, so this workbench may not be so advanced like well-paid projects, there is no 24/7 support plans to buy. 
+Currently the Woodworking workbench is one-man project, mostly private but I share it with others. There is no huge corporation behind it, so this workbench may not be so advanced like well-paid projects, there is no 24/7 support plans to buy.
 
 Also, for now it is not possible for me to record all the Woodworking workbench features. It would probably takes several hours and I don't want to run special youtube channel for that and record tutorials only. I feel better creating code, making quality improvements, solving problems, inventing new things and prototyping, not making tutorials. 
 Sorry, for that.
@@ -24,8 +24,8 @@ Sorry, for that.
 * [debugInfo](https://github.com/dprojects/Woodworking/blob/master/Tools/debugInfo.py) - allows to get quick and simple debug info for bug report.
 * [makeTransparent](https://github.com/dprojects/Woodworking/blob/master/Tools/makeTransparent.py) - allows to make all parts transparent and back to normal. You can preview all pilot holes, countersinks or any other joints like that, very simply.
 * [colorManager](https://github.com/dprojects/Woodworking/blob/master/Tools/colorManager.py) - allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected face or object and see the effect at 3D model in real-time.
-* [magicAngle](https://github.com/dprojects/Woodworking/blob/master/Tools/magicAngle.py) - allows to rotate panels and even other more complicated objects, like construction profiles.
-* [magicDowels](https://github.com/dprojects/Woodworking/blob/master/Tools/MagicPanels/magicDowels.py) - allows to add mounting points to the panel edge or surface, or even any other elements like construction profiles. Tou can add predefined mounting point e.g. screw, dowel, shelf pins or add custom mounting point. This is very quick way to add mounting points the furniture.
+* [magicAngle](https://github.com/dprojects/Woodworking/blob/master/Tools/magicAngle.py) - allows to rotate panels and even other more complicated objects, like construction profiles. If you want rotate many objects, rotate `Part` or pack all objects into `LinkGroup` and use rotation at the `LinkGroup`.
+* [magicDowels](https://github.com/dprojects/Woodworking/blob/master/Tools/MagicPanels/magicDowels.py) - allows to add mounting points to the furniture, or even any other elements like construction profiles. You can add predefined mounting points e.g. screws, dowels, shelf supporter pins or add custom mounting points. This is very quick way to add mounting points to the furniture, no calculation needed to place dowel exactly in the middle of the edge, you can do it with single click in many cases.
 * Also clean toolbar, with sections adjusted for woodworking.
 
 ![000](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/000.png)

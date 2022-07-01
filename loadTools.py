@@ -456,7 +456,7 @@ class magicDowels():
 		return {"Pixmap"  : os.path.join(iconPath, "magicDowels.xpm"),
 				"Accel"   : "",
 				"MenuText": "magicDowels",
-				"ToolTip" : "Allow to create dowels along the selected panel surface."}
+				"ToolTip" : "Allows to add mounting points to the furniture. For example you can easily add screws, dowels, shelf supporter pins or custom mounting points."}
 
 	def Activated(self):
 

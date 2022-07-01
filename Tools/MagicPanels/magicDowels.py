@@ -47,7 +47,7 @@ def showQtGUI():
 		gDONext = 32
 		gDOEdge = 0
 		
-		gNoSelection = "select panel surface"
+		gNoSelection = "please select face"
 		
 		# ############################################################################
 		# init

@@ -34,7 +34,7 @@ Tools = [
 
 	"magicMove", "MagicPanels", "magicMove", "magicMove", "If you have problem with unexpected result of panel movements via dedicated icons, you can use this tool to precisely move panel into desired direction. This tool allow to turn off and on axis cross and resize corner cross size.",
 
-	"magicDowels", "MagicPanels", "magicDowels", "magicDowels", "Allow to create dowels along the selected panel surface.",
+	"magicDowels", "MagicPanels", "magicDowels", "magicDowels", "Allows to add mounting points to the furniture. For example you can easily add screws, dowels, shelf supporter pins or custom mounting points.",
 
 	# #################################################################################################################################
 	# Magic Panels - default
