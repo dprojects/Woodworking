@@ -197,32 +197,37 @@ def showQtGUI():
 			
 			self.gCenter = []
 			
-			# you can add new center points here, if needed
+			try:
 			
-			v = self.gObj.Shape.Faces[4].Vertexes[0]
-			self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				# you can add new center points here, if needed
+				
+				v = self.gObj.Shape.Faces[4].Vertexes[0]
+				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+			
+				v = self.gObj.Shape.Faces[4].Vertexes[1]
+				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+
+				v = self.gObj.Shape.Faces[4].Vertexes[2]
+				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+
+				v = self.gObj.Shape.Faces[4].Vertexes[3]
+				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+
+				v = self.gObj.Shape.Faces[5].Vertexes[0]
+				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+
+				v = self.gObj.Shape.Faces[5].Vertexes[1]
+				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+
+				v = self.gObj.Shape.Faces[5].Vertexes[2]
+				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+
+				v = self.gObj.Shape.Faces[5].Vertexes[3]
+				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
 		
-			v = self.gObj.Shape.Faces[4].Vertexes[1]
-			self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-
-			v = self.gObj.Shape.Faces[4].Vertexes[2]
-			self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-
-			v = self.gObj.Shape.Faces[4].Vertexes[3]
-			self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-
-			v = self.gObj.Shape.Faces[5].Vertexes[0]
-			self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-
-			v = self.gObj.Shape.Faces[5].Vertexes[1]
-			self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-
-			v = self.gObj.Shape.Faces[5].Vertexes[2]
-			self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-
-			v = self.gObj.Shape.Faces[5].Vertexes[3]
-			self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-		
+			except:
+				self.gCenter.append(FreeCAD.Vector(float(0.0), float(0.0), float(0.0)))
+			
 		def setCenterSphere(self):
 			
 			v = self.gCenter[self.gCenterIndex]

@@ -1,12 +1,32 @@
-# -*- coding: utf-8 -*-
+# ###################################################################################################################
+'''
 
-# FreeCAD macro for spreadsheet export
-# Author: Darek L (aka dprojects)
-# Version: 2022.03.07
-# Latest version: https://github.com/dprojects/sheet2export
+FreeCAD macro for spreadsheet export
+Author: Darek L (github.com/dprojects)
+Latest version: https://github.com/dprojects/sheet2export
 
-import FreeCAD, Draft, Spreadsheet
+Certified platform:
+
+OS: Ubuntu 22.04 LTS (XFCE/xubuntu)
+Word size of FreeCAD: 64-bit
+Version: 0.20.29177 (Git) AppImage
+Build type: Release
+Branch: (HEAD detached at 0.20)
+Hash: 68e337670e227889217652ddac593c93b5e8dc94
+Python 3.9.13, Qt 5.12.9, Coin 4.0.0, Vtk 9.1.0, OCC 7.5.3
+Locale: English/United States (en_US)
+Installed mods: 
+  * Woodworking 0.20.29177
+
+https://github.com/dprojects/Woodworking
+
+'''
+# ###################################################################################################################
+
+
+import FreeCAD, FreeCADGui, Draft, Spreadsheet
 from PySide import QtGui, QtCore
+
 
 # ###################################################################################################################
 # Main Settings ( CHANGE HERE IF NEEDED )
@@ -129,9 +149,28 @@ def showQtMain():
 
 		def initUI(self):
 			
-			# window
+			# ############################################################################
+			# set screen
+			# ############################################################################
+			
+			# tool screen size
+			toolSW = 500
+			toolSH = 350
+			
+			# active screen size - FreeCAD main window
+			gSW = FreeCADGui.getMainWindow().width()
+			gSH = FreeCADGui.getMainWindow().height()
+
+			# tool screen position
+			gPW = int( ( gSW - toolSW ) / 2 )
+			gPH = int( ( gSH - toolSH ) / 2 )
+
+			# ############################################################################
+			# main window
+			# ############################################################################
+			
 			self.result = userCancelled
-			self.setGeometry(250, 250, 500, 350)
+			self.setGeometry(gPW, gPH, toolSW, toolSH)
 			self.setWindowTitle("sheet2export - default settings")
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 

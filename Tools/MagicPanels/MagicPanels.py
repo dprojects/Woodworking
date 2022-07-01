@@ -11,15 +11,291 @@ from PySide import QtCore
 
 
 # ###################################################################################################################
-# Functions - for this library purposes
+# Functions - internal for this library purposes, no error handling
 # ###################################################################################################################
+
+# ############################################################################
+def getFaceIndex(iObj, iFace):
+	'''
+	getFaceIndex(iObj, iFace) - returns face index for given object and face.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObj: object of the face
+		iFace: face object
+	
+	Usage:
+	
+		faceIndex = getFaceIndex(gObj, gFace)
+		
+	Result:
+	
+		return int value for face
+
+	'''
+
+	index = 1
+	for f in iObj.Shape.Faces:
+		if str(f.BoundBox) == str(iFace.BoundBox):
+			return index
+
+		index = index + 1
+	
+	return -1
+
+
+# ############################################################################
+def getEdgeIndex(iObj, iEdge):
+	'''
+	getEdgeIndex(iObj, iEdge) - returns edge index for given object and edge.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObj: object of the edge
+		iEdge: edge object
+	
+	Usage:
+	
+		edgeIndex = getEdgeIndex(gObj, gEdge)
+		
+	Result:
+	
+		return int value for edge
+
+	'''
+
+	index = 1
+	for e in iObj.Shape.Edges:
+		if str(e.BoundBox) == str(iEdge.BoundBox):
+			return index
+
+		index = index + 1
+	
+	return -1
+
+
+# ############################################################################
+def getEdgeIndexByKey(iObj, iBoundBox):
+	'''
+	getEdgeIndexByKey(iObj, iBoundBox) - returns edge index for given edge BoundBox.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObj: object of the edge
+		iBoundBox: edge BoundBox
+	
+	Usage:
+	
+		edgeIndex = getEdgeIndex(o, key)
+		
+	Result:
+	
+		return int value for edge
+
+	'''
+
+	index = 1
+	for e in iObj.Shape.Edges:
+		
+		c = "BoundBox ("
+		c += str(int(round(e.BoundBox.XMin, 0))) + ", "
+		c += str(int(round(e.BoundBox.YMin, 0))) + ", "
+		c += str(int(round(e.BoundBox.ZMin, 0))) + ", "
+		c += str(int(round(e.BoundBox.XMax, 0))) + ", "
+		c += str(int(round(e.BoundBox.YMax, 0))) + ", "
+		c += str(int(round(e.BoundBox.ZMax, 0)))
+		c += ")"
+		
+		if c == str(iBoundBox):
+			return index
+
+		index = index + 1
+	
+	return -1
+
+
+# ###################################################################################################################
+def getFaceVertices(iFace):
+	'''
+	getFaceVertices(iFace) - get all vertices values for face.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iFace: face object
+		
+	Usage:
+	
+		[ v1, v2, v3, v4 ] = getFaceVertices(gFace)
+		
+	Result:
+	
+		Return vertices array like [ [ 1, 1, 1 ], [ 2, 2, 2 ], [ 3, 3, 3 ], [ 4, 4, 4 ] ]
+	'''
+	
+	# I like such typos, I would make the same ;-)
+	typo = "Vertex"+"es"
+	vertexArr = getattr(iFace, typo)
+
+	v1 = [ vertexArr[0].X, vertexArr[0].Y, vertexArr[0].Z ]
+	v2 = [ vertexArr[1].X, vertexArr[1].Y, vertexArr[1].Z ]
+	v3 = [ vertexArr[2].X, vertexArr[2].Y, vertexArr[2].Z ]
+	v4 = [ vertexArr[3].X, vertexArr[3].Y, vertexArr[3].Z ]
+	
+	return [ v1, v2, v3, v4 ]
+
+
+# ###################################################################################################################
+def getFaceEdges(iObj, iFace):
+	'''
+	getFaceEdges(iObj, iFace) - get all edges for given face grouped by sizes.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObj: object where is the face
+		iFace: face object
+
+	Usage:
+	
+		[ faceType, arrAll, arrThick, arrShort, arrLong ] = getFaceEdges(gObj, gFace)
+		
+	Result:
+	
+		Return arrays like [ faceType, arrAll, arrThick, arrShort, arrLong ] with edges objects, 
+		
+		faceType - string "surface" or "edge"
+		arrAll - array with all edges
+		arrThick - array with the thickness edges
+		arrShort - array with the short edges (if type is edge this will be the same as arrThick)
+		arrLong - array with the long edges
+
+	'''
+	
+	[ faceAxis, faceType ] = getDirectionFace(iObj, iFace)
+
+	sizes = []
+	sizes = getSizes(iObj)
+	sizes.sort()
+	
+	t = int(sizes[0])
+	s = int(sizes[1])
+	l = int(sizes[2])
+	
+	e1 = iFace.Edges[0]
+	e2 = iFace.Edges[1]
+	e3 = iFace.Edges[2]
+	e4 = iFace.Edges[3]
+
+	arrAll = [ e1, e2, e3, e4 ]
+	arrThick = []
+	arrShort = []
+	arrLong = []
+	
+	if int(e1.Length) == t:
+		arrThick.append(e1)
+	if int(e1.Length) == s:
+		arrShort.append(e1)
+	if int(e1.Length) == l:
+		arrLong.append(e1)
+	
+	if int(e2.Length) == t:
+		arrThick.append(e2)
+	if int(e2.Length) == s:
+		arrShort.append(e2)
+	if int(e2.Length) == l:
+		arrLong.append(e2)
+		
+	if int(e3.Length) == t:
+		arrThick.append(e3)
+	if int(e3.Length) == s:
+		arrShort.append(e3)
+	if int(e3.Length) == l:
+		arrLong.append(e3)
+	
+	if int(e4.Length) == t:
+		arrThick.append(e4)
+	if int(e4.Length) == s:
+		arrShort.append(e4)
+	if int(e4.Length) == l:
+		arrLong.append(e4)
+	
+	return [ faceType, arrAll, arrThick, arrShort, arrLong ]
+	
+
+# ###################################################################################################################
+def getEdgeVertices(iEdge):
+	'''
+	getEdgeVertices(iEdge) - get all vertices values for edge.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iEdge: edge object
+		
+	Usage:
+	
+		[ v1, v2 ] = getEdgeVertices(gEdge)
+		
+	Result:
+	
+		Return vertices array like [ [ 1, 1, 1 ], [ 1, 1, 1 ] ].
+	'''
+	
+	# I like such typos, I would make the same ;-)
+	typo = "Vertex"+"es"
+	vertexArr = getattr(iEdge, typo)
+
+	v1 = [ vertexArr[0].X, vertexArr[0].Y, vertexArr[0].Z ]
+	v2 = [ vertexArr[1].X, vertexArr[1].Y, vertexArr[1].Z ]
+
+	return [ v1, v2 ]
+
+
+# ###################################################################################################################
+def getVertex(iFace, iEdge, iVertex):
+	'''
+	getVertex(iFace, iEdge, iVertex) - get vertex values for face, edge and vertex index.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iFace: face object
+		iEdge: edge array index
+		iVertex: vertex array index (0 or 1)
+	
+	Usage:
+	
+		[ x, y, z ] = getVertex(gFace, 0, 1)
+		
+	Result:
+	
+		Return vertex position.
+	'''
+	
+	# I like such typos, I would make the same ;-)
+	typo = "Vertex"+"es"
+	vertexArr = getattr(iFace.Edges[iEdge], typo)
+
+	return [ vertexArr[iVertex].X, vertexArr[iVertex].Y, vertexArr[iVertex].Z ]
+
 
 # ###################################################################################################################
 def getReference():
 	'''
-	Get reference to the selected object.
+	getReference() - get reference to the selected object.
 	
-	getReference()
+	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
@@ -37,11 +313,13 @@ def getReference():
 
 	obj = FreeCADGui.Selection.getSelection()[0]
 
-	if obj.isDerivedFrom("Part::Box") or obj.isDerivedFrom("PartDesign::Pad"):
-		return obj
-	
-	if obj.isDerivedFrom("PartDesign::Thickness"):
+	if ( 
+		obj.isDerivedFrom("PartDesign::Thickness") or 
+		obj.isDerivedFrom("PartDesign::Chamfer")
+		):
 		return obj.Base[0]
+	else:
+		return obj
 	
 	return -1
 
@@ -49,9 +327,9 @@ def getReference():
 # ###################################################################################################################
 def getPlacement(iObj):
 	'''
-	Get placement with rotation info for given object.
+	getPlacement(iObj) - get placement with rotation info for given object.
 	
-	getPlacement(iObj)
+	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
@@ -72,12 +350,11 @@ def getPlacement(iObj):
 
 	'''
 
-	if iObj.isDerivedFrom("Part::Box"):
-		ref = iObj.Placement
-	
 	if iObj.isDerivedFrom("PartDesign::Pad"):
 		ref = iObj.Profile[0].AttachmentOffset
-
+	else:
+		ref = iObj.Placement
+		
 	x = ref.Base.x
 	y = ref.Base.y
 	z = ref.Base.z
@@ -89,9 +366,9 @@ def getPlacement(iObj):
 # ###################################################################################################################
 def setPlacement(iObj, iX, iY, iZ, iR):
 	'''
-	Set placement with rotation for given object.
+	setPlacement(iObj, iX, iY, iZ, iR) - set placement with rotation for given object.
 	
-	setPlacement(iObj, iX, iY, iZ, iR)
+	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
@@ -111,21 +388,20 @@ def setPlacement(iObj, iX, iY, iZ, iR):
 
 	'''
 
-	if iObj.isDerivedFrom("Part::Box"):
-		iObj.Placement.Base = FreeCAD.Vector(iX, iY, iZ)
-		iObj.Placement.Rotation = iR
-	
 	if iObj.isDerivedFrom("PartDesign::Pad"):
 		iObj.Profile[0].AttachmentOffset.Base = FreeCAD.Vector(iX, iY, iZ)
 		iObj.Profile[0].AttachmentOffset.Rotation = iR
-
+	else:
+		iObj.Placement.Base = FreeCAD.Vector(iX, iY, iZ)
+		iObj.Placement.Rotation = iR
+	
 
 # ###################################################################################################################
 def getModelRotation(iX, iY, iZ):
 	'''
-	Transform given iX, iY, iZ values to the correct vector, if the user rotated 3D model.
-	
-	getModelRotation()
+	getModelRotation() - transform given iX, iY, iZ values to the correct vector, if the user rotated 3D model.
+
+	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
@@ -336,9 +612,9 @@ def getModelRotation(iX, iY, iZ):
 # ###################################################################################################################
 def getSizes(iObj):
 	'''
-	Allow to get sizes for object (iObj), according to the object type. The values are not sorted.
+	getSizes(iObj) - allow to get sizes for object (iObj), according to the object type. The values are not sorted.
 	
-	getSizes(iObj)
+	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
@@ -367,17 +643,21 @@ def getSizes(iObj):
 				
 		return [ sizeX, sizeY, iObj.Length.Value ]
 
-	else:
-				
+	try:
+		
 		return [ iObj.Base_Width.Value, iObj.Base_Height.Value, iObj.Base_Length.Value ]
+		
+	except:
+		
+		return [ 1, 1, 1 ]
 
 
 # ###################################################################################################################
 def getDirection(iObj):
 	'''
-	Allow to get Cube object direction (iType).
+	getDirection(iObj) - allow to get Cube object direction (iType).
 	
-	getDirection(iObj)
+	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
@@ -472,40 +752,103 @@ def getDirection(iObj):
 
 
 # ###################################################################################################################
-def getVertex(iFace, iEdge, iVertex):
+def getDirectionFace(iObj, iFace):
 	'''
-	Get vertex position.
+	getDirectionFace(iObj, iFace) - allow to get Face direction.
 	
-	getVertex(iFace, iEdge, iVertex)
+	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
-		iFace: face object
-		iEdge: edge array index
-		iVertex: vertex array index (0 or 1)
+		iObj: selected object
+		iFace: selected face
 	
 	Usage:
 	
-		[ x, y, z ] = getVertex(gFace, 0, 1)
+		getDirectionFace(gObj, gFace)
 		
 	Result:
 	
-		Return vertex position.
+		[ "XY", "surface" ] - if the direction is XY and it is surface, no thickness edge
+		[ "XY", "edge" ] - if the direction is XY and it is edge, there is thickness edge
+		[ "XY", "equal" ] - if the direction is XY and both edges are equal
+		
+		Note: The first argument can be "XY", "YX", "XZ", "ZX", "YZ", "ZY". 
+		This is related to face not to object. The object direction will be different.
+		
 	'''
-	
-	# I like such typos, I would make the same ;-)
-	typo = "Vertex"+"es"
-	vertexArr = getattr(iFace.Edges[iEdge], typo)
 
-	return [ vertexArr[iVertex].X, vertexArr[iVertex].Y, vertexArr[iVertex].Z ]
+	[ v1, v2, v3, v4 ] = getFaceVertices(iFace)
+
+	direction = ""
+	
+	if int(v1[2] + v2[2] + v3[2] + v4[2]) == int(4 * v1[2]):
+		direction = "XY"
+	
+	if int(v1[1] + v2[1] + v3[1] + v4[1]) == int(4 * v1[1]):
+		direction = "XZ"
+	
+	if int(v1[0] + v2[0] + v3[0] + v4[0]) == int(4 * v1[0]):
+		direction = "YZ"
+
+	s = getSizes(iObj)
+	s.sort()
+	thick = int(s[0])
+	
+	e1 = int(iFace.Edges[0].Length)
+	e2 = int(iFace.Edges[1].Length)
+	e3 = int(iFace.Edges[2].Length)
+	e4 = int(iFace.Edges[3].Length)
+	
+	ed = int(iFace.Edges[0].Length + iFace.Edges[1].Length + iFace.Edges[2].Length + iFace.Edges[3].Length)
+	
+	if ed == int(4 * e1):
+		return [ direction, "equal" ]
+		
+	if direction == "XY" and e1 < e2:
+		if e1 == thick or e2 == thick:
+			return [ "XY", "edge" ]
+		else:
+			return [ "XY", "surface" ]
+
+	if direction == "XY" and e1 > e2:
+		if e1 == thick or e2 == thick:
+			return [ "YX", "edge" ]
+		else:
+			return [ "YX", "surface" ]
+
+	if direction == "XZ" and e1 > e2:
+		if e1 == thick or e2 == thick:
+			return [ "XZ", "edge" ]
+		else:
+			return [ "XZ", "surface" ]
+
+	if direction == "XZ" and e1 < e2:
+		if e1 == thick or e2 == thick:
+			return [ "ZX", "edge" ]
+		else:
+			return [ "ZX", "surface" ]
+
+	if direction == "YZ" and e1 < e2:
+		if e1 == thick or e2 == thick:
+			return [ "YZ", "edge" ]
+		else:
+			return [ "YZ", "surface" ]
+
+	if direction == "YZ" and e1 > e2:
+		if e1 == thick or e2 == thick:
+			return [ "ZY", "edge" ]
+		else:
+			return [ "ZY", "surface" ]
 
 
 # ###################################################################################################################
 def convertPosition(iObj, iX, iY, iZ):
 	'''
-	Convert given position vector to correct position values according to the direction (Plane).
+	convertPosition(iObj, iX, iY, iZ) - convert given position vector to correct position values according 
+	to the object direction.
 	
-	convertPosition(iObj, iX, iY, iZ)
+	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
@@ -522,11 +865,8 @@ def convertPosition(iObj, iX, iY, iZ):
 	
 		For Pad object in XZ direction return the AttachmentOffset order [ 0, 0, -400 ]
 	'''
-
-	if iObj.isDerivedFrom("Part::Box"):
-		return [ iX, iY, iZ ]
 	
-	else:
+	if iObj.isDerivedFrom("PartDesign::Pad"):
 		
 		direction = getDirection(iObj)
 		
@@ -538,16 +878,20 @@ def convertPosition(iObj, iX, iY, iZ):
 
 		if direction == "YZ" or direction == "ZY":
 			return [ iY, iZ, iX ]
-			
+	
+	else:
+		
+		return [ iX, iY, iZ ]
+
 
 # ###################################################################################################################
 def sizesToCubePanel(iObj, iType):
 	'''
-	Convert selected object (iObj) sizes to Cube panel sizes into given direction (iType). 
+	sizesToCubePanel(iObj, iType) - converts selected object (iObj) sizes to Cube panel sizes into given direction (iType). 
 	So, the returned values can be directly assigned to Cube object in order to create 
 	panel in exact direction.
 
-	sizesToCubePanel(iObj, iType)
+	Note: This is internal function, so there is no error pop-up or any error handling.
 
 	Args:
 
@@ -619,9 +963,10 @@ def sizesToCubePanel(iObj, iType):
 # ###################################################################################################################
 def makePad(iSize1, iSize2, iSize3, iX, iY, iZ, iRotation, iType, iPadName="Pad"):
 	'''
-	Allow to create Part, Plane, Body, Pad, Sketch objects.
+	makePad(iSize1, iSize2, iSize3, iX, iY, iZ, iType, iPadName="Pad") - allows to create 
+	Part, Plane, Body, Pad, Sketch objects.
 	
-	makePad(iSize1, iSize2, iSize3, iX, iY, iZ, iType, iPadName="Pad"):
+	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
@@ -646,7 +991,7 @@ def makePad(iSize1, iSize2, iSize3, iX, iY, iZ, iRotation, iType, iPadName="Pad"
 		
 	Result:
 	
-		Created Pad with correct placement.
+		Created Pad with correct placement, rotation and return [ part, body, sketch, pad ].
 	'''
 
 	import Part, PartDesign
@@ -712,11 +1057,11 @@ def makePad(iSize1, iSize2, iSize3, iX, iY, iZ, iRotation, iType, iPadName="Pad"
 
 
 # ###################################################################################################################
-def showInfo(iCaller, iInfo):
+def showInfo(iCaller, iInfo, iNote="none"):
 	'''
-	Allow to show Gui info box for all available function and multiple calls.
+	showInfo(iCaller, iInfo) - allow to show Gui info box for all available function and multiple calls.
 	
-	showInfo(iCaller, iInfo)
+	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
@@ -734,7 +1079,28 @@ def showInfo(iCaller, iInfo):
 
 	info = iInfo
 
+	if iNote == "replace":
+		info += '<br><br>'
+		info += 'The replace features are considered for final stage of furniture designing. '
+		info += 'Some kind of detailed preview stage. '
+		info += 'Do not use the replace feature at the beginning because the Magic Panels may stop working '
+		info += 'and the furniture designing process will be much longer and more complicated. '
+	
+
 	info += '<br><br><br><br>'
+	info += 'To keep furniture designing process quick and simple, '
+	info += 'the furniture designing process should follow steps: '
+	info += '<ol>'
+	info += '<li>Create simple model with simple Cube panels.</li>'
+	info += '<li>Add mounting points.</li>'
+	info += '<li>Replace desired elements with more detailed elements.</li>'
+	info += '<li>Add decoration if needed.</li>'
+	info += '<li>Add colors or textures and preview furniture.</li>'
+	info += '<li>Generate cut-list.</li>'
+	info += '<li>Create furniture in real-life.</li>'
+	info += '<li>Have fun with your new furniture in real-life !</li>'
+	info += '</ol>'
+		
 	info += 'For more details please see:' + ' '
 	info += '<a href="https://github.com/dprojects/Woodworking">Woodworking workbench documentation.</a>'
 	
@@ -746,16 +1112,16 @@ def showInfo(iCaller, iInfo):
 
 
 # ###################################################################################################################
-# Functions - for external usage
+# Functions - for external usage, should be error handling and pop-up.
 # ###################################################################################################################
 
 
 # ###################################################################################################################
 def panelDefault(iType):
 	'''
-	Allow to create default panel 600 x 300 x 18 into exact direction (iType).
+	panelDefault(iType) - allows to create default panel 600 x 300 x 18 into exact direction (iType).
 
-	panelDefault(iType)
+	Note: This function displays pop-up info in case of error.
 
 	Args:
 
@@ -821,9 +1187,9 @@ def panelDefault(iType):
 # ###################################################################################################################
 def panelCopy(iType):
 	'''
-	Allow to copy selected panel into exact direction (iType).
+	panelCopy(iType) - allows to copy selected panel into exact direction (iType).
 
-	panelCopy(iType)
+	Note: This function displays pop-up info in case of error.
 
 	Args:
 
@@ -869,10 +1235,10 @@ def panelCopy(iType):
 # ###################################################################################################################
 def panelMove(iType):
 	'''
-	Allow to move panel in given direction.
-	
-	panelMove(iType)
-	
+	panelMove(iType) - allows to move panel in given direction.
+
+	Note: This function displays pop-up info in case of error.
+
 	Args:
 	
 		iType: "Xp", "Xm", "Yp", "Ym", "Zp", "Zm"
@@ -945,9 +1311,9 @@ def panelMove(iType):
 # ###################################################################################################################
 def panelResize(iType):
 	'''
-	Allow to resize panel in given direction.
+	panelResize(iType) - allows to resize panel in given direction.
 	
-	panelResize(iType)
+	Note: This function displays pop-up info in case of error.
 	
 	Args:
 	
@@ -1091,9 +1457,9 @@ def panelResize(iType):
 # ###################################################################################################################
 def panelFace(iType):
 	'''
-	Allow to create simple panel based on selected face and object.
-	
-	panelFace(iType)
+	panelFace(iType) - allows to create simple panel based on selected face and object.
+
+	Note: This function displays pop-up info in case of error.
 	
 	Args:
 	
@@ -1147,9 +1513,9 @@ def panelFace(iType):
 # ###################################################################################################################
 def panelBetween(iType):
 	'''
-	Allow to create simple panel between 2 selected faces.
+	panelBetween(iType) - allows to create simple panel between 2 selected faces.
 	
-	panelBetween(iType)
+	Note: This function displays pop-up info in case of error.
 	
 	Args:
 	
@@ -1215,9 +1581,9 @@ def panelBetween(iType):
 # ###################################################################################################################
 def panelSide(iType):
 	'''
-	Allow to create back of the furniture with 3 selected faces.
+	panelSide(iType) - allows to create back of the furniture with 3 selected faces.
 	
-	panelSide(iType)
+	Note: This function displays pop-up info in case of error.
 	
 	Args:
 	
@@ -1296,9 +1662,9 @@ def panelSide(iType):
 # ###################################################################################################################
 def panelBackOut():
 	'''
-	Allow to create back of the furniture with 3 selected faces.
+	panelCover(iType) - allows to create back of the furniture with 3 selected faces.
 	
-	panelCover(iType)
+	Note: This function displays pop-up info in case of error.
 	
 	Args:
 	
@@ -1365,9 +1731,9 @@ def panelBackOut():
 # ###################################################################################################################
 def panelCover(iType):
 	'''
-	Allow to create simple panel on top of 3 selected faces.
+	panelCover(iType) - allows to create simple panel on top of 3 selected faces.
 	
-	panelCover(iType)
+	Note: This function displays pop-up info in case of error.
 	
 	Args:
 	
@@ -1431,10 +1797,10 @@ def panelCover(iType):
 # ###################################################################################################################
 def panelReplacePad(iLabel="rpanelPad"):
 	'''
-	Allow to replace Cube panel with the same panel but Pad.
+	panelReplacePad() - allows to replace Cube panel with the same panel but Pad.
 
-	panelReplacePad()
-
+	Note: This function displays pop-up info in case of error.
+	
 	Args:
 
 		iLabel (optional): name all parts with given string
@@ -1447,7 +1813,8 @@ def panelReplacePad(iLabel="rpanelPad"):
 		
 	Result:
 
-		Selected Cube panel will be replaced with Pad.
+		Selected Cube panel will be replaced with Pad and return [ part, body, sketch, pad ] references 
+		that can be used for further transformations.
 	'''
 
 	try:
@@ -1487,30 +1854,19 @@ def panelReplacePad(iLabel="rpanelPad"):
 		
 		info = ""
 		
-		info += '<b>If you have active document, please select Cube panel you want to replace with the same Pad panel.</b>'
+		info += '<b>If you have active document, please select Cube panel you want to replace with the same Pad panel. </b>'
+		info += 'You can select only one Cube panel at once. This replace panel is mostly for manual changes and decorations. '
 		info += '<br><br>'
 	
-		info += '<b>Note:</b>' + ' '
-		info += 'The replace features are considered for final stage of furniture designing. '
-		info += 'Some kind of detailed preview stage. To keep furniture designing process quick and simple, '
-		info += 'first You should create full furniture model with the basic Cube panels. '
-		info += 'Then, if the model is acceptable for You and You want to make it more detailed You '
-		info += 'can replace all the needed furniture elements with Pad just by single click and make it more detailed. '
-		info += '<br><br>'
-		info += 'Do not use the replace feature at the beginning because the Magic Panels may stop working '
-		info += 'and the furniture designing process will be much longer and more complicated. '
-		info += 'If You create Pad by mistake, You can move it and resize but it is better '
-		info += 'to not keep furniture designing process like this. '
-	
-		showInfo("rpanelPad", info)
+		showInfo("rpanelPad", info, "replace")
 	
 
 # ###################################################################################################################
 def panel2profile():
 	'''
-	Allow to replace Pad panel with construction profile made from Thickness.
+	panel2profile() - allows to replace Cube panels with construction profiles made from Thickness.
 
-	panel2profile()
+	Note: This function displays pop-up info in case of error.
 
 	Args:
 
@@ -1520,11 +1876,13 @@ def panel2profile():
 
 		import MagicPanels
 		
-		MagicPanels.panel2profile()
+		profiles = MagicPanels.panel2profile()
 		
 	Result:
 
-		Selected Pad panel will be changed into Thickness construction profile.
+		Selected Cube panels will be changed into Thickness construction profiles. This function 
+		returns array with references to the created profiles, so it can be used for further 
+		transfomrations.
 	'''
 
 	try:
@@ -1588,20 +1946,106 @@ def panel2profile():
 		info += '<b>If you have active document, please select panels (Cubes) with 2 equal sizes e.g. '
 		info += '20 mm x 20 mm x 300 mm to replace it with construction profiles.</b>' + '<br><br>'
 		
-		info += '<b>Note:</b>' + ' '
-		info += 'The replace features are considered for final stage of furniture designing. '
-		info += 'Some kind of detailed preview stage. To keep furniture designing process quick and simple, '
-		info += 'first You should create full furniture model with the basic Cube panels. '
-		info += 'Then, if the model is acceptable for You and You want to make it more detailed You '
-		info += 'can replace all the needed furniture elements with construction profiles just by single click. '
-		info += '<br><br>'
-		info += 'Do not use the replace feature at the beginning because the Magic Panels stop working '
-		info += 'and the furniture designing process will be much longer and more complicated. '
-		info += 'If You create construction profile by mistake, You can move it and resize but it is better '
-		info += 'to not keep furniture designing process like this. If You need make operation at final object, '
-		info += 'better find base object e.g. base Pad object in Thickness, and apply the operation on it. '
+		showInfo("panel2profile", info, "replace")
 
-		showInfo("panel2profile", info)
 
+# ###################################################################################################################
+def panel2frame():
+	'''
+	panel2frame() - allows to replace Cube panels with frame elements cut with 45 angle. You have to select 
+	face at Cube panels to make frame.
+
+	Note: This function displays pop-up info in case of error.
+
+	Args:
+
+		no args
+
+	Usage:
+
+		import MagicPanels
+		
+		frames = MagicPanels.panel2frame()
+		
+	Result:
+
+		Selected Cube panels faces will be changed into frame. This function 
+		returns array with references to the created frames, so it can be used for further 
+		transfomrations.
+	'''
+
+	try:
+
+		frames = []
+		frame = ""
+		objects = FreeCADGui.Selection.getSelection()
+		
+		if len(objects) == 0:
+			raise
+		
+		faces = dict()
+		
+		i = 0
+		for o in objects:
+			faces[o] = FreeCADGui.Selection.getSelectionEx()[i].SubObjects
+			i = i + 1
+
+		for o in objects:
+			
+			face = faces[o][0]
+		
+			sizes = getSizes(o)
+			sizes.sort()
+			
+			[ faceType, arrAll, arrThick, arrShort, arrLong ] = getFaceEdges(o, face)
+			
+			keys = []
+			
+			if faceType == "edge":
+				arr = arrThick
+				size = sizes[1]
+			if faceType == "surface":
+				arr = arrShort
+				size = sizes[0]
+				
+			for e in arr:
+				keys.append(str(e.BoundBox))
+			
+			[ part, body, sketch, pad ] = panelReplacePad("Frame")
+
+			edges = []
+			for k in keys:
+				index = getEdgeIndexByKey(pad, k)
+				edges.append("Edge"+str(int(index)))
+			
+			frame = body.newObject('PartDesign::Chamfer','Frame45Cut')
+			frame.Base = (pad, edges)
+			frame.Size = size - 0.01
+			pad.Visibility = False
+			
+			FreeCAD.activeDocument().recompute()
+			
+			color = (0.5098039507865906, 0.3137255012989044, 0.1568627506494522, 0.0)
+
+			frame.ViewObject.ShapeColor = color
+			frame.ViewObject.DiffuseColor = color
+			FreeCAD.activeDocument().recompute()
+			
+			frames.append(frame)
+		
+		return frames
+	
+	except:
+		
+		info = ""
+		
+		info += '<b>If you have active document, please select face of panel (Cube) to change it into '
+		info += 'picture frame element. You can select more than one face to change all '
+		info += 'elements at once with single click. </b>' + '<br><br>'
+		info += 'If the selected face is edge, the 45 cut depth will be according to the short edge of the object. '
+		info += 'If the selected face is surface, the 45 cut depth will be according to the thickness of the object. '
+				
+		showInfo("panel2frame", info, "replace")
+	
 
 # ###################################################################################################################

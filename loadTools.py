@@ -136,7 +136,7 @@ class setTextures():
 		return {"Pixmap"  : os.path.join(iconPath, "setTextures.xpm"),
 				"Accel"   : "",
 				"MenuText": "setTextures",
-				"ToolTip" : "Store textures information at object's property and allows to load textures from stored URL. Solves problem with texture sharing, no huge project file size."}
+				"ToolTip" : "Store textures information at object's property and allows to load textures from stored URL or local HDD path. Solves problem with texture sharing without huge project file size."}
 
 	def Activated(self):
 
@@ -446,6 +446,46 @@ class magicMove():
 		return True
 
 FreeCADGui.addCommand("magicMove", magicMove())
+
+	
+
+# ######################################################################################################################
+class magicDowels():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "magicDowels.xpm"),
+				"Accel"   : "",
+				"MenuText": "magicDowels",
+				"ToolTip" : "Allow to create dowels along the selected panel surface."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "magicDowels"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("magicDowels", magicDowels())
 
 	
 
@@ -1616,7 +1656,7 @@ class panel2profile():
 		return {"Pixmap"  : os.path.join(iconPath, "panel2profile.xpm"),
 				"Accel"   : "",
 				"MenuText": "panel to construction profile, 1 mm",
-				"ToolTip" : "Replace selected Cube panel with construction profile."}
+				"ToolTip" : "Replace selected Cube panels with construction profile. You can select more than one Cube panel, so you can create all detailed construction with single click."}
 
 	def Activated(self):
 
@@ -1646,6 +1686,46 @@ class panel2profile():
 		return True
 
 FreeCADGui.addCommand("panel2profile", panel2profile())
+
+	
+
+# ######################################################################################################################
+class panel2frame():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panel2frame.xpm"),
+				"Accel"   : "",
+				"MenuText": "panel to frame, 45 cut",
+				"ToolTip" : "Select face to replace selected Cube panel with frame 45 cut. The 45 cut is at both sides. You can select more than one face to replace more objects at once by single click. "}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panel2frame"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panel2frame", panel2frame())
 
 	
 

@@ -25,6 +25,7 @@ class WoodworkingWorkbench (Workbench):
 		self.appendToolbar("Woodworking - Magic Panels - face", loadToolbar.getItems("Magic Panels - face"))
 		self.appendToolbar("Woodworking - Magic Panels - between", loadToolbar.getItems("Magic Panels - between"))
 		self.appendToolbar("Woodworking - Magic Panels - replace", loadToolbar.getItems("Magic Panels - replace"))
+		self.appendToolbar("Woodworking - Magic Panels - mounting", loadToolbar.getItems("Magic Panels - mounting"))
 		
 		self.appendToolbar("Woodworking - Project manage", loadToolbar.getItems("Project manage"))
 		self.appendToolbar("Woodworking - Code and Debug", loadToolbar.getItems("Code and Debug"))

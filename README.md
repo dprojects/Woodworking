@@ -25,6 +25,7 @@ Sorry, for that.
 * [makeTransparent](https://github.com/dprojects/Woodworking/blob/master/Tools/makeTransparent.py) - allows to make all parts transparent and back to normal. You can preview all pilot holes, countersinks or any other joints like that, very simply.
 * [colorManager](https://github.com/dprojects/Woodworking/blob/master/Tools/colorManager.py) - allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected face or object and see the effect at 3D model in real-time.
 * [magicAngle](https://github.com/dprojects/Woodworking/blob/master/Tools/magicAngle.py) - allows to rotate panels and even other more complicated objects, like construction profiles.
+* [magicDowels](https://github.com/dprojects/Woodworking/blob/master/Tools/MagicPanels/magicDowels.py) - allows to add mounting points to the panel edge or surface, or even any other elements like construction profiles. Tou can add predefined mounting point e.g. screw, dowel, shelf pins or add custom mounting point. This is very quick way to add mounting points the furniture.
 * Also clean toolbar, with sections adjusted for woodworking.
 
 ![000](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/000.png)

@@ -18,7 +18,7 @@ Tools = [
 	
 	"scanObjects", "", "scanObjects", "scanObjects", "Inspection tool for FreeCAD macro development & project debug (live API).",
 	
-	"setTextures", "", "setTextures", "setTextures", "Store textures information at object's property and allows to load textures from stored URL. Solves problem with texture sharing, no huge project file size.",
+	"setTextures", "", "setTextures", "setTextures", "Store textures information at object's property and allows to load textures from stored URL or local HDD path. Solves problem with texture sharing without huge project file size.",
 	
 	"debugInfo", "", "debugInfo", "debugInfo", "Copy platform details to clipboard for bug report purposes.",
 
@@ -33,6 +33,8 @@ Tools = [
 	"magicManager", "MagicPanels", "magicManager", "magicManager", "If you have problem with unexpected result of Magic Panels, you can use this tool to preview panel before creation. It may take more time to create panel, but you can select exact panel to apply, also the edge and vertex position. This tool allows to create panel at selected face or between two faces.",
 
 	"magicMove", "MagicPanels", "magicMove", "magicMove", "If you have problem with unexpected result of panel movements via dedicated icons, you can use this tool to precisely move panel into desired direction. This tool allow to turn off and on axis cross and resize corner cross size.",
+
+	"magicDowels", "MagicPanels", "magicDowels", "magicDowels", "Allow to create dowels along the selected panel surface.",
 
 	# #################################################################################################################################
 	# Magic Panels - default
@@ -116,8 +118,10 @@ Tools = [
 	
 	"rpanelPad", "MagicPanels", "rpanelPad", "panel, replace Cube to Pad", "This is replace panel and it will remove the selected Cube object and replace it with exactly the same Pad object. So, you will be able to use more transformations on that Pad.",
 	
-	"panel2profile", "MagicPanels", "panel2profile", "panel to construction profile, 1 mm", "Replace selected Cube panel with construction profile.",
-	
+	"panel2profile", "MagicPanels", "panel2profile", "panel to construction profile, 1 mm", "Replace selected Cube panels with construction profile. You can select more than one Cube panel, so you can create all detailed construction with single click.",
+
+	"panel2frame", "MagicPanels", "panel2frame", "panel to frame, 45 cut", "Select face to replace selected Cube panel with frame 45 cut. The 45 cut is at both sides. You can select more than one face to replace more objects at once by single click. ",
+
 	# #################################################################################################################################
 	# Magic Panels - face
 	# #################################################################################################################################

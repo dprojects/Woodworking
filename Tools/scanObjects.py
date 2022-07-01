@@ -1,9 +1,28 @@
-# -*- coding: utf-8 -*-
+# ###################################################################################################################
+'''
 
-# Inspection tool for FreeCAD macro development.
-# Author: Darek L (aka dprojects)
-# Version: 5.0
-# Latest version: https://github.com/dprojects/scanObjects
+Inspection tool for FreeCAD macro development
+Author: Darek L (github.com/dprojects)
+Latest version: https://github.com/dprojects/scanObjects
+
+Certified platform:
+
+OS: Ubuntu 22.04 LTS (XFCE/xubuntu)
+Word size of FreeCAD: 64-bit
+Version: 0.20.29177 (Git) AppImage
+Build type: Release
+Branch: (HEAD detached at 0.20)
+Hash: 68e337670e227889217652ddac593c93b5e8dc94
+Python 3.9.13, Qt 5.12.9, Coin 4.0.0, Vtk 9.1.0, OCC 7.5.3
+Locale: English/United States (en_US)
+Installed mods: 
+  * Woodworking 0.20.29177
+
+https://github.com/dprojects/Woodworking
+
+'''
+# ###################################################################################################################
+
 
 import FreeCAD, FreeCADGui
 from PySide import QtGui, QtCore

@@ -1,9 +1,28 @@
-# -*- coding: utf-8 -*-
+# ###################################################################################################################
+'''
 
-# FreeCAD macro for woodworking to apply and store textures
-# Author: Darek L (aka dprojects)
-# Version: 7.0
-# Latest version: https://github.com/dprojects/setTextures
+FreeCAD macro for woodworking to apply and store textures
+Author: Darek L (github.com/dprojects)
+Latest version: https://github.com/dprojects/setTextures
+
+Certified platform:
+
+OS: Ubuntu 22.04 LTS (XFCE/xubuntu)
+Word size of FreeCAD: 64-bit
+Version: 0.20.29177 (Git) AppImage
+Build type: Release
+Branch: (HEAD detached at 0.20)
+Hash: 68e337670e227889217652ddac593c93b5e8dc94
+Python 3.9.13, Qt 5.12.9, Coin 4.0.0, Vtk 9.1.0, OCC 7.5.3
+Locale: English/United States (en_US)
+Installed mods: 
+  * Woodworking 0.20.29177
+
+https://github.com/dprojects/Woodworking
+
+'''
+# ###################################################################################################################
+
 
 import FreeCAD, FreeCADGui
 from PySide import QtGui, QtCore
@@ -79,22 +98,35 @@ def showQtMain():
 			info = ""
 			info += "Set new textures or change:"
 			self.storeL = QtGui.QLabel(info, self)
-			self.storeL.move(10, 100)
+			self.storeL.move(10, 70)
+
+			# color
+			# ############################################################################
+
+			self.checkColor = QtGui.QCheckBox("- set white color", self)
+			self.checkColor.setCheckState(QtCore.Qt.Checked)
+			self.checkColor.move(10, 100)
 
 			# URL
 			# ############################################################################
 
 			# label
 			info = ""
-			info += "Texture URL path:"
+			info += "Texture URL or local HDD path:"
 			self.urlL = QtGui.QLabel(info, self)
 			self.urlL.move(10, 130)
 
 			# text input
 			self.urlO = QtGui.QLineEdit(self)
 			self.urlO.setText(str(""))
-			self.urlO.setFixedWidth(280)
+			self.urlO.setFixedWidth(235)
 			self.urlO.move(10, 150)
+
+			# button
+			self.urlHDD = QtGui.QPushButton("...", self)
+			self.urlHDD.clicked.connect(self.loadCustomFile)
+			self.urlHDD.setFixedWidth(40)
+			self.urlHDD.move(250, 150)
 
 			# repeat
 			# ############################################################################
@@ -234,6 +266,10 @@ def showQtMain():
 		# actions - store
 		# ############################################################################
 		
+		def loadCustomFile(self):
+			hdd = str(QtGui.QFileDialog.getOpenFileName()[0])
+			self.urlO.setText(hdd)
+		
 		def storeTextures(self, iSearch, iSelect):
 
 			# set flag
@@ -259,7 +295,7 @@ def showQtMain():
 				try:
 
 					if not hasattr(obj, "Texture_URL"):
-						info = "Texture URL, need to star with http, cannot be disk file."
+						info = "Texture URL or HDD local path."
 						obj.addProperty("App::PropertyString", "Texture_URL", "Texture", info)
 
 					if not hasattr(obj, "Texture_Repeat_X"):
@@ -325,7 +361,7 @@ def showQtMain():
 			# support for texture URL stored at objects Texture_URL property
 			try:
 				textureURL = str(iObj.Texture_URL)
-				if textureURL != "" and textureURL.startswith("http"):
+				if textureURL != "":
 					return textureURL
 			except:
 				skip = 1
@@ -333,7 +369,7 @@ def showQtMain():
 			# support for texture URL stored at objects description
 			try:
 				textureURL = str(iObj.Label2)
-				if textureURL != "" and textureURL.startswith("http"):
+				if textureURL != "":
 					return textureURL
 			except:
 				skip = 1
@@ -341,7 +377,7 @@ def showQtMain():
 			# backward compatibility and support for manually added to Texture property
 			try:
 				textureURL = str(iObj.Texture)
-				if textureURL != "" and textureURL.startswith("http"):
+				if textureURL != "":
 					return textureURL
 			except:
 				skip = 1
@@ -349,7 +385,7 @@ def showQtMain():
 			# support for texture URL stored at Material Card TexturePath
 			try:
 				textureURL = str(iObj.Material.Material["TexturePath"])
-				if textureURL != "" and textureURL.startswith("http"):
+				if textureURL != "":
 					return textureURL
 			except:
 				skip = 1
@@ -510,6 +546,14 @@ def showQtMain():
 			# search all objects and set URL
 			for obj in iSearch:
 				
+				# try set color
+				if self.checkColor.isChecked():
+					try:
+						obj.ViewObject.ShapeColor = (1.0, 1.0, 1.0, 0.0)
+						obj.ViewObject.DiffuseColor = (1.0, 1.0, 1.0, 0.0)
+					except:
+						skip = 1
+
 				textureURL = self.getTextureURL(obj)
 
 				# if no texture found for object skip it
@@ -518,10 +562,17 @@ def showQtMain():
 				else:
 					empty = "no"
 
-				filename = self.downloadTexture(obj, textureURL)
+				# chose URL or local HDD
+				if textureURL.startswith("http"):
+					filename = self.downloadTexture(obj, textureURL)
+				else:
+					filename = str(textureURL)
+				
+				# should be no empty
 				if str(filename) == "":
 					continue
 
+				# set texture
 				self.setTexture(obj, filename)
 				self.fitTexture(obj)
 
@@ -591,16 +642,32 @@ def showQtMain():
 
 
 		def storeSelected(self):
-			self.checkSelected("store", "selected")
+			try:
+				self.checkSelected("store", "selected")
+			except:
+				iText = "Please select objects and try again."
+				self.showStatus(iText)
 
 		def storeAll(self):
-			self.checkSelected("store", "all")
+			try:
+				self.checkSelected("store", "all")
+			except:
+				iText = "Please select objects and try again."
+				self.showStatus(iText)
 
 		def loadSelected(self):
-			self.checkSelected("load", "selected")
+			try:
+				self.checkSelected("load", "selected")
+			except:
+				iText = "Please select objects and try again."
+				self.showStatus(iText)
 
 		def loadAll(self):
-			self.checkSelected("load", "all")
+			try:
+				self.checkSelected("load", "all")
+			except:
+				iText = "Please select objects and try again."
+				self.showStatus(iText)
 
 
 		# ############################################################################

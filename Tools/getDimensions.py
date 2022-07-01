@@ -1,9 +1,28 @@
-# -*- coding: utf-8 -*-
+# ###################################################################################################################
+'''
 
-# FreeCAD macro for woodworking
-# Author: Darek L (github.com/dprojects)
-# Tested FreeCAD version: 0.20.0
-# Latest version: https://github.com/dprojects/getDimensions
+FreeCAD macro to get chipboards dimensions to cut
+Author: Darek L (github.com/dprojects)
+Latest version: https://github.com/dprojects/getDimensions
+
+Certified platform:
+
+OS: Ubuntu 22.04 LTS (XFCE/xubuntu)
+Word size of FreeCAD: 64-bit
+Version: 0.20.29177 (Git) AppImage
+Build type: Release
+Branch: (HEAD detached at 0.20)
+Hash: 68e337670e227889217652ddac593c93b5e8dc94
+Python 3.9.13, Qt 5.12.9, Coin 4.0.0, Vtk 9.1.0, OCC 7.5.3
+Locale: English/United States (en_US)
+Installed mods: 
+  * Woodworking 0.20.29177
+
+https://github.com/dprojects/Woodworking
+
+'''
+# ###################################################################################################################
+
 
 import FreeCAD, FreeCADGui, Draft, Spreadsheet
 from PySide import QtGui, QtCore
@@ -250,7 +269,7 @@ def showQtGUI():
 
 		def initUI(self):
 
-# ############################################################################
+			# ############################################################################
 			# set screen
 			# ############################################################################
 			
@@ -760,6 +779,21 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 		if sUnitsMetric == "in":
 			return str( round(v * float(0.0393700787), 3) )
 	
+	# for dimensions
+	if iType == "f":
+	
+		gFakeCube.Length = float(iValue)
+		v = gFakeCube.Length.getValueAs(gUnitC).Value
+
+		if sUnitsMetric == "mm":
+			return str( round(v, 1) )
+		
+		if sUnitsMetric == "m":
+			return str( round(v * float(0.001), 3) )
+		
+		if sUnitsMetric == "in":
+			return str( round(v * float(0.0393700787), 3) )
+	
 	# for edge
 	if iType == "edge":
 		
@@ -806,6 +840,9 @@ def toSheet(iValue, iType, iCaller="toSheet"):
 	
 	# for dimensions
 	if iType == "d":
+		return  "=<<" + getUnit(iValue, iType, iCaller) + " " + sUnitsMetric + ">>"
+
+	if iType == "f":
 		return  "=<<" + getUnit(iValue, iType, iCaller) + " " + sUnitsMetric + ">>"
 
 	# for edge
@@ -1575,11 +1612,17 @@ def setMounting(iObj, iCaller="setMounting"):
 		vType = ""
 
 		if iObj.isDerivedFrom("Part::Cylinder"):
-
-			vType = gLang19 + " " + str(int(2 * iObj.Radius))
-
+		
+			vType = gLang19
+		
+			try:
+				n = iObj.Label.split(" ")
+				vType += ", " + str(n[0]) + " " + str(2 * iObj.Radius.Value) + " x " + str(int(iObj.Height.Value))
+			except:
+				skip = 1
+				
 			vArrNames.append(gLang20)
-			v = "d;" + str(2 * iObj.Radius.Value)
+			v = "f;" + str(2 * iObj.Radius.Value)
 			vArrValues.append(v)
 
 			vArrNames.append(gLang21)
@@ -2183,7 +2226,7 @@ def initLang():
 		gLang16 = "Profil konstrukcyjny"
 		gLang17 = "Grubość"
 		gLang18 = "Wymiary"
-		gLang19 = "Kołek"
+		gLang19 = "Punkty montażowe"
 		gLang20 = "Średnica"
 		gLang21 = "Długość"
 
@@ -2215,7 +2258,7 @@ def initLang():
 		gLang16 = "Construction profile"
 		gLang17 = "Thickness"
 		gLang18 = "Dimensions"
-		gLang19 = "Dowel"
+		gLang19 = "Mounting points"
 		gLang20 = "Diameter"
 		gLang21 = "Length"
 

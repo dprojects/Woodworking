@@ -35,15 +35,15 @@ def getItems(iType):
 	if iType == "Magic Panels - move":
 		
 		parts = [
+			"magicMove",
+			"magicAngle",
 			"panelMoveXp",
 			"panelMoveXm",
 			"panelMoveYp",
 			"panelMoveYm",
 			"panelMoveZp",
 			"panelMoveZm",
-			"magicMove",
-			"magicAngle",
-			"fitModel",
+			"fitModel"
 		]
 
 	if iType == "Magic Panels - resize":
@@ -93,17 +93,28 @@ def getItems(iType):
 		
 		parts = [
 			"rpanelPad",
-			"panel2profile"
+			"panel2profile",
+			"PartDesign_Thickness",
+			"panel2frame"
+		]
+
+	if iType == "Magic Panels - mounting":
+		
+		parts = [
+			"magicDowels",
+			"Part_Cylinder",
+			"PartDesign_Hole",
+			"makeTransparent"
 		]
 
 	if iType == "Furniture Parts":
 		
 		parts = [
+			"Part_Box",
 			"Std_Part",
 			"PartDesign_Body", 
 			"PartDesign_NewSketch",
-			"PartDesign_Pad", 
-			"Part_Box" 
+			"PartDesign_Pad"
 		]
 	
 	if iType == "Transformations":
@@ -122,25 +133,22 @@ def getItems(iType):
 	if iType == "Decorations":
 		
 		parts = [
-			"PartDesign_Hole",
-			"PartDesign_Pocket",
-			"PartDesign_Fillet",
-			"PartDesign_Chamfer",
-			"PartDesign_Thickness",
+			"Part_Boolean",
 			"Part_Torus",
 			"Part_Cone",
 			"Part_Sphere",
-			"Part_Cylinder",
-			"Part_Boolean"
+			"PartDesign_Fillet",
+			"PartDesign_Chamfer",
+			"PartDesign_Pocket"
 		]
 
 	if iType == "Dimensions":
 		
 		parts = [
-			"Part_Measure_Linear",
 			"getDimensions",
 			"Std_Print",
-			"sheet2export"
+			"sheet2export",
+			"Part_Measure_Linear"
 		]
 
 	if iType == "Project manage":
@@ -158,22 +166,21 @@ def getItems(iType):
 	if iType == "Preview":
 		
 		parts = [
-			"Std_TextureMapping",
-			"setTextures",
 			"colorManager",
-			"makeTransparent"
+			"Std_TextureMapping",
+			"setTextures"
 		]
 
 	if iType == "Code and Debug":
 		
 		parts = [
+			"scanObjects",
+			"debugInfo",
+			"Std_DependencyGraph",
 			"Std_DlgMacroRecord",
 			"Std_MacroStopRecord",
 			"Std_DlgMacroExecute",
-			"Std_DlgMacroExecuteDirect",
-			"Std_DependencyGraph",
-			"scanObjects",
-			"debugInfo"
+			"Std_DlgMacroExecuteDirect"
 		]
 		
 	return parts
