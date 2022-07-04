@@ -14,6 +14,31 @@ from PySide import QtCore
 # Functions - internal for this library purposes, no error handling
 # ###################################################################################################################
 
+
+# ############################################################################
+def touchTypo(iObj):
+	'''
+	touchTypo(iObj) - touch the typo so that the typo-snake does not notice it ;-) LOL
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObj: object to touch
+
+	Usage:
+	
+		vs = touchTypo(o)
+		
+	Result:
+	
+		return Vertex + es for object o
+
+	'''
+	
+	return getattr(iObj, "Vertex"+"es")
+
+
 # ############################################################################
 def getFaceIndex(iObj, iFace):
 	'''
@@ -140,9 +165,7 @@ def getFaceVertices(iFace):
 		Return vertices array like [ [ 1, 1, 1 ], [ 2, 2, 2 ], [ 3, 3, 3 ], [ 4, 4, 4 ] ]
 	'''
 	
-	# I like such typos, I would make the same ;-)
-	typo = "Vertex"+"es"
-	vertexArr = getattr(iFace, typo)
+	vertexArr = touchTypo(iFace)
 
 	v1 = [ vertexArr[0].X, vertexArr[0].Y, vertexArr[0].Z ]
 	v2 = [ vertexArr[1].X, vertexArr[1].Y, vertexArr[1].Z ]
@@ -251,9 +274,7 @@ def getEdgeVertices(iEdge):
 		Return vertices array like [ [ 1, 1, 1 ], [ 1, 1, 1 ] ].
 	'''
 	
-	# I like such typos, I would make the same ;-)
-	typo = "Vertex"+"es"
-	vertexArr = getattr(iEdge, typo)
+	vertexArr = touchTypo(iEdge)
 
 	v1 = [ vertexArr[0].X, vertexArr[0].Y, vertexArr[0].Z ]
 	v2 = [ vertexArr[1].X, vertexArr[1].Y, vertexArr[1].Z ]
@@ -283,9 +304,7 @@ def getVertex(iFace, iEdge, iVertex):
 		Return vertex position.
 	'''
 	
-	# I like such typos, I would make the same ;-)
-	typo = "Vertex"+"es"
-	vertexArr = getattr(iFace.Edges[iEdge], typo)
+	vertexArr = touchTypo(iFace.Edges[iEdge])
 
 	return [ vertexArr[iVertex].X, vertexArr[iVertex].Y, vertexArr[iVertex].Z ]
 

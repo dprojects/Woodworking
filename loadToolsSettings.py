@@ -36,6 +36,10 @@ Tools = [
 
 	"magicDowels", "MagicPanels", "magicDowels", "magicDowels", "Allows to add mounting points to the furniture. For example you can easily add screws, dowels, shelf supporter pins or custom mounting points.",
 
+	"showModelSize", "", "showModelSize", "show, model, size", "This tool allows you to calculate the overall occupied space in 3D by the model. This will show max width, depth and height of the full furniture.",
+	
+	"showSelectedSize", "", "showSelectedSize", "show, selected, size", "This tool allows you to calculate the overall occupied space in 3D by the selected parts. This will show max width, depth and height of the selected elements.",
+
 	# #################################################################################################################################
 	# Magic Panels - default
 	# #################################################################################################################################

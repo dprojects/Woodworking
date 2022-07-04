@@ -1,4 +1,4 @@
-import FreeCAD
+import FreeCAD, FreeCADGui
 import FreeCADGui as Gui
 
 try:
@@ -29,7 +29,7 @@ try:
 	QtGui.qApp.removeEventFilter(ai)
 	
 	# ############################################################################
-	# by Darek L aka dprojects below:
+	# added by Darek L below:
 	# ############################################################################
 	
 	def showQtGUI():
@@ -41,11 +41,30 @@ try:
 				self.initUI()
 	
 			def initUI(self):
-	
+				
+				# ############################################################################
+				# set screen
+				# ############################################################################
+				
+				# tool screen size
+				toolSW = 410
+				toolSH = 400
+				
+				# active screen size - FreeCAD main window
+				gSW = FreeCADGui.getMainWindow().width()
+				gSH = FreeCADGui.getMainWindow().height()
+
+				# tool screen position
+				gPW = int( ( gSW - toolSW ) / 2 )
+				gPH = int( ( gSH - toolSH ) / 2 )
+
+				# ############################################################################
 				# main window
+				# ############################################################################
+				
 				self.result = userCancelled
-				self.setGeometry(450, 100, 410, 500)
-				self.setWindowTitle("Platform details for bug report")
+				self.setGeometry(gPW, gPH, toolSW, toolSH)
+				self.setWindowTitle("platform details for bug report")
 				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 	
 				# output
@@ -56,8 +75,8 @@ try:
 				self.oInfo1.move(5, 10)
 				
 				self.o = QtGui.QTextEdit(self)
-				self.o.setMinimumSize(400, 350)
-				self.o.setMaximumSize(400, 350)
+				self.o.setMinimumSize(400, 250)
+				self.o.setMaximumSize(400, 250)
 				self.o.move(5, 40)
 				
 				self.o.setPlainText("")
@@ -69,7 +88,7 @@ try:
 				Info += "CTRL-A, CTRL-C - to copy again"
 				
 				self.oInfo2 = QtGui.QLabel(Info, self)
-				self.oInfo2.move(5, 400)
+				self.oInfo2.move(5, 300)
 	
 				# show
 				self.show()
@@ -96,20 +115,11 @@ except:
 	from PySide import QtCore
 
 	info = ''
-	info += 'There is error during getting debug information.' + ' '
-	info += 'It probably means <span style="color:red;">Your FreeCAD installation is incorrect.</span>' + ' '
-	info += 'Try the newest FreeCAD AppImage.' + '<br><br><br>'
-	info += 'If You are using Ubuntu 22.04 LTS You may have to rebuild the AppImage:' + '<br>'
-	info += '<div style="background-color: #DDDDFF;margin:15px;">'
-	info += 'chmod +x ./FreeCAD_weekly-build' + '<br>'
-	info += './FreeCAD_weekly-build --appimage-extract' + '<br>'
-	info += 'rm -rf ./squashfs-root/usr/lib/libstdc++.so.6' + '<br>'
-	info += 'rm -rf ./squashfs-root/usr/lib/libstdc++.so' + '<br>'
-	info += '<a href="https://appimage.github.io/appimagetool/">appimagetool-x86_64.AppImage</a> ./squashfs-root'
-	info += '</div>'
-	info += '<br><br><br><br>'
+	info += 'There is an error during getting debug information.' + '<br>'
+	info += 'It probably means <span style="color:red;">Your FreeCAD installation is incorrect.</span>' + '<br><br>'
 	info += 'For more details please see:' + ' '
-	info += '<a href="https://forum.freecadweb.org/viewtopic.php?p=590997#p590997">FreeCAD forum thread.</a>'
+	info += '<a href="https://github.com/dprojects/Woodworking#certified-platforms">'
+	info += 'Woodworking workbench certified platforms.</a>'
 
 	msg = QtGui.QMessageBox()
 	msg.setTextFormat(QtCore.Qt.TextFormat.RichText)

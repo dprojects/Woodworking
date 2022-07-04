@@ -490,6 +490,86 @@ FreeCADGui.addCommand("magicDowels", magicDowels())
 	
 
 # ######################################################################################################################
+class showModelSize():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "showModelSize.xpm"),
+				"Accel"   : "",
+				"MenuText": "show, model, size",
+				"ToolTip" : "This tool allows you to calculate the overall occupied space in 3D by the model. This will show max width, depth and height of the full furniture."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "showModelSize"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("showModelSize", showModelSize())
+
+	
+
+# ######################################################################################################################
+class showSelectedSize():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "showSelectedSize.xpm"),
+				"Accel"   : "",
+				"MenuText": "show, selected, size",
+				"ToolTip" : "This tool allows you to calculate the overall occupied space in 3D by the selected parts. This will show max width, depth and height of the selected elements."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "showSelectedSize"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("showSelectedSize", showSelectedSize())
+
+	
+
+# ######################################################################################################################
 class panelDefaultXY():
 
 	def GetResources(self):

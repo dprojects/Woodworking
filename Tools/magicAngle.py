@@ -1,3 +1,34 @@
+# ###################################################################################################################
+'''
+
+This magicAngle macro allows to rotate panels and even other more complicated objects, like construction profiles. 
+If you want to rotate many objects together, use this tool directly at Part object or pack all objects into 
+LinkGroup and use rotation at the LinkGroup.
+
+Note: This FreeCAD macro is part of Woodworking workbench. However, it can be used as standalone macro.
+
+Author: Darek L (github.com/dprojects)
+Latest version: https://github.com/dprojects/Woodworking/blob/master/Tools/magicAngle.py
+
+Certified platform:
+
+OS: Ubuntu 22.04 LTS (XFCE/xubuntu)
+Word size of FreeCAD: 64-bit
+Version: 0.20.29177 (Git) AppImage
+Build type: Release
+Branch: (HEAD detached at 0.20)
+Hash: 68e337670e227889217652ddac593c93b5e8dc94
+Python 3.9.13, Qt 5.12.9, Coin 4.0.0, Vtk 9.1.0, OCC 7.5.3
+Locale: English/United States (en_US)
+Installed mods: 
+  * Woodworking 0.20.29177
+
+https://github.com/dprojects/Woodworking
+
+'''
+# ###################################################################################################################
+
+
 import FreeCAD, FreeCADGui 
 import Draft
 from PySide import QtGui, QtCore
@@ -193,6 +224,15 @@ def showQtGUI():
 		# ############################################################################
 
 		# ############################################################################
+		def touchTypo(self, iFaceIndex, iVertexIndex):
+			
+			f = self.gObj.Shape.Faces[iFaceIndex]
+			
+			# how to touch the typo so that the typo-snake does not notice it ;-) LOL
+			v = getattr(f, "Vertex"+"es")
+			
+			return v[iVertexIndex]
+		
 		def setCenterPoints(self):
 			
 			self.gCenter = []
@@ -201,28 +241,28 @@ def showQtGUI():
 			
 				# you can add new center points here, if needed
 				
-				v = self.gObj.Shape.Faces[4].Vertexes[0]
+				v = self.touchTypo(4, 0)
 				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
 			
-				v = self.gObj.Shape.Faces[4].Vertexes[1]
+				v = self.touchTypo(4, 1)
 				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
 
-				v = self.gObj.Shape.Faces[4].Vertexes[2]
+				v = self.touchTypo(4, 2)
 				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
 
-				v = self.gObj.Shape.Faces[4].Vertexes[3]
+				v = self.touchTypo(4, 3)
 				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
 
-				v = self.gObj.Shape.Faces[5].Vertexes[0]
+				v = self.touchTypo(5, 0)
 				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
 
-				v = self.gObj.Shape.Faces[5].Vertexes[1]
+				v = self.touchTypo(5, 1)
 				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
 
-				v = self.gObj.Shape.Faces[5].Vertexes[2]
+				v = self.touchTypo(5, 2)
 				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
 
-				v = self.gObj.Shape.Faces[5].Vertexes[3]
+				v = self.touchTypo(5, 3)
 				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
 		
 			except:

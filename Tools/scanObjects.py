@@ -227,6 +227,7 @@ def showQtGUI():
 				"beautiful pinky world",
 				"the sky is blue",
 				"my world is gray",
+				"grass is green everywhere",
 				"I like winter more",
 				"matrix red pill"
 			)
@@ -1064,13 +1065,9 @@ def showQtGUI():
 				selectedText == "my world is gray" or
 				selectedText == "beautiful pinky world" or
 				selectedText == "the sky is blue" or
+				selectedText == "grass is green everywhere" or
 				selectedText == "I like winter more"
 				):
-
-				if selectedText == "my world is gray":
-					color1 = "#A1A1A1"
-					color2 = "#D1D1D1"
-					color3 = "#A1A1A1"
 
 				if selectedText == "beautiful pinky world":
 					color1 = "#FF00EE"
@@ -1081,7 +1078,17 @@ def showQtGUI():
 					color1 = "#AAAAFF"
 					color2 = "#FFFFFF"
 					color3 = "#AAAAFF"
+					
+				if selectedText == "my world is gray":
+					color1 = "#A1A1A1"
+					color2 = "#D1D1D1"
+					color3 = "#A1A1A1"
 
+				if selectedText == "grass is green everywhere":
+					color1 = "#AAFFAA"
+					color2 = "#FFFFFF"
+					color3 = "#AAFFAA"
+				
 				if selectedText == "I like winter more":
 					color1 = "#E1E1E1"
 					color2 = "#FFFFFF"

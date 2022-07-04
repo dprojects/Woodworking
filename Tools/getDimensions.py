@@ -76,7 +76,8 @@ sLTFDsc = {
 	"e" : "edgeband, extended edge",
 	"d" : "detailed, edgeband, drill holes, countersinks",
 	"c" : "constraints names, totally custom report",
-	"p" : "pads, show list of all constraints"
+	"p" : "pads, show list of all constraints",
+	"a" : "approximation of needed material"
 }
 
 # Additional report - decoration
@@ -191,6 +192,7 @@ gLang18 = ""
 gLang19 = ""
 gLang20 = ""
 gLang21 = ""
+gLang22 = ""
 
 # spreadsheet result
 gSheet = gAD
@@ -641,7 +643,7 @@ def showQtGUI():
 			self.rcIS.setText(str(sLTFDsc[sLTF]) + sEmptyDsc)
 
 			# submenu for report type
-			if selectedText == "c" or selectedText == "p":
+			if selectedText == "c" or selectedText == "p" or selectedText == "a":
 				self.setSubmenu("hide")
 			else:
 				self.setSubmenu("show")
@@ -657,6 +659,41 @@ def showQtGUI():
 				self.ecO.hide()
 				self.ectiL.hide()
 				self.ecti.hide()
+				
+			if selectedText == "a":
+				self.ufdL.hide()
+				self.ufdO.hide()
+				self.ufdIS.hide()
+				
+				self.ufaL.hide()
+				self.ufaO.hide()
+				self.ufaIS.hide()
+				
+				self.ufsL.hide()
+				self.ufsO.hide()
+				self.ufsIS.hide()
+				
+				self.ardL.hide()
+				self.ardO.hide()
+				self.armO.hide()
+				self.arpO.hide()
+			else:
+				self.ufdL.show()
+				self.ufdO.show()
+				self.ufdIS.show()
+				
+				self.ufaL.show()
+				self.ufaO.show()
+				self.ufaIS.show()
+				
+				self.ufsL.show()
+				self.ufsO.show()
+				self.ufsIS.show()
+				
+				self.ardL.show()
+				self.ardO.show()
+				self.armO.show()
+				self.arpO.show()
 
 		def setARD(self, selectedText):
 			global sARD
@@ -866,6 +903,97 @@ def toSheet(iValue, iType, iCaller="toSheet"):
 		return str(iValue)
 
 	return -1
+
+
+# ###################################################################################################################
+def switchApproximation(iA, iB, iCaller="switchApproximation"):
+	
+	# solves the problem if an element intersects the coordinate axis
+
+	if iA >= 0 and iB >= 0 and iB > iA:
+		return iB - iA
+	if iB >= 0 and iA >= 0 and iA > iB:
+		return iA - iB
+		
+	if iA < 0 and iB >= 0 and iB > iA:
+		return abs(iA) + iB
+	if iB < 0 and iA >= 0 and iA > iB:
+		return abs(iB) + iA
+
+	if iA < 0 and iB <= 0 and iB > iA:
+		return abs(iA) - abs(iB)
+	if iB < 0 and iA <= 0 and iA > iB:
+		return abs(iB) - abs(iA)
+
+	return 0
+	
+	
+# ###################################################################################################################
+def getApproximation(iObj, iCaller="getApproximation"):
+
+	init = 0
+	
+	minX = 0
+	minY = 0
+	minZ = 0
+
+	maxX = 0
+	maxY = 0
+	maxZ = 0
+
+	vs = getattr(iObj.Shape, "Vertex"+"es")
+
+	for v in vs:
+		
+		[ x, y, z ] = [ v.X, v.Y, v.Z ]
+		
+		if init == 0:
+			[ minX, minY, minZ ] = [ x, y, z ]
+			[ maxX, maxY, maxZ ] = [ x, y, z ]
+			init = 1
+		
+		if x > maxX:
+			maxX = x
+		
+		if y > maxY:
+			maxY = y
+
+		if z > maxZ:
+			maxZ = z
+
+		if x < minX:
+			minX = x
+
+		if y < minY:
+			minY = y
+
+		if z < minZ:
+			minZ = z
+		
+	s1 = switchApproximation(minX, maxX, iCaller)
+	s2 = switchApproximation(minY, maxY, iCaller)
+	s3 = switchApproximation(minZ, maxZ, iCaller)
+
+	mWidth = round(s1, 2)
+	mDepth = round(s2, 2)
+	mHeight = round(s3, 2)
+	
+	s = [ mWidth, mDepth, mHeight ]
+	s.sort()
+	
+	area = s[1] * s[2]
+	edge = 2 * (s[1] + s[2])
+	
+	key = ""
+	key += str(round(s[0], 2))
+	key += ":"
+	key += str(round(s[1], 2))
+	key += ":"
+	key += str(round(s[2], 2))
+	key += ":"
+	key += str(round(area, 2))
+
+	return [ key, s[0], s[1], s[2], area, edge ]
 
 
 # ###################################################################################################################
@@ -1176,6 +1304,36 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 
 
 # ###################################################################################################################
+def setDBApproximation(iObj, iCaller="setDBApproximation"):
+
+	try:
+		
+		[ vKey, thick, s1, s2, vArea, vEdge ] = getApproximation(iObj, iCaller)
+		
+		if thick <= 0 or s1 <= 0 or s2 <= 0:
+			raise
+		
+		# set dimensions db
+		if vKey in dbDQ:
+			
+			dbDQ[vKey] = dbDQ[vKey] + 1
+			
+		else:
+		
+			dbDQ[vKey] = 1
+
+	except:
+
+		# set db error
+		error = ""
+		error += "Object is not supported, because has no exact vertex values to calculate dimensions."
+		showError(iCaller, iObj, "setDBApproximation", error)
+		return -1
+
+	return 0
+
+
+# ###################################################################################################################
 def setDBConstraints(iObj, iL, iN, iV, iHoleObj, iCaller="setDBConstraints"):
 
 	try:
@@ -1329,13 +1487,19 @@ def setCube(iObj, iCaller="setCube"):
 
 	try:
 
-		# get correct dimensions as values
-		vW = iObj.Width.Value
-		vH = iObj.Height.Value
-		vL = iObj.Length.Value
+		if sLTF == "a":
+		
+			setDBApproximation(iObj, iCaller)
+		
+		else:
+		
+			# get correct dimensions as values
+			vW = iObj.Width.Value
+			vH = iObj.Height.Value
+			vL = iObj.Length.Value
 
-		# set db for quantity & area & edge size
-		setDB(iObj, vW, vH, vL, iCaller)
+			# set db for quantity & area & edge size
+			setDB(iObj, vW, vH, vL, iCaller)
 
 	except:
 
@@ -1351,13 +1515,19 @@ def setPad(iObj, iCaller="setPad"):
 
 	try:
 		
-		# get values
-		vW = iObj.Profile[0].Shape.OrderedEdges[0].Length
-		vH = iObj.Profile[0].Shape.OrderedEdges[1].Length
-		vL = iObj.Length.Value
+		if sLTF == "a":
 		
-		# set db for quantity & area & edge size
-		setDB(iObj, vW, vH, vL, iCaller)
+			setDBApproximation(iObj, iCaller)
+		
+		else:
+		
+			# get values
+			vW = iObj.Profile[0].Shape.OrderedEdges[0].Length
+			vH = iObj.Profile[0].Shape.OrderedEdges[1].Length
+			vL = iObj.Length.Value
+		
+			# set db for quantity & area & edge size
+			setDB(iObj, vW, vH, vL, iCaller)
 
 	except:
 
@@ -2197,6 +2367,7 @@ def initLang():
 	global gLang19
 	global gLang20
 	global gLang21
+	global gLang22
 
 	# Polish language
 	if sLang  == "pl":
@@ -2229,6 +2400,7 @@ def initLang():
 		gLang19 = "Punkty montażowe"
 		gLang20 = "Średnica"
 		gLang21 = "Długość"
+		gLang22 = "Obszar"
 
 	# English language
 	else:
@@ -2261,6 +2433,7 @@ def initLang():
 		gLang19 = "Mounting points"
 		gLang20 = "Diameter"
 		gLang21 = "Length"
+		gLang22 = "Area"
 
 # ###################################################################################################################
 def setViewQ(iCaller="setViewQ"):
@@ -2361,6 +2534,82 @@ def setViewQ(iCaller="setViewQ"):
 
 		# go to next spreadsheet row
 		gSheetRow = gSheetRow + 1
+
+
+# ###################################################################################################################
+def setViewA(iCaller="setViewA"):
+
+	global gSheet
+	global gSheetRow
+
+	# set headers
+	gSheet.set("A1", "Length")
+	gSheet.set("B1", "Width")
+	gSheet.set("C1", "Qty")
+	gSheet.set("D1", "Material")
+	gSheet.set("E1", "Label")
+	gSheet.set("F1", "Enabled")
+	gSheet.set("G1", "Grain direction")
+	gSheet.set("H1", "Top band")
+	gSheet.set("I1", "Left band")
+	gSheet.set("J1", "Bottom band")
+	gSheet.set("K1", "Right band")
+	
+	# text header decoration
+	gSheet.setStyle("A1:K1", "bold", "add")
+
+	# set background
+	vCell = "A" + str(gSheetRow) + ":K" + str(gSheetRow)
+	gSheet.setBackground(vCell, gHeadCS)
+
+	# go to next spreadsheet row
+	gSheetRow = gSheetRow + 1
+
+	# add values
+	for key in dbDQ.keys():
+
+		a = key.split(":")
+
+		gSheet.set("A" + str(gSheetRow), toSheet(a[1], "string", iCaller)) 			# Length
+		gSheet.set("B" + str(gSheetRow), toSheet(a[2], "string", iCaller)) 			# Width
+		gSheet.set("C" + str(gSheetRow), toSheet(dbDQ[key], "string", iCaller)) 	# Qty
+		gSheet.set("D" + str(gSheetRow), "")										# Material
+		gSheet.set("E" + str(gSheetRow), toSheet(a[0], "string", iCaller))			# Label
+		gSheet.set("F" + str(gSheetRow), "true")									# Enabled
+		gSheet.set("G" + str(gSheetRow), "")										# Grain direction
+		gSheet.set("H" + str(gSheetRow), "")										# Top band
+		gSheet.set("I" + str(gSheetRow), "")										# Left band
+		gSheet.set("J" + str(gSheetRow), "")										# Bottom band
+		gSheet.set("K" + str(gSheetRow), "")										# Right band
+		
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+		
+	# cell sizes
+	gSheet.setColumnWidth("A", 100)
+	gSheet.setColumnWidth("B", 100)
+	gSheet.setColumnWidth("C", 70)
+	gSheet.setColumnWidth("D", 100)
+	gSheet.setColumnWidth("E", 100)
+	gSheet.setColumnWidth("F", 70)
+	gSheet.setColumnWidth("G", 120)
+	gSheet.setColumnWidth("H", 100)
+	gSheet.setColumnWidth("I", 100)
+	gSheet.setColumnWidth("J", 100)
+	gSheet.setColumnWidth("K", 100)
+
+	# alignment
+	gSheet.setAlignment("A1:A" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("B1:B" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("C1:C" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("D1:D" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("E1:E" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("F1:F" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("G1:G" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("H1:H" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("I1:I" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("J1:J" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("K1:K" + str(gSheetRow), "right", "keep")
 
 
 # ###################################################################################################################
@@ -3576,9 +3825,15 @@ def selectView(iCaller="selectView"):
 	# main report - pads (all constraints report)
 	if sLTF == "p":
 		setViewP(iCaller)
+		
+	# main report - approximation (raw values calculated from vertex)
+	if sLTF == "a":
+		setViewA(iCaller)
 	
-	setViewAdditional(iCaller)
-	codeLink(iCaller)
+	if sLTF != "a":
+		
+		setViewAdditional(iCaller)
+		codeLink(iCaller)
 
 	finalViewSettings(iCaller)
 
@@ -3605,7 +3860,12 @@ def setTechDraw(iCaller="setTechDraw"):
 	# create TechDraw page for print
 	gAD.addObject("TechDraw::DrawPage","toPrint")
 	gAD.addObject("TechDraw::DrawSVGTemplate","Template")
-	gAD.Template.Template = FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Portrait_blank.svg"
+	
+	if sLTF == "a":
+		gAD.Template.Template = FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Landscape_blank.svg"
+	else:
+		gAD.Template.Template = FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Portrait_blank.svg"
+	
 	gAD.toPrint.Template = gAD.Template
 
 	# add spreadsheet to TechDraw page
@@ -3635,7 +3895,10 @@ def setTechDraw(iCaller="setTechDraw"):
 	gAD.getObject("Sheet").LineWidth = 0.10
 
 	# fix FreeCAD bug
-	gAD.getObject("Sheet").CellEnd = "G" + str(gSheetRow)
+	if sLTF == "a":
+		gAD.getObject("Sheet").CellEnd = "K" + str(gSheetRow)
+	else:
+		gAD.getObject("Sheet").CellEnd = "G" + str(gSheetRow)
 
 
 # ###################################################################################################################
