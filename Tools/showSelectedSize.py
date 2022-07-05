@@ -1,7 +1,7 @@
 # ###################################################################################################################
 '''
 
-This showSelectedSize macro allows to calculate the overall dimensions of the selected parts. 
+This showSelectedSize macro allows to calculate occupied space in 3D by all the selected parts.
 This will show max width, depth and height of the selected elements.
 
 Note: This FreeCAD macro is part of Woodworking workbench. However, it can be used as standalone macro.
@@ -116,7 +116,7 @@ try:
 	mHeight = round(s3, 2)
 
 	info += 'Occupied space in 3D by all the selected parts: ' + '<br><br>'
-	info += '<table>'
+	info += '<table cellpadding=5 style="background-color:#DDDDFF;">'
 	info += '<tr><td><b>' + 'Width: ' + '</b></td><td style="text-align:right">' + str(mWidth) + '</td></tr>'
 	info += '<tr><td><b>' + 'Depth: ' + '</b></td><td style="text-align:right">' + str(mDepth) + '</td></tr>'
 	info += '<tr><td><b>' + 'Height: ' + '</b></td><td style="text-align:right">' + str(mHeight) + '</td></tr>'
@@ -142,6 +142,7 @@ info += 'Normally, all the Pad or Cube elements, should be created according to 
 info += 'so there will be no difference between the real dimensions and occupied space in 3D. '
 
 msg = QtGui.QMessageBox()
+msg.setWindowTitle("showSelectedSize")
 msg.setTextFormat(QtCore.Qt.TextFormat.RichText)
 msg.setText(info)
 msg.exec_()

@@ -10,6 +10,206 @@ iconPath = os.path.join(path, "Icons")
 
 
 # ######################################################################################################################
+class debugInfo():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "debugInfo.xpm"),
+				"Accel"   : "",
+				"MenuText": "debugInfo",
+				"ToolTip" : "Copy platform details to clipboard for bug report purposes."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "debugInfo"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("debugInfo", debugInfo())
+
+	
+
+# ######################################################################################################################
+class colorManager():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "colorManager.xpm"),
+				"Accel"   : "",
+				"MenuText": "colorManager",
+				"ToolTip" : "Allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected face, object or many faces or objects and see the effect at 3D model in real-time."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "colorManager"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("colorManager", colorManager())
+
+	
+
+# ######################################################################################################################
+class magicAngle():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "magicAngle.xpm"),
+				"Accel"   : "",
+				"MenuText": "magicAngle",
+				"ToolTip" : "Allows to rotate panels and even other more complicated objects, like construction profiles."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "magicAngle"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("magicAngle", magicAngle())
+
+	
+
+# ######################################################################################################################
+class showModelSize():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "showModelSize.xpm"),
+				"Accel"   : "",
+				"MenuText": "show, model, size",
+				"ToolTip" : "This tool allows you to calculate the overall occupied space in 3D by the model. This will show max width, depth and height of the full furniture."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "showModelSize"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("showModelSize", showModelSize())
+
+	
+
+# ######################################################################################################################
+class showSelectedSize():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "showSelectedSize.xpm"),
+				"Accel"   : "",
+				"MenuText": "show, selected, size",
+				"ToolTip" : "This tool allows you to calculate the overall occupied space in 3D by the selected parts. This will show max width, depth and height of the selected elements."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "showSelectedSize"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("showSelectedSize", showSelectedSize())
+
+	
+
+# ######################################################################################################################
 class getDimensions():
 
 	def GetResources(self):
@@ -170,13 +370,13 @@ FreeCADGui.addCommand("setTextures", setTextures())
 	
 
 # ######################################################################################################################
-class debugInfo():
+class magicMove():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "debugInfo.xpm"),
+		return {"Pixmap"  : os.path.join(iconPath, "magicMove.xpm"),
 				"Accel"   : "",
-				"MenuText": "debugInfo",
-				"ToolTip" : "Copy platform details to clipboard for bug report purposes."}
+				"MenuText": "magicMove",
+				"ToolTip" : "If you have problem with unexpected result of panel movements via dedicated icons, you can use this tool to precisely move panel into desired direction. This tool allow to turn off and on axis cross and resize corner cross size."}
 
 	def Activated(self):
 
@@ -185,11 +385,11 @@ class debugInfo():
 
 		modulePath = sys.path
 		
-		module = "debugInfo"
+		module = "magicMove"
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		
+		path = os.path.join(path, "MagicPanels")
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -205,167 +405,7 @@ class debugInfo():
 		# not needed now, maybe in the future
 		return True
 
-FreeCADGui.addCommand("debugInfo", debugInfo())
-
-	
-
-# ######################################################################################################################
-class makeTransparent():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "makeTransparent.xpm"),
-				"Accel"   : "",
-				"MenuText": "transparent or normal mode",
-				"ToolTip" : "Make all parts transparent, so you can see all the joints, pilot holes, screws, countersinks. If you click next one all parts will back to normal. The transparent default is 83, so do not set any part to this number if you want e.g. to keep glass part of the furniture transparent after this preview."}
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "makeTransparent"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("makeTransparent", makeTransparent())
-
-	
-
-# ######################################################################################################################
-class colorManager():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "colorManager.xpm"),
-				"Accel"   : "",
-				"MenuText": "colorManager",
-				"ToolTip" : "Allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected face, object or many faces or objects and see the effect at 3D model in real-time."}
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "colorManager"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("colorManager", colorManager())
-
-	
-
-# ######################################################################################################################
-class fitModel():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "fitModel.xpm"),
-				"Accel"   : "",
-				"MenuText": "fitModel",
-				"ToolTip" : "Fit 3D model to the screen and set base orientation (XY, 0 key)."}
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "fitModel"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("fitModel", fitModel())
-
-	
-
-# ######################################################################################################################
-class magicAngle():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "magicAngle.xpm"),
-				"Accel"   : "",
-				"MenuText": "magicAngle",
-				"ToolTip" : "Allows to rotate panels and even other more complicated objects, like construction profiles."}
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "magicAngle"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("magicAngle", magicAngle())
+FreeCADGui.addCommand("magicMove", magicMove())
 
 	
 
@@ -410,46 +450,6 @@ FreeCADGui.addCommand("magicManager", magicManager())
 	
 
 # ######################################################################################################################
-class magicMove():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "magicMove.xpm"),
-				"Accel"   : "",
-				"MenuText": "magicMove",
-				"ToolTip" : "If you have problem with unexpected result of panel movements via dedicated icons, you can use this tool to precisely move panel into desired direction. This tool allow to turn off and on axis cross and resize corner cross size."}
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "magicMove"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("magicMove", magicMove())
-
-	
-
-# ######################################################################################################################
 class magicDowels():
 
 	def GetResources(self):
@@ -490,13 +490,13 @@ FreeCADGui.addCommand("magicDowels", magicDowels())
 	
 
 # ######################################################################################################################
-class showModelSize():
+class fitModel():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "showModelSize.xpm"),
+		return {"Pixmap"  : os.path.join(iconPath, "fitModel.xpm"),
 				"Accel"   : "",
-				"MenuText": "show, model, size",
-				"ToolTip" : "This tool allows you to calculate the overall occupied space in 3D by the model. This will show max width, depth and height of the full furniture."}
+				"MenuText": "fitModel",
+				"ToolTip" : "Fit 3D model to the screen and set base orientation (XY, 0 key)."}
 
 	def Activated(self):
 
@@ -505,7 +505,7 @@ class showModelSize():
 
 		modulePath = sys.path
 		
-		module = "showModelSize"
+		module = "fitModel"
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
@@ -525,18 +525,18 @@ class showModelSize():
 		# not needed now, maybe in the future
 		return True
 
-FreeCADGui.addCommand("showModelSize", showModelSize())
+FreeCADGui.addCommand("fitModel", fitModel())
 
 	
 
 # ######################################################################################################################
-class showSelectedSize():
+class makeTransparent():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "showSelectedSize.xpm"),
+		return {"Pixmap"  : os.path.join(iconPath, "makeTransparent.xpm"),
 				"Accel"   : "",
-				"MenuText": "show, selected, size",
-				"ToolTip" : "This tool allows you to calculate the overall occupied space in 3D by the selected parts. This will show max width, depth and height of the selected elements."}
+				"MenuText": "transparent or normal mode",
+				"ToolTip" : "Make all parts transparent, so you can see all the joints, pilot holes, screws, countersinks. If you click next one all parts will back to normal. The transparent default is 83, so do not set any part to this number if you want e.g. to keep glass part of the furniture transparent after this preview."}
 
 	def Activated(self):
 
@@ -545,7 +545,7 @@ class showSelectedSize():
 
 		modulePath = sys.path
 		
-		module = "showSelectedSize"
+		module = "makeTransparent"
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
@@ -565,7 +565,7 @@ class showSelectedSize():
 		# not needed now, maybe in the future
 		return True
 
-FreeCADGui.addCommand("showSelectedSize", showSelectedSize())
+FreeCADGui.addCommand("makeTransparent", makeTransparent())
 
 	
 
@@ -1056,7 +1056,7 @@ class panelMoveXp():
 		return {"Pixmap"  : os.path.join(iconPath, "panelMoveXp.xpm"),
 				"Accel"   : "",
 				"MenuText": "panel, move, back",
-				"ToolTip" : "Allow to move back selected panel. The move step is the selected panel thickness."}
+				"ToolTip" : "Allows to move back selected panel. The move step is the selected panel thickness."}
 
 	def Activated(self):
 
@@ -1096,7 +1096,7 @@ class panelMoveXm():
 		return {"Pixmap"  : os.path.join(iconPath, "panelMoveXm.xpm"),
 				"Accel"   : "",
 				"MenuText": "panel, move, forward",
-				"ToolTip" : "Allow to move forward selected panel. The move step is the selected panel thickness."}
+				"ToolTip" : "Allows to move forward selected panel. The move step is the selected panel thickness."}
 
 	def Activated(self):
 
@@ -1136,7 +1136,7 @@ class panelMoveYp():
 		return {"Pixmap"  : os.path.join(iconPath, "panelMoveYp.xpm"),
 				"Accel"   : "",
 				"MenuText": "panel, move, right",
-				"ToolTip" : "Allow to move right selected panel. The move step is the selected panel thickness."}
+				"ToolTip" : "Allows to move right selected panel. The move step is the selected panel thickness."}
 
 	def Activated(self):
 
@@ -1176,7 +1176,7 @@ class panelMoveYm():
 		return {"Pixmap"  : os.path.join(iconPath, "panelMoveYm.xpm"),
 				"Accel"   : "",
 				"MenuText": "panel, move, left",
-				"ToolTip" : "Allow to move left selected panel. The move step is the selected panel thickness."}
+				"ToolTip" : "Allows to move left selected panel. The move step is the selected panel thickness."}
 
 	def Activated(self):
 
@@ -1216,7 +1216,7 @@ class panelMoveZp():
 		return {"Pixmap"  : os.path.join(iconPath, "panelMoveZp.xpm"),
 				"Accel"   : "",
 				"MenuText": "panel, move, up",
-				"ToolTip" : "Allow to move up selected panel. The move step is the selected panel thickness."}
+				"ToolTip" : "Allows to move up selected panel. The move step is the selected panel thickness."}
 
 	def Activated(self):
 
@@ -1256,7 +1256,7 @@ class panelMoveZm():
 		return {"Pixmap"  : os.path.join(iconPath, "panelMoveZm.xpm"),
 				"Accel"   : "",
 				"MenuText": "panel, move, down",
-				"ToolTip" : "Allow to move down selected panel. The move step is the selected panel thickness."}
+				"ToolTip" : "Allows to move down selected panel. The move step is the selected panel thickness."}
 
 	def Activated(self):
 
@@ -1290,13 +1290,93 @@ FreeCADGui.addCommand("panelMoveZm", panelMoveZm())
 	
 
 # ######################################################################################################################
+class panelMoveZm():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelMoveZm.xpm"),
+				"Accel"   : "",
+				"MenuText": "panel, move, down",
+				"ToolTip" : "Allows to move down selected panel. The move step is the selected panel thickness."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelMoveZm"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelMoveZm", panelMoveZm())
+
+	
+
+# ######################################################################################################################
+class panelMove2Face():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelMove2Face.xpm"),
+				"Accel"   : "",
+				"MenuText": "panel, move, to face",
+				"ToolTip" : "Allows to move selected panel to the selected face position. First selected must be object you want to move. Next selected must be face at other object, as the reference position."}
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panelMove2Face"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panelMove2Face", panelMove2Face())
+
+	
+
+# ######################################################################################################################
 class panelResize1():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelResize1.xpm"),
 				"Accel"   : "",
 				"MenuText": "panel, bigger, long+",
-				"ToolTip" : "Allow to make bigger the long side of the panel. The resize step is the selected panel thickness."}
+				"ToolTip" : "Allows to make bigger the long side of the panel. The resize step is the selected panel thickness."}
 
 	def Activated(self):
 
@@ -1336,7 +1416,7 @@ class panelResize2():
 		return {"Pixmap"  : os.path.join(iconPath, "panelResize2.xpm"),
 				"Accel"   : "",
 				"MenuText": "panel, smaller, long-",
-				"ToolTip" : "Allow to make smaller the long side of the panel. The resize step is the selected panel thickness."}
+				"ToolTip" : "Allows to make smaller the long side of the panel. The resize step is the selected panel thickness."}
 
 	def Activated(self):
 
@@ -1376,7 +1456,7 @@ class panelResize3():
 		return {"Pixmap"  : os.path.join(iconPath, "panelResize3.xpm"),
 				"Accel"   : "",
 				"MenuText": "panel, bigger, short+",
-				"ToolTip" : "Allow to make bigger the short side of the panel. The resize step is the selected panel thickness."}
+				"ToolTip" : "Allows to make bigger the short side of the panel. The resize step is the selected panel thickness."}
 
 	def Activated(self):
 
@@ -1416,7 +1496,7 @@ class panelResize4():
 		return {"Pixmap"  : os.path.join(iconPath, "panelResize4.xpm"),
 				"Accel"   : "",
 				"MenuText": "panel, smaller, short-",
-				"ToolTip" : "Allow to make smaller the short side of the panel. The resize step is the selected panel thickness."}
+				"ToolTip" : "Allows to make smaller the short side of the panel. The resize step is the selected panel thickness."}
 
 	def Activated(self):
 

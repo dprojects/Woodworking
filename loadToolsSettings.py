@@ -9,7 +9,21 @@
 Tools = [
 	
 	# #################################################################################################################################
-	# tools
+	# GUI tools - not using MagicPanels library
+	# #################################################################################################################################
+
+	"debugInfo", "", "debugInfo", "debugInfo", "Copy platform details to clipboard for bug report purposes.",
+
+	"colorManager", "", "colorManager", "colorManager", "Allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected face, object or many faces or objects and see the effect at 3D model in real-time.",
+
+	"magicAngle", "", "magicAngle", "magicAngle", "Allows to rotate panels and even other more complicated objects, like construction profiles.",
+
+	"showModelSize", "", "showModelSize", "show, model, size", "This tool allows you to calculate the overall occupied space in 3D by the model. This will show max width, depth and height of the full furniture.",
+	
+	"showSelectedSize", "", "showSelectedSize", "show, selected, size", "This tool allows you to calculate the overall occupied space in 3D by the selected parts. This will show max width, depth and height of the selected elements.",
+
+	# #################################################################################################################################
+	# GUI tools - external
 	# #################################################################################################################################
 	
 	"getDimensions", "", "getDimensions", "getDimensions, BOM, cutlist", "Creates spreadsheet with dimensions to cut.",
@@ -19,27 +33,25 @@ Tools = [
 	"scanObjects", "", "scanObjects", "scanObjects", "Inspection tool for FreeCAD macro development & project debug (live API).",
 	
 	"setTextures", "", "setTextures", "setTextures", "Store textures information at object's property and allows to load textures from stored URL or local HDD path. Solves problem with texture sharing without huge project file size.",
-	
-	"debugInfo", "", "debugInfo", "debugInfo", "Copy platform details to clipboard for bug report purposes.",
 
-	"makeTransparent", "", "makeTransparent", "transparent or normal mode", "Make all parts transparent, so you can see all the joints, pilot holes, screws, countersinks. If you click next one all parts will back to normal. The transparent default is 83, so do not set any part to this number if you want e.g. to keep glass part of the furniture transparent after this preview.",
-	
-	"colorManager", "", "colorManager", "colorManager", "Allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected face, object or many faces or objects and see the effect at 3D model in real-time.",
-	
-	"fitModel", "", "fitModel", "fitModel", "Fit 3D model to the screen and set base orientation (XY, 0 key).",
-	
-	"magicAngle", "", "magicAngle", "magicAngle", "Allows to rotate panels and even other more complicated objects, like construction profiles.",
-
-	"magicManager", "MagicPanels", "magicManager", "magicManager", "If you have problem with unexpected result of Magic Panels, you can use this tool to preview panel before creation. It may take more time to create panel, but you can select exact panel to apply, also the edge and vertex position. This tool allows to create panel at selected face or between two faces.",
+	# #################################################################################################################################
+	# GUI tools - using MagicPanels library
+	# #################################################################################################################################
 
 	"magicMove", "MagicPanels", "magicMove", "magicMove", "If you have problem with unexpected result of panel movements via dedicated icons, you can use this tool to precisely move panel into desired direction. This tool allow to turn off and on axis cross and resize corner cross size.",
 
+	"magicManager", "MagicPanels", "magicManager", "magicManager", "If you have problem with unexpected result of Magic Panels, you can use this tool to preview panel before creation. It may take more time to create panel, but you can select exact panel to apply, also the edge and vertex position. This tool allows to create panel at selected face or between two faces.",
+
 	"magicDowels", "MagicPanels", "magicDowels", "magicDowels", "Allows to add mounting points to the furniture. For example you can easily add screws, dowels, shelf supporter pins or custom mounting points.",
 
-	"showModelSize", "", "showModelSize", "show, model, size", "This tool allows you to calculate the overall occupied space in 3D by the model. This will show max width, depth and height of the full furniture.",
-	
-	"showSelectedSize", "", "showSelectedSize", "show, selected, size", "This tool allows you to calculate the overall occupied space in 3D by the selected parts. This will show max width, depth and height of the selected elements.",
+	# #################################################################################################################################
+	# no GUI tools - not using MagicPanels library
+	# #################################################################################################################################
 
+	"fitModel", "", "fitModel", "fitModel", "Fit 3D model to the screen and set base orientation (XY, 0 key).",
+
+	"makeTransparent", "", "makeTransparent", "transparent or normal mode", "Make all parts transparent, so you can see all the joints, pilot holes, screws, countersinks. If you click next one all parts will back to normal. The transparent default is 83, so do not set any part to this number if you want e.g. to keep glass part of the furniture transparent after this preview.",
+	
 	# #################################################################################################################################
 	# Magic Panels - default
 	# #################################################################################################################################
@@ -76,29 +88,33 @@ Tools = [
 	# Magic Panels - move
 	# #################################################################################################################################
 	
-	"panelMoveXp", "MagicPanels", "panelMoveXp", "panel, move, back", "Allow to move back selected panel. The move step is the selected panel thickness.",
+	"panelMoveXp", "MagicPanels", "panelMoveXp", "panel, move, back", "Allows to move back selected panel. The move step is the selected panel thickness.",
 
-	"panelMoveXm", "MagicPanels", "panelMoveXm", "panel, move, forward", "Allow to move forward selected panel. The move step is the selected panel thickness.",
+	"panelMoveXm", "MagicPanels", "panelMoveXm", "panel, move, forward", "Allows to move forward selected panel. The move step is the selected panel thickness.",
 	
-	"panelMoveYp", "MagicPanels", "panelMoveYp", "panel, move, right", "Allow to move right selected panel. The move step is the selected panel thickness.",
+	"panelMoveYp", "MagicPanels", "panelMoveYp", "panel, move, right", "Allows to move right selected panel. The move step is the selected panel thickness.",
 
-	"panelMoveYm", "MagicPanels", "panelMoveYm", "panel, move, left", "Allow to move left selected panel. The move step is the selected panel thickness.",
+	"panelMoveYm", "MagicPanels", "panelMoveYm", "panel, move, left", "Allows to move left selected panel. The move step is the selected panel thickness.",
 	
-	"panelMoveZp", "MagicPanels", "panelMoveZp", "panel, move, up", "Allow to move up selected panel. The move step is the selected panel thickness.",
+	"panelMoveZp", "MagicPanels", "panelMoveZp", "panel, move, up", "Allows to move up selected panel. The move step is the selected panel thickness.",
 
-	"panelMoveZm", "MagicPanels", "panelMoveZm", "panel, move, down", "Allow to move down selected panel. The move step is the selected panel thickness.",
+	"panelMoveZm", "MagicPanels", "panelMoveZm", "panel, move, down", "Allows to move down selected panel. The move step is the selected panel thickness.",
+
+	"panelMoveZm", "MagicPanels", "panelMoveZm", "panel, move, down", "Allows to move down selected panel. The move step is the selected panel thickness.",
+
+	"panelMove2Face", "MagicPanels", "panelMove2Face", "panel, move, to face", "Allows to move selected panel to the selected face position. First selected must be object you want to move. Next selected must be face at other object, as the reference position.",
 
 	# #################################################################################################################################
 	# Magic Panels - resize
 	# #################################################################################################################################
 	
-	"panelResize1", "MagicPanels", "panelResize1", "panel, bigger, long+", "Allow to make bigger the long side of the panel. The resize step is the selected panel thickness.",
+	"panelResize1", "MagicPanels", "panelResize1", "panel, bigger, long+", "Allows to make bigger the long side of the panel. The resize step is the selected panel thickness.",
 
-	"panelResize2", "MagicPanels", "panelResize2", "panel, smaller, long-", "Allow to make smaller the long side of the panel. The resize step is the selected panel thickness.",
+	"panelResize2", "MagicPanels", "panelResize2", "panel, smaller, long-", "Allows to make smaller the long side of the panel. The resize step is the selected panel thickness.",
 
-	"panelResize3", "MagicPanels", "panelResize3", "panel, bigger, short+", "Allow to make bigger the short side of the panel. The resize step is the selected panel thickness.",
+	"panelResize3", "MagicPanels", "panelResize3", "panel, bigger, short+", "Allows to make bigger the short side of the panel. The resize step is the selected panel thickness.",
 
-	"panelResize4", "MagicPanels", "panelResize4", "panel, smaller, short-", "Allow to make smaller the short side of the panel. The resize step is the selected panel thickness.",
+	"panelResize4", "MagicPanels", "panelResize4", "panel, smaller, short-", "Allows to make smaller the short side of the panel. The resize step is the selected panel thickness.",
 
 	# #################################################################################################################################
 	# Magic Panels - special
@@ -156,9 +172,9 @@ Tools = [
 	
 	"panelBetweenYZ", "MagicPanels", "panelBetweenYZ", "panel between 2 faces to YZ", "Copy 1st selected panel between 1st and 2nd selected faces according to the YZ direction, described by the icon.",
 
-	"panelBetweenZY", "MagicPanels", "panelBetweenZY", "panel between 2 faces to ZY", "Copy 1st selected panel between 1st and 2nd selected faces according to the ZY direction, described by the icon."
+	"panelBetweenZY", "MagicPanels", "panelBetweenZY", "panel between 2 faces to ZY", "Copy 1st selected panel between 1st and 2nd selected faces according to the ZY direction, described by the icon." # no comma
 	
 
-	
+	# #################################################################################################################################	
 ]
 

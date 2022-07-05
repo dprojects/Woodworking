@@ -37,6 +37,7 @@ def getItems(iType):
 		parts = [
 			"magicMove",
 			"magicAngle",
+			"panelMove2Face",
 			"panelMoveXp",
 			"panelMoveXm",
 			"panelMoveYp",

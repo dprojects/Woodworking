@@ -1,8 +1,8 @@
 # ###################################################################################################################
 '''
 
-This showModelSize macro allows to calculate the overall dimensions of the model. 
-This will show max width, depth and height of the full furniture.
+This showModelSize macro allows to calculate the occupied space in 3D by the model. 
+This will show max width, depth and height of the full model.
 
 Note: This FreeCAD macro is part of Woodworking workbench. However, it can be used as standalone macro.
 
@@ -121,8 +121,8 @@ try:
 	mDepth = round(s2, 2)
 	mHeight = round(s3, 2)
 
-	info += 'Occupied space in 3D by the furniture: ' + '<br><br>'
-	info += '<table>'
+	info += 'Occupied space in 3D by the model: ' + '<br><br>'
+	info += '<table cellpadding=5 style="background-color:#DDDDFF;">'
 	info += '<tr><td><b>' + 'Width: ' + '</b></td><td style="text-align:right">' + str(mWidth) + '</td></tr>'
 	info += '<tr><td><b>' + 'Depth: ' + '</b></td><td style="text-align:right">' + str(mDepth) + '</td></tr>'
 	info += '<tr><td><b>' + 'Height: ' + '</b></td><td style="text-align:right">' + str(mHeight) + '</td></tr>'
@@ -131,7 +131,7 @@ try:
 except:
 
 	if info == "":
-		info += "Please create furniture to calculate occupied space in 3D."
+		info += "Please create model to calculate occupied space in 3D."
 
 info += '<br><br>'
 info += '<b>Note:</b> '
@@ -148,6 +148,7 @@ info += 'Normally, all the Pad or Cube elements, should be created according to 
 info += 'so there will be no difference between the real dimensions and occupied space in 3D. '
 
 msg = QtGui.QMessageBox()
+msg.setWindowTitle("showModelSize")
 msg.setTextFormat(QtCore.Qt.TextFormat.RichText)
 msg.setText(info)
 msg.exec_()

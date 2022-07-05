@@ -113,7 +113,7 @@ def getEdgeIndexByKey(iObj, iBoundBox):
 	Args:
 	
 		iObj: object of the edge
-		iBoundBox: edge BoundBox
+		iBoundBox: edge BoundBox as key
 	
 	Usage:
 	
@@ -668,7 +668,8 @@ def getSizes(iObj):
 		
 	except:
 		
-		return [ 1, 1, 1 ]
+		# allows to move all furniture more quickly
+		return [ 100, 100, 100 ]
 
 
 # ###################################################################################################################
@@ -1326,6 +1327,79 @@ def panelMove(iType):
 		
 		showInfo("panelMove"+iType, info)
 
+
+# ###################################################################################################################
+def panelMove2Face():
+	'''
+	panelMove2Face - allows to move panel to the face
+
+	Note: This function displays pop-up info in case of error.
+
+	Args:
+	
+		no args
+	
+	Usage:
+	
+		import MagicPanels
+		
+		MagicPanels.panelMove2Face()
+		
+	Result:
+	
+		Panel will be moved to the face position.
+		
+	'''
+
+	try:
+	
+		gObj = getReference()
+		gFace2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+
+		[ faceAxis, faceType ] = getDirectionFace(gObj, gFace2)
+		
+		[ x, y, z, r ] = getPlacement(gObj)
+		[ v1, v2, v3, v4 ] = getFaceVertices(gFace2)
+		
+		if faceAxis == "XY" or faceAxis == "YX":
+			X = x
+			Y = y
+			Z = v1[2]
+			R = r
+			
+		if faceAxis == "XZ" or faceAxis == "ZX":
+			X = x
+			Y = v1[1]
+			Z = z
+			R = r
+		
+		if faceAxis == "YZ" or faceAxis == "ZY":
+			X = v1[0]
+			Y = y
+			Z = z
+			R = r
+		
+		setPlacement(gObj, X, Y, Z, R)
+	
+	except:
+		
+		info = ""
+		
+		info += '<b>If you have active document, please select correct panel to move and face as a move reference '
+		info += 'vertex point.</b> To select more than one face hold left CTRL keyboard key during selection.' + ' '
+		info += '<br><br>'
+		
+		info += '<b>Note:</b>' + ' '
+		info += 'Panel is moved according to the face direction. For example if the selected face is XY, '
+		info += 'the movement will be along Z axis direction. '
+		info += '<br><br>'
+		info += 'This tool allows to avoid thickness step problem, if you want to move panel to the other edge '
+		info += 'but the way is not a multiple of the panel thickness. So, the panel will not match the '
+		info += 'edge exactly. You can use this tool to align the panel to the thickness step. After this '
+		info += 'alignment the panel can be adjusted with thickness step, if needed. '
+		
+		showInfo("panelMove2Face", info)
+	
 
 # ###################################################################################################################
 def panelResize(iType):
