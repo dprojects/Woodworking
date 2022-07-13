@@ -1,6 +1,8 @@
 import FreeCAD, FreeCADGui
 import FreeCADGui as Gui
 
+translate = FreeCAD.Qt.translate
+
 try:
 
 	# ############################################################################
@@ -64,12 +66,13 @@ try:
 				
 				self.result = userCancelled
 				self.setGeometry(gPW, gPH, toolSW, toolSH)
-				self.setWindowTitle("platform details for bug report")
+				self.setWindowTitle(translate('debugInfo1', 'platform details for bug report'))
 				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 	
 				# output
 				Info = ""
-				Info += "Has been copied to clipboard: \n"
+				Info += translate('debugInfo2', 'Has been copied to clipboard:')
+				Info += "\n"
 				
 				self.oInfo1 = QtGui.QLabel(Info, self)
 				self.oInfo1.move(5, 10)
@@ -83,9 +86,11 @@ try:
 				self.o.paste()
 	
 				Info = ""
-				Info += "Note: \n\n"
-				Info += "CTRL-V - to paste it at your forum topic \n\n"
-				Info += "CTRL-A, CTRL-C - to copy again"
+				Info += translate('debugInfo2', 'Note:')
+				Info += "\n\n"
+				Info += translate('debugInfo3', 'CTRL-V - to paste it at your forum topic')
+				Info += "\n\n"
+				Info += translate('debugInfo4', 'CTRL-A, CTRL-C - to copy again')
 				
 				self.oInfo2 = QtGui.QLabel(Info, self)
 				self.oInfo2.move(5, 300)
@@ -115,11 +120,16 @@ except:
 	from PySide import QtCore
 
 	info = ''
-	info += 'There is an error during getting debug information.' + '<br>'
-	info += 'It probably means <span style="color:red;">Your FreeCAD installation is incorrect.</span>' + '<br><br>'
-	info += 'For more details please see:' + ' '
-	info += '<a href="https://github.com/dprojects/Woodworking#certified-platforms">'
-	info += 'Woodworking workbench certified platforms.</a>'
+	info += translate('debugInfo5', 'There is an error during getting debug information.')
+	info += '<br>'
+	info += translate('debugInfo6', 'It probably means')
+	info += ' ' + '<span style="color:red;">'
+	info += translate('debugInfo7', 'Your FreeCAD installation is incorrect.')
+	info += '</span>' + '<br><br>'
+	info += translate('debugInfo8', 'For more details please see:')
+	info += ' ' + '<a href="https://github.com/dprojects/Woodworking#certified-platforms">'
+	info += translate('debugInfo9', 'Woodworking workbench certified platforms.')
+	info += '</a>'
 
 	msg = QtGui.QMessageBox()
 	msg.setTextFormat(QtCore.Qt.TextFormat.RichText)

@@ -28,6 +28,8 @@ import FreeCAD, FreeCADGui
 from PySide import QtGui, QtCore
 from pivy import coin
 
+translate = FreeCAD.Qt.translate
+
 
 # ###################################################################################################################
 # Qt GUI
@@ -77,7 +79,7 @@ def showQtMain():
 			
 			self.result = userCancelled
 			self.setGeometry(gPW, gPH, toolSW, toolSH)
-			self.setWindowTitle("setTextures")
+			self.setWindowTitle(translate('setTextures1', 'setTextures'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
@@ -85,7 +87,7 @@ def showQtMain():
 			# ############################################################################
 
 			# button
-			self.initBA = QtGui.QPushButton("show stored textures for all objects", self)
+			self.initBA = QtGui.QPushButton(translate('setTextures2', 'show stored textures for all objects'), self)
 			self.initBA.clicked.connect(self.loadAll)
 			self.initBA.resize(280, 40)
 			self.initBA.move(10, 10)
@@ -96,14 +98,14 @@ def showQtMain():
 
 			# label
 			info = ""
-			info += "Set new textures or change:"
+			info += translate('setTextures3', 'Set new textures or change:')
 			self.storeL = QtGui.QLabel(info, self)
 			self.storeL.move(10, 70)
 
 			# color
 			# ############################################################################
 
-			self.checkColor = QtGui.QCheckBox("- set white color", self)
+			self.checkColor = QtGui.QCheckBox(translate('setTextures4', '- set white color'), self)
 			self.checkColor.setCheckState(QtCore.Qt.Checked)
 			self.checkColor.move(10, 100)
 
@@ -112,7 +114,7 @@ def showQtMain():
 
 			# label
 			info = ""
-			info += "Texture URL or local HDD path:"
+			info += translate('setTextures5', 'Texture URL or local HDD path:')
 			self.urlL = QtGui.QLabel(info, self)
 			self.urlL.move(10, 130)
 
@@ -139,7 +141,7 @@ def showQtMain():
 
 			# label
 			info = ""
-			info += "- repeat X, set 1 to not repeat"
+			info += translate('setTextures6', '- repeat X, set 1 to not repeat')
 			self.repeatXL = QtGui.QLabel(info, self)
 			self.repeatXL.move(70, 183)
 
@@ -151,7 +153,7 @@ def showQtMain():
 
 			# label
 			info = ""
-			info += "- repeat Y, set 1 to not repeat"
+			info += translate('setTextures7', '- repeat Y, set 1 to not repeat')
 			self.repeatYL = QtGui.QLabel(info, self)
 			self.repeatYL.move(70, 203)
 
@@ -166,7 +168,7 @@ def showQtMain():
 
 			# label
 			info = ""
-			info += "- rotation, set 0 to not rotate"
+			info += translate('setTextures8', '- rotation, set 0 to not rotate')
 			self.rotateL = QtGui.QLabel(info, self)
 			self.rotateL.move(70, 223)
 
@@ -192,7 +194,7 @@ def showQtMain():
 			self.fitO.move(10, 250)
 			
 			# label
-			self.fitL = QtGui.QLabel("- fit mode", self)
+			self.fitL = QtGui.QLabel(translate('setTextures9', '- fit mode'), self)
 			self.fitL.move(170, 253)
 			
 			# store & load buttons
@@ -200,36 +202,36 @@ def showQtMain():
 
 			# label
 			info = ""
-			info += "Store texture properties for:"
+			info += translate('setTextures10', 'Store texture properties for:')
 			self.storeL = QtGui.QLabel(info, self)
 			self.storeL.move(10, 280)
 
 			# button
-			self.storeBS = QtGui.QPushButton("selected objects only", self)
+			self.storeBS = QtGui.QPushButton(translate('setTextures11', 'selected objects only'), self)
 			self.storeBS.clicked.connect(self.storeSelected)
 			self.storeBS.resize(150, 40)
 			self.storeBS.move(10, 300)
 
 			# button
-			self.storeBA = QtGui.QPushButton("all objects", self)
+			self.storeBA = QtGui.QPushButton(translate('setTextures12', 'all objects'), self)
 			self.storeBA.clicked.connect(self.storeAll)
 			self.storeBA.resize(100, 40)
 			self.storeBA.move(190, 300)
 
 			# label
 			info = ""
-			info += "Refresh texture for:"
+			info += translate('setTextures13', 'Refresh texture for:')
 			self.loadL = QtGui.QLabel(info, self)
 			self.loadL.move(10, 350)
 
 			# button
-			self.loadBS = QtGui.QPushButton("selected objects only", self)
+			self.loadBS = QtGui.QPushButton(translate('setTextures14', 'selected objects only'), self)
 			self.loadBS.clicked.connect(self.loadSelected)
 			self.loadBS.resize(150, 40)
 			self.loadBS.move(10, 370)
 
 			# button
-			self.loadBA = QtGui.QPushButton("all objects", self)
+			self.loadBA = QtGui.QPushButton(translate('setTextures15', 'all objects'), self)
 			self.loadBA.clicked.connect(self.loadAll)
 			self.loadBA.resize(100, 40)
 			self.loadBA.move(190, 370)
@@ -333,9 +335,9 @@ def showQtMain():
 		
 			# show status
 			if skip == 0:
-				self.showStatus("Texture properties has been stored.")
+				self.showStatus(translate('setTextures16', 'Texture properties has been stored.'))
 			else:
-				self.showStatus("Error during setting properties.")
+				self.showStatus(translate('setTextures17', 'Error during setting properties.'))
 
 
 		# ############################################################################
@@ -579,28 +581,28 @@ def showQtMain():
 			# set status
 			if empty == "":
 				
-				iText = "No textures URLs found." 
+				iText = translate('setTextures18', 'No textures URLs found.')
 				self.showStatus(iText)
 			
 			else:
 			
 				if len(self.gBrokenURL) == 0:
 					
-					self.showStatus("All textures has been loaded.")
+					self.showStatus(translate('setTextures19', 'All textures has been loaded.'))
 				
 				else:
 					
 					FreeCAD.Console.PrintMessage("\n ====================== \n")
 					for n, b in self.gBrokenURL.items():
 						FreeCAD.Console.PrintMessage("\n")
-						FreeCAD.Console.PrintMessage("Object Label: "+n)
+						FreeCAD.Console.PrintMessage(translate('setTextures20', 'Object Label') + ': '+n)
 						FreeCAD.Console.PrintMessage("\n")
-						FreeCAD.Console.PrintMessage("Broken URL: "+b)
+						FreeCAD.Console.PrintMessage(translate('setTextures21', 'Broken URL') + ': '+b)
 						FreeCAD.Console.PrintMessage("\n")
 					FreeCAD.Console.PrintMessage("\n ====================== \n")
 
 					info = ""
-					info += "See console for broken URLs. "
+					info += translate('setTextures22', 'See console for broken URLs.')
 					self.showStatus(info)
 
 
@@ -616,7 +618,7 @@ def showQtMain():
 			selectedLen = len(selected)
 
 			if iSelection == "selected" and selectedLen == 0:
-				iText = "Please select objects and try again."
+				iText = translate('setTextures23', 'Please select objects and try again.')
 				self.showStatus(iText)
 			else:
 
@@ -645,28 +647,28 @@ def showQtMain():
 			try:
 				self.checkSelected("store", "selected")
 			except:
-				iText = "Please select objects and try again."
+				iText = translate('setTextures24', 'Please select objects and try again.')
 				self.showStatus(iText)
 
 		def storeAll(self):
 			try:
 				self.checkSelected("store", "all")
 			except:
-				iText = "Please select objects and try again."
+				iText = translate('setTextures25', 'Please select objects and try again.')
 				self.showStatus(iText)
 
 		def loadSelected(self):
 			try:
 				self.checkSelected("load", "selected")
 			except:
-				iText = "Please select objects and try again."
+				iText = translate('setTextures26', 'Please select objects and try again.')
 				self.showStatus(iText)
 
 		def loadAll(self):
 			try:
 				self.checkSelected("load", "all")
 			except:
-				iText = "Please select objects and try again."
+				iText = translate('setTextures27', 'Please select objects and try again.')
 				self.showStatus(iText)
 
 

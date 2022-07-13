@@ -4,13 +4,13 @@ def getItems(iType):
 
 	parts = []
 
-	if iType == "Parameterization":
+	if iType == "Woodworking - Parameterization":
 		
 		parts = [
 			"Spreadsheet_CreateSheet"
 		]
 
-	if iType == "Magic Panels - default":
+	if iType == "Woodworking - Magic Panels - default":
 		
 		parts = [
 			"panelDefaultXY",
@@ -21,7 +21,7 @@ def getItems(iType):
 			"panelDefaultZY"
 		]
 
-	if iType == "Magic Panels - copy":
+	if iType == "Woodworking - Magic Panels - copy":
 		
 		parts = [
 			"panelCopyXY",
@@ -32,7 +32,7 @@ def getItems(iType):
 			"panelCopyZY"
 		]
 
-	if iType == "Magic Panels - move":
+	if iType == "Woodworking - Magic Panels - move":
 		
 		parts = [
 			"magicMove",
@@ -47,7 +47,7 @@ def getItems(iType):
 			"fitModel"
 		]
 
-	if iType == "Magic Panels - resize":
+	if iType == "Woodworking - Magic Panels - resize":
 		
 		parts = [
 			"panelResize1",
@@ -56,7 +56,7 @@ def getItems(iType):
 			"panelResize4"
 		]
 
-	if iType == "Magic Panels - face":
+	if iType == "Woodworking - Magic Panels - face":
 		
 		parts = [
 			"panelFaceXY",
@@ -67,7 +67,7 @@ def getItems(iType):
 			"panelFaceZY"
 		]
 
-	if iType == "Magic Panels - between":
+	if iType == "Woodworking - Magic Panels - between":
 		
 		parts = [
 			"panelBetweenXY",
@@ -78,7 +78,7 @@ def getItems(iType):
 			"panelBetweenZY"
 		]
 		
-	if iType == "Magic Panels - special":
+	if iType == "Woodworking - Magic Panels - special":
 		
 		parts = [
 			"magicManager",
@@ -90,16 +90,16 @@ def getItems(iType):
 			"panelCoverXY"
 		]
 
-	if iType == "Magic Panels - replace":
+	if iType == "Woodworking - Magic Panels - replace":
 		
 		parts = [
-			"rpanelPad",
+			"panel2pad",
 			"panel2profile",
-			"PartDesign_Thickness",
-			"panel2frame"
+			"panel2frame",
+			"panel2link"
 		]
 
-	if iType == "Magic Panels - mounting":
+	if iType == "Woodworking - Magic Panels - mounting":
 		
 		parts = [
 			"magicDowels",
@@ -108,7 +108,7 @@ def getItems(iType):
 			"makeTransparent"
 		]
 
-	if iType == "Furniture Parts":
+	if iType == "Woodworking - Furniture Parts":
 		
 		parts = [
 			"Part_Box",
@@ -118,7 +118,7 @@ def getItems(iType):
 			"PartDesign_Pad"
 		]
 	
-	if iType == "Transformations":
+	if iType == "Woodworking - Transformations":
 		
 		parts = [
 			"Draft_Array",
@@ -131,7 +131,7 @@ def getItems(iType):
 			"Draft_Clone"
 		]
 
-	if iType == "Decorations":
+	if iType == "Woodworking - Decorations":
 		
 		parts = [
 			"Part_Boolean",
@@ -143,18 +143,18 @@ def getItems(iType):
 			"PartDesign_Pocket"
 		]
 
-	if iType == "Dimensions":
+	if iType == "Woodworking - Dimensions":
 		
 		parts = [
 			"getDimensions",
 			"Std_Print",
 			"sheet2export",
-			"showModelSize",
-			"showSelectedSize",
+			"showSpaceModel",
+			"showSpaceSelected",
 			"Part_Measure_Linear"
 		]
 
-	if iType == "Project manage":
+	if iType == "Woodworking - Project manage":
 		
 		parts = [
 			"Std_New",
@@ -166,7 +166,7 @@ def getItems(iType):
 			"Std_LinkMake"
 		]
 
-	if iType == "Preview":
+	if iType == "Woodworking - Preview":
 		
 		parts = [
 			"colorManager",
@@ -174,7 +174,7 @@ def getItems(iType):
 			"setTextures"
 		]
 
-	if iType == "Code and Debug":
+	if iType == "Woodworking - Code and Debug":
 		
 		parts = [
 			"scanObjects",

@@ -27,6 +27,9 @@ https://github.com/dprojects/Woodworking
 import FreeCAD, FreeCADGui, Draft, Spreadsheet
 from PySide import QtGui, QtCore
 
+translate = FreeCAD.Qt.translate
+
+
 # ###################################################################################################################
 #
 # 				Default Settings
@@ -40,44 +43,44 @@ from PySide import QtGui, QtCore
 # Languages:
 sLang = "en"
 sLangDsc = { 
-	"en" : "English language", 
-	"pl" : "Polish language"
+	"en" : translate("getDimensions1", "English language"), 
+	"pl" : translate("getDimensions2", "Polish language")
 }
 
 # Report print quality:
 sRPQ = "hq"
 sRPQDsc = {
-	"eco" : "low ink mode (good for printing)",
-	"hq" : "high quality mode (good for pdf or html export)"
+	"eco" : translate("getDimensions3", "low ink mode (good for printing)"),
+	"hq" : translate("getDimensions4", "high quality mode (good for pdf or html export)")
 }
 
 # Visibility (Toggle Visibility Feature):
 sTVF = "off"
 sTVFDsc = {
-	"on" : "skip all hidden objects and groups",
-	"edge" : "show all hidden objects and groups but not add to the edge size",
-	"off" : "show and calculate all objects and groups"
+	"on" : translate("getDimensions5", "skip all hidden objects and groups"),
+	"edge" : translate("getDimensions6", "show all hidden objects and groups but not add to the edge size"),
+	"off" : translate("getDimensions7", "show and calculate all objects and groups")
 }
 
 # Units for dimensions:
 sUnitsMetric = "mm"
 sUnitsMetricDsc = {
-	"mm" : "millimeter",
-	"m" : "meter",
-	"in" : "inch"
+	"mm" : translate("getDimensions8", "millimeter"),
+	"m" : translate("getDimensions9", "meter"),
+	"in" : translate("getDimensions10", "inch")
 }
 
 # Report customization (Label Type Feature):
 sLTF = "q"
 sLTFDsc = {
-	"q" : "quick, quantity first",
-	"n" : "names, objects listing",
-	"g" : "group, grandparent or parent folder name first",
-	"e" : "edgeband, extended edge",
-	"d" : "detailed, edgeband, drill holes, countersinks",
-	"c" : "constraints names, totally custom report",
-	"p" : "pads, show list of all constraints",
-	"a" : "approximation of needed material"
+	"q" : translate("getDimensions11", "quick, quantity first"),
+	"n" : translate("getDimensions12", "names, objects listing"),
+	"g" : translate("getDimensions13", "group, grandparent or parent folder name first"),
+	"e" : translate("getDimensions14", "edgeband, extended edge"),
+	"d" : translate("getDimensions15", "detailed, edgeband, drill holes, countersinks"),
+	"c" : translate("getDimensions16", "constraints names, totally custom report"),
+	"p" : translate("getDimensions17", "pads, show list of all constraints"),
+	"a" : translate("getDimensions18", "approximation of needed material")
 }
 
 # Additional report - decoration
@@ -104,17 +107,17 @@ sARPsc = {
 # Units for area:
 sUnitsArea = "m"
 sUnitsAreaDsc = {
-	"m" : "square meter (m2)",
-	"mm" : "square millimeter (mm2)",
-	"in" : "square inch (in2)"
+	"m" : translate("getDimensions19", "square meter (m2)"),
+	"mm" : translate("getDimensions20", "square millimeter (mm2)"),
+	"in" : translate("getDimensions21", "square inch (in2)")
 }
 
 # Units for edge size:
 sUnitsEdge = "m"
 sUnitsEdgeDsc = {
-	"mm" : "millimeter",
-	"m" : "meter",
-	"in" : "inch"
+	"mm" : translate("getDimensions22", "millimeter"),
+	"m" : translate("getDimensions23", "meter"),
+	"in" : translate("getDimensions24", "inch")
 }
 
 # Furniture color:
@@ -293,7 +296,7 @@ def showQtGUI():
 			
 			self.result = userCancelled
 			self.setGeometry(gPW, gPH, toolSW, toolSH)
-			self.setWindowTitle("getDimensions - default settings")
+			self.setWindowTitle(translate("getDimensions25", "getDimensions - default settings"))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# set line start point

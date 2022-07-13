@@ -1,4 +1,0 @@
-import MagicPanels
-
-MagicPanels.panelReplacePad()
-

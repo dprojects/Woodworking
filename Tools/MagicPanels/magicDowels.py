@@ -4,6 +4,8 @@ import Draft
 
 import MagicPanels
 
+translate = FreeCAD.Qt.translate
+
 
 # ############################################################################
 # Qt Main
@@ -19,6 +21,7 @@ def showQtGUI():
 		# ############################################################################
 
 		gObj = ""
+		gThick = 0
 		
 		gFace = ""
 		gFIndex = 0
@@ -28,17 +31,16 @@ def showQtGUI():
 		gEdge = ""
 		gEArr = []
 		gEIndex = 0
-		
-		gSides = 0
-		
+
 		gPosition = 0
-		
 		gRAxis = ""
 		gRAngles = []
 		gRIndex = 0
-		
+
+		# should not be reset if object change
+		gSides = 0
 		gDowels = []
-		gDowelLabel = "Dowel 8x35 mm "
+		gDowelLabel = ""
 		gDDiameter = 8
 		gDSize = 35
 		gDSink = 20
@@ -47,7 +49,7 @@ def showQtGUI():
 		gDONext = 32
 		gDOEdge = 0
 		
-		gNoSelection = "please select face"
+		gNoSelection = translate('magicDowels1', 'please select face')
 		
 		# ############################################################################
 		# init
@@ -81,7 +83,7 @@ def showQtGUI():
 			
 			self.result = userCancelled
 			self.setGeometry(gPW, gPH, toolSW, toolSH)
-			self.setWindowTitle("magicDowels")
+			self.setWindowTitle(translate('magicDowels2', 'magicDowels'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
@@ -97,7 +99,7 @@ def showQtGUI():
 			self.s1S.move(10, 10)
 
 			# button
-			self.s1B1 = QtGui.QPushButton("refresh selection", self)
+			self.s1B1 = QtGui.QPushButton(translate('magicDowels3', 'refresh selection'), self)
 			self.s1B1.clicked.connect(self.getSelected)
 			self.s1B1.setFixedWidth(200)
 			self.s1B1.move(10, 40)
@@ -111,7 +113,7 @@ def showQtGUI():
 			row += 30
 
 			# label
-			self.s2L = QtGui.QLabel("Select edge:", self)
+			self.s2L = QtGui.QLabel(translate('magicDowels4', 'Select edge:'), self)
 			self.s2L.move(10, row+3)
 
 			# button
@@ -135,7 +137,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.s3L = QtGui.QLabel("Adjust position:", self)
+			self.s3L = QtGui.QLabel(translate('magicDowels5', 'Adjust position:'), self)
 			self.s3L.move(10, row+3)
 
 			# button
@@ -159,7 +161,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.s4L = QtGui.QLabel("Adjust rotation:", self)
+			self.s4L = QtGui.QLabel(translate('magicDowels6', 'Adjust rotation:'), self)
 			self.s4L.move(10, row+3)
 
 			# button
@@ -183,7 +185,7 @@ def showQtGUI():
 			row += 50
 
 			# label
-			self.s5L = QtGui.QLabel("Select sides:", self)
+			self.s5L = QtGui.QLabel(translate('magicDowels7', 'Select sides:'), self)
 			self.s5L.move(10, row+3)
 
 			# button
@@ -208,25 +210,27 @@ def showQtGUI():
 
 			# border options
 			self.s6Slist = (
-						"Dowel 6 x 35 mm",
-						"Dowel 8 x 35 mm",
-						"Dowel 10 x 35 mm",
-						"Screw 3 x 20 mm",
-						"Screw 4.5 x 40 mm",
-						"Screw 4 x 40 mm",
-						"Screw 5 x 50 mm",
-						"Screw 6 x 60 mm",
-						"Confirmation 7 x 40 mm",
-						"Confirmation 7 x 50 mm",
-						"Confirmation 7 x 70 mm",
-						"Shelf Pin 5 x 16 mm",
-						"Profile Pin 5 x 30 mm",
-						"Profile Pin 8 x 40 mm",
-						"Custom mount point"
+						"Dowel 6 x 35 mm ",
+						"Dowel 8 x 35 mm ",
+						"Dowel 10 x 35 mm ",
+						"Screw 3 x 20 mm ",
+						"Screw 4.5 x 40 mm ",
+						"Screw 4 x 40 mm ",
+						"Screw 5 x 50 mm ",
+						"Screw 6 x 60 mm ",
+						"Confirmation 7 x 40 mm ",
+						"Confirmation 7 x 50 mm ",
+						"Confirmation 7 x 70 mm ",
+						"Shelf Pin 5 x 16 mm ",
+						"Profile Pin 5 x 30 mm ",
+						"Profile Pin 8 x 40 mm ",
+						"Custom mount point "
 						)
+			
+			self.gDowelLabel = "Dowel 8 x 35 mm "
 			self.s6S = QtGui.QComboBox(self)
 			self.s6S.addItems(self.s6Slist)
-			self.s6S.setCurrentIndex(self.s6Slist.index("Dowel 8 x 35 mm"))
+			self.s6S.setCurrentIndex(self.s6Slist.index(self.gDowelLabel))
 			self.s6S.activated[str].connect(self.setCustomMount)
 			self.s6S.setFixedWidth(200)
 			self.s6S.move(10, row)
@@ -238,7 +242,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oDowelLabelL = QtGui.QLabel("Label:", self)
+			self.oDowelLabelL = QtGui.QLabel(translate('magicDowels8', 'Label:'), self)
 			self.oDowelLabelL.move(10, row+3)
 
 			# text input
@@ -254,7 +258,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oDNumL = QtGui.QLabel("Dowels per side:", self)
+			self.oDNumL = QtGui.QLabel(translate('magicDowels9', 'Dowels per side:'), self)
 			self.oDNumL.move(10, row+3)
 
 			# text input
@@ -270,7 +274,7 @@ def showQtGUI():
 			row += 30
 
 			# label
-			self.oDDiameterL = QtGui.QLabel("Dowels diameter:", self)
+			self.oDDiameterL = QtGui.QLabel(translate('magicDowels10', 'Dowels diameter:'), self)
 			self.oDDiameterL.move(10, row+3)
 
 			# text input
@@ -286,7 +290,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oDSizeL = QtGui.QLabel("Dowels size:", self)
+			self.oDSizeL = QtGui.QLabel(translate('magicDowels11', 'Dowels size:'), self)
 			self.oDSizeL.move(10, row+3)
 
 			# text input
@@ -302,7 +306,7 @@ def showQtGUI():
 			row += 30
 
 			# label
-			self.oDSinkL = QtGui.QLabel("Dowels sink:", self)
+			self.oDSinkL = QtGui.QLabel(translate('magicDowels12', 'Dowels sink:'), self)
 			self.oDSinkL.move(10, row+3)
 
 			# text input
@@ -318,7 +322,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oDOCornerL = QtGui.QLabel("Offset from corner:", self)
+			self.oDOCornerL = QtGui.QLabel(translate('magicDowels13', 'Offset from corner:'), self)
 			self.oDOCornerL.move(10, row+3)
 
 			# text input
@@ -334,7 +338,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oDONextL = QtGui.QLabel("Offset between dowels:", self)
+			self.oDONextL = QtGui.QLabel(translate('magicDowels14', 'Offset between dowels:'), self)
 			self.oDONextL.move(10, row+3)
 
 			# text input
@@ -350,7 +354,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oDOEdgeL = QtGui.QLabel("Offset from edge:", self)
+			self.oDOEdgeL = QtGui.QLabel(translate('magicDowels15', 'Offset from edge:'), self)
 			self.oDOEdgeL.move(10, row+3)
 
 			# text input
@@ -366,7 +370,7 @@ def showQtGUI():
 			row += 30
 
 			# button
-			self.e1B1 = QtGui.QPushButton("set custom values", self)
+			self.e1B1 = QtGui.QPushButton(translate('magicDowels16', 'set custom values'), self)
 			self.e1B1.clicked.connect(self.refreshSettings)
 			self.e1B1.setFixedWidth(200)
 			self.e1B1.move(10, row)
@@ -374,7 +378,7 @@ def showQtGUI():
 			row += 40
 
 			# button
-			self.e2B1 = QtGui.QPushButton("apply dowels to this position", self)
+			self.e2B1 = QtGui.QPushButton(translate('magicDowels17', 'apply dowels to this position'), self)
 			self.e2B1.clicked.connect(self.setDowels)
 			self.e2B1.setFixedWidth(200)
 			self.e2B1.setFixedHeight(40)
@@ -642,6 +646,7 @@ def showQtGUI():
 		def resetGlobals(self):
 
 			self.gObj = ""
+			self.gThick = 0
 			
 			self.gFace = ""
 			self.gFIndex = 0
@@ -690,15 +695,8 @@ def showQtGUI():
 				sizes = []
 				sizes = MagicPanels.getSizes(self.gObj)
 				sizes.sort()
-				thick = int(sizes[0])
+				self.gThick = sizes[0]
 
-				if self.gPosition == 0:
-					self.gDOEdge = sizes[0] / 2
-				else:
-					self.gDOEdge = - sizes[0] / 2
-				
-				self.oDOEdgeE.setText(str(self.gDOEdge))
-				
 				e1 = self.gFace.Edges[0]
 				e2 = self.gFace.Edges[1]
 				e3 = self.gFace.Edges[2]
@@ -706,19 +704,19 @@ def showQtGUI():
 		
 				if self.gFType == "edge":
 					
-					if int(e1.Length) != thick:
+					if int(e1.Length) != int(self.gThick):
 						self.gEArr.append(e1)
 					
-					if int(e2.Length) != thick:
+					if int(e2.Length) != int(self.gThick):
 						self.gEArr.append(e2)
 						
-					if int(e3.Length) != thick:
+					if int(e3.Length) != int(self.gThick):
 						self.gEArr.append(e3)
 						
-					if int(e4.Length) != thick:
+					if int(e4.Length) != int(self.gThick):
 						self.gEArr.append(e4)
 					
-				if self.gFType == "surface":
+				if self.gFType == "surface" or self.gFType == "equal":
 					
 					self.gEArr.append(self.gFace.Edges[0])
 					self.gEArr.append(self.gFace.Edges[1])
@@ -751,7 +749,7 @@ def showQtGUI():
 					self.gRAxis = FreeCAD.Vector(0, 1, 0)
 				
 				# ############################################################################
-				self.showDowels()
+				self.setCustomMount(self.gDowelLabel)
 			
 			except:
 
@@ -879,8 +877,11 @@ def showQtGUI():
 			
 			try:
 			
-				if selectedText == "Dowel 6 x 35 mm":
-					self.gDowelLabel = "Dowel 6x35 mm "
+				self.gDOEdge = self.gThick / 2
+				self.gDowelLabel = selectedText
+				self.gSides = 0
+				
+				if selectedText == "Dowel 6 x 35 mm ":
 					self.gDDiameter = 6
 					self.gDSize = 35
 					self.gDSink = 20
@@ -888,8 +889,7 @@ def showQtGUI():
 					self.gDOCorner = 50
 					self.gDONext = 32
 					
-				if selectedText == "Dowel 8 x 35 mm":
-					self.gDowelLabel = "Dowel 8x35 mm "
+				if selectedText == "Dowel 8 x 35 mm ":
 					self.gDDiameter = 8
 					self.gDSize = 35
 					self.gDSink = 20
@@ -897,8 +897,7 @@ def showQtGUI():
 					self.gDOCorner = 50
 					self.gDONext = 32
 
-				if selectedText == "Dowel 10 x 35 mm":
-					self.gDowelLabel = "Dowel 10x35 mm "
+				if selectedText == "Dowel 10 x 35 mm ":
 					self.gDDiameter = 10
 					self.gDSize = 35
 					self.gDSink = 20
@@ -906,8 +905,7 @@ def showQtGUI():
 					self.gDOCorner = 50
 					self.gDONext = 32
 				
-				if selectedText == "Screw 3 x 20 mm":
-					self.gDowelLabel = "Screw 3x20 mm "
+				if selectedText == "Screw 3 x 20 mm ":
 					self.gDDiameter = 3
 					self.gDSize = 20
 					self.gDSink = 17
@@ -915,8 +913,7 @@ def showQtGUI():
 					self.gDOCorner = 50
 					self.gDONext = 32
 				
-				if selectedText == "Screw 4.5 x 40 mm":
-					self.gDowelLabel = "Screw 4.5x40 mm "
+				if selectedText == "Screw 4.5 x 40 mm ":
 					self.gDDiameter = 4.5
 					self.gDSize = 40
 					self.gDSink = 25
@@ -924,8 +921,7 @@ def showQtGUI():
 					self.gDOCorner = 50
 					self.gDONext = 32
 
-				if selectedText == "Screw 4 x 40 mm":
-					self.gDowelLabel = "Screw 4x40 mm "
+				if selectedText == "Screw 4 x 40 mm ":
 					self.gDDiameter = 4
 					self.gDSize = 40
 					self.gDSink = 25
@@ -933,8 +929,7 @@ def showQtGUI():
 					self.gDOCorner = 50
 					self.gDONext = 32
 
-				if selectedText == "Screw 5 x 50 mm":
-					self.gDowelLabel = "Screw 5x50 mm "
+				if selectedText == "Screw 5 x 50 mm ":
 					self.gDDiameter = 5
 					self.gDSize = 50
 					self.gDSink = 35
@@ -942,8 +937,7 @@ def showQtGUI():
 					self.gDOCorner = 50
 					self.gDONext = 32
 
-				if selectedText == "Screw 6 x 60 mm":
-					self.gDowelLabel = "Screw 6x60 mm "
+				if selectedText == "Screw 6 x 60 mm ":
 					self.gDDiameter = 6
 					self.gDSize = 60
 					self.gDSink = 45
@@ -951,8 +945,7 @@ def showQtGUI():
 					self.gDOCorner = 50
 					self.gDONext = 32
 					
-				if selectedText == "Confirmation 7 x 40 mm":
-					self.gDowelLabel = "Confirmation 7x40 mm "
+				if selectedText == "Confirmation 7 x 40 mm ":
 					self.gDDiameter = 7
 					self.gDSize = 40
 					self.gDSink = 25
@@ -960,8 +953,7 @@ def showQtGUI():
 					self.gDOCorner = 50
 					self.gDONext = 32
 					
-				if selectedText == "Confirmation 7 x 50 mm":
-					self.gDowelLabel = "Confirmation 7x50 mm "
+				if selectedText == "Confirmation 7 x 50 mm ":
 					self.gDDiameter = 7
 					self.gDSize = 50
 					self.gDSink = 35
@@ -969,8 +961,7 @@ def showQtGUI():
 					self.gDOCorner = 50
 					self.gDONext = 32
 					
-				if selectedText == "Confirmation 7 x 70 mm":
-					self.gDowelLabel = "Confirmation 7x70 mm "
+				if selectedText == "Confirmation 7 x 70 mm ":
 					self.gDDiameter = 7
 					self.gDSize = 70
 					self.gDSink = 55
@@ -978,8 +969,7 @@ def showQtGUI():
 					self.gDOCorner = 50
 					self.gDONext = 32
 					
-				if selectedText == "Shelf Pin 5 x 16 mm":
-					self.gDowelLabel = "Shelf Pin 5x16 mm "
+				if selectedText == "Shelf Pin 5 x 16 mm ":
 					self.gDDiameter = 5
 					self.gDSize = 16
 					self.gDSink = 8
@@ -989,8 +979,7 @@ def showQtGUI():
 					self.gDOEdge = 50
 					self.gSides = 1
 
-				if selectedText == "Profile Pin 5 x 30 mm":
-					self.gDowelLabel = "Profile Pin 5 x 30 mm "
+				if selectedText == "Profile Pin 5 x 30 mm ":
 					self.gDDiameter = 5
 					self.gDSize = 30
 					self.gDSink = 25
@@ -998,8 +987,7 @@ def showQtGUI():
 					self.gDOCorner = 5
 					self.gDONext = 32
 
-				if selectedText == "Profile Pin 8 x 40 mm":
-					self.gDowelLabel = "Profile Pin 8 x 40 mm "
+				if selectedText == "Profile Pin 8 x 40 mm ":
 					self.gDDiameter = 8
 					self.gDSize = 40
 					self.gDSink = 35
@@ -1007,14 +995,16 @@ def showQtGUI():
 					self.gDOCorner = 50
 					self.gDONext = 32
 
-				if selectedText == "Custom mount point":
-					self.gDowelLabel = "Custom mount point "
+				if selectedText == "Custom mount point ":
 					self.gDDiameter = 8
 					self.gDSize = 35
 					self.gDSink = 20
 					self.gDNum = 2
 					self.gDOCorner = 50
 					self.gDONext = 32
+
+				if self.gPosition != 0:
+					self.gDOEdge = - self.gDOEdge
 
 				self.oDowelLabelE.setText(str(self.gDowelLabel))
 				self.oDDiameterE.setText(str(self.gDDiameter))

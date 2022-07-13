@@ -1,3 +1,9 @@
+import FreeCAD
+translate = FreeCAD.Qt.translate
+
+def QT_TRANSLATE_NOOP(context, text):
+	return text
+
 import FreeCADGui
 
 import os, sys
@@ -11,9 +17,9 @@ class DOCS():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "Docs.xpm"),
-				"Accel"   : "",
-				"MenuText": "Woodworking at FreeCAD - basic tutorial (getDimensions Docs)",
-				"ToolTip" : "Opens web browser with external link."}
+				"MenuText": QT_TRANSLATE_NOOP('Workbench', 'Woodworking at FreeCAD - basic tutorial (getDimensions Docs)'),
+				"ToolTip" : QT_TRANSLATE_NOOP('Workbench', 'Opens web browser with external link.'),
+				"Accel"   : ""}
 
 	def Activated(self):
 
@@ -34,14 +40,14 @@ class EXAMPLES():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "Docs.xpm"),
-				"Accel"   : "",
-				"MenuText": "Woodworking at FreeCAD - fully parametric examples",
-				"ToolTip" : "Opens web browser with external link."}
+				"MenuText": QT_TRANSLATE_NOOP('Workbench', 'Woodworking at FreeCAD - fully parametric examples'),
+				"ToolTip" : QT_TRANSLATE_NOOP('Workbench', 'Opens web browser with external link.'),
+				"Accel"   : ""}
 
 	def Activated(self):
 
 		import webbrowser
-		webbrowser.open("https://github.com/dprojects/Woodworking/tree/master/Examples")
+		webbrowser.open("https://github.com/dprojects/Woodworking/tree/master/Examples/Parametric")
 
 		return
 
@@ -53,13 +59,35 @@ FreeCADGui.addCommand("EXAMPLES", EXAMPLES())
 
 
 # ######################################################################################################################
+class FIXTURE():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "Docs.xpm"),
+				"MenuText": QT_TRANSLATE_NOOP('Workbench', 'Woodworking at FreeCAD - fixture examples'),
+				"ToolTip" : QT_TRANSLATE_NOOP('Workbench', 'Opens web browser with external link.'),
+				"Accel"   : ""}
+
+	def Activated(self):
+
+		import webbrowser
+		webbrowser.open("https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture")
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("FIXTURE", FIXTURE())
+
+# ######################################################################################################################
 class TEXTURES():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "Docs.xpm"),
-				"Accel"   : "",
-				"MenuText": "Woodworking at FreeCAD - free woodworking textures",
-				"ToolTip" : "Opens web browser with external link."}
+				"MenuText": QT_TRANSLATE_NOOP('Workbench', 'Woodworking at FreeCAD - free woodworking textures'),
+				"ToolTip" : QT_TRANSLATE_NOOP('Workbench', 'Opens web browser with external link.'),
+				"Accel"   : ""}
 
 	def Activated(self):
 
@@ -103,9 +131,9 @@ class AUTOUPDATE():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "autoupdate.xpm"),
-				"Accel"   : "",
-				"MenuText": "Download and update all macro tools",
-				"ToolTip" : "Download latest versions for all macro tools."}
+				"MenuText": QT_TRANSLATE_NOOP('Workbench', 'Download and update all macro tools'),
+				"ToolTip" : QT_TRANSLATE_NOOP('Workbench', 'Download latest versions for all macro tools.'),
+				"Accel"   : ""}
 
 	def Activated(self):
 
@@ -120,19 +148,20 @@ class AUTOUPDATE():
 		info = ""
 		
 		if self.gUpdated != "":
-			info += "Updated macro tools:"
+			info += translate('manuAutoupdate', 'Updated macro tools:')
 			info += "\n\n"
 			info += self.gUpdated
 			info += "\n\n"
 		
 		if self.gSkipped != "":
-			info += "Skipped macro tools:"
+			info += translate('manuAutoupdate', 'Skipped macro tools:')
 			info += "\n\n"
 			info += self.gSkipped
 			info += "\n\n"
 		
 		from PySide import QtGui, QtCore
-		QtGui.QMessageBox.information(None,"Macro tools - autoupdate",str(info))
+		title = translate('manuAutoupdate', 'Macro tools - autoupdate')
+		QtGui.QMessageBox.information(None, title, str(info))
 		
 		return
 
@@ -151,6 +180,7 @@ def getItems():
 	parts = [ 
 		"DOCS",
 		"EXAMPLES",
+		"FIXTURE",
 		"TEXTURES",
 		"AUTOUPDATE"
 	]

@@ -1,43 +1,94 @@
 class WoodworkingWorkbench (Workbench):
 
+	import FreeCAD
+	translate = FreeCAD.Qt.translate
+
+	def QT_TRANSLATE_NOOP(context, text):
+		return text
+
 	import os, sys
 	import fakemodule
 	path = os.path.dirname(fakemodule.__file__)
 	iconPath = os.path.join(path, "Icons")
+	translationsPath = os.path.join(path, "translations")
 
-	MenuText = "Woodworking"
-	ToolTip = "Workbech for woodworking."
+	MenuText = QT_TRANSLATE_NOOP("Workbench", "Woodworking")
+	ToolTip = QT_TRANSLATE_NOOP("Workbench", "Workbech for woodworking.")
 	Icon = os.path.join(iconPath, "Woodworking.xpm")
 
 	def Initialize(self):
 
-		import FreeCADGui, PartGui, PartDesignGui, SketcherGui, SpreadsheetGui
+		import FreeCAD, FreeCADGui
+		
+		def QT_TRANSLATE_NOOP(context, text):
+			return text
+
+		FreeCADGui.addLanguagePath(self.translationsPath)
+		
+		import PartGui, PartDesignGui, SketcherGui, SpreadsheetGui
 		import DraftTools
 
 		import loadToolbar
 		import loadMenu
 
-		self.appendToolbar("Woodworking - Magic Panels - default", loadToolbar.getItems("Magic Panels - default"))
-		self.appendToolbar("Woodworking - Magic Panels - copy", loadToolbar.getItems("Magic Panels - copy"))
-		self.appendToolbar("Woodworking - Magic Panels - move", loadToolbar.getItems("Magic Panels - move"))
-		self.appendToolbar("Woodworking - Magic Panels - resize", loadToolbar.getItems("Magic Panels - resize"))
-		self.appendToolbar("Woodworking - Magic Panels - special", loadToolbar.getItems("Magic Panels - special"))
-		self.appendToolbar("Woodworking - Magic Panels - face", loadToolbar.getItems("Magic Panels - face"))
-		self.appendToolbar("Woodworking - Magic Panels - between", loadToolbar.getItems("Magic Panels - between"))
-		self.appendToolbar("Woodworking - Magic Panels - replace", loadToolbar.getItems("Magic Panels - replace"))
-		self.appendToolbar("Woodworking - Magic Panels - mounting", loadToolbar.getItems("Magic Panels - mounting"))
+		# toolbar
+		# ################################################################################################
 		
-		self.appendToolbar("Woodworking - Project manage", loadToolbar.getItems("Project manage"))
-		self.appendToolbar("Woodworking - Code and Debug", loadToolbar.getItems("Code and Debug"))
-		self.appendToolbar("Woodworking - Dimensions", loadToolbar.getItems("Dimensions"))
-		self.appendToolbar("Woodworking - Preview", loadToolbar.getItems("Preview"))
-				
-		self.appendToolbar("Woodworking - Furniture Parts", loadToolbar.getItems("Furniture Parts"))
-		self.appendToolbar("Woodworking - Parameterization", loadToolbar.getItems("Parameterization"))
-		self.appendToolbar("Woodworking - Transformations", loadToolbar.getItems("Transformations"))
-		self.appendToolbar("Woodworking - Decorations", loadToolbar.getItems("Decorations"))
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Magic Panels - default"), 
+			loadToolbar.getItems("Woodworking - Magic Panels - default"))
 
-		self.appendMenu("Woodworking", loadMenu.getItems())
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Magic Panels - copy"), 
+			loadToolbar.getItems("Woodworking - Magic Panels - copy"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Magic Panels - move"), 
+			loadToolbar.getItems("Woodworking - Magic Panels - move"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Magic Panels - resize"), 
+			loadToolbar.getItems("Woodworking - Magic Panels - resize"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Magic Panels - special"), 
+			loadToolbar.getItems("Woodworking - Magic Panels - special"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Magic Panels - face"), 
+			loadToolbar.getItems("Woodworking - Magic Panels - face"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Magic Panels - between"), 
+			loadToolbar.getItems("Woodworking - Magic Panels - between"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Magic Panels - replace"), 
+			loadToolbar.getItems("Woodworking - Magic Panels - replace"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Magic Panels - mounting"), 
+			loadToolbar.getItems("Woodworking - Magic Panels - mounting"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Project manage"), 
+			loadToolbar.getItems("Woodworking - Project manage"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Code and Debug"), 
+			loadToolbar.getItems("Woodworking - Code and Debug"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Dimensions"), 
+			loadToolbar.getItems("Woodworking - Dimensions"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Preview"), 
+			loadToolbar.getItems("Woodworking - Preview"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Furniture Parts"), 
+			loadToolbar.getItems("Woodworking - Furniture Parts"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Parameterization"), 
+			loadToolbar.getItems("Woodworking - Parameterization"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Transformations"), 
+			loadToolbar.getItems("Woodworking - Transformations"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Decorations"), 
+			loadToolbar.getItems("Woodworking - Decorations"))
+		
+		# menu
+		# ################################################################################################
+		
+		self.appendMenu(QT_TRANSLATE_NOOP("Workbench", "Woodworking"), loadMenu.getItems())
 		
 	def Activated(self):
 		# not needed now, maybe in the future

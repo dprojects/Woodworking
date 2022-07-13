@@ -1,11 +1,12 @@
-# -*- coding: utf-8 -*-
-
 # magicManager tool for Magic Panels
 # Author: Darek L (github.com/dprojects)
 
 import FreeCAD, FreeCADGui
 from PySide import QtGui, QtCore
+
 import MagicPanels
+
+translate = FreeCAD.Qt.translate
 
 
 # ############################################################################
@@ -71,7 +72,7 @@ def showQtGUI():
 			
 			self.result = userCancelled
 			self.setGeometry(gPW, gPH, toolSW, toolSH)
-			self.setWindowTitle("magicManager")
+			self.setWindowTitle(translate('magicManager1', 'magicManager'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
@@ -83,7 +84,7 @@ def showQtGUI():
 			self.oModeL.move(10, 10)
 
 			# button - refresh
-			self.oModeB1 = QtGui.QPushButton("refresh selection", self)
+			self.oModeB1 = QtGui.QPushButton(translate('magicManager2', 'refresh selection'), self)
 			self.oModeB1.clicked.connect(self.setMode)
 			self.oModeB1.setFixedWidth(240)
 			self.oModeB1.move(10, 30)
@@ -93,7 +94,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.spL = QtGui.QLabel("Select panel:", self)
+			self.spL = QtGui.QLabel(translate('magicManager3', 'Select panel:'), self)
 			self.spL.move(10, 73)
 
 			# button - previous
@@ -115,7 +116,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.seL = QtGui.QLabel("Select edge:", self)
+			self.seL = QtGui.QLabel(translate('magicManager4', 'Select edge:'), self)
 			self.seL.move(10, 103)
 
 			# button - previous
@@ -137,7 +138,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.svL = QtGui.QLabel("Select vertex:", self)
+			self.svL = QtGui.QLabel(translate('magicManager5', 'Select vertex:'), self)
 			self.svL.move(10, 133)
 
 			# button - previous
@@ -159,7 +160,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# button - apply
-			self.oSetB = QtGui.QPushButton("apply panel to this position", self)
+			self.oSetB = QtGui.QPushButton(translate('magicManager6', 'apply panel to this position'), self)
 			self.oSetB.clicked.connect(self.setPanel)
 			self.oSetB.setFixedWidth(240)
 			self.oSetB.move(10, 160)
@@ -261,7 +262,7 @@ def showQtGUI():
 			if self.gFace1 == "":
 
 				self.gMode = ""
-				self.oModeL.setText("select 1 or 2 faces")
+				self.oModeL.setText(translate('magicManager7', 'select 1 or 2 faces'))
 				
 				self.seL.hide()
 				self.seBP.hide()
@@ -276,7 +277,7 @@ def showQtGUI():
 			if self.gFace2 == "":
 
 				self.gMode = "Face"
-				self.oModeL.setText("Selection: 1 face")
+				self.oModeL.setText(translate('magicManager8', 'Selection: 1 face'))
 				
 				self.seL.show()
 				self.seBP.show()
@@ -288,7 +289,7 @@ def showQtGUI():
 				
 			else:
 				self.gMode = "Between"
-				self.oModeL.setText("Selection: 2 faces")
+				self.oModeL.setText(translate('magicManager9', 'Selection: 2 faces'))
 				
 				self.seL.hide()
 				self.seBP.hide()

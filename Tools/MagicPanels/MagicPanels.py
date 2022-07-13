@@ -9,6 +9,7 @@ import FreeCAD, FreeCADGui
 from PySide import QtGui
 from PySide import QtCore
 
+translate = FreeCAD.Qt.translate
 
 # ###################################################################################################################
 # Functions - internal for this library purposes, no error handling
@@ -310,15 +311,15 @@ def getVertex(iFace, iEdge, iVertex):
 
 
 # ###################################################################################################################
-def getReference():
+def getReference(iObj="none"):
 	'''
-	getReference() - get reference to the selected object.
+	getReference(iObj="none") - get reference to the selected or given object.
 	
 	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
-		none
+		iObj (optional): object to get reference (to return base object)
 	
 	Usage:
 	
@@ -326,11 +327,14 @@ def getReference():
 		
 	Result:
 	
-		obj - reference to the base panel object
+		obj - reference to the base object
 
 	'''
 
-	obj = FreeCADGui.Selection.getSelection()[0]
+	if iObj == "none":
+		obj = FreeCADGui.Selection.getSelection()[0]
+	else:
+		obj = iObj
 
 	if ( 
 		obj.isDerivedFrom("PartDesign::Thickness") or 
@@ -1097,32 +1101,98 @@ def showInfo(iCaller, iInfo, iNote="none"):
 		Show info Gui.
 	'''
 
-	info = iInfo
-
-	if iNote == "replace":
-		info += '<br><br>'
-		info += 'The replace features are considered for final stage of furniture designing. '
-		info += 'Some kind of detailed preview stage. '
-		info += 'Do not use the replace feature at the beginning because the Magic Panels may stop working '
-		info += 'and the furniture designing process will be much longer and more complicated. '
+	info = ""
 	
+	import os, sys
+	import fakemodule
+	path = os.path.dirname(fakemodule.__file__)
+	iconPath = str(os.path.join(path, "Icons"))
+	
+	filename = ""
+	
+	info += '<table cellpadding="5" border="0" text-align="left">'
+	info += '<tr>'
+	
+	info += '<td>'
+	info += iInfo
+	info += '</td>'
+	
+	info += '<td>'
+	
+	f = os.path.join(iconPath, iCaller+".xpm")
+	if os.path.exists(f):
+		filename = f
+		info += '<img src="'+ filename + '" width="200" height="200" align="right"/>'
+	
+	f = os.path.join(iconPath, iCaller+".svg")
+	if os.path.exists(f):
+		filename = f
+		info += '<svg>'
+		info += '<img src="'+ filename + '" width="200" height="200" align="right"/>'
+		info += '</svg>'
+		
+	f = os.path.join(iconPath, iCaller+".png")
+	if os.path.exists(f):
+		filename = f
+		info += '<img src="'+ filename + '" width="200" height="200" align="right">'
+	
+	info += '</td>'
+	
+	info += '</tr>'
+	info += '</table>'
 
-	info += '<br><br><br><br>'
-	info += 'To keep furniture designing process quick and simple, '
-	info += 'the furniture designing process should follow steps: '
+	info += translate('showInfoAll', 'To keep furniture designing process quick and simple, ')
+	info += translate('showInfoAll', 'the furniture designing process should follow steps: ')
+	
 	info += '<ol>'
-	info += '<li>Create simple model with simple Cube panels.</li>'
-	info += '<li>Add mounting points.</li>'
-	info += '<li>Replace desired elements with more detailed elements.</li>'
-	info += '<li>Add decoration if needed.</li>'
-	info += '<li>Add colors or textures and preview furniture.</li>'
-	info += '<li>Generate cut-list.</li>'
-	info += '<li>Create furniture in real-life.</li>'
-	info += '<li>Have fun with your new furniture in real-life !</li>'
+	
+	info += '<li>'
+	info += translate('showInfoAll', 'Create furniture with simple Cube panels. Try to not make detailed model ')
+	info += translate('showInfoAll', 'with Pads and Sketches at this stage. ')
+	info += '</li>'
+	
+	info += '<li>'
+	info += translate('showInfoAll', 'Add simple mounting points with magicDowels tool and other simple references ')
+	info += translate('showInfoAll', 'with Cubes to replace all of them later with single click.')
+	info += '</li>'
+	
+	info += '<li>'
+	info += translate('showInfoAll', 'Replace desired Cube elements with more detailed elements. Use dedicated replace ')
+	info += translate('showInfoAll', 'features for that e.g. panel2profile to replace all Cubes with detailed construction ')
+	info += translate('showInfoAll', 'profiles or use panel2link to replace all selected Cubes with any detailed object.')
+	info += '</li>'
+	
+	info += '<li>'
+	info += translate('showInfoAll', 'Add decorations or more details, if needed. If you want to change Cube shape you can ')
+	info += translate('showInfoAll', 'replace it with Pad by single click via panel2pad replace feature and edit the Sketch. ')
+	info += '</li>'
+	
+	info += '<li>'
+	info += translate('showInfoAll', 'Add colors or textures and preview furniture.')
+	info += '</li>'
+	
+	info += '<li>'
+	info += translate('showInfoAll', 'Generate cut-list with getDimensions tool. You can use TechDraw for more detailed draw. ')
+	info += '</li>'
+	
+	info += '<li>'
+	info += translate('showInfoAll', 'You can print this report directly from TechDraw page or use sheet2export tool.')
+	info += '</li>'
+	
+	info += '<li>'
+	info += translate('showInfoAll', 'Create furniture in real-life.')
+	info += '</li>'
+	
+	info += '<li>'
+	info += translate('showInfoAll', 'Have fun with your new furniture in real-life !')
+	info += '</li>'
+	
 	info += '</ol>'
 		
-	info += 'For more details please see:' + ' '
-	info += '<a href="https://github.com/dprojects/Woodworking">Woodworking workbench documentation.</a>'
+	info += translate('showInfoAll', 'For more details please see:')
+	info += ' ' + '<a href="https://github.com/dprojects/Woodworking">'
+	info += translate('showInfoAll', 'Woodworking workbench documentation.')
+	info += '</a>'
 	
 	msg = QtGui.QMessageBox()
 	msg.setWindowTitle(iCaller)
@@ -1198,9 +1268,8 @@ def panelDefault(iType):
 	
 		info = ""
 		
-		info += '<b>Please create active document to create default panel 600 mm x 300 mm and thickness of 18 mm.</b>' + ' '
-		info += '<br>'
-		
+		info += translate('panelDefaultInfo', 'This tool creates default panel that can be easily resized. You can clearly see where should be the thickness to keep exact panel XYZ axis orientation. All furniture elements should be created according to the XYZ axis plane, if possible. Avoid building whole furniture with rotated elements. If you want to rotate panel with dowels, better create panel with dowels without rotation, pack panel with dowels into LinkGroup, and use magicAngle to rotate whole LinkGroup. You can rotate whole furniture like this with single click.')
+
 		showInfo("panelDefault"+iType, info)
 
 
@@ -1230,25 +1299,20 @@ def panelCopy(iType):
 
 		gObj = FreeCADGui.Selection.getSelection()[0]
 
+		
+		[ Length, Width, Height ] = sizesToCubePanel(gObj, iType)
+		
 		panel = FreeCAD.activeDocument().addObject("Part::Box", "panel"+iType)
-		[ panel.Length, panel.Width, panel.Height ] = sizesToCubePanel(gObj, iType)
-
+		[ panel.Length, panel.Width, panel.Height ] = [ Length, Width, Height ]
+		
 		FreeCAD.activeDocument().recompute()
 
 	except:
 
 		info = ""
 		
-		info += '<b>If you have active document, please select correct panel you want to copy to exact direction.</b>' + ' '
-		info += '<br><br>'
-		
-		info += '<ul>'
-		info += '<li>By default you can copy any panel based on FreeCAD Cube object. </li>'
-		info += '<li>If you want to copy Pad, you need to have Constraints named "SizeX" and "SizeY" at the Sketch. </li>' 
-		info += '<li>For other object types you need to have Length, Width, Height properties at object. '
-		info += 'Group: "Base", Type: "App::PropertyLength". </li>'
-		info += '</ul>'
-	
+		info += translate('panelCopyInfo', 'This tool copy selected panel into exact XYZ axis orientation. By default you can copy any panel based on Cube object. If you want to copy Pad, you need to have Constraints named "SizeX" and "SizeY" at the Sketch. For other object types you need to have Length, Width, Height properties at object (Group: "Base", Type: "App::PropertyLength").') 
+
 		showInfo("panelCopy"+iType, info)
 
 
@@ -1318,12 +1382,7 @@ def panelMove(iType):
 		
 		info = ""
 		
-		info += '<b>If you have active document, please select correct panel to move.</b>' + ' '
-		info += '<br><br>'
-		
-		info += '<b>Note:</b>' + ' '
-		info += 'Panel is moved into direction described by the icon. However, in some cases the panel may move '
-		info += 'into opposite direction, if the panel type is not supported.'
+		info += translate('panelMoveInfo', 'With the arrows you can quickly move Cube panels or even any other objects. If the thickness of the selected object can be recognized, the move step will be the thickness. So, you can solve common furniture problem with thickness offset. If the thickness will not be recognized the step will be 100. This allow you to move whole furniture segments very quickly. The arrows recognize the view model rotation. If you want precisely move object, use magicMove tool, instead. ')
 		
 		showInfo("panelMove"+iType, info)
 
@@ -1353,50 +1412,56 @@ def panelMove2Face():
 
 	try:
 	
-		gObj = getReference()
-		gFace2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-
-		[ faceAxis, faceType ] = getDirectionFace(gObj, gFace2)
+		objects = FreeCADGui.Selection.getSelection()
 		
-		[ x, y, z, r ] = getPlacement(gObj)
-		[ v1, v2, v3, v4 ] = getFaceVertices(gFace2)
+		if len(objects) < 2:
+			raise
 		
-		if faceAxis == "XY" or faceAxis == "YX":
-			X = x
-			Y = y
-			Z = v1[2]
-			R = r
+		i = 0
+		for o in objects:
 			
-		if faceAxis == "XZ" or faceAxis == "ZX":
-			X = x
-			Y = v1[1]
-			Z = z
-			R = r
-		
-		if faceAxis == "YZ" or faceAxis == "ZY":
-			X = v1[0]
-			Y = y
-			Z = z
-			R = r
-		
-		setPlacement(gObj, X, Y, Z, R)
-	
+			i = i + 1
+			
+			if i == 1:
+
+				gObj = FreeCADGui.Selection.getSelection()[0]
+				gFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+
+				[ faceAxis, faceType ] = getDirectionFace(gObj, gFace)
+				[ v1, v2, v3, v4 ] = getFaceVertices(gFace)
+
+				continue
+			
+			obj = getReference(o)
+			
+			[ x, y, z, r ] = getPlacement(obj)
+			
+			if faceAxis == "XY" or faceAxis == "YX":
+				X = x
+				Y = y
+				Z = v1[2]
+				R = r
+				
+			if faceAxis == "XZ" or faceAxis == "ZX":
+				X = x
+				Y = v1[1]
+				Z = z
+				R = r
+			
+			if faceAxis == "YZ" or faceAxis == "ZY":
+				X = v1[0]
+				Y = y
+				Z = z
+				R = r
+			
+			setPlacement(obj, X, Y, Z, R)
+			FreeCAD.activeDocument().recompute()
+			
 	except:
 		
 		info = ""
-		
-		info += '<b>If you have active document, please select correct panel to move and face as a move reference '
-		info += 'vertex point.</b> To select more than one face hold left CTRL keyboard key during selection.' + ' '
-		info += '<br><br>'
-		
-		info += '<b>Note:</b>' + ' '
-		info += 'Panel is moved according to the face direction. For example if the selected face is XY, '
-		info += 'the movement will be along Z axis direction. '
-		info += '<br><br>'
-		info += 'This tool allows to avoid thickness step problem, if you want to move panel to the other edge '
-		info += 'but the way is not a multiple of the panel thickness. So, the panel will not match the '
-		info += 'edge exactly. You can use this tool to align the panel to the thickness step. After this '
-		info += 'alignment the panel can be adjusted with thickness step, if needed. '
+
+		info += translate('panelMove2FaceInfo', 'This tool allows to align panels or any other objects to face position. First select face and next select objects you want to align with face position. You can select objects at objects Tree window holding left CTRL key. This tool allows to avoid thickness step problem, if you want to move panel to the other edge but the way is not a multiple of the panel thickness.')
 		
 		showInfo("panelMove2Face", info)
 	
@@ -1537,13 +1602,8 @@ def panelResize(iType):
 		
 		info = ""
 		
-		info += '<b>If you have active document, please select correct panel to resize.</b>' + ' '
-		info += '<br><br>'
+		info += translate('panelResizeInfo', 'This tool allows to resize quickly Cube panels or even other objects. The resize step is the panel thickness. Panel is resized into direction described by the icon for XY panel. However, in some cases the panel may be resized into opposite direction, if the panel is not supported or the sides are equal.')
 		
-		info += '<b>Note:</b>' + ' '
-		info += 'Panel is resized into direction described by the icon for XY panel. However, in some cases the '
-		info += 'panel may be resized into opposite direction, if the panel is not supported or the sides are equal.'
-	
 		showInfo("panelResize"+iType, info)
 
 
@@ -1589,17 +1649,8 @@ def panelFace(iType):
 		
 		info = ""
 		
-		info += '<b>If you have active document, please select face at panel to create new panel at this selected face.</b>' + ' '
-		info += '<br><br>'
-		
-		info += '<b>Note:</b>' + ' '
-		info += 'Usually for the opposite direction to the coordinate axes there is thickness offset for the panel. '
-		info += 'However, to move the panel quickly to the correct place, you can: '
-		info += '<ul>'
-		info += '<li>use dedicated Magic Panels to move panels,</li>'
-		info += '<li>use dedicated Magic Panels for left furniture side creation.</li>'
-		info += '</ul>'
-		
+		info += translate('panelFaceInfo', 'This tool creates new panel at selected face. The blue panel represents the selected object and the red one represents the new created object. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
+
 		showInfo("panelFace"+iType, info)
 
 
@@ -1659,14 +1710,7 @@ def panelBetween(iType):
 		
 		info = ""
 		
-		info += '<b>If you have active document, please select 2 faces at 2 different panels to create new panel between these '
-		info += '2 selected faces.</b>' + ' '
-		info += '<br><br>'
-		
-		info += '<b>Note:</b>' + ' '
-		info += 'To use the feature you have to keep exact face selection order. If you change selection order the '
-		info += 'result will be different. You can also experiment with outside faces, move and resize panels. To select '
-		info += 'more than 1 face you have to hold CTRL key.'
+		info += translate('panelBetweenInfo', 'This tool creates new panel between two selected faces. Selection faces order is important. To select more than one face, hold left CTRL key during second face selection. The blue panels represents the selected objects and the red one represents the new created object. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
 
 		showInfo("panelBetween"+iType, info)
 
@@ -1741,15 +1785,16 @@ def panelSide(iType):
 		
 		info = ""
 		
-		info += '<b>If you have active document, please select 1 face to create side of the furniture.</b>'
-		info += '<br><br>'
-		
-		info += '<b>Note:</b>' + ' '
-		info += 'The face should be selected at edge of the side you want to create new panel. '
-		info += 'This feature is mostly designed to this specific situation. In other cases the result may be '
-		info += 'different than expected. '
+		info += translate('panelSideInfo', 'This tool creates new panel at selected face. The blue panel represents the selected object and the red one represents the new created object. The arrow describe if the panel will be created up or down. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
 
-		showInfo("panelSide"+iType, info)
+		if iType == "1":
+			showInfo("panelSideLeft", info)
+		if iType == "2":
+			showInfo("panelSideLeftUP", info)
+		if iType == "3":
+			showInfo("panelSideRight", info)
+		if iType == "4":
+			showInfo("panelSideRightUP", info)
 
 
 # ###################################################################################################################
@@ -1809,15 +1854,8 @@ def panelBackOut():
 			
 		info = ""
 		
-		info += '<b>If you have active document, please select 3 faces at 3 different panels to create back of the furniture.</b>'
-		info += '<br><br>'
+		info += translate('panelBackOutInfo', 'This tool allows to create back of the furniture with single click. To create back of the furniture you have to select 3 faces in the order described by the icon. To select more than one face, hold left CTRL key during face selection. The red edges at blue panels represents the selected faces. The transparent red panel represents the new created object. The icon refers to the back of the furniture.')
 		
-		info += '<b>Note:</b>' + ' '
-		info += 'The 3rd selected face panel should be the bottom shelf of the furniture to resize the back panel to this place. '
-		info += 'This feature is mostly designed to this specific situation. In other cases the result may be different than '
-		info += 'expected. To use the feature you have to keep exact face selection order. If you change selection order the '
-		info += 'result will be different. To select more than 1 face you have to hold CTRL key.'
-
 		showInfo("panelBackOut", info)
 
 
@@ -1874,23 +1912,15 @@ def panelCover(iType):
 		
 		info = ""
 		
-		info += '<b>If you have active document, please select 3 faces at 3 different panels to create new panel on top of these '
-		info += '3 selected faces.</b>' + ' '
-		info += '<br><br>'
-		
-		info += '<b>Note:</b>' + ' '
-		info += 'The 3rd selected object should be the back of the furniture to resize the new cover panel with the thickness. '
-		info += 'This feature is mostly designed to this specific situation. In other cases the result may be different than '
-		info += 'expected. To use the feature you have to keep exact face selection order. If you change selection order the '
-		info += 'result will be different. To select more than 1 face you have to hold CTRL key.'
+		info += translate('panelCoverInfo', 'This tool allows to create top cover of the furniture with single click. To create top cover of the furniture you have to select 3 faces in the order described by the icon. To select more than one face, hold left CTRL key during face selection. The red edges at blue panels represents the selected faces. The transparent red panel represents the new created object. The icon refers to the base XY model view (0 key position). Click fitModel to set model into referred view.')
 
 		showInfo("panelCover"+iType, info)
 
 
 # ###################################################################################################################
-def panelReplacePad(iLabel="rpanelPad"):
+def panel2pad(iLabel="panel2pad"):
 	'''
-	panelReplacePad() - allows to replace Cube panel with the same panel but Pad.
+	panel2pad() - allows to replace Cube panel with the same panel but Pad.
 
 	Note: This function displays pop-up info in case of error.
 	
@@ -1902,7 +1932,7 @@ def panelReplacePad(iLabel="rpanelPad"):
 
 		import MagicPanels
 		
-		MagicPanels.panelReplacePad()
+		MagicPanels.panel2pad()
 		
 	Result:
 
@@ -1947,11 +1977,9 @@ def panelReplacePad(iLabel="rpanelPad"):
 		
 		info = ""
 		
-		info += '<b>If you have active document, please select Cube panel you want to replace with the same Pad panel. </b>'
-		info += 'You can select only one Cube panel at once. This replace panel is mostly for manual changes and decorations. '
-		info += '<br><br>'
+		info += translate('panel2padInfo', 'This tool allows to replace Cube panel with Pad panel. The new created Pad panel will get the same dimensions, placement and rotation as the selected Cube panel. You can transform only one Cube panel into Pad at once. This tool is mostly dedicated to add decoration that is not supported for Cube objects by FreeCAD PartDesign workbench. You can also change shape by changing the Sketch.')
 	
-		showInfo("rpanelPad", info, "replace")
+		showInfo("panel2pad", info)
 	
 
 # ###################################################################################################################
@@ -1992,7 +2020,7 @@ def panel2profile():
 			if sizes[0] != sizes[1]:
 				raise
 			
-			[ part, body, sketch, pad ] = panelReplacePad("Construction")
+			[ part, body, sketch, pad ] = panel2pad("Construction")
 			profile = body.newObject('PartDesign::Thickness','Profile')
 			
 			faces = []
@@ -2036,10 +2064,9 @@ def panel2profile():
 		
 		info = ""
 		
-		info += '<b>If you have active document, please select panels (Cubes) with 2 equal sizes e.g. '
-		info += '20 mm x 20 mm x 300 mm to replace it with construction profiles.</b>' + '<br><br>'
-		
-		showInfo("panel2profile", info, "replace")
+		info += translate('panel2profileInfo', 'This tool allows to replace Cube panel with construction profile. You can replace more than one Cube panel at once. To select more objects hold left CTRL key during selection. The selected Cube objects need to have two equal sizes e.g. 20 mm x 20 mm x 300 mm to replace it with construction profile. The new created construction profile will get the same dimensions, placement and rotation as the selected Cube panel. If you have all construction created with simple Cube objects that imitating profiles, you can replace all of them with realistic looking construction profiles with single click.')
+	
+		showInfo("panel2profile", info)
 
 
 # ###################################################################################################################
@@ -2104,7 +2131,7 @@ def panel2frame():
 			for e in arr:
 				keys.append(str(e.BoundBox))
 			
-			[ part, body, sketch, pad ] = panelReplacePad("Frame")
+			[ part, body, sketch, pad ] = panel2pad("Frame")
 
 			edges = []
 			for k in keys:
@@ -2132,13 +2159,80 @@ def panel2frame():
 		
 		info = ""
 		
-		info += '<b>If you have active document, please select face of panel (Cube) to change it into '
-		info += 'picture frame element. You can select more than one face to change all '
-		info += 'elements at once with single click. </b>' + '<br><br>'
-		info += 'If the selected face is edge, the 45 cut depth will be according to the short edge of the object. '
-		info += 'If the selected face is surface, the 45 cut depth will be according to the thickness of the object. '
-				
-		showInfo("panel2frame", info, "replace")
+		info += translate('panel2frameInfo', 'This tool allows to replace Cube panel with frame 45 cut at both sides. You can replace more than one Cube panel at once. To replace Cube objects with frames you have to select exact face at each Cube object. To select more objects hold left CTRL key during selection. The new created frame will get the same dimensions, placement and rotation as the selected Cube panel but will be cut at the selected face. If you have all construction created with simple Cube objects that imitating picture frame or window, you can replace all of them with realistic looking frame with single click.')
+
+		showInfo("panel2frame", info)
+
+
+# ###################################################################################################################
+def panel2link():
+	'''
+	panel2link() - allows to replace Cube panels with Link. You have to select at least 2 objects. 
+	First object will be the base object, and all others will be replaced with Link.
+
+	Note: This function displays pop-up info in case of error.
+
+	Args:
+
+		no args
+
+	Usage:
+
+		import MagicPanels
+		
+		frames = MagicPanels.panel2link()
+		
+	Result:
+
+		Selected detailed Screw and Dowels made from Cylinder, should result replace all simple Cylinder dowels, 
+		with detailed Screw. 
+	'''
+
+	try:
+
+		links = []
+		objects = FreeCADGui.Selection.getSelection()
+		
+		if len(objects) < 2:
+			raise
+		
+		i = 0
+		for o in objects:
+			
+			i = i + 1
+			
+			if i == 1:
+				base = o
+				continue
+			
+			linkName = "Link_" + str(o.Name)
+			link = FreeCAD.activeDocument().addObject('App::Link', linkName)
+			link.setLink(base)
+			link.Label = "Link, " + o.Label
+			
+			[ x, y, z, r ] = getPlacement(o)
+			setPlacement(link, x, y, z, r)
+			
+			FreeCAD.ActiveDocument.removeObject(str(o.Name))
+			FreeCAD.activeDocument().recompute()
+			
+			links.append(link)
+			
+			
+		return links
+	
+	except:
+		
+		info = ""
+		
+		info += translate('panel2linkInfo', 'This tool allows to replace simple objects with any detailed object, e.g. Cylinder with realistic looking dowel made with Pad. First you have to select detailed object and than simple object that will be replaced with Link. The first selected detailed object can be Part, LinkGroup or any other created manually or merged with your project. You can replace more than one simple objects at once with Link. To select more objects hold left CTRL key during selection. The simple objects should imitate the detailed object to replace all of them in-place with realistic looking one. ')
+
+		info += translate('panel2linkInfo', 'For more details please see:')
+		info += ' ' + '<a href="https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture">'
+		info += translate('panel2linkInfo', 'fixture.')
+		info += '</a>'
+
+		showInfo("panel2link", info)
 	
 
 # ###################################################################################################################

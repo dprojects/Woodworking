@@ -1,179 +1,172 @@
 # This is setting file for loadToolsAuto generator. 
+#
 # If you want to add new macro and create command Class for it, 
-# add here the macro name and run loadToolsAuto.py once.
-# There is no need to add loadToolsAuto.py to workbench startup.
-
+# add here the new entry and run: 
+# 
+# python3 ./loadToolsAuto.py
+# pylupdate5 `find . -name "*.py"` -ts translations/pyfiles.ts
+# /usr/lib/x86_64-linux-gnu/qt5/bin/lrelease ./translations/Woodworking_pl.ts
+#
+# There is no need to add it to workbench startup.
+#
 # Macro row order:
-# "macro name", "special directory name", "command name", "MenuText", "ToolTip"
+#
+# 0, 1, 2, 3, 4
+#
+# 0 - sub-directory name
+# 1 - macro filename, this will be also registred command name
+# 2 - icon filename extension (only extension, filename will be get from macro filename)
+# 3 - MenuText - command name visible for user after icon mouse hover
+# 4 - ToolTip - description visible for user after icon mouse hover
+#
+# example: 
+#
+# "", "getDimensions", "xpm", "getDimensions, BOM, cutlist", "Creates spreadsheet with dimensions to cut.", # no comma if last
+
 
 Tools = [
 	
 	# #################################################################################################################################
-	# GUI tools - not using MagicPanels library
+	# tools - not using MagicPanels library
 	# #################################################################################################################################
 
-	"debugInfo", "", "debugInfo", "debugInfo", "Copy platform details to clipboard for bug report purposes.",
-
-	"colorManager", "", "colorManager", "colorManager", "Allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected face, object or many faces or objects and see the effect at 3D model in real-time.",
-
-	"magicAngle", "", "magicAngle", "magicAngle", "Allows to rotate panels and even other more complicated objects, like construction profiles.",
-
-	"showModelSize", "", "showModelSize", "show, model, size", "This tool allows you to calculate the overall occupied space in 3D by the model. This will show max width, depth and height of the full furniture.",
-	
-	"showSelectedSize", "", "showSelectedSize", "show, selected, size", "This tool allows you to calculate the overall occupied space in 3D by the selected parts. This will show max width, depth and height of the selected elements.",
+	"", "debugInfo", "xpm", "debugInfo", "Copy platform details to clipboard for bug report purposes.",
 
 	# #################################################################################################################################
-	# GUI tools - external
+	# tools - linked standalone macros (should not use MagicPanels library or be moved)
 	# #################################################################################################################################
 	
-	"getDimensions", "", "getDimensions", "getDimensions, BOM, cutlist", "Creates spreadsheet with dimensions to cut.",
+	"", "getDimensions", "xpm", "getDimensions, BOM, cutlist", "Creates spreadsheet with dimensions to cut.",
 	
-	"sheet2export", "", "sheet2export", "sheet2export", "Exports spreadsheet to chosen file format.",
+	"", "sheet2export", "xpm", "sheet2export", "Exports spreadsheet to chosen file format.",
 	
-	"scanObjects", "", "scanObjects", "scanObjects", "Inspection tool for FreeCAD macro development & project debug (live API).",
+	"", "scanObjects", "xpm", "scanObjects", "Inspection tool for FreeCAD macro development & project debug (live API).",
 	
-	"setTextures", "", "setTextures", "setTextures", "Store textures information at object's property and allows to load textures from stored URL or local HDD path. Solves problem with texture sharing without huge project file size.",
+	"", "setTextures", "xpm", "setTextures", "Store textures information and allows to load textures. Solves problem with texture sharing without huge project file size.",
+
+	"", "makeTransparent",  "png","transparent or normal mode", "Make all parts transparent, so you can see all the joints, pilot holes, screws, countersinks. If you click next one all parts will back to normal. The transparent default is 83, so do not set any part to this number if you want e.g. to keep glass part of the furniture transparent after this preview.",
+
+	"", "colorManager", "xpm", "colorManager", "Allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected face, object or many faces or objects and see the effect at 3D model in real-time.",
+
+	"", "magicAngle", "xpm", "magicAngle", "Allows to rotate panels and even other more complicated objects, like construction profiles.",
+
+	"", "showSpaceModel", "xpm", "show, model, space", "This tool allows you to calculate the overall occupied space in 3D by the model.",
+	
+	"", "showSpaceSelected", "xpm", "show, selected, space", "This tool allows you to calculate the overall occupied space in 3D by the selected parts.",
 
 	# #################################################################################################################################
-	# GUI tools - using MagicPanels library
+	# tools - using MagicPanels library
 	# #################################################################################################################################
 
-	"magicMove", "MagicPanels", "magicMove", "magicMove", "If you have problem with unexpected result of panel movements via dedicated icons, you can use this tool to precisely move panel into desired direction. This tool allow to turn off and on axis cross and resize corner cross size.",
+	"MagicPanels", "magicMove", "xpm", "magicMove", "If you have problem with unexpected result of panel movements via dedicated icons, you can use this tool to precisely move panel into desired direction. This tool allow to turn off and on axis cross and resize corner cross size.",
 
-	"magicManager", "MagicPanels", "magicManager", "magicManager", "If you have problem with unexpected result of Magic Panels, you can use this tool to preview panel before creation. It may take more time to create panel, but you can select exact panel to apply, also the edge and vertex position. This tool allows to create panel at selected face or between two faces.",
+	"MagicPanels", "magicManager", "xpm", "magicManager", "If you have problem with unexpected result of Magic Panels, you can use this tool to preview panel before creation. It may take more time to create panel, but you can select exact panel to apply, also the edge and vertex position. This tool allows to create panel at selected face or between two faces.",
 
-	"magicDowels", "MagicPanels", "magicDowels", "magicDowels", "Allows to add mounting points to the furniture. For example you can easily add screws, dowels, shelf supporter pins or custom mounting points.",
+	"MagicPanels", "magicDowels", "xpm", "magicDowels", "Allows to add mounting points to the furniture. For example you can easily add screws, dowels, shelf supporter pins or custom mounting points.",
 
-	# #################################################################################################################################
-	# no GUI tools - not using MagicPanels library
-	# #################################################################################################################################
+	"MagicPanels", "fitModel", "png", "fitModel", "Fit 3D model to the screen and set base orientation (XY, 0 key).",
 
-	"fitModel", "", "fitModel", "fitModel", "Fit 3D model to the screen and set base orientation (XY, 0 key).",
-
-	"makeTransparent", "", "makeTransparent", "transparent or normal mode", "Make all parts transparent, so you can see all the joints, pilot holes, screws, countersinks. If you click next one all parts will back to normal. The transparent default is 83, so do not set any part to this number if you want e.g. to keep glass part of the furniture transparent after this preview.",
-	
 	# #################################################################################################################################
 	# Magic Panels - default
 	# #################################################################################################################################
 	
-	"panelDefaultXY", "MagicPanels", "panelDefaultXY", "panel, XY, 600x300, 18 thickness", "Create default panel with dimensions 600 mm x 300 mm and 18 mm thickness in the XY direction, described by the icon. Change dimensions and placement at object property window, if needed.",
+	"MagicPanels", "panelDefaultXY", "png", "panel, XY, 600x300, 18 thickness", "Click to see info.",
+	"MagicPanels", "panelDefaultYX", "png", "panel, YX, 300x600, 18 thickness", "Click to see info.",
 	
-	"panelDefaultYX", "MagicPanels", "panelDefaultYX", "panel, YX, 300x600, 18 thickness", "Create default panel with dimensions 300 mm x 600 mm and 18 mm thickness in the YX direction, described by the icon. Change dimensions and placement at object property window, if needed.",
-		
-	"panelDefaultXZ", "MagicPanels", "panelDefaultXZ", "panel, XZ, 600x300, 18 thickness", "Create default panel with dimensions 600 mm x 300 mm and 18 mm thickness in the XZ direction, described by the icon. Change dimensions and placement at object property window, if needed.",
+	"MagicPanels", "panelDefaultXZ", "png", "panel, XZ, 600x300, 18 thickness", "Click to see info.",
+	"MagicPanels", "panelDefaultZX", "png", "panel, ZX, 300x600, 18 thickness", "Click to see info.",
 	
-	"panelDefaultZX", "MagicPanels", "panelDefaultZX", "panel, ZX, 300x600, 18 thickness", "Create default panel with dimensions 300 mm x 600 mm and 18 mm thickness in the ZX direction, described by the icon. Change dimensions and placement at object property window, if needed.",
-		
-	"panelDefaultYZ", "MagicPanels", "panelDefaultYZ", "panel, YZ, 600x300, 18 thickness", "Create default panel with dimensions 600 mm x 300 mm and 18 mm thickness in the YZ direction, described by the icon. Change dimensions and placement at object property window, if needed.",
-
-	"panelDefaultZY", "MagicPanels", "panelDefaultZY", "panel, ZY, 300x600, 18 thickness", "Create default panel with dimensions 300 mm x 600 mm and 18 mm thickness in the ZY direction, described by the icon. Change dimensions and placement at object property window, if needed.",
+	"MagicPanels", "panelDefaultYZ", "png", "panel, YZ, 600x300, 18 thickness", "Click to see info.",
+	"MagicPanels", "panelDefaultZY", "png", "panel, ZY, 300x600, 18 thickness", "Click to see info.",
 
 	# #################################################################################################################################
 	# Magic Panels - copy
 	# #################################################################################################################################
 	
-	"panelCopyXY", "MagicPanels", "panelCopyXY", "copy panel to XY", "Copy selected panel to XY direction, described by the icon. If you select any supported panel in other direction, e.g. XZ, this will be some kind of copy panel with exact rotation. Change dimensions and placement at object property window, if needed.",
+	"MagicPanels", "panelCopyXY", "png", "copy panel, XY", "Click to see info.",
+	"MagicPanels", "panelCopyYX", "png", "copy panel, YX", "Click to see info.",
 	
-	"panelCopyYX", "MagicPanels", "panelCopyYX", "copy panel to YX", "Copy selected panel to YX direction, described by the icon.  If you select any supported panel in other direction, e.g. XZ, this will be some kind of copy panel with exact rotation. Change dimensions and placement at object property window, if needed.",
-		
-	"panelCopyXZ", "MagicPanels", "panelCopyXZ", "copy panel to XZ", "Copy selected panel to XZ direction, described by the icon.  If you select any supported panel in other direction, e.g. XY, this will be some kind of copy panel with exact rotation. Change dimensions and placement at object property window, if needed.",
+	"MagicPanels", "panelCopyXZ", "png", "copy panel, XZ", "Click to see info.",
+	"MagicPanels", "panelCopyZX", "png", "copy panel, ZX", "Click to see info.",
 	
-	"panelCopyZX", "MagicPanels", "panelCopyZX", "copy panel to ZX", "Copy selected panel to ZX direction, described by the icon.  If you select any supported panel in other direction, e.g. XY, this will be some kind of copy panel with exact rotation. Change dimensions and placement at object property window, if needed.",
-		
-	"panelCopyYZ", "MagicPanels", "panelCopyYZ", "copy panel to YZ", "Copy selected panel to YZ direction, described by the icon.  If you select any supported panel in other direction, e.g. XY, this will be some kind of copy panel with exact rotation. Change dimensions and placement at object property window, if needed.",
-
-	"panelCopyZY", "MagicPanels", "panelCopyZY", "copy panel to ZY", "Copy selected panel to ZY direction, described by the icon.  If you select any supported panel in other direction, e.g. XY, this will be some kind of copy panel with exact rotation. Change dimensions and placement at object property window, if needed.",
+	"MagicPanels", "panelCopyYZ", "png", "copy panel, YZ", "Click to see info.",
+	"MagicPanels", "panelCopyZY", "png", "copy panel, ZY", "Click to see info.",
 
 	# #################################################################################################################################
 	# Magic Panels - move
 	# #################################################################################################################################
 	
-	"panelMoveXp", "MagicPanels", "panelMoveXp", "panel, move, back", "Allows to move back selected panel. The move step is the selected panel thickness.",
-
-	"panelMoveXm", "MagicPanels", "panelMoveXm", "panel, move, forward", "Allows to move forward selected panel. The move step is the selected panel thickness.",
+	"MagicPanels", "panelMoveXp", "png", "panel, move, back", "Click to see info.",
+	"MagicPanels", "panelMoveXm", "png", "panel, move, forward", "Click to see info.",
 	
-	"panelMoveYp", "MagicPanels", "panelMoveYp", "panel, move, right", "Allows to move right selected panel. The move step is the selected panel thickness.",
-
-	"panelMoveYm", "MagicPanels", "panelMoveYm", "panel, move, left", "Allows to move left selected panel. The move step is the selected panel thickness.",
+	"MagicPanels", "panelMoveYp", "png", "panel, move, right", "Click to see info.",
+	"MagicPanels", "panelMoveYm", "png", "panel, move, left", "Click to see info.",
 	
-	"panelMoveZp", "MagicPanels", "panelMoveZp", "panel, move, up", "Allows to move up selected panel. The move step is the selected panel thickness.",
+	"MagicPanels", "panelMoveZp", "png", "panel, move, up", "Click to see info.",
+	"MagicPanels", "panelMoveZm", "png", "panel, move, down", "Click to see info.",
 
-	"panelMoveZm", "MagicPanels", "panelMoveZm", "panel, move, down", "Allows to move down selected panel. The move step is the selected panel thickness.",
-
-	"panelMoveZm", "MagicPanels", "panelMoveZm", "panel, move, down", "Allows to move down selected panel. The move step is the selected panel thickness.",
-
-	"panelMove2Face", "MagicPanels", "panelMove2Face", "panel, move, to face", "Allows to move selected panel to the selected face position. First selected must be object you want to move. Next selected must be face at other object, as the reference position.",
+	"MagicPanels", "panelMove2Face", "png", "panel, move, to face", "Click to see info.",
 
 	# #################################################################################################################################
 	# Magic Panels - resize
 	# #################################################################################################################################
 	
-	"panelResize1", "MagicPanels", "panelResize1", "panel, bigger, long+", "Allows to make bigger the long side of the panel. The resize step is the selected panel thickness.",
-
-	"panelResize2", "MagicPanels", "panelResize2", "panel, smaller, long-", "Allows to make smaller the long side of the panel. The resize step is the selected panel thickness.",
-
-	"panelResize3", "MagicPanels", "panelResize3", "panel, bigger, short+", "Allows to make bigger the short side of the panel. The resize step is the selected panel thickness.",
-
-	"panelResize4", "MagicPanels", "panelResize4", "panel, smaller, short-", "Allows to make smaller the short side of the panel. The resize step is the selected panel thickness.",
+	"MagicPanels", "panelResize1", "png", "panel, bigger, long+", "Click to see info.",
+	"MagicPanels", "panelResize2", "png", "panel, smaller, long-", "Click to see info.",
+	"MagicPanels", "panelResize3", "png", "panel, bigger, short+", "Click to see info.",
+	"MagicPanels", "panelResize4", "png", "panel, smaller, short-", "Click to see info.",
 
 	# #################################################################################################################################
 	# Magic Panels - special
 	# #################################################################################################################################
 	
-	"panelSideLeft", "MagicPanels", "panelSideLeft", "panel, side, left", "Creates furniture left side at selected face. Dimensions are taken from selected object. Adjust dimensions and position at object property window, if needed.",
+	"MagicPanels", "panelSideLeft", "png", "panel, side, left", "Click to see info.",
+	"MagicPanels", "panelSideLeftUP", "png", "panel, side, left, up", "Click to see info.",
 	
-	"panelSideLeftUP", "MagicPanels", "panelSideLeftUP", "panel, side, left, up", "Creates furniture left side at selected face but raised up. Dimensions are taken from selected object. Adjust dimensions and position at object property window, if needed.",
-	
-	"panelSideRight", "MagicPanels", "panelSideRight", "panel, side, right", "Creates furniture right side at selected face. Dimensions are taken from selected object. Adjust dimensions and position at object property window, if needed.",
-	
-	"panelSideRightUP", "MagicPanels", "panelSideRightUP", "panel, side, right, up", "Creates furniture right side at selected face but raised up. Dimensions are taken from selected object. Adjust dimensions and position at object property window, if needed.",
+	"MagicPanels", "panelSideRight", "png", "panel, side, right", "Click to see info.",
+	"MagicPanels", "panelSideRightUP", "png", "panel, side, right, up", "Click to see info.",
 
-	"panelBackOut", "MagicPanels", "panelBackOut", "panel, back, out", "Creates furniture back panel at 3 selected faces. Adjust dimensions and position at object property window, if needed.",
+	"MagicPanels", "panelBackOut", "png", "panel, back, out", "Click to see info.",
 	
-	"panelCoverXY", "MagicPanels", "panelCoverXY", "panel on top 3 faces to XY", "Copy 1st selected object and resize it with 3rd selected object thickness according to the XY direction, described by the icon. You need to select 3 faces. Dimensions are taken from 1st and 3rd selected object. So, the selection order is important to get desired result. Adjust dimensions and position at object property window, if needed.",
+	"MagicPanels", "panelCoverXY", "png", "panel, top, cover", "Click to see info.",
 	
 	# #################################################################################################################################
 	# Magic Panels - replace
 	# #################################################################################################################################
 	
-	"rpanelPad", "MagicPanels", "rpanelPad", "panel, replace Cube to Pad", "This is replace panel and it will remove the selected Cube object and replace it with exactly the same Pad object. So, you will be able to use more transformations on that Pad.",
+	"MagicPanels", "panel2pad", "png", "replace, cube to pad", "Click to see info.",
 	
-	"panel2profile", "MagicPanels", "panel2profile", "panel to construction profile, 1 mm", "Replace selected Cube panels with construction profile. You can select more than one Cube panel, so you can create all detailed construction with single click.",
+	"MagicPanels", "panel2profile", "png", "replace, cubes to construction profiles", "Click to see info.",
 
-	"panel2frame", "MagicPanels", "panel2frame", "panel to frame, 45 cut", "Select face to replace selected Cube panel with frame 45 cut. The 45 cut is at both sides. You can select more than one face to replace more objects at once by single click. ",
+	"MagicPanels", "panel2frame", "png", "replace, cubes to frames", "Click to see info.",
+
+	"MagicPanels", "panel2link", "png", "replace, cubes to links", "Click to see info.",
 
 	# #################################################################################################################################
 	# Magic Panels - face
 	# #################################################################################################################################
 	
-	"panelFaceXY", "MagicPanels", "panelFaceXY", "copy panel at face to XY", "Copy selected panel at selected face to XY direction, described by the icon.",
-
-	"panelFaceYX", "MagicPanels", "panelFaceYX", "copy panel at face to YX", "Copy selected panel at selected face to YX direction, described by the icon.",
+	"MagicPanels", "panelFaceXY", "png", "copy panel, face, XY", "Click to see info.",
+	"MagicPanels", "panelFaceYX", "png", "copy panel, face, YX", "Click to see info.",
 	
-	"panelFaceXZ", "MagicPanels", "panelFaceXZ", "copy panel at face to XZ", "Copy selected panel at selected face to XZ direction, described by the icon.",
-
-	"panelFaceZX", "MagicPanels", "panelFaceZX", "copy panel at face to ZX", "Copy selected panel at selected face to ZX direction, described by the icon.",
+	"MagicPanels", "panelFaceXZ", "png", "copy panel, face, XZ", "Click to see info.",
+	"MagicPanels", "panelFaceZX", "png", "copy panel, face, ZX", "Click to see info.",
 	
-	"panelFaceYZ", "MagicPanels", "panelFaceYZ", "copy panel at face to YZ", "Copy selected panel at selected face to YZ direction, described by the icon.",
-
-	"panelFaceZY", "MagicPanels", "panelFaceZY", "copy panel at face to ZY", "Copy selected panel at selected face to ZY direction, described by the icon.",
+	"MagicPanels", "panelFaceYZ", "png", "copy panel, face, YZ", "Click to see info.",
+	"MagicPanels", "panelFaceZY", "png", "copy panel, face, ZY", "Click to see info.",
 		
 	# #################################################################################################################################
 	# Magic Panels - between
 	# #################################################################################################################################
 	
-	"panelBetweenXY", "MagicPanels", "panelBetweenXY", "panel between 2 faces to XY", "Copy 1st selected panel between 1st and 2nd selected faces according to the XY direction, described by the icon.",
-
-	"panelBetweenYX", "MagicPanels", "panelBetweenYX", "panel between 2 faces to YX", "Copy 1st selected panel between 1st and 2nd selected faces according to the YX direction, described by the icon.",
+	"MagicPanels", "panelBetweenXY", "png", "panel, between, XY", "Click to see info.",
+	"MagicPanels", "panelBetweenYX", "png", "panel, between, YX", "Click to see info.",
 	
-	"panelBetweenXZ", "MagicPanels", "panelBetweenXZ", "panel between 2 faces to XZ", "Copy 1st selected panel between 1st and 2nd selected faces according to the XZ direction, described by the icon.",
-
-	"panelBetweenZX", "MagicPanels", "panelBetweenZX", "panel between 2 faces to ZX", "Copy 1st selected panel between 1st and 2nd selected faces according to the ZX direction, described by the icon.",
+	"MagicPanels", "panelBetweenXZ", "png", "panel, between, XZ", "Click to see info.",
+	"MagicPanels", "panelBetweenZX", "png", "panel, between, ZX", "Click to see info.",
 	
-	"panelBetweenYZ", "MagicPanels", "panelBetweenYZ", "panel between 2 faces to YZ", "Copy 1st selected panel between 1st and 2nd selected faces according to the YZ direction, described by the icon.",
-
-	"panelBetweenZY", "MagicPanels", "panelBetweenZY", "panel between 2 faces to ZY", "Copy 1st selected panel between 1st and 2nd selected faces according to the ZY direction, described by the icon." # no comma
-	
+	"MagicPanels", "panelBetweenYZ", "png", "panel, between, YZ", "Click to see info.",
+	"MagicPanels", "panelBetweenZY", "png", "panel, between, ZY", "Click to see info." # no comma
 
 	# #################################################################################################################################	
 ]

@@ -16,7 +16,8 @@ Sorry, for that.
 # Main features
 
 * **Magic Panels** - allow to create woodworking project more quickly, especially simplifies the positioning process and thickness recognition. You see clearly where is the thickness in object property window, so it can be changed quickly, if needed. If you have problems with "side effect", I mean pure magic of the Magic Panels ;-), please use `magicManager` to preview panel before creation and `magicMove` to move panels.
-* [Fully parametric examples](https://github.com/dprojects/Woodworking/tree/master/Examples) - you can adopt it to your current project, merge them, without designing from scratch e.g. bookcase. You can also add decoration, if needed.
+* [Fully parametric examples](https://github.com/dprojects/Woodworking/tree/master/Examples/Parametric) - you can adopt it to your current project, merge them, without designing from scratch e.g. bookcase. You can also add decoration, if needed.
+* [Fixture examples](https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture) - this is new approach to 3D modeling. With `panel2link` feature you can replace any cube object with detailed object created manually. This is very powerful feature and gives a lot of flexibility and simplifies the process of making model detailed. Also if you replace all cube objects with links to detailed object. You get parametric detailed model. If you change the detailed object all links will be updated.
 * [getDimensions](https://github.com/dprojects/getDimensions) - allows to create spreadsheet with dimensions to cut, cutlist, BOM.
 * [sheet2export](https://github.com/dprojects/sheet2export) - allows to export spreadsheets to chosen file format.
 * [setTextures](https://github.com/dprojects/setTextures) - allows to store, load, repeat and rotate textures from URL.
@@ -62,14 +63,44 @@ Sorry, for that.
 
 I do not have `Windows` or `macOS`, so I am not able to say if this work or not. Should work everywhere with AppImage but... You never know, this is why this section is here, to create stable Woodworking platform.
 
-# Screenshots
+# Translations
 
-![001](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/001.png)
+You can create your own `Woodworking` workbench translation with the following steps:
 
-![002](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/002.png)
+* Generate `.ts` file. At `Xubuntu 22.04 LTS` in `Woodworking` directory:
+	
+	```
+	pylupdate5 `find . -name "*.py"` -ts translations/pyfiles.ts
+	```
+	
+* Rename `pyfiles.ts` e.g.:
 
-![003](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/003.png)
+	```
+	mv ./translations/pyfiles.ts ./translations/Woodworking_pl.ts
+	```
+	
+	**Note:** Replace `pl` with your language code.
+	
+* Make translations of the `.ts` file. You can also use editor for that.
 
+	* For example this entry below:
+	```
+	<source>Step 2. Custom CSS rules for each cell (edit or add):</source>
+	<translation type="unfinished"></translation>
+	```
+	* should be replaced with:
+	```
+	<source>Step 2. Custom CSS rules for each cell (edit or add):</source>
+	<translation>Krok 2. Własne ustawienia CSS dla komórki:</translation>
+	```
+
+* Generate `.qm` files:
+	
+	```
+	sudo apt-get install qttools5-dev-tools
+	/usr/lib/x86_64-linux-gnu/qt5/bin/lrelease ./translations/Woodworking_pl.ts
+	```
+	
 # Contact
 
 Please add all comments and questions to the dedicated [FreeCAD forum thread](https://forum.freecadweb.org/viewtopic.php?f=3&t=8247).
