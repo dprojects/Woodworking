@@ -2127,11 +2127,6 @@ def setDraftArray(iObj, iCaller="setDraftArray"):
 			# set reference point to the furniture part
 			key = iObj.Base
 
-			# support for Array on Array
-			if key.isDerivedFrom("Part::FeaturePython") and key.Name.startswith("Array"):
-				setDraftArray(key, "self")
-				return
-				
 			if iObj.ArrayType == "polar":
 				
 				# without the base furniture part
@@ -2141,18 +2136,26 @@ def setDraftArray(iObj, iCaller="setDraftArray"):
 				# without the base furniture part
 				vArray = (iObj.NumberX * iObj.NumberY * iObj.NumberZ) - 1
 
-			# if array on array add base too
+			# array on array
 			if iCaller == "self":
 				vArray = vArray + 1
 
-			# calculate the base furniture part
-			k = 0
-			while k < vArray:
+			# if array on array add base too
+			if key.isDerivedFrom("Part::FeaturePython") and key.Name.startswith("Array"):
+				
+				k = 0
+				while k < vArray:
+					setDraftArray(key, "self")
+					k = k + 1
+				
+			# single array
+			else:
+			
+				k = 0
+				while k < vArray:
+					selectFurniturePart(key, iCaller)
+					k = k + 1
 
-				# select and add furniture part
-				selectFurniturePart(key, iCaller)
-				k = k + 1
-		
 		except:
 			
 			# if there is wrong structure
