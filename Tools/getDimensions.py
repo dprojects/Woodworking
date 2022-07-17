@@ -984,8 +984,6 @@ def getApproximation(iObj, iCaller="getApproximation"):
 	s = [ mWidth, mDepth, mHeight ]
 	s.sort()
 	
-	area = s[1] * s[2]
-	edge = 2 * (s[1] + s[2])
 	
 	key = ""
 	key += str(round(s[0], 2))
@@ -994,9 +992,9 @@ def getApproximation(iObj, iCaller="getApproximation"):
 	key += ":"
 	key += str(round(s[2], 2))
 	key += ":"
-	key += str(round(area, 2))
+	key += str(getGroup(iObj, iCaller))
 
-	return [ key, s[0], s[1], s[2], area, edge ]
+	return [ key, s[0], s[1], s[2] ]
 
 
 # ###################################################################################################################
@@ -1311,7 +1309,7 @@ def setDBApproximation(iObj, iCaller="setDBApproximation"):
 
 	try:
 		
-		[ vKey, thick, s1, s2, vArea, vEdge ] = getApproximation(iObj, iCaller)
+		[ vKey, thick, s1, s2 ] = getApproximation(iObj, iCaller)
 		
 		if thick <= 0 or s1 <= 0 or s2 <= 0:
 			raise
@@ -2129,6 +2127,11 @@ def setDraftArray(iObj, iCaller="setDraftArray"):
 			# set reference point to the furniture part
 			key = iObj.Base
 
+			# support for Array on Array
+			if key.isDerivedFrom("Part::FeaturePython") and key.Name.startswith("Array"):
+				setDraftArray(key, "self")
+				return
+				
 			if iObj.ArrayType == "polar":
 				
 				# without the base furniture part
@@ -2138,9 +2141,12 @@ def setDraftArray(iObj, iCaller="setDraftArray"):
 				# without the base furniture part
 				vArray = (iObj.NumberX * iObj.NumberY * iObj.NumberZ) - 1
 
+			# if array on array add base too
+			if iCaller == "self":
+				vArray = vArray + 1
+
 			# calculate the base furniture part
 			k = 0
-			
 			while k < vArray:
 
 				# select and add furniture part
@@ -2570,16 +2576,34 @@ def setViewA(iCaller="setViewA"):
 
 	# add values
 	for key in dbDQ.keys():
-
+		
+		# split key
 		a = key.split(":")
+		
+		# split group
+		group = a[3]
+		label = ""
+		grain = ""
+		
+		if group.find(", ") != 1:
+			
+			more = group.split(", ")
+			
+			label = more[0]
+			g = more[1]
+			
+			if g == "grain horizontal":
+				grain = "h"
+			if g == "grain vertical":
+				grain = "v"
 
 		gSheet.set("A" + str(gSheetRow), toSheet(a[1], "string", iCaller)) 			# Length
 		gSheet.set("B" + str(gSheetRow), toSheet(a[2], "string", iCaller)) 			# Width
 		gSheet.set("C" + str(gSheetRow), toSheet(dbDQ[key], "string", iCaller)) 	# Qty
-		gSheet.set("D" + str(gSheetRow), "")										# Material
-		gSheet.set("E" + str(gSheetRow), toSheet(a[0], "string", iCaller))			# Label
+		gSheet.set("D" + str(gSheetRow), toSheet(a[0], "string", iCaller))			# Material
+		gSheet.set("E" + str(gSheetRow), toSheet(label, "string", iCaller))			# Label
 		gSheet.set("F" + str(gSheetRow), "true")									# Enabled
-		gSheet.set("G" + str(gSheetRow), "")										# Grain direction
+		gSheet.set("G" + str(gSheetRow), toSheet(grain, "string", iCaller))			# Grain direction
 		gSheet.set("H" + str(gSheetRow), "")										# Top band
 		gSheet.set("I" + str(gSheetRow), "")										# Left band
 		gSheet.set("J" + str(gSheetRow), "")										# Bottom band
