@@ -4,7 +4,7 @@
 
 * [Mount](#mount)
 	* [Dowel 8 x 35](#dowel-8-x-35)
-	* [Screw 4.5 x 40](#screw-4.5-x-40)
+	* [Screw 4.5 x 40](#screw-45-x-40)
 
 ## Mount 
 
