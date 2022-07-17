@@ -49,6 +49,8 @@ def showQtGUI():
 		gDONext = 32
 		gDOEdge = 0
 		
+		gDSinkSave = 20
+		
 		gNoSelection = translate('magicDowels1', 'please select face')
 		
 		# ############################################################################
@@ -67,7 +69,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 220
-			toolSH = 600
+			toolSH = 620
 			
 			# active screen size (FreeCAD main window)
 			gSW = FreeCADGui.getMainWindow().width()
@@ -137,22 +139,46 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.s3L = QtGui.QLabel(translate('magicDowels5', 'Adjust position:'), self)
+			self.s3L = QtGui.QLabel(translate('magicDowels5', 'Adjust edge:'), self)
 			self.s3L.move(10, row+3)
 
 			# button
 			self.s3B1 = QtGui.QPushButton("<", self)
-			self.s3B1.clicked.connect(self.setPositionP)
+			self.s3B1.clicked.connect(self.setPosition)
 			self.s3B1.setFixedWidth(50)
 			self.s3B1.move(105, row)
 			self.s3B1.setAutoRepeat(True)
 			
 			# button
 			self.s3B2 = QtGui.QPushButton(">", self)
-			self.s3B2.clicked.connect(self.setPositionN)
+			self.s3B2.clicked.connect(self.setPosition)
 			self.s3B2.setFixedWidth(50)
 			self.s3B2.move(160, row)
 			self.s3B2.setAutoRepeat(True)
+
+			# ############################################################################
+			# options - adjust sink
+			# ############################################################################
+
+			row += 30
+			
+			# label
+			self.s7L = QtGui.QLabel(translate('magicDowels18', 'Adjust sink:'), self)
+			self.s7L.move(10, row+3)
+
+			# button
+			self.s7B1 = QtGui.QPushButton("< >", self)
+			self.s7B1.clicked.connect(self.setSink)
+			self.s7B1.setFixedWidth(50)
+			self.s7B1.move(105, row)
+			self.s7B1.setAutoRepeat(True)
+			
+			# button
+			self.s7B2 = QtGui.QPushButton("0", self)
+			self.s7B2.clicked.connect(self.setSink0)
+			self.s7B2.setFixedWidth(50)
+			self.s7B2.move(160, row)
+			self.s7B2.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - adjust rotation
@@ -529,8 +555,8 @@ def showQtGUI():
 					d.Placement.Base.y = y
 					d.Placement.Base.z = z
 					
-					d.ViewObject.ShapeColor = (0.0, 0.0, 0.0, 0.0)
-					d.ViewObject.Transparency = 83
+					colors = [ (0.0, 0.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0) ]
+					d.ViewObject.DiffuseColor = colors
 					
 					self.gDowels.append(d)
 					
@@ -625,9 +651,9 @@ def showQtGUI():
 					d.Placement.Base.y = y
 					d.Placement.Base.z = z
 
-					d.ViewObject.ShapeColor = (0.0, 0.0, 0.0, 0.0)
-					d.ViewObject.Transparency = 83
-
+					colors = [ (0.0, 0.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0) ]
+					d.ViewObject.DiffuseColor = colors
+					
 					self.gDowels.append(d)
 					
 					i = i + 1
@@ -749,7 +775,10 @@ def showQtGUI():
 					self.gRAxis = FreeCAD.Vector(0, 1, 0)
 				
 				# ############################################################################
-				self.setCustomMount(self.gDowelLabel)
+				self.gDOEdge = self.gThick / 2
+				self.oDOEdgeE.setText(str(self.gDOEdge))
+				
+				self.showDowels()
 			
 			except:
 
@@ -815,36 +844,44 @@ def showQtGUI():
 				self.s1S.setText(self.gNoSelection)
 		
 		# ############################################################################
-		def setPositionP(self):
-			
+		def setSink(self):
 			try:
-				if self.gPosition == 0:
-					self.gPosition = 1
-				else:
-					self.gPosition = 0
-				
-				self.gDOEdge = - self.gDOEdge
-				self.oDOEdgeE.setText(str(self.gDOEdge))
-				self.showDowels()
-				
-			except:
-				self.s1S.setText(self.gNoSelection)
-				
-		def setPositionN(self):
-			
-			try:
-				if self.gPosition == 0:
-					self.gPosition = 1
-				else:
-					self.gPosition = 0
+				if self.gDSink == 0:
+					self.gDSink = self.gDSinkSave
 					
-				self.gDOEdge = - self.gDOEdge
-				self.oDOEdgeE.setText(str(self.gDOEdge))
+				self.gDSink = - self.gDSink
+				self.oDSinkE.setText(str(self.gDSink))
 				self.showDowels()
-			
+				
 			except:
 				self.s1S.setText(self.gNoSelection)
 		
+		def setSink0(self):
+			try:
+				self.gDSinkSave = self.gDSink
+				self.gDSink = 0
+				self.oDSinkE.setText(str(self.gDSink))
+				self.showDowels()
+				
+			except:
+				self.s1S.setText(self.gNoSelection)
+				
+		# ############################################################################
+		def setPosition(self):
+			
+			try:
+				if self.gPosition == 0:
+					self.gPosition = 1
+				else:
+					self.gPosition = 0
+				
+				self.gDOEdge = - self.gDOEdge
+				self.oDOEdgeE.setText(str(self.gDOEdge))
+				self.showDowels()
+				
+			except:
+				self.s1S.setText(self.gNoSelection)
+
 		# ############################################################################
 		def setRotationP(self):
 			
@@ -1003,9 +1040,6 @@ def showQtGUI():
 					self.gDOCorner = 50
 					self.gDONext = 32
 
-				if self.gPosition != 0:
-					self.gDOEdge = - self.gDOEdge
-
 				self.oDowelLabelE.setText(str(self.gDowelLabel))
 				self.oDDiameterE.setText(str(self.gDDiameter))
 				self.oDSizeE.setText(str(self.gDSize))
@@ -1046,7 +1080,6 @@ def showQtGUI():
 				if len(self.gDowels) != 0:
 					for d in self.gDowels:
 						try:
-							d.ViewObject.Transparency = 0
 							d.ViewObject.ShapeColor = self.gObj.ViewObject.ShapeColor
 						except:
 							skip = 1
