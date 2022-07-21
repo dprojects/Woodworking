@@ -22,7 +22,7 @@ This furniture from my garage has applied realistic looking screws and dowels. A
 	* [Screw 4.5 x 40 mm](#screw-45-x-40-mm)
 	* [Screw 5 x 50 mm](#screw-5-x-50-mm)
 * [Pins](#pins)
-	* [Shelf Pin 5 x 16 mm](#shelf_pin-5-x-16-mm)
+	* [Shelf Pin 5 x 16 mm](#shelf-pin-5-x-16-mm)
 
 # Dowels
 
