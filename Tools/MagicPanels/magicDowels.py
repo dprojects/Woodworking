@@ -945,10 +945,11 @@ def showQtGUI():
 				if selectedText == "Screw 3 x 20 mm ":
 					self.gDDiameter = 3
 					self.gDSize = 20
-					self.gDSink = 17
+					self.gDSink = 19
 					self.gDNum = 5
 					self.gDOCorner = 50
 					self.gDONext = 32
+					self.gDOEdge = 9
 				
 				if selectedText == "Screw 4.5 x 40 mm ":
 					self.gDDiameter = 4.5
