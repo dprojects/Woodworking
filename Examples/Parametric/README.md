@@ -169,7 +169,7 @@
 |   |   |
 |:--|:--|
 | **Supported reports:** | `c - report type` |
-| **FreeCAD version:** | `0.20.27936 (Weekly, Linux, x86_64, Conda, AppImage)` |
+| **FreeCAD version:** | `0.20.29177 (Stable, Linux, x86_64, Conda, AppImage)` |
 | **OS:** | `Ubuntu 20.04.2 LTS x86_64` |
 | **Textures:** | Stored, open `setTextures` tool and click `load` button to see them |
 

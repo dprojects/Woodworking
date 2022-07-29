@@ -124,17 +124,17 @@ try:
 	mY = round(s2, 2)
 	mZ = round(s3, 2)
 
-	info += translate('showSpaceModel1', 'Occupied space in 3D by the model:') + '<br><br>'
+	info += translate('showSpaceModel', 'Occupied space in 3D by the model:') + '<br><br>'
 	
 	info += '<table cellpadding=5 style="background-color:#DDDDFF;">'
 	
-	info += '<tr><td><b>' + translate('showSpaceModel2', 'Size along X axis') + ': ' + '</b></td>'
+	info += '<tr><td><b>' + translate('showSpaceModel', 'Size along X axis') + ': ' + '</b></td>'
 	info += '<td style="text-align:right">' + str(mX) + '</td></tr>'
 	
-	info += '<tr><td><b>' + translate('showSpaceModel3', 'Size along Y axis') + ': ' + '</b></td>'
+	info += '<tr><td><b>' + translate('showSpaceModel', 'Size along Y axis') + ': ' + '</b></td>'
 	info += '<td style="text-align:right">' + str(mY) + '</td></tr>'
 	
-	info += '<tr><td><b>' + translate('showSpaceModel4', 'Size along Z axis') + ': ' + '</b></td>'
+	info += '<tr><td><b>' + translate('showSpaceModel', 'Size along Z axis') + ': ' + '</b></td>'
 	info += '<td style="text-align:right">' + str(mZ) + '</td></tr>'
 	
 	info += '</table>'
@@ -142,18 +142,18 @@ try:
 except:
 
 	if info == "":
-		info += translate('showSpaceModel5', 'Please create model to calculate occupied space in 3D.')
+		info += translate('showSpaceModel', 'Please create model to calculate occupied space in 3D.')
 
-info += '<br><br>' + '<b>' + translate('showSpaceModel6', 'Note') + ':' + '</b>' + ' '
+info += '<br><br>' + '<b>' + translate('showSpaceModel', 'Note') + ':' + '</b>' + ' '
 
-info += translate('showSpaceModel7', 'They are not dimensions taken from objects, they are occupied space in 3D by the objects. The values are calculated from raw vertex. You have to be careful because the dimensions are rounded and given in raw form.') + '<br><br>'
+info += translate('showSpaceModel', 'They are not dimensions taken from objects, they are occupied space in 3D by the objects. The values are calculated from raw vertex. You have to be careful because the dimensions are rounded and given in raw form.') + '<br><br>'
 
-info += translate('showSpaceModel8', 'You can see the difference for all rotated elements. For rotated Cube elements the occupied space in 3D will not be the same as dimensions.') + '<br><br>'
+info += translate('showSpaceModel', 'You can see the difference for all rotated elements. For rotated Cube elements the occupied space in 3D will not be the same as dimensions.') + '<br><br>'
 
-info += translate('showSpaceModel9', 'However, this approach might be very useful at furniture designing process. For example you can see how much space in your room will take opened front of the furniture. Normally, all the Pad or Cube elements, should be created according to the XYZ plane, so there will be no difference between the real dimensions and occupied space in 3D.')
+info += translate('showSpaceModel', 'However, this approach might be very useful at furniture designing process. For example you can see how much space in your room will take opened front of the furniture. Normally, all the Pad or Cube elements, should be created according to the XYZ plane, so there will be no difference between the real dimensions and occupied space in 3D.')
 
 msg = QtGui.QMessageBox()
-msg.setWindowTitle(translate('showSpaceModel10', 'showSpaceModel'))
+msg.setWindowTitle(translate('showSpaceModel', 'showSpaceModel'))
 msg.setTextFormat(QtCore.Qt.TextFormat.RichText)
 msg.setText(info)
 msg.exec_()

@@ -406,7 +406,8 @@ def showQtGUI():
 			self.setWindowsLayout("all windows")
 
 			# set default colors
-			self.setWindowsColors("matrix blue pill")
+			#self.setWindowsColors("matrix blue pill")
+			self.setWindowsColors("beautiful pinky world") # my favorite colors ;-)
 
 		# ############################################################################
 		# actions - function for actions
@@ -706,6 +707,11 @@ def showQtGUI():
 			# all objects types
 			else:
 				for o in iList:
+					
+					# fix FreeCAD bug https://forum.freecadweb.org/viewtopic.php?f=22&t=70365
+					if str(o) == "DraggingPlacement":
+						continue
+					
 					try:
 						if hasattr(iObj, o):
 							tmpO.append(getattr(iObj, o))
@@ -1207,10 +1213,6 @@ def showQtGUI():
 
 			try:
 				rootS = str(self.rootCO.text())				
-
-				import sys
-				if rootS in sys.modules:
-					del sys.modules[rootS]
 
 				module = __import__(rootS, globals(), locals(), [], 0)
 				root = dir(module)

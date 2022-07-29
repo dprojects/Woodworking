@@ -54,7 +54,7 @@ def showQtGUI():
 		gCenter = []
 		gCenterIndex = 0
 		gStep = 15
-		gNoSelection = translate('magicAngle1', 'select panel to rotate')
+		gNoSelection = translate('magicAngle', 'select panel to rotate')
 		
 		# ############################################################################
 		# init
@@ -88,7 +88,7 @@ def showQtGUI():
 			
 			self.result = userCancelled
 			self.setGeometry(gPW, gPH, toolSW, toolSH)
-			self.setWindowTitle(translate('magicAngle2', 'magicAngle'))
+			self.setWindowTitle(translate('magicAngle', 'magicAngle'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
@@ -104,7 +104,7 @@ def showQtGUI():
 			self.s1S.move(10, 10)
 
 			# button
-			self.s1B1 = QtGui.QPushButton(translate('magicAngle3', 'refresh selection'), self)
+			self.s1B1 = QtGui.QPushButton(translate('magicAngle', 'refresh selection'), self)
 			self.s1B1.clicked.connect(self.getSelected)
 			self.s1B1.setFixedWidth(200)
 			self.s1B1.move(10, 40)
@@ -114,7 +114,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.o0L = QtGui.QLabel(translate('magicAngle4', 'Rotation point:'), self)
+			self.o0L = QtGui.QLabel(translate('magicAngle', 'Rotation point:'), self)
 			self.o0L.move(10, 83)
 
 			# button
@@ -136,7 +136,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.o1L = QtGui.QLabel(translate('magicAngle5', 'X axis (yaw):'), self)
+			self.o1L = QtGui.QLabel(translate('magicAngle', 'X axis (yaw):'), self)
 			self.o1L.move(10, 123)
 
 			# button
@@ -158,7 +158,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.o2L = QtGui.QLabel(translate('magicAngle6', 'Y axis (pitch):'), self)
+			self.o2L = QtGui.QLabel(translate('magicAngle', 'Y axis (pitch):'), self)
 			self.o2L.move(10, 153)
 
 			# button
@@ -180,7 +180,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.o3L = QtGui.QLabel(translate('magicAngle7', 'Z axis (roll):'), self)
+			self.o3L = QtGui.QLabel(translate('magicAngle', 'Z axis (roll):'), self)
 			self.o3L.move(10, 183)
 
 			# button
@@ -202,7 +202,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.o4L = QtGui.QLabel(translate('magicAngle8', 'Angle step:'), self)
+			self.o4L = QtGui.QLabel(translate('magicAngle', 'Angle step:'), self)
 			self.o4L.move(10, 213)
 
 			# text input

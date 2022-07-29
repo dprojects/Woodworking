@@ -1081,16 +1081,17 @@ def makePad(iSize1, iSize2, iSize3, iX, iY, iZ, iRotation, iType, iPadName="Pad"
 
 
 # ###################################################################################################################
-def showInfo(iCaller, iInfo, iNote="none"):
+def showInfo(iCaller, iInfo, iNote="yes"):
 	'''
-	showInfo(iCaller, iInfo) - allow to show Gui info box for all available function and multiple calls.
-	
+	showInfo(iCaller, iInfo, iNote="yes") - allow to show Gui info box for all available function and multiple calls.
+
 	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
 		iCaller: window title
 		iInfo: HTML text to show
+		iNote: additional tutorial ("yes" or "no"), by default is "yes".
 	
 	Usage:
 	
@@ -1141,58 +1142,61 @@ def showInfo(iCaller, iInfo, iNote="none"):
 	info += '</tr>'
 	info += '</table>'
 
-	info += translate('showInfoAll', 'To keep furniture designing process quick and simple, ')
-	info += translate('showInfoAll', 'the furniture designing process should follow steps: ')
-	
-	info += '<ol>'
-	
-	info += '<li>'
-	info += translate('showInfoAll', 'Create furniture with simple Cube panels. Try to not make detailed model ')
-	info += translate('showInfoAll', 'with Pads and Sketches at this stage. ')
-	info += '</li>'
-	
-	info += '<li>'
-	info += translate('showInfoAll', 'Add simple mounting points with magicDowels tool and other simple references ')
-	info += translate('showInfoAll', 'with Cubes to replace all of them later with single click.')
-	info += '</li>'
-	
-	info += '<li>'
-	info += translate('showInfoAll', 'Replace desired Cube elements with more detailed elements. Use dedicated replace ')
-	info += translate('showInfoAll', 'features for that e.g. panel2profile to replace all Cubes with detailed construction ')
-	info += translate('showInfoAll', 'profiles or use panel2link to replace all selected Cubes with any detailed object.')
-	info += '</li>'
-	
-	info += '<li>'
-	info += translate('showInfoAll', 'Add decorations or more details, if needed. If you want to change Cube shape you can ')
-	info += translate('showInfoAll', 'replace it with Pad by single click via panel2pad replace feature and edit the Sketch. ')
-	info += '</li>'
-	
-	info += '<li>'
-	info += translate('showInfoAll', 'Add colors or textures and preview furniture.')
-	info += '</li>'
-	
-	info += '<li>'
-	info += translate('showInfoAll', 'Generate cut-list with getDimensions tool. You can use TechDraw for more detailed draw. ')
-	info += '</li>'
-	
-	info += '<li>'
-	info += translate('showInfoAll', 'You can print this report directly from TechDraw page or use sheet2export tool.')
-	info += '</li>'
-	
-	info += '<li>'
-	info += translate('showInfoAll', 'Create furniture in real-life.')
-	info += '</li>'
-	
-	info += '<li>'
-	info += translate('showInfoAll', 'Have fun with your new furniture in real-life !')
-	info += '</li>'
-	
-	info += '</ol>'
+
+	if iNote == "yes":
 		
-	info += translate('showInfoAll', 'For more details please see:')
-	info += ' ' + '<a href="https://github.com/dprojects/Woodworking">'
-	info += translate('showInfoAll', 'Woodworking workbench documentation.')
-	info += '</a>'
+		info += translate('showInfoAll', 'To keep furniture designing process quick and simple, ')
+		info += translate('showInfoAll', 'the furniture designing process should follow steps: ')
+		
+		info += '<ol>'
+		
+		info += '<li>'
+		info += translate('showInfoAll', 'Create furniture with simple Cube panels. Try to not make detailed model ')
+		info += translate('showInfoAll', 'with Pads and Sketches at this stage. ')
+		info += '</li>'
+		
+		info += '<li>'
+		info += translate('showInfoAll', 'Add simple mounting points with magicDowels tool and other simple references ')
+		info += translate('showInfoAll', 'with Cubes to replace all of them later with single click.')
+		info += '</li>'
+		
+		info += '<li>'
+		info += translate('showInfoAll', 'Replace desired Cube elements with more detailed elements. Use dedicated replace ')
+		info += translate('showInfoAll', 'features for that e.g. panel2profile to replace all Cubes with detailed construction ')
+		info += translate('showInfoAll', 'profiles or use panel2link to replace all selected Cubes with any detailed object.')
+		info += '</li>'
+		
+		info += '<li>'
+		info += translate('showInfoAll', 'Add decorations or more details, if needed. If you want to change Cube shape you can ')
+		info += translate('showInfoAll', 'replace it with Pad by single click via panel2pad replace feature and edit the Sketch. ')
+		info += '</li>'
+		
+		info += '<li>'
+		info += translate('showInfoAll', 'Add colors or textures and preview furniture.')
+		info += '</li>'
+		
+		info += '<li>'
+		info += translate('showInfoAll', 'Generate cut-list with getDimensions tool. You can use TechDraw for more detailed draw. ')
+		info += '</li>'
+		
+		info += '<li>'
+		info += translate('showInfoAll', 'You can print this report directly from TechDraw page or use sheet2export tool.')
+		info += '</li>'
+		
+		info += '<li>'
+		info += translate('showInfoAll', 'Create furniture in real-life.')
+		info += '</li>'
+		
+		info += '<li>'
+		info += translate('showInfoAll', 'Have fun with your new furniture in real-life !')
+		info += '</li>'
+		
+		info += '</ol>'
+			
+		info += translate('showInfoAll', 'For more details please see:')
+		info += ' ' + '<a href="https://github.com/dprojects/Woodworking">'
+		info += translate('showInfoAll', 'Woodworking workbench documentation.')
+		info += '</a>'
 	
 	msg = QtGui.QMessageBox()
 	msg.setWindowTitle(iCaller)

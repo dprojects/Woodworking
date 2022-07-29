@@ -118,17 +118,17 @@ try:
 	mY = round(s2, 2)
 	mZ = round(s3, 2)
 
-	info += translate('showSpaceSelected1', 'Occupied space in 3D by all the selected parts:') + '<br><br>'
+	info += translate('showSpaceSelected', 'Occupied space in 3D by all the selected parts:') + '<br><br>'
 	
 	info += '<table cellpadding=5 style="background-color:#DDDDFF;">'
 	
-	info += '<tr><td><b>' + translate('showSpaceSelected2', 'Space along X axis') + ': ' + '</b></td>'
+	info += '<tr><td><b>' + translate('showSpaceSelected', 'Space along X axis') + ': ' + '</b></td>'
 	info += '<td style="text-align:right">' + str(mX) + '</td></tr>'
 	
-	info += '<tr><td><b>' + translate('showSpaceSelected3', 'Space along Y axis') + ': ' + '</b></td>'
+	info += '<tr><td><b>' + translate('showSpaceSelected', 'Space along Y axis') + ': ' + '</b></td>'
 	info += '<td style="text-align:right">' + str(mY) + '</td></tr>'
 	
-	info += '<tr><td><b>' + translate('showSpaceSelected4', 'Space along Z axis') + ': ' + '</b></td>'
+	info += '<tr><td><b>' + translate('showSpaceSelected', 'Space along Z axis') + ': ' + '</b></td>'
 	info += '<td style="text-align:right">' + str(mZ) + '</td></tr>'
 	
 	info += '</table>'
@@ -136,18 +136,18 @@ try:
 except:
 
 	if info == "":
-		info += translate('showSpaceSelected5', 'Please select parts to calculate occupied space in 3D.')
+		info += translate('showSpaceSelected', 'Please select parts to calculate occupied space in 3D.')
 
-info += '<br><br>' + '<b>' + translate('showSpaceSelected6', 'Note') + ':' + '</b>' + ' '
+info += '<br><br>' + '<b>' + translate('showSpaceSelected', 'Note') + ':' + '</b>' + ' '
 
-info += translate('showSpaceSelected7', 'They are not dimensions taken from selected objects, they are occupied space in 3D by the selected objects. The values are calculated from raw vertex. You have to be careful because the dimensions are rounded and given in raw form.') + '<br><br>'
+info += translate('showSpaceSelected', 'They are not dimensions taken from selected objects, they are occupied space in 3D by the selected objects. The values are calculated from raw vertex. You have to be careful because the dimensions are rounded and given in raw form.') + '<br><br>'
 
-info += translate('showSpaceSelected8', 'You can see the difference for all rotated elements. For rotated Cube elements the occupied space in 3D will not be the same as dimensions.') + '<br><br>'
+info += translate('showSpaceSelected', 'You can see the difference for all rotated elements. For rotated Cube elements the occupied space in 3D will not be the same as dimensions.') + '<br><br>'
 
-info += translate('showSpaceSelected9', 'However, this approach might be very useful at furniture designing process. For example you can see how much space in your room will take opened front of the furniture. Normally, all the Pad or Cube elements, should be created according to the XYZ plane, so there will be no difference between the real dimensions and occupied space in 3D.')
+info += translate('showSpaceSelected', 'However, this approach might be very useful at furniture designing process. For example you can see how much space in your room will take opened front of the furniture. Normally, all the Pad or Cube elements, should be created according to the XYZ plane, so there will be no difference between the real dimensions and occupied space in 3D.')
 
 msg = QtGui.QMessageBox()
-msg.setWindowTitle(translate('showSpaceSelected10', 'showSpaceSelected'))
+msg.setWindowTitle(translate('showSpaceSelected', 'showSpaceSelected'))
 msg.setTextFormat(QtCore.Qt.TextFormat.RichText)
 msg.setText(info)
 msg.exec_()

@@ -14,7 +14,7 @@ class WoodworkingWorkbench (Workbench):
 
 	MenuText = QT_TRANSLATE_NOOP("Workbench", "Woodworking")
 	ToolTip = QT_TRANSLATE_NOOP("Workbench", "Workbech for woodworking.")
-	Icon = os.path.join(iconPath, "Woodworking.xpm")
+	Icon = os.path.join(iconPath, "Woodworking.png")
 
 	def Initialize(self):
 

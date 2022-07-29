@@ -93,10 +93,10 @@ def getItems(iType):
 	if iType == "Woodworking - Magic Panels - replace":
 		
 		parts = [
-			"panel2pad",
+			"panel2link",
+			"magicFixture",
 			"panel2profile",
-			"panel2frame",
-			"panel2link"
+			"panel2frame"
 		]
 
 	if iType == "Woodworking - Magic Panels - mounting":
@@ -134,13 +134,14 @@ def getItems(iType):
 	if iType == "Woodworking - Decorations":
 		
 		parts = [
+			"panel2pad",
+			"PartDesign_Fillet",
+			"PartDesign_Chamfer",
+			"PartDesign_Pocket",
 			"Part_Boolean",
 			"Part_Torus",
 			"Part_Cone",
 			"Part_Sphere",
-			"PartDesign_Fillet",
-			"PartDesign_Chamfer",
-			"PartDesign_Pocket"
 		]
 
 	if iType == "Woodworking - Dimensions":

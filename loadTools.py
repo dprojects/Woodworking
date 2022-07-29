@@ -16,7 +16,7 @@ iconPath = os.path.join(path, "Icons")
 class debugInfo():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "debugInfo.xpm"),
+		return {"Pixmap"  : os.path.join(iconPath, "debugInfo.png"),
 				"MenuText": QT_TRANSLATE_NOOP("debugInfoMenuText", "debugInfo"),
 				"ToolTip" : QT_TRANSLATE_NOOP("debugInfoToolTip", "Copy platform details to clipboard for bug report purposes."),
 				"Accel"   : "" }
@@ -55,7 +55,7 @@ FreeCADGui.addCommand("debugInfo", debugInfo())
 class getDimensions():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "getDimensions.xpm"),
+		return {"Pixmap"  : os.path.join(iconPath, "getDimensions.png"),
 				"MenuText": QT_TRANSLATE_NOOP("getDimensionsMenuText", "getDimensions, BOM, cutlist"),
 				"ToolTip" : QT_TRANSLATE_NOOP("getDimensionsToolTip", "Creates spreadsheet with dimensions to cut."),
 				"Accel"   : "" }
@@ -94,7 +94,7 @@ FreeCADGui.addCommand("getDimensions", getDimensions())
 class sheet2export():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "sheet2export.xpm"),
+		return {"Pixmap"  : os.path.join(iconPath, "sheet2export.png"),
 				"MenuText": QT_TRANSLATE_NOOP("sheet2exportMenuText", "sheet2export"),
 				"ToolTip" : QT_TRANSLATE_NOOP("sheet2exportToolTip", "Exports spreadsheet to chosen file format."),
 				"Accel"   : "" }
@@ -133,7 +133,7 @@ FreeCADGui.addCommand("sheet2export", sheet2export())
 class scanObjects():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "scanObjects.xpm"),
+		return {"Pixmap"  : os.path.join(iconPath, "scanObjects.png"),
 				"MenuText": QT_TRANSLATE_NOOP("scanObjectsMenuText", "scanObjects"),
 				"ToolTip" : QT_TRANSLATE_NOOP("scanObjectsToolTip", "Inspection tool for FreeCAD macro development & project debug (live API)."),
 				"Accel"   : "" }
@@ -172,7 +172,7 @@ FreeCADGui.addCommand("scanObjects", scanObjects())
 class setTextures():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "setTextures.xpm"),
+		return {"Pixmap"  : os.path.join(iconPath, "setTextures.png"),
 				"MenuText": QT_TRANSLATE_NOOP("setTexturesMenuText", "setTextures"),
 				"ToolTip" : QT_TRANSLATE_NOOP("setTexturesToolTip", "Store textures information and allows to load textures. Solves problem with texture sharing without huge project file size."),
 				"Accel"   : "" }
@@ -250,7 +250,7 @@ FreeCADGui.addCommand("makeTransparent", makeTransparent())
 class colorManager():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "colorManager.xpm"),
+		return {"Pixmap"  : os.path.join(iconPath, "colorManager.png"),
 				"MenuText": QT_TRANSLATE_NOOP("colorManagerMenuText", "colorManager"),
 				"ToolTip" : QT_TRANSLATE_NOOP("colorManagerToolTip", "Allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected face, object or many faces or objects and see the effect at 3D model in real-time."),
 				"Accel"   : "" }
@@ -289,7 +289,7 @@ FreeCADGui.addCommand("colorManager", colorManager())
 class magicAngle():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "magicAngle.xpm"),
+		return {"Pixmap"  : os.path.join(iconPath, "magicAngle.png"),
 				"MenuText": QT_TRANSLATE_NOOP("magicAngleMenuText", "magicAngle"),
 				"ToolTip" : QT_TRANSLATE_NOOP("magicAngleToolTip", "Allows to rotate panels and even other more complicated objects, like construction profiles."),
 				"Accel"   : "" }
@@ -328,7 +328,7 @@ FreeCADGui.addCommand("magicAngle", magicAngle())
 class showSpaceModel():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "showSpaceModel.xpm"),
+		return {"Pixmap"  : os.path.join(iconPath, "showSpaceModel.png"),
 				"MenuText": QT_TRANSLATE_NOOP("showSpaceModelMenuText", "show, model, space"),
 				"ToolTip" : QT_TRANSLATE_NOOP("showSpaceModelToolTip", "This tool allows you to calculate the overall occupied space in 3D by the model."),
 				"Accel"   : "" }
@@ -367,7 +367,7 @@ FreeCADGui.addCommand("showSpaceModel", showSpaceModel())
 class showSpaceSelected():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "showSpaceSelected.xpm"),
+		return {"Pixmap"  : os.path.join(iconPath, "showSpaceSelected.png"),
 				"MenuText": QT_TRANSLATE_NOOP("showSpaceSelectedMenuText", "show, selected, space"),
 				"ToolTip" : QT_TRANSLATE_NOOP("showSpaceSelectedToolTip", "This tool allows you to calculate the overall occupied space in 3D by the selected parts."),
 				"Accel"   : "" }
@@ -406,7 +406,7 @@ FreeCADGui.addCommand("showSpaceSelected", showSpaceSelected())
 class magicMove():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "magicMove.xpm"),
+		return {"Pixmap"  : os.path.join(iconPath, "magicMove.png"),
 				"MenuText": QT_TRANSLATE_NOOP("magicMoveMenuText", "magicMove"),
 				"ToolTip" : QT_TRANSLATE_NOOP("magicMoveToolTip", "If you have problem with unexpected result of panel movements via dedicated icons, you can use this tool to precisely move panel into desired direction. This tool allow to turn off and on axis cross and resize corner cross size."),
 				"Accel"   : "" }
@@ -445,7 +445,7 @@ FreeCADGui.addCommand("magicMove", magicMove())
 class magicManager():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "magicManager.xpm"),
+		return {"Pixmap"  : os.path.join(iconPath, "magicManager.png"),
 				"MenuText": QT_TRANSLATE_NOOP("magicManagerMenuText", "magicManager"),
 				"ToolTip" : QT_TRANSLATE_NOOP("magicManagerToolTip", "If you have problem with unexpected result of Magic Panels, you can use this tool to preview panel before creation. It may take more time to create panel, but you can select exact panel to apply, also the edge and vertex position. This tool allows to create panel at selected face or between two faces."),
 				"Accel"   : "" }
@@ -484,7 +484,7 @@ FreeCADGui.addCommand("magicManager", magicManager())
 class magicDowels():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "magicDowels.xpm"),
+		return {"Pixmap"  : os.path.join(iconPath, "magicDowels.png"),
 				"MenuText": QT_TRANSLATE_NOOP("magicDowelsMenuText", "magicDowels"),
 				"ToolTip" : QT_TRANSLATE_NOOP("magicDowelsToolTip", "Allows to add mounting points to the furniture. For example you can easily add screws, dowels, shelf supporter pins or custom mounting points."),
 				"Accel"   : "" }
@@ -517,6 +517,45 @@ class magicDowels():
 		return True
 
 FreeCADGui.addCommand("magicDowels", magicDowels())
+
+	
+# ######################################################################################################################
+class magicFixture():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "magicFixture.png"),
+				"MenuText": QT_TRANSLATE_NOOP("magicFixtureMenuText", "magicFixture"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicFixtureToolTip", "Allows to add fixture reference points to the furniture. Later you will be able to replace the cube fixture reference points with realistic fixture elements."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "magicFixture"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("magicFixture", magicFixture())
 
 	
 # ######################################################################################################################

@@ -51,7 +51,7 @@ def showQtGUI():
 		
 		gDSinkSave = 20
 		
-		gNoSelection = translate('magicDowels1', 'please select face')
+		gNoSelection = translate('magicDowels', 'please select face')
 		
 		# ############################################################################
 		# init
@@ -85,7 +85,7 @@ def showQtGUI():
 			
 			self.result = userCancelled
 			self.setGeometry(gPW, gPH, toolSW, toolSH)
-			self.setWindowTitle(translate('magicDowels2', 'magicDowels'))
+			self.setWindowTitle(translate('magicDowels', 'magicDowels'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
@@ -101,7 +101,7 @@ def showQtGUI():
 			self.s1S.move(10, 10)
 
 			# button
-			self.s1B1 = QtGui.QPushButton(translate('magicDowels3', 'refresh selection'), self)
+			self.s1B1 = QtGui.QPushButton(translate('magicDowels', 'refresh selection'), self)
 			self.s1B1.clicked.connect(self.getSelected)
 			self.s1B1.setFixedWidth(200)
 			self.s1B1.move(10, 40)
@@ -115,7 +115,7 @@ def showQtGUI():
 			row += 30
 
 			# label
-			self.s2L = QtGui.QLabel(translate('magicDowels4', 'Select edge:'), self)
+			self.s2L = QtGui.QLabel(translate('magicDowels', 'Select edge:'), self)
 			self.s2L.move(10, row+3)
 
 			# button
@@ -139,7 +139,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.s3L = QtGui.QLabel(translate('magicDowels5', 'Adjust edge:'), self)
+			self.s3L = QtGui.QLabel(translate('magicDowels', 'Adjust edge:'), self)
 			self.s3L.move(10, row+3)
 
 			# button
@@ -163,7 +163,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.s7L = QtGui.QLabel(translate('magicDowels18', 'Adjust sink:'), self)
+			self.s7L = QtGui.QLabel(translate('magicDowels', 'Adjust sink:'), self)
 			self.s7L.move(10, row+3)
 
 			# button
@@ -187,7 +187,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.s4L = QtGui.QLabel(translate('magicDowels6', 'Adjust rotation:'), self)
+			self.s4L = QtGui.QLabel(translate('magicDowels', 'Adjust rotation:'), self)
 			self.s4L.move(10, row+3)
 
 			# button
@@ -211,7 +211,7 @@ def showQtGUI():
 			row += 50
 
 			# label
-			self.s5L = QtGui.QLabel(translate('magicDowels7', 'Select sides:'), self)
+			self.s5L = QtGui.QLabel(translate('magicDowels', 'Select sides:'), self)
 			self.s5L.move(10, row+3)
 
 			# button
@@ -268,7 +268,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oDowelLabelL = QtGui.QLabel(translate('magicDowels8', 'Label:'), self)
+			self.oDowelLabelL = QtGui.QLabel(translate('magicDowels', 'Label:'), self)
 			self.oDowelLabelL.move(10, row+3)
 
 			# text input
@@ -284,7 +284,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oDNumL = QtGui.QLabel(translate('magicDowels9', 'Dowels per side:'), self)
+			self.oDNumL = QtGui.QLabel(translate('magicDowels', 'Dowels per side:'), self)
 			self.oDNumL.move(10, row+3)
 
 			# text input
@@ -300,7 +300,7 @@ def showQtGUI():
 			row += 30
 
 			# label
-			self.oDDiameterL = QtGui.QLabel(translate('magicDowels10', 'Dowels diameter:'), self)
+			self.oDDiameterL = QtGui.QLabel(translate('magicDowels', 'Dowels diameter:'), self)
 			self.oDDiameterL.move(10, row+3)
 
 			# text input
@@ -316,7 +316,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oDSizeL = QtGui.QLabel(translate('magicDowels11', 'Dowels size:'), self)
+			self.oDSizeL = QtGui.QLabel(translate('magicDowels', 'Dowels size:'), self)
 			self.oDSizeL.move(10, row+3)
 
 			# text input
@@ -332,7 +332,7 @@ def showQtGUI():
 			row += 30
 
 			# label
-			self.oDSinkL = QtGui.QLabel(translate('magicDowels12', 'Dowels sink:'), self)
+			self.oDSinkL = QtGui.QLabel(translate('magicDowels', 'Dowels sink:'), self)
 			self.oDSinkL.move(10, row+3)
 
 			# text input
@@ -348,7 +348,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oDOCornerL = QtGui.QLabel(translate('magicDowels13', 'Offset from corner:'), self)
+			self.oDOCornerL = QtGui.QLabel(translate('magicDowels', 'Offset from corner:'), self)
 			self.oDOCornerL.move(10, row+3)
 
 			# text input
@@ -364,7 +364,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oDONextL = QtGui.QLabel(translate('magicDowels14', 'Offset between dowels:'), self)
+			self.oDONextL = QtGui.QLabel(translate('magicDowels', 'Offset between dowels:'), self)
 			self.oDONextL.move(10, row+3)
 
 			# text input
@@ -380,7 +380,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oDOEdgeL = QtGui.QLabel(translate('magicDowels15', 'Offset from edge:'), self)
+			self.oDOEdgeL = QtGui.QLabel(translate('magicDowels', 'Offset from edge:'), self)
 			self.oDOEdgeL.move(10, row+3)
 
 			# text input
@@ -396,7 +396,7 @@ def showQtGUI():
 			row += 30
 
 			# button
-			self.e1B1 = QtGui.QPushButton(translate('magicDowels16', 'set custom values'), self)
+			self.e1B1 = QtGui.QPushButton(translate('magicDowels', 'set custom values'), self)
 			self.e1B1.clicked.connect(self.refreshSettings)
 			self.e1B1.setFixedWidth(200)
 			self.e1B1.move(10, row)
@@ -404,7 +404,7 @@ def showQtGUI():
 			row += 40
 
 			# button
-			self.e2B1 = QtGui.QPushButton(translate('magicDowels17', 'apply dowels to this position'), self)
+			self.e2B1 = QtGui.QPushButton(translate('magicDowels', 'apply dowels to this position'), self)
 			self.e2B1.clicked.connect(self.setDowels)
 			self.e2B1.setFixedWidth(200)
 			self.e2B1.setFixedHeight(40)

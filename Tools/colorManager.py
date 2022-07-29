@@ -87,7 +87,7 @@ def showQtGUI():
 			
 			self.result = userCancelled
 			self.setGeometry(gPW, gPH, toolSW, toolSH)
-			self.setWindowTitle(translate('colorManager1', 'colorManager'))
+			self.setWindowTitle(translate('colorManager', 'colorManager'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
@@ -103,13 +103,13 @@ def showQtGUI():
 			self.s1S.move(10, 10)
 
 			# button
-			self.s1B1 = QtGui.QPushButton(translate('colorManager2', 'refresh selection'), self)
+			self.s1B1 = QtGui.QPushButton(translate('colorManager', 'refresh selection'), self)
 			self.s1B1.clicked.connect(self.getSelected)
 			self.s1B1.setFixedWidth(240)
 			self.s1B1.move(10, 40)
 
 			# button
-			self.s1B2 = QtGui.QPushButton(translate('colorManager3', 'set face colors from spreadsheet'), self)
+			self.s1B2 = QtGui.QPushButton(translate('colorManager', 'set face colors from spreadsheet'), self)
 			self.s1B2.clicked.connect(self.setSheet)
 			self.s1B2.setFixedWidth(240)
 			self.s1B2.move(10, 70)
@@ -119,7 +119,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.o1L = QtGui.QLabel(translate('colorManager4', 'Select red:'), self)
+			self.o1L = QtGui.QLabel(translate('colorManager', 'Select red:'), self)
 			self.o1L.move(10, 113)
 
 			# button
@@ -147,7 +147,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.o2L = QtGui.QLabel(translate('colorManager5', 'Select green:'), self)
+			self.o2L = QtGui.QLabel(translate('colorManager', 'Select green:'), self)
 			self.o2L.move(10, 143)
 
 			# button
@@ -175,7 +175,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.o3L = QtGui.QLabel(translate('colorManager6', 'Select blue:'), self)
+			self.o3L = QtGui.QLabel(translate('colorManager', 'Select blue:'), self)
 			self.o3L.move(10, 173)
 
 			# button
@@ -203,7 +203,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.o4L = QtGui.QLabel(translate('colorManager7', 'Step:'), self)
+			self.o4L = QtGui.QLabel(translate('colorManager', 'Step:'), self)
 			self.o4L.move(10, 203)
 
 			# text input
@@ -213,7 +213,7 @@ def showQtGUI():
 			self.o4E.move(100, 200)
 
 			# update button
-			self.o5B1 = QtGui.QPushButton(translate('colorManager8', 'update color'), self)
+			self.o5B1 = QtGui.QPushButton(translate('colorManager', 'update color'), self)
 			self.o5B1.clicked.connect(self.setColor)
 			self.o5B1.setFixedWidth(240)
 			self.o5B1.move(10, 250)
@@ -504,7 +504,7 @@ def showQtGUI():
 				
 			except:
 
-				self.s1S.setText(translate('colorManager9', 'please select objects or faces'))
+				self.s1S.setText(translate('colorManager', 'please select objects or faces'))
 				return -1
 
 		# ############################################################################
@@ -609,7 +609,7 @@ def showQtGUI():
 				sheet.set("B6",str("green"))
 
 				info = ""
-				info += translate('colorManager10', 'The colorManager tool search all faces at object and try to read exact B row with color name. For example: for Face3 the color at B3 cell will be searched, for Face5 the color at B5 cell will be set. If there is no cell with color, this face will not be set. If you have Array object with 24 faces you need to set 24 rows. By default only first 6 faces will be set, usually it is base element. So you can quickly see where is the default element. You do not have to set A column, only B column is important for the tool. The A column is description for you. Currently only the 6 visible color names are supported.')
+				info += translate('colorManager', 'The colorManager tool search all faces at object and try to read exact B row with color name. For example: for Face3 the color at B3 cell will be searched, for Face5 the color at B5 cell will be set. If there is no cell with color, this face will not be set. If you have Array object with 24 faces you need to set 24 rows. By default only first 6 faces will be set, usually it is base element. So you can quickly see where is the default element. You do not have to set A column, only B column is important for the tool. The A column is description for you. Currently only the 6 visible color names are supported.')
 				
 				sheet.mergeCells("C1:G6")
 				sheet.set("D1", info)
@@ -638,7 +638,7 @@ def showQtGUI():
 				except:
 					skipObject = 1 # spreadsheet, group
 
-			self.s1S.setText(translate('colorManager11', 'colors from faceColors'))
+			self.s1S.setText(translate('colorManager', 'colors from faceColors'))
 
 	# ############################################################################
 	# final settings

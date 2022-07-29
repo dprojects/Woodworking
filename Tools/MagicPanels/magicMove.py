@@ -22,7 +22,7 @@ def showQtGUI():
 
 		gObj = ""
 		gStep = 1
-		gNoSelection = translate('magicMove1', 'select panel to move')
+		gNoSelection = translate('magicMove', 'select panel to move')
 		
 		# ############################################################################
 		# init
@@ -56,7 +56,7 @@ def showQtGUI():
 			
 			self.result = userCancelled
 			self.setGeometry(gPW, gPH, toolSW, toolSH)
-			self.setWindowTitle(translate('magicMove2', 'magicMove'))
+			self.setWindowTitle(translate('magicMove', 'magicMove'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
@@ -72,7 +72,7 @@ def showQtGUI():
 			self.s1S.move(10, 10)
 
 			# button
-			self.s1B1 = QtGui.QPushButton(translate('magicMove3', 'refresh selection'), self)
+			self.s1B1 = QtGui.QPushButton(translate('magicMove', 'refresh selection'), self)
 			self.s1B1.clicked.connect(self.getSelected)
 			self.s1B1.setFixedWidth(200)
 			self.s1B1.move(10, 40)
@@ -82,7 +82,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.o1L = QtGui.QLabel(translate('magicMove4', 'Move along X:'), self)
+			self.o1L = QtGui.QLabel(translate('magicMove', 'Move along X:'), self)
 			self.o1L.move(10, 83)
 
 			# button
@@ -104,7 +104,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.o2L = QtGui.QLabel(translate('magicMove5', 'Move along Y:'), self)
+			self.o2L = QtGui.QLabel(translate('magicMove', 'Move along Y:'), self)
 			self.o2L.move(10, 113)
 
 			# button
@@ -126,7 +126,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.o3L = QtGui.QLabel(translate('magicMove6', 'Move along Z:'), self)
+			self.o3L = QtGui.QLabel(translate('magicMove', 'Move along Z:'), self)
 			self.o3L.move(10, 143)
 
 			# button
@@ -148,7 +148,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.o4L = QtGui.QLabel(translate('magicMove7', 'Move step:'), self)
+			self.o4L = QtGui.QLabel(translate('magicMove', 'Move step:'), self)
 			self.o4L.move(10, 173)
 
 			# text input
@@ -162,7 +162,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.o0L = QtGui.QLabel(translate('magicMove8', 'Corner cross:'), self)
+			self.o0L = QtGui.QLabel(translate('magicMove', 'Corner cross:'), self)
 			self.o0L.move(10, 213)
 
 			# button
@@ -184,18 +184,18 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.o0L = QtGui.QLabel(translate('magicMove9', 'Center cross:'), self)
+			self.o0L = QtGui.QLabel(translate('magicMove', 'Center cross:'), self)
 			self.o0L.move(10, 243)
 
 			# button
-			self.o0B1 = QtGui.QPushButton(translate('magicMove10', 'on'), self)
+			self.o0B1 = QtGui.QPushButton(translate('magicMove', 'on'), self)
 			self.o0B1.clicked.connect(self.setCenterOn)
 			self.o0B1.setFixedWidth(50)
 			self.o0B1.move(105, 240)
 			self.o0B1.setAutoRepeat(True)
 			
 			# button
-			self.o0B2 = QtGui.QPushButton(translate('magicMove11', 'off'), self)
+			self.o0B2 = QtGui.QPushButton(translate('magicMove', 'off'), self)
 			self.o0B2.clicked.connect(self.setCenterOff)
 			self.o0B2.setFixedWidth(50)
 			self.o0B2.move(160, 240)

@@ -16,15 +16,15 @@ iconPath = os.path.join(path, "Icons")
 class DOCS():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "Docs.xpm"),
-				"MenuText": QT_TRANSLATE_NOOP('Workbench', 'Woodworking at FreeCAD - basic tutorial (getDimensions Docs)'),
+		return {"Pixmap"  : os.path.join(iconPath, "Docs.png"),
+				"MenuText": QT_TRANSLATE_NOOP('Workbench', 'Woodworking at FreeCAD - woodworking workbench documentation'),
 				"ToolTip" : QT_TRANSLATE_NOOP('Workbench', 'Opens web browser with external link.'),
 				"Accel"   : ""}
 
 	def Activated(self):
 
 		import webbrowser
-		webbrowser.open("https://github.com/dprojects/getDimensions/tree/master/Docs")
+		webbrowser.open("https://github.com/dprojects/Woodworking/tree/master/Docs")
 
 		return
 
@@ -39,7 +39,7 @@ FreeCADGui.addCommand("DOCS", DOCS())
 class EXAMPLES():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "Docs.xpm"),
+		return {"Pixmap"  : os.path.join(iconPath, "Docs.png"),
 				"MenuText": QT_TRANSLATE_NOOP('Workbench', 'Woodworking at FreeCAD - fully parametric examples'),
 				"ToolTip" : QT_TRANSLATE_NOOP('Workbench', 'Opens web browser with external link.'),
 				"Accel"   : ""}
@@ -62,7 +62,7 @@ FreeCADGui.addCommand("EXAMPLES", EXAMPLES())
 class FIXTURE():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "Docs.xpm"),
+		return {"Pixmap"  : os.path.join(iconPath, "Docs.png"),
 				"MenuText": QT_TRANSLATE_NOOP('Workbench', 'Woodworking at FreeCAD - fixture examples'),
 				"ToolTip" : QT_TRANSLATE_NOOP('Workbench', 'Opens web browser with external link.'),
 				"Accel"   : ""}
@@ -80,11 +80,12 @@ class FIXTURE():
 
 FreeCADGui.addCommand("FIXTURE", FIXTURE())
 
+
 # ######################################################################################################################
 class TEXTURES():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "Docs.xpm"),
+		return {"Pixmap"  : os.path.join(iconPath, "Docs.png"),
 				"MenuText": QT_TRANSLATE_NOOP('Workbench', 'Woodworking at FreeCAD - free woodworking textures'),
 				"ToolTip" : QT_TRANSLATE_NOOP('Workbench', 'Opens web browser with external link.'),
 				"Accel"   : ""}
@@ -101,6 +102,98 @@ class TEXTURES():
 		return True
 
 FreeCADGui.addCommand("TEXTURES", TEXTURES())
+
+
+# ######################################################################################################################
+class DOCSgetDimensions():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "Docs.png"),
+				"MenuText": QT_TRANSLATE_NOOP('Workbench', 'Tool documentation - getDimensions, cut-list, BOM'),
+				"ToolTip" : QT_TRANSLATE_NOOP('Workbench', 'Opens web browser with external link.'),
+				"Accel"   : ""}
+
+	def Activated(self):
+
+		import webbrowser
+		webbrowser.open("https://github.com/dprojects/getDimensions/tree/master/Docs")
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("DOCSgetDimensions", DOCSgetDimensions())
+
+
+# ######################################################################################################################
+class DOCSsheet2export():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "Docs.png"),
+				"MenuText": QT_TRANSLATE_NOOP('Workbench', 'Tool documentation - sheet2export'),
+				"ToolTip" : QT_TRANSLATE_NOOP('Workbench', 'Opens web browser with external link.'),
+				"Accel"   : ""}
+
+	def Activated(self):
+
+		import webbrowser
+		webbrowser.open("https://github.com/dprojects/sheet2export")
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("DOCSsheet2export", DOCSsheet2export())
+
+
+# ######################################################################################################################
+class DOCSsetTextures():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "Docs.png"),
+				"MenuText": QT_TRANSLATE_NOOP('Workbench', 'Tool documentation - setTextures'),
+				"ToolTip" : QT_TRANSLATE_NOOP('Workbench', 'Opens web browser with external link.'),
+				"Accel"   : ""}
+
+	def Activated(self):
+
+		import webbrowser
+		webbrowser.open("https://github.com/dprojects/setTextures")
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("DOCSsetTextures", DOCSsetTextures())
+
+
+# ######################################################################################################################
+class DOCSscanObjects():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "Docs.png"),
+				"MenuText": QT_TRANSLATE_NOOP('Workbench', 'Tool documentation - scanObjects'),
+				"ToolTip" : QT_TRANSLATE_NOOP('Workbench', 'Opens web browser with external link.'),
+				"Accel"   : ""}
+
+	def Activated(self):
+
+		import webbrowser
+		webbrowser.open("https://github.com/dprojects/scanObjects")
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("DOCSscanObjects", DOCSscanObjects())
 
 
 # ######################################################################################################################
@@ -130,7 +223,7 @@ class AUTOUPDATE():
 		return
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "autoupdate.xpm"),
+		return {"Pixmap"  : os.path.join(iconPath, "autoupdate.png"),
 				"MenuText": QT_TRANSLATE_NOOP('Workbench', 'Download and update all macro tools'),
 				"ToolTip" : QT_TRANSLATE_NOOP('Workbench', 'Download latest versions for all macro tools.'),
 				"Accel"   : ""}
@@ -182,6 +275,10 @@ def getItems():
 		"EXAMPLES",
 		"FIXTURE",
 		"TEXTURES",
+		"DOCSgetDimensions",
+		"DOCSsheet2export",
+		"DOCSsetTextures",
+		"DOCSscanObjects",
 		"AUTOUPDATE"
 	]
 

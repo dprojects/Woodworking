@@ -66,12 +66,12 @@ try:
 				
 				self.result = userCancelled
 				self.setGeometry(gPW, gPH, toolSW, toolSH)
-				self.setWindowTitle(translate('debugInfo1', 'platform details for bug report'))
+				self.setWindowTitle(translate('debugInfo', 'platform details for bug report'))
 				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 	
 				# output
 				Info = ""
-				Info += translate('debugInfo2', 'Has been copied to clipboard:')
+				Info += translate('debugInfo', 'Has been copied to clipboard:')
 				Info += "\n"
 				
 				self.oInfo1 = QtGui.QLabel(Info, self)
@@ -86,11 +86,11 @@ try:
 				self.o.paste()
 	
 				Info = ""
-				Info += translate('debugInfo2', 'Note:')
+				Info += translate('debugInfo', 'Note:')
 				Info += "\n\n"
-				Info += translate('debugInfo3', 'CTRL-V - to paste it at your forum topic')
+				Info += translate('debugInfo', 'CTRL-V - to paste it at your forum topic')
 				Info += "\n\n"
-				Info += translate('debugInfo4', 'CTRL-A, CTRL-C - to copy again')
+				Info += translate('debugInfo', 'CTRL-A, CTRL-C - to copy again')
 				
 				self.oInfo2 = QtGui.QLabel(Info, self)
 				self.oInfo2.move(5, 300)
@@ -120,15 +120,15 @@ except:
 	from PySide import QtCore
 
 	info = ''
-	info += translate('debugInfo5', 'There is an error during getting debug information.')
+	info += translate('debugInfo', 'There is an error during getting debug information.')
 	info += '<br>'
-	info += translate('debugInfo6', 'It probably means')
+	info += translate('debugInfo', 'It probably means')
 	info += ' ' + '<span style="color:red;">'
-	info += translate('debugInfo7', 'Your FreeCAD installation is incorrect.')
+	info += translate('debugInfo', 'Your FreeCAD installation is incorrect.')
 	info += '</span>' + '<br><br>'
-	info += translate('debugInfo8', 'For more details please see:')
+	info += translate('debugInfo', 'For more details please see:')
 	info += ' ' + '<a href="https://github.com/dprojects/Woodworking#certified-platforms">'
-	info += translate('debugInfo9', 'Woodworking workbench certified platforms.')
+	info += translate('debugInfo', 'Woodworking workbench certified platforms.')
 	info += '</a>'
 
 	msg = QtGui.QMessageBox()

@@ -43,51 +43,44 @@ translate = FreeCAD.Qt.translate
 # Languages:
 sLang = "en"
 sLangDsc = { 
-	"en" : translate("getDimensions1", "English language"), 
-	"pl" : translate("getDimensions2", "Polish language")
+	"en" : translate("getDimensions", "English language"), 
+	"pl" : translate("getDimensions", "Polish language")
 }
 
 # Report print quality:
 sRPQ = "hq"
 sRPQDsc = {
-	"eco" : translate("getDimensions3", "low ink mode (good for printing)"),
-	"hq" : translate("getDimensions4", "high quality mode (good for pdf or html export)")
+	"eco" : translate("getDimensions", "low ink mode (good for printing)"),
+	"hq" : translate("getDimensions", "high quality mode (good for pdf or html export)")
 }
 
 # Visibility (Toggle Visibility Feature):
 sTVF = "off"
 sTVFDsc = {
-	"on" : translate("getDimensions5", "skip all hidden objects and groups"),
-	"edge" : translate("getDimensions6", "show all hidden objects and groups but not add to the edge size"),
-	"off" : translate("getDimensions7", "show and calculate all objects and groups")
+	"on" : translate("getDimensions", "skip all hidden objects and groups"),
+	"edge" : translate("getDimensions", "show all hidden objects and groups but not add to the edge size"),
+	"off" : translate("getDimensions", "show and calculate all objects and groups")
 }
 
 # Units for dimensions:
 sUnitsMetric = "mm"
 sUnitsMetricDsc = {
-	"mm" : translate("getDimensions8", "millimeter"),
-	"m" : translate("getDimensions9", "meter"),
-	"in" : translate("getDimensions10", "inch")
+	"mm" : translate("getDimensions", "millimeter"),
+	"m" : translate("getDimensions", "meter"),
+	"in" : translate("getDimensions", "inch")
 }
 
 # Report customization (Label Type Feature):
 sLTF = "q"
 sLTFDsc = {
-	"q" : translate("getDimensions11", "quick, quantity first"),
-	"n" : translate("getDimensions12", "names, objects listing"),
-	"g" : translate("getDimensions13", "group, grandparent or parent folder name first"),
-	"e" : translate("getDimensions14", "edgeband, extended edge"),
-	"d" : translate("getDimensions15", "detailed, edgeband, drill holes, countersinks"),
-	"c" : translate("getDimensions16", "constraints names, totally custom report"),
-	"p" : translate("getDimensions17", "pads, show list of all constraints"),
-	"a" : translate("getDimensions18", "approximation of needed material")
-}
-
-# Additional report - decoration
-sARD = "decoration"
-sARDsc = {
-	"decoration" : "",
-	"no decoration" : ""
+	"q" : translate("getDimensions", "quick, quantity first"),
+	"n" : translate("getDimensions", "names, objects listing"),
+	"g" : translate("getDimensions", "group, grandparent or parent folder name first"),
+	"e" : translate("getDimensions", "edgeband, extended edge"),
+	"d" : translate("getDimensions", "detailed, edgeband, drill holes, countersinks"),
+	"c" : translate("getDimensions", "constraints names, totally custom report"),
+	"p" : translate("getDimensions", "pads, show list of all constraints"),
+	"a" : translate("getDimensions", "approximation of needed material")
 }
 
 # Additional report - mounting
@@ -104,20 +97,27 @@ sARPsc = {
 	"no profiles" : ""
 }
 
+# Additional report - decoration
+sARD = "no decoration"
+sARDsc = {
+	"decoration" : "",
+	"no decoration" : ""
+}
+
 # Units for area:
 sUnitsArea = "m"
 sUnitsAreaDsc = {
-	"m" : translate("getDimensions19", "square meter (m2)"),
-	"mm" : translate("getDimensions20", "square millimeter (mm2)"),
-	"in" : translate("getDimensions21", "square inch (in2)")
+	"m" : translate("getDimensions", "square meter (m2)"),
+	"mm" : translate("getDimensions", "square millimeter (mm2)"),
+	"in" : translate("getDimensions", "square inch (in2)")
 }
 
 # Units for edge size:
 sUnitsEdge = "m"
 sUnitsEdgeDsc = {
-	"mm" : translate("getDimensions22", "millimeter"),
-	"m" : translate("getDimensions23", "meter"),
-	"in" : translate("getDimensions24", "inch")
+	"mm" : translate("getDimensions", "millimeter"),
+	"m" : translate("getDimensions", "meter"),
+	"in" : translate("getDimensions", "inch")
 }
 
 # Furniture color:
@@ -154,17 +154,28 @@ sEmptyDsc = "                                                                   
 # "no" - to hide
 sQT = "yes"
 
+# DEBUG
+# 1 - debug mode
+# 0 - keep console clean
+gDEBUG = 0
+
 
 # ###################################################################################################################
 # Autoconfig - define globals ( NOT CHANGE HERE )
 # ###################################################################################################################
 
 
-# set reference point to Active Document
-gAD = FreeCAD.activeDocument()
+# active document init
+gAD = ""
 
-# get all objects from 3D model
-gOBs = gAD.Objects
+# objects to parse init
+gOBs = ""
+
+# spreadsheet result init
+gSheet = gAD
+
+# spreadsheet row init
+gSheetRow = 1
 
 # unit for calculation purposes (not change)
 gUnitC = "mm"
@@ -196,15 +207,6 @@ gLang19 = ""
 gLang20 = ""
 gLang21 = ""
 gLang22 = ""
-
-# spreadsheet result
-gSheet = gAD
-
-# spreadsheet result
-gSheetRow = 1
-
-# for cancel buttons assign "no"
-gExecute = "yes"
 
 
 # ###################################################################################################################
@@ -296,7 +298,7 @@ def showQtGUI():
 			
 			self.result = userCancelled
 			self.setGeometry(gPW, gPH, toolSW, toolSH)
-			self.setWindowTitle(translate("getDimensions25", "getDimensions - default settings"))
+			self.setWindowTitle(translate("getDimensions", "getDimensions - default settings"))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# set line start point
@@ -309,7 +311,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.rcL = QtGui.QLabel("Report type:", self)
+			self.rcL = QtGui.QLabel(translate("getDimensions", "Report type:"), self)
 			self.rcL.move(10, vLine + 3)
 			
 			# options
@@ -332,17 +334,8 @@ def showQtGUI():
 			vLine = vLine + vLineOffset
 
 			# label
-			self.ardL = QtGui.QLabel("Additional reports:", self)
+			self.ardL = QtGui.QLabel(translate("getDimensions", "Additional reports:"), self)
 			self.ardL.move(10, vLine + 3)
-			
-			# decoration
-			self.ardList = tuple(sARDsc.keys())
-			self.ardO = QtGui.QComboBox(self)
-			self.ardO.addItems(self.ardList)
-			self.ardO.setCurrentIndex(self.ardList.index(str(sARD)))
-			self.ardO.activated[str].connect(self.setARD)
-			self.ardO.setFixedWidth(110)
-			self.ardO.move(10, vLine + vLineNextRow)
 			
 			# mounting
 			self.armList = tuple(sARMsc.keys())
@@ -351,7 +344,7 @@ def showQtGUI():
 			self.armO.setCurrentIndex(self.armList.index(str(sARM)))
 			self.armO.activated[str].connect(self.setARM)
 			self.armO.setFixedWidth(110)
-			self.armO.move(130, vLine + vLineNextRow)
+			self.armO.move(10, vLine + vLineNextRow)
 			
 			# profiles
 			self.arpList = tuple(sARPsc.keys())
@@ -360,7 +353,16 @@ def showQtGUI():
 			self.arpO.setCurrentIndex(self.arpList.index(str(sARP)))
 			self.arpO.activated[str].connect(self.setARP)
 			self.arpO.setFixedWidth(110)
-			self.arpO.move(250, vLine + vLineNextRow)
+			self.arpO.move(130, vLine + vLineNextRow)
+
+			# decoration
+			self.ardList = tuple(sARDsc.keys())
+			self.ardO = QtGui.QComboBox(self)
+			self.ardO.addItems(self.ardList)
+			self.ardO.setCurrentIndex(self.ardList.index(str(sARD)))
+			self.ardO.activated[str].connect(self.setARD)
+			self.ardO.setFixedWidth(110)
+			self.ardO.move(250, vLine + vLineNextRow)
 
 			# ############################################################################
 			# languages
@@ -370,7 +372,7 @@ def showQtGUI():
 			vLine = vLine + vLineOffset
 
 			# label
-			self.LangL = QtGui.QLabel("Report language:", self)
+			self.LangL = QtGui.QLabel(translate("getDimensions", "Report language:"), self)
 			self.LangL.move(10, vLine + 3)
 			
 			# options
@@ -393,7 +395,7 @@ def showQtGUI():
 			vLine = vLine + vLineOffset
 
 			# label
-			self.rpqL = QtGui.QLabel("Report quality:", self)
+			self.rpqL = QtGui.QLabel(translate("getDimensions", "Report quality:"), self)
 			self.rpqL.move(10, vLine + 3)
 			
 			# options
@@ -416,7 +418,7 @@ def showQtGUI():
 			vLine = vLine + vLineOffset
 
 			# label
-			self.visibilityL = QtGui.QLabel("Visibility:", self)
+			self.visibilityL = QtGui.QLabel(translate("getDimensions", "Visibility:"), self)
 			self.visibilityL.move(10, vLine + 3)
 			
 			# options
@@ -439,7 +441,7 @@ def showQtGUI():
 			vLine = vLine + vLineOffset
 
 			# label
-			self.ufdL = QtGui.QLabel("Units for dimensions:", self)
+			self.ufdL = QtGui.QLabel(translate("getDimensions", "Units for dimensions:"), self)
 			self.ufdL.move(10, vLine + 3)
 			
 			# options
@@ -459,7 +461,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.ufaL = QtGui.QLabel("Units for area:", self)
+			self.ufaL = QtGui.QLabel(translate("getDimensions", "Units for area:"), self)
 			self.ufaL.move(170, vLine + 3)
 			
 			# options
@@ -479,7 +481,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.ufsL = QtGui.QLabel("Units for edge size:", self)
+			self.ufsL = QtGui.QLabel(translate("getDimensions", "Units for edge size:"), self)
 			self.ufsL.move(410, vLine + 3)
 			
 			# options
@@ -503,7 +505,7 @@ def showQtGUI():
 			vLine = vLine + vLineOffset
 
 			# label
-			self.fcL = QtGui.QLabel("Furniture color:", self)
+			self.fcL = QtGui.QLabel(translate("getDimensions", "Furniture color:"), self)
 			self.fcL.move(10, vLine + 3)
 
 			# options
@@ -515,7 +517,7 @@ def showQtGUI():
 			self.fcO.move(10, vLine + vLineNextRow + 3)
 
 			# text input label
-			self.fctiL = QtGui.QLabel("Custom:", self)
+			self.fctiL = QtGui.QLabel(translate("getDimensions", "Custom:"), self)
 			self.fctiL.move(140, vLine + 3)
 
 			# text input
@@ -533,7 +535,7 @@ def showQtGUI():
 			vLine = vLine + vLineOffset
 
 			# label
-			self.ecL = QtGui.QLabel("Edgeband code:", self)
+			self.ecL = QtGui.QLabel(translate("getDimensions", "Edgeband code:"), self)
 			self.ecL.move(10, vLine + 3)
 
 			# options
@@ -545,7 +547,7 @@ def showQtGUI():
 			self.ecO.move(10, vLine + vLineNextRow + 3)
 
 			# text input label
-			self.ectiL = QtGui.QLabel("Custom:", self)
+			self.ectiL = QtGui.QLabel(translate("getDimensions", "Custom:"), self)
 			self.ectiL.move(140, vLine + 3)
 
 			# text input
@@ -565,14 +567,14 @@ def showQtGUI():
 			# ############################################################################
 
 			# button - cancel
-			self.cancelButton = QtGui.QPushButton('Cancel', self)
+			self.cancelButton = QtGui.QPushButton(translate("getDimensions", "Cancel"), self)
 			self.cancelButton.clicked.connect(self.onCancel)
 			self.cancelButton.setAutoDefault(True)
 			self.cancelButton.resize(200, 40)
 			self.cancelButton.move(50, toolSH-50)
 			
 			# button - ok
-			self.okButton = QtGui.QPushButton('OK', self)
+			self.okButton = QtGui.QPushButton(translate("getDimensions", "OK"), self)
 			self.okButton.clicked.connect(self.onOk)
 			self.okButton.resize(200, 40)
 			self.okButton.move(toolSW-250, toolSH-50)
@@ -775,23 +777,25 @@ def showQtGUI():
 # ###################################################################################################################
 def showError(iCaller, iObj, iPlace, iError):
 
-	FreeCAD.Console.PrintMessage("\n ====================================================== \n")
-	
-	try:
-		FreeCAD.Console.PrintMessage("ERROR: ")
-		FreeCAD.Console.PrintMessage(" | ")
-		FreeCAD.Console.PrintMessage(str(iCaller))
-		FreeCAD.Console.PrintMessage(" | ")
-		FreeCAD.Console.PrintMessage(str(iObj.Label))
-		FreeCAD.Console.PrintMessage(" | ")
-		FreeCAD.Console.PrintMessage(str(iPlace))
-		FreeCAD.Console.PrintMessage(" | ")
-		FreeCAD.Console.PrintMessage(str(iError))
+	if gDEBUG == 1:
 		
-	except:
-		FreeCAD.Console.PrintMessage("FATAL ERROR, or even worse :-)")
+		FreeCAD.Console.PrintMessage("\n ====================================================== \n")
 		
-	FreeCAD.Console.PrintMessage("\n ====================================================== \n")
+		try:
+			FreeCAD.Console.PrintMessage("ERROR: ")
+			FreeCAD.Console.PrintMessage(" | ")
+			FreeCAD.Console.PrintMessage(str(iCaller))
+			FreeCAD.Console.PrintMessage(" | ")
+			FreeCAD.Console.PrintMessage(str(iObj.Label))
+			FreeCAD.Console.PrintMessage(" | ")
+			FreeCAD.Console.PrintMessage(str(iPlace))
+			FreeCAD.Console.PrintMessage(" | ")
+			FreeCAD.Console.PrintMessage(str(iError))
+			
+		except:
+			FreeCAD.Console.PrintMessage("FATAL ERROR, or even worse :-)")
+			
+		FreeCAD.Console.PrintMessage("\n ====================================================== \n")
 	
 	return 0
 
@@ -1786,12 +1790,24 @@ def setMounting(iObj, iCaller="setMounting"):
 		
 			vType = gLang19
 		
-			try:
-				n = iObj.Label.split(" ")
-				vType += ", " + str(n[0]) + " " + str(2 * iObj.Radius.Value) + " x " + str(int(iObj.Height.Value))
-			except:
-				skip = 1
+			s = str(iObj.Label)
+		
+			if s.find(" ") != -1:
+				n = s.split(" ")[0]
 				
+				if n.find(",") != -1:
+					m = n.split(",")[0]
+					vType += ", " + str(m)
+				else:
+					vType += ", " + str(n)
+					
+			s = str(iObj.Label2)
+
+			if s != "":
+				vType += ", " + s
+
+			vType += ", " + str(2 * iObj.Radius.Value) + " x " + str(int(iObj.Height.Value))
+
 			vArrNames.append(gLang20)
 			v = "f;" + str(2 * iObj.Radius.Value)
 			vArrValues.append(v)
@@ -1979,10 +1995,6 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 		if iObj.isDerivedFrom("PartDesign::FeatureBase") and iObj.Name.startswith("Clone"):
 			setDraftClone(iObj, iCaller)
 
-	# additional report - decoration
-	if sARD == "decoration":
-		setDecoration(iObj, iCaller)
-
 	# additional report - mounting
 	if sARM == "mounting":
 		setMounting(iObj, iCaller)
@@ -1990,6 +2002,10 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 	# additional report - profiles
 	if sARP == "profiles":
 		setProfiles(iObj, iCaller)
+
+	# additional report - decoration
+	if sARD == "decoration":
+		setDecoration(iObj, iCaller)
 
 	# skip not supported furniture parts with no error
 	# Sheet, Transformations will be handling later
@@ -2031,7 +2047,7 @@ def setAppLinkGroup(iObj, iCaller="setAppLinkGroup"):
 	if iObj.isDerivedFrom("App::LinkGroup"):
 
 		try:
-
+			
 			# set reference point to the objects list
 			key = iObj.ElementList
 
@@ -2585,13 +2601,12 @@ def setViewA(iCaller="setViewA"):
 		
 		# split group
 		group = a[3]
-		label = ""
+		label = a[3]
 		grain = ""
 		
-		if group.find(", ") != 1:
+		if group.find(", ") != -1:
 			
 			more = group.split(", ")
-			
 			label = more[0]
 			g = more[1]
 			
@@ -3773,14 +3788,7 @@ def codeLink(iCaller="codeLink"):
 	global gSheetRow
 
 	# add empty line separator
-	gSheetRow = gSheetRow + 1
-
-	# merge cells for better look line separation
-	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
-	gSheet.mergeCells(vCell)
-
-	# add empty line separator
-	gSheetRow = gSheetRow + 1
+	gSheetRow = gSheetRow + 2
 
 	# add link 
 	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
@@ -3801,7 +3809,11 @@ def finalViewSettings(iCaller="finalViewSettings"):
 	
 	# reset settings for eco mode
 	if sRPQ == "eco":
-		vCell = "A1" + ":G" + str(gSheetRow)
+		if sLTF == "a":
+			vCell = "A1" + ":K" + str(gSheetRow)
+		else:
+			vCell = "A1" + ":G" + str(gSheetRow)
+		
 		gSheet.setBackground(vCell, (1,1,1))
 
 
@@ -3932,9 +3944,55 @@ def setTechDraw(iCaller="setTechDraw"):
 
 
 # ###################################################################################################################
+# INIT - check status
+# ###################################################################################################################
+
+
+# ###################################################################################################################
+def checkStatus():
+	
+	global gAD
+	global gOBs
+	global sQT
+	global gExecute
+	
+	skip = 0
+	
+	try:
+	
+		gAD = FreeCAD.ActiveDocument
+		
+		# remove existing Fake Cube object if exists (auto clean after error)
+		if gAD.getObject("gFakeCube"):
+			gAD.removeObject("gFakeCube")
+		
+		gOBs = gAD.Objects
+		gExecute = "yes"
+
+	except:
+
+		sQT = "no"
+		gExecute = "no"
+		skip = 1
+	
+	if skip == 1:
+	
+		info = ""
+		info += translate("getDimensions", "Please create active document and objects to generate cut-list.")
+
+		msg = QtGui.QMessageBox()
+		msg.setWindowTitle(translate("getDimensions","getDimensions"))
+		msg.setTextFormat(QtCore.Qt.TextFormat.RichText)
+		msg.setText(info)
+		msg.exec_()
+
+
+# ###################################################################################################################
 # MAIN
 # ###################################################################################################################
 
+# check if there is active document and init
+checkStatus()
 
 # show Qt GUI
 if sQT == "yes":
@@ -3943,15 +4001,11 @@ if sQT == "yes":
 # if Qt GUI ok button
 if gExecute == "yes":
 
-	# set language
-	initLang()
-	
-	# remove existing Fake Cube object if exists (auto clean after error)
-	if gAD.getObject("gFakeCube"):
-		gAD.removeObject("gFakeCube")
-
 	# create Fake Cube but not call recompute
 	gFakeCube = gAD.addObject("Part::Box", "gFakeCube")
+
+	# set language
+	initLang()
 
 	# main loop for calculations
 	scanObjects(gOBs, "main")

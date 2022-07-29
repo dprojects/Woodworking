@@ -4,8 +4,6 @@
 # add here the new entry and run: 
 # 
 # python3 ./loadToolsAuto.py
-# pylupdate5 `find . -name "*.py"` -ts translations/pyfiles.ts
-# /usr/lib/x86_64-linux-gnu/qt5/bin/lrelease ./translations/Woodworking_pl.ts
 #
 # There is no need to add it to workbench startup.
 #
@@ -21,7 +19,7 @@
 #
 # example: 
 #
-# "", "getDimensions", "xpm", "getDimensions, BOM, cutlist", "Creates spreadsheet with dimensions to cut.", # no comma if last
+# "", "getDimensions", "png", "getDimensions, BOM, cutlist", "Creates spreadsheet with dimensions to cut.", # no comma if last
 
 
 Tools = [
@@ -30,39 +28,41 @@ Tools = [
 	# tools - not using MagicPanels library
 	# #################################################################################################################################
 
-	"", "debugInfo", "xpm", "debugInfo", "Copy platform details to clipboard for bug report purposes.",
+	"", "debugInfo", "png", "debugInfo", "Copy platform details to clipboard for bug report purposes.",
 
 	# #################################################################################################################################
 	# tools - linked standalone macros (should not use MagicPanels library or be moved)
 	# #################################################################################################################################
 	
-	"", "getDimensions", "xpm", "getDimensions, BOM, cutlist", "Creates spreadsheet with dimensions to cut.",
+	"", "getDimensions", "png", "getDimensions, BOM, cutlist", "Creates spreadsheet with dimensions to cut.",
 	
-	"", "sheet2export", "xpm", "sheet2export", "Exports spreadsheet to chosen file format.",
+	"", "sheet2export", "png", "sheet2export", "Exports spreadsheet to chosen file format.",
 	
-	"", "scanObjects", "xpm", "scanObjects", "Inspection tool for FreeCAD macro development & project debug (live API).",
+	"", "scanObjects", "png", "scanObjects", "Inspection tool for FreeCAD macro development & project debug (live API).",
 	
-	"", "setTextures", "xpm", "setTextures", "Store textures information and allows to load textures. Solves problem with texture sharing without huge project file size.",
+	"", "setTextures", "png", "setTextures", "Store textures information and allows to load textures. Solves problem with texture sharing without huge project file size.",
 
 	"", "makeTransparent",  "png","transparent or normal mode", "Make all parts transparent, so you can see all the joints, pilot holes, screws, countersinks. If you click next one all parts will back to normal. The transparent default is 83, so do not set any part to this number if you want e.g. to keep glass part of the furniture transparent after this preview.",
 
-	"", "colorManager", "xpm", "colorManager", "Allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected face, object or many faces or objects and see the effect at 3D model in real-time.",
+	"", "colorManager", "png", "colorManager", "Allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected face, object or many faces or objects and see the effect at 3D model in real-time.",
 
-	"", "magicAngle", "xpm", "magicAngle", "Allows to rotate panels and even other more complicated objects, like construction profiles.",
+	"", "magicAngle", "png", "magicAngle", "Allows to rotate panels and even other more complicated objects, like construction profiles.",
 
-	"", "showSpaceModel", "xpm", "show, model, space", "This tool allows you to calculate the overall occupied space in 3D by the model.",
+	"", "showSpaceModel", "png", "show, model, space", "This tool allows you to calculate the overall occupied space in 3D by the model.",
 	
-	"", "showSpaceSelected", "xpm", "show, selected, space", "This tool allows you to calculate the overall occupied space in 3D by the selected parts.",
+	"", "showSpaceSelected", "png", "show, selected, space", "This tool allows you to calculate the overall occupied space in 3D by the selected parts.",
 
 	# #################################################################################################################################
 	# tools - using MagicPanels library
 	# #################################################################################################################################
 
-	"MagicPanels", "magicMove", "xpm", "magicMove", "If you have problem with unexpected result of panel movements via dedicated icons, you can use this tool to precisely move panel into desired direction. This tool allow to turn off and on axis cross and resize corner cross size.",
+	"MagicPanels", "magicMove", "png", "magicMove", "If you have problem with unexpected result of panel movements via dedicated icons, you can use this tool to precisely move panel into desired direction. This tool allow to turn off and on axis cross and resize corner cross size.",
 
-	"MagicPanels", "magicManager", "xpm", "magicManager", "If you have problem with unexpected result of Magic Panels, you can use this tool to preview panel before creation. It may take more time to create panel, but you can select exact panel to apply, also the edge and vertex position. This tool allows to create panel at selected face or between two faces.",
+	"MagicPanels", "magicManager", "png", "magicManager", "If you have problem with unexpected result of Magic Panels, you can use this tool to preview panel before creation. It may take more time to create panel, but you can select exact panel to apply, also the edge and vertex position. This tool allows to create panel at selected face or between two faces.",
 
-	"MagicPanels", "magicDowels", "xpm", "magicDowels", "Allows to add mounting points to the furniture. For example you can easily add screws, dowels, shelf supporter pins or custom mounting points.",
+	"MagicPanels", "magicDowels", "png", "magicDowels", "Allows to add mounting points to the furniture. For example you can easily add screws, dowels, shelf supporter pins or custom mounting points.",
+
+	"MagicPanels", "magicFixture", "png", "magicFixture", "Allows to add fixture reference points to the furniture. Later you will be able to replace the cube fixture reference points with realistic fixture elements.",
 
 	"MagicPanels", "fitModel", "png", "fitModel", "Fit 3D model to the screen and set base orientation (XY, 0 key).",
 

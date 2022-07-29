@@ -173,7 +173,7 @@ def showQtMain():
 			
 			self.result = userCancelled
 			self.setGeometry(gPW, gPH, toolSW, toolSH)
-			self.setWindowTitle(translate('sheet2export1', 'sheet2export - default settings'))
+			self.setWindowTitle(translate('sheet2export', 'sheet2export - default settings'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
@@ -181,7 +181,7 @@ def showQtMain():
 			# ############################################################################
 
 			# label
-			self.eTypeL = QtGui.QLabel(translate('sheet2export2', 'Export type:'), self)
+			self.eTypeL = QtGui.QLabel(translate('sheet2export', 'Export type:'), self)
 			self.eTypeL.move(10, 13)
 			
 			# options
@@ -193,7 +193,7 @@ def showQtMain():
 			self.eTypeO.move(100, 10)
 			
 			# info screen
-			self.eTypeIS = QtGui.QLabel(translate('sheet2export3', 'all spreadsheets')+'                  ', self)
+			self.eTypeIS = QtGui.QLabel(translate('sheet2export', 'all spreadsheets')+'                  ', self)
 			self.eTypeIS.move(145, 13)
 
 			# ############################################################################
@@ -201,7 +201,7 @@ def showQtMain():
 			# ############################################################################
 
 			# label
-			self.fPathL = QtGui.QLabel(translate('sheet2export4', 'File path:'), self)
+			self.fPathL = QtGui.QLabel(translate('sheet2export', 'File path:'), self)
 			self.fPathL.move(10, 43)
 
 			# text input
@@ -220,7 +220,7 @@ def showQtMain():
 			# ############################################################################
 			
 			# label
-			self.fileTypeL = QtGui.QLabel(translate('sheet2export5', 'File type:'), self)
+			self.fileTypeL = QtGui.QLabel(translate('sheet2export', 'File type:'), self)
 			self.fileTypeL.move(10, 73)
 			
 			# options
@@ -232,7 +232,7 @@ def showQtMain():
 			self.fileTypeO.move(100, 70)
 
 			# info screen
-			self.fileTypeOIS = QtGui.QLabel(translate('sheet2export6', 'HyperText Markup Language (.html file)')+'          ', self)
+			self.fileTypeOIS = QtGui.QLabel(translate('sheet2export', 'HyperText Markup Language (.html file)')+'          ', self)
 			self.fileTypeOIS.move(165, 73)
 
 			# ############################################################################
@@ -240,7 +240,7 @@ def showQtMain():
 			# ############################################################################
 
 			# label
-			self.emptyCellL = QtGui.QLabel(translate('sheet2export7', 'Empty cell content:'), self)
+			self.emptyCellL = QtGui.QLabel(translate('sheet2export', 'Empty cell content:'), self)
 			self.emptyCellL.move(10, 143)
 
 			# text input
@@ -254,7 +254,7 @@ def showQtMain():
 			# ############################################################################
 			
 			# label
-			self.csvSL = QtGui.QLabel(translate('sheet2export8', 'Set CSV separator:'), self)
+			self.csvSL = QtGui.QLabel(translate('sheet2export', 'Set CSV separator:'), self)
 			self.csvSL.move(10, 183)
 			self.csvSL.hide()
 
@@ -270,7 +270,7 @@ def showQtMain():
 			# ############################################################################
 
 			# border label
-			self.customCSSbl = QtGui.QLabel(translate('sheet2export9', 'Step 1. Border decoration:'), self)
+			self.customCSSbl = QtGui.QLabel(translate('sheet2export', 'Step 1. Border decoration:'), self)
 			self.customCSSbl.move(10, 193)
 
 			# border options
@@ -283,7 +283,7 @@ def showQtMain():
 			self.customCSSbo.move(180, 190)
 
 			# text input label
-			self.customCSStil = QtGui.QLabel(translate('sheet2export10', 'Step 2. Custom CSS rules for each cell (edit or add):'), self)
+			self.customCSStil = QtGui.QLabel(translate('sheet2export', 'Step 2. Custom CSS rules for each cell (edit or add):'), self)
 			self.customCSStil.move(10, 230)
 
 			# text input
@@ -297,13 +297,13 @@ def showQtMain():
 			# ############################################################################
 
 			# button - cancel
-			cancelButton = QtGui.QPushButton(translate('sheet2export11', 'Cancel'), self)
+			cancelButton = QtGui.QPushButton(translate('sheet2export', 'Cancel'), self)
 			cancelButton.clicked.connect(self.onCancel)
 			cancelButton.setAutoDefault(True)
 			cancelButton.move(120, 300)
 			
 			# button - ok
-			okButton = QtGui.QPushButton(translate('sheet2export12', 'OK'), self)
+			okButton = QtGui.QPushButton(translate('sheet2export', 'OK'), self)
 			okButton.clicked.connect(self.onOk)
 			okButton.move(300, 300)
 
@@ -328,7 +328,7 @@ def showQtMain():
 			sFileType = str(selectedText)
 
 			if selectedText == "csv":
-				self.fileTypeOIS.setText(translate('sheet2export13', 'Comma-separated values ( .csv file )'))
+				self.fileTypeOIS.setText(translate('sheet2export', 'Comma-separated values ( .csv file )'))
 				self.customCSSbl.hide()
 				self.customCSSbo.hide()
 				self.customCSStil.hide()
@@ -338,7 +338,7 @@ def showQtMain():
 				self.emptyCellTi.setText("")
 
 			if selectedText == "html":
-				self.fileTypeOIS.setText(translate('sheet2export14', 'HyperText Markup Language ( .html file )'))
+				self.fileTypeOIS.setText(translate('sheet2export', 'HyperText Markup Language ( .html file )'))
 				self.csvSL.hide()
 				self.csvSTi.hide()
 				self.customCSSbl.show()
@@ -348,7 +348,7 @@ def showQtMain():
 				self.emptyCellTi.setText(str(sEmptyCell))
 
 			if selectedText == "json":
-				self.fileTypeOIS.setText(translate('sheet2export15', 'JavaScript Object Notation ( .json file )'))
+				self.fileTypeOIS.setText(translate('sheet2export', 'JavaScript Object Notation ( .json file )'))
 				self.csvSL.hide()
 				self.csvSTi.hide()
 				self.customCSSbl.hide()
@@ -358,7 +358,7 @@ def showQtMain():
 				self.emptyCellTi.setText("")
 
 			if selectedText == "md":
-				self.fileTypeOIS.setText(translate('sheet2export16', 'MarkDown ( .md file )'))
+				self.fileTypeOIS.setText(translate('sheet2export', 'MarkDown ( .md file )'))
 				self.csvSL.hide()
 				self.csvSTi.hide()
 				self.customCSSbl.hide()
@@ -372,10 +372,10 @@ def showQtMain():
 
 			if selectedText == "a":
 				sExportType = "a"
-				self.eTypeIS.setText(translate('sheet2export17', 'all spreadsheets'))
+				self.eTypeIS.setText(translate('sheet2export', 'all spreadsheets'))
 			if selectedText == "s":
 				sExportType = "s"
-				self.eTypeIS.setText(translate('sheet2export18', 'selected spreadsheet only'))
+				self.eTypeIS.setText(translate('sheet2export', 'selected spreadsheet only'))
 
 		def setCustomCSSbo(self, selectedText):
 			global sCustomCSS
@@ -444,7 +444,7 @@ def showInfo(iText):
 
 	if sQT == "yes":
 
-		QtGui.QMessageBox.information(None, translate('sheet2export19', 'sheet2export'), str(iText))
+		QtGui.QMessageBox.information(None, translate('sheet2export', 'sheet2export'), str(iText))
 
 	else:
 		FreeCAD.Console.PrintMessage(gSepC)
@@ -1071,14 +1071,14 @@ def setOUTPUT():
 		if int(dbMaxR * dbMaxC) > 10000:
 
 			info = ""
-			info += translate('sheet2export20', 'The spreadsheet') + ' ' + str(gSheet.Label)
-			info += ' ' + translate('sheet2export21', 'has') + ':' + ' ' + '\n\n'
-			info += str(dbMaxC) + ' ' + translate('sheet2export22', 'columns') + '\n'
-			info += str(dbMaxR) + ' ' + translate('sheet2export23', 'rows') + '\n'
+			info += translate('sheet2export', 'The spreadsheet') + ' ' + str(gSheet.Label)
+			info += ' ' + translate('sheet2export', 'has') + ':' + ' ' + '\n\n'
+			info += str(dbMaxC) + ' ' + translate('sheet2export', 'columns') + '\n'
+			info += str(dbMaxR) + ' ' + translate('sheet2export', 'rows') + '\n'
 			info += "\n"
-			info += translate('sheet2export24', 'This may take several minutes to export file.')
+			info += translate('sheet2export', 'This may take several minutes to export file.')
 			info += "\n"
-			info += translate('sheet2export25', 'Would you like to wait (ok) or skip (cancel) the spreadsheet?') + '\t\t'
+			info += translate('sheet2export', 'Would you like to wait (ok) or skip (cancel) the spreadsheet?') + '\t\t'
 			info += "\n\n"
 			reply = QtGui.QMessageBox.question(None, "", str(info), 
 				QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.No)
@@ -1256,13 +1256,13 @@ if gExecute == "yes":
 	
 				# info
 				info = ""
-				info += translate('sheet2export26', 'Exported files')
+				info += translate('sheet2export', 'Exported files')
 				info += ": \n\n" + str(gExpFilesN) + "\n\n"
 				showInfo(info)
 			else:
-				showInfo(translate('sheet2export27', 'Please select spreadsheet to export.'))
+				showInfo(translate('sheet2export', 'Please select spreadsheet to export.'))
 		except:
-			showInfo(translate('sheet2export28', 'Please select spreadsheet to export.'))
+			showInfo(translate('sheet2export', 'Please select spreadsheet to export.'))
 	
 		
 	# for all spreadsheets
@@ -1293,7 +1293,7 @@ if gExecute == "yes":
 
 		# info
 		info = ""
-		info += translate('sheet2export29', 'Exported files')
+		info += translate('sheet2export', 'Exported files')
 		info += ": \n\n" + str(gExpFilesN) + "\n\n"
 		showInfo(info)
 	else:
