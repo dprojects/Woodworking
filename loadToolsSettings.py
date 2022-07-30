@@ -12,7 +12,7 @@
 # 0, 1, 2, 3, 4
 #
 # 0 - sub-directory name
-# 1 - macro filename, this will be also registred command name
+# 1 - macro filename, this will be also registered command name
 # 2 - icon filename extension (only extension, filename will be get from macro filename)
 # 3 - MenuText - command name visible for user after icon mouse hover
 # 4 - ToolTip - description visible for user after icon mouse hover
