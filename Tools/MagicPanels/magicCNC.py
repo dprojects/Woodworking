@@ -331,6 +331,12 @@ def showQtGUI():
 		# actions - functions for actions
 		# ############################################################################
 
+		def resetInfoScreen(self):
+			
+			self.s1S1.setText("")
+			self.s1S2.setText("")
+			self.s1S.setText(self.gNoSelection)
+
 		# ############################################################################
 		def hideAxis(self):
 			
@@ -428,7 +434,7 @@ def showQtGUI():
 			
 			except:
 
-				self.s1S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 				return -1
 			
 			
@@ -443,7 +449,7 @@ def showQtGUI():
 					FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(s-1)
 
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 			
 		def setCornerP(self):
 			
@@ -452,7 +458,7 @@ def showQtGUI():
 				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(s+1)
 					
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 		
 		# ############################################################################
 		def setCenterOn(self):
@@ -460,14 +466,14 @@ def showQtGUI():
 			try:
 				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 			
 		def setCenterOff(self):
 			
 			try:
 				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(False)
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 				
 		# ############################################################################
 		def setX1(self):
@@ -476,7 +482,7 @@ def showQtGUI():
 				self.gStep = float(self.o4E.text())
 				self.setMove("Xm")
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 			
 		def setX2(self):
 			
@@ -484,7 +490,7 @@ def showQtGUI():
 				self.gStep = float(self.o4E.text())
 				self.setMove("Xp")
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 			
 		def setY1(self):
 			
@@ -492,7 +498,7 @@ def showQtGUI():
 				self.gStep = float(self.o4E.text())
 				self.setMove("Ym")
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 		
 		def setY2(self):
 			
@@ -500,7 +506,7 @@ def showQtGUI():
 				self.gStep = float(self.o4E.text())
 				self.setMove("Yp")
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 
 		def setZ1(self):
 			
@@ -508,7 +514,7 @@ def showQtGUI():
 				self.gStep = float(self.o4E.text())
 				self.setMove("Zm")
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 		
 		def setZ2(self):
 			
@@ -516,7 +522,7 @@ def showQtGUI():
 				self.gStep = float(self.o4E.text())
 				self.setMove("Zp")
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 
 		# ############################################################################
 		def setEditModeON(self):
@@ -526,7 +532,7 @@ def showQtGUI():
 				vo.Document.setEdit(vo, 1)
 				
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 		
 		def setEditModeOFF(self):
 			
@@ -535,7 +541,7 @@ def showQtGUI():
 				vo.Document.resetEdit()
 				
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 
 		# ############################################################################
 		def runDriller(self):
@@ -577,7 +583,7 @@ def showQtGUI():
 				FreeCADGui.Selection.clearSelection()
 		
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 		
 
 	# ############################################################################

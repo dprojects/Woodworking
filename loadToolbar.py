@@ -98,6 +98,7 @@ def getItems(iType):
 			"magicDowels",
 			"panel2link",
 			"sketch2dowel",
+			"edge2dowel",
 			"makeTransparent"
 		]
 
@@ -107,7 +108,8 @@ def getItems(iType):
 			"magicCNC",
 			"drillHoles",
 			"drillCountersinks",
-			"drillCounterbores"
+			"drillCounterbores",
+			"edge2drillbit"
 		]
 
 	if iType == "Woodworking - Decorations":

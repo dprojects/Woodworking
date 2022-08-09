@@ -611,6 +611,9 @@ def showQtGUI():
 				self.gRoAnglesArr.append(120)
 				self.gRoAxisArr.append([-0.58, 0.58, 0.58])
 
+				self.gRoAnglesArr.append(180)
+				self.gRoAxisArr.append([0, 0.71, 0.71])
+				
 				# init
 				self.gRoAngles = self.gRoAnglesArr[0]
 				self.gRoAxis = self.gRoAxisArr[0]

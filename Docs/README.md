@@ -25,6 +25,7 @@ The main goal for this workbench is to make furniture designing process at FreeC
     * [magicDowels](#magicdowels)
     * [panel2link](#panel2link)
     * [sketch2dowel](#sketch2dowel)
+    * [edge2dowel](#edge2dowel)
     * [makeTransparent](#maketransparent)
   * [Fixture](#fixture)
     * [magicFixture](#magicfixture)
@@ -33,6 +34,7 @@ The main goal for this workbench is to make furniture designing process at FreeC
     * [drillHoles](#drillholes)
     * [drillCountersinks](#drillcountersinks)
     * [drillCounterbores](#drillcounterbores)
+    * [edge2drillbit](#edge2drillbit)
   * [Replace](#replace)
     * [panel2profile](#panel2profile)
     * [panel2frame](#panel2frame)
@@ -122,6 +124,10 @@ The main goal for this workbench is to make furniture designing process at FreeC
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/sketch2dowel.png"> This tool allows to create dowel at the selected hole. To create dowel select Sketch for the hole and face of the hole object. The dowel position will be get from the Sketch and the face refer to the side the dowel will be raised. The dowel radius and height will be get from hole object. If the hole is throughAll the dowel height will be very big, so make sure you use dimensions instead for hole. To select more objects hold left CTRL key during selection.
 
+### edge2dowel
+
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/edge2dowel.png"> This tool allows to create dowels above the selected hole edges. To create dowel select edge of the hole. You can select many edges at once but all the holes need to be at the same object. The dowel Height will be 40. The dowel radius will be get from the selected edge hole radius. To select more objects hold left CTRL key during selection.
+
 ### makeTransparent
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/makeTransparent.png"> This tool allows to make all parts transparent and back to normal. You can preview all pilot holes, countersinks or any other joints like that, very simply.
@@ -149,6 +155,10 @@ The main goal for this workbench is to make furniture designing process at FreeC
 ### drillCounterbores
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/drillCounterbores.png"> This is drill bit to make counterbore with hole. The hole will be drilled below the bottom part of the drill bit, below the red face. The radius of the hole will be drill bit Radius1. The radius of counterbore will be drill bit Radius2. The hole depth will be drill bit Height. If you select face only, the drill bit will be created in the corner of the face (0 vertex), allowing you to move the drill bit precisely to any place at the face. Do not move the drill bit up, the drill bit should touch the face. You can select any amount of drill bits, the holes will be drilled below each drill bit but first selected should be face, next drill bits. To select more objects hold left CTRL key during selection. If the selected element is Cube, it will be replaced with Pad. For more info see: [Drilling via icons](#drilling-via-icons)
+
+### edge2drillbit
+
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/edge2drillbit.png"> This tool allows to create drill bits for making simple hole. The drill bits will be created above the selected hole edges. To create drill bits select edge of the hole. You can select many edges at once but all the holes need to be at the same object. The drill bit Height will be 16. The drill bits radius will be get from the selected edge hole radius but will be little smaller, 1 mm, than the hole to make pilot hole. To select more objects hold left CTRL key during selection. This feature can be used to create drill bits above holes at hinges, angles or other fixture type.
 
 ## Replace
 

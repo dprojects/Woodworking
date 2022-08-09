@@ -69,15 +69,17 @@ Tools = [
 	# #################################################################################################################################
 	
 	"MagicPanels", "magicCNC", "png", "magicCNC, drill bit move machine", "This tool allows to move drill bit at the selected face and drill holes.",
-	"MagicPanels", "drillHoles", "png", "drill bit, simple hole", "Click to see info.",
-	"MagicPanels", "drillCountersinks", "png", "drill bit, countersink", "Click to see info.",
-	"MagicPanels", "drillCounterbores", "png", "drill bit, counterbore", "Click to see info.",
-
+	"MagicPanels", "drillHoles", "png", "drill bit, drill simple holes", "Click to see info.",
+	"MagicPanels", "drillCountersinks", "png", "drill bit, drill countersinks", "Click to see info.",
+	"MagicPanels", "drillCounterbores", "png", "drill bit, drill counterbores", "Click to see info.",
+	"MagicPanels", "edge2drillbit", "png", "drill bit from edge hole", "Click to see info.",
+	
 	# #################################################################################################################################
 	# Magic Panels - mount
 	# #################################################################################################################################
 	
-	"MagicPanels", "sketch2dowel", "png", "sketch hole to dowel", "Click to see info.",
+	"MagicPanels", "sketch2dowel", "png", "dowel from sketch hole and face", "Click to see info.",
+	"MagicPanels", "edge2dowel", "png", "dowel from edge hole", "Click to see info.",
 
 	# #################################################################################################################################
 	# Magic Panels - default

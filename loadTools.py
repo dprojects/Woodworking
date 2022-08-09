@@ -602,7 +602,7 @@ class drillHoles():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "drillHoles.png"),
-				"MenuText": QT_TRANSLATE_NOOP("drillHolesMenuText", "drill bit, simple hole"),
+				"MenuText": QT_TRANSLATE_NOOP("drillHolesMenuText", "drill bit, drill simple holes"),
 				"ToolTip" : QT_TRANSLATE_NOOP("drillHolesToolTip", "Click to see info."),
 				"Accel"   : "" }
 
@@ -641,7 +641,7 @@ class drillCountersinks():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "drillCountersinks.png"),
-				"MenuText": QT_TRANSLATE_NOOP("drillCountersinksMenuText", "drill bit, countersink"),
+				"MenuText": QT_TRANSLATE_NOOP("drillCountersinksMenuText", "drill bit, drill countersinks"),
 				"ToolTip" : QT_TRANSLATE_NOOP("drillCountersinksToolTip", "Click to see info."),
 				"Accel"   : "" }
 
@@ -680,7 +680,7 @@ class drillCounterbores():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "drillCounterbores.png"),
-				"MenuText": QT_TRANSLATE_NOOP("drillCounterboresMenuText", "drill bit, counterbore"),
+				"MenuText": QT_TRANSLATE_NOOP("drillCounterboresMenuText", "drill bit, drill counterbores"),
 				"ToolTip" : QT_TRANSLATE_NOOP("drillCounterboresToolTip", "Click to see info."),
 				"Accel"   : "" }
 
@@ -715,11 +715,50 @@ FreeCADGui.addCommand("drillCounterbores", drillCounterbores())
 
 	
 # ######################################################################################################################
+class edge2drillbit():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "edge2drillbit.png"),
+				"MenuText": QT_TRANSLATE_NOOP("edge2drillbitMenuText", "drill bit from edge hole"),
+				"ToolTip" : QT_TRANSLATE_NOOP("edge2drillbitToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "edge2drillbit"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("edge2drillbit", edge2drillbit())
+
+	
+# ######################################################################################################################
 class sketch2dowel():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "sketch2dowel.png"),
-				"MenuText": QT_TRANSLATE_NOOP("sketch2dowelMenuText", "sketch hole to dowel"),
+				"MenuText": QT_TRANSLATE_NOOP("sketch2dowelMenuText", "dowel from sketch hole and face"),
 				"ToolTip" : QT_TRANSLATE_NOOP("sketch2dowelToolTip", "Click to see info."),
 				"Accel"   : "" }
 
@@ -751,6 +790,45 @@ class sketch2dowel():
 		return True
 
 FreeCADGui.addCommand("sketch2dowel", sketch2dowel())
+
+	
+# ######################################################################################################################
+class edge2dowel():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "edge2dowel.png"),
+				"MenuText": QT_TRANSLATE_NOOP("edge2dowelMenuText", "dowel from edge hole"),
+				"ToolTip" : QT_TRANSLATE_NOOP("edge2dowelToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "edge2dowel"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("edge2dowel", edge2dowel())
 
 	
 # ######################################################################################################################
