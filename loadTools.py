@@ -559,12 +559,12 @@ FreeCADGui.addCommand("magicFixture", magicFixture())
 
 	
 # ######################################################################################################################
-class fitModel():
+class magicCNC():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "fitModel.png"),
-				"MenuText": QT_TRANSLATE_NOOP("fitModelMenuText", "fitModel"),
-				"ToolTip" : QT_TRANSLATE_NOOP("fitModelToolTip", "Fit 3D model to the screen and set base orientation (XY, 0 key)."),
+		return {"Pixmap"  : os.path.join(iconPath, "magicCNC.png"),
+				"MenuText": QT_TRANSLATE_NOOP("magicCNCMenuText", "magicCNC, drill bit move machine"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicCNCToolTip", "This tool allows to move drill bit at the selected face and drill holes."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -574,7 +574,7 @@ class fitModel():
 
 		modulePath = sys.path
 		
-		module = "fitModel"
+		module = "magicCNC"
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
@@ -594,7 +594,163 @@ class fitModel():
 		# not needed now, maybe in the future
 		return True
 
-FreeCADGui.addCommand("fitModel", fitModel())
+FreeCADGui.addCommand("magicCNC", magicCNC())
+
+	
+# ######################################################################################################################
+class drillHoles():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "drillHoles.png"),
+				"MenuText": QT_TRANSLATE_NOOP("drillHolesMenuText", "drill bit, simple hole"),
+				"ToolTip" : QT_TRANSLATE_NOOP("drillHolesToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "drillHoles"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("drillHoles", drillHoles())
+
+	
+# ######################################################################################################################
+class drillCountersinks():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "drillCountersinks.png"),
+				"MenuText": QT_TRANSLATE_NOOP("drillCountersinksMenuText", "drill bit, countersink"),
+				"ToolTip" : QT_TRANSLATE_NOOP("drillCountersinksToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "drillCountersinks"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("drillCountersinks", drillCountersinks())
+
+	
+# ######################################################################################################################
+class drillCounterbores():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "drillCounterbores.png"),
+				"MenuText": QT_TRANSLATE_NOOP("drillCounterboresMenuText", "drill bit, counterbore"),
+				"ToolTip" : QT_TRANSLATE_NOOP("drillCounterboresToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "drillCounterbores"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("drillCounterbores", drillCounterbores())
+
+	
+# ######################################################################################################################
+class sketch2dowel():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "sketch2dowel.png"),
+				"MenuText": QT_TRANSLATE_NOOP("sketch2dowelMenuText", "sketch hole to dowel"),
+				"ToolTip" : QT_TRANSLATE_NOOP("sketch2dowelToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "sketch2dowel"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("sketch2dowel", sketch2dowel())
 
 	
 # ######################################################################################################################
@@ -1336,6 +1492,45 @@ class panelMove2Face():
 		return True
 
 FreeCADGui.addCommand("panelMove2Face", panelMove2Face())
+
+	
+# ######################################################################################################################
+class fitModel():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "fitModel.png"),
+				"MenuText": QT_TRANSLATE_NOOP("fitModelMenuText", "fitModel"),
+				"ToolTip" : QT_TRANSLATE_NOOP("fitModelToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "fitModel"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("fitModel", fitModel())
 
 	
 # ######################################################################################################################

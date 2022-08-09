@@ -23,11 +23,19 @@ The main goal for this workbench is to make furniture designing process at FreeC
     * [magicMove](#magicmove)
     * [panelMove2Face](#panelmove2face)
     * [magicAngle](#magicangle)
-  * [Adding details](#adding-details)
+  * [Mount points](#mount-points)
     * [magicDowels](#magicdowels)
-    * [magicFixture](#magicfixture)
     * [panel2link](#panel2link)
+    * [sketch2dowel](sketch2dowel)
     * [makeTransparent](#maketransparent)
+  * [Fixture](#fixture)
+    * [magicFixture](#magicfixture)
+  * [Drilling](#drilling)
+    * [magicCNC](#magiccnc)
+    * [drillHoles](#drillholes)
+    * [drillCountersinks](#drillcountersinks)
+    * [drillCounterbores](#drillcounterbores)
+  * [Replace](#replace)
     * [panel2profile](#panel2profile)
     * [panel2frame](#panel2frame)
     * [panel2pad](#panel2pad)
@@ -43,6 +51,9 @@ The main goal for this workbench is to make furniture designing process at FreeC
     * [scanObjects](#scanobjects)
     * [debugInfo](#debuginfo)
 * [Dowels, Screws, Fixture](#dowels-screws-fixture)
+* [Holes, Countersinks, Counterbores](#holes-countersinks-counterbores)
+  * [Drilling via icons](#drilling-via-icons)
+  * [Drilling via magicCNC](#drilling-via-magiccnc)
 * [Extras](#extras)
 * [Translations](#translations)
 * [Final notes](#final-notes)
@@ -99,23 +110,49 @@ The main goal for this workbench is to make furniture designing process at FreeC
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicAngle.png"> This tool allows to rotate panels and even other more complicated objects, like construction profiles. If you want to rotate many objects together, use this tool directly at `Part` object or pack all objects into `LinkGroup` and use rotation at the `LinkGroup`. You can also choose center point of rotation by browsing vertices.
 
-## Adding details
+## Mount points
 
 ### magicDowels
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicDowels.png"> This tool allows to add mounting points to the furniture, or even any other elements like construction profiles. You can add predefined mounting points e.g. screws, dowels, shelf supporter pins or add custom mounting points. This is very quick way to add mounting points to the furniture, no calculation needed to place dowel exactly in the middle of the edge. If you would like to add e.g. 40 dowels to the whole furniture and align all of them manually, it would probably be big challenge. With this tool you can do it with single click in many cases. Make sure the green faces are visible, because they refers to the head of the screw. If you would like to replace the dowels with detailed screw later, this might be important if the dowel is rotated incorrectly, the screw will be rotated incorrectly as well.
 
-### magicFixture
-
-<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicFixture.png"> This tool has a little different approach than [magicDowels](#magicdowels) tool, because it allows to apply any type of fixture. Instead of `Cylinders` preview, it creates link to the detailed object and move it to the selected face. You can set exact offset from corner, offset from edge and sink. Also you can select predefined rotations and all edges. If you want you can turn on and off the manually edit mode and move and rotate it by hand. With this tool you can very easily apply detailed aluminum angles.
-
 ### panel2link
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2link.png"> This tool allows to replace simple objects with any detailed object, e.g. `Cylinder` with realistic looking dowel made with `Pad`. First you have to select detailed object and than simple object that will be replaced with `Link`. The first selected detailed object can be `Part`, `LinkGroup` or any other created manually or merged with your project object. You can replace more than one simple objects at once with `Link`. To select more objects hold `left CTRL key` during selection. The simple objects should imitate the detailed object to replace all of them in-place with realistic looking one.
 
+### sketch2dowel
+
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/sketch2dowel.png"> This tool allows to create dowel at the selected hole. To create dowel select Sketch for the hole and face of the hole object. The dowel position will be get from the Sketch and the face refer to the side the dowel will be raised. The dowel radius and height will be get from hole object. If the hole is throughAll the dowel height will be very big, so make sure you use dimensions instead for hole. To select more objects hold left CTRL key during selection.
+
 ### makeTransparent
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/makeTransparent.png"> This tool allows to make all parts transparent and back to normal. You can preview all pilot holes, countersinks or any other joints like that, very simply.
+
+## Fixture
+
+### magicFixture
+
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicFixture.png"> This tool has a little different approach than [magicDowels](#magicdowels) tool, because it allows to apply any type of fixture. Instead of `Cylinders` preview, it creates link to the detailed object and move it to the selected face. You can set exact offset from corner, offset from edge and sink. Also you can select predefined rotations and all edges. If you want you can turn on and off the manually edit mode and move and rotate it by hand. With this tool you can very easily apply detailed aluminum angles.
+
+## Drilling
+
+### magicCNC
+
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicCNC.png"> This tool is some kind of CNC drilling machine simulator. It is the same [magicMove](#magicmove) tool but improved for the drilling purposes. The axis which move the drill bit up and down is automatically hidden at this tool. So, you can move the drill bit at the surface and you not move the drill bit up or down by mistake and cause incorrect hole depth. Also this tool has option to drill by button click. It recognize the drill bit type by the label. For the countersink the label need to contains "countersink", and for counterbore need to contains "counterbore". For other label the simple hole will be drilled. This tool also allows for turn on and off the manuall edit mode, transform FreeCAD. So, you can move the drill bit by hand and drill holes by clicking buttons. This option can be useful for artists whom want to make holes in artistic way, not with mathematical precision. For more info see: [Drilling via magicCNC](#drilling-via-magiccnc)
+
+### drillHoles
+
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/drillHoles.png"> This is drill bit to make simple hole. The hole will be drilled below the bottom part of the drill bit, below the red face of the cylinder. The radius and depth of the hole will be the same as drill bit radius and height. You can resize the drill bit if you want. If you select face only, the drill bit will be created in the corner of the face (0 vertex). So, you will be able to move the drill bit precisely to any place at the face. Do not move the drill bit up, the drill bit should touch the face to get exact hole depth. If you select face and than any amount of drill bits, the holes will be drilled below each drill bit. To select more objects hold left CTRL key during selection. If the selected element is Cube, it will be replaced with Pad. For more info see: [Drilling via icons](#drilling-via-icons)
+
+### drillCountersinks
+
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/drillCountersinks.png"> This is drill bit to make countersink with hole. The hole will be drilled below the bottom part of the drill bit, below the red face. The radius of the hole will be drill bit Radius1. The radius of countersink will be drill bit Radius2. The hole depth will be drill bit Height. If you select face only, the drill bit will be created in the corner of the face (0 vertex), allowing you to move the drill bit precisely to any place at the face. Do not move the drill bit up, the drill bit should touch the face. You can select any amount of drill bits, the holes will be drilled below each drill bit but first selected should be face, next drill bits. To select more objects hold left CTRL key during selection. If the selected element is Cube, it will be replaced with Pad. For more info see: [Drilling via icons](#drilling-via-icons)
+
+### drillCounterbores
+
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/drillCounterbores.png"> This is drill bit to make counterbore with hole. The hole will be drilled below the bottom part of the drill bit, below the red face. The radius of the hole will be drill bit Radius1. The radius of counterbore will be drill bit Radius2. The hole depth will be drill bit Height. If you select face only, the drill bit will be created in the corner of the face (0 vertex), allowing you to move the drill bit precisely to any place at the face. Do not move the drill bit up, the drill bit should touch the face. You can select any amount of drill bits, the holes will be drilled below each drill bit but first selected should be face, next drill bits. To select more objects hold left CTRL key during selection. If the selected element is Cube, it will be replaced with Pad. For more info see: [Drilling via icons](#drilling-via-icons)
+
+## Replace
 
 ### panel2profile
 
@@ -196,6 +233,66 @@ However, if you make your own detailed part or order somewhere, you need to fulf
 * This furniture from my garage has applied realistic looking screws and dowels. All the screws has been applied with single click via [panel2link](#panel2link) woodworking workbench feature. Also it has angles replaced with [magicFixture](#magicfixture) tool.
 
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/fixture003.png)
+
+# Holes, Countersinks, Counterbores
+
+### Drilling via icons
+
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/drillHoles.png"> <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/drillCountersinks.png"> <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/drillCounterbores.png"> Select face you want to drill and click any hole icons. The drill bit for the hole type will be created in the 0 vertex of the face, allowing you to move the drill bit to any place at the face. You can change the drill bit size if you want. Also you can create your own drill bits. But there is rule, for simple holes this need to be Cylinder object, but for Countersinks and Counterbores this need to be Cone object. This is because at Cone you can easily store radius for countersink and other for hole. Also the drill bit need to be exactly rotated, exact face of drill bit need to touch the face for drilling.
+
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillHoles001.png)
+
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillHoles002.png)
+  
+* To drill the hole select face and drill bit in this order. The selected drill bit must be at the end. The face to drill should be first.
+
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillHoles003.png)
+    
+* Now to drill hole click the exact icons for the drill bit and the hole will be drilled below the drill bit.
+
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillHoles004.png)
+  
+* You can also copy the drill bit and select more at once:
+  
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillHoles005.png)
+  
+* If you click the icon for the hole all holes will be created:
+  
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillHoles006.png)
+  
+* The holes have the same size as the drill bits:
+  
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillHoles007.png)
+  
+### Drilling via magicCNC
+
+* First select exact place to drill:
+
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillCNC001.png)
+  
+* Create drill bit, in this case countersink, select the face and the drill bit. Next open [magicCNC](#magiccnc) tool. You can also first open the [magicCNC](#magiccnc) tool and then set then refresh selection to set exact objects references. 
+
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillCNC002.png)
+
+* With this tool you can precisely move the drill bit to any place at the surface and drill any type of hole just by single button click. You can also turn on and off the transform edit and move the drill bit by hand. The [magicCNC](#magiccnc) tool recognize the drill bit type by label. For countersink the label need to have "countersink", for counterbore the "counterbore". If nothing will be found the simple hole will be drilled. The tool support only single hole at once but allows you to drill hole very quickly, just by moving and clicking drill. In this example the countersink has been created in the first element:
+
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillCNC003.png)
+  
+* To drill rest of the hole you have to change the face reference. To do that, hide the first element and select face and drill bit:
+  
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillCNC004.png)
+  
+* Now click "refresh selection" to load new references:
+  
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillCNC005.png)
+
+* Now you can click drilling button to create rest of the hole:
+  
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillCNC006.png)
+  
+* Now the hole is created through two element and the countersink is in the righ place, and also the depth of the hole is equally divided into both elements, like it should be in real-life:
+  
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillCNC007.png)
 
 # Extras
 

@@ -25,8 +25,13 @@ class WoodworkingWorkbench (Workbench):
 
 		FreeCADGui.addLanguagePath(self.translationsPath)
 		
-		import PartGui, PartDesignGui, SketcherGui, SpreadsheetGui
-		import DraftTools
+		# uncomment those lines below if you want to add icon from other workbenches
+		# however the DraftTools will slow down the FreeCAD loading
+		# for woodworking purposes there will be new tools, so do not cry ;-)
+		
+		import PartGui, PartDesignGui
+		import SketcherGui, SpreadsheetGui
+		#import DraftTools
 
 		import loadToolbar
 		import loadMenu
@@ -61,6 +66,9 @@ class WoodworkingWorkbench (Workbench):
 		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Magic Panels - mounting"), 
 			loadToolbar.getItems("Woodworking - Magic Panels - mounting"))
 
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Magic Panels - drilling"), 
+			loadToolbar.getItems("Woodworking - Magic Panels - drilling"))
+
 		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Project manage"), 
 			loadToolbar.getItems("Woodworking - Project manage"))
 
@@ -73,17 +81,11 @@ class WoodworkingWorkbench (Workbench):
 		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Preview"), 
 			loadToolbar.getItems("Woodworking - Preview"))
 
-		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Furniture Parts"), 
-			loadToolbar.getItems("Woodworking - Furniture Parts"))
-
-		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Parameterization"), 
-			loadToolbar.getItems("Woodworking - Parameterization"))
-
-		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Transformations"), 
-			loadToolbar.getItems("Woodworking - Transformations"))
-
 		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Decorations"), 
 			loadToolbar.getItems("Woodworking - Decorations"))
+		
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - Advanced"), 
+			loadToolbar.getItems("Woodworking - Advanced"))
 		
 		# menu
 		# ################################################################################################

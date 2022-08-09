@@ -19,9 +19,18 @@ def showQtGUI():
 		# globals
 		# ############################################################################
 
+		gDrillBit = ""
+		gDrillFace = ""
+		
+		gDrillFaceKey = ""
+		
+		gAxisRow1 = 0
+		gAxisRow2 = 0
+
 		gObj = ""
-		gStep = 1
-		gNoSelection = translate('magicMove', 'select panel to move')
+		gStep = 9
+		
+		gNoSelection = translate('magicCNC', 'select face to drill and drill bit')
 		
 		# ############################################################################
 		# init
@@ -39,7 +48,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 220
-			toolSH = 280
+			toolSH = 350
 			
 			# active screen size (FreeCAD main window)
 			gSW = FreeCADGui.getMainWindow().width()
@@ -55,7 +64,7 @@ def showQtGUI():
 			
 			self.result = userCancelled
 			self.setGeometry(gPW, gPH, toolSW, toolSH)
-			self.setWindowTitle(translate('magicMove', 'magicMove'))
+			self.setWindowTitle(translate('magicCNC', 'magicCNC'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
@@ -67,138 +76,210 @@ def showQtGUI():
 			info += "                                             "
 			info += "                                             "
 			info += "                                             "
+			
+			self.s1S1 = QtGui.QLabel(info, self)
+			self.s1S1.move(10, 10)
+			
+			self.s1S2 = QtGui.QLabel(info, self)
+			self.s1S2.move(10, 30)
+			
 			self.s1S = QtGui.QLabel(info, self)
-			self.s1S.move(10, 10)
+			self.s1S.move(10, 30)
+			
+			row = 50
 
 			# button
-			self.s1B1 = QtGui.QPushButton(translate('magicMove', 'refresh selection'), self)
+			self.s1B1 = QtGui.QPushButton(translate('magicCNC', 'refresh selection'), self)
 			self.s1B1.clicked.connect(self.getSelected)
-			self.s1B1.setFixedWidth(200)
-			self.s1B1.move(10, 40)
+			self.s1B1.setFixedWidth(toolSW-20)
+			self.s1B1.move(10, row)
+
+			# ############################################################################
+			# options - changed axes
+			# ############################################################################
+
+			self.OPTlayout = QtGui.QVBoxLayout()
+			self.OPTlayout.setAlignment(QtGui.Qt.AlignTop)
 
 			# ############################################################################
 			# options - X axis
 			# ############################################################################
 
 			# label
-			self.o1L = QtGui.QLabel(translate('magicMove', 'Move along X:'), self)
-			self.o1L.move(10, 83)
-
+			self.o1L = QtGui.QLabel(translate('magicCNC', 'Move along X:'), self)
+			self.o1L.move(10, row+3)
+			self.o1L.hide()
+			
 			# button
 			self.o1B1 = QtGui.QPushButton("<", self)
 			self.o1B1.clicked.connect(self.setX1)
 			self.o1B1.setFixedWidth(50)
-			self.o1B1.move(105, 80)
+			self.o1B1.move(105, row)
 			self.o1B1.setAutoRepeat(True)
+			self.o1B1.hide()
 			
 			# button
 			self.o1B2 = QtGui.QPushButton(">", self)
 			self.o1B2.clicked.connect(self.setX2)
 			self.o1B2.setFixedWidth(50)
-			self.o1B2.move(160, 80)
+			self.o1B2.move(160, row)
 			self.o1B2.setAutoRepeat(True)
+			self.o1B2.hide()
 			
 			# ############################################################################
 			# options - Y axis
 			# ############################################################################
 
 			# label
-			self.o2L = QtGui.QLabel(translate('magicMove', 'Move along Y:'), self)
-			self.o2L.move(10, 113)
-
+			self.o2L = QtGui.QLabel(translate('magicCNC', 'Move along Y:'), self)
+			self.o2L.move(10, row+3)
+			self.o2L.hide()
+			
 			# button
 			self.o2B1 = QtGui.QPushButton("<", self)
 			self.o2B1.clicked.connect(self.setY1)
 			self.o2B1.setFixedWidth(50)
-			self.o2B1.move(105, 110)
+			self.o2B1.move(105, row)
 			self.o2B1.setAutoRepeat(True)
+			self.o2B1.hide()
 			
 			# button
 			self.o2B2 = QtGui.QPushButton(">", self)
 			self.o2B2.clicked.connect(self.setY2)
 			self.o2B2.setFixedWidth(50)
-			self.o2B2.move(160, 110)
+			self.o2B2.move(160, row)
 			self.o2B2.setAutoRepeat(True)
-
+			self.o2B2.hide()
+			
 			# ############################################################################
 			# options - Z axis
 			# ############################################################################
 
 			# label
-			self.o3L = QtGui.QLabel(translate('magicMove', 'Move along Z:'), self)
-			self.o3L.move(10, 143)
-
+			self.o3L = QtGui.QLabel(translate('magicCNC', 'Move along Z:'), self)
+			self.o3L.move(10, row+3)
+			self.o3L.hide()
+			
 			# button
 			self.o3B1 = QtGui.QPushButton("<", self)
 			self.o3B1.clicked.connect(self.setZ1)
 			self.o3B1.setFixedWidth(50)
-			self.o3B1.move(105, 140)
+			self.o3B1.move(105, row)
 			self.o3B1.setAutoRepeat(True)
+			self.o3B1.hide()
 			
 			# button
 			self.o3B2 = QtGui.QPushButton(">", self)
 			self.o3B2.clicked.connect(self.setZ2)
 			self.o3B2.setFixedWidth(50)
-			self.o3B2.move(160, 140)
+			self.o3B2.move(160, row)
 			self.o3B2.setAutoRepeat(True)
+			self.o3B2.hide()
 			
 			# ############################################################################
 			# options - additional
 			# ############################################################################
 
+			row += 30
+			self.gAxisRow1 = row
+			
+			row += 30
+			self.gAxisRow2 = row
+
+			row += 30
+			
 			# label
-			self.o4L = QtGui.QLabel(translate('magicMove', 'Move step:'), self)
-			self.o4L.move(10, 173)
+			self.o4L = QtGui.QLabel(translate('magicCNC', 'Move step:'), self)
+			self.o4L.move(10, row+3)
 
 			# text input
 			self.o4E = QtGui.QLineEdit(self)
 			self.o4E.setText(str(self.gStep))
 			self.o4E.setFixedWidth(50)
-			self.o4E.move(105, 170)
+			self.o4E.move(105, row)
+
+			# ############################################################################
+			# options - manually move
+			# ############################################################################
+			
+			row += 30
+			
+			# label
+			self.o5L = QtGui.QLabel(translate('magicCNC', 'Transform:'), self)
+			self.o5L.move(10, row+3)
+			
+			# button
+			self.o5B1 = QtGui.QPushButton(translate('magicCNC', 'on'), self)
+			self.o5B1.clicked.connect(self.setEditModeON)
+			self.o5B1.setFixedWidth(50)
+			self.o5B1.move(105, row)
+
+			# button
+			self.o5B2 = QtGui.QPushButton(translate('magicCNC', 'off'), self)
+			self.o5B2.clicked.connect(self.setEditModeOFF)
+			self.o5B2.setFixedWidth(50)
+			self.o5B2.move(160, row)
 
 			# ############################################################################
 			# options - corner cross
 			# ############################################################################
 
+			row += 40
+
 			# label
-			self.o0L = QtGui.QLabel(translate('magicMove', 'Corner cross:'), self)
-			self.o0L.move(10, 213)
+			self.o6L = QtGui.QLabel(translate('magicCNC', 'Corner cross:'), self)
+			self.o6L.move(10, row+3)
 
 			# button
-			self.o0B1 = QtGui.QPushButton("<", self)
-			self.o0B1.clicked.connect(self.setCornerM)
-			self.o0B1.setFixedWidth(50)
-			self.o0B1.move(105, 210)
-			self.o0B1.setAutoRepeat(True)
+			self.o6B1 = QtGui.QPushButton("-", self)
+			self.o6B1.clicked.connect(self.setCornerM)
+			self.o6B1.setFixedWidth(50)
+			self.o6B1.move(105, row)
+			self.o6B1.setAutoRepeat(True)
 			
 			# button
-			self.o0B2 = QtGui.QPushButton(">", self)
-			self.o0B2.clicked.connect(self.setCornerP)
-			self.o0B2.setFixedWidth(50)
-			self.o0B2.move(160, 210)
-			self.o0B2.setAutoRepeat(True)
+			self.o6B2 = QtGui.QPushButton("+", self)
+			self.o6B2.clicked.connect(self.setCornerP)
+			self.o6B2.setFixedWidth(50)
+			self.o6B2.move(160, row)
+			self.o6B2.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - center cross
 			# ############################################################################
 
+			row += 30
+
 			# label
-			self.o0L = QtGui.QLabel(translate('magicMove', 'Center cross:'), self)
-			self.o0L.move(10, 243)
+			self.o7L = QtGui.QLabel(translate('magicCNC', 'Center cross:'), self)
+			self.o7L.move(10, row+3)
 
 			# button
-			self.o0B1 = QtGui.QPushButton(translate('magicMove', 'on'), self)
-			self.o0B1.clicked.connect(self.setCenterOn)
-			self.o0B1.setFixedWidth(50)
-			self.o0B1.move(105, 240)
-			self.o0B1.setAutoRepeat(True)
+			self.o7B1 = QtGui.QPushButton(translate('magicCNC', 'on'), self)
+			self.o7B1.clicked.connect(self.setCenterOn)
+			self.o7B1.setFixedWidth(50)
+			self.o7B1.move(105, row)
+			self.o7B1.setAutoRepeat(True)
 			
 			# button
-			self.o0B2 = QtGui.QPushButton(translate('magicMove', 'off'), self)
-			self.o0B2.clicked.connect(self.setCenterOff)
-			self.o0B2.setFixedWidth(50)
-			self.o0B2.move(160, 240)
-			self.o0B2.setAutoRepeat(True)
+			self.o7B2 = QtGui.QPushButton(translate('magicCNC', 'off'), self)
+			self.o7B2.clicked.connect(self.setCenterOff)
+			self.o7B2.setFixedWidth(50)
+			self.o7B2.move(160, row)
+			self.o7B2.setAutoRepeat(True)
+
+			# ############################################################################
+			# options - drilling
+			# ############################################################################
+
+			row += 40
+
+			# button
+			self.o8B1 = QtGui.QPushButton(translate('magicCNC', 'drill below drill bit'), self)
+			self.o8B1.clicked.connect(self.runDriller)
+			self.o8B1.setFixedWidth(toolSW-20)
+			self.o8B1.setFixedHeight(40)
+			self.o8B1.move(10, row)
 			
 			# ############################################################################
 			# show & init defaults
@@ -239,10 +320,10 @@ def showQtGUI():
 			if iType == "Zm":
 				z = - self.gStep
 
-			[ x, y, z ] = MagicPanels.convertPosition(self.gObj, x, y, z)
+			[ x, y, z ] = MagicPanels.convertPosition(self.gDrillBit, x, y, z)
 			
-			[ px, py, pz, r ] = MagicPanels.getPlacement(self.gObj)
-			MagicPanels.setPlacement(self.gObj, px+x, py+y, pz+z, r)
+			[ px, py, pz, r ] = MagicPanels.getPlacement(self.gDrillBit)
+			MagicPanels.setPlacement(self.gDrillBit, px+x, py+y, pz+z, r)
 
 			FreeCAD.activeDocument().recompute()
 
@@ -251,28 +332,105 @@ def showQtGUI():
 		# ############################################################################
 
 		# ############################################################################
+		def hideAxis(self):
+			
+			plane = MagicPanels.getFacePlane(self.gDrillFace)
+			
+			if plane == "XY":
+				
+				self.o1L.show()
+				self.o1B1.show()
+				self.o1B2.show()
+				
+				self.o1L.move(10, self.gAxisRow1+3)
+				self.o1B1.move(105, self.gAxisRow1)
+				self.o1B2.move(160, self.gAxisRow1)
+				
+				self.o2L.show()
+				self.o2B1.show()
+				self.o2B2.show()
+				
+				self.o2L.move(10, self.gAxisRow2+3)
+				self.o2B1.move(105, self.gAxisRow2)
+				self.o2B2.move(160, self.gAxisRow2)
+				
+				self.o3L.hide()
+				self.o3B1.hide()
+				self.o3B2.hide()
+				
+			if plane == "XZ":
+				
+				self.o1L.show()
+				self.o1B1.show()
+				self.o1B2.show()
+				
+				self.o1L.move(10, self.gAxisRow1+3)
+				self.o1B1.move(105, self.gAxisRow1)
+				self.o1B2.move(160, self.gAxisRow1)
+				
+				self.o2L.hide()
+				self.o2B1.hide()
+				self.o2B2.hide()
+
+				self.o3L.show()
+				self.o3B1.show()
+				self.o3B2.show()
+				
+				self.o3L.move(10, self.gAxisRow2+3)
+				self.o3B1.move(105, self.gAxisRow2)
+				self.o3B2.move(160, self.gAxisRow2)
+
+			if plane == "YZ":
+
+				self.o1L.hide()
+				self.o1B1.hide()
+				self.o1B2.hide()
+
+				self.o2L.show()
+				self.o2B1.show()
+				self.o2B2.show()
+				
+				self.o2L.move(10, self.gAxisRow1+3)
+				self.o2B1.move(105, self.gAxisRow1)
+				self.o2B2.move(160, self.gAxisRow1)
+				
+				self.o3L.show()
+				self.o3B1.show()
+				self.o3B2.show()
+				
+				self.o3L.move(10, self.gAxisRow2+3)
+				self.o3B1.move(105, self.gAxisRow2)
+				self.o3B2.move(160, self.gAxisRow2)
+	
+
+		# ############################################################################
 		def getSelected(self):
 
 			try:
 
-				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
-				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(50)
-
-				self.gObj = MagicPanels.getReference()
+				self.gObj = FreeCADGui.Selection.getSelection()[0]
+				self.gDrillFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				self.gDrillBit = FreeCADGui.Selection.getSelection()[1]
 				
-				sizes = []
-				sizes = MagicPanels.getSizes(self.gObj)
-				sizes.sort()
-				self.gStep = sizes[0]
+				face = "Face"+str(MagicPanels.getFaceIndex(self.gObj, self.gDrillFace))
+				self.s1S1.setText(str(self.gObj.Label)+", "+face)
+				self.s1S2.setText(str(self.gDrillBit.Label))
+				self.s1S.setText("")
+				
 				self.o4E.setText(str(self.gStep))
 				
-				self.s1S.setText(str(self.gObj.Label))
 				FreeCADGui.Selection.clearSelection()
 				
+				self.hideAxis()
+				
+				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
+				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(50)
+			
 			except:
 
 				self.s1S.setText(self.gNoSelection)
 				return -1
+			
 			
 		# ############################################################################
 		def setCornerM(self):
@@ -359,6 +517,68 @@ def showQtGUI():
 				self.setMove("Zp")
 			except:
 				self.s1S.setText(self.gNoSelection)
+
+		# ############################################################################
+		def setEditModeON(self):
+			
+			try:
+				vo = self.gDrillBit.ViewObject
+				vo.Document.setEdit(vo, 1)
+				
+			except:
+				self.s1S.setText(self.gNoSelection)
+		
+		def setEditModeOFF(self):
+			
+			try:
+				vo = self.gDrillBit.ViewObject
+				vo.Document.resetEdit()
+				
+			except:
+				self.s1S.setText(self.gNoSelection)
+
+		# ############################################################################
+		def runDriller(self):
+			
+			try:
+			
+				# store face key to find face to drill at new object later
+				self.gDrillFaceKey = self.gDrillFace.BoundBox
+				
+				# set args
+				s = self.gDrillBit.Label
+				o = []
+				o.append(self.gDrillBit)
+				
+				# drilling selection
+				
+				if s.find("countersink") != -1:
+					holes = MagicPanels.makeCountersinks(self.gObj, self.gDrillFace, o )
+				
+				elif s.find("counterbore") != -1:
+					holes = MagicPanels.makeCounterbores(self.gObj, self.gDrillFace, o )
+				
+				else:
+					holes = MagicPanels.makeHoles(self.gObj, self.gDrillFace, o )
+
+				# get new object from selection
+				FreeCADGui.Selection.addSelection(holes[0])
+				self.gObj = FreeCADGui.Selection.getSelection()[0]
+				
+				# search for selected face to drill
+				index = MagicPanels.getFaceIndexByKey(self.gObj, self.gDrillFaceKey)
+				self.gDrillFace = self.gObj.Shape.Faces[index]
+
+				# update status info screen
+				face = "Face"+str(MagicPanels.getFaceIndex(self.gObj, self.gDrillFace))
+				self.s1S1.setText(str(self.gObj.Label)+", "+face)
+				
+				# remove selection
+				FreeCADGui.Selection.clearSelection()
+		
+			except:
+				self.s1S.setText(self.gNoSelection)
+		
 
 	# ############################################################################
 	# final settings

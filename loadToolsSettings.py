@@ -31,7 +31,7 @@ Tools = [
 	"", "debugInfo", "png", "debugInfo", "Copy platform details to clipboard for bug report purposes.",
 
 	# #################################################################################################################################
-	# tools - linked standalone macros (should not use MagicPanels library or be moved)
+	# tools - linked standalone macros (should not use MagicPanels library)
 	# #################################################################################################################################
 	
 	"", "getDimensions", "png", "getDimensions, BOM, cutlist", "Creates spreadsheet with dimensions to cut.",
@@ -53,7 +53,7 @@ Tools = [
 	"", "showSpaceSelected", "png", "show, selected, space", "This tool allows you to calculate the overall occupied space in 3D by the selected parts.",
 
 	# #################################################################################################################################
-	# tools - using MagicPanels library
+	# tools - using MagicPanels library with GUI
 	# #################################################################################################################################
 
 	"MagicPanels", "magicMove", "png", "magicMove", "If you have problem with unexpected result of panel movements via dedicated icons, you can use this tool to precisely move panel into desired direction. This tool allow to turn off and on axis cross and resize corner cross size.",
@@ -64,7 +64,20 @@ Tools = [
 
 	"MagicPanels", "magicFixture", "png", "magicFixture", "Allows to add fixture reference points to the furniture. Later you will be able to replace the cube fixture reference points with realistic fixture elements.",
 
-	"MagicPanels", "fitModel", "png", "fitModel", "Fit 3D model to the screen and set base orientation (XY, 0 key).",
+	# #################################################################################################################################
+	# Magic Panels - drilling
+	# #################################################################################################################################
+	
+	"MagicPanels", "magicCNC", "png", "magicCNC, drill bit move machine", "This tool allows to move drill bit at the selected face and drill holes.",
+	"MagicPanels", "drillHoles", "png", "drill bit, simple hole", "Click to see info.",
+	"MagicPanels", "drillCountersinks", "png", "drill bit, countersink", "Click to see info.",
+	"MagicPanels", "drillCounterbores", "png", "drill bit, counterbore", "Click to see info.",
+
+	# #################################################################################################################################
+	# Magic Panels - mount
+	# #################################################################################################################################
+	
+	"MagicPanels", "sketch2dowel", "png", "sketch hole to dowel", "Click to see info.",
 
 	# #################################################################################################################################
 	# Magic Panels - default
@@ -106,6 +119,7 @@ Tools = [
 	"MagicPanels", "panelMoveZm", "png", "panel, move, down", "Click to see info.",
 
 	"MagicPanels", "panelMove2Face", "png", "panel, move, to face", "Click to see info.",
+	"MagicPanels", "fitModel", "png", "fitModel", "Click to see info.",
 
 	# #################################################################################################################################
 	# Magic Panels - resize

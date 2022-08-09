@@ -1,0 +1,4 @@
+import MagicPanels
+
+MagicPanels.drillCountersinks()
+

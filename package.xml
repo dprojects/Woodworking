@@ -3,7 +3,7 @@
   <name>Woodworking</name>
   <description>FreeCAD workbench for woodworking purposes.</description>
   <version>0.20.29177</version>
-  <date>2022-07-29</date>
+  <date>2022-08-09</date>
   <author>Darek L (https://github.com/dprojects)</author>
   <maintainer email="you@null.com">If you fork and copy to FreeCAD repository, add your name here and keep author tag without change.</maintainer>
   <license file="LICENSE">MIT</license>

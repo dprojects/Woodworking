@@ -4,12 +4,6 @@ def getItems(iType):
 
 	parts = []
 
-	if iType == "Woodworking - Parameterization":
-		
-		parts = [
-			"Spreadsheet_CreateSheet"
-		]
-
 	if iType == "Woodworking - Magic Panels - default":
 		
 		parts = [
@@ -93,42 +87,27 @@ def getItems(iType):
 	if iType == "Woodworking - Magic Panels - replace":
 		
 		parts = [
-			"panel2link",
-			"magicFixture",
 			"panel2profile",
-			"panel2frame"
+			"panel2frame",
+			"magicFixture"
 		]
 
 	if iType == "Woodworking - Magic Panels - mounting":
 		
 		parts = [
 			"magicDowels",
-			"Part_Cylinder",
-			"PartDesign_Hole",
+			"panel2link",
+			"sketch2dowel",
 			"makeTransparent"
 		]
 
-	if iType == "Woodworking - Furniture Parts":
+	if iType == "Woodworking - Magic Panels - drilling":
 		
 		parts = [
-			"Part_Box",
-			"Std_Part",
-			"PartDesign_Body", 
-			"PartDesign_NewSketch",
-			"PartDesign_Pad"
-		]
-	
-	if iType == "Woodworking - Transformations":
-		
-		parts = [
-			"Draft_Array",
-			"Draft_PolarArray",
-			"PartDesign_LinearPattern",
-			"PartDesign_Plane",
-			"Part_Mirror",
-			"PartDesign_Mirrored",
-			"PartDesign_MultiTransform",
-			"Draft_Clone"
+			"magicCNC",
+			"drillHoles",
+			"drillCountersinks",
+			"drillCounterbores"
 		]
 
 	if iType == "Woodworking - Decorations":
@@ -138,10 +117,7 @@ def getItems(iType):
 			"PartDesign_Fillet",
 			"PartDesign_Chamfer",
 			"PartDesign_Pocket",
-			"Part_Boolean",
-			"Part_Torus",
-			"Part_Cone",
-			"Part_Sphere",
+			"Part_Boolean"
 		]
 
 	if iType == "Woodworking - Dimensions":
@@ -185,6 +161,16 @@ def getItems(iType):
 			"Std_MacroStopRecord",
 			"Std_DlgMacroExecute",
 			"Std_DlgMacroExecuteDirect"
+		]
+		
+	if iType == "Woodworking - Advanced":
+		
+		parts = [
+			"Spreadsheet_CreateSheet",
+			"Std_Part",
+			"PartDesign_Body", 
+			"PartDesign_NewSketch",
+			"PartDesign_Pad"
 		]
 		
 	return parts

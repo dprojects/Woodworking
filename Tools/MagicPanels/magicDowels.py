@@ -25,7 +25,7 @@ def showQtGUI():
 		
 		gFace = ""
 		gFIndex = 0
-		gFAxis = ""
+		gFPlane = ""
 		gFType = ""
 		
 		gEdge = ""
@@ -50,6 +50,8 @@ def showQtGUI():
 		gDOEdge = 0
 		
 		gDSinkSave = 20
+		
+		gInit = 1
 		
 		gNoSelection = translate('magicDowels', 'please select face')
 		
@@ -448,7 +450,7 @@ def showQtGUI():
 			FreeCAD.activeDocument().recompute()
 
 		# ############################################################################
-		def showDowels(self):
+		def showDowels(self, iCall=0):
 			
 			# ############################################################################
 			# remove all dowels
@@ -466,6 +468,9 @@ def showQtGUI():
 			# get settings
 			[ v1, v2 ] = MagicPanels.getEdgeVertices(self.gEArr[self.gEIndex])
 			
+			if not self.gObj.isDerivedFrom("Part::Box"):
+				[ v1, v2 ] = MagicPanels.getEdgeNormalized(v1, v2)
+			
 			# ############################################################################
 			# dowels at 1st side
 			# ############################################################################
@@ -478,23 +483,17 @@ def showQtGUI():
 				i = 0
 				while i < self.gDNum:
 					
-					d = FreeCAD.ActiveDocument.addObject("Part::Cylinder","Dowel")
-					d.Label = str(self.gDowelLabel)
-					
-					d.Radius = self.gDDiameter / 2
-					d.Height = self.gDSize
-					
 					# edge along X
 					if v1[0] != v2[0]:
 						
-						if self.gFAxis == "XY" or self.gFAxis == "YX":
+						if self.gFPlane == "XY":
 							x = X - self.gDOCorner
 							if i != 0:
 								x = x - ( i * self.gDONext)
 							y = Y + self.gDOEdge
 							z = Z - self.gDSink
 						
-						if self.gFAxis == "XZ" or self.gFAxis == "ZX":
+						if self.gFPlane == "XZ":
 							x = X - self.gDOCorner
 							if i != 0:
 								x = x - ( i * self.gDONext)
@@ -502,13 +501,13 @@ def showQtGUI():
 							z = Z + self.gDOEdge
 				
 						# this should not exist
-						if self.gFAxis == "YZ" or self.gFAxis == "ZY":
+						if self.gFPlane == "YZ":
 							[ x, y, z ] = [ X, Y, Z ]
 
 					# edge along Y
 					if v1[1] != v2[1]:
 						
-						if self.gFAxis == "XY" or self.gFAxis == "YX":
+						if self.gFPlane == "XY":
 							x = X + self.gDOEdge
 							y = Y - self.gDOCorner
 							if i != 0:
@@ -516,10 +515,10 @@ def showQtGUI():
 							z = Z - self.gDSink
 					
 						# this should not exist
-						if self.gFAxis == "XZ" or self.gFAxis == "ZX":
+						if self.gFPlane == "XZ":
 							[ x, y, z ] = [ X, Y, Z ]
 					
-						if self.gFAxis == "YZ" or self.gFAxis == "ZY":
+						if self.gFPlane == "YZ":
 							x = X - self.gDSink
 							y = Y - self.gDOCorner
 							if i != 0:
@@ -529,28 +528,49 @@ def showQtGUI():
 					# edge along Z
 					if v1[2] != v2[2]:
 						
-						if self.gFAxis == "XY" or self.gFAxis == "YX":
+						if self.gFPlane == "XY":
 							x = X + self.gDOEdge
 							y = Y - self.gDSink
 							z = Z - self.gDOCorner
 							if i != 0:
 								z = z - ( i * self.gDONext)
 						
-						if self.gFAxis == "XZ" or self.gFAxis == "ZX":
+						if self.gFPlane == "XZ":
 							x = X - self.gDOEdge
 							y = Y - self.gDSink
 							z = Z - self.gDOCorner
 							if i != 0:
 								z = z - ( i * self.gDONext)
 								
-						if self.gFAxis == "YZ" or self.gFAxis == "ZY":
+						if self.gFPlane == "YZ":
 							x = X - self.gDSink
 							y = Y + self.gDOEdge
 							z = Z - self.gDOCorner
 							if i != 0:
 								z = z - ( i * self.gDONext)
 
-					# final set
+					# ############################################################################
+					# try auto-reposition dowels
+					# ############################################################################
+					
+					if iCall == 1:
+					
+						inside = self.gObj.Shape.BoundBox.isInside(FreeCAD.Vector(x, y, z))
+						
+						if inside == False:
+							self.setPosition()
+							return
+					
+					# ############################################################################
+					# create dowel
+					# ############################################################################
+					
+					d = FreeCAD.ActiveDocument.addObject("Part::Cylinder","Dowel")
+					d.Label = str(self.gDowelLabel)
+					
+					d.Radius = self.gDDiameter / 2
+					d.Height = self.gDSize
+					
 					d.Placement.Base.x = x
 					d.Placement.Base.y = y
 					d.Placement.Base.z = z
@@ -574,23 +594,17 @@ def showQtGUI():
 				i = 0
 				while i < self.gDNum:
 					
-					d = FreeCAD.ActiveDocument.addObject("Part::Cylinder","Dowel")
-					d.Label = str(self.gDowelLabel)
-					
-					d.Radius = self.gDDiameter / 2
-					d.Height = self.gDSize
-					
 					# edge along X
 					if v1[0] != v2[0]:
 						
-						if self.gFAxis == "XY" or self.gFAxis == "YX":
+						if self.gFPlane == "XY":
 							x = X + self.gDOCorner
 							if i != 0:
 								x = x + ( i * self.gDONext)
 							y = Y + self.gDOEdge
 							z = Z - self.gDSink
 					
-						if self.gFAxis == "XZ" or self.gFAxis == "ZX":
+						if self.gFPlane == "XZ":
 							x = X + self.gDOCorner
 							if i != 0:
 								x = x + ( i * self.gDONext)
@@ -598,13 +612,13 @@ def showQtGUI():
 							z = Z + self.gDOEdge
 						
 						# this should not exist
-						if self.gFAxis == "YZ" or self.gFAxis == "ZY":
+						if self.gFPlane == "YZ":
 							[ x, y, z ] = [ X, Y, Z ]
 
 					# edge along Y
 					if v1[1] != v2[1]:
 						
-						if self.gFAxis == "XY" or self.gFAxis == "YX":
+						if self.gFPlane == "XY":
 							x = X + self.gDOEdge
 							y = Y + self.gDOCorner
 							if i != 0:
@@ -612,10 +626,10 @@ def showQtGUI():
 							z = Z - self.gDSink
 					
 						# this should not exist
-						if self.gFAxis == "XZ" or self.gFAxis == "ZX":
+						if self.gFPlane == "XZ":
 							[ x, y, z ] = [ X, Y, Z ]
 					
-						if self.gFAxis == "YZ" or self.gFAxis == "ZY":
+						if self.gFPlane == "YZ":
 							x = X - self.gDSink
 							y = Y + self.gDOCorner
 							if i != 0:
@@ -625,28 +639,37 @@ def showQtGUI():
 					# edge along Z
 					if v1[2] != v2[2]:
 						
-						if self.gFAxis == "XY" or self.gFAxis == "YX":
+						if self.gFPlane == "XY":
 							x = X + self.gDOEdge
 							y = Y - self.gDSink
 							z = Z + self.gDOCorner
 							if i != 0:
 								z = z + ( i * self.gDONext)
 					
-						if self.gFAxis == "XZ" or self.gFAxis == "ZX":
+						if self.gFPlane == "XZ":
 							x = X - self.gDOEdge
 							y = Y - self.gDSink
 							z = Z + self.gDOCorner
 							if i != 0:
 								z = z + ( i * self.gDONext)
 					
-						if self.gFAxis == "YZ" or self.gFAxis == "ZY":
+						if self.gFPlane == "YZ":
 							x = X - self.gDSink
 							y = Y + self.gDOEdge
 							z = Z + self.gDOCorner
 							if i != 0:
 								z = z + ( i * self.gDONext)
 					
-					# final set
+					# ############################################################################
+					# create dowel
+					# ############################################################################
+					
+					d = FreeCAD.ActiveDocument.addObject("Part::Cylinder","Dowel")
+					d.Label = str(self.gDowelLabel)
+					
+					d.Radius = self.gDDiameter / 2
+					d.Height = self.gDSize
+					
 					d.Placement.Base.x = x
 					d.Placement.Base.y = y
 					d.Placement.Base.z = z
@@ -676,7 +699,7 @@ def showQtGUI():
 			
 			self.gFace = ""
 			self.gFIndex = 0
-			self.gFAxis = ""
+			self.gFPlane = ""
 			self.gFType = ""
 		
 			self.gEdge = ""
@@ -712,78 +735,119 @@ def showQtGUI():
 				n += str(self.gFIndex)
 				self.s1S.setText(n)
 				
-				[ self.gFAxis, self.gFType ] = MagicPanels.getDirectionFace(self.gObj, self.gFace)
+				# ############################################################################
+				# get plane and type
+				# ############################################################################
+				
+				self.gFPlane = MagicPanels.getFacePlane(self.gFace)
+				
+				[ self.gFType, 
+					arrAll, 
+					arrThick, 
+					arrShort, 
+					arrLong ] = MagicPanels.getFaceEdges(self.gObj, self.gFace)
 				
 				# ############################################################################
 				# set possible edges
 				# ############################################################################
 				
-				sizes = []
-				sizes = MagicPanels.getSizes(self.gObj)
-				sizes.sort()
-				self.gThick = sizes[0]
-
-				e1 = self.gFace.Edges[0]
-				e2 = self.gFace.Edges[1]
-				e3 = self.gFace.Edges[2]
-				e4 = self.gFace.Edges[3]
-		
 				if self.gFType == "edge":
 					
-					if int(e1.Length) != int(self.gThick):
-						self.gEArr.append(e1)
+					if len(arrShort) == 0:
+						self.gEArr = arrLong
 					
-					if int(e2.Length) != int(self.gThick):
-						self.gEArr.append(e2)
-						
-					if int(e3.Length) != int(self.gThick):
-						self.gEArr.append(e3)
-						
-					if int(e4.Length) != int(self.gThick):
-						self.gEArr.append(e4)
+					if len(arrLong) == 0:
+						self.gEArr = arrShort
+
+				if self.gFType == "surface":
+					self.gEArr = arrAll
 					
-				if self.gFType == "surface" or self.gFType == "equal":
-					
-					self.gEArr.append(self.gFace.Edges[0])
-					self.gEArr.append(self.gFace.Edges[1])
-					self.gEArr.append(self.gFace.Edges[2])
-					self.gEArr.append(self.gFace.Edges[3])
-				
 				# ############################################################################
-				# set possible rotation 
+				# set possible rotations
 				# ############################################################################
 				
-				if self.gFAxis == "XY" or self.gFAxis == "YX":
+				if self.gFPlane == "XY":
 					self.gRAngles.append(0)
 					self.gRAngles.append(180)
-				
-				if self.gFAxis == "XZ" or self.gFAxis == "ZX":
+					self.gRAxis = FreeCAD.Vector(1, 0, 0)
+
+				if self.gFPlane == "XZ":
 					self.gRAngles.append(90)
 					self.gRAngles.append(270)
-				
-				if self.gFAxis == "YZ" or self.gFAxis == "ZY":
+					self.gRAxis = FreeCAD.Vector(1, 0, 0)
+					
+				if self.gFPlane == "YZ":
 					self.gRAngles.append(90)
 					self.gRAngles.append(270)
-				
-				if self.gFAxis == "XY" or self.gFAxis == "YX":
-					self.gRAxis = FreeCAD.Vector(1, 0, 0)
-					
-				if self.gFAxis == "XZ" or self.gFAxis == "ZX":
-					self.gRAxis = FreeCAD.Vector(1, 0, 0)
-					
-				if self.gFAxis == "YZ" or self.gFAxis == "ZY":
 					self.gRAxis = FreeCAD.Vector(0, 1, 0)
 				
 				# ############################################################################
+				# set default
+				# ############################################################################
+
+				s = MagicPanels.getSizes(self.gObj)
+				s.sort()
+				self.gThick = s[0]
+				
 				self.gDOEdge = self.gThick / 2
+				self.gDSink = abs(self.gDSink)
+				self.gRIndex = 0
+				
+				# ############################################################################
+				# try auto adjust dowel
+				# ############################################################################
+
+				# set default sink
+				if self.gInit == 1 and self.gFType == "surface":
+					self.gDSink = 15
+
+				if self.gFType == "surface" and self.gDSink == 20:
+					self.gDSink = 15
+				
+				if self.gFType == "edge" and self.gDSink == 15:
+					self.gDSink = 20
+				
+				# adjust sink
+				sink = MagicPanels.getFaceSink(self.gObj, self.gFace)
+				
+				if sink == "+":
+					self.gDSink = - abs(self.gDSink)
+				
+				# adjust rotation
+				if sink == "+":
+					
+					if self.gFPlane == "XY":
+						self.gRIndex = 1
+						
+					if self.gFPlane == "XZ":
+						self.gRIndex = 0
+						
+					if self.gFPlane == "YZ":
+						self.gRIndex = 1
+
+				else:
+				
+					if self.gFPlane == "XY":
+						self.gRIndex = 0
+						
+					if self.gFPlane == "XZ":
+						self.gRIndex = 1
+						
+					if self.gFPlane == "YZ":
+						self.gRIndex = 0
+				
+				self.oDSinkE.setText(str(self.gDSink))
 				self.oDOEdgeE.setText(str(self.gDOEdge))
 				
-				self.showDowels()
+				self.showDowels(1)
+				
+				self.gInit = 0
 			
 			except:
 
 				self.s1S.setText(self.gNoSelection)
 				return -1
+			
 			
 		# ############################################################################
 		def setSidesP(self):
@@ -823,7 +887,7 @@ def showQtGUI():
 					
 				self.gEdge = self.gEArr[self.gEIndex]
 				
-				self.showDowels()
+				self.showDowels(1)
 			
 			except:
 				self.s1S.setText(self.gNoSelection)
@@ -838,7 +902,7 @@ def showQtGUI():
 					
 				self.gEdge = self.gEArr[self.gEIndex]
 				
-				self.showDowels()
+				self.showDowels(1)
 			
 			except:
 				self.s1S.setText(self.gNoSelection)
@@ -851,6 +915,7 @@ def showQtGUI():
 					
 				self.gDSink = - self.gDSink
 				self.oDSinkE.setText(str(self.gDSink))
+				
 				self.showDowels()
 				
 			except:
@@ -861,6 +926,7 @@ def showQtGUI():
 				self.gDSinkSave = self.gDSink
 				self.gDSink = 0
 				self.oDSinkE.setText(str(self.gDSink))
+				
 				self.showDowels()
 				
 			except:
@@ -877,6 +943,7 @@ def showQtGUI():
 				
 				self.gDOEdge = - self.gDOEdge
 				self.oDOEdgeE.setText(str(self.gDOEdge))
+				
 				self.showDowels()
 				
 			except:

@@ -40,36 +40,155 @@ def touchTypo(iObj):
 	return getattr(iObj, "Vertex"+"es")
 
 
-# ############################################################################
-def getFaceIndex(iObj, iFace):
+# ###################################################################################################################
+# Vertices
+# ###################################################################################################################
+
+
+# ###################################################################################################################
+def getVertex(iFace, iEdge, iVertex):
 	'''
-	getFaceIndex(iObj, iFace) - returns face index for given object and face.
+	getVertex(iFace, iEdge, iVertex) - get vertex values for face, edge and vertex index.
 	
 	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
-		iObj: object of the face
 		iFace: face object
+		iEdge: edge array index
+		iVertex: vertex array index (0 or 1)
 	
 	Usage:
 	
-		faceIndex = getFaceIndex(gObj, gFace)
+		[ x, y, z ] = getVertex(gFace, 0, 1)
 		
 	Result:
 	
-		return int value for face
+		Return vertex position.
+	'''
+	
+	vertexArr = touchTypo(iFace.Edges[iEdge])
+
+	return [ vertexArr[iVertex].X, vertexArr[iVertex].Y, vertexArr[iVertex].Z ]
+
+
+# ###################################################################################################################
+def getVertexAxisCross(iA, iB):
+	'''
+	getVertexAxisCross(iA, iB) - get (iB - iA) value.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iA: vertex object
+		iB: vertex object
+	
+	Usage:
+	
+		edgeSize = getVertexAxisCross(v0[0], v1[0])
+		
+	Result:
+	
+		Return diff for vertices values.
+	'''
+	
+	if iA >= 0 and iB >= 0 and iB > iA:
+		return iB - iA
+	if iB >= 0 and iA >= 0 and iA > iB:
+		return iA - iB
+		
+	if iA < 0 and iB >= 0 and iB > iA:
+		return abs(iA) + iB
+	if iB < 0 and iA >= 0 and iA > iB:
+		return abs(iB) + iA
+
+	if iA < 0 and iB <= 0 and iB > iA:
+		return abs(iA) - abs(iB)
+	if iB < 0 and iA <= 0 and iA > iB:
+		return abs(iB) - abs(iA)
+
+	return 0
+
+
+# ###################################################################################################################
+# Edges
+# ###################################################################################################################
+
+
+# ###################################################################################################################
+def getEdgeVertices(iEdge):
+	'''
+	getEdgeVertices(iEdge) - get all vertices values for edge.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iEdge: edge object
+		
+	Usage:
+	
+		[ v1, v2 ] = getEdgeVertices(gEdge)
+		
+	Result:
+	
+		Return vertices array like [ [ 1, 1, 1 ], [ 1, 1, 1 ] ].
+	'''
+	
+	vertexArr = touchTypo(iEdge)
+
+	v1 = [ vertexArr[0].X, vertexArr[0].Y, vertexArr[0].Z ]
+	v2 = [ vertexArr[1].X, vertexArr[1].Y, vertexArr[1].Z ]
+
+	return [ v1, v2 ]
+
+
+# ###################################################################################################################
+def getEdgeNormalized(iV1, iV2):
+	'''
+	getEdgeNormalized(iV1, iV2) - returns vertices with exact sorted order V1 > V2, mostly used 
+	to normalize Pad vertices
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iV1: array with vertices e.g. [ 1, 1, 1 ]
+		iV2: array with vertices e.g. [ 2, 2, 2 ]
+	
+	Usage:
+	
+		[ v1, v2 ] = getEdgeNormalized(v1, v2)
+		
+	Result:
+	
+		for vertices [ 2, 2, 2 ], [ 1, 1, 1 ] return [ 1, 1, 1 ], [ 2, 2, 2 ]
 
 	'''
 
-	index = 1
-	for f in iObj.Shape.Faces:
-		if str(f.BoundBox) == str(iFace.BoundBox):
-			return index
-
-		index = index + 1
-	
-	return -1
+	# edge along X
+	if iV1[0] != iV2[0]:
+		if iV1[0] > iV2[0]:
+			return [ iV1, iV2 ]
+		else:
+			return [ iV2, iV1 ]
+			
+	# edge along Y
+	if iV1[1] != iV2[1]:
+		if iV1[1] > iV2[1]:
+			return [ iV1, iV2 ]
+		else:
+			return [ iV2, iV1 ]
+			
+	# edge along Z
+	if iV1[2] != iV2[2]:
+		if iV1[2] > iV2[2]:
+			return [ iV1, iV2 ]
+		else:
+			return [ iV2, iV1 ]
+		
+	return [ iV1, iV2 ]
 
 
 # ############################################################################
@@ -147,6 +266,85 @@ def getEdgeIndexByKey(iObj, iBoundBox):
 
 
 # ###################################################################################################################
+# Faces
+# ###################################################################################################################
+
+
+# ############################################################################
+def getFaceIndex(iObj, iFace):
+	'''
+	getFaceIndex(iObj, iFace) - returns face index for given object and face.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObj: object of the face
+		iFace: face object
+	
+	Usage:
+	
+		faceIndex = getFaceIndex(gObj, gFace)
+		
+	Result:
+	
+		return int value for face
+
+	'''
+
+	index = 1
+	for f in iObj.Shape.Faces:
+		if str(f.BoundBox) == str(iFace.BoundBox):
+			return index
+
+		index = index + 1
+	
+	return -1
+
+
+# ############################################################################
+def getFaceIndexByKey(iObj, iBoundBox):
+	'''
+	getFaceIndexByKey(iObj, iBoundBox) - returns face index for given face BoundBox.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObj: object of the face
+		iBoundBox: face BoundBox as key
+	
+	Usage:
+	
+		faceIndex = getFaceIndexByKey(o, key)
+		
+	Result:
+	
+		return int value for face
+
+	'''
+
+	index = 1
+	for e in iObj.Shape.Faces:
+		
+		c = "BoundBox ("
+		c += str(int(round(e.BoundBox.XMin, 0))) + ", "
+		c += str(int(round(e.BoundBox.YMin, 0))) + ", "
+		c += str(int(round(e.BoundBox.ZMin, 0))) + ", "
+		c += str(int(round(e.BoundBox.XMax, 0))) + ", "
+		c += str(int(round(e.BoundBox.YMax, 0))) + ", "
+		c += str(int(round(e.BoundBox.ZMax, 0)))
+		c += ")"
+		
+		if c == str(iBoundBox):
+			return index
+
+		index = index + 1
+	
+	return -1
+
+
+# ###################################################################################################################
 def getFaceVertices(iFace):
 	'''
 	getFaceVertices(iFace) - get all vertices values for face.
@@ -177,6 +375,41 @@ def getFaceVertices(iFace):
 
 
 # ###################################################################################################################
+def getFaceType(iObj, iFace):
+	'''
+	getFaceType(iObj, iFace) - get face type, if this is "edge" or "surface".
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObj: object where is the face
+		iFace: face object
+
+	Usage:
+	
+		faceType = getFaceType(gObj, gFace)
+		
+	Result:
+	
+		Return string "surface" or "edge".
+
+	'''
+	
+	sizes = []
+	sizes = getSizes(iObj)
+	sizes.sort()
+	
+	t = int(sizes[0])
+	
+	for e in iFace.Edges:
+		if int(e.Length) == t:
+			return "edge"
+			
+	return "surface"
+	
+
+# ###################################################################################################################
 def getFaceEdges(iObj, iFace):
 	'''
 	getFaceEdges(iObj, iFace) - get all edges for given face grouped by sizes.
@@ -204,8 +437,6 @@ def getFaceEdges(iObj, iFace):
 
 	'''
 	
-	[ faceAxis, faceType ] = getDirectionFace(iObj, iFace)
-
 	sizes = []
 	sizes = getSizes(iObj)
 	sizes.sort()
@@ -252,62 +483,243 @@ def getFaceEdges(iObj, iFace):
 	if int(e4.Length) == l:
 		arrLong.append(e4)
 	
+	if len(arrThick) == 0:
+		faceType = "surface"
+	else:
+		faceType = "edge"
+	
 	return [ faceType, arrAll, arrThick, arrShort, arrLong ]
 	
 
 # ###################################################################################################################
-def getEdgeVertices(iEdge):
+def getFacePlane(iFace):
 	'''
-	getEdgeVertices(iEdge) - get all vertices values for edge.
-	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
-	Args:
-	
-		iEdge: edge object
-		
-	Usage:
-	
-		[ v1, v2 ] = getEdgeVertices(gEdge)
-		
-	Result:
-	
-		Return vertices array like [ [ 1, 1, 1 ], [ 1, 1, 1 ] ].
-	'''
-	
-	vertexArr = touchTypo(iEdge)
+	getFacePlane(iFace) - get face plane in notation "XY", "XZ", "YZ". 
 
-	v1 = [ vertexArr[0].X, vertexArr[0].Y, vertexArr[0].Z ]
-	v2 = [ vertexArr[1].X, vertexArr[1].Y, vertexArr[1].Z ]
-
-	return [ v1, v2 ]
-
-
-# ###################################################################################################################
-def getVertex(iFace, iEdge, iVertex):
-	'''
-	getVertex(iFace, iEdge, iVertex) - get vertex values for face, edge and vertex index.
-	
 	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
 		iFace: face object
-		iEdge: edge array index
-		iVertex: vertex array index (0 or 1)
 	
 	Usage:
 	
-		[ x, y, z ] = getVertex(gFace, 0, 1)
+		plane = getFacePlane(face)
 		
 	Result:
 	
-		Return vertex position.
+		string "XY", "XZ", or "YZ".
+		
 	'''
-	
-	vertexArr = touchTypo(iFace.Edges[iEdge])
 
-	return [ vertexArr[iVertex].X, vertexArr[iVertex].Y, vertexArr[iVertex].Z ]
+	[ v1, v2, v3, v4 ] = getFaceVertices(iFace)
+
+	if int(v1[2] + v2[2] + v3[2] + v4[2]) == int(4 * v1[2]):
+		return "XY"
+	
+	if int(v1[1] + v2[1] + v3[1] + v4[1]) == int(4 * v1[1]):
+		return "XZ"
+	
+	if int(v1[0] + v2[0] + v3[0] + v4[0]) == int(4 * v1[0]):
+		return "YZ"
+
+	return ""
+
+
+# ###################################################################################################################
+def getFaceSink(iObj, iFace):
+	'''
+	getFaceSink(iObj, iFace) - get face sink axis direction in notation "+", or "-".
+
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObj: object with the face
+		iFace: face object
+	
+	Usage:
+	
+		sink = getFaceSink(obj, face)
+		
+	Result:
+	
+		string "+" if the object at face should go along axis forward, 
+		or "-" if the object at face should go along axis backward
+		
+	'''
+
+	plane = getFacePlane(iFace)
+	[ x, y, z ] = iFace.CenterOfMass
+	
+	if plane == "XY":
+		v = FreeCAD.Vector(x, y, z + 1)
+		
+	if plane == "XZ":
+		v = FreeCAD.Vector(x, y + 1, z)
+		
+	if plane == "YZ":
+		v = FreeCAD.Vector(x + 1, y, z)
+		
+	inside = iObj.Shape.BoundBox.isInside(v)
+	
+	if inside == True:
+		return "+"
+	else:
+		return "-"
+
+
+# ###################################################################################################################
+def getFaceObjectRotation(iObj, iFace):
+	'''
+	getFaceObjectRotation(iObj, iFace) - get face object rotation to apply to the new created object at face. 
+	Object created at face with this rotation should be up from the face.
+
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObj: object with the face
+		iFace: face object
+	
+	Usage:
+	
+		r = getFaceObjectRotation(obj, face)
+		
+	Result:
+	
+		FreeCAD.Rotation object that can be directly pass to the setPlacement or object.Placement
+		
+	'''
+
+	plane = getFacePlane(iFace)
+	sink = getFaceSink(iObj, iFace)
+	
+	if sink == "+":
+				
+		if plane == "XY":
+			r = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 180)
+			
+		if plane == "XZ":
+			r = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 90)
+
+		if plane == "YZ":
+			r = FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), 270)
+
+	else:
+	
+		if plane == "XY":
+			r = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 0)
+			
+		if plane == "XZ":
+			r = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 270)
+
+		if plane == "YZ":
+			r = FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), 90)
+	
+	return r
+
+
+# ###################################################################################################################
+def getFaceDetails(iObj, iFace):
+	'''
+	getFaceDetails(iObj, iFace) - allow to get detailed information for face direction.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObj: selected object
+		iFace: selected face object
+	
+	Usage:
+	
+		getFaceDetails(gObj, gFace)
+		
+	Result:
+	
+		[ "XY", "surface" ] - if the direction is XY and it is surface, no thickness edge
+		[ "XY", "edge" ] - if the direction is XY and it is edge, there is thickness edge
+		[ "XY", "equal" ] - if the direction is XY and both edges are equal
+		
+		Note: The first argument can be "XY", "YX", "XZ", "ZX", "YZ", "ZY". 
+		This is related to face not to object. The object direction will be different.
+		
+	'''
+
+	[ v1, v2, v3, v4 ] = getFaceVertices(iFace)
+
+	direction = ""
+	
+	if int(v1[2] + v2[2] + v3[2] + v4[2]) == int(4 * v1[2]):
+		direction = "XY"
+	
+	if int(v1[1] + v2[1] + v3[1] + v4[1]) == int(4 * v1[1]):
+		direction = "XZ"
+	
+	if int(v1[0] + v2[0] + v3[0] + v4[0]) == int(4 * v1[0]):
+		direction = "YZ"
+
+	s = getSizes(iObj)
+	s.sort()
+	thick = int(s[0])
+	
+	e1 = int(iFace.Edges[0].Length)
+	e2 = int(iFace.Edges[1].Length)
+	e3 = int(iFace.Edges[2].Length)
+	e4 = int(iFace.Edges[3].Length)
+	
+	ed = int(iFace.Edges[0].Length + iFace.Edges[1].Length + iFace.Edges[2].Length + iFace.Edges[3].Length)
+	
+	if ed == int(4 * e1):
+		return [ direction, "equal" ]
+	
+	if iObj.isDerivedFrom("Part::Box"):
+		
+		if direction == "XY" and e1 < e2:
+			if e1 == thick or e2 == thick:
+				return [ "XY", "edge" ]
+			else:
+				return [ "XY", "surface" ]
+
+		if direction == "XY" and e1 > e2:
+			if e1 == thick or e2 == thick:
+				return [ "YX", "edge" ]
+			else:
+				return [ "YX", "surface" ]
+
+		if direction == "XZ" and e1 > e2:
+			if e1 == thick or e2 == thick:
+				return [ "XZ", "edge" ]
+			else:
+				return [ "XZ", "surface" ]
+
+		if direction == "XZ" and e1 < e2:
+			if e1 == thick or e2 == thick:
+				return [ "ZX", "edge" ]
+			else:
+				return [ "ZX", "surface" ]
+
+		if direction == "YZ" and e1 < e2:
+			if e1 == thick or e2 == thick:
+				return [ "YZ", "edge" ]
+			else:
+				return [ "YZ", "surface" ]
+
+		if direction == "YZ" and e1 > e2:
+			if e1 == thick or e2 == thick:
+				return [ "ZY", "edge" ]
+			else:
+				return [ "ZY", "surface" ]
+
+	else:
+		
+		return [ "not supported", "not supported" ]
+
+
+# ###################################################################################################################
+# Object
+# ###################################################################################################################
 
 
 # ###################################################################################################################
@@ -375,6 +787,9 @@ def getPlacement(iObj):
 
 	if iObj.isDerivedFrom("PartDesign::Pad"):
 		ref = iObj.Profile[0].AttachmentOffset
+		
+	elif iObj.isDerivedFrom("Sketcher::SketchObject"):
+		ref = iObj.AttachmentOffset
 	else:
 		ref = iObj.Placement
 		
@@ -414,10 +829,52 @@ def setPlacement(iObj, iX, iY, iZ, iR):
 	if iObj.isDerivedFrom("PartDesign::Pad"):
 		iObj.Profile[0].AttachmentOffset.Base = FreeCAD.Vector(iX, iY, iZ)
 		iObj.Profile[0].AttachmentOffset.Rotation = iR
+		
+	elif iObj.isDerivedFrom("Sketcher::SketchObject"):
+		iObj.Placement.Base = FreeCAD.Vector(iX, iY, iZ)
+		iObj.Placement.Rotation = iR
+		
 	else:
 		iObj.Placement.Base = FreeCAD.Vector(iX, iY, iZ)
 		iObj.Placement.Rotation = iR
 	
+
+# ###################################################################################################################
+def resetPlacement(iObj):
+	'''
+	resetPlacement(iObj) - reset placement for given object. Needed to set rotation for object at face.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObj: object to reset placement
+
+	Usage:
+	
+		resetPlacement(obj)
+		
+	Result:
+	
+		Object obj return to base position.
+
+	'''
+
+	zero = FreeCAD.Vector(0, 0, 0)
+	r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 0.00)
+	
+	if iObj.isDerivedFrom("PartDesign::Pad"):
+		iObj.Profile[0].AttachmentOffset.Base = zero
+		iObj.Profile[0].AttachmentOffset.Rotation = r
+		
+	elif iObj.isDerivedFrom("Sketcher::SketchObject"):
+		iObj.Placement.Base = zero
+		iObj.Placement.Rotation = r
+		
+	else:
+		iObj.Placement.Base = zero
+		iObj.Placement.Rotation = r
+
 
 # ###################################################################################################################
 def getModelRotation(iX, iY, iZ):
@@ -776,97 +1233,6 @@ def getDirection(iObj):
 
 
 # ###################################################################################################################
-def getDirectionFace(iObj, iFace):
-	'''
-	getDirectionFace(iObj, iFace) - allow to get Face direction.
-	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
-	Args:
-	
-		iObj: selected object
-		iFace: selected face
-	
-	Usage:
-	
-		getDirectionFace(gObj, gFace)
-		
-	Result:
-	
-		[ "XY", "surface" ] - if the direction is XY and it is surface, no thickness edge
-		[ "XY", "edge" ] - if the direction is XY and it is edge, there is thickness edge
-		[ "XY", "equal" ] - if the direction is XY and both edges are equal
-		
-		Note: The first argument can be "XY", "YX", "XZ", "ZX", "YZ", "ZY". 
-		This is related to face not to object. The object direction will be different.
-		
-	'''
-
-	[ v1, v2, v3, v4 ] = getFaceVertices(iFace)
-
-	direction = ""
-	
-	if int(v1[2] + v2[2] + v3[2] + v4[2]) == int(4 * v1[2]):
-		direction = "XY"
-	
-	if int(v1[1] + v2[1] + v3[1] + v4[1]) == int(4 * v1[1]):
-		direction = "XZ"
-	
-	if int(v1[0] + v2[0] + v3[0] + v4[0]) == int(4 * v1[0]):
-		direction = "YZ"
-
-	s = getSizes(iObj)
-	s.sort()
-	thick = int(s[0])
-	
-	e1 = int(iFace.Edges[0].Length)
-	e2 = int(iFace.Edges[1].Length)
-	e3 = int(iFace.Edges[2].Length)
-	e4 = int(iFace.Edges[3].Length)
-	
-	ed = int(iFace.Edges[0].Length + iFace.Edges[1].Length + iFace.Edges[2].Length + iFace.Edges[3].Length)
-	
-	if ed == int(4 * e1):
-		return [ direction, "equal" ]
-		
-	if direction == "XY" and e1 < e2:
-		if e1 == thick or e2 == thick:
-			return [ "XY", "edge" ]
-		else:
-			return [ "XY", "surface" ]
-
-	if direction == "XY" and e1 > e2:
-		if e1 == thick or e2 == thick:
-			return [ "YX", "edge" ]
-		else:
-			return [ "YX", "surface" ]
-
-	if direction == "XZ" and e1 > e2:
-		if e1 == thick or e2 == thick:
-			return [ "XZ", "edge" ]
-		else:
-			return [ "XZ", "surface" ]
-
-	if direction == "XZ" and e1 < e2:
-		if e1 == thick or e2 == thick:
-			return [ "ZX", "edge" ]
-		else:
-			return [ "ZX", "surface" ]
-
-	if direction == "YZ" and e1 < e2:
-		if e1 == thick or e2 == thick:
-			return [ "YZ", "edge" ]
-		else:
-			return [ "YZ", "surface" ]
-
-	if direction == "YZ" and e1 > e2:
-		if e1 == thick or e2 == thick:
-			return [ "ZY", "edge" ]
-		else:
-			return [ "ZY", "surface" ]
-
-
-# ###################################################################################################################
 def convertPosition(iObj, iX, iY, iZ):
 	'''
 	convertPosition(iObj, iX, iY, iZ) - convert given position vector to correct position values according 
@@ -985,57 +1351,70 @@ def sizesToCubePanel(iObj, iType):
 
 
 # ###################################################################################################################
-def makePad(iSize1, iSize2, iSize3, iX, iY, iZ, iRotation, iType, iPadName="Pad"):
+def makePad(iObj, iPadLabel="Pad"):
 	'''
-	makePad(iSize1, iSize2, iSize3, iX, iY, iZ, iType, iPadName="Pad") - allows to create 
-	Part, Plane, Body, Pad, Sketch objects.
+	makePad(iObj, iPadLabel="Pad") - allows to create Part, Plane, Body, Pad, Sketch objects.
 	
 	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
-		iSize1: SizeX
-		iSize2: SizeY
-		iSize3: Pad Length
+		iObj: object Cube to change into Pad
+		iPadLabel: Label for the new created Pad, the Name will be Pad
 		
-		iX: Sketch AttachmentOffset X
-		iY: Sketch AttachmentOffset Y
-		iZ: Sketch AttachmentOffset Z
-		iRotation: rotation object
-		
-		iType: "XY", "YX", "XZ", "ZX", "YZ", "ZY"
-		iPadName="Pad": Label for created Pad and other parts
-	
 	Usage:
 	
 		import MagicPanels
-		
-		r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 0.00)
-		MagicPanels.makePad("600", "300", "18", 0, 0, 0, r, "XY", iPadName="Pad"):
+		MagicPanels.makePad(obj, "myPanel")
 		
 	Result:
 	
 		Created Pad with correct placement, rotation and return [ part, body, sketch, pad ].
 	'''
 
+	sizes = getSizes(iObj)
+	sizes.sort()
+	
+	direction = getDirection(iObj)
+	
+	if direction == "XY" or direction == "XZ" or direction == "YZ":
+		s = [ sizes[2], sizes[1], sizes[0] ]
+	
+	if direction == "YX" or direction == "ZX" or direction == "ZY":
+		s = [ sizes[1], sizes[2], sizes[0] ]
+
+	[ X, Y, Z, r ] = getPlacement(iObj)
+	
+	if direction == "XY" or direction == "YX":
+		[ x, y, z ] = [ X, Y, Z ]
+	
+	if direction == "XZ" or direction == "ZX":
+		[ x, y, z ] = [ X, Z, -(Y+sizes[0]) ]
+
+	if direction == "YZ" or direction == "ZY":
+		[ x, y, z ] = [ Y, Z, X ]
+	
 	import Part, PartDesign
 	import Sketcher
 	import PartDesignGui
 
 	doc = FreeCAD.ActiveDocument
-	part = doc.addObject('App::Part', 'Part')
-	part.Label = "Part, "+iPadName
-	body = doc.addObject('PartDesign::Body', 'Body')
-	body.Label = "Body, "+iPadName
-	part.addObject(body)
-	sketch = body.newObject('Sketcher::SketchObject', 'Sketch')
-	sketch.Label = "Pattern, "+iPadName
 	
-	if iType == "XY" or iType == "YX":
+	part = doc.addObject('App::Part', 'Part')
+	part.Label = "Part, "+iPadLabel
+	
+	body = doc.addObject('PartDesign::Body', 'Body')
+	body.Label = "Body, "+iPadLabel
+	part.addObject(body)
+	
+	sketch = body.newObject('Sketcher::SketchObject', 'Sketch')
+	sketch.Label = "Pattern, "+iPadLabel
+	
+	if direction == "XY" or direction == "YX":
 		sketch.Support = (body.Origin.OriginFeatures[3])
-	if iType == "XZ" or iType == "ZX":
+	if direction == "XZ" or direction == "ZX":
 		sketch.Support = (body.Origin.OriginFeatures[4])
-	if iType == "YZ" or iType == "ZY":
+	if direction == "YZ" or direction == "ZY":
 		sketch.Support = (body.Origin.OriginFeatures[5])
 
 	sketch.MapMode = 'FlatFace'
@@ -1061,23 +1440,329 @@ def makePad(iSize1, iSize2, iSize3, iX, iY, iZ, iRotation, iType, iPadName="Pad"
 
 	sketch.addConstraint(Sketcher.Constraint('Coincident',2,2,-1,1))
 	sketch.addConstraint(Sketcher.Constraint('DistanceX',0,1,0,2,274.784485))
-	sketch.setDatum(9,FreeCAD.Units.Quantity(iSize1))
+	sketch.setDatum(9,FreeCAD.Units.Quantity(s[0]))
 	sketch.renameConstraint(9, u'SizeX')
 	sketch.addConstraint(Sketcher.Constraint('DistanceY',3,1,3,2,159.435455))
-	sketch.setDatum(10,FreeCAD.Units.Quantity(iSize2))
+	sketch.setDatum(10,FreeCAD.Units.Quantity(s[1]))
 	sketch.renameConstraint(10, u'SizeY')
 
-	position = FreeCAD.Vector(iX, iY, iZ)
-	sketch.AttachmentOffset = FreeCAD.Placement(position, iRotation)
+	position = FreeCAD.Vector(x, y, z)
+	sketch.AttachmentOffset = FreeCAD.Placement(position, r)
 
-	pad = body.newObject('PartDesign::Pad', iPadName)
+	pad = body.newObject('PartDesign::Pad', "Pad")
+	pad.Label = iPadLabel
 	pad.Profile = sketch
-	pad.Length = FreeCAD.Units.Quantity(iSize3)
+	pad.Length = FreeCAD.Units.Quantity(s[2])
 	sketch.Visibility = False
 
 	doc.recompute()
 
 	return [ part, body, sketch, pad ]
+
+
+# ###################################################################################################################
+def makeHoles(iObj, iFace, iCylinders):
+	'''
+	makeHoles(iObj, iFace, iCylinders) - make holes
+
+	Note: This is internal function, so there is no error pop-up or any error handling.
+
+	Args:
+
+		iObj: base object to make hole
+		iFace: face of base object to make hole
+		iCylinders: list of cylinders to make holes below each one
+
+	Usage:
+
+		import MagicPanels
+		holes = MagicPanels.makeHoles(obj, face, cylinders)
+		
+	Result:
+
+		Make holes and return list of holes.
+	'''
+
+	import Part, Sketcher
+
+	holes = []
+
+	base = iObj
+	face = iFace
+	objects = iCylinders
+
+	# set body for base object
+	if base.isDerivedFrom("Part::Box"):
+		
+		[ part, body, sketch, pad ] = makePad(base, base.Label)
+		FreeCAD.ActiveDocument.removeObject(base.Name)
+		FreeCAD.activeDocument().recompute()
+	
+	else:
+		
+		body = base._Body
+
+	# loop in drill bits and drill holes
+	for o in objects:
+		
+		# create hole Sketch
+		holeSketch = body.newObject('Sketcher::SketchObject','Sketch')
+		holeSketch.MapMode = 'FlatFace'
+
+		axis = o.Placement.Rotation.Axis
+		circleGeo = Part.Circle(FreeCAD.Vector(0, 0, 0), axis, o.Radius)
+		holeSketch.addGeometry(circleGeo, False)
+		
+		holeSketch.addConstraint(Sketcher.Constraint('Coincident', 0, 3, -1, 1)) 
+		holeSketch.addConstraint(Sketcher.Constraint('Diameter', 0, 2 * o.Radius)) 
+		s = str(float(2 * o.Radius))+" mm"
+		holeSketch.setDatum(1, FreeCAD.Units.Quantity(s))
+		holeSketch.renameConstraint(1, u'Hole00Diameter')
+		
+		FreeCAD.ActiveDocument.recompute()
+		
+		# set position to hole Sketch
+		[ x, y, z, r ] = getPlacement(o)
+		setPlacement(holeSketch, x, y, z, r)
+		
+		FreeCAD.ActiveDocument.recompute()
+		
+		# create hole object
+		hole = body.newObject('PartDesign::Hole','Hole')
+		hole.Profile = holeSketch
+		holeSketch.Visibility = False
+		
+		hole.Diameter = 2 * o.Radius
+		hole.HoleCutDiameter = 2 * o.Radius
+		hole.HoleCutDepth = o.Height
+		hole.HoleCutCountersinkAngle = 90.000000
+		hole.Depth = o.Height
+		hole.DrillPointAngle = 118.000000
+		hole.TaperedAngle = 90.000000
+		hole.Threaded = 0
+		hole.ThreadType = 0
+		hole.HoleCutType = 0
+		hole.DepthType = 0
+		hole.DrillPoint = 1
+		hole.DrillForDepth = 1
+		hole.Tapered = 0
+		
+		FreeCAD.ActiveDocument.recompute()
+		
+		base = hole
+		holes.append(hole)
+
+	return holes
+	
+
+# ###################################################################################################################
+def makeCountersinks(iObj, iFace, iCones):
+	'''
+	makeCountersinks(iObj, iFace, iCones) - make countersinks
+
+	Note: This is internal function, so there is no error pop-up or any error handling.
+
+	Args:
+
+		iObj: base object to drill
+		iFace: face of base object to drill
+		iCones: list of drill bits to drill below each one (Cone objects)
+
+	Usage:
+
+		import MagicPanels
+		holes = MagicPanels.makeCountersinks(obj, face, cones)
+		
+	Result:
+
+		Make holes and return list of holes. 
+	'''
+
+	import Part, Sketcher
+
+	holes = []
+
+	base = iObj
+	face = iFace
+	objects = iCones
+		
+	# set body for base object
+	if base.isDerivedFrom("Part::Box"):
+		
+		[ part, body, sketch, pad ] = makePad(base, base.Label)
+		FreeCAD.ActiveDocument.removeObject(base.Name)
+		FreeCAD.activeDocument().recompute()
+	
+	else:
+		
+		body = base._Body
+	
+	for o in objects:
+		
+		# create hole Sketch
+		holeSketch = body.newObject('Sketcher::SketchObject','Sketch')
+		holeSketch.MapMode = 'FlatFace'
+
+		axis = o.Placement.Rotation.Axis
+		r1 = float(2 * o.Radius1)
+		r2 = float(2 * o.Radius2)
+		sr1 = str(r1)+" mm"
+		sr2 = str(r2)+" mm"
+		
+		# set hole
+		geo = Part.Circle(FreeCAD.Vector(0, 0, 0), axis, r1)
+		holeSketch.addGeometry(geo, False)
+		holeSketch.addConstraint(Sketcher.Constraint('Coincident', 0, 3, -1, 1))
+		holeSketch.addConstraint(Sketcher.Constraint('Diameter', 0, r1)) 
+		holeSketch.setDatum(1, FreeCAD.Units.Quantity(sr1))
+		holeSketch.renameConstraint(1, u'Hole00Diameter')
+		
+		# set countersink
+		geo = Part.Circle(FreeCAD.Vector(0, 0, 0), axis, r2)
+		holeSketch.addGeometry(geo, True)
+		holeSketch.addConstraint(Sketcher.Constraint('Coincident', 1, 3, -1, 1)) 
+		holeSketch.addConstraint(Sketcher.Constraint('Diameter', 1, r2)) 
+		holeSketch.setDatum(3, FreeCAD.Units.Quantity(sr2))
+		holeSketch.renameConstraint(3, u'Countersink00Diameter')
+		
+		FreeCAD.ActiveDocument.recompute()
+		
+		# set position to hole Sketch
+		[ x, y, z, r ] = getPlacement(o)
+		setPlacement(holeSketch, x, y, z, r)
+		
+		FreeCAD.ActiveDocument.recompute()
+		
+		# create hole object
+		hole = body.newObject('PartDesign::Hole','Countersink')
+		hole.Profile = holeSketch
+		holeSketch.Visibility = False
+		
+		hole.Diameter = 2 * o.Radius1
+		hole.HoleCutDiameter = 2 * o.Radius2
+		hole.HoleCutDepth = 5.000000
+		hole.HoleCutCountersinkAngle = 90.000000
+		hole.Depth = o.Height
+		hole.DrillPointAngle = 118.000000
+		hole.TaperedAngle = 90.000000
+		hole.Threaded = 0
+		hole.ThreadType = 0
+		hole.HoleCutType = 2
+		hole.DepthType = 0
+		hole.DrillPoint = 1
+		hole.DrillForDepth = 1
+		hole.Tapered = 0
+		
+		FreeCAD.ActiveDocument.recompute()
+		
+		base = hole
+		holes.append(hole)
+		
+	return holes
+	
+
+# ###################################################################################################################
+def makeCounterbores(iObj, iFace, iCones):
+	'''
+	makeCounterbores(iObj, iFace, iCones) - make counterbores
+
+	Note: This is internal function, so there is no error pop-up or any error handling.
+
+	Args:
+
+		iObj: base object to drill
+		iFace: face of base object to drill
+		iCones: list of drill bits to drill below each one (Cone objects)
+
+	Usage:
+
+		import MagicPanels
+		holes = MagicPanels.drillCounterbores(obj, face, cones)
+		
+	Result:
+
+		Make holes and return list of holes. 
+	'''
+
+	import Part, Sketcher
+
+	holes = []
+
+	base = iObj
+	face = iFace
+	objects = iCones
+		
+	# set body for base object
+	if base.isDerivedFrom("Part::Box"):
+		
+		[ part, body, sketch, pad ] = makePad(base, base.Label)
+		FreeCAD.ActiveDocument.removeObject(base.Name)
+		FreeCAD.activeDocument().recompute()
+	
+	else:
+		
+		body = base._Body
+
+	for o in objects:
+		
+		# create hole Sketch
+		holeSketch = body.newObject('Sketcher::SketchObject','Sketch')
+		holeSketch.MapMode = 'FlatFace'
+
+		axis = o.Placement.Rotation.Axis
+		r1 = float(2 * o.Radius1)
+		r2 = float(2 * o.Radius2)
+		sr1 = str(r1)+" mm"
+		sr2 = str(r2)+" mm"
+		
+		# set hole
+		geo = Part.Circle(FreeCAD.Vector(0, 0, 0), axis, r1)
+		holeSketch.addGeometry(geo, False)
+		holeSketch.addConstraint(Sketcher.Constraint('Coincident', 0, 3, -1, 1))
+		holeSketch.addConstraint(Sketcher.Constraint('Diameter', 0, r1)) 
+		holeSketch.setDatum(1, FreeCAD.Units.Quantity(sr1))
+		holeSketch.renameConstraint(1, u'Hole00Diameter')
+		
+		# set counterbore
+		geo = Part.Circle(FreeCAD.Vector(0, 0, 0), axis, r2)
+		holeSketch.addGeometry(geo, True)
+		holeSketch.addConstraint(Sketcher.Constraint('Coincident', 1, 3, -1, 1)) 
+		holeSketch.addConstraint(Sketcher.Constraint('Diameter', 1, r2)) 
+		holeSketch.setDatum(3, FreeCAD.Units.Quantity(sr2))
+		holeSketch.renameConstraint(3, u'Counterbore00Diameter')
+		
+		FreeCAD.ActiveDocument.recompute()
+		
+		# set position to hole Sketch
+		[ x, y, z, r ] = getPlacement(o)
+		setPlacement(holeSketch, x, y, z, r)
+		
+		FreeCAD.ActiveDocument.recompute()
+		
+		# create hole object
+		hole = body.newObject('PartDesign::Hole','Counterbore')
+		hole.Profile = holeSketch
+		holeSketch.Visibility = False
+		
+		hole.Diameter = r1
+		hole.HoleCutDiameter = r2
+		hole.HoleCutDepth = 5.000000
+		hole.HoleCutCountersinkAngle = 90.000000
+		hole.Depth = o.Height
+		hole.TaperedAngle = 90.000000
+		hole.Threaded = 0
+		hole.ThreadType = 0
+		hole.HoleCutType = 1
+		hole.DepthType = 0
+		hole.DrillPoint = 0
+		hole.Tapered = 0
+		
+		FreeCAD.ActiveDocument.recompute()
+		
+		base = hole
+		holes.append(hole)
+		
+	return holes
 
 
 # ###################################################################################################################
@@ -1431,7 +2116,7 @@ def panelMove2Face():
 				gObj = FreeCADGui.Selection.getSelection()[0]
 				gFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 
-				[ faceAxis, faceType ] = getDirectionFace(gObj, gFace)
+				gFPlane = getFacePlane(gFace)
 				[ v1, v2, v3, v4 ] = getFaceVertices(gFace)
 
 				continue
@@ -1440,19 +2125,19 @@ def panelMove2Face():
 			
 			[ x, y, z, r ] = getPlacement(obj)
 			
-			if faceAxis == "XY" or faceAxis == "YX":
+			if gFPlane == "XY":
 				X = x
 				Y = y
 				Z = v1[2]
 				R = r
 				
-			if faceAxis == "XZ" or faceAxis == "ZX":
+			if gFPlane == "XZ":
 				X = x
 				Y = v1[1]
 				Z = z
 				R = r
 			
-			if faceAxis == "YZ" or faceAxis == "ZY":
+			if gFPlane == "YZ":
 				X = v1[0]
 				Y = y
 				Z = z
@@ -1948,29 +2633,7 @@ def panel2pad(iLabel="panel2pad"):
 
 		gObj = FreeCADGui.Selection.getSelection()[0]
 
-		sizes = getSizes(gObj)
-		sizes.sort()
-		
-		direction = getDirection(gObj)
-		
-		if direction == "XY" or direction == "XZ" or direction == "YZ":
-			s = [ sizes[2], sizes[1], sizes[0] ]
-		
-		if direction == "YX" or direction == "ZX" or direction == "ZY":
-			s = [ sizes[1], sizes[2], sizes[0] ]
-
-		[ X, Y, Z, r ] = getPlacement(gObj)
-		
-		if direction == "XY" or direction == "YX":
-			[ x, y, z ] = [ X, Y, Z ]
-		
-		if direction == "XZ" or direction == "ZX":
-			[ x, y, z ] = [ X, Z, -(Y+sizes[0]) ]
-
-		if direction == "YZ" or direction == "ZY":
-			[ x, y, z ] = [ Y, Z, X ]
-			
-		[ part, body, sketch, pad ] = makePad(s[0], s[1], s[2], x, y, z, r, direction, iLabel)
+		[ part, body, sketch, pad ] = makePad(gObj, iLabel)
 		
 		FreeCAD.ActiveDocument.removeObject(gObj.Name)
 		FreeCAD.activeDocument().recompute()
@@ -2024,7 +2687,10 @@ def panel2profile():
 			if sizes[0] != sizes[1]:
 				raise
 			
-			[ part, body, sketch, pad ] = panel2pad("Construction")
+			[ part, body, sketch, pad ] = makePad(gObj, "Construction")
+			FreeCAD.ActiveDocument.removeObject(gObj.Name)
+			FreeCAD.activeDocument().recompute()
+			
 			profile = body.newObject('PartDesign::Thickness','Profile')
 			
 			faces = []
@@ -2135,8 +2801,10 @@ def panel2frame():
 			for e in arr:
 				keys.append(str(e.BoundBox))
 			
-			[ part, body, sketch, pad ] = panel2pad("Frame")
-
+			[ part, body, sketch, pad ] = makePad(o, "Frame")
+			FreeCAD.ActiveDocument.removeObject(o.Name)
+			FreeCAD.activeDocument().recompute()
+		
 			edges = []
 			for k in keys:
 				index = getEdgeIndexByKey(pad, k)
@@ -2237,6 +2905,289 @@ def panel2link():
 		info += '</a>'
 
 		showInfo("panel2link", info)
+
+
+# ###################################################################################################################
+def drillHoles():
+	'''
+	drillHole() - allows to drill holes in selected face below selected cylinders.
+	First object will be the base object face, and all others should be cylinders to drill holes.
+
+	Note: This function displays pop-up info in case of error.
+
+	Args:
+		
+		no args
+		
+	Usage:
+
+		import MagicPanels
+		holes = MagicPanels.drillHoles()
+		
+	Result:
+
+		Selected face will be drilled below selected cylinders. 
+		If the first selected object is Cube it will be changed into Pad. 
+	'''
+
+	try:
+
+		import Part, Sketcher
+
+		base = FreeCADGui.Selection.getSelection()[0]
+		face = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+		objects = FreeCADGui.Selection.getSelection()
+		
+		del objects[0]
+			
+		# if face is selected create drill bit at face only
+		if len(objects) == 0:
+
+			d = FreeCAD.ActiveDocument.addObject("Part::Cylinder","DrillBitHole")
+			d.Label = "Drill Bit - simple hole "
+
+			# default drill bit size
+			d.Radius = 4
+			d.Height = 25
+
+			# default drill bit position 0 - vertex
+			[ v1, v2, v3, v4 ] = getFaceVertices(face)
+			x, y, z = v1[0], v1[1], v1[2]
+			
+			r = getFaceObjectRotation(base, face)
+			
+			setPlacement(d, x, y, z, r)
+			
+			# default drill bit colors (middle, bottom, top)
+			colors = [ (1.0, 0.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0) ]
+			d.ViewObject.DiffuseColor = colors
+			
+			return
+
+		makeHoles(base, face, objects)
 	
+	except:
+		
+		info = ""
+		
+		info += translate('drillHoles', 'This is drill bit to make simple hole. The hole will be drilled below the bottom part of the drill bit, below the red face of the cylinder. The radius and depth of the hole will be the same as drill bit radius and height. You can resize the drill bit if you want. If you select face only, the drill bit will be created in the corner of the face (0 vertex). So, you will be able to move the drill bit precisely to any place at the face. Do not move the drill bit up, the drill bit should touch the face to get exact hole depth. If you select face and than any amount of drill bits, the holes will be drilled below each drill bit. To select more objects hold left CTRL key during selection. If the selected element is Cube, it will be replaced with Pad.')
+
+		showInfo("drillHoles", info)
+
+
+# ###################################################################################################################
+def drillCountersinks():
+	'''
+	drillCountersinks() - allows to drill hole with countersink in selected face below selected drill bit. 
+	First object will be the base object face, and all others should be drill bits 
+	to drill holes with countersinks.
+
+	Note: This function displays pop-up info in case of error.
+
+	Args:
+
+		no args
+
+	Usage:
+
+		import MagicPanels
+		holes = MagicPanels.drillCountersinks()
+		
+	Result:
+
+		Selected face will be drilled below selected drill bits. 
+		If the first selected object is Cube it will be changed into Pad. 
+	'''
+
+	try:
+
+		import Part, Sketcher
+
+		holes = []
+
+		base = FreeCADGui.Selection.getSelection()[0]
+		face = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+		objects = FreeCADGui.Selection.getSelection()
+		
+		del objects[0]
+
+		# if face is selected create drill bit at face only
+		if len(objects) == 0:
+			
+			d = FreeCAD.ActiveDocument.addObject("Part::Cone","DrillBitCountersink")
+			d.Label = "Drill Bit - countersink "
+
+			# default drill bit size
+			d.Radius1 = 2
+			d.Radius2 = 5
+			d.Height = 50
+
+			# default drill bit position 0 - vertex
+			[ v1, v2, v3, v4 ] = getFaceVertices(face)
+			x, y, z = v1[0], v1[1], v1[2]
+			
+			r = getFaceObjectRotation(base, face)
+			
+			setPlacement(d, x, y, z, r)
+			
+			# default drill bit colors (middle, bottom, top)
+			colors = [ (0.0, 1.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0) ]
+			d.ViewObject.DiffuseColor = colors
+			
+			return
+		
+		makeCountersinks(base, face, objects)
+	
+	except:
+		
+		info = ""
+		
+		info += translate('drillCountersinks', 'This is drill bit to make countersink with hole. The hole will be drilled below the bottom part of the drill bit, below the red face. The radius of the hole will be drill bit Radius1. The radius of countersink will be drill bit Radius2. The hole depth will be drill bit Height. If you select face only, the drill bit will be created in the corner of the face (0 vertex), allowing you to move the drill bit precisely to any place at the face. Do not move the drill bit up, the drill bit should touch the face. You can select any amount of drill bits, the holes will be drilled below each drill bit but first selected should be face, next drill bits. To select more objects hold left CTRL key during selection. If the selected element is Cube, it will be replaced with Pad.')
+
+		showInfo("drillCountersinks", info)
+	
+
+# ###################################################################################################################
+def drillCounterbores():
+	'''
+	drillCounterbores() - allows to drill hole with counterbore in selected face below selected drill bits. 
+	First object will be the base object face, and all others should be drill bits to drill 
+	holes with counterbores.
+
+	Note: This function displays pop-up info in case of error.
+
+	Args:
+
+		no args
+
+	Usage:
+
+		import MagicPanels
+		holes = MagicPanels.drillCounterbores()
+		
+	Result:
+
+		Selected face will be drilled below selected drill bits. 
+		If the first selected object is Cube it will be changed into Pad. 
+	'''
+
+	try:
+
+		import Part, Sketcher
+
+		holes = []
+
+		base = FreeCADGui.Selection.getSelection()[0]
+		face = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+		objects = FreeCADGui.Selection.getSelection()
+		
+		del objects[0]
+
+		# if face is selected create drill bit at face only
+		if len(objects) == 0:
+	
+			d = FreeCAD.ActiveDocument.addObject("Part::Cone","DrillBitCounterbore")
+			d.Label = "Drill Bit - counterbore "
+
+			# default drill bit size
+			d.Radius1 = 3
+			d.Radius2 = 7.5
+			d.Height = 50
+			
+			# default drill bit position 0 - vertex
+			[ v1, v2, v3, v4 ] = getFaceVertices(face)
+			x, y, z = v1[0], v1[1], v1[2]
+			
+			r = getFaceObjectRotation(base, face)
+			
+			setPlacement(d, x, y, z, r)
+			
+			# default drill bit colors (middle, bottom, top)
+			colors = [ (0.0, 0.0, 1.0, 0.0), (0.0, 1.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0) ]
+			d.ViewObject.DiffuseColor = colors
+
+			return
+		
+		makeCounterbores(base, face, objects)
+	
+	except:
+		
+		info = ""
+		
+		info += translate('drillCounterbores', 'This is drill bit to make counterbore with hole. The hole will be drilled below the bottom part of the drill bit, below the red face. The radius of the hole will be drill bit Radius1. The radius of counterbore will be drill bit Radius2. The hole depth will be drill bit Height. If you select face only, the drill bit will be created in the corner of the face (0 vertex), allowing you to move the drill bit precisely to any place at the face. Do not move the drill bit up, the drill bit should touch the face. You can select any amount of drill bits, the holes will be drilled below each drill bit but first selected should be face, next drill bits. To select more objects hold left CTRL key during selection. If the selected element is Cube, it will be replaced with Pad.')
+
+		showInfo("drillCounterbores", info)
+
+
+# ###################################################################################################################
+def sketch2dowel():
+	'''
+	sketch2dowel() - allows to create dowel above the selected Sketch of the hole. The dowels size will be taken from
+	hole object. The position will be taken from selected Sketch.
+
+	Note: This function displays pop-up info in case of error.
+
+	Args:
+
+		no args
+
+	Usage:
+
+		import MagicPanels
+		
+		holes = MagicPanels.sketch2dowel()
+		
+	Result:
+
+		The dowel will be created above the selected Sketch, at the hole object surface.
+	'''
+
+	try:
+	
+		objects = FreeCADGui.Selection.getSelection()
+
+		if len(objects) != 2:
+			raise
+		
+		sketch = FreeCADGui.Selection.getSelection()[0]
+		face = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+		
+		if not sketch.isDerivedFrom("Sketcher::SketchObject"):
+			raise
+			
+		hole = ""
+			
+		if sketch.InList[0].isDerivedFrom("PartDesign::Hole"):
+			hole = sketch.InList[0]
+			
+		if sketch.InList[1].isDerivedFrom("PartDesign::Hole"):
+			hole = sketch.InList[1]
+			
+		if hole == "":
+			raise
+				
+		x = sketch.Placement.Base.x
+		y = sketch.Placement.Base.y
+		z = sketch.Placement.Base.z
+		r = getFaceObjectRotation(hole, face)
+			
+		d = FreeCAD.ActiveDocument.addObject("Part::Cylinder","DowelSketch")
+		d.Label = "Dowel - " + str(sketch.Label)
+
+		d.Radius = hole.Diameter / 2
+		d.Height = hole.Depth
+
+		setPlacement(d, x, y, z, r)
+
+		return d
+
+	except:
+		
+		info = ""
+		
+		info += translate('sketch2dowel', 'This tool allows to create dowel at the selected hole. To create dowel select Sketch for the hole and face of the hole object. The dowel position will be get from the Sketch and the face refer to the side the dowel will be raised. The dowel radius and height will be get from hole object. If the hole is throughAll the dowel height will be very big, so make sure you use dimensions instead for hole. To select more objects hold left CTRL key during selection.')
+
+		showInfo("sketch2dowel", info)
+
 
 # ###################################################################################################################

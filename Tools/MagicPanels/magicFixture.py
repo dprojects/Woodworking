@@ -25,8 +25,7 @@ def showQtGUI():
 		
 		gFaceRef = ""
 		gFaceIndex = 0
-		gFaceAxis = ""
-		gFaceType = ""
+		gFPlane = ""
 		
 		gEdgeRef = ""
 		gEdgeArr = []
@@ -409,33 +408,33 @@ def showQtGUI():
 			# edge along X
 			if v1[0] != v2[0]:
 				
-				if self.gFaceAxis == "XY" or self.gFaceAxis == "YX":
+				if self.gFPlane == "XY":
 					x = X - self.gFxOCorner
 					y = Y + self.gFxOEdge
 					z = Z - self.gFxSink
 				
-				if self.gFaceAxis == "XZ" or self.gFaceAxis == "ZX":
+				if self.gFPlane == "XZ":
 					x = X - self.gFxOCorner
 					y = Y - self.gFxSink
 					z = Z + self.gFxOEdge
 		
 				# this should not exist
-				if self.gFaceAxis == "YZ" or self.gFaceAxis == "ZY":
+				if self.gFPlane == "YZ":
 					x, y, z = X, Y, Z
 
 			# edge along Y
 			if v1[1] != v2[1]:
 				
-				if self.gFaceAxis == "XY" or self.gFaceAxis == "YX":
+				if self.gFPlane == "XY":
 					x = X + self.gFxOEdge
 					y = Y - self.gFxOCorner
 					z = Z - self.gFxSink
 			
 				# this should not exist
-				if self.gFaceAxis == "XZ" or self.gFaceAxis == "ZX":
+				if self.gFPlane == "XZ":
 					[ x, y, z ] = [ X, Y, Z ]
 			
-				if self.gFaceAxis == "YZ" or self.gFaceAxis == "ZY":
+				if self.gFPlane == "YZ":
 					x = X - self.gFxSink
 					y = Y - self.gFxOCorner
 					z = Z + self.gFxOEdge
@@ -443,17 +442,17 @@ def showQtGUI():
 			# edge along Z
 			if v1[2] != v2[2]:
 				
-				if self.gFaceAxis == "XY" or self.gFaceAxis == "YX":
+				if self.gFPlane == "XY":
 					x = X + self.gFxOEdge
 					y = Y - self.gFxSink
 					z = Z - self.gFxOCorner
 					
-				if self.gFaceAxis == "XZ" or self.gFaceAxis == "ZX":
+				if self.gFPlane == "XZ":
 					x = X - self.gFxOEdge
 					y = Y - self.gFxSink
 					z = Z - self.gFxOCorner
 						
-				if self.gFaceAxis == "YZ" or self.gFaceAxis == "ZY":
+				if self.gFPlane == "YZ":
 					x = X - self.gFxSink
 					y = Y + self.gFxOEdge
 					z = Z - self.gFxOCorner
@@ -483,8 +482,7 @@ def showQtGUI():
 			
 			self.gFaceRef = ""
 			self.gFaceIndex = 0
-			self.gFaceAxis = ""
-			self.gFaceType = ""
+			self.gFPlane = ""
 		
 			self.gEdgeRef = ""
 			self.gEdgeArr = []
@@ -528,7 +526,7 @@ def showQtGUI():
 				n += str(self.gFaceIndex)
 				self.ob2S.setText(n)
 				
-				[ self.gFaceAxis, self.gFaceType ] = MagicPanels.getDirectionFace(self.gObjRef, self.gFaceRef)
+				self.gFPlane = MagicPanels.getFacePlane(self.gFaceRef)
 				
 				# ############################################################################
 				# set possible edges
@@ -612,7 +610,7 @@ def showQtGUI():
 				
 				self.gRoAnglesArr.append(120)
 				self.gRoAxisArr.append([-0.58, 0.58, 0.58])
-								
+
 				# init
 				self.gRoAngles = self.gRoAnglesArr[0]
 				self.gRoAxis = self.gRoAxisArr[0]

@@ -157,10 +157,11 @@ def showQtGUI():
 			self.rootList = (
 				"my project root",
 				"Module: FreeCAD",
+				"Module: Part",
 				"Module: QtGui", 
 				"Module: QtCore",
 				"Module: coin",
-				"Module: Path", 
+				"Module: Path",
 				"Module: Draft", 
 				"Module: TechDraw", 
 				"Module: Spreadsheet",
@@ -202,6 +203,7 @@ def showQtGUI():
 			# options
 			self.layList = (
 				"all windows",
+				"coding",
 				"modules",
 				"content", 
 				"docs", 
@@ -232,9 +234,12 @@ def showQtGUI():
 				"matrix red pill"
 			)
 
+			# my favorite colors ;-)
+			gLayout = "beautiful pinky world"
+
 			self.colorsO = QtGui.QComboBox(self)
 			self.colorsO.addItems(self.colorsList)
-			self.colorsO.setCurrentIndex(self.colorsList.index("matrix blue pill"))
+			self.colorsO.setCurrentIndex(self.colorsList.index(gLayout))
 			self.colorsO.activated[str].connect(self.setWindowsColors)
 			self.colorsO.setFixedWidth((1*self.gGridCol)-20)
 			
@@ -257,54 +262,28 @@ def showQtGUI():
 			# options sub-window
 			# ############################################################################
 
-			# label
-			self.OPTLabel = QtGui.QLabel("Select options type to show:", self)
-			
-			# options
-			self.OPTList = (
-				"scan root",
-				"layout & colors"
-			)
-
-			self.OPTListQ = QtGui.QComboBox(self)
-			self.OPTListQ.addItems(self.OPTList)
-			self.OPTListQ.setCurrentIndex(self.OPTList.index("scan root"))
-			self.OPTListQ.activated[str].connect(self.setOptionsVisibility)
-			self.OPTListQ.setFixedWidth((1*self.gGridCol)-20)
-			
 			self.OPTlayout = QtGui.QVBoxLayout()
 			self.OPTlayout.setAlignment(QtGui.Qt.AlignTop)
 			
-			self.OPTlayout.addWidget(self.OPTLabel)
-			self.OPTlayout.addWidget(self.OPTListQ)
-			self.OPTseparator = QtGui.QLabel("", self)
-			self.OPTlayout.addWidget(self.OPTseparator)
-
 			self.OPTlayout.addWidget(self.rootL)
 			self.OPTlayout.addWidget(self.rootO)
 			self.OPTlayout.addWidget(self.rootCL)
 			self.OPTlayout.addWidget(self.rootCO)
 			self.OPTlayout.addWidget(self.rootCLoad)
+			self.OPTlayout.addWidget(self.oCommandL)
+			self.OPTlayout.addWidget(self.oCommandI)
+			self.OPTlayout.addWidget(self.oCommandB)
 			self.OPTlayout.addWidget(self.layL)
 			self.OPTlayout.addWidget(self.layO)
 			self.OPTlayout.addWidget(self.colorsL)
 			self.OPTlayout.addWidget(self.colorsO)
-			self.OPTlayout.addWidget(self.oCommandL)
-			self.OPTlayout.addWidget(self.oCommandI)
-			self.OPTlayout.addWidget(self.oCommandB)
-
-			self.rootL.show()
-			self.rootO.show()
+			
 			self.rootCL.hide()
 			self.rootCO.hide()
 			self.rootCLoad.hide()
 			self.oCommandL.hide()
 			self.oCommandI.hide()
 			self.oCommandB.hide()
-			self.layL.hide()
-			self.layO.hide()
-			self.colorsL.hide()
-			self.colorsO.hide()
 			
 			self.OPTwidget = QtGui.QWidget()
 			self.OPTwidget.setLayout(self.OPTlayout)
@@ -406,8 +385,7 @@ def showQtGUI():
 			self.setWindowsLayout("all windows")
 
 			# set default colors
-			#self.setWindowsColors("matrix blue pill")
-			self.setWindowsColors("beautiful pinky world") # my favorite colors ;-)
+			self.setWindowsColors(gLayout)
 
 		# ############################################################################
 		# actions - function for actions
@@ -749,44 +727,17 @@ def showQtGUI():
 
 
 		# ############################################################################
-		def setOptionsVisibility(self, selectedText):
-
-			if selectedText == "scan root":
-				self.rootL.show()
-				self.rootO.show()
-				
-				self.rootCL.hide()
-				self.rootCO.hide()
-				self.rootCLoad.hide()
-				self.oCommandL.hide()
-				self.oCommandI.hide()
-				self.oCommandB.hide()
-				self.layL.hide()
-				self.layO.hide()
-				self.colorsL.hide()
-				self.colorsO.hide()
-			
-			if selectedText == "layout & colors":
-				self.rootL.hide()
-				self.rootO.hide()
-				self.rootCL.hide()
-				self.rootCO.hide()
-				self.rootCLoad.hide()
-				self.oCommandL.hide()
-				self.oCommandI.hide()
-				self.oCommandB.hide()
-				
-				self.layL.show()
-				self.layO.show()
-				self.colorsL.show()
-				self.colorsO.show()
-
-
-		# ############################################################################
 		def setRootPath(self, selectedText):
 
 			# clear db before root set
 			self.clearDB()
+			
+			self.rootCL.hide()
+			self.rootCO.hide()
+			self.rootCLoad.hide()
+			self.oCommandL.hide()
+			self.oCommandI.hide()
+			self.oCommandB.hide()
 
 			if selectedText == "my project root":
 					
@@ -821,6 +772,14 @@ def showQtGUI():
 				root = dir(QtCore)
 				rootS = "QtCore"
 				self.addSelection(QtCore, root, rootS, -1)
+
+			if selectedText == "Module: Part":
+
+				import Part
+
+				root = dir(Part)
+				rootS = "Part"
+				self.addSelection(Part, root, rootS, -1)
 
 			if selectedText == "Module: Path":
 
@@ -872,11 +831,7 @@ def showQtGUI():
 				self.oCommandL.hide()
 				self.oCommandI.hide()
 				self.oCommandB.hide()
-				self.layL.hide()
-				self.layO.hide()
-				self.colorsL.hide()
-				self.colorsO.hide()
-			
+				
 			if selectedText == "custom command result":
 				self.rootL.show()
 				self.rootO.show()
@@ -887,11 +842,6 @@ def showQtGUI():
 				self.rootCL.hide()
 				self.rootCO.hide()
 				self.rootCLoad.hide()
-				self.layL.hide()
-				self.layO.hide()
-				self.colorsL.hide()
-				self.colorsO.hide()
-
 
 		# ############################################################################
 		def setWindowsLayout(self, selectedText):
@@ -936,7 +886,44 @@ def showQtGUI():
 				self.o6sw.setGeometry((3*self.gGridCol), (2*self.gGridRow), (2*self.gGridCol), (1*self.gGridRow))
 				self.o6sw.show()
 				self.o6.show()
+			
+			if selectedText == "coding":
 
+				# options
+				self.OPTsw.setGeometry(0, (3*self.gGridRow), (1*self.gGridCol), (2*self.gGridRow))
+				self.OPTsw.show()
+
+				# select
+				self.listsw.setGeometry(0, 0, (1*self.gGridCol), (3*self.gGridRow))
+				self.listsw.show()
+				self.list.show()
+
+				# dir
+				self.o1sw.hide()
+				self.o1.hide()
+
+				# __dict__
+				self.o2sw.hide()
+				self.o2.hide()
+
+				# __doc__
+				self.o3sw.setGeometry((1*self.gGridCol), 0, (4*self.gGridCol), (4*self.gGridRow))
+				self.o3sw.show()
+				self.o3.show()
+
+				# getAllDerivedFrom
+				self.o4sw.hide()
+				self.o4.hide()
+
+				# content
+				self.o5sw.hide()
+				self.o5.hide()
+
+				# object
+				self.o6sw.setGeometry((1*self.gGridCol), (4*self.gGridRow), (4*self.gGridCol), (1*self.gGridRow))
+				self.o6sw.show()
+				self.o6.show()
+				
 			if selectedText == "modules":
 				self.OPTsw.setGeometry(0, (3*self.gGridRow), (1*self.gGridCol), (2*self.gGridRow))
 				self.OPTsw.show()
