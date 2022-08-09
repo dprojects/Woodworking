@@ -8,8 +8,6 @@ Currently the Woodworking workbench is one-man project, yes one-man mission to t
 
 The main goal for this workbench is to make furniture designing process at FreeCAD more simple.
 
-<br><br>
-
 * [Main features](#main-features)
   * [Making panels](#making-panels)
     * [Default panels](#default-panels)
@@ -26,7 +24,7 @@ The main goal for this workbench is to make furniture designing process at FreeC
   * [Mount points](#mount-points)
     * [magicDowels](#magicdowels)
     * [panel2link](#panel2link)
-    * [sketch2dowel](sketch2dowel)
+    * [sketch2dowel](#sketch2dowel)
     * [makeTransparent](#maketransparent)
   * [Fixture](#fixture)
     * [magicFixture](#magicfixture)
