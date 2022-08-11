@@ -13,45 +13,6 @@ iconPath = os.path.join(path, "Icons")
 
 
 # ######################################################################################################################
-class debugInfo():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "debugInfo.png"),
-				"MenuText": QT_TRANSLATE_NOOP("debugInfoMenuText", "debugInfo"),
-				"ToolTip" : QT_TRANSLATE_NOOP("debugInfoToolTip", "Copy platform details to clipboard for bug report purposes."),
-				"Accel"   : "" }
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "debugInfo"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("debugInfo", debugInfo())
-
-	
-# ######################################################################################################################
 class getDimensions():
 
 	def GetResources(self):
@@ -520,6 +481,45 @@ FreeCADGui.addCommand("magicDowels", magicDowels())
 
 	
 # ######################################################################################################################
+class magicCNC():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "magicCNC.png"),
+				"MenuText": QT_TRANSLATE_NOOP("magicCNCMenuText", "magicCNC, drill bit move machine"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicCNCToolTip", "This tool allows to move drill bit at the selected face and drill holes."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "magicCNC"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("magicCNC", magicCNC())
+
+	
+# ######################################################################################################################
 class magicFixture():
 
 	def GetResources(self):
@@ -559,12 +559,12 @@ FreeCADGui.addCommand("magicFixture", magicFixture())
 
 	
 # ######################################################################################################################
-class magicCNC():
+class debugInfo():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "magicCNC.png"),
-				"MenuText": QT_TRANSLATE_NOOP("magicCNCMenuText", "magicCNC, drill bit move machine"),
-				"ToolTip" : QT_TRANSLATE_NOOP("magicCNCToolTip", "This tool allows to move drill bit at the selected face and drill holes."),
+		return {"Pixmap"  : os.path.join(iconPath, "debugInfo.png"),
+				"MenuText": QT_TRANSLATE_NOOP("debugInfoMenuText", "debugInfo"),
+				"ToolTip" : QT_TRANSLATE_NOOP("debugInfoToolTip", "Copy platform details to clipboard for bug report purposes."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -574,7 +574,46 @@ class magicCNC():
 
 		modulePath = sys.path
 		
-		module = "magicCNC"
+		module = "debugInfo"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("debugInfo", debugInfo())
+
+	
+# ######################################################################################################################
+class magicCut():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "magicCut.png"),
+				"MenuText": QT_TRANSLATE_NOOP("magicCutMenuText", "magicCut, quick multi cut"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicCutToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "magicCut"
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
@@ -594,7 +633,7 @@ class magicCNC():
 		# not needed now, maybe in the future
 		return True
 
-FreeCADGui.addCommand("magicCNC", magicCNC())
+FreeCADGui.addCommand("magicCut", magicCut())
 
 	
 # ######################################################################################################################

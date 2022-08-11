@@ -25,12 +25,6 @@
 Tools = [
 	
 	# #################################################################################################################################
-	# tools - not using MagicPanels library
-	# #################################################################################################################################
-
-	"", "debugInfo", "png", "debugInfo", "Copy platform details to clipboard for bug report purposes.",
-
-	# #################################################################################################################################
 	# tools - linked standalone macros (should not use MagicPanels library)
 	# #################################################################################################################################
 	
@@ -62,28 +56,37 @@ Tools = [
 
 	"MagicPanels", "magicDowels", "png", "magicDowels", "Allows to add mounting points to the furniture. For example you can easily add screws, dowels, shelf supporter pins or custom mounting points.",
 
+	"MagicPanels", "magicCNC", "png", "magicCNC, drill bit move machine", "This tool allows to move drill bit at the selected face and drill holes.",
+	
 	"MagicPanels", "magicFixture", "png", "magicFixture", "Allows to add fixture reference points to the furniture. Later you will be able to replace the cube fixture reference points with realistic fixture elements.",
 
 	# #################################################################################################################################
-	# Magic Panels - drilling
+	# tools - not using MagicPanels library, no GUI
 	# #################################################################################################################################
+
+	"", "debugInfo", "png", "debugInfo", "Copy platform details to clipboard for bug report purposes.",
+
+	# #################################################################################################################################
+	# tools - using MagicPanels library, no GUI
+	# #################################################################################################################################
+
+	# decoration
 	
-	"MagicPanels", "magicCNC", "png", "magicCNC, drill bit move machine", "This tool allows to move drill bit at the selected face and drill holes.",
+	"MagicPanels", "magicCut", "png", "magicCut, quick multi cut", "Click to see info.",
+
+	# drilling
+	
 	"MagicPanels", "drillHoles", "png", "drill bit, drill simple holes", "Click to see info.",
 	"MagicPanels", "drillCountersinks", "png", "drill bit, drill countersinks", "Click to see info.",
 	"MagicPanels", "drillCounterbores", "png", "drill bit, drill counterbores", "Click to see info.",
 	"MagicPanels", "edge2drillbit", "png", "drill bit from edge hole", "Click to see info.",
 	
-	# #################################################################################################################################
-	# Magic Panels - mount
-	# #################################################################################################################################
+	# mount
 	
 	"MagicPanels", "sketch2dowel", "png", "dowel from sketch hole and face", "Click to see info.",
 	"MagicPanels", "edge2dowel", "png", "dowel from edge hole", "Click to see info.",
-
-	# #################################################################################################################################
-	# Magic Panels - default
-	# #################################################################################################################################
+	
+	# default
 	
 	"MagicPanels", "panelDefaultXY", "png", "panel, XY, 600x300, 18 thickness", "Click to see info.",
 	"MagicPanels", "panelDefaultYX", "png", "panel, YX, 300x600, 18 thickness", "Click to see info.",
@@ -94,9 +97,7 @@ Tools = [
 	"MagicPanels", "panelDefaultYZ", "png", "panel, YZ, 600x300, 18 thickness", "Click to see info.",
 	"MagicPanels", "panelDefaultZY", "png", "panel, ZY, 300x600, 18 thickness", "Click to see info.",
 
-	# #################################################################################################################################
-	# Magic Panels - copy
-	# #################################################################################################################################
+	# copy
 	
 	"MagicPanels", "panelCopyXY", "png", "copy panel, XY", "Click to see info.",
 	"MagicPanels", "panelCopyYX", "png", "copy panel, YX", "Click to see info.",
@@ -107,9 +108,7 @@ Tools = [
 	"MagicPanels", "panelCopyYZ", "png", "copy panel, YZ", "Click to see info.",
 	"MagicPanels", "panelCopyZY", "png", "copy panel, ZY", "Click to see info.",
 
-	# #################################################################################################################################
-	# Magic Panels - move
-	# #################################################################################################################################
+	# move
 	
 	"MagicPanels", "panelMoveXp", "png", "panel, move, back", "Click to see info.",
 	"MagicPanels", "panelMoveXm", "png", "panel, move, forward", "Click to see info.",
@@ -123,18 +122,14 @@ Tools = [
 	"MagicPanels", "panelMove2Face", "png", "panel, move, to face", "Click to see info.",
 	"MagicPanels", "fitModel", "png", "fitModel", "Click to see info.",
 
-	# #################################################################################################################################
-	# Magic Panels - resize
-	# #################################################################################################################################
+	# resize
 	
 	"MagicPanels", "panelResize1", "png", "panel, bigger, long+", "Click to see info.",
 	"MagicPanels", "panelResize2", "png", "panel, smaller, long-", "Click to see info.",
 	"MagicPanels", "panelResize3", "png", "panel, bigger, short+", "Click to see info.",
 	"MagicPanels", "panelResize4", "png", "panel, smaller, short-", "Click to see info.",
 
-	# #################################################################################################################################
-	# Magic Panels - special
-	# #################################################################################################################################
+	# special
 	
 	"MagicPanels", "panelSideLeft", "png", "panel, side, left", "Click to see info.",
 	"MagicPanels", "panelSideLeftUP", "png", "panel, side, left, up", "Click to see info.",
@@ -146,21 +141,14 @@ Tools = [
 	
 	"MagicPanels", "panelCoverXY", "png", "panel, top, cover", "Click to see info.",
 	
-	# #################################################################################################################################
-	# Magic Panels - replace
-	# #################################################################################################################################
+	# replace
 	
 	"MagicPanels", "panel2pad", "png", "replace, cube to pad", "Click to see info.",
-	
 	"MagicPanels", "panel2profile", "png", "replace, cubes to construction profiles", "Click to see info.",
-
 	"MagicPanels", "panel2frame", "png", "replace, cubes to frames", "Click to see info.",
-
 	"MagicPanels", "panel2link", "png", "replace, cubes to links", "Click to see info.",
 
-	# #################################################################################################################################
-	# Magic Panels - face
-	# #################################################################################################################################
+	# face
 	
 	"MagicPanels", "panelFaceXY", "png", "copy panel, face, XY", "Click to see info.",
 	"MagicPanels", "panelFaceYX", "png", "copy panel, face, YX", "Click to see info.",
@@ -170,10 +158,8 @@ Tools = [
 	
 	"MagicPanels", "panelFaceYZ", "png", "copy panel, face, YZ", "Click to see info.",
 	"MagicPanels", "panelFaceZY", "png", "copy panel, face, ZY", "Click to see info.",
-		
-	# #################################################################################################################################
-	# Magic Panels - between
-	# #################################################################################################################################
+
+	# between
 	
 	"MagicPanels", "panelBetweenXY", "png", "panel, between, XY", "Click to see info.",
 	"MagicPanels", "panelBetweenYX", "png", "panel, between, YX", "Click to see info.",

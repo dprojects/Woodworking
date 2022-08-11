@@ -39,6 +39,8 @@ The main goal for this workbench is to make furniture designing process at FreeC
     * [panel2profile](#panel2profile)
     * [panel2frame](#panel2frame)
     * [panel2pad](#panel2pad)
+  * [Decoration](#decoration)
+    * [magicCut](#magiccut)
   * [Colors](#colors)
     * [colorManager](#colormanager)
     * [setTextures](#settextures)
@@ -173,6 +175,12 @@ The main goal for this workbench is to make furniture designing process at FreeC
 ### panel2pad
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2pad.png"> This tool allows to replace `Cube` panel with `Pad` panel. The new created `Pad` panel will get the same dimensions, placement and rotation as the selected `Cube` panel. You can transform only one `Cube` panel into `Pad` at once. This tool is mostly dedicated to add decoration that is not supported for `Cube` objects by FreeCAD PartDesign workbench. You can also change shape by changing the `Sketch`. This is mostly used for decoration that can be applied only to `Pad`, like `Fillet`.
+
+## Decoration
+
+## magicCut
+
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicCut.png"> This tool make multi bool cut operation at selected objects. First object should be the base object to cut. All other selected objects will cut the base 1st selected object. To select more objects hold left CTRL key during selection. During this process the objects copies will be used to cut and the original objects will be not be moved. Also there will be auto labeling to keep the cut tree more informative and cleaner.
 
 ## Colors
 

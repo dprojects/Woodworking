@@ -1351,6 +1351,60 @@ def sizesToCubePanel(iObj, iType):
 
 
 # ###################################################################################################################
+def makeCuts(iObjects):
+	'''
+	makeCuts(iObjects) - allows to create multi bool cut operation at given objects. First objects 
+	from iObjects is the base element and all other will cut the base. The copies will be created for cut. 
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObjects: objects to parse by multi bool cut
+
+	Usage:
+	
+		import MagicPanels
+		MagicPanels.makeCuts(objects)
+		
+	Result:
+	
+		Array of cut objects will be returned.
+	'''
+	
+	cuts = []
+	
+	i = 0
+	for o in iObjects:
+		
+		i = i + 1
+		
+		if i == 1:
+			base = o
+			baseName = str(base.Name)
+			baseLabel = str(base.Label)
+			continue
+
+		copy = FreeCAD.ActiveDocument.copyObject(o)
+		copy.Label = "copy, " + o.Label
+		
+		cutName = baseName + str(i-1)
+		cut = FreeCAD.ActiveDocument.addObject("Part::Cut", cutName)
+		cut.Base = base
+		cut.Tool = copy
+		cut.Label = "Cut " + str(i-1) + ", " + baseLabel
+		
+		FreeCAD.activeDocument().recompute()
+		
+		base = cut
+		cuts.append(cut)
+		
+	cut.Label = "Cut, " + baseLabel
+
+	return cuts
+
+
+# ###################################################################################################################
 def makePad(iObj, iPadLabel="Pad"):
 	'''
 	makePad(iObj, iPadLabel="Pad") - allows to create Part, Plane, Body, Pad, Sketch objects.
@@ -3318,6 +3372,50 @@ def edge2drillbit():
 		info += translate('edge2drillbit', 'This tool allows to create drill bits for making simple hole. The drill bits will be created above the selected hole edges. To create drill bits select edge of the hole. You can select many edges at once but all the holes need to be at the same object. The drill bit Height will be 16. The drill bits radius will be get from the selected edge hole radius but will be little smaller, 1 mm, than the hole to make pilot hole. To select more objects hold left CTRL key during selection. This feature can be used to create drill bits above holes at hinges, angles or other fixture type.')
 
 		showInfo("edge2drillbit", info)
+
+
+# ###################################################################################################################
+def magicCut():
+	'''
+	magicCut() - allows to create multi bool cut operation at selected objects. First selected object 
+	should be the base element and all other selected will cut the base. The copies will be created for cut. 
+
+	Note: This function displays pop-up info in case of error.
+
+	Args:
+
+		no args
+
+	Usage:
+
+		import MagicPanels
+		
+		cuts = MagicPanels.magicCut()
+		
+	Result:
+
+		Array of cut objects will be returned.
+	'''
+
+	try:
+
+		objects = FreeCADGui.Selection.getSelection()
+
+		if len(objects) < 2:
+			raise
+
+		cuts = makeCuts(objects)
+		FreeCADGui.Selection.clearSelection()
+		
+		return cuts
+	
+	except:
+		
+		info = ""
+		
+		info += translate('magicCut', 'This tool make multi bool cut operation at selected objects. First object should be the base object to cut. All other selected objects will cut the base 1st selected object. To select more objects hold left CTRL key during selection. During this process the objects copies will be used to cut and the original objects will be not be moved. Also there will be auto labeling to keep the cut tree more informative and cleaner.')
+
+		showInfo("magicCut", info)
 
 
 # ###################################################################################################################

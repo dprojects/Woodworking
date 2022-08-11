@@ -119,6 +119,7 @@ def getItems(iType):
 			"PartDesign_Fillet",
 			"PartDesign_Chamfer",
 			"PartDesign_Pocket",
+			"magicCut",
 			"Part_Boolean"
 		]
 
