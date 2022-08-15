@@ -4,7 +4,7 @@ def getItems(iType):
 
 	parts = []
 
-	if iType == "Woodworking - Magic Panels - default":
+	if iType == "Woodworking - default":
 		
 		parts = [
 			"panelDefaultXY",
@@ -15,7 +15,7 @@ def getItems(iType):
 			"panelDefaultZY"
 		]
 
-	if iType == "Woodworking - Magic Panels - copy":
+	if iType == "Woodworking - copy":
 		
 		parts = [
 			"panelCopyXY",
@@ -26,7 +26,7 @@ def getItems(iType):
 			"panelCopyZY"
 		]
 
-	if iType == "Woodworking - Magic Panels - move":
+	if iType == "Woodworking - move":
 		
 		parts = [
 			"magicMove",
@@ -41,16 +41,18 @@ def getItems(iType):
 			"fitModel"
 		]
 
-	if iType == "Woodworking - Magic Panels - resize":
+	if iType == "Woodworking - resize":
 		
 		parts = [
 			"panelResize1",
 			"panelResize2",
 			"panelResize3",
-			"panelResize4"
+			"panelResize4",
+			"panelResize5",
+			"panelResize6"
 		]
 
-	if iType == "Woodworking - Magic Panels - face":
+	if iType == "Woodworking - face":
 		
 		parts = [
 			"panelFaceXY",
@@ -61,7 +63,7 @@ def getItems(iType):
 			"panelFaceZY"
 		]
 
-	if iType == "Woodworking - Magic Panels - between":
+	if iType == "Woodworking - between":
 		
 		parts = [
 			"panelBetweenXY",
@@ -72,7 +74,7 @@ def getItems(iType):
 			"panelBetweenZY"
 		]
 		
-	if iType == "Woodworking - Magic Panels - special":
+	if iType == "Woodworking - special":
 		
 		parts = [
 			"magicManager",
@@ -84,15 +86,13 @@ def getItems(iType):
 			"panelCoverXY"
 		]
 
-	if iType == "Woodworking - Magic Panels - replace":
+	if iType == "Woodworking - construction":
 		
 		parts = [
-			"panel2profile",
-			"panel2frame",
-			"magicFixture"
+			"panel2profile"
 		]
 
-	if iType == "Woodworking - Magic Panels - mounting":
+	if iType == "Woodworking - dowels and screws":
 		
 		parts = [
 			"magicDowels",
@@ -102,28 +102,43 @@ def getItems(iType):
 			"makeTransparent"
 		]
 
-	if iType == "Woodworking - Magic Panels - drilling":
+	if iType == "Woodworking - fixture":
+		
+		parts = [
+			"magicFixture",
+			"edge2drillbit"
+		]
+	
+
+	if iType == "Woodworking - joinery":
+		
+		parts = [
+			"magicCut",
+			"jointTenon",
+			"jointCustom",
+			"panel2frame"
+		]
+		
+	if iType == "Woodworking - drilling holes":
 		
 		parts = [
 			"magicCNC",
 			"drillHoles",
 			"drillCountersinks",
-			"drillCounterbores",
-			"edge2drillbit"
+			"drillCounterbores"
 		]
 
-	if iType == "Woodworking - Decorations":
+	if iType == "Woodworking - decorations":
 		
 		parts = [
 			"panel2pad",
 			"PartDesign_Fillet",
 			"PartDesign_Chamfer",
 			"PartDesign_Pocket",
-			"magicCut",
 			"Part_Boolean"
 		]
 
-	if iType == "Woodworking - Dimensions":
+	if iType == "Woodworking - dimensions":
 		
 		parts = [
 			"getDimensions",
@@ -134,7 +149,7 @@ def getItems(iType):
 			"Part_Measure_Linear"
 		]
 
-	if iType == "Woodworking - Project manage":
+	if iType == "Woodworking - project manage":
 		
 		parts = [
 			"Std_New",
@@ -146,7 +161,7 @@ def getItems(iType):
 			"Std_LinkMake"
 		]
 
-	if iType == "Woodworking - Preview":
+	if iType == "Woodworking - preview":
 		
 		parts = [
 			"colorManager",
@@ -154,7 +169,7 @@ def getItems(iType):
 			"setTextures"
 		]
 
-	if iType == "Woodworking - Code and Debug":
+	if iType == "Woodworking - code and debug":
 		
 		parts = [
 			"scanObjects",
@@ -166,7 +181,7 @@ def getItems(iType):
 			"Std_DlgMacroExecuteDirect"
 		]
 		
-	if iType == "Woodworking - Advanced":
+	if iType == "Woodworking - advanced":
 		
 		parts = [
 			"Spreadsheet_CreateSheet",

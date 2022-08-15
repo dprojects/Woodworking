@@ -47,7 +47,7 @@ def showQtGUI():
 		gFxOCorner = 0
 		gFxOEdge = 0
 		
-		gNoSelection = translate('magicFixture', 'please select fixture and face for link')
+		gNoSelection = translate('magicFixture', 'please select fixture object and face')
 		
 		# ############################################################################
 		# init
@@ -65,7 +65,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 270
-			toolSH = 450
+			toolSH = 480
 			
 			# active screen size (FreeCAD main window)
 			gSW = FreeCADGui.getMainWindow().width()
@@ -172,7 +172,11 @@ def showQtGUI():
 			self.s4B1.setAutoRepeat(True)
 			
 			# info screen
-			self.s4IS = QtGui.QLabel("                                         ", self)
+			info = ""
+			info += "                                                           "
+			info += "                                                           "
+			info += "                                                           "
+			self.s4IS = QtGui.QLabel(info, self)
 			self.s4IS.move(col2, row+3)
 			
 			# button
@@ -326,7 +330,21 @@ def showQtGUI():
 
 			row += 60
 
-			# button
+			# radio buttons
+			
+			self.rb1 = QtGui.QRadioButton(self)
+			self.rb1.setText(translate('magicFixture', 'Link'))
+			self.rb1.toggled.connect(self.selectRadioButton1)
+			self.rb1.move(10, row)
+
+			self.rb2 = QtGui.QRadioButton(self)
+			self.rb2.setText(translate('magicFixture', 'Clone for drilling'))
+			self.rb2.toggled.connect(self.selectRadioButton2)
+			self.rb2.move(80, row)
+
+			row += 30
+
+			# apply button
 			self.e3B1 = QtGui.QPushButton(translate('magicFixture', 'apply fixture to this position'), self)
 			self.e3B1.clicked.connect(self.setFixture)
 			self.e3B1.setFixedWidth(toolSW-20)
@@ -398,12 +416,26 @@ def showQtGUI():
 			# ############################################################################
 			
 			X, Y, Z = v1[0], v1[1], v1[2]
-			x , y, z = 0, 0, 0
-			
-			linkName = "Link_" + str(self.gBaseRef.Name)
-			link = FreeCAD.activeDocument().addObject('App::Link', linkName)
-			link.setLink(self.gBaseRef)
-			link.Label = "Link, " + self.gBaseRef.Label + " "
+			x, y, z = 0, 0, 0
+
+			# ############################################################################
+			# choose object type to set
+			# ############################################################################
+
+			if self.rb1.isChecked() == True:
+				linkName = "Link_" + str(self.gBaseRef.Name)
+				link = FreeCAD.activeDocument().addObject('App::Link', linkName)
+				link.setLink(self.gBaseRef)
+				link.Label = "Link, " + self.gBaseRef.Label + " "
+
+			if self.rb2.isChecked() == True:
+				import Draft
+				link = Draft.make_clone(self.gBaseRef)
+				link.Label = "Clone, " + self.gBaseRef.Label + " "
+
+			# ############################################################################
+			# set object into position
+			# ############################################################################
 
 			# edge along X
 			if v1[0] != v2[0]:
@@ -474,6 +506,12 @@ def showQtGUI():
 		# actions - functions for actions
 		# ############################################################################
 
+		# ############################################################################
+		def resetInfoScreen(self):
+			self.ob1S.setText("")
+			self.ob2S.setText("")
+			self.ob3S.setText(self.gNoSelection)
+			
 		# ############################################################################
 		def resetGlobals(self):
 
@@ -620,13 +658,12 @@ def showQtGUI():
 				
 				# ############################################################################
 				
-				self.showFixture()
-			
+				self.rb1.setChecked(True)
 				self.ob3S.setText("")
 				
 			except:
 
-				self.ob3S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 				return -1
 			
 		# ############################################################################
@@ -643,7 +680,7 @@ def showQtGUI():
 				self.showFixture()
 			
 			except:
-				self.ob3S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 			
 		def setEdgeN(self):
 			
@@ -658,13 +695,13 @@ def showQtGUI():
 				self.showFixture()
 			
 			except:
-				self.ob3S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 
 		# ############################################################################
 		def setSinkOffsetP(self):
 			
 			try:
-				self.gStep = int(self.oFxStepE.text())
+				self.gStep = float(self.oFxStepE.text())
 			
 				self.gFxSink -= self.gStep
 				self.oFxSinkE.setText(str(self.gFxSink))
@@ -672,12 +709,12 @@ def showQtGUI():
 				self.showFixture()
 			
 			except:
-				self.ob3S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 			
 		def setSinkOffsetN(self):
 			
 			try:
-				self.gStep = int(self.oFxStepE.text())
+				self.gStep = float(self.oFxStepE.text())
 				
 				self.gFxSink += self.gStep
 				self.oFxSinkE.setText(str(self.gFxSink))
@@ -685,13 +722,13 @@ def showQtGUI():
 				self.showFixture()
 			
 			except:
-				self.ob3S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 
 		# ############################################################################
 		def setCornerOffsetP(self):
 			
 			try:
-				self.gStep = int(self.oFxStepE.text())
+				self.gStep = float(self.oFxStepE.text())
 				
 				self.gFxOCorner -= self.gStep
 				self.oFxOCornerE.setText(str(self.gFxOCorner))
@@ -699,12 +736,12 @@ def showQtGUI():
 				self.showFixture()
 			
 			except:
-				self.ob3S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 			
 		def setCornerOffsetN(self):
 			
 			try:
-				self.gStep = int(self.oFxStepE.text())
+				self.gStep = float(self.oFxStepE.text())
 				
 				self.gFxOCorner += self.gStep
 				self.oFxOCornerE.setText(str(self.gFxOCorner))
@@ -712,13 +749,13 @@ def showQtGUI():
 				self.showFixture()
 			
 			except:
-				self.ob3S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 
 		# ############################################################################
 		def setEdgeOffsetP(self):
 			
 			try:
-				self.gStep = int(self.oFxStepE.text())
+				self.gStep = float(self.oFxStepE.text())
 				
 				self.gFxOEdge -= self.gStep
 				self.oFxOEdgeE.setText(str(self.gFxOEdge))
@@ -726,12 +763,12 @@ def showQtGUI():
 				self.showFixture()
 			
 			except:
-				self.ob3S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 			
 		def setEdgeOffsetN(self):
 			
 			try:
-				self.gStep = int(self.oFxStepE.text())
+				self.gStep = float(self.oFxStepE.text())
 				
 				self.gFxOEdge += self.gStep
 				self.oFxOEdgeE.setText(str(self.gFxOEdge))
@@ -739,7 +776,7 @@ def showQtGUI():
 				self.showFixture()
 			
 			except:
-				self.ob3S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 
 		# ############################################################################
 		def setRoAnglesP(self):
@@ -756,7 +793,7 @@ def showQtGUI():
 				self.showFixture()
 			
 			except:
-				self.ob3S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 			
 		def setRoAnglesN(self):
 			
@@ -772,7 +809,7 @@ def showQtGUI():
 				self.showFixture()
 			
 			except:
-				self.ob3S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 
 		# ############################################################################
 		def refreshSettings(self):
@@ -782,12 +819,12 @@ def showQtGUI():
 				self.gFxSink = float(self.oFxSinkE.text())
 				self.gFxOCorner = float(self.oFxOCornerE.text())
 				self.gFxOEdge = float(self.oFxOEdgeE.text())
-				self.gStep = int(self.oFxStepE.text())
+				self.gStep = float(self.oFxStepE.text())
 
 				self.showFixture()
 			
 			except:
-				self.ob3S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 				
 		# ############################################################################
 		def setEditModeON(self):
@@ -797,7 +834,7 @@ def showQtGUI():
 				vo.Document.setEdit(vo, 1)
 				
 			except:
-				self.ob3S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 		
 		def setEditModeOFF(self):
 			
@@ -806,8 +843,23 @@ def showQtGUI():
 				vo.Document.resetEdit()
 				
 			except:
-				self.ob3S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 		
+		# ############################################################################
+		def selectRadioButton1(self, selected):
+			try:
+				if selected:
+					self.showFixture()
+			except:
+				self.resetInfoScreen()
+		
+		def selectRadioButton2(self, selected):
+			try:
+				if selected:
+					self.showFixture()
+			except:
+				self.resetInfoScreen()
+				
 		# ############################################################################
 		def setFixture(self):
 			
@@ -815,7 +867,7 @@ def showQtGUI():
 				self.gLink = ""
 				
 			except:
-				self.ob3S.setText(self.gNoSelection)
+				self.resetInfoScreen()
 		
 	# ############################################################################
 	# final settings

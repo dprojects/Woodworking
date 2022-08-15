@@ -58,7 +58,7 @@ Tools = [
 
 	"MagicPanels", "magicCNC", "png", "magicCNC, drill bit move machine", "This tool allows to move drill bit at the selected face and drill holes.",
 	
-	"MagicPanels", "magicFixture", "png", "magicFixture", "Allows to add fixture reference points to the furniture. Later you will be able to replace the cube fixture reference points with realistic fixture elements.",
+	"MagicPanels", "magicFixture", "png", "magicFixture", "Allows to add any type of detailed fixture to the furniture. You can create Link to the realistic looking part or Clone it.",
 
 	# #################################################################################################################################
 	# tools - not using MagicPanels library, no GUI
@@ -69,10 +69,6 @@ Tools = [
 	# #################################################################################################################################
 	# tools - using MagicPanels library, no GUI
 	# #################################################################################################################################
-
-	# decoration
-	
-	"MagicPanels", "magicCut", "png", "magicCut, quick multi cut", "Click to see info.",
 
 	# drilling
 	
@@ -86,6 +82,12 @@ Tools = [
 	"MagicPanels", "sketch2dowel", "png", "dowel from sketch hole and face", "Click to see info.",
 	"MagicPanels", "edge2dowel", "png", "dowel from edge hole", "Click to see info.",
 	
+	# joinery
+	
+	"MagicPanels", "magicCut", "png", "magicCut, quick multi cut", "Click to see info.",
+	"MagicPanels", "jointTenon", "png", "joint, Tenon", "Click to see info.",
+	"MagicPanels", "jointCustom", "png", "joint, Custom", "Click to see info.",
+
 	# default
 	
 	"MagicPanels", "panelDefaultXY", "png", "panel, XY, 600x300, 18 thickness", "Click to see info.",
@@ -128,6 +130,8 @@ Tools = [
 	"MagicPanels", "panelResize2", "png", "panel, smaller, long-", "Click to see info.",
 	"MagicPanels", "panelResize3", "png", "panel, bigger, short+", "Click to see info.",
 	"MagicPanels", "panelResize4", "png", "panel, smaller, short-", "Click to see info.",
+	"MagicPanels", "panelResize5", "png", "panel, bigger, thickness+", "Click to see info.",
+	"MagicPanels", "panelResize6", "png", "panel, smaller, thickness-", "Click to see info.",
 
 	# special
 	

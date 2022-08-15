@@ -1,6 +1,3 @@
-# magicManager tool for Magic Panels
-# Author: Darek L (github.com/dprojects)
-
 import FreeCAD, FreeCADGui
 from PySide import QtGui, QtCore
 
@@ -55,8 +52,8 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 260
-			toolSH = 200
+			toolSW = 220
+			toolSH = 240
 			
 			# active screen size - FreeCAD main window
 			gSW = FreeCADGui.getMainWindow().width()
@@ -79,6 +76,8 @@ def showQtGUI():
 			# options
 			# ############################################################################
 			
+			row = 30
+			
 			# screen
 			self.oModeL = QtGui.QLabel("                                          ", self)
 			self.oModeL.move(10, 10)
@@ -86,84 +85,93 @@ def showQtGUI():
 			# button - refresh
 			self.oModeB1 = QtGui.QPushButton(translate('magicManager', 'refresh selection'), self)
 			self.oModeB1.clicked.connect(self.setMode)
-			self.oModeB1.setFixedWidth(240)
-			self.oModeB1.move(10, 30)
+			self.oModeB1.setFixedWidth(toolSW-20)
+			self.oModeB1.move(10, row)
 
 			# ############################################################################
 			# options - panel
 			# ############################################################################
 
+			row += 40
+
 			# label
 			self.spL = QtGui.QLabel(translate('magicManager', 'Select panel:'), self)
-			self.spL.move(10, 73)
+			self.spL.move(10, row+3)
 
 			# button - previous
 			self.spBP = QtGui.QPushButton("<", self)
 			self.spBP.clicked.connect(self.setPreviousPanel)
 			self.spBP.setFixedWidth(50)
-			self.spBP.move(100, 70)
+			self.spBP.move(toolSW-120, row)
 			self.spBP.setAutoRepeat(True)
 
 			# button - next
 			self.spBN = QtGui.QPushButton(">", self)
 			self.spBN.clicked.connect(self.setNextPanel)
 			self.spBN.setFixedWidth(50)
-			self.spBN.move(170, 70)
+			self.spBN.move(toolSW-60, row)
 			self.spBN.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - edge
 			# ############################################################################
 
+			row += 30
+
 			# label
 			self.seL = QtGui.QLabel(translate('magicManager', 'Select edge:'), self)
-			self.seL.move(10, 103)
+			self.seL.move(10, row+3)
 
 			# button - previous
 			self.seBP = QtGui.QPushButton("<", self)
 			self.seBP.clicked.connect(self.setPreviousEdge)
 			self.seBP.setFixedWidth(50)
-			self.seBP.move(100, 100)
+			self.seBP.move(toolSW-120, row)
 			self.seBP.setAutoRepeat(True)
 
 			# button - next
 			self.seBN = QtGui.QPushButton(">", self)
 			self.seBN.clicked.connect(self.setNextEdge)
 			self.seBN.setFixedWidth(50)
-			self.seBN.move(170, 100)
+			self.seBN.move(toolSW-60, row)
 			self.seBN.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - vertex
 			# ############################################################################
+			
+			row += 30
 
 			# label
 			self.svL = QtGui.QLabel(translate('magicManager', 'Select vertex:'), self)
-			self.svL.move(10, 133)
+			self.svL.move(10, row+3)
 
 			# button - previous
 			self.svBP = QtGui.QPushButton("<", self)
 			self.svBP.clicked.connect(self.setPreviousVertex)
 			self.svBP.setFixedWidth(50)
-			self.svBP.move(100, 130)
+			self.svBP.move(toolSW-120, row)
 			self.svBP.setAutoRepeat(True)
 
 			# button - next
 			self.svBN = QtGui.QPushButton(">", self)
 			self.svBN.clicked.connect(self.setNextVertex)
 			self.svBN.setFixedWidth(50)
-			self.svBN.move(170, 130)
+			self.svBN.move(toolSW-60, row)
 			self.svBN.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - apply
 			# ############################################################################
 
+			row += 50
+
 			# button - apply
 			self.oSetB = QtGui.QPushButton(translate('magicManager', 'apply panel to this position'), self)
 			self.oSetB.clicked.connect(self.setPanel)
-			self.oSetB.setFixedWidth(240)
-			self.oSetB.move(10, 160)
+			self.oSetB.setFixedWidth(toolSW-20)
+			self.oSetB.setFixedHeight(40)
+			self.oSetB.move(10, row)
 
 			
 			# ############################################################################
@@ -176,7 +184,6 @@ def showQtGUI():
 			# init
 			self.resetGlobals()
 			self.setMode()
-
 			
 		# ############################################################################
 		# actions - internal functions
@@ -232,7 +239,7 @@ def showQtGUI():
 			self.resetGlobals()
 			
 			try:
-				self.gObj = FreeCADGui.Selection.getSelection()[0]
+				self.gObj = MagicPanels.getReference()
 				self.gColor = self.gObj.ViewObject.ShapeColor
 			except:
 				skip = 1
@@ -299,6 +306,9 @@ def showQtGUI():
 				self.svBP.hide()
 				self.svBN.hide()
 
+			# init panel
+			self.setNextPanel()
+			
 		# ############################################################################
 		def resetGlobals(self):
 			

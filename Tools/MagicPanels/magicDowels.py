@@ -723,9 +723,11 @@ def showQtGUI():
 				
 				self.resetGlobals()
 
-				self.gObj = MagicPanels.getReference()
+				gSO = FreeCADGui.Selection.getSelection()[0]
+				
+				self.gObj = MagicPanels.getReference(gSO)
 				self.gFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-				self.gFIndex = MagicPanels.getFaceIndex(self.gObj, self.gFace)
+				self.gFIndex = MagicPanels.getFaceIndex(gSO, self.gFace)
 				FreeCADGui.Selection.clearSelection()
 				
 				n = ""
@@ -847,7 +849,6 @@ def showQtGUI():
 
 				self.s1S.setText(self.gNoSelection)
 				return -1
-			
 			
 		# ############################################################################
 		def setSidesP(self):

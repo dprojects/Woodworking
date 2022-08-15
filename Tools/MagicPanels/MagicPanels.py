@@ -12,7 +12,12 @@ from PySide import QtCore
 translate = FreeCAD.Qt.translate
 
 # ###################################################################################################################
-# Functions - internal for this library purposes, no error handling
+#
+#
+# Internal functions for this library purposes
+# no error handling, can be used in tools
+#
+#
 # ###################################################################################################################
 
 
@@ -38,6 +43,44 @@ def touchTypo(iObj):
 	'''
 	
 	return getattr(iObj, "Vertex"+"es")
+
+
+# ############################################################################
+def normalizeBoundBox(iBoundBox):
+	'''
+	normalizeBoundBox(iBoundBox) - return normalized version of BoundBox. All values 0.01 will be rounded 
+	allowing comparison, and searches for the same face or edge.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iBoundBox: directly pass BoundBox object
+
+	Usage:
+	
+		e1 = obj1.Shape.Edges[0]
+		e2 = obj2.Shape.Edges[0]
+		
+		b1 = normalizeBoundBox(e1.BoundBox)
+		b2 = normalizeBoundBox(e2.BoundBox)
+		
+	Result:
+	
+		return normalized version for comparison if b1 == b2: you can set your own precision here
+
+	'''
+
+	b = "BoundBox ("
+	b += str(int(round(iBoundBox.XMin, 0))) + ", "
+	b += str(int(round(iBoundBox.YMin, 0))) + ", "
+	b += str(int(round(iBoundBox.ZMin, 0))) + ", "
+	b += str(int(round(iBoundBox.XMax, 0))) + ", "
+	b += str(int(round(iBoundBox.YMax, 0))) + ", "
+	b += str(int(round(iBoundBox.ZMax, 0)))
+	b += ")"
+	
+	return b
 
 
 # ###################################################################################################################
@@ -248,16 +291,7 @@ def getEdgeIndexByKey(iObj, iBoundBox):
 	index = 1
 	for e in iObj.Shape.Edges:
 		
-		c = "BoundBox ("
-		c += str(int(round(e.BoundBox.XMin, 0))) + ", "
-		c += str(int(round(e.BoundBox.YMin, 0))) + ", "
-		c += str(int(round(e.BoundBox.ZMin, 0))) + ", "
-		c += str(int(round(e.BoundBox.XMax, 0))) + ", "
-		c += str(int(round(e.BoundBox.YMax, 0))) + ", "
-		c += str(int(round(e.BoundBox.ZMax, 0)))
-		c += ")"
-		
-		if c == str(iBoundBox):
+		if normalizeBoundBox(e.BoundBox) == normalizeBoundBox(iBoundBox):
 			return index
 
 		index = index + 1
@@ -445,51 +479,31 @@ def getFaceEdges(iObj, iFace):
 	s = int(sizes[1])
 	l = int(sizes[2])
 	
-	e1 = iFace.Edges[0]
-	e2 = iFace.Edges[1]
-	e3 = iFace.Edges[2]
-	e4 = iFace.Edges[3]
-
-	arrAll = [ e1, e2, e3, e4 ]
+	arrAll = [ ]
 	arrThick = []
 	arrShort = []
 	arrLong = []
 	
-	if int(e1.Length) == t:
-		arrThick.append(e1)
-	if int(e1.Length) == s:
-		arrShort.append(e1)
-	if int(e1.Length) == l:
-		arrLong.append(e1)
-	
-	if int(e2.Length) == t:
-		arrThick.append(e2)
-	if int(e2.Length) == s:
-		arrShort.append(e2)
-	if int(e2.Length) == l:
-		arrLong.append(e2)
+	for e in iFace.Edges:
 		
-	if int(e3.Length) == t:
-		arrThick.append(e3)
-	if int(e3.Length) == s:
-		arrShort.append(e3)
-	if int(e3.Length) == l:
-		arrLong.append(e3)
+		arrAll.append(e)
+		
+		if int(e.Length) == t:
+			arrThick.append(e)
+			
+		if int(e.Length) != t and int(e.Length) <= s:
+			arrShort.append(e)
+			
+		if int(e.Length) != t and int(e.Length) > s:
+			arrLong.append(e)
 	
-	if int(e4.Length) == t:
-		arrThick.append(e4)
-	if int(e4.Length) == s:
-		arrShort.append(e4)
-	if int(e4.Length) == l:
-		arrLong.append(e4)
-	
-	if len(arrThick) == 0:
-		faceType = "surface"
-	else:
+	if len(arrThick) == len(arrAll) / 2:
 		faceType = "edge"
+	else:
+		faceType = "surface"
 	
 	return [ faceType, arrAll, arrThick, arrShort, arrLong ]
-	
+
 
 # ###################################################################################################################
 def getFacePlane(iFace):
@@ -753,6 +767,28 @@ def getReference(iObj="none"):
 		obj.isDerivedFrom("PartDesign::Chamfer")
 		):
 		return obj.Base[0]
+		
+	elif obj.isDerivedFrom("Part::Cut"):
+		i = 0
+		base = obj
+		while True:
+			
+			if (
+				base.isDerivedFrom("Part::Box") or 
+				base.isDerivedFrom("PartDesign::Pad")
+				):
+				
+				return base
+			
+			else:
+			
+				base = base.Base
+			
+			if i > 20:
+				break
+			else:
+				i = i + 1
+		
 	else:
 		return obj
 	
@@ -1109,10 +1145,12 @@ def getSizes(iObj):
 		Returns [ Length, Width, Height ] for Cube.
 	'''
 
+	# for Cube panels
 	if iObj.isDerivedFrom("Part::Box"):
 
 		return [ iObj.Length.Value, iObj.Width.Value, iObj.Height.Value ]
-			
+
+	# for Pad panels
 	if iObj.isDerivedFrom("PartDesign::Pad"):
 
 		for c in iObj.Profile[0].Constraints:
@@ -1123,13 +1161,21 @@ def getSizes(iObj):
 				
 		return [ sizeX, sizeY, iObj.Length.Value ]
 
+	# to move drill bits more precisely
+	if iObj.isDerivedFrom("Part::Cylinder"):
+		return [ 1, 1, 1 ]
+
+	if iObj.isDerivedFrom("Part::Cone"):
+		return [ 1, 1, 1 ]
+	
+	# for custom objects
 	try:
 		
 		return [ iObj.Base_Width.Value, iObj.Base_Height.Value, iObj.Base_Length.Value ]
 		
 	except:
 		
-		# allows to move all furniture more quickly
+		# to move all furniture more quickly
 		return [ 100, 100, 100 ]
 
 
@@ -1900,22 +1946,23 @@ def showInfo(iCaller, iInfo, iNote="yes"):
 		info += '</li>'
 		
 		info += '<li>'
-		info += translate('showInfoAll', 'Replace desired Cube elements with more detailed elements. Use dedicated replace ')
+		info += translate('showInfoAll', 'A this stage you can generate cut-list with getDimensions tool.')
+		info += '</li>'
+		
+		info += '<li>'
+		info += translate('showInfoAll', 'If you want more detailed model you can replace desired Cube elements ')
+		info += translate('showInfoAll', 'with more detailed elements. Use dedicated replace ')
 		info += translate('showInfoAll', 'features for that e.g. panel2profile to replace all Cubes with detailed construction ')
 		info += translate('showInfoAll', 'profiles or use panel2link to replace all selected Cubes with any detailed object.')
 		info += '</li>'
 		
 		info += '<li>'
 		info += translate('showInfoAll', 'Add decorations or more details, if needed. If you want to change Cube shape you can ')
-		info += translate('showInfoAll', 'replace it with Pad by single click via panel2pad replace feature and edit the Sketch. ')
+		info += translate('showInfoAll', 'replace it with Pad by single click via panel2pad and edit the Sketch. ')
 		info += '</li>'
 		
 		info += '<li>'
 		info += translate('showInfoAll', 'Add colors or textures and preview furniture.')
-		info += '</li>'
-		
-		info += '<li>'
-		info += translate('showInfoAll', 'Generate cut-list with getDimensions tool. You can use TechDraw for more detailed draw. ')
 		info += '</li>'
 		
 		info += '<li>'
@@ -1945,7 +1992,13 @@ def showInfo(iCaller, iInfo, iNote="yes"):
 
 
 # ###################################################################################################################
-# Functions - for external usage, should be error handling and pop-up.
+#
+#
+# Functions for external usage only, 
+# should be error handling and pop-up, do not call it from GUI tools,
+# should be called from toolbar icons only.
+# 
+#
 # ###################################################################################################################
 
 
@@ -2040,8 +2093,7 @@ def panelCopy(iType):
 
 	try:
 
-		gObj = FreeCADGui.Selection.getSelection()[0]
-
+		gObj = getReference()
 		
 		[ Length, Width, Height ] = sizesToCubePanel(gObj, iType)
 		
@@ -2243,6 +2295,56 @@ def panelResize(iType):
 		sizes.sort()
 		thick = sizes[0]
 
+		if gObj.isDerivedFrom("Part::Cylinder"):
+			if iType == "1":
+				gObj.Height = gObj.Height.Value + thick
+				return
+
+			if iType == "2":
+				gObj.Height = gObj.Height.Value - thick
+				return
+
+			if iType == "3":
+				gObj.Radius = gObj.Radius.Value + thick
+				return
+
+			if iType == "4":
+				gObj.Radius = gObj.Radius.Value - thick
+				return
+
+			if iType == "5":
+				gObj.Radius = gObj.Radius.Value + thick/2
+				return
+
+			if iType == "6":
+				gObj.Radius = gObj.Radius.Value - thick/2
+				return
+
+		if gObj.isDerivedFrom("Part::Cone"):
+			if iType == "1":
+				gObj.Height = gObj.Height.Value + thick
+				return
+
+			if iType == "2":
+				gObj.Height = gObj.Height.Value - thick
+				return
+
+			if iType == "3":
+				gObj.Radius2 = gObj.Radius2.Value + thick/2
+				return
+
+			if iType == "4":
+				gObj.Radius2 = gObj.Radius2.Value - thick/2
+				return
+
+			if iType == "5":
+				gObj.Radius1 = gObj.Radius1.Value + thick/2
+				return
+
+			if iType == "6":
+				gObj.Radius1 = gObj.Radius1.Value - thick/2
+				return
+
 		if gObj.isDerivedFrom("Part::Box"):
 
 			if iType == "1":
@@ -2303,6 +2405,34 @@ def panelResize(iType):
 						gObj.Height = gObj.Height.Value - thick
 					return
 
+			if iType == "5":
+				if gObj.Length.Value == sizes[0]:
+					gObj.Length = gObj.Length.Value + 1
+					return
+					
+				if gObj.Width.Value == sizes[0]:
+					gObj.Width = gObj.Width.Value + 1
+					return
+					
+				if gObj.Height.Value == sizes[0]:
+					gObj.Height = gObj.Height.Value + 1
+					return
+
+			if iType == "6":
+				if gObj.Length.Value == sizes[0]:
+					if gObj.Length.Value - 1 > 0:
+						gObj.Length = gObj.Length.Value - 1
+					return
+					
+				if gObj.Width.Value == sizes[0]:
+					if gObj.Width.Value - 1 > 0:
+						gObj.Width = gObj.Width.Value - 1
+					return
+					
+				if gObj.Height.Value == sizes[0]:
+					if gObj.Height.Value - 1 > 0:
+						gObj.Height = gObj.Height.Value - 1
+					return
 		else:
 		
 			direction = getDirection(gObj)
@@ -2339,13 +2469,23 @@ def panelResize(iType):
 					else:
 						gObj.Profile[0].setDatum(9, FreeCAD.Units.Quantity(sizes[1] - thick))
 
+			if iType == "5":
+				
+				gObj.Length = gObj.Length.Value + 1
+			
+			if iType == "6":
+				
+				if gObj.Length.Value - 1 > 0:
+					gObj.Length = gObj.Length.Value - 1
+
+			
 		FreeCAD.activeDocument().recompute()
 
 	except:
 		
 		info = ""
 		
-		info += translate('panelResizeInfo', 'This tool allows to resize quickly Cube panels or even other objects. The resize step is the panel thickness. Panel is resized into direction described by the icon for XY panel. However, in some cases the panel may be resized into opposite direction, if the panel is not supported or the sides are equal.')
+		info += translate('panelResizeInfo', 'This tool allows to resize quickly Cube panels or even other objects. The resize step is the panel thickness. Panel is resized into direction described by the icon for XY panel. However, in some cases the panel may be resized into opposite direction, if the panel is not supported or the sides are equal. You can also resize Cylinders (drill bits), the long side will be Height, the short will be diameter, the thickness will be Radius. For Cone objects (drill bits - countersinks, counterbore) the long side will be Height, the thickness will be Radius1 (bottom radius) and the short will be Radius2 (top radius).')
 		
 		showInfo("panelResize"+iType, info)
 
@@ -2374,20 +2514,27 @@ def panelFace(iType):
 
 	try:
 
-		gObj = FreeCADGui.Selection.getSelection()[0]
+		gSO = FreeCADGui.Selection.getSelection()[0]
+		
+		gObj = getReference(gSO)
 		gFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-
-		panel = FreeCAD.activeDocument().addObject("Part::Box", "panelFace"+iType)
-		[ panel.Length, panel.Width, panel.Height ] = sizesToCubePanel(gObj, iType)
-
+		
+		[ L, W, H ] = sizesToCubePanel(gObj, iType)
+		
 		if gObj.isDerivedFrom("Part::Box"):
 			[ x, y, z ] = getVertex(gFace, 0, 1)
 		else:
 			[ x, y, z ] = getVertex(gFace, 1, 0)
+		
+		if gSO.isDerivedFrom("Part::Cut"):
+			[ x, y, z ] = getVertex(gFace, 2, 0)
+
+		panel = FreeCAD.activeDocument().addObject("Part::Box", "panelFace"+iType)
+		panel.Length, panel.Width, panel.Height = L, W, H
 
 		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
 		FreeCAD.activeDocument().recompute()
-		
+	
 	except:
 		
 		info = ""
@@ -2395,7 +2542,7 @@ def panelFace(iType):
 		info += translate('panelFaceInfo', 'This tool creates new panel at selected face. The blue panel represents the selected object and the red one represents the new created object. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
 
 		showInfo("panelFace"+iType, info)
-
+	
 
 # ###################################################################################################################
 def panelBetween(iType):
@@ -2421,7 +2568,9 @@ def panelBetween(iType):
 
 	try:
 
-		gObj = FreeCADGui.Selection.getSelection()[0]
+		gSO = FreeCADGui.Selection.getSelection()[0]
+		gObj = getReference(gSO)
+		
 		gFace1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 		gFace2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
 	
@@ -2485,7 +2634,7 @@ def panelSide(iType):
 
 	try:
 
-		gObj = FreeCADGui.Selection.getSelection()[0]
+		gObj = getReference()
 		gFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 
 		[ Length, Width, Height ] = sizesToCubePanel(gObj, "ZY")
@@ -2564,7 +2713,7 @@ def panelBackOut():
 
 	try:
 
-		gObj = FreeCADGui.Selection.getSelection()[0]
+		gObj = getReference()
 
 		gFace1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 		gFace2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
@@ -2626,7 +2775,7 @@ def panelCover(iType):
 
 	try:
 
-		gObj = FreeCADGui.Selection.getSelection()[0]
+		gObj = getReference()
 		
 		gFace1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 		gFace2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
@@ -2853,7 +3002,7 @@ def panel2frame():
 				size = sizes[0]
 				
 			for e in arr:
-				keys.append(str(e.BoundBox))
+				keys.append(e.BoundBox)
 			
 			[ part, body, sketch, pad ] = makePad(o, "Frame")
 			FreeCAD.ActiveDocument.removeObject(o.Name)
@@ -3413,9 +3562,112 @@ def magicCut():
 		
 		info = ""
 		
-		info += translate('magicCut', 'This tool make multi bool cut operation at selected objects. First object should be the base object to cut. All other selected objects will cut the base 1st selected object. To select more objects hold left CTRL key during selection. During this process the objects copies will be used to cut and the original objects will be not be moved. Also there will be auto labeling to keep the cut tree more informative and cleaner.')
+		info += translate('magicCut', 'This tool make multi bool cut operation at selected objects. First object should be the base object to cut. All other selected objects will cut the base 1st selected object. To select more objects hold left CTRL key during selection. During this process only the copies will be used to cut, so the original objects will not be moved at tree. Also there will be auto labeling to keep the cut tree more informative and cleaner.')
 
 		showInfo("magicCut", info)
+
+
+# ###################################################################################################################
+def jointTenon():
+	'''
+	jointTenon() - allows to create tenon joint at selected face.
+
+	Note: This function displays pop-up info in case of error.
+
+	Args:
+		
+		no args
+		
+	Usage:
+
+		import MagicPanels
+		holes = MagicPanels.jointTenon()
+		
+	Result:
+
+		Tenon joint will be created at face.
+	'''
+
+	try:
+
+		base = getReference()
+		face = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+		
+		joint = FreeCAD.ActiveDocument.addObject("Part::Box","jointtenon")
+		joint.Label = str(base.Label) + ", joint - Tenon "
+		
+		size = 6.35
+		joint.Width, joint.Height, joint.Length = 1 * size, 3 * size, 5 * size
+		
+		[ v1, v2, v3, v4 ] = getFaceVertices(face)
+		x, y, z = v1[0], v1[1], v1[2]
+			
+		r = getFaceObjectRotation(base, face)
+			
+		setPlacement(joint, x, y, z, r)
+			
+		return
+
+	except:
+		
+		info = ""
+		
+		info += translate('jointTenon', 'Select face to create Tenon joint. This is simple Cube object and will be created in the corner of the selected face (0 vertex), allowing you to move the joint precisely to any place at the face. It has predefined size but you can resize and move the joint to fit to your elements and needs. To make more copies you can use magicFixture. If you set all Tenons at the element, you can quickly cut all Mortises for the Tenons with magicCut.')
+
+		showInfo("jointTenon", info)
+
+# ###################################################################################################################
+def jointCustom():
+	'''
+	jointCustom() - allows to create custom joint at selected face.
+
+	Note: This function displays pop-up info in case of error.
+
+	Args:
+		
+		no args
+		
+	Usage:
+
+		import MagicPanels
+		holes = MagicPanels.jointCustom()
+		
+	Result:
+
+		Custom joint will be created at face allowing to change the Sketch.
+	'''
+
+	try:
+
+		base = getReference()
+		face = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+		
+		joint = FreeCAD.ActiveDocument.addObject("Part::Box","jointcustom")
+		joint.Label = str(base.Label) + ", joint - Custom "
+		
+		size = 6.35
+		joint.Length, joint.Width, joint.Height = 5 * size, 3 * size, 1 * size
+		
+		[ v1, v2, v3, v4 ] = getFaceVertices(face)
+		x, y, z = v1[0], v1[1], v1[2]
+			
+		r = getFaceObjectRotation(base, face)
+			
+		setPlacement(joint, x, y, z, r)
+		[ part, body, sketch, pad ] = makePad(joint, joint.Label)
+		
+		FreeCAD.ActiveDocument.removeObject(joint.Name)
+		FreeCAD.activeDocument().recompute()
+		
+		return
+
+	except:
+		
+		info = ""
+		
+		info += translate('jointCustom', 'Select face to create Custom joint. The simple Pad will be created in the corner of the selected face (0 vertex), allowing you to move the joint precisely to any place at the face. It has predefined size but you can resize and move the joint to fit to your elements and needs. Also you can edit the Sketch to create your custom joint shape. To make more copies you can use magicFixture. If you set all joints at the element, you can quickly cut all Mortises for the joints with magicCut.')
+
+		showInfo("jointCustom", info)
 
 
 # ###################################################################################################################
