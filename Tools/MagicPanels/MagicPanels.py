@@ -1930,60 +1930,13 @@ def showInfo(iCaller, iInfo, iNote="yes"):
 
 	if iNote == "yes":
 		
-		info += translate('showInfoAll', 'To keep furniture designing process quick and simple, ')
-		info += translate('showInfoAll', 'the furniture designing process should follow steps: ')
-		
-		info += '<ol>'
-		
-		info += '<li>'
-		info += translate('showInfoAll', 'Create furniture with simple Cube panels. Try to not make detailed model ')
-		info += translate('showInfoAll', 'with Pads and Sketches at this stage. ')
-		info += '</li>'
-		
-		info += '<li>'
-		info += translate('showInfoAll', 'Add simple mounting points with magicDowels tool and other simple references ')
-		info += translate('showInfoAll', 'with Cubes to replace all of them later with single click.')
-		info += '</li>'
-		
-		info += '<li>'
-		info += translate('showInfoAll', 'A this stage you can generate cut-list with getDimensions tool.')
-		info += '</li>'
-		
-		info += '<li>'
-		info += translate('showInfoAll', 'If you want more detailed model you can replace desired Cube elements ')
-		info += translate('showInfoAll', 'with more detailed elements. Use dedicated replace ')
-		info += translate('showInfoAll', 'features for that e.g. panel2profile to replace all Cubes with detailed construction ')
-		info += translate('showInfoAll', 'profiles or use panel2link to replace all selected Cubes with any detailed object.')
-		info += '</li>'
-		
-		info += '<li>'
-		info += translate('showInfoAll', 'Add decorations or more details, if needed. If you want to change Cube shape you can ')
-		info += translate('showInfoAll', 'replace it with Pad by single click via panel2pad and edit the Sketch. ')
-		info += '</li>'
-		
-		info += '<li>'
-		info += translate('showInfoAll', 'Add colors or textures and preview furniture.')
-		info += '</li>'
-		
-		info += '<li>'
-		info += translate('showInfoAll', 'You can print this report directly from TechDraw page or use sheet2export tool.')
-		info += '</li>'
-		
-		info += '<li>'
-		info += translate('showInfoAll', 'Create furniture in real-life.')
-		info += '</li>'
-		
-		info += '<li>'
-		info += translate('showInfoAll', 'Have fun with your new furniture in real-life !')
-		info += '</li>'
-		
-		info += '</ol>'
-			
-		info += translate('showInfoAll', 'For more details please see:')
-		info += ' ' + '<a href="https://github.com/dprojects/Woodworking">'
-		info += translate('showInfoAll', 'Woodworking workbench documentation.')
+		info += '<br><br>'
+		info += translate('showInfoAll', 'Please see:')
+		info += ' ' + '<a href="https://github.com/dprojects/Woodworking/tree/master/Docs">'
+		info += translate('showInfoAll', 'Woodworking workbench documentation')
 		info += '</a>'
-	
+		info += translate('showInfoAll', ' for features description and detailed tutorials.')
+		
 	msg = QtGui.QMessageBox()
 	msg.setWindowTitle(iCaller)
 	msg.setTextFormat(QtCore.Qt.TextFormat.RichText)

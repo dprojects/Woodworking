@@ -2,11 +2,7 @@
 
 <img align="left" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/Woodworking.png"> FreeCAD is a very cool software and allows to design a lot of interesting things. However, FreeCAD is not dedicated to be software only for furniture designing. For this reason, some tasks when designing furniture can be challenging at the beginning. Despite the fact that I finished math, I have a problem with counting in my memory. For me, constantly calculating wood thickness and adding this to the position was a problem without a calculator. In addition, constantly starting from the `10 x 10 x 10 Cube` and setting it in the right position was a bit challenging at the beginning. 
 
-Woodworking workbench has been created because of my woodworking and coding hobby. Everything started from [getDimensions](https://github.com/dprojects/getDimensions/commits/master) project long time ago. I wanted to have [simple cut-list for chipboards order](https://github.com/dprojects/getDimensions/commit/a6f0a2221e90f717be95bd0dc1cc9f1ede95a329) and I found FreeCAD with low hardware requirements and possibility to implement the cut-list. Now it has been transformed into whole Woodworking workbench.
-
-Currently the Woodworking workbench is one-man project, yes one-man mission to the Moon (LOL), mostly private but I share it with others. There is no huge corporation behind it, so this workbench may not be so advanced like well-paid projects, also there is no 24/7 support plans to buy.
-
-The main goal for this workbench is to make furniture designing process at FreeCAD more simple.
+Woodworking workbench has been created because of my woodworking and coding hobby. Everything started from [getDimensions](https://github.com/dprojects/getDimensions/commits/master) project long time ago. I wanted to have [simple cut-list for chipboards order](https://github.com/dprojects/getDimensions/commit/a6f0a2221e90f717be95bd0dc1cc9f1ede95a329) and I found FreeCAD with low hardware requirements and possibility to implement the cut-list. Now it has been transformed into whole Woodworking workbench. The main goal for this workbench is to make furniture designing process at FreeCAD more simple.
 
 * [Main features](#main-features)
   * [Making panels](#making-panels)
