@@ -481,6 +481,45 @@ FreeCADGui.addCommand("magicDowels", magicDowels())
 
 	
 # ######################################################################################################################
+class magicDriller():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "magicDriller.png"),
+				"MenuText": QT_TRANSLATE_NOOP("magicDrillerMenuText", "magicDriller"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicDrillerToolTip", "Allows to drill holes, countersinks or counterbores in a series with predefined or custom sequences."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "magicDriller"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("magicDriller", magicDriller())
+
+	
+# ######################################################################################################################
 class magicCNC():
 
 	def GetResources(self):

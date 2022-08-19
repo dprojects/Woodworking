@@ -486,6 +486,9 @@ def getFaceEdges(iObj, iFace):
 	
 	for e in iFace.Edges:
 		
+		if not e.Curve.isDerivedFrom("Part::GeomLine"):
+			continue
+		
 		arrAll.append(e)
 		
 		if int(e.Length) == t:
@@ -757,10 +760,19 @@ def getReference(iObj="none"):
 
 	'''
 
+	obj = ""
+	
+	# selection
+	
 	if iObj == "none":
 		obj = FreeCADGui.Selection.getSelection()[0]
 	else:
 		obj = iObj
+
+	# object types 
+	
+	if obj.isDerivedFrom("Part::Box") or obj.isDerivedFrom("PartDesign::Pad"):
+		return obj
 
 	if ( 
 		obj.isDerivedFrom("PartDesign::Thickness") or 
@@ -768,28 +780,33 @@ def getReference(iObj="none"):
 		):
 		return obj.Base[0]
 		
-	elif obj.isDerivedFrom("Part::Cut"):
+	if (
+		obj.isDerivedFrom("Part::Cut") or 
+		obj.isDerivedFrom("PartDesign::Hole")
+		):
+		
 		i = 0
 		base = obj
 		while True:
 			
-			if (
-				base.isDerivedFrom("Part::Box") or 
-				base.isDerivedFrom("PartDesign::Pad")
-				):
-				
+			if base.isDerivedFrom("Part::Box") or base.isDerivedFrom("PartDesign::Pad"):
 				return base
 			
 			else:
 			
-				base = base.Base
+				if obj.isDerivedFrom("Part::Cut"):
+					base = base.Base
+					
+				if obj.isDerivedFrom("PartDesign::Hole"):
+					base = base.BaseFeature
 			
-			if i > 20:
+			# search depth level
+			if i > 200:
 				break
 			else:
 				i = i + 1
 		
-	else:
+	if obj != "":
 		return obj
 	
 	return -1
@@ -2249,144 +2266,129 @@ def panelResize(iType):
 		thick = sizes[0]
 
 		if gObj.isDerivedFrom("Part::Cylinder"):
+			
+			R, H = gObj.Radius.Value, gObj.Height.Value
+			
 			if iType == "1":
 				gObj.Height = gObj.Height.Value + thick
-				return
 
 			if iType == "2":
-				gObj.Height = gObj.Height.Value - thick
-				return
+				if H - thick > 0:
+					gObj.Height = gObj.Height.Value - thick
 
 			if iType == "3":
 				gObj.Radius = gObj.Radius.Value + thick
-				return
-
+				
 			if iType == "4":
-				gObj.Radius = gObj.Radius.Value - thick
-				return
+				if R - thick > 0:
+					gObj.Radius = gObj.Radius.Value - thick
 
 			if iType == "5":
 				gObj.Radius = gObj.Radius.Value + thick/2
-				return
 
 			if iType == "6":
-				gObj.Radius = gObj.Radius.Value - thick/2
-				return
+				if R - thick/2 > 0:
+					gObj.Radius = gObj.Radius.Value - thick/2
 
 		if gObj.isDerivedFrom("Part::Cone"):
+			
+			R1, R2, H = gObj.Radius1.Value, gObj.Radius2.Value, gObj.Height.Value
+			
 			if iType == "1":
 				gObj.Height = gObj.Height.Value + thick
-				return
 
 			if iType == "2":
-				gObj.Height = gObj.Height.Value - thick
-				return
+				if H - thick > 0:
+					gObj.Height = gObj.Height.Value - thick
 
 			if iType == "3":
 				gObj.Radius2 = gObj.Radius2.Value + thick/2
-				return
 
 			if iType == "4":
-				gObj.Radius2 = gObj.Radius2.Value - thick/2
-				return
+				if R2 - thick/2 > 0:
+					gObj.Radius2 = gObj.Radius2.Value - thick/2
 
 			if iType == "5":
 				gObj.Radius1 = gObj.Radius1.Value + thick/2
-				return
 
 			if iType == "6":
-				gObj.Radius1 = gObj.Radius1.Value - thick/2
-				return
+				if R1 - thick/2 > 0:
+					gObj.Radius1 = gObj.Radius1.Value - thick/2
 
 		if gObj.isDerivedFrom("Part::Box"):
 
+			L, W, H = gObj.Length.Value, gObj.Width.Value, gObj.Height.Value
+				
 			if iType == "1":
-				if gObj.Length.Value == sizes[2]:
+				if L == sizes[2]:
 					gObj.Length = gObj.Length.Value + thick
-					return
-					
-				if gObj.Width.Value == sizes[2]:
+
+				if W == sizes[2]:
 					gObj.Width = gObj.Width.Value + thick
-					return
 					
-				if gObj.Height.Value == sizes[2]:
+				if H == sizes[2]:
 					gObj.Height = gObj.Height.Value + thick
-					return
 
 			if iType == "2":
-				if gObj.Length.Value == sizes[2]:
+				if L == sizes[2]:
 					if gObj.Length.Value - thick > 0:
 						gObj.Length = gObj.Length.Value - thick
-					return
 					
-				if gObj.Width.Value == sizes[2]:
+				if W == sizes[2]:
 					if gObj.Width.Value - thick > 0:
 						gObj.Width = gObj.Width.Value - thick
-					return
 					
-				if gObj.Height.Value == sizes[2]:
+				if H == sizes[2]:
 					if gObj.Height.Value - thick > 0:
 						gObj.Height = gObj.Height.Value - thick
-					return
 
 			if iType == "3":
-				if gObj.Length.Value == sizes[1]:
+				if L == sizes[1]:
 					gObj.Length = gObj.Length.Value + thick
-					return
-					
-				if gObj.Width.Value == sizes[1]:
+
+				if W == sizes[1]:
 					gObj.Width = gObj.Width.Value + thick
-					return
-					
-				if gObj.Height.Value == sizes[1]:
+
+				if H == sizes[1]:
 					gObj.Height = gObj.Height.Value + thick
-					return
 
 			if iType == "4":
-				if gObj.Length.Value == sizes[1]:
+				if L == sizes[1]:
 					if gObj.Length.Value - thick > 0:
 						gObj.Length = gObj.Length.Value - thick
-					return
-					
-				if gObj.Width.Value == sizes[1]:
+
+				if W == sizes[1]:
 					if gObj.Width.Value - thick > 0:
 						gObj.Width = gObj.Width.Value - thick
-					return
-					
-				if gObj.Height.Value == sizes[1]:
+
+				if H == sizes[1]:
 					if gObj.Height.Value - thick > 0:
 						gObj.Height = gObj.Height.Value - thick
-					return
 
 			if iType == "5":
-				if gObj.Length.Value == sizes[0]:
+				if L == sizes[0]:
 					gObj.Length = gObj.Length.Value + 1
-					return
-					
-				if gObj.Width.Value == sizes[0]:
+
+				if W == sizes[0]:
 					gObj.Width = gObj.Width.Value + 1
-					return
-					
-				if gObj.Height.Value == sizes[0]:
+
+				if H == sizes[0]:
 					gObj.Height = gObj.Height.Value + 1
-					return
 
 			if iType == "6":
-				if gObj.Length.Value == sizes[0]:
+				if L == sizes[0]:
 					if gObj.Length.Value - 1 > 0:
 						gObj.Length = gObj.Length.Value - 1
-					return
-					
-				if gObj.Width.Value == sizes[0]:
+
+				if W == sizes[0]:
 					if gObj.Width.Value - 1 > 0:
 						gObj.Width = gObj.Width.Value - 1
-					return
-					
-				if gObj.Height.Value == sizes[0]:
+
+				if H == sizes[0]:
 					if gObj.Height.Value - 1 > 0:
 						gObj.Height = gObj.Height.Value - 1
-					return
-		else:
+
+		if gObj.isDerivedFrom("PartDesign::Pad"):
 		
 			direction = getDirection(gObj)
 		

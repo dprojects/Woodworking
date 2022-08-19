@@ -24,10 +24,11 @@ def showQtGUI():
 		gObjBase = ""
 		gThick = 0
 		
-		gFace = ""
+		gDrillFace = ""
 		gFIndex = 0
 		gFPlane = ""
 		gFType = ""
+		gDrillFaceKey = ""
 		
 		gEdge = ""
 		gEArr = []
@@ -38,23 +39,24 @@ def showQtGUI():
 		gRAngles = []
 		gRIndex = 0
 
+		# Holes, Countersinks, Counterbores
+		gDBType = "" 
+
 		# should not be reset if object change
-		gSides = 0
-		gDowels = []
-		gDowelLabel = ""
-		gDDiameter = 8
-		gDSize = 35
-		gDSink = 20
-		gDNum = 2
-		gDOCorner = 50
-		gDONext = 32
-		gDOEdge = 0
-		
-		gDSinkSave = 20
+		gDBSides = 0
+		gDrillBits = []
+		gDBLabel = ""
+		gDBDiameter = 8
+		gDBDiameter2 = 10
+		gDBSize = 35
+		gDBNum = 2
+		gDBOCorner = 50
+		gDBONext = 32
+		gDBOEdge = 0
 		
 		gInit = 1
 		
-		gNoSelection = translate('magicDowels', 'please select face')
+		gNoSelection = translate('magicDriller', 'please select face')
 		
 		# ############################################################################
 		# init
@@ -88,7 +90,7 @@ def showQtGUI():
 			
 			self.result = userCancelled
 			self.setGeometry(gPW, gPH, toolSW, toolSH)
-			self.setWindowTitle(translate('magicDowels', 'magicDowels'))
+			self.setWindowTitle(translate('magicDriller', 'magicDriller'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
@@ -104,7 +106,7 @@ def showQtGUI():
 			self.s1S.move(10, 10)
 
 			# button
-			self.s1B1 = QtGui.QPushButton(translate('magicDowels', 'refresh selection'), self)
+			self.s1B1 = QtGui.QPushButton(translate('magicDriller', 'refresh selection'), self)
 			self.s1B1.clicked.connect(self.getSelected)
 			self.s1B1.setFixedWidth(200)
 			self.s1B1.move(10, 40)
@@ -118,7 +120,7 @@ def showQtGUI():
 			row += 30
 
 			# label
-			self.s2L = QtGui.QLabel(translate('magicDowels', 'Select edge:'), self)
+			self.s2L = QtGui.QLabel(translate('magicDriller', 'Select edge:'), self)
 			self.s2L.move(10, row+3)
 
 			# button
@@ -142,7 +144,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.s3L = QtGui.QLabel(translate('magicDowels', 'Adjust edge:'), self)
+			self.s3L = QtGui.QLabel(translate('magicDriller', 'Adjust edge:'), self)
 			self.s3L.move(10, row+3)
 
 			# button
@@ -160,37 +162,13 @@ def showQtGUI():
 			self.s3B2.setAutoRepeat(True)
 
 			# ############################################################################
-			# options - adjust sink
-			# ############################################################################
-
-			row += 30
-			
-			# label
-			self.s7L = QtGui.QLabel(translate('magicDowels', 'Adjust sink:'), self)
-			self.s7L.move(10, row+3)
-
-			# button
-			self.s7B1 = QtGui.QPushButton("< >", self)
-			self.s7B1.clicked.connect(self.setSink)
-			self.s7B1.setFixedWidth(50)
-			self.s7B1.move(105, row)
-			self.s7B1.setAutoRepeat(True)
-			
-			# button
-			self.s7B2 = QtGui.QPushButton("0", self)
-			self.s7B2.clicked.connect(self.setSink0)
-			self.s7B2.setFixedWidth(50)
-			self.s7B2.move(160, row)
-			self.s7B2.setAutoRepeat(True)
-
-			# ############################################################################
 			# options - adjust rotation
 			# ############################################################################
 
 			row += 30
 			
 			# label
-			self.s4L = QtGui.QLabel(translate('magicDowels', 'Adjust rotation:'), self)
+			self.s4L = QtGui.QLabel(translate('magicDriller', 'Adjust rotation:'), self)
 			self.s4L.move(10, row+3)
 
 			# button
@@ -214,7 +192,7 @@ def showQtGUI():
 			row += 50
 
 			# label
-			self.s5L = QtGui.QLabel(translate('magicDowels', 'Select sides:'), self)
+			self.s5L = QtGui.QLabel(translate('magicDriller', 'Select sides:'), self)
 			self.s5L.move(10, row+3)
 
 			# button
@@ -232,13 +210,33 @@ def showQtGUI():
 			self.s5B2.setAutoRepeat(True)
 
 			# ############################################################################
+			# options - drill bit types
+			# ############################################################################
+			
+			row += 30
+			
+			# border options
+			self.s6Slist = (
+						"Holes",
+						"Countersinks",
+						"Counterbores"
+						)
+			
+			self.s6S = QtGui.QComboBox(self)
+			self.s6S.addItems(self.s6Slist)
+			self.s6S.setCurrentIndex(self.s6Slist.index("Holes"))
+			self.s6S.activated[str].connect(self.setDrillBitType)
+			self.s6S.setFixedWidth(200)
+			self.s6S.move(10, row)
+
+			# ############################################################################
 			# options - mounting samples
 			# ############################################################################
 
 			row += 30
 
 			# border options
-			self.s6Slist = (
+			self.s7Slist = (
 						"Dowel 6 x 35 mm ",
 						"Dowel 8 x 35 mm ",
 						"Dowel 10 x 35 mm ",
@@ -247,23 +245,20 @@ def showQtGUI():
 						"Screw 4 x 40 mm ",
 						"Screw 5 x 50 mm ",
 						"Screw 6 x 60 mm ",
-						"Confirmation 7 x 40 mm ",
-						"Confirmation 7 x 50 mm ",
-						"Confirmation 7 x 70 mm ",
 						"Shelf Pin 5 x 16 mm ",
 						"Profile Pin 5 x 30 mm ",
-						"Profile Pin 8 x 40 mm ",
-						"Custom mount point "
+						"Profile Pin 8 x 40 mm "
 						)
 			
-			self.gDowelLabel = "Dowel 8 x 35 mm "
-			self.s6S = QtGui.QComboBox(self)
-			self.s6S.addItems(self.s6Slist)
-			self.s6S.setCurrentIndex(self.s6Slist.index(self.gDowelLabel))
-			self.s6S.activated[str].connect(self.setCustomMount)
-			self.s6S.setFixedWidth(200)
-			self.s6S.move(10, row)
-
+			self.gDBLabel = "Dowel 8 x 35 mm "
+			self.s7S = QtGui.QComboBox(self)
+			self.s7S.addItems(self.s7Slist)
+			self.s7S.setCurrentIndex(self.s7Slist.index(self.gDBLabel))
+			self.s7S.activated[str].connect(self.setCustomDrillbits)
+			self.s7S.setFixedWidth(200)
+			self.s7S.move(10, row)
+			self.gDBType = "Holes"
+			
 			# ############################################################################
 			# options - mount label
 			# ############################################################################
@@ -271,78 +266,81 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oDowelLabelL = QtGui.QLabel(translate('magicDowels', 'Label:'), self)
-			self.oDowelLabelL.move(10, row+3)
+			self.oDBLabelL = QtGui.QLabel(translate('magicDriller', 'Label:'), self)
+			self.oDBLabelL.move(10, row+3)
 
 			# text input
-			self.oDowelLabelE = QtGui.QLineEdit(self)
-			self.oDowelLabelE.setText(str(self.gDowelLabel))
-			self.oDowelLabelE.setFixedWidth(150)
-			self.oDowelLabelE.move(60, row)
+			self.oDBLabelE = QtGui.QLineEdit(self)
+			self.oDBLabelE.setText(str(self.gDBLabel))
+			self.oDBLabelE.setFixedWidth(150)
+			self.oDBLabelE.move(60, row)
 
 			# ############################################################################
-			# options - dowels number per side
+			# options - drill bits number per side
 			# ############################################################################
 
 			row += 30
 			
 			# label
-			self.oDNumL = QtGui.QLabel(translate('magicDowels', 'Dowels per side:'), self)
-			self.oDNumL.move(10, row+3)
+			self.oDBNumL = QtGui.QLabel(translate('magicDriller', 'Holes per side:'), self)
+			self.oDBNumL.move(10, row+3)
 
 			# text input
-			self.oDNumE = QtGui.QLineEdit(self)
-			self.oDNumE.setText(str(self.gDNum))
-			self.oDNumE.setFixedWidth(50)
-			self.oDNumE.move(160, row)
+			self.oDBNumE = QtGui.QLineEdit(self)
+			self.oDBNumE.setText(str(self.gDBNum))
+			self.oDBNumE.setFixedWidth(50)
+			self.oDBNumE.move(160, row)
 
 			# ############################################################################
-			# options - dowels diameter
+			# options - hole diameter
 			# ############################################################################
 			
 			row += 30
 
 			# label
-			self.oDDiameterL = QtGui.QLabel(translate('magicDowels', 'Dowels diameter:'), self)
-			self.oDDiameterL.move(10, row+3)
+			self.oDBDiameterL = QtGui.QLabel(translate('magicDriller', 'Hole diameter:'), self)
+			self.oDBDiameterL.move(10, row+3)
 
 			# text input
-			self.oDDiameterE = QtGui.QLineEdit(self)
-			self.oDDiameterE.setText(str(self.gDDiameter))
-			self.oDDiameterE.setFixedWidth(50)
-			self.oDDiameterE.move(160, row)
+			self.oDBDiameterE = QtGui.QLineEdit(self)
+			self.oDBDiameterE.setText(str(self.gDBDiameter))
+			self.oDBDiameterE.setFixedWidth(50)
+			self.oDBDiameterE.move(160, row)
 
 			# ############################################################################
-			# options - dowels size
+			# options - hole diameter for countersinks or counterbores
+			# ############################################################################
+			
+			row += 30
+
+			# label
+			self.oDBDiameter2L = QtGui.QLabel(translate('magicDriller', 'Countersink diameter:'), self)
+			self.oDBDiameter2L.move(10, row+3)
+
+			# text input
+			self.oDBDiameter2E = QtGui.QLineEdit(self)
+			self.oDBDiameter2E.setText(str(self.gDBDiameter2))
+			self.oDBDiameter2E.setFixedWidth(50)
+			self.oDBDiameter2E.move(160, row)
+
+			self.oDBDiameter2L.hide()
+			self.oDBDiameter2E.hide()
+
+			# ############################################################################
+			# options - hole depth
 			# ############################################################################
 
 			row += 30
 			
 			# label
-			self.oDSizeL = QtGui.QLabel(translate('magicDowels', 'Dowels size:'), self)
-			self.oDSizeL.move(10, row+3)
+			self.oDBSizeL = QtGui.QLabel(translate('magicDriller', 'Hole depth:'), self)
+			self.oDBSizeL.move(10, row+3)
 
 			# text input
-			self.oDSizeE = QtGui.QLineEdit(self)
-			self.oDSizeE.setText(str(self.gDSize))
-			self.oDSizeE.setFixedWidth(50)
-			self.oDSizeE.move(160, row)
-
-			# ############################################################################
-			# options - dowels sink
-			# ############################################################################
-
-			row += 30
-
-			# label
-			self.oDSinkL = QtGui.QLabel(translate('magicDowels', 'Dowels sink:'), self)
-			self.oDSinkL.move(10, row+3)
-
-			# text input
-			self.oDSinkE = QtGui.QLineEdit(self)
-			self.oDSinkE.setText(str(self.gDSink))
-			self.oDSinkE.setFixedWidth(50)
-			self.oDSinkE.move(160, row)
+			self.oDBSizeE = QtGui.QLineEdit(self)
+			self.oDBSizeE.setText(str(self.gDBSize))
+			self.oDBSizeE.setFixedWidth(50)
+			self.oDBSizeE.move(160, row)
 
 			# ############################################################################
 			# options - offset from corner
@@ -351,14 +349,14 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oDOCornerL = QtGui.QLabel(translate('magicDowels', 'Offset from corner:'), self)
-			self.oDOCornerL.move(10, row+3)
+			self.oDBOCornerL = QtGui.QLabel(translate('magicDriller', 'Offset from corner:'), self)
+			self.oDBOCornerL.move(10, row+3)
 
 			# text input
-			self.oDOCornerE = QtGui.QLineEdit(self)
-			self.oDOCornerE.setText(str(self.gDOCorner))
-			self.oDOCornerE.setFixedWidth(50)
-			self.oDOCornerE.move(160, row)
+			self.oDBOCornerE = QtGui.QLineEdit(self)
+			self.oDBOCornerE.setText(str(self.gDBOCorner))
+			self.oDBOCornerE.setFixedWidth(50)
+			self.oDBOCornerE.move(160, row)
 
 			# ############################################################################
 			# options - offset between dowels
@@ -367,12 +365,12 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oDONextL = QtGui.QLabel(translate('magicDowels', 'Offset between dowels:'), self)
+			self.oDONextL = QtGui.QLabel(translate('magicDriller', 'Offset between holes:'), self)
 			self.oDONextL.move(10, row+3)
 
 			# text input
 			self.oDONextE = QtGui.QLineEdit(self)
-			self.oDONextE.setText(str(self.gDONext))
+			self.oDONextE.setText(str(self.gDBONext))
 			self.oDONextE.setFixedWidth(50)
 			self.oDONextE.move(160, row)
 
@@ -383,14 +381,14 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oDOEdgeL = QtGui.QLabel(translate('magicDowels', 'Offset from edge:'), self)
-			self.oDOEdgeL.move(10, row+3)
+			self.oDBOEdgeL = QtGui.QLabel(translate('magicDriller', 'Offset from edge:'), self)
+			self.oDBOEdgeL.move(10, row+3)
 
 			# text input
-			self.oDOEdgeE = QtGui.QLineEdit(self)
-			self.oDOEdgeE.setText(str(self.gDOEdge))
-			self.oDOEdgeE.setFixedWidth(50)
-			self.oDOEdgeE.move(160, row)
+			self.oDBOEdgeE = QtGui.QLineEdit(self)
+			self.oDBOEdgeE.setText(str(self.gDBOEdge))
+			self.oDBOEdgeE.setFixedWidth(50)
+			self.oDBOEdgeE.move(160, row)
 
 			# ############################################################################
 			# options - end settings
@@ -399,7 +397,7 @@ def showQtGUI():
 			row += 30
 
 			# button
-			self.e1B1 = QtGui.QPushButton(translate('magicDowels', 'set custom values'), self)
+			self.e1B1 = QtGui.QPushButton(translate('magicDriller', 'set custom values'), self)
 			self.e1B1.clicked.connect(self.refreshSettings)
 			self.e1B1.setFixedWidth(200)
 			self.e1B1.move(10, row)
@@ -407,8 +405,8 @@ def showQtGUI():
 			row += 40
 
 			# button
-			self.e2B1 = QtGui.QPushButton(translate('magicDowels', 'apply dowels to this position'), self)
-			self.e2B1.clicked.connect(self.setDowels)
+			self.e2B1 = QtGui.QPushButton(translate('magicDriller', 'drill below drill bits'), self)
+			self.e2B1.clicked.connect(self.drillHoles)
 			self.e2B1.setFixedWidth(200)
 			self.e2B1.setFixedHeight(40)
 			self.e2B1.move(10, row)
@@ -431,13 +429,13 @@ def showQtGUI():
 		def setRotation(self):
 			
 			reset = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 0.00)
-			for d in self.gDowels:
+			for d in self.gDrillBits:
 				d.Placement.Rotation = reset
 			
 			angle = self.gRAngles[self.gRIndex]
 			axis = self.gRAxis
 
-			for d in self.gDowels:
+			for d in self.gDrillBits:
 				
 				x = d.Placement.Base.x
 				y = d.Placement.Base.y
@@ -451,20 +449,65 @@ def showQtGUI():
 			FreeCAD.activeDocument().recompute()
 
 		# ############################################################################
-		def showDowels(self, iCall=0):
+		def createDrillBit(self, iX, iY, iZ):
+
+			if self.gDBType == "Holes":
+
+				d = FreeCAD.ActiveDocument.addObject("Part::Cylinder","DrillBitHole")
+				d.Label = str(self.gDBLabel)
+
+				d.Radius = self.gDBDiameter / 2
+				d.Height = self.gDBSize
+				
+				colors = [ (1.0, 0.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0) ]
+				d.ViewObject.DiffuseColor = colors
+
+			if self.gDBType == "Countersinks":
+
+				d = FreeCAD.ActiveDocument.addObject("Part::Cone","DrillBitCountersink")
+				d.Label = str(self.gDBLabel)
+
+				d.Radius1 = self.gDBDiameter / 2
+				d.Radius2 = self.gDBDiameter2 / 2
+				d.Height = self.gDBSize
+				
+				colors = [ (0.0, 1.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0) ]
+				d.ViewObject.DiffuseColor = colors
+			
+
+			if self.gDBType == "Counterbores":
+
+				d = FreeCAD.ActiveDocument.addObject("Part::Cone","DrillBitCounterbore")
+				d.Label = str(self.gDBLabel)
+
+				d.Radius1 = self.gDBDiameter / 2
+				d.Radius2 = self.gDBDiameter2 / 2
+				d.Height = self.gDBSize
+				
+				colors = [ (0.0, 0.0, 1.0, 0.0), (0.0, 1.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0) ]
+				d.ViewObject.DiffuseColor = colors
+
+			d.Placement.Base.x = iX
+			d.Placement.Base.y = iY
+			d.Placement.Base.z = iZ
+
+			return d
+
+		# ############################################################################
+		def showDrillBits(self):
 			
 			# ############################################################################
 			# remove all dowels
 			# ############################################################################
 			
-			if len(self.gDowels) != 0:
-				for d in self.gDowels:
+			if len(self.gDrillBits) != 0:
+				for d in self.gDrillBits:
 					try:
 						FreeCAD.activeDocument().removeObject(str(d.Name))
 					except:
 						skip = 1
 			
-			self.gDowels = []
+			self.gDrillBits = []
 			
 			# get settings
 			[ v1, v2 ] = MagicPanels.getEdgeVertices(self.gEArr[self.gEIndex])
@@ -476,30 +519,30 @@ def showQtGUI():
 			# dowels at 1st side
 			# ############################################################################
 			
-			if self.gSides == 0 or self.gSides == 1:
+			if self.gDBSides == 0 or self.gDBSides == 1:
 			
 				[ X, Y, Z ] = [ v1[0], v1[1], v1[2] ]
 				[ x , y, z ] = [ 0, 0, 0 ]
 				
 				i = 0
-				while i < self.gDNum:
+				while i < self.gDBNum:
 					
 					# edge along X
 					if v1[0] != v2[0]:
 						
 						if self.gFPlane == "XY":
-							x = X - self.gDOCorner
+							x = X - self.gDBOCorner
 							if i != 0:
-								x = x - ( i * self.gDONext)
-							y = Y + self.gDOEdge
-							z = Z - self.gDSink
+								x = x - ( i * self.gDBONext)
+							y = Y + self.gDBOEdge
+							z = Z
 						
 						if self.gFPlane == "XZ":
-							x = X - self.gDOCorner
+							x = X - self.gDBOCorner
 							if i != 0:
-								x = x - ( i * self.gDONext)
-							y = Y - self.gDSink
-							z = Z + self.gDOEdge
+								x = x - ( i * self.gDBONext)
+							y = Y
+							z = Z + self.gDBOEdge
 				
 						# this should not exist
 						if self.gFPlane == "YZ":
@@ -509,77 +552,53 @@ def showQtGUI():
 					if v1[1] != v2[1]:
 						
 						if self.gFPlane == "XY":
-							x = X + self.gDOEdge
-							y = Y - self.gDOCorner
+							x = X + self.gDBOEdge
+							y = Y - self.gDBOCorner
 							if i != 0:
-								y = y - ( i * self.gDONext)
-							z = Z - self.gDSink
+								y = y - ( i * self.gDBONext)
+							z = Z
 					
 						# this should not exist
 						if self.gFPlane == "XZ":
 							[ x, y, z ] = [ X, Y, Z ]
 					
 						if self.gFPlane == "YZ":
-							x = X - self.gDSink
-							y = Y - self.gDOCorner
+							x = X
+							y = Y - self.gDBOCorner
 							if i != 0:
-								y = y - ( i * self.gDONext)
-							z = Z + self.gDOEdge
+								y = y - ( i * self.gDBONext)
+							z = Z + self.gDBOEdge
 
 					# edge along Z
 					if v1[2] != v2[2]:
 						
 						if self.gFPlane == "XY":
-							x = X + self.gDOEdge
-							y = Y - self.gDSink
-							z = Z - self.gDOCorner
+							x = X + self.gDBOEdge
+							y = Y
+							z = Z - self.gDBOCorner
 							if i != 0:
-								z = z - ( i * self.gDONext)
+								z = z - ( i * self.gDBONext)
 						
 						if self.gFPlane == "XZ":
-							x = X - self.gDOEdge
-							y = Y - self.gDSink
-							z = Z - self.gDOCorner
+							x = X - self.gDBOEdge
+							y = Y
+							z = Z - self.gDBOCorner
 							if i != 0:
-								z = z - ( i * self.gDONext)
+								z = z - ( i * self.gDBONext)
 								
 						if self.gFPlane == "YZ":
-							x = X - self.gDSink
-							y = Y + self.gDOEdge
-							z = Z - self.gDOCorner
+							x = X
+							y = Y + self.gDBOEdge
+							z = Z - self.gDBOCorner
 							if i != 0:
-								z = z - ( i * self.gDONext)
+								z = z - ( i * self.gDBONext)
 
-					# ############################################################################
-					# try auto-reposition dowels
-					# ############################################################################
-					
-					if iCall == 1:
-					
-						inside = self.gObj.Shape.BoundBox.isInside(FreeCAD.Vector(x, y, z))
-						
-						if inside == False:
-							self.setPosition()
-							return
-					
 					# ############################################################################
 					# create dowel
 					# ############################################################################
 					
-					d = FreeCAD.ActiveDocument.addObject("Part::Cylinder","Dowel")
-					d.Label = str(self.gDowelLabel)
-					
-					d.Radius = self.gDDiameter / 2
-					d.Height = self.gDSize
-					
-					d.Placement.Base.x = x
-					d.Placement.Base.y = y
-					d.Placement.Base.z = z
-					
-					colors = [ (0.0, 0.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0) ]
-					d.ViewObject.DiffuseColor = colors
-					
-					self.gDowels.append(d)
+					d = self.createDrillBit(x, y, z)
+					self.gDrillBits.append(d)
 					
 					i = i + 1
 			
@@ -587,30 +606,30 @@ def showQtGUI():
 			# dowels at 2nd side
 			# ############################################################################
 
-			if self.gSides == 0 or self.gSides == 2:
+			if self.gDBSides == 0 or self.gDBSides == 2:
 			
 				[ X, Y, Z ] = [ v2[0], v2[1], v2[2] ]
 				[ x , y, z ] = [ 0, 0, 0 ]
 
 				i = 0
-				while i < self.gDNum:
+				while i < self.gDBNum:
 					
 					# edge along X
 					if v1[0] != v2[0]:
 						
 						if self.gFPlane == "XY":
-							x = X + self.gDOCorner
+							x = X + self.gDBOCorner
 							if i != 0:
-								x = x + ( i * self.gDONext)
-							y = Y + self.gDOEdge
-							z = Z - self.gDSink
+								x = x + ( i * self.gDBONext)
+							y = Y + self.gDBOEdge
+							z = Z
 					
 						if self.gFPlane == "XZ":
-							x = X + self.gDOCorner
+							x = X + self.gDBOCorner
 							if i != 0:
-								x = x + ( i * self.gDONext)
-							y = Y - self.gDSink
-							z = Z + self.gDOEdge
+								x = x + ( i * self.gDBONext)
+							y = Y
+							z = Z + self.gDBOEdge
 						
 						# this should not exist
 						if self.gFPlane == "YZ":
@@ -620,65 +639,53 @@ def showQtGUI():
 					if v1[1] != v2[1]:
 						
 						if self.gFPlane == "XY":
-							x = X + self.gDOEdge
-							y = Y + self.gDOCorner
+							x = X + self.gDBOEdge
+							y = Y + self.gDBOCorner
 							if i != 0:
-								y = y + ( i * self.gDONext)
-							z = Z - self.gDSink
+								y = y + ( i * self.gDBONext)
+							z = Z
 					
 						# this should not exist
 						if self.gFPlane == "XZ":
 							[ x, y, z ] = [ X, Y, Z ]
 					
 						if self.gFPlane == "YZ":
-							x = X - self.gDSink
-							y = Y + self.gDOCorner
+							x = X
+							y = Y + self.gDBOCorner
 							if i != 0:
-								y = y + ( i * self.gDONext)
-							z = Z + self.gDOEdge
+								y = y + ( i * self.gDBONext)
+							z = Z + self.gDBOEdge
 
 					# edge along Z
 					if v1[2] != v2[2]:
 						
 						if self.gFPlane == "XY":
-							x = X + self.gDOEdge
-							y = Y - self.gDSink
-							z = Z + self.gDOCorner
+							x = X + self.gDBOEdge
+							y = Y
+							z = Z + self.gDBOCorner
 							if i != 0:
-								z = z + ( i * self.gDONext)
+								z = z + ( i * self.gDBONext)
 					
 						if self.gFPlane == "XZ":
-							x = X - self.gDOEdge
-							y = Y - self.gDSink
-							z = Z + self.gDOCorner
+							x = X - self.gDBOEdge
+							y = Y
+							z = Z + self.gDBOCorner
 							if i != 0:
-								z = z + ( i * self.gDONext)
+								z = z + ( i * self.gDBONext)
 					
 						if self.gFPlane == "YZ":
-							x = X - self.gDSink
-							y = Y + self.gDOEdge
-							z = Z + self.gDOCorner
+							x = X
+							y = Y + self.gDBOEdge
+							z = Z + self.gDBOCorner
 							if i != 0:
-								z = z + ( i * self.gDONext)
+								z = z + ( i * self.gDBONext)
 					
 					# ############################################################################
 					# create dowel
 					# ############################################################################
 					
-					d = FreeCAD.ActiveDocument.addObject("Part::Cylinder","Dowel")
-					d.Label = str(self.gDowelLabel)
-					
-					d.Radius = self.gDDiameter / 2
-					d.Height = self.gDSize
-					
-					d.Placement.Base.x = x
-					d.Placement.Base.y = y
-					d.Placement.Base.z = z
-
-					colors = [ (0.0, 0.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0) ]
-					d.ViewObject.DiffuseColor = colors
-					
-					self.gDowels.append(d)
+					d = self.createDrillBit(x, y, z)
+					self.gDrillBits.append(d)
 					
 					i = i + 1
 				
@@ -698,7 +705,7 @@ def showQtGUI():
 			self.gObj = ""
 			self.gThick = 0
 			
-			self.gFace = ""
+			self.gDrillFace = ""
 			self.gFIndex = 0
 			self.gFPlane = ""
 			self.gFType = ""
@@ -727,8 +734,8 @@ def showQtGUI():
 				self.gObjBase = MagicPanels.getReference()
 				
 				self.gObj = FreeCADGui.Selection.getSelection()[0]
-				self.gFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-				self.gFIndex = MagicPanels.getFaceIndex(self.gObj, self.gFace)
+				self.gDrillFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				self.gFIndex = MagicPanels.getFaceIndex(self.gObj, self.gDrillFace)
 				FreeCADGui.Selection.clearSelection()
 				
 				n = ""
@@ -742,13 +749,13 @@ def showQtGUI():
 				# get plane and type
 				# ############################################################################
 				
-				self.gFPlane = MagicPanels.getFacePlane(self.gFace)
+				self.gFPlane = MagicPanels.getFacePlane(self.gDrillFace)
 				
 				[ self.gFType, 
 					arrAll, 
 					arrThick, 
 					arrShort, 
-					arrLong ] = MagicPanels.getFaceEdges(self.gObj, self.gFace)
+					arrLong ] = MagicPanels.getFaceEdges(self.gObj, self.gDrillFace)
 				
 				# ############################################################################
 				# set possible edges
@@ -792,29 +799,15 @@ def showQtGUI():
 				s.sort()
 				self.gThick = s[0]
 				
-				self.gDOEdge = self.gThick / 2
-				self.gDSink = abs(self.gDSink)
+				self.gDBOEdge = self.gThick / 2
 				self.gRIndex = 0
 				
 				# ############################################################################
 				# try auto adjust dowel
 				# ############################################################################
 
-				# set default sink
-				if self.gInit == 1 and self.gFType == "surface":
-					self.gDSink = 15
-
-				if self.gFType == "surface" and self.gDSink == 20:
-					self.gDSink = 15
-				
-				if self.gFType == "edge" and self.gDSink == 15:
-					self.gDSink = 20
-				
 				# adjust sink
-				sink = MagicPanels.getFaceSink(self.gObj, self.gFace)
-				
-				if sink == "+":
-					self.gDSink = - abs(self.gDSink)
+				sink = MagicPanels.getFaceSink(self.gObj, self.gDrillFace)
 				
 				# adjust rotation
 				if sink == "+":
@@ -839,10 +832,9 @@ def showQtGUI():
 					if self.gFPlane == "YZ":
 						self.gRIndex = 0
 				
-				self.oDSinkE.setText(str(self.gDSink))
-				self.oDOEdgeE.setText(str(self.gDOEdge))
-				
-				self.showDowels(1)
+				self.oDBOEdgeE.setText(str(self.gDBOEdge))
+
+				self.showDrillBits()
 				
 				self.gInit = 0
 			
@@ -851,16 +843,17 @@ def showQtGUI():
 				self.s1S.setText(self.gNoSelection)
 				return -1
 			
+			
 		# ############################################################################
 		def setSidesP(self):
 			
 			try:
-				if self.gSides - 1 < 0:
-					self.gSides = 2
+				if self.gDBSides - 1 < 0:
+					self.gDBSides = 2
 				else:
-					self.gSides = self.gSides - 1
+					self.gDBSides = self.gDBSides - 1
 					
-				self.showDowels()
+				self.showDrillBits()
 		
 			except:
 				self.s1S.setText(self.gNoSelection)
@@ -868,12 +861,12 @@ def showQtGUI():
 		def setSidesN(self):
 			
 			try:
-				if self.gSides + 1 > 2:
-					self.gSides = 0
+				if self.gDBSides + 1 > 2:
+					self.gDBSides = 0
 				else:
-					self.gSides = self.gSides + 1
+					self.gDBSides = self.gDBSides + 1
 					
-				self.showDowels()
+				self.showDrillBits()
 			
 			except:
 				self.s1S.setText(self.gNoSelection)
@@ -889,7 +882,7 @@ def showQtGUI():
 					
 				self.gEdge = self.gEArr[self.gEIndex]
 				
-				self.showDowels(1)
+				self.showDrillBits()
 			
 			except:
 				self.s1S.setText(self.gNoSelection)
@@ -904,36 +897,11 @@ def showQtGUI():
 					
 				self.gEdge = self.gEArr[self.gEIndex]
 				
-				self.showDowels(1)
+				self.showDrillBits()
 			
 			except:
 				self.s1S.setText(self.gNoSelection)
 		
-		# ############################################################################
-		def setSink(self):
-			try:
-				if self.gDSink == 0:
-					self.gDSink = self.gDSinkSave
-					
-				self.gDSink = - self.gDSink
-				self.oDSinkE.setText(str(self.gDSink))
-				
-				self.showDowels()
-				
-			except:
-				self.s1S.setText(self.gNoSelection)
-		
-		def setSink0(self):
-			try:
-				self.gDSinkSave = self.gDSink
-				self.gDSink = 0
-				self.oDSinkE.setText(str(self.gDSink))
-				
-				self.showDowels()
-				
-			except:
-				self.s1S.setText(self.gNoSelection)
-				
 		# ############################################################################
 		def setPosition(self):
 			
@@ -943,10 +911,10 @@ def showQtGUI():
 				else:
 					self.gPosition = 0
 				
-				self.gDOEdge = - self.gDOEdge
-				self.oDOEdgeE.setText(str(self.gDOEdge))
+				self.gDBOEdge = - self.gDBOEdge
+				self.oDBOEdgeE.setText(str(self.gDBOEdge))
 				
-				self.showDowels()
+				self.showDrillBits()
 				
 			except:
 				self.s1S.setText(self.gNoSelection)
@@ -960,7 +928,7 @@ def showQtGUI():
 				else:
 					self.gRIndex = self.gRIndex - 1
 					
-				self.showDowels()
+				self.showDrillBits()
 			
 			except:
 				self.s1S.setText(self.gNoSelection)
@@ -973,153 +941,157 @@ def showQtGUI():
 				else:
 					self.gRIndex = self.gRIndex + 1
 					
-				self.showDowels()
+				self.showDrillBits()
 			
 			except:
 				self.s1S.setText(self.gNoSelection)
 		
 		# ############################################################################
-		def setCustomMount(self, selectedText):
+		def setCustomDrillbits(self, selectedText):
 			
 			try:
 			
-				self.gDOEdge = self.gThick / 2
-				self.gDowelLabel = selectedText
-				self.gSides = 0
+				self.gDBOEdge = self.gThick / 2
+				self.gDBLabel = selectedText
+				self.gDBSides = 0
 				
 				if selectedText == "Dowel 6 x 35 mm ":
-					self.gDDiameter = 6
-					self.gDSize = 35
-					self.gDSink = 20
-					self.gDNum = 2
-					self.gDOCorner = 50
-					self.gDONext = 32
+					self.gDBDiameter = 6
+					self.gDBDiameter2 = 6
+					self.gDBSize = 25
+					self.gDBNum = 2
+					self.gDBOCorner = 50
+					self.gDBONext = 32
 					
 				if selectedText == "Dowel 8 x 35 mm ":
-					self.gDDiameter = 8
-					self.gDSize = 35
-					self.gDSink = 20
-					self.gDNum = 2
-					self.gDOCorner = 50
-					self.gDONext = 32
+					self.gDBDiameter = 8
+					self.gDBDiameter2 = 8
+					self.gDBSize = 25
+					self.gDBNum = 2
+					self.gDBOCorner = 50
+					self.gDBONext = 32
 
 				if selectedText == "Dowel 10 x 35 mm ":
-					self.gDDiameter = 10
-					self.gDSize = 35
-					self.gDSink = 20
-					self.gDNum = 2
-					self.gDOCorner = 50
-					self.gDONext = 32
+					self.gDBDiameter = 10
+					self.gDBDiameter2 = 10
+					self.gDBSize = 25
+					self.gDBNum = 2
+					self.gDBOCorner = 50
+					self.gDBONext = 32
 				
 				if selectedText == "Screw 3 x 20 mm ":
-					self.gDDiameter = 3
-					self.gDSize = 20
-					self.gDSink = 19
-					self.gDNum = 5
-					self.gDOCorner = 50
-					self.gDONext = 32
-					self.gDOEdge = 9
+					self.gDBDiameter = 2
+					self.gDBDiameter2 = 6
+					self.gDBSize = 20
+					self.gDBNum = 5
+					self.gDBOCorner = 50
+					self.gDBONext = 32
+					self.gDBOEdge = 9
 				
-				if selectedText == "Screw 4.5 x 40 mm ":
-					self.gDDiameter = 4.5
-					self.gDSize = 40
-					self.gDSink = 23
-					self.gDNum = 2
-					self.gDOCorner = 50
-					self.gDONext = 32
-
-				if selectedText == "Screw 4 x 40 mm ":
-					self.gDDiameter = 4
-					self.gDSize = 40
-					self.gDSink = 23
-					self.gDNum = 1
-					self.gDOCorner = 50
-					self.gDONext = 32
-
-				if selectedText == "Screw 5 x 50 mm ":
-					self.gDDiameter = 5
-					self.gDSize = 50
-					self.gDSink = 33
-					self.gDNum = 1
-					self.gDOCorner = 50
-					self.gDONext = 32
-
-				if selectedText == "Screw 6 x 60 mm ":
-					self.gDDiameter = 6
-					self.gDSize = 60
-					self.gDSink = 45
-					self.gDNum = 1
-					self.gDOCorner = 50
-					self.gDONext = 32
+				if self.gDBType == "Holes":
 					
-				if selectedText == "Confirmation 7 x 40 mm ":
-					self.gDDiameter = 7
-					self.gDSize = 40
-					self.gDSink = 25
-					self.gDNum = 1
-					self.gDOCorner = 50
-					self.gDONext = 32
-					
-				if selectedText == "Confirmation 7 x 50 mm ":
-					self.gDDiameter = 7
-					self.gDSize = 50
-					self.gDSink = 35
-					self.gDNum = 1
-					self.gDOCorner = 50
-					self.gDONext = 32
-					
-				if selectedText == "Confirmation 7 x 70 mm ":
-					self.gDDiameter = 7
-					self.gDSize = 70
-					self.gDSink = 55
-					self.gDNum = 1
-					self.gDOCorner = 50
-					self.gDONext = 32
+					if selectedText == "Screw 4.5 x 40 mm ":
+						self.gDBDiameter = 3
+						self.gDBDiameter2 = 10
+						self.gDBSize = 40 - self.gThick
+						self.gDBNum = 2
+						self.gDBOCorner = 50
+						self.gDBONext = 32
+
+					if selectedText == "Screw 4 x 40 mm ":
+						self.gDBDiameter = 3
+						self.gDBDiameter2 = 10
+						self.gDBSize = 40 - self.gThick
+						self.gDBNum = 1
+						self.gDBOCorner = 50
+						self.gDBONext = 32
+
+					if selectedText == "Screw 5 x 50 mm ":
+						self.gDBDiameter = 4
+						self.gDBDiameter2 = 10
+						self.gDBSize = 50 - self.gThick
+						self.gDBNum = 1
+						self.gDBOCorner = 50
+						self.gDBONext = 32
+
+					if selectedText == "Screw 6 x 60 mm ":
+						self.gDBDiameter = 5
+						self.gDBDiameter2 = 10
+						self.gDBSize = 60 - self.gThick
+						self.gDBNum = 1
+						self.gDBOCorner = 50
+						self.gDBONext = 32
+
+				else:
+				
+					if selectedText == "Screw 4.5 x 40 mm ":
+						self.gDBDiameter = 3
+						self.gDBDiameter2 = 10
+						self.gDBSize = 40
+						self.gDBNum = 2
+						self.gDBOCorner = 50
+						self.gDBONext = 32
+
+					if selectedText == "Screw 4 x 40 mm ":
+						self.gDBDiameter = 3
+						self.gDBDiameter2 = 10
+						self.gDBSize = 40
+						self.gDBNum = 1
+						self.gDBOCorner = 50
+						self.gDBONext = 32
+
+					if selectedText == "Screw 5 x 50 mm ":
+						self.gDBDiameter = 4
+						self.gDBDiameter2 = 10
+						self.gDBSize = 50
+						self.gDBNum = 1
+						self.gDBOCorner = 50
+						self.gDBONext = 32
+
+					if selectedText == "Screw 6 x 60 mm ":
+						self.gDBDiameter = 5
+						self.gDBDiameter2 = 10
+						self.gDBSize = 60
+						self.gDBNum = 1
+						self.gDBOCorner = 50
+						self.gDBONext = 32
 					
 				if selectedText == "Shelf Pin 5 x 16 mm ":
-					self.gDDiameter = 5
-					self.gDSize = 16
-					self.gDSink = 8
-					self.gDNum = 15
-					self.gDOCorner = 50
-					self.gDONext = 32
-					self.gDOEdge = 50
-					self.gSides = 1
+					self.gDBDiameter = 5
+					self.gDBDiameter2 = 5
+					self.gDBSize = 8
+					self.gDBNum = 15
+					self.gDBOCorner = 50
+					self.gDBONext = 32
+					self.gDBOEdge = 50
+					self.gDBSides = 1
 
 				if selectedText == "Profile Pin 5 x 30 mm ":
-					self.gDDiameter = 5
-					self.gDSize = 30
-					self.gDSink = 25
-					self.gDNum = 2
-					self.gDOCorner = 5
-					self.gDONext = 32
+					self.gDBDiameter = 5
+					self.gDBDiameter2 = 6
+					self.gDBSize = 100
+					self.gDBNum = 2
+					self.gDBOCorner = 5
+					self.gDBONext = 32
 
 				if selectedText == "Profile Pin 8 x 40 mm ":
-					self.gDDiameter = 8
-					self.gDSize = 40
-					self.gDSink = 35
-					self.gDNum = 1
-					self.gDOCorner = 50
-					self.gDONext = 32
+					self.gDBDiameter = 8
+					self.gDBDiameter2 = 9
+					self.gDBSize = 100
+					self.gDBNum = 1
+					self.gDBOCorner = 50
+					self.gDBONext = 32
 
-				if selectedText == "Custom mount point ":
-					self.gDDiameter = 8
-					self.gDSize = 35
-					self.gDSink = 20
-					self.gDNum = 2
-					self.gDOCorner = 50
-					self.gDONext = 32
+				self.oDBLabelE.setText(str(self.gDBLabel))
+				self.oDBDiameterE.setText(str(self.gDBDiameter))
+				self.oDBDiameter2E.setText(str(self.gDBDiameter2))
+				self.oDBSizeE.setText(str(self.gDBSize))
+				self.oDBNumE.setText(str(self.gDBNum))
+				self.oDBOCornerE.setText(str(self.gDBOCorner))
+				self.oDONextE.setText(str(self.gDBONext))
+				self.oDBOEdgeE.setText(str(self.gDBOEdge))
 
-				self.oDowelLabelE.setText(str(self.gDowelLabel))
-				self.oDDiameterE.setText(str(self.gDDiameter))
-				self.oDSizeE.setText(str(self.gDSize))
-				self.oDSinkE.setText(str(self.gDSink))
-				self.oDNumE.setText(str(self.gDNum))
-				self.oDOCornerE.setText(str(self.gDOCorner))
-				self.oDONextE.setText(str(self.gDONext))
-				self.oDOEdgeE.setText(str(self.gDOEdge))
-
-				self.showDowels()
+				self.showDrillBits()
 		
 			except:
 				self.s1S.setText(self.gNoSelection)
@@ -1129,37 +1101,133 @@ def showQtGUI():
 			
 			try:
 			
-				self.gDowelLabel = str(self.oDowelLabelE.text())
-				self.gDDiameter = float(self.oDDiameterE.text())
-				self.gDSize = float(self.oDSizeE.text())
-				self.gDSink = float(self.oDSinkE.text())
-				self.gDNum = int(self.oDNumE.text())
-				self.gDOCorner = float(self.oDOCornerE.text())
-				self.gDONext = float(self.oDONextE.text())
-				self.gDOEdge = float(self.oDOEdgeE.text())
+				self.gDBLabel = str(self.oDBLabelE.text())
+				self.gDBDiameter = float(self.oDBDiameterE.text())
+				self.gDBDiameter2 = float(self.oDBDiameter2E.text())
+				self.gDBSize = float(self.oDBSizeE.text())
+				self.gDBNum = int(self.oDBNumE.text())
+				self.gDBOCorner = float(self.oDBOCornerE.text())
+				self.gDBONext = float(self.oDONextE.text())
+				self.gDBOEdge = float(self.oDBOEdgeE.text())
 
-				self.showDowels()
+				self.showDrillBits()
 			
 			except:
 				self.s1S.setText(self.gNoSelection)
-				
+
 		# ############################################################################
-		def setDowels(self):
+		def setDrillBitType(self, selected):
+			try:
+				
+				if selected == "Holes":
+					self.gDBType = "Holes"
+					
+					self.s7Slist = (
+						"Dowel 6 x 35 mm ",
+						"Dowel 8 x 35 mm ",
+						"Dowel 10 x 35 mm ",
+						"Screw 3 x 20 mm ",
+						"Screw 4.5 x 40 mm ",
+						"Screw 4 x 40 mm ",
+						"Screw 5 x 50 mm ",
+						"Screw 6 x 60 mm ",
+						"Shelf Pin 5 x 16 mm ",
+						"Profile Pin 5 x 30 mm ",
+						"Profile Pin 8 x 40 mm "
+						)
+			
+					self.gDBLabel = "Dowel 8 x 35 mm "
+					self.s7S.clear()
+					self.s7S.addItems(self.s7Slist)
+					self.s7S.setCurrentIndex(self.s7Slist.index(self.gDBLabel))
+					
+					self.oDBDiameter2L.hide()
+					self.oDBDiameter2E.hide()
+					
+				if selected == "Countersinks":
+					self.gDBType = "Countersinks"
+				
+					self.s7Slist = (
+						"Screw 4.5 x 40 mm ",
+						"Screw 4 x 40 mm ",
+						"Screw 5 x 50 mm ",
+						"Screw 6 x 60 mm "
+						)
+			
+					self.gDBLabel = "Screw 4 x 40 mm "
+					self.s7S.clear()
+					self.s7S.addItems(self.s7Slist)
+					self.s7S.setCurrentIndex(self.s7Slist.index(self.gDBLabel))
+				
+					self.oDBDiameter2L.show()
+					self.oDBDiameter2E.show()
+					
+				if selected == "Counterbores":
+					self.gDBType = "Counterbores"
+					
+					self.s7Slist = (
+						"Screw 4.5 x 40 mm ",
+						"Screw 4 x 40 mm ",
+						"Screw 5 x 50 mm ",
+						"Screw 6 x 60 mm "
+						)
+			
+					self.gDBLabel = "Screw 4 x 40 mm "
+					self.s7S.clear()
+					self.s7S.addItems(self.s7Slist)
+					self.s7S.setCurrentIndex(self.s7Slist.index(self.gDBLabel))
+					
+					self.oDBDiameter2L.show()
+					self.oDBDiameter2E.show()
+					
+				self.setCustomDrillbits(self.gDBLabel)
+
+			except:
+				self.s1S.setText(self.gNoSelection)
+
+		# ############################################################################
+		def drillHoles(self):
 			
 			try:
-				if len(self.gDowels) != 0:
-					for d in self.gDowels:
-						try:
-							d.ViewObject.ShapeColor = self.gObj.ViewObject.ShapeColor
-						except:
-							skip = 1
+		
+				# store face key to find face to drill at new object later
+				self.gDrillFaceKey = self.gDrillFace.BoundBox
 				
-				self.gDowels = []
-				FreeCAD.ActiveDocument.recompute()
-			
+				# set args
+				o = []
+				if len(self.gDrillBits) != 0:
+					for d in self.gDrillBits:
+						o.append(d)
+				
+				# drilling selection
+				
+				if self.gDBType == "Holes":
+					holes = MagicPanels.makeHoles(self.gObj, self.gDrillFace, o )
+
+				if self.gDBType == "Countersinks":
+					holes = MagicPanels.makeCountersinks(self.gObj, self.gDrillFace, o )
+
+				if self.gDBType == "Counterbores":
+					holes = MagicPanels.makeCounterbores(self.gObj, self.gDrillFace, o )
+
+				# get new object from selection
+				FreeCADGui.Selection.addSelection(holes[0])
+				self.gObj = FreeCADGui.Selection.getSelection()[0]
+				
+				# search for selected face to drill
+				index = MagicPanels.getFaceIndexByKey(self.gObj, self.gDrillFaceKey)
+				self.gDrillFace = self.gObj.Shape.Faces[index]
+
+				# update status info screen
+				face = "Face"+str(MagicPanels.getFaceIndex(self.gObj, self.gDrillFace))
+				self.s1S.setText(str(self.gObj.Label)+", "+face)
+				
+				# remove selection
+				FreeCADGui.Selection.clearSelection()
+		
 			except:
 				self.s1S.setText(self.gNoSelection)
-				
+		
 	# ############################################################################
 	# final settings
 	# ############################################################################
@@ -1171,8 +1239,8 @@ def showQtGUI():
 	form.exec_()
 	
 	if form.result == userCancelled:
-		if len(form.gDowels) != 0:
-			for d in form.gDowels:
+		if len(form.gDrillBits) != 0:
+			for d in form.gDrillBits:
 				try:
 					FreeCAD.activeDocument().removeObject(str(d.Name))
 				except:

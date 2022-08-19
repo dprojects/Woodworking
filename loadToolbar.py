@@ -122,10 +122,11 @@ def getItems(iType):
 	if iType == "Woodworking - drilling holes":
 		
 		parts = [
-			"magicCNC",
+			"magicDriller",
 			"drillHoles",
 			"drillCountersinks",
-			"drillCounterbores"
+			"drillCounterbores",
+			"magicCNC"
 		]
 
 	if iType == "Woodworking - decorations":

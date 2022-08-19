@@ -25,7 +25,7 @@
 Tools = [
 	
 	# #################################################################################################################################
-	# tools - linked standalone macros (should not use MagicPanels library)
+	# tools - linked standalone macros (not use MagicPanels library, not move anywhere)
 	# #################################################################################################################################
 	
 	"", "getDimensions", "png", "getDimensions, BOM, cutlist", "Creates spreadsheet with dimensions to cut.",
@@ -55,6 +55,8 @@ Tools = [
 	"MagicPanels", "magicManager", "png", "magicManager", "If you have problem with unexpected result of Magic Panels, you can use this tool to preview panel before creation. It may take more time to create panel, but you can select exact panel to apply, also the edge and vertex position. This tool allows to create panel at selected face or between two faces.",
 
 	"MagicPanels", "magicDowels", "png", "magicDowels", "Allows to add mounting points to the furniture. For example you can easily add screws, dowels, shelf supporter pins or custom mounting points.",
+
+	"MagicPanels", "magicDriller", "png", "magicDriller", "Allows to drill holes, countersinks or counterbores in a series with predefined or custom sequences.",
 
 	"MagicPanels", "magicCNC", "png", "magicCNC, drill bit move machine", "This tool allows to move drill bit at the selected face and drill holes.",
 	

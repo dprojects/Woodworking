@@ -27,10 +27,11 @@ Woodworking workbench has been created because of my woodworking and coding hobb
     * [magicFixture](#magicfixture)
     * [edge2drillbit](#edge2drillbit)
   * [Drilling holes](#drilling-holes)
-    * [magicCNC](#magiccnc)
+    * [magicDriller](#magicdriller)
     * [drillHoles](#drillholes)
     * [drillCountersinks](#drillcountersinks)
     * [drillCounterbores](#drillcounterbores)
+    * [magicCNC](#magiccnc)
   * [Construction](#construction)
     * [panel2profile](#panel2profile)
   * [Joinery](#joinery)
@@ -53,6 +54,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
     * [debugInfo](#debuginfo)
 * [Dowels, Screws, Fixture](#dowels-screws-fixture)
 * [Holes, Countersinks, Counterbores](#holes-countersinks-counterbores)
+  * [Drilling serially](#drilling-serially)
   * [Drilling via icons](#drilling-via-icons)
   * [Drilling via magicCNC](#drilling-via-magiccnc)
   * [Pilot holes for angles, hinges](#pilot-holes-for-angles-hinges)
@@ -145,9 +147,9 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 ## Drilling holes
 
-### magicCNC
+### magicDriller
 
-<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicCNC.png"> This tool is some kind of CNC drilling machine simulator. It is the same [magicMove](#magicmove) tool but improved for the drilling purposes. The axis which move the drill bit up and down is automatically hidden at this tool. So, you can move the drill bit at the surface and you not move the drill bit up or down by mistake and cause incorrect hole depth. Also this tool has option to drill by button click. It recognize the drill bit type by the label. For the countersink the label need to contains "countersink", and for counterbore need to contains "counterbore". For other label the simple hole will be drilled. This tool also allows for turn on and off the manuall edit mode, transform FreeCAD. So, you can move the drill bit by hand and drill holes by clicking buttons. This option can be useful for artists whom want to make holes in artistic way, not with mathematical precision. For more info see: [Drilling via magicCNC](#drilling-via-magiccnc)
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicDriller.png"> This tool is similar to [magicDowels](#magicdowels) but instead of applying dowels this tool allows to drill holes, countersinks or counterbores serially with predefined or custom sets. You can choose the same predefined screws, dowels and pins as at [magicDowels](#magicdowels) but instead of dowels there will be created set of drill bits. The drill bits will be smaller than screws to allow drill pilot holes for screws. For dowels the drill bits will be with the same size. [Drilling serially](#drilling-serially)
 
 ### drillHoles
 
@@ -160,6 +162,8 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 ### drillCounterbores
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/drillCounterbores.png"> This is drill bit to make counterbore with hole. The hole will be drilled below the bottom part of the drill bit, below the red face. The radius of the hole will be drill bit Radius1. The radius of counterbore will be drill bit Radius2. The hole depth will be drill bit Height. If you select face only, the drill bit will be created in the corner of the face (0 vertex), allowing you to move the drill bit precisely to any place at the face. Do not move the drill bit up, the drill bit should touch the face. You can select any amount of drill bits, the holes will be drilled below each drill bit but first selected should be face, next drill bits. To select more objects hold left CTRL key during selection. If the selected element is Cube, it will be replaced with Pad. For more info see: [Drilling via icons](#drilling-via-icons)
+
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicCNC.png"> This tool is some kind of CNC drilling machine simulator. It is the same [magicMove](#magicmove) tool but improved for the drilling purposes. The axis which move the drill bit up and down is automatically hidden at this tool. So, you can move the drill bit at the surface and you not move the drill bit up or down by mistake and cause incorrect hole depth. Also this tool has option to drill by button click. It recognize the drill bit type by the label. For the countersink the label need to contains "countersink", and for counterbore need to contains "counterbore". For other label the simple hole will be drilled. This tool also allows for turn on and off the manuall edit mode, transform FreeCAD. So, you can move the drill bit by hand and drill holes by clicking buttons. This option can be useful for artists whom want to make holes in artistic way, not with mathematical precision. For more info see: [Drilling via magicCNC](#drilling-via-magiccnc)
 
 ## Construction
 
@@ -260,6 +264,35 @@ However, if you make your own detailed part or order somewhere, you need to fulf
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/fixture003.png)
 
 # Holes, Countersinks, Counterbores
+
+### Drilling serially
+
+* <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicDriller.png"> To drill holes with countersinks you have to drill through two panels. First select the surface for countersinks and click `refresh selection`, reference for the face should be updated and visible at the tool info screen:
+
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillDriller001.png)
+
+* Next choose `Contersinks` and exact screw type. Also adjust the edge, rotation and sink, if needed:
+
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillDriller002.png)
+
+* If the drill bits are in correct place, click the drill button, this may take sometimes if you drill for example 30 holes at once and you have slow laptop as I have: 
+  
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillDriller003.png)
+  
+* To drill rest of the hole, hide the first element with countersinks and select edge:
+  
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillDriller004.png)
+
+  <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/drillCountersinks.png"> **Note:** To drill rest of the hole, you can also use [Drilling via icons](#drilling-via-icons) feature. Just select edge, next all the countersinks drill bits and click the icon. All the holes will be drilled. But do not exit the tool because the countersinks drill bits will be automatically removed. You can do it if the holes will be drilled. But also you can continue with this tool and drill the resto of this tool directly from it.
+
+* Now click `refresh selection`, reference for the face should be updated and visible at the tool info screen. Also the drill bits will be moved to the new face, but do not worry, for this tool it is ok, just select `Holes` for hole type and exact screw. The sizes for `Holes` type are automatically adjusted with panel thickness. However, if you have different panel sizes you can adjust it, as well: 
+  
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillDriller005.png)
+  
+* Now click to drill and the rest of the holes will be drilled at the edge:
+  
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillDriller006.png)
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillDriller007.png)
 
 ### Drilling via icons
 
