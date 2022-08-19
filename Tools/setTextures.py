@@ -301,11 +301,11 @@ def showQtMain():
 						obj.addProperty("App::PropertyString", "Texture_URL", "Texture", info)
 
 					if not hasattr(obj, "Texture_Repeat_X"):
-						info = "How many times reapeat the texture to X direction. Float 1.0 is default value for no repeat."
+						info = "Amount of times to repeat the texture in the X direction. Float 1.0 is default value for no repeat."
 						obj.addProperty("App::PropertyFloat", "Texture_Repeat_X", "Texture", info)
 
 					if not hasattr(obj, "Texture_Repeat_Y"):
-						info = "How many times reapeat the texture to Y direction. Float 1.0 is default value for no repeat."
+						info = "Amount of times to repeat the texture in the Y direction. Float 1.0 is default value for no repeat."
 						obj.addProperty("App::PropertyFloat", "Texture_Repeat_Y", "Texture", info)
 
 					if not hasattr(obj, "Texture_Rotation"):
@@ -335,7 +335,7 @@ def showQtMain():
 		
 			# show status
 			if skip == 0:
-				self.showStatus(translate('setTextures', 'Texture properties has been stored.'))
+				self.showStatus(translate('setTextures', 'Texture properties have been stored.'))
 			else:
 				self.showStatus(translate('setTextures', 'Error during setting properties.'))
 
@@ -464,7 +464,7 @@ def showQtMain():
 				
 				if hasattr(i, "filename"):
 
-					# replace texure URL
+					# replace texture URL
 					i.filename = ""
 					i.filename = iFile
 					skip = 1
