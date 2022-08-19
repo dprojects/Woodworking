@@ -6,7 +6,6 @@ import MagicPanels
 
 translate = FreeCAD.Qt.translate
 
-
 # ############################################################################
 # Qt Main
 # ############################################################################
@@ -485,7 +484,7 @@ def showQtGUI():
 				while i < self.gDNum:
 					
 					# edge along X
-					if v1[0] != v2[0]:
+					if not MagicPanels.equal(v1[0], v2[0]):
 						
 						if self.gFPlane == "XY":
 							x = X - self.gDOCorner
@@ -506,7 +505,7 @@ def showQtGUI():
 							[ x, y, z ] = [ X, Y, Z ]
 
 					# edge along Y
-					if v1[1] != v2[1]:
+					if not MagicPanels.equal(v1[1], v2[1]):
 						
 						if self.gFPlane == "XY":
 							x = X + self.gDOEdge
@@ -527,7 +526,7 @@ def showQtGUI():
 							z = Z + self.gDOEdge
 
 					# edge along Z
-					if v1[2] != v2[2]:
+					if not MagicPanels.equal(v1[2], v2[2]):
 						
 						if self.gFPlane == "XY":
 							x = X + self.gDOEdge
@@ -596,7 +595,7 @@ def showQtGUI():
 				while i < self.gDNum:
 					
 					# edge along X
-					if v1[0] != v2[0]:
+					if not MagicPanels.equal(v1[0], v2[0]):
 						
 						if self.gFPlane == "XY":
 							x = X + self.gDOCorner
@@ -617,7 +616,7 @@ def showQtGUI():
 							[ x, y, z ] = [ X, Y, Z ]
 
 					# edge along Y
-					if v1[1] != v2[1]:
+					if not MagicPanels.equal(v1[1], v2[1]):
 						
 						if self.gFPlane == "XY":
 							x = X + self.gDOEdge
@@ -638,7 +637,7 @@ def showQtGUI():
 							z = Z + self.gDOEdge
 
 					# edge along Z
-					if v1[2] != v2[2]:
+					if not MagicPanels.equal(v1[2], v2[2]):
 						
 						if self.gFPlane == "XY":
 							x = X + self.gDOEdge
@@ -850,6 +849,7 @@ def showQtGUI():
 
 				self.s1S.setText(self.gNoSelection)
 				return -1
+			
 			
 		# ############################################################################
 		def setSidesP(self):

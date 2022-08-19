@@ -528,7 +528,7 @@ def showQtGUI():
 				while i < self.gDBNum:
 					
 					# edge along X
-					if v1[0] != v2[0]:
+					if not MagicPanels.equal(v1[0], v2[0]):
 						
 						if self.gFPlane == "XY":
 							x = X - self.gDBOCorner
@@ -549,7 +549,7 @@ def showQtGUI():
 							[ x, y, z ] = [ X, Y, Z ]
 
 					# edge along Y
-					if v1[1] != v2[1]:
+					if not MagicPanels.equal(v1[1], v2[1]):
 						
 						if self.gFPlane == "XY":
 							x = X + self.gDBOEdge
@@ -570,7 +570,7 @@ def showQtGUI():
 							z = Z + self.gDBOEdge
 
 					# edge along Z
-					if v1[2] != v2[2]:
+					if not MagicPanels.equal(v1[2], v2[2]):
 						
 						if self.gFPlane == "XY":
 							x = X + self.gDBOEdge
@@ -615,7 +615,7 @@ def showQtGUI():
 				while i < self.gDBNum:
 					
 					# edge along X
-					if v1[0] != v2[0]:
+					if not MagicPanels.equal(v1[0], v2[0]):
 						
 						if self.gFPlane == "XY":
 							x = X + self.gDBOCorner
@@ -636,7 +636,7 @@ def showQtGUI():
 							[ x, y, z ] = [ X, Y, Z ]
 
 					# edge along Y
-					if v1[1] != v2[1]:
+					if not MagicPanels.equal(v1[1], v2[1]):
 						
 						if self.gFPlane == "XY":
 							x = X + self.gDBOEdge
@@ -657,7 +657,7 @@ def showQtGUI():
 							z = Z + self.gDBOEdge
 
 					# edge along Z
-					if v1[2] != v2[2]:
+					if not MagicPanels.equal(v1[2], v2[2]):
 						
 						if self.gFPlane == "XY":
 							x = X + self.gDBOEdge

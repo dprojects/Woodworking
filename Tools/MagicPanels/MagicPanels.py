@@ -11,6 +11,9 @@ from PySide import QtCore
 
 translate = FreeCAD.Qt.translate
 
+# this should be set according to the user FreeCAD GUI settings
+gRoundPrecision = 2
+
 # ###################################################################################################################
 #
 #
@@ -19,6 +22,35 @@ translate = FreeCAD.Qt.translate
 #
 #
 # ###################################################################################################################
+
+# ############################################################################
+def equal(iA, iB):
+	'''
+	equal(iA, iB) - At FreeCAD there are many values like 1.000006, especially for PartDesign objects. 
+	So if you want to compare such values this sometimes might be True and sometimes False. Some people will 
+	tell you it is because of Pi, but I do not have the time or the desire to fight with human stupidity. 
+	Recently I spent two hours debugging my code and in the end it turned out to be working fine after 
+	rounding the values. So, finally I decided to write my own function for comparison.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iA: float value
+		iB: float value
+
+	Usage:
+	
+		if equal(1.0006, 1):
+			do something ...
+		
+	Result:
+	
+		return True if equal or False if not
+
+	'''
+	
+	return round(iA, gRoundPrecision) == round(iB, gRoundPrecision)
 
 
 # ############################################################################
@@ -211,21 +243,21 @@ def getEdgeNormalized(iV1, iV2):
 	'''
 
 	# edge along X
-	if iV1[0] != iV2[0]:
+	if not equal(iV1[0], iV2[0]):
 		if iV1[0] > iV2[0]:
 			return [ iV1, iV2 ]
 		else:
 			return [ iV2, iV1 ]
 			
 	# edge along Y
-	if iV1[1] != iV2[1]:
+	if not equal(iV1[1], iV2[1]):
 		if iV1[1] > iV2[1]:
 			return [ iV1, iV2 ]
 		else:
 			return [ iV2, iV1 ]
 			
 	# edge along Z
-	if iV1[2] != iV2[2]:
+	if not equal(iV1[2], iV2[2]):
 		if iV1[2] > iV2[2]:
 			return [ iV1, iV2 ]
 		else:
@@ -531,13 +563,16 @@ def getFacePlane(iFace):
 
 	[ v1, v2, v3, v4 ] = getFaceVertices(iFace)
 
-	if int(v1[2] + v2[2] + v3[2] + v4[2]) == int(4 * v1[2]):
+	# if Z axis not change
+	if equal(v1[2] + v2[2] + v3[2] + v4[2], 4 * v1[2]):
 		return "XY"
 	
-	if int(v1[1] + v2[1] + v3[1] + v4[1]) == int(4 * v1[1]):
+	# if Y axis not change
+	if equal(v1[1] + v2[1] + v3[1] + v4[1], 4 * v1[1]):
 		return "XZ"
 	
-	if int(v1[0] + v2[0] + v3[0] + v4[0]) == int(4 * v1[0]):
+	# if X axis not change
+	if equal(v1[0] + v2[0] + v3[0] + v4[0], 4 * v1[0]):
 		return "YZ"
 
 	return ""
