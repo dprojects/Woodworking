@@ -3339,46 +3339,56 @@ def sketch2dowel():
 	
 		objects = FreeCADGui.Selection.getSelection()
 
-		if len(objects) != 2:
+		if len(objects) < 2:
 			raise
+
+		face = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+
+		i = 0
+		for o in objects:
 		
-		sketch = FreeCADGui.Selection.getSelection()[0]
-		face = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-		
-		if not sketch.isDerivedFrom("Sketcher::SketchObject"):
-			raise
+			i = i + 1
 			
-		hole = ""
-			
-		if sketch.InList[0].isDerivedFrom("PartDesign::Hole"):
-			hole = sketch.InList[0]
-			
-		if sketch.InList[1].isDerivedFrom("PartDesign::Hole"):
-			hole = sketch.InList[1]
-			
-		if hole == "":
-			raise
+			if i == 1:
+				base = o
+				continue
+
+			sketch = o
+
+			if not sketch.isDerivedFrom("Sketcher::SketchObject"):
+				raise
 				
-		x = sketch.Placement.Base.x
-		y = sketch.Placement.Base.y
-		z = sketch.Placement.Base.z
-		r = getFaceObjectRotation(hole, face)
-			
-		d = FreeCAD.ActiveDocument.addObject("Part::Cylinder","DowelSketch")
-		d.Label = "Dowel - " + str(sketch.Label)
+			hole = ""
+				
+			if sketch.InList[0].isDerivedFrom("PartDesign::Hole"):
+				hole = sketch.InList[0]
+				
+			if sketch.InList[1].isDerivedFrom("PartDesign::Hole"):
+				hole = sketch.InList[1]
+				
+			if hole == "":
+				raise
+					
+			x = sketch.Placement.Base.x
+			y = sketch.Placement.Base.y
+			z = sketch.Placement.Base.z
+			r = getFaceObjectRotation(hole, face)
+				
+			d = FreeCAD.ActiveDocument.addObject("Part::Cylinder","DowelSketch")
+			d.Label = "Dowel - " + str(sketch.Label)
 
-		d.Radius = hole.Diameter / 2
-		d.Height = hole.Depth
+			d.Radius = hole.Diameter / 2
+			d.Height = hole.Depth
 
-		setPlacement(d, x, y, z, r)
+			setPlacement(d, x, y, z, r)
 
-		return d
+		return
 
 	except:
 		
 		info = ""
 		
-		info += translate('sketch2dowel', 'This tool allows to create dowel at the selected hole. To create dowel select Sketch for the hole and face of the hole object. The dowel position will be get from the Sketch and the face refer to the side the dowel will be raised. The dowel radius and height will be get from hole object. If the hole is throughAll the dowel height will be very big, so make sure you use dimensions instead for hole. To select more objects hold left CTRL key during selection.')
+		info += translate('sketch2dowel', '<b>First select face, next Sketches of the holes to create dowels.</b><br><br> <b>Note:</b> This tool allows to create dowel from Sketch of the hole. The first selected face refers to the side the dowel will be raised, exact orientation for the dowel. Dowel position will be get from the Sketch. The dowel Radius and Height will be get from hole object. If the hole is throughAll the dowel height will be very big, so make sure you use dimensions for hole. To select more Sketches hold left CTRL key during selection.')
 
 		showInfo("sketch2dowel", info)
 
