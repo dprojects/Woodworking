@@ -1948,15 +1948,6 @@ def showInfo(iCaller, iInfo, iNote="yes"):
 	
 	filename = ""
 	
-	info += '<table cellpadding="5" border="0" text-align="left">'
-	info += '<tr>'
-	
-	info += '<td>'
-	info += iInfo
-	info += '</td>'
-	
-	info += '<td>'
-	
 	f = os.path.join(iconPath, iCaller+".xpm")
 	if os.path.exists(f):
 		filename = f
@@ -1974,20 +1965,15 @@ def showInfo(iCaller, iInfo, iNote="yes"):
 		filename = f
 		info += '<img src="'+ filename + '" width="200" height="200" align="right">'
 	
-	info += '</td>'
-	
-	info += '</tr>'
-	info += '</table>'
-
+	info += iInfo
 
 	if iNote == "yes":
 		
 		info += '<br><br>'
-		info += translate('showInfoAll', 'Please see:')
-		info += ' ' + '<a href="https://github.com/dprojects/Woodworking/tree/master/Docs">'
+		info += translate('showInfoAll', 'For features description and detailed tutorials please see:')
+		info += '<br>' + '<a href="https://github.com/dprojects/Woodworking/tree/master/Docs">'
 		info += translate('showInfoAll', 'Woodworking workbench documentation')
 		info += '</a>'
-		info += translate('showInfoAll', ' for features description and detailed tutorials.')
 		
 	msg = QtGui.QMessageBox()
 	msg.setWindowTitle(iCaller)
@@ -2069,7 +2055,7 @@ def panelDefault(iType):
 	
 		info = ""
 		
-		info += translate('panelDefaultInfo', 'This tool creates default panel that can be easily resized. You can clearly see where should be the thickness to keep exact panel XYZ axis orientation. All furniture elements should be created according to the XYZ axis plane, if possible. Avoid building whole furniture with rotated elements. If you want to rotate panel with dowels, better create panel with dowels without rotation, pack panel with dowels into LinkGroup, and use magicAngle to rotate whole LinkGroup. You can rotate whole furniture like this with single click.')
+		info += translate('panelDefaultInfo', '<b>To create default panel, first create active document. </b><br><br><b>Note:</b> This tool creates default panel that can be easily resized. You can clearly see where should be the thickness to keep exact panel XYZ axis orientation. All furniture elements should be created according to the XYZ axis plane, if possible. Avoid building whole furniture with rotated elements. If you want to rotate panel with dowels, better create panel with dowels without rotation, pack panel with dowels into LinkGroup, and use magicAngle to rotate whole LinkGroup. You can rotate whole furniture like this with single click.')
 
 		showInfo("panelDefault"+iType, info)
 
@@ -2111,7 +2097,7 @@ def panelCopy(iType):
 
 		info = ""
 		
-		info += translate('panelCopyInfo', 'This tool copy selected panel into exact XYZ axis orientation. By default you can copy any panel based on Cube object. If you want to copy Pad, you need to have Constraints named "SizeX" and "SizeY" at the Sketch. For other object types you need to have Length, Width, Height properties at object (Group: "Base", Type: "App::PropertyLength").') 
+		info += translate('panelCopyInfo', '<b>To create copy of panel in exact direction, select valid panel first. </b><br><br><b>Note:</b> This tool copy selected panel into exact XYZ axis orientation. By default you can copy any panel based on Cube object. If you want to copy Pad, you need to have Constraints named "SizeX" and "SizeY" at the Sketch. For custom objects types you need to have Length, Width, Height properties at object (Group: "Base", Type: "App::PropertyLength").') 
 
 		showInfo("panelCopy"+iType, info)
 
@@ -2182,7 +2168,7 @@ def panelMove(iType):
 		
 		info = ""
 		
-		info += translate('panelMoveInfo', 'With the arrows you can quickly move Cube panels or even any other objects. If the thickness of the selected object can be recognized, the move step will be the thickness. So, you can solve common furniture problem with thickness offset. If the thickness will not be recognized the step will be 100. This allow you to move whole furniture segments very quickly. The arrows recognize the view model rotation. If you want precisely move object, use magicMove tool, instead. ')
+		info += translate('panelMoveInfo', '<b>Please select valid object to move. </b><br><br><b>Note:</b> With the arrows you can quickly move Cube panels or even any other objects. If the thickness of the selected object can be recognized, the move step will be the thickness. So, you can solve common furniture problem with thickness offset. If the thickness will not be recognized the step will be 100. This allow you to move whole furniture segments very quickly. The arrows recognize the view model rotation. If you want precisely move object, use magicMove tool, instead. ')
 		
 		showInfo("panelMove"+iType, info)
 
@@ -2261,7 +2247,7 @@ def panelMove2Face():
 		
 		info = ""
 
-		info += translate('panelMove2FaceInfo', 'This tool allows to align panels or any other objects to face position. First select face and next select objects you want to align with face position. You can select objects at objects Tree window holding left CTRL key. This tool allows to avoid thickness step problem, if you want to move panel to the other edge but the way is not a multiple of the panel thickness.')
+		info += translate('panelMove2FaceInfo', '<b>First select face, and next object that should be aligned to the face position. </b><br><br><b>Note:</b> This tool allows to align panels or any other objects to face position. You can select objects at objects Tree window holding left CTRL key. This tool allows to avoid thickness step problem, if you want to move panel to the other edge but the way is not a multiple of the panel thickness.')
 		
 		showInfo("panelMove2Face", info)
 	
@@ -2475,7 +2461,7 @@ def panelResize(iType):
 		
 		info = ""
 		
-		info += translate('panelResizeInfo', 'This tool allows to resize quickly Cube panels or even other objects. The resize step is the panel thickness. Panel is resized into direction described by the icon for XY panel. However, in some cases the panel may be resized into opposite direction, if the panel is not supported or the sides are equal. You can also resize Cylinders (drill bits), the long side will be Height, the short will be diameter, the thickness will be Radius. For Cone objects (drill bits - countersinks, counterbore) the long side will be Height, the thickness will be Radius1 (bottom radius) and the short will be Radius2 (top radius).')
+		info += translate('panelResizeInfo', '<b>Please select valid panel to resize. </b><br><br><b>Note:</b> This tool allows to resize quickly Cube panels or even other objects. The resize step is the panel thickness. Panel is resized into direction described by the icon for XY panel. However, in some cases the panel may be resized into opposite direction, if the panel is not supported or the sides are equal. You can also resize Cylinders (drill bits), the long side will be Height, the short will be diameter, the thickness will be Radius. For Cone objects (drill bits - countersinks, counterbore) the long side will be Height, the thickness will be Radius1 (bottom radius) and the short will be Radius2 (top radius).')
 		
 		showInfo("panelResize"+iType, info)
 
@@ -2529,7 +2515,7 @@ def panelFace(iType):
 		
 		info = ""
 		
-		info += translate('panelFaceInfo', 'This tool creates new panel at selected face. The blue panel represents the selected object and the red one represents the new created object. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
+		info += translate('panelFaceInfo', '<b>Please select face to create panel. </b><br><br><b>Note:</b> This tool creates new panel at selected face. The blue panel represents the selected object and the red one represents the new created object. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
 
 		showInfo("panelFace"+iType, info)
 	
@@ -2592,7 +2578,7 @@ def panelBetween(iType):
 		
 		info = ""
 		
-		info += translate('panelBetweenInfo', 'This tool creates new panel between two selected faces. Selection faces order is important. To select more than one face, hold left CTRL key during second face selection. The blue panels represents the selected objects and the red one represents the new created object. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
+		info += translate('panelBetweenInfo', '<b>Please select two valid faces at two different valid objects, to create panel between them. </b><br><br><b>Note:</b> This tool creates new panel between two selected faces. Selection faces order is important. To select more than one face, hold left CTRL key during second face selection. The blue panels represents the selected objects and the red one represents the new created object. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
 
 		showInfo("panelBetween"+iType, info)
 
@@ -2667,7 +2653,7 @@ def panelSide(iType):
 		
 		info = ""
 		
-		info += translate('panelSideInfo', 'This tool creates new panel at selected face. The blue panel represents the selected object and the red one represents the new created object. The arrow describe if the panel will be created up or down. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
+		info += translate('panelSideInfo', '<b>Please select valid face, to create panel. </b><br><br><b>Note:</b> This tool creates new panel at selected face. The blue panel represents the selected object and the red one represents the new created object. The arrow describe if the panel will be created up or down. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
 
 		if iType == "1":
 			showInfo("panelSideLeft", info)
@@ -2736,7 +2722,7 @@ def panelBackOut():
 			
 		info = ""
 		
-		info += translate('panelBackOutInfo', 'This tool allows to create back of the furniture with single click. To create back of the furniture you have to select 3 faces in the order described by the icon. To select more than one face, hold left CTRL key during face selection. The red edges at blue panels represents the selected faces. The transparent red panel represents the new created object. The icon refers to the back of the furniture.')
+		info += translate('panelBackOutInfo', '<b>Please select three faces according to the icon. </b><br><br><b>Note:</b> This tool allows to create back of the furniture with single click. To create back of the furniture you have to select 3 faces in the order described by the icon. To select more than one face, hold left CTRL key during face selection. The red edges at blue panels represents the selected faces. The transparent red panel represents the new created object. The icon refers to the back of the furniture.')
 		
 		showInfo("panelBackOut", info)
 
@@ -2794,7 +2780,7 @@ def panelCover(iType):
 		
 		info = ""
 		
-		info += translate('panelCoverInfo', 'This tool allows to create top cover of the furniture with single click. To create top cover of the furniture you have to select 3 faces in the order described by the icon. To select more than one face, hold left CTRL key during face selection. The red edges at blue panels represents the selected faces. The transparent red panel represents the new created object. The icon refers to the base XY model view (0 key position). Click fitModel to set model into referred view.')
+		info += translate('panelCoverInfo', '<b>Please select three faces according to the icon. </b><br><br><b>Note:</b> This tool allows to create top cover of the furniture with single click. To create top cover of the furniture you have to select 3 faces in the order described by the icon. To select more than one face, hold left CTRL key during face selection. The red edges at blue panels represents the selected faces. The transparent red panel represents the new created object. The icon refers to the base XY model view (0 key position). Click fitModel to set model into referred view.')
 
 		showInfo("panelCover"+iType, info)
 
@@ -2837,7 +2823,7 @@ def panel2pad(iLabel="panel2pad"):
 		
 		info = ""
 		
-		info += translate('panel2padInfo', 'This tool allows to replace Cube panel with Pad panel. The new created Pad panel will get the same dimensions, placement and rotation as the selected Cube panel. You can transform only one Cube panel into Pad at once. This tool is mostly dedicated to add decoration that is not supported for Cube objects by FreeCAD PartDesign workbench. You can also change shape by changing the Sketch.')
+		info += translate('panel2padInfo', '<b>Please select valid Cube panel to replace it with Pad. </b><br><br><b>Note:</b> This tool allows to replace Cube panel with Pad panel. The new created Pad panel will get the same dimensions, placement and rotation as the selected Cube panel. You can transform only one Cube panel into Pad at once. This tool is mostly dedicated to add decoration that is not supported for Cube objects by FreeCAD PartDesign workbench. You can also change shape by changing the Sketch.')
 	
 		showInfo("panel2pad", info)
 	
@@ -2927,7 +2913,7 @@ def panel2profile():
 		
 		info = ""
 		
-		info += translate('panel2profileInfo', 'This tool allows to replace Cube panel with construction profile. You can replace more than one Cube panel at once. To select more objects hold left CTRL key during selection. The selected Cube objects need to have two equal sizes e.g. 20 mm x 20 mm x 300 mm to replace it with construction profile. The new created construction profile will get the same dimensions, placement and rotation as the selected Cube panel. If you have all construction created with simple Cube objects that imitating profiles, you can replace all of them with realistic looking construction profiles with single click.')
+		info += translate('panel2profileInfo', '<b>Please select valid Cube object imitating profile. The selected Cube objects need to have two equal sizes e.g. 20 mm x 20 mm x 300 mm to replace it with construction profile. </b><br><br><b>Note:</b> This tool allows to replace Cube panel with construction profile. You can replace more than one Cube panel at once. To select more objects hold left CTRL key during selection. The new created construction profile will get the same dimensions, placement and rotation as the selected Cube panel. If you have all construction created with simple Cube objects that imitating profiles, you can replace all of them with realistic looking construction profiles with single click.')
 	
 		showInfo("panel2profile", info)
 
@@ -3024,7 +3010,7 @@ def panel2frame():
 		
 		info = ""
 		
-		info += translate('panel2frameInfo', 'This tool allows to replace Cube panel with frame 45 cut at both sides. You can replace more than one Cube panel at once. To replace Cube objects with frames you have to select exact face at each Cube object. To select more objects hold left CTRL key during selection. The new created frame will get the same dimensions, placement and rotation as the selected Cube panel but will be cut at the selected face. If you have all construction created with simple Cube objects that imitating picture frame or window, you can replace all of them with realistic looking frame with single click.')
+		info += translate('panel2frameInfo', '<b>Please select single face for each Cube object to make 45 cut at both sides. </b><br><br><b>Note:</b> This tool allows to replace Cube panel with frame 45 cut at both sides. You can replace more than one Cube panel at once. To replace Cube objects with frames you have to select exact face at each Cube object. To select more objects hold left CTRL key during selection. The new created frame will get the same dimensions, placement and rotation as the selected Cube panel but will be cut at the selected face. If you have all construction created with simple Cube objects that imitating picture frame or window, you can replace all of them with realistic looking frame with single click.')
 
 		showInfo("panel2frame", info)
 
@@ -3090,7 +3076,7 @@ def panel2link():
 		
 		info = ""
 		
-		info += translate('panel2linkInfo', 'This tool allows to replace simple objects with any detailed object, e.g. Cylinder with realistic looking dowel made with Pad. First you have to select detailed object and than simple object that will be replaced with Link. The first selected detailed object can be Part, LinkGroup or any other created manually or merged with your project. You can replace more than one simple objects at once with Link. To select more objects hold left CTRL key during selection. The simple objects should imitate the detailed object to replace all of them in-place with realistic looking one. ')
+		info += translate('panel2linkInfo', '<b>Please select valid object to be linked, next selected objects will be replaced with Links. </b><br><br><b>Note:</b> This tool allows to replace simple objects with any detailed object, e.g. Cylinders with realistic looking screws. First you have to select detailed object and than simple object that will be replaced with Link. The first selected detailed object can be Part, LinkGroup or any other created manually or merged with your project. You can replace more than one simple object at once with Link. To select more objects hold left CTRL key during selection. The simple objects should imitate the detailed object to replace all of them in-place with realistic looking one. ')
 
 		info += translate('panel2linkInfo', 'For more details please see:')
 		info += ' ' + '<a href="https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture">'
@@ -3163,7 +3149,7 @@ def drillHoles():
 		
 		info = ""
 		
-		info += translate('drillHoles', 'This is drill bit to make simple hole. The hole will be drilled below the bottom part of the drill bit, below the red face of the cylinder. The radius and depth of the hole will be the same as drill bit radius and height. You can resize the drill bit if you want. If you select face only, the drill bit will be created in the corner of the face (0 vertex). So, you will be able to move the drill bit precisely to any place at the face. Do not move the drill bit up, the drill bit should touch the face to get exact hole depth. If you select face and than any amount of drill bits, the holes will be drilled below each drill bit. To select more objects hold left CTRL key during selection. If the selected element is Cube, it will be replaced with Pad.')
+		info += translate('drillHoles', '<b>Please select face to create drill bit. Or please select face and next drill bits to drill holes at selected face. </b><br><br><b>Note:</b> This is drill bit to make simple hole. The hole will be drilled below the bottom part of the drill bit, below the red face of the cylinder. The radius and depth of the hole will be the same as drill bit radius and height. You can resize the drill bit if you want. If you select face only, the drill bit will be created in the corner of the face (0 vertex). So, you will be able to move the drill bit precisely to any place at the face. Do not move the drill bit up, the drill bit should touch the face to get exact hole depth. If you select face and than any amount of drill bits, the holes will be drilled below each drill bit. To select more objects hold left CTRL key during selection. If the selected element is Cube, it will be replaced with Pad.')
 
 		showInfo("drillHoles", info)
 
@@ -3235,7 +3221,7 @@ def drillCountersinks():
 		
 		info = ""
 		
-		info += translate('drillCountersinks', 'This is drill bit to make countersink with hole. The hole will be drilled below the bottom part of the drill bit, below the red face. The radius of the hole will be drill bit Radius1. The radius of countersink will be drill bit Radius2. The hole depth will be drill bit Height. If you select face only, the drill bit will be created in the corner of the face (0 vertex), allowing you to move the drill bit precisely to any place at the face. Do not move the drill bit up, the drill bit should touch the face. You can select any amount of drill bits, the holes will be drilled below each drill bit but first selected should be face, next drill bits. To select more objects hold left CTRL key during selection. If the selected element is Cube, it will be replaced with Pad.')
+		info += translate('drillCountersinks', '<b>Please select face to create drill bit. Or please select face and next drill bits to drill holes at selected face. </b><br><br><b>Note:</b> This is drill bit to make countersink with hole. The hole will be drilled below the bottom part of the drill bit, below the red face. The radius of the hole will be drill bit Radius1. The radius of countersink will be drill bit Radius2. The hole depth will be drill bit Height. If you select face only, the drill bit will be created in the corner of the face (0 vertex), allowing you to move the drill bit precisely to any place at the face. Do not move the drill bit up, the drill bit should touch the face. You can select any amount of drill bits, the holes will be drilled below each drill bit but first selected should be face, next drill bits. To select more objects hold left CTRL key during selection. If the selected element is Cube, it will be replaced with Pad.')
 
 		showInfo("drillCountersinks", info)
 	
@@ -3307,7 +3293,7 @@ def drillCounterbores():
 		
 		info = ""
 		
-		info += translate('drillCounterbores', 'This is drill bit to make counterbore with hole. The hole will be drilled below the bottom part of the drill bit, below the red face. The radius of the hole will be drill bit Radius1. The radius of counterbore will be drill bit Radius2. The hole depth will be drill bit Height. If you select face only, the drill bit will be created in the corner of the face (0 vertex), allowing you to move the drill bit precisely to any place at the face. Do not move the drill bit up, the drill bit should touch the face. You can select any amount of drill bits, the holes will be drilled below each drill bit but first selected should be face, next drill bits. To select more objects hold left CTRL key during selection. If the selected element is Cube, it will be replaced with Pad.')
+		info += translate('drillCounterbores', '<b>Please select face to create drill bit. Or please select face and next drill bits to drill holes at selected face. </b><br><br><b>Note:</b> This is drill bit to make counterbore with hole. The hole will be drilled below the bottom part of the drill bit, below the red face. The radius of the hole will be drill bit Radius1. The radius of counterbore will be drill bit Radius2. The hole depth will be drill bit Height. If you select face only, the drill bit will be created in the corner of the face (0 vertex), allowing you to move the drill bit precisely to any place at the face. Do not move the drill bit up, the drill bit should touch the face. You can select any amount of drill bits, the holes will be drilled below each drill bit but first selected should be face, next drill bits. To select more objects hold left CTRL key during selection. If the selected element is Cube, it will be replaced with Pad.')
 
 		showInfo("drillCounterbores", info)
 
@@ -3388,7 +3374,7 @@ def sketch2dowel():
 		
 		info = ""
 		
-		info += translate('sketch2dowel', '<b>First select face, next Sketches of the holes to create dowels.</b><br><br> <b>Note:</b> This tool allows to create dowel from Sketch of the hole. The first selected face refers to the side the dowel will be raised, exact orientation for the dowel. Dowel position will be get from the Sketch. The dowel Radius and Height will be get from hole object. If the hole is throughAll the dowel height will be very big, so make sure you use dimensions for hole. To select more Sketches hold left CTRL key during selection.')
+		info += translate('sketch2dowel', '<b>Please first select face, next Sketches of the holes to create dowels. </b><br><br> <b>Note:</b> This tool allows to create dowel from Sketch of the hole. The first selected face refers to the side the dowel will be raised, exact orientation for the dowel. Dowel position will be get from the Sketch. The dowel Radius and Height will be get from hole object. If the hole is throughAll the dowel height will be very big, so make sure you use dimensions for hole. To select more Sketches hold left CTRL key during selection.')
 
 		showInfo("sketch2dowel", info)
 
@@ -3451,7 +3437,7 @@ def edge2dowel():
 		
 		info = ""
 		
-		info += translate('edge2dowel', 'This tool allows to create dowels above the selected hole edges. To create dowel select edge of the hole. You can select many edges at once but all the holes need to be at the same object. The dowel Height will be 40. The dowel radius will be get from the selected edge hole radius. To select more objects hold left CTRL key during selection.')
+		info += translate('edge2dowel', '<b>Please select valid edge of the hole to create dowel. </b><br><br><b>Note:</b> This tool allows to create dowels above the selected hole edges. To create dowel select edge of the hole. You can select many edges at once but all the holes need to be at the same object. The dowel Height will be 40. The dowel radius will be get from the selected edge hole radius. To select more objects hold left CTRL key during selection.')
 
 		showInfo("edge2dowel", info)
 
@@ -3518,7 +3504,7 @@ def edge2drillbit():
 		
 		info = ""
 		
-		info += translate('edge2drillbit', 'This tool allows to create drill bits for making simple hole. The drill bits will be created above the selected hole edges. To create drill bits select edge of the hole. You can select many edges at once but all the holes need to be at the same object. The drill bit Height will be 16. The drill bits radius will be get from the selected edge hole radius but will be little smaller, 1 mm, than the hole to make pilot hole. To select more objects hold left CTRL key during selection. This feature can be used to create drill bits above holes at hinges, angles or other fixture type.')
+		info += translate('edge2drillbit', '<b>Please select valid edge to create drill bit. This feature can be used to create drill bits above holes at hinges, angles or other fixture type. </b><br><br><b>Note:</b> This tool allows to create drill bits for making simple hole. The drill bits will be created above the selected hole edges. To create drill bits select edge of the hole. You can select many edges at once but all the holes need to be at the same object. The drill bit Height will be 16. The drill bits radius will be get from the selected edge hole radius but will be little smaller, 1 mm, than the hole to make pilot hole. To select more objects hold left CTRL key during selection.')
 
 		showInfo("edge2drillbit", info)
 
@@ -3562,7 +3548,7 @@ def magicCut():
 		
 		info = ""
 		
-		info += translate('magicCut', 'This tool make multi bool cut operation at selected objects. First object should be the base object to cut. All other selected objects will cut the base 1st selected object. To select more objects hold left CTRL key during selection. During this process only the copies will be used to cut, so the original objects will not be moved at tree. Also there will be auto labeling to keep the cut tree more informative and cleaner.')
+		info += translate('magicCut', '<b>Please select the object to cut and then the objects that will cut the base element. </b><br><br><b>Note:</b> This tool make multi bool cut operation at selected objects. First object should be the base object to cut. All other selected objects will cut the base 1st selected object. To select more objects hold left CTRL key during selection. During this process only the copies will be used to cut, so the original objects will not be moved at tree. Also there will be auto labeling to keep the cut tree more informative and cleaner.')
 
 		showInfo("magicCut", info)
 
@@ -3612,7 +3598,7 @@ def jointTenon():
 		
 		info = ""
 		
-		info += translate('jointTenon', 'Select face to create Tenon joint. This is simple Cube object and will be created in the corner of the selected face (0 vertex), allowing you to move the joint precisely to any place at the face. It has predefined size but you can resize and move the joint to fit to your elements and needs. To make more copies you can use magicFixture. If you set all Tenons at the element, you can quickly cut all Mortises for the Tenons with magicCut.')
+		info += translate('jointTenon', '<b>Please select face to create Tenon joint at the selected face. </b><br><br><b>Note:</b> This is simple Cube object and will be created in the corner of the selected face (0 vertex), allowing you to move the joint precisely to any place at the face. It has predefined size but you can resize and move the joint to fit to your elements and needs. For example if you set all Tenons at the element, you can quickly cut all Mortises for the Tenons with magicCut.')
 
 		showInfo("jointTenon", info)
 
@@ -3665,7 +3651,7 @@ def jointCustom():
 		
 		info = ""
 		
-		info += translate('jointCustom', 'Select face to create Custom joint. The simple Pad will be created in the corner of the selected face (0 vertex), allowing you to move the joint precisely to any place at the face. It has predefined size but you can resize and move the joint to fit to your elements and needs. Also you can edit the Sketch to create your custom joint shape. To make more copies you can use magicFixture. If you set all joints at the element, you can quickly cut all Mortises for the joints with magicCut.')
+		info += translate('jointCustom', '<b>Please select face to create Custom joint at the selected face. </b><br><br><b>Note:</b> The simple Pad will be created in the corner of the selected face (0 vertex), allowing you to move the joint precisely to any place at the face. It has predefined size but you can resize and move the joint to fit to your elements and needs. Also you can edit the Sketch to create your custom joint shape. For example if you set all joints at the element, you can quickly cut all Mortises for the joints with magicCut.')
 
 		showInfo("jointCustom", info)
 
