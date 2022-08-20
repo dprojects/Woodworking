@@ -20,6 +20,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
   * [Dowels and Screws](#dowels-and-screws)
     * [magicDowels](#magicdowels)
     * [panel2link](#panel2link)
+    * [panel2clone](#panel2clone)
     * [sketch2dowel](#sketch2dowel)
     * [edge2dowel](#edge2dowel)
     * [makeTransparent](#maketransparent)
@@ -124,7 +125,11 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 ### panel2link
 
-<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2link.png"> This tool allows to replace simple objects with any detailed object, e.g. `Cylinder` with realistic looking dowel made with `Pad`. First you have to select detailed object and than simple object that will be replaced with `Link`. The first selected detailed object can be `Part`, `LinkGroup` or any other created manually or merged with your project object. You can replace more than one simple objects at once with `Link`. To select more objects hold `left CTRL key` during selection. The simple objects should imitate the detailed object to replace all of them in-place with realistic looking one.
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2link.png"> This tool allows to replace simple objects with any detailed object, e.g. `Cylinders` with realistic looking screws. First you have to select detailed object and than simple object that will be replaced with `Link`. The first selected detailed object can be `Part`, `LinkGroup` or any other created manually or merged with your project. You can replace more than one simple object at once with `Link`. To select more objects hold left `CTRL` key during selection. The simple objects should imitate the detailed object to replace all of them in-place with realistic looking one. For more details please see: [Fixture examples](https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture).
+
+### panel2clone
+
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2clone.png"> This tool allows to replace simple objects with any detailed object, e.g. `Cylinders` with realistic looking screws. First you have to select detailed object and than simple object that will be replaced with `Clones`. The first selected detailed object can be `Part`, `LinkGroup` or any other created manually or merged with your project. You can replace more than one simple object at once with `Clone`. To select more objects hold left `CTRL` key during selection. The simple objects should imitate the detailed object to replace all of them in-place with realistic looking one. This tool works with the same way as [panel2link](#panel2link) but instead of `Link` it creates `Clone` objects. It can be useful if you want to remove the base object and have clean objects Tree. Also if you want to change each copy separately. [Fixture examples](https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture).
 
 ### sketch2dowel
 

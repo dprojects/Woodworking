@@ -2240,7 +2240,7 @@ class panel2pad():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panel2pad.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panel2padMenuText", "replace, cube to pad"),
+				"MenuText": QT_TRANSLATE_NOOP("panel2padMenuText", "cube to pad"),
 				"ToolTip" : QT_TRANSLATE_NOOP("panel2padToolTip", "Click to see info."),
 				"Accel"   : "" }
 
@@ -2279,7 +2279,7 @@ class panel2profile():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panel2profile.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panel2profileMenuText", "replace, cubes to construction profiles"),
+				"MenuText": QT_TRANSLATE_NOOP("panel2profileMenuText", "cubes to construction profiles"),
 				"ToolTip" : QT_TRANSLATE_NOOP("panel2profileToolTip", "Click to see info."),
 				"Accel"   : "" }
 
@@ -2318,7 +2318,7 @@ class panel2frame():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panel2frame.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panel2frameMenuText", "replace, cubes to frames"),
+				"MenuText": QT_TRANSLATE_NOOP("panel2frameMenuText", "cubes to frames"),
 				"ToolTip" : QT_TRANSLATE_NOOP("panel2frameToolTip", "Click to see info."),
 				"Accel"   : "" }
 
@@ -2357,7 +2357,7 @@ class panel2link():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panel2link.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panel2linkMenuText", "replace, cubes to links"),
+				"MenuText": QT_TRANSLATE_NOOP("panel2linkMenuText", "replace with links"),
 				"ToolTip" : QT_TRANSLATE_NOOP("panel2linkToolTip", "Click to see info."),
 				"Accel"   : "" }
 
@@ -2389,6 +2389,45 @@ class panel2link():
 		return True
 
 FreeCADGui.addCommand("panel2link", panel2link())
+
+	
+# ######################################################################################################################
+class panel2clone():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panel2clone.png"),
+				"MenuText": QT_TRANSLATE_NOOP("panel2cloneMenuText", "replace with clones"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panel2cloneToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panel2clone"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panel2clone", panel2clone())
 
 	
 # ######################################################################################################################

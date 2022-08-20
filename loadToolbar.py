@@ -97,6 +97,7 @@ def getItems(iType):
 		parts = [
 			"magicDowels",
 			"panel2link",
+			"panel2clone",
 			"sketch2dowel",
 			"edge2dowel",
 			"makeTransparent"

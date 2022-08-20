@@ -149,10 +149,11 @@ Tools = [
 	
 	# replace
 	
-	"MagicPanels", "panel2pad", "png", "replace, cube to pad", "Click to see info.",
-	"MagicPanels", "panel2profile", "png", "replace, cubes to construction profiles", "Click to see info.",
-	"MagicPanels", "panel2frame", "png", "replace, cubes to frames", "Click to see info.",
-	"MagicPanels", "panel2link", "png", "replace, cubes to links", "Click to see info.",
+	"MagicPanels", "panel2pad", "png", "cube to pad", "Click to see info.",
+	"MagicPanels", "panel2profile", "png", "cubes to construction profiles", "Click to see info.",
+	"MagicPanels", "panel2frame", "png", "cubes to frames", "Click to see info.",
+	"MagicPanels", "panel2link", "png", "replace with links", "Click to see info.",
+	"MagicPanels", "panel2clone", "png", "replace with clones", "Click to see info.",
 
 	# face
 	
