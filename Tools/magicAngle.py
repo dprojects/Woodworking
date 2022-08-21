@@ -239,9 +239,25 @@ def showQtGUI():
 			
 			self.gCenter = []
 			
-			try:
+			# you can add new center points here, if needed
 			
-				# you can add new center points here, if needed
+			if self.gObj.isDerivedFrom("Part::Cylinder"):
+				
+				v = self.touchTypo(1, 0)
+				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				
+				v = self.touchTypo(2, 0)
+				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+			
+			if self.gObj.isDerivedFrom("Part::Cone"):
+				
+				v = self.touchTypo(2, 0)
+				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				
+				v = self.touchTypo(1, 0)
+				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+
+			try:
 				
 				v = self.touchTypo(4, 0)
 				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
@@ -268,7 +284,17 @@ def showQtGUI():
 				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
 		
 			except:
+
 				self.gCenter.append(FreeCAD.Vector(float(0.0), float(0.0), float(0.0)))
+
+			try:
+				
+				v = self.gObj.Shape.CenterOfMass
+				self.gCenter.append(FreeCAD.Vector(float(v.x), float(v.y), float(v.z)))
+				
+			except:
+			
+				skip = 1
 			
 		def setCenterSphere(self):
 			
