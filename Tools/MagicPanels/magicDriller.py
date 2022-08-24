@@ -29,6 +29,7 @@ def showQtGUI():
 		gFPlane = ""
 		gFType = ""
 		gDrillFaceKey = ""
+		gDrillSink = ""
 		
 		gEdge = ""
 		gEArr = []
@@ -53,6 +54,15 @@ def showQtGUI():
 		gDBOCorner = 50
 		gDBONext = 32
 		gDBOEdge = 0
+		gDBSink = 0 # used for pocket holes only
+		
+		
+		# settings for pocket holes
+		gDBPocketR = 75
+		gDBPocketS = -5
+		
+		gPocketAxis = ""
+		gPocketCenter = ""
 		
 		gInit = 1
 		
@@ -74,7 +84,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 220
-			toolSH = 620
+			toolSH = 640
 			
 			# active screen size (FreeCAD main window)
 			gSW = FreeCADGui.getMainWindow().width()
@@ -219,7 +229,8 @@ def showQtGUI():
 			self.s6Slist = (
 						"Holes",
 						"Countersinks",
-						"Counterbores"
+						"Counterbores",
+						"Pocket holes"
 						)
 			
 			self.s6S = QtGui.QComboBox(self)
@@ -259,22 +270,6 @@ def showQtGUI():
 			self.s7S.move(10, row)
 			self.gDBType = "Holes"
 			
-			# ############################################################################
-			# options - mount label
-			# ############################################################################
-
-			row += 30
-			
-			# label
-			self.oDBLabelL = QtGui.QLabel(translate('magicDriller', 'Label:'), self)
-			self.oDBLabelL.move(10, row+3)
-
-			# text input
-			self.oDBLabelE = QtGui.QLineEdit(self)
-			self.oDBLabelE.setText(str(self.gDBLabel))
-			self.oDBLabelE.setFixedWidth(150)
-			self.oDBLabelE.move(60, row)
-
 			# ############################################################################
 			# options - drill bits number per side
 			# ############################################################################
@@ -391,6 +386,44 @@ def showQtGUI():
 			self.oDBOEdgeE.move(160, row)
 
 			# ############################################################################
+			# options - pocket rotation
+			# ############################################################################
+
+			row += 30
+			
+			# label
+			self.oDBPocketRL = QtGui.QLabel(translate('magicDriller', 'Pocket rotation:'), self)
+			self.oDBPocketRL.move(10, row+3)
+
+			# text input
+			self.oDBPocketRE = QtGui.QLineEdit(self)
+			self.oDBPocketRE.setText(str(self.gDBPocketR))
+			self.oDBPocketRE.setFixedWidth(50)
+			self.oDBPocketRE.move(160, row)
+
+			self.oDBPocketRL.hide()
+			self.oDBPocketRE.hide()
+			
+			# ############################################################################
+			# options - pocket sink
+			# ############################################################################
+
+			row += 30
+			
+			# label
+			self.oDBPocketSL = QtGui.QLabel(translate('magicDriller', 'Pocket sink:'), self)
+			self.oDBPocketSL.move(10, row+3)
+
+			# text input
+			self.oDBPocketSE = QtGui.QLineEdit(self)
+			self.oDBPocketSE.setText(str(self.gDBPocketS))
+			self.oDBPocketSE.setFixedWidth(50)
+			self.oDBPocketSE.move(160, row)
+
+			self.oDBPocketSL.hide()
+			self.oDBPocketSE.hide()
+
+			# ############################################################################
 			# options - end settings
 			# ############################################################################
 
@@ -444,7 +477,16 @@ def showQtGUI():
 				center = FreeCAD.Vector(x, y, z)
 			
 				Draft.rotate(d, angle, center, axis, False)
+			
+			if self.gDBType == "Pocket holes":
 				
+				for d in self.gDrillBits:
+				
+					axis = self.gPocketAxis
+					center = FreeCAD.Vector(x, y, z)
+					Draft.rotate(d, self.gDBPocketR, center, axis, False)
+			
+			
 			FreeCADGui.Selection.clearSelection()
 			FreeCAD.activeDocument().recompute()
 
@@ -478,6 +520,18 @@ def showQtGUI():
 			if self.gDBType == "Counterbores":
 
 				d = FreeCAD.ActiveDocument.addObject("Part::Cone","DrillBitCounterbore")
+				d.Label = str(self.gDBLabel)
+
+				d.Radius1 = self.gDBDiameter / 2
+				d.Radius2 = self.gDBDiameter2 / 2
+				d.Height = self.gDBSize
+				
+				colors = [ (0.0, 0.0, 1.0, 0.0), (0.0, 1.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0) ]
+				d.ViewObject.DiffuseColor = colors
+				
+			if self.gDBType == "Pocket holes":
+
+				d = FreeCAD.ActiveDocument.addObject("Part::Cone","DrillBitPocket")
 				d.Label = str(self.gDBLabel)
 
 				d.Radius1 = self.gDBDiameter / 2
@@ -535,19 +589,22 @@ def showQtGUI():
 							if i != 0:
 								x = x - ( i * self.gDBONext)
 							y = Y + self.gDBOEdge
-							z = Z
-						
+							z = Z - self.gDBSink
+							
 						if self.gFPlane == "XZ":
 							x = X - self.gDBOCorner
 							if i != 0:
 								x = x - ( i * self.gDBONext)
-							y = Y
+							y = Y - self.gDBSink
 							z = Z + self.gDBOEdge
 				
 						# this should not exist
 						if self.gFPlane == "YZ":
 							[ x, y, z ] = [ X, Y, Z ]
-
+						
+						# settings for pocket holes
+						self.gPocketAxis = FreeCAD.Vector(1, 0, 0)
+						
 					# edge along Y
 					if not MagicPanels.equal(v1[1], v2[1]):
 						
@@ -556,42 +613,48 @@ def showQtGUI():
 							y = Y - self.gDBOCorner
 							if i != 0:
 								y = y - ( i * self.gDBONext)
-							z = Z
+							z = Z - self.gDBSink
 					
 						# this should not exist
 						if self.gFPlane == "XZ":
 							[ x, y, z ] = [ X, Y, Z ]
 					
 						if self.gFPlane == "YZ":
-							x = X
+							x = X - self.gDBSink
 							y = Y - self.gDBOCorner
 							if i != 0:
 								y = y - ( i * self.gDBONext)
 							z = Z + self.gDBOEdge
 
+						# settings for pocket holes
+						self.gPocketAxis = FreeCAD.Vector(0, 1, 0)
+						
 					# edge along Z
 					if not MagicPanels.equal(v1[2], v2[2]):
 						
 						if self.gFPlane == "XY":
 							x = X + self.gDBOEdge
-							y = Y
+							y = Y - self.gDBSink
 							z = Z - self.gDBOCorner
 							if i != 0:
 								z = z - ( i * self.gDBONext)
 						
 						if self.gFPlane == "XZ":
 							x = X - self.gDBOEdge
-							y = Y
+							y = Y - self.gDBSink
 							z = Z - self.gDBOCorner
 							if i != 0:
 								z = z - ( i * self.gDBONext)
 								
 						if self.gFPlane == "YZ":
-							x = X
+							x = X - self.gDBSink
 							y = Y + self.gDBOEdge
 							z = Z - self.gDBOCorner
 							if i != 0:
 								z = z - ( i * self.gDBONext)
+
+						# settings for pocket holes
+						self.gPocketAxis = FreeCAD.Vector(0, 0, 1)
 
 					# ############################################################################
 					# create dowel
@@ -622,18 +685,21 @@ def showQtGUI():
 							if i != 0:
 								x = x + ( i * self.gDBONext)
 							y = Y + self.gDBOEdge
-							z = Z
+							z = Z - self.gDBSink
 					
 						if self.gFPlane == "XZ":
 							x = X + self.gDBOCorner
 							if i != 0:
 								x = x + ( i * self.gDBONext)
-							y = Y
+							y = Y - self.gDBSink
 							z = Z + self.gDBOEdge
 						
 						# this should not exist
 						if self.gFPlane == "YZ":
 							[ x, y, z ] = [ X, Y, Z ]
+
+						# settings for pocket holes
+						self.gPocketAxis = FreeCAD.Vector(1, 0, 0)
 
 					# edge along Y
 					if not MagicPanels.equal(v1[1], v2[1]):
@@ -643,43 +709,49 @@ def showQtGUI():
 							y = Y + self.gDBOCorner
 							if i != 0:
 								y = y + ( i * self.gDBONext)
-							z = Z
+							z = Z - self.gDBSink
 					
 						# this should not exist
 						if self.gFPlane == "XZ":
 							[ x, y, z ] = [ X, Y, Z ]
 					
 						if self.gFPlane == "YZ":
-							x = X
+							x = X - self.gDBSink
 							y = Y + self.gDBOCorner
 							if i != 0:
 								y = y + ( i * self.gDBONext)
 							z = Z + self.gDBOEdge
+							
+						# settings for pocket holes
+						self.gPocketAxis = FreeCAD.Vector(0, 1, 0)
 
 					# edge along Z
 					if not MagicPanels.equal(v1[2], v2[2]):
 						
 						if self.gFPlane == "XY":
 							x = X + self.gDBOEdge
-							y = Y
+							y = Y - self.gDBSink
 							z = Z + self.gDBOCorner
 							if i != 0:
 								z = z + ( i * self.gDBONext)
 					
 						if self.gFPlane == "XZ":
 							x = X - self.gDBOEdge
-							y = Y
+							y = Y - self.gDBSink
 							z = Z + self.gDBOCorner
 							if i != 0:
 								z = z + ( i * self.gDBONext)
 					
 						if self.gFPlane == "YZ":
-							x = X
+							x = X - self.gDBSink
 							y = Y + self.gDBOEdge
 							z = Z + self.gDBOCorner
 							if i != 0:
 								z = z + ( i * self.gDBONext)
 					
+						# settings for pocket holes
+						self.gPocketAxis = FreeCAD.Vector(0, 0, 1)
+						
 					# ############################################################################
 					# create dowel
 					# ############################################################################
@@ -807,10 +879,10 @@ def showQtGUI():
 				# ############################################################################
 
 				# adjust sink
-				sink = MagicPanels.getFaceSink(self.gObj, self.gDrillFace)
+				self.gDrillSink = MagicPanels.getFaceSink(self.gObj, self.gDrillFace)
 				
 				# adjust rotation
-				if sink == "+":
+				if self.gDrillSink == "+":
 					
 					if self.gFPlane == "XY":
 						self.gRIndex = 1
@@ -954,6 +1026,7 @@ def showQtGUI():
 				self.gDBOEdge = self.gThick / 2
 				self.gDBLabel = selectedText
 				self.gDBSides = 0
+				self.gDBSink = 0
 				
 				if selectedText == "Dowel 6 x 35 mm ":
 					self.gDBDiameter = 6
@@ -1082,7 +1155,40 @@ def showQtGUI():
 					self.gDBOCorner = 50
 					self.gDBONext = 32
 
-				self.oDBLabelE.setText(str(self.gDBLabel))
+				if self.gDBType == "Pocket holes":
+					
+					self.gDBDiameter = 3
+					self.gDBDiameter2 = 9.5
+					self.gDBNum = 2
+					self.gDBOCorner = 50
+					self.gDBONext = 32
+						
+					if selectedText == "Screw 4 x 25 mm ":
+						self.gDBSize = 75
+						self.gDBOEdge = 50
+						self.gDBPocketR = 75
+						self.gDBPocketS = - 5
+						
+					if selectedText == "Screw 4 x 30 mm ":
+						self.gDBSize = 90
+						self.gDBOEdge = 60
+						self.gDBPocketR = 75
+						self.gDBPocketS = - 6
+						
+					if selectedText == "Screw 4 x 40 mm ":
+						self.gDBSize = 120
+						self.gDBOEdge = 80
+						self.gDBPocketR = 75
+						self.gDBPocketS = - 9
+					
+					if selectedText == "Screw 4 x 60 mm ":
+						self.gDBSize = 180
+						self.gDBOEdge = 120
+						self.gDBPocketR = 75
+						self.gDBPocketS = - 12
+					
+					self.gDBSink = self.gDBPocketS
+					
 				self.oDBDiameterE.setText(str(self.gDBDiameter))
 				self.oDBDiameter2E.setText(str(self.gDBDiameter2))
 				self.oDBSizeE.setText(str(self.gDBSize))
@@ -1090,6 +1196,8 @@ def showQtGUI():
 				self.oDBOCornerE.setText(str(self.gDBOCorner))
 				self.oDONextE.setText(str(self.gDBONext))
 				self.oDBOEdgeE.setText(str(self.gDBOEdge))
+				self.oDBPocketRE.setText(str(self.gDBPocketR))
+				self.oDBPocketSE.setText(str(self.gDBPocketS))
 
 				self.showDrillBits()
 		
@@ -1101,7 +1209,6 @@ def showQtGUI():
 			
 			try:
 			
-				self.gDBLabel = str(self.oDBLabelE.text())
 				self.gDBDiameter = float(self.oDBDiameterE.text())
 				self.gDBDiameter2 = float(self.oDBDiameter2E.text())
 				self.gDBSize = float(self.oDBSizeE.text())
@@ -1109,6 +1216,11 @@ def showQtGUI():
 				self.gDBOCorner = float(self.oDBOCornerE.text())
 				self.gDBONext = float(self.oDONextE.text())
 				self.gDBOEdge = float(self.oDBOEdgeE.text())
+				self.gDBPocketR = float(self.oDBPocketRE.text())
+				self.gDBPocketS = float(self.oDBPocketSE.text())
+				
+				if self.gDBType == "Pocket holes":
+					self.gDBSink = self.gDBPocketS
 
 				self.showDrillBits()
 			
@@ -1117,7 +1229,10 @@ def showQtGUI():
 
 		# ############################################################################
 		def setDrillBitType(self, selected):
+			
 			try:
+				
+				self.gDBSink = 0
 				
 				if selected == "Holes":
 					self.gDBType = "Holes"
@@ -1144,6 +1259,11 @@ def showQtGUI():
 					self.oDBDiameter2L.hide()
 					self.oDBDiameter2E.hide()
 					
+					self.oDBPocketRL.hide()
+					self.oDBPocketRE.hide()
+					self.oDBPocketSL.hide()
+					self.oDBPocketSE.hide()
+					
 				if selected == "Countersinks":
 					self.gDBType = "Countersinks"
 				
@@ -1161,6 +1281,11 @@ def showQtGUI():
 				
 					self.oDBDiameter2L.show()
 					self.oDBDiameter2E.show()
+					
+					self.oDBPocketRL.hide()
+					self.oDBPocketRE.hide()
+					self.oDBPocketSL.hide()
+					self.oDBPocketSE.hide()
 					
 				if selected == "Counterbores":
 					self.gDBType = "Counterbores"
@@ -1180,6 +1305,35 @@ def showQtGUI():
 					self.oDBDiameter2L.show()
 					self.oDBDiameter2E.show()
 					
+					self.oDBPocketRL.hide()
+					self.oDBPocketRE.hide()
+					self.oDBPocketSL.hide()
+					self.oDBPocketSE.hide()
+					
+				if selected == "Pocket holes":
+					self.gDBType = "Pocket holes"
+					
+					self.s7Slist = (
+						"Screw 4 x 25 mm ",
+						"Screw 4 x 30 mm ",
+						"Screw 4 x 40 mm ",
+						"Screw 4 x 60 mm "
+						)
+			
+					self.gDBLabel = "Screw 4 x 40 mm "
+					self.s7S.clear()
+					self.s7S.addItems(self.s7Slist)
+					self.s7S.setCurrentIndex(self.s7Slist.index(self.gDBLabel))
+					
+					self.oDBDiameter2L.show()
+					self.oDBDiameter2E.show()
+					
+					self.oDBPocketRL.show()
+					self.oDBPocketRE.show()
+					self.oDBPocketSL.show()
+					self.oDBPocketSE.show()
+					
+				# set other settings and refresh drill bits
 				self.setCustomDrillbits(self.gDBLabel)
 
 			except:
@@ -1209,6 +1363,9 @@ def showQtGUI():
 
 				if self.gDBType == "Counterbores":
 					holes = MagicPanels.makeCounterbores(self.gObj, self.gDrillFace, o )
+
+				if self.gDBType == "Pocket holes":
+					holes = MagicPanels.makePocketHoles(self.gObj, self.gDrillFace, o )
 
 				# get new object from selection
 				FreeCADGui.Selection.addSelection(holes[0])

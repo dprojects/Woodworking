@@ -1830,7 +1830,7 @@ def makeCounterbores(iObj, iFace, iCones):
 	Usage:
 
 		import MagicPanels
-		holes = MagicPanels.drillCounterbores(obj, face, cones)
+		holes = MagicPanels.makeCounterbores(obj, face, cones)
 		
 	Result:
 
@@ -1900,6 +1900,110 @@ def makeCounterbores(iObj, iFace, iCones):
 		hole.Diameter = r1
 		hole.HoleCutDiameter = r2
 		hole.HoleCutDepth = 5.000000
+		hole.HoleCutCountersinkAngle = 90.000000
+		hole.Depth = o.Height
+		hole.TaperedAngle = 90.000000
+		hole.Threaded = 0
+		hole.ThreadType = 0
+		hole.HoleCutType = 1
+		hole.DepthType = 0
+		hole.DrillPoint = 0
+		hole.Tapered = 0
+		
+		FreeCAD.ActiveDocument.recompute()
+		
+		base = hole
+		holes.append(hole)
+		
+	return holes
+
+
+# ###################################################################################################################
+def makePocketHoles(iObj, iFace, iCones):
+	'''
+	makePocketHoles(iObj, iFace, iCones) - make pocket holes for invisible connections
+
+	Note: This is internal function, so there is no error pop-up or any error handling.
+
+	Args:
+
+		iObj: base object to drill
+		iFace: face of base object to drill
+		iCones: list of drill bits to drill below each one (Cone objects)
+
+	Usage:
+
+		import MagicPanels
+		holes = MagicPanels.makePocketHoles(obj, face, cones)
+		
+	Result:
+
+		Make holes and return list of holes. 
+	'''
+
+	import Part, Sketcher
+
+	holes = []
+
+	base = iObj
+	face = iFace
+	objects = iCones
+		
+	# set body for base object
+	if base.isDerivedFrom("Part::Box"):
+		
+		[ part, body, sketch, pad ] = makePad(base, base.Label)
+		FreeCAD.ActiveDocument.removeObject(base.Name)
+		FreeCAD.activeDocument().recompute()
+	
+	else:
+		
+		body = base._Body
+
+	for o in objects:
+		
+		# create hole Sketch
+		holeSketch = body.newObject('Sketcher::SketchObject','Sketch')
+		holeSketch.MapMode = 'FlatFace'
+
+		axis = o.Placement.Rotation.Axis
+		r1 = float(2 * o.Radius1)
+		r2 = float(2 * o.Radius2)
+		sr1 = str(r1)+" mm"
+		sr2 = str(r2)+" mm"
+		
+		# set hole
+		geo = Part.Circle(FreeCAD.Vector(0, 0, 0), axis, r1)
+		holeSketch.addGeometry(geo, False)
+		holeSketch.addConstraint(Sketcher.Constraint('Coincident', 0, 3, -1, 1))
+		holeSketch.addConstraint(Sketcher.Constraint('Diameter', 0, r1)) 
+		holeSketch.setDatum(1, FreeCAD.Units.Quantity(sr1))
+		holeSketch.renameConstraint(1, u'Tip0hole00Diameter')
+		
+		# set counterbore
+		geo = Part.Circle(FreeCAD.Vector(0, 0, 0), axis, r2)
+		holeSketch.addGeometry(geo, True)
+		holeSketch.addConstraint(Sketcher.Constraint('Coincident', 1, 3, -1, 1)) 
+		holeSketch.addConstraint(Sketcher.Constraint('Diameter', 1, r2)) 
+		holeSketch.setDatum(3, FreeCAD.Units.Quantity(sr2))
+		holeSketch.renameConstraint(3, u'Pocket0hole00Diameter')
+		
+		FreeCAD.ActiveDocument.recompute()
+		
+		# set position to hole Sketch
+		[ x, y, z, r ] = getPlacement(o)
+		setPlacement(holeSketch, x, y, z, r)
+		
+		FreeCAD.ActiveDocument.recompute()
+		
+		# create hole object
+		hole = body.newObject('PartDesign::Hole','PocketHole')
+		hole.Profile = holeSketch
+		holeSketch.Visibility = False
+		
+		hole.Diameter = r1
+		hole.HoleCutDiameter = r2
+		hole.HoleCutDepth = o.Height / 2
 		hole.HoleCutCountersinkAngle = 90.000000
 		hole.Depth = o.Height
 		hole.TaperedAngle = 90.000000
