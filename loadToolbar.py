@@ -127,6 +127,7 @@ def getItems(iType):
 			"drillHoles",
 			"drillCountersinks",
 			"drillCounterbores",
+			"drillCounterbores2x",
 			"magicCNC"
 		]
 

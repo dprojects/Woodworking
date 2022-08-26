@@ -77,6 +77,7 @@ Tools = [
 	"MagicPanels", "drillHoles", "png", "drill bit, drill simple holes", "Click to see info.",
 	"MagicPanels", "drillCountersinks", "png", "drill bit, drill countersinks", "Click to see info.",
 	"MagicPanels", "drillCounterbores", "png", "drill bit, drill counterbores", "Click to see info.",
+	"MagicPanels", "drillCounterbores2x", "png", "drill bit, drill counterbores from both sides", "Click to see info.",
 	"MagicPanels", "edge2drillbit", "png", "drill bit from edge hole", "Click to see info.",
 	
 	# mount

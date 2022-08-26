@@ -1373,7 +1373,7 @@ def showQtGUI():
 				
 				# search for selected face to drill
 				index = MagicPanels.getFaceIndexByKey(self.gObj, self.gDrillFaceKey)
-				self.gDrillFace = self.gObj.Shape.Faces[index]
+				self.gDrillFace = self.gObj.Shape.Faces[index-1]
 
 				# update status info screen
 				face = "Face"+str(MagicPanels.getFaceIndex(self.gObj, self.gDrillFace))

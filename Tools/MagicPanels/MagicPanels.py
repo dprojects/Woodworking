@@ -392,18 +392,9 @@ def getFaceIndexByKey(iObj, iBoundBox):
 	'''
 
 	index = 1
-	for e in iObj.Shape.Faces:
+	for f in iObj.Shape.Faces:
 		
-		c = "BoundBox ("
-		c += str(int(round(e.BoundBox.XMin, 0))) + ", "
-		c += str(int(round(e.BoundBox.YMin, 0))) + ", "
-		c += str(int(round(e.BoundBox.ZMin, 0))) + ", "
-		c += str(int(round(e.BoundBox.XMax, 0))) + ", "
-		c += str(int(round(e.BoundBox.YMax, 0))) + ", "
-		c += str(int(round(e.BoundBox.ZMax, 0)))
-		c += ")"
-		
-		if c == str(iBoundBox):
+		if normalizeBoundBox(f.BoundBox) == normalizeBoundBox(iBoundBox):
 			return index
 
 		index = index + 1
@@ -2023,6 +2014,224 @@ def makePocketHoles(iObj, iFace, iCones):
 
 
 # ###################################################################################################################
+def makeCounterbores2x(iObj, iFace, iCones):
+	'''
+	makeCounterbores2x(iObj, iFace, iCones) - make counterbores from both sides
+
+	Note: This is internal function, so there is no error pop-up or any error handling.
+
+	Args:
+
+		iObj: base object to drill
+		iFace: face of base object to drill
+		iCones: list of drill bits to drill below each one (Cone objects)
+
+	Usage:
+
+		import MagicPanels
+		holes = MagicPanels.makeCounterbores2x(obj, face, cones)
+		
+	Result:
+
+		Make holes and return list of holes. 
+	'''
+
+	import Part, Sketcher, Draft
+
+	holes = []
+
+	base = iObj
+	face = iFace
+	objects = iCones
+	
+	sizes = []
+	sizes = getSizes(getReference(base))
+	sizes.sort()
+	thick = sizes[0]
+	
+	plane = getFacePlane(face)
+	sink = getFaceSink(base, face)
+	
+	# set body for base object
+	if base.isDerivedFrom("Part::Box"):
+		
+		[ part, body, sketch, pad ] = makePad(base, base.Label)
+		FreeCAD.ActiveDocument.removeObject(base.Name)
+		FreeCAD.activeDocument().recompute()
+	
+	else:
+		
+		body = base._Body
+
+	for o in objects:
+		
+		# create hole Sketch
+		holeSketch1 = body.newObject('Sketcher::SketchObject','Sketch')
+		holeSketch1.MapMode = 'FlatFace'
+
+		axis = o.Placement.Rotation.Axis
+		r1 = float(2 * o.Radius1)
+		r2 = float(2 * o.Radius2)
+		sr1 = str(r1)+" mm"
+		sr2 = str(r2)+" mm"
+		
+		# set hole
+		geo = Part.Circle(FreeCAD.Vector(0, 0, 0), axis, r1)
+		holeSketch1.addGeometry(geo, False)
+		holeSketch1.addConstraint(Sketcher.Constraint('Coincident', 0, 3, -1, 1))
+		holeSketch1.addConstraint(Sketcher.Constraint('Diameter', 0, r1)) 
+		holeSketch1.setDatum(1, FreeCAD.Units.Quantity(sr1))
+		holeSketch1.renameConstraint(1, u'Hole100Diameter')
+		
+		# set counterbore
+		geo = Part.Circle(FreeCAD.Vector(0, 0, 0), axis, r2)
+		holeSketch1.addGeometry(geo, True)
+		holeSketch1.addConstraint(Sketcher.Constraint('Coincident', 1, 3, -1, 1)) 
+		holeSketch1.addConstraint(Sketcher.Constraint('Diameter', 1, r2)) 
+		holeSketch1.setDatum(3, FreeCAD.Units.Quantity(sr2))
+		holeSketch1.renameConstraint(3, u'Counterbore100Diameter')
+		
+		FreeCAD.ActiveDocument.recompute()
+		
+		# #################################################################
+		# First hole
+		# #################################################################
+		
+		# get & store drill bit position and set it to sketch
+		[ xs1, ys1, zs1, rs1 ] = getPlacement(o)
+		setPlacement(holeSketch1, xs1, ys1, zs1, rs1)
+
+		FreeCAD.ActiveDocument.recompute()
+		
+		# create hole object
+		hole = body.newObject('PartDesign::Hole','Counterbore')
+		hole.Profile = holeSketch1
+		holeSketch1.Visibility = False
+		
+		hole.Diameter = r1
+		hole.HoleCutDiameter = r2
+		hole.HoleCutDepth = o.Height
+		hole.HoleCutCountersinkAngle = 90.000000
+		hole.Depth = thick
+		hole.TaperedAngle = 90.000000
+		hole.Threaded = 0
+		hole.ThreadType = 0
+		hole.HoleCutType = 1
+		hole.DepthType = 0
+		hole.DrillPoint = 0
+		hole.Tapered = 0
+		
+		FreeCAD.ActiveDocument.recompute()
+		
+		base = hole
+		holes.append(hole)
+		
+		# #################################################################
+		# Second hole
+		# #################################################################
+		
+		# create hole Sketch
+		holeSketch2 = body.newObject('Sketcher::SketchObject','Sketch')
+		holeSketch2.MapMode = 'FlatFace'
+
+		axis = o.Placement.Rotation.Axis
+		r1 = float(2 * o.Radius1)
+		r2 = float(2 * o.Radius2)
+		sr1 = str(r1)+" mm"
+		sr2 = str(r2)+" mm"
+		
+		# set hole
+		geo = Part.Circle(FreeCAD.Vector(0, 0, 0), axis, r1)
+		holeSketch2.addGeometry(geo, False)
+		holeSketch2.addConstraint(Sketcher.Constraint('Coincident', 0, 3, -1, 1))
+		holeSketch2.addConstraint(Sketcher.Constraint('Diameter', 0, r1)) 
+		holeSketch2.setDatum(1, FreeCAD.Units.Quantity(sr1))
+		holeSketch2.renameConstraint(1, u'Hole200Diameter')
+		
+		# set counterbore
+		geo = Part.Circle(FreeCAD.Vector(0, 0, 0), axis, r2)
+		holeSketch2.addGeometry(geo, True)
+		holeSketch2.addConstraint(Sketcher.Constraint('Coincident', 1, 3, -1, 1)) 
+		holeSketch2.addConstraint(Sketcher.Constraint('Diameter', 1, r2)) 
+		holeSketch2.setDatum(3, FreeCAD.Units.Quantity(sr2))
+		holeSketch2.renameConstraint(3, u'Counterbore200Diameter')
+		
+		xs2, ys2, zs2, rs2 = xs1, ys1, zs1, rs1
+		
+		if sink == "+":
+
+			if plane == "XY":
+				zs2 = zs2 + thick
+				axis = FreeCAD.Vector(1, 0, 0)
+				
+			if plane == "XZ":
+				ys2 = ys2 + thick
+				axis = FreeCAD.Vector(1, 0, 0)
+
+			if plane == "YZ":
+				xs2 = xs2 + thick
+				axis = FreeCAD.Vector(0, 1, 0)
+
+		else:
+
+			if plane == "XY":
+				zs2 = zs2 - thick
+				axis = FreeCAD.Vector(1, 0, 0)
+				
+			if plane == "XZ":
+				ys2 = ys2 - thick
+				axis = FreeCAD.Vector(1, 0, 0)
+
+			if plane == "YZ":
+				xs2 = xs2 - thick
+				axis = FreeCAD.Vector(0, 1, 0)
+	
+		center = FreeCAD.Vector(xs2, ys2, zs2)
+
+		# move & rotate drill bit
+		setPlacement(o, xs2, ys2, zs2, rs2)
+		Draft.rotate(o, 180, center, axis, False)
+		
+		# move & rotate sketch for hole
+		[ xs3, ys3, zs3, rs3 ] = getPlacement(o)
+		setPlacement(holeSketch2, xs3, ys3, zs3, rs3)
+		
+		FreeCAD.ActiveDocument.recompute()
+		
+		# create hole object
+		hole = body.newObject('PartDesign::Hole','Counterbore')
+		hole.Profile = holeSketch2
+		holeSketch2.Visibility = False
+		
+		hole.Diameter = r1
+		hole.HoleCutDiameter = r2
+		hole.HoleCutDepth = o.Height
+		hole.HoleCutCountersinkAngle = 90.000000
+		hole.Depth = thick
+		hole.TaperedAngle = 90.000000
+		hole.Threaded = 0
+		hole.ThreadType = 0
+		hole.HoleCutType = 1
+		hole.DepthType = 0
+		hole.DrillPoint = 0
+		hole.Tapered = 0
+		
+		FreeCAD.ActiveDocument.recompute()
+		
+		base = hole
+		holes.append(hole)
+		
+		# move & rotate back drill bit
+		setPlacement(o, xs1, ys1, zs1, rs1)
+		
+		FreeCAD.ActiveDocument.recompute()
+	
+	FreeCADGui.Selection.clearSelection()
+		
+	return holes
+
+
+# ###################################################################################################################
 def showInfo(iCaller, iInfo, iNote="yes"):
 	'''
 	showInfo(iCaller, iInfo, iNote="yes") - allow to show Gui info box for all available function and multiple calls.
@@ -3466,6 +3675,78 @@ def drillCounterbores():
 		info += translate('drillCounterbores', '<b>Please select face to create drill bit. Or please select face and next drill bits to drill holes at selected face. </b><br><br><b>Note:</b> This is drill bit to make counterbore with hole. The hole will be drilled below the bottom part of the drill bit, below the red face. The radius of the hole will be drill bit Radius1. The radius of counterbore will be drill bit Radius2. The hole depth will be drill bit Height. If you select face only, the drill bit will be created in the corner of the face (0 vertex), allowing you to move the drill bit precisely to any place at the face. Do not move the drill bit up, the drill bit should touch the face. You can select any amount of drill bits, the holes will be drilled below each drill bit but first selected should be face, next drill bits. To select more objects hold left CTRL key during selection. If the selected element is Cube, it will be replaced with Pad.')
 
 		showInfo("drillCounterbores", info)
+
+
+# ###################################################################################################################
+def drillCounterbores2x():
+	'''
+	drillCounterbores2x() - allows to drill hole with counterbore in selected face below selected drill bits and 
+	also the same counterbore from the other side of the panel. First object will be the base object face, 
+	and all others should be drill bits to drill holes with counterbores.
+
+	Note: This function displays pop-up info in case of error.
+
+	Args:
+
+		no args
+
+	Usage:
+
+		import MagicPanels
+		holes = MagicPanels.drillCounterbores2x()
+		
+	Result:
+
+		Selected face will be drilled below selected drill bits from both sides. 
+		If the first selected object is Cube it will be changed into Pad. 
+	'''
+
+	try:
+
+		import Part, Sketcher
+
+		holes = []
+
+		base = FreeCADGui.Selection.getSelection()[0]
+		face = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+		objects = FreeCADGui.Selection.getSelection()
+		
+		del objects[0]
+
+		# if face is selected create drill bit at face only
+		if len(objects) == 0:
+	
+			d = FreeCAD.ActiveDocument.addObject("Part::Cone","DrillBitCounterbore2x")
+			d.Label = "Drill Bit - 2 sides "
+
+			# default drill bit size
+			d.Radius1 = 3
+			d.Radius2 = 7.5
+			d.Height = 5
+			
+			# default drill bit position 0 - vertex
+			[ v1, v2, v3, v4 ] = getFaceVertices(face)
+			x, y, z = v1[0], v1[1], v1[2]
+			
+			r = getFaceObjectRotation(base, face)
+			
+			setPlacement(d, x, y, z, r)
+			
+			# default drill bit colors (middle, bottom, top)
+			colors = [ (0.0, 0.0, 1.0, 0.0), (0.0, 1.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0) ]
+			d.ViewObject.DiffuseColor = colors
+
+			return
+		
+		makeCounterbores2x(base, face, objects)
+	
+	except:
+		
+		info = ""
+		
+		info += translate('drillCounterbores2x', '<b>Please select face to create drill bit. Or please select face and next drill bits to drill holes at selected face from both sides of the panel. </b><br><br><b>Note:</b> This is drill bit to make counterbore2x with hole. The hole will be drilled below the bottom part of the drill bit, below the red face. The radius of the hole will be drill bit Radius1. The radius of counterbore will be drill bit Radius2. The hole depth will be panel thickness. The counterbore depth will be drill bit Height. If you select face only, the drill bit will be created in the corner of the face (0 vertex), allowing you to move the drill bit precisely to any place at the face. Do not move the drill bit up, the drill bit should touch the face. You can select any amount of drill bits, the holes will be drilled below each drill bit but first selected should be face, next drill bits. To select more objects hold left CTRL key during selection. If the selected element is Cube, it will be replaced with Pad.')
+
+		showInfo("drillCounterbores2x", info)
 
 
 # ###################################################################################################################

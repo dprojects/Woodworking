@@ -563,17 +563,24 @@ def showQtGUI():
 				
 				elif s.find("counterbore") != -1:
 					holes = MagicPanels.makeCounterbores(self.gObj, self.gDrillFace, o )
+					
+				elif s.find("2 sides") != -1:
+					holes = MagicPanels.makeCounterbores2x(self.gObj, self.gDrillFace, o )
 				
 				else:
 					holes = MagicPanels.makeHoles(self.gObj, self.gDrillFace, o )
 
 				# get new object from selection
-				FreeCADGui.Selection.addSelection(holes[0])
+				if s.find("2 sides") != -1:
+					FreeCADGui.Selection.addSelection(holes[1])
+				else:
+					FreeCADGui.Selection.addSelection(holes[0])
+					
 				self.gObj = FreeCADGui.Selection.getSelection()[0]
 				
 				# search for selected face to drill
 				index = MagicPanels.getFaceIndexByKey(self.gObj, self.gDrillFaceKey)
-				self.gDrillFace = self.gObj.Shape.Faces[index]
+				self.gDrillFace = self.gObj.Shape.Faces[index-1]
 
 				# update status info screen
 				face = "Face"+str(MagicPanels.getFaceIndex(self.gObj, self.gDrillFace))
@@ -581,10 +588,10 @@ def showQtGUI():
 				
 				# remove selection
 				FreeCADGui.Selection.clearSelection()
-		
+			
 			except:
 				self.resetInfoScreen()
-		
+
 
 	# ############################################################################
 	# final settings

@@ -754,6 +754,45 @@ FreeCADGui.addCommand("drillCounterbores", drillCounterbores())
 
 	
 # ######################################################################################################################
+class drillCounterbores2x():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "drillCounterbores2x.png"),
+				"MenuText": QT_TRANSLATE_NOOP("drillCounterbores2xMenuText", "drill bit, drill counterbores from both sides"),
+				"ToolTip" : QT_TRANSLATE_NOOP("drillCounterbores2xToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "drillCounterbores2x"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("drillCounterbores2x", drillCounterbores2x())
+
+	
+# ######################################################################################################################
 class edge2drillbit():
 
 	def GetResources(self):
