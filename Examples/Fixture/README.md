@@ -18,6 +18,8 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 	* [Pocket screw 4 x 30 mm](#pocket-screw-4-x-30-mm)
 	* [Pocket screw 4 x 40 mm](#pocket-screw-4-x-40-mm)
 	* [Pocket screw 4 x 60 mm](#pocket-screw-4-x-60-mm)
+* [Bolts](#bolts)
+	* [Conterbore2x 5 x 60 mm](#conterbore2x-5-x-60-mm)
 * [Pins](#pins)
 	* [Shelf Pin 5 x 16 mm](#shelf-pin-5-x-16-mm)
 * [Angles](#angles)
@@ -33,6 +35,7 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 |:--|:--|
 | **FreeCAD version:** | `0.20.29177 (Stable, Linux, x86_64, AppImage)` |
 | **OS:** | `Xubuntu 22.04 LTS x86_64` |
+| **Download:** | [Dowel_8_x_35_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Dowel_8_x_35_mm.FCStd)
 
 ![Dowel_8_x_35_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Dowel_8_x_35_mm.png)
 
@@ -42,9 +45,10 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 
 |   |   |
 |:--|:--|
+| **Usage:** | This type of screw can be used for hinges. |
 | **FreeCAD version:** | `0.20.29177 (Stable, Linux, x86_64, AppImage)` |
 | **OS:** | `Xubuntu 22.04 LTS x86_64` |
-| **Usage:** | This type of screw can be used for hinges. |
+| **Download:** | [Screw_3_x_12_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Screw_3_x_12_mm.FCStd)
 
 ![Screw_3_x_12_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Screw_3_x_12_mm.png)
 
@@ -52,9 +56,10 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 
 |   |   |
 |:--|:--|
+| **Usage:** | This type of screw can be used for 3 mm HDF back of the furniture. |
 | **FreeCAD version:** | `0.20.29177 (Stable, Linux, x86_64, AppImage)` |
 | **OS:** | `Xubuntu 22.04 LTS x86_64` |
-| **Usage:** | This type of screw can be used for 3 mm HDF back of the furniture. |
+| **Download:** | [Screw_3_x_20_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Screw_3_x_20_mm.FCStd)
 
 ![Screw_3_x_20_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Screw_3_x_20_mm.png)
 
@@ -62,9 +67,10 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 
 |   |   |
 |:--|:--|
+| **Usage:** | This type of screw can be used for furniture panels connection. |
 | **FreeCAD version:** | `0.20.29177 (Stable, Linux, x86_64, AppImage)` |
 | **OS:** | `Xubuntu 22.04 LTS x86_64` |
-| **Usage:** | This type of screw can be used for furniture panels connection. |
+| **Download:** | [Screw_4_x_40_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Screw_4_x_40_mm.FCStd)
 
 ![Screw_4_x_40_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Screw_4_x_40_mm.png)
 
@@ -72,9 +78,10 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 
 |   |   |
 |:--|:--|
+| **Usage:** | This type of screw can be used for aluminium angles. |
 | **FreeCAD version:** | `0.20.29177 (Stable, Linux, x86_64, AppImage)` |
 | **OS:** | `Xubuntu 22.04 LTS x86_64` |
-| **Usage:** | This type of screw can be used for aluminium angles. |
+| **Download:** | [Screw_4_x_16_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Screw_4_x_16_mm.FCStd)
 
 ![Screw_4_x_16_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Screw_4_x_16_mm.png)
 
@@ -82,9 +89,10 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 
 |   |   |
 |:--|:--|
+| **Usage:** | This type of screw can be used for furniture panels connection. However, this screw has thread along the screw, so you have to squeeze the boards when screwing or there will be a gap. |
 | **FreeCAD version:** | `0.20.29177 (Stable, Linux, x86_64, AppImage)` |
 | **OS:** | `Xubuntu 22.04 LTS x86_64` |
-| **Usage:** | This type of screw can be used for furniture panels connection. However, this screw has thread along the screw, so you have to squeeze the boards when screwing or there will be a gap. |
+| **Download:** | [Screw_4.5_x_40_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Screw_4.5_x_40_mm.FCStd)
 
 ![Screw_4.5_x_40_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Screw_4.5_x_40_mm.png)
 
@@ -92,9 +100,10 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 
 |   |   |
 |:--|:--|
+| **Usage:** | This type of screw can be used for bigger furniture parts. |
 | **FreeCAD version:** | `0.20.29177 (Stable, Linux, x86_64, AppImage)` |
 | **OS:** | `Xubuntu 22.04 LTS x86_64` |
-| **Usage:** | This type of screw can be used for bigger furniture parts. |
+| **Download:** | [Screw_5_x_50_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Screw_5_x_50_mm.FCStd)
 
 ![Screw_5_x_50_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Screw_5_x_50_mm.png)
 
@@ -104,9 +113,10 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 
 |   |   |
 |:--|:--|
+| **Usage:** | This type of screw can be used for pocket holes, invisible connections, because it has flat head. According to the [Wolfcraft Guide to Wood Joints](https://www.wolfcraft.com/products/wolfcraft/en/EUR/Products/Wood-Joints/Dowel-Jointers/Undercover-Jig-Set/p/P_4642) this size of screw can be used for wood thickness from `12 mm`. |
 | **FreeCAD version:** | `0.20.29177 (Stable, Linux, x86_64, AppImage)` |
 | **OS:** | `Xubuntu 22.04 LTS x86_64` |
-| **Usage:** | This type of screw can be used for pocket holes, invisible connections, because it has flat head. |
+| **Download:** | [Pocket_screw_4_x_25_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Pocket_screw_4_x_25_mm.FCStd)
 
 ![Pocket_screw_4_x_25_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Pocket_screw_4_x_25_mm.png)
 
@@ -114,9 +124,10 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 
 |   |   |
 |:--|:--|
+| **Usage:** | This type of screw can be used for pocket holes, invisible connections, because it has flat head. According to the [Wolfcraft Guide to Wood Joints](https://www.wolfcraft.com/products/wolfcraft/en/EUR/Products/Wood-Joints/Dowel-Jointers/Undercover-Jig-Set/p/P_4642) this size of screw can be used for wood thickness from `19 mm`. |
 | **FreeCAD version:** | `0.20.29177 (Stable, Linux, x86_64, AppImage)` |
 | **OS:** | `Xubuntu 22.04 LTS x86_64` |
-| **Usage:** | This type of screw can be used for pocket holes, invisible connections, because it has flat head. |
+| **Download:** | [Pocket_screw_4_x_30_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Pocket_screw_4_x_30_mm.FCStd)
 
 ![Pocket_screw_4_x_30_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Pocket_screw_4_x_30_mm.png)
 
@@ -124,9 +135,10 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 
 |   |   |
 |:--|:--|
+| **Usage:** | This type of screw can be used for pocket holes, invisible connections, because it has flat head. According to the [Wolfcraft Guide to Wood Joints](https://www.wolfcraft.com/products/wolfcraft/en/EUR/Products/Wood-Joints/Dowel-Jointers/Undercover-Jig-Set/p/P_4642) this size of screw can be used for wood thickness from `27 mm`. |
 | **FreeCAD version:** | `0.20.29177 (Stable, Linux, x86_64, AppImage)` |
 | **OS:** | `Xubuntu 22.04 LTS x86_64` |
-| **Usage:** | This type of screw can be used for pocket holes, invisible connections, because it has flat head. |
+| **Download:** | [Pocket_screw_4_x_40_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Pocket_screw_4_x_40_mm.FCStd)
 
 ![Pocket_screw_4_x_40_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Pocket_screw_4_x_40_mm.png)
 
@@ -134,11 +146,25 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 
 |   |   |
 |:--|:--|
+| **Usage:** | This type of screw can be used for pocket holes, invisible connections, because it has flat head. According to the [Wolfcraft Guide to Wood Joints](https://www.wolfcraft.com/products/wolfcraft/en/EUR/Products/Wood-Joints/Dowel-Jointers/Undercover-Jig-Set/p/P_4642) this size of screw can be used for wood thickness from `38 mm`. |
 | **FreeCAD version:** | `0.20.29177 (Stable, Linux, x86_64, AppImage)` |
 | **OS:** | `Xubuntu 22.04 LTS x86_64` |
-| **Usage:** | This type of screw can be used for pocket holes, invisible connections, because it has flat head. |
+| **Download:** | [Pocket_screw_4_x_60_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Pocket_screw_4_x_60_mm.FCStd)
 
 ![Pocket_screw_4_x_60_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Pocket_screw_4_x_60_mm.png)
+
+# Bolts
+
+### Conterbore2x 5 x 60 mm
+
+|   |   |
+|:--|:--|
+| **Usage:** | This type of bolts can be used for counterbore 2x. |
+| **FreeCAD version:** | `0.20.29177 (Stable, Linux, x86_64, AppImage)` |
+| **OS:** | `Xubuntu 22.04 LTS x86_64` |
+| **Download:** | [Conterbore2x_5_x_60_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Conterbore2x_5_x_60_mm.FCStd)
+
+![Conterbore2x_5_x_60_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Conterbore2x_5_x_60_mm.png)
 
 # Pins
 
@@ -146,9 +172,10 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 
 |   |   |
 |:--|:--|
+| **Usage:** | This pin can be used to support the shelf. |
 | **FreeCAD version:** | `0.20.29177 (Stable, Linux, x86_64, AppImage)` |
 | **OS:** | `Xubuntu 22.04 LTS x86_64` |
-| **Usage:** | This pin can be used to support the shelf. |
+| **Download:** | [Shelf_Pin_5_x_16_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Shelf_Pin_5_x_16_mm.FCStd)
 
 ![Shelf_Pin_5_x_16_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Shelf_Pin_5_x_16_mm.png)
 
@@ -160,6 +187,7 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 |:--|:--|
 | **FreeCAD version:** | `0.20.29177 (Stable, Linux, x86_64, AppImage)` |
 | **OS:** | `Xubuntu 22.04 LTS x86_64` |
+| **Download:** | [Angle_30_x_30_x_25_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Angles/Angle_30_x_30_x_25_mm.FCStd)
 
 ![Angle_30_x_30_x_25_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Angle_30_x_30_x_25_mm.png)
 
@@ -169,6 +197,7 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 |:--|:--|
 | **FreeCAD version:** | `0.20.29177 (Stable, Linux, x86_64, AppImage)` |
 | **OS:** | `Xubuntu 22.04 LTS x86_64` |
+| **Download:** | [Angle_80_x_80_x_20_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Angles/Angle_80_x_80_x_20_mm.FCStd)
 
 ![Angle_80_x_80_x_20_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Angle_80_x_80_x_20_mm.png)
 
@@ -178,6 +207,7 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 |:--|:--|
 | **FreeCAD version:** | `0.20.29177 (Stable, Linux, x86_64, AppImage)` |
 | **OS:** | `Xubuntu 22.04 LTS x86_64` |
+| **Download:** | [Angle_40_x_40_x_100_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Angles/Angle_40_x_40_x_100_mm.FCStd)
 
 ![Angle_40_x_40_x_100_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Angle_40_x_40_x_100_mm.png)
 
