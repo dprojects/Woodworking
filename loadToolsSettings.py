@@ -125,6 +125,8 @@ Tools = [
 	"MagicPanels", "panelMoveZm", "png", "panel, move, down", "Click to see info.",
 
 	"MagicPanels", "panelMove2Face", "png", "panel, move, to face", "Click to see info.",
+	"MagicPanels", "panelMove2Center", "png", "panel, move, to center", "Click to see info.",
+	
 	"MagicPanels", "fitModel", "png", "fitModel", "Click to see info.",
 
 	# resize

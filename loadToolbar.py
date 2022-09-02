@@ -32,6 +32,7 @@ def getItems(iType):
 			"magicMove",
 			"magicAngle",
 			"panelMove2Face",
+			"panelMove2Center",
 			"panelMoveXp",
 			"panelMoveXm",
 			"panelMoveYp",

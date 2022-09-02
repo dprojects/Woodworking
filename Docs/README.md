@@ -16,6 +16,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
     * [arrows](#arrows)
     * [magicMove](#magicmove)
     * [panelMove2Face](#panelmove2face)
+    * [panelMove2Center](#panelMove2Center)
     * [magicAngle](#magicangle)
   * [Dowels and Screws](#dowels-and-screws)
     * [magicDowels](#magicdowels)
@@ -118,6 +119,10 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 ### panelMove2Face
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMove2Face.png"> This tool allows to align panels or any other objects to face position. First select face and next select objects you want to align with face position. You can select objects at objects `Tree` window holding `left CTRL key`. This tool allows to avoid thickness step problem, if you want to move panel to the other edge but the way is not a multiple of the panel thickness. However, it not cover all possible situations. This will be improved in the future maybe but for now it align object to the first `0 vertex` (beginning of the panel), what may not be always what you want.
+
+### panelMove2Center
+
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMove2Center.png"> This tool allows to move object to the center of two holes or two vertices. The edge holes or vertices should lie on one of the coordinate axes `XYZ`. The object can be `Cylinder`, `Cone` (dril bit), `Cube` (panel), `Pad` or `LinkGroup` with as many objects you want. If you want to move `Pad`, select `Body`. If you want to move many Pads, select Body or pack all `Part` into `LinkGroup` and select `LinkGroup` to move. Make sure you do not have `Sketch` position set. This tool use `.Shape.CenterOfMass` but if it is not available for object like it is for `LinkGroup` the center will be calculated from vertices. Hold left CTRL key during selection. 
 
 ### magicAngle
 
@@ -489,7 +494,7 @@ Personally I do not use this type of connections because I am not convinced to i
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RealisticPocketScrews002.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RealisticPocketScrews003.png)
 
-* <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2link.png"> Now merge with you active document exact screw. In my case I use 19 mm thickness panel. So, according to the pocket holes and screws table I have to merge screw `4 x 30 mm`. If you have merged the screw, replace all the fake dowels with the realistc screw using [panel2link](#panel2link):
+* <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2link.png"> Now merge with you active document exact screw. In my case I use 19 mm thickness panel. According to the [Wolfcraft Guide to Wood Joints](https://www.wolfcraft.com/products/wolfcraft/en/EUR/Products/Wood-Joints/Dowel-Jointers/Undercover-Jig-Set/p/P_4642) I have to merge screw `4 x 30 mm`. If you have merged the screw, replace all the fake dowels with the realistc screw using [panel2link](#panel2link):
   
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RealisticPocketScrews004.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RealisticPocketScrews005.png)

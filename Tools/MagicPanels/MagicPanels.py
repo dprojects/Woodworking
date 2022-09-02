@@ -120,6 +120,37 @@ def normalizeBoundBox(iBoundBox):
 # Vertices
 # ###################################################################################################################
 
+def showVertex(iVertex):
+	'''
+	showVertex(iVertex) - create sphere at given vertex, to show where is the point for debug purposes.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iVertex: vertex object
+	
+	Usage:
+	
+		showVertex(obj.Shape.CenterOfMass)
+		
+	Result:
+	
+		show vertex
+	'''
+	
+	try:
+		FreeCAD.ActiveDocument.removeObject("showVertex")
+	except:
+		skip = 1
+	
+	s1 = FreeCAD.ActiveDocument.addObject("Part::Sphere","showVertex")
+	s1.Placement = FreeCAD.Placement(iVertex, FreeCAD.Rotation(0, 0, 0))
+	s1.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 0.0)
+	s1.Radius = 20
+	
+	FreeCAD.ActiveDocument.recompute()
+		
 
 # ###################################################################################################################
 def getVertex(iFace, iEdge, iVertex):
@@ -186,6 +217,97 @@ def getVertexAxisCross(iA, iB):
 
 	return 0
 
+
+# ###################################################################################################################
+def getVerticesPlane(iV1, iV2):
+	'''
+	getVerticesPlane(iV1, iV2) - get axes with the same values
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iV1: vertex object
+		iV2: vertex object
+	
+	Usage:
+	
+		plane = getVerticesPlane(v1, v2)
+		
+	Result:
+	
+		Return plane as "XY", "XZ", "YZ".
+	'''
+
+	if equal(iV1[0], iV2[0]) and equal(iV1[1], iV2[1]):
+		return "XY"
+
+	if equal(iV1[0], iV2[0]) and equal(iV1[2], iV2[2]):
+		return "XZ"
+		
+	if equal(iV1[1], iV2[1]) and equal(iV1[2], iV2[2]):
+		return "YZ"
+
+	return ""
+
+
+# ###################################################################################################################
+def setVertexPadding(iObj, iVertex, iPadding, iAxis):
+	'''
+	setVertexPadding(iObj, iVertex, iPadding, iAxis) - set padding offset from given vertex to inside the object.
+	Do not use it at getPlacement for Pads. Use 0 vertex instead.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObj: object
+		iVertex: vertex object FreeCAD.Vector(x, y, z)
+		iPadding: value > 0 for making offset
+		iAxis: string: "X" or "Y" or "Z"
+		
+	Usage:
+	
+		v = getattr(obj.Shape, "Vertex"+"es")[0]
+		offsetX = setVertexPadding(obj, v, 15, "X")
+		
+	Result:
+	
+		Return return new position value for given axis.
+	'''
+	
+	if iAxis == "X":
+		
+		v = FreeCAD.Vector(iVertex.X + iPadding, iVertex.Y, iVertex.Z)
+		inside = iObj.Shape.BoundBox.isInside(v)
+		
+		if inside:
+			return iVertex.X + iPadding
+		else: 
+			return iVertex.X - iPadding
+			
+	if iAxis == "Y":
+		
+		v = FreeCAD.Vector(iVertex.X, iVertex.Y + iPadding, iVertex.Z)
+		inside = iObj.Shape.BoundBox.isInside(v)
+		
+		if inside:
+			return iVertex.Y + iPadding
+		else: 
+			return iVertex.Y - iPadding
+			
+	if iAxis == "Z":
+		
+		v = FreeCAD.Vector(iVertex.X, iVertex.Y, iVertex.Z + iPadding)
+		inside = iObj.Shape.BoundBox.isInside(v)
+		
+		if inside:
+			return iVertex.Z + iPadding
+		else: 
+			return iVertex.Z - iPadding
+
+	return ""
+	
 
 # ###################################################################################################################
 # Edges
@@ -882,9 +1004,9 @@ def getPlacement(iObj):
 
 
 # ###################################################################################################################
-def setPlacement(iObj, iX, iY, iZ, iR):
+def setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
 	'''
-	setPlacement(iObj, iX, iY, iZ, iR) - set placement with rotation for given object.
+	setPlacement(iObj, iX, iY, iZ, iR, iAnchor="") - set placement with rotation for given object.
 	
 	Note: This is internal function, so there is no error pop-up or any error handling.
 	
@@ -895,6 +1017,7 @@ def setPlacement(iObj, iX, iY, iZ, iR):
 		iX: Y Axis object position
 		iZ: Z Axis object position
 		iR: Rotation object
+		iAnchor="" (optional): anchor for placement instead of 0 vertex, FreeCAD.Vector(x, y, z)
 
 	Usage:
 	
@@ -906,6 +1029,35 @@ def setPlacement(iObj, iX, iY, iZ, iR):
 
 	'''
 
+	# recalculate position for custom anchor
+	if iAnchor != "":
+		
+		[ oX, oY, oZ, oR ] = getPlacement(iObj)
+		aX, aY, aZ = iAnchor[0], iAnchor[1], iAnchor[2] 
+		
+		offset = getVertexAxisCross(oX, aX)
+		
+		if oX < aX:
+			iX = iX - offset
+		else:
+			iX = iX + offset
+		
+		offset = getVertexAxisCross(oY, aY)
+		
+		if oY < aY:
+			iY = iY - offset
+		else:
+			iY = iY + offset
+			
+		offset = getVertexAxisCross(oZ, aZ)
+		
+		if oZ < aZ:
+			iZ = iZ - offset
+		else:
+			iZ = iZ + offset
+	
+	# default anchor 0 vertex if not set above
+	
 	if iObj.isDerivedFrom("PartDesign::Pad"):
 		iObj.Profile[0].AttachmentOffset.Base = FreeCAD.Vector(iX, iY, iZ)
 		iObj.Profile[0].AttachmentOffset.Rotation = iR
@@ -1222,6 +1374,129 @@ def getSizes(iObj):
 		# to move all furniture more quickly
 		return [ 100, 100, 100 ]
 
+
+# ###################################################################################################################
+def getSizesFromVertices(iObj):
+	'''
+	getSizesFromVertices(iObj) - get occupied space by the object from vertices.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObj: object
+	
+	Usage:
+	
+		[ sx, sy, sz ] = getSizesFromVertices(obj)
+		
+	Result:
+	
+		Returns array with [ mX, mY, mZ ] where: 
+		mX - occupied space along X axis
+		mY - occupied space along Y axis
+		mZ - occupied space along Z axis
+		
+	'''
+
+	init = 0
+	
+	minX = 0
+	minY = 0
+	minZ = 0
+
+	maxX = 0
+	maxY = 0
+	maxZ = 0
+
+	vs = getattr(iObj.Shape, "Vertex"+"es")
+
+	for v in vs:
+		
+		[ x, y, z ] = [ v.X, v.Y, v.Z ]
+		
+		if init == 0:
+			[ minX, minY, minZ ] = [ x, y, z ]
+			[ maxX, maxY, maxZ ] = [ x, y, z ]
+			init = 1
+		
+		if x > maxX:
+			maxX = x
+		
+		if y > maxY:
+			maxY = y
+
+		if z > maxZ:
+			maxZ = z
+
+		if x < minX:
+			minX = x
+
+		if y < minY:
+			minY = y
+
+		if z < minZ:
+			minZ = z
+		
+	s1 = getVertexAxisCross(minX, maxX)
+	s2 = getVertexAxisCross(minY, maxY)
+	s3 = getVertexAxisCross(minZ, maxZ)
+
+	mX = round(s1, gRoundPrecision)
+	mY = round(s2, gRoundPrecision)
+	mZ = round(s3, gRoundPrecision)
+	
+	return [ mX, mY, mZ ]
+
+
+# ###################################################################################################################
+def getObjectCenter(iObj):
+	'''
+	getObjectCenter(iObj) - return Shape.CenterOfMass for the object or calculates center from vertices. 
+	However, for Cone the CenterOfMass is not the center of object. More reliable is calculation 
+	from vertices but some objects do not have all vertices to calculation. So, for now to handle 
+	simple Pad objects and LinkGroups the CenterOfMass will be returned first.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObj: object
+	
+	Usage:
+	
+		[ cx, cy, cz ] = getObjectCenter(obj)
+		
+	Result:
+	
+		Returns array with [ cx, cy, cz ] values for center point.
+		
+	'''
+
+	try:
+		
+		v = iObj.Shape.CenterOfMass
+		return [ v[0], v[1], v[2] ]
+		
+	except:
+		
+		noCenterOfMass = True
+		
+	if noCenterOfMass:
+		
+		[ sx, sy, sz ] = getSizesFromVertices(iObj)
+		
+		v = getattr(iObj.Shape, "Vertex"+"es")[0]
+		x, y, z = v.X, v.Y, v.Z
+		
+		cx = setVertexPadding(iObj, v, sx / 2, "X")
+		cy = setVertexPadding(iObj, v, sy / 2, "Y")
+		cz = setVertexPadding(iObj, v, sy / 2, "Z")
+
+		return [ cx, cy, cz ]
+		
+	return ""
+	
 
 # ###################################################################################################################
 def getDirection(iObj):
@@ -2564,7 +2839,7 @@ def panelMove2Face():
 		info += translate('panelMove2FaceInfo', '<b>First select face, and next object that should be aligned to the face position. </b><br><br><b>Note:</b> This tool allows to align panels or any other objects to face position. You can select objects at objects Tree window holding left CTRL key. This tool allows to avoid thickness step problem, if you want to move panel to the other edge but the way is not a multiple of the panel thickness.')
 		
 		showInfo("panelMove2Face", info)
-	
+
 
 # ###################################################################################################################
 def panelResize(iType):
