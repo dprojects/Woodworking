@@ -116,6 +116,7 @@ def getItems(iType):
 		
 		parts = [
 			"magicCut",
+			"magicKnife",
 			"jointTenon",
 			"jointCustom",
 			"panel2frame"

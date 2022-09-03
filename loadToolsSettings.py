@@ -87,7 +87,8 @@ Tools = [
 	
 	# joinery
 	
-	"MagicPanels", "magicCut", "png", "magicCut, quick multi cut", "Click to see info.",
+	"MagicPanels", "magicCut", "png", "magicCut, single panel cut by many knives", "Click to see info.",
+	"MagicPanels", "magicKnife", "png", "magicKnife, single knife cut many panels", "Click to see info.",
 	"MagicPanels", "jointTenon", "png", "joint, Tenon", "Click to see info.",
 	"MagicPanels", "jointCustom", "png", "joint, Custom", "Click to see info.",
 

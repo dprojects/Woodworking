@@ -39,6 +39,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
     * [panel2profile](#panel2profile)
   * [Joinery](#joinery)
     * [magicCut](#magiccut)
+    * [magicKnife](#magicknife)
     * [jointTenon](#jointtenon)
     * [jointCustom](#jointcustom)
     * [panel2frame](#panel2frame)
@@ -198,15 +199,19 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 ## Joinery
 
-## magicCut
+### magicCut
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicCut.png"> This tool make multi bool cut operation at selected objects. First object should be the base object to cut. All other selected objects will cut the base 1st selected object. To select more objects hold left CTRL key during selection. During this process only the copies will be used to cut, so the original objects will not be moved at tree. Also there will be auto labeling to keep the cut tree more informative and cleaner.
 
-## jointTenon
+### magicKnife
+
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicKnife.png"> This tool is opposite for [magicCut](#magiccut) tool. This tool allows to use single knife to cut many panels. First selected object should be knife, and all other selected objects will be cut with the knife. The knife can be any object. So, you can create your own shape of the knife and cut many panels at once. Also you can cut all legs of the table using floor or top of the table as knife. To select more objects hold left CTRL key during selection. During this process the copies of knife are used, so the original knife objects will not be moved at tree. Also there will be auto labeling to keep the cut tree more informative and cleaner.
+
+### jointTenon
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/jointTenon.png"> Select face to create Tenon joint. This is simple Cube object and will be created in the corner of the selected face (0 vertex), allowing you to move the joint precisely to any place at the face. It has predefined size but you can resize and move the joint to fit to your elements and needs. To make more copies you can use [magicFixture](#magicfixture). If you set all Tenons at the element, you can quickly cut all Mortises for the Tenons with [magicCut](#magiccut). 
 
-## jointCustom
+### jointCustom
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/jointCustom.png"> Select face to create Custom joint. The simple Pad will be created in the corner of the selected face (0 vertex), allowing you to move the joint precisely to any place at the face. It has predefined size but you can resize and move the joint to fit to your elements and needs. Also you can edit the Sketch to create your custom joint shape. To make more copies you can use [magicFixture](#magicfixture). If you set all joints at the element, you can quickly cut all Mortises for the joints with [magicCut](#magiccut).
 

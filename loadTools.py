@@ -914,7 +914,7 @@ class magicCut():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "magicCut.png"),
-				"MenuText": QT_TRANSLATE_NOOP("magicCutMenuText", "magicCut, quick multi cut"),
+				"MenuText": QT_TRANSLATE_NOOP("magicCutMenuText", "magicCut, single panel cut by many knives"),
 				"ToolTip" : QT_TRANSLATE_NOOP("magicCutToolTip", "Click to see info."),
 				"Accel"   : "" }
 
@@ -946,6 +946,45 @@ class magicCut():
 		return True
 
 FreeCADGui.addCommand("magicCut", magicCut())
+
+	
+# ######################################################################################################################
+class magicKnife():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "magicKnife.png"),
+				"MenuText": QT_TRANSLATE_NOOP("magicKnifeMenuText", "magicKnife, single knife cut many panels"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicKnifeToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "magicKnife"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("magicKnife", magicKnife())
 
 	
 # ######################################################################################################################
