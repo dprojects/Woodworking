@@ -52,6 +52,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
     * [getDimensions](#getdimensions)
     * [showSpaceModel](#showspacemodel)
     * [showSpaceSelected](#showspaceselected)
+    * [showAlias](#showalias)
     * [sheet2export](#sheet2export)
   * [Debugging](#debugging)
     * [scanObjects](#scanobjects)
@@ -252,6 +253,10 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 ### showSpaceSelected
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showSpaceSelected.png"> This tool allows to calculate occupied space in 3D by selected elements. This approach might be very useful at furniture designing process. For example you can see how much space take selected parts of the furniture. Normally, all the `Pad` or `Cube` elements, should be created according to the `XYZ` plane, so there will be no difference between the real dimensions and occupied space in 3D.
+
+### showAlias
+
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showAlias.png"> To see all objects with alias: 1. First select spreadsheet at objects Tree. 2. Click this tool icon to activate the preview mode. 3. Click any spreadsheet cell with alias. **Note:** This tool needs to be activated to work. To activate this tool you have to select spreadsheet at objects Tree and click this tool icon. If this tool will be activated you can select any cell with alias to see all objects selected. The selected objects at 3D model will be those that uses the selected alias. Also the objects will be selected at objects Tree. To finish the preview mode, click the tool icon without any selection.
 
 ### sheet2export
 

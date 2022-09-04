@@ -2507,6 +2507,54 @@ def makeCounterbores2x(iObj, iFace, iCones):
 
 
 # ###################################################################################################################
+# Spreadsheet
+# ###################################################################################################################
+
+def sheetGetKey(iC, iR):
+	'''
+	sheetGetKey(iC, iR) - allow to get key as letters for spreadsheet from given column and row index.
+
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iC: column index
+		iR: row index
+	
+	Usage:
+	
+		key = sheetGetKey(1, 2)
+		
+	Result:
+	
+		return key string
+	'''
+
+	letters = "ZABCDEFGHIJKLMNOPQRSTUVWXYZ" # max 26
+
+	mod = int((iC % 26))
+	div = int((iC - 1) / 26) 
+
+	keyC = ""
+
+	if iC < 27:
+		keyC = letters[iC]
+	else:
+		keyC = letters[div] + letters[mod]
+
+	keyR = str(iR)
+
+	key = keyC + keyR
+
+	# for given column and row it returns
+	# spreadsheet key for cell like e.g. A5, AG125 etc
+	return str(key)
+
+
+# ###################################################################################################################
+# Info screen
+# ###################################################################################################################
+
 def showInfo(iCaller, iInfo, iNote="yes"):
 	'''
 	showInfo(iCaller, iInfo, iNote="yes") - allow to show Gui info box for all available function and multiple calls.

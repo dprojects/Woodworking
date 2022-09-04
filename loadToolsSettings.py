@@ -91,7 +91,9 @@ Tools = [
 	"MagicPanels", "magicKnife", "png", "magicKnife, single knife cut many panels", "Click to see info.",
 	"MagicPanels", "jointTenon", "png", "joint, Tenon", "Click to see info.",
 	"MagicPanels", "jointCustom", "png", "joint, Custom", "Click to see info.",
-
+	"MagicPanels", "showAlias", "png", "select objects with alias", "Click to see info.",
+	
+	
 	# default
 	
 	"MagicPanels", "panelDefaultXY", "png", "panel, XY, 600x300, 18 thickness", "Click to see info.",

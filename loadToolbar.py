@@ -189,6 +189,7 @@ def getItems(iType):
 	if iType == "Woodworking - advanced":
 		
 		parts = [
+			"showAlias",
 			"Spreadsheet_CreateSheet",
 			"Std_Part",
 			"PartDesign_Body", 

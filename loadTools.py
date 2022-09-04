@@ -1066,6 +1066,45 @@ FreeCADGui.addCommand("jointCustom", jointCustom())
 
 	
 # ######################################################################################################################
+class showAlias():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "showAlias.png"),
+				"MenuText": QT_TRANSLATE_NOOP("showAliasMenuText", "select objects with alias"),
+				"ToolTip" : QT_TRANSLATE_NOOP("showAliasToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "showAlias"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("showAlias", showAlias())
+
+	
+# ######################################################################################################################
 class panelDefaultXY():
 
 	def GetResources(self):
