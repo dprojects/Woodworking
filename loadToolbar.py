@@ -151,6 +151,8 @@ def getItems(iType):
 			"sheet2export",
 			"showSpaceModel",
 			"showSpaceSelected",
+			"showAlias",
+			"showConstraints",
 			"Part_Measure_Linear"
 		]
 
@@ -189,7 +191,6 @@ def getItems(iType):
 	if iType == "Woodworking - advanced":
 		
 		parts = [
-			"showAlias",
 			"Spreadsheet_CreateSheet",
 			"Std_Part",
 			"PartDesign_Body", 

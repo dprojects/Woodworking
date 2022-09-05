@@ -5,72 +5,73 @@
 Woodworking workbench has been created because of my woodworking and coding hobby. Everything started from [getDimensions](https://github.com/dprojects/getDimensions/commits/master) project long time ago. I wanted to have [simple cut-list for chipboards order](https://github.com/dprojects/getDimensions/commit/a6f0a2221e90f717be95bd0dc1cc9f1ede95a329) and I found FreeCAD with low hardware requirements and possibility to implement the cut-list. Now it has been transformed into whole Woodworking workbench. The main goal for this workbench is to make the furniture designing process at FreeCAD more simple.
 
 * [Main features](#main-features)
-  * [Making panels](#making-panels)
-    * [Default panels](#default-panels)
-    * [Copy panels](#copy-panels)
-    * [magicManager](#magicmanager)
-    * [Dedicated panels](#dedicated-panels)
-  * [Resize panels](#resize-panels)
-  * [Adjust position](#adjust-position)
-    * [fitModel](#fitmodel)
-    * [arrows](#arrows)
-    * [magicMove](#magicmove)
-    * [panelMove2Face](#panelmove2face)
-    * [panelMove2Center](#panelMove2Center)
-    * [magicAngle](#magicangle)
-  * [Dowels and Screws](#dowels-and-screws)
-    * [magicDowels](#magicdowels)
-    * [panel2link](#panel2link)
-    * [panel2clone](#panel2clone)
-    * [sketch2dowel](#sketch2dowel)
-    * [edge2dowel](#edge2dowel)
-    * [makeTransparent](#maketransparent)
-  * [Fixture](#fixture)
-    * [magicFixture](#magicfixture)
-    * [edge2drillbit](#edge2drillbit)
-  * [Drilling holes](#drilling-holes)
-    * [magicDriller](#magicdriller)
-    * [drillHoles](#drillholes)
-    * [drillCountersinks](#drillcountersinks)
-    * [drillCounterbores](#drillcounterbores)
-    * [drillCounterbores2x](#drillcounterbores2x)
-    * [magicCNC](#magiccnc)
-  * [Construction](#construction)
-    * [panel2profile](#panel2profile)
-  * [Joinery](#joinery)
-    * [magicCut](#magiccut)
-    * [magicKnife](#magicknife)
-    * [jointTenon](#jointtenon)
-    * [jointCustom](#jointcustom)
-    * [panel2frame](#panel2frame)
-  * [Decoration](#decoration)
-    * [panel2pad](#panel2pad)
-  * [Colors](#colors)
-    * [colorManager](#colormanager)
-    * [setTextures](#settextures)
-  * [Dimensions](#dimensions)
-    * [getDimensions](#getdimensions)
-    * [showSpaceModel](#showspacemodel)
-    * [showSpaceSelected](#showspaceselected)
-    * [showAlias](#showalias)
-    * [sheet2export](#sheet2export)
-  * [Debugging](#debugging)
-    * [scanObjects](#scanobjects)
-    * [debugInfo](#debuginfo)
+	* [Making panels](#making-panels)
+		* [Default panels](#default-panels)
+		* [Copy panels](#copy-panels)
+		* [magicManager](#magicmanager)
+		* [Dedicated panels](#dedicated-panels)
+	* [Resize panels](#resize-panels)
+	* [Move panels](#move-panels)
+		* [magicMove](#magicmove)
+		* [magicAngle](#magicangle)
+		* [panelMove2Face](#panelmove2face)
+		* [panelMove2Center](#panelmove2center)
+		* [arrows](#arrows)
+		* [fitModel](#fitmodel)
+	* [Dowels and Screws](#dowels-and-screws)
+		* [magicDowels](#magicdowels)
+		* [panel2link](#panel2link)
+		* [panel2clone](#panel2clone)
+		* [sketch2dowel](#sketch2dowel)
+		* [edge2dowel](#edge2dowel)
+		* [makeTransparent](#maketransparent)
+	* [Fixture](#fixture)
+		* [magicFixture](#magicfixture)
+		* [edge2drillbit](#edge2drillbit)
+	* [Drilling holes](#drilling-holes)
+		* [magicDriller](#magicdriller)
+		* [drillHoles](#drillholes)
+		* [drillCountersinks](#drillcountersinks)
+		* [drillCounterbores](#drillcounterbores)
+		* [drillCounterbores2x](#drillcounterbores2x)
+		* [magicCNC](#magiccnc)
+	* [Construction](#construction)
+		* [panel2profile](#panel2profile)
+	* [Joinery](#joinery)
+		* [magicCut](#magiccut)
+		* [magicKnife](#magicknife)
+		* [jointTenon](#jointtenon)
+		* [jointCustom](#jointcustom)
+		* [panel2frame](#panel2frame)
+	* [Decoration](#decoration)
+		* [panel2pad](#panel2pad)
+	* [Preview model](#preview-model)
+		* [colorManager](#colormanager)
+		* [setTextures](#settextures)
+	* [Dimensions](#dimensions)
+		* [getDimensions](#getdimensions)
+		* [sheet2export](#sheet2export)
+		* [showSpaceModel](#showspacemodel)
+		* [showSpaceSelected](#showspaceselected)
+		* [showAlias](#showalias)
+		* [showConstraints](#showconstraints)
+	* [Code and Debug](#code-and-debug)
+		* [scanObjects](#scanobjects)
+		* [debugInfo](#debuginfo)
 * [Dowels, Screws, Fixture](#dowels-screws-fixture)
 * [Holes, Countersinks, Counterbores](#holes-countersinks-counterbores)
-  * [Drilling serially](#drilling-serially)
-  * [Drilling via icons](#drilling-via-icons)
-  * [Drilling via magicCNC](#drilling-via-magiccnc)
-  * [Pilot holes for angles, hinges](#pilot-holes-for-angles-hinges)
-  * [Pocket holes - invisible connections](#pocket-holes---invisible-connections)
-    * [Drill pocket holes - manually](#drill-pocket-holes---manually)
-    * [Drill pocket holes - with magicDriller](#drill-pocket-holes---with-magicdriller)
+	* [Drilling serially](#drilling-serially)
+	* [Drilling via icons](#drilling-via-icons)
+	* [Drilling via magicCNC](#drilling-via-magiccnc)
+	* [Pilot holes for angles, hinges](#pilot-holes-for-angles-hinges)
+	* [Pocket holes - invisible connections](#pocket-holes---invisible-connections)
+	* [Drill pocket holes - manually](#drill-pocket-holes---manually)
+	* [Drill pocket holes - with magicDriller](#drill-pocket-holes---with-magicdriller)
 * [Realistic parts](#realistic-parts)
-  * [Realistic screws and pilot holes](#realistic-screws-and-pilot-holes)
-  * [Realistic screws and angles](#realistic-screws-and-angles)
-  * [Realistic screws and pocket holes](#realistic-screws-and-pocket-holes)
-  * [Counterbore 2x with bolt](#counterbore-2x-with-bolt)
+	* [Realistic screws and pilot holes](#realistic-screws-and-pilot-holes)
+	* [Realistic screws and angles](#realistic-screws-and-angles)
+	* [Realistic screws and pocket holes](#realistic-screws-and-pocket-holes)
+	* [Counterbore 2x with bolt](#counterbore-2x-with-bolt)
 * [Extras](#extras)
 * [Translations](#translations)
 * [Contact](#contact)
@@ -104,19 +105,15 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelResize1.png"> <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelResize2.png"> <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelResize3.png"> <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelResize4.png"> <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelResize5.png"> <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelResize6.png"> You can resize panel very quickly. The resize step is selected panel thickness, so you can solve the common problem with thickness offset. For example to move top of the furniture and make shelf from it, you have to resize the panel `2 x` with thickness step and once from other side. This may not be so easy calculation, and you may have to calculate something like `534 - 18 - 18 = ?` and `613 - 18 = ?`. Now you can click three times and you have it without thinking. You can also resize Cylinders (drill bits), the long side will be `Height`, the short will be diameter, the thickness will be `Radius`. For Cone objects (drill bits - countersinks, counterbore) the long side will be `Height`, the thickness will be `Radius1` (bottom radius) and the short will be `Radius2` (top radius). [Holes, Countersinks, Counterbores](#holes-countersinks-counterbores).
 
-## Adjust position
-
-### fitModel
-
-<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/fitModel.png"> This tool allows to fit model to the 3D screen view and also rotate the model view to the base `XY` position (0 key press). This is very useful, used all the time, during furniture designing process. If you rotate the furniture, you can loose the correct orientation of the furniture. So, it strongly recommended to click this tool very often.
-
-### arrows
-
-<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveXp.png"> <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveXm.png"> <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveYp.png"> <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveYm.png"> <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveZp.png"> <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveZm.png"> With the arrows you can quickly move panels or even any other objects. If the thickness of the selected object can be recognized, the move step will be the thickness. So, you can solve common furniture problem with thickness offset. You do not have to calculate something like `643 - 18 - 18 - 18 = ?`, click three times and you have it. If the thickness will not be recognized the step will be `100`. This approach allows you to move whole furniture segments very quickly. You can select container like `Body` or `LinkGroup` with many element and move it quickly. The arrows recognize the view model rotation. However, all possible rotations are not recognized, sometimes the movement may not be correctly aligned with the arrow icon. So, it strongly recommended to click [fitModel](#fitmodel) tool before using arrows. If you want precisely move object, use [magicMove](#magicmove) tool, instead.
+## Move panels
 
 ### magicMove
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicMove.png"> This tool allows to move panel with custom step. It automatically show center axes and resize the corner axes. You can also resize the corner axes or turn on and off the center axes. This tool recognize holding button, so you can press once the arrow and hold it, and the selected part will be moving in desired direction with exact step. This approach allows, to precisely move objects and also do it quickly without clicking arrows icons many times.
+
+### magicAngle
+
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicAngle.png"> This tool allows to rotate panels and even other more complicated objects, like construction profiles. If you want to rotate many objects together, use this tool directly at `Part` object or pack all objects into `LinkGroup` and use rotation at the `LinkGroup`. You can also choose center point of rotation by browsing vertices.
 
 ### panelMove2Face
 
@@ -126,9 +123,13 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMove2Center.png"> This tool allows to move object to the center of two holes or two vertices. The edge holes or vertices should lie on one of the coordinate axes `XYZ`. The object can be `Cylinder`, `Cone` (dril bit), `Cube` (panel), `Pad` or `LinkGroup` with as many objects you want. If you want to move `Pad`, select `Body`. If you want to move many Pads, select Body or pack all `Part` into `LinkGroup` and select `LinkGroup` to move. Make sure you do not have `Sketch` position set. This tool use `.Shape.CenterOfMass` but if it is not available for object like it is for `LinkGroup` the center will be calculated from vertices. Hold left CTRL key during selection. 
 
-### magicAngle
+### arrows
 
-<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicAngle.png"> This tool allows to rotate panels and even other more complicated objects, like construction profiles. If you want to rotate many objects together, use this tool directly at `Part` object or pack all objects into `LinkGroup` and use rotation at the `LinkGroup`. You can also choose center point of rotation by browsing vertices.
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveXp.png"> <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveXm.png"> <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveYp.png"> <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveYm.png"> <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveZp.png"> <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveZm.png"> With the arrows you can quickly move panels or even any other objects. If the thickness of the selected object can be recognized, the move step will be the thickness. So, you can solve common furniture problem with thickness offset. You do not have to calculate something like `643 - 18 - 18 - 18 = ?`, click three times and you have it. If the thickness will not be recognized the step will be `100`. This approach allows you to move whole furniture segments very quickly. You can select container like `Body` or `LinkGroup` with many element and move it quickly. The arrows recognize the view model rotation. However, all possible rotations are not recognized, sometimes the movement may not be correctly aligned with the arrow icon. So, it strongly recommended to click [fitModel](#fitmodel) tool before using arrows. If you want precisely move object, use [magicMove](#magicmove) tool, instead.
+
+### fitModel
+
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/fitModel.png"> This tool allows to fit model to the 3D screen view and also rotate the model view to the base `XY` position (0 key press). This is very useful, used all the time, during furniture designing process. If you rotate the furniture, you can loose the correct orientation of the furniture. So, it strongly recommended to click this tool very often.
 
 ## Dowels and Screws
 
@@ -226,7 +227,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2pad.png"> This tool allows to replace `Cube` panel with `Pad` panel. The new created `Pad` panel will get the same dimensions, placement and rotation as the selected `Cube` panel. You can transform only one `Cube` panel into `Pad` at once. This tool is mostly dedicated to add decoration that is not supported for `Cube` objects by FreeCAD PartDesign workbench. You can also change shape by changing the `Sketch`. This is mostly used for decoration that can be applied only to `Pad`, like `Fillet`.
 
-## Colors
+## Preview model
 
 ### colorManager
 
@@ -246,6 +247,12 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 <br>
 
+### sheet2export
+
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/sheet2export.png"> This tool allows to export cut-list, BOM to more flexible file formats. For more info see: [sheet2export](https://github.com/dprojects/sheet2export)
+
+<br>
+
 ### showSpaceModel
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showSpaceModel.png"> This tool allows to calculate occupied space in 3D by the model. This approach might be very useful at furniture designing process. For example you can see how much space in your room will take opened front of the furniture. Normally, all the `Pad` or `Cube` elements, should be created according to the `XYZ` plane, so there will be no difference between the real dimensions and occupied space in 3D. 
@@ -258,13 +265,11 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showAlias.png"> To see all objects with alias: 1. First select spreadsheet at objects Tree. 2. Click this tool icon to activate the preview mode. 3. Click any spreadsheet cell with alias. **Note:** This tool needs to be activated to work. To activate this tool you have to select spreadsheet at objects Tree and click this tool icon. If this tool will be activated you can select any cell with alias to see all objects selected. The selected objects at 3D model will be those that uses the selected alias. Also the objects will be selected at objects Tree. To finish the preview mode, click the tool icon without any selection.
 
-### sheet2export
+### showConstraints
 
-<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/sheet2export.png"> This tool allows to export cut-list, BOM to more flexible file formats. For more info see: [sheet2export](https://github.com/dprojects/sheet2export)
+<img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showConstraints.png"> To use this tool first select objects to see edges with the same size as defined constraints. **Note:** This tool search all constraints for selected objects. If the constraints is non-zero this tool search for all edges with the same size. It allows for quick preview if all the edges are defined by the Sketch. However, in some cases, if the constraints is offset and it is equal edge size this will give false result. To select more objects hold left CTRL key during selection. 
 
-<br>
-
-## Debugging
+## Code and Debug
 
 ### scanObjects
 
@@ -300,7 +305,7 @@ However, if you make your own detailed part or order somewhere, you need to fulf
 
 # Holes, Countersinks, Counterbores
 
-### Drilling serially
+## Drilling serially
 
 * <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicDriller.png"> To drill holes with countersinks you have to drill through two panels. First select the surface for countersinks and click `refresh selection`, reference for the face should be updated and visible at the tool info screen:
 
@@ -329,7 +334,7 @@ However, if you make your own detailed part or order somewhere, you need to fulf
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillDriller006.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillDriller007.png)
 
-### Drilling via icons
+## Drilling via icons
 
 <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/drillHoles.png"> <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/drillCountersinks.png"> <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/drillCounterbores.png"> Select face you want to drill and click any hole icons. The drill bit for the hole type will be created in the 0 vertex of the face, allowing you to move the drill bit to any place at the face. You can change the drill bit size if you want, manually or with [Resize panels](#resize-panels) icons. Also you can create your own drill bits. But there is rule, for simple holes this need to be `Cylinder` object, but for Countersinks and Counterbores this need to be `Cone` object. This is because at `Cone` you can easily store radius for countersink and other for hole. Also the drill bit need to be exactly rotated, exact face of drill bit need to touch the face for drilling.
 
@@ -357,7 +362,7 @@ However, if you make your own detailed part or order somewhere, you need to fulf
   
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillHoles007.png)
   
-### Drilling via magicCNC
+## Drilling via magicCNC
 
 * First select exact place to drill:
 
@@ -387,7 +392,7 @@ However, if you make your own detailed part or order somewhere, you need to fulf
   
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillCNC007.png)
 
-### Pilot holes for angles, hinges
+## Pilot holes for angles, hinges
 
 * To create pilot holes for angle, first set the angle into position with [magicFixture](#magicfixture). Remember to set `Clone` option, because if you make a `Link` the drill bits will be created at the base element, and you will not be albe to drill holes.
   
@@ -407,11 +412,11 @@ However, if you make your own detailed part or order somewhere, you need to fulf
 
 **Note:** The same procedure you can use to drill pilot holes for hinges or any other fixture.
 
-### Pocket holes - invisible connections
+## Pocket holes - invisible connections
 
 Personally I do not use this type of connections because I am not convinced to it, and also I do not have such jig. But I know that many woodworkers use pocket invisible connections and they love it. They use it especially for real wood and than put dowels inside the holes so the screws are not visible at all. 
 
-### Drill pocket holes - manually
+## Drill pocket holes - manually
 
 * <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicDowels.png"> First apply dowels to the surface you want to drill. This is a little trick because I use dowels not tool for holes. Any `Cylinder`, dowel can be drill bit for hole, but [magicDowels](#magicdowels) allows to apply the dowls for further processing. If you use [magicDriller](#magicdriller) you need to keep the tool open or the drill bits will be removed. For the dowels, you have to adjust offset from the edge, size of the dowel and also dowels per side. You can do it at custom settings:
 
@@ -436,7 +441,7 @@ Personally I do not use this type of connections because I am not convinced to i
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillPocketHoles007.png)
 
 
-### Drill pocket holes - with magicDriller
+## Drill pocket holes - with magicDriller
 
 * <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicDriller.png"> To drill pocket holes you can use [magicDriller](#magicdriller). First select exact face you want to drill and run [magicDriller](#magicdriller). Also you can run [magicDriller](#magicdriller) and then select exact face and click `refresh selection`. For hole type choose `Pocket holes` and select predefined screw. You can also change the settings for your custom screw. If you want more rounded hole finish play with increase `Pocket sink` option. To tilt the drill bit to the other side just change the sign at `Pocket rotation`. The angle is `75` by default because pocket holes are drilled with `15` degree angle, so `90 - 75 = 15`. However, you can play with the `Pocket rotation` option as well.
 
@@ -450,7 +455,7 @@ Personally I do not use this type of connections because I am not convinced to i
 
 # Realistic parts
 
-### Realistic screws and pilot holes
+## Realistic screws and pilot holes
 
 * <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/drillCountersinks.png"> If you want to drill pilot holes and apply realistic screws to the holes first you have to drill holes using procedure described at: [Drilling serially](#drilling-serially). For quick way I use the drilling countersinks icon to drill the rest of the holes at the edge of second element.
 
@@ -475,7 +480,7 @@ Personally I do not use this type of connections because I am not convinced to i
 
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RealisticScrews008.png)
 
-### Realistic screws and angles
+## Realistic screws and angles
 
 * <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/sketch2dowel.png"> First you have to create angles or any other fixture and drill holes according to this procedure: [Pilot holes for angles, hinges](#pilot-holes-for-angles-hinges). If you have it, first select face of the element, and next all `Sketches` of the holes. This allow you to create dowels directly from `Sketches` with exact orientation and size. If you have it selected click [sketch2dowel](#sketch2dowel):
 
@@ -496,7 +501,7 @@ Personally I do not use this type of connections because I am not convinced to i
 
   **Note:** I use a little bigger screws for angles than normally should be, because they hold things a little better than `3 x 20 mm` ones, so the head of the screw is not flat with the surface but you can use any screw size with the same way. For hinges you can use `3 x 20 mm`, without pilot holes.
 
-### Realistic screws and pocket holes
+## Realistic screws and pocket holes
 
 * <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/edge2dowel.png"> First select edge of the hole inside the pocket hole and click [edge2dowel](#edge2dowel). You can select all edges for the panel to create dowels. The dowels should be created with exact angle, so it will be more easy to adjust the screw later. 
 
@@ -516,7 +521,7 @@ Personally I do not use this type of connections because I am not convinced to i
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RealisticPocketScrews008.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RealisticPocketScrews009.png)
 
-### Counterbore 2x with bolt
+## Counterbore 2x with bolt
 
 Personally, the two side counterbore I use for screwing things to the table. I use double counterbore for example for screwing the `Parkside PNTS 250` grinder to a piece of chipboard. Thanks to it the grinder gains greater stability and mobility, because it can be attached anywhere to the workbench by simple clamps.
 
