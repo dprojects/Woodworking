@@ -72,6 +72,8 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 	* [Realistic screws and angles](#realistic-screws-and-angles)
 	* [Realistic screws and pocket holes](#realistic-screws-and-pocket-holes)
 	* [Counterbore 2x with bolt](#counterbore-2x-with-bolt)
+* [Raw wood](#raw-wood)
+	* [Glued table top](#glued-table-top)
 * [Extras](#extras)
 * [Translations](#translations)
 * [Contact](#contact)
@@ -541,6 +543,40 @@ Personally, the two side counterbore I use for screwing things to the table. I u
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RealisticCounterbore2x006.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RealisticCounterbore2x007.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RealisticCounterbore2x008.png)
+
+# Raw wood
+
+Working with raw wood is difficult, it requires a lot of knowledge about different types of wood and experience. The wood must be properly seasoned, dried, and the proper grain direction must be maintained during gluing or joining. If not the wood will crack later when it starts working. I remember a bread cutting board bought in a shop that broke. It was made of beech wood and I assume it was made by experienced carpenters, but it cracked.
+
+Wood is a natural product, therefore it is also difficult to predict the exact size. For this reason, raw real wood is a product that is not very practical and difficult to process. Currently, it has been replaced by prefabricated panels. Nowadays, nobody makes furniture entirely from raw real wood for everyday use. Even these expensive furniture, as if made of real raw wood, are built on prefabricated boards, MDF, plywood, and only the front parts are made of raw real oak wood. However, raw real wood is making a comeback as a luxurious, expensive and healthy product.
+
+Working with raw wood is an art of some sort. This is the true form of working with wood, so it deserves to be supported by furniture design programs. However, computers have slightly different rules. Here it starts with the dimensions and not the order of operations. However, with the right approach some real wood operations can be simulated.
+
+## Glued table top
+
+* To simulate the creation of a glued table top. First, you can create an irregular shape from panels of different length. You can also use a different thickness, and then simulate a thickness planer woodworking tool. But for the sake of simplicity, I chose panels of the same thickness.
+
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RawWoodGlued001.png)
+  
+* <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/setTextures.png"> Using [setTextures](#settextures) tool you can simulate grain direction. I use [texture samples](https://commons.wikimedia.org/w/index.php?title=Special:ListFiles/Dprojects&ilshowall=1) but you can also create your own textures, looking much better or even mark the grain direction using colors only. 
+
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RawWoodGlued002.png)
+  
+* <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicDowels.png"> Using [magicDowels](#magicdowels) tool you can apply dowels. I use standard predefined dowels but you can use any joints you like. Also you may want to drill holes. It depends how precisely you want to simulate this process. 
+
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RawWoodGlued003.png)
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RawWoodGlued004.png)
+  
+* <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicKnife.png"> Using [magicKnife](#magicknife) tool you can simulatee the cuting edges process. The "knife" should be larger to cut off the irregular protruding part of the panels. Make a note that if the panel will be cut, the texture disappear because it is applied at base object that is hidden after cut. But you can bring it back by applying the texture to the cut object.  
+
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RawWoodGlued005.png)
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RawWoodGlued006.png)
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RawWoodGlued007.png)
+  
+* <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showSpaceSelected.png"> <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/getDimensions.png"> You can use [showSpaceSelected](#showspaceselected) to see oaccupied space by any selected panel after cut or even by all the parts. Not use [showSpaceModel](#showspacemodel) because it also calculates the hidden elements, "knives". However you can also create report via [getDimensions](#getdimensions) with the base elements used before cut.
+  
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RawWoodGlued008.png)
+  ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RawWoodGlued009.png)
 
 # Extras
 
