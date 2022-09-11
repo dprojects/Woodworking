@@ -72,7 +72,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 	* [Realistic screws and angles](#realistic-screws-and-angles)
 	* [Realistic screws and pocket holes](#realistic-screws-and-pocket-holes)
 	* [Counterbore 2x with bolt](#counterbore-2x-with-bolt)
-* [Raw wood](#raw-wood)
+* [Raw wood, Lumber](#raw-wood-lumber)
 	* [Glued table top](#glued-table-top)
 * [Extras](#extras)
 * [Translations](#translations)
@@ -544,7 +544,7 @@ Personally, the two side counterbore I use for screwing things to the table. I u
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RealisticCounterbore2x007.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RealisticCounterbore2x008.png)
 
-# Raw wood
+# Raw wood, Lumber
 
 Working with raw wood is difficult, it requires a lot of knowledge about different types of wood and experience. The wood must be properly seasoned, dried, and the proper grain direction must be maintained during gluing or joining. If not the wood will crack later when it starts working. I remember a bread cutting board bought in a shop that broke. It was made of beech wood and I assume it was made by experienced carpenters, but it cracked.
 
@@ -577,6 +577,8 @@ Working with raw wood is an art of some sort. This is the true form of working w
   
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RawWoodGlued008.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RawWoodGlued009.png)
+
+**Note:** To watch movie with this process see: [3D furniture designing - glued table top simulation (force order of operations)](https://www.youtube.com/watch?v=SULl3EmCTsk)
 
 # Extras
 
