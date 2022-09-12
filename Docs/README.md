@@ -64,7 +64,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 	* [Drilling via icons](#drilling-via-icons)
 	* [Drilling via magicCNC](#drilling-via-magiccnc)
 	* [Pilot holes for angles, hinges](#pilot-holes-for-angles-hinges)
-	* [Pocket holes - invisible connections](#pocket-holes---invisible-connections)
+* [Pocket holes - invisible connections](#pocket-holes---invisible-connections)
 	* [Drill pocket holes - manually](#drill-pocket-holes---manually)
 	* [Drill pocket holes - with magicDriller](#drill-pocket-holes---with-magicdriller)
 * [Realistic parts](#realistic-parts)
@@ -288,7 +288,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 # Dowels, Screws, Fixture
 
 * Use [magicDowels](#magicdowels) for dowels, screws and other mounting points references.
-* Use [magicFixture](#magicfixture) for any other type of fixture.
+* Use [magicFixture](#magicfixture) for any other type of fixture (angles, hinges, anything). For drilling templates use `Clone`.
 * Examples repository: [Fixture](https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture) - you can use this repository, make your own detailed part, or order exact detailed part somewhere and merge with your project and apply with the same rules.
 
 However, if you make your own detailed part or order somewhere, you need to fulfill certain requirements:
@@ -304,6 +304,11 @@ However, if you make your own detailed part or order somewhere, you need to fulf
 * This furniture from my garage has applied realistic looking screws and dowels. All the screws has been applied with single click via [panel2link](#panel2link) woodworking workbench feature. Also it has angles replaced with [magicFixture](#magicfixture) tool.
 
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/fixture003.png)
+
+**Video tutorials:** 
+
+* [3D furniture designing - adding dowels](https://www.youtube.com/watch?v=q7tJffBBUGY)
+* [3D furniture designing - angles & pilot holes & realistic screws](https://www.youtube.com/watch?v=CYaL-sGvIK8)
 
 # Holes, Countersinks, Counterbores
 
@@ -335,6 +340,8 @@ However, if you make your own detailed part or order somewhere, you need to fulf
   
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillDriller006.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillDriller007.png)
+
+**Video tutorial:** [3D furniture designing - countersinks & realistic screws](https://www.youtube.com/watch?v=N5SpUCtNMY0)
 
 ## Drilling via icons
 
@@ -394,6 +401,11 @@ However, if you make your own detailed part or order somewhere, you need to fulf
   
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillCNC007.png)
 
+**Video tutorials:** 
+
+* [3D furniture designing - drilling holes](https://www.youtube.com/watch?v=SS-fnr_ud2I)
+* [3D furniture designing - drilling counterbores](https://www.youtube.com/watch?v=xpEWPRFq-7A)
+
 ## Pilot holes for angles, hinges
 
 * To create pilot holes for angle, first set the angle into position with [magicFixture](#magicfixture). Remember to set `Clone` option, because if you make a `Link` the drill bits will be created at the base element, and you will not be albe to drill holes.
@@ -414,11 +426,13 @@ However, if you make your own detailed part or order somewhere, you need to fulf
 
 **Note:** The same procedure you can use to drill pilot holes for hinges or any other fixture.
 
-## Pocket holes - invisible connections
+# Pocket holes - invisible connections
 
 Personally I do not use this type of connections because I am not convinced to it, and also I do not have such jig. But I know that many woodworkers use pocket invisible connections and they love it. They use it especially for real wood and than put dowels inside the holes so the screws are not visible at all. 
 
 ## Drill pocket holes - manually
+
+**Note:** This is deprecated.
 
 * <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicDowels.png"> First apply dowels to the surface you want to drill. This is a little trick because I use dowels not tool for holes. Any `Cylinder`, dowel can be drill bit for hole, but [magicDowels](#magicdowels) allows to apply the dowls for further processing. If you use [magicDriller](#magicdriller) you need to keep the tool open or the drill bits will be removed. For the dowels, you have to adjust offset from the edge, size of the dowel and also dowels per side. You can do it at custom settings:
 
@@ -454,6 +468,8 @@ Personally I do not use this type of connections because I am not convinced to i
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillPocketHoles009.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillPocketHoles010.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillPocketHoles011.png)
+
+**Video tutorial:** [3D furniture designing - pocket holes & realistic screws](https://www.youtube.com/watch?v=eXzYXNbWwqM)
 
 # Realistic parts
 
@@ -503,6 +519,8 @@ Personally I do not use this type of connections because I am not convinced to i
 
   **Note:** I use a little bigger screws for angles than normally should be, because they hold things a little better than `3 x 20 mm` ones, so the head of the screw is not flat with the surface but you can use any screw size with the same way. For hinges you can use `3 x 20 mm`, without pilot holes.
 
+**Video tutorial:** [3D furniture designing - angles & pilot holes & realistic screws](https://www.youtube.com/watch?v=CYaL-sGvIK8)
+
 ## Realistic screws and pocket holes
 
 * <img align="left" width="48" height="48" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/edge2dowel.png"> First select edge of the hole inside the pocket hole and click [edge2dowel](#edge2dowel). You can select all edges for the panel to create dowels. The dowels should be created with exact angle, so it will be more easy to adjust the screw later. 
@@ -522,6 +540,8 @@ Personally I do not use this type of connections because I am not convinced to i
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RealisticPocketScrews007.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RealisticPocketScrews008.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RealisticPocketScrews009.png)
+
+**Video tutorial:** [3D furniture designing - pocket holes & realistic screws](https://www.youtube.com/watch?v=eXzYXNbWwqM)
 
 ## Counterbore 2x with bolt
 
@@ -578,7 +598,7 @@ Working with raw wood is an art of some sort. This is the true form of working w
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RawWoodGlued008.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RawWoodGlued009.png)
 
-**Note:** To watch movie with this process see: [3D furniture designing - glued table top simulation (force order of operations)](https://www.youtube.com/watch?v=SULl3EmCTsk)
+**Video tutorial:** [3D furniture designing - glued table top simulation (force order of operations)](https://www.youtube.com/watch?v=SULl3EmCTsk)
 
 # Extras
 

@@ -4,8 +4,7 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 
 ![intro](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/intro.gif)
 
-More movies, features, tutorials see at: [my YouTube channel](https://www.youtube.com/channel/UCDaABD-__ESAfflopSqZ0ng/videos)
-Features description: [Woodworking workbench documentation](https://github.com/dprojects/Woodworking/blob/master/Docs)
+**For more details see:** [YouTube channel](https://www.youtube.com/channel/UCDaABD-__ESAfflopSqZ0ng/videos) and [Woodworking workbench documentation](https://github.com/dprojects/Woodworking/blob/master/Docs)
 
 # Screenshots examples
 
