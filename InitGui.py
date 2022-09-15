@@ -84,9 +84,6 @@ class WoodworkingWorkbench (Workbench):
 		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - dimensions"), 
 			loadToolbar.getItems("Woodworking - dimensions"))
 
-		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - preview"), 
-			loadToolbar.getItems("Woodworking - preview"))
-
 		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - decorations"), 
 			loadToolbar.getItems("Woodworking - decorations"))
 		

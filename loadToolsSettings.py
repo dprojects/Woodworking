@@ -82,6 +82,8 @@ Tools = [
 	
 	# mount
 	
+	"MagicPanels", "panel2link", "png", "replace with links", "Click to see info.",
+	"MagicPanels", "panel2clone", "png", "replace with clones", "Click to see info.",
 	"MagicPanels", "sketch2dowel", "png", "dowel from sketch hole and face", "Click to see info.",
 	"MagicPanels", "edge2dowel", "png", "dowel from edge hole", "Click to see info.",
 	
@@ -91,6 +93,7 @@ Tools = [
 	"MagicPanels", "magicKnife", "png", "magicKnife, single knife cut many panels", "Click to see info.",
 	"MagicPanels", "jointTenon", "png", "joint, Tenon", "Click to see info.",
 	"MagicPanels", "jointCustom", "png", "joint, Custom", "Click to see info.",
+	"MagicPanels", "panel2frame", "png", "cubes to frames", "Click to see info.",
 	
 	# dimensions
 	
@@ -156,13 +159,15 @@ Tools = [
 	
 	"MagicPanels", "panelCoverXY", "png", "panel, top, cover", "Click to see info.",
 	
-	# replace
+	# advanced
 	
 	"MagicPanels", "panel2pad", "png", "cube to pad", "Click to see info.",
-	"MagicPanels", "panel2profile", "png", "cubes to construction profiles", "Click to see info.",
-	"MagicPanels", "panel2frame", "png", "cubes to frames", "Click to see info.",
-	"MagicPanels", "panel2link", "png", "replace with links", "Click to see info.",
-	"MagicPanels", "panel2clone", "png", "replace with clones", "Click to see info.",
+	
+	# construction profiles
+	
+	"MagicPanels", "panel2profile", "png", "construction profile", "Click to see info.",
+	"MagicPanels", "panel2angle", "png", "construction angle", "Click to see info.",
+	"MagicPanels", "panel2angle45cut", "png", "construction angle 45 cut", "Click to see info.",
 
 	# face
 	

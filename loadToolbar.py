@@ -90,7 +90,9 @@ def getItems(iType):
 	if iType == "Woodworking - construction":
 		
 		parts = [
-			"panel2profile"
+			"panel2profile",
+			"panel2angle",
+			"panel2angle45cut"
 		]
 
 	if iType == "Woodworking - dowels and screws":
@@ -136,11 +138,8 @@ def getItems(iType):
 	if iType == "Woodworking - decorations":
 		
 		parts = [
-			"panel2pad",
-			"PartDesign_Fillet",
-			"PartDesign_Chamfer",
-			"PartDesign_Pocket",
-			"Part_Boolean"
+			"colorManager",
+			"setTextures"
 		]
 
 	if iType == "Woodworking - dimensions":
@@ -168,14 +167,6 @@ def getItems(iType):
 			"Std_LinkMake"
 		]
 
-	if iType == "Woodworking - preview":
-		
-		parts = [
-			"colorManager",
-			"Std_TextureMapping",
-			"setTextures"
-		]
-
 	if iType == "Woodworking - code and debug":
 		
 		parts = [
@@ -191,6 +182,7 @@ def getItems(iType):
 	if iType == "Woodworking - advanced":
 		
 		parts = [
+			"panel2pad",
 			"Spreadsheet_CreateSheet",
 			"Std_Part",
 			"PartDesign_Body", 

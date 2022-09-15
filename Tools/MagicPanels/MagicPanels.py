@@ -454,6 +454,41 @@ def getEdgeIndexByKey(iObj, iBoundBox):
 	return -1
 
 
+# ############################################################################
+def getEdgePlane(iEdge):
+	'''
+	getEdgePlane(iEdge) - returns orientation for the edge, changed axis, as "X", "Y" or "Z".
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iEdge: edge object
+		
+	Usage:
+	
+		plane = getEdgePlane(edge)
+		
+	Result:
+	
+		return string "X", "Y" or "Z".
+
+	'''
+
+	[ v1, v2 ] = getEdgeVertices(iEdge)
+	
+	if not equal(v1[0], v2[0]):
+		return "X"
+
+	if not equal(v1[1], v2[1]):
+		return "Y"
+
+	if not equal(v1[2], v2[2]):
+		return "Z"
+		
+	return ""
+
+
 # ###################################################################################################################
 # Faces
 # ###################################################################################################################
@@ -1364,6 +1399,16 @@ def getSizes(iObj):
 	if iObj.isDerivedFrom("Part::Cone"):
 		return [ 1, 1, 1 ]
 	
+	if iObj.isDerivedFrom("PartDesign::Thickness"):
+		
+		for c in iObj.Base[0].Profile[0].Constraints:
+			if c.Name == "SizeX":
+				sizeX = c.Value
+			if c.Name == "SizeY":
+				sizeY = c.Value
+				
+		return [ sizeX, sizeY, iObj.Base[0].Length.Value ]
+	
 	# for custom objects
 	try:
 		
@@ -1784,7 +1829,7 @@ def makePad(iObj, iPadLabel="Pad"):
 	Usage:
 	
 		import MagicPanels
-		MagicPanels.makePad(obj, "myPanel")
+		[ part, body, sketch, pad ] = MagicPanels.makePad(obj, "myPanel")
 		
 	Result:
 	
@@ -1877,6 +1922,81 @@ def makePad(iObj, iPadLabel="Pad"):
 	doc.recompute()
 
 	return [ part, body, sketch, pad ]
+
+
+# ###################################################################################################################
+def makeFrame45cut(iObjects, iFaces):
+	'''
+	makeFrame45cut(iObjects, iFaces) - makes 45 frame cut with PartDesing Chamfer. 
+	For each face the ends will be cut.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObjects: array of objects to cut
+		iFaces: dict() of faces for Chamfer cut direction, the key is iObjects value (object), 
+				if there are more faces for object, the first one will be get as direction.
+		
+	Usage:
+	
+		import MagicPanels
+		frames = MagicPanels.makeFrame45cut(objects, faces)
+		
+	Result:
+	
+		Created Frames with correct placement, rotation and return array with Chamfer frame objects.
+	'''
+
+	frames = []
+
+	for o in iObjects:
+	
+		face = iFaces[o][0]
+
+		sizes = getSizes(o)
+		sizes.sort()
+		
+		[ faceType, arrAll, arrThick, arrShort, arrLong ] = getFaceEdges(o, face)
+		
+		if faceType == "edge":
+			arr = arrThick
+			size = sizes[1]
+			
+		if faceType == "surface":
+			arr = arrShort
+			size = sizes[0]
+
+		keys = []
+		
+		for e in arr:
+			keys.append(e.BoundBox)
+		
+		if o.isDerivedFrom("Part::Box"):
+		
+			[ part, body, sketch, pad ] = makePad(o, "Frame")
+			FreeCAD.ActiveDocument.removeObject(o.Name)
+			FreeCAD.ActiveDocument.recompute()
+		
+		else:
+		
+			body = o._Body
+			pad = o
+
+		edges = []
+		for k in keys:
+			index = getEdgeIndexByKey(pad, k)
+			edges.append("Edge"+str(int(index)))
+		
+		frame = body.newObject('PartDesign::Chamfer','Frame45Cut')
+		frame.Base = (pad, edges)
+		frame.Size = size - 0.01
+		pad.Visibility = False
+		
+		FreeCAD.ActiveDocument.recompute()
+		frames.append(frame)
+	
+	return frames
 
 
 # ###################################################################################################################
@@ -2916,189 +3036,200 @@ def panelResize(iType):
 
 	try:
 
-		gObj = getReference()
+		objects = FreeCADGui.Selection.getSelection()
+		
+		for o in objects:
 
-		sizes = []
-		sizes = getSizes(gObj)
-		sizes.sort()
-		thick = sizes[0]
+			gObj = getReference(o)
 
-		if gObj.isDerivedFrom("Part::Cylinder"):
-			
-			R, H = gObj.Radius.Value, gObj.Height.Value
-			
-			if iType == "1":
-				gObj.Height = gObj.Height.Value + thick
+			sizes = []
+			sizes = getSizes(gObj)
+			sizes.sort()
+			thick = sizes[0]
 
-			if iType == "2":
-				if H - thick > 0:
-					gObj.Height = gObj.Height.Value - thick
-
-			if iType == "3":
-				gObj.Radius = gObj.Radius.Value + thick
+			if gObj.isDerivedFrom("Part::Cylinder"):
 				
-			if iType == "4":
-				if R - thick > 0:
-					gObj.Radius = gObj.Radius.Value - thick
-
-			if iType == "5":
-				gObj.Radius = gObj.Radius.Value + thick/2
-
-			if iType == "6":
-				if R - thick/2 > 0:
-					gObj.Radius = gObj.Radius.Value - thick/2
-
-		if gObj.isDerivedFrom("Part::Cone"):
-			
-			R1, R2, H = gObj.Radius1.Value, gObj.Radius2.Value, gObj.Height.Value
-			
-			if iType == "1":
-				gObj.Height = gObj.Height.Value + thick
-
-			if iType == "2":
-				if H - thick > 0:
-					gObj.Height = gObj.Height.Value - thick
-
-			if iType == "3":
-				gObj.Radius2 = gObj.Radius2.Value + thick/2
-
-			if iType == "4":
-				if R2 - thick/2 > 0:
-					gObj.Radius2 = gObj.Radius2.Value - thick/2
-
-			if iType == "5":
-				gObj.Radius1 = gObj.Radius1.Value + thick/2
-
-			if iType == "6":
-				if R1 - thick/2 > 0:
-					gObj.Radius1 = gObj.Radius1.Value - thick/2
-
-		if gObj.isDerivedFrom("Part::Box"):
-
-			L, W, H = gObj.Length.Value, gObj.Width.Value, gObj.Height.Value
+				R, H = gObj.Radius.Value, gObj.Height.Value
 				
-			if iType == "1":
-				if L == sizes[2]:
-					gObj.Length = gObj.Length.Value + thick
-
-				if W == sizes[2]:
-					gObj.Width = gObj.Width.Value + thick
-					
-				if H == sizes[2]:
+				if iType == "1":
 					gObj.Height = gObj.Height.Value + thick
-
-			if iType == "2":
-				if L == sizes[2]:
-					if gObj.Length.Value - thick > 0:
-						gObj.Length = gObj.Length.Value - thick
-					
-				if W == sizes[2]:
-					if gObj.Width.Value - thick > 0:
-						gObj.Width = gObj.Width.Value - thick
-					
-				if H == sizes[2]:
-					if gObj.Height.Value - thick > 0:
-						gObj.Height = gObj.Height.Value - thick
-
-			if iType == "3":
-				if L == sizes[1]:
-					gObj.Length = gObj.Length.Value + thick
-
-				if W == sizes[1]:
-					gObj.Width = gObj.Width.Value + thick
-
-				if H == sizes[1]:
-					gObj.Height = gObj.Height.Value + thick
-
-			if iType == "4":
-				if L == sizes[1]:
-					if gObj.Length.Value - thick > 0:
-						gObj.Length = gObj.Length.Value - thick
-
-				if W == sizes[1]:
-					if gObj.Width.Value - thick > 0:
-						gObj.Width = gObj.Width.Value - thick
-
-				if H == sizes[1]:
-					if gObj.Height.Value - thick > 0:
-						gObj.Height = gObj.Height.Value - thick
-
-			if iType == "5":
-				if L == sizes[0]:
-					gObj.Length = gObj.Length.Value + 1
-
-				if W == sizes[0]:
-					gObj.Width = gObj.Width.Value + 1
-
-				if H == sizes[0]:
-					gObj.Height = gObj.Height.Value + 1
-
-			if iType == "6":
-				if L == sizes[0]:
-					if gObj.Length.Value - 1 > 0:
-						gObj.Length = gObj.Length.Value - 1
-
-				if W == sizes[0]:
-					if gObj.Width.Value - 1 > 0:
-						gObj.Width = gObj.Width.Value - 1
-
-				if H == sizes[0]:
-					if gObj.Height.Value - 1 > 0:
-						gObj.Height = gObj.Height.Value - 1
-
-		if gObj.isDerivedFrom("PartDesign::Pad"):
-		
-			direction = getDirection(gObj)
-		
-			if iType == "1":
-				
-				if direction == "XY" or direction == "XZ" or direction == "YZ":
-					gObj.Profile[0].setDatum(9, FreeCAD.Units.Quantity(sizes[2] + thick))
-				else:
-					gObj.Profile[0].setDatum(10, FreeCAD.Units.Quantity(sizes[2] + thick))
-		
-			if sizes[2] - thick > 0:
 
 				if iType == "2":
-				
-					if direction == "XY" or direction == "XZ" or direction == "YZ":
-						gObj.Profile[0].setDatum(9, FreeCAD.Units.Quantity(sizes[2] - thick))
-					else:
-						gObj.Profile[0].setDatum(10, FreeCAD.Units.Quantity(sizes[2] - thick))
+					if H - thick > 0:
+						gObj.Height = gObj.Height.Value - thick
 
-			if iType == "3":
-				
-				if direction == "XY" or direction == "XZ" or direction == "YZ":
-					gObj.Profile[0].setDatum(10, FreeCAD.Units.Quantity(sizes[1] + thick))
-				else:
-					gObj.Profile[0].setDatum(9, FreeCAD.Units.Quantity(sizes[1] + thick))
-
-			if sizes[1] - thick > 0:
-				
+				if iType == "3":
+					gObj.Radius = gObj.Radius.Value + thick
+					
 				if iType == "4":
+					if R - thick > 0:
+						gObj.Radius = gObj.Radius.Value - thick
+
+				if iType == "5":
+					gObj.Radius = gObj.Radius.Value + thick/2
+
+				if iType == "6":
+					if R - thick/2 > 0:
+						gObj.Radius = gObj.Radius.Value - thick/2
+
+			if gObj.isDerivedFrom("Part::Cone"):
 				
+				R1, R2, H = gObj.Radius1.Value, gObj.Radius2.Value, gObj.Height.Value
+				
+				if iType == "1":
+					gObj.Height = gObj.Height.Value + thick
+
+				if iType == "2":
+					if H - thick > 0:
+						gObj.Height = gObj.Height.Value - thick
+
+				if iType == "3":
+					gObj.Radius2 = gObj.Radius2.Value + thick/2
+
+				if iType == "4":
+					if R2 - thick/2 > 0:
+						gObj.Radius2 = gObj.Radius2.Value - thick/2
+
+				if iType == "5":
+					gObj.Radius1 = gObj.Radius1.Value + thick/2
+
+				if iType == "6":
+					if R1 - thick/2 > 0:
+						gObj.Radius1 = gObj.Radius1.Value - thick/2
+
+			if gObj.isDerivedFrom("Part::Box"):
+
+				L, W, H = gObj.Length.Value, gObj.Width.Value, gObj.Height.Value
+					
+				if iType == "1":
+					if L == sizes[2]:
+						gObj.Length = gObj.Length.Value + thick
+
+					if W == sizes[2]:
+						gObj.Width = gObj.Width.Value + thick
+						
+					if H == sizes[2]:
+						gObj.Height = gObj.Height.Value + thick
+
+				if iType == "2":
+					if L == sizes[2]:
+						if gObj.Length.Value - thick > 0:
+							gObj.Length = gObj.Length.Value - thick
+						
+					if W == sizes[2]:
+						if gObj.Width.Value - thick > 0:
+							gObj.Width = gObj.Width.Value - thick
+						
+					if H == sizes[2]:
+						if gObj.Height.Value - thick > 0:
+							gObj.Height = gObj.Height.Value - thick
+
+				if iType == "3":
+					if L == sizes[1]:
+						gObj.Length = gObj.Length.Value + thick
+
+					if W == sizes[1]:
+						gObj.Width = gObj.Width.Value + thick
+
+					if H == sizes[1]:
+						gObj.Height = gObj.Height.Value + thick
+
+				if iType == "4":
+					if L == sizes[1]:
+						if gObj.Length.Value - thick > 0:
+							gObj.Length = gObj.Length.Value - thick
+
+					if W == sizes[1]:
+						if gObj.Width.Value - thick > 0:
+							gObj.Width = gObj.Width.Value - thick
+
+					if H == sizes[1]:
+						if gObj.Height.Value - thick > 0:
+							gObj.Height = gObj.Height.Value - thick
+
+				if iType == "5":
+					if L == sizes[0]:
+						gObj.Length = gObj.Length.Value + 1
+
+					if W == sizes[0]:
+						gObj.Width = gObj.Width.Value + 1
+
+					if H == sizes[0]:
+						gObj.Height = gObj.Height.Value + 1
+
+				if iType == "6":
+					if L == sizes[0]:
+						if gObj.Length.Value - 1 > 0:
+							gObj.Length = gObj.Length.Value - 1
+
+					if W == sizes[0]:
+						if gObj.Width.Value - 1 > 0:
+							gObj.Width = gObj.Width.Value - 1
+
+					if H == sizes[0]:
+						if gObj.Height.Value - 1 > 0:
+							gObj.Height = gObj.Height.Value - 1
+
+			if gObj.isDerivedFrom("PartDesign::Pad"):
+			
+				direction = getDirection(gObj)
+			
+				if iType == "1":
+					
 					if direction == "XY" or direction == "XZ" or direction == "YZ":
-						gObj.Profile[0].setDatum(10, FreeCAD.Units.Quantity(sizes[1] - thick))
+						gObj.Profile[0].setDatum(9, FreeCAD.Units.Quantity(sizes[2] + thick))
 					else:
-						gObj.Profile[0].setDatum(9, FreeCAD.Units.Quantity(sizes[1] - thick))
-
-			if iType == "5":
-				
-				gObj.Length = gObj.Length.Value + 1
+						gObj.Profile[0].setDatum(10, FreeCAD.Units.Quantity(sizes[2] + thick))
 			
-			if iType == "6":
-				
-				if gObj.Length.Value - 1 > 0:
-					gObj.Length = gObj.Length.Value - 1
+				if sizes[2] - thick > 0:
 
-			
+					if iType == "2":
+					
+						if direction == "XY" or direction == "XZ" or direction == "YZ":
+							gObj.Profile[0].setDatum(9, FreeCAD.Units.Quantity(sizes[2] - thick))
+						else:
+							gObj.Profile[0].setDatum(10, FreeCAD.Units.Quantity(sizes[2] - thick))
+
+				if iType == "3":
+					
+					if direction == "XY" or direction == "XZ" or direction == "YZ":
+						gObj.Profile[0].setDatum(10, FreeCAD.Units.Quantity(sizes[1] + thick))
+					else:
+						gObj.Profile[0].setDatum(9, FreeCAD.Units.Quantity(sizes[1] + thick))
+
+				if sizes[1] - thick > 0:
+					
+					if iType == "4":
+					
+						if direction == "XY" or direction == "XZ" or direction == "YZ":
+							gObj.Profile[0].setDatum(10, FreeCAD.Units.Quantity(sizes[1] - thick))
+						else:
+							gObj.Profile[0].setDatum(9, FreeCAD.Units.Quantity(sizes[1] - thick))
+
+				if iType == "5":
+					
+					if o.isDerivedFrom("PartDesign::Thickness"):
+						o.Value.Value = o.Value.Value + 1
+					else:
+						gObj.Length = gObj.Length.Value + 1
+				
+				if iType == "6":
+					
+					if o.isDerivedFrom("PartDesign::Thickness"):
+						if o.Value.Value -1 > 0:
+							o.Value.Value = o.Value.Value - 1
+					else:
+						if gObj.Length.Value - 1 > 0:
+							gObj.Length = gObj.Length.Value - 1
+
+
 		FreeCAD.activeDocument().recompute()
 
 	except:
 		
 		info = ""
 		
-		info += translate('panelResizeInfo', '<b>Please select valid panel to resize. </b><br><br><b>Note:</b> This tool allows to resize quickly Cube panels or even other objects. The resize step is the panel thickness. Panel is resized into direction described by the icon for XY panel. However, in some cases the panel may be resized into opposite direction, if the panel is not supported or the sides are equal. You can also resize Cylinders (drill bits), the long side will be Height, the short will be diameter, the thickness will be Radius. For Cone objects (drill bits - countersinks, counterbore) the long side will be Height, the thickness will be Radius1 (bottom radius) and the short will be Radius2 (top radius).')
+		info += translate('panelResizeInfo', '<b>Please select valid panels to resize. </b><br><br><b>Note:</b> This tool allows to resize quickly panels or even other objects. The resize step is the panel thickness. Panel is resized into direction described by the icon for XY panel. However, in some cases the panel may be resized into opposite direction, if the panel is not supported or the sides are equal. You can also resize Cylinders (drill bits), the long side will be Height, the short will be diameter, the thickness will be Radius. For Cone objects (drill bits - countersinks, counterbore) the long side will be Height, the thickness will be Radius1 (bottom radius) and the short will be Radius2 (top radius).')
 		
 		showInfo("panelResize"+iType, info)
 
@@ -3464,193 +3595,6 @@ def panel2pad(iLabel="panel2pad"):
 	
 		showInfo("panel2pad", info)
 	
-
-# ###################################################################################################################
-def panel2profile():
-	'''
-	panel2profile() - allows to replace Cube panels with construction profiles made from Thickness.
-
-	Note: This function displays pop-up info in case of error.
-
-	Args:
-
-		no args
-
-	Usage:
-
-		import MagicPanels
-		
-		profiles = MagicPanels.panel2profile()
-		
-	Result:
-
-		Selected Cube panels will be changed into Thickness construction profiles. This function 
-		returns array with references to the created profiles, so it can be used for further 
-		transfomrations.
-	'''
-
-	try:
-
-		profiles = []
-		objects = FreeCADGui.Selection.getSelection()
-		if len(objects) == 0:
-			raise
-			
-		for gObj in objects:
-		
-			sizes = getSizes(gObj)
-			sizes.sort()
-			if sizes[0] != sizes[1]:
-				raise
-			
-			[ part, body, sketch, pad ] = makePad(gObj, "Construction")
-			FreeCAD.ActiveDocument.removeObject(gObj.Name)
-			FreeCAD.activeDocument().recompute()
-			
-			profile = body.newObject('PartDesign::Thickness','Profile')
-			
-			faces = []
-			i = 0
-			for f in pad.Shape.Faces:
-				if int(round(pad.Shape.Faces[i].Length)) == int(round(4 * sizes[0])):
-					faces.append("Face"+str(i+1))
-
-				i = i + 1
-				
-			profile.Base = (pad, faces)
-			profile.Value = 1
-			profile.Reversed = 1
-			profile.Mode = 0
-			profile.Intersection = 0
-			profile.Join = 0
-
-			pad.Visibility = False
-
-			FreeCAD.activeDocument().recompute()
-			
-			colors = [ (0.0, 0.0, 0.0, 0.0),
-				(0.0, 0.0, 0.0, 0.0),
-				(0.0, 0.0, 0.0, 0.0),
-				(0.0, 0.0, 0.0, 0.0),
-				(0.0, 0.0, 0.0, 0.0),
-				(0.0, 1.0, 0.0, 0.0),
-				(0.0, 0.0, 0.0, 0.0),
-				(0.0, 1.0, 0.0, 0.0),
-				(0.0, 1.0, 0.0, 0.0),
-				(0.0, 1.0, 0.0, 0.0) ]
-
-			profile.ViewObject.DiffuseColor = colors
-
-			FreeCAD.activeDocument().recompute()
-			profiles.append(profile)
-		
-		return profiles
-	
-	except:
-		
-		info = ""
-		
-		info += translate('panel2profileInfo', '<b>Please select valid Cube object imitating profile. The selected Cube objects need to have two equal sizes e.g. 20 mm x 20 mm x 300 mm to replace it with construction profile. </b><br><br><b>Note:</b> This tool allows to replace Cube panel with construction profile. You can replace more than one Cube panel at once. To select more objects hold left CTRL key during selection. The new created construction profile will get the same dimensions, placement and rotation as the selected Cube panel. If you have all construction created with simple Cube objects that imitating profiles, you can replace all of them with realistic looking construction profiles with single click.')
-	
-		showInfo("panel2profile", info)
-
-
-# ###################################################################################################################
-def panel2frame():
-	'''
-	panel2frame() - allows to replace Cube panels with frame elements cut with 45 angle. You have to select 
-	face at Cube panels to make frame.
-
-	Note: This function displays pop-up info in case of error.
-
-	Args:
-
-		no args
-
-	Usage:
-
-		import MagicPanels
-		
-		frames = MagicPanels.panel2frame()
-		
-	Result:
-
-		Selected Cube panels faces will be changed into frame. This function 
-		returns array with references to the created frames, so it can be used for further 
-		transfomrations.
-	'''
-
-	try:
-
-		frames = []
-		frame = ""
-		objects = FreeCADGui.Selection.getSelection()
-		
-		if len(objects) == 0:
-			raise
-		
-		faces = dict()
-		
-		i = 0
-		for o in objects:
-			faces[o] = FreeCADGui.Selection.getSelectionEx()[i].SubObjects
-			i = i + 1
-
-		for o in objects:
-			
-			face = faces[o][0]
-		
-			sizes = getSizes(o)
-			sizes.sort()
-			
-			[ faceType, arrAll, arrThick, arrShort, arrLong ] = getFaceEdges(o, face)
-			
-			keys = []
-			
-			if faceType == "edge":
-				arr = arrThick
-				size = sizes[1]
-			if faceType == "surface":
-				arr = arrShort
-				size = sizes[0]
-				
-			for e in arr:
-				keys.append(e.BoundBox)
-			
-			[ part, body, sketch, pad ] = makePad(o, "Frame")
-			FreeCAD.ActiveDocument.removeObject(o.Name)
-			FreeCAD.activeDocument().recompute()
-		
-			edges = []
-			for k in keys:
-				index = getEdgeIndexByKey(pad, k)
-				edges.append("Edge"+str(int(index)))
-			
-			frame = body.newObject('PartDesign::Chamfer','Frame45Cut')
-			frame.Base = (pad, edges)
-			frame.Size = size - 0.01
-			pad.Visibility = False
-			
-			FreeCAD.activeDocument().recompute()
-			
-			color = (0.5098039507865906, 0.3137255012989044, 0.1568627506494522, 0.0)
-
-			frame.ViewObject.ShapeColor = color
-			frame.ViewObject.DiffuseColor = color
-			FreeCAD.activeDocument().recompute()
-			
-			frames.append(frame)
-		
-		return frames
-	
-	except:
-		
-		info = ""
-		
-		info += translate('panel2frameInfo', '<b>Please select single face for each Cube object to make 45 cut at both sides. </b><br><br><b>Note:</b> This tool allows to replace Cube panel with frame 45 cut at both sides. You can replace more than one Cube panel at once. To replace Cube objects with frames you have to select exact face at each Cube object. To select more objects hold left CTRL key during selection. The new created frame will get the same dimensions, placement and rotation as the selected Cube panel but will be cut at the selected face. If you have all construction created with simple Cube objects that imitating picture frame or window, you can replace all of them with realistic looking frame with single click.')
-
-		showInfo("panel2frame", info)
-
 
 # ###################################################################################################################
 def panel2link():
