@@ -2041,6 +2041,45 @@ FreeCADGui.addCommand("panelMove2Center", panelMove2Center())
 
 	
 # ######################################################################################################################
+class mapPosition():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "mapPosition.png"),
+				"MenuText": QT_TRANSLATE_NOOP("mapPositionMenuText", "move to 1st selected"),
+				"ToolTip" : QT_TRANSLATE_NOOP("mapPositionToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "mapPosition"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("mapPosition", mapPosition())
+
+	
+# ######################################################################################################################
 class fitModel():
 
 	def GetResources(self):

@@ -1659,7 +1659,7 @@ def convertPosition(iObj, iX, iY, iZ):
 	
 	Usage:
 	
-		convertPosition(obj, 0, 400, 0)
+		[ x, y, z ] = convertPosition(obj, 0, 400, 0)
 		
 	Result:
 	
@@ -3037,6 +3037,9 @@ def panelResize(iType):
 	try:
 
 		objects = FreeCADGui.Selection.getSelection()
+		
+		if len(objects) < 1:
+			raise
 		
 		for o in objects:
 
