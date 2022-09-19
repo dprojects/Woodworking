@@ -188,8 +188,8 @@ def getVertexAxisCross(iA, iB):
 	
 	Args:
 	
-		iA: vertex object
-		iB: vertex object
+		iA: vertex float value
+		iB: vertex float value
 	
 	Usage:
 	

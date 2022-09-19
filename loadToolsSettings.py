@@ -98,8 +98,11 @@ Tools = [
 	# dimensions
 	
 	"MagicPanels", "showAlias", "png", "select objects with alias", "Click to see info.",
-	"MagicPanels", "showConstraints", "png", "select edges equal to constraints", "Click to see info.",
 	
+	# preview
+	
+	"MagicPanels", "fitModel", "png", "fitModel", "Click to see info.",
+
 	# default
 	
 	"MagicPanels", "panelDefaultXY", "png", "panel, XY, 600x300, 18 thickness", "Click to see info.",
@@ -136,11 +139,11 @@ Tools = [
 	"MagicPanels", "panelMove2Face", "png", "panel, move, to face", "Click to see info.",
 	"MagicPanels", "panelMove2Center", "png", "panel, move, to center", "Click to see info.",
 	"MagicPanels", "mapPosition", "png", "move to 1st selected", "Click to see info.",
-	
-	"MagicPanels", "fitModel", "png", "fitModel", "Click to see info.",
 
 	# resize
 	
+	"MagicPanels", "magicResizer", "png", "magicResizer, smart resizer tool", "This tool allows to resize object via selected edge or to the nearest face of other object.",
+	"MagicPanels", "showConstraints", "png", "select edges equal to constraints", "Click to see info.",
 	"MagicPanels", "panelResize1", "png", "panel, bigger, long+", "Click to see info.",
 	"MagicPanels", "panelResize2", "png", "panel, smaller, long-", "Click to see info.",
 	"MagicPanels", "panelResize3", "png", "panel, bigger, short+", "Click to see info.",

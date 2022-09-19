@@ -90,6 +90,9 @@ class WoodworkingWorkbench (Workbench):
 		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - advanced"), 
 			loadToolbar.getItems("Woodworking - advanced"))
 		
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - preview"), 
+			loadToolbar.getItems("Woodworking - preview"))
+		
 		# menu
 		# ################################################################################################
 		

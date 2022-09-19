@@ -1222,12 +1222,12 @@ FreeCADGui.addCommand("showAlias", showAlias())
 
 	
 # ######################################################################################################################
-class showConstraints():
+class fitModel():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "showConstraints.png"),
-				"MenuText": QT_TRANSLATE_NOOP("showConstraintsMenuText", "select edges equal to constraints"),
-				"ToolTip" : QT_TRANSLATE_NOOP("showConstraintsToolTip", "Click to see info."),
+		return {"Pixmap"  : os.path.join(iconPath, "fitModel.png"),
+				"MenuText": QT_TRANSLATE_NOOP("fitModelMenuText", "fitModel"),
+				"ToolTip" : QT_TRANSLATE_NOOP("fitModelToolTip", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1237,7 +1237,7 @@ class showConstraints():
 
 		modulePath = sys.path
 		
-		module = "showConstraints"
+		module = "fitModel"
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
@@ -1257,7 +1257,7 @@ class showConstraints():
 		# not needed now, maybe in the future
 		return True
 
-FreeCADGui.addCommand("showConstraints", showConstraints())
+FreeCADGui.addCommand("fitModel", fitModel())
 
 	
 # ######################################################################################################################
@@ -2080,12 +2080,12 @@ FreeCADGui.addCommand("mapPosition", mapPosition())
 
 	
 # ######################################################################################################################
-class fitModel():
+class magicResizer():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "fitModel.png"),
-				"MenuText": QT_TRANSLATE_NOOP("fitModelMenuText", "fitModel"),
-				"ToolTip" : QT_TRANSLATE_NOOP("fitModelToolTip", "Click to see info."),
+		return {"Pixmap"  : os.path.join(iconPath, "magicResizer.png"),
+				"MenuText": QT_TRANSLATE_NOOP("magicResizerMenuText", "magicResizer, smart resizer tool"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicResizerToolTip", "This tool allows to resize object via selected edge or to the nearest face of other object."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2095,7 +2095,7 @@ class fitModel():
 
 		modulePath = sys.path
 		
-		module = "fitModel"
+		module = "magicResizer"
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
@@ -2115,7 +2115,46 @@ class fitModel():
 		# not needed now, maybe in the future
 		return True
 
-FreeCADGui.addCommand("fitModel", fitModel())
+FreeCADGui.addCommand("magicResizer", magicResizer())
+
+	
+# ######################################################################################################################
+class showConstraints():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "showConstraints.png"),
+				"MenuText": QT_TRANSLATE_NOOP("showConstraintsMenuText", "select edges equal to constraints"),
+				"ToolTip" : QT_TRANSLATE_NOOP("showConstraintsToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "showConstraints"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("showConstraints", showConstraints())
 
 	
 # ######################################################################################################################

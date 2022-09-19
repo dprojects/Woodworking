@@ -39,13 +39,14 @@ def getItems(iType):
 			"panelMoveYp",
 			"panelMoveYm",
 			"panelMoveZp",
-			"panelMoveZm",
-			"fitModel"
+			"panelMoveZm"
 		]
 
 	if iType == "Woodworking - resize":
 		
 		parts = [
+			"magicResizer",
+			"showConstraints",
 			"panelResize1",
 			"panelResize2",
 			"panelResize3",
@@ -103,8 +104,7 @@ def getItems(iType):
 			"panel2link",
 			"panel2clone",
 			"sketch2dowel",
-			"edge2dowel",
-			"makeTransparent"
+			"edge2dowel"
 		]
 
 	if iType == "Woodworking - fixture":
@@ -152,7 +152,6 @@ def getItems(iType):
 			"showSpaceModel",
 			"showSpaceSelected",
 			"showAlias",
-			"showConstraints",
 			"Part_Measure_Linear"
 		]
 
@@ -191,4 +190,11 @@ def getItems(iType):
 			"PartDesign_Pad"
 		]
 		
+	if iType == "Woodworking - preview":
+		
+		parts = [
+			"fitModel",
+			"makeTransparent"
+		]
+
 	return parts
