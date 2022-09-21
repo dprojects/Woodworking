@@ -120,16 +120,6 @@ sUnitsEdgeDsc = {
 	"in" : translate("getDimensions", "inch")
 }
 
-# Furniture color:
-# Edge face with other color than furniture color will be calculated as edgeband.
-sFColorD = "gray (no color)"
-sFColorDsc = {
-	"gray (no color)" : (0.800000011920929, 0.800000011920929, 0.800000011920929, 0.0),
-	"white" : (1.0, 1.0, 1.0, 0.0),
-	"black" :  (0.0, 0.0, 0.0, 0.0)
-}
-sFColor = sFColorDsc[sFColorD]
-
 # Edgeband code:
 sEColorD = "PL55 PVC"
 sEColorDsc = {
@@ -497,36 +487,6 @@ def showQtGUI():
 			self.ufsIS.move(470, vLine + vLineNextRow + 3)
 
 			# ############################################################################
-			# furniture color
-			# here is different you set description to variable
-			# ############################################################################
-
-			# set line separator
-			vLine = vLine + vLineOffset
-
-			# label
-			self.fcL = QtGui.QLabel(translate("getDimensions", "Furniture color:"), self)
-			self.fcL.move(10, vLine + 3)
-
-			# options
-			self.fcList = tuple(sFColorDsc.keys())
-			self.fcO = QtGui.QComboBox(self)
-			self.fcO.addItems(self.fcList)
-			self.fcO.setCurrentIndex(self.fcList.index(str(sFColorD)))
-			self.fcO.activated[str].connect(self.setFColor)
-			self.fcO.move(10, vLine + vLineNextRow + 3)
-
-			# text input label
-			self.fctiL = QtGui.QLabel(translate("getDimensions", "Custom:"), self)
-			self.fctiL.move(140, vLine + 3)
-
-			# text input
-			self.fcti = QtGui.QLineEdit(self)
-			self.fcti.setText(str(sFColor))
-			self.fcti.setFixedWidth(435)
-			self.fcti.move(140, vLine + vLineNextRow + 3)
-
-			# ############################################################################
 			# edgeband code
 			# here is different you set description to variable
 			# ############################################################################
@@ -621,12 +581,7 @@ def showQtGUI():
 				self.ufsL.show()
 				self.ufsO.show()
 				self.ufsIS.show()
-				# furniture color
-				self.fcL.show()
-				self.fcO.show()
-				self.fctiL.show()
-				self.fcti.show()
-	
+				
 			if iAction == "hide":
 				# units for area
 				self.ufaL.hide()
@@ -636,12 +591,7 @@ def showQtGUI():
 				self.ufsL.hide()
 				self.ufsO.hide()
 				self.ufsIS.hide()
-				# furniture color
-				self.fcL.hide()
-				self.fcO.hide()
-				self.fctiL.hide()
-				self.fcti.hide()
-
+				
 		def setRC(self, selectedText):
 			global sLTF
 			sLTF = selectedText
@@ -723,12 +673,6 @@ def showQtGUI():
 			self.ufsIS.setText(str(sUnitsEdgeDsc[sUnitsEdge]) + sEmptyDsc)
 
 		# here is different you set description to variable
-		def setFColor(self, selectedText):
-			# the variable will be set at OK button click from text form
-			tmpColor = sFColorDsc[str(selectedText)]
-			self.fcti.setText(str(tmpColor))
-
-		# here is different you set description to variable
 		def setEColor(self, selectedText):
 			global sEColor
 			tmpColor = sEColorDsc[str(selectedText)]
@@ -757,12 +701,8 @@ def showQtGUI():
 		pass
 	
 	if form.result == userOK:
-		global sFColor
 		global sEColor
 		
-		# set furniture color from text form
-		sFColor = form.fcti.text()
-
 		# set edgeband code from text form
 		sEColor = form.ecti.text()
 		
@@ -1139,6 +1079,7 @@ def getEdgeBand(iObj, iW, iH, iL, iCaller="getEdgeBand"):
 
 		# get faces colors
 		vFacesColors = iObj.ViewObject.DiffuseColor
+		vObjColor = iObj.ViewObject.ShapeColor
 
 		# edgeband for given object
 		vEdgeSum = 0
@@ -1157,9 +1098,9 @@ def getEdgeBand(iObj, iW, iH, iL, iCaller="getEdgeBand"):
 			vFaceD.insert(i, 0)
 			vFaceV.insert(i, "")
 
-			# if the edge face color is different than default furniture color 
-			# it means this edge is covered by user
-			if str(c) != str(sFColor):
+			# if the edge face color is different than object color, 
+			# it means this is edgeband added by the user
+			if str(c) != str(vObjColor):
 				
 				vFaceEdge = iObj.Shape.Faces[i].Length
 	
@@ -3664,7 +3605,7 @@ def setViewEdge(iCaller="setViewEdge"):
 	vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
 	gSheet.setBackground(vCell, gHeadCS)
 
-	# skip if furniture color is not set correctly
+	# skip if edgeband is not set correctly
 	if dbE["empty"] >= 0 and dbE["edgeband"] > 0:
 
 		# go to next spreadsheet row

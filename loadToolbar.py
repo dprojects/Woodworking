@@ -151,7 +151,6 @@ def getItems(iType):
 			"sheet2export",
 			"showSpaceModel",
 			"showSpaceSelected",
-			"showAlias",
 			"Part_Measure_Linear"
 		]
 
@@ -184,6 +183,7 @@ def getItems(iType):
 		parts = [
 			"panel2pad",
 			"Spreadsheet_CreateSheet",
+			"showAlias",
 			"Std_Part",
 			"PartDesign_Body", 
 			"PartDesign_NewSketch",

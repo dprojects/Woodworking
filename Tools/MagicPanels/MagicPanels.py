@@ -14,6 +14,7 @@ translate = FreeCAD.Qt.translate
 # this should be set according to the user FreeCAD GUI settings
 gRoundPrecision = 2
 
+
 # ###################################################################################################################
 #
 # Functions for tools: 
@@ -23,6 +24,7 @@ gRoundPrecision = 2
 # yes: return for further processing
 #
 # ###################################################################################################################
+
 
 # ############################################################################
 def equal(iA, iB):
@@ -117,9 +119,13 @@ def normalizeBoundBox(iBoundBox):
 
 
 # ###################################################################################################################
+#
 # Vertices
+#
 # ###################################################################################################################
 
+
+# ###################################################################################################################
 def showVertex(iVertex):
 	'''
 	showVertex(iVertex) - create sphere at given vertex, to show where is the point for debug purposes.
@@ -310,7 +316,9 @@ def setVertexPadding(iObj, iVertex, iPadding, iAxis):
 	
 
 # ###################################################################################################################
+#
 # Edges
+#
 # ###################################################################################################################
 
 
@@ -490,11 +498,13 @@ def getEdgePlane(iEdge):
 
 
 # ###################################################################################################################
+#
 # Faces
+#
 # ###################################################################################################################
 
 
-# ############################################################################
+# ###################################################################################################################
 def getFaceIndex(iObj, iFace):
 	'''
 	getFaceIndex(iObj, iFace) - returns face index for given object and face.
@@ -526,7 +536,7 @@ def getFaceIndex(iObj, iFace):
 	return -1
 
 
-# ############################################################################
+# ###################################################################################################################
 def getFaceIndexByKey(iObj, iBoundBox):
 	'''
 	getFaceIndexByKey(iObj, iBoundBox) - returns face index for given face BoundBox.
@@ -919,7 +929,9 @@ def getFaceDetails(iObj, iFace):
 
 
 # ###################################################################################################################
-# Object
+#
+# References
+#
 # ###################################################################################################################
 
 
@@ -997,150 +1009,155 @@ def getReference(iObj="none"):
 
 
 # ###################################################################################################################
-def getPlacement(iObj):
-	'''
-	getPlacement(iObj) - get placement with rotation info for given object.
-	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
-	Args:
-	
-		iObj: object to get placement
-
-	Usage:
-	
-		[ x, y, z, r ] = getPlacement(gObj)
-		
-	Result:
-	
-		return [ x, y, z, r ] array with placement info, where:
-		
-		x: X Axis object position
-		y: Y Axis object position
-		z: Z Axis object position
-		r: Rotation object
-
-	'''
-
-	if iObj.isDerivedFrom("PartDesign::Pad"):
-		ref = iObj.Profile[0].AttachmentOffset
-		
-	elif iObj.isDerivedFrom("Sketcher::SketchObject"):
-		ref = iObj.AttachmentOffset
-	else:
-		ref = iObj.Placement
-		
-	x = ref.Base.x
-	y = ref.Base.y
-	z = ref.Base.z
-	r = ref.Rotation
-
-	return [ x, y, z, r ]
+#
+# Sizes
+#
+# ###################################################################################################################
 
 
 # ###################################################################################################################
-def setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
+def getSizes(iObj):
 	'''
-	setPlacement(iObj, iX, iY, iZ, iR, iAnchor="") - set placement with rotation for given object.
+	getSizes(iObj) - allow to get sizes for object (iObj), according to the object type. The values are not sorted.
 	
 	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
-		iObj: object to set custom placement and rotation
-		iX: X Axis object position
-		iX: Y Axis object position
-		iZ: Z Axis object position
-		iR: Rotation object
-		iAnchor="" (optional): anchor for placement instead of 0 vertex, FreeCAD.Vector(x, y, z)
-
+		iObj: object to get sizes
+	
 	Usage:
 	
-		setPlacement(gObj, 100, 100, 200, r)
+		[ size1, size2, size3 ] = getSizes(obj)
 		
 	Result:
 	
-		Object gObj should be moved into 100, 100, 200 position without rotation.
-
+		Returns [ Length, Width, Height ] for Cube.
 	'''
 
-	# recalculate position for custom anchor
-	if iAnchor != "":
-		
-		[ oX, oY, oZ, oR ] = getPlacement(iObj)
-		aX, aY, aZ = iAnchor[0], iAnchor[1], iAnchor[2] 
-		
-		offset = getVertexAxisCross(oX, aX)
-		
-		if oX < aX:
-			iX = iX - offset
-		else:
-			iX = iX + offset
-		
-		offset = getVertexAxisCross(oY, aY)
-		
-		if oY < aY:
-			iY = iY - offset
-		else:
-			iY = iY + offset
-			
-		offset = getVertexAxisCross(oZ, aZ)
-		
-		if oZ < aZ:
-			iZ = iZ - offset
-		else:
-			iZ = iZ + offset
-	
-	# default anchor 0 vertex if not set above
-	
+	# for Cube panels
+	if iObj.isDerivedFrom("Part::Box"):
+
+		return [ iObj.Length.Value, iObj.Width.Value, iObj.Height.Value ]
+
+	# for Pad panels
 	if iObj.isDerivedFrom("PartDesign::Pad"):
-		iObj.Profile[0].AttachmentOffset.Base = FreeCAD.Vector(iX, iY, iZ)
-		iObj.Profile[0].AttachmentOffset.Rotation = iR
-		
-	elif iObj.isDerivedFrom("Sketcher::SketchObject"):
-		iObj.Placement.Base = FreeCAD.Vector(iX, iY, iZ)
-		iObj.Placement.Rotation = iR
-		
-	else:
-		iObj.Placement.Base = FreeCAD.Vector(iX, iY, iZ)
-		iObj.Placement.Rotation = iR
+
+		for c in iObj.Profile[0].Constraints:
+			if c.Name == "SizeX":
+				sizeX = c.Value
+			if c.Name == "SizeY":
+				sizeY = c.Value
+				
+		return [ sizeX, sizeY, iObj.Length.Value ]
+
+	# to move drill bits more precisely
+	if iObj.isDerivedFrom("Part::Cylinder"):
+		return [ 1, 1, 1 ]
+
+	if iObj.isDerivedFrom("Part::Cone"):
+		return [ 1, 1, 1 ]
 	
+	if iObj.isDerivedFrom("PartDesign::Thickness"):
+		
+		for c in iObj.Base[0].Profile[0].Constraints:
+			if c.Name == "SizeX":
+				sizeX = c.Value
+			if c.Name == "SizeY":
+				sizeY = c.Value
+				
+		return [ sizeX, sizeY, iObj.Base[0].Length.Value ]
+	
+	# for custom objects
+	try:
+		
+		return [ iObj.Base_Width.Value, iObj.Base_Height.Value, iObj.Base_Length.Value ]
+		
+	except:
+		
+		# to move all furniture more quickly
+		return [ 100, 100, 100 ]
+
 
 # ###################################################################################################################
-def resetPlacement(iObj):
+def getSizesFromVertices(iObj):
 	'''
-	resetPlacement(iObj) - reset placement for given object. Needed to set rotation for object at face.
+	getSizesFromVertices(iObj) - get occupied space by the object from vertices.
 	
 	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
-		iObj: object to reset placement
-
+		iObj: object
+	
 	Usage:
 	
-		resetPlacement(obj)
+		[ sx, sy, sz ] = getSizesFromVertices(obj)
 		
 	Result:
 	
-		Object obj return to base position.
-
+		Returns array with [ mX, mY, mZ ] where: 
+		mX - occupied space along X axis
+		mY - occupied space along Y axis
+		mZ - occupied space along Z axis
+		
 	'''
 
-	zero = FreeCAD.Vector(0, 0, 0)
-	r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 0.00)
+	init = 0
 	
-	if iObj.isDerivedFrom("PartDesign::Pad"):
-		iObj.Profile[0].AttachmentOffset.Base = zero
-		iObj.Profile[0].AttachmentOffset.Rotation = r
+	minX = 0
+	minY = 0
+	minZ = 0
+
+	maxX = 0
+	maxY = 0
+	maxZ = 0
+
+	vs = getattr(iObj.Shape, "Vertex"+"es")
+
+	for v in vs:
 		
-	elif iObj.isDerivedFrom("Sketcher::SketchObject"):
-		iObj.Placement.Base = zero
-		iObj.Placement.Rotation = r
+		[ x, y, z ] = [ v.X, v.Y, v.Z ]
 		
-	else:
-		iObj.Placement.Base = zero
-		iObj.Placement.Rotation = r
+		if init == 0:
+			[ minX, minY, minZ ] = [ x, y, z ]
+			[ maxX, maxY, maxZ ] = [ x, y, z ]
+			init = 1
+		
+		if x > maxX:
+			maxX = x
+		
+		if y > maxY:
+			maxY = y
+
+		if z > maxZ:
+			maxZ = z
+
+		if x < minX:
+			minX = x
+
+		if y < minY:
+			minY = y
+
+		if z < minZ:
+			minZ = z
+		
+	s1 = getVertexAxisCross(minX, maxX)
+	s2 = getVertexAxisCross(minY, maxY)
+	s3 = getVertexAxisCross(minZ, maxZ)
+
+	mX = round(s1, gRoundPrecision)
+	mY = round(s2, gRoundPrecision)
+	mZ = round(s3, gRoundPrecision)
+	
+	return [ mX, mY, mZ ]
+
+
+# ###################################################################################################################
+#
+# Direction, Plane, Orientation, Axis
+#
+# ###################################################################################################################
 
 
 # ###################################################################################################################
@@ -1357,193 +1374,6 @@ def getModelRotation(iX, iY, iZ):
 
 
 # ###################################################################################################################
-def getSizes(iObj):
-	'''
-	getSizes(iObj) - allow to get sizes for object (iObj), according to the object type. The values are not sorted.
-	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
-	Args:
-	
-		iObj: object to get sizes
-	
-	Usage:
-	
-		[ size1, size2, size3 ] = getSizes(obj)
-		
-	Result:
-	
-		Returns [ Length, Width, Height ] for Cube.
-	'''
-
-	# for Cube panels
-	if iObj.isDerivedFrom("Part::Box"):
-
-		return [ iObj.Length.Value, iObj.Width.Value, iObj.Height.Value ]
-
-	# for Pad panels
-	if iObj.isDerivedFrom("PartDesign::Pad"):
-
-		for c in iObj.Profile[0].Constraints:
-			if c.Name == "SizeX":
-				sizeX = c.Value
-			if c.Name == "SizeY":
-				sizeY = c.Value
-				
-		return [ sizeX, sizeY, iObj.Length.Value ]
-
-	# to move drill bits more precisely
-	if iObj.isDerivedFrom("Part::Cylinder"):
-		return [ 1, 1, 1 ]
-
-	if iObj.isDerivedFrom("Part::Cone"):
-		return [ 1, 1, 1 ]
-	
-	if iObj.isDerivedFrom("PartDesign::Thickness"):
-		
-		for c in iObj.Base[0].Profile[0].Constraints:
-			if c.Name == "SizeX":
-				sizeX = c.Value
-			if c.Name == "SizeY":
-				sizeY = c.Value
-				
-		return [ sizeX, sizeY, iObj.Base[0].Length.Value ]
-	
-	# for custom objects
-	try:
-		
-		return [ iObj.Base_Width.Value, iObj.Base_Height.Value, iObj.Base_Length.Value ]
-		
-	except:
-		
-		# to move all furniture more quickly
-		return [ 100, 100, 100 ]
-
-
-# ###################################################################################################################
-def getSizesFromVertices(iObj):
-	'''
-	getSizesFromVertices(iObj) - get occupied space by the object from vertices.
-	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
-	Args:
-	
-		iObj: object
-	
-	Usage:
-	
-		[ sx, sy, sz ] = getSizesFromVertices(obj)
-		
-	Result:
-	
-		Returns array with [ mX, mY, mZ ] where: 
-		mX - occupied space along X axis
-		mY - occupied space along Y axis
-		mZ - occupied space along Z axis
-		
-	'''
-
-	init = 0
-	
-	minX = 0
-	minY = 0
-	minZ = 0
-
-	maxX = 0
-	maxY = 0
-	maxZ = 0
-
-	vs = getattr(iObj.Shape, "Vertex"+"es")
-
-	for v in vs:
-		
-		[ x, y, z ] = [ v.X, v.Y, v.Z ]
-		
-		if init == 0:
-			[ minX, minY, minZ ] = [ x, y, z ]
-			[ maxX, maxY, maxZ ] = [ x, y, z ]
-			init = 1
-		
-		if x > maxX:
-			maxX = x
-		
-		if y > maxY:
-			maxY = y
-
-		if z > maxZ:
-			maxZ = z
-
-		if x < minX:
-			minX = x
-
-		if y < minY:
-			minY = y
-
-		if z < minZ:
-			minZ = z
-		
-	s1 = getVertexAxisCross(minX, maxX)
-	s2 = getVertexAxisCross(minY, maxY)
-	s3 = getVertexAxisCross(minZ, maxZ)
-
-	mX = round(s1, gRoundPrecision)
-	mY = round(s2, gRoundPrecision)
-	mZ = round(s3, gRoundPrecision)
-	
-	return [ mX, mY, mZ ]
-
-
-# ###################################################################################################################
-def getObjectCenter(iObj):
-	'''
-	getObjectCenter(iObj) - return Shape.CenterOfMass for the object or calculates center from vertices. 
-	However, for Cone the CenterOfMass is not the center of object. More reliable is calculation 
-	from vertices but some objects do not have all vertices to calculation. So, for now to handle 
-	simple Pad objects and LinkGroups the CenterOfMass will be returned first.
-	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
-	Args:
-	
-		iObj: object
-	
-	Usage:
-	
-		[ cx, cy, cz ] = getObjectCenter(obj)
-		
-	Result:
-	
-		Returns array with [ cx, cy, cz ] values for center point.
-		
-	'''
-
-	try:
-		
-		v = iObj.Shape.CenterOfMass
-		return [ v[0], v[1], v[2] ]
-		
-	except:
-		
-		noCenterOfMass = True
-		
-	if noCenterOfMass:
-		
-		[ sx, sy, sz ] = getSizesFromVertices(iObj)
-		
-		v = getattr(iObj.Shape, "Vertex"+"es")[0]
-		x, y, z = v.X, v.Y, v.Z
-		
-		cx = setVertexPadding(iObj, v, sx / 2, "X")
-		cy = setVertexPadding(iObj, v, sy / 2, "Y")
-		cz = setVertexPadding(iObj, v, sy / 2, "Z")
-
-		return [ cx, cy, cz ]
-		
-	return ""
-	
-
-# ###################################################################################################################
 def getDirection(iObj):
 	'''
 	getDirection(iObj) - allow to get Cube object direction (iType).
@@ -1643,6 +1473,160 @@ def getDirection(iObj):
 
 
 # ###################################################################################################################
+#
+# Position, Placement, Move
+#
+# ###################################################################################################################
+
+
+# ###################################################################################################################
+def getPlacement(iObj):
+	'''
+	getPlacement(iObj) - get placement with rotation info for given object.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObj: object to get placement
+
+	Usage:
+	
+		[ x, y, z, r ] = getPlacement(gObj)
+		
+	Result:
+	
+		return [ x, y, z, r ] array with placement info, where:
+		
+		x: X Axis object position
+		y: Y Axis object position
+		z: Z Axis object position
+		r: Rotation object
+
+	'''
+
+	if iObj.isDerivedFrom("PartDesign::Pad"):
+		ref = iObj.Profile[0].AttachmentOffset
+		
+	elif iObj.isDerivedFrom("Sketcher::SketchObject"):
+		ref = iObj.AttachmentOffset
+	else:
+		ref = iObj.Placement
+		
+	x = ref.Base.x
+	y = ref.Base.y
+	z = ref.Base.z
+	r = ref.Rotation
+
+	return [ x, y, z, r ]
+
+
+# ###################################################################################################################
+def setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
+	'''
+	setPlacement(iObj, iX, iY, iZ, iR, iAnchor="") - set placement with rotation for given object.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObj: object to set custom placement and rotation
+		iX: X Axis object position
+		iX: Y Axis object position
+		iZ: Z Axis object position
+		iR: Rotation object
+		iAnchor="" (optional): anchor for placement instead of 0 vertex, FreeCAD.Vector(x, y, z)
+
+	Usage:
+	
+		setPlacement(gObj, 100, 100, 200, r)
+		
+	Result:
+	
+		Object gObj should be moved into 100, 100, 200 position without rotation.
+
+	'''
+
+	# recalculate position for custom anchor
+	if iAnchor != "":
+		
+		[ oX, oY, oZ, oR ] = getPlacement(iObj)
+		aX, aY, aZ = iAnchor[0], iAnchor[1], iAnchor[2] 
+		
+		offset = getVertexAxisCross(oX, aX)
+		
+		if oX < aX:
+			iX = iX - offset
+		else:
+			iX = iX + offset
+		
+		offset = getVertexAxisCross(oY, aY)
+		
+		if oY < aY:
+			iY = iY - offset
+		else:
+			iY = iY + offset
+			
+		offset = getVertexAxisCross(oZ, aZ)
+		
+		if oZ < aZ:
+			iZ = iZ - offset
+		else:
+			iZ = iZ + offset
+	
+	# default anchor 0 vertex if not set above
+	
+	if iObj.isDerivedFrom("PartDesign::Pad"):
+		iObj.Profile[0].AttachmentOffset.Base = FreeCAD.Vector(iX, iY, iZ)
+		iObj.Profile[0].AttachmentOffset.Rotation = iR
+		
+	elif iObj.isDerivedFrom("Sketcher::SketchObject"):
+		iObj.Placement.Base = FreeCAD.Vector(iX, iY, iZ)
+		iObj.Placement.Rotation = iR
+		
+	else:
+		iObj.Placement.Base = FreeCAD.Vector(iX, iY, iZ)
+		iObj.Placement.Rotation = iR
+	
+
+# ###################################################################################################################
+def resetPlacement(iObj):
+	'''
+	resetPlacement(iObj) - reset placement for given object. Needed to set rotation for object at face.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObj: object to reset placement
+
+	Usage:
+	
+		resetPlacement(obj)
+		
+	Result:
+	
+		Object obj return to base position.
+
+	'''
+
+	zero = FreeCAD.Vector(0, 0, 0)
+	r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 0.00)
+	
+	if iObj.isDerivedFrom("PartDesign::Pad"):
+		iObj.Profile[0].AttachmentOffset.Base = zero
+		iObj.Profile[0].AttachmentOffset.Rotation = r
+		
+	elif iObj.isDerivedFrom("Sketcher::SketchObject"):
+		iObj.Placement.Base = zero
+		iObj.Placement.Rotation = r
+		
+	else:
+		iObj.Placement.Base = zero
+		iObj.Placement.Rotation = r
+
+
+# ###################################################################################################################
 def convertPosition(iObj, iX, iY, iZ):
 	'''
 	convertPosition(iObj, iX, iY, iZ) - convert given position vector to correct position values according 
@@ -1682,6 +1666,56 @@ def convertPosition(iObj, iX, iY, iZ):
 	else:
 		
 		return [ iX, iY, iZ ]
+
+
+# ###################################################################################################################
+def getObjectCenter(iObj):
+	'''
+	getObjectCenter(iObj) - return Shape.CenterOfMass for the object or calculates center from vertices. 
+	However, for Cone the CenterOfMass is not the center of object. More reliable is calculation 
+	from vertices but some objects do not have all vertices to calculation. So, for now to handle 
+	simple Pad objects and LinkGroups the CenterOfMass will be returned first.
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObj: object
+	
+	Usage:
+	
+		[ cx, cy, cz ] = getObjectCenter(obj)
+		
+	Result:
+	
+		Returns array with [ cx, cy, cz ] values for center point.
+		
+	'''
+
+	try:
+		
+		v = iObj.Shape.CenterOfMass
+		return [ v[0], v[1], v[2] ]
+		
+	except:
+		
+		noCenterOfMass = True
+		
+	if noCenterOfMass:
+		
+		[ sx, sy, sz ] = getSizesFromVertices(iObj)
+		
+		v = getattr(iObj.Shape, "Vertex"+"es")[0]
+		x, y, z = v.X, v.Y, v.Z
+		
+		cx = setVertexPadding(iObj, v, sx / 2, "X")
+		cy = setVertexPadding(iObj, v, sy / 2, "Y")
+		cz = setVertexPadding(iObj, v, sy / 2, "Z")
+
+		return [ cx, cy, cz ]
+		
+	return ""
+	
 
 
 # ###################################################################################################################
@@ -1761,57 +1795,10 @@ def sizesToCubePanel(iObj, iType):
 
 
 # ###################################################################################################################
-def makeCuts(iObjects):
-	'''
-	makeCuts(iObjects) - allows to create multi bool cut operation at given objects. First objects 
-	from iObjects is the base element and all other will cut the base. The copies will be created for cut. 
-	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
-	Args:
-	
-		iObjects: objects to parse by multi bool cut
-
-	Usage:
-	
-		import MagicPanels
-		MagicPanels.makeCuts(objects)
-		
-	Result:
-	
-		Array of cut objects will be returned.
-	'''
-	
-	cuts = []
-	
-	i = 0
-	for o in iObjects:
-		
-		i = i + 1
-		
-		if i == 1:
-			base = o
-			baseName = str(base.Name)
-			baseLabel = str(base.Label)
-			continue
-
-		copy = FreeCAD.ActiveDocument.copyObject(o)
-		copy.Label = "copy, " + o.Label
-		
-		cutName = baseName + str(i-1)
-		cut = FreeCAD.ActiveDocument.addObject("Part::Cut", cutName)
-		cut.Base = base
-		cut.Tool = copy
-		cut.Label = "Cut " + str(i-1) + ", " + baseLabel
-		
-		FreeCAD.activeDocument().recompute()
-		
-		base = cut
-		cuts.append(cut)
-		
-	cut.Label = "Cut, " + baseLabel
-
-	return cuts
+#
+# Replace
+#
+# ###################################################################################################################
 
 
 # ###################################################################################################################
@@ -1919,9 +1906,75 @@ def makePad(iObj, iPadLabel="Pad"):
 	pad.Length = FreeCAD.Units.Quantity(s[2])
 	sketch.Visibility = False
 
+	try:
+		copyColors(iObj, pad)
+	except:
+		skip = 1
+
 	doc.recompute()
 
 	return [ part, body, sketch, pad ]
+
+
+# ###################################################################################################################
+#
+# Cut
+#
+# ###################################################################################################################
+
+
+# ###################################################################################################################
+def makeCuts(iObjects):
+	'''
+	makeCuts(iObjects) - allows to create multi bool cut operation at given objects. First objects 
+	from iObjects is the base element and all other will cut the base. The copies will be created for cut. 
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iObjects: objects to parse by multi bool cut
+
+	Usage:
+	
+		import MagicPanels
+		MagicPanels.makeCuts(objects)
+		
+	Result:
+	
+		Array of cut objects will be returned.
+	'''
+	
+	cuts = []
+	
+	i = 0
+	for o in iObjects:
+		
+		i = i + 1
+		
+		if i == 1:
+			base = o
+			baseName = str(base.Name)
+			baseLabel = str(base.Label)
+			continue
+
+		copy = FreeCAD.ActiveDocument.copyObject(o)
+		copy.Label = "copy, " + o.Label
+		
+		cutName = baseName + str(i-1)
+		cut = FreeCAD.ActiveDocument.addObject("Part::Cut", cutName)
+		cut.Base = base
+		cut.Tool = copy
+		cut.Label = "Cut " + str(i-1) + ", " + baseLabel
+		
+		FreeCAD.activeDocument().recompute()
+		
+		base = cut
+		cuts.append(cut)
+		
+	cut.Label = "Cut, " + baseLabel
+
+	return cuts
 
 
 # ###################################################################################################################
@@ -1997,6 +2050,13 @@ def makeFrame45cut(iObjects, iFaces):
 		frames.append(frame)
 	
 	return frames
+
+
+# ###################################################################################################################
+#
+# Holes
+#
+# ###################################################################################################################
 
 
 # ###################################################################################################################
@@ -2085,6 +2145,11 @@ def makeHoles(iObj, iFace, iCylinders):
 		hole.DrillPoint = 1
 		hole.DrillForDepth = 1
 		hole.Tapered = 0
+		
+		try:
+			copyColors(hole.BaseFeature, hole)
+		except:
+			skip = 1
 		
 		FreeCAD.ActiveDocument.recompute()
 		
@@ -2192,6 +2257,11 @@ def makeCountersinks(iObj, iFace, iCones):
 		hole.DrillForDepth = 1
 		hole.Tapered = 0
 		
+		try:
+			copyColors(hole.BaseFeature, hole)
+		except:
+			skip = 1
+		
 		FreeCAD.ActiveDocument.recompute()
 		
 		base = hole
@@ -2296,6 +2366,11 @@ def makeCounterbores(iObj, iFace, iCones):
 		hole.DrillPoint = 0
 		hole.Tapered = 0
 		
+		try:
+			copyColors(hole.BaseFeature, hole)
+		except:
+			skip = 1
+		
 		FreeCAD.ActiveDocument.recompute()
 		
 		base = hole
@@ -2399,6 +2474,11 @@ def makePocketHoles(iObj, iFace, iCones):
 		hole.DepthType = 0
 		hole.DrillPoint = 0
 		hole.Tapered = 0
+		
+		try:
+			copyColors(hole.BaseFeature, hole)
+		except:
+			skip = 1
 		
 		FreeCAD.ActiveDocument.recompute()
 		
@@ -2516,6 +2596,11 @@ def makeCounterbores2x(iObj, iFace, iCones):
 		hole.DrillPoint = 0
 		hole.Tapered = 0
 		
+		try:
+			copyColors(hole.BaseFeature, hole)
+		except:
+			skip = 1
+		
 		FreeCAD.ActiveDocument.recompute()
 		
 		base = hole
@@ -2611,6 +2696,11 @@ def makeCounterbores2x(iObj, iFace, iCones):
 		hole.DrillPoint = 0
 		hole.Tapered = 0
 		
+		try:
+			copyColors(hole.BaseFeature, hole)
+		except:
+			skip = 1
+		
 		FreeCAD.ActiveDocument.recompute()
 		
 		base = hole
@@ -2627,7 +2717,63 @@ def makeCounterbores2x(iObj, iFace, iCones):
 
 
 # ###################################################################################################################
+#
+# Colors
+#
+# ###################################################################################################################
+
+
+# ###################################################################################################################
+def copyColors(iSource, iTarget):
+	'''
+	copyColors(iSource, iTarget) - allows to copy colors from iSource object to iTarget object
+
+	Note: This is internal function, so there is no error pop-up or any error handling.
+
+	Args:
+
+		iSource: source object
+		iTarget: target object
+		
+	Usage:
+
+		import MagicPanels
+		MagicPanels.copyColors(panel, copy)
+		
+	Result:
+
+		All colors structure should be copied from source to target.
+	'''
+
+	skip = 0
+	
+	try:
+		iTarget.ViewObject.ShapeColor = iSource.ViewObject.ShapeColor
+	except:
+		skip = 1
+		
+	try:
+		# copy edgeand only for cubes because other objects have different face order
+		if len(iTarget.ViewObject.DiffuseColor) == len(iSource.ViewObject.DiffuseColor):
+			iTarget.ViewObject.DiffuseColor = iSource.ViewObject.DiffuseColor
+	except:
+		skip = 1
+	
+	try:
+		iTarget.ViewObject.LineColor = iSource.ViewObject.LineColor
+	except:
+		skip = 1
+		
+	if skip == 0:
+		return 0
+	else:
+		return -1
+
+
+# ###################################################################################################################
+#
 # Spreadsheet
+#
 # ###################################################################################################################
 
 def sheetGetKey(iC, iR):
@@ -2847,8 +2993,13 @@ def panelCopy(iType):
 		
 		panel = FreeCAD.activeDocument().addObject("Part::Box", "panel"+iType)
 		[ panel.Length, panel.Width, panel.Height ] = [ Length, Width, Height ]
-		
-		FreeCAD.activeDocument().recompute()
+
+		try:
+			copyColors(gObj, panel)
+		except:
+			skip = 1
+
+		FreeCAD.ActiveDocument.recompute()
 
 	except:
 
@@ -3280,8 +3431,14 @@ def panelFace(iType):
 		panel.Length, panel.Width, panel.Height = L, W, H
 
 		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
+		
+		try:
+			copyColors(gObj, panel)
+		except:
+			skip = 1
+			
 		FreeCAD.activeDocument().recompute()
-	
+
 	except:
 		
 		info = ""
@@ -3343,6 +3500,12 @@ def panelBetween(iType):
 			panel.Height = z
 
 		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x1, y1, z1), FreeCAD.Rotation(0, 0, 0))
+		
+		try:
+			copyColors(gObj, panel)
+		except:
+			skip = 1
+
 		FreeCAD.activeDocument().recompute()
 
 	except:
@@ -3418,6 +3581,12 @@ def panelSide(iType):
 		panel.Height = Height
 		
 		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
+		
+		try:
+			copyColors(gObj, panel)
+		except:
+			skip = 1
+
 		FreeCAD.activeDocument().recompute()
 
 	except:
@@ -3483,6 +3652,12 @@ def panelBackOut():
 			panel.Height = z
 
 			panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x1, y1, z3), FreeCAD.Rotation(0, 0, 0))
+			
+			try:
+				copyColors(gObj, panel)
+			except:
+				skip = 1
+
 			FreeCAD.activeDocument().recompute()
 			
 		else:
@@ -3545,6 +3720,12 @@ def panelCover(iType):
 			panel.Height = z
 
 			panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x1, y1, z3), FreeCAD.Rotation(0, 0, 0))
+			
+			try:
+				copyColors(gObj, panel)
+			except:
+				skip = 1
+
 			FreeCAD.activeDocument().recompute()
 
 	except:
@@ -3597,7 +3778,7 @@ def panel2pad(iLabel="panel2pad"):
 		info += translate('panel2padInfo', '<b>Please select valid Cube panel to replace it with Pad. </b><br><br><b>Note:</b> This tool allows to replace Cube panel with Pad panel. The new created Pad panel will get the same dimensions, placement and rotation as the selected Cube panel. You can transform only one Cube panel into Pad at once. This tool is mostly dedicated to add decoration that is not supported for Cube objects by FreeCAD PartDesign workbench. You can also change shape by changing the Sketch.')
 	
 		showInfo("panel2pad", info)
-	
+
 
 # ###################################################################################################################
 def panel2link():
