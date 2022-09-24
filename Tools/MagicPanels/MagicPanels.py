@@ -1155,6 +1155,57 @@ def getSizesFromVertices(iObj):
 
 # ###################################################################################################################
 #
+# Measurements
+#
+# ###################################################################################################################
+
+
+# ###################################################################################################################
+def showMeasure(iP1, iP2, iRef=""):
+	'''
+	showMeasure(iP1, iP2, iRef="") - create measurements object, I mean draw it. Now it use FreeCAD function 
+	to create and draw object. But in the future this can be changed to more beautiful drawing without changing
+	tools. 
+	
+	Note: This is internal function, so there is no error pop-up or any error handling.
+	
+	Args:
+	
+		iP1: starting point vertex object
+		iP2: ending point vertex object
+		iRef (optional): string for future TechDraw import or any other use, other tools
+	
+	Usage:
+	
+		m = MagicPanels.showMeasure(gP1, gP2, "Pad")
+		
+	Result:
+	
+		Create measure object, draw it and return measure object for further proccessing. 
+	'''
+
+	m = FreeCAD.ActiveDocument.addObject('App::MeasureDistance', "measure")
+	m.P1 = iP1
+	m.P2 = iP2
+	
+	if iRef != "":
+		m.Label = "Measure "
+		m.Label2 = str(iRef)
+	else:
+		m.Label = "Measure "
+	
+	m.ViewObject.LineColor = (1.0, 0.0, 0.0, 0.0)
+	m.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
+	m.ViewObject.FontSize = 24
+	m.ViewObject.DistFactor = 0.25
+	
+	FreeCAD.ActiveDocument.recompute()
+	
+	return m
+	
+
+# ###################################################################################################################
+#
 # Direction, Plane, Orientation, Axis
 #
 # ###################################################################################################################

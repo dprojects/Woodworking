@@ -58,6 +58,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 		* [sheet2export](#sheet2export)
 		* [showSpaceModel](#showspacemodel)
 		* [showSpaceSelected](#showspaceselected)
+		* [magicMeasure](#magicmeasure)
 	* [Advanced](#advanced)
 		* [panel2pad](#panel2pad)
 		* [showAlias](#showalias)
@@ -298,6 +299,8 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 ### getDimensions
 
 <img align="left" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/getDimensions.png"> This tool allows to create spreadsheet with dimensions to cut, cut-list, BOM. For more info see: [getDimensions](https://github.com/dprojects/getDimensions)
+  
+**Video tutorial:** [3D furniture designing - cut-list, BOM](https://www.youtube.com/watch?v=lYssiliONVo)
 
 <br><br>
 
@@ -314,6 +317,22 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 ### showSpaceSelected
 
 <img align="left" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showSpaceSelected.png"> This tool allows to calculate occupied space in 3D by selected elements. This approach might be very useful at furniture designing process. For example you can see how much space take selected parts of the furniture. Normally, all the `Pad` or `Cube` elements, should be created according to the `XYZ` plane, so there will be no difference between the real dimensions and occupied space in 3D.
+
+### magicMeasure
+
+<img align="left" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicMeasure.png"> This tool allows for quick measure: 
+  * Hover mode:
+    * all edges for face
+    * edge
+    * hole, you can also measure face inside to get depth
+    * ellipse, you can also measure face inside to get depth
+  * Selection mode:
+    * vertex + vertex
+    * hole + hole
+    * hole + edge
+    
+**Video tutorial:** [3D furniture designing - smart measurement tool](https://www.youtube.com/watch?v=d2FRECuHy2o)
+
 
 ## Advanced
 

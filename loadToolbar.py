@@ -151,7 +151,7 @@ def getItems(iType):
 			"sheet2export",
 			"showSpaceModel",
 			"showSpaceSelected",
-			"Part_Measure_Linear"
+			"magicMeasure"
 		]
 
 	if iType == "Woodworking - project manage":

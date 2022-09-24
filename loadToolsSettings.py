@@ -98,6 +98,7 @@ Tools = [
 	# dimensions
 	
 	"MagicPanels", "showAlias", "png", "select objects with alias", "Click to see info.",
+	"MagicPanels", "magicMeasure", "png", "magicMeasure", "Quick measurement preview on hover or by selection.",
 	
 	# preview
 	

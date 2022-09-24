@@ -1222,6 +1222,45 @@ FreeCADGui.addCommand("showAlias", showAlias())
 
 	
 # ######################################################################################################################
+class magicMeasure():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "magicMeasure.png"),
+				"MenuText": QT_TRANSLATE_NOOP("magicMeasureMenuText", "magicMeasure"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicMeasureToolTip", "Quick measurement preview on hover or by selection."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "magicMeasure"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("magicMeasure", magicMeasure())
+
+	
+# ######################################################################################################################
 class fitModel():
 
 	def GetResources(self):

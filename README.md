@@ -32,7 +32,7 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 
 **Current development platform:**
 
-	OS: Ubuntu 22.04 LTS (XFCE/xubuntu)
+	OS: Ubuntu 22.04.1 LTS (XFCE/xubuntu)
 	Word size of FreeCAD: 64-bit
 	Version: 0.20.29177 (Git) AppImage
 	Build type: Release
