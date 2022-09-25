@@ -6,18 +6,6 @@ Author: Darek L (github.com/dprojects)
 Latest version: https://github.com/dprojects/getDimensions
 
 Certified platform:
-
-OS: Ubuntu 22.04 LTS (XFCE/xubuntu)
-Word size of FreeCAD: 64-bit
-Version: 0.20.29177 (Git) AppImage
-Build type: Release
-Branch: (HEAD detached at 0.20)
-Hash: 68e337670e227889217652ddac593c93b5e8dc94
-Python 3.9.13, Qt 5.12.9, Coin 4.0.0, Vtk 9.1.0, OCC 7.5.3
-Locale: English/United States (en_US)
-Installed mods: 
-  * Woodworking 0.20.29177
-
 https://github.com/dprojects/Woodworking
 
 '''
@@ -83,27 +71,6 @@ sLTFDsc = {
 	"a" : translate("getDimensions", "approximation of needed material")
 }
 
-# Additional report - mounting
-sARM = "mounting"
-sARMsc = {
-	"mounting" : "",
-	"no mounting" : ""
-}
-
-# Additional report - profiles
-sARP = "profiles"
-sARPsc = {
-	"profiles" : "",
-	"no profiles" : ""
-}
-
-# Additional report - decoration
-sARD = "no decoration"
-sARDsc = {
-	"decoration" : "",
-	"no decoration" : ""
-}
-
 # Units for area:
 sUnitsArea = "m"
 sUnitsAreaDsc = {
@@ -129,6 +96,14 @@ sEColorDsc = {
 	"bronze" : "bronze"
 }
 sEColor = sEColorDsc[sEColorD]
+
+
+# checkboxes - additional reports
+
+sARME = True      # measurements
+sARM = True       # mounting
+sARP = True       # profiles
+sARD = False      # decoration
 
 
 # ###################################################################################################################
@@ -197,6 +172,7 @@ gLang19 = ""
 gLang20 = ""
 gLang21 = ""
 gLang22 = ""
+gLang23 = ""
 
 
 # ###################################################################################################################
@@ -327,33 +303,24 @@ def showQtGUI():
 			self.ardL = QtGui.QLabel(translate("getDimensions", "Additional reports:"), self)
 			self.ardL.move(10, vLine + 3)
 			
-			# mounting
-			self.armList = tuple(sARMsc.keys())
-			self.armO = QtGui.QComboBox(self)
-			self.armO.addItems(self.armList)
-			self.armO.setCurrentIndex(self.armList.index(str(sARM)))
-			self.armO.activated[str].connect(self.setARM)
-			self.armO.setFixedWidth(110)
-			self.armO.move(10, vLine + vLineNextRow)
+			self.armeCB = QtGui.QCheckBox(translate('getDimensions', '- custom measurements'), self)
+			self.armeCB.setCheckState(QtCore.Qt.Checked)
+			self.armeCB.move(10, vLine + vLineNextRow)
+
+			self.armCB = QtGui.QCheckBox(translate('getDimensions', '- dowels and screws'), self)
+			self.armCB.setCheckState(QtCore.Qt.Checked)
+			self.armCB.move(200, vLine + vLineNextRow)
 			
-			# profiles
-			self.arpList = tuple(sARPsc.keys())
-			self.arpO = QtGui.QComboBox(self)
-			self.arpO.addItems(self.arpList)
-			self.arpO.setCurrentIndex(self.arpList.index(str(sARP)))
-			self.arpO.activated[str].connect(self.setARP)
-			self.arpO.setFixedWidth(110)
-			self.arpO.move(130, vLine + vLineNextRow)
-
-			# decoration
-			self.ardList = tuple(sARDsc.keys())
-			self.ardO = QtGui.QComboBox(self)
-			self.ardO.addItems(self.ardList)
-			self.ardO.setCurrentIndex(self.ardList.index(str(sARD)))
-			self.ardO.activated[str].connect(self.setARD)
-			self.ardO.setFixedWidth(110)
-			self.ardO.move(250, vLine + vLineNextRow)
-
+			vLine = vLine + vLineNextRow
+			
+			self.ardCB = QtGui.QCheckBox(translate('getDimensions', '- decorations'), self)
+			self.ardCB.setCheckState(QtCore.Qt.Unchecked)
+			self.ardCB.move(10, vLine + vLineNextRow)
+			
+			self.arpCB = QtGui.QCheckBox(translate('getDimensions', '- construction profiles'), self)
+			self.arpCB.setCheckState(QtCore.Qt.Checked)
+			self.arpCB.move(200, vLine + vLineNextRow)
+			
 			# ############################################################################
 			# languages
 			# ############################################################################
@@ -629,9 +596,10 @@ def showQtGUI():
 				self.ufsIS.hide()
 				
 				self.ardL.hide()
-				self.ardO.hide()
-				self.armO.hide()
-				self.arpO.hide()
+				self.armeCB.hide()
+				self.ardCB.hide()
+				self.armCB.hide()
+				self.arpCB.hide()
 			else:
 				self.ufdL.show()
 				self.ufdO.show()
@@ -646,21 +614,10 @@ def showQtGUI():
 				self.ufsIS.show()
 				
 				self.ardL.show()
-				self.ardO.show()
-				self.armO.show()
-				self.arpO.show()
-
-		def setARD(self, selectedText):
-			global sARD
-			sARD = selectedText
-
-		def setARM(self, selectedText):
-			global sARM
-			sARM = selectedText
-
-		def setARP(self, selectedText):
-			global sARP
-			sARP = selectedText
+				self.armeCB.show()
+				self.ardCB.show()
+				self.armCB.show()
+				self.arpCB.show()
 
 		def setUFA(self, selectedText):
 			global sUnitsArea
@@ -701,11 +658,57 @@ def showQtGUI():
 		pass
 	
 	if form.result == userOK:
-		global sEColor
+		global sEColor, sARME
+
+
+	
+
+		'''
+		def setARD(self, selectedText):
+			global sARD
+			sARD = selectedText
+
+		def setARM(self, selectedText):
+			global sARM
+			sARM = selectedText
+
+		def setARP(self, selectedText):
+			global sARP
+			sARP = selectedText
+		
+		def setARME(self, selectedText):
+			global sARME
+			sARME = selectedText
+		'''
+		
 		
 		# set edgeband code from text form
 		sEColor = form.ecti.text()
 		
+		# measurements
+		if form.armeCB.isChecked():
+			sARME = True
+		else:
+			sARME = False
+		
+		# mounting
+		if form.armCB.isChecked():
+			sARM = True
+		else:
+			sARM = False
+			
+		# profiles
+		if form.arpCB.isChecked():
+			sARP = True
+		else:
+			sARP = False
+		
+		# decoration
+		if form.ardCB.isChecked():
+			sARD = True
+		else:
+			sARD = False
+			
 		gExecute = "yes"
 
 
@@ -1378,25 +1381,30 @@ def setDBAllConstraints(iObj, iL, iN, iV, iCaller="setDBAllConstraints"):
 
 
 # ###################################################################################################################
-def setDBAdditional(iObj, iType, iN, iV, iCaller="setDBAdditional"):
+def setDBAdditional(iObj, iType, iN, iV, iKey="", iCaller="setDBAdditional"):
 
 	try:
 
 		# set key
 		vV = str(":".join(map(str, iV)))
 		
-		if (
-			iType == "Fillet" or
-			iType == "Chamfer"
-			):
-		
-			vKey = iType + ", "
-			vKey += iObj.Base[0].Label + ", " + ', '.join(map(str, iObj.Base[1]))
-			vKey += ":" + vV
+		if iKey != "":
+			
+			vKey = iKey
 		
 		else:
-			vKey = iType
-			vKey += ":" + vV
+			if (
+				iType == "Fillet" or
+				iType == "Chamfer"
+				):
+			
+				vKey = iType + ", "
+				vKey += iObj.Base[0].Label + ", " + ', '.join(map(str, iObj.Base[1]))
+				vKey += ":" + vV
+			
+			else:
+				vKey = iType
+				vKey += ":" + vV
 		
 		# set quantity
 		if vKey in dbARQ:
@@ -1404,10 +1412,16 @@ def setDBAdditional(iObj, iType, iN, iV, iCaller="setDBAdditional"):
 			# increase quantity only
 			dbARQ[vKey] = dbARQ[vKey] + 1
 	
-			# show only one object at report
-			return 0
-			
-		# init quantity
+			# show only one object at report if there is no custom key
+			# update existing entry if there is custom key
+			if iKey == "":
+				return 0
+			else:
+				# set names and values
+				dbARN[vKey] = str(":".join(map(str, iN)))
+				dbARV[vKey] = vV
+				return 0
+		
 		dbARQ[vKey] = 1
 		
 		# set names and values
@@ -1706,7 +1720,7 @@ def setDecoration(iObj, iCaller="setDecoration"):
 
 		# set db for additional report
 		if vType != "":
-			setDBAdditional(iObj, vType, vArrNames, vArrValues, iCaller)
+			setDBAdditional(iObj, vType, vArrNames, vArrValues, "", iCaller)
 
 	except:
 		
@@ -1759,7 +1773,7 @@ def setMounting(iObj, iCaller="setMounting"):
 
 		# set db for additional report
 		if vType != "":
-			setDBAdditional(iObj, vType, vArrNames, vArrValues, iCaller)
+			setDBAdditional(iObj, vType, vArrNames, vArrValues, "", iCaller)
 		
 	except:
 		
@@ -1857,12 +1871,61 @@ def setProfiles(iObj, iCaller="setProfiles"):
 
 		# set db for additional report
 		if vType != "":
-			setDBAdditional(iObj, vType, vArrNames, vArrValues, iCaller)
+			setDBAdditional(iObj, vType, vArrNames, vArrValues, "", iCaller)
 
 	except:
 		
 		# if there is wrong structure
 		showError(iCaller, iObj, "setProfiles", "wrong structure")
+		return -1
+
+	return 0
+
+
+# ###################################################################################################################
+def setMeasurementsList(iObj, iCaller="setMeasurementsList"):
+
+	try:
+
+		# init variables
+		vArrNames = []
+		vArrValues = []
+		vType = ""
+
+		if iObj.isDerivedFrom("App::MeasureDistance"):
+
+			arr = str(iObj.Label2).split(", ")
+			
+			n = str(arr[0])
+			sub = str(arr[len(arr)-1])
+			
+			# set key
+			vType = gLang23 + ", " + n
+			
+			# add existing entries
+			if vType in dbARN.keys():
+				
+				vArrNames.append(dbARN[vType])
+				vArrValues.append(dbARV[vType])
+			
+			# add new entry
+			
+			# set name for entry
+			v = "string;" + str(sub)
+			vArrNames.append(sub)
+			
+			# set value for entry
+			v = "f;" + str(iObj.Distance.Value)
+			vArrValues.append(v)
+
+		# set db for additional report
+		if vType != "":
+			setDBAdditional(iObj, vType, vArrNames, vArrValues, vType, iCaller)
+
+	except:
+		
+		# if there is wrong structure
+		showError(iCaller, iObj, "setMeasurementsList", "wrong structure")
 		return -1
 
 	return 0
@@ -1936,18 +1999,22 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 		if iObj.isDerivedFrom("PartDesign::FeatureBase") and iObj.Name.startswith("Clone"):
 			setDraftClone(iObj, iCaller)
 
+	# additional report - measurements
+	if sARME == True:
+		setMeasurementsList(iObj, iCaller)
+
 	# additional report - mounting
-	if sARM == "mounting":
+	if sARM == True:
 		setMounting(iObj, iCaller)
 		
 	# additional report - profiles
-	if sARP == "profiles":
+	if sARP == True:
 		setProfiles(iObj, iCaller)
 
 	# additional report - decoration
-	if sARD == "decoration":
+	if sARD == True:
 		setDecoration(iObj, iCaller)
-
+		
 	# skip not supported furniture parts with no error
 	# Sheet, Transformations will be handling later
 	return 0
@@ -2337,6 +2404,7 @@ def initLang():
 	global gLang20
 	global gLang21
 	global gLang22
+	global gLang23
 
 	# Polish language
 	if sLang  == "pl":
@@ -2370,6 +2438,7 @@ def initLang():
 		gLang20 = "Średnica"
 		gLang21 = "Długość"
 		gLang22 = "Obszar"
+		gLang23 = "Własne pomiary"
 
 	# English language
 	else:
@@ -2403,6 +2472,8 @@ def initLang():
 		gLang20 = "Diameter"
 		gLang21 = "Length"
 		gLang22 = "Area"
+		gLang23 = "Custom measurements"
+
 
 # ###################################################################################################################
 def setViewQ(iCaller="setViewQ"):

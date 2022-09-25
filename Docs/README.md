@@ -300,7 +300,9 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 <img align="left" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/getDimensions.png"> This tool allows to create spreadsheet with dimensions to cut, cut-list, BOM. For more info see: [getDimensions](https://github.com/dprojects/getDimensions)
   
-**Video tutorial:** [3D furniture designing - cut-list, BOM](https://www.youtube.com/watch?v=lYssiliONVo)
+**Video tutorials:** 
+* [3D furniture designing - cut-list, BOM](https://www.youtube.com/watch?v=lYssiliONVo)
+* [3D furniture designing - report for custom measurements](https://www.youtube.com/watch?v=-Mmwvw_Bue4)
 
 <br><br>
 
@@ -320,19 +322,11 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 ### magicMeasure
 
-<img align="left" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicMeasure.png"> This tool allows for quick measure: 
-  * Hover mode:
-    * all edges for face
-    * edge
-    * hole, you can also measure face inside to get depth
-    * ellipse, you can also measure face inside to get depth
-  * Selection mode:
-    * vertex + vertex
-    * hole + hole
-    * hole + edge
+<img align="left" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicMeasure.png"> This tool allows for quick measure on objects hover or by selection. At hover mode you can measure e.g. all edges for face, single edge, single hole radius, face inside hole to get depth, ellipse both radius and also depth. At selection mode you can measure e.g. distance from vertex to another vertex, distance from hole to hole, distance from hole to edge. This tool save also references to the measured object for further processing. So, you can easily get all your custom measurements.
     
-**Video tutorial:** [3D furniture designing - smart measurement tool](https://www.youtube.com/watch?v=d2FRECuHy2o)
-
+**Video tutorials:** 
+* [3D furniture designing - smart measurement tool](https://www.youtube.com/watch?v=d2FRECuHy2o)
+* [3D furniture designing - report for custom measurements](https://www.youtube.com/watch?v=-Mmwvw_Bue4)
 
 ## Advanced
 
