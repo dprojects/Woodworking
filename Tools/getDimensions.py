@@ -1589,34 +1589,38 @@ def setAllConstraints(iObj, iCaller="setAllConstraints"):
 		vCons = iObj.Profile[0].Constraints
 
 		for c in vCons:
-		
-			if c.Value != 0:
+			
+			name = str(c.Name)
+			value = float(c.Value)
+			
+			if value != float(0):
 
 				if str(c.Type) == "Angle":
-					v = "to-angle;" + str(c.Value)
+					v = "to-angle;" + str(value)
 				else:
-					v = "d;" + str(c.Value)
+					v = "d;" + str(value)
 				
 				vArrValues.append(v)
 
 				# set Constraint Name
-				if c.Name != "":
+				if name != "":
 	
 					# decode
-					c.Name = getConstraintName(iObj, c.Name, iCaller)
+					n = getConstraintName(iObj, name, iCaller)
 
 				else:
 					
-					# avoid FreeCAD crash bug at empty string
-					c.Name = "-"
+					# no empty array key
+					n = "-"
 
-				vArrNames.append(str(c.Name))
+				vArrNames.append(n)
 			
 		# convert float to the correct dimension
 		vLength = "d;" + str(iObj.Length.Value)
 
 		# set db for Constraints
-		setDBAllConstraints(iObj, vLength, vArrNames, vArrValues, iCaller)
+		if len(vArrNames) > 0 and len(vArrValues) > 0:
+			setDBAllConstraints(iObj, vLength, vArrNames, vArrValues, iCaller)
 
 	except:
 		
