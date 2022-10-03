@@ -760,19 +760,22 @@ def getFaceSink(iObj, iFace):
 		
 	'''
 
+	inside = True
+
 	plane = getFacePlane(iFace)
 	[ x, y, z ] = iFace.CenterOfMass
 	
 	if plane == "XY":
 		v = FreeCAD.Vector(x, y, z + 1)
+		inside = iObj.Shape.BoundBox.isInside(v)
 		
 	if plane == "XZ":
 		v = FreeCAD.Vector(x, y + 1, z)
+		inside = iObj.Shape.BoundBox.isInside(v)
 		
 	if plane == "YZ":
 		v = FreeCAD.Vector(x + 1, y, z)
-		
-	inside = iObj.Shape.BoundBox.isInside(v)
+		inside = iObj.Shape.BoundBox.isInside(v)
 	
 	if inside == True:
 		return "+"
@@ -1042,14 +1045,25 @@ def getSizes(iObj):
 
 	# for Pad panels
 	if iObj.isDerivedFrom("PartDesign::Pad"):
-
+		
+		sizeX = ""
+		sizeY = ""
+		
 		for c in iObj.Profile[0].Constraints:
 			if c.Name == "SizeX":
 				sizeX = c.Value
 			if c.Name == "SizeY":
 				sizeY = c.Value
-				
-		return [ sizeX, sizeY, iObj.Length.Value ]
+		
+		if sizeX == "" or sizeY == "":
+			sizes = getSizesFromVertices(iObj.Profile[0])
+			sizes.sort()
+			sizes.pop(0)
+			sizes.insert(0, iObj.Length.Value)
+			return sizes
+			
+		else:
+			return [ sizeX, sizeY, iObj.Length.Value ]
 
 	# to move drill bits more precisely
 	if iObj.isDerivedFrom("Part::Cylinder"):
@@ -1060,13 +1074,24 @@ def getSizes(iObj):
 	
 	if iObj.isDerivedFrom("PartDesign::Thickness"):
 		
+		sizeX = ""
+		sizeY = ""
+
 		for c in iObj.Base[0].Profile[0].Constraints:
 			if c.Name == "SizeX":
 				sizeX = c.Value
 			if c.Name == "SizeY":
 				sizeY = c.Value
-				
-		return [ sizeX, sizeY, iObj.Base[0].Length.Value ]
+			
+		if sizeX == "" or sizeY == "":
+			sizes = getSizesFromVertices(iObj.Base[0].Profile[0])
+			sizes.sort()
+			sizes.pop(0)
+			sizes.insert(0, iObj.Base[0].Length.Value)
+			return sizes
+			
+		else:
+			return [ sizeX, sizeY, iObj.Base[0].Length.Value ]
 	
 	# for custom objects
 	try:
@@ -1557,7 +1582,21 @@ def getPlacement(iObj):
 	'''
 
 	if iObj.isDerivedFrom("PartDesign::Pad"):
-		ref = iObj.Profile[0].AttachmentOffset
+		
+		skip = 0
+		
+		try:
+			direction = getDirection(iObj)
+		except:
+			skip = 1
+		
+		# for normal rectangular Pad
+		if skip == 0:
+			ref = iObj.Profile[0].AttachmentOffset
+			
+		# for irregular shapes
+		else:
+			ref = iObj.Profile[0].Placement
 		
 	elif iObj.isDerivedFrom("Sketcher::SketchObject"):
 		ref = iObj.AttachmentOffset
@@ -1628,8 +1667,23 @@ def setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
 	# default anchor 0 vertex if not set above
 	
 	if iObj.isDerivedFrom("PartDesign::Pad"):
-		iObj.Profile[0].AttachmentOffset.Base = FreeCAD.Vector(iX, iY, iZ)
-		iObj.Profile[0].AttachmentOffset.Rotation = iR
+		
+		skip = 0
+		
+		try:
+			direction = getDirection(iObj)
+		except:
+			skip = 1
+		
+		# for normal rectangular Pad
+		if skip == 0:
+			iObj.Profile[0].AttachmentOffset.Base = FreeCAD.Vector(iX, iY, iZ)
+			iObj.Profile[0].AttachmentOffset.Rotation = iR
+		
+		# for irregular shapes
+		else:
+			iObj.Profile[0].Placement.Base = FreeCAD.Vector(iX, iY, iZ)
+			iObj.Profile[0].Placement.Rotation = iR
 		
 	elif iObj.isDerivedFrom("Sketcher::SketchObject"):
 		iObj.Placement.Base = FreeCAD.Vector(iX, iY, iZ)
@@ -1798,13 +1852,23 @@ def sizesToCubePanel(iObj, iType):
 		
 	elif iObj.isDerivedFrom("PartDesign::Pad"):
 		
+		sizeX = ""
+		sizeY = ""
+		
 		for c in iObj.Profile[0].Constraints:
 			if c.Name == "SizeX":
 				sizeX = c.Value
 			if c.Name == "SizeY":
 				sizeY = c.Value
 		
-		sizes = [ iObj.Length.Value, sizeX, sizeY ]
+		if sizeX == "" or sizeY == "":
+			sizes = getSizesFromVertices(iObj.Profile[0])
+			sizes.sort()
+			sizes.pop(0)
+			sizes.insert(0, iObj.Length.Value)
+			
+		else:
+			sizes = [ iObj.Length.Value, sizeX, sizeY ]
 	
 	else:
 		
@@ -2018,7 +2082,7 @@ def makeCuts(iObjects):
 		cut.Tool = copy
 		cut.Label = "Cut " + str(i-1) + ", " + baseLabel
 		
-		FreeCAD.activeDocument().recompute()
+		FreeCAD.ActiveDocument.recompute()
 		
 		base = cut
 		cuts.append(cut)
@@ -2146,7 +2210,7 @@ def makeHoles(iObj, iFace, iCylinders):
 		
 		[ part, body, sketch, pad ] = makePad(base, base.Label)
 		FreeCAD.ActiveDocument.removeObject(base.Name)
-		FreeCAD.activeDocument().recompute()
+		FreeCAD.ActiveDocument.recompute()
 	
 	else:
 		
@@ -2246,7 +2310,7 @@ def makeCountersinks(iObj, iFace, iCones):
 		
 		[ part, body, sketch, pad ] = makePad(base, base.Label)
 		FreeCAD.ActiveDocument.removeObject(base.Name)
-		FreeCAD.activeDocument().recompute()
+		FreeCAD.ActiveDocument.recompute()
 	
 	else:
 		
@@ -2357,7 +2421,7 @@ def makeCounterbores(iObj, iFace, iCones):
 		
 		[ part, body, sketch, pad ] = makePad(base, base.Label)
 		FreeCAD.ActiveDocument.removeObject(base.Name)
-		FreeCAD.activeDocument().recompute()
+		FreeCAD.ActiveDocument.recompute()
 	
 	else:
 		
@@ -2466,7 +2530,7 @@ def makePocketHoles(iObj, iFace, iCones):
 		
 		[ part, body, sketch, pad ] = makePad(base, base.Label)
 		FreeCAD.ActiveDocument.removeObject(base.Name)
-		FreeCAD.activeDocument().recompute()
+		FreeCAD.ActiveDocument.recompute()
 	
 	else:
 		
@@ -2583,7 +2647,7 @@ def makeCounterbores2x(iObj, iFace, iCones):
 		
 		[ part, body, sketch, pad ] = makePad(base, base.Label)
 		FreeCAD.ActiveDocument.removeObject(base.Name)
-		FreeCAD.activeDocument().recompute()
+		FreeCAD.ActiveDocument.recompute()
 	
 	else:
 		
@@ -3003,7 +3067,7 @@ def panelDefault(iType):
 			panel.Width = 300
 			panel.Height = 600
 
-		FreeCAD.activeDocument().recompute()
+		FreeCAD.ActiveDocument.recompute()
 	
 	except:
 	
@@ -3115,13 +3179,17 @@ def panelMove(iType):
 		if iType == "Zm":
 			z = - sizes[0]
 
-		[ x, y, z ] = convertPosition(gObj, x, y, z)
+		try:
+			[ x, y, z ] = convertPosition(gObj, x, y, z)
+		except:
+			skip = 1
+			
 		[ x, y, z ] = getModelRotation(x, y, z)
 
 		[ px, py, pz, r ] = getPlacement(gObj)
 		setPlacement(gObj, px+x, py+y, pz+z, r)
 
-		FreeCAD.activeDocument().recompute()
+		FreeCAD.ActiveDocument.recompute()
 	
 	except:
 		
@@ -3130,7 +3198,7 @@ def panelMove(iType):
 		info += translate('panelMoveInfo', '<b>Please select valid object to move. </b><br><br><b>Note:</b> With the arrows you can quickly move Cube panels or even any other objects. If the thickness of the selected object can be recognized, the move step will be the thickness. So, you can solve common furniture problem with thickness offset. If the thickness will not be recognized the step will be 100. This allow you to move whole furniture segments very quickly. The arrows recognize the view model rotation. If you want precisely move object, use magicMove tool, instead. ')
 		
 		showInfo("panelMove"+iType, info)
-
+	
 
 # ###################################################################################################################
 def panelMove2Face():
@@ -3200,7 +3268,7 @@ def panelMove2Face():
 				R = r
 			
 			setPlacement(obj, X, Y, Z, R)
-			FreeCAD.activeDocument().recompute()
+			FreeCAD.ActiveDocument.recompute()
 			
 	except:
 		
@@ -3428,7 +3496,7 @@ def panelResize(iType):
 							gObj.Length = gObj.Length.Value - 1
 
 
-		FreeCAD.activeDocument().recompute()
+		FreeCAD.ActiveDocument.recompute()
 
 	except:
 		
@@ -3488,7 +3556,7 @@ def panelFace(iType):
 		except:
 			skip = 1
 			
-		FreeCAD.activeDocument().recompute()
+		FreeCAD.ActiveDocument.recompute()
 
 	except:
 		
@@ -3557,7 +3625,7 @@ def panelBetween(iType):
 		except:
 			skip = 1
 
-		FreeCAD.activeDocument().recompute()
+		FreeCAD.ActiveDocument.recompute()
 
 	except:
 		
@@ -3638,7 +3706,7 @@ def panelSide(iType):
 		except:
 			skip = 1
 
-		FreeCAD.activeDocument().recompute()
+		FreeCAD.ActiveDocument.recompute()
 
 	except:
 		
@@ -3709,7 +3777,7 @@ def panelBackOut():
 			except:
 				skip = 1
 
-			FreeCAD.activeDocument().recompute()
+			FreeCAD.ActiveDocument.recompute()
 			
 		else:
 		
@@ -3777,7 +3845,7 @@ def panelCover(iType):
 			except:
 				skip = 1
 
-			FreeCAD.activeDocument().recompute()
+			FreeCAD.ActiveDocument.recompute()
 
 	except:
 		
@@ -3818,7 +3886,7 @@ def panel2pad(iLabel="panel2pad"):
 		[ part, body, sketch, pad ] = makePad(gObj, iLabel)
 		
 		FreeCAD.ActiveDocument.removeObject(gObj.Name)
-		FreeCAD.activeDocument().recompute()
+		FreeCAD.ActiveDocument.recompute()
 		
 		return [ part, body, sketch, pad ]
 
@@ -3881,7 +3949,7 @@ def panel2link():
 			setPlacement(link, x, y, z, r)
 			
 			FreeCAD.ActiveDocument.removeObject(str(o.Name))
-			FreeCAD.activeDocument().recompute()
+			FreeCAD.ActiveDocument.recompute()
 			
 			links.append(link)
 			
@@ -3951,7 +4019,7 @@ def panel2clone():
 			setPlacement(clone, x, y, z, r)
 			
 			FreeCAD.ActiveDocument.removeObject(str(o.Name))
-			FreeCAD.activeDocument().recompute()
+			FreeCAD.ActiveDocument.recompute()
 
 	except:
 		
@@ -4596,7 +4664,7 @@ def jointCustom():
 		[ part, body, sketch, pad ] = makePad(joint, joint.Label)
 		
 		FreeCAD.ActiveDocument.removeObject(joint.Name)
-		FreeCAD.activeDocument().recompute()
+		FreeCAD.ActiveDocument.recompute()
 		
 		return
 

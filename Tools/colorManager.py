@@ -10,18 +10,6 @@ Author: Darek L (github.com/dprojects)
 Latest version: https://github.com/dprojects/Woodworking/blob/master/Tools/colorManager.py
 
 Certified platform:
-
-OS: Ubuntu 22.04 LTS (XFCE/xubuntu)
-Word size of FreeCAD: 64-bit
-Version: 0.20.29177 (Git) AppImage
-Build type: Release
-Branch: (HEAD detached at 0.20)
-Hash: 68e337670e227889217652ddac593c93b5e8dc94
-Python 3.9.13, Qt 5.12.9, Coin 4.0.0, Vtk 9.1.0, OCC 7.5.3
-Locale: English/United States (en_US)
-Installed mods: 
-  * Woodworking 0.20.29177
-
 https://github.com/dprojects/Woodworking
 
 '''
@@ -71,7 +59,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 260
-			toolSH = 440
+			toolSH = 280
 			
 			# active screen size - FreeCAD main window
 			gSW = FreeCADGui.getMainWindow().width()
@@ -135,7 +123,8 @@ def showQtGUI():
 						"Wood 3",
 						"Wood 4",
 						"Wood 5",
-						"Wood 6"
+						"Wood 6",
+						"set colors from spreadsheet"
 			)
 			
 			self.sColors = QtGui.QComboBox(self)
@@ -264,7 +253,7 @@ def showQtGUI():
 			# show & init defaults
 			# ############################################################################
 
-			row += 50
+			row -= 120
 			
 			# info
 			info = ""
@@ -290,6 +279,28 @@ def showQtGUI():
 			# ############################################################################
 			# show & init defaults
 			# ############################################################################
+
+			self.o1L.show()
+			self.o1B1.show()
+			self.o1E.show()
+			self.o1B2.show()
+			
+			self.o2L.show()
+			self.o2B1.show()
+			self.o2E.show()
+			self.o2B2.show()
+			
+			self.o3L.show()
+			self.o3B1.show()
+			self.o3E.show()
+			self.o3B2.show()
+			
+			self.o4L.show()
+			self.o4E.show()
+			self.o5B1.show()
+			
+			self.sheetInfo.hide()
+			self.sheetB1.hide()
 
 			# show window
 			self.show()
@@ -712,6 +723,28 @@ def showQtGUI():
 		# ############################################################################
 		def setPredefinedColors(self, selectedText):
 			
+			self.o1L.show()
+			self.o1B1.show()
+			self.o1E.show()
+			self.o1B2.show()
+			
+			self.o2L.show()
+			self.o2B1.show()
+			self.o2E.show()
+			self.o2B2.show()
+			
+			self.o3L.show()
+			self.o3B1.show()
+			self.o3E.show()
+			self.o3B2.show()
+			
+			self.o4L.show()
+			self.o4E.show()
+			self.o5B1.show()
+			
+			self.sheetInfo.hide()
+			self.sheetB1.hide()
+			
 			if selectedText == "reset":
 				self.o1E.setText("204")
 				self.o2E.setText("204")
@@ -795,7 +828,31 @@ def showQtGUI():
 				self.o2E.setText("25")
 				self.o3E.setText("17")
 				self.setColor()
-
+			
+			if selectedText == "set colors from spreadsheet":
+				
+				self.o1L.hide()
+				self.o1B1.hide()
+				self.o1E.hide()
+				self.o1B2.hide()
+				
+				self.o2L.hide()
+				self.o2B1.hide()
+				self.o2E.hide()
+				self.o2B2.hide()
+				
+				self.o3L.hide()
+				self.o3B1.hide()
+				self.o3E.hide()
+				self.o3B2.hide()
+				
+				self.o4L.hide()
+				self.o4E.hide()
+				self.o5B1.hide()
+				
+				self.sheetInfo.show()
+				self.sheetB1.show()
+				
 	# ############################################################################
 	# final settings
 	# ############################################################################

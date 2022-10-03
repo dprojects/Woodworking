@@ -287,9 +287,12 @@ def showQtGUI():
 
 			if iType == "Zm":
 				z = - self.gStep
-
-			[ x, y, z ] = MagicPanels.convertPosition(self.gObj, x, y, z)
 			
+			try:
+				[ x, y, z ] = MagicPanels.convertPosition(self.gObj, x, y, z)
+			except:
+				skip = 1
+				
 			[ px, py, pz, r ] = MagicPanels.getPlacement(self.gObj)
 			MagicPanels.setPlacement(self.gObj, px+x, py+y, pz+z, r)
 

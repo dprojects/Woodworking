@@ -191,7 +191,7 @@ def showQtGUI():
 				if self.gResizeObj.Curve.isDerivedFrom("Part::GeomLine"):
 					self.gResizeVal = self.gResizeObj.Length
 					
-			info = str(self.gResizeVal) + " | " + str(self.gObj.Label)
+			info = str(round(self.gResizeVal, MagicPanels.gRoundPrecision)) + " | " + str(self.gObj.Label)
 			self.s1S.setText(info)
 
 		def setSize(self, iType):
@@ -320,9 +320,9 @@ def showQtGUI():
 				else:
 					self.gStep = road2
 				
-				self.oStepE.setText(str(self.gStep))
+				self.oStepE.setText(str(round(self.gStep, MagicPanels.gRoundPrecision)))
 
-				info = str(self.gStep) + " | " + self.gFaceObj.Label
+				info = str(round(self.gStep, MagicPanels.gRoundPrecision)) + " | " + self.gFaceObj.Label
 				self.s2S.setText(info)
 				
 				# check if movement is needed
@@ -351,7 +351,7 @@ def showQtGUI():
 				sizes = MagicPanels.getSizesFromVertices(self.gObj)
 				sizes.sort()
 				self.gStep = sizes[0]
-				self.oStepE.setText(str(self.gStep))
+				self.oStepE.setText(str(round(self.gStep, MagicPanels.gRoundPrecision)))
 
 				self.setSelectedSize()
 				self.getSelectedFace()

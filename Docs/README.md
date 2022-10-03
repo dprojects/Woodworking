@@ -104,7 +104,9 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 ### magicManager
 
-<img align="left" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicManager.png"> This tool allows to preview panel before creation. It allows to see panel at single selected face and also panel between two faces. This tool can be used if you have problems with unpredicted result, "side effect of Magic Panels". However, clicking single icon is sometimes more quicker than opening GUI and choosing right panel.
+<img align="left" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicManager.png"> This tool allows to preview panel before creation. It allows to see panel at single selected face and also panel between two faces. This tool can be used if you have problems with unpredicted result, "side effect of Magic Panels". However, clicking single icon is sometimes more quicker than opening GUI and choosing right panel. Sice `0.21` this tool is able to create panel from selected vertices. This functionality uses observer for reading and helping select vertices. You do not have to hit the vertex directly. If you select edge or face, the nearest vertex will be selected for you. Also you can remove last selected vertex from list if you make mistake. The selected vertices should create wire, shape, but you do not have to select last vertex to close the wire. The first selected vertex will be automatically added at the end to close the wire. The new panel thickness is taken from the object of last selected vertex.
+
+**Video tutorial:** [3D furniture designing - panel from vertices](https://www.youtube.com/watch?v=6s0fbagPeZA)
 
 <br>
 
