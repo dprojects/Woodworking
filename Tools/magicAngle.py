@@ -241,6 +241,33 @@ def showQtGUI():
 			
 			# you can add new center points here, if needed
 			
+			if self.gObj.isDerivedFrom("App::LinkGroup"):
+				v = self.touchTypo(1, 0)
+				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+			
+				v = self.touchTypo(1, 1)
+				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+
+				v = self.touchTypo(1, 2)
+				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+
+				v = self.touchTypo(1, 3)
+				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				
+				maxIdx = len(self.gObj.Shape.Faces) - 1
+				
+				v = self.touchTypo(maxIdx, 0)
+				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+			
+				v = self.touchTypo(maxIdx, 1)
+				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+
+				v = self.touchTypo(maxIdx, 2)
+				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+
+				v = self.touchTypo(maxIdx, 3)
+				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+			
 			if self.gObj.isDerivedFrom("Part::Cylinder"):
 				
 				v = self.touchTypo(1, 0)

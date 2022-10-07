@@ -3445,40 +3445,40 @@ def panelResize(iType):
 
 			if gObj.isDerivedFrom("PartDesign::Pad"):
 			
-				direction = getDirection(gObj)
-			
+				[ sizeX, sizeY, thick ] = getSizes(gObj)
+				
 				if iType == "1":
 					
-					if direction == "XY" or direction == "XZ" or direction == "YZ":
-						gObj.Profile[0].setDatum(9, FreeCAD.Units.Quantity(sizes[2] + thick))
+					if sizeX > sizeY:
+						gObj.Profile[0].setDatum("SizeX", FreeCAD.Units.Quantity(sizeX + thick))
 					else:
-						gObj.Profile[0].setDatum(10, FreeCAD.Units.Quantity(sizes[2] + thick))
+						gObj.Profile[0].setDatum("SizeY", FreeCAD.Units.Quantity(sizeY + thick))
 			
-				if sizes[2] - thick > 0:
-
-					if iType == "2":
+				if iType == "2":
 					
-						if direction == "XY" or direction == "XZ" or direction == "YZ":
-							gObj.Profile[0].setDatum(9, FreeCAD.Units.Quantity(sizes[2] - thick))
-						else:
-							gObj.Profile[0].setDatum(10, FreeCAD.Units.Quantity(sizes[2] - thick))
+					if sizeX > sizeY:
+						if sizeX - thick > 0:
+							gObj.Profile[0].setDatum("SizeX", FreeCAD.Units.Quantity(sizeX - thick))
+					else:
+						if sizeY - thick > 0:
+							gObj.Profile[0].setDatum("SizeY", FreeCAD.Units.Quantity(sizeY - thick))
 
 				if iType == "3":
 					
-					if direction == "XY" or direction == "XZ" or direction == "YZ":
-						gObj.Profile[0].setDatum(10, FreeCAD.Units.Quantity(sizes[1] + thick))
+					if sizeX < sizeY:
+						gObj.Profile[0].setDatum("SizeX", FreeCAD.Units.Quantity(sizeX + thick))
 					else:
-						gObj.Profile[0].setDatum(9, FreeCAD.Units.Quantity(sizes[1] + thick))
-
-				if sizes[1] - thick > 0:
+						gObj.Profile[0].setDatum("SizeY", FreeCAD.Units.Quantity(sizeY + thick))
+			
+				if iType == "4":
 					
-					if iType == "4":
-					
-						if direction == "XY" or direction == "XZ" or direction == "YZ":
-							gObj.Profile[0].setDatum(10, FreeCAD.Units.Quantity(sizes[1] - thick))
-						else:
-							gObj.Profile[0].setDatum(9, FreeCAD.Units.Quantity(sizes[1] - thick))
-
+					if sizeX < sizeY:
+						if sizeX - thick > 0:
+							gObj.Profile[0].setDatum("SizeX", FreeCAD.Units.Quantity(sizeX - thick))
+					else:
+						if sizeY - thick > 0:
+							gObj.Profile[0].setDatum("SizeY", FreeCAD.Units.Quantity(sizeY - thick))
+				
 				if iType == "5":
 					
 					if o.isDerivedFrom("PartDesign::Thickness"):
@@ -3494,10 +3494,11 @@ def panelResize(iType):
 					else:
 						if gObj.Length.Value - 1 > 0:
 							gObj.Length = gObj.Length.Value - 1
-
+					
 
 		FreeCAD.ActiveDocument.recompute()
 
+	
 	except:
 		
 		info = ""
@@ -3505,7 +3506,7 @@ def panelResize(iType):
 		info += translate('panelResizeInfo', '<b>Please select valid panels to resize. </b><br><br><b>Note:</b> This tool allows to resize quickly panels or even other objects. The resize step is the panel thickness. Panel is resized into direction described by the icon for XY panel. However, in some cases the panel may be resized into opposite direction, if the panel is not supported or the sides are equal. You can also resize Cylinders (drill bits), the long side will be Height, the short will be diameter, the thickness will be Radius. For Cone objects (drill bits - countersinks, counterbore) the long side will be Height, the thickness will be Radius1 (bottom radius) and the short will be Radius2 (top radius).')
 		
 		showInfo("panelResize"+iType, info)
-
+	
 
 # ###################################################################################################################
 def panelFace(iType):
