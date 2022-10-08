@@ -104,7 +104,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 ### magicManager
 
-<img align="left" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicManager.png"> This tool allows to preview panel before creation. It allows to see panel at single selected face and also panel between two faces. This tool can be used if you have problems with unpredicted result, "side effect of Magic Panels". However, clicking single icon is sometimes more quicker than opening GUI and choosing right panel. Sice `0.21` this tool is able to create panel from selected vertices. This functionality uses observer for reading and helping select vertices. You do not have to hit the vertex directly. If you select edge or face, the nearest vertex will be selected for you. Also you can remove last selected vertex from list if you make mistake. The selected vertices should create wire, shape, but you do not have to select last vertex to close the wire. The first selected vertex will be automatically added at the end to close the wire. The new panel thickness is taken from the object of last selected vertex.
+<img align="left" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicManager.png"> This tool allows to preview panel before creation. It allows to see panel at single selected face and also panel between two faces. This tool can be used if you have problems with unpredicted result, "side effect of Magic Panels". However, clicking single icon is sometimes more quicker than opening GUI and choosing right panel. Sice `0.21` this tool is able to create panel from selected vertices. This functionality uses observer for reading and helping select vertices. You do not have to hit the vertex directly. If you select edge or face, the nearest vertex will be selected for you. Also you can remove last selected vertex from list if you make mistake. The selected vertices should create wire, shape, but you do not have to select last vertex to close the wire. The first selected vertex will be automatically added at the end to close the wire. If the panel thickness is not set by the user, the thickness for the new panel from vertices will be set from first selected object. Custom thickenss works only for vertices.
 
 **Video tutorial:** [3D furniture designing - panel from vertices](https://www.youtube.com/watch?v=6s0fbagPeZA)
 
@@ -301,10 +301,13 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 ### getDimensions
 
 <img align="left" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/getDimensions.png"> This tool allows to create spreadsheet with dimensions to cut, cut-list, BOM. For more info see: [getDimensions](https://github.com/dprojects/getDimensions)
+
+<br><br>
   
 **Video tutorials:** 
 * [3D furniture designing - cut-list, BOM](https://www.youtube.com/watch?v=lYssiliONVo)
 * [3D furniture designing - report for custom measurements](https://www.youtube.com/watch?v=-Mmwvw_Bue4)
+* [3D furniture designing - preview furniture & cut-list](https://www.youtube.com/watch?v=xEMQUH665Vw)
 
 <br><br>
 
@@ -324,7 +327,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 ### magicMeasure
 
-<img align="left" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicMeasure.png"> This tool allows for quick measure on objects hover or by selection. At hover mode you can measure e.g. all edges for face, single edge, single hole radius, face inside hole to get depth, ellipse both radius and also depth. At selection mode you can measure e.g. distance from vertex to another vertex, distance from hole to hole, distance from hole to edge. This tool save also references to the measured object for further processing. So, you can easily get all your custom measurements.
+<img align="left" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicMeasure.png"> This tool allows for quick measure on objects hover or by selection. At hover mode you can measure e.g. all edges for face, single edge, single hole radius, face inside hole to get depth, ellipse both radius and also depth. At selection mode you can measure e.g. distance from vertex to another vertex, distance from hole to hole, distance from hole to edge, distance from vertex to face. This tool save also references to the measured object for further processing. So, you can easily get all your custom measurements.
     
 **Video tutorials:** 
 * [3D furniture designing - smart measurement tool](https://www.youtube.com/watch?v=d2FRECuHy2o)

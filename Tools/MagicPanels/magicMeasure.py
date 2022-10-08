@@ -274,6 +274,56 @@ class SelectionObserver:
 		resetGlobals()
 
 	# ############################################################################
+	def faceSelect(self, doc, obj, sub, pos):
+		
+		global gP1, gP2, gRef
+		
+		removeHoverMeasure()
+		clearInfoScreens()
+		
+		skip = 0
+		
+		o = FreeCAD.ActiveDocument.getObject(obj)
+		label = obj
+		
+		try:
+			label = o.Label
+		except:
+			skip = 1
+		
+		face = o.getSubObject(sub)
+		
+		# if already selected vertex, get second vertex from face
+		if gP1 != "":
+			
+			[ v1, v2 ] = MagicPanels.getEdgeVertices(face.Edges[0])
+			axis = MagicPanels.getFacePlane(face)
+			
+			if axis == "YZ":
+				gP2 = FreeCAD.Vector(v1[0], gP1[1], gP1[2])
+			if axis == "XZ":
+				gP2 = FreeCAD.Vector(gP1[0], v1[1], gP1[2])
+			if axis == "XY":
+				gP2 = FreeCAD.Vector(gP1[0], gP1[1], v1[2])
+	
+		# not supported
+		else:
+			skip = 1
+	
+		# skip if there is no data to show measurement
+		if skip == 1 or gP1 == "" or gP2 == "":
+			return
+		
+		size = round(gP1.distanceToPoint(gP2), MagicPanels.gRoundPrecision)
+		
+		gGUI.hoverIS.setText(str(label) + ", " + str(sub))
+		gGUI.hoverIS.setText(str(obj) + ", " + str(sub))
+		gGUI.sizeIS.setPlainText("Size:" + " " + str(size))
+		
+		m = MagicPanels.showMeasure(gP1, gP2, str(o.Label) + ", " + str(sub))
+		resetGlobals()
+		
+	# ############################################################################
 	def vertexSelect(self, doc, obj, sub, pos):
 		
 		global gP1, gP2, gRef
@@ -316,6 +366,9 @@ class SelectionObserver:
 		
 		if sub.find("Edge") != -1:
 			self.edgeSelect(doc, obj, sub, pos)
+		
+		if sub.find("Face") != -1:
+			self.faceSelect(doc, obj, sub, pos)
 			
 		if sub.find("Vertex") != -1:
 			self.vertexSelect(doc, obj, sub, pos)
