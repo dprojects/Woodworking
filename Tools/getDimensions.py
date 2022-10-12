@@ -2365,6 +2365,10 @@ def scanObjects(iOBs, iCaller="main"):
 			if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
 				continue
 
+		if hasattr(obj, "BOM"):
+			if obj.BOM == False:
+				continue
+
 		# select and set furniture part
 		selectFurniturePart(obj, iCaller)
 

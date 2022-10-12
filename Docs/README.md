@@ -250,9 +250,13 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 <img align="left" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicCut.png"> This tool make multi bool cut operation at selected objects. First object should be the base object to cut. All other selected objects will cut the base 1st selected object. To select more objects hold left CTRL key during selection. During this process only the copies will be used to cut, so the original objects will not be moved at tree. Also there will be auto labeling to keep the cut tree more informative and cleaner.
 
+**Video tutorial:** [3D furniture designing - skip copies in cut-list](https://www.youtube.com/watch?v=rFEDLaD8lxM)
+
 ### magicKnife
 
 <img align="left" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicKnife.png"> This tool is opposite for [magicCut](#magiccut) tool. This tool allows to use single knife to cut many panels. First selected object should be knife, and all other selected objects will be cut with the knife. The knife can be any object. So, you can create your own shape of the knife and cut many panels at once. Also you can cut all legs of the table using floor or top of the table as knife. To select more objects hold left CTRL key during selection. During this process the copies of knife are used, so the original knife objects will not be moved at tree. Also there will be auto labeling to keep the cut tree more informative and cleaner.
+
+**Video tutorial:** [3D furniture designing - skip copies in cut-list](https://www.youtube.com/watch?v=rFEDLaD8lxM)
 
 ### jointTenon
 

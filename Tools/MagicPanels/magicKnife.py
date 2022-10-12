@@ -3,6 +3,9 @@ import MagicPanels
 
 translate = FreeCAD.Qt.translate
 
+def QT_TRANSLATE_NOOP(context, text):
+	return text
+
 try:
 
 	objects = FreeCADGui.Selection.getSelection()
@@ -23,6 +26,12 @@ try:
 
 		knifeCopy = FreeCAD.ActiveDocument.copyObject(knife)
 		knifeCopy.Label = "knife" + " " + str(i-1) + ", " + knifeLabel
+		
+		if not hasattr(knifeCopy, "BOM"):
+			info = QT_TRANSLATE_NOOP("App::Property", "Allows to skip this duplicated copy in BOM, cut-list report.")
+			knifeCopy.addProperty("App::PropertyBool", "BOM", "Woodworking", info)
+		
+		knifeCopy.BOM = False
 		
 		cutName = "cut_" + o.Name
 		cut = FreeCAD.ActiveDocument.addObject("Part::Cut", cutName)

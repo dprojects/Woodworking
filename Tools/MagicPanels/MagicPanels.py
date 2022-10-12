@@ -11,6 +11,9 @@ from PySide import QtCore
 
 translate = FreeCAD.Qt.translate
 
+def QT_TRANSLATE_NOOP(context, text):
+	return text
+
 # this should be set according to the user FreeCAD GUI settings
 gRoundPrecision = 2
 
@@ -2075,6 +2078,12 @@ def makeCuts(iObjects):
 
 		copy = FreeCAD.ActiveDocument.copyObject(o)
 		copy.Label = "copy, " + o.Label
+		
+		if not hasattr(copy, "BOM"):
+			info = QT_TRANSLATE_NOOP("App::Property", "Allows to skip this duplicated copy in BOM, cut-list report.")
+			copy.addProperty("App::PropertyBool", "BOM", "Woodworking", info)
+		
+		copy.BOM = False
 		
 		cutName = baseName + str(i-1)
 		cut = FreeCAD.ActiveDocument.addObject("Part::Cut", cutName)
@@ -4529,50 +4538,6 @@ def edge2drillbit():
 		info += translate('edge2drillbit', '<b>Please select valid edge to create drill bit. This feature can be used to create drill bits above holes at hinges, angles or other fixture type. </b><br><br><b>Note:</b> This tool allows to create drill bits for making simple hole. The drill bits will be created above the selected hole edges. To create drill bits select edge of the hole. You can select many edges at once but all the holes need to be at the same object. The drill bit Height will be 16. The drill bits radius will be get from the selected edge hole radius but will be little smaller, 1 mm, than the hole to make pilot hole. To select more objects hold left CTRL key during selection.')
 
 		showInfo("edge2drillbit", info)
-
-
-# ###################################################################################################################
-def magicCut():
-	'''
-	magicCut() - allows to create multi bool cut operation at selected objects. First selected object 
-	should be the base element and all other selected will cut the base. The copies will be created for cut. 
-
-	Note: This function displays pop-up info in case of error.
-
-	Args:
-
-		no args
-
-	Usage:
-
-		import MagicPanels
-		
-		cuts = MagicPanels.magicCut()
-		
-	Result:
-
-		Array of cut objects will be returned.
-	'''
-
-	try:
-
-		objects = FreeCADGui.Selection.getSelection()
-
-		if len(objects) < 2:
-			raise
-
-		cuts = makeCuts(objects)
-		FreeCADGui.Selection.clearSelection()
-		
-		return cuts
-	
-	except:
-		
-		info = ""
-		
-		info += translate('magicCut', '<b>Please select the object to cut and then the objects that will cut the base element. </b><br><br><b>Note:</b> This tool make multi bool cut operation at selected objects. First object should be the base object to cut. All other selected objects will cut the base 1st selected object. To select more objects hold left CTRL key during selection. During this process only the copies will be used to cut, so the original objects will not be moved at tree. Also there will be auto labeling to keep the cut tree more informative and cleaner.')
-
-		showInfo("magicCut", info)
 
 
 # ###################################################################################################################
