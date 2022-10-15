@@ -8,23 +8,23 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 
 # Certified platforms
 
-* **Stable certified versions download at:** [Woodworking/releases](https://github.com/dprojects/Woodworking/releases)
-* For cutting edge features download development version from: [the master branch](https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip)
+* Stable certified versions download at: [Woodworking/releases](https://github.com/dprojects/Woodworking/releases)
+* For cutting edge features download:
+	* Woodworking workbench development version from: [the master branch](https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip)
+	* FreeCAD version from: [FreeCAD_weekly-builds-30486-2022-09-29-conda-Linux-x86_64-py310.AppImage](https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/weekly-builds/FreeCAD_weekly-builds-30486-2022-09-29-conda-Linux-x86_64-py310.AppImage)
 
-### Current development platform
+* Current development platform:
 
-**FreeCAD version:** [FreeCAD_weekly-builds-30486-2022-09-29-conda-Linux-x86_64-py310.AppImage](https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/weekly-builds/FreeCAD_weekly-builds-30486-2022-09-29-conda-Linux-x86_64-py310.AppImage)
-
-	OS: Ubuntu 22.04.1 LTS (XFCE/xubuntu)
-	Word size of FreeCAD: 64-bit
-	Version: 0.21.30486 (Git) AppImage
-	Build type: Release
-	Branch: master
-	Hash: eb546e25d3f952869e3ec87dca02b58653cb3936
-	Python 3.10.6, Qt 5.15.4, Coin 4.0.0, Vtk 9.1.0, OCC 7.6.3
-	Locale: English/United States (en_US)
-	Installed mods: 
-	* Woodworking 0.21.30486
+		OS: Ubuntu 22.04.1 LTS (XFCE/xubuntu)
+		Word size of FreeCAD: 64-bit
+		Version: 0.21.30486 (Git) AppImage
+		Build type: Release
+		Branch: master
+		Hash: eb546e25d3f952869e3ec87dca02b58653cb3936
+		Python 3.10.6, Qt 5.15.4, Coin 4.0.0, Vtk 9.1.0, OCC 7.6.3
+		Locale: English/United States (en_US)
+		Installed mods: 
+		* Woodworking 0.21.30486
 
 **Note:** To get better stability make sure your current Woodworking workbench version has always the same version number as the FreeCAD version.
 
