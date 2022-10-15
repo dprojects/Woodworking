@@ -1,3 +1,3 @@
-import MagicPanels
+import MagicPanelsController
 
-MagicPanels.panelCover("XY")
+MagicPanelsController.panelCover("XY")

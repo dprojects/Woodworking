@@ -1,3 +1,3 @@
-import MagicPanels
+import MagicPanelsController
 
-MagicPanels.panelResize("1")
+MagicPanelsController.panelResize("1")

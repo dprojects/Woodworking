@@ -1,3 +1,3 @@
-import MagicPanels
+import MagicPanelsController
 
-MagicPanels.panelMove("Zm")
+MagicPanelsController.panelMove("Zm")

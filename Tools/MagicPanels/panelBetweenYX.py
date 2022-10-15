@@ -1,3 +1,3 @@
-import MagicPanels
+import MagicPanelsController
 
-MagicPanels.panelBetween("YX")
+MagicPanelsController.panelBetween("YX")

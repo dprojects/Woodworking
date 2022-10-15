@@ -1,3 +1,3 @@
-import MagicPanels
+import MagicPanelsController
 
-MagicPanels.panelDefault("XZ")
+MagicPanelsController.panelDefault("XZ")

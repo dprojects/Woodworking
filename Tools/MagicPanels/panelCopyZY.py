@@ -1,3 +1,3 @@
-import MagicPanels
+import MagicPanelsController
 
-MagicPanels.panelCopy("ZY")
+MagicPanelsController.panelCopy("ZY")

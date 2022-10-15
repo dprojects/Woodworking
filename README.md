@@ -11,18 +11,7 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 * **Stable certified versions download at:** [Woodworking/releases](https://github.com/dprojects/Woodworking/releases)
 * For cutting edge features download development version from: [the master branch](https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip)
 
-# Installation
-
-* Download and unpack `Woodworking` repository.
-* Copy the folder `Woodworking` to the FreeCAD module directory (`Mod` folder).
-
-**Note:**
-
-* Xubuntu:
-	* FreeCAD version < 0.20.27936: `~.FreeCAD/Mod/Woodworking`
-	* FreeCAD version >= 0.20.27936: `~.local/share/FreeCAD/Mod/Woodworking`
-
-# Current development platform
+### Current development platform
 
 **FreeCAD version:** [FreeCAD_weekly-builds-30486-2022-09-29-conda-Linux-x86_64-py310.AppImage](https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/weekly-builds/FreeCAD_weekly-builds-30486-2022-09-29-conda-Linux-x86_64-py310.AppImage)
 
@@ -38,6 +27,17 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 	* Woodworking 0.21.30486
 
 **Note:** To get better stability make sure your current Woodworking workbench version has always the same version number as the FreeCAD version.
+
+# Installation
+
+* Download and unpack `Woodworking` repository.
+* Copy the folder `Woodworking` to the FreeCAD module directory (`Mod` folder).
+
+**Note:**
+
+* Xubuntu:
+	* FreeCAD version < 0.20.27936: `~.FreeCAD/Mod/Woodworking`
+	* FreeCAD version >= 0.20.27936: `~.local/share/FreeCAD/Mod/Woodworking`
 
 # Screenshots examples
 

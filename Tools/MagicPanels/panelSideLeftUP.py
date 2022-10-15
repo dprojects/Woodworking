@@ -1,3 +1,3 @@
-import MagicPanels
+import MagicPanelsController
 
-MagicPanels.panelSide("2")
+MagicPanelsController.panelSide("2")

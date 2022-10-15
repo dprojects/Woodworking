@@ -6,18 +6,6 @@ Author: Darek L (github.com/dprojects)
 Latest version: https://github.com/dprojects/scanObjects
 
 Certified platform:
-
-OS: Ubuntu 22.04 LTS (XFCE/xubuntu)
-Word size of FreeCAD: 64-bit
-Version: 0.20.29177 (Git) AppImage
-Build type: Release
-Branch: (HEAD detached at 0.20)
-Hash: 68e337670e227889217652ddac593c93b5e8dc94
-Python 3.9.13, Qt 5.12.9, Coin 4.0.0, Vtk 9.1.0, OCC 7.5.3
-Locale: English/United States (en_US)
-Installed mods: 
-  * Woodworking 0.20.29177
-
 https://github.com/dprojects/Woodworking
 
 '''
@@ -165,6 +153,7 @@ def showQtGUI():
 				"Module: Draft", 
 				"Module: TechDraw", 
 				"Module: Spreadsheet",
+				"Module: MagicPanels",
 				"custom module",
 				"custom command result"
 			)
@@ -821,6 +810,20 @@ def showQtGUI():
 				rootS = "coin"
 				self.addSelection(coin, root, rootS, -1)
 
+			if selectedText == "Module: MagicPanels":
+
+				try:
+					import MagicPanels
+
+					root = dir(MagicPanels)
+					rootS = "MagicPanels"
+					self.addSelection(MagicPanels, root, rootS, -1)
+				
+					self.setWindowsLayout("coding")
+				
+				except:
+					self.showMsg("You need to install Woodworking workbench to see the MagicPanels API.")
+				
 			if selectedText == "custom module":
 				self.rootL.show()
 				self.rootO.show()

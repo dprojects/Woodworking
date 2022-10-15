@@ -18,10 +18,34 @@ def showQtGUI():
 		# ############################################################################
 		# globals
 		# ############################################################################
-
+		
+		gModeType = "Move"
+		gCopyType = "copyObject"
+		
+		gInfoMoveX = translate('magicMove', 'Move along X:')
+		gInfoMoveY = translate('magicMove', 'Move along Y:')
+		gInfoMoveZ = translate('magicMove', 'Move along Z:')
+		gInfoMoveStep = translate('magicMove', 'Move step:')
+		
+		gInfoCopyX = translate('magicMove', 'Copy along X:')
+		gInfoCopyY = translate('magicMove', 'Copy along Y:')
+		gInfoCopyZ = translate('magicMove', 'Copy along Z:')
+		gInfoCopyStep = translate('magicMove', 'Copy offset:')
+		
 		gObj = ""
+		gThick = 0
 		gStep = 1
-		gNoSelection = translate('magicMove', 'select panel to move')
+
+		gMaxX = 0
+		gMaxY = 0
+		gMaxZ = 0
+		
+		gLCPX = 0 # Last Copy Position X
+		gLCPY = 0 # Last Copy Position Y
+		gLCPZ = 0 # Last Copy Position Z
+		gLCPR = 0 # Last Copy Position Rotation
+		
+		gNoSelection = translate('magicMove', 'select panel to move or copy')
 		
 		# ############################################################################
 		# init
@@ -39,7 +63,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 220
-			toolSH = 350
+			toolSH = 330
 			
 			# active screen size (FreeCAD main window)
 			gSW = FreeCADGui.getMainWindow().width()
@@ -47,7 +71,7 @@ def showQtGUI():
 
 			# tool screen position
 			gPW = 0 + 300
-			gPH = int( gSH - toolSH ) - 50
+			gPH = int( gSH - toolSH ) - 30
 
 			# ############################################################################
 			# main window
@@ -78,8 +102,41 @@ def showQtGUI():
 			self.s1B1 = QtGui.QPushButton(translate('magicMove', 'refresh selection'), self)
 			self.s1B1.clicked.connect(self.getSelected)
 			self.s1B1.setFixedWidth(200)
+			self.s1B1.setFixedHeight(40)
 			self.s1B1.move(10, row)
 
+			# ############################################################################
+			# options - mode selector
+			# ############################################################################
+			
+			row += 50
+			
+			self.sModeList = (
+						"Move",
+						"Copy"
+						)
+			
+			self.sMode = QtGui.QComboBox(self)
+			self.sMode.addItems(self.sModeList)
+			self.sMode.setCurrentIndex(self.sModeList.index("Move"))
+			self.sMode.activated[str].connect(self.setModeType)
+			self.sMode.setFixedWidth(80)
+			self.sMode.move(10, row)
+
+			self.sCopyTypeList = (
+						"copyObject",
+						"Clone",
+						"Link"
+						)
+			
+			self.sCopyType = QtGui.QComboBox(self)
+			self.sCopyType.addItems(self.sCopyTypeList)
+			self.sCopyType.setCurrentIndex(self.sCopyTypeList.index("copyObject"))
+			self.sCopyType.activated[str].connect(self.setCopyType)
+			self.sCopyType.setFixedWidth(105)
+			self.sCopyType.move(105, row)
+			self.sCopyType.hide()
+			
 			# ############################################################################
 			# options - X axis
 			# ############################################################################
@@ -87,23 +144,23 @@ def showQtGUI():
 			row += 40
 
 			# label
-			self.o1L = QtGui.QLabel(translate('magicMove', 'Move along X:'), self)
+			self.o1L = QtGui.QLabel(self.gInfoMoveX, self)
 			self.o1L.move(10, row+3)
 
 			# button
-			self.o1B1 = QtGui.QPushButton("<", self)
+			self.o1B1 = QtGui.QPushButton("X-", self)
 			self.o1B1.clicked.connect(self.setX1)
 			self.o1B1.setFixedWidth(50)
 			self.o1B1.move(105, row)
 			self.o1B1.setAutoRepeat(True)
 			
 			# button
-			self.o1B2 = QtGui.QPushButton(">", self)
+			self.o1B2 = QtGui.QPushButton("X+", self)
 			self.o1B2.clicked.connect(self.setX2)
 			self.o1B2.setFixedWidth(50)
 			self.o1B2.move(160, row)
 			self.o1B2.setAutoRepeat(True)
-			
+
 			# ############################################################################
 			# options - Y axis
 			# ############################################################################
@@ -111,18 +168,18 @@ def showQtGUI():
 			row += 30
 
 			# label
-			self.o2L = QtGui.QLabel(translate('magicMove', 'Move along Y:'), self)
+			self.o2L = QtGui.QLabel(self.gInfoMoveY, self)
 			self.o2L.move(10, row+3)
 
 			# button
-			self.o2B1 = QtGui.QPushButton("<", self)
+			self.o2B1 = QtGui.QPushButton("Y-", self)
 			self.o2B1.clicked.connect(self.setY1)
 			self.o2B1.setFixedWidth(50)
 			self.o2B1.move(105, row)
 			self.o2B1.setAutoRepeat(True)
 			
 			# button
-			self.o2B2 = QtGui.QPushButton(">", self)
+			self.o2B2 = QtGui.QPushButton("Y+", self)
 			self.o2B2.clicked.connect(self.setY2)
 			self.o2B2.setFixedWidth(50)
 			self.o2B2.move(160, row)
@@ -135,18 +192,18 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.o3L = QtGui.QLabel(translate('magicMove', 'Move along Z:'), self)
+			self.o3L = QtGui.QLabel(self.gInfoMoveZ, self)
 			self.o3L.move(10, row+3)
 
 			# button
-			self.o3B1 = QtGui.QPushButton("<", self)
+			self.o3B1 = QtGui.QPushButton("Z-", self)
 			self.o3B1.clicked.connect(self.setZ1)
 			self.o3B1.setFixedWidth(50)
 			self.o3B1.move(105, row)
 			self.o3B1.setAutoRepeat(True)
 			
 			# button
-			self.o3B2 = QtGui.QPushButton(">", self)
+			self.o3B2 = QtGui.QPushButton("Z+", self)
 			self.o3B2.clicked.connect(self.setZ2)
 			self.o3B2.setFixedWidth(50)
 			self.o3B2.move(160, row)
@@ -159,14 +216,14 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.o4L = QtGui.QLabel(translate('magicMove', 'Move step:'), self)
+			self.o4L = QtGui.QLabel(self.gInfoMoveStep+"               ", self)
 			self.o4L.move(10, row+3)
 
 			# text input
 			self.o4E = QtGui.QLineEdit(self)
 			self.o4E.setText(str(self.gStep))
 			self.o4E.setFixedWidth(50)
-			self.o4E.move(105, row)
+			self.o4E.move(160, row)
 
 			# ############################################################################
 			# options - corner cross
@@ -179,14 +236,14 @@ def showQtGUI():
 			self.o0L.move(10, row+3)
 
 			# button
-			self.o0B1 = QtGui.QPushButton("<", self)
+			self.o0B1 = QtGui.QPushButton("-", self)
 			self.o0B1.clicked.connect(self.setCornerM)
 			self.o0B1.setFixedWidth(50)
 			self.o0B1.move(105, row)
 			self.o0B1.setAutoRepeat(True)
 			
 			# button
-			self.o0B2 = QtGui.QPushButton(">", self)
+			self.o0B2 = QtGui.QPushButton("+", self)
 			self.o0B2.clicked.connect(self.setCornerP)
 			self.o0B2.setFixedWidth(50)
 			self.o0B2.move(160, row)
@@ -217,39 +274,6 @@ def showQtGUI():
 			self.o0B2.setAutoRepeat(True)
 
 			# ############################################################################
-			# options - copy buttons
-			# ############################################################################
-
-			row += 40
-
-			# label
-			self.o0L = QtGui.QLabel(translate('magicMove', 'Copy selected object here as:'), self)
-			self.o0L.move(10, row+3)
-
-			row += 30
-
-			# button
-			self.o0B1 = QtGui.QPushButton(translate('magicMove', 'copyObject'), self)
-			self.o0B1.clicked.connect(self.copyAsCopyObject)
-			self.o0B1.setFixedWidth(90)
-			self.o0B1.move(10, row)
-			self.o0B1.setAutoRepeat(True)
-			
-			# button
-			self.o0B2 = QtGui.QPushButton(translate('magicMove', 'Clone'), self)
-			self.o0B2.clicked.connect(self.copyAsClone)
-			self.o0B2.setFixedWidth(50)
-			self.o0B2.move(105, row)
-			self.o0B2.setAutoRepeat(True)
-			
-			# button
-			self.o0B2 = QtGui.QPushButton(translate('magicMove', 'Link'), self)
-			self.o0B2.clicked.connect(self.copyAsLink)
-			self.o0B2.setFixedWidth(50)
-			self.o0B2.move(160, row)
-			self.o0B2.setAutoRepeat(True)
-
-			# ############################################################################
 			# show & init defaults
 			# ############################################################################
 
@@ -264,7 +288,20 @@ def showQtGUI():
 		# ############################################################################
 
 		# ############################################################################
+		def resetGlobals(self):
+			
+			self.gMaxX = 0
+			self.gMaxY = 0
+			self.gMaxZ = 0
+			
+			self.gLCPX = 0
+			self.gLCPY = 0
+			self.gLCPZ = 0
+			self.gLCPR = 0
+			
 		def setMove(self, iType):
+			
+			self.gStep = float(self.o4E.text())
 			
 			x = 0
 			y = 0
@@ -298,6 +335,55 @@ def showQtGUI():
 
 			FreeCAD.activeDocument().recompute()
 
+		def createCopy(self, iType):
+			
+			self.gStep = float(self.o4E.text())
+			
+			if self.gCopyType == "copyObject":
+				copy = FreeCAD.ActiveDocument.copyObject(self.gObj)
+				copy.Label = "Copy, " + str(self.gObj.Label) + " "
+			
+			if self.gCopyType == "Clone":
+				import Draft
+				copy = Draft.make_clone(self.gObj)
+				copy.Label = "Clone, " + str(self.gObj.Label) + " "
+			
+			if self.gCopyType == "Link":
+				copyName = "Link_" + str(self.gObj.Name)
+				copy = FreeCAD.ActiveDocument.addObject('App::Link', copyName)
+				copy.setLink(self.gObj)
+				copy.Label = "Link, " + str(self.gObj.Label) + " "
+			
+			x, y, z, r = self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR
+			
+			if iType == "Xp":
+				x = x + self.gMaxX + self.gStep
+			
+			if iType == "Xm":
+				x = x - self.gMaxX - self.gStep
+
+			if iType == "Yp":
+				y = y + self.gMaxY + self.gStep
+
+			if iType == "Ym":
+				y = y - self.gMaxY - self.gStep
+
+			if iType == "Zp":
+				z = z + self.gMaxZ + self.gStep
+
+			if iType == "Zm":
+				z = z - self.gMaxX - self.gStep
+			
+			MagicPanels.setPlacement(copy, x, y, z, r)
+			FreeCAD.ActiveDocument.recompute()
+			
+			[ self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR ] = MagicPanels.getPlacement(copy)
+			
+			try:
+				MagicPanels.copyColors(self.gObj, copy)
+			except:
+				skip = 1
+
 		# ############################################################################
 		# actions - functions for actions
 		# ############################################################################
@@ -306,6 +392,8 @@ def showQtGUI():
 		def getSelected(self):
 
 			try:
+
+				self.resetGlobals()
 
 				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
 				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(50)
@@ -316,15 +404,47 @@ def showQtGUI():
 				sizes = MagicPanels.getSizes(self.gObj)
 				sizes.sort()
 				self.gStep = sizes[0]
+				self.gThick = sizes[0]
 				self.o4E.setText(str(self.gStep))
 				
 				self.s1S.setText(str(self.gObj.Label))
 				FreeCADGui.Selection.clearSelection()
 				
+				[ self.gMaxX, self.gMaxY, self.gMaxZ ] = MagicPanels.getSizesFromVertices(self.gObj)
+				[ self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR ] = MagicPanels.getPlacement(self.gObj)
+				
 			except:
 
 				self.s1S.setText(self.gNoSelection)
 				return -1
+		
+		def setModeType(self, selectedText):
+			
+			self.gModeType = selectedText
+			
+			if selectedText == "Move":
+				self.o1L.setText(self.gInfoMoveX)
+				self.o2L.setText(self.gInfoMoveY)
+				self.o3L.setText(self.gInfoMoveZ)
+				self.o4L.setText(self.gInfoMoveStep)
+				self.sCopyType.hide()
+				self.gStep = self.gThick
+				self.o4E.setText(str(self.gStep))
+				[ self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR ] = MagicPanels.getPlacement(self.gObj)
+			
+			if selectedText == "Copy":
+				self.o1L.setText(self.gInfoCopyX)
+				self.o2L.setText(self.gInfoCopyY)
+				self.o3L.setText(self.gInfoCopyZ)
+				self.o4L.setText(self.gInfoCopyStep)
+				self.sCopyType.show()
+				self.gStep = 0
+				self.o4E.setText(str(self.gStep))
+				[ self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR ] = MagicPanels.getPlacement(self.gObj)
+			
+		def setCopyType(self, selectedText):
+			
+			self.gCopyType = selectedText
 			
 		# ############################################################################
 		def setCornerM(self):
@@ -367,86 +487,76 @@ def showQtGUI():
 		def setX1(self):
 			
 			try:
-				self.gStep = float(self.o4E.text())
-				self.setMove("Xm")
+				if self.gModeType == "Move":
+					self.setMove("Xm")
+					
+				if self.gModeType == "Copy":
+					self.createCopy("Xm")
+					
 			except:
 				self.s1S.setText(self.gNoSelection)
 			
 		def setX2(self):
 			
 			try:
-				self.gStep = float(self.o4E.text())
-				self.setMove("Xp")
+				if self.gModeType == "Move":
+					self.setMove("Xp")
+					
+				if self.gModeType == "Copy":
+					self.createCopy("Xp")
+					
 			except:
 				self.s1S.setText(self.gNoSelection)
 			
 		def setY1(self):
 			
 			try:
-				self.gStep = float(self.o4E.text())
-				self.setMove("Ym")
+				if self.gModeType == "Move":
+					self.setMove("Ym")
+					
+				if self.gModeType == "Copy":
+					self.createCopy("Ym")
+			
 			except:
 				self.s1S.setText(self.gNoSelection)
 		
 		def setY2(self):
 			
 			try:
-				self.gStep = float(self.o4E.text())
-				self.setMove("Yp")
+				if self.gModeType == "Move":
+					self.setMove("Yp")
+					
+				if self.gModeType == "Copy":
+					self.createCopy("Yp")
+					
 			except:
 				self.s1S.setText(self.gNoSelection)
 
 		def setZ1(self):
 			
 			try:
-				self.gStep = float(self.o4E.text())
-				self.setMove("Zm")
+				if self.gModeType == "Move":
+					self.setMove("Zm")
+					
+				if self.gModeType == "Copy":
+					self.createCopy("Zm")
+					
 			except:
 				self.s1S.setText(self.gNoSelection)
 		
 		def setZ2(self):
 			
 			try:
-				self.gStep = float(self.o4E.text())
-				self.setMove("Zp")
+				if self.gModeType == "Move":
+					self.setMove("Zp")
+					
+				if self.gModeType == "Copy":
+					self.createCopy("Zp")
+					
 			except:
 				self.s1S.setText(self.gNoSelection)
 
 		# ############################################################################
-		def copyAsCopyObject(self):
-			
-			try:
-				copy = FreeCAD.ActiveDocument.copyObject(self.gObj)
-				copy.Label = "Copy, " + str(self.gObj.Label) + " "
-				FreeCAD.ActiveDocument.recompute()
-			
-			except:
-				self.s1S.setText(self.gNoSelection)
-		
-		def copyAsClone(self):
-			
-			try:
-				import Draft
-				copy = Draft.make_clone(self.gObj)
-				copy.Label = "Clone, " + str(self.gObj.Label) + " "
-				FreeCAD.ActiveDocument.recompute()
-			
-			except:
-				self.s1S.setText(self.gNoSelection)
-		
-		def copyAsLink(self):
-			
-			try:
-				copyName = "Link_" + str(self.gObj.Name)
-				copy = FreeCAD.ActiveDocument.addObject('App::Link', copyName)
-				copy.setLink(self.gObj)
-				copy.Label = "Link, " + str(self.gObj.Label) + " "
-				[ x, y, z, r ] = MagicPanels.getPlacement(self.gObj)
-				MagicPanels.setPlacement(copy, x, y, z, r)
-				FreeCAD.ActiveDocument.recompute()
-			
-			except:
-				self.s1S.setText(self.gNoSelection)
 		
 	# ############################################################################
 	# final settings
