@@ -10,13 +10,17 @@ file =  open(sys.argv[1], 'r')
 data = file.readlines()
 
 commentOpen = False
+globalsOpen = False
 out = ""
 
 for line in data:
 	
-	if line.startswith("def ") == True:
+	if line.startswith("# #") == True:
+		continue
+	
+	if line.startswith("def ") == True and line.endswith("#\n") == False:
 		out = line
-		out = out.replace("def ","# ")
+		out = out.replace("def ","### ")
 		api.append(out)
 		continue
 
@@ -28,7 +32,14 @@ for line in data:
 		commentOpen = False
 		continue
 	
-	if commentOpen == True:
+	if line.find("# Globals") != -1 and globalsOpen == False:
+		globalsOpen = True
+	
+	if line.find("# end globals") != -1 and globalsOpen == True:
+		globalsOpen = False
+		continue
+	
+	if commentOpen == True or globalsOpen == True:
 		out = line
 		out = out.replace("\n","")
 		out = out.replace("\tArgs:","##### Args:")

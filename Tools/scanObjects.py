@@ -182,6 +182,7 @@ def showQtGUI():
 			self.rootCLoad = QtGui.QPushButton("load custom module", self)
 			self.rootCLoad.clicked.connect(self.loadCustomModule)
 			self.rootCLoad.setFixedWidth((1*self.gGridCol)-20)
+			self.rootCLoad.setFixedHeight(40)
 			
 			# select windows layout
 			# ############################################################################
@@ -216,6 +217,7 @@ def showQtGUI():
 			self.colorsList = (
 				"matrix blue pill",
 				"beautiful pinky world",
+				"the Sun is free?",
 				"the sky is blue",
 				"my world is gray",
 				"grass is green everywhere",
@@ -224,7 +226,7 @@ def showQtGUI():
 			)
 
 			# my favorite colors ;-)
-			gLayout = "beautiful pinky world"
+			gLayout = "I like winter more"
 
 			self.colorsO = QtGui.QComboBox(self)
 			self.colorsO.addItems(self.colorsList)
@@ -247,9 +249,12 @@ def showQtGUI():
 			self.oCommandB = QtGui.QPushButton("load command result", self)
 			self.oCommandB.clicked.connect(self.executeCustomCommand)
 			self.oCommandB.setFixedWidth((1*self.gGridCol)-20)
+			self.oCommandB.setFixedHeight(40)
 			
 			# options sub-window
 			# ############################################################################
+
+			self.oSeparator = QtGui.QLabel("", self)
 
 			self.OPTlayout = QtGui.QVBoxLayout()
 			self.OPTlayout.setAlignment(QtGui.Qt.AlignTop)
@@ -262,6 +267,7 @@ def showQtGUI():
 			self.OPTlayout.addWidget(self.oCommandL)
 			self.OPTlayout.addWidget(self.oCommandI)
 			self.OPTlayout.addWidget(self.oCommandB)
+			self.OPTlayout.addWidget(self.oSeparator)
 			self.OPTlayout.addWidget(self.layL)
 			self.OPTlayout.addWidget(self.layO)
 			self.OPTlayout.addWidget(self.colorsL)
@@ -281,17 +287,14 @@ def showQtGUI():
 			self.OPTsw.setWindowTitle("Options :")
 			self.OPTsw.setWidget(self.OPTwidget)
 
-
 			# ############################################################################
 			# selection view
 			# ############################################################################
-
 
 			self.list = QtGui.QListView()
 			self.listsw = QtGui.QMdiSubWindow(self)
 			self.listsw.setWindowTitle("Select object :")
 			self.listsw.setWidget(self.list)
-
 
 			# ############################################################################
 			# outputs
@@ -668,16 +671,41 @@ def showQtGUI():
 
 			# if object is list (eg. faces, edges)
 			elif isinstance(iObj, list):
-				tmpO = iObj
-				tmpL = iObj
-
+				
+				convert = 0
+				
+				i = 0
+				for o in iObj:
+					
+					i = i + 1
+					
+					if str(o).find("Face") != -1:
+						convert = 1
+						tmpO.append(o)
+						tmpL.append("Face"+str(i))
+					
+					if str(o).find("Edge") != -1:
+						convert = 1
+						tmpO.append(o)
+						tmpL.append("Edge"+str(i))
+				
+					if str(o).find("Vertex") != -1:
+						convert = 1
+						tmpO.append(o)
+						tmpL.append("Vertex"+str(i))
+				
+				if convert == 0:
+					tmpO = iObj
+					tmpL = iObj
+				
+				
 			# all objects types
 			else:
 				for o in iList:
 					
 					# fix FreeCAD bug https://forum.freecadweb.org/viewtopic.php?f=22&t=70365
-					if str(o) == "DraggingPlacement":
-						continue
+					#if str(o) == "DraggingPlacement":
+					#	continue
 					
 					try:
 						if hasattr(iObj, o):
@@ -1060,6 +1088,7 @@ def showQtGUI():
 			if (
 				selectedText == "my world is gray" or
 				selectedText == "beautiful pinky world" or
+				selectedText == "the Sun is free?" or
 				selectedText == "the sky is blue" or
 				selectedText == "grass is green everywhere" or
 				selectedText == "I like winter more"
@@ -1074,6 +1103,11 @@ def showQtGUI():
 					color1 = "#AAAAFF"
 					color2 = "#FFFFFF"
 					color3 = "#AAAAFF"
+				
+				if selectedText == "the Sun is free?":
+					color1 = "#FFAA00"
+					color2 = "#FFFFFF"
+					color3 = "#FFAA00"
 					
 				if selectedText == "my world is gray":
 					color1 = "#A1A1A1"

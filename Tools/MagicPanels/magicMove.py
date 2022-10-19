@@ -32,6 +32,9 @@ def showQtGUI():
 		gInfoCopyZ = translate('magicMove', 'Copy along Z:')
 		gInfoCopyStep = translate('magicMove', 'Copy offset:')
 		
+		gCrossCorner = 10
+		gCrossCenter = False
+		
 		gObj = ""
 		gThick = 0
 		gStep = 1
@@ -43,7 +46,7 @@ def showQtGUI():
 		gLCPX = 0 # Last Copy Position X
 		gLCPY = 0 # Last Copy Position Y
 		gLCPZ = 0 # Last Copy Position Z
-		gLCPR = 0 # Last Copy Position Rotation
+		gLCPR = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 0.00) # Last Copy Position Rotation
 		
 		gNoSelection = translate('magicMove', 'select panel to move or copy')
 		
@@ -299,6 +302,13 @@ def showQtGUI():
 			self.gLCPZ = 0
 			self.gLCPR = 0
 			
+		def setLastPosition(self):
+			
+			if self.gObj.isDerivedFrom("Sketcher::SketchObject"):
+				[ self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR ] = MagicPanels.getSketchPlacement(self.gObj, "global")
+			else:
+				[ self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR ] = MagicPanels.getPlacement(self.gObj)
+			
 		def setMove(self, iType):
 			
 			self.gStep = float(self.o4E.text())
@@ -325,14 +335,24 @@ def showQtGUI():
 			if iType == "Zm":
 				z = - self.gStep
 			
-			try:
-				[ x, y, z ] = MagicPanels.convertPosition(self.gObj, x, y, z)
-			except:
-				skip = 1
+			if self.gObj.isDerivedFrom("Sketcher::SketchObject"):
 				
-			[ px, py, pz, r ] = MagicPanels.getPlacement(self.gObj)
+				gp = self.gObj.getGlobalPlacement()
+				px = gp.Base.x
+				py = gp.Base.y
+				pz = gp.Base.z
+				r = gp.Rotation
+			
+			else:
+				
+				try:
+					[ x, y, z ] = MagicPanels.convertPosition(self.gObj, x, y, z)
+				except:
+					skip = 1
+				
+				[ px, py, pz, r ] = MagicPanels.getPlacement(self.gObj)
+			
 			MagicPanels.setPlacement(self.gObj, px+x, py+y, pz+z, r)
-
 			FreeCAD.activeDocument().recompute()
 
 		def createCopy(self, iType):
@@ -374,10 +394,17 @@ def showQtGUI():
 			if iType == "Zm":
 				z = z - self.gMaxX - self.gStep
 			
-			MagicPanels.setPlacement(copy, x, y, z, r)
-			FreeCAD.ActiveDocument.recompute()
+			if copy.isDerivedFrom("Sketcher::SketchObject"):
+				
+				MagicPanels.setSketchPlacement(copy, x, y, z, r, "global")
+				FreeCAD.ActiveDocument.recompute()
+				[ self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR ] = MagicPanels.getSketchPlacement(copy, "global")
 			
-			[ self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR ] = MagicPanels.getPlacement(copy)
+			else:
+			
+				MagicPanels.setPlacement(copy, x, y, z, r)
+				FreeCAD.ActiveDocument.recompute()
+				[ self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR ] = MagicPanels.getPlacement(copy)
 			
 			try:
 				MagicPanels.copyColors(self.gObj, copy)
@@ -394,7 +421,10 @@ def showQtGUI():
 			try:
 
 				self.resetGlobals()
-
+				
+				self.gCrossCorner = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
+				self.gCrossCenter = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
+				
 				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
 				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(50)
 
@@ -411,8 +441,8 @@ def showQtGUI():
 				FreeCADGui.Selection.clearSelection()
 				
 				[ self.gMaxX, self.gMaxY, self.gMaxZ ] = MagicPanels.getSizesFromVertices(self.gObj)
-				[ self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR ] = MagicPanels.getPlacement(self.gObj)
-				
+				self.setLastPosition()
+
 			except:
 
 				self.s1S.setText(self.gNoSelection)
@@ -430,8 +460,8 @@ def showQtGUI():
 				self.sCopyType.hide()
 				self.gStep = self.gThick
 				self.o4E.setText(str(self.gStep))
-				[ self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR ] = MagicPanels.getPlacement(self.gObj)
-			
+				self.setLastPosition()
+
 			if selectedText == "Copy":
 				self.o1L.setText(self.gInfoCopyX)
 				self.o2L.setText(self.gInfoCopyY)
@@ -440,8 +470,8 @@ def showQtGUI():
 				self.sCopyType.show()
 				self.gStep = 0
 				self.o4E.setText(str(self.gStep))
-				[ self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR ] = MagicPanels.getPlacement(self.gObj)
-			
+				self.setLastPosition()
+
 		def setCopyType(self, selectedText):
 			
 			self.gCopyType = selectedText
@@ -570,8 +600,8 @@ def showQtGUI():
 	
 	if form.result == userCancelled:
 		try:
-			FreeCADGui.ActiveDocument.ActiveView.setAxisCross(False)
-			FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(10)
+			FreeCADGui.ActiveDocument.ActiveView.setAxisCross(form.gCrossCenter)
+			FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(form.gCrossCorner)
 		except:
 			skip = 1
 		pass

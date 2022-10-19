@@ -1,9 +1,31 @@
 # ###################################################################################################################
+'''
 
+	This is MagicPanels library for Woodworking workbench.
+	Darek L (github.com/dprojects)
+
+Usage:
+
+	import MagicPanels
+	returned_value = MagicPanels.function(args)
+
+Functions at this library:
+
+* Should not have error handling and pop-ups, so you can call it from GUI tools in loops.
+* Should return value, if further processing needed.
+
+'''
+# ###################################################################################################################
 __doc__ = "This is MagicPanels library for Woodworking workbench."
 __author__ = "Darek L (github.com/dprojects)"
 
+
 # ###################################################################################################################
+#
+# Imports
+#
+# ###################################################################################################################
+
 
 import FreeCAD, FreeCADGui
 from PySide import QtGui
@@ -11,25 +33,31 @@ from PySide import QtCore
 
 translate = FreeCAD.Qt.translate
 
-def QT_TRANSLATE_NOOP(context, text):
+def QT_TRANSLATE_NOOP(context, text): #
 	return text
 
-# this should be set according to the user FreeCAD GUI settings
-gRoundPrecision = 2
-
 
 # ###################################################################################################################
-#
-# Functions for tools: 
-#
-# - no error handling and pop-ups
-# + you can call it from GUI tools in loops
-# + you should return for further processing
-#
+'''
+# Globals
+'''
 # ###################################################################################################################
 
 
-# ############################################################################
+gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
+
+
+# end globals (for API generator)
+
+
+# ###################################################################################################################
+'''
+# Functions for general purpose
+'''
+# ###################################################################################################################
+
+
+# ###################################################################################################################
 def equal(iA, iB):
 	'''
 	equal(iA, iB) - At FreeCAD there are many values like 1.000006, especially for PartDesign objects. 
@@ -38,8 +66,6 @@ def equal(iA, iB):
 	Recently I spent two hours debugging my code and in the end it turned out to be working fine after 
 	rounding the values. So, finally I decided to write my own function for comparison.
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iA: float value
@@ -47,9 +73,9 @@ def equal(iA, iB):
 
 	Usage:
 	
-		if equal(1.0006, 1):
+		if MagicPanels.equal(1.0006, 1):
 			do something ...
-		
+
 	Result:
 	
 		return True if equal or False if not
@@ -59,12 +85,10 @@ def equal(iA, iB):
 	return round(iA, gRoundPrecision) == round(iB, gRoundPrecision)
 
 
-# ############################################################################
+# ###################################################################################################################
 def touchTypo(iObj):
 	'''
 	touchTypo(iObj) - touch the typo so that the typo-snake does not notice it ;-) LOL
-	
-	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
@@ -72,8 +96,8 @@ def touchTypo(iObj):
 
 	Usage:
 	
-		vs = touchTypo(o)
-		
+		vs = MagicPanels.touchTypo(o)
+
 	Result:
 	
 		return Vertex + es for object o
@@ -83,13 +107,11 @@ def touchTypo(iObj):
 	return getattr(iObj, "Vertex"+"es")
 
 
-# ############################################################################
+# ###################################################################################################################
 def normalizeBoundBox(iBoundBox):
 	'''
 	normalizeBoundBox(iBoundBox) - return normalized version of BoundBox. All values 0.01 will be rounded 
 	allowing comparison, and searches for the same face or edge.
-	
-	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
@@ -99,10 +121,10 @@ def normalizeBoundBox(iBoundBox):
 	
 		e1 = obj1.Shape.Edges[0]
 		e2 = obj2.Shape.Edges[0]
-		
-		b1 = normalizeBoundBox(e1.BoundBox)
-		b2 = normalizeBoundBox(e2.BoundBox)
-		
+
+		b1 = MagicPanels.normalizeBoundBox(e1.BoundBox)
+		b2 = MagicPanels.normalizeBoundBox(e2.BoundBox)
+
 	Result:
 	
 		return normalized version for comparison if b1 == b2: you can set your own precision here
@@ -122,9 +144,9 @@ def normalizeBoundBox(iBoundBox):
 
 
 # ###################################################################################################################
-#
+'''
 # Vertices
-#
+'''
 # ###################################################################################################################
 
 
@@ -133,16 +155,14 @@ def showVertex(iVertex):
 	'''
 	showVertex(iVertex) - create sphere at given vertex, to show where is the point for debug purposes.
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iVertex: vertex object
-	
+
 	Usage:
 	
-		showVertex(obj.Shape.CenterOfMass)
-		
+		MagicPanels.showVertex(obj.Shape.CenterOfMass)
+
 	Result:
 	
 		show vertex
@@ -166,21 +186,20 @@ def getVertex(iFace, iEdge, iVertex):
 	'''
 	getVertex(iFace, iEdge, iVertex) - get vertex values for face, edge and vertex index.
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iFace: face object
 		iEdge: edge array index
 		iVertex: vertex array index (0 or 1)
-	
+
 	Usage:
 	
-		[ x, y, z ] = getVertex(gFace, 0, 1)
-		
+		[ x, y, z ] = MagicPanels.getVertex(gFace, 0, 1)
+
 	Result:
-	
+
 		Return vertex position.
+
 	'''
 	
 	vertexArr = touchTypo(iFace.Edges[iEdge])
@@ -193,8 +212,6 @@ def getVertexAxisCross(iA, iB):
 	'''
 	getVertexAxisCross(iA, iB) - get (iB - iA) value.
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iA: vertex float value
@@ -202,11 +219,12 @@ def getVertexAxisCross(iA, iB):
 	
 	Usage:
 	
-		edgeSize = getVertexAxisCross(v0[0], v1[0])
+		edgeSize = MagicPanels.getVertexAxisCross(v0[0], v1[0])
 		
 	Result:
 	
 		Return diff for vertices values.
+
 	'''
 	
 	if iA >= 0 and iB >= 0 and iB > iA:
@@ -232,8 +250,6 @@ def getVerticesPlane(iV1, iV2):
 	'''
 	getVerticesPlane(iV1, iV2) - get axes with the same values
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iV1: vertex object
@@ -241,11 +257,12 @@ def getVerticesPlane(iV1, iV2):
 	
 	Usage:
 	
-		plane = getVerticesPlane(v1, v2)
+		plane = MagicPanels.getVerticesPlane(v1, v2)
 		
 	Result:
 	
 		Return plane as "XY", "XZ", "YZ".
+
 	'''
 
 	if equal(iV1[0], iV2[0]) and equal(iV1[1], iV2[1]):
@@ -266,8 +283,6 @@ def setVertexPadding(iObj, iVertex, iPadding, iAxis):
 	setVertexPadding(iObj, iVertex, iPadding, iAxis) - set padding offset from given vertex to inside the object.
 	Do not use it at getPlacement for Pads. Use 0 vertex instead.
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iObj: object
@@ -278,11 +293,12 @@ def setVertexPadding(iObj, iVertex, iPadding, iAxis):
 	Usage:
 	
 		v = getattr(obj.Shape, "Vertex"+"es")[0]
-		offsetX = setVertexPadding(obj, v, 15, "X")
+		offsetX = MagicPanels.setVertexPadding(obj, v, 15, "X")
 		
 	Result:
 	
 		Return return new position value for given axis.
+
 	'''
 	
 	if iAxis == "X":
@@ -319,9 +335,9 @@ def setVertexPadding(iObj, iVertex, iPadding, iAxis):
 	
 
 # ###################################################################################################################
-#
+'''
 # Edges
-#
+'''
 # ###################################################################################################################
 
 
@@ -330,19 +346,18 @@ def getEdgeVertices(iEdge):
 	'''
 	getEdgeVertices(iEdge) - get all vertices values for edge.
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iEdge: edge object
-		
+
 	Usage:
 	
-		[ v1, v2 ] = getEdgeVertices(gEdge)
-		
+		[ v1, v2 ] = MagicPanels.getEdgeVertices(gEdge)
+
 	Result:
 	
 		Return vertices array like [ [ 1, 1, 1 ], [ 1, 1, 1 ] ].
+
 	'''
 	
 	vertexArr = touchTypo(iEdge)
@@ -359,8 +374,6 @@ def getEdgeNormalized(iV1, iV2):
 	getEdgeNormalized(iV1, iV2) - returns vertices with exact sorted order V1 > V2, mostly used 
 	to normalize Pad vertices
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iV1: array with vertices e.g. [ 1, 1, 1 ]
@@ -368,7 +381,7 @@ def getEdgeNormalized(iV1, iV2):
 	
 	Usage:
 	
-		[ v1, v2 ] = getEdgeNormalized(v1, v2)
+		[ v1, v2 ] = MagicPanels.getEdgeNormalized(v1, v2)
 		
 	Result:
 	
@@ -400,22 +413,20 @@ def getEdgeNormalized(iV1, iV2):
 	return [ iV1, iV2 ]
 
 
-# ############################################################################
+# ###################################################################################################################
 def getEdgeIndex(iObj, iEdge):
 	'''
 	getEdgeIndex(iObj, iEdge) - returns edge index for given object and edge.
-	
-	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
 		iObj: object of the edge
 		iEdge: edge object
-	
+
 	Usage:
 	
-		edgeIndex = getEdgeIndex(gObj, gEdge)
-		
+		edgeIndex = MagicPanels.getEdgeIndex(gObj, gEdge)
+
 	Result:
 	
 		return int value for edge
@@ -432,22 +443,20 @@ def getEdgeIndex(iObj, iEdge):
 	return -1
 
 
-# ############################################################################
+# ###################################################################################################################
 def getEdgeIndexByKey(iObj, iBoundBox):
 	'''
 	getEdgeIndexByKey(iObj, iBoundBox) - returns edge index for given edge BoundBox.
-	
-	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
 		iObj: object of the edge
 		iBoundBox: edge BoundBox as key
-	
+
 	Usage:
 	
-		edgeIndex = getEdgeIndex(o, key)
-		
+		edgeIndex = MagicPanels.getEdgeIndex(o, key)
+
 	Result:
 	
 		return int value for edge
@@ -465,21 +474,19 @@ def getEdgeIndexByKey(iObj, iBoundBox):
 	return -1
 
 
-# ############################################################################
+# ###################################################################################################################
 def getEdgePlane(iEdge):
 	'''
 	getEdgePlane(iEdge) - returns orientation for the edge, changed axis, as "X", "Y" or "Z".
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iEdge: edge object
-		
+
 	Usage:
 	
-		plane = getEdgePlane(edge)
-		
+		plane = MagicPanels.getEdgePlane(edge)
+
 	Result:
 	
 		return string "X", "Y" or "Z".
@@ -501,9 +508,9 @@ def getEdgePlane(iEdge):
 
 
 # ###################################################################################################################
-#
+'''
 # Faces
-#
+'''
 # ###################################################################################################################
 
 
@@ -512,17 +519,15 @@ def getFaceIndex(iObj, iFace):
 	'''
 	getFaceIndex(iObj, iFace) - returns face index for given object and face.
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iObj: object of the face
 		iFace: face object
-	
+
 	Usage:
 	
-		faceIndex = getFaceIndex(gObj, gFace)
-		
+		faceIndex = MagicPanels.getFaceIndex(gObj, gFace)
+
 	Result:
 	
 		return int value for face
@@ -544,17 +549,15 @@ def getFaceIndexByKey(iObj, iBoundBox):
 	'''
 	getFaceIndexByKey(iObj, iBoundBox) - returns face index for given face BoundBox.
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iObj: object of the face
 		iBoundBox: face BoundBox as key
-	
+
 	Usage:
 	
-		faceIndex = getFaceIndexByKey(o, key)
-		
+		faceIndex = MagicPanels.getFaceIndexByKey(o, key)
+
 	Result:
 	
 		return int value for face
@@ -577,19 +580,18 @@ def getFaceVertices(iFace):
 	'''
 	getFaceVertices(iFace) - get all vertices values for face.
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iFace: face object
-		
+
 	Usage:
 	
-		[ v1, v2, v3, v4 ] = getFaceVertices(gFace)
-		
+		[ v1, v2, v3, v4 ] = MagicPanels.getFaceVertices(gFace)
+
 	Result:
 	
 		Return vertices array like [ [ 1, 1, 1 ], [ 2, 2, 2 ], [ 3, 3, 3 ], [ 4, 4, 4 ] ]
+
 	'''
 	
 	vertexArr = touchTypo(iFace)
@@ -607,8 +609,6 @@ def getFaceType(iObj, iFace):
 	'''
 	getFaceType(iObj, iFace) - get face type, if this is "edge" or "surface".
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iObj: object where is the face
@@ -616,8 +616,8 @@ def getFaceType(iObj, iFace):
 
 	Usage:
 	
-		faceType = getFaceType(gObj, gFace)
-		
+		faceType = MagicPanels.getFaceType(gObj, gFace)
+
 	Result:
 	
 		Return string "surface" or "edge".
@@ -642,8 +642,6 @@ def getFaceEdges(iObj, iFace):
 	'''
 	getFaceEdges(iObj, iFace) - get all edges for given face grouped by sizes.
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iObj: object where is the face
@@ -651,8 +649,8 @@ def getFaceEdges(iObj, iFace):
 
 	Usage:
 	
-		[ faceType, arrAll, arrThick, arrShort, arrLong ] = getFaceEdges(gObj, gFace)
-		
+		[ faceType, arrAll, arrThick, arrShort, arrLong ] = MagicPanels.getFaceEdges(gObj, gFace)
+
 	Result:
 	
 		Return arrays like [ faceType, arrAll, arrThick, arrShort, arrLong ] with edges objects, 
@@ -707,16 +705,14 @@ def getFacePlane(iFace):
 	'''
 	getFacePlane(iFace) - get face plane in notation "XY", "XZ", "YZ". 
 
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iFace: face object
-	
+
 	Usage:
 	
-		plane = getFacePlane(face)
-		
+		plane = MagicPanels.getFacePlane(face)
+
 	Result:
 	
 		string "XY", "XZ", or "YZ".
@@ -745,22 +741,20 @@ def getFaceSink(iObj, iFace):
 	'''
 	getFaceSink(iObj, iFace) - get face sink axis direction in notation "+", or "-".
 
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iObj: object with the face
 		iFace: face object
-	
+
 	Usage:
 	
-		sink = getFaceSink(obj, face)
-		
+		sink = MagicPanels.getFaceSink(obj, face)
+
 	Result:
 	
 		string "+" if the object at face should go along axis forward, 
 		or "-" if the object at face should go along axis backward
-		
+
 	'''
 
 	inside = True
@@ -792,21 +786,19 @@ def getFaceObjectRotation(iObj, iFace):
 	getFaceObjectRotation(iObj, iFace) - get face object rotation to apply to the new created object at face. 
 	Object created at face with this rotation should be up from the face.
 
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iObj: object with the face
 		iFace: face object
-	
+
 	Usage:
 	
-		r = getFaceObjectRotation(obj, face)
-		
+		r = MagicPanels.getFaceObjectRotation(obj, face)
+
 	Result:
 	
 		FreeCAD.Rotation object that can be directly pass to the setPlacement or object.Placement
-		
+
 	'''
 
 	plane = getFacePlane(iFace)
@@ -842,17 +834,15 @@ def getFaceDetails(iObj, iFace):
 	'''
 	getFaceDetails(iObj, iFace) - allow to get detailed information for face direction.
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iObj: selected object
 		iFace: selected face object
-	
+
 	Usage:
 	
-		getFaceDetails(gObj, gFace)
-		
+		[ plane, type ] = MagicPanels.getFaceDetails(gObj, gFace)
+
 	Result:
 	
 		[ "XY", "surface" ] - if the direction is XY and it is surface, no thickness edge
@@ -935,9 +925,9 @@ def getFaceDetails(iObj, iFace):
 
 
 # ###################################################################################################################
-#
+'''
 # References
-#
+'''
 # ###################################################################################################################
 
 
@@ -946,19 +936,18 @@ def getReference(iObj="none"):
 	'''
 	getReference(iObj="none") - get reference to the selected or given object.
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iObj (optional): object to get reference (to return base object)
 	
 	Usage:
 	
-		gObj = getReference()
+		gObj = MagicPanels.getReference()
+		gObj = MagicPanels.getReference(obj)
 		
 	Result:
 	
-		obj - reference to the base object
+		gObj - reference to the base object
 
 	'''
 
@@ -1015,9 +1004,9 @@ def getReference(iObj="none"):
 
 
 # ###################################################################################################################
-#
+'''
 # Sizes
-#
+'''
 # ###################################################################################################################
 
 
@@ -1026,19 +1015,18 @@ def getSizes(iObj):
 	'''
 	getSizes(iObj) - allow to get sizes for object (iObj), according to the object type. The values are not sorted.
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iObj: object to get sizes
-	
+
 	Usage:
 	
-		[ size1, size2, size3 ] = getSizes(obj)
-		
+		[ size1, size2, size3 ] = MagicPanels.getSizes(obj)
+
 	Result:
 	
 		Returns [ Length, Width, Height ] for Cube.
+
 	'''
 
 	# for Cube panels
@@ -1112,23 +1100,21 @@ def getSizesFromVertices(iObj):
 	'''
 	getSizesFromVertices(iObj) - get occupied space by the object from vertices.
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iObj: object
 	
 	Usage:
 	
-		[ sx, sy, sz ] = getSizesFromVertices(obj)
-		
+		[ sx, sy, sz ] = MagicPanels.getSizesFromVertices(obj)
+
 	Result:
 	
 		Returns array with [ mX, mY, mZ ] where: 
 		mX - occupied space along X axis
 		mY - occupied space along Y axis
 		mZ - occupied space along Z axis
-		
+
 	'''
 
 	init = 0
@@ -1182,9 +1168,9 @@ def getSizesFromVertices(iObj):
 
 
 # ###################################################################################################################
-#
+'''
 # Measurements
-#
+'''
 # ###################################################################################################################
 
 
@@ -1195,21 +1181,20 @@ def showMeasure(iP1, iP2, iRef=""):
 	to create and draw object. But in the future this can be changed to more beautiful drawing without changing
 	tools. 
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iP1: starting point vertex object
 		iP2: ending point vertex object
 		iRef (optional): string for future TechDraw import or any other use, other tools
-	
+
 	Usage:
 	
 		m = MagicPanels.showMeasure(gP1, gP2, "Pad")
-		
+
 	Result:
 	
 		Create measure object, draw it and return measure object for further proccessing. 
+
 	'''
 
 	m = FreeCAD.ActiveDocument.addObject('App::MeasureDistance', "measure")
@@ -1233,9 +1218,9 @@ def showMeasure(iP1, iP2, iRef=""):
 	
 
 # ###################################################################################################################
-#
+'''
 # Direction, Plane, Orientation, Axis
-#
+'''
 # ###################################################################################################################
 
 
@@ -1244,18 +1229,16 @@ def getModelRotation(iX, iY, iZ):
 	'''
 	getModelRotation() - transform given iX, iY, iZ values to the correct vector, if the user rotated 3D model.
 
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iX: X value to transform
 		iY: Y value to transform
 		iY: Z value to transform
-	
+
 	Usage:
 	
-		[x, y, z ] = getModelRotation(x, y, z)
-		
+		[x, y, z ] = MagicPanels.getModelRotation(x, y, z)
+
 	Result:
 	
 		[ X, Y, Z ] - transformed vector of given values
@@ -1457,19 +1440,18 @@ def getDirection(iObj):
 	'''
 	getDirection(iObj) - allow to get Cube object direction (iType).
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iObj: selected object
-	
+
 	Usage:
 	
-		getDirection(obj)
-		
+		direction = MagicPanels.getDirection(obj)
+
 	Result:
 	
 		Returns iType: "XY", "YX", "XZ", "ZX", "YZ", "ZY"
+
 	'''
 
 	if iObj.isDerivedFrom("Part::Box"):
@@ -1552,9 +1534,9 @@ def getDirection(iObj):
 
 
 # ###################################################################################################################
-#
+'''
 # Position, Placement, Move
-#
+'''
 # ###################################################################################################################
 
 
@@ -1563,16 +1545,14 @@ def getPlacement(iObj):
 	'''
 	getPlacement(iObj) - get placement with rotation info for given object.
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iObj: object to get placement
 
 	Usage:
 	
-		[ x, y, z, r ] = getPlacement(gObj)
-		
+		[ x, y, z, r ] = MagicPanels.getPlacement(gObj)
+
 	Result:
 	
 		return [ x, y, z, r ] array with placement info, where:
@@ -1619,10 +1599,8 @@ def setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
 	'''
 	setPlacement(iObj, iX, iY, iZ, iR, iAnchor="") - set placement with rotation for given object.
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
-	
+
 		iObj: object to set custom placement and rotation
 		iX: X Axis object position
 		iX: Y Axis object position
@@ -1632,8 +1610,8 @@ def setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
 
 	Usage:
 	
-		setPlacement(gObj, 100, 100, 200, r)
-		
+		MagicPanels.setPlacement(gObj, 100, 100, 200, r)
+
 	Result:
 	
 		Object gObj should be moved into 100, 100, 200 position without rotation.
@@ -1702,16 +1680,14 @@ def resetPlacement(iObj):
 	'''
 	resetPlacement(iObj) - reset placement for given object. Needed to set rotation for object at face.
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iObj: object to reset placement
 
 	Usage:
 	
-		resetPlacement(obj)
-		
+		MagicPanels.resetPlacement(obj)
+
 	Result:
 	
 		Object obj return to base position.
@@ -1735,12 +1711,92 @@ def resetPlacement(iObj):
 
 
 # ###################################################################################################################
+def getSketchPlacement(iSketch, iType):
+	'''
+	getSketchPlacement(iSketch, iType) - get placement dedicated to move and copy Sketch directly.
+	
+	Args:
+	
+		iSketch: Sketch object
+		iType: 
+			"global" - global Sketch position
+			"attach" - AttachmentOffset position
+
+	Usage:
+	
+		[ x, y, z, r ] = MagicPanels.getSketchPlacement(sketch, "global")
+
+	Result:
+	
+		return [ x, y, z, r ] array with placement info, where:
+		
+		x: X Axis object position
+		y: Y Axis object position
+		z: Z Axis object position
+		r: Rotation object
+
+	'''
+
+	if iType == "attach":
+		
+		x = iSketch.AttachmentOffset.Base.x
+		y = iSketch.AttachmentOffset.Base.y
+		z = iSketch.AttachmentOffset.Base.z
+		r = iSketch.AttachmentOffset.Rotation
+
+	if iType == "global":
+		
+		gp = iSketch.getGlobalPlacement()
+		x = gp.Base.x
+		y = gp.Base.y
+		z = gp.Base.z
+		r = gp.Rotation
+
+	return [ x, y, z, r ]
+
+
+# ###################################################################################################################
+def setSketchPlacement(iSketch, iX, iY, iZ, iR, iType):
+	'''
+	setSketchPlacement(iSketch, iX, iY, iZ, iR, iType) - set placement with rotation dedicated to move and copy Sketch directly.
+	
+	Args:
+
+		iSketch: Sketch object to set custom placement and rotation
+		iX: X Axis object position
+		iX: Y Axis object position
+		iZ: Z Axis object position
+		iR: Rotation object
+		iType: 
+			"global" - global Sketch position
+			"attach" - AttachmentOffset position
+
+	Usage:
+	
+		MagicPanels.setSketchPlacement(sketch, 100, 100, 200, r, "attach")
+
+	Result:
+	
+		Object Sketch should be moved.
+
+	'''
+
+	if iType == "attach":
+		
+		iSketch.AttachmentOffset.Base = FreeCAD.Vector(iX, iY, iZ)
+		iSketch.AttachmentOffset.Rotation = iR
+		
+	if iType == "global":
+		
+		iSketch.Placement.Base = FreeCAD.Vector(iX, iY, iZ)
+		iSketch.Placement.Rotation = iR
+
+
+# ###################################################################################################################
 def convertPosition(iObj, iX, iY, iZ):
 	'''
 	convertPosition(iObj, iX, iY, iZ) - convert given position vector to correct position values according 
 	to the object direction.
-	
-	Note: This is internal function, so there is no error pop-up or any error handling.
 	
 	Args:
 	
@@ -1748,16 +1804,34 @@ def convertPosition(iObj, iX, iY, iZ):
 		iX: x position
 		iY: y position
 		iZ: z position
-	
+
 	Usage:
 	
-		[ x, y, z ] = convertPosition(obj, 0, 400, 0)
-		
+		[ x, y, z ] = MagicPanels.convertPosition(obj, 0, 400, 0)
+
 	Result:
 	
 		For Pad object in XZ direction return the AttachmentOffset order [ 0, 0, -400 ]
+
 	'''
 	
+	# it is better to use Sketch.getGlobalPlacement()
+	if iObj.isDerivedFrom("Sketcher::SketchObject"):
+		
+		obj = iObj.Support[0][0]
+		faceName = str(iObj.Support[0][1]).replace("'","").replace(",","").replace("(","").replace(")","")
+		face = obj.getSubObject(faceName)
+		axis = getFacePlane(face)
+		
+		if axis == "XY":
+			return [ iX, iY, iZ ]
+		
+		if axis == "XZ":
+			return [ iX, iZ, -iY ]
+
+		if axis == "YZ":
+			return [ iY, iZ, iX ]
+
 	if iObj.isDerivedFrom("PartDesign::Pad"):
 		
 		direction = getDirection(iObj)
@@ -1771,9 +1845,7 @@ def convertPosition(iObj, iX, iY, iZ):
 		if direction == "YZ" or direction == "ZY":
 			return [ iY, iZ, iX ]
 	
-	else:
-		
-		return [ iX, iY, iZ ]
+	return [ iX, iY, iZ ]
 
 
 # ###################################################################################################################
@@ -1784,20 +1856,18 @@ def getObjectCenter(iObj):
 	from vertices but some objects do not have all vertices to calculation. So, for now to handle 
 	simple Pad objects and LinkGroups the CenterOfMass will be returned first.
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iObj: object
-	
+
 	Usage:
 	
-		[ cx, cy, cz ] = getObjectCenter(obj)
-		
+		[ cx, cy, cz ] = MagicPanels.getObjectCenter(obj)
+
 	Result:
 	
 		Returns array with [ cx, cy, cz ] values for center point.
-		
+
 	'''
 
 	try:
@@ -1833,8 +1903,6 @@ def sizesToCubePanel(iObj, iType):
 	So, the returned values can be directly assigned to Cube object in order to create 
 	panel in exact direction.
 
-	Note: This is internal function, so there is no error pop-up or any error handling.
-
 	Args:
 
 		iObj: selected object
@@ -1842,11 +1910,12 @@ def sizesToCubePanel(iObj, iType):
 
 	Usage:
 
-		[ Length, Width, Height ] = sizesToCubePanel(obj, "YZ")
-		
+		[ Length, Width, Height ] = MagicPanels.sizesToCubePanel(obj, "YZ")
+
 	Result:
 
 		Returns [ Length, Width, Height ] for YZ object placement".
+
 	'''
 
 	if iObj.isDerivedFrom("Part::Box"):
@@ -1913,9 +1982,9 @@ def sizesToCubePanel(iObj, iType):
 
 
 # ###################################################################################################################
-#
+'''
 # Replace
-#
+'''
 # ###################################################################################################################
 
 
@@ -1924,21 +1993,19 @@ def makePad(iObj, iPadLabel="Pad"):
 	'''
 	makePad(iObj, iPadLabel="Pad") - allows to create Part, Plane, Body, Pad, Sketch objects.
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iObj: object Cube to change into Pad
 		iPadLabel: Label for the new created Pad, the Name will be Pad
-		
+
 	Usage:
-	
-		import MagicPanels
+
 		[ part, body, sketch, pad ] = MagicPanels.makePad(obj, "myPanel")
-		
+
 	Result:
 	
 		Created Pad with correct placement, rotation and return [ part, body, sketch, pad ].
+
 	'''
 
 	sizes = getSizes(iObj)
@@ -2035,9 +2102,9 @@ def makePad(iObj, iPadLabel="Pad"):
 
 
 # ###################################################################################################################
-#
+'''
 # Cut
-#
+'''
 # ###################################################################################################################
 
 
@@ -2047,20 +2114,18 @@ def makeCuts(iObjects):
 	makeCuts(iObjects) - allows to create multi bool cut operation at given objects. First objects 
 	from iObjects is the base element and all other will cut the base. The copies will be created for cut. 
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iObjects: objects to parse by multi bool cut
 
 	Usage:
 	
-		import MagicPanels
-		MagicPanels.makeCuts(objects)
-		
+		cuts = MagicPanels.makeCuts(objects)
+
 	Result:
 	
 		Array of cut objects will be returned.
+
 	'''
 	
 	cuts = []
@@ -2107,22 +2172,20 @@ def makeFrame45cut(iObjects, iFaces):
 	makeFrame45cut(iObjects, iFaces) - makes 45 frame cut with PartDesing Chamfer. 
 	For each face the ends will be cut.
 	
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iObjects: array of objects to cut
 		iFaces: dict() of faces for Chamfer cut direction, the key is iObjects value (object), 
 				if there are more faces for object, the first one will be get as direction.
-		
+
 	Usage:
 	
-		import MagicPanels
 		frames = MagicPanels.makeFrame45cut(objects, faces)
 		
 	Result:
 	
 		Created Frames with correct placement, rotation and return array with Chamfer frame objects.
+
 	'''
 
 	frames = []
@@ -2177,9 +2240,9 @@ def makeFrame45cut(iObjects, iFaces):
 
 
 # ###################################################################################################################
-#
+'''
 # Holes
-#
+'''
 # ###################################################################################################################
 
 
@@ -2187,8 +2250,6 @@ def makeFrame45cut(iObjects, iFaces):
 def makeHoles(iObj, iFace, iCylinders):
 	'''
 	makeHoles(iObj, iFace, iCylinders) - make holes
-
-	Note: This is internal function, so there is no error pop-up or any error handling.
 
 	Args:
 
@@ -2198,12 +2259,12 @@ def makeHoles(iObj, iFace, iCylinders):
 
 	Usage:
 
-		import MagicPanels
 		holes = MagicPanels.makeHoles(obj, face, cylinders)
 		
 	Result:
 
 		Make holes and return list of holes.
+
 	'''
 
 	import Part, Sketcher
@@ -2288,8 +2349,6 @@ def makeCountersinks(iObj, iFace, iCones):
 	'''
 	makeCountersinks(iObj, iFace, iCones) - make countersinks
 
-	Note: This is internal function, so there is no error pop-up or any error handling.
-
 	Args:
 
 		iObj: base object to drill
@@ -2298,12 +2357,12 @@ def makeCountersinks(iObj, iFace, iCones):
 
 	Usage:
 
-		import MagicPanels
 		holes = MagicPanels.makeCountersinks(obj, face, cones)
-		
+
 	Result:
 
 		Make holes and return list of holes. 
+
 	'''
 
 	import Part, Sketcher
@@ -2399,8 +2458,6 @@ def makeCounterbores(iObj, iFace, iCones):
 	'''
 	makeCounterbores(iObj, iFace, iCones) - make counterbores
 
-	Note: This is internal function, so there is no error pop-up or any error handling.
-
 	Args:
 
 		iObj: base object to drill
@@ -2409,12 +2466,12 @@ def makeCounterbores(iObj, iFace, iCones):
 
 	Usage:
 
-		import MagicPanels
 		holes = MagicPanels.makeCounterbores(obj, face, cones)
-		
+
 	Result:
 
-		Make holes and return list of holes. 
+		Make holes and return list of holes.
+
 	'''
 
 	import Part, Sketcher
@@ -2508,8 +2565,6 @@ def makePocketHoles(iObj, iFace, iCones):
 	'''
 	makePocketHoles(iObj, iFace, iCones) - make pocket holes for invisible connections
 
-	Note: This is internal function, so there is no error pop-up or any error handling.
-
 	Args:
 
 		iObj: base object to drill
@@ -2518,12 +2573,12 @@ def makePocketHoles(iObj, iFace, iCones):
 
 	Usage:
 
-		import MagicPanels
 		holes = MagicPanels.makePocketHoles(obj, face, cones)
-		
+
 	Result:
 
-		Make holes and return list of holes. 
+		Make holes and return list of holes.
+
 	'''
 
 	import Part, Sketcher
@@ -2617,8 +2672,6 @@ def makeCounterbores2x(iObj, iFace, iCones):
 	'''
 	makeCounterbores2x(iObj, iFace, iCones) - make counterbores from both sides
 
-	Note: This is internal function, so there is no error pop-up or any error handling.
-
 	Args:
 
 		iObj: base object to drill
@@ -2627,12 +2680,12 @@ def makeCounterbores2x(iObj, iFace, iCones):
 
 	Usage:
 
-		import MagicPanels
 		holes = MagicPanels.makeCounterbores2x(obj, face, cones)
-		
+
 	Result:
 
-		Make holes and return list of holes. 
+		Make holes and return list of holes.
+
 	'''
 
 	import Part, Sketcher, Draft
@@ -2841,9 +2894,9 @@ def makeCounterbores2x(iObj, iFace, iCones):
 
 
 # ###################################################################################################################
-#
+'''
 # Colors
-#
+'''
 # ###################################################################################################################
 
 
@@ -2852,21 +2905,22 @@ def copyColors(iSource, iTarget):
 	'''
 	copyColors(iSource, iTarget) - allows to copy colors from iSource object to iTarget object
 
-	Note: This is internal function, so there is no error pop-up or any error handling.
-
 	Args:
 
 		iSource: source object
 		iTarget: target object
-		
+
 	Usage:
 
-		import MagicPanels
-		MagicPanels.copyColors(panel, copy)
-		
+		try:
+			MagicPanels.copyColors(panel, copy)
+		except:
+			skip = 1
+
 	Result:
 
 		All colors structure should be copied from source to target.
+
 	'''
 
 	skip = 0
@@ -2895,29 +2949,28 @@ def copyColors(iSource, iTarget):
 
 
 # ###################################################################################################################
-#
+'''
 # Spreadsheet
-#
+'''
 # ###################################################################################################################
 
 def sheetGetKey(iC, iR):
 	'''
 	sheetGetKey(iC, iR) - allow to get key as letters for spreadsheet from given column and row index.
 
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iC: column index
 		iR: row index
-	
+
 	Usage:
 	
-		key = sheetGetKey(1, 2)
-		
+		key = MagicPanels.sheetGetKey(1, 2)
+
 	Result:
 	
 		return key string
+
 	'''
 
 	letters = "ZABCDEFGHIJKLMNOPQRSTUVWXYZ" # max 26
@@ -2942,28 +2995,34 @@ def sheetGetKey(iC, iR):
 
 
 # ###################################################################################################################
+'''
 # Info screen
+'''
 # ###################################################################################################################
+
 
 def showInfo(iCaller, iInfo, iNote="yes"):
 	'''
 	showInfo(iCaller, iInfo, iNote="yes") - allow to show Gui info box for all available function and multiple calls.
 
-	Note: This is internal function, so there is no error pop-up or any error handling.
-	
 	Args:
 	
 		iCaller: window title
 		iInfo: HTML text to show
 		iNote: additional tutorial ("yes" or "no"), by default is "yes".
-	
+
 	Usage:
-	
-		showInfo("panel"+iType, info)
+
+		info = "text to show"
+		iType = "XY"
 		
+		MagicPanels.showInfo("window title", info)
+		MagicPanels.showInfo("window title", info, "no")
+
 	Result:
 	
 		Show info Gui.
+
 	'''
 
 	info = ""
