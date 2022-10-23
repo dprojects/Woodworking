@@ -32,9 +32,6 @@ def showQtGUI():
 		gInfoCopyZ = translate('magicMove', 'Copy along Z:')
 		gInfoCopyStep = translate('magicMove', 'Copy offset:')
 		
-		gCrossCorner = 10
-		gCrossCenter = False
-		
 		gObj = ""
 		gThick = 0
 		gStep = 1
@@ -48,6 +45,9 @@ def showQtGUI():
 		gLCPZ = 0 # Last Copy Position Z
 		gLCPR = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 0.00) # Last Copy Position Rotation
 		
+		gCrossCorner = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
+		gCrossCenter = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
+
 		gNoSelection = translate('magicMove', 'select panel to move or copy')
 		
 		# ############################################################################
@@ -284,6 +284,8 @@ def showQtGUI():
 			self.show()
 
 			# init
+			FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
+			FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(50)
 			self.getSelected()
 
 		# ############################################################################
@@ -422,12 +424,6 @@ def showQtGUI():
 
 				self.resetGlobals()
 				
-				self.gCrossCorner = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
-				self.gCrossCenter = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
-				
-				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
-				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(50)
-
 				self.gObj = MagicPanels.getReference()
 				
 				sizes = []
@@ -599,11 +595,10 @@ def showQtGUI():
 	form.exec_()
 	
 	if form.result == userCancelled:
-		try:
-			FreeCADGui.ActiveDocument.ActiveView.setAxisCross(form.gCrossCenter)
-			FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(form.gCrossCorner)
-		except:
-			skip = 1
+
+		FreeCADGui.ActiveDocument.ActiveView.setAxisCross(form.gCrossCenter)
+		FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(form.gCrossCorner)
+
 		pass
 
 # ###################################################################################################################

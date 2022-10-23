@@ -151,17 +151,18 @@ def normalizeBoundBox(iBoundBox):
 
 
 # ###################################################################################################################
-def showVertex(iVertex):
+def showVertex(iVertex, iRadius):
 	'''
 	showVertex(iVertex) - create sphere at given vertex, to show where is the point for debug purposes.
 	
 	Args:
 	
 		iVertex: vertex object
+		iRadius: ball Radius
 
 	Usage:
 	
-		MagicPanels.showVertex(obj.Shape.CenterOfMass)
+		MagicPanels.showVertex(obj.Shape.CenterOfMass, 20)
 
 	Result:
 	
@@ -176,7 +177,7 @@ def showVertex(iVertex):
 	s1 = FreeCAD.ActiveDocument.addObject("Part::Sphere","showVertex")
 	s1.Placement = FreeCAD.Placement(iVertex, FreeCAD.Rotation(0, 0, 0))
 	s1.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 0.0)
-	s1.Radius = 20
+	s1.Radius = iRadius
 	
 	FreeCAD.ActiveDocument.recompute()
 		
@@ -953,24 +954,64 @@ def getReference(iObj="none"):
 
 	obj = ""
 	
+	# #####################################
 	# selection
+	# #####################################
 	
 	if iObj == "none":
 		obj = FreeCADGui.Selection.getSelection()[0]
 	else:
 		obj = iObj
 
+	# #####################################
 	# object types 
+	# #####################################
 	
-	if obj.isDerivedFrom("Part::Box") or obj.isDerivedFrom("PartDesign::Pad"):
+	# Cube
+	if obj.isDerivedFrom("Part::Box"):
 		return obj
-
+	
+	# normal Pad
+	if obj.isDerivedFrom("PartDesign::Pad") and obj.BaseFeature == None:
+		FreeCAD.Console.PrintMessage("\n")
+		FreeCAD.Console.PrintMessage("Hello 1")
+		return obj
+	
+	# Mortise and Tenon
+	if (
+		( obj.isDerivedFrom("PartDesign::Pocket") and obj.BaseFeature != None ) or
+		( obj.isDerivedFrom("PartDesign::Pad") and obj.BaseFeature != None )
+		):
+		
+		i = 0
+		base = obj
+		while True:
+			
+			if base.BaseFeature == None:
+				return base
+			
+			else:
+			
+				if (
+					obj.isDerivedFrom("PartDesign::Pad") or 
+					obj.isDerivedFrom("PartDesign::Pocket")
+					):
+					base = base.BaseFeature
+			
+			# search depth level
+			if i > 200:
+				break
+			else:
+				i = i + 1
+	
+	# construction Profiles and Frames
 	if ( 
 		obj.isDerivedFrom("PartDesign::Thickness") or 
 		obj.isDerivedFrom("PartDesign::Chamfer")
 		):
 		return obj.Base[0]
-		
+
+	# boolean Cut and Holes
 	if (
 		obj.isDerivedFrom("Part::Cut") or 
 		obj.isDerivedFrom("PartDesign::Hole")
@@ -996,7 +1037,8 @@ def getReference(iObj="none"):
 				break
 			else:
 				i = i + 1
-		
+	
+	# not recognized
 	if obj != "":
 		return obj
 	
@@ -1163,6 +1205,37 @@ def getSizesFromVertices(iObj):
 	mX = round(s1, gRoundPrecision)
 	mY = round(s2, gRoundPrecision)
 	mZ = round(s3, gRoundPrecision)
+	
+	return [ mX, mY, mZ ]
+
+
+# ###################################################################################################################
+def getSizesFromBoundBox(iObj):
+	'''
+	getSizesFromBoundBox(iObj) - get occupied space by the object from BoundBox. This can be useful for round shapes, 
+	where is no vertices at object edges, e.g. cylinders, circle at Sketch.
+	
+	Args:
+	
+		iObj: object
+	
+	Usage:
+	
+		[ sx, sy, sz ] = MagicPanels.getSizesFromVertices(obj)
+
+	Result:
+	
+		Returns array with [ mX, mY, mZ ] where: 
+		mX - occupied space along X axis
+		mY - occupied space along Y axis
+		mZ - occupied space along Z axis
+
+	'''
+
+
+	mX = round(iObj.Shape.BoundBox.XLength, gRoundPrecision)
+	mY = round(iObj.Shape.BoundBox.YLength, gRoundPrecision)
+	mZ = round(iObj.Shape.BoundBox.ZLength, gRoundPrecision)
 	
 	return [ mX, mY, mZ ]
 
@@ -2103,144 +2176,6 @@ def makePad(iObj, iPadLabel="Pad"):
 
 # ###################################################################################################################
 '''
-# Cut
-'''
-# ###################################################################################################################
-
-
-# ###################################################################################################################
-def makeCuts(iObjects):
-	'''
-	makeCuts(iObjects) - allows to create multi bool cut operation at given objects. First objects 
-	from iObjects is the base element and all other will cut the base. The copies will be created for cut. 
-	
-	Args:
-	
-		iObjects: objects to parse by multi bool cut
-
-	Usage:
-	
-		cuts = MagicPanels.makeCuts(objects)
-
-	Result:
-	
-		Array of cut objects will be returned.
-
-	'''
-	
-	cuts = []
-	
-	i = 0
-	for o in iObjects:
-		
-		i = i + 1
-		
-		if i == 1:
-			base = o
-			baseName = str(base.Name)
-			baseLabel = str(base.Label)
-			continue
-
-		copy = FreeCAD.ActiveDocument.copyObject(o)
-		copy.Label = "copy, " + o.Label
-		
-		if not hasattr(copy, "BOM"):
-			info = QT_TRANSLATE_NOOP("App::Property", "Allows to skip this duplicated copy in BOM, cut-list report.")
-			copy.addProperty("App::PropertyBool", "BOM", "Woodworking", info)
-		
-		copy.BOM = False
-		
-		cutName = baseName + str(i-1)
-		cut = FreeCAD.ActiveDocument.addObject("Part::Cut", cutName)
-		cut.Base = base
-		cut.Tool = copy
-		cut.Label = "Cut " + str(i-1) + ", " + baseLabel
-		
-		FreeCAD.ActiveDocument.recompute()
-		
-		base = cut
-		cuts.append(cut)
-		
-	cut.Label = "Cut, " + baseLabel
-
-	return cuts
-
-
-# ###################################################################################################################
-def makeFrame45cut(iObjects, iFaces):
-	'''
-	makeFrame45cut(iObjects, iFaces) - makes 45 frame cut with PartDesing Chamfer. 
-	For each face the ends will be cut.
-	
-	Args:
-	
-		iObjects: array of objects to cut
-		iFaces: dict() of faces for Chamfer cut direction, the key is iObjects value (object), 
-				if there are more faces for object, the first one will be get as direction.
-
-	Usage:
-	
-		frames = MagicPanels.makeFrame45cut(objects, faces)
-		
-	Result:
-	
-		Created Frames with correct placement, rotation and return array with Chamfer frame objects.
-
-	'''
-
-	frames = []
-
-	for o in iObjects:
-	
-		face = iFaces[o][0]
-
-		sizes = getSizes(o)
-		sizes.sort()
-		
-		[ faceType, arrAll, arrThick, arrShort, arrLong ] = getFaceEdges(o, face)
-		
-		if faceType == "edge":
-			arr = arrThick
-			size = sizes[1]
-			
-		if faceType == "surface":
-			arr = arrShort
-			size = sizes[0]
-
-		keys = []
-		
-		for e in arr:
-			keys.append(e.BoundBox)
-		
-		if o.isDerivedFrom("Part::Box"):
-		
-			[ part, body, sketch, pad ] = makePad(o, "Frame")
-			FreeCAD.ActiveDocument.removeObject(o.Name)
-			FreeCAD.ActiveDocument.recompute()
-		
-		else:
-		
-			body = o._Body
-			pad = o
-
-		edges = []
-		for k in keys:
-			index = getEdgeIndexByKey(pad, k)
-			edges.append("Edge"+str(int(index)))
-		
-		frame = body.newObject('PartDesign::Chamfer','Frame45Cut')
-		frame.Base = (pad, edges)
-		frame.Size = size - 0.01
-		pad.Visibility = False
-		
-		FreeCAD.ActiveDocument.recompute()
-		frames.append(frame)
-	
-	return frames
-
-
-# ###################################################################################################################
-'''
 # Holes
 '''
 # ###################################################################################################################
@@ -2891,6 +2826,288 @@ def makeCounterbores2x(iObj, iFace, iCones):
 	FreeCADGui.Selection.clearSelection()
 		
 	return holes
+
+
+# ###################################################################################################################
+'''
+# Joinery
+'''
+# ###################################################################################################################
+
+
+# ###################################################################################################################
+def makeCuts(iObjects):
+	'''
+	makeCuts(iObjects) - allows to create multi bool cut operation at given objects. First objects 
+	from iObjects is the base element and all other will cut the base. The copies will be created for cut. 
+	
+	Args:
+	
+		iObjects: objects to parse by multi bool cut
+
+	Usage:
+	
+		cuts = MagicPanels.makeCuts(objects)
+
+	Result:
+	
+		Array of cut objects will be returned.
+
+	'''
+	
+	cuts = []
+	
+	i = 0
+	for o in iObjects:
+		
+		i = i + 1
+		
+		if i == 1:
+			base = o
+			baseName = str(base.Name)
+			baseLabel = str(base.Label)
+			continue
+
+		copy = FreeCAD.ActiveDocument.copyObject(o)
+		copy.Label = "copy, " + o.Label
+		
+		if not hasattr(copy, "BOM"):
+			info = QT_TRANSLATE_NOOP("App::Property", "Allows to skip this duplicated copy in BOM, cut-list report.")
+			copy.addProperty("App::PropertyBool", "BOM", "Woodworking", info)
+		
+		copy.BOM = False
+		
+		cutName = baseName + str(i-1)
+		cut = FreeCAD.ActiveDocument.addObject("Part::Cut", cutName)
+		cut.Base = base
+		cut.Tool = copy
+		cut.Label = "Cut " + str(i-1) + ", " + baseLabel
+		
+		FreeCAD.ActiveDocument.recompute()
+		
+		base = cut
+		cuts.append(cut)
+		
+	cut.Label = "Cut, " + baseLabel
+
+	return cuts
+
+
+# ###################################################################################################################
+def makeFrame45cut(iObjects, iFaces):
+	'''
+	makeFrame45cut(iObjects, iFaces) - makes 45 frame cut with PartDesing Chamfer. 
+	For each face the ends will be cut.
+	
+	Args:
+	
+		iObjects: array of objects to cut
+		iFaces: dict() of faces for Chamfer cut direction, the key is iObjects value (object), 
+				if there are more faces for object, the first one will be get as direction.
+
+	Usage:
+	
+		frames = MagicPanels.makeFrame45cut(objects, faces)
+		
+	Result:
+	
+		Created Frames with correct placement, rotation and return array with Chamfer frame objects.
+
+	'''
+
+	frames = []
+
+	for o in iObjects:
+	
+		face = iFaces[o][0]
+
+		sizes = getSizes(o)
+		sizes.sort()
+		
+		[ faceType, arrAll, arrThick, arrShort, arrLong ] = getFaceEdges(o, face)
+		
+		if faceType == "edge":
+			arr = arrThick
+			size = sizes[1]
+			
+		if faceType == "surface":
+			arr = arrShort
+			size = sizes[0]
+
+		keys = []
+		
+		for e in arr:
+			keys.append(e.BoundBox)
+		
+		if o.isDerivedFrom("Part::Box"):
+		
+			[ part, body, sketch, pad ] = makePad(o, "Frame")
+			FreeCAD.ActiveDocument.removeObject(o.Name)
+			FreeCAD.ActiveDocument.recompute()
+		
+		else:
+		
+			body = o._Body
+			pad = o
+
+		edges = []
+		for k in keys:
+			index = getEdgeIndexByKey(pad, k)
+			edges.append("Edge"+str(int(index)))
+		
+		frame = body.newObject('PartDesign::Chamfer','Frame45Cut')
+		frame.Base = (pad, edges)
+		frame.Size = size - 0.01
+		pad.Visibility = False
+		
+		FreeCAD.ActiveDocument.recompute()
+		frames.append(frame)
+	
+	return frames
+
+
+# ###################################################################################################################
+def makeMortise(iSketch, iDepth, iPad, iFace):
+	'''
+	makeMortise(iSketch, iDepth, iPad, iFace) - make Mortise pocket for given iSketch pattern
+
+	Args:
+
+		iSketch: Sketch object as pattern for Mortise
+		iDepth: depth of the pocket
+		iPad: pad object to get Body
+		iFace: face object at the pad where is the iSketch
+
+	Usage:
+
+		[ obj, face ] = MagicPanels.makeMortise(sketch, 20, obj, face)
+
+	Result:
+
+		Make Mortise and return new object and face reference for GUI info screen update and further processing
+
+	'''
+
+	faceKey = iFace.BoundBox
+	
+	# set body for object
+	if iPad.isDerivedFrom("Part::Box"):
+		
+		[ part, body, sketchPad, pad ] = makePad(iPad, iPad.Label)
+		FreeCAD.ActiveDocument.removeObject(iPad.Name)
+		FreeCAD.ActiveDocument.recompute()
+	
+	else:
+		
+		body = iPad._Body
+		pad = iPad
+
+	sketch = FreeCAD.ActiveDocument.copyObject(iSketch)
+	sketch.Support = ""
+	
+	mortise = body.newObject('PartDesign::Pocket','Mortise')
+	mortise.Profile = sketch
+	
+	mortise.Length = 2 * iDepth
+	mortise.Midplane = 1
+	mortise.Label = "Mortise "
+	
+	# not needed
+	#plane = getFacePlane(iFace)
+	
+	#if plane == "XY":
+	#	direction = (0, 0, 1)
+	#if plane == "XZ":
+	#	direction = (0, 1, 0)
+	#if plane == "YZ":
+	#	direction = (1, 0, 0)
+
+	#mortise.TaperAngle = 0.000000
+	#mortise.UseCustomVector = 0
+	#mortise.Direction = direction
+	#mortise.AlongSketchNormal = 1
+	#mortise.Type = 0
+	#mortise.UpToFace = None
+	#mortise.Reversed = 0
+	#mortise.Offset = 0
+
+	sketch.Visibility = False
+	pad.Visibility = False
+	FreeCAD.ActiveDocument.recompute()
+	
+	try:
+		copyColors(pad, mortise)
+	except:
+		skip = 1
+	
+	FreeCAD.ActiveDocument.recompute()
+	
+	index = getFaceIndexByKey(mortise, faceKey)
+	newFace = mortise.Shape.Faces[index-1]
+
+	return [ mortise, newFace ]
+
+
+# ###################################################################################################################
+def makeTenon(iSketch, iLength, iPad, iFace):
+	'''
+	makeTenon(iSketch, iLength, iPad, iFace) - make Tenon pad for given iSketch pattern
+
+	Args:
+
+		iSketch: Sketch object as pattern for Mortise
+		iLength: Length for the Tenon pad
+		iPad: pad object to get Body
+		iFace: face object at the pad where is the iSketch
+
+	Usage:
+
+		[ obj, face ] = MagicPanels.makeTenon(sketch, 20, obj, face)
+
+	Result:
+
+		Make Tenon and return new object and face reference for GUI info screen update and further processing
+
+	'''
+
+	faceKey = iFace.BoundBox
+
+	# set body for object
+	if iPad.isDerivedFrom("Part::Box"):
+		
+		[ part, body, sketchPad, pad ] = makePad(iPad, iPad.Label)
+		FreeCAD.ActiveDocument.removeObject(iPad.Name)
+		FreeCAD.ActiveDocument.recompute()
+	
+	else:
+		
+		body = iPad._Body
+		pad = iPad
+
+	sketch = FreeCAD.ActiveDocument.copyObject(iSketch)
+	sketch.Support = ""
+	
+	tenon = body.newObject('PartDesign::Pad', "Tenon")
+	tenon.Label = "Tenon "
+	tenon.Profile = sketch
+	tenon.Length = FreeCAD.Units.Quantity(2 * iLength)
+	tenon.Midplane = 1
+	
+	sketch.Visibility = False
+	pad.Visibility = False
+	FreeCAD.ActiveDocument.recompute()
+	
+	try:
+		copyColors(pad, tenon)
+	except:
+		skip = 1
+	
+	FreeCAD.ActiveDocument.recompute()
+	
+	index = getFaceIndexByKey(tenon, faceKey)
+	newFace = tenon.Shape.Faces[index-1]
+
+	return [ tenon, newFace ]
 
 
 # ###################################################################################################################

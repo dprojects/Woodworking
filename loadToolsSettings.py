@@ -62,6 +62,8 @@ Tools = [
 	
 	"MagicPanels", "magicFixture", "png", "magicFixture", "Allows to add any type of detailed fixture to the furniture. You can create Link to the realistic looking part or Clone it.",
 
+	"MagicPanels", "magicJoints", "png", "magicJoints", "Allows to move, copy joint Sketch pattern and create Mortise and Tenon.",
+
 	# #################################################################################################################################
 	# tools - not using MagicPanels library, no GUI
 	# #################################################################################################################################

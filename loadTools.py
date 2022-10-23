@@ -598,6 +598,45 @@ FreeCADGui.addCommand("magicFixture", magicFixture())
 
 	
 # ######################################################################################################################
+class magicJoints():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "magicJoints.png"),
+				"MenuText": QT_TRANSLATE_NOOP("magicJointsMenuText", "magicJoints"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicJointsToolTip", "Allows to move, copy joint Sketch pattern and create Mortise and Tenon."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "magicJoints"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("magicJoints", magicJoints())
+
+	
+# ######################################################################################################################
 class debugInfo():
 
 	def GetResources(self):

@@ -79,17 +79,18 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 		return normalized version for comparison if b1 == b2: you can set your own precision here
 
 # Vertices
-### showVertex(iVertex):
+### showVertex(iVertex, iRadius):
 
 	showVertex(iVertex) - create sphere at given vertex, to show where is the point for debug purposes.
 	
 ##### Args:
 	
 		iVertex: vertex object
+		iRadius: ball Radius
 
 ##### Usage:
 	
-		MagicPanels.showVertex(obj.Shape.CenterOfMass)
+		MagicPanels.showVertex(obj.Shape.CenterOfMass, 20)
 
 ##### Result:
 	
@@ -471,6 +472,26 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 		mY - occupied space along Y axis
 		mZ - occupied space along Z axis
 
+### getSizesFromBoundBox(iObj):
+
+	getSizesFromBoundBox(iObj) - get occupied space by the object from BoundBox. This can be useful for round shapes, 
+	where is no vertices at object edges, e.g. cylinders, circle at Sketch.
+	
+##### Args:
+	
+		iObj: object
+	
+##### Usage:
+	
+		[ sx, sy, sz ] = MagicPanels.getSizesFromVertices(obj)
+
+##### Result:
+	
+		Returns array with [ mX, mY, mZ ] where: 
+		mX - occupied space along X axis
+		mY - occupied space along Y axis
+		mZ - occupied space along Z axis
+
 # Measurements
 ### showMeasure(iP1, iP2, iRef=""):
 
@@ -709,43 +730,6 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 	
 		Created Pad with correct placement, rotation and return [ part, body, sketch, pad ].
 
-# Cut
-### makeCuts(iObjects):
-
-	makeCuts(iObjects) - allows to create multi bool cut operation at given objects. First objects 
-	from iObjects is the base element and all other will cut the base. The copies will be created for cut. 
-	
-##### Args:
-	
-		iObjects: objects to parse by multi bool cut
-
-##### Usage:
-	
-		cuts = MagicPanels.makeCuts(objects)
-
-##### Result:
-	
-		Array of cut objects will be returned.
-
-### makeFrame45cut(iObjects, iFaces):
-
-	makeFrame45cut(iObjects, iFaces) - makes 45 frame cut with PartDesing Chamfer. 
-	For each face the ends will be cut.
-	
-##### Args:
-	
-		iObjects: array of objects to cut
-		iFaces: dict() of faces for Chamfer cut direction, the key is iObjects value (object), 
-				if there are more faces for object, the first one will be get as direction.
-
-##### Usage:
-	
-		frames = MagicPanels.makeFrame45cut(objects, faces)
-		
-##### Result:
-	
-		Created Frames with correct placement, rotation and return array with Chamfer frame objects.
-
 # Holes
 ### makeHoles(iObj, iFace, iCylinders):
 
@@ -836,6 +820,81 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 ##### Result:
 
 		Make holes and return list of holes.
+
+# Joinery
+### makeCuts(iObjects):
+
+	makeCuts(iObjects) - allows to create multi bool cut operation at given objects. First objects 
+	from iObjects is the base element and all other will cut the base. The copies will be created for cut. 
+	
+##### Args:
+	
+		iObjects: objects to parse by multi bool cut
+
+##### Usage:
+	
+		cuts = MagicPanels.makeCuts(objects)
+
+##### Result:
+	
+		Array of cut objects will be returned.
+
+### makeFrame45cut(iObjects, iFaces):
+
+	makeFrame45cut(iObjects, iFaces) - makes 45 frame cut with PartDesing Chamfer. 
+	For each face the ends will be cut.
+	
+##### Args:
+	
+		iObjects: array of objects to cut
+		iFaces: dict() of faces for Chamfer cut direction, the key is iObjects value (object), 
+				if there are more faces for object, the first one will be get as direction.
+
+##### Usage:
+	
+		frames = MagicPanels.makeFrame45cut(objects, faces)
+		
+##### Result:
+	
+		Created Frames with correct placement, rotation and return array with Chamfer frame objects.
+
+### makeMortise(iSketch, iDepth, iPad, iFace):
+
+	makeMortise(iSketch, iDepth, iPad, iFace) - make Mortise pocket for given iSketch pattern
+
+##### Args:
+
+		iSketch: Sketch object as pattern for Mortise
+		iDepth: depth of the pocket
+		iPad: pad object to get Body
+		iFace: face object at the pad where is the iSketch
+
+##### Usage:
+
+		[ obj, face ] = MagicPanels.makeMortise(sketch, 20, obj, face)
+
+##### Result:
+
+		Make Mortise and return new object and face reference for GUI info screen update and further processing
+
+### makeTenon(iSketch, iLength, iPad, iFace):
+
+	makeTenon(iSketch, iLength, iPad, iFace) - make Tenon pad for given iSketch pattern
+
+##### Args:
+
+		iSketch: Sketch object as pattern for Mortise
+		iLength: Length for the Tenon pad
+		iPad: pad object to get Body
+		iFace: face object at the pad where is the iSketch
+
+##### Usage:
+
+		[ obj, face ] = MagicPanels.makeTenon(sketch, 20, obj, face)
+
+##### Result:
+
+		Make Tenon and return new object and face reference for GUI info screen update and further processing
 
 # Colors
 ### copyColors(iSource, iTarget):

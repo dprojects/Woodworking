@@ -118,6 +118,7 @@ def getItems(iType):
 	if iType == "Woodworking - joinery":
 		
 		parts = [
+			"magicJoints",
 			"magicCut",
 			"magicKnife",
 			"jointTenon",

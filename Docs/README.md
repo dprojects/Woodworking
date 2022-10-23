@@ -42,6 +42,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 		* [panel2angle](#panel2angle)
 		* [panel2angle45cut](#panel2angle45cut)
 	* [Joinery](#joinery)
+		* [magicJoints](#magicjoints)
 		* [magicCut](#magiccut)
 		* [magicKnife](#magicknife)
 		* [jointTenon](#jointtenon)
@@ -267,6 +268,12 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 **Video tutorial:** [3D furniture designing - construction profiles](https://www.youtube.com/watch?v=5hXMFAxXQag)
 
 ## Joinery
+
+### magicJoints
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicJoints.png"> This tool is to create Mortises and Tenons. It allows to create any joint shape using Sketch. First you have to create joint pattern with Sketch. The Sketch do not have to be assigned to the face of object, the `Support` can be empty. The joint pattern should be created in the corner of coordinate axes cross. This will be better for rotation and positioning. However, you can add any offset, if you want. If you have joint pattern created, select the Sketch and Face to create Mortise or Tenon. First `Anchor` position is the Sketch position, all others are the vertices of selected face, so you can move the Sketch to any point at the selected face. If you want to map the Sketch to the another object, you may need use rotation selector. If the selected object is `Cube` it will be automatically converted to `Pad` during Mortise or Tenon creation. The Mortise and Tenons are PartDesign Pocket and pad so they can be easily managed by FreeCAD. If you want to select more objects hold left `CTRL` key during selection.
+
+**Video tutorial:** [3D furniture designing - Mortise and Tenon](https://www.youtube.com/watch?v=bJJeUaUho_4)
 
 ### magicCut
 
