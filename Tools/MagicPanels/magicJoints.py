@@ -25,7 +25,6 @@ def showQtGUI():
 		
 		gFaceRef = ""
 		gFaceIndex = 0
-		gFPlane = ""
 
 		gAnchorCurrent = ""
 		gAnchorArr = []
@@ -381,7 +380,7 @@ def showQtGUI():
 			self.getSelected()
 
 		# ############################################################################
-		# actions - internal functions
+		# actions - internal functions, no error handling
 		# ############################################################################
 
 		# ############################################################################
@@ -398,7 +397,6 @@ def showQtGUI():
 			
 			self.gFaceRef = ""
 			self.gFaceIndex = 0
-			self.gFPlane = ""
 		
 			self.gAnchorCurrent = ""
 			self.gAnchorArr = []
@@ -423,7 +421,10 @@ def showQtGUI():
 		# ############################################################################
 		def setRotation(self):
 			
-			angle = self.gRoAnglesArr[self.gRoIndex]
+			reset = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 0.00)
+			self.gLink.Placement.Rotation = reset
+			
+			angle = self.gRoAngles
 			axis = FreeCAD.Vector(self.gRoAxis)
 
 			x = self.gLink.Placement.Base.x
@@ -488,6 +489,110 @@ def showQtGUI():
 			
 			self.setRotation()
 
+		def setSketchRotations(self):
+			
+			import math
+			
+			self.gRoAnglesArr = []
+			self.gRoAxisArr = []
+			
+			[ x, y, z, r ] = MagicPanels.getSketchPlacement(self.gSketchRef, "global")
+
+			# init state
+			self.gRoAnglesArr.append( math.degrees(r.Angle) )
+			self.gRoAxisArr.append( [ r.Axis.x, r.Axis.y, r.Axis.z ] )
+			
+			# Z axis
+			self.gRoAnglesArr.append(0)
+			self.gRoAxisArr.append([0, 0, 1])
+			
+			self.gRoAnglesArr.append(90)
+			self.gRoAxisArr.append([0, 0, 1])
+			
+			self.gRoAnglesArr.append(180)
+			self.gRoAxisArr.append([0, 0, 1])
+			
+			self.gRoAnglesArr.append(270)
+			self.gRoAxisArr.append([0, 0, 1])
+			
+			# X axis
+			self.gRoAnglesArr.append(0)
+			self.gRoAxisArr.append([1, 0, 0])
+			
+			self.gRoAnglesArr.append(90)
+			self.gRoAxisArr.append([1, 0, 0])
+			
+			self.gRoAnglesArr.append(180)
+			self.gRoAxisArr.append([1, 0, 0])
+			
+			self.gRoAnglesArr.append(270)
+			self.gRoAxisArr.append([1, 0, 0])
+			
+			# Y axis
+			self.gRoAnglesArr.append(0)
+			self.gRoAxisArr.append([0, 1, 0])
+			
+			self.gRoAnglesArr.append(90)
+			self.gRoAxisArr.append([0, 1, 0])
+			
+			self.gRoAnglesArr.append(180)
+			self.gRoAxisArr.append([0, 1, 0])
+			
+			self.gRoAnglesArr.append(270)
+			self.gRoAxisArr.append([0, 1, 0])
+			
+			# special 1
+			
+			self.gRoAnglesArr.append(0)
+			self.gRoAxisArr.append([0.71, 0.71, 0])
+			
+			self.gRoAnglesArr.append(90)
+			self.gRoAxisArr.append([0.71, 0.71, 0])
+			
+			self.gRoAnglesArr.append(180)
+			self.gRoAxisArr.append([0.71, 0.71, 0])
+			
+			self.gRoAnglesArr.append(270)
+			self.gRoAxisArr.append([0.71, 0.71, 0])
+			
+			# special 2
+			
+			self.gRoAnglesArr.append(120)
+			self.gRoAxisArr.append([-0.58, -0.58, 0.58])
+			
+			self.gRoAnglesArr.append(120)
+			self.gRoAxisArr.append([0.58, 0.58, 0.58])
+			
+			self.gRoAnglesArr.append(180)
+			self.gRoAxisArr.append([0.58, 0.58, -0.58])
+			
+			self.gRoAnglesArr.append(270)
+			self.gRoAxisArr.append([0.58, 0.58, -0.58])
+			
+			self.gRoAnglesArr.append(120)
+			self.gRoAxisArr.append([-0.58, 0.58, 0.58])
+
+			self.gRoAnglesArr.append(180)
+			self.gRoAxisArr.append([0, 0.71, 0.71])
+			
+			# init
+			self.gRoAngles = self.gRoAnglesArr[0]
+			self.gRoAxis = self.gRoAxisArr[0]
+		
+		def setSketchAnchors(self):
+			
+			[ x, y, z, r ] = MagicPanels.getSketchPlacement(self.gSketchRef, "global")
+			[ v1, v2, v3, v4 ] = MagicPanels.getFaceVertices(self.gFaceRef)
+		
+			self.gAnchorArr = []
+			self.gAnchorArr.append([x, y, z])
+			self.gAnchorArr.append(v1)
+			self.gAnchorArr.append(v2)
+			self.gAnchorArr.append(v3)
+			self.gAnchorArr.append(v4)
+			
+			self.gAnchorCurrent = self.gAnchorArr[self.gAnchorIndex]
+			
 		# ############################################################################
 		# actions - functions for actions
 		# ############################################################################
@@ -497,9 +602,33 @@ def showQtGUI():
 
 			try:
 
-				# ############################################################################
-				# global config
-				# ############################################################################
+				# update face only
+				if self.gSketchRef != "" and len(FreeCADGui.Selection.getSelection()) == 1:
+					
+					# update face data
+					
+					self.gObjRef = FreeCADGui.Selection.getSelection()[0]
+					self.gFaceRef = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+					self.gFaceIndex = MagicPanels.getFaceIndex(self.gObjRef, self.gFaceRef)
+
+					FreeCADGui.Selection.clearSelection()
+					
+					# update info screen for face only
+					
+					n = ""
+					n += str(self.gObjRef.Label)
+					n += ", "
+					n += "Face"
+					n += str(self.gFaceIndex)
+					self.ob2S.setText(n)
+					
+					# load new face anchors
+					
+					self.setSketchAnchors()
+				
+					return
+				
+				# load init selections
 				
 				self.resetGlobals()
 
@@ -512,6 +641,8 @@ def showQtGUI():
 
 				FreeCADGui.Selection.clearSelection()
 				
+				# update info screens
+				
 				n = ""
 				n += str(self.gSketchRef.Label)
 				self.ob1S.setText(n)
@@ -523,109 +654,13 @@ def showQtGUI():
 				n += str(self.gFaceIndex)
 				self.ob2S.setText(n)
 				
-				self.gFPlane = MagicPanels.getFacePlane(self.gFaceRef)
-				
-				# ############################################################################
-				# set possible anchors
-				# ############################################################################
-				
-				[ x, y, z, r ] = MagicPanels.getSketchPlacement(self.gSketchRef, "global")
-				[ v1, v2, v3, v4 ] = MagicPanels.getFaceVertices(self.gFaceRef)
-				
-				self.gAnchorArr.append([x, y, z])
-				self.gAnchorArr.append(v1)
-				self.gAnchorArr.append(v2)
-				self.gAnchorArr.append(v3)
-				self.gAnchorArr.append(v4)
-				
-				self.gAnchorCurrent = self.gAnchorArr[self.gAnchorIndex]
+				# set anchors
+				self.setSketchAnchors()
 
-				# ############################################################################
-				# set possible rotation 
-				# ############################################################################
+				# set rotation 
+				self.setSketchRotations()
 				
-				# Z axis
-				self.gRoAnglesArr.append(0)
-				self.gRoAxisArr.append([0, 0, 1])
-				
-				self.gRoAnglesArr.append(90)
-				self.gRoAxisArr.append([0, 0, 1])
-				
-				self.gRoAnglesArr.append(180)
-				self.gRoAxisArr.append([0, 0, 1])
-				
-				self.gRoAnglesArr.append(270)
-				self.gRoAxisArr.append([0, 0, 1])
-				
-				# X axis
-				self.gRoAnglesArr.append(0)
-				self.gRoAxisArr.append([1, 0, 0])
-				
-				self.gRoAnglesArr.append(90)
-				self.gRoAxisArr.append([1, 0, 0])
-				
-				self.gRoAnglesArr.append(180)
-				self.gRoAxisArr.append([1, 0, 0])
-				
-				self.gRoAnglesArr.append(270)
-				self.gRoAxisArr.append([1, 0, 0])
-				
-				# Y axis
-				self.gRoAnglesArr.append(0)
-				self.gRoAxisArr.append([0, 1, 0])
-				
-				self.gRoAnglesArr.append(90)
-				self.gRoAxisArr.append([0, 1, 0])
-				
-				self.gRoAnglesArr.append(180)
-				self.gRoAxisArr.append([0, 1, 0])
-				
-				self.gRoAnglesArr.append(270)
-				self.gRoAxisArr.append([0, 1, 0])
-				
-				# special 1
-				
-				self.gRoAnglesArr.append(0)
-				self.gRoAxisArr.append([0.71, 0.71, 0])
-				
-				self.gRoAnglesArr.append(90)
-				self.gRoAxisArr.append([0.71, 0.71, 0])
-				
-				self.gRoAnglesArr.append(180)
-				self.gRoAxisArr.append([0.71, 0.71, 0])
-				
-				self.gRoAnglesArr.append(270)
-				self.gRoAxisArr.append([0.71, 0.71, 0])
-				
-				# special 2
-				
-				self.gRoAnglesArr.append(120)
-				self.gRoAxisArr.append([-0.58, -0.58, 0.58])
-				
-				self.gRoAnglesArr.append(120)
-				self.gRoAxisArr.append([0.58, 0.58, 0.58])
-				
-				self.gRoAnglesArr.append(180)
-				self.gRoAxisArr.append([0.58, 0.58, -0.58])
-				
-				self.gRoAnglesArr.append(270)
-				self.gRoAxisArr.append([0.58, 0.58, -0.58])
-				
-				self.gRoAnglesArr.append(120)
-				self.gRoAxisArr.append([-0.58, 0.58, 0.58])
-
-				self.gRoAnglesArr.append(180)
-				self.gRoAxisArr.append([0, 0.71, 0.71])
-				
-				# init
-				self.gRoAngles = self.gRoAnglesArr[0]
-				self.gRoAxis = self.gRoAxisArr[0]
-				
-				# ############################################################################
-				
-				# set shape sizes for better offset
-				#[ self.gMaxX, self.gMaxY, self.gMaxZ ] = MagicPanels.getSizesFromBoundBox(self.gSketchRef)
-
+				# show the joint pattern
 				self.showJoints()
 			
 			except:
@@ -782,7 +817,6 @@ def showQtGUI():
 		def refreshSettings(self):
 			
 			try:
-			
 				self.gAxisX = float(self.oAxisXE.text())
 				self.gAxisY = float(self.oAxisYE.text())
 				self.gAxisZ = float(self.oAxisZE.text())
@@ -815,31 +849,39 @@ def showQtGUI():
 		# ############################################################################
 		def setMortise(self):
 			
-			self.gDepth = float(self.oFxDepthE.text())
+			try:
+				self.gDepth = float(self.oFxDepthE.text())
+				
+				[ self.gObjRef, self.gFaceRef ] = MagicPanels.makeMortise(self.gLink, self.gDepth, self.gObjRef, self.gFaceRef)
+				self.gFaceIndex = MagicPanels.getFaceIndex(self.gObjRef, self.gFaceRef)
+				
+				n = ""
+				n += str(self.gObjRef.Label)
+				n += ", "
+				n += "Face"
+				n += str(self.gFaceIndex)
+				self.ob2S.setText(n)
 			
-			[ self.gObjRef, self.gFaceRef ] = MagicPanels.makeMortise(self.gLink, self.gDepth, self.gObjRef, self.gFaceRef)
-			self.gFaceIndex = MagicPanels.getFaceIndex(self.gObjRef, self.gFaceRef)
-			
-			n = ""
-			n += str(self.gObjRef.Label)
-			n += ", "
-			n += "Face"
-			n += str(self.gFaceIndex)
-			self.ob2S.setText(n)
-			
+			except:
+				self.resetInfoScreen()
+				
 		def setTenon(self):
 			
-			self.gDepth = float(self.oFxDepthE.text())
+			try:
+				self.gDepth = float(self.oFxDepthE.text())
+				
+				[ self.gObjRef, self.gFaceRef ] = MagicPanels.makeTenon(self.gLink, self.gDepth, self.gObjRef, self.gFaceRef)
+				self.gFaceIndex = MagicPanels.getFaceIndex(self.gObjRef, self.gFaceRef)
+				
+				n = ""
+				n += str(self.gObjRef.Label)
+				n += ", "
+				n += "Face"
+				n += str(self.gFaceIndex)
+				self.ob2S.setText(n)
 			
-			[ self.gObjRef, self.gFaceRef ] = MagicPanels.makeTenon(self.gLink, self.gDepth, self.gObjRef, self.gFaceRef)
-			self.gFaceIndex = MagicPanels.getFaceIndex(self.gObjRef, self.gFaceRef)
-			
-			n = ""
-			n += str(self.gObjRef.Label)
-			n += ", "
-			n += "Face"
-			n += str(self.gFaceIndex)
-			self.ob2S.setText(n)
+			except:
+				self.resetInfoScreen()
 			
 	# ############################################################################
 	# final settings

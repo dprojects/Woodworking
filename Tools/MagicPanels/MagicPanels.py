@@ -973,8 +973,6 @@ def getReference(iObj="none"):
 	
 	# normal Pad
 	if obj.isDerivedFrom("PartDesign::Pad") and obj.BaseFeature == None:
-		FreeCAD.Console.PrintMessage("\n")
-		FreeCAD.Console.PrintMessage("Hello 1")
 		return obj
 	
 	# Mortise and Tenon
