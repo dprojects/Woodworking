@@ -3003,6 +3003,9 @@ def makeMortise(iSketch, iDepth, iPad, iFace):
 	sketch = FreeCAD.ActiveDocument.copyObject(iSketch)
 	sketch.Support = ""
 	
+	sketch.adjustRelativeLinks(body)
+	body.ViewObject.dropObject(sketch, None, '', [])
+	
 	mortise = body.newObject('PartDesign::Pocket','Mortise')
 	mortise.Profile = sketch
 	
@@ -3085,6 +3088,9 @@ def makeTenon(iSketch, iLength, iPad, iFace):
 	sketch = FreeCAD.ActiveDocument.copyObject(iSketch)
 	sketch.Support = ""
 	
+	sketch.adjustRelativeLinks(body)
+	body.ViewObject.dropObject(sketch, None, '', [])
+
 	tenon = body.newObject('PartDesign::Pad', "Tenon")
 	tenon.Label = "Tenon "
 	tenon.Profile = sketch

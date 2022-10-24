@@ -277,6 +277,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 * [3D furniture designing - Mortise and Tenon](https://www.youtube.com/watch?v=bJJeUaUho_4)
 * [3D furniture designing - Mortise and Tenon (tips and tricks)](https://www.youtube.com/watch?v=vMEWqvNRIpk)
 * [3D furniture designing - Table with Mortise and Tenon](https://www.youtube.com/watch?v=Mqzi3Mk9g44)
+* [3D furniture designing - Frame with Bridle Joint)](https://www.youtube.com/watch?v=KAS3FHyroI8)
 
 ### magicCut
 
