@@ -55,6 +55,9 @@ def panelDefault(iType):
 			panel.Width = 300
 			panel.Height = 600
 
+		color = (247 / 255, 185 / 255, 108 / 255, 0.0)
+		panel.ViewObject.ShapeColor = color
+
 		FreeCAD.ActiveDocument.recompute()
 	
 	except:

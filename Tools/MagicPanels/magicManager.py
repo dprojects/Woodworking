@@ -15,6 +15,7 @@ translate = FreeCAD.Qt.translate
 
 gGUI = ""
 
+gLastSelected = ""
 gObserver = ""
 gVertices = []
 gVerticesInfo = []
@@ -32,12 +33,13 @@ class SelectionObserver:
 	
 	def addSelection(self, doc, obj, sub, pos):
 		
-		global gVertices, gStep, gVerticesInfo
+		global gVertices, gStep, gVerticesInfo, gLastSelected
 		
 		if sub.find("Edge") != -1 or sub.find("Face") != -1:
 			
 			vpos = FreeCAD.Vector(pos)
 			o = FreeCAD.ActiveDocument.getObject(obj)
+			gLastSelected = o
 			ves = MagicPanels.touchTypo(o.Shape)
 			
 			minVertexName = ""
@@ -70,6 +72,7 @@ class SelectionObserver:
 		if sub.find("Vertex") != -1:
 			
 			o = FreeCAD.ActiveDocument.getObject(obj)
+			gLastSelected = o
 			
 			if str(gGUI.shapeLE1.text()) == "first":
 				sizes = MagicPanels.getSizesFromVertices(o)
@@ -105,20 +108,29 @@ def showQtGUI():
 		gMode = ""
 		
 		gPanel = ""
-		gPanelTypes = []
+		gPanelArr = []
 		gPanelIndex = 0
+
+		gAnchorArr = []
+		gAnchorIndex = 1
+
+		gSizeArr = []
+		gSizeIndex = 0
 		
-		gEdgeTypes = []
-		gEdgeIndex = 0
+		gOffsetTypes = []
+		gOffsetIndex = 0
 		
-		gVertexTypes = []
-		gVertexIndex = 0
-		
+		gSelection = ""
 		gObj = ""
+		gObjThick = 0
+		gObjShort = 0
+		gObjLong = 0
+
 		gFace1 = ""
 		gFace2 = ""
-		gFace3 = ""
-		gColor = ""
+
+		gFace1Plane = ""
+		gFace2Plane = ""
 		
 		gInfoObserverOFF = translate('magicManager', 'Reading vertices: OFF')
 		gInfoObserverOFF += "\n\n"
@@ -145,7 +157,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 260
-			toolSH = 450
+			toolSH = 470
 			
 			# active screen size - FreeCAD main window
 			gSW = FreeCADGui.getMainWindow().width()
@@ -168,18 +180,28 @@ def showQtGUI():
 			# options
 			# ############################################################################
 			
+			spaceInfoScreen = ""
+			spaceInfoScreen += "                                               "
+			spaceInfoScreen += "                                               "
+			spaceInfoScreen += "                                               "
+			
+			col1 = 10
+			col2 = 80
+			col3 = 140
+			col4 = 200
+			
 			row = 30
 			
 			# screen
-			self.oModeL = QtGui.QLabel("                                          ", self)
-			self.oModeL.move(10, 10)
+			self.oModeL = QtGui.QLabel(spaceInfoScreen, self)
+			self.oModeL.move(col1, 10)
 
 			# button - refresh
 			self.oModeB1 = QtGui.QPushButton(translate('magicManager', 'refresh selection'), self)
 			self.oModeB1.clicked.connect(self.setMode)
 			self.oModeB1.setFixedWidth(toolSW-20)
 			self.oModeB1.setFixedHeight(40)
-			self.oModeB1.move(10, row)
+			self.oModeB1.move(col1, row)
 
 			# ############################################################################
 			# options - panel
@@ -188,70 +210,110 @@ def showQtGUI():
 			row += 50
 
 			# label
-			self.spL = QtGui.QLabel(translate('magicManager', 'Select panel:'), self)
-			self.spL.move(10, row+3)
+			self.spL = QtGui.QLabel(translate('magicManager', 'Plane:'), self)
+			self.spL.move(col1, row+3)
 
 			# button - previous
 			self.spBP = QtGui.QPushButton("<", self)
 			self.spBP.clicked.connect(self.setPreviousPanel)
 			self.spBP.setFixedWidth(50)
-			self.spBP.move(toolSW-120, row)
+			self.spBP.move(col2, row)
 			self.spBP.setAutoRepeat(True)
+
+			# info screen
+			self.spIS = QtGui.QLabel(spaceInfoScreen, self)
+			self.spIS.move(col3, row+3)
 
 			# button - next
 			self.spBN = QtGui.QPushButton(">", self)
 			self.spBN.clicked.connect(self.setNextPanel)
 			self.spBN.setFixedWidth(50)
-			self.spBN.move(toolSW-60, row)
+			self.spBN.move(col4, row)
 			self.spBN.setAutoRepeat(True)
 
 			# ############################################################################
-			# options - edge
-			# ############################################################################
-
-			row += 30
-
-			# label
-			self.seL = QtGui.QLabel(translate('magicManager', 'Select edge:'), self)
-			self.seL.move(10, row+3)
-
-			# button - previous
-			self.seBP = QtGui.QPushButton("<", self)
-			self.seBP.clicked.connect(self.setPreviousEdge)
-			self.seBP.setFixedWidth(50)
-			self.seBP.move(toolSW-120, row)
-			self.seBP.setAutoRepeat(True)
-
-			# button - next
-			self.seBN = QtGui.QPushButton(">", self)
-			self.seBN.clicked.connect(self.setNextEdge)
-			self.seBN.setFixedWidth(50)
-			self.seBN.move(toolSW-60, row)
-			self.seBN.setAutoRepeat(True)
-
-			# ############################################################################
-			# options - vertex
+			# options - anchor
 			# ############################################################################
 			
 			row += 30
 
 			# label
-			self.svL = QtGui.QLabel(translate('magicManager', 'Select vertex:'), self)
-			self.svL.move(10, row+3)
+			self.saL = QtGui.QLabel(translate('magicManager', 'Anchor:'), self)
+			self.saL.move(col1, row+3)
 
 			# button - previous
-			self.svBP = QtGui.QPushButton("<", self)
-			self.svBP.clicked.connect(self.setPreviousVertex)
-			self.svBP.setFixedWidth(50)
-			self.svBP.move(toolSW-120, row)
-			self.svBP.setAutoRepeat(True)
+			self.saBP = QtGui.QPushButton("<", self)
+			self.saBP.clicked.connect(self.setPreviousAnchor)
+			self.saBP.setFixedWidth(50)
+			self.saBP.move(col2, row)
+			self.saBP.setAutoRepeat(True)
+
+			# info screen
+			self.saIS = QtGui.QLabel(spaceInfoScreen, self)
+			self.saIS.move(col3, row+3)
 
 			# button - next
-			self.svBN = QtGui.QPushButton(">", self)
-			self.svBN.clicked.connect(self.setNextVertex)
-			self.svBN.setFixedWidth(50)
-			self.svBN.move(toolSW-60, row)
-			self.svBN.setAutoRepeat(True)
+			self.saBN = QtGui.QPushButton(">", self)
+			self.saBN.clicked.connect(self.setNextAnchor)
+			self.saBN.setFixedWidth(50)
+			self.saBN.move(col4, row)
+			self.saBN.setAutoRepeat(True)
+
+			# ############################################################################
+			# options - 3rd size for the panel
+			# ############################################################################
+			
+			row += 30
+
+			# label
+			self.ssL = QtGui.QLabel(translate('magicManager', 'Size:'), self)
+			self.ssL.move(col1, row+3)
+
+			# button - previous
+			self.ssBP = QtGui.QPushButton("<", self)
+			self.ssBP.clicked.connect(self.setPreviousSize)
+			self.ssBP.setFixedWidth(50)
+			self.ssBP.move(col2, row)
+			self.ssBP.setAutoRepeat(True)
+
+			# info screen
+			self.ssIS = QtGui.QLabel(spaceInfoScreen, self)
+			self.ssIS.move(col3, row+3)
+
+			# button - next
+			self.ssBN = QtGui.QPushButton(">", self)
+			self.ssBN.clicked.connect(self.setNextSize)
+			self.ssBN.setFixedWidth(50)
+			self.ssBN.move(col4, row)
+			self.ssBN.setAutoRepeat(True)
+
+			# ############################################################################
+			# options - offset
+			# ############################################################################
+			
+			row += 30
+
+			# label
+			self.soL = QtGui.QLabel(translate('magicManager', 'Offset:'), self)
+			self.soL.move(col1, row+3)
+
+			# button - previous
+			self.soBP = QtGui.QPushButton("<", self)
+			self.soBP.clicked.connect(self.setPreviousOffset)
+			self.soBP.setFixedWidth(50)
+			self.soBP.move(col2, row)
+			self.soBP.setAutoRepeat(True)
+
+			# info screen
+			self.soIS = QtGui.QLabel(spaceInfoScreen, self)
+			self.soIS.move(col3, row+3)
+
+			# button - next
+			self.soBN = QtGui.QPushButton(">", self)
+			self.soBN.clicked.connect(self.setNextOffset)
+			self.soBN.setFixedWidth(50)
+			self.soBN.move(col4, row)
+			self.soBN.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - vertices reader
@@ -330,21 +392,38 @@ def showQtGUI():
 		# ############################################################################
 		def resetGUIGlobals(self):
 			
+			if self.gPanel != "":
+				try:
+					FreeCAD.ActiveDocument.removeObject(str(self.gPanel.Name))
+				except:
+					skip = 1
+			
 			self.gMode = ""
 
 			self.gPanel = ""
-			self.gPanelTypes = [ "XY", "YX", "XZ", "ZX", "YZ", "ZY" ]
-			self.gPanelIndex = 5
+			self.gPanelArr = []
+			self.gPanelIndex = 0
 			
+			self.gSelection = ""
 			self.gObj = ""
+			self.gObjThick = 0
+			self.gObjShort = 0
+			self.gObjLong = 0
+		
 			self.gFace1 = ""
 			self.gFace2 = ""
 			
-			self.gEdgeTypes = [ 0, 1, 2, 3 ]
-			self.gEdgeIndex = 0
+			gFace1Plane = ""
+			gFace2Plane = ""
+			
+			self.gAnchorArr = []
+			self.gAnchorIndex = 1
+			
+			self.gSizeArr = []
+			self.gSizeIndex = 0
 		
-			self.gVertexTypes = [ 0, 1 ]
-			self.gVertexIndex = 1
+			self.gOffsetTypes = [ 1, 2, 3, 4, 5, 6, 7 ]
+			self.gOffsetIndex = 0
 		
 		def observerON(self):
 			
@@ -388,60 +467,163 @@ def showQtGUI():
 		# ############################################################################
 		def projectPanelFace(self, iType):
 
-			edge = self.gEdgeTypes[self.gEdgeIndex]
-			vertex = self.gVertexTypes[self.gVertexIndex]
-			[ x, y, z ] = MagicPanels.getVertex(self.gFace1, edge, vertex)
+			# get settings
+			size = self.gSizeArr[self.gSizeIndex]
+			offset = self.gOffsetTypes[self.gOffsetIndex]
+			anchor = self.gAnchorArr[self.gAnchorIndex]
+			x, y, z = anchor[0], anchor[1], anchor[2]
+			[ L, W, H ] = MagicPanels.sizesToCubePanel(self.gObj, iType)
 
-			self.gPanel = FreeCAD.activeDocument().addObject("Part::Box", "panelFace"+iType)
-			[ self.gPanel.Length, self.gPanel.Width, self.gPanel.Height ] = MagicPanels.sizesToCubePanel(self.gObj, iType)
+			# set custom sizes for short edge
 
+			if iType == "XY":
+				W = size
+			if iType == "YX":
+				L = size
+			if iType == "XZ":
+				H = size
+			if iType == "ZX":
+				L = size
+			if iType == "YZ":
+				H = size
+			if iType == "ZY":
+				W = size
+
+			# check if panel is valid
+			if L <= 0 or W <= 0 or H <= 0:
+				return -1
+				
+			# set offsets
+			if offset == 2:
+				x = x - size
+			if offset == 3:
+				x = x + size
+			if offset == 4:
+				y = y - size
+			if offset == 5:
+				y = y + size
+			if offset == 6:
+				z = z - size
+			if offset == 7:
+				z = z + size
+
+			# create panel
+			self.gPanel = FreeCAD.ActiveDocument.addObject("Part::Box", "panelFace"+iType)
+			self.gPanel.Length, self.gPanel.Width, self.gPanel.Height = L, W, H
+
+			# add settings to panel
 			self.gPanel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
 			self.gPanel.ViewObject.ShapeColor = (0.0, 0.0, 0.0, 0.0)
 			self.gPanel.ViewObject.Transparency = 83
-			FreeCAD.activeDocument().recompute()
+			FreeCAD.ActiveDocument.recompute()
 
 		def projectPanelBetween(self, iType):
 
-			[ x1, y1, z1 ] = MagicPanels.getVertex(self.gFace1, 0, 1)
-			[ x2, y2, z2 ] = MagicPanels.getVertex(self.gFace2, 0, 1)
+			# get settings
+			size = self.gSizeArr[self.gSizeIndex]
+			offset = self.gOffsetTypes[self.gOffsetIndex]
+			anchor = self.gAnchorArr[self.gAnchorIndex]
+			facesDistance = MagicPanels.getDistanceBetweenFaces(self.gFace1, self.gFace2)
+			x, y, z = anchor[0], anchor[1], anchor[2]
+			L, W, H = 0, 0, 0
 
-			x = abs(x2 - x1)
-			y = abs(y2 - y1)
-			z = abs(z2 - z1)
-
+			# set panel sizes
 			
-			[ L, W, H ] = MagicPanels.sizesToCubePanel(self.gObj, iType)
+			# set panel sizes along X
+			if self.gFace1Plane == "YZ":
 
-			z1 = z1 + self.gObj.Height.Value - H
-			
-			if x > 0:
-				L = x
-			
-			if y > 0:
-				W = y
-				
-			if z > 0:
-				H = z
+				if iType == "XY":
+					L = facesDistance
+					W = size
+					H = self.gObjThick
 
-			self.gPanel = FreeCAD.activeDocument().addObject("Part::Box", "panelBetween"+iType)
+				if iType ==	"XZ":
+					L = facesDistance
+					W = self.gObjThick
+					H = size
+
+			# set panel sizes along Y
+			if self.gFace1Plane == "XZ":
+
+				if iType == "XY":
+					L = size
+					W = facesDistance
+					H = self.gObjThick
+
+				if iType == "YZ":
+					L = self.gObjThick
+					W = facesDistance
+					H = size
+
+			# set panel sizes along Z
+			if self.gFace1Plane == "XY":
+
+				if iType ==	"XZ":
+					L = size
+					W = self.gObjThick
+					H = facesDistance
+
+				if iType == "YZ":
+					L = self.gObjThick
+					W = size
+					H = facesDistance
+
+			# check if panel is valid
+			if L <= 0 or W <= 0 or H <= 0:
+				return -1
+
+			# set offsets
+			if offset == 2:
+				x = x - size
+			if offset == 3:
+				x = x + size
+			if offset == 4:
+				y = y - size
+			if offset == 5:
+				y = y + size
+			if offset == 6:
+				z = z - size
+			if offset == 7:
+				z = z + size
+
+			# create panel
+			self.gPanel = FreeCAD.ActiveDocument.addObject("Part::Box", "panelBetween"+iType)
 			self.gPanel.Length, self.gPanel.Width, self.gPanel.Height = L, W, H
-			self.gPanel.Placement = FreeCAD.Placement(FreeCAD.Vector(x1, y1, z1), FreeCAD.Rotation(0, 0, 0))
+
+			# add settings to panel
+			self.gPanel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
 			self.gPanel.ViewObject.ShapeColor = (0.0, 0.0, 0.0, 0.0)
 			self.gPanel.ViewObject.Transparency = 83
-			FreeCAD.activeDocument().recompute()
+			FreeCAD.ActiveDocument.recompute()
 
 		def previewPanel(self):
-			
+
 			try:
 				FreeCAD.activeDocument().removeObject(str(self.gPanel.Name))
 			except:
 				skip = 1
 
+			# update info screens
+
+			info = str(self.gPanelIndex + 1) + " / " + str(len(self.gPanelArr))
+			self.spIS.setText(info)
+			
+			info = str(self.gAnchorIndex + 1) + " / " + str(len(self.gAnchorArr))
+			self.saIS.setText(info)
+			
+			info = str(self.gSizeIndex + 1) + " / " + str(len(self.gSizeArr))
+			self.ssIS.setText(info)
+
+			info = str(self.gOffsetIndex + 1) + " / " + str(len(self.gOffsetTypes))
+			self.soIS.setText(info)
+
+			# show panel
+			
 			if self.gMode == "Face":
-				self.projectPanelFace(self.gPanelTypes[self.gPanelIndex])
+				self.projectPanelFace(self.gPanelArr[self.gPanelIndex])
 
 			if self.gMode == "Between":
-				self.projectPanelBetween(self.gPanelTypes[self.gPanelIndex])
+				self.projectPanelBetween(self.gPanelArr[self.gPanelIndex])
 
 		# ############################################################################
 		def setMode(self):
@@ -457,15 +639,7 @@ def showQtGUI():
 
 				self.gMode = ""
 				self.oModeL.setText(translate('magicManager', 'select 1 or 2 faces'))
-				
-				self.seL.hide()
-				self.seBP.hide()
-				self.seBN.hide()
-				
-				self.svL.hide()
-				self.svBP.hide()
-				self.svBN.hide()
-				
+
 				return
 
 			if self.gFace2 == "":
@@ -473,25 +647,21 @@ def showQtGUI():
 				self.gMode = "Face"
 				self.oModeL.setText(translate('magicManager', 'Selection: 1 face'))
 				
-				self.seL.show()
-				self.seBP.show()
-				self.seBN.show()
-				
-				self.svL.show()
-				self.svBP.show()
-				self.svBN.show()
+				self.gPanelArr = [ "XY", "YX", "XZ", "ZX", "YZ", "ZY" ]
+				self.gPanelIndex = 5
 				
 			else:
 				self.gMode = "Between"
 				self.oModeL.setText(translate('magicManager', 'Selection: 2 faces'))
 				
-				self.seL.hide()
-				self.seBP.hide()
-				self.seBN.hide()
+				if self.gFace1Plane == "YZ":
+					self.gPanelArr = [ "XY", "XZ" ]
+				if self.gFace1Plane == "XZ":
+					self.gPanelArr = [ "XY", "YZ" ]
+				if self.gFace1Plane == "XY":
+					self.gPanelArr = [ "XZ", "YZ" ]
 				
-				self.svL.hide()
-				self.svBP.hide()
-				self.svBN.hide()
+				self.gPanelIndex = 1
 
 			# init panel
 			self.setNextPanel()
@@ -502,21 +672,44 @@ def showQtGUI():
 			
 			try:
 				self.gObj = MagicPanels.getReference()
+				self.gSelection = FreeCADGui.Selection.getSelection()[0]
 			except:
 				skip = 1
 				
 			try:
 				self.gFace1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				self.gFace1Plane = MagicPanels.getFacePlane(self.gFace1)
+				
+				sizes = MagicPanels.getSizes(self.gObj)
+				sizes.sort()
+				self.gObjThick = sizes[0]
+				self.gObjShort = sizes[1]
+				self.gObjLong = sizes[2]
+
+				self.gAnchorArr = MagicPanels.getFaceVertices(self.gFace1, "all")
+				[ a1, edges, a2, a3, a4 ] = MagicPanels.getFaceEdges(self.gSelection, self.gFace1)
+
+				noRepeat = dict()
+				for e in edges:
+					noRepeat[str(e.Length)] = e.Length
+
+				noRepeat[str(self.gObjThick)] = self.gObjThick
+				noRepeat[str(self.gObjShort)] = self.gObjShort
+				noRepeat[str(self.gObjLong)] = self.gObjLong
+				
+				self.gSizeArr = list(noRepeat.values())
+
 			except:
 				skip = 1
 			
 			try:
 				self.gFace2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+				self.gFace2Plane = MagicPanels.getFacePlane(self.gFace2)
 			except:
 				skip = 1
 
 			FreeCADGui.Selection.clearSelection()
-			
+
 		# ############################################################################
 		# actions - buttons functions
 		# ############################################################################
@@ -524,48 +717,64 @@ def showQtGUI():
 		# ############################################################################
 		def setPreviousPanel(self):
 			if self.gPanelIndex == 0:
-				self.gPanelIndex = 5
+				self.gPanelIndex = len(self.gPanelArr) - 1
 			else:
 				self.gPanelIndex = self.gPanelIndex - 1
 			self.previewPanel()
-			
+
 		def setNextPanel(self):
-			if self.gPanelIndex == 5:
+			if self.gPanelIndex == len(self.gPanelArr) - 1:
 				self.gPanelIndex = 0
 			else:
 				self.gPanelIndex = self.gPanelIndex + 1
 			self.previewPanel()
-			
+
 		# ############################################################################
-		def setPreviousEdge(self):
-			if self.gEdgeIndex == 0:
-				self.gEdgeIndex = 3
+		def setPreviousOffset(self):
+			if self.gOffsetIndex == 0:
+				self.gOffsetIndex = len(self.gOffsetTypes) - 1
 			else:
-				self.gEdgeIndex = self.gEdgeIndex - 1
+				self.gOffsetIndex = self.gOffsetIndex - 1
 			self.previewPanel()
 
-		def setNextEdge(self):
-			if self.gEdgeIndex == 3:
-				self.gEdgeIndex = 0
+		def setNextOffset(self):
+			if self.gOffsetIndex == len(self.gOffsetTypes) - 1:
+				self.gOffsetIndex = 0
 			else:
-				self.gEdgeIndex = self.gEdgeIndex + 1
-			self.previewPanel()
-			
-		# ############################################################################
-		def setPreviousVertex(self):
-			if self.gVertexIndex == 0:
-				self.gVertexIndex = 1
-			else:
-				self.gVertexIndex = 0
-			self.previewPanel()
-			
-		def setNextVertex(self):
-			if self.gVertexIndex == 0:
-				self.gVertexIndex = 1
-			else:
-				self.gVertexIndex = 0
+				self.gOffsetIndex = self.gOffsetIndex + 1
 			self.previewPanel()
 
+		# ############################################################################
+		def setPreviousAnchor(self):
+			if self.gAnchorIndex == 0:
+				self.gAnchorIndex = len(self.gAnchorArr) - 1
+			else:
+				self.gAnchorIndex = self.gAnchorIndex - 1
+			self.previewPanel()
+
+		def setNextAnchor(self):
+			if self.gAnchorIndex == len(self.gAnchorArr) - 1:
+				self.gAnchorIndex = 0
+			else:
+				self.gAnchorIndex = self.gAnchorIndex + 1
+			self.previewPanel()
+		
+		# ############################################################################
+		def setPreviousSize(self):
+			if self.gSizeIndex == 0:
+				self.gSizeIndex = len(self.gSizeArr) - 1
+			else:
+				self.gSizeIndex = self.gSizeIndex - 1
+			self.previewPanel()
+
+		def setNextSize(self):
+			if self.gSizeIndex == len(self.gSizeArr) - 1:
+				self.gSizeIndex = 0
+			else:
+				self.gSizeIndex = self.gSizeIndex + 1
+			self.previewPanel()
+
+		# ############################################################################
 		def removeLastVertex(self):
 			
 			global gVertices, gVerticesInfo
@@ -626,7 +835,7 @@ def showQtGUI():
 			
 			# ser color of last selected object
 			try:
-				MagicPanels.copyColors(FreeCADGui.Selection.getSelection()[0], pad)
+				MagicPanels.copyColors(gLastSelected, pad)
 			except:
 				skip = 1
 			
@@ -655,7 +864,7 @@ def showQtGUI():
 		
 		if form.gPanel != "":
 			try:
-				FreeCAD.activeDocument().removeObject(str(form.gPanel.Name))
+				FreeCAD.ActiveDocument.removeObject(str(form.gPanel.Name))
 			except:
 				skip = 1
 		

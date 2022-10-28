@@ -1,6 +1,6 @@
 
-	This is MagicPanels library for Woodworking workbench.
-	Darek L (github.com/dprojects)
+# This is MagicPanels library for Woodworking workbench.
+# Darek L (github.com/dprojects)
 
 Usage:
 
@@ -288,17 +288,21 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 	
 		return int value for face
 
-### getFaceVertices(iFace):
+### getFaceVertices(iFace, iType="4"):
 
-	getFaceVertices(iFace) - get all vertices values for face.
+	getFaceVertices(iFace, iType="4") - get all vertices values for face.
 	
 ##### Args:
 	
 		iFace: face object
+		iType (optional): 
+			* "4" - 4 vertices for normal Cube
+			* "all" - get all vertices, for example for Cut object
 
 ##### Usage:
 	
 		[ v1, v2, v3, v4 ] = MagicPanels.getFaceVertices(gFace)
+		vertices = MagicPanels.getFaceVertices(gFace, "all")
 
 ##### Result:
 	
@@ -513,6 +517,23 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 	
 		Create measure object, draw it and return measure object for further proccessing. 
 
+### getDistanceBetweenFaces(iFace1, iFace2):
+
+	getDistanceBetweenFaces(iFace1, iFace2) - get distance between iFace1 and iFace2
+	
+##### Args:
+	
+		iFace1: face object
+		iFace2: face object
+
+##### Usage:
+	
+		size = MagicPanels.getDistanceBetweenFaces(face1, face2)
+
+##### Result:
+
+		return distance between face1 object and face2 object
+
 # Direction, Plane, Orientation, Axis
 ### getModelRotation(iX, iY, iZ):
 
@@ -710,7 +731,7 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 
 ##### Result:
 
-		Returns [ Length, Width, Height ] for YZ object placement".
+		Returns [ Length, Width, Height ] for YZ object placement.
 
 # Replace
 ### makePad(iObj, iPadLabel="Pad"):

@@ -13,7 +13,7 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 
 
 **For more details see:** 
-* YouTube channel dedicated for this workbench at: [YouTube channel](https://www.youtube.com/channel/UCDaABD-__ESAfflopSqZ0ng/videos)
+* YouTube channel dedicated for this workbench at: [youtube.com/@dprojects.woodworking](https://www.youtube.com/@dprojects.woodworking/videos)
 * Woodworking workbench documentation available at: [Docs folder](https://github.com/dprojects/Woodworking/tree/master/Docs)
 
 # Certified platforms
@@ -71,7 +71,7 @@ The Woodworking workbench has also API for developers. You can also create your 
 # Contact
 
 * For questions, comments, feature requests, improvements, please open issue at: [issue tracker](https://github.com/dprojects/Woodworking/issues)
-* Also we can discuss at: [FreeCAD forum thread](https://forum.freecadweb.org/viewtopic.php?f=3&t=8247).
+* Also we can discuss at: [FreeCAD forum thread](https://forum.freecadweb.org/viewtopic.php?f=3&t=8247)
 
 # License
 

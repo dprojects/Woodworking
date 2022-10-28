@@ -1,8 +1,8 @@
 # ###################################################################################################################
 '''
 
-	This is MagicPanels library for Woodworking workbench.
-	Darek L (github.com/dprojects)
+# This is MagicPanels library for Woodworking workbench.
+# Darek L (github.com/dprojects)
 
 Usage:
 
@@ -577,17 +577,21 @@ def getFaceIndexByKey(iObj, iBoundBox):
 
 
 # ###################################################################################################################
-def getFaceVertices(iFace):
+def getFaceVertices(iFace, iType="4"):
 	'''
-	getFaceVertices(iFace) - get all vertices values for face.
+	getFaceVertices(iFace, iType="4") - get all vertices values for face.
 	
 	Args:
 	
 		iFace: face object
+		iType (optional): 
+			* "4" - 4 vertices for normal Cube
+			* "all" - get all vertices, for example for Cut object
 
 	Usage:
 	
 		[ v1, v2, v3, v4 ] = MagicPanels.getFaceVertices(gFace)
+		vertices = MagicPanels.getFaceVertices(gFace, "all")
 
 	Result:
 	
@@ -597,12 +601,24 @@ def getFaceVertices(iFace):
 	
 	vertexArr = touchTypo(iFace)
 
-	v1 = [ vertexArr[0].X, vertexArr[0].Y, vertexArr[0].Z ]
-	v2 = [ vertexArr[1].X, vertexArr[1].Y, vertexArr[1].Z ]
-	v3 = [ vertexArr[2].X, vertexArr[2].Y, vertexArr[2].Z ]
-	v4 = [ vertexArr[3].X, vertexArr[3].Y, vertexArr[3].Z ]
+	if iType == "4":
+		
+		v1 = [ vertexArr[0].X, vertexArr[0].Y, vertexArr[0].Z ]
+		v2 = [ vertexArr[1].X, vertexArr[1].Y, vertexArr[1].Z ]
+		v3 = [ vertexArr[2].X, vertexArr[2].Y, vertexArr[2].Z ]
+		v4 = [ vertexArr[3].X, vertexArr[3].Y, vertexArr[3].Z ]
+		
+		return [ v1, v2, v3, v4 ]
 	
-	return [ v1, v2, v3, v4 ]
+	if iType == "all":
+		
+		vertices = []
+		for v in vertexArr:
+			vertices.append([ v.X, v.Y, v.Z ])
+		
+		return vertices
+	
+	return ""
 
 
 # ###################################################################################################################
@@ -1286,7 +1302,44 @@ def showMeasure(iP1, iP2, iRef=""):
 	FreeCAD.ActiveDocument.recompute()
 	
 	return m
+
+
+# ###################################################################################################################
+def getDistanceBetweenFaces(iFace1, iFace2):
+	'''
+	getDistanceBetweenFaces(iFace1, iFace2) - get distance between iFace1 and iFace2
 	
+	Args:
+	
+		iFace1: face object
+		iFace2: face object
+
+	Usage:
+	
+		size = MagicPanels.getDistanceBetweenFaces(face1, face2)
+
+	Result:
+
+		return distance between face1 object and face2 object
+
+	'''
+
+	plane1 = getFacePlane(iFace1)
+	plane2 = getFacePlane(iFace2)
+	[ x1, y1, z1 ] = getVertex(iFace1, 0, 0)
+	[ x2, y2, z2 ] = getVertex(iFace2, 0, 0)
+	
+	if plane1 == "XY" and plane2 == "XY":
+		return round(abs(z1-z2), gRoundPrecision)
+
+	if plane1 == "XZ" and plane2 == "XZ":
+		return round(abs(y1-y2), gRoundPrecision)
+		
+	if plane1 == "YZ" and plane2 == "YZ":
+		return round(abs(x1-x2), gRoundPrecision)
+
+	return ""
+
 
 # ###################################################################################################################
 '''
@@ -1985,7 +2038,7 @@ def sizesToCubePanel(iObj, iType):
 
 	Result:
 
-		Returns [ Length, Width, Height ] for YZ object placement".
+		Returns [ Length, Width, Height ] for YZ object placement.
 
 	'''
 
@@ -3152,9 +3205,12 @@ def copyColors(iSource, iTarget):
 		skip = 1
 		
 	try:
-		# copy edgeand only for cubes because other objects have different face order
+		# copy edge and only for cubes because other objects have different face order
 		if len(iTarget.ViewObject.DiffuseColor) == len(iSource.ViewObject.DiffuseColor):
 			iTarget.ViewObject.DiffuseColor = iSource.ViewObject.DiffuseColor
+		
+		if len(iSource.ViewObject.DiffuseColor) > 0 and len(iTarget.ViewObject.DiffuseColor) == 1:
+			iTarget.ViewObject.DiffuseColor = iSource.ViewObject.DiffuseColor[0]
 	except:
 		skip = 1
 	
@@ -3162,7 +3218,7 @@ def copyColors(iSource, iTarget):
 		iTarget.ViewObject.LineColor = iSource.ViewObject.LineColor
 	except:
 		skip = 1
-		
+	
 	if skip == 0:
 		return 0
 	else:

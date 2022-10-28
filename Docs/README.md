@@ -89,11 +89,11 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 ### Default panels
 
-<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelDefaultXY.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelDefaultYX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelDefaultXZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelDefaultZX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelDefaultYZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelDefaultZY.png"> There are many types of wood. So there is no chance to cover all possible wood sizes provided by the market. This starting panels, allows for quick start. You do not have to start each time from `10 x 10 x 10` box `Cube` object. This tool creates default panel that can be easily resized. You can clearly see where should be the thickness to keep exact panel `XYZ` axis orientation. All furniture elements should be created according to the `XYZ` axis plane, if possible. Avoid building whole furniture with rotated elements. If you want to rotate panel with dowels, better create panel with dowels without rotation, pack panel with dowels into container like `LinkGroup`, and use [magicAngle](#magicangle) to rotate whole `LinkGroup`. You can rotate whole furniture like this with single click and the dowels will be in the correct place after rotation. If you would like to apply dowels at rotated element it would be pointless complication, almost impossible at FreeCAD.
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelDefaultXY.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelDefaultYX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelDefaultXZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelDefaultZX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelDefaultYZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelDefaultZY.png"> There are many types of wood. So there is no chance to cover all possible wood sizes provided by the market. This starting panels allow you for quick start. You do not have to start each time from `10 x 10 x 10` box `Cube` object and think where should be the thickenss. This tool creates default panel that can be easily resized. You can clearly see where should be the thickness to keep exact panel `XYZ` axis orientation. All furniture elements should be created according to the `XYZ` axis plane, if possible. Avoid building whole furniture with rotated elements. If you want to rotate panel with dowels, better create panel with dowels without rotation, pack panel with dowels into container like `LinkGroup`, and use [magicAngle](#magicangle) to rotate whole `LinkGroup`. You can rotate whole furniture like this with single click and the dowels will be in the correct place after rotation. If you would like to apply dowels at rotated element it would be pointless complication, almost impossible at FreeCAD.
 
 ### Copy panels
 
-<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyXY.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyYX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyXZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyZX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyYZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyZY.png"> This icons copy selected panel into exact `XYZ` axis orientation. By default you can copy any panel based on `Cube` object. If you want to copy `Pad`, you need to have constraints named "SizeX" and "SizeY" at the `Sketch`. For other object types you need to have `Length`, `Width`, `Height` properties at object (Group: `Base`, Type: `App::PropertyLength`). To copy panel without changing orientation, you can use [magicMove](#magicmove) tool.
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyXY.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyYX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyXZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyZX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyYZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyZY.png"> This icons copy selected panel into exact `XYZ` axis orientation. By default you can copy any panel based on `Cube` object. If you want to copy `Pad`, you need to have constraints named `SizeX` and `SizeY` at the `Sketch`. For other object types you need to have `Length`, `Width`, `Height` properties at object (Group: `Base`, Type: `App::PropertyLength`). To copy panel without changing orientation, you can use [magicMove](#magicmove) tool.
 
 <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelFaceXY.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelFaceYX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelFaceXZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelFaceZX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelFaceYZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelFaceZY.png"> This icons creates new panel at selected face. The blue panel represents the selected object and the red one represents the new created object. The icon refers to base `XY` model view (0 key position). Click [fitModel](#fitmodel) to set model into referred view, and to be sure the model and face you have selected refers to exact icon. **Note:** If you have problems with unpredicted result, "side effect of Magic Panels", please use [magicManager](#magicmanager) to preview panel before creation and [magicMove](#magicmove) to move panels.
 
@@ -101,9 +101,23 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 ### magicManager
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicManager.png"> This tool allows to preview panel before creation. It allows to see panel at single selected face and also panel between two faces. This tool can be used if you have problems with unpredicted result, "side effect of Magic Panels". However, clicking single icon is sometimes more quicker than opening GUI and choosing right panel. Sice `0.21` this tool is able to create panel from selected vertices. This functionality uses observer for reading and helping select vertices. You do not have to hit the vertex directly. If you select edge or face, the nearest vertex will be selected for you. Also you can remove last selected vertex from list if you make mistake. The selected vertices should create wire, shape, but you do not have to select last vertex to close the wire. The first selected vertex will be automatically added at the end to close the wire. If the panel thickness is not set by the user, the thickness for the new panel from vertices will be set from first selected object. Custom thickenss works only for vertices.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicManager.png">
+This tool allows to preview panel before creation. It allows to see panel at single selected face and also panel between two faces. This tool can be used if you have problems with unpredicted result, "side effect of Magic Panels". However, clicking single icon is sometimes more quicker than opening GUI and choosing right panel. Sice `0.21` this tool is able to create panel from selected vertices. This functionality uses observer for reading and helping select vertices. You do not have to hit the vertex directly. If you select edge or face, the nearest vertex will be selected for you. Also you can remove last selected vertex from list if you make mistake. The selected vertices should create wire, shape, but you do not have to select last vertex to close the wire. The first selected vertex will be automatically added at the end to close the wire. If the panel thickness is not set by the user, the thickness for the new panel from vertices will be set from first selected object. Custom thickenss works only for vertices.
 
-**Video tutorial:** [3D furniture designing - panel from vertices](https://www.youtube.com/watch?v=6s0fbagPeZA)
+* **Panel at face:** To create panel at face select single face and click `refresh selection`.
+* **Panel between faces:** To create panel between two faces select two faces and click `refresh selection`. To select more faces hold `CTRL` key. The selection order is important. If the panel is created outside change selection order.
+* **Panel from vertices:** To create panel from vertices, you have to activate observer. The `first` means the thickness will be get from first selected object. You can set custom thickness if you want.
+
+**Options:**
+  
+* **Plane:** You can select panel orientation according to the `XYZ` coordinate axes. The panel can be created at planes: `XY`, `YX`, `XZ`, `ZX`, `YZ`, `ZY`, if you select single face. If you select two faces this tool automatically recognize plane of selected faces and adjust possible panels to create, there will be two panels.
+* **Anchor:** You can select position for the new panel. The anchors are the face vertices. If the object is for example `Cut` there might be more than four anchors to choose.
+* **Size:** Custom size is taken from edges. For example, if you have `Cut` object you can set panel with the same size as the cut edge. All edges should be available, search for the right one.
+* **Offset:** The first selected offset is no offset from vertex position. All next are offset with current selected `Size` for `X-`, `X+`, `Y-`, `Y+`, `Z-`, `Z+` coordinate axis. This can be helpful if you want to make frame and the frame need to be offset with different size than thickenss.
+
+**Video tutorials:** 
+* [3D furniture designing - panel from vertices](https://www.youtube.com/watch?v=6s0fbagPeZA)
+* [3D furniture designing - making panels improvement](https://www.youtube.com/watch?v=sunE2rLThZI)
 
 <br>
 
@@ -117,7 +131,8 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicResizer.png"> This tool allows to resize `Cube` or `Pad` panel and also other objects based on `Pad` e.g. construction profiles. It works in two modes. First mode is simple resize with custom step and edge selection. In this mode the tool search for all sizes with selected edge size and resize each one. The second mode allows to resize object to the nearest face of other object. To use this mode, first select edge to resize and next select nearest face of any other object. If the face is at the right side this tool will calculate space needed to resize and will change the exact size. If the face is before the selected edge the object will be resized and moved to the left. So, the result will be resized object from the left side. To select more objects hold left CTRL key during selection. Make sure your `Pad` object has defined constraints, you can use [showConstraints](#showConstraints) tool for that. If the object has no constraint at the selected edge the object will not be resized. The constraints do not have to be named but must be defined.
 
-**Video tutorial:** [3D furniture designing - smart resizer tool](https://www.youtube.com/watch?v=t1G7qnRfAgY)
+**Video tutorials:** 
+* [3D furniture designing - smart resizer tool](https://www.youtube.com/watch?v=t1G7qnRfAgY)
 
 ### showConstraints
 
@@ -135,7 +150,8 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicMove.png"> This tool allows to move panel with custom step. It automatically show center axes and resize the corner axes. You can also resize the corner axes or turn on and off the center axes. This tool recognize holding button, so you can press once the arrow and hold it, and the selected part will be moving in desired direction with exact step. This approach allows, to precisely move objects and also do it quickly without clicking arrows icons many times. You can also copy objects along coordinate axes. At FreeCAD you can use arrays but arrays make problems in case of edgeband because arrays have more than 6 faces. With this copy option you can quickly create many objects and avoid the multiple faces problem. 
 
-**Video tutorial:** [3D furniture designing - smart move & copy](https://www.youtube.com/watch?v=gh0Sc0eLooQ)
+**Video tutorials:** 
+* [3D furniture designing - smart move & copy](https://www.youtube.com/watch?v=gh0Sc0eLooQ)
 
 ### magicAngle
 
@@ -153,7 +169,8 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMove2Face.png"> This tool allows to align panels or any other objects to face position. First select face and next select objects you want to align with face position. You can select objects at objects `Tree` window holding `left CTRL key`. This tool allows to avoid thickness step problem, if you want to move panel to the other edge but the way is not a multiple of the panel thickness. However, it not cover all possible situations. This will be improved in the future maybe but for now it align object to the first `0 vertex` (beginning of the panel), what may not be always what you want.
 
-**Video tutorial:** [3D furniture designing - simple table](https://www.youtube.com/watch?v=Xru52f8uyBk)
+**Video tutorials:** 
+* [3D furniture designing - simple table](https://www.youtube.com/watch?v=Xru52f8uyBk)
 
 ### panelMove2Center
 
@@ -171,7 +188,8 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicDowels.png"> This tool allows to add mounting points to the furniture, or even any other elements like construction profiles. You can add predefined mounting points e.g. screws, dowels, shelf supporter pins or add custom mounting points. This is very quick way to add mounting points to the furniture, no calculation needed to place dowel exactly in the middle of the edge. If you would like to add e.g. 40 dowels to the whole furniture and align all of them manually, it would probably be big challenge. With this tool you can do it with single click in many cases. Make sure the green faces are visible, because they refers to the head of the screw. If you would like to replace the dowels with detailed screw later, this might be important if the dowel is rotated incorrectly, the screw will be rotated incorrectly as well. 
 
-**Video tutorial:** [3D furniture designing - adding dowels](https://www.youtube.com/watch?v=q7tJffBBUGY)
+**Video tutorials:** 
+* [3D furniture designing - adding dowels](https://www.youtube.com/watch?v=q7tJffBBUGY)
 
 ### panel2link
 
@@ -187,13 +205,15 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/sketch2dowel.png"> First select face, next Sketches of the holes to create dowels. This tool allows to create dowel from Sketch of the hole. The first selected face refers to the side the dowel will be raised, exact orientation for the dowel. Dowel position will be get from the Sketch. The dowel Radius and Height will be get from hole object. If the hole is throughAll the dowel height will be very big, so make sure you use dimensions for hole. To select more Sketches hold left CTRL key during selection. 
 
-**Video tutorial:** [3D furniture designing - dowels from Sketch](https://www.youtube.com/watch?v=CI4M5_DDWSg)
+**Video tutorials:** 
+* [3D furniture designing - dowels from Sketch](https://www.youtube.com/watch?v=CI4M5_DDWSg)
 
 ### edge2dowel
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/edge2dowel.png"> This tool allows to create dowels above the selected hole edges. To create dowel select edge of the hole. You can select many edges at once but all the holes need to be at the same object. The dowel Height will be 40. The dowel radius will be get from the selected edge hole radius. To select more objects hold left CTRL key during selection. 
 
-**Video tutorial:** [3D furniture designing - dowels from holes](https://www.youtube.com/watch?v=l8-Jven6VTQ)
+**Video tutorials:** 
+* [3D furniture designing - dowels from holes](https://www.youtube.com/watch?v=l8-Jven6VTQ)
 
 <br><br><br>
 
@@ -253,37 +273,56 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2profile.png"> Please select valid `Cube` or `Pad` object imitating profile. The selected `Cube` or `Pad` objects need to have two equal sizes e.g. `20 mm x 20 mm x 300 mm` to replace it with construction profile. **Note:** This tool allows to replace panel with construction profile. You can replace more than one panel at once. To select more panels hold left `CTRL` key during selection. The new created construction profile will get the same dimensions, placement and rotation as the selected panel. If you have all construction created with simple panel objects that imitating profiles, you can replace all of them with realistic looking construction profiles with single click.
 
-**Video tutorial:** [3D furniture designing - construction profiles](https://www.youtube.com/watch?v=5hXMFAxXQag)
+**Video tutorials:** 
+* [3D furniture designing - construction profiles](https://www.youtube.com/watch?v=5hXMFAxXQag)
 
 ### panel2angle
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2angle.png"> Please select valid faces at any amount of `Cubes` or `Pads` to cut the faces and create construction angle profiles. **Note:** This tool allows to replace panel with construction angle. You can replace more than one panel at once. To select more faces hold left `CTRL` key during faces selection. The new created construction angle will get the same dimensions, placement and rotation as the selected panel. You can cut any faces at panel. However, if the panel has two equal sizes e.g. `20 mm x 20 mm x 600 mm`, the ends will be cut as well, so you do not have to select them. If you do not have same sizes you have have to select ends too, if you want to cut them. If the selected faces are not valid, e.g. opposite faces, the final object may disappear and be broken. You can remove last operation and try again. If you have all construction created with simple panels that imitating angles, you can replace all of them with realistic looking construction angles with single click and they will be rotated according to the selected faces.
 
-**Video tutorial:** [3D furniture designing - construction profiles](https://www.youtube.com/watch?v=5hXMFAxXQag)
+**Video tutorials:** 
+* [3D furniture designing - construction profiles](https://www.youtube.com/watch?v=5hXMFAxXQag)
 
 ### panel2angle45cut
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2angle45cut.png"> Please select valid face at construction angle to create 45 cut at edges. **Note:** This tool allows to cut construction angle with 45 cut. You can select many construction angles at once but only single face can be selected for each construction angle. If the construction angle is C-shape you can select face inside profile and two sides will be cut. If the construction angle is L-shape you select single face inside profile and only single side will be cut. Because to create frame with L-shape profiles you have to cut only single side. To create frame with C-shape profiles you have to cut both sides. The face should be selected inside profile to set exact cut size without profile thickness. To select more faces hold left `CTRL` key during faces selection. You can remove last operation and try again. If you have all construction created with construction angles you can cut all of them at once.
 
-**Video tutorial:** [3D furniture designing - construction profiles](https://www.youtube.com/watch?v=5hXMFAxXQag)
+**Video tutorials:** 
+* [3D furniture designing - construction profiles](https://www.youtube.com/watch?v=5hXMFAxXQag)
 
 ## Joinery
 
 ### magicJoints
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicJoints.png"> This tool is to create Mortises and Tenons. It allows to create any joint shape using Sketch. First you have to create joint pattern with Sketch. The Sketch do not have to be assigned to the face of object, the `Support` can be empty. The joint pattern should be created in the corner of coordinate axes cross. This will be better for rotation and positioning. However, you can add any offset, if you want. If you have joint pattern created, select the Sketch and Face to create Mortise or Tenon. First `Anchor` position is the Sketch position, all others are the vertices of selected face, so you can move the Sketch to any point at the selected face. If you want to map the Sketch to the another object, you may need use rotation selector. If the selected object is `Cube` it will be automatically converted to `Pad` during Mortise or Tenon creation. The Mortise and Tenons are PartDesign Pocket and pad so they can be easily managed by FreeCAD. If you want to select more objects hold left `CTRL` key during selection. You can also refresh only face. It is useful, if you want to map quickly the Sketch to another object. To refresh face only, select face and click `refresh selection` button.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicJoints.png"> This tool is to create Mortises and Tenons. It allows to create any joint shape using Sketch. First you have to create joint pattern with Sketch. The Sketch do not have to be assigned to the face of object, the `Support` can be empty. The joint pattern should be created in the corner of coordinate axes cross. This will be better for rotation and positioning. However, you can add any offset, if you want. If you have joint pattern created, select the Sketch and Face to create Mortise or Tenon. First `Anchor` position is the Sketch position, all others are the vertices of selected face, so you can move the Sketch to any point at the selected face. If you want to map the Sketch to the another object, you may need use rotation selector. If the selected object is `Cube` it will be automatically converted to `Pad` during Mortise or Tenon creation. The Mortise and Tenons are `PartDesign :: Pocket` and `PartDesign :: Pad` objects, so they can be easily managed by FreeCAD. If you want to select more objects hold left `CTRL` key during selection. You can also refresh only face. It is useful, if you want to map quickly the Sketch to the another object in the same line. To refresh face only, select face and click `refresh selection` button.
+
+**Options:**
+
+* **Anchor:** First slection is the actual `Sketch` global position. Next are vertices from selected face. You can switch between the available positions to adjust the position more precisely.
+* **Rotation:** This is `Sketch` pattern rotation. It is useful if you change the face and the face is not at the same line. For example if you want to create Tenon at the other side of the table supporter.
+* **X axis:** Offset for the `X` coordinate axis.
+* **Y axis:** Offset for the `Y` coordinate axis.
+* **Z axis:** Offset for the `Z` coordinate axis.
+* **Step:** Is the step for the `XYZ` offset. The step is automatically get during `- +` changes.
+* **set custom values** This button should be clicked if you write manually values for `X`, `Y` or `Z` axis offset.
+* **set manually** Allows to set `Sketch` pattern into transform mode and move the `Sketch` pattern manually by hand. You can create Mortise and Tenon in this mode.
+* **finish manually** Close tranform mode.
+* **create Mortise** Create `PartDesign :: Pocket` object below the current `Sketch` pattern position at the selected face. However, in practise you can create only Tenons and use boolean [magicCut](#magiccut) to create Mortises.
+* **create Tenon** Create `PartDesign :: Pad` above the current `Sketch` pattern position at the selected face.
 
 **Video tutorials:** 
 * [3D furniture designing - Mortise and Tenon](https://www.youtube.com/watch?v=bJJeUaUho_4)
 * [3D furniture designing - Mortise and Tenon (tips and tricks)](https://www.youtube.com/watch?v=vMEWqvNRIpk)
 * [3D furniture designing - Table with Mortise and Tenon](https://www.youtube.com/watch?v=Mqzi3Mk9g44)
 * [3D furniture designing - Frame with Bridle Joint)](https://www.youtube.com/watch?v=KAS3FHyroI8)
+* [3D furniture designing - half lap joint with pins)](https://www.youtube.com/watch?v=hejDh5YXGbU)
 
 ### magicCut
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicCut.png"> This tool make multi bool cut operation at selected objects. First object should be the base object to cut. All other selected objects will cut the base 1st selected object. To select more objects hold left CTRL key during selection. During this process only the copies will be used to cut, so the original objects will not be moved at tree. Also there will be auto labeling to keep the cut tree more informative and cleaner.
 
-**Video tutorial:** [3D furniture designing - skip copies in cut-list](https://www.youtube.com/watch?v=rFEDLaD8lxM)
+**Video tutorials:** 
+* [3D furniture designing - skip copies in cut-list](https://www.youtube.com/watch?v=rFEDLaD8lxM)
 
 <br><br><br>
 
@@ -291,7 +330,8 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicKnife.png"> This tool is opposite for [magicCut](#magiccut) tool. This tool allows to use single knife to cut many panels. First selected object should be knife, and all other selected objects will be cut with the knife. The knife can be any object. So, you can create your own shape of the knife and cut many panels at once. Also you can cut all legs of the table using floor or top of the table as knife. To select more objects hold left CTRL key during selection. During this process the copies of knife are used, so the original knife objects will not be moved at tree. Also there will be auto labeling to keep the cut tree more informative and cleaner.
 
-**Video tutorial:** [3D furniture designing - skip copies in cut-list](https://www.youtube.com/watch?v=rFEDLaD8lxM)
+**Video tutorials:** 
+* [3D furniture designing - skip copies in cut-list](https://www.youtube.com/watch?v=rFEDLaD8lxM)
 
 ### jointTenon
 
@@ -309,7 +349,8 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2frame.png"> This tool allows to replace `Cube` panel with frame 45 cut at both sides. You can replace more than one `Cube` panel at once. To replace Cube objects with frames you have to select exact face at each `Cube` object. For example if you want to make picture frame, select all 4 inner faces. To select more faces hold `left CTRL key` during selection. The new created frame will get the same dimensions, placement and rotation as the selected `Cube` panel but will be cut at the selected face. If you have all construction created with simple `Cube` objects that imitating picture frame or window, you can replace all of them with realistic looking frame with single click. 
 
-**Video tutorial:** [3D furniture designing - quick 45 cut joint](https://www.youtube.com/watch?v=aFe9p4At41c)
+**Video tutorials:** 
+* [3D furniture designing - quick 45 cut joint](https://www.youtube.com/watch?v=aFe9p4At41c)
 
 <br><br><br>
 
@@ -519,7 +560,8 @@ However, if you make your own detailed part or order somewhere, you need to fulf
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillDriller006.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillDriller007.png)
 
-**Video tutorial:** [3D furniture designing - countersinks & realistic screws](https://www.youtube.com/watch?v=N5SpUCtNMY0)
+**Video tutorials:** 
+* [3D furniture designing - countersinks & realistic screws](https://www.youtube.com/watch?v=N5SpUCtNMY0)
 
 ## Drilling via icons
 
@@ -604,7 +646,8 @@ However, if you make your own detailed part or order somewhere, you need to fulf
 
 **Note:** The same procedure you can use to drill pilot holes for hinges or any other fixture.
 
-**Video tutorial:** [3D furniture designing - angles & pilot holes & realistic screws](https://www.youtube.com/watch?v=CYaL-sGvIK8)
+**Video tutorials:** 
+* [3D furniture designing - angles & pilot holes & realistic screws](https://www.youtube.com/watch?v=CYaL-sGvIK8)
 
 # Pocket holes - invisible connections
 
@@ -649,7 +692,8 @@ Personally I do not use this type of connections because I am not convinced to i
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillPocketHoles010.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillPocketHoles011.png)
 
-**Video tutorial:** [3D furniture designing - pocket holes & realistic screws](https://www.youtube.com/watch?v=eXzYXNbWwqM)
+**Video tutorials:** 
+* [3D furniture designing - pocket holes & realistic screws](https://www.youtube.com/watch?v=eXzYXNbWwqM)
 
 # Realistic parts
 
@@ -678,7 +722,8 @@ Personally I do not use this type of connections because I am not convinced to i
 
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RealisticScrews008.png)
 
-**Video tutorial:** [3D furniture designing - pocket holes & realistic screws](https://www.youtube.com/watch?v=eXzYXNbWwqM)
+**Video tutorials:** 
+* [3D furniture designing - pocket holes & realistic screws](https://www.youtube.com/watch?v=eXzYXNbWwqM)
 
 ## Realistic screws and angles
 
@@ -701,7 +746,8 @@ Personally I do not use this type of connections because I am not convinced to i
 
   **Note:** I use a little bigger screws for angles than normally should be, because they hold things a little better than `3 x 20 mm` ones, so the head of the screw is not flat with the surface but you can use any screw size with the same way. For hinges you can use `3 x 20 mm`, without pilot holes.
 
-**Video tutorial:** [3D furniture designing - angles & pilot holes & realistic screws](https://www.youtube.com/watch?v=CYaL-sGvIK8)
+**Video tutorials:** 
+* [3D furniture designing - angles & pilot holes & realistic screws](https://www.youtube.com/watch?v=CYaL-sGvIK8)
 
 ## Realistic screws and pocket holes
 
@@ -723,7 +769,8 @@ Personally I do not use this type of connections because I am not convinced to i
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RealisticPocketScrews008.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RealisticPocketScrews009.png)
 
-**Video tutorial:** [3D furniture designing - pocket holes & realistic screws](https://www.youtube.com/watch?v=eXzYXNbWwqM)
+**Video tutorials:** 
+* [3D furniture designing - pocket holes & realistic screws](https://www.youtube.com/watch?v=eXzYXNbWwqM)
 
 ## Counterbore 2x with bolt
 
@@ -780,5 +827,6 @@ Working with raw wood is an art of some sort. This is the true form of working w
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RawWoodGlued008.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RawWoodGlued009.png)
 
-**Video tutorial:** [3D furniture designing - glued table top simulation (force order of operations)](https://www.youtube.com/watch?v=SULl3EmCTsk)
+**Video tutorials:** 
+* [3D furniture designing - glued table top simulation (force order of operations)](https://www.youtube.com/watch?v=SULl3EmCTsk)
 
