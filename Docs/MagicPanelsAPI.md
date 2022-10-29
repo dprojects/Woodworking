@@ -1,6 +1,8 @@
 
-# This is MagicPanels library for Woodworking workbench.
-# Darek L (github.com/dprojects)
+# MagicPanels
+
+	This is MagicPanels library for Woodworking workbench.
+	Darek L (github.com/dprojects)
 
 Usage:
 
@@ -22,10 +24,8 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 ### equal(iA, iB):
 
 	equal(iA, iB) - At FreeCAD there are many values like 1.000006, especially for PartDesign objects. 
-	So if you want to compare such values this sometimes might be True and sometimes False. Some people will 
-	tell you it is because of Pi, but I do not have the time or the desire to fight with human stupidity. 
-	Recently I spent two hours debugging my code and in the end it turned out to be working fine after 
-	rounding the values. So, finally I decided to write my own function for comparison.
+	So if you want to compare such values this sometimes might be True and sometimes False. 
+	So, finally I decided to write my own function for comparison.
 	
 ##### Args:
 	

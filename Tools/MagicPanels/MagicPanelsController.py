@@ -92,9 +92,260 @@ def panelCopy(iType):
 
 		info = ""
 		
-		info += translate('panelCopyInfo', '<b>To create copy of panel in exact direction, select valid panel first. </b><br><br><b>Note:</b> This tool copy selected panel into exact XYZ axis orientation. By default you can copy any panel based on Cube object. If you want to copy Pad, you need to have Constraints named "SizeX" and "SizeY" at the Sketch. For custom objects types you need to have Length, Width, Height properties at object (Group: "Base", Type: "App::PropertyLength").') 
+		info += translate('panelCopyInfo', '<b>To create copy of panel in exact direction, select valid panel first. </b><br><br><b>Note:</b> This tool copy selected panel into exact XYZ axis orientation. By default you can copy any panel based on Cube object. If you want to copy Pad, you need to have Constraints named "SizeX" and "SizeY" at the Sketch. For custom objects types you need to have Length, Width, Height properties at object (Group: "Base", Type: "App::PropertyLength"). The new panel will be created at (0, 0, 0) coordinate XYZ axis position. You can use mapPosition tool to move the new panel to the original panel position. To copy panel without changing orientation, you can use magicMove tool or CTRL-C and CTRL-V keys with arrows to move the copy.') 
 
 		MagicPanels.showInfo("panelCopy"+iType, info)
+
+
+# ###################################################################################################################
+def panelFace(iType):
+	
+	try:
+
+		gSO = FreeCADGui.Selection.getSelection()[0]
+		
+		gObj = MagicPanels.getReference(gSO)
+		gFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+		
+		[ L, W, H ] = MagicPanels.sizesToCubePanel(gObj, iType)
+		
+		if gObj.isDerivedFrom("Part::Box"):
+			[ x, y, z ] = MagicPanels.getVertex(gFace, 0, 1)
+		else:
+			[ x, y, z ] = MagicPanels.getVertex(gFace, 1, 0)
+		
+		if gSO.isDerivedFrom("Part::Cut"):
+			[ x, y, z ] = MagicPanels.getVertex(gFace, 2, 0)
+
+		panel = FreeCAD.activeDocument().addObject("Part::Box", "panelFace"+iType)
+		panel.Length, panel.Width, panel.Height = L, W, H
+
+		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
+		
+		try:
+			MagicPanels.copyColors(gObj, panel)
+		except:
+			skip = 1
+			
+		FreeCAD.ActiveDocument.recompute()
+
+	except:
+		
+		info = ""
+		
+		info += translate('panelFaceInfo', '<b>Please select face to create panel. </b><br><br><b>Note:</b> This tool creates new panel at selected face. The blue panel represents the selected object and the red one represents the new created object. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view. The new created panel will get the same dimensions as panel of the selected face. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
+
+		MagicPanels.showInfo("panelFace"+iType, info)
+
+
+# ###################################################################################################################
+def panelBetween(iType):
+	
+	try:
+
+		gSO = FreeCADGui.Selection.getSelection()[0]
+		gObj = MagicPanels.getReference(gSO)
+		
+		gFace1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+		gFace2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+	
+		[ x1, y1, z1 ] = MagicPanels.getVertex(gFace1, 0, 1)
+		[ x2, y2, z2 ] = MagicPanels.getVertex(gFace2, 0, 1)
+
+		x = abs(x2 - x1)
+		y = abs(y2 - y1)
+		z = abs(z2 - z1)
+
+		panel = FreeCAD.activeDocument().addObject("Part::Box", "panelBetween"+iType)
+		[ panel.Length, panel.Width, panel.Height ] = MagicPanels.sizesToCubePanel(gObj, iType)
+
+		z1 = z1 + gObj.Height.Value - panel.Height.Value
+		
+		if x > 0:
+			panel.Length = x
+		
+		if y > 0:
+			panel.Width = y
+			
+		if z > 0:
+			panel.Height = z
+
+		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x1, y1, z1), FreeCAD.Rotation(0, 0, 0))
+		
+		try:
+			MagicPanels.copyColors(gObj, panel)
+		except:
+			skip = 1
+
+		FreeCAD.ActiveDocument.recompute()
+
+	except:
+		
+		info = ""
+		
+		info += translate('panelBetweenInfo', '<b>Please select two valid faces at two different valid objects, to create panel between them. </b><br><br><b>Note:</b> This tool creates new panel between two selected faces. Selection faces order is important. To select more than one face, hold left CTRL key during second face selection. The blue panels represents the selected objects and the red one represents the new created object. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view.  If the two selected panels will be matching the icon, the new created panel should fill the gap between the selected faces. You can experiment with selection faces outside to resize the new panel. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
+
+		MagicPanels.showInfo("panelBetween"+iType, info)
+
+
+# ###################################################################################################################
+def panelSide(iType):
+	
+	try:
+
+		gObj = MagicPanels.getReference()
+		gFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+
+		[ Length, Width, Height ] = MagicPanels.sizesToCubePanel(gObj, "ZY")
+
+		if gObj.isDerivedFrom("Part::Box"):
+			[ x, y, z ] = MagicPanels.getVertex(gFace, 0, 1)
+
+		else:
+
+			if iType == "1" or iType == "2":
+				[ x, y, z ] = MagicPanels.getVertex(gFace, 0, 0)
+
+			if iType == "3" or iType == "4":
+				[ x, y, z ] = MagicPanels.getVertex(gFace, 1, 0)
+
+		if iType == "1":
+			x = x - Length
+			panel = FreeCAD.activeDocument().addObject("Part::Box", "panelSideLeft")
+		
+		if iType == "2":
+			z = z + Length
+			panel = FreeCAD.activeDocument().addObject("Part::Box", "panelSideLeftUP")
+		
+		if iType == "3":
+			panel = FreeCAD.activeDocument().addObject("Part::Box", "panelSideRight")
+		
+		if iType == "4":
+			x = x - Length
+			z = z + Length
+			panel = FreeCAD.activeDocument().addObject("Part::Box", "panelSideRightUP")
+
+		panel.Length = Length
+		panel.Width = Width
+		panel.Height = Height
+		
+		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
+		
+		try:
+			MagicPanels.copyColors(gObj, panel)
+		except:
+			skip = 1
+
+		FreeCAD.ActiveDocument.recompute()
+
+	except:
+		
+		info = ""
+		
+		info += translate('panelSideInfo', '<b>Please select valid face, to create panel. </b><br><br><b>Note:</b> This tool creates new panel at selected face. The blue panel represents the selected object and the red one represents the new created object. The arrow describe if the panel will be created up or down. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
+
+		if iType == "1":
+			MagicPanels.showInfo("panelSideLeft", info)
+		if iType == "2":
+			MagicPanels.showInfo("panelSideLeftUP", info)
+		if iType == "3":
+			MagicPanels.showInfo("panelSideRight", info)
+		if iType == "4":
+			MagicPanels.showInfo("panelSideRightUP", info)
+
+
+# ###################################################################################################################
+def panelBackOut():
+	
+	try:
+
+		gObj = MagicPanels.getReference()
+
+		gFace1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+		gFace2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+		gFace3 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
+
+		[ x, y, z ] = MagicPanels.sizesToCubePanel(gObj, "ZX")
+
+		[ x1, y1, z1 ] = MagicPanels.getVertex(gFace1, 0, 1)
+		[ x2, y2, z2 ] = MagicPanels.getVertex(gFace2, 0, 0)
+		[ x3, y3, z3 ] = MagicPanels.getVertex(gFace3, 0, 1)
+
+		x = abs(x2 - x1)
+		z = z - z3
+
+		if x > 0 and y > 0 and z > 0:
+
+			panel = FreeCAD.activeDocument().addObject("Part::Box", "panelBackOut")
+			panel.Length = x
+			panel.Width = y
+			panel.Height = z
+
+			panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x1, y1, z3), FreeCAD.Rotation(0, 0, 0))
+			
+			try:
+				MagicPanels.copyColors(gObj, panel)
+			except:
+				skip = 1
+
+			FreeCAD.ActiveDocument.recompute()
+			
+		else:
+		
+			raise
+
+	except:
+			
+		info = ""
+		
+		info += translate('panelBackOutInfo', '<b>Please select three faces according to the icon. </b><br><br><b>Note:</b> This tool allows to create back of the furniture with single click. To create back of the furniture you have to select 3 faces in the order described by the icon. To select more than one face, hold left CTRL key during face selection. The red edges at blue panels represents the selected faces. The transparent red panel represents the new created object. The icon refers to the back of the furniture.')
+		
+		MagicPanels.showInfo("panelBackOut", info)
+
+
+# ###################################################################################################################
+def panelCover(iType):
+	
+	try:
+
+		gObj = MagicPanels.getReference()
+		
+		gFace1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+		gFace2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+		gFace3 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
+
+		[ x, y, z ] = MagicPanels.sizesToCubePanel(gObj, iType)
+
+		[ x1, y1, z1 ] = MagicPanels.getVertex(gFace1, 0, 1)
+		[ x2, y2, z2 ] = MagicPanels.getVertex(gFace2, 2, 1)
+		[ x3, y3, z3 ] = MagicPanels.getVertex(gFace3, 0, 1)
+
+		x = abs(x2 - x1)
+		y = y + z
+
+		if x > 0 and y > 0 and z > 0:
+		
+			panel = FreeCAD.activeDocument().addObject("Part::Box", "panelCover"+iType)
+			panel.Length = x
+			panel.Width = y
+			panel.Height = z
+
+			panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x1, y1, z3), FreeCAD.Rotation(0, 0, 0))
+			
+			try:
+				MagicPanels.copyColors(gObj, panel)
+			except:
+				skip = 1
+
+			FreeCAD.ActiveDocument.recompute()
+
+	except:
+		
+		info = ""
+		
+		info += translate('panelCoverInfo', '<b>Please select three faces according to the icon. </b><br><br><b>Note:</b> This tool allows to create top cover of the furniture with single click. To create top cover of the furniture you have to select 3 faces in the order described by the icon. To select more than one face, hold left CTRL key during face selection. The red edges at blue panels represents the selected faces. The transparent red panel represents the new created object. The icon refers to the base XY model view (0 key position). Click fitModel to set model into referred view.')
+
+		MagicPanels.showInfo("panelCover"+iType, info)
 
 
 # ###################################################################################################################
@@ -359,257 +610,6 @@ def panelResize(iType):
 		info += translate('panelResizeInfo', '<b>Please select valid panels to resize. </b><br><br><b>Note:</b> This tool allows to resize quickly panels or even other objects. The resize step is the panel thickness. Panel is resized into direction described by the icon for XY panel. However, in some cases the panel may be resized into opposite direction, if the panel is not supported or the sides are equal. You can also resize Cylinders (drill bits), the long side will be Height, the short will be diameter, the thickness will be Radius. For Cone objects (drill bits - countersinks, counterbore) the long side will be Height, the thickness will be Radius1 (bottom radius) and the short will be Radius2 (top radius).')
 		
 		MagicPanels.showInfo("panelResize"+iType, info)
-	
-
-# ###################################################################################################################
-def panelFace(iType):
-	
-	try:
-
-		gSO = FreeCADGui.Selection.getSelection()[0]
-		
-		gObj = MagicPanels.getReference(gSO)
-		gFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-		
-		[ L, W, H ] = MagicPanels.sizesToCubePanel(gObj, iType)
-		
-		if gObj.isDerivedFrom("Part::Box"):
-			[ x, y, z ] = MagicPanels.getVertex(gFace, 0, 1)
-		else:
-			[ x, y, z ] = MagicPanels.getVertex(gFace, 1, 0)
-		
-		if gSO.isDerivedFrom("Part::Cut"):
-			[ x, y, z ] = MagicPanels.getVertex(gFace, 2, 0)
-
-		panel = FreeCAD.activeDocument().addObject("Part::Box", "panelFace"+iType)
-		panel.Length, panel.Width, panel.Height = L, W, H
-
-		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
-		
-		try:
-			MagicPanels.copyColors(gObj, panel)
-		except:
-			skip = 1
-			
-		FreeCAD.ActiveDocument.recompute()
-
-	except:
-		
-		info = ""
-		
-		info += translate('panelFaceInfo', '<b>Please select face to create panel. </b><br><br><b>Note:</b> This tool creates new panel at selected face. The blue panel represents the selected object and the red one represents the new created object. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
-
-		MagicPanels.showInfo("panelFace"+iType, info)
-	
-
-# ###################################################################################################################
-def panelBetween(iType):
-	
-	try:
-
-		gSO = FreeCADGui.Selection.getSelection()[0]
-		gObj = MagicPanels.getReference(gSO)
-		
-		gFace1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-		gFace2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-	
-		[ x1, y1, z1 ] = MagicPanels.getVertex(gFace1, 0, 1)
-		[ x2, y2, z2 ] = MagicPanels.getVertex(gFace2, 0, 1)
-
-		x = abs(x2 - x1)
-		y = abs(y2 - y1)
-		z = abs(z2 - z1)
-
-		panel = FreeCAD.activeDocument().addObject("Part::Box", "panelBetween"+iType)
-		[ panel.Length, panel.Width, panel.Height ] = MagicPanels.sizesToCubePanel(gObj, iType)
-
-		z1 = z1 + gObj.Height.Value - panel.Height.Value
-		
-		if x > 0:
-			panel.Length = x
-		
-		if y > 0:
-			panel.Width = y
-			
-		if z > 0:
-			panel.Height = z
-
-		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x1, y1, z1), FreeCAD.Rotation(0, 0, 0))
-		
-		try:
-			MagicPanels.copyColors(gObj, panel)
-		except:
-			skip = 1
-
-		FreeCAD.ActiveDocument.recompute()
-
-	except:
-		
-		info = ""
-		
-		info += translate('panelBetweenInfo', '<b>Please select two valid faces at two different valid objects, to create panel between them. </b><br><br><b>Note:</b> This tool creates new panel between two selected faces. Selection faces order is important. To select more than one face, hold left CTRL key during second face selection. The blue panels represents the selected objects and the red one represents the new created object. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
-
-		MagicPanels.showInfo("panelBetween"+iType, info)
-
-
-# ###################################################################################################################
-def panelSide(iType):
-	
-	try:
-
-		gObj = MagicPanels.getReference()
-		gFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-
-		[ Length, Width, Height ] = MagicPanels.sizesToCubePanel(gObj, "ZY")
-
-		if gObj.isDerivedFrom("Part::Box"):
-			[ x, y, z ] = MagicPanels.getVertex(gFace, 0, 1)
-
-		else:
-
-			if iType == "1" or iType == "2":
-				[ x, y, z ] = MagicPanels.getVertex(gFace, 0, 0)
-
-			if iType == "3" or iType == "4":
-				[ x, y, z ] = MagicPanels.getVertex(gFace, 1, 0)
-
-		if iType == "1":
-			x = x - Length
-			panel = FreeCAD.activeDocument().addObject("Part::Box", "panelSideLeft")
-		
-		if iType == "2":
-			z = z + Length
-			panel = FreeCAD.activeDocument().addObject("Part::Box", "panelSideLeftUP")
-		
-		if iType == "3":
-			panel = FreeCAD.activeDocument().addObject("Part::Box", "panelSideRight")
-		
-		if iType == "4":
-			x = x - Length
-			z = z + Length
-			panel = FreeCAD.activeDocument().addObject("Part::Box", "panelSideRightUP")
-
-		panel.Length = Length
-		panel.Width = Width
-		panel.Height = Height
-		
-		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
-		
-		try:
-			MagicPanels.copyColors(gObj, panel)
-		except:
-			skip = 1
-
-		FreeCAD.ActiveDocument.recompute()
-
-	except:
-		
-		info = ""
-		
-		info += translate('panelSideInfo', '<b>Please select valid face, to create panel. </b><br><br><b>Note:</b> This tool creates new panel at selected face. The blue panel represents the selected object and the red one represents the new created object. The arrow describe if the panel will be created up or down. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
-
-		if iType == "1":
-			MagicPanels.showInfo("panelSideLeft", info)
-		if iType == "2":
-			MagicPanels.showInfo("panelSideLeftUP", info)
-		if iType == "3":
-			MagicPanels.showInfo("panelSideRight", info)
-		if iType == "4":
-			MagicPanels.showInfo("panelSideRightUP", info)
-
-
-# ###################################################################################################################
-def panelBackOut():
-	
-	try:
-
-		gObj = MagicPanels.getReference()
-
-		gFace1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-		gFace2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-		gFace3 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
-
-		[ x, y, z ] = MagicPanels.sizesToCubePanel(gObj, "ZX")
-
-		[ x1, y1, z1 ] = MagicPanels.getVertex(gFace1, 0, 1)
-		[ x2, y2, z2 ] = MagicPanels.getVertex(gFace2, 0, 0)
-		[ x3, y3, z3 ] = MagicPanels.getVertex(gFace3, 0, 1)
-
-		x = abs(x2 - x1)
-		z = z - z3
-
-		if x > 0 and y > 0 and z > 0:
-
-			panel = FreeCAD.activeDocument().addObject("Part::Box", "panelBackOut")
-			panel.Length = x
-			panel.Width = y
-			panel.Height = z
-
-			panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x1, y1, z3), FreeCAD.Rotation(0, 0, 0))
-			
-			try:
-				MagicPanels.copyColors(gObj, panel)
-			except:
-				skip = 1
-
-			FreeCAD.ActiveDocument.recompute()
-			
-		else:
-		
-			raise
-
-	except:
-			
-		info = ""
-		
-		info += translate('panelBackOutInfo', '<b>Please select three faces according to the icon. </b><br><br><b>Note:</b> This tool allows to create back of the furniture with single click. To create back of the furniture you have to select 3 faces in the order described by the icon. To select more than one face, hold left CTRL key during face selection. The red edges at blue panels represents the selected faces. The transparent red panel represents the new created object. The icon refers to the back of the furniture.')
-		
-		MagicPanels.showInfo("panelBackOut", info)
-
-
-# ###################################################################################################################
-def panelCover(iType):
-	
-	try:
-
-		gObj = MagicPanels.getReference()
-		
-		gFace1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-		gFace2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-		gFace3 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
-
-		[ x, y, z ] = MagicPanels.sizesToCubePanel(gObj, iType)
-
-		[ x1, y1, z1 ] = MagicPanels.getVertex(gFace1, 0, 1)
-		[ x2, y2, z2 ] = MagicPanels.getVertex(gFace2, 2, 1)
-		[ x3, y3, z3 ] = MagicPanels.getVertex(gFace3, 0, 1)
-
-		x = abs(x2 - x1)
-		y = y + z
-
-		if x > 0 and y > 0 and z > 0:
-		
-			panel = FreeCAD.activeDocument().addObject("Part::Box", "panelCover"+iType)
-			panel.Length = x
-			panel.Width = y
-			panel.Height = z
-
-			panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x1, y1, z3), FreeCAD.Rotation(0, 0, 0))
-			
-			try:
-				MagicPanels.copyColors(gObj, panel)
-			except:
-				skip = 1
-
-			FreeCAD.ActiveDocument.recompute()
-
-	except:
-		
-		info = ""
-		
-		info += translate('panelCoverInfo', '<b>Please select three faces according to the icon. </b><br><br><b>Note:</b> This tool allows to create top cover of the furniture with single click. To create top cover of the furniture you have to select 3 faces in the order described by the icon. To select more than one face, hold left CTRL key during face selection. The red edges at blue panels represents the selected faces. The transparent red panel represents the new created object. The icon refers to the base XY model view (0 key position). Click fitModel to set model into referred view.')
-
-		MagicPanels.showInfo("panelCover"+iType, info)
 
 
 # ###################################################################################################################

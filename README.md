@@ -4,17 +4,16 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 
 ![intro](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/intro.gif)
 
+**For more details see:** 
+* YouTube channel dedicated for this workbench at: [youtube.com/@dprojects.woodworking](https://www.youtube.com/@dprojects.woodworking/videos)
+* Woodworking workbench documentation available at: [Docs folder](https://github.com/dprojects/Woodworking/tree/master/Docs)
+
 |   |   |
 |---|---|
 | [![c1r1](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r1.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r1.png) | [![c2r1](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r1.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r1.png) |
 | [![c1r2](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r2.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r2.png) | [![c2r2](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r2.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r2.png) |
 | [![c1r3](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r3.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r3.png) | [![c2r3](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r3.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r3.png) |
 | [![c1r4](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r4.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r4.png) | [![c2r4](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r4.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r4.png) |
-
-
-**For more details see:** 
-* YouTube channel dedicated for this workbench at: [youtube.com/@dprojects.woodworking](https://www.youtube.com/@dprojects.woodworking/videos)
-* Woodworking workbench documentation available at: [Docs folder](https://github.com/dprojects/Woodworking/tree/master/Docs)
 
 # Certified platforms
 
