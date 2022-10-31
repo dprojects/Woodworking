@@ -3018,6 +3018,85 @@ def makeFrame45cut(iObjects, iFaces):
 
 
 # ###################################################################################################################
+def makeChamferCut(iObjects, iEdges, iSizes, iLabels):
+	'''
+	makeChamferCut(iObjects, iEdges, iSizes, iLabels) - makes PartDesing Chamfer cut for edges array. But you can set 
+	different size for each edge. Yes, you give edge objects, and you make chamfer for each edge, one by one, 
+	with different size, but the most funny part is that the selected edge not exists because the Cube 
+	object not exists ;-)
+
+	Args:
+	
+		iObjects: array of objects to cut
+		iEdges: dict() of arrays [ edgeObj1, edgeObj2 ], edgeArr = iEdges[iObjects[0]]
+		iSizes: dict() of arrays [ 100, 50 ], sizeArr = iSizes[iObjects[0]]
+		iLabels: dict() of labels for new object, label = iLabels[iObjects[0]]
+
+	Usage:
+	
+		cuts = MagicPanels.makeChamferCut(objects, edges, sizes, labels)
+		
+	Result:
+	
+		return array with chamfer objects
+
+	'''
+
+	cuts = []
+
+	for o in iObjects:
+	
+		edges = iEdges[o]
+		sizes = iSizes[o]
+		label = iLabels[o]
+
+		# do not watch this, because it is Topology Naming Problem ;-)
+		keys = []
+		for e in edges:
+			keys.append(e.BoundBox)
+		
+		if o.isDerivedFrom("Part::Box"):
+		
+			[ part, body, sketch, pad ] = makePad(o, str(o.Label))
+			FreeCAD.ActiveDocument.removeObject(o.Name)
+			FreeCAD.ActiveDocument.recompute()
+
+		else:
+		
+			body = o._Body
+			pad = o
+
+		# so let's roll, you have also Topology Naming Problem in the fridge? ;-)
+		cut = pad
+		i = 0
+		for k in keys:
+			
+			index = getEdgeIndexByKey(cut, k)
+			edgeName = "Edge"+str(index)
+
+			newCut = body.newObject('PartDesign::Chamfer', "chamferCut")
+			newCut.Label = label
+			newCut.Base = (cut, edgeName)
+			newCut.Size = sizes[i] - (1 / (10 * gRoundPrecision))
+			cuts.append(newCut)
+			
+			cut.Visibility = False
+			FreeCAD.ActiveDocument.recompute()
+
+			try:
+				copyColors(cut, newCut)
+			except:
+				skip = 1
+		
+			FreeCAD.ActiveDocument.recompute()
+			
+			cut = newCut
+			i = i + 1
+
+	return cuts
+
+
+# ###################################################################################################################
 def makeMortise(iSketch, iDepth, iPad, iFace):
 	'''
 	makeMortise(iSketch, iDepth, iPad, iFace) - make Mortise pocket for given iSketch pattern

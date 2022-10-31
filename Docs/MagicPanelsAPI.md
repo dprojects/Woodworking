@@ -879,6 +879,28 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 	
 		Created Frames with correct placement, rotation and return array with Chamfer frame objects.
 
+### makeChamferCut(iObjects, iEdges, iSizes, iLabels):
+
+	makeChamferCut(iObjects, iEdges, iSizes, iLabels) - makes PartDesing Chamfer cut for edges array. But you can set 
+	different size for each edge. Yes, you give edge objects, and you make chamfer for each edge, one by one, 
+	with different size, but the most funny part is that the selected edge not exists because the Cube 
+	object not exists ;-)
+
+##### Args:
+	
+		iObjects: array of objects to cut
+		iEdges: dict() of arrays [ edgeObj1, edgeObj2 ], edgeArr = iEdges[iObjects[0]]
+		iSizes: dict() of arrays [ 100, 50 ], sizeArr = iSizes[iObjects[0]]
+		iLabels: dict() of labels for new object, label = iLabels[iObjects[0]]
+
+##### Usage:
+	
+		cuts = MagicPanels.makeChamferCut(objects, edges, sizes, labels)
+		
+##### Result:
+	
+		return array with chamfer objects
+
 ### makeMortise(iSketch, iDepth, iPad, iFace):
 
 	makeMortise(iSketch, iDepth, iPad, iFace) - make Mortise pocket for given iSketch pattern

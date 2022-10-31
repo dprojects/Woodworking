@@ -41,6 +41,8 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 		* [panel2profile](#panel2profile)
 		* [panel2angle](#panel2angle)
 		* [panel2angle45cut](#panel2angle45cut)
+		* [cornerBlock](#cornerBlock)
+		* [cornerBrace](#cornerBrace)
 	* [Joinery](#joinery)
 		* [magicJoints](#magicjoints)
 		* [magicCut](#magiccut)
@@ -287,6 +289,24 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 **Video tutorials:** 
 * [3D furniture designing - construction profiles](https://www.youtube.com/watch?v=5hXMFAxXQag)
+
+### cornerBlock
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/cornerBlock.png"> Please select single edge at each panel you want to change into corner block. **Note:** This tool allows to create corner block from selected edge. The cut size will be the panel thickness. For example you can create Cube 100 mm x 100 mm x 100 mm in the corner of the table to support table leg, and you can change it into corner block, quickly with single click. You can replace more than one panel at once. Hold left CTRL key during edges selection.
+
+**Video tutorials:** 
+* [3D furniture designing - table corner block](https://www.youtube.com/watch?v=Fyss9sZ4AgE)
+
+<br><br><br>
+
+### cornerBrace
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/cornerBrace.png"> Please select single edge at each panel you want to change into corner brace. **Note:** This tool allows to create corner brace from selected edge (the single visible edge). The cut size will be the panel thickness for the first edge and for the second edge half of the thickness. So, you get nice looking corner brace with single click. For example you can create Cube 100 mm x 100 mm x 100 mm in the corner of the table to support table leg, and you can change it into corner brace, quickly with single click. You can replace more than one panel at once. Hold left CTRL key during edges selection.
+
+**Video tutorials:** 
+* [3D furniture designing - table corner brace](https://www.youtube.com/watch?v=Y9Wa4o9N1mM)
+
+<br><br><br>
 
 ## Joinery
 

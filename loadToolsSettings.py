@@ -175,7 +175,9 @@ Tools = [
 	"MagicPanels", "panel2profile", "png", "construction profile", "Click to see info.",
 	"MagicPanels", "panel2angle", "png", "construction angle", "Click to see info.",
 	"MagicPanels", "panel2angle45cut", "png", "construction angle 45 cut", "Click to see info.",
-
+	"MagicPanels", "cornerBlock", "png", "table corner block", "Click to see info.",
+	"MagicPanels", "cornerBrace", "png", "table corner brace", "Click to see info.",
+	
 	# face
 	
 	"MagicPanels", "panelFaceXY", "png", "copy panel, face, XY", "Click to see info.",

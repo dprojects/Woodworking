@@ -94,7 +94,9 @@ def getItems(iType):
 		parts = [
 			"panel2profile",
 			"panel2angle",
-			"panel2angle45cut"
+			"panel2angle45cut",
+			"cornerBlock",
+			"cornerBrace"
 		]
 
 	if iType == "Woodworking - dowels and screws":
