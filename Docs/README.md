@@ -129,7 +129,13 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 ### magicResizer
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicResizer.png"> This tool allows to resize `Cube` or `Pad` panel and also other objects based on `Pad` e.g. construction profiles. It works in two modes. First mode is simple resize with custom step and edge selection. In this mode the tool search for all sizes with selected edge size and resize each one. The second mode allows to resize object to the nearest face of other object. To use this mode, first select edge to resize and next select nearest face of any other object. If the face is at the right side this tool will calculate space needed to resize and will change the exact size. If the face is before the selected edge the object will be resized and moved to the left. So, the result will be resized object from the left side. To select more objects hold left CTRL key during selection. Make sure your `Pad` object has defined constraints, you can use [showConstraints](#showConstraints) tool for that. If the object has no constraint at the selected edge the object will not be resized. The constraints do not have to be named but must be defined.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicResizer.png"> This tool allows to resize `Cube` or `Pad` panel and also other objects based on `Pad` e.g. construction profiles. Make sure your `Pad` object has defined constraints, you can use [showConstraints](#showConstraints) tool for that. If the object has no constraint at the selected edge the object will not be resized. The constraints do not have to be named but must be defined. 
+
+**Options:**
+
+* **Selected edge only:** If you select edge only you can resize the edge with `Resize step` via `resize -` and `resize +` buttons. This is simple resize with current `Resize step` and edge selection. In this mode the tool search for all sizes with selected edge size and resize each one with `Resize step`. Use `resize -` and `resize +` buttons in this mode.
+
+* **Selected edge and face:** The second mode allows to resize object to the nearest face of other object. To use this mode, first select edge to resize and next select nearest face of any other object. If the face is at the right side this tool will calculate space needed to resize and will change the exact size. If the face is before the selected edge the object will be resized and moved to the left. So, the result will be resized object from the left side. Use `resize to nearest face` button in this mode. If you have selected face the `Resize step` should be automatically calculated. You can also undo this operation via `resize -` button.
 
 **Video tutorials:** 
 * [3D furniture designing - smart resizer tool](https://www.youtube.com/watch?v=t1G7qnRfAgY)
@@ -150,6 +156,16 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicMove.png"> This tool allows to move panel with custom step. It automatically show center axes and resize the corner axes. You can also resize the corner axes or turn on and off the center axes. This tool recognize holding button, so you can press once the arrow and hold it, and the selected part will be moving in desired direction with exact step. This approach allows, to precisely move objects and also do it quickly without clicking arrows icons many times. You can also copy objects along coordinate axes. At FreeCAD you can use arrays but arrays make problems in case of edgeband because arrays have more than 6 faces. With this copy option you can quickly create many objects and avoid the multiple faces problem. 
 
+**Options:**
+
+* **Move mode:** In this mode you can move any object with custom step. If the object is recognized the `Move step` will be set by default with selected object thickness. You can also move containers. It can be used if you want to move many objects, for exampe panel with dowels.
+
+* **Copy mode:** In copy mode you can quickly create arrays, sets of many objects perfectly aligned with custom offset. 
+  * `copyObject` by default, good for simple objects like `Cube`.
+  * `Clone` is useful, if you want to make copy of `Body` or `Part` with many Bodies.
+  * `Link` if you want to copy `LinkGroup` and generate cut-list, it is better to set this copy option. 
+  * `Copy offset` this is offset between original selected object or last copied element and next copied element. If this is set to `0` the next element will be created without space in relation to the last element. For example if you set `10` and click `X+` many times, the space before each copied elements will be `10`.
+
 **Video tutorials:** 
 * [3D furniture designing - smart move & copy](https://www.youtube.com/watch?v=gh0Sc0eLooQ)
 
@@ -163,43 +179,61 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/mapPosition.png"> First select object to copy position, next select objects to move. **Note:** This tool allows to move objects to the same position as first selected object. The objects will be moved without rotation. Only the placement will change. If the first selected object is rotated they objects may not match exactly the starting point. This tool is very useful if you want to redesign furniture and you want to create new element. Using this tool you can quickly move the new element to the same position of old element and remove the old element. To select more objects hold left `CTRL` key during selection.
 
+**Video tutorials:** 
+* [FreeCAD extension - mapping position](https://www.youtube.com/watch?v=841xzb_uRpc)
+
 <br><br><br>
 
 ### panelMove2Face
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMove2Face.png"> This tool allows to align panels or any other objects to face position. First select face and next select objects you want to align with face position. You can select objects at objects `Tree` window holding `left CTRL key`. This tool allows to avoid thickness step problem, if you want to move panel to the other edge but the way is not a multiple of the panel thickness. However, it not cover all possible situations. This will be improved in the future maybe but for now it align object to the first `0 vertex` (beginning of the panel), what may not be always what you want.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMove2Face.png"> This tool allows to align panels or any other objects to face position. First select face and next select objects you want to align with face position. You can select objects at objects `Tree` window holding `left CTRL key`. This tool allows to avoid thickness step problem, if you want to move panel to the other edge but the way is not a multiple of the panel thickness. However, it not cover all possible situations. This tool move object to the first `0 vertex` (beginning of the panel).
 
 **Video tutorials:** 
 * [3D furniture designing - simple table](https://www.youtube.com/watch?v=Xru52f8uyBk)
+* [FreeCAD extension - move to face](https://www.youtube.com/watch?v=i9pXqdEhahU)
+
+<br><br><br>
 
 ### panelMove2Center
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMove2Center.png"> This tool allows to move objects to the center of two holes or two vertices. The edge holes or vertices should lie on one of the coordinate axes `XYZ`. The object can be `Cylinder`, `Cone` (dril bit), `Cube` (panel), `Pad` or `LinkGroup` with as many objects you want. If you want to move `Pad`, select `Body`. If you want to move many Pads, select Body or pack all `Part` into `LinkGroup` and select `LinkGroup` to move. Make sure you do not have `Sketch` position set. This tool use `.Shape.CenterOfMass` but if it is not available for object like it is for `LinkGroup` the center will be calculated from vertices. You can move to the center many objects at once. Hold left CTRL key during selection. 
 
+**Video tutorials:** 
+* [FreeCAD extension - move to center](https://www.youtube.com/watch?v=zKttrKdahg8)
+
 <br><br><br>
 
 ### arrows
 
-<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveXp.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveXm.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveYp.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveYm.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveZp.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveZm.png"> With the arrows you can quickly move many Cube panels or even any other objects at once. If the thickness of the selected object can be recognized, the move step will be the thickness. So, you can solve common furniture problem with thickness offset. You do not have to calculate something like `643 - 18 - 18 - 18 = ?`, click three times and you have it. If the thickness will not be recognized the step will be `100`. This approach allows you to move whole furniture segments very quickly. You can select container like `Body` or `LinkGroup` with many element and move it quickly. The arrows recognize the view model rotation. However, all possible rotations are not recognized, sometimes the movement may not be correctly aligned with the arrow icon. So, it strongly recommended to click [fitModel](#fitmodel) tool before using arrows. If you want precisely move object, use [magicMove](#magicmove) tool, instead.
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveXp.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveXm.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveYp.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveYm.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveZp.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveZm.png"> With the arrows you can quickly move panels. The move step is the selected panel thickness, if reference for the selected object can be recognized. You can also use the arrows for quick copy. Select object at objects Tree, click `CTRL-C` and `CTRL-V` to copy in-place the selected object and use arrows to move the object. The thickness step solves common furniture problem with thickness offset. You do not have to calculate something like `643 - 18 - 18 - 18 = ?`, click three times and you have it. If the thickness will not be recognized the step will be `100`. This approach allows you to move whole furniture segments very quickly. You can select container like `Body` or `LinkGroup` with many elements and move it quickly. The arrows recognize the view model rotation. However, all possible rotations are not recognized, sometimes the movement may not be correctly aligned with the arrow icon. So, it strongly recommended to click [fitModel](#fitmodel) tool before using arrows. If you want precisely move object, use [magicMove](#magicmove) tool, instead.
 
 ## Dowels and Screws
 
 ### magicDowels
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicDowels.png"> This tool allows to add mounting points to the furniture, or even any other elements like construction profiles. You can add predefined mounting points e.g. screws, dowels, shelf supporter pins or add custom mounting points. This is very quick way to add mounting points to the furniture, no calculation needed to place dowel exactly in the middle of the edge. If you would like to add e.g. 40 dowels to the whole furniture and align all of them manually, it would probably be big challenge. With this tool you can do it with single click in many cases. Make sure the green faces are visible, because they refers to the head of the screw. If you would like to replace the dowels with detailed screw later, this might be important if the dowel is rotated incorrectly, the screw will be rotated incorrectly as well. 
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicDowels.png"> This tool allows to add mounting points to panels. You can add predefined mounting points e.g. screws, dowels, shelf supporter pins or add custom mounting points. This is very quick way to add mounting points to the furniture, no calculation needed to place dowel exactly in the middle of the edge. If you would like to add e.g. 40 dowels to the whole furniture and align all of them manually, it would probably be big challenge. With this tool you can do it with single click in many cases. Make sure the green faces are visible, because they refers to the head of the screw. If you would like to replace the dowels with detailed screw later, this might be important if the dowel is rotated incorrectly, the screw will be rotated incorrectly as well. 
+
+**Options:**
+
+* **Select edge:** You can choose the edge for the dowels. Normally, there are 4 edges but if the object is for example `boolean Cut` there might be as many edges, as the panel has been cut.
+* **Adjust edge:** Allows to adjust offset from the edge. This option is useful if by default the dowels not sink to the surface, so there is problem with correct positioning by default. 
+* **Adjust sink:** With this option you can change the sign for the sink. Sometimes it solves the problem with correct positioning and further adjust is not needed. The `0` is to set the sink to zero. It is useful if you want to add reference points for custom screw types. 
+* **Adjust rotation:** You can rotate the dowels. There are some predefined rotations according to the curent face plane  to speed up this process.
+* **Select sides:** You can choose the side for the dowels, left side only, right side only or both sides.
+* **Text inputs:** You can set your custom values here and click `set custom values` to apply the settings to the dowels and see how they change. If you select new object `Offset from edge` will be automatically set to the selected panel thickenss but all other settings will stay as they are allowing you to keep the custom settings. If you change predefined settings all the custom settings will be replaced with predefined values. 
 
 **Video tutorials:** 
 * [3D furniture designing - adding dowels](https://www.youtube.com/watch?v=q7tJffBBUGY)
 
 ### panel2link
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2link.png"> This tool allows to replace simple objects with any detailed object, e.g. `Cylinders` with realistic looking screws. First you have to select detailed object and than simple object that will be replaced with `Link`. The first selected detailed object can be `Part`, `LinkGroup` or any other created manually or merged with your project. You can replace more than one simple object at once with `Link`. To select more objects hold left `CTRL` key during selection. The simple objects should imitate the detailed object to replace all of them in-place with realistic looking one. For more details please see: [Fixture examples](https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture).
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2link.png"> This tool allows to replace simple objects with any detailed object, e.g. `Cylinders` with realistic looking screws made using `PartDesign`. First you have to select detailed object, next select simple objects to replace with `Links`. The first selected detailed object can be `Part`, `LinkGroup` or any other created manually or merged with your project. You can replace more than one simple object at once with `Link`. To select more objects hold left `CTRL` key during selection. The simple objects should imitate the detailed object to replace all of them in-place with realistic looking one. For more details please see: [Fixture examples](https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture).
 
 <br><br><br>
 
 ### panel2clone
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2clone.png"> This tool allows to replace simple objects with any detailed object, e.g. `Cylinders` with realistic looking screws. First you have to select detailed object and than simple object that will be replaced with `Clones`. The first selected detailed object can be `Part`, `LinkGroup` or any other created manually or merged with your project. You can replace more than one simple object at once with `Clone`. To select more objects hold left `CTRL` key during selection. The simple objects should imitate the detailed object to replace all of them in-place with realistic looking one. This tool works with the same way as [panel2link](#panel2link) but instead of `Link` it creates `Clone` objects. It can be useful if you want to remove the base object and have clean objects Tree. Also if you want to change each copy separately. [Fixture examples](https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture).
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2clone.png"> This tool allows to replace simple objects with any detailed object, e.g. `Cylinders` with realistic looking screws made using `PartDesign`. First you have to select detailed object, next simple objects to replace with `Clones`. The first selected detailed object can be `Part`, `LinkGroup` or any other created manually or merged with your project. You can replace more than one simple object at once with `Clone`. To select more objects hold left `CTRL` key during selection. The simple objects should imitate the detailed object to replace all of them in-place with realistic looking one. This tool works with the same way as [panel2link](#panel2link) but instead of `Links` it creates `Clones` objects. It can be useful if you want to remove the base object and have clean objects Tree. Also if you want to change each copy separately. [Fixture examples](https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture).
 
 ### sketch2dowel
 
@@ -489,11 +523,13 @@ Tool repository: [github.com/dprojects/sheet2export](https://github.com/dproject
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2pad.png"> This tool allows to replace `Cube` panel with `Pad` panel. The new created `Pad` panel will get the same dimensions, placement and rotation as the selected `Cube` panel. You can transform many `Cube` panels into `Pad` at once. To select more `Cubes` hold `left CTRL key` during selection. This tool is mostly dedicated to add decoration that is not supported for `Cube` objects by FreeCAD PartDesign workbench. You can also change shape by changing the `Sketch`. This is mostly used for decoration that can be applied only to `Pad`, like `Fillet`.
 
-<br>
+<br><br><br>
 
 ### showAlias
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showAlias.png"> To see all objects with alias: 1. First select spreadsheet at objects Tree. 2. Click this tool icon to activate the preview mode. 3. Click any spreadsheet cell with alias. **Note:** This tool needs to be activated to work. To activate this tool you have to select spreadsheet at objects Tree and click this tool icon. If this tool will be activated you can select any cell with alias to see all objects selected. The selected objects at 3D model will be those that uses the selected alias. Also the objects will be selected at objects Tree. To finish the preview mode, click the tool icon without any selection.
+
+<br><br><br>
 
 ## Code and Debug
 

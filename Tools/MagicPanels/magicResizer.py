@@ -34,7 +34,7 @@ def showQtGUI():
 		gDest = 0
 
 		gNoSelection1 = translate('magicResizer', 'select edge to resize')
-		gNoSelection2 = translate('magicResizer', 'select face reference')
+		gNoSelection2 = translate('magicResizer', 'select nearest face')
 		
 		# ############################################################################
 		# init
@@ -94,7 +94,7 @@ def showQtGUI():
 			row += 30
 
 			# button
-			self.s1B1 = QtGui.QPushButton(translate('magicResizer', 'refresh edge and face selection'), self)
+			self.s1B1 = QtGui.QPushButton(translate('magicResizer', 'refresh edge and face'), self)
 			self.s1B1.clicked.connect(self.getSelected)
 			self.s1B1.setFixedWidth(toolSW-20)
 			self.s1B1.setFixedHeight(40)
@@ -145,12 +145,11 @@ def showQtGUI():
 			row += 50
 
 			# button
-			self.s2B1 = QtGui.QPushButton(translate('magicResizer', 'resize to selected face'), self)
+			self.s2B1 = QtGui.QPushButton(translate('magicResizer', 'resize to nearest face'), self)
 			self.s2B1.clicked.connect(self.resizeToFace)
 			self.s2B1.setFixedWidth(toolSW-20)
 			self.s2B1.setFixedHeight(40)
 			self.s2B1.move(10, row)
-
 			
 			# ############################################################################
 			# show & init defaults
