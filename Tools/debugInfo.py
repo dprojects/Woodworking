@@ -1,137 +1,288 @@
 import FreeCAD, FreeCADGui
-import FreeCADGui as Gui
+import os, sys
+from PySide import QtGui, QtCore
+from PySide2 import QtWidgets
 
 translate = FreeCAD.Qt.translate
 
-try:
+# ###################################################################################################################
+# globals
+# ###################################################################################################################
 
-	# ############################################################################
-	# This part of code has been created by Werner Mayer (wmayer) at forum:
-	# https://forum.freecadweb.org/viewtopic.php?p=187448#p187448
-	# ############################################################################
+gTests = dict()
+gWBData = dict()
+
+# ###################################################################################################################
+# tests
+# ###################################################################################################################
+
+def runTests():
 	
-	from PySide import QtCore
-	from PySide import QtGui
+	try:
+		test = QtGui.qApp
+		gTests["qApp"] = True
+	except:
+		gTests["qApp"] = False
+
+	status = WorkbenchVersionVerify()
+	if status == "yes":
+		gTests["certified"] = True
+	else:
+		gTests["certified"] = False
+
+# ###################################################################################################################
+# workbench verification
+# ###################################################################################################################
+
+def setWBData():
 	
-	class AboutInfo(QtCore.QObject):
-		def eventFilter(self, obj, ev):
-			if obj.metaObject().className() == "Gui::Dialog::AboutDialog":
-				if ev.type() == ev.ChildPolished:
-					mo = obj.metaObject()
-					index = mo.indexOfMethod("on_copyButton_clicked()")
-					if index > 0:
-						mo.invokeMethod(obj, "on_copyButton_clicked")
-						QtGui.qApp.postEvent(obj, QtGui.QCloseEvent())
-	    
-			return False
+	wb = FreeCADGui.activeWorkbench()
+	package = os.path.join(wb.path, "package.xml")
+	md = FreeCAD.Metadata(package)
 	
-	ai=AboutInfo()
-	QtGui.qApp.installEventFilter(ai)
-	Gui.runCommand("Std_About")
-	QtGui.qApp.removeEventFilter(ai)
-	
-	# ############################################################################
-	# added by Darek L below:
-	# ############################################################################
-	
-	def showQtGUI():
+	try:
+		gWBData["Name"] = str(md.Name) + " workbench"
+		gWBData["Description"] = str(md.Description)
+		gWBData["Author"] = str(md.Author)
+		gWBData["Maintainer"] = str(md.Maintainer)
+		gWBData["Date"] = str(md.Date)
+		gWBData["InfoStatus"] = True
+	except:
+		gWBData["InfoStatus"] = False
 		
-		class QtMainClass(QtGui.QDialog):
+	gWBData["Version"] = str(md.Version)
 	
-			def __init__(self):
-				super(QtMainClass, self).__init__()
-				self.initUI()
-	
-			def initUI(self):
-				
-				# ############################################################################
-				# set screen
-				# ############################################################################
-				
-				# tool screen size
-				toolSW = 410
-				toolSH = 400
-				
-				# active screen size - FreeCAD main window
-				gSW = FreeCADGui.getMainWindow().width()
-				gSH = FreeCADGui.getMainWindow().height()
+def WorkbenchVersionVerify():
 
-				# tool screen position
-				gPW = int( ( gSW - toolSW ) / 2 )
-				gPH = int( ( gSH - toolSH ) / 2 )
+	fVersion = ""
+	fVersion += str(FreeCAD.ConfigDump()["ExeVersion"]) + "."
+	fVersion += str(FreeCAD.ConfigDump()["BuildRevision"]).split(" ")[0]
+	
+	if gWBData["Version"] == fVersion:
+		return "yes"
+	else:
+		return "no"
 
-				# ############################################################################
-				# main window
-				# ############################################################################
-				
-				self.result = userCancelled
-				self.setGeometry(gPW, gPH, toolSW, toolSH)
-				self.setWindowTitle(translate('debugInfo', 'platform details for bug report'))
-				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+def getIcon(iType, iSize, iAlign):
 	
-				# output
-				Info = ""
-				Info += translate('debugInfo', 'Has been copied to clipboard:')
-				Info += "\n"
-				
-				self.oInfo1 = QtGui.QLabel(Info, self)
-				self.oInfo1.move(5, 10)
-				
-				self.o = QtGui.QTextEdit(self)
-				self.o.setMinimumSize(400, 250)
-				self.o.setMaximumSize(400, 250)
-				self.o.move(5, 40)
-				
-				self.o.setPlainText("")
-				self.o.paste()
+	path = FreeCADGui.activeWorkbench().path
+	iconPath = str(os.path.join(path, "Icons"))
 	
-				Info = ""
-				Info += translate('debugInfo', 'Note:')
-				Info += "\n\n"
-				Info += translate('debugInfo', 'CTRL-V - to paste it at your forum topic')
-				Info += "\n\n"
-				Info += translate('debugInfo', 'CTRL-A, CTRL-C - to copy again')
-				
-				self.oInfo2 = QtGui.QLabel(Info, self)
-				self.oInfo2.move(5, 300)
+	filename = ""
+	icon = ""
 	
-				# show
-				self.show()
-				
-		userCancelled = "Cancelled"
-		userOK = "OK"
+	f = os.path.join(iconPath, iType+".png")
+	if os.path.exists(f):
+		filename = f
+		icon += '<img src="'+ filename + '" width="'+str(iSize)+'" height="'+str(iSize)+'" align="'+iAlign+'">'
+	
+	return icon
+
+# ###################################################################################################################
+# debug info
+#
+# This part of code has been created using forum code samples:
+# https://forum.freecadweb.org/viewtopic.php?p=187448#p187448
+# ###################################################################################################################
+
+def getDebugInfo():
+
+	if gTests["qApp"] == True:
 		
-		form = QtMainClass()
-		form.exec_()
+		class AboutInfo(QtCore.QObject):
+			def eventFilter(self, obj, ev):
+				if obj.metaObject().className() == "Gui::Dialog::AboutDialog":
+					if ev.type() == ev.ChildPolished:
+						mo = obj.metaObject()
+						index = mo.indexOfMethod("on_copyButton_clicked()")
+						if index > 0:
+							mo.invokeMethod(obj, "on_copyButton_clicked")
+							QtGui.qApp.postEvent(obj, QtGui.QCloseEvent())
+			
+				return False
+
+		ai = AboutInfo()
+		QtGui.qApp.installEventFilter(ai)
+		FreeCADGui.runCommand("Std_About")
+		QtGui.qApp.removeEventFilter(ai)
+	
+	else:
 		
-		if form.result == userCancelled:
-			pass
+		class AboutInfo(QtCore.QObject):
+			def eventFilter(self, obj, ev):
+				if obj.metaObject().className() == 'Gui::Dialog::AboutDialog':
+					if ev.type() == ev.ChildPolished:
+						if hasattr(obj, 'on_copyButton_clicked'):
+							QtWidgets.QApplication.instance().removeEventFilter(self)
+							obj.on_copyButton_clicked()
+							QtCore.QMetaObject.invokeMethod(obj, 'reject', QtCore.Qt.QueuedConnection)
+				return False
+                
+		ai = AboutInfo()
+		QtWidgets.QApplication.instance().installEventFilter(ai)
+		FreeCADGui.runCommand('Std_About')
+		del ai
+
+# ############################################################################
+# main Qt screen
+# ############################################################################
+
+def showQtGUI():
 	
-	# ###################################################################################################################
-	# MAIN
-	# ###################################################################################################################
+	class QtMainClass(QtGui.QDialog):
+
+		def __init__(self):
+			super(QtMainClass, self).__init__()
+			self.initUI()
+
+		def initUI(self):
+			
+			# ############################################################################
+			# set screen
+			# ############################################################################
+			
+			# tool screen size
+			toolSW = 410
+			toolSH = 540
+			
+			# active screen size - FreeCAD main window
+			gSW = FreeCADGui.getMainWindow().width()
+			gSH = FreeCADGui.getMainWindow().height()
+
+			# tool screen position
+			gPW = int( ( gSW - toolSW ) / 2 )
+			gPH = int( ( gSH - toolSH ) / 2 )
+
+			# ############################################################################
+			# main window
+			# ############################################################################
+			
+			self.result = userCancelled
+			self.setGeometry(gPW, gPH, toolSW, toolSH)
+			self.setWindowTitle(translate('debugInfo', 'debugInfo'))
+			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+
+			# ############################################################################
+			# validation
+			# ############################################################################
+
+			row = 10
+
+			info = ""
+			
+			if not False in gTests.values():
+				info += getIcon("yes", 200, "right")
+			elif not True in gTests.values():
+				info += getIcon("no", 200, "right")
+			else:
+				info += getIcon("unknown", 200, "right")
+			
+			
+			# workbench package informations
+			
+			if gWBData["InfoStatus"] == True:
+				info += "<b>" + gWBData["Name"] + "</b>" + "<br>"
+				info += "<b>" + gWBData["Date"] + "</b>" + "<br>"
+				info += "<br><br>"
+			
+			# tests
+			
+			iconSize = 30
+			iconAlign = "left"
+			
+			# qApp
+			
+			if gTests["qApp"] == True:
+				info += getIcon("yes", iconSize, iconAlign)
+				info += translate('debugInfo', 'Test for qApp passed. This FreeCAD version is safe to use.')
+			else:
+				info += getIcon("no", iconSize, iconAlign)
+				info += translate('debugInfo', 'Test for qApp failed. This FreeCAD version might be broken.')
+			
+			info += "<br><br>"
+			
+			# workbench certification
+			
+			if gTests["certified"] == True:
+				info += getIcon("yes", iconSize, iconAlign)
+				info += translate('debugInfo', 'You are using certified version. Thanks.')
+			else:
+				info += getIcon("no", iconSize, iconAlign)
+				info += translate('debugInfo', 'Your FreeCAD version not match the Woodworking workbench version. ')
+				info += translate('debugInfo', 'You are using this configuration on your own risk.')
+			
+			# show info
+			
+			self.ov = QtGui.QLabel(info, self)
+			self.ov.setFixedWidth(toolSW - 20)
+			self.ov.setFixedHeight(200)
+			self.ov.setWordWrap(True)
+			self.ov.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.ov.move(10, row)
+
+			# ############################################################################
+			# debug info
+			# ############################################################################
+
+			row = row + 230
+			
+			editSizeX = toolSW - 20
+			editSizeY = 220
+			self.odie = QtGui.QTextEdit(self)
+			self.odie.setMinimumSize(editSizeX, editSizeY)
+			self.odie.setMaximumSize(editSizeX, editSizeY)
+			self.odie.move(10, row)
+			
+			#self.o.setPlainText(out)
+			self.odie.paste()
+
+			# ############################################################################
+			# debug info - note
+			# ############################################################################
+
+			row = row + 180
+			
+			info = ""
+			info += "<b>"
+			info += translate('debugInfo', 'Note:')
+			info += "</b>"
+			info += "<br>"
+			info += translate('debugInfo', 'CTRL-V - to paste it at your forum topic')
+			info += "<br>"
+			info += translate('debugInfo', 'CTRL-A, CTRL-C - to copy again')
+			info += "<br><br><br>"
+
+			self.odin = QtGui.QLabel(info, self)
+			self.odin.setFixedWidth(toolSW - 20)
+			self.odin.setFixedHeight(200)
+			self.odin.setWordWrap(True)
+			self.odin.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.odin.move(10, row)
+
+			# ############################################################################
+			# show
+			# ############################################################################
+
+			self.show()
+			
+	userCancelled = "Cancelled"
+	userOK = "OK"
 	
-	showQtGUI()
+	form = QtMainClass()
+	form.exec_()
+	
+	if form.result == userCancelled:
+		pass
 
-except:
+# ###################################################################################################################
+# MAIN
+# ###################################################################################################################
 
-	import FreeCAD, FreeCADGui
-	from PySide import QtGui
-	from PySide import QtCore
 
-	info = ''
-	info += translate('debugInfo', 'There is an error during getting debug information.')
-	info += '<br>'
-	info += translate('debugInfo', 'It probably means')
-	info += ' ' + '<span style="color:red;">'
-	info += translate('debugInfo', 'Your FreeCAD installation is incorrect.')
-	info += '</span>' + '<br><br>'
-	info += translate('debugInfo', 'For more details please see:')
-	info += ' ' + '<a href="https://github.com/dprojects/Woodworking#certified-platforms">'
-	info += translate('debugInfo', 'Woodworking workbench certified platforms.')
-	info += '</a>'
+setWBData()
+runTests()
+getDebugInfo()
+showQtGUI()
 
-	msg = QtGui.QMessageBox()
-	msg.setTextFormat(QtCore.Qt.TextFormat.RichText)
-	msg.setText(info)
-	msg.exec_()
+
+# ###################################################################################################################
