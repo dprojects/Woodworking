@@ -565,9 +565,7 @@ Main features:
 * There is also funny worm icon describing current verification status: 
   * The worms are unhappy, if everything works.
   * The worms are happy, if everything is broken.
-  * If not everything is broken, the worm will be partially happy, I mean happy and sad at the same time ;-) Let me know if you think this is funny joke? ;-)
-
-<br><br><br>
+  * If not everything is broken, the worm will be partially happy, I mean happy and sad at the same time, good joke? ;-)
 
 # Dowels, Screws, Fixture
 
