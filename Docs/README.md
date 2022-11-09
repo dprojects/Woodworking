@@ -557,7 +557,17 @@ Tool repository: [github.com/dprojects/scanObjects](https://github.com/dprojects
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/debugInfo.png"> This tool allows to get platform information used for FreeCAD bug report.
 
-<br><br><br><br><br>
+Main features:
+
+* Checks version of your Woodowrking workbench and compare it with the latest version. If the version match latest master branch version you have info this version is "up-to-date". Otherwise you have link to download the latest version.
+* Verify if your Woodowrking workbench is certifed.
+* Run some test cases, mostly import modules used by Woodworking workbench, to find out if the FreeCAD version is safe to use.
+* There is also funny worm icon describing current verification status: 
+  * The worms are unhappy, if everything works.
+  * The worms are happy, if everything is broken.
+  * If not everything is broken, the worm will be partially happy, I mean happy and sad at the same time ;-) Let me know if you think this is funny joke? ;-)
+
+<br><br><br>
 
 # Dowels, Screws, Fixture
 
