@@ -1,7 +1,6 @@
 import FreeCAD, FreeCADGui
 import os, sys
 from PySide import QtGui, QtCore
-from PySide2 import QtWidgets
 
 translate = FreeCAD.Qt.translate
 
@@ -16,6 +15,7 @@ gWBData = dict()
 
 gCertified = ""
 gLatest = ""
+gLastVersion = ""
 
 # ###################################################################################################################
 # workbench verification
@@ -74,11 +74,16 @@ def getLastVersion():
 	# create Metadata and get Version
 	md = FreeCAD.Metadata(tmpFile)
 	date = str(md.Date)
+	version = str(md.Version)
 
-	if gWBData["Date"] == date:
-		gLatest = True
+	# skip update from master branch for stable versions
+	if gWBData["Version"] == version:
+		if gWBData["Date"] == date:
+			gLatest = True
+		else:
+			gLatest = False
 	else:
-		gLatest = False
+		gLatest = True
 
 	return str(date)
 
@@ -101,6 +106,16 @@ def testCases():
 		gTestsStatus += "qApp, "
 
 	# ######################################
+	# test: QtWidgets
+	# ######################################
+	try:
+		from PySide2 import QtWidgets
+		gTests["QtWidgets"] = True
+	except:
+		gTests["QtWidgets"] = False
+		gTestsStatus += "QtWidgets, "
+
+	# ######################################
 	# test: urllib.request
 	# ######################################
 	try:
@@ -119,6 +134,16 @@ def testCases():
 	except:
 		gTests["tempfile"] = False
 		gTestsStatus += "tempfile, "
+
+	# ######################################
+	# test: zipfile
+	# ######################################
+	try:
+		from zipfile import ZipFile
+		gTests["zipfile"] = True
+	except:
+		gTests["zipfile"] = False
+		gTestsStatus += "zipfile, "
 
 	# ######################################
 	# test: package.xml
@@ -180,41 +205,62 @@ def testCases():
 
 def getDebugInfo():
 
-	if gTests["qApp"] == True:
-		
-		class AboutInfo(QtCore.QObject):
-			def eventFilter(self, obj, ev):
-				if obj.metaObject().className() == "Gui::Dialog::AboutDialog":
-					if ev.type() == ev.ChildPolished:
-						mo = obj.metaObject()
-						index = mo.indexOfMethod("on_copyButton_clicked()")
-						if index > 0:
-							mo.invokeMethod(obj, "on_copyButton_clicked")
-							QtGui.qApp.postEvent(obj, QtGui.QCloseEvent())
-			
-				return False
+	error = 1
 
-		ai = AboutInfo()
-		QtGui.qApp.installEventFilter(ai)
-		FreeCADGui.runCommand("Std_About")
-		QtGui.qApp.removeEventFilter(ai)
+	if error == 1 and gTests["qApp"] == True:
+		try:
+			class AboutInfo(QtCore.QObject):
+				def eventFilter(self, obj, ev):
+					if obj.metaObject().className() == "Gui::Dialog::AboutDialog":
+						if ev.type() == ev.ChildPolished:
+							mo = obj.metaObject()
+							index = mo.indexOfMethod("on_copyButton_clicked()")
+							if index > 0:
+								mo.invokeMethod(obj, "on_copyButton_clicked")
+								QtGui.qApp.postEvent(obj, QtGui.QCloseEvent())
+				
+					return False
+
+			ai = AboutInfo()
+			QtGui.qApp.installEventFilter(ai)
+			FreeCADGui.runCommand("Std_About")
+			QtGui.qApp.removeEventFilter(ai)
 	
-	else:
-		
-		class AboutInfo(QtCore.QObject):
-			def eventFilter(self, obj, ev):
-				if obj.metaObject().className() == 'Gui::Dialog::AboutDialog':
-					if ev.type() == ev.ChildPolished:
-						if hasattr(obj, 'on_copyButton_clicked'):
-							QtWidgets.QApplication.instance().removeEventFilter(self)
-							obj.on_copyButton_clicked()
-							QtCore.QMetaObject.invokeMethod(obj, 'reject', QtCore.Qt.QueuedConnection)
-				return False
-                
-		ai = AboutInfo()
-		QtWidgets.QApplication.instance().installEventFilter(ai)
-		FreeCADGui.runCommand('Std_About')
-		del ai
+			error = 0
+		except:
+			error = 1
+
+	if error == 1 and gTests["QtWidgets"] == True:
+		try:
+			from PySide2 import QtWidgets
+			
+			class AboutInfo(QtCore.QObject):
+				def eventFilter(self, obj, ev):
+					if obj.metaObject().className() == 'Gui::Dialog::AboutDialog':
+						if ev.type() == ev.ChildPolished:
+							if hasattr(obj, 'on_copyButton_clicked'):
+								QtWidgets.QApplication.instance().removeEventFilter(self)
+								obj.on_copyButton_clicked()
+								QtCore.QMetaObject.invokeMethod(obj, 'reject', QtCore.Qt.QueuedConnection)
+					return False
+
+			ai = AboutInfo()
+			QtWidgets.QApplication.instance().installEventFilter(ai)
+			FreeCADGui.runCommand('Std_About')
+			del ai
+
+			error = 0
+		except:
+			error = 1
+
+	if error == 1:
+		try:
+			info = translate('debugInfo', 'This FreeCAD version is too buggy to get debug information.')
+			QtGui.QApplication.clipboard().setText(info)
+
+			error = 0
+		except:
+			error = 1
 
 # ############################################################################
 # main Qt screen
@@ -230,12 +276,14 @@ def showQtGUI():
 
 		def initUI(self):
 			
+			global gLastVersion
+			
 			# ############################################################################
 			# set screen
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 450
+			toolSW = 470
 			toolSH = 540
 			
 			# active screen size - FreeCAD main window
@@ -265,10 +313,10 @@ def showQtGUI():
 			info = ""
 			
 			# set last version
-			lastVersion = ""
+			gLastVersion = ""
 			if gTests["package.xml"] == True and gTests["Version"] == True and gTests["Date"] == True:
 				if gTests["urllib.request"] == True and gTests["tempfile"] == True:
-					lastVersion = getLastVersion()
+					gLastVersion = getLastVersion()
 
 			# worm status
 			if gLatest == True and gTestsStatus == "" and gCertified == True:
@@ -279,22 +327,22 @@ def showQtGUI():
 				info += getIcon("worm_undecided", 200, "right")
 
 			# actual version
-			if lastVersion != "":
+			if gLastVersion != "":
 
 				if gLatest == True:
 					info += getIcon("yes", iconSize, iconAlign)
 					info += translate('debugInfo', 'Your Woodworking workbench version')
-					info += " " + lastVersion + " "
+					info += " " + gLastVersion + " "
 					info += translate('debugInfo', 'is ')
 					info += "<br>"
 					info += translate('debugInfo', 'up-to-date.')
 				else:
 					master = "https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip"
 					info += getIcon("no", iconSize, iconAlign)
-					info += translate('debugInfo', 'There is new update for your Woodworking workbench')
-					info += ": " + '<a href="' + master + '">' + lastVersion + '</a>'
+					info += translate('debugInfo', 'Update is available for this workbench')
+					info += ": " + '<a href="' + master + '">' + gLastVersion + '</a>'
 			
-				info += "<br><br>"
+				info += "<br><br><br><br>"
 			
 			# tests
 			if gTestsStatus == "":
@@ -306,7 +354,7 @@ def showQtGUI():
 				info += translate('debugInfo', 'Tests failed: ')
 				info += gTestsStatus + ". "
 			
-			info += "<br><br><br>"
+			info += "<br><br><br><br><br>"
 			
 			# workbench certification
 			if gCertified == True:
@@ -315,7 +363,6 @@ def showQtGUI():
 			else:
 				info += getIcon("no", iconSize, iconAlign)
 				info += translate('debugInfo', 'Your FreeCAD version not match the Woodworking workbench version. ')
-				info += translate('debugInfo', 'You are using this configuration on your own risk.')
 			
 			# show info
 			
@@ -339,8 +386,6 @@ def showQtGUI():
 			self.odie.setMinimumSize(editSizeX, editSizeY)
 			self.odie.setMaximumSize(editSizeX, editSizeY)
 			self.odie.move(10, row)
-			
-			#self.o.setPlainText(out)
 			self.odie.paste()
 
 			# ############################################################################
@@ -366,12 +411,147 @@ def showQtGUI():
 			self.odin.setTextFormat(QtCore.Qt.TextFormat.RichText)
 			self.odin.move(10, row)
 
+			# update button - after info, to not hide by text
+			self.ub1 = QtGui.QPushButton(translate('debugInfo', 'update workbench \n and restart FreeCAD'), self)
+			self.ub1.clicked.connect(self.wbUpdate)
+			bW = 160
+			bH = 40
+			self.ub1.setFixedWidth(bW)
+			self.ub1.setFixedHeight(bH)
+			self.ub1.move(toolSW-10-bW, toolSH-10-bH)
+			if gLastVersion != "":
+				self.ub1.show()
+			else:
+				self.ub1.hide()
+
 			# ############################################################################
 			# show
 			# ############################################################################
 
 			self.show()
+
+		# ############################################################################
+		# actions - internal functions
+		# ############################################################################
+
+		def wbUpdateTask(self):
 			
+			# #########################
+			# download zip file
+			# #########################
+			
+			info = self.odie.toPlainText() + "\n"
+			info += translate('debugInfo', 'Downloading latest update...')
+			self.odie.setPlainText(info)
+			self.odie.repaint()
+			
+			from zipfile import ZipFile
+			import urllib.request
+			import tempfile, os
+
+			pathRoot = str(FreeCAD.ConfigDump()["UserAppData"])
+			pathMod = str(os.path.join(pathRoot, "Mod"))
+			pathWB = FreeCADGui.activeWorkbench().path
+			
+			url = "https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip"
+			master = urllib.request.urlopen(url)
+
+			zipPattern = "Woodworking" + " " + str(gLastVersion)
+			zipFileName = zipPattern + ".zip"
+			zipFilePath = os.path.join(pathMod, zipFileName)
+
+			out = open(str(zipFilePath), "wb")
+			out.write(master.read())
+			out.close()
+			
+			# #########################
+			# extract zip file
+			# #########################
+			
+			info = self.odie.toPlainText() + "\n"
+			info += translate('debugInfo', 'Extracting latest update...')
+			self.odie.setPlainText(info)
+			self.odie.repaint()
+			
+			with ZipFile(zipFilePath, 'r') as ex:
+				ex.extractall(path=pathMod)
+				ex.close()
+
+			# #########################
+			# rename extracted folder
+			# #########################
+			
+			info = self.odie.toPlainText() + "\n"
+			info += translate('debugInfo', 'Renaming extracted folder...')
+			self.odie.setPlainText(info)
+			self.odie.repaint()
+			
+			oldDir = os.path.join(pathMod, "Woodworking-master")
+			newDir = os.path.join(pathMod, zipPattern)
+			os.rename(oldDir, newDir)
+			
+			# #########################
+			# prevent loading old workbench
+			# #########################
+			
+			info = self.odie.toPlainText() + "\n"
+			info += translate('debugInfo', 'Disable old workbech...')
+			self.odie.setPlainText(info)
+			self.odie.repaint()
+			
+			disableFile = os.path.join(pathWB, "ADDON_DISABLED")
+			disable = open(str(disableFile), "w")
+			disable.write("disabled")
+			disable.close()
+			
+			# #########################
+			# remove zip file
+			# #########################
+			
+			info = self.odie.toPlainText() + "\n"
+			info += translate('debugInfo', 'Clean...')
+			self.odie.setPlainText(info)
+			self.odie.repaint()
+			
+			os.remove(zipFilePath)
+			
+			# #########################
+			# restart FreeCAD
+			# #########################
+			
+			info = self.odie.toPlainText() + "\n"
+			info += translate('debugInfo', 'Restarting FreeCAD...')
+			self.odie.setPlainText(info)
+			self.odie.repaint()
+			
+			import PySide2 
+			from PySide2 import QtWidgets, QtCore, QtGui
+			
+			args = QtWidgets.QApplication.arguments()[1:]
+			if FreeCADGui.getMainWindow().close():
+				QtCore.QProcess.startDetached(
+					QtWidgets.QApplication.applicationFilePath(), args
+				)
+
+		def wbUpdate(self):
+			
+			self.ub1.setDisabled(True)
+			
+			info = ""
+			info += translate('debugInfo', 'Latest update for Woodworking workbench will be downloaded. ')
+			info += translate('debugInfo', 'FreeCAD will restart with new Woodworking workbench version ')
+			info += translate('debugInfo', 'but old version will be stored and disabled. ')
+			info += "\n\n"
+			
+			self.odie.setPlainText(info)
+			self.odie.repaint()
+			
+			self.wbUpdateTask()
+
+	# ############################################################################
+	# final settings
+	# ############################################################################
+
 	userCancelled = "Cancelled"
 	userOK = "OK"
 	
