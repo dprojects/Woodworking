@@ -419,10 +419,10 @@ def showQtGUI():
 			self.ub1.setFixedWidth(bW)
 			self.ub1.setFixedHeight(bH)
 			self.ub1.move(toolSW-10-bW, toolSH-10-bH)
-			if gLastVersion != "":
-				self.ub1.show()
-			else:
+			if gLastVersion != "" and gLatest == True:
 				self.ub1.hide()
+			else:
+				self.ub1.show()
 
 			# ############################################################################
 			# show
