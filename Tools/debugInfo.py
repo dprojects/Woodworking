@@ -8,92 +8,19 @@ translate = FreeCAD.Qt.translate
 # globals
 # ###################################################################################################################
 
+gMaster = "https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip"
+
 gTests = dict()
-gTestsStatus = ""
-
-gWBData = dict()
-
-gCertified = ""
-gLatest = ""
-gLastVersion = ""
-
-# ###################################################################################################################
-# workbench verification
-# ###################################################################################################################
-
-def wbVersionVerify():
-
-	fVersion = ""
-	fVersion += str(FreeCAD.ConfigDump()["ExeVersion"]) + "."
-	fVersion += str(FreeCAD.ConfigDump()["BuildRevision"]).split(" ")[0]
-	
-	if gWBData["Version"] == fVersion:
-		return "yes"
-	else:
-		return "no"
-
-def getIcon(iType, iSize, iAlign):
-	
-	path = FreeCADGui.activeWorkbench().path
-	iconPath = str(os.path.join(path, "Icons"))
-	
-	filename = ""
-	icon = ""
-	
-	f = os.path.join(iconPath, iType+".png")
-	if os.path.exists(f):
-		filename = f
-		icon += '<img src="'+ filename + '" width="'+str(iSize)+'" height="'+str(iSize)+'" align="'+iAlign+'">'
-	
-	return icon
-
-def getLastVersion():
-	
-	global gLatest
-	
-	import urllib.request
-	import tempfile
-	import os
-	
-	# get latest package.xml
-	url = "https://raw.githubusercontent.com/dprojects/Woodworking/master/package.xml"
-	package = urllib.request.urlopen(url)
-
-	# create temp directory
-	tmpDir = tempfile.gettempdir()
-	tmpDir = os.path.join(tmpDir, "FreeCAD_debug")
-	if not os.path.exists(tmpDir):
-		os.makedirs(tmpDir)
-
-	# set tmp filename
-	tmpFile = os.path.join(tmpDir, "package.xml.latest")
-	out = open(str(tmpFile), "wb")
-	out.write(package.read())
-	out.close()
-
-	# create Metadata and get Version
-	md = FreeCAD.Metadata(tmpFile)
-	date = str(md.Date)
-	version = str(md.Version)
-
-	# skip update from master branch for stable versions
-	if gWBData["Version"] == version:
-		if gWBData["Date"] == date:
-			gLatest = True
-		else:
-			gLatest = False
-	else:
-		gLatest = True
-
-	return str(date)
+gWBCurrent = dict()
+gWBLatest = dict()
 
 # ###################################################################################################################
 # tests
 # ###################################################################################################################
 
-def testCases():
+def setTests():
 	
-	global gTestsStatus, gCertified
+	gTests["status"] = ""
 	
 	# ######################################
 	# test: qApp
@@ -103,7 +30,7 @@ def testCases():
 		gTests["qApp"] = True
 	except:
 		gTests["qApp"] = False
-		gTestsStatus += "qApp, "
+		gTests["status"] += "qApp, "
 
 	# ######################################
 	# test: QtWidgets
@@ -113,7 +40,7 @@ def testCases():
 		gTests["QtWidgets"] = True
 	except:
 		gTests["QtWidgets"] = False
-		gTestsStatus += "QtWidgets, "
+		gTests["status"] += "QtWidgets, "
 
 	# ######################################
 	# test: urllib.request
@@ -123,7 +50,7 @@ def testCases():
 		gTests["urllib.request"] = True
 	except:
 		gTests["urllib.request"] = False
-		gTestsStatus += "urllib.request, "
+		gTests["status"] += "urllib.request, "
 	
 	# ######################################
 	# test: tempfile
@@ -133,7 +60,7 @@ def testCases():
 		gTests["tempfile"] = True
 	except:
 		gTests["tempfile"] = False
-		gTestsStatus += "tempfile, "
+		gTests["status"] += "tempfile, "
 
 	# ######################################
 	# test: zipfile
@@ -143,58 +70,145 @@ def testCases():
 		gTests["zipfile"] = True
 	except:
 		gTests["zipfile"] = False
-		gTestsStatus += "zipfile, "
+		gTests["status"] += "zipfile, "
 
-	# ######################################
-	# test: package.xml
-	# ######################################
+	# end cut
+	if gTests["status"] != "":
+		gTests["status"] = gTests["status"][:-2]
+
+# ###################################################################################################################
+# set latest workbench database
+# ###################################################################################################################
+
+def setWBLatest():
+	
+	try:
+		import urllib.request
+		import tempfile
+		import os
+		
+		# get latest package.xml
+		url = "https://raw.githubusercontent.com/dprojects/Woodworking/master/package.xml"
+		package = urllib.request.urlopen(url)
+
+		# create temp directory
+		tmpDir = tempfile.gettempdir()
+		tmpDir = os.path.join(tmpDir, "FreeCAD_debug")
+		if not os.path.exists(tmpDir):
+			os.makedirs(tmpDir)
+
+		# set tmp filename
+		tmpFile = os.path.join(tmpDir, "package.xml.latest")
+		out = open(str(tmpFile), "wb")
+		out.write(package.read())
+		out.close()
+
+		# create Metadata and get Version
+		md = FreeCAD.Metadata(tmpFile)
+		gWBLatest["Date"] = str(md.Date)
+		gWBLatest["Version"] = str(md.Version)
+
+	except:
+		skip = 1
+
+# ###################################################################################################################
+# set current workbench database
+# ###################################################################################################################
+
+def setWBCurrent():
+
 	try:
 		wb = FreeCADGui.activeWorkbench()
 		package = os.path.join(wb.path, "package.xml")
 		md = FreeCAD.Metadata(package)
-		gTests["package.xml"] = True
 	except:
-		gTests["package.xml"] = False
-		gTestsStatus += "package.xml parse, "
+		return
 	
 	try:
-		gWBData["Version"] = str(md.Version)
-		gTests["Version"] = True
+		gWBCurrent["Name"] = str(md.Name)
 	except:
-		gTests["Version"] = False
-		gTestsStatus += "parse Version in package.xml, "
-
+		skip = 1
+		
 	try:
-		gWBData["Date"] = str(md.Date)
-		gTests["Date"] = True
+		gWBCurrent["Description"] = str(md.Description)
 	except:
-		gTests["Date"] = False
-		gTestsStatus += "parse Date in package.xml, "
+		skip = 1
+	try:
+		gWBCurrent["Author"] = str(md.Author)
+	except:
+		skip = 1
+	try:
+		gWBCurrent["Maintainer"] = str(md.Maintainer)
+	except:
+		skip = 1
+	try:
+		gWBCurrent["Urls"] = str(md.Urls)
+	except:
+		skip = 1
 	
 	try:
-		gWBData["Name"] = str(md.Name) + " workbench"
-		gWBData["Description"] = str(md.Description)
-		gWBData["Author"] = str(md.Author)
-		gWBData["Maintainer"] = str(md.Maintainer)
-		gWBData["Urls"] = str(md.Urls)
-		gTests["data"] = True
+		gWBCurrent["Version"] = str(md.Version)
 	except:
-		gTests["data"] = False
-		gTestsStatus += "parse data in package.xml, "
+		skip = 1
 
-	# ######################################
-	# test: certified version
-	# ######################################
-	if gTests["Version"] == True:
-		status = wbVersionVerify()
-		if status == "yes":
-			gCertified = True
+	try:
+		gWBCurrent["Date"] = str(md.Date)
+	except:
+		skip = 1
+
+# ###################################################################################################################
+def setFreeCADVersion():
+
+	try:
+		v = str(FreeCAD.ConfigDump()["ExeVersion"]) + "."
+		v += str(FreeCAD.ConfigDump()["BuildRevision"]).split(" ")[0]
+		gWBCurrent["FreeCADVersion"] = v
+	except:
+		skip = 1
+
+# ###################################################################################################################
+def setCertified():
+
+	try:
+		if gWBCurrent["Version"] == gWBCurrent["FreeCADVersion"]:
+			gWBCurrent["Certified"] = "yes"
 		else:
-			gCertified = False
+			gWBCurrent["Certified"] = "no"
+	except:
+		skip = 1
 
-	# end cut
-	if gTestsStatus != "":
-		gTestsStatus = gTestsStatus[:-2]
+# ###################################################################################################################
+def setUpToDate():
+	
+	try:
+		gWBCurrent["up-to-date"] = ""
+		gWBCurrent["update"] = ""
+
+		# update the same version branch
+		if gWBCurrent["Version"] == gWBLatest["Version"]:
+			
+			if gWBCurrent["Date"] == gWBLatest["Date"]:
+				gWBCurrent["up-to-date"] = "yes"
+				gWBCurrent["update"] = "no-update"
+				gWBCurrent["info"] = "1"
+			else:
+				gWBCurrent["up-to-date"] = "no"
+				gWBCurrent["update"] = "update"
+				gWBCurrent["info"] = "2"
+
+		# change version branch, upgrade to the latest master branch
+		else:
+			
+			if gWBCurrent["Certified"] == "yes":
+				gWBCurrent["up-to-date"] = "yes"
+				gWBCurrent["update"] = "upgrade"
+				gWBCurrent["info"] = "3"
+			else:
+				gWBCurrent["up-to-date"] = "no"
+				gWBCurrent["update"] = "upgrade"
+				gWBCurrent["info"] = "4"
+	except:
+		skip = 1
 
 # ###################################################################################################################
 # debug info
@@ -276,8 +290,6 @@ def showQtGUI():
 
 		def initUI(self):
 			
-			global gLastVersion
-			
 			# ############################################################################
 			# set screen
 			# ############################################################################
@@ -312,60 +324,81 @@ def showQtGUI():
 			iconAlign = "left"
 			info = ""
 			
-			# set last version
-			gLastVersion = ""
-			if gTests["package.xml"] == True and gTests["Version"] == True and gTests["Date"] == True:
-				if gTests["urllib.request"] == True and gTests["tempfile"] == True:
-					gLastVersion = getLastVersion()
-
 			# worm status
-			if gLatest == True and gTestsStatus == "" and gCertified == True:
-				info += getIcon("worm_unhappy", 200, "right")
-			elif gLatest != True and gTestsStatus != "" and gCertified != True:
-				info += getIcon("worm_happy", 200, "right")
-			else:
-				info += getIcon("worm_undecided", 200, "right")
-
-			# actual version
-			if gLastVersion != "":
-
-				if gLatest == True:
-					info += getIcon("yes", iconSize, iconAlign)
-					info += translate('debugInfo', 'Your Woodworking workbench version')
-					info += " " + gLastVersion + " "
-					info += translate('debugInfo', 'is ')
-					info += "<br>"
-					info += translate('debugInfo', 'up-to-date.')
+			try:
+				if gWBCurrent["up-to-date"] == "yes" and gTests["status"] == "" and gWBCurrent["Certified"] == "yes":
+					info += self.getIcon("worm_unhappy", 200, "right")
+				elif gWBCurrent["up-to-date"] == "no" and gTests["status"] != "" and gWBCurrent["Certified"] == "no":
+					info += self.getIcon("worm_happy", 200, "right")
 				else:
-					master = "https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip"
-					info += getIcon("no", iconSize, iconAlign)
-					info += translate('debugInfo', 'Update is available for this workbench')
-					info += ": " + '<a href="' + master + '">' + gLastVersion + '</a>'
+					info += self.getIcon("worm_undecided", 200, "right")
+			except:
+				info += self.getIcon("worm_happy", 200, "right")
+
+			# up-to-date status
+			try:
+				if gWBCurrent["info"] == "1":
+					
+					info += self.getIcon("yes", iconSize, iconAlign)
+					info += translate('debugInfo', 'Your workbench is up-to-date. ')
+					info += "<br><br><br><br>"
+					
+				if gWBCurrent["info"] == "2":
+					
+					info += self.getIcon("no", iconSize, iconAlign)
+					
+					info += translate('debugInfo', 'New update for your workbench')
+					info += ": " + '<a href="' + gMaster + '">' + gWBLatest["Date"] + '.</a>'
+					info += "<br><br><br><br>"
+					
+				if gWBCurrent["info"] == "3":
+					
+					info += self.getIcon("yes", iconSize, iconAlign)
+					
+					info += translate('debugInfo', 'Consider upgrade workbench to the new version branch')
+					info += ": " + gWBLatest["Version"]
+					info += ", " + '<a href="' + gMaster + '">' + gWBLatest["Date"] + '.</a>'
+					info += "<br><br><br>"
+					
+				if gWBCurrent["info"] == "4":
+					
+					info += self.getIcon("no", iconSize, iconAlign)
+					
+					info += translate('debugInfo', 'Consider upgrade workbench to the new version branch')
+					info += ": " + gWBLatest["Version"]
+					info += ", " + '<a href="' + gMaster + '">' + gWBLatest["Date"] + '.</a>'
+					info += "<br><br><br>"
+
+			except:
+				skip = 1
 			
-				info += "<br><br><br><br>"
+			# tests status
+			try:
+				if gTests["status"] == "":
+					info += self.getIcon("yes", iconSize, iconAlign)
+					info += translate('debugInfo', 'All tests passed. This FreeCAD version is safe to use.')
+				else:
+					info += self.getIcon("no", iconSize, iconAlign)
+					info += translate('debugInfo', 'This FreeCAD version might not work correctly.')
+					info += translate('debugInfo', 'Tests failed: ')
+					info += gTests["status"] + ". "
 			
-			# tests
-			if gTestsStatus == "":
-				info += getIcon("yes", iconSize, iconAlign)
-				info += translate('debugInfo', 'All tests passed. This FreeCAD version is safe to use.')
-			else:
-				info += getIcon("no", iconSize, iconAlign)
-				info += translate('debugInfo', 'This FreeCAD version might not work correctly.')
-				info += translate('debugInfo', 'Tests failed: ')
-				info += gTestsStatus + ". "
-			
-			info += "<br><br><br><br><br>"
+				info += "<br><br><br><br><br>"
+			except:
+				skip = 1
 			
 			# workbench certification
-			if gCertified == True:
-				info += getIcon("yes", iconSize, iconAlign)
-				info += translate('debugInfo', 'You are using certified version. Thanks.')
-			else:
-				info += getIcon("no", iconSize, iconAlign)
-				info += translate('debugInfo', 'Your FreeCAD version not match the Woodworking workbench version. ')
-			
+			try:
+				if gWBCurrent["Certified"] == "yes":
+					info += self.getIcon("yes", iconSize, iconAlign)
+					info += translate('debugInfo', 'You are using certified version. Thanks.')
+				else:
+					info += self.getIcon("no", iconSize, iconAlign)
+					info += translate('debugInfo', 'Your FreeCAD version not match the Woodworking workbench version. ')
+			except:
+				skip = 1
+				
 			# show info
-			
 			self.ov = QtGui.QLabel(info, self)
 			self.ov.setFixedWidth(toolSW - 20)
 			self.ov.setFixedHeight(200)
@@ -412,17 +445,20 @@ def showQtGUI():
 			self.odin.move(10, row)
 
 			# update button - after info, to not hide by text
-			self.ub1 = QtGui.QPushButton(translate('debugInfo', 'update workbench \n and restart FreeCAD'), self)
-			self.ub1.clicked.connect(self.wbUpdate)
-			bW = 160
-			bH = 40
-			self.ub1.setFixedWidth(bW)
-			self.ub1.setFixedHeight(bH)
-			self.ub1.move(toolSW-10-bW, toolSH-10-bH)
-			if gLastVersion != "" and gLatest == True:
-				self.ub1.hide()
-			else:
-				self.ub1.show()
+			try:
+				if gWBCurrent["update"] == "update":
+					self.ub1 = QtGui.QPushButton(translate('debugInfo', 'update workbench \n and restart FreeCAD'), self)
+				if gWBCurrent["update"] == "upgrade":
+					self.ub1 = QtGui.QPushButton(translate('debugInfo', 'upgrade workbench \n and restart FreeCAD'), self)
+				
+				self.ub1.clicked.connect(self.wbUpdate)
+				bW = 160
+				bH = 40
+				self.ub1.setFixedWidth(bW)
+				self.ub1.setFixedHeight(bH)
+				self.ub1.move(toolSW-10-bW, toolSH-10-bH)
+			except:
+				skip = 1
 
 			# ############################################################################
 			# show
@@ -433,6 +469,21 @@ def showQtGUI():
 		# ############################################################################
 		# actions - internal functions
 		# ############################################################################
+
+		def getIcon(self, iType, iSize, iAlign):
+			
+			path = FreeCADGui.activeWorkbench().path
+			iconPath = str(os.path.join(path, "Icons"))
+			
+			filename = ""
+			icon = ""
+			
+			f = os.path.join(iconPath, iType+".png")
+			if os.path.exists(f):
+				filename = f
+				icon += '<img src="'+ filename + '" width="'+str(iSize)+'" height="'+str(iSize)+'" align="'+iAlign+'">'
+			
+			return icon
 
 		def wbUpdateTask(self):
 			
@@ -453,10 +504,10 @@ def showQtGUI():
 			pathMod = str(os.path.join(pathRoot, "Mod"))
 			pathWB = FreeCADGui.activeWorkbench().path
 			
-			url = "https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip"
+			url = gMaster
 			master = urllib.request.urlopen(url)
 
-			zipPattern = "Woodworking" + " " + str(gLastVersion)
+			zipPattern = "Woodworking" + " " + gWBLatest["Date"]
 			zipFileName = zipPattern + ".zip"
 			zipFilePath = os.path.join(pathMod, zipFileName)
 
@@ -481,15 +532,18 @@ def showQtGUI():
 			# rename extracted folder
 			# #########################
 			
-			info = self.odie.toPlainText() + "\n"
-			info += translate('debugInfo', 'Renaming extracted folder...')
-			self.odie.setPlainText(info)
-			self.odie.repaint()
-			
-			oldDir = os.path.join(pathMod, "Woodworking-master")
-			newDir = os.path.join(pathMod, zipPattern)
-			os.rename(oldDir, newDir)
-			
+			try:
+				info = self.odie.toPlainText() + "\n"
+				info += translate('debugInfo', 'Renaming extracted folder...')
+				self.odie.setPlainText(info)
+				self.odie.repaint()
+				
+				oldDir = os.path.join(pathMod, "Woodworking-master")
+				newDir = os.path.join(pathMod, zipPattern)
+				os.rename(oldDir, newDir)
+			except:
+				skip = 1
+
 			# #########################
 			# prevent loading old workbench
 			# #########################
@@ -566,8 +620,17 @@ def showQtGUI():
 # ###################################################################################################################
 
 
-testCases()
+setTests()
+
+setWBLatest()
+setWBCurrent()
+
+setFreeCADVersion()
+setCertified()
+setUpToDate()
+
 getDebugInfo()
+
 showQtGUI()
 
 

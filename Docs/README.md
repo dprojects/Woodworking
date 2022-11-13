@@ -560,7 +560,7 @@ Tool repository: [github.com/dprojects/scanObjects](https://github.com/dprojects
 Main features:
 
 * This tool compares date of your Woodworking workbench with the latest date for you version branch, from github repository. If the date of your Woodworking workbench match the latest master branch date you have information "up-to-date". Otherwise you have link to download the latest version from github master branch. 
-* Additionally, if there are new updates for your version branch `update button` will be visible allowing you update your workbench with single button click. The latest update for Woodworking workbench will be downloaded and unpacked. After this the FreeCAD will restart with new Woodworking workbench version. The old Woodworking workbench version will remain untouched but only disabled to protect your personal files, if there are such any.
+* Additionally, `update button` will be visible allowing you to update your workbench with single button click. The latest update for Woodworking workbench will be downloaded and unpacked. After this the FreeCAD will restart with new Woodworking workbench version. The old Woodworking workbench version will remain untouched but only disabled to protect your personal files, if there are such any.
 * This tool also run some test cases, mostly import modules used by Woodworking workbench, to find out if the FreeCAD version is safe to use.
 * Additionally, this tool will verify if your Woodworking workbench is certified.
 * There is also funny worm icon describing current verification status: 
