@@ -35,7 +35,7 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 		Installed mods: 
 		* Woodworking 0.21.30486
 
-**Note:** To get better stability make sure your current Woodworking workbench version has always the same version number as the FreeCAD version. You can also verify this via via [debuginfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool. 
+**Note:** To get better stability make sure your current Woodworking workbench version has always the same version number as the FreeCAD version. You can also verify this via [debuginfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool. 
 
 * I don't have `Windows` or `macOS`, so I am not able to test and certify this workbench for those systems. However, if you use `FreeCAD AppImage` there is big chance this will be working correctly.
 

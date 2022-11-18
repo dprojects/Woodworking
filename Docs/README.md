@@ -529,6 +529,9 @@ Tool repository: [github.com/dprojects/sheet2export](https://github.com/dproject
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showAlias.png"> To see all objects with alias: 1. First select spreadsheet at objects Tree. 2. Click this tool icon to activate the preview mode. 3. Click any spreadsheet cell with alias. **Note:** This tool needs to be activated to work. To activate this tool you have to select spreadsheet at objects Tree and click this tool icon. If this tool will be activated you can select any cell with alias to see all objects selected. The selected objects at 3D model will be those that uses the selected alias. Also the objects will be selected at objects Tree. To finish the preview mode, click the tool icon without any selection.
 
+**Video tutorials:** 
+* [FreeCAD Woodworking extension - preview alias](https://www.youtube.com/watch?v=tS9pvkPH5RI)
+
 <br><br><br>
 
 ## Code and Debug
@@ -549,9 +552,14 @@ Main features:
 * Quick windows positioning (layouts).
 * Funny color schemas.
 * Quick browse via cursors.
+* Selection search filter for quick parse long lists.
 * Allow to quick copy window content.
 
 Tool repository: [github.com/dprojects/scanObjects](https://github.com/dprojects/scanObjects)
+
+**Video tutorials:** 
+* [FreeCAD Woodworking extension - debbuger, live API, features](https://www.youtube.com/watch?v=nFK_o95y6xk)
+* [FreeCAD Woodworking extension - debbuger, search filter](https://www.youtube.com/watch?v=5h_feMn_lsQ)
 
 ### debugInfo
 

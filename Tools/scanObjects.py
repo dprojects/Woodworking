@@ -24,33 +24,98 @@ from PySide import QtGui, QtCore
 def showQtGUI():
 	
 	class QtMainClass(QtGui.QDialog):
-		
 
 		# ############################################################################
 		# database
 		# ############################################################################
 
+		dbObjects = dict()     # dbObjects[dbPage] = array of objects
+		dbLabels = dict()      # dbLabels[dbPage] = array of labels
+		dbPath = dict()        # dbPath[dbPage] = string label path for this page
+		dbLastIndex = dict()   # dbLastIndex[dbPage] = string selection index for this page
+		dbPage = "0"           # string page index used as key
 
-		# database for selection
-		dbSO = [] # objects
-		dbSL = [] # labels
-		dbSI = -1 # index
-		dbSP = [] # path
-		dbSLI = [] # last index
+		# ############################################################################
+		# controllers for database
+		# ############################################################################
 
 		def clearDB(self):
 
-			self.dbSO = [] # objects
-			self.dbSL = [] # labels
-			self.dbSI = -1 # index
-			self.dbSP = [] # path
-			self.dbSLI = [] # last index
+			self.dbObjects = dict()
+			self.dbLabels = dict()
+			self.dbPath = dict()
+			self.dbLastIndex = dict()
+			self.dbPage = "0"
 
+		def getSelectionIndex(self):
+			
+			# convert from proxy filter index to data real index
+			# this will be quicker and better I guess than 
+			# updating the data with the filter in real-time
+			# big data not change, change only index, that's the trick ;-)
+			try:
+				selected = self.slist.currentIndex()
+				label = selected.data()
+				index = self.dbLabels[self.dbPage].index(label)
+			except:
+				index = ""
+
+			return index
+
+		def getSelectionObject(self):
+
+			try:
+				index = self.getSelectionIndex()
+				obj = self.dbObjects[self.dbPage][index]
+				
+			except:
+				obj = ""
+
+			return obj
+		
+		def getSelectionLabel(self):
+
+			try:
+				index = self.getSelectionIndex()
+				label = str(self.dbLabels[self.dbPage][index])
+				
+			except:
+				label = ""
+
+			return label
+
+		def getSelectionPath(self):
+
+			path = ""
+			for item in self.dbPath.values():
+				path += "." + item + "\n"
+
+			return str(path)[1:]
+
+		def setNewPage(self, iType):
+
+			if iType == "init":
+				self.dbLastIndex[self.dbPage] = ""
+			else:
+				index = self.getSelectionIndex()
+				self.dbLastIndex[self.dbPage] = str(index)
+				self.dbPage = str(int(self.dbPage) + 1)
+
+		def removeCurrentPage(self):
+			
+			if int(self.dbPage) > 0:
+				
+				del self.dbObjects[self.dbPage]
+				del self.dbLabels[self.dbPage]
+				del self.dbPath[self.dbPage]
+				if self.dbPage in self.dbLastIndex.keys():
+					del self.dbLastIndex[self.dbPage]
+			
+				self.dbPage = str(int(self.dbPage) - 1)
 
 		# ############################################################################
 		# globals
 		# ############################################################################
-
 
 		gDefaultRoot = ""
 		gModeType = "normal"
@@ -70,11 +135,9 @@ def showQtGUI():
 		gGridCol = int(gW / 5)
 		gGridRow = int(gH / 5)
 
-
 		# ############################################################################
 		# errors & info
 		# ############################################################################
-
 
 		def showMsg(self, iMsg, iType = "error"):
 		
@@ -94,11 +157,9 @@ def showQtGUI():
 			except:
 				self.o5.setPlainText("kernel panic or even FreeCAD panic :-)")
 
-
 		# ############################################################################
-		# init
+		# init - it should be first but not in my code ;-)
 		# ############################################################################
-
 
 		def __init__(self):
 			super(QtMainClass, self).__init__()
@@ -106,11 +167,9 @@ def showQtGUI():
 
 		def initUI(self):
 
-
 			# ############################################################################
 			# defaults
 			# ############################################################################
-
 
 			try:
 				test = FreeCAD.activeDocument().Objects
@@ -118,22 +177,18 @@ def showQtGUI():
 			except:
 				self.gDefaultRoot = "FreeCAD"
 
-
 			# ############################################################################
 			# main window
 			# ############################################################################
-			
 
 			self.result = userCancelled
 			self.setGeometry(0, 0, self.gW, self.gH)
 			self.setWindowTitle("scanObjects - inspection tool for macro development")
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
-
 			# ############################################################################
 			# options
 			# ############################################################################
-
 
 			# scan root
 			# ############################################################################
@@ -194,9 +249,9 @@ def showQtGUI():
 			self.layList = (
 				"all windows",
 				"coding",
+				"docs",
 				"modules",
-				"content", 
-				"docs", 
+				"content",
 				"object",
 				"command"
 			)
@@ -225,8 +280,7 @@ def showQtGUI():
 				"matrix red pill"
 			)
 
-			# my favorite colors ;-)
-			gLayout = "I like winter more"
+			gLayout = "matrix blue pill"
 
 			self.colorsO = QtGui.QComboBox(self)
 			self.colorsO.addItems(self.colorsList)
@@ -288,19 +342,39 @@ def showQtGUI():
 			self.OPTsw.setWidget(self.OPTwidget)
 
 			# ############################################################################
-			# selection view
+			# selection
 			# ############################################################################
+			
+			self.slist = QtGui.QListView()
+			
+			placeholder = "... search filter ..."
+			
+			self.sfilter = QtGui.QLineEdit()
+			self.sfilter.setPlaceholderText(placeholder)
+			self.sfilter.textChanged.connect(self.setFilter)
 
-			self.list = QtGui.QListView()
-			self.listsw = QtGui.QMdiSubWindow(self)
-			self.listsw.setWindowTitle("Select object :")
-			self.listsw.setWidget(self.list)
+			self.slayout = QtGui.QVBoxLayout()
+			self.slayout.setAlignment(QtGui.Qt.AlignTop)
+			self.slayout.addWidget(self.sfilter)
+			self.slayout.addWidget(self.slist)
+			
+			self.swidget = QtGui.QWidget()
+			self.swidget.setLayout(self.slayout)
 
+			self.swindow = QtGui.QMdiSubWindow(self)
+			self.swindow.setWindowTitle("Select object :")
+			self.swindow.setWidget(self.swidget)
+
+			self.smodel = QtGui.QStandardItemModel(self.slist)
+			
+			self.sproxy = QtCore.QSortFilterProxyModel()
+			self.sproxy.setSourceModel(self.smodel)
+			self.sproxy.setDynamicSortFilter(False)
+
+			self.slist.setModel(self.sproxy)
+			self.slist.selectionModel().selectionChanged.connect(self.selectionChanged)
+			
 			# ############################################################################
-			# outputs
-			# ############################################################################
-
-
 			# output 1
 			# ############################################################################
 
@@ -309,6 +383,7 @@ def showQtGUI():
 			self.o1sw.setWindowTitle("Help Window & dir() :")
 			self.o1sw.setWidget(self.o1)
 
+			# ############################################################################
 			# output 2
 			# ############################################################################
 			
@@ -316,7 +391,8 @@ def showQtGUI():
 			self.o2sw = QtGui.QMdiSubWindow(self)
 			self.o2sw.setWindowTitle("__dict__ :")
 			self.o2sw.setWidget(self.o2)
-			
+
+			# ############################################################################
 			# output 3
 			# ############################################################################
 
@@ -325,6 +401,7 @@ def showQtGUI():
 			self.o3sw.setWindowTitle("__doc__ :")
 			self.o3sw.setWidget(self.o3)
 
+			# ############################################################################
 			# output 4
 			# ############################################################################
 
@@ -333,6 +410,7 @@ def showQtGUI():
 			self.o4sw.setWindowTitle("getAllDerivedFrom() :")
 			self.o4sw.setWidget(self.o4)
 
+			# ############################################################################
 			# output 5
 			# ############################################################################
 
@@ -341,6 +419,7 @@ def showQtGUI():
 			self.o5sw.setWindowTitle("Content & Error Console :")
 			self.o5sw.setWidget(self.o5)
 
+			# ############################################################################
 			# output 6
 			# ############################################################################
 
@@ -349,20 +428,16 @@ def showQtGUI():
 			self.o6sw.setWindowTitle("Object parse view :")
 			self.o6sw.setWidget(self.o6)
 
-
 			# ############################################################################
 			# keyboard keys
 			# ############################################################################
 
-
 			QtGui.QShortcut(QtGui.QKeySequence("left"), self, self.keyLeft)
 			QtGui.QShortcut(QtGui.QKeySequence("right"), self, self.keyRight)
-
 
 			# ############################################################################
 			# show & init defaults
 			# ############################################################################
-
 
 			# init default selection db
 			if self.gDefaultRoot == "project":
@@ -380,26 +455,82 @@ def showQtGUI():
 			self.setWindowsColors(gLayout)
 
 		# ############################################################################
-		# actions - function for actions
+		# actions - update screens
 		# ############################################################################
 
+		# ############################################################################
+		def resetOutputs(self):
+
+			path = self.getSelectionPath()
+
+			if self.gModeType == "matrix":
+				info = ""
+				info += "Current rabbit hole is:"
+				info += "\n\n"
+				info += path
+				info += "\n\n\n"
+				info += "Usage:"
+				info += "\n"
+				info += "→ \t | go deeper"
+				info += "\n"
+				info += "← \t | go back"
+				info += "\n"
+				info += "↑ ↓ \t | select rabbit hole"
+				info += "\n\n"
+				info += "Use ↑ ↓ arrow keys to select rabbit hole and enter the matrix."
+			else:
+				info = ""
+				info += "Your current selection path is:"
+				info += "\n\n"
+				info += path
+				info += "\n\n\n"
+				info += "Usage:"
+				info += "\n"
+				info += "→ \t | go deeper"
+				info += "\n"
+				info += "← \t | go back"
+				info += "\n"
+				info += "↑ ↓ \t | select object"
+				info += "\n\n"
+				info += "Use ↑ ↓ arrow keys to select object and start inspection at this path."
+
+			self.o1.setPlainText(info)
+			self.o2.setPlainText("")
+			self.o3.setPlainText("")
+			self.o4.setPlainText("")
+			self.o5.setPlainText("")
+			self.o6.setPlainText("")
 
 		# ############################################################################
-		def setOutput(self, iObj):
+		def updateSelection(self):
 
-			# reset outputs before set new values
+			self.smodel.clear()
+			
+			for o in self.dbLabels[self.dbPage]:
+				item = QtGui.QStandardItem(str(o))
+				self.smodel.appendRow(item)
+			
 			self.resetOutputs()
 
-			# get selected item index
-			index = iObj.indexes()[0].row()
+		# ############################################################################
+		def selectionChanged(self, iSelection):
 
+			self.resetOutputs()
+			
+			index = self.getSelectionIndex()
+
+			# after right key pressed there is no selection
+			if index == "":
+				return
+			
+			# ########################################
 			# output 1
 			# ########################################
 
 			skip = 0
 
 			try:
-				result = dir(self.dbSO[self.dbSI][index])
+				result = dir(self.dbObjects[self.dbPage][index])
 			except:
 				skip = 1
 
@@ -416,13 +547,14 @@ def showQtGUI():
 			except:
 				skip = 1
 
+			# ########################################
 			# output 2
 			# ########################################
 
 			skip = 0
 
 			try:
-				result = self.dbSO[self.dbSI][index].__dict__
+				result = self.dbObjects[self.dbPage][index].__dict__
 			except:
 				skip = 1
 
@@ -439,13 +571,14 @@ def showQtGUI():
 			except:
 				skip = 1
 
+			# ########################################
 			# output 3
 			# ########################################
 
 			skip = 0
 
 			try:
-				result = self.dbSO[self.dbSI][index].__doc__
+				result = self.dbObjects[self.dbPage][index].__doc__
 			except:
 				skip = 1
 
@@ -457,13 +590,14 @@ def showQtGUI():
 			except:
 				skip = 1
 
+			# ########################################
 			# output 4
 			# ########################################
 
 			skip = 0
 
 			try:
-				result = self.dbSO[self.dbSI][index].getAllDerivedFrom()
+				result = self.dbObjects[self.dbPage][index].getAllDerivedFrom()
 			except:
 				skip = 1
 
@@ -480,13 +614,14 @@ def showQtGUI():
 			except:
 				skip = 1
 
+			# ########################################
 			# output 5
 			# ########################################
 
 			skip = 0
 
 			try:
-				result = self.dbSO[self.dbSI][index].Content
+				result = self.dbObjects[self.dbPage][index].Content
 			except:
 				skip = 1
 
@@ -498,13 +633,14 @@ def showQtGUI():
 			except:
 				skip = 1
 
+			# ########################################
 			# output 6 - object window
 			# ########################################
 
 			skip = 0
 
 			try:
-				result = self.dbSO[self.dbSI][index]
+				result = self.dbObjects[self.dbPage][index]
 			except:
 				skip = 1
 
@@ -551,199 +687,10 @@ def showQtGUI():
 			except:
 				skip = 1
 
-
-		# ############################################################################	
-		def getSelectionPath(self):
-
-			path = ""
-			for item in self.dbSP:
-				path += "." + item + "\n"
-
-			return str(path)[1:]
-
-
-		# ############################################################################
-		def resetOutputs(self):
-
-			path = self.getSelectionPath()
-
-			if self.gModeType == "matrix":
-				info = ""
-				info += "Current rabbit hole is:"
-				info += "\n\n"
-				info += path
-				info += "\n\n\n"
-				info += "Usage:"
-				info += "\n"
-				info += "→ \t | go deeper"
-				info += "\n"
-				info += "← \t | go back"
-				info += "\n"
-				info += "↑ ↓ \t | select rabbit hole"
-				info += "\n\n"
-				info += "Use ↑ ↓ arrow keys to select rabbit hole and enter the matrix."
-			else:
-				info = ""
-				info += "Your current selection path is:"
-				info += "\n\n"
-				info += path
-				info += "\n\n\n"
-				info += "Usage:"
-				info += "\n"
-				info += "→ \t | go deeper"
-				info += "\n"
-				info += "← \t | go back"
-				info += "\n"
-				info += "↑ ↓ \t | select object"
-				info += "\n\n"
-				info += "Use ↑ ↓ arrow keys to select object and start inspection at this path."
-
-			self.o1.setPlainText(info)
-			self.o2.setPlainText("")
-			self.o3.setPlainText("")
-			self.o4.setPlainText("")
-			self.o5.setPlainText("")
-			self.o6.setPlainText("")
-
-
-		# ############################################################################
-		def updateSelection(self):
-
-			model = QtGui.QStandardItemModel(self.list)
-			
-			for o in self.dbSL[self.dbSI]:
-				item = QtGui.QStandardItem(str(o))
-				model.appendRow(item)
-				self.list.setModel(model)
-
-			self.list.selectionModel().selectionChanged.connect(self.setOutput)
-			
-			# reset outputs and show info screen
-			self.resetOutputs()
-
-
-		# ############################################################################
-		def removeSelection(self):
-
-			# stop remove if there is only init objects list
-			if self.dbSI > 0:
-
-				self.dbSO.pop()
-				self.dbSL.pop()
-				self.dbSP.pop()
-				self.dbSI = self.dbSI - 1
-
-				self.updateSelection()
-
-			# set last selected
-			try:
-
-				# select item
-				item = self.dbSLI[self.dbSI]
-				flag = QtCore.QItemSelectionModel.Select
-				self.list.selectionModel().setCurrentIndex(item, flag)
-
-				# scroll to item
-				flag = QtGui.QAbstractItemView.EnsureVisible.PositionAtCenter
-				self.list.scrollTo(item, flag)
-
-			except:
-				skip = 1
-
-			# remove last selected
-			if self.dbSI > 0:
-				self.dbSLI.pop()
-
-			# reset outputs
-			self.resetOutputs()
-
-
-		# ############################################################################
-		def addSelection(self, iObj, iList, iPath, iSelected):
-
-			tmpO = []
-			tmpL = []
-
-			# init selection view (compare strings only)
-			if str(iObj) == "":
-				tmpO = iList
-				tmpL = [ o.Label for o in tmpO ]
-
-			# if object is list (eg. faces, edges)
-			elif isinstance(iObj, list):
-				
-				convert = 0
-				
-				i = 0
-				for o in iObj:
-					
-					i = i + 1
-					
-					if str(o).find("Face") != -1:
-						convert = 1
-						tmpO.append(o)
-						tmpL.append("Face"+str(i))
-					
-					if str(o).find("Edge") != -1:
-						convert = 1
-						tmpO.append(o)
-						tmpL.append("Edge"+str(i))
-				
-					if str(o).find("Vertex") != -1:
-						convert = 1
-						tmpO.append(o)
-						tmpL.append("Vertex"+str(i))
-				
-				if convert == 0:
-					tmpO = iObj
-					tmpL = iObj
-				
-				
-			# all objects types
-			else:
-				for o in iList:
-					
-					# fix FreeCAD bug https://forum.freecadweb.org/viewtopic.php?f=22&t=70365
-					#if str(o) == "DraggingPlacement":
-					#	continue
-					
-					try:
-						if hasattr(iObj, o):
-							tmpO.append(getattr(iObj, o))
-							tmpL.append(str(o))
-					except:
-						skip = 1
-
-			# not add empty lists (this stuck)
-			if len(tmpO) > 0 and len(tmpL) > 0:
-
-				# update db
-				self.dbSO.append(tmpO)
-				self.dbSL.append(tmpL)
-				self.dbSP.append(iPath)
-
-				# not select at init
-				if iSelected != -1:
-					self.dbSLI.insert(self.dbSI, iSelected)
-
-				self.dbSI = self.dbSI + 1
-
-				# update selection list
-				self.updateSelection()
-
-			else:
-				if self.gModeType == "matrix":
-					self.showMsg("This is the end of the rabbit hole. Go back quickly before you get lost ;-)", "info")
-				else:
-					self.showMsg("Can't parse this object structure deeper. Check deeper at the python console.", "info")
-
-
 		# ############################################################################
 		# actions - options menu
 		# ############################################################################
 
-
-		# ############################################################################
 		def setRootPath(self, selectedText):
 
 			# clear db before root set
@@ -761,7 +708,7 @@ def showQtGUI():
 				try:
 					root = FreeCAD.activeDocument().Objects
 					rootS = "FreeCAD.activeDocument().Objects"
-					self.addSelection("", root, rootS, -1)
+					self.goDeeper("", rootS, root, "init")
 				except:
 					if self.gModeType == "matrix":
 						self.showMsg("You need to release project first to enter the matrix ;-)")
@@ -772,7 +719,7 @@ def showQtGUI():
 
 				root = dir(FreeCAD)
 				rootS = "FreeCAD"
-				self.addSelection(FreeCAD, root, rootS, -1)
+				self.goDeeper(FreeCAD, rootS, root, "init")
 
 			if selectedText == "Module: QtGui":
 
@@ -780,7 +727,7 @@ def showQtGUI():
 
 				root = dir(QtGui)
 				rootS = "QtGui"
-				self.addSelection(QtGui, root, rootS, -1)
+				self.goDeeper(QtGui, rootS, root, "init")
 
 			if selectedText == "Module: QtCore":
 
@@ -788,7 +735,7 @@ def showQtGUI():
 
 				root = dir(QtCore)
 				rootS = "QtCore"
-				self.addSelection(QtCore, root, rootS, -1)
+				self.goDeeper(QtCore, rootS, root, "init")
 
 			if selectedText == "Module: Part":
 
@@ -796,7 +743,7 @@ def showQtGUI():
 
 				root = dir(Part)
 				rootS = "Part"
-				self.addSelection(Part, root, rootS, -1)
+				self.goDeeper(Part, rootS, root, "init")
 
 			if selectedText == "Module: Path":
 
@@ -804,7 +751,7 @@ def showQtGUI():
 
 				root = dir(Path)
 				rootS = "Path"
-				self.addSelection(Path, root, rootS, -1)
+				self.goDeeper(Path, rootS, root, "init")
 
 			if selectedText == "Module: Draft":
 
@@ -812,7 +759,7 @@ def showQtGUI():
 
 				root = dir(Draft)
 				rootS = "Draft"
-				self.addSelection(Draft, root, rootS, -1)
+				self.goDeeper(Draft, rootS, root, "init")
 
 			if selectedText == "Module: TechDraw":
 
@@ -820,7 +767,7 @@ def showQtGUI():
 
 				root = dir(TechDraw)
 				rootS = "TechDraw"
-				self.addSelection(TechDraw, root, rootS, -1)
+				self.goDeeper(TechDraw, rootS, root, "init")
 
 			if selectedText == "Module: Spreadsheet":
 
@@ -828,7 +775,7 @@ def showQtGUI():
 
 				root = dir(Spreadsheet)
 				rootS = "Spreadsheet"
-				self.addSelection(Spreadsheet, root, rootS, -1)
+				self.goDeeper(Spreadsheet, rootS, root, "init")
 
 			if selectedText == "Module: coin":
 
@@ -836,7 +783,7 @@ def showQtGUI():
 
 				root = dir(coin)
 				rootS = "coin"
-				self.addSelection(coin, root, rootS, -1)
+				self.goDeeper(coin, rootS, root, "init")
 
 			if selectedText == "Module: MagicPanels":
 
@@ -845,7 +792,7 @@ def showQtGUI():
 
 					root = dir(MagicPanels)
 					rootS = "MagicPanels"
-					self.addSelection(MagicPanels, root, rootS, -1)
+					self.goDeeper(MagicPanels, rootS, root, "init")
 				
 					self.setWindowsLayout("coding")
 				
@@ -884,9 +831,9 @@ def showQtGUI():
 				self.OPTsw.show()
 
 				# select
-				self.listsw.setGeometry(0, 0, (1*self.gGridCol), (3*self.gGridRow))
-				self.listsw.show()
-				self.list.show()
+				self.swindow.setGeometry(0, 0, (1*self.gGridCol), (3*self.gGridRow))
+				self.swindow.show()
+				self.slist.show()
 
 				# dir
 				self.o1sw.setGeometry((1*self.gGridCol), 0, (1*self.gGridCol), (3*self.gGridRow))
@@ -925,9 +872,9 @@ def showQtGUI():
 				self.OPTsw.show()
 
 				# select
-				self.listsw.setGeometry(0, 0, (1*self.gGridCol), (3*self.gGridRow))
-				self.listsw.show()
-				self.list.show()
+				self.swindow.setGeometry(0, 0, (1*self.gGridCol), (3*self.gGridRow))
+				self.swindow.show()
+				self.slist.show()
 
 				# dir
 				self.o1sw.hide()
@@ -958,9 +905,9 @@ def showQtGUI():
 			if selectedText == "modules":
 				self.OPTsw.setGeometry(0, (3*self.gGridRow), (1*self.gGridCol), (2*self.gGridRow))
 				self.OPTsw.show()
-				self.listsw.setGeometry(0, 0, (1*self.gGridCol), (3*self.gGridRow))
-				self.listsw.show()
-				self.list.show()
+				self.swindow.setGeometry(0, 0, (1*self.gGridCol), (3*self.gGridRow))
+				self.swindow.show()
+				self.slist.show()
 				self.o1sw.setGeometry((1*self.gGridCol), 0, (1*self.gGridCol), (3*self.gGridRow))
 				self.o1sw.show()
 				self.o1.show()
@@ -985,9 +932,9 @@ def showQtGUI():
 			if selectedText == "content":
 				self.OPTsw.setGeometry(0, (3*self.gGridRow), (1*self.gGridCol), (2*self.gGridRow))
 				self.OPTsw.show()
-				self.listsw.setGeometry(0, 0, (1*self.gGridCol), (3*self.gGridRow))
-				self.listsw.show()
-				self.list.show()
+				self.swindow.setGeometry(0, 0, (1*self.gGridCol), (3*self.gGridRow))
+				self.swindow.show()
+				self.slist.show()
 
 				self.o1sw.hide()
 				self.o1.hide()
@@ -1008,9 +955,9 @@ def showQtGUI():
 			if selectedText == "docs":
 				self.OPTsw.setGeometry(0, (3*self.gGridRow), (1*self.gGridCol), (2*self.gGridRow))
 				self.OPTsw.show()
-				self.listsw.setGeometry(0, 0, (1*self.gGridCol), (3*self.gGridRow))
-				self.listsw.show()
-				self.list.show()
+				self.swindow.setGeometry(0, 0, (1*self.gGridCol), (3*self.gGridRow))
+				self.swindow.show()
+				self.slist.show()
 
 				self.o1sw.hide()
 				self.o1.hide()
@@ -1031,9 +978,9 @@ def showQtGUI():
 			if selectedText == "object":
 				self.OPTsw.setGeometry(0, (3*self.gGridRow), (1*self.gGridCol), (2*self.gGridRow))
 				self.OPTsw.show()
-				self.listsw.setGeometry(0, 0, (1*self.gGridCol), (3*self.gGridRow))
-				self.listsw.show()
-				self.list.show()
+				self.swindow.setGeometry(0, 0, (1*self.gGridCol), (3*self.gGridRow))
+				self.swindow.show()
+				self.slist.show()
 
 				self.o1sw.hide()
 				self.o1.hide()
@@ -1052,9 +999,9 @@ def showQtGUI():
 			if selectedText == "command":
 				self.OPTsw.setGeometry(0, (3*self.gGridRow), (1*self.gGridCol), (2*self.gGridRow))
 				self.OPTsw.show()
-				self.listsw.setGeometry(0, 0, (2*self.gGridCol), (3*self.gGridRow))
-				self.listsw.show()
-				self.list.show()
+				self.swindow.setGeometry(0, 0, (2*self.gGridCol), (3*self.gGridRow))
+				self.swindow.show()
+				self.slist.show()
 				self.o1sw.setGeometry((2*self.gGridCol), 0, (1*self.gGridCol), (3*self.gGridRow))
 				self.o1sw.show()
 				self.o1.show()
@@ -1075,7 +1022,6 @@ def showQtGUI():
 				self.o6sw.setGeometry((4*self.gGridCol), (2*self.gGridRow), (1*self.gGridCol), (1*self.gGridRow))
 				self.o6sw.show()
 				self.o6.show()
-
 
 		# ############################################################################
 		def setWindowsColors(self, selectedText):
@@ -1155,7 +1101,7 @@ def showQtGUI():
 						color: #000000;
 						background-color: '''+color1+''';
 					}
-										
+
 					QLineEdit, QPushButton {
 						color: #000000;
 						background-color: qlineargradient( 
@@ -1226,23 +1172,17 @@ def showQtGUI():
 				self.setStyleSheet(QtCSS)
 				self.gModeType = "matrix"
 
-
-		# ############################################################################
-		# actions - other
-		# ############################################################################
-
-
 		# ############################################################################
 		def loadCustomModule(self):
 
 			try:
-				rootS = str(self.rootCO.text())				
+				rootS = str(self.rootCO.text())
 
 				module = __import__(rootS, globals(), locals(), [], 0)
 				root = dir(module)
 
 				self.clearDB()
-				self.addSelection(module, root, rootS, -1)
+				self.goDeeper(module, rootS, root, "init")
 
 			except:
 
@@ -1250,7 +1190,6 @@ def showQtGUI():
 					self.showMsg("This module is outside the matrix: "+rootS)
 				else:
 					self.showMsg("Can't load module: "+rootS)
-		
 		
 		# ############################################################################
 		def executeCustomCommand(self):
@@ -1260,7 +1199,7 @@ def showQtGUI():
 	
 				if isinstance(result, list):
 					self.clearDB()
-					self.addSelection(result, result, command, -1)
+					self.goDeeper(result, command, result, "init")
 
 				else:
 	
@@ -1276,42 +1215,163 @@ def showQtGUI():
 				else:
 					self.showMsg("Can't evaluate command: "+command)
 
+		# ############################################################################
+		def setFilter(self):
+			
+			try:
+				self.slist.selectionModel().selectionChanged.disconnect()
+				
+				if self.slist.selectionModel().hasSelection():
+					self.slist.selectionModel().clearSelection()
+				
+				search = str(self.sfilter.text())
+				regExp = QtCore.QRegExp(search, QtCore.Qt.CaseInsensitive, QtCore.QRegExp.Wildcard)
+				self.sproxy.setFilterRegExp(regExp)
+				
+				self.slist.selectionModel().selectionChanged.connect(self.selectionChanged)
 
+			except:
+				if self.gModeType == "matrix":
+					self.showMsg("This search is outside the matrix: "+str(self.sfilter.text()))
+				else:
+					self.showMsg("Search not possible: "+str(self.sfilter.text()))
+		
 		# ############################################################################
 		# actions - for keyboard keys
 		# ############################################################################
 
-		def keyLeft(self):
-			self.removeSelection()
+		# ############################################################################
+		def goDeeper(self, iObj, iLabel, iList, iType):
 
+			tmpO = []
+			tmpL = []
+
+			# init selection view (compare strings only)
+			if str(iObj) == "":
+				tmpO = iList
+				tmpL = [ o.Label for o in tmpO ]
+
+			# if object is list (eg. faces, edges)
+			elif isinstance(iObj, list):
+				
+				convert = 0
+				
+				i = 0
+				for o in iObj:
+					
+					i = i + 1
+					
+					if str(o).find("Face") != -1:
+						convert = 1
+						tmpO.append(o)
+						tmpL.append("Face"+str(i))
+					
+					if str(o).find("Edge") != -1:
+						convert = 1
+						tmpO.append(o)
+						tmpL.append("Edge"+str(i))
+				
+					if str(o).find("Vertex") != -1:
+						convert = 1
+						tmpO.append(o)
+						tmpL.append("Vertex"+str(i))
+				
+				if convert == 0:
+					tmpO = iObj
+					tmpL = iObj
+				
+				
+			# other types
+			else:
+				for o in iList:
+					
+					try:
+						if hasattr(iObj, o):
+							tmpO.append(getattr(iObj, o))
+							tmpL.append(str(o))
+					except:
+						skip = 1
+
+			# not add empty lists (this stuck)
+			if len(tmpO) > 0 and len(tmpL) > 0:
+
+				self.setNewPage(iType)
+				
+				# update db
+				self.dbObjects[self.dbPage] = tmpO
+				self.dbLabels[self.dbPage] = tmpL
+				self.dbPath[self.dbPage] = iLabel
+				self.updateSelection()
+
+			else:
+				if self.gModeType == "matrix":
+					self.showMsg("This is the end of the rabbit hole. Go back quickly before you get lost ;-)", "info")
+				else:
+					self.showMsg("Can't parse this object structure deeper. Check deeper at the python console.", "info")
+
+		# ############################################################################
+		def goBack(self):
+
+			# stop remove if there is only init
+			if int(self.dbPage) > 0:
+
+				# back page
+				self.removeCurrentPage()
+				self.updateSelection()
+				
+				# select row
+				index = int(self.dbLastIndex[self.dbPage])
+				index = self.smodel.index(index, 0)
+				flag = QtCore.QItemSelectionModel.Select
+				self.slist.selectionModel().setCurrentIndex(index, flag)
+				
+				# scroll to item
+				flag = QtGui.QAbstractItemView.EnsureVisible.PositionAtCenter
+				self.slist.scrollTo(index, flag)
+
+			# reset outputs
+			self.resetOutputs()
+
+		# ############################################################################
+		def keyLeft(self):
+			
+			self.goBack()
+
+		# ############################################################################
 		def keyRight(self):
 
 			try:
-				selected = self.list.currentIndex()
-				index = selected.row()
-				Obj = self.dbSO[self.dbSI][index]
-				path = str(self.dbSL[self.dbSI][index])
+				if self.slist.selectionModel().hasSelection() == False:
+					raise
 
-				if isinstance(Obj, str):
-					skip = 1
-				elif isinstance(Obj, float):
-					skip = 1
-				elif isinstance(Obj, list):
-					newList = Obj
-					self.addSelection(Obj, newList, path, selected)
+				obj = self.getSelectionObject()
+				label = self.getSelectionLabel()
+				
+				if isinstance(obj, str):
+					raise
+				elif isinstance(obj, float):
+					raise
+				elif isinstance(obj, list):
+					newList = obj
+					self.goDeeper(obj, label, newList, "next")
 				else:
 					try:
 						newList = []
-						for n in Obj.getChildren():
+						for n in obj.getChildren():
 							newList.append(n)
 	
-						self.addSelection(newList, newList, path, selected)
+						self.goDeeper(newList, label, newList, "next")
 					except:
-						newList = dir(Obj)
-						self.addSelection(Obj, newList, path, selected)
-			except:
-				skip = 1
+						newList = dir(obj)
+						self.goDeeper(obj, label, newList, "next")
 
+				self.sfilter.setText("")
+			except:
+
+				if self.gModeType == "matrix":
+					self.showMsg("This is the end of the rabbit hole. Go back quickly before you get lost ;-)", "info")
+				else:
+					self.showMsg("Can't parse this object structure deeper. Check deeper at the python console.", "info")
 
 	# ############################################################################
 	# final settings
