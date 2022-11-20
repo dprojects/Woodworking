@@ -187,17 +187,14 @@ def showQtGUI():
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
-			# options
-			# ############################################################################
-
-			# scan root
+			# options - scan root
 			# ############################################################################
 			
 			# label
-			self.rootL = QtGui.QLabel("Select scan root path:", self)
+			self.orootlabel = QtGui.QLabel("Select scan root path:", self)
 			
 			# options
-			self.rootList = (
+			self.orootlist = (
 				"my project root",
 				"Module: FreeCAD",
 				"Module: Part",
@@ -213,40 +210,42 @@ def showQtGUI():
 				"custom command result"
 			)
 
-			self.rootO = QtGui.QComboBox(self)
-			self.rootO.addItems(self.rootList)
+			self.orootcb = QtGui.QComboBox(self)
+			self.orootcb.addItems(self.orootlist)
 			if self.gDefaultRoot == "project":
-				self.rootO.setCurrentIndex(self.rootList.index("my project root"))
+				self.orootcb.setCurrentIndex(self.orootlist.index("my project root"))
 			else:
-				self.rootO.setCurrentIndex(self.rootList.index("Module: FreeCAD"))
-			self.rootO.activated[str].connect(self.setRootPath)
-			self.rootO.setFixedWidth((1*self.gGridCol)-20)
+				self.orootcb.setCurrentIndex(self.orootlist.index("Module: FreeCAD"))
+			self.orootcb.activated[str].connect(self.setRootPath)
+			self.orootcb.setFixedWidth((1*self.gGridCol)-20)
 			
-			# custom module
+			# ############################################################################
+			# options - custom module
 			# ############################################################################
 
 			# label
-			self.rootCL = QtGui.QLabel("Custom module name:", self)
+			self.ocmlabel = QtGui.QLabel("Custom module name:", self)
 			
-			# text input
-			self.rootCO = QtGui.QLineEdit(self)
-			self.rootCO.setText("")
-			self.rootCO.setFixedWidth((1*self.gGridCol)-20)
+			# input
+			self.ocminput = QtGui.QLineEdit(self)
+			self.ocminput.setText("")
+			self.ocminput.setFixedWidth((1*self.gGridCol)-20)
 			
 			# button
-			self.rootCLoad = QtGui.QPushButton("load custom module", self)
-			self.rootCLoad.clicked.connect(self.loadCustomModule)
-			self.rootCLoad.setFixedWidth((1*self.gGridCol)-20)
-			self.rootCLoad.setFixedHeight(40)
+			self.ocmbutton = QtGui.QPushButton("load custom module", self)
+			self.ocmbutton.clicked.connect(self.loadCustomModule)
+			self.ocmbutton.setFixedWidth((1*self.gGridCol)-20)
+			self.ocmbutton.setFixedHeight(40)
 			
-			# select windows layout
+			# ############################################################################
+			# options - windows layout
 			# ############################################################################
 
 			# label
-			self.layL = QtGui.QLabel("Select windows layout:", self)
+			self.owllabel = QtGui.QLabel("Select windows layout:", self)
 			
-			# options
-			self.layList = (
+			# list
+			self.owllist = (
 				"all windows",
 				"coding",
 				"docs",
@@ -256,20 +255,21 @@ def showQtGUI():
 				"command"
 			)
 
-			self.layO = QtGui.QComboBox(self)
-			self.layO.addItems(self.layList)
-			self.layO.setCurrentIndex(self.layList.index("all windows"))
-			self.layO.activated[str].connect(self.setWindowsLayout)
-			self.layO.setFixedWidth((1*self.gGridCol)-20)
-
-			# select windows colors
+			self.owlcb = QtGui.QComboBox(self)
+			self.owlcb.addItems(self.owllist)
+			self.owlcb.setCurrentIndex(self.owllist.index("all windows"))
+			self.owlcb.activated[str].connect(self.setWindowsLayout)
+			self.owlcb.setFixedWidth((1*self.gGridCol)-20)
+			
+			# ############################################################################
+			# options - windows colors
 			# ############################################################################
 
 			# label
-			self.colorsL = QtGui.QLabel("Select colors:", self)
+			self.owclabel = QtGui.QLabel("Select colors:", self)
 			
 			# options
-			self.colorsList = (
+			self.owclist = (
 				"matrix blue pill",
 				"beautiful pinky world",
 				"the Sun is free?",
@@ -280,69 +280,71 @@ def showQtGUI():
 				"matrix red pill"
 			)
 
-			gLayout = "matrix blue pill"
+			gDefaultColors = "matrix blue pill"
 
-			self.colorsO = QtGui.QComboBox(self)
-			self.colorsO.addItems(self.colorsList)
-			self.colorsO.setCurrentIndex(self.colorsList.index(gLayout))
-			self.colorsO.activated[str].connect(self.setWindowsColors)
-			self.colorsO.setFixedWidth((1*self.gGridCol)-20)
+			self.owcqb = QtGui.QComboBox(self)
+			self.owcqb.addItems(self.owclist)
+			self.owcqb.setCurrentIndex(self.owclist.index(gDefaultColors))
+			self.owcqb.activated[str].connect(self.setWindowsColors)
+			self.owcqb.setFixedWidth((1*self.gGridCol)-20)
 			
-			# custom command execute
+			# ############################################################################
+			# options - command result
 			# ############################################################################
 
 			# label
-			self.oCommandL = QtGui.QLabel("Custom command execute:", self)
+			self.ocrlabel = QtGui.QLabel("Custom command execute:", self)
 			
-			# text input
-			self.oCommandI = QtGui.QLineEdit(self)
-			self.oCommandI.setText("FreeCADGui.getMainWindow().children()")
-			self.oCommandI.setFixedWidth((1*self.gGridCol)-20)
+			# input
+			self.ocrinput = QtGui.QLineEdit(self)
+			self.ocrinput.setText("FreeCADGui.getMainWindow().children()")
+			self.ocrinput.setFixedWidth((1*self.gGridCol)-20)
 			
 			# button
-			self.oCommandB = QtGui.QPushButton("load command result", self)
-			self.oCommandB.clicked.connect(self.executeCustomCommand)
-			self.oCommandB.setFixedWidth((1*self.gGridCol)-20)
-			self.oCommandB.setFixedHeight(40)
+			self.ocrbutton = QtGui.QPushButton("load command result", self)
+			self.ocrbutton.clicked.connect(self.executeCustomCommand)
+			self.ocrbutton.setFixedWidth((1*self.gGridCol)-20)
+			self.ocrbutton.setFixedHeight(40)
 			
-			# options sub-window
+			# ############################################################################
+			# options - container
 			# ############################################################################
 
-			self.oSeparator = QtGui.QLabel("", self)
+			self.oseparator = QtGui.QLabel("", self)
 
-			self.OPTlayout = QtGui.QVBoxLayout()
-			self.OPTlayout.setAlignment(QtGui.Qt.AlignTop)
+			self.oclayout = QtGui.QVBoxLayout()
+			self.oclayout.setAlignment(QtGui.Qt.AlignTop)
 			
-			self.OPTlayout.addWidget(self.rootL)
-			self.OPTlayout.addWidget(self.rootO)
-			self.OPTlayout.addWidget(self.rootCL)
-			self.OPTlayout.addWidget(self.rootCO)
-			self.OPTlayout.addWidget(self.rootCLoad)
-			self.OPTlayout.addWidget(self.oCommandL)
-			self.OPTlayout.addWidget(self.oCommandI)
-			self.OPTlayout.addWidget(self.oCommandB)
-			self.OPTlayout.addWidget(self.oSeparator)
-			self.OPTlayout.addWidget(self.layL)
-			self.OPTlayout.addWidget(self.layO)
-			self.OPTlayout.addWidget(self.colorsL)
-			self.OPTlayout.addWidget(self.colorsO)
+			self.oclayout.addWidget(self.orootlabel)
+			self.oclayout.addWidget(self.orootcb)
+			self.oclayout.addWidget(self.ocmlabel)
+			self.oclayout.addWidget(self.ocminput)
+			self.oclayout.addWidget(self.ocmbutton)
+			self.oclayout.addWidget(self.ocrlabel)
+			self.oclayout.addWidget(self.ocrinput)
+			self.oclayout.addWidget(self.ocrbutton)
+			self.oclayout.addWidget(self.oseparator)
+			self.oclayout.addWidget(self.owllabel)
+			self.oclayout.addWidget(self.owlcb)
+			self.oclayout.addWidget(self.owclabel)
+			self.oclayout.addWidget(self.owcqb)
 			
-			self.rootCL.hide()
-			self.rootCO.hide()
-			self.rootCLoad.hide()
-			self.oCommandL.hide()
-			self.oCommandI.hide()
-			self.oCommandB.hide()
+			self.ocmlabel.hide()
+			self.ocminput.hide()
+			self.ocmbutton.hide()
+			self.ocrlabel.hide()
+			self.ocrinput.hide()
+			self.ocrbutton.hide()
 			
-			self.OPTwidget = QtGui.QWidget()
-			self.OPTwidget.setLayout(self.OPTlayout)
+			self.ocwidget = QtGui.QWidget()
+			self.ocwidget.setLayout(self.oclayout)
 
 			self.OPTsw = QtGui.QMdiSubWindow(self)
 			self.OPTsw.setWindowTitle("Options :")
-			self.OPTsw.setWidget(self.OPTwidget)
+			self.OPTsw.setWidget(self.ocwidget)
 
 			# ############################################################################
-			# selection
+			# window - selection
 			# ############################################################################
 			
 			self.slist = QtGui.QListView()
@@ -375,7 +377,7 @@ def showQtGUI():
 			self.slist.selectionModel().selectionChanged.connect(self.selectionChanged)
 			
 			# ############################################################################
-			# output 1
+			# window - output 1
 			# ############################################################################
 
 			self.o1 = QtGui.QTextEdit()
@@ -384,7 +386,7 @@ def showQtGUI():
 			self.o1sw.setWidget(self.o1)
 
 			# ############################################################################
-			# output 2
+			# window - output 2
 			# ############################################################################
 			
 			self.o2 = QtGui.QTextEdit()
@@ -393,7 +395,7 @@ def showQtGUI():
 			self.o2sw.setWidget(self.o2)
 
 			# ############################################################################
-			# output 3
+			# window - output 3
 			# ############################################################################
 
 			self.o3 = QtGui.QTextEdit()
@@ -402,7 +404,7 @@ def showQtGUI():
 			self.o3sw.setWidget(self.o3)
 
 			# ############################################################################
-			# output 4
+			# window - output 4
 			# ############################################################################
 
 			self.o4 = QtGui.QTextEdit()
@@ -411,7 +413,7 @@ def showQtGUI():
 			self.o4sw.setWidget(self.o4)
 
 			# ############################################################################
-			# output 5
+			# window - output 5
 			# ############################################################################
 
 			self.o5 = QtGui.QTextEdit()
@@ -420,7 +422,7 @@ def showQtGUI():
 			self.o5sw.setWidget(self.o5)
 
 			# ############################################################################
-			# output 6
+			# window - output 6
 			# ############################################################################
 
 			self.o6 = QtGui.QTextEdit()
@@ -452,7 +454,7 @@ def showQtGUI():
 			self.setWindowsLayout("all windows")
 
 			# set default colors
-			self.setWindowsColors(gLayout)
+			self.setWindowsColors(gDefaultColors)
 
 		# ############################################################################
 		# actions - update screens
@@ -696,12 +698,12 @@ def showQtGUI():
 			# clear db before root set
 			self.clearDB()
 			
-			self.rootCL.hide()
-			self.rootCO.hide()
-			self.rootCLoad.hide()
-			self.oCommandL.hide()
-			self.oCommandI.hide()
-			self.oCommandB.hide()
+			self.ocmlabel.hide()
+			self.ocminput.hide()
+			self.ocmbutton.hide()
+			self.ocrlabel.hide()
+			self.ocrinput.hide()
+			self.ocrbutton.hide()
 
 			if selectedText == "my project root":
 					
@@ -800,26 +802,26 @@ def showQtGUI():
 					self.showMsg("You need to install Woodworking workbench to see the MagicPanels API.")
 				
 			if selectedText == "custom module":
-				self.rootL.show()
-				self.rootO.show()
-				self.rootCL.show()
-				self.rootCO.show()
-				self.rootCLoad.show()
+				self.orootlabel.show()
+				self.orootcb.show()
+				self.ocmlabel.show()
+				self.ocminput.show()
+				self.ocmbutton.show()
 				
-				self.oCommandL.hide()
-				self.oCommandI.hide()
-				self.oCommandB.hide()
+				self.ocrlabel.hide()
+				self.ocrinput.hide()
+				self.ocrbutton.hide()
 				
 			if selectedText == "custom command result":
-				self.rootL.show()
-				self.rootO.show()
-				self.oCommandL.show()
-				self.oCommandI.show()
-				self.oCommandB.show()
+				self.orootlabel.show()
+				self.orootcb.show()
+				self.ocrlabel.show()
+				self.ocrinput.show()
+				self.ocrbutton.show()
 				
-				self.rootCL.hide()
-				self.rootCO.hide()
-				self.rootCLoad.hide()
+				self.ocmlabel.hide()
+				self.ocminput.hide()
+				self.ocmbutton.hide()
 
 		# ############################################################################
 		def setWindowsLayout(self, selectedText):
@@ -1176,7 +1178,7 @@ def showQtGUI():
 		def loadCustomModule(self):
 
 			try:
-				rootS = str(self.rootCO.text())
+				rootS = str(self.ocminput.text())
 
 				module = __import__(rootS, globals(), locals(), [], 0)
 				root = dir(module)
@@ -1194,7 +1196,7 @@ def showQtGUI():
 		# ############################################################################
 		def executeCustomCommand(self):
 			try:
-				command = self.oCommandI.text()
+				command = self.ocrinput.text()
 				result = eval(str(command))
 	
 				if isinstance(result, list):
@@ -1214,6 +1216,10 @@ def showQtGUI():
 					self.showMsg("This command is outside the matrix: "+command)
 				else:
 					self.showMsg("Can't evaluate command: "+command)
+
+		# ############################################################################
+		# actions - selection search filter
+		# ############################################################################
 
 		# ############################################################################
 		def setFilter(self):
@@ -1236,6 +1242,9 @@ def showQtGUI():
 				else:
 					self.showMsg("Search not possible: "+str(self.sfilter.text()))
 		
+		def cleanFilter(self):
+			self.sfilter.setText("")
+			
 		# ############################################################################
 		# actions - for keyboard keys
 		# ############################################################################
@@ -1301,6 +1310,8 @@ def showQtGUI():
 				self.dbObjects[self.dbPage] = tmpO
 				self.dbLabels[self.dbPage] = tmpL
 				self.dbPath[self.dbPage] = iLabel
+				
+				self.cleanFilter()
 				self.updateSelection()
 
 			else:
@@ -1329,8 +1340,9 @@ def showQtGUI():
 				flag = QtGui.QAbstractItemView.EnsureVisible.PositionAtCenter
 				self.slist.scrollTo(index, flag)
 
-			# reset outputs
-			self.resetOutputs()
+				# reset outputs
+				self.cleanFilter()
+				self.resetOutputs()
 
 		# ############################################################################
 		def keyLeft(self):
@@ -1365,7 +1377,6 @@ def showQtGUI():
 						newList = dir(obj)
 						self.goDeeper(obj, label, newList, "next")
 
-				self.sfilter.setText("")
 			except:
 
 				if self.gModeType == "matrix":
