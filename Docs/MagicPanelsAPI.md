@@ -253,6 +253,67 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 	
 		return string "X", "Y" or "Z".
 
+# Edge routing
+### getEdgeByKey(iObj, iKey, iType):
+
+	getEdgeByKey(iObj, iKey, iType) - this is extended version of getEdgeIndexByKey function. This function has 
+	been created to solve resized edge. If you cut the edge the next edge will change the Length. So, also 
+	the BoundBox will be changed. With this function you can customize reference key to solve the Topology Naming Problem.
+	
+##### Args:
+	
+		iObj: object of the edge
+		iKey: array with keys
+		iType: type of comparison
+
+##### Usage:
+	
+		key = [ e.CenterOfMass, plane ]
+		[ edge, edgeName, edgeIndex ] = MagicPanels.getEdgeByKey(o, key, "CenterOfMass")
+
+##### Result:
+	
+		return edge object, name like Edge1 and also index starting from 0 (for iObj.Shape.Edges[index])
+
+### getEdgeSketchRotation(iEdge):
+
+	getEdgeSketchRotation(iEdge) - returns Rotation object which can be passed directly to setSketchPlacement functions. 
+	The Sketch will be perpendicular to the edge, so it can be used as router bit to cut the edge. 
+	
+##### Args:
+	
+		iEdge: edge object
+
+##### Usage:
+	
+		r = MagicPanels.getEdgeSketchRotation(edge)
+
+##### Result:
+	
+		return FreeCAD.Rotation object.
+
+### edgeRouter(iPad, iEdge, iSketch, iLength, iLabel, iType):
+
+	edgeRouter(iObj, iEdge, iSketch, iLabel, iType) - this function is router for the edge. It cut the iEdge with iSketch 
+	pattern. The new object will get iLabel label.
+	
+##### Args:
+	
+		iPad: Pad object of the edge, for routing
+		iEdge: edge object
+		iSketch: sketch object will be used as pattern to cut, the sketch should be around XYZ center cross.
+		iLength (optional): length to cut, float or int value, 0 means along all edge
+		iLabel: label for new object
+		iType: type of routing
+
+##### Usage:
+	
+		router = MagicPanels.edgeRouter(pad, edge, sketch, 0, "routerCove", "simple")
+
+##### Result:
+	
+		return router object, the result of cut
+
 # Faces
 ### getFaceIndex(iObj, iFace):
 
@@ -515,7 +576,7 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 
 ##### Result:
 	
-		Create measure object, draw it and return measure object for further proccessing. 
+		Create measure object, draw it and return measure object for further processing. 
 
 ### getDistanceBetweenFaces(iFace1, iFace2):
 

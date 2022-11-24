@@ -166,6 +166,24 @@ Tools = [
 	
 	"MagicPanels", "panelCoverXY", "png", "panel, top, cover", "Click to see info.",
 	
+	# router
+	
+	"MagicPanels", "routerCove", "png", "edge to cove, thickness", "Click to see info.",
+	"MagicPanels", "routerCove2", "png", "edge to cove, 1/2 thickness", "Click to see info.",
+	"MagicPanels", "routerCove4", "png", "edge to cove, 1/4 thickness", "Click to see info.",
+	
+	"MagicPanels", "routerRoundOver", "png", "edge to round over, thickness", "Click to see info.",
+	"MagicPanels", "routerRoundOver2", "png", "edge to round over, 1/2 thickness", "Click to see info.",
+	"MagicPanels", "routerRoundOver4", "png", "edge to round over, 1/4 thickness", "Click to see info.",
+	
+	"MagicPanels", "routerStraight2", "png", "edge to straight, 1/2 thickness", "Click to see info.",
+	"MagicPanels", "routerStraight3", "png", "edge to straight, 1/3 thickness", "Click to see info.",
+	"MagicPanels", "routerStraight4", "png", "edge to straight, 1/4 thickness", "Click to see info.",
+	
+	"MagicPanels", "routerChamfer", "png", "edge to chamfer, thickness", "Click to see info.",
+	"MagicPanels", "routerChamfer2", "png", "edge to chamfer, 1/2 thickness", "Click to see info.",
+	"MagicPanels", "routerChamfer4", "png", "edge to chamfer, 1/4 thickness", "Click to see info.",
+
 	# advanced
 	
 	"MagicPanels", "panel2pad", "png", "cube to pad", "Click to see info.",

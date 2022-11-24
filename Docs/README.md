@@ -41,8 +41,8 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 		* [panel2profile](#panel2profile)
 		* [panel2angle](#panel2angle)
 		* [panel2angle45cut](#panel2angle45cut)
-		* [cornerBlock](#cornerBlock)
-		* [cornerBrace](#cornerBrace)
+		* [cornerBlock](#cornerblock)
+		* [cornerBrace](#cornerbrace)
 	* [Joinery](#joinery)
 		* [magicJoints](#magicjoints)
 		* [magicCut](#magiccut)
@@ -53,6 +53,11 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 	* [Preview](#preview)
 		* [fitModel](#fitmodel)
 		* [makeTransparent](#maketransparent)
+	* [Router](#router)
+		* [Router bit - Cove](#router-bit---cove)
+		* [Router bit - Round Over](#router-bit---round-over)
+		* [Router bit - Straight](#router-bit---straight)
+		* [Router bit - Chamfer](#router-bit---chamfer)
 	* [Decoration](#decoration)
 		* [colorManager](#colormanager)
 		* [setTextures](#settextures)
@@ -218,7 +223,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 * **Select edge:** You can choose the edge for the dowels. Normally, there are 4 edges but if the object is for example `boolean Cut` there might be as many edges, as the panel has been cut.
 * **Adjust edge:** Allows to adjust offset from the edge. This option is useful if by default the dowels not sink to the surface, so there is problem with correct positioning by default. 
 * **Adjust sink:** With this option you can change the sign for the sink. Sometimes it solves the problem with correct positioning and further adjust is not needed. The `0` is to set the sink to zero. It is useful if you want to add reference points for custom screw types. 
-* **Adjust rotation:** You can rotate the dowels. There are some predefined rotations according to the curent face plane  to speed up this process.
+* **Adjust rotation:** You can rotate the dowels. There are some predefined rotations according to the current face plane  to speed up this process.
 * **Select sides:** You can choose the side for the dowels, left side only, right side only or both sides.
 * **Text inputs:** You can set your custom values here and click `set custom values` to apply the settings to the dowels and see how they change. If you select new object `Offset from edge` will be automatically set to the selected panel thickenss but all other settings will stay as they are allowing you to keep the custom settings. If you change predefined settings all the custom settings will be replaced with predefined values. 
 
@@ -350,7 +355,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 **Options:**
 
-* **Anchor:** First slection is the actual `Sketch` global position. Next are vertices from selected face. You can switch between the available positions to adjust the position more precisely.
+* **Anchor:** First selection is the actual `Sketch` global position. Next are vertices from selected face. You can switch between the available positions to adjust the position more precisely.
 * **Rotation:** This is `Sketch` pattern rotation. It is useful if you change the face and the face is not at the same line. For example if you want to create Tenon at the other side of the table supporter.
 * **X axis:** Offset for the `X` coordinate axis.
 * **Y axis:** Offset for the `Y` coordinate axis.
@@ -358,7 +363,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 * **Step:** Is the step for the `XYZ` offset. The step is automatically get during `- +` changes.
 * **set custom values** This button should be clicked if you write manually values for `X`, `Y` or `Z` axis offset.
 * **set manually** Allows to set `Sketch` pattern into transform mode and move the `Sketch` pattern manually by hand. You can create Mortise and Tenon in this mode.
-* **finish manually** Close tranform mode.
+* **finish manually** Close transform mode.
 * **create Mortise** Create `PartDesign :: Pocket` object below the current `Sketch` pattern position at the selected face. However, in practise you can create only Tenons and use boolean [magicCut](#magiccut) to create Mortises.
 * **create Tenon** Create `PartDesign :: Pad` above the current `Sketch` pattern position at the selected face.
 
@@ -418,6 +423,38 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 ### makeTransparent
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/makeTransparent.png"> This tool allows to make all parts transparent and back to normal. You can preview all pilot holes, countersinks or any other joints like that, very simply.
+
+<br><br><br><br><br>
+
+## Router
+
+### Router bit - Cove
+
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerCove.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerCove2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerCove4.png"> **Note:** This tool allows to create decoration router bits effect. You can select any amount of edges. The selected edges do not have to be at the same object. You can select edges at any objects. But each edge need to be according XYZ coordinate axis to get correct plane of the edge. Hold left CTRL key during edges selection. The router bits get size from thickness. If the router bit is for example Cove2, it means the size of the Cove will be half of the thickness.
+
+**Video tutorials:** 
+* [FreeCAD Woodworking extension - router cove](https://www.youtube.com/watch?v=MQYaZ4NEiBI)
+
+### Router bit - Round Over
+
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerRoundOver.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerRoundOver2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerRoundOver4.png"> **Note:** This tool allows to create decoration router bits effect. You can select any amount of edges. The selected edges do not have to be at the same object. You can select edges at any objects. But each edge need to be according XYZ coordinate axis to get correct plane of the edge. Hold left CTRL key during edges selection. The router bits get size from thickness. If the router bit is for example Cove2, it means the size of the Cove will be half of the thickness.
+
+**Video tutorials:** 
+* [FreeCAD Woodworking extension - router round over](https://www.youtube.com/watch?v=RErYZpqbqAY)
+
+### Router bit - Straight
+
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerStraight2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerStraight3.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerStraight4.png"> **Note:** This tool allows to create decoration router bits effect. You can select any amount of edges. The selected edges do not have to be at the same object. You can select edges at any objects. But each edge need to be according XYZ coordinate axis to get correct plane of the edge. Hold left CTRL key during edges selection. The router bits get size from thickness. If the router bit is for example Cove2, it means the size of the Cove will be half of the thickness.
+
+**Video tutorials:** 
+* [FreeCAD Woodworking extension - router straight](https://www.youtube.com/watch?v=NDBLmh2SwwI)
+
+### Router bit - Chamfer
+
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerChamfer.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerChamfer2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerChamfer4.png"> **Note:** This tool allows to create decoration router bits effect. You can select any amount of edges. The selected edges do not have to be at the same object. You can select edges at any objects. But each edge need to be according XYZ coordinate axis to get correct plane of the edge. Hold left CTRL key during edges selection. The router bits get size from thickness. If the router bit is for example Cove2, it means the size of the Cove will be half of the thickness.
+
+**Video tutorials:** 
+* [FreeCAD Woodworking extension - router chamfer](https://www.youtube.com/watch?v=Z45TDosmb-U)
 
 <br><br><br><br><br>
 
@@ -558,8 +595,8 @@ Main features:
 Tool repository: [github.com/dprojects/scanObjects](https://github.com/dprojects/scanObjects)
 
 **Video tutorials:** 
-* [FreeCAD Woodworking extension - debbuger, live API, features](https://www.youtube.com/watch?v=nFK_o95y6xk)
-* [FreeCAD Woodworking extension - debbuger, search filter](https://www.youtube.com/watch?v=5h_feMn_lsQ)
+* [FreeCAD Woodworking extension - debugger, live API, features](https://www.youtube.com/watch?v=nFK_o95y6xk)
+* [FreeCAD Woodworking extension - debugger, search filter](https://www.youtube.com/watch?v=5h_feMn_lsQ)
 
 ### debugInfo
 

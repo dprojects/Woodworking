@@ -139,6 +139,23 @@ def getItems(iType):
 			"magicCNC"
 		]
 
+	if iType == "Woodworking - router":
+		
+		parts = [
+			"routerCove",
+			"routerCove2",
+			"routerCove4",
+			"routerRoundOver",
+			"routerRoundOver2",
+			"routerRoundOver4",
+			"routerStraight2",
+			"routerStraight3",
+			"routerStraight4",
+			"routerChamfer",
+			"routerChamfer2",
+			"routerChamfer4"
+		]
+
 	if iType == "Woodworking - decorations":
 		
 		parts = [

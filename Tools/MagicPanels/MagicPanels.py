@@ -510,6 +510,176 @@ def getEdgePlane(iEdge):
 
 # ###################################################################################################################
 '''
+# Edge routing
+'''
+# ###################################################################################################################
+
+
+def getEdgeByKey(iObj, iKey, iType):
+	'''
+	getEdgeByKey(iObj, iKey, iType) - this is extended version of getEdgeIndexByKey function. This function has 
+	been created to solve resized edge. If you cut the edge the next edge will change the Length. So, also 
+	the BoundBox will be changed. With this function you can customize reference key to solve the Topology Naming Problem.
+	
+	Args:
+	
+		iObj: object of the edge
+		iKey: array with keys
+		iType: type of comparison
+
+	Usage:
+	
+		key = [ e.CenterOfMass, plane ]
+		[ edge, edgeName, edgeIndex ] = MagicPanels.getEdgeByKey(o, key, "CenterOfMass")
+
+	Result:
+	
+		return edge object, name like Edge1 and also index starting from 0 (for iObj.Shape.Edges[index])
+
+	'''
+	
+	if iType == "CenterOfMass":
+		
+		key = iKey[0]
+		plane = iKey[1]
+		
+		edge = ""
+		index = 1
+		name = "Edge"
+		
+		for e in iObj.Shape.Edges:
+			
+			p = getEdgePlane(e)
+			
+			if p == plane:
+				if plane == "X":
+					if equal(e.CenterOfMass.y, key.y) and equal(e.CenterOfMass.z, key.z):
+						name += str(index)
+						return [ e, name, index ]
+
+				if plane == "Y":
+					if equal(e.CenterOfMass.x, key.x) and equal(e.CenterOfMass.z, key.z):
+						name += str(index)
+						return [ e, name, index ]
+						
+				if plane == "Z":
+					if equal(e.CenterOfMass.x, key.x) and equal(e.CenterOfMass.y, key.y):
+						name += str(index)
+						return [ e, name, index ]
+			
+			index = index + 1
+
+	if iType == "BoundBox":
+		
+		key = iKey[0]
+		
+		index = 1
+		for e in iObj.Shape.Edges:
+		
+			if normalizeBoundBox(e.BoundBox) == normalizeBoundBox(key):
+				edgeName = "Edge"+str(index)
+				idx = index - 1
+				return [ e, edgeName, idx ]
+
+			index = index + 1
+
+	return [ "", "", "" ]
+
+
+# ###################################################################################################################
+def getEdgeSketchRotation(iEdge):
+	'''
+	getEdgeSketchRotation(iEdge) - returns Rotation object which can be passed directly to setSketchPlacement functions. 
+	The Sketch will be perpendicular to the edge, so it can be used as router bit to cut the edge. 
+	
+	Args:
+	
+		iEdge: edge object
+
+	Usage:
+	
+		r = MagicPanels.getEdgeSketchRotation(edge)
+
+	Result:
+	
+		return FreeCAD.Rotation object.
+
+	'''
+
+	plane = getEdgePlane(iEdge)
+	r = ""
+
+	if plane == "X":
+		r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 1.00, 0.00), 90.00)
+
+	if plane == "Y":
+		r = FreeCAD.Rotation(FreeCAD.Vector(1.00, 0.00, 0.00), 90.00)
+
+	if plane == "Z":
+		r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 00.00)
+	
+	# This can be updated later for rotated edges with additional rotation angle (offset from axis)
+	return r
+
+
+def edgeRouter(iPad, iEdge, iSketch, iLength, iLabel, iType):
+	'''
+	edgeRouter(iObj, iEdge, iSketch, iLabel, iType) - this function is router for the edge. It cut the iEdge with iSketch 
+	pattern. The new object will get iLabel label.
+	
+	Args:
+	
+		iPad: Pad object of the edge, for routing
+		iEdge: edge object
+		iSketch: sketch object will be used as pattern to cut, the sketch should be around XYZ center cross.
+		iLength (optional): length to cut, float or int value, 0 means along all edge
+		iLabel: label for new object
+		iType: type of routing
+
+	Usage:
+	
+		router = MagicPanels.edgeRouter(pad, edge, sketch, 0, "routerCove", "simple")
+
+	Result:
+	
+		return router object, the result of cut
+
+	'''
+
+	if iType == "simple":
+		
+		anchor = iEdge.CenterOfMass
+		r = getEdgeSketchRotation(iEdge)
+		setSketchPlacement(iSketch, anchor.x, anchor.y, anchor.z, r, "global")
+		
+		router = iPad._Body.newObject('PartDesign::Pocket','router')
+		router.Profile = iSketch
+		router.Midplane = 1
+		router.Label = iLabel + " "
+		
+		if iLength == 0:
+			router.Type = 1
+		else:
+			router.Length = iLength
+
+		iSketch.Visibility = False
+		iPad.Visibility = False
+		FreeCAD.ActiveDocument.recompute()
+		
+		try:
+			copyColors(iPad, router)
+		except:
+			skip = 1
+		
+		FreeCAD.ActiveDocument.recompute()
+	
+		return router
+
+	return ""
+	
+
+# ###################################################################################################################
+'''
 # Faces
 '''
 # ###################################################################################################################
@@ -1280,7 +1450,7 @@ def showMeasure(iP1, iP2, iRef=""):
 
 	Result:
 	
-		Create measure object, draw it and return measure object for further proccessing. 
+		Create measure object, draw it and return measure object for further processing. 
 
 	'''
 

@@ -3,7 +3,7 @@
 # Functions to handle many toolbar icons without code duplication. Should not be used for single icon click. 
 # For single icon use dedicated file to not make this library too big, and slow to load.
 #
-# The funtions below have error handling and pop-ups, so not call it in loop, or from other functions 
+# The functions below have error handling and pop-ups, so not call it in loop, or from other functions 
 # because you get many pop-ups in case of error. No need to return anything for further processing.
 #
 # ###################################################################################################################
@@ -610,6 +610,115 @@ def panelResize(iType):
 		info += translate('panelResizeInfo', '<b>Please select valid panels to resize. </b><br><br><b>Note:</b> This tool allows to resize quickly panels or even other objects. The resize step is the panel thickness. Panel is resized into direction described by the icon for XY panel. However, in some cases the panel may be resized into opposite direction, if the panel is not supported or the sides are equal. You can also resize Cylinders (drill bits), the long side will be Height, the short will be diameter, the thickness will be Radius. For Cone objects (drill bits - countersinks, counterbore) the long side will be Height, the thickness will be Radius1 (bottom radius) and the short will be Radius2 (top radius).')
 		
 		MagicPanels.showInfo("panelResize"+iType, info)
+
+
+# ###################################################################################################################
+def routerBitSelect(iType):
+	
+	import PartDesign, Sketcher, Part
+	import RouterPatterns
+
+	try:
+
+		# ###########################################################################################################
+		# init database for call
+		# ###########################################################################################################
+
+		selectedObjects = FreeCADGui.Selection.getSelection()
+
+		if len(selectedObjects) == 0:
+			raise
+
+		selectedEdges = dict()
+		selectedKeys = dict()
+
+		i = 0
+		for o in selectedObjects:
+
+			selectedEdges[o] = FreeCADGui.Selection.getSelectionEx()[i].SubObjects
+			selectedKeys[o] = dict()
+			for e in selectedEdges[o]:
+				selectedKeys[o][e] = e.BoundBox
+
+			i = i + 1
+
+		# ###########################################################################################################
+		# main call
+		# ###########################################################################################################
+
+		i = 0
+		for o in selectedObjects:
+			
+			s = MagicPanels.getSizesFromVertices(o)
+			s.sort()
+			thick = s[0]
+
+			edges = []
+			
+			if o.isDerivedFrom("Part::Box"):
+			
+				[ part, body, sketch, pad ] = MagicPanels.makePad(o, "panel2pad")
+				
+				for e in selectedEdges[o]:
+					[ edge, edgeName, edgeIndex ] = MagicPanels.getEdgeByKey(pad, [ e.BoundBox ], "BoundBox")
+					edges.append(edge)
+				
+				FreeCAD.ActiveDocument.removeObject(o.Name)
+				FreeCAD.ActiveDocument.recompute()
+			
+			else:
+			
+				body = o._Body
+				pad = o
+				
+				for e in selectedEdges[o]:
+					edges.append(e)
+
+			for e in edges:
+				
+				if e != "":
+
+					if iType == "Cove":
+						bit = float(thick)
+					if iType == "Cove2":
+						bit = float(thick/2)
+					if iType == "Cove4":
+						bit = float(thick/4)
+					
+					if iType == "RoundOver":
+						bit = float(thick)
+					if iType == "RoundOver2":
+						bit = float(thick/2)
+					if iType == "RoundOver4":
+						bit = float(thick/4)
+					
+					if iType == "Straight2":
+						bit = float(thick/2)
+					if iType == "Straight3":
+						bit = float(thick/3)
+					if iType == "Straight4":
+						bit = float(thick/4)
+					
+					if iType == "Chamfer":
+						bit = float(thick)
+					if iType == "Chamfer2":
+						bit = float(thick/2)
+					if iType == "Chamfer4":
+						bit = float(thick/4)
+						
+					sketchPattern = body.newObject('Sketcher::SketchObject','routerPattern')
+					RouterPatterns.setRouterPattern(sketchPattern, [ bit ], iType)
+					FreeCAD.ActiveDocument.recompute()
+
+					router = MagicPanels.edgeRouter(pad, e, sketchPattern, 0, iType, "simple")
+
+	except:
+		
+		info = ""
+		
+		info += translate(iType+'Info', '<b>Please select edges to use router. </b><br><br><b>Note:</b> This tool allows to create decoration router bits effect. You can select any amount of edges. The selected edges do not have to be at the same object. You can select edges at any objects. But each edge need to be according XYZ coordinate axis to get correct plane of the edge. Hold left CTRL key during edges selection. The router bits get size from thickness. If the router bit is for example Cove2, it means the size of the Cove will be half of the thickness.')
+
+		MagicPanels.showInfo("router"+iType, info)
 
 
 # ###################################################################################################################

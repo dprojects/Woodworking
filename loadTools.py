@@ -2704,6 +2704,474 @@ FreeCADGui.addCommand("panelCoverXY", panelCoverXY())
 
 	
 # ######################################################################################################################
+class routerCove():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "routerCove.png"),
+				"MenuText": QT_TRANSLATE_NOOP("routerCoveMenuText", "edge to cove, thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerCoveToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "routerCove"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("routerCove", routerCove())
+
+	
+# ######################################################################################################################
+class routerCove2():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "routerCove2.png"),
+				"MenuText": QT_TRANSLATE_NOOP("routerCove2MenuText", "edge to cove, 1/2 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerCove2ToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "routerCove2"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("routerCove2", routerCove2())
+
+	
+# ######################################################################################################################
+class routerCove4():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "routerCove4.png"),
+				"MenuText": QT_TRANSLATE_NOOP("routerCove4MenuText", "edge to cove, 1/4 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerCove4ToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "routerCove4"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("routerCove4", routerCove4())
+
+	
+# ######################################################################################################################
+class routerRoundOver():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "routerRoundOver.png"),
+				"MenuText": QT_TRANSLATE_NOOP("routerRoundOverMenuText", "edge to round over, thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerRoundOverToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "routerRoundOver"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("routerRoundOver", routerRoundOver())
+
+	
+# ######################################################################################################################
+class routerRoundOver2():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "routerRoundOver2.png"),
+				"MenuText": QT_TRANSLATE_NOOP("routerRoundOver2MenuText", "edge to round over, 1/2 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerRoundOver2ToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "routerRoundOver2"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("routerRoundOver2", routerRoundOver2())
+
+	
+# ######################################################################################################################
+class routerRoundOver4():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "routerRoundOver4.png"),
+				"MenuText": QT_TRANSLATE_NOOP("routerRoundOver4MenuText", "edge to round over, 1/4 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerRoundOver4ToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "routerRoundOver4"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("routerRoundOver4", routerRoundOver4())
+
+	
+# ######################################################################################################################
+class routerStraight2():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "routerStraight2.png"),
+				"MenuText": QT_TRANSLATE_NOOP("routerStraight2MenuText", "edge to straight, 1/2 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerStraight2ToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "routerStraight2"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("routerStraight2", routerStraight2())
+
+	
+# ######################################################################################################################
+class routerStraight3():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "routerStraight3.png"),
+				"MenuText": QT_TRANSLATE_NOOP("routerStraight3MenuText", "edge to straight, 1/3 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerStraight3ToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "routerStraight3"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("routerStraight3", routerStraight3())
+
+	
+# ######################################################################################################################
+class routerStraight4():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "routerStraight4.png"),
+				"MenuText": QT_TRANSLATE_NOOP("routerStraight4MenuText", "edge to straight, 1/4 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerStraight4ToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "routerStraight4"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("routerStraight4", routerStraight4())
+
+	
+# ######################################################################################################################
+class routerChamfer():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "routerChamfer.png"),
+				"MenuText": QT_TRANSLATE_NOOP("routerChamferMenuText", "edge to chamfer, thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerChamferToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "routerChamfer"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("routerChamfer", routerChamfer())
+
+	
+# ######################################################################################################################
+class routerChamfer2():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "routerChamfer2.png"),
+				"MenuText": QT_TRANSLATE_NOOP("routerChamfer2MenuText", "edge to chamfer, 1/2 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerChamfer2ToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "routerChamfer2"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("routerChamfer2", routerChamfer2())
+
+	
+# ######################################################################################################################
+class routerChamfer4():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "routerChamfer4.png"),
+				"MenuText": QT_TRANSLATE_NOOP("routerChamfer4MenuText", "edge to chamfer, 1/4 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerChamfer4ToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "routerChamfer4"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("routerChamfer4", routerChamfer4())
+
+	
+# ######################################################################################################################
 class panel2pad():
 
 	def GetResources(self):
