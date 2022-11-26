@@ -249,8 +249,8 @@ def showQtGUI():
 			self.saBP.setAutoRepeat(True)
 
 			# info screen
-			self.saIS = QtGui.QLabel(spaceInfoScreen, self)
-			self.saIS.move(col3, row+3)
+			self.sainfo = QtGui.QLabel(spaceInfoScreen, self)
+			self.sainfo.move(col3, row+3)
 
 			# button - next
 			self.saBN = QtGui.QPushButton(">", self)
@@ -609,7 +609,7 @@ def showQtGUI():
 			self.spIS.setText(info)
 			
 			info = str(self.gAnchorIndex + 1) + " / " + str(len(self.gAnchorArr))
-			self.saIS.setText(info)
+			self.sainfo.setText(info)
 			
 			info = str(self.gSizeIndex + 1) + " / " + str(len(self.gSizeArr))
 			self.ssIS.setText(info)
@@ -833,7 +833,7 @@ def showQtGUI():
 			draftSketch.Visibility = False
 			doc.recompute()
 			
-			# ser color of last selected object
+			# set color of last selected object
 			try:
 				MagicPanels.copyColors(gLastSelected, pad)
 			except:

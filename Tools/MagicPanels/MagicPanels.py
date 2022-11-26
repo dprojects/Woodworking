@@ -510,27 +510,29 @@ def getEdgePlane(iEdge):
 
 # ###################################################################################################################
 '''
-# Edge routing
+# Router
 '''
 # ###################################################################################################################
 
 
-def getEdgeByKey(iObj, iKey, iType):
+def getSubByKey(iObj, iKey, iType, iSubType):
 	'''
-	getEdgeByKey(iObj, iKey, iType) - this is extended version of getEdgeIndexByKey function. This function has 
-	been created to solve resized edge. If you cut the edge the next edge will change the Length. So, also 
-	the BoundBox will be changed. With this function you can customize reference key to solve the Topology Naming Problem.
+	getSubByKey(iObj, iKey, iType, iSubType) - this is extended version of getEdgeIndexByKey function. 
+	This function has been created to solve resized edge problem. If you cut the edge the next edge will 
+	change the Length. So, also the BoundBox will be changed. With this function you can customize 
+	reference key to solve the Topology Naming Problem.
 	
 	Args:
 	
-		iObj: object of the edge
+		iObj: object for the sub-object
 		iKey: array with keys
 		iType: type of comparison
+		iSubType: type of sub-object to return, "edge" or "face"
 
 	Usage:
 	
 		key = [ e.CenterOfMass, plane ]
-		[ edge, edgeName, edgeIndex ] = MagicPanels.getEdgeByKey(o, key, "CenterOfMass")
+		[ edge, edgeName, edgeIndex ] = MagicPanels.getSubByKey(o, key, "CenterOfMass", "edge")
 
 	Result:
 	
@@ -547,58 +549,82 @@ def getEdgeByKey(iObj, iKey, iType):
 		index = 1
 		name = "Edge"
 		
-		for e in iObj.Shape.Edges:
+		if iSubType == "edge":
 			
-			p = getEdgePlane(e)
-			
-			if p == plane:
-				if plane == "X":
-					if equal(e.CenterOfMass.y, key.y) and equal(e.CenterOfMass.z, key.z):
-						name += str(index)
-						return [ e, name, index ]
+			for e in iObj.Shape.Edges:
+				
+				p = getEdgePlane(e)
+				
+				if p == plane:
+					if plane == "X":
+						if equal(e.CenterOfMass.y, key.y) and equal(e.CenterOfMass.z, key.z):
+							name += str(index)
+							return [ e, name, index ]
 
-				if plane == "Y":
-					if equal(e.CenterOfMass.x, key.x) and equal(e.CenterOfMass.z, key.z):
-						name += str(index)
-						return [ e, name, index ]
-						
-				if plane == "Z":
-					if equal(e.CenterOfMass.x, key.x) and equal(e.CenterOfMass.y, key.y):
-						name += str(index)
-						return [ e, name, index ]
-			
-			index = index + 1
+					if plane == "Y":
+						if equal(e.CenterOfMass.x, key.x) and equal(e.CenterOfMass.z, key.z):
+							name += str(index)
+							return [ e, name, index ]
+							
+					if plane == "Z":
+						if equal(e.CenterOfMass.x, key.x) and equal(e.CenterOfMass.y, key.y):
+							name += str(index)
+							return [ e, name, index ]
+				
+				index = index + 1
 
+		# not needed now
+		if iSubType == "face":
+			
+			search = iObj.Shape.Faces
+			return [ "not supported", "not supported", "not supported" ]
+		
 	if iType == "BoundBox":
 		
 		key = iKey[0]
-		
 		index = 1
-		for e in iObj.Shape.Edges:
 		
-			if normalizeBoundBox(e.BoundBox) == normalizeBoundBox(key):
-				edgeName = "Edge"+str(index)
-				idx = index - 1
-				return [ e, edgeName, idx ]
+		if iSubType == "edge":
+			
+			for e in iObj.Shape.Edges:
+			
+				if normalizeBoundBox(e.BoundBox) == normalizeBoundBox(key):
+					edgeName = "Edge"+str(index)
+					idx = index - 1
+					return [ e, edgeName, idx ]
 
-			index = index + 1
+				index = index + 1
+
+		if iSubType == "face":
+			
+			for f in iObj.Shape.Faces:
+			
+				if normalizeBoundBox(f.BoundBox) == normalizeBoundBox(key):
+					faceName = "Face"+str(index)
+					idx = index - 1
+					return [ f, faceName, idx ]
+
+				index = index + 1
 
 	return [ "", "", "" ]
 
 
 # ###################################################################################################################
-def getEdgeSketchRotation(iEdge):
+def getSketchPatternRotation(iObj, iSub):
 	'''
-	getEdgeSketchRotation(iEdge) - returns Rotation object which can be passed directly to setSketchPlacement functions. 
-	The Sketch will be perpendicular to the edge, so it can be used as router bit to cut the edge. 
+	getSketchPatternRotation(iObj, iSub) - returns Rotation object which can be passed directly to setSketchPlacement 
+	functions. The Sketch will be perpendicular to the iSub object, so it can be used as router bit to cut the 
+	edge or face.
 	
 	Args:
 	
-		iEdge: edge object
+		iObj: object for sub-object
+		iSub: selected sub-object, edge or face
 
 	Usage:
 	
-		r = MagicPanels.getEdgeSketchRotation(edge)
+		r = MagicPanels.getSketchPatternRotation(o, edge)
+		r = MagicPanels.getSketchPatternRotation(o, face)
 
 	Result:
 	
@@ -606,33 +632,57 @@ def getEdgeSketchRotation(iEdge):
 
 	'''
 
-	plane = getEdgePlane(iEdge)
 	r = ""
+	
+	if iSub.ShapeType == "Edge":
+	
+		plane = getEdgePlane(iSub)
 
-	if plane == "X":
-		r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 1.00, 0.00), 90.00)
+		if plane == "X":
+			r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 1.00, 0.00), 90.00)
 
-	if plane == "Y":
-		r = FreeCAD.Rotation(FreeCAD.Vector(1.00, 0.00, 0.00), 90.00)
+		if plane == "Y":
+			r = FreeCAD.Rotation(FreeCAD.Vector(1.00, 0.00, 0.00), 90.00)
 
-	if plane == "Z":
-		r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 00.00)
+		if plane == "Z":
+			r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 00.00)
+	
+	if iSub.ShapeType == "Face":
+		
+		plane = getFacePlane(iSub)
+		[ faceType, arrAll, arrThick, arrShort, arrLong ] = getFaceEdges(iObj, iSub)
+		
+		if len(arrLong) > 0:
+			subPlane = getEdgePlane(arrLong[0])
+		elif len(arrShort) > 0:
+			subPlane = getEdgePlane(arrShort[0])
+		elif len(arrAll) > 0:
+			subPlane = getEdgePlane(arrAll[0])
+		
+		if subPlane == "X":
+			r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 1.00, 0.00), 90.00)
+
+		if subPlane == "Y":
+			r = FreeCAD.Rotation(FreeCAD.Vector(1.00, 0.00, 0.00), 90.00)
+
+		if subPlane == "Z":
+			r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 00.00)
 	
 	# This can be updated later for rotated edges with additional rotation angle (offset from axis)
 	return r
 
 
-def edgeRouter(iPad, iEdge, iSketch, iLength, iLabel, iType):
+def edgeRouter(iPad, iSub, iSketch, iLength, iLabel, iType):
 	'''
-	edgeRouter(iObj, iEdge, iSketch, iLabel, iType) - this function is router for the edge. It cut the iEdge with iSketch 
-	pattern. The new object will get iLabel label.
+	edgeRouter(iPad, iSub, iSketch, iLength, iLabel, iType) - this function is router for the edge. It cut the 
+	iSub with iSketch pattern. The new object will get iLabel label.
 	
 	Args:
 	
-		iPad: Pad object of the edge, for routing
-		iEdge: edge object
+		iPad: Pad object of the sub-object, for routing
+		iSub: sub-object, edge or face
 		iSketch: sketch object will be used as pattern to cut, the sketch should be around XYZ center cross.
-		iLength (optional): length to cut, float or int value, 0 means along all edge
+		iLength: length to cut, float or int value, 0 means ThroughAll
 		iLabel: label for new object
 		iType: type of routing
 
@@ -648,8 +698,8 @@ def edgeRouter(iPad, iEdge, iSketch, iLength, iLabel, iType):
 
 	if iType == "simple":
 		
-		anchor = iEdge.CenterOfMass
-		r = getEdgeSketchRotation(iEdge)
+		anchor = iSub.CenterOfMass
+		r = getSketchPatternRotation(iPad, iSub)
 		setSketchPlacement(iSketch, anchor.x, anchor.y, anchor.z, r, "global")
 		
 		router = iPad._Body.newObject('PartDesign::Pocket','router')

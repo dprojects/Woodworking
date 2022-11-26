@@ -72,7 +72,20 @@ def setTests():
 		gTests["zipfile"] = False
 		gTests["status"] += "zipfile, "
 
+	# ######################################
+	# test: RegularPolygon
+	# ######################################
+	try:
+		import ProfileLib.RegularPolygon
+		gTests["RegularPolygon"] = True
+	except:
+		gTests["RegularPolygon"] = False
+		gTests["status"] += "ProfileLib.RegularPolygon, "
+
+	# ######################################
 	# end cut
+	# ######################################
+	
 	if gTests["status"] != "":
 		gTests["status"] = gTests["status"][:-2]
 

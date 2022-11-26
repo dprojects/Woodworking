@@ -253,56 +253,61 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 	
 		return string "X", "Y" or "Z".
 
-# Edge routing
-### getEdgeByKey(iObj, iKey, iType):
+# Router
+### getSubByKey(iObj, iKey, iType, iSubType):
 
-	getEdgeByKey(iObj, iKey, iType) - this is extended version of getEdgeIndexByKey function. This function has 
-	been created to solve resized edge. If you cut the edge the next edge will change the Length. So, also 
-	the BoundBox will be changed. With this function you can customize reference key to solve the Topology Naming Problem.
+	getSubByKey(iObj, iKey, iType, iSubType) - this is extended version of getEdgeIndexByKey function. 
+	This function has been created to solve resized edge problem. If you cut the edge the next edge will 
+	change the Length. So, also the BoundBox will be changed. With this function you can customize 
+	reference key to solve the Topology Naming Problem.
 	
 ##### Args:
 	
-		iObj: object of the edge
+		iObj: object for the sub-object
 		iKey: array with keys
 		iType: type of comparison
+		iSubType: type of sub-object to return, "edge" or "face"
 
 ##### Usage:
 	
 		key = [ e.CenterOfMass, plane ]
-		[ edge, edgeName, edgeIndex ] = MagicPanels.getEdgeByKey(o, key, "CenterOfMass")
+		[ edge, edgeName, edgeIndex ] = MagicPanels.getSubByKey(o, key, "CenterOfMass", "edge")
 
 ##### Result:
 	
 		return edge object, name like Edge1 and also index starting from 0 (for iObj.Shape.Edges[index])
 
-### getEdgeSketchRotation(iEdge):
+### getSketchPatternRotation(iObj, iSub):
 
-	getEdgeSketchRotation(iEdge) - returns Rotation object which can be passed directly to setSketchPlacement functions. 
-	The Sketch will be perpendicular to the edge, so it can be used as router bit to cut the edge. 
+	getSketchPatternRotation(iObj, iSub) - returns Rotation object which can be passed directly to setSketchPlacement 
+	functions. The Sketch will be perpendicular to the iSub object, so it can be used as router bit to cut the 
+	edge or face.
 	
 ##### Args:
 	
-		iEdge: edge object
+		iObj: object for sub-object
+		iSub: selected sub-object, edge or face
 
 ##### Usage:
 	
-		r = MagicPanels.getEdgeSketchRotation(edge)
+		r = MagicPanels.getSketchPatternRotation(o, edge)
+		r = MagicPanels.getSketchPatternRotation(o, face)
 
 ##### Result:
 	
 		return FreeCAD.Rotation object.
 
-### edgeRouter(iPad, iEdge, iSketch, iLength, iLabel, iType):
+### edgeRouter(iPad, iSub, iSketch, iLength, iLabel, iType):
 
-	edgeRouter(iObj, iEdge, iSketch, iLabel, iType) - this function is router for the edge. It cut the iEdge with iSketch 
-	pattern. The new object will get iLabel label.
+	edgeRouter(iPad, iSub, iSketch, iLength, iLabel, iType) - this function is router for the edge. It cut the 
+	iSub with iSketch pattern. The new object will get iLabel label.
 	
 ##### Args:
 	
-		iPad: Pad object of the edge, for routing
-		iEdge: edge object
+		iPad: Pad object of the sub-object, for routing
+		iSub: sub-object, edge or face
 		iSketch: sketch object will be used as pattern to cut, the sketch should be around XYZ center cross.
-		iLength (optional): length to cut, float or int value, 0 means along all edge
+		iLength: length to cut, float or int value, 0 means ThroughAll
 		iLabel: label for new object
 		iType: type of routing
 

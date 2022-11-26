@@ -629,16 +629,16 @@ def routerBitSelect(iType):
 		if len(selectedObjects) == 0:
 			raise
 
-		selectedEdges = dict()
+		selectedSubs = dict()
 		selectedKeys = dict()
 
 		i = 0
 		for o in selectedObjects:
 
-			selectedEdges[o] = FreeCADGui.Selection.getSelectionEx()[i].SubObjects
+			selectedSubs[o] = FreeCADGui.Selection.getSelectionEx()[i].SubObjects
 			selectedKeys[o] = dict()
-			for e in selectedEdges[o]:
-				selectedKeys[o][e] = e.BoundBox
+			for s in selectedSubs[o]:
+				selectedKeys[o][s] = s.BoundBox
 
 			i = i + 1
 
@@ -649,20 +649,26 @@ def routerBitSelect(iType):
 		i = 0
 		for o in selectedObjects:
 			
-			s = MagicPanels.getSizesFromVertices(o)
-			s.sort()
-			thick = s[0]
+			sizes = MagicPanels.getSizesFromVertices(o)
+			sizes.sort()
+			thick = sizes[0]
 
-			edges = []
+			subs = []
 			
 			if o.isDerivedFrom("Part::Box"):
 			
 				[ part, body, sketch, pad ] = MagicPanels.makePad(o, "panel2pad")
 				
-				for e in selectedEdges[o]:
-					[ edge, edgeName, edgeIndex ] = MagicPanels.getEdgeByKey(pad, [ e.BoundBox ], "BoundBox")
-					edges.append(edge)
-				
+				for s in selectedSubs[o]:
+					
+					if s.ShapeType == "Edge":
+						[ edge, edgeName, edgeIndex ] = MagicPanels.getSubByKey(pad, [ s.BoundBox ], "BoundBox", "edge")
+						subs.append(edge)
+
+					if s.ShapeType == "Face":
+						[ face, faceName, faceIndex ] = MagicPanels.getSubByKey(pad, [ s.BoundBox ], "BoundBox", "face")
+						subs.append(face)
+					
 				FreeCAD.ActiveDocument.removeObject(o.Name)
 				FreeCAD.ActiveDocument.recompute()
 			
@@ -671,12 +677,12 @@ def routerBitSelect(iType):
 				body = o._Body
 				pad = o
 				
-				for e in selectedEdges[o]:
-					edges.append(e)
+				for s in selectedSubs[o]:
+					subs.append(s)
 
-			for e in edges:
+			for s in subs:
 				
-				if e != "":
+				if s != "":
 
 					if iType == "Cove":
 						bit = float(thick)
@@ -710,13 +716,13 @@ def routerBitSelect(iType):
 					RouterPatterns.setRouterPattern(sketchPattern, [ bit ], iType)
 					FreeCAD.ActiveDocument.recompute()
 
-					router = MagicPanels.edgeRouter(pad, e, sketchPattern, 0, iType, "simple")
+					router = MagicPanels.edgeRouter(pad, s, sketchPattern, 0, iType, "simple")
 
 	except:
 		
 		info = ""
 		
-		info += translate(iType+'Info', '<b>Please select edges to use router. </b><br><br><b>Note:</b> This tool allows to create decoration router bits effect. You can select any amount of edges. The selected edges do not have to be at the same object. You can select edges at any objects. But each edge need to be according XYZ coordinate axis to get correct plane of the edge. Hold left CTRL key during edges selection. The router bits get size from thickness. If the router bit is for example Cove2, it means the size of the Cove will be half of the thickness.')
+		info += translate(iType+'Info', '<b>Please select edges or faces to use router. </b><br><br><b>Note:</b> This tool allows to create decoration router bits effect. You can select many edges or faces. The selected edges or faces do not have to be at the same object. You can select edges or faces at any object. But each edge or face need to be according to the XYZ coordinate axis to get correct plane of the edge or face. For face the routing path is the CenterOfMass of the face and also along the longest edge. Hold left CTRL key during edges or faces selection. The router bits get size from object thickness. If the router bit is for example Cove2, it means the size of the Cove will be 1/2 of the object thickness.')
 
 		MagicPanels.showInfo("router"+iType, info)
 
