@@ -153,7 +153,10 @@ def getItems(iType):
 			"routerStraight4",
 			"routerChamfer",
 			"routerChamfer2",
-			"routerChamfer4"
+			"routerChamfer4",
+			"multiPocket",
+			"multiPocket2",
+			"multiPocket4"
 		]
 
 	if iType == "Woodworking - decorations":

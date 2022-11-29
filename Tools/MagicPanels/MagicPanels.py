@@ -728,6 +728,75 @@ def edgeRouter(iPad, iSub, iSketch, iLength, iLabel, iType):
 	return ""
 	
 
+def makePockets(iObjects, iLength):
+	'''
+	makePockets(iObjects, iLength) - this function is multi Pocket. First object from iObjects will be base
+	object to Pocket, all others should be Sketches. The Length is depth for Pocket. If the Length is 0 
+	the Pocket will be ThroughAll.
+	
+	Args:
+	
+		iObjects: First base objects, next sketches
+		iLength: length to cut, float or int value, 0 means ThroughAll
+		
+	Usage:
+	
+		pocket = MagicPanels.makePockets(selectedObjects, 0)
+
+	Result:
+	
+		return last pocket object, the result of cut
+
+	'''
+
+	base = iObjects[0]
+	sketches = iObjects[1:]
+
+	if base.isDerivedFrom("Part::Box"):
+
+		[ part, body, sketch, pad ] = makePad(base, "panel2pad")
+		FreeCAD.ActiveDocument.removeObject(base.Name)
+		FreeCAD.ActiveDocument.recompute()
+		base = pad
+
+	for s in sketches:
+		
+		body = base._Body
+
+		# FreeCAD know what is going on here and not blow up, I am surprised ;-)
+		try:
+			[ x, y, z, r ] = getSketchPlacement(s, "global")
+			s.adjustRelativeLinks(body)
+			body.ViewObject.dropObject(s, None, '', [])
+			setSketchPlacement(s, x, y, z, r, "global")
+		except:
+			skip = 1
+
+		pocket = body.newObject('PartDesign::Pocket','multiPocket')
+		pocket.Profile = s
+		pocket.Midplane = 1
+		pocket.Label = "multiPocket "
+		pocket.Midplane = 1
+
+		if iLength == 0:
+			pocket.Type = 1
+		else:
+			pocket.Length = 2 * iLength
+
+		s.Visibility = False
+		base.Visibility = False
+		FreeCAD.ActiveDocument.recompute()
+		
+		try:
+			copyColors(base, pocket)
+		except:
+			skip = 1
+			
+		FreeCAD.ActiveDocument.recompute()
+		
+		base = pocket
+
+
 # ###################################################################################################################
 '''
 # Faces

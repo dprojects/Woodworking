@@ -81,7 +81,7 @@ Tools = [
 	"MagicPanels", "drillCounterbores", "png", "drill bit, drill counterbores", "Click to see info.",
 	"MagicPanels", "drillCounterbores2x", "png", "drill bit, drill counterbores from both sides", "Click to see info.",
 	"MagicPanels", "edge2drillbit", "png", "drill bit from edge hole", "Click to see info.",
-	
+
 	# mount
 	
 	"MagicPanels", "panel2link", "png", "replace with links", "Click to see info.",
@@ -183,7 +183,11 @@ Tools = [
 	"MagicPanels", "routerChamfer", "png", "edge to chamfer, thickness", "Click to see info.",
 	"MagicPanels", "routerChamfer2", "png", "edge to chamfer, 1/2 thickness", "Click to see info.",
 	"MagicPanels", "routerChamfer4", "png", "edge to chamfer, 1/4 thickness", "Click to see info.",
-
+	
+	"MagicPanels", "multiPocket", "png", "multi Sketch to Pocket, thickness", "Click to see info.",
+	"MagicPanels", "multiPocket2", "png", "multi Sketch to Pocket, 1/2 thickness", "Click to see info.",
+	"MagicPanels", "multiPocket4", "png", "multi Sketch to Pocket, 1/4 thickness", "Click to see info.",
+	
 	# advanced
 	
 	"MagicPanels", "panel2pad", "png", "cube to pad", "Click to see info.",

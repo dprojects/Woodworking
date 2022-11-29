@@ -3172,6 +3172,123 @@ FreeCADGui.addCommand("routerChamfer4", routerChamfer4())
 
 	
 # ######################################################################################################################
+class multiPocket():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "multiPocket.png"),
+				"MenuText": QT_TRANSLATE_NOOP("multiPocketMenuText", "multi Sketch to Pocket, thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("multiPocketToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "multiPocket"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("multiPocket", multiPocket())
+
+	
+# ######################################################################################################################
+class multiPocket2():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "multiPocket2.png"),
+				"MenuText": QT_TRANSLATE_NOOP("multiPocket2MenuText", "multi Sketch to Pocket, 1/2 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("multiPocket2ToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "multiPocket2"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("multiPocket2", multiPocket2())
+
+	
+# ######################################################################################################################
+class multiPocket4():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "multiPocket4.png"),
+				"MenuText": QT_TRANSLATE_NOOP("multiPocket4MenuText", "multi Sketch to Pocket, 1/4 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("multiPocket4ToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "multiPocket4"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("multiPocket4", multiPocket4())
+
+	
+# ######################################################################################################################
 class panel2pad():
 
 	def GetResources(self):

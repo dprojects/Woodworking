@@ -728,3 +728,32 @@ def routerBitSelect(iType):
 
 
 # ###################################################################################################################
+def multiPocket(iType):
+	
+	try:
+
+		selectedObjects = FreeCADGui.Selection.getSelection()
+
+		if len(selectedObjects) == 0:
+			raise
+
+		length = 0
+		
+		if iType != "":
+			
+			sizes = MagicPanels.getSizesFromVertices(selectedObjects[0])
+			sizes.sort()
+			thick = sizes[0]
+			length = thick / int(iType)
+
+		pocket = MagicPanels.makePockets(selectedObjects, length)
+
+	except:
+		
+		info = ""
+		
+		info += translate('multiPocket'+iType, '<b>Please select object, next Sketches to create Pockets. </b><br><br><b>Note:</b> This tool allows to create custom decoration from Sketches. You can select many Sketches at once. The selected Sketches will make Pockets at the first selected object. The Sketches need to be correctly aligned at the object. Hold left CTRL key during Sketches selection. For 2 and 4 variant this tool gets first selected object size and create Pocket with 1/2 thickness or 1/4 thickness.')
+
+		MagicPanels.showInfo("multiPocket"+iType, info)
+
+# ###################################################################################################################

@@ -58,6 +58,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 		* [Router bit - Round Over](#router-bit---round-over)
 		* [Router bit - Straight](#router-bit---straight)
 		* [Router bit - Chamfer](#router-bit---chamfer)
+		* [multiPocket](#multiPocket)
 	* [Decoration](#decoration)
 		* [colorManager](#colormanager)
 		* [setTextures](#settextures)
@@ -459,6 +460,14 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 **Video tutorials:** 
 * [FreeCAD Woodworking extension - router chamfer](https://www.youtube.com/watch?v=Z45TDosmb-U)
 * [FreeCAD Woodworking extension - decoration testing with router bits](https://www.youtube.com/watch?v=K229hhMt8Vc)
+
+### multiPocket
+
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/multiPocket4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/multiPocket2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/multiPocket.png"> **Note:** This tool allows to create custom decoration from Sketches. You can select many Sketches at once. The selected Sketches will make Pockets at the first selected object. The Sketches need to be correctly aligned at the object. Hold left CTRL key during Sketches selection. For 2 and 4 variant this tool gets first selected object size and create Pocket with 1/2 thickness or 1/4 thickness.
+
+**Video tutorials:** 
+* [multiPocket custom decoration | FreeCAD | Woodworking](https://www.youtube.com/watch?v=FHups7Zvl5E)
+* [Future of parametric modeling | FreeCAD | Woodworking](https://www.youtube.com/watch?v=0M9EW0I9iwg)
 
 <br><br><br>
 

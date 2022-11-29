@@ -319,6 +319,25 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 	
 		return router object, the result of cut
 
+### makePockets(iObjects, iLength):
+
+	makePockets(iObjects, iLength) - this function is multi Pocket. First object from iObjects will be base
+	object to Pocket, all others should be Sketches. The Length is depth for Pocket. If the Length is 0 
+	the Pocket will be ThroughAll.
+	
+##### Args:
+	
+		iObjects: First base objects, next sketches
+		iLength: length to cut, float or int value, 0 means ThroughAll
+		
+##### Usage:
+	
+		pocket = MagicPanels.makePockets(selectedObjects, 0)
+
+##### Result:
+	
+		return last pocket object, the result of cut
+
 # Faces
 ### getFaceIndex(iObj, iFace):
 
