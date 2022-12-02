@@ -3328,6 +3328,45 @@ FreeCADGui.addCommand("panel2pad", panel2pad())
 
 	
 # ######################################################################################################################
+class sketch2clone():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "sketch2clone.png"),
+				"MenuText": QT_TRANSLATE_NOOP("sketch2cloneMenuText", "convert sketches to clones"),
+				"ToolTip" : QT_TRANSLATE_NOOP("sketch2cloneToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "sketch2clone"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("sketch2clone", sketch2clone())
+
+	
+# ######################################################################################################################
 class panel2profile():
 
 	def GetResources(self):

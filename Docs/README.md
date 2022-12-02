@@ -70,6 +70,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 		* [magicMeasure](#magicmeasure)
 	* [Advanced](#advanced)
 		* [panel2pad](#panel2pad)
+		* [sketch2clone](#sketch2clone)
 		* [showAlias](#showalias)
 	* [Code and Debug](#code-and-debug)
 		* [scanObjects](#scanobjects)
@@ -574,6 +575,16 @@ Tool repository: [github.com/dprojects/sheet2export](https://github.com/dproject
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2pad.png"> This tool allows to replace `Cube` panel with `Pad` panel. The new created `Pad` panel will get the same dimensions, placement and rotation as the selected `Cube` panel. You can transform many `Cube` panels into `Pad` at once. To select more `Cubes` hold `left CTRL key` during selection. This tool is mostly dedicated to add decoration that is not supported for `Cube` objects by FreeCAD PartDesign workbench. You can also change shape by changing the `Sketch`. This is mostly used for decoration that can be applied only to `Pad`, like `Fillet`.
 
 <br><br><br>
+
+**Video tutorials:** 
+* [Automatic parametrization | Woodworking | Furniture 3D design | FreeCAD](https://www.youtube.com/watch?v=JuZsAjrQr6M)
+
+### sketch2clone
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/sketch2clone.png"> This tool allows to replace selected Sketches with Clones and thanks to it, convert static model to parametric. First selected Sketch will be changed into `Parametric Pattern` for all other selected Sketches. After this operation, if you change the `Parametric Pattern` all other Sketches will be automatically updated with new pattern. For example if you have Pad, it will change the shape. Make sure the center of coordinate axes XYZ for each selected Sketch is in the middle of the pattern, this will allow for correct positioning of the Sketches. To select more objects hold left CTRL key during selection. For more complicated objects use [panel2link](#panel2link) or [panel2clone](#panel2clone) at the whole `Part`. 
+
+**Video tutorials:** 
+* [Automatic parametrization | Woodworking | Furniture 3D design | FreeCAD](https://www.youtube.com/watch?v=JuZsAjrQr6M)
 
 ### showAlias
 

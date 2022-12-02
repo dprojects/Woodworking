@@ -205,6 +205,7 @@ def getItems(iType):
 		
 		parts = [
 			"panel2pad",
+			"sketch2clone",
 			"Spreadsheet_CreateSheet",
 			"showAlias",
 			"Std_Part",

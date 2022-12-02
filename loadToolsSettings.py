@@ -191,6 +191,7 @@ Tools = [
 	# advanced
 	
 	"MagicPanels", "panel2pad", "png", "cube to pad", "Click to see info.",
+	"MagicPanels", "sketch2clone", "png", "convert sketches to clones", "Click to see info.",
 	
 	# construction profiles
 	
