@@ -20,11 +20,19 @@ def showQtGUI():
 		# globals
 		# ############################################################################
 
-		gSketchRef = ""
-		gObjRef = ""
+		# 1st selected object - sketch
+		gObj1 = ""
+		gObj1Visible = ""
 		
-		gFaceRef = ""
-		gFaceIndex = 0
+		# 2nd selected object - auto Tenon
+		gObj2 = ""
+		gObj2Face = ""
+		gObj2FaceIndex = 0
+		
+		# 3rd selected object - auto Mortise
+		gObj3 = ""
+		gObj3Face = ""
+		gObj3FaceIndex = 0
 
 		gAnchorCurrent = ""
 		gAnchorArr = []
@@ -53,10 +61,10 @@ def showQtGUI():
 		
 		gCrossCorner = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
 		gCrossCenter = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
-		gSketchVisible = ""
-		
-		gNoSelection1 = translate('magicJoints', '1. first select joint Sketch pattern')
-		gNoSelection2 = translate('magicJoints', '2. next select face to map Sketch')
+
+		gNoSelection1 = translate('magicJoints', '1. select Sketch pattern')
+		gNoSelection2 = translate('magicJoints', '2. select face to map Sketch')
+		gNoSelection3 = translate('magicJoints', '3. select face for Mortise')
 		
 		# ############################################################################
 		# init
@@ -74,7 +82,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 270
-			toolSH = 480
+			toolSH = 500
 			
 			# active screen size (FreeCAD main window)
 			gSW = FreeCADGui.getMainWindow().width()
@@ -111,20 +119,63 @@ def showQtGUI():
 			
 			row += 10
 			
-			# info about base detailed object to link
+			# ############################################################################
+			# options - 1st object
+			# ############################################################################
+
+			# button
+			self.ob1B1 = QtGui.QPushButton(translate('magicJoints', 'set'), self)
+			self.ob1B1.clicked.connect(self.setObj1)
+			self.ob1B1.setFixedWidth(30)
+			self.ob1B1.setFixedHeight(20)
+			self.ob1B1.move(10, row)
+
+			# screen
 			self.ob1S = QtGui.QLabel(info, self)
-			self.ob1S.move(10, row)
+			self.ob1S.move(50, row+3)
+			
+			# ############################################################################
+			# options - 2nd object
+			# ############################################################################
 			
 			row += 20
+
+			# button
+			self.ob2B1 = QtGui.QPushButton(translate('magicJoints', 'set'), self)
+			self.ob2B1.clicked.connect(self.setObj2)
+			self.ob2B1.setFixedWidth(30)
+			self.ob2B1.setFixedHeight(20)
+			self.ob2B1.move(10, row)
 			
-			# info about selected face to place the link
+			# screen
 			self.ob2S = QtGui.QLabel(info, self)
-			self.ob2S.move(10, row)
+			self.ob2S.move(50, row+3)
+
+			# ############################################################################
+			# options - 3rd object
+			# ############################################################################
 			
 			row += 20
 			
 			# button
-			self.s1B1 = QtGui.QPushButton(translate('magicJoints', 'refresh selection'), self)
+			self.ob3B1 = QtGui.QPushButton(translate('magicJoints', 'set'), self)
+			self.ob3B1.clicked.connect(self.setObj3)
+			self.ob3B1.setFixedWidth(30)
+			self.ob3B1.setFixedHeight(20)
+			self.ob3B1.move(10, row)
+			
+			# screen
+			self.ob3S = QtGui.QLabel(info, self)
+			self.ob3S.move(50, row+3)
+			
+			# ############################################################################
+			# options - refresh all
+			# ############################################################################
+
+			row += 20
+			
+			# button
+			self.s1B1 = QtGui.QPushButton(translate('magicJoints', 'refresh all selections'), self)
 			self.s1B1.clicked.connect(self.getSelected)
 			self.s1B1.setFixedWidth(toolSW-20)
 			self.s1B1.setFixedHeight(40)
@@ -148,9 +199,9 @@ def showQtGUI():
 			self.s2B1.setAutoRepeat(True)
 			
 			# info screen
-			self.s2IS = QtGui.QLabel("                                         ", self)
+			self.s2IS = QtGui.QLabel(info, self)
 			self.s2IS.move(col2, row+3)
-						
+
 			# button
 			self.s2B2 = QtGui.QPushButton(">", self)
 			self.s2B2.clicked.connect(self.setAnchorN)
@@ -176,10 +227,6 @@ def showQtGUI():
 			self.s4B1.setAutoRepeat(True)
 			
 			# info screen
-			info = ""
-			info += "                                                           "
-			info += "                                                           "
-			info += "                                                           "
 			self.s4IS = QtGui.QLabel(info, self)
 			self.s4IS.move(col2, row+3)
 			
@@ -250,7 +297,6 @@ def showQtGUI():
 			self.gAxisYB2.move(col3, row)
 			self.gAxisYB2.setAutoRepeat(True)
 
-
 			# ############################################################################
 			# options - Z axis
 			# ############################################################################
@@ -280,7 +326,6 @@ def showQtGUI():
 			self.gAxisZB2.setFixedWidth(50)
 			self.gAxisZB2.move(col3, row)
 			self.gAxisZB2.setAutoRepeat(True)
-
 
 			# ############################################################################
 			# options - step
@@ -320,21 +365,21 @@ def showQtGUI():
 			self.e2B1 = QtGui.QPushButton(translate('magicJoints', 'set manually'), self)
 			self.e2B1.clicked.connect(self.setEditModeON)
 			self.e2B1.setFixedWidth((toolSW/2)-20)
-			self.e2B1.setFixedHeight(40)
+			self.e2B1.setFixedHeight(20)
 			self.e2B1.move(10, row)
 
 			# button
 			self.e2B2 = QtGui.QPushButton(translate('magicJoints', 'finish manually'), self)
 			self.e2B2.clicked.connect(self.setEditModeOFF)
 			self.e2B2.setFixedWidth((toolSW/2)-20)
-			self.e2B2.setFixedHeight(40)
+			self.e2B2.setFixedHeight(20)
 			self.e2B2.move((toolSW/2)+10, row)
 
 			# ############################################################################
 			# options - depth
 			# ############################################################################
 
-			row += 80
+			row += 40
 
 			# label
 			self.oFxDepthL = QtGui.QLabel(translate('magicJoints', 'Mortise depth and Tenon height:'), self)
@@ -346,7 +391,6 @@ def showQtGUI():
 			self.oFxDepthE.setFixedWidth(50)
 			self.oFxDepthE.move(col3, row)
 
-
 			# ############################################################################
 			# options - final save
 			# ############################################################################
@@ -357,15 +401,28 @@ def showQtGUI():
 			self.e3B1 = QtGui.QPushButton(translate('magicJoints', 'create Mortise'), self)
 			self.e3B1.clicked.connect(self.setMortise)
 			self.e3B1.setFixedWidth((toolSW/2)-20)
-			self.e3B1.setFixedHeight(40)
+			self.e3B1.setFixedHeight(20)
 			self.e3B1.move(10, row)
 
 			# apply button
 			self.e3B2 = QtGui.QPushButton(translate('magicJoints', 'create Tenon'), self)
 			self.e3B2.clicked.connect(self.setTenon)
 			self.e3B2.setFixedWidth((toolSW/2)-20)
-			self.e3B2.setFixedHeight(40)
+			self.e3B2.setFixedHeight(20)
 			self.e3B2.move((toolSW/2)+10, row)
+
+			# ############################################################################
+			# options - final save both
+			# ############################################################################
+
+			row += 30
+
+			# apply button
+			self.e3B3 = QtGui.QPushButton(translate('magicJoints', 'create Tenon and Mortise'), self)
+			self.e3B3.clicked.connect(self.setJoints)
+			self.e3B3.setFixedWidth(toolSW-20)
+			self.e3B3.setFixedHeight(40)
+			self.e3B3.move(10, row)
 
 			# ############################################################################
 			# show & init defaults
@@ -388,16 +445,51 @@ def showQtGUI():
 
 			self.ob1S.setText(self.gNoSelection1)
 			self.ob2S.setText(self.gNoSelection2)
+			self.ob3S.setText(self.gNoSelection3)
+		
+		# ############################################################################
+		def refreshInfoScreens(self):
 			
+			try:
+				n = ""
+				n += str(self.gObj1.Label)
+				self.ob1S.setText(n)
+			except:
+				self.ob1S.setText(self.gNoSelection1)
+
+			try:
+				n = ""
+				n += str(self.gObj2.Label)
+				n += ", "
+				n += "Face"
+				n += str(self.gObj2FaceIndex)
+				self.ob2S.setText(n)
+			except:
+				self.ob2S.setText(self.gNoSelection2)
+			
+			try:
+				n = ""
+				n += str(self.gObj3.Label)
+				n += ", "
+				n += "Face"
+				n += str(self.gObj3FaceIndex)
+				self.ob3S.setText(n)
+			except:
+				self.ob3S.setText(self.gNoSelection3)
+				
 		# ############################################################################
 		def resetGlobals(self):
 
-			self.gSketchRef = ""
-			self.gObjRef = ""
+			self.gObj1 = ""
 			
-			self.gFaceRef = ""
-			self.gFaceIndex = 0
+			self.gObj2 = ""
+			self.gObj2Face = ""
+			self.gObj2FaceIndex = 0
 		
+			self.gObj3 = ""
+			self.gObj3Face = ""
+			self.gObj3FaceIndex = 0
+			
 			self.gAnchorCurrent = ""
 			self.gAnchorArr = []
 			self.gAnchorIndex = 0
@@ -439,56 +531,6 @@ def showQtGUI():
 			FreeCAD.ActiveDocument.recompute()
 
 		# ############################################################################
-		def showJoints(self):
-			
-			# set info screen
-			
-			info = str(self.gAnchorIndex + 1) + " / " + str(len(self.gAnchorArr))
-			self.s2IS.setText(info)
-
-			info = str(self.gRoIndex + 1) + " / " + str(len(self.gRoAnglesArr))
-			self.s4IS.setText(info)
-			
-			# remove all
-			
-			if self.gLink != "":
-				try:
-					FreeCAD.activeDocument().removeObject(str(self.gLink.Name))
-				except:
-					skip = 1
-			
-			self.gLink = ""
-			
-			# set anchor
-			
-			X, Y, Z = self.gAnchorCurrent[0], self.gAnchorCurrent[1], self.gAnchorCurrent[2]
-			x, y, z = 0, 0, 0
-
-			# copy Sketch
-
-			link = Draft.make_clone(self.gSketchRef)
-			link.Label = "Pattern from " + str(self.gSketchRef.Label) + " "
-			
-			link.ViewObject.LineWidth = 6.00
-			link.ViewObject.LineColor = (1.00,0.00,0.00)
-			self.gSketchRef.Visibility = False
-
-			# set object into position
-
-			x = X + self.gAxisX
-			y = Y + self.gAxisY
-			z = Z + self.gAxisZ
-
-			link.Placement.Base.x = x
-			link.Placement.Base.y = y
-			link.Placement.Base.z = z
-			
-			self.gLink = link
-
-			# set current rotation
-			
-			self.setRotation()
-
 		def setSketchRotations(self):
 			
 			import math
@@ -496,7 +538,7 @@ def showQtGUI():
 			self.gRoAnglesArr = []
 			self.gRoAxisArr = []
 			
-			[ x, y, z, r ] = MagicPanels.getSketchPlacement(self.gSketchRef, "global")
+			[ x, y, z, r ] = MagicPanels.getSketchPlacement(self.gObj1, "global")
 
 			# init state
 			self.gRoAnglesArr.append( math.degrees(r.Angle) )
@@ -579,10 +621,11 @@ def showQtGUI():
 			self.gRoAngles = self.gRoAnglesArr[0]
 			self.gRoAxis = self.gRoAxisArr[0]
 		
+		# ############################################################################
 		def setSketchAnchors(self):
 			
-			[ x, y, z, r ] = MagicPanels.getSketchPlacement(self.gSketchRef, "global")
-			[ v1, v2, v3, v4 ] = MagicPanels.getFaceVertices(self.gFaceRef)
+			[ x, y, z, r ] = MagicPanels.getSketchPlacement(self.gObj1, "global")
+			[ v1, v2, v3, v4 ] = MagicPanels.getFaceVertices(self.gObj2Face)
 		
 			self.gAnchorArr = []
 			self.gAnchorArr.append([x, y, z])
@@ -592,79 +635,174 @@ def showQtGUI():
 			self.gAnchorArr.append(v4)
 			
 			self.gAnchorCurrent = self.gAnchorArr[self.gAnchorIndex]
+		
+		# ############################################################################
+		def setSelectionData(self):
+		
+			try:
+				self.setSketchAnchors()
+			except:
+				skip = 1
 			
+			try:
+				self.setSketchRotations()
+			except:
+				skip = 1
+				
+			try:
+				self.showJoints()
+			except:
+				skip = 1
+			
+		# ############################################################################
+		def showJoints(self):
+			
+			# set info screen
+			
+			info = str(self.gAnchorIndex + 1) + " / " + str(len(self.gAnchorArr))
+			self.s2IS.setText(info)
+
+			info = str(self.gRoIndex + 1) + " / " + str(len(self.gRoAnglesArr))
+			self.s4IS.setText(info)
+			
+			# remove all
+			
+			if self.gLink != "":
+				try:
+					FreeCAD.activeDocument().removeObject(str(self.gLink.Name))
+				except:
+					skip = 1
+			
+			self.gLink = ""
+			
+			# set anchor
+			
+			X, Y, Z = self.gAnchorCurrent[0], self.gAnchorCurrent[1], self.gAnchorCurrent[2]
+			x, y, z = 0, 0, 0
+
+			# copy Sketch
+
+			link = Draft.make_clone(self.gObj1)
+			link.Label = "Pattern from " + str(self.gObj1.Label) + " "
+			
+			link.ViewObject.LineWidth = 6.00
+			link.ViewObject.LineColor = (1.00,0.00,0.00)
+			self.gObj1.Visibility = False
+
+			# set object into position
+
+			x = X + self.gAxisX
+			y = Y + self.gAxisY
+			z = Z + self.gAxisZ
+
+			link.Placement.Base.x = x
+			link.Placement.Base.y = y
+			link.Placement.Base.z = z
+			
+			self.gLink = link
+
+			# set current rotation
+			
+			self.setRotation()
+
 		# ############################################################################
 		# actions - functions for actions
 		# ############################################################################
+
+		# ############################################################################
+		def setObj1(self):
+
+			try:
+				self.gObj1 = FreeCADGui.Selection.getSelection()[0]
+				self.gObj1Visible = self.gObj1.Visibility
+
+				FreeCADGui.Selection.clearSelection()
+				self.refreshInfoScreens()
+				self.setSelectionData()
+				
+			except:
+				self.resetInfoScreen()
+
+		def setObj2(self):
+			
+			try:
+				self.gObj2 = FreeCADGui.Selection.getSelection()[0]
+				self.gObj2Face = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				self.gObj2FaceIndex = MagicPanels.getFaceIndex(self.gObj2, self.gObj2Face)
+
+				FreeCADGui.Selection.clearSelection()
+				self.refreshInfoScreens()
+				self.setSelectionData()
+
+			except:
+				self.resetInfoScreen()
+
+		def setObj3(self):
+			
+			try:
+				self.gObj3 = FreeCADGui.Selection.getSelection()[0]
+				self.gObj3Face = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				self.gObj3FaceIndex = MagicPanels.getFaceIndex(self.gObj3, self.gObj3Face)
+
+				FreeCADGui.Selection.clearSelection()
+				self.refreshInfoScreens()
+				self.setSelectionData()
+				
+			except:
+				self.resetInfoScreen()
 
 		# ############################################################################
 		def getSelected(self):
 
 			try:
 
-				# update face only
-				if self.gSketchRef != "" and len(FreeCADGui.Selection.getSelection()) == 1:
+				# update face of 2nd object only
+				if self.gObj1 != "" and len(FreeCADGui.Selection.getSelection()) == 1:
 					
 					# update face data
-					
-					self.gObjRef = FreeCADGui.Selection.getSelection()[0]
-					self.gFaceRef = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-					self.gFaceIndex = MagicPanels.getFaceIndex(self.gObjRef, self.gFaceRef)
-
+					self.gObj2 = FreeCADGui.Selection.getSelection()[0]
+					self.gObj2Face = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+					self.gObj2FaceIndex = MagicPanels.getFaceIndex(self.gObj2, self.gObj2Face)
 					FreeCADGui.Selection.clearSelection()
 					
 					# update info screen for face only
-					
 					n = ""
-					n += str(self.gObjRef.Label)
+					n += str(self.gObj2.Label)
 					n += ", "
 					n += "Face"
-					n += str(self.gFaceIndex)
+					n += str(self.gObj2FaceIndex)
 					self.ob2S.setText(n)
 					
-					# load new face anchors
-					
+					# load new face anchors but not refresh sketch to keep the same place
 					self.setSketchAnchors()
 				
 					return
 				
-				# load init selections
-				
+				# init
 				self.resetGlobals()
 
-				self.gSketchRef = FreeCADGui.Selection.getSelection()[0]
-				self.gSketchVisible = self.gSketchRef.Visibility
-				
-				self.gObjRef = FreeCADGui.Selection.getSelection()[1]
-				self.gFaceRef = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-				self.gFaceIndex = MagicPanels.getFaceIndex(self.gObjRef, self.gFaceRef)
+				# get all objects
+				self.gObj1 = FreeCADGui.Selection.getSelection()[0]
+				self.gObj1Visible = self.gObj1.Visibility
 
-				FreeCADGui.Selection.clearSelection()
+				self.gObj2 = FreeCADGui.Selection.getSelection()[1]
+				self.gObj2Face = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+				self.gObj2FaceIndex = MagicPanels.getFaceIndex(self.gObj2, self.gObj2Face)
 				
-				# update info screens
-				
-				n = ""
-				n += str(self.gSketchRef.Label)
-				self.ob1S.setText(n)
-				
-				n = ""
-				n += str(self.gObjRef.Label)
-				n += ", "
-				n += "Face"
-				n += str(self.gFaceIndex)
-				self.ob2S.setText(n)
-				
-				# set anchors
+				try:
+					self.gObj3 = FreeCADGui.Selection.getSelection()[2]
+					self.gObj3Face = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
+					self.gObj3FaceIndex = MagicPanels.getFaceIndex(self.gObj3, self.gObj3Face)
+				except:
+					skip = 1
+
+				self.refreshInfoScreens()
+
 				self.setSketchAnchors()
-
-				# set rotation 
 				self.setSketchRotations()
-				
-				# show the joint pattern
 				self.showJoints()
-			
-			except:
 
+			except:
 				self.resetInfoScreen()
 				return -1
 
@@ -851,17 +989,20 @@ def showQtGUI():
 			
 			try:
 				self.gDepth = float(self.oFxDepthE.text())
+				t2 = self.gObj2.ViewObject.Transparency
 				
-				[ self.gObjRef, self.gFaceRef ] = MagicPanels.makeMortise(self.gLink, self.gDepth, self.gObjRef, self.gFaceRef)
-				self.gFaceIndex = MagicPanels.getFaceIndex(self.gObjRef, self.gFaceRef)
+				[ self.gObj2, self.gObj2Face ] = MagicPanels.makeMortise(self.gLink, self.gDepth, self.gObj2, self.gObj2Face)
+				self.gObj2FaceIndex = MagicPanels.getFaceIndex(self.gObj2, self.gObj2Face)
 				
 				n = ""
-				n += str(self.gObjRef.Label)
+				n += str(self.gObj2.Label)
 				n += ", "
 				n += "Face"
-				n += str(self.gFaceIndex)
+				n += str(self.gObj2FaceIndex)
 				self.ob2S.setText(n)
-			
+				
+				self.gObj2.ViewObject.Transparency = t2
+				
 			except:
 				self.resetInfoScreen()
 				
@@ -869,17 +1010,43 @@ def showQtGUI():
 			
 			try:
 				self.gDepth = float(self.oFxDepthE.text())
+				t2 = self.gObj2.ViewObject.Transparency
 				
-				[ self.gObjRef, self.gFaceRef ] = MagicPanels.makeTenon(self.gLink, self.gDepth, self.gObjRef, self.gFaceRef)
-				self.gFaceIndex = MagicPanels.getFaceIndex(self.gObjRef, self.gFaceRef)
+				[ self.gObj2, self.gObj2Face ] = MagicPanels.makeTenon(self.gLink, self.gDepth, self.gObj2, self.gObj2Face)
+				self.gObj2FaceIndex = MagicPanels.getFaceIndex(self.gObj2, self.gObj2Face)
 				
 				n = ""
-				n += str(self.gObjRef.Label)
+				n += str(self.gObj2.Label)
 				n += ", "
 				n += "Face"
-				n += str(self.gFaceIndex)
+				n += str(self.gObj2FaceIndex)
 				self.ob2S.setText(n)
+				
+				self.gObj2.ViewObject.Transparency = t2
 			
+			except:
+				self.resetInfoScreen()
+		
+		def setJoints(self):
+			
+			try:
+
+				self.gDepth = float(self.oFxDepthE.text())
+				
+				t2 = self.gObj2.ViewObject.Transparency
+				t3 = self.gObj3.ViewObject.Transparency
+				
+				[ self.gObj2, self.gObj2Face ] = MagicPanels.makeTenon(self.gLink, self.gDepth, self.gObj2, self.gObj2Face)
+				self.gObj2FaceIndex = MagicPanels.getFaceIndex(self.gObj2, self.gObj2Face)
+				
+				[ self.gObj3, self.gObj3Face ] = MagicPanels.makeMortise(self.gLink, self.gDepth, self.gObj3, self.gObj3Face)
+				self.gObj3FaceIndex = MagicPanels.getFaceIndex(self.gObj3, self.gObj3Face)
+				
+				self.refreshInfoScreens()
+			
+				self.gObj2.ViewObject.Transparency = t2
+				self.gObj3.ViewObject.Transparency = t3
+		
 			except:
 				self.resetInfoScreen()
 			
@@ -900,10 +1067,10 @@ def showQtGUI():
 
 		try:
 			FreeCAD.ActiveDocument.removeObject(str(form.gLink.Name))
-			if form.gSketchVisible == True:
-				form.gSketchRef.Visibility = True
+			if form.gObj1Visible == True:
+				form.gObj1.Visibility = True
 			else:
-				form.gSketchRef.Visibility = False
+				form.gObj1.Visibility = False
 		except:
 			skip = 1
 
