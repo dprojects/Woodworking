@@ -17,17 +17,8 @@ try:
 
 	sketchPattern = FreeCAD.ActiveDocument.copyObject(base)
 	sketchPattern.Label = "Parametric Pattern "
-
+	
 	for sketch in selectedObjects:
-
-		cloneName = "clone_" + str(sketch.Name)
-		clone = Draft.make_clone(sketchPattern)
-		clone.Label = "Clone " + str(sketch.Label) + " "
-		
-		[ x, y, z, r ] = MagicPanels.getSketchPlacement(sketch, "global")
-		MagicPanels.setPlacement(clone, x, y, z, r)
-
-		FreeCAD.ActiveDocument.recompute()
 
 		for o in allObjects:
 			skip = 0
@@ -35,11 +26,27 @@ try:
 				test = o.Profile[0]
 			except:
 				skip = 1
-			
+
 			if skip == 0:
 				if str(o.Profile[0].Name) == str(sketch.Name):
+
+					cloneName = "clone_" + str(sketch.Name)
+					clone = Draft.make_clone(sketchPattern)
+					clone.Label = "Clone " + str(sketch.Label) + " "
+
+					[ x, y, z, r ] = MagicPanels.getSketchPlacement(sketch, "global")
+					MagicPanels.setPlacement(clone, x, y, z, r)
+
+					FreeCAD.ActiveDocument.recompute()
+
 					parent = FreeCAD.ActiveDocument.getObject(o.Name)
+					
+					body = parent._Body
+					clone.adjustRelativeLinks(body)
+					body.ViewObject.dropObject(clone, None, '', [])
+
 					parent.Profile = clone
+					clone.Visibility = False
 
 		sketch.Visibility = False
 		FreeCAD.ActiveDocument.recompute()
