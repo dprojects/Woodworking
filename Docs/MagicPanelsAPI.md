@@ -676,6 +676,27 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 		z: Z Axis object position
 		r: Rotation object
 
+### getGlobalPlacement(iObj):
+
+	getGlobalPlacement(iObj) - call FreeCAD getGlobalPlacement at base object, and return useful form of placement
+	
+##### Args:
+	
+		iObj: object to get placement
+
+##### Usage:
+	
+		[ x, y, z, r ] = MagicPanels.getGlobalPlacement(o)
+
+##### Result:
+	
+		return [ x, y, z, r ] array with placement info, where:
+		
+		x: X Axis object position
+		y: Y Axis object position
+		z: Z Axis object position
+		r: Rotation object
+
 ### setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
 
 	setPlacement(iObj, iX, iY, iZ, iR, iAnchor="") - set placement with rotation for given object.
@@ -749,8 +770,8 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 		iZ: Z Axis object position
 		iR: Rotation object
 		iType: 
-			"global" - global Sketch position
-			"attach" - AttachmentOffset position
+			"global" - global Sketch position, good before Pocket or any other operation, Sketch global position is temporary, FreeCAD bug? after Sketch edit the Sketch position will be lost, use "attach" to keep it
+			"attach" - AttachmentOffset position, global position will be converted to AttachmentOffset, make sure the Support is set for Sketch, the Clones may not have Support, use global instead
 
 ##### Usage:
 	

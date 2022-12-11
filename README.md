@@ -77,6 +77,8 @@ The Woodworking workbench has also API for developers. You can also create your 
 * API documentation: [MagicPanelsAPI.md](https://github.com/dprojects/Woodworking/blob/master/Docs/MagicPanelsAPI.md)
 * You can also browse MagicPanels library directly from Woodworking workbench via: [scanObjects tool](https://github.com/dprojects/Woodworking/tree/master/Docs#scanobjects)
 
+**Note:** For programming I use simple [KWrite](https://en.wikipedia.org/wiki/KWrite) editor. I have set tabulators as indent: `Settings` -> `Configure Editor` -> `Editing` -> `Indentation` -> `Tabulators` -> `Tab width: 4 characters`.
+
 # Contact
 
 * For questions, comments, feature requests, improvements, please open issue at: [issue tracker](https://github.com/dprojects/Woodworking/issues)
@@ -84,4 +86,4 @@ The Woodworking workbench has also API for developers. You can also create your 
 
 # License
 
-MIT for all Woodworking workbench content.
+[MIT](https://github.com/dprojects/Woodworking/blob/master/LICENSE) for all Woodworking workbench content.

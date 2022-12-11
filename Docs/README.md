@@ -184,12 +184,11 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 ### mapPosition
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/mapPosition.png"> First select object to copy position, next select objects to move. **Note:** This tool allows to move objects to the same position as first selected object. The objects will be moved without rotation. Only the placement will change. If the first selected object is rotated they objects may not match exactly the starting point. This tool is very useful if you want to redesign furniture and you want to create new element. Using this tool you can quickly move the new element to the same position of old element and remove the old element. To select more objects hold left `CTRL` key during selection.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/mapPosition.png"> First select object to copy position, next select objects to move. **Note:** This tool allows to move objects to the same position as first selected object. The objects will be moved without rotation. Only the placement will change. If the first selected object is rotated the objects may not match exactly the starting point. This tool is very useful if you want to redesign furniture and you want to create new element. Using this tool you can quickly move the new element to the same position of old element and remove the old element. To select more objects hold left CTRL key during selection. With this tool you can also move Cylinders and Sketches more precisely. If first you select Edge or Face the Cylinders or Sketches will be moved to the CenterOfMass. If first you select Vertex the Cylinders or Sketches will be moved to the selected Vertex position.
 
 **Video tutorials:** 
 * [Mapping position](https://www.youtube.com/watch?v=841xzb_uRpc)
-
-<br><br><br>
+* [mapPosition little improved](https://www.youtube.com/watch?v=pMKLXvwmGSI)
 
 ### panelMove2Face
 
@@ -587,7 +586,7 @@ Tool repository: [github.com/dprojects/sheet2export](https://github.com/dproject
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/sketch2clone.png"> This tool allows to replace selected Sketches with Clones and thanks to it, convert static model to parametric. First selected Sketch will be changed into `Parametric Pattern` for all other selected Sketches. After this operation, if you change the `Parametric Pattern` all other Sketches will be automatically updated with new pattern. For example if you have Pad, it will change the shape. Make sure the center of coordinate axes XYZ for each selected Sketch is in the middle of the pattern, this will allow for correct positioning of the Sketches. To select more objects hold left CTRL key during selection. For more complicated objects use [panel2link](#panel2link) or [panel2clone](#panel2clone) at the whole `Part`. 
 
 **Video tutorials:** 
-* [Automatic parametrization](https://www.youtube.com/watch?v=JuZsAjrQr6M)
+* [Playlist for parametrization](https://www.youtube.com/playlist?list=PLSKOS_LK45BCzvg_B7oSTk1IsQnu5thtZ)
 
 ### showAlias
 

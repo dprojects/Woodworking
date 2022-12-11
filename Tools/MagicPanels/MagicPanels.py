@@ -2008,6 +2008,47 @@ def getPlacement(iObj):
 
 
 # ###################################################################################################################
+def getGlobalPlacement(iObj):
+	'''
+	getGlobalPlacement(iObj) - call FreeCAD getGlobalPlacement at base object, and return useful form of placement
+	
+	Args:
+	
+		iObj: object to get placement
+
+	Usage:
+	
+		[ x, y, z, r ] = MagicPanels.getGlobalPlacement(o)
+
+	Result:
+	
+		return [ x, y, z, r ] array with placement info, where:
+		
+		x: X Axis object position
+		y: Y Axis object position
+		z: Z Axis object position
+		r: Rotation object
+
+	'''
+
+	o = getReference(iObj)
+
+	if o.isDerivedFrom("PartDesign::Pad"):
+		ref = o.Profile[0]
+	else:
+		ref = o
+
+	p = ref.getGlobalPlacement()
+
+	x = p.Base.x
+	y = p.Base.y
+	z = p.Base.z
+	r = p.Rotation
+
+	return [ x, y, z, r ]
+
+
+# ###################################################################################################################
 def setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
 	'''
 	setPlacement(iObj, iX, iY, iZ, iR, iAnchor="") - set placement with rotation for given object.
@@ -2181,8 +2222,8 @@ def setSketchPlacement(iSketch, iX, iY, iZ, iR, iType):
 		iZ: Z Axis object position
 		iR: Rotation object
 		iType: 
-			"global" - global Sketch position
-			"attach" - AttachmentOffset position
+			"global" - global Sketch position, good before Pocket or any other operation, Sketch global position is temporary, FreeCAD bug? after Sketch edit the Sketch position will be lost, use "attach" to keep it
+			"attach" - AttachmentOffset position, global position will be converted to AttachmentOffset, make sure the Support is set for Sketch, the Clones may not have Support, use global instead
 
 	Usage:
 	
@@ -2196,8 +2237,30 @@ def setSketchPlacement(iSketch, iX, iY, iZ, iR, iType):
 
 	if iType == "attach":
 		
-		iSketch.AttachmentOffset.Base = FreeCAD.Vector(iX, iY, iZ)
-		iSketch.AttachmentOffset.Rotation = iR
+		plane = iSketch.Support[0][0].Label
+		
+		rX = iR.Axis.x
+		rY = iR.Axis.y
+		rZ = iR.Axis.z
+		rAngle = iR.Angle
+
+		# the Sketch AttachmentOffset position is rocket science for me ;-)
+		# it has been invented by time travelers or what? ;-)
+
+		if plane.startswith("XY"):
+			x, y, z = iX, iY, iZ
+			r = FreeCAD.Rotation(FreeCAD.Vector(rX, rY, rZ), rAngle)
+			
+		if plane.startswith("XZ"):
+			x, y, z = iX, iZ, -iY
+			r = FreeCAD.Rotation(FreeCAD.Vector(rX, rZ, -rY), rAngle)
+			
+		if plane.startswith("YZ"):
+			x, y, z = iY, iZ, iX
+			r = FreeCAD.Rotation(FreeCAD.Vector(rY, rZ, rX), rAngle)
+
+		iSketch.AttachmentOffset.Base = FreeCAD.Vector(x, y, z)
+		iSketch.AttachmentOffset.Rotation = r
 		
 	if iType == "global":
 		
