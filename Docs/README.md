@@ -75,6 +75,9 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 	* [Code and Debug](#code-and-debug)
 		* [scanObjects](#scanobjects)
 		* [debugInfo](#debuginfo)
+    * [Project manage](#project-manage)
+		* [selected2LinkGroup](#selected2linkgroup)
+		* [selected2Link](#selected2link)
 * [Dowels, Screws, Fixture](#dowels-screws-fixture)
 * [Holes, Countersinks, Counterbores](#holes-countersinks-counterbores)
 	* [Drilling serially](#drilling-serially)
@@ -165,16 +168,19 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 **Options:**
 
-* **Move mode:** In this mode you can move any object with custom step. If the object is recognized the `Move step` will be set by default with selected object thickness. You can also move containers. It can be used if you want to move many objects, for exampe panel with dowels.
+* **Move:** In this mode you can move any object with custom step. If the object is recognized the `Move step` will be set by default with selected object thickness. You can also move containers. It can be used if you want to move many objects, for exampe panel with dowels.
 
-* **Copy mode:** In copy mode you can quickly create arrays, sets of many objects perfectly aligned with custom offset. 
+* **Copy:** In copy mode you can quickly create arrays, sets of many objects perfectly aligned with custom offset. 
   * `copyObject` by default, good for simple objects like `Cube`.
   * `Clone` is useful, if you want to make copy of `Body` or `Part` with many Bodies.
   * `Link` if you want to copy `LinkGroup` and generate cut-list, it is better to set this copy option. 
   * `Copy offset` this is offset between original selected object or last copied element and next copied element. If this is set to `0` the next element will be created without space in relation to the last element. For example if you set `10` and click `X+` many times, the space before each copied elements will be `10`.
 
+* **Mirror:** This option create mirror with offset. You can select single element like `Cube` or container like `LinkGroup` with more elements inside. This tool calculates occupied space by the selected element and add new element with given offset. If you have dowels the space will be calculated from dowels to dowels.
+
 **Video tutorials:** 
 * [Smart move & copy](https://www.youtube.com/watch?v=gh0Sc0eLooQ)
+* [Mirror with offset](https://www.youtube.com/watch?v=DG7eUsz8-0c)
 
 ### magicAngle
 
@@ -638,6 +644,20 @@ Main features:
   * The worms are unhappy, if everything works.
   * The worms are happy, if everything is broken.
   * If not everything is broken, the worm will be partially happy, I mean happy and sad at the same time, good joke? ;-)
+
+## Project manage
+
+### selected2LinkGroup
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/selected2LinkGroup.png"> This tool call FreeCAD LinkGroup command and set color for new LinkGroup objects from first selected object. To select more objects hold left CTRL key during selection.
+
+<br><br><br><br><br><br>
+
+### selected2Link
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/selected2Link.png"> This tool call FreeCAD simple Link command and set color for new Link objects from first selected object. To select more objects hold left CTRL key during selection.
+
+<br><br><br><br><br><br>
 
 # Dowels, Screws, Fixture
 

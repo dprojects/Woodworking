@@ -26,11 +26,16 @@ def showQtGUI():
 		gInfoMoveY = translate('magicMove', 'Move along Y:')
 		gInfoMoveZ = translate('magicMove', 'Move along Z:')
 		gInfoMoveStep = translate('magicMove', 'Move step:')
-		
+
 		gInfoCopyX = translate('magicMove', 'Copy along X:')
 		gInfoCopyY = translate('magicMove', 'Copy along Y:')
 		gInfoCopyZ = translate('magicMove', 'Copy along Z:')
 		gInfoCopyStep = translate('magicMove', 'Copy offset:')
+
+		gInfoMirrorX = translate('magicMove', 'Mirror along X:')
+		gInfoMirrorY = translate('magicMove', 'Mirror along Y:')
+		gInfoMirrorZ = translate('magicMove', 'Mirror along Z:')
+		gInfoMirrorStep = translate('magicMove', 'Mirror offset:')
 		
 		gObj = ""
 		gThick = 0
@@ -48,7 +53,7 @@ def showQtGUI():
 		gCrossCorner = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
 		gCrossCenter = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
 
-		gNoSelection = translate('magicMove', 'select panel to move or copy')
+		gNoSelection = translate('magicMove', 'select panel or container')
 		
 		# ############################################################################
 		# init
@@ -116,7 +121,8 @@ def showQtGUI():
 			
 			self.sModeList = (
 						"Move",
-						"Copy"
+						"Copy",
+						"Mirror"
 						)
 			
 			self.sMode = QtGui.QComboBox(self)
@@ -303,14 +309,16 @@ def showQtGUI():
 			self.gLCPY = 0
 			self.gLCPZ = 0
 			self.gLCPR = 0
-			
+		
+		# ############################################################################
 		def setLastPosition(self):
 			
 			if self.gObj.isDerivedFrom("Sketcher::SketchObject"):
 				[ self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR ] = MagicPanels.getSketchPlacement(self.gObj, "global")
 			else:
 				[ self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR ] = MagicPanels.getPlacement(self.gObj)
-			
+		
+		# ############################################################################
 		def setMove(self, iType):
 			
 			self.gStep = float(self.o4E.text())
@@ -357,6 +365,7 @@ def showQtGUI():
 			MagicPanels.setPlacement(self.gObj, px+x, py+y, pz+z, r)
 			FreeCAD.activeDocument().recompute()
 
+		# ############################################################################
 		def createCopy(self, iType):
 			
 			self.gStep = float(self.o4E.text())
@@ -414,6 +423,57 @@ def showQtGUI():
 				skip = 1
 
 		# ############################################################################
+		def createMirror(self, iType):
+			
+			self.gStep = float(self.o4E.text())
+			
+			[ x, y, z, r ] = MagicPanels.getPlacement(self.gObj)
+			mx, my, mz = 0, 0, 0
+			
+			if iType == "Xp":
+				x = x + self.gMaxX
+				mx = self.gStep
+				direction = (1, 0, 0)
+			
+			if iType == "Xm":
+				mx = - self.gStep
+				direction = (1, 0, 0)
+				
+			if iType == "Yp":
+				y = y + self.gMaxY
+				my = self.gStep
+				direction = (0, 1, 0)
+				
+			if iType == "Ym":
+				my = - self.gStep
+				direction = (0, 1, 0)
+
+			if iType == "Zp":
+				z = z + self.gMaxZ
+				mz = self.gStep
+				direction = (0, 0, 1)
+				
+			if iType == "Zm":
+				mz = - self.gStep
+				direction = (0, 0, 1)
+
+			mirror = FreeCAD.ActiveDocument.addObject('Part::Mirroring', "mirror")
+			mirror.Label = "Mirror, " + str(self.gObj.Label) + " "
+			mirror.Source = FreeCAD.ActiveDocument.getObject(self.gObj.Name)
+			mirror.Normal = direction
+			mirror.Base = (x, y, z)
+			
+			FreeCAD.activeDocument().recompute()
+			
+			[ cx, cy, cz, r ] = MagicPanels.getPlacement(mirror)
+			MagicPanels.setPlacement(mirror, cx+mx, cy+my, cz+mz, r)
+			
+			try:
+				MagicPanels.copyColors(self.gObj, mirror)
+			except:
+				skip = 1
+			
+		# ############################################################################
 		# actions - functions for actions
 		# ############################################################################
 
@@ -454,8 +514,6 @@ def showQtGUI():
 				self.o3L.setText(self.gInfoMoveZ)
 				self.o4L.setText(self.gInfoMoveStep)
 				self.sCopyType.hide()
-				self.gStep = self.gThick
-				self.o4E.setText(str(self.gStep))
 				self.setLastPosition()
 
 			if selectedText == "Copy":
@@ -464,8 +522,14 @@ def showQtGUI():
 				self.o3L.setText(self.gInfoCopyZ)
 				self.o4L.setText(self.gInfoCopyStep)
 				self.sCopyType.show()
-				self.gStep = 0
-				self.o4E.setText(str(self.gStep))
+				self.setLastPosition()
+
+			if selectedText == "Mirror":
+				self.o1L.setText(self.gInfoMirrorX)
+				self.o2L.setText(self.gInfoMirrorY)
+				self.o3L.setText(self.gInfoMirrorZ)
+				self.o4L.setText(self.gInfoMirrorStep)
+				self.sCopyType.hide()
 				self.setLastPosition()
 
 		def setCopyType(self, selectedText):
@@ -518,7 +582,9 @@ def showQtGUI():
 					
 				if self.gModeType == "Copy":
 					self.createCopy("Xm")
-					
+				
+				if self.gModeType == "Mirror":
+					self.createMirror("Xm")
 			except:
 				self.s1S.setText(self.gNoSelection)
 			
@@ -530,7 +596,9 @@ def showQtGUI():
 					
 				if self.gModeType == "Copy":
 					self.createCopy("Xp")
-					
+
+				if self.gModeType == "Mirror":
+					self.createMirror("Xp")
 			except:
 				self.s1S.setText(self.gNoSelection)
 			
@@ -543,6 +611,8 @@ def showQtGUI():
 				if self.gModeType == "Copy":
 					self.createCopy("Ym")
 			
+				if self.gModeType == "Mirror":
+					self.createMirror("Ym")
 			except:
 				self.s1S.setText(self.gNoSelection)
 		
@@ -554,7 +624,9 @@ def showQtGUI():
 					
 				if self.gModeType == "Copy":
 					self.createCopy("Yp")
-					
+
+				if self.gModeType == "Mirror":
+					self.createMirror("Yp")
 			except:
 				self.s1S.setText(self.gNoSelection)
 
@@ -566,7 +638,9 @@ def showQtGUI():
 					
 				if self.gModeType == "Copy":
 					self.createCopy("Zm")
-					
+				
+				if self.gModeType == "Mirror":
+					self.createMirror("Zm")
 			except:
 				self.s1S.setText(self.gNoSelection)
 		
@@ -578,7 +652,9 @@ def showQtGUI():
 					
 				if self.gModeType == "Copy":
 					self.createCopy("Zp")
-					
+				
+				if self.gModeType == "Mirror":
+					self.createMirror("Zp")
 			except:
 				self.s1S.setText(self.gNoSelection)
 

@@ -676,6 +676,84 @@ FreeCADGui.addCommand("debugInfo", debugInfo())
 
 	
 # ######################################################################################################################
+class selected2LinkGroup():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "selected2LinkGroup.png"),
+				"MenuText": QT_TRANSLATE_NOOP("selected2LinkGroupMenuText", "selected to LinkGroup"),
+				"ToolTip" : QT_TRANSLATE_NOOP("selected2LinkGroupToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "selected2LinkGroup"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("selected2LinkGroup", selected2LinkGroup())
+
+	
+# ######################################################################################################################
+class selected2Link():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "selected2Link.png"),
+				"MenuText": QT_TRANSLATE_NOOP("selected2LinkMenuText", "selected to Link"),
+				"ToolTip" : QT_TRANSLATE_NOOP("selected2LinkToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "selected2Link"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("selected2Link", selected2Link())
+
+	
+# ######################################################################################################################
 class drillHoles():
 
 	def GetResources(self):

@@ -3650,6 +3650,42 @@ def copyColors(iSource, iTarget):
 	except:
 		skip = 1
 	
+	# handling links
+	if (
+		iSource.isDerivedFrom("App::LinkGroup") or 
+		iTarget.isDerivedFrom("App::LinkGroup") or
+		iSource.isDerivedFrom("App::Link") or 
+		iTarget.isDerivedFrom("App::Link") 
+		):
+	
+		# normal -> link
+		try:
+			iTarget.ViewObject.ShapeMaterial.DiffuseColor = iSource.ViewObject.ShapeColor
+		except:
+			skip = 1
+		
+		try:
+			iTarget.ViewObject.ShapeMaterial.DiffuseColor = iSource.ViewObject.DiffuseColor
+		except:
+			skip = 1
+
+		# link -> normal
+		try:
+			iTarget.ViewObject.ShapeColor = iSource.ViewObject.ShapeMaterial.DiffuseColor
+		except:
+			skip = 1
+		
+		try:
+			iTarget.ViewObject.DiffuseColor = iSource.ViewObject.ShapeMaterial.DiffuseColor
+		except:
+			skip = 1
+		
+		# link -> link
+		try:
+			iTarget.ViewObject.ShapeMaterial.DiffuseColor = iSource.ViewObject.ShapeMaterial.DiffuseColor
+		except:
+			skip = 1
+
 	if skip == 0:
 		return 0
 	else:
