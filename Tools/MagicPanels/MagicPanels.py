@@ -2049,6 +2049,52 @@ def getGlobalPlacement(iObj):
 
 
 # ###################################################################################################################
+def getContainersOffset(iObj):
+	'''
+	getContainersOffset(iObj) - if the object is in the container like Part, Body, LingGroup the vertices are 
+	not updated by FreeCAD. From FreeCAD perspective the object is still in the same place. This function 
+	is trying to solve this problem and calculates all offsets of all containers.
+	
+	Args:
+	
+		iObj: object to get containers offset
+
+	Usage:
+	
+		[ oX, oY, oZ, oR ] = MagicPanels.getContainersOffset(o)
+
+	Result:
+	
+		return [ oX, oY, oZ, oR ] array with offsets for placement:
+		
+		oX: X Axis object position
+		oY: Y Axis object position
+		oZ: Z Axis object position
+		oR: Rotation object (not implemented right now)
+
+	'''
+
+	oX, oY, oZ, oR = 0, 0, 0, 0
+	[ x, y, z, oR ] = getPlacement(iObj)
+	
+	for o in iObj.InListRecursive:
+		
+		if o.isDerivedFrom("Part::Mirroring"):
+			continue
+		
+		try:
+			[ x, y, z, r ] = getPlacement(o)
+		except:
+			continue
+		
+		oX += x
+		oY += y
+		oZ += z
+	
+	return [ oX, oY, oZ, oR ]
+
+
+# ###################################################################################################################
 def setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
 	'''
 	setPlacement(iObj, iX, iY, iZ, iR, iAnchor="") - set placement with rotation for given object.

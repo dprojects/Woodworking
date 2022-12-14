@@ -5,51 +5,47 @@ translate = FreeCAD.Qt.translate
 
 try:
 
-	objects = FreeCADGui.Selection.getSelection()
-	
-	if len(objects) < 2:
+	selectedObjects = FreeCADGui.Selection.getSelection()
+	allObjects = FreeCAD.ActiveDocument.Objects
+
+	if len(selectedObjects) < 2:
 		raise
-	
-	i = 0
+
+	base = selectedObjects[0]
+	baseFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+	basePlane = MagicPanels.getFacePlane(baseFace)
+	[ v1, v2, v3, v4 ] = MagicPanels.getFaceVertices(baseFace)
+	[ oX, oY, oZ, oR ] = MagicPanels.getContainersOffset(base)
+
+	objects = selectedObjects[1:]
+
 	for o in objects:
-		
-		i = i + 1
-		
-		if i == 1:
-
-			gObj = FreeCADGui.Selection.getSelection()[0]
-			gFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-
-			gFPlane = MagicPanels.getFacePlane(gFace)
-			[ v1, v2, v3, v4 ] = MagicPanels.getFaceVertices(gFace)
-
-			continue
 		
 		obj = MagicPanels.getReference(o)
 		
-		[ x, y, z, r ] = MagicPanels.getPlacement(obj)
+		[ x, y, z, r ] = MagicPanels.getGlobalPlacement(obj)
 		
-		if gFPlane == "XY":
+		if basePlane == "XY":
 			X = x
 			Y = y
-			Z = v1[2]
+			Z = v1[2] + oZ
 			R = r
 			
-		if gFPlane == "XZ":
+		if basePlane == "XZ":
 			X = x
-			Y = v1[1]
+			Y = v1[1] + oY
 			Z = z
 			R = r
 		
-		if gFPlane == "YZ":
-			X = v1[0]
+		if basePlane == "YZ":
+			X = v1[0] + oX
 			Y = y
 			Z = z
 			R = r
 		
 		MagicPanels.setPlacement(obj, X, Y, Z, R)
 		FreeCAD.ActiveDocument.recompute()
-		
+	
 except:
 	
 	info = ""

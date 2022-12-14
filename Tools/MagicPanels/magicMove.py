@@ -468,8 +468,13 @@ def showQtGUI():
 			[ cx, cy, cz, r ] = MagicPanels.getPlacement(mirror)
 			MagicPanels.setPlacement(mirror, cx+mx, cy+my, cz+mz, r)
 			
+			# hehe ;-)
 			try:
-				MagicPanels.copyColors(self.gObj, mirror)
+				for o in self.gObj.OutListRecursive:
+					s = str(o.getAllDerivedFrom()[0])
+					if s.startswith("Part::") or s.startswith("PartDesign::"):
+						MagicPanels.copyColors(o, mirror)
+						raise
 			except:
 				skip = 1
 			

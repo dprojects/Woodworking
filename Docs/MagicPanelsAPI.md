@@ -697,6 +697,29 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 		z: Z Axis object position
 		r: Rotation object
 
+### getContainersOffset(iObj):
+
+	getContainersOffset(iObj) - if the object is in the container like Part, Body, LingGroup the vertices are 
+	not updated by FreeCAD. From FreeCAD perspective the object is still in the same place. This function 
+	is trying to solve this problem and calculates all offsets of all containers.
+	
+##### Args:
+	
+		iObj: object to get containers offset
+
+##### Usage:
+	
+		[ oX, oY, oZ, oR ] = MagicPanels.getContainersOffset(o)
+
+##### Result:
+	
+		return [ oX, oY, oZ, oR ] array with offsets for placement:
+		
+		oX: X Axis object position
+		oY: Y Axis object position
+		oZ: Z Axis object position
+		oR: Rotation object (not implemented right now)
+
 ### setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
 
 	setPlacement(iObj, iX, iY, iZ, iR, iAnchor="") - set placement with rotation for given object.
