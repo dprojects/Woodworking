@@ -3051,7 +3051,7 @@ def makeHoles(iObj, iFace, iCylinders):
 		holeSketch = body.newObject('Sketcher::SketchObject','Sketch')
 		holeSketch.MapMode = 'FlatFace'
 
-		axis = o.Placement.Rotation.Axis
+		axis = FreeCAD.Vector(0, 0, 1)
 		circleGeo = Part.Circle(FreeCAD.Vector(0, 0, 0), axis, o.Radius)
 		holeSketch.addGeometry(circleGeo, False)
 		
@@ -3152,7 +3152,7 @@ def makeCountersinks(iObj, iFace, iCones):
 		holeSketch = body.newObject('Sketcher::SketchObject','Sketch')
 		holeSketch.MapMode = 'FlatFace'
 
-		axis = o.Placement.Rotation.Axis
+		axis = FreeCAD.Vector(0, 0, 1)
 		r1 = float(2 * o.Radius1)
 		r2 = float(2 * o.Radius2)
 		sr1 = str(r1)+" mm"
@@ -3265,7 +3265,7 @@ def makeCounterbores(iObj, iFace, iCones):
 		holeSketch = body.newObject('Sketcher::SketchObject','Sketch')
 		holeSketch.MapMode = 'FlatFace'
 
-		axis = o.Placement.Rotation.Axis
+		axis = FreeCAD.Vector(0, 0, 1)
 		r1 = float(2 * o.Radius1)
 		r2 = float(2 * o.Radius2)
 		sr1 = str(r1)+" mm"
@@ -3376,7 +3376,7 @@ def makePocketHoles(iObj, iFace, iCones):
 		holeSketch = body.newObject('Sketcher::SketchObject','Sketch')
 		holeSketch.MapMode = 'FlatFace'
 
-		axis = o.Placement.Rotation.Axis
+		axis = FreeCAD.Vector(0, 0, 1)
 		r1 = float(2 * o.Radius1)
 		r2 = float(2 * o.Radius2)
 		sr1 = str(r1)+" mm"
@@ -3495,7 +3495,7 @@ def makeCounterbores2x(iObj, iFace, iCones):
 		holeSketch1 = body.newObject('Sketcher::SketchObject','Sketch')
 		holeSketch1.MapMode = 'FlatFace'
 
-		axis = o.Placement.Rotation.Axis
+		axis = FreeCAD.Vector(0, 0, 1)
 		r1 = float(2 * o.Radius1)
 		r2 = float(2 * o.Radius2)
 		sr1 = str(r1)+" mm"
