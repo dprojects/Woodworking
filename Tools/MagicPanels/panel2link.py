@@ -25,7 +25,12 @@ try:
 		link.Label = "Link, " + o.Label
 		
 		[ x, y, z, r ] = MagicPanels.getPlacement(o)
+		[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(o)
+		x = x + coX
+		y = y + coY
+		z = z + coZ
 		MagicPanels.setPlacement(link, x, y, z, r)
+		MagicPanels.moveToFirst([ link ], o)
 		
 		FreeCAD.ActiveDocument.removeObject(str(o.Name))
 		FreeCAD.ActiveDocument.recompute()

@@ -2175,6 +2175,15 @@ def setDraftArray(iObj, iCaller="setDraftArray"):
 				while k < vArray:
 					setDraftArray(key, "self")
 					k = k + 1
+			
+			# array on Compound
+			elif key.isDerivedFrom("Part::Compound"):
+				
+				for c in key.Links:
+					k = 0
+					while k < vArray:
+						selectFurniturePart(c, iCaller)
+						k = k + 1
 				
 			# single array
 			else:

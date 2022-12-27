@@ -410,6 +410,7 @@ def showQtGUI():
 			
 			# get settings
 			[ v1, v2 ] = MagicPanels.getEdgeVertices(self.gEdgeArr[self.gEdgeIndex])
+			[ v1, v2 ] = MagicPanels.getVerticesOffset([ v1, v2 ], self.gObjRef, "array")
 			
 			# ############################################################################
 			# set link
@@ -570,11 +571,8 @@ def showQtGUI():
 				# set possible edges
 				# ############################################################################
 				
-				self.gEdgeArr.append(self.gFaceRef.Edges[0])
-				self.gEdgeArr.append(self.gFaceRef.Edges[1])
-				self.gEdgeArr.append(self.gFaceRef.Edges[2])
-				self.gEdgeArr.append(self.gFaceRef.Edges[3])
-					
+				[ a1, self.gEdgeArr, a2, a3, a4 ] = MagicPanels.getFaceEdges(self.gObjRef, self.gFaceRef)
+
 				# ############################################################################
 				# set possible rotation 
 				# ############################################################################
@@ -864,6 +862,7 @@ def showQtGUI():
 		def setFixture(self):
 			
 			try:
+				MagicPanels.moveToFirst([ self.gLink ], self.gObjRef)
 				self.gLink = ""
 				
 			except:

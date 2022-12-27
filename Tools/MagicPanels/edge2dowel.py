@@ -6,7 +6,8 @@ translate = FreeCAD.Qt.translate
 try:
 
 	objects = FreeCADGui.Selection.getSelectionEx()[0].SubObjects
-
+	objRef = FreeCADGui.Selection.getSelection()[0]
+	
 	if len(objects) == 0:
 		raise
 	
@@ -21,6 +22,11 @@ try:
 		z = e.Curve.Center[2]
 		r = e.Curve.Rotation
 		
+		[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(objRef)
+		x = x + coX
+		y = y + coY
+		z = z + coZ
+	
 		d = FreeCAD.ActiveDocument.addObject("Part::Cylinder","DowelEdge")
 		d.Label = "Dowel - edge "
 
@@ -28,6 +34,7 @@ try:
 		d.Height = 40
 
 		MagicPanels.setPlacement(d, x, y, z, r)
+		MagicPanels.moveToFirst([ d ], objRef)
 
 except:
 	

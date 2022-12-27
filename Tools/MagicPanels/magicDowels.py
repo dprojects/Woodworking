@@ -565,6 +565,11 @@ def showQtGUI():
 					# create dowel
 					# ############################################################################
 					
+					[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(self.gObj)
+					x = x + coX
+					y = y + coY
+					z = z + coZ
+			
 					d = FreeCAD.ActiveDocument.addObject("Part::Cylinder","Dowel")
 					d.Label = str(self.gDowelLabel)
 					
@@ -663,6 +668,11 @@ def showQtGUI():
 					# ############################################################################
 					# create dowel
 					# ############################################################################
+					
+					[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(self.gObj)
+					x = x + coX
+					y = y + coY
+					z = z + coZ
 					
 					d = FreeCAD.ActiveDocument.addObject("Part::Cylinder","Dowel")
 					d.Label = str(self.gDowelLabel)
@@ -1153,7 +1163,9 @@ def showQtGUI():
 							d.ViewObject.ShapeColor = self.gObj.ViewObject.ShapeColor
 						except:
 							skip = 1
-				
+						
+					MagicPanels.moveToFirst(self.gDowels, self.gObj)
+						
 				self.gDowels = []
 				FreeCAD.ActiveDocument.recompute()
 			

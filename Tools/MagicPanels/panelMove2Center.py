@@ -7,13 +7,17 @@ try:
 
 	sv1 = ""
 	sv2 = ""
+	obj1Ref = ""
+	obj2Ref = ""
 	objects = []
-	
+
 	selection = FreeCADGui.Selection.getSelection()
 
 	try:
 		sv1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 		sv2 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[1]
+		obj1Ref = FreeCADGui.Selection.getSelection()[0]
+		obj2Ref = FreeCADGui.Selection.getSelection()[0]
 		
 		objects = FreeCADGui.Selection.getSelection()
 		objects.pop(0)
@@ -26,7 +30,9 @@ try:
 		try:
 			sv1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 			sv2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-			
+			obj1Ref = FreeCADGui.Selection.getSelection()[0]
+			obj2Ref = FreeCADGui.Selection.getSelection()[1]
+		
 			objects = FreeCADGui.Selection.getSelection()
 			objects.pop(0)
 			objects.pop(0)
@@ -38,7 +44,9 @@ try:
 		raise
 
 	for o in objects:
-	
+		
+		oRef = MagicPanels.getReference(o)
+		
 		if hasattr(sv1, "Curve"):
 			if sv1.Curve.isDerivedFrom("Part::GeomCircle"):
 				v1 = sv1.Curve.Location
@@ -51,10 +59,14 @@ try:
 		else:
 			v2 = FreeCAD.Vector(sv2.X, sv2.Y, sv2.Z)
 
+		[ v1 ] = MagicPanels.getVerticesOffset([ v1 ], obj1Ref, "vector")
+		[ v2 ] = MagicPanels.getVerticesOffset([ v2 ], obj2Ref, "vector")
 		plane = MagicPanels.getVerticesPlane(v1, v2)
-		[ cx, cy, cz ] = MagicPanels.getObjectCenter(o)
-		c = FreeCAD.Vector(cx, cy, cz)
 		
+		[ cx, cy, cz ] = MagicPanels.getObjectCenter(oRef)
+		c = FreeCAD.Vector(cx, cy, cz)
+		[ c ] = MagicPanels.getVerticesOffset([ c ], oRef, "vector")
+
 		X, Y, Z = v1[0], v1[1], v1[2]
 
 		if plane == "XY":
@@ -93,8 +105,10 @@ try:
 			else:
 				X = X - offset
 
-		[ x, y, z, r ] = MagicPanels.getPlacement(o)
-		MagicPanels.setPlacement(o, X, Y, Z, r, centerAnchor)
+		objMove = MagicPanels.getObjectToMove(oRef)
+		[ x, y, z, r ] = MagicPanels.getPlacement(objMove)
+		
+		MagicPanels.setPlacement(objMove, X, Y, Z, r, centerAnchor)
 		FreeCAD.activeDocument().recompute()
 
 except:

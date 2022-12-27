@@ -27,12 +27,17 @@ try:
 		
 		r = MagicPanels.getFaceObjectRotation(base, face)
 		
+		[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(base)
+		x = x + coX
+		y = y + coY
+		z = z + coZ
+
 		MagicPanels.setPlacement(d, x, y, z, r)
 		
 		# default drill bit colors (middle, bottom, top)
 		colors = [ (1.0, 0.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0) ]
 		d.ViewObject.DiffuseColor = colors
-		
+
 	else:
 
 		MagicPanels.makeHoles(base, face, objects)

@@ -6,6 +6,7 @@ translate = FreeCAD.Qt.translate
 try:
 	
 	objects = FreeCADGui.Selection.getSelectionEx()[0].SubObjects
+	objRef = FreeCADGui.Selection.getSelection()[0]
 
 	if len(objects) == 0:
 		raise
@@ -21,6 +22,11 @@ try:
 		z = e.Curve.Center[2]
 		r = e.Curve.Rotation
 		
+		[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(objRef)
+		x = x + coX
+		y = y + coY
+		z = z + coZ
+		
 		d = FreeCAD.ActiveDocument.addObject("Part::Cylinder","DrillBitHole")
 		d.Label = "Drill Bit - simple hole "
 
@@ -32,7 +38,7 @@ try:
 		# default drill bit colors (middle, bottom, top)
 		colors = [ (1.0, 0.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0) ]
 		d.ViewObject.DiffuseColor = colors
-		
+
 except:
 	
 	info = ""

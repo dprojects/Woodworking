@@ -15,37 +15,56 @@ try:
 	baseFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 	basePlane = MagicPanels.getFacePlane(baseFace)
 	[ v1, v2, v3, v4 ] = MagicPanels.getFaceVertices(baseFace)
-	[ oX, oY, oZ, oR ] = MagicPanels.getContainersOffset(base)
-
+	[ v1, v2, v3, v4 ] = MagicPanels.getVerticesOffset([ v1, v2, v3, v4 ], base, "array")
+	
 	objects = selectedObjects[1:]
 
 	for o in objects:
 		
-		obj = MagicPanels.getReference(o)
+		objRef = MagicPanels.getReference(o)
 		
-		[ x, y, z, r ] = MagicPanels.getGlobalPlacement(obj)
+		if o.isDerivedFrom("Part::Cut"):
+			objMove = o
+
+		else:
 		
-		if basePlane == "XY":
-			X = x
-			Y = y
-			Z = v1[2] + oZ
-			R = r
-			
-		if basePlane == "XZ":
-			X = x
-			Y = v1[1] + oY
-			Z = z
-			R = r
-		
-		if basePlane == "YZ":
-			X = v1[0] + oX
-			Y = y
-			Z = z
-			R = r
-		
-		MagicPanels.setPlacement(obj, X, Y, Z, R)
-		FreeCAD.ActiveDocument.recompute()
+			if objRef.isDerivedFrom("Part::Box"):
+				objMove = objRef
+			else:
+				objMove = objRef._Body
+
+		[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(objRef)
+		[ X, Y, Z, R ] = MagicPanels.getPlacement(objMove)
+		[ refX, refY, refZ, refR ] = MagicPanels.getPlacement(objRef)
 	
+		gX = coX + refX
+		gY = coY + refY
+		gZ = coZ + refZ
+
+		if basePlane == "XY":
+			d = MagicPanels.getVertexAxisCross(gZ, v1[2])
+			if gZ < v1[2]:
+				Z = Z + d
+			else:
+				Z = Z - d
+
+		if basePlane == "XZ":
+			d = MagicPanels.getVertexAxisCross(gY, v1[1])
+			if gY < v1[1]:
+				Y = Y + d
+			else:
+				Y = Y - d
+
+		if basePlane == "YZ":
+			d = MagicPanels.getVertexAxisCross(gX, v1[0])
+			if gX < v1[0]:
+				X = X + d
+			else:
+				X = X - d
+
+		MagicPanels.setPlacement(objMove, X, Y, Z, R)
+		FreeCAD.ActiveDocument.recompute()
+
 except:
 	
 	info = ""

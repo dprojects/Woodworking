@@ -12,13 +12,11 @@ try:
 
 	for o in objects:
 		
-		gObj = MagicPanels.getReference(o)
-
-		[ part, body, sketch, pad ] = MagicPanels.makePad(gObj, "panel2pad")
-		
-		FreeCAD.ActiveDocument.removeObject(gObj.Name)
+		objRef = MagicPanels.getReference(o)
+		[ part, body, sketch, pad ] = MagicPanels.makePad(objRef, "panel2pad")
+		FreeCAD.ActiveDocument.removeObject(objRef.Name)
 		FreeCAD.ActiveDocument.recompute()
-	
+		
 except:
 	
 	info = ""

@@ -74,15 +74,15 @@ def panelCopy(iType):
 	
 	try:
 
-		gObj = MagicPanels.getReference()
+		objRef = MagicPanels.getReference()
 		
-		[ Length, Width, Height ] = MagicPanels.sizesToCubePanel(gObj, iType)
+		[ Length, Width, Height ] = MagicPanels.sizesToCubePanel(objRef, iType)
 		
 		panel = FreeCAD.activeDocument().addObject("Part::Box", "panel"+iType)
 		[ panel.Length, panel.Width, panel.Height ] = [ Length, Width, Height ]
 
 		try:
-			MagicPanels.copyColors(gObj, panel)
+			MagicPanels.copyColors(objRef, panel)
 		except:
 			skip = 1
 
@@ -102,32 +102,37 @@ def panelFace(iType):
 	
 	try:
 
-		gSO = FreeCADGui.Selection.getSelection()[0]
+		selection = FreeCADGui.Selection.getSelection()[0]
 		
-		gObj = MagicPanels.getReference(gSO)
-		gFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+		objRef = MagicPanels.getReference(selection)
+		face = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 		
-		[ L, W, H ] = MagicPanels.sizesToCubePanel(gObj, iType)
+		[ L, W, H ] = MagicPanels.sizesToCubePanel(objRef, iType)
 		
-		if gObj.isDerivedFrom("Part::Box"):
-			[ x, y, z ] = MagicPanels.getVertex(gFace, 0, 1)
+		if objRef.isDerivedFrom("Part::Box"):
+			[ x, y, z ] = MagicPanels.getVertex(face, 0, 1)
 		else:
-			[ x, y, z ] = MagicPanels.getVertex(gFace, 1, 0)
+			[ x, y, z ] = MagicPanels.getVertex(face, 1, 0)
 		
-		if gSO.isDerivedFrom("Part::Cut"):
-			[ x, y, z ] = MagicPanels.getVertex(gFace, 2, 0)
+		if selection.isDerivedFrom("Part::Cut"):
+			[ x, y, z ] = MagicPanels.getVertex(face, 2, 0)
 
 		panel = FreeCAD.activeDocument().addObject("Part::Box", "panelFace"+iType)
 		panel.Length, panel.Width, panel.Height = L, W, H
 
+		[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(objRef)
+		x = x + coX
+		y = y + coY
+		z = z + coZ
 		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
 		
 		try:
-			MagicPanels.copyColors(gObj, panel)
+			MagicPanels.copyColors(objRef, panel)
 		except:
 			skip = 1
 			
 		FreeCAD.ActiveDocument.recompute()
+		MagicPanels.moveToFirst([ panel ], objRef)
 
 	except:
 		
@@ -143,41 +148,49 @@ def panelBetween(iType):
 	
 	try:
 
-		gSO = FreeCADGui.Selection.getSelection()[0]
-		gObj = MagicPanels.getReference(gSO)
-		
-		gFace1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-		gFace2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-	
-		[ x1, y1, z1 ] = MagicPanels.getVertex(gFace1, 0, 1)
-		[ x2, y2, z2 ] = MagicPanels.getVertex(gFace2, 0, 1)
+		obj1Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[0])
+		obj2Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[1])
 
-		x = abs(x2 - x1)
-		y = abs(y2 - y1)
-		z = abs(z2 - z1)
+		face1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+		face2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+	
+		[ x1, y1, z1 ] = MagicPanels.getVertex(face1, 0, 1)
+		[ x2, y2, z2 ] = MagicPanels.getVertex(face2, 0, 1)
+
+		# add cointainer offset for PartDesign object and skip Cut
+		if not obj1Ref.isDerivedFrom("Part::Cut"):
+			[[ x1, y1, z1 ]] = MagicPanels.getVerticesOffset([[ x1, y1, z1 ]], obj1Ref, "array")
+		
+		if not obj2Ref.isDerivedFrom("Part::Cut"):
+			[[ x2, y2, z2 ]] = MagicPanels.getVerticesOffset([[ x2, y2, z2 ]], obj2Ref, "array")
+
+		L = abs(x2 - x1)
+		W = abs(y2 - y1)
+		H = abs(z2 - z1)
 
 		panel = FreeCAD.activeDocument().addObject("Part::Box", "panelBetween"+iType)
-		[ panel.Length, panel.Width, panel.Height ] = MagicPanels.sizesToCubePanel(gObj, iType)
+		[ panel.Length, panel.Width, panel.Height ] = MagicPanels.sizesToCubePanel(obj1Ref, iType)
 
-		z1 = z1 + gObj.Height.Value - panel.Height.Value
+		z1 = z1 + obj1Ref.Height.Value - panel.Height.Value
 		
-		if x > 0:
-			panel.Length = x
+		if L > 0:
+			panel.Length = L
 		
-		if y > 0:
-			panel.Width = y
+		if W > 0:
+			panel.Width = W
 			
-		if z > 0:
-			panel.Height = z
+		if H > 0:
+			panel.Height = H
 
 		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x1, y1, z1), FreeCAD.Rotation(0, 0, 0))
 		
 		try:
-			MagicPanels.copyColors(gObj, panel)
+			MagicPanels.copyColors(obj1Ref, panel)
 		except:
 			skip = 1
 
 		FreeCAD.ActiveDocument.recompute()
+		MagicPanels.moveToFirst([ panel ], obj1Ref)
 
 	except:
 		
@@ -193,21 +206,21 @@ def panelSide(iType):
 	
 	try:
 
-		gObj = MagicPanels.getReference()
-		gFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+		objRef = MagicPanels.getReference()
+		face = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 
-		[ Length, Width, Height ] = MagicPanels.sizesToCubePanel(gObj, "ZY")
+		[ Length, Width, Height ] = MagicPanels.sizesToCubePanel(objRef, "ZY")
 
-		if gObj.isDerivedFrom("Part::Box"):
-			[ x, y, z ] = MagicPanels.getVertex(gFace, 0, 1)
+		if objRef.isDerivedFrom("Part::Box"):
+			[ x, y, z ] = MagicPanels.getVertex(face, 0, 1)
 
 		else:
 
 			if iType == "1" or iType == "2":
-				[ x, y, z ] = MagicPanels.getVertex(gFace, 0, 0)
+				[ x, y, z ] = MagicPanels.getVertex(face, 0, 0)
 
 			if iType == "3" or iType == "4":
-				[ x, y, z ] = MagicPanels.getVertex(gFace, 1, 0)
+				[ x, y, z ] = MagicPanels.getVertex(face, 1, 0)
 
 		if iType == "1":
 			x = x - Length
@@ -229,15 +242,20 @@ def panelSide(iType):
 		panel.Width = Width
 		panel.Height = Height
 		
+		[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(objRef)
+		x = x + coX
+		y = y + coY
+		z = z + coZ
 		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
 		
 		try:
-			MagicPanels.copyColors(gObj, panel)
+			MagicPanels.copyColors(objRef, panel)
 		except:
 			skip = 1
 
 		FreeCAD.ActiveDocument.recompute()
-
+		MagicPanels.moveToFirst([ panel ], objRef)
+		
 	except:
 		
 		info = ""
@@ -259,36 +277,43 @@ def panelBackOut():
 	
 	try:
 
-		gObj = MagicPanels.getReference()
+		obj1Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[0])
+		obj2Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[1])
+		obj3Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[2])
 
-		gFace1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-		gFace2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-		gFace3 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
+		face1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+		face2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+		face3 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
 
-		[ x, y, z ] = MagicPanels.sizesToCubePanel(gObj, "ZX")
+		[ L, W, H ] = MagicPanels.sizesToCubePanel(obj1Ref, "ZX")
+		
+		[ x1, y1, z1 ] = MagicPanels.getVertex(face1, 0, 1)
+		[ x2, y2, z2 ] = MagicPanels.getVertex(face2, 0, 0)
+		[ x3, y3, z3 ] = MagicPanels.getVertex(face3, 0, 1)
+		
+		[[ x1, y1, z1 ]] = MagicPanels.getVerticesOffset([[ x1, y1, z1 ]], obj1Ref, "array")
+		[[ x2, y2, z2 ]] = MagicPanels.getVerticesOffset([[ x2, y2, z2 ]], obj2Ref, "array")
+		[[ x3, y3, z3 ]] = MagicPanels.getVerticesOffset([[ x3, y3, z3 ]], obj3Ref, "array")
 
-		[ x1, y1, z1 ] = MagicPanels.getVertex(gFace1, 0, 1)
-		[ x2, y2, z2 ] = MagicPanels.getVertex(gFace2, 0, 0)
-		[ x3, y3, z3 ] = MagicPanels.getVertex(gFace3, 0, 1)
+		L = abs(x2 - x1)
+		H = H - z3
 
-		x = abs(x2 - x1)
-		z = z - z3
-
-		if x > 0 and y > 0 and z > 0:
+		if L > 0 and W > 0 and H > 0:
 
 			panel = FreeCAD.activeDocument().addObject("Part::Box", "panelBackOut")
-			panel.Length = x
-			panel.Width = y
-			panel.Height = z
+			panel.Length = L
+			panel.Width = W
+			panel.Height = H
 
 			panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x1, y1, z3), FreeCAD.Rotation(0, 0, 0))
 			
 			try:
-				MagicPanels.copyColors(gObj, panel)
+				MagicPanels.copyColors(obj1Ref, panel)
 			except:
 				skip = 1
 
 			FreeCAD.ActiveDocument.recompute()
+			MagicPanels.moveToFirst([ panel ], obj1Ref)
 			
 		else:
 		
@@ -308,36 +333,43 @@ def panelCover(iType):
 	
 	try:
 
-		gObj = MagicPanels.getReference()
-		
-		gFace1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-		gFace2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-		gFace3 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
+		obj1Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[0])
+		obj2Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[1])
+		obj3Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[2])
 
-		[ x, y, z ] = MagicPanels.sizesToCubePanel(gObj, iType)
+		face1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+		face2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+		face3 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
 
-		[ x1, y1, z1 ] = MagicPanels.getVertex(gFace1, 0, 1)
-		[ x2, y2, z2 ] = MagicPanels.getVertex(gFace2, 2, 1)
-		[ x3, y3, z3 ] = MagicPanels.getVertex(gFace3, 0, 1)
+		[ L, W, H ] = MagicPanels.sizesToCubePanel(obj1Ref, iType)
 
-		x = abs(x2 - x1)
-		y = y + z
+		[ x1, y1, z1 ] = MagicPanels.getVertex(face1, 0, 1)
+		[ x2, y2, z2 ] = MagicPanels.getVertex(face2, 2, 1)
+		[ x3, y3, z3 ] = MagicPanels.getVertex(face3, 0, 1)
 
-		if x > 0 and y > 0 and z > 0:
+		[[ x1, y1, z1 ]] = MagicPanels.getVerticesOffset([[ x1, y1, z1 ]], obj1Ref, "array")
+		[[ x2, y2, z2 ]] = MagicPanels.getVerticesOffset([[ x2, y2, z2 ]], obj2Ref, "array")
+		[[ x3, y3, z3 ]] = MagicPanels.getVerticesOffset([[ x3, y3, z3 ]], obj3Ref, "array")
+
+		L = abs(x2 - x1)
+		W = W + H
+
+		if L > 0 and W > 0 and H > 0:
 		
 			panel = FreeCAD.activeDocument().addObject("Part::Box", "panelCover"+iType)
-			panel.Length = x
-			panel.Width = y
-			panel.Height = z
+			panel.Length = L
+			panel.Width = W
+			panel.Height = H
 
 			panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x1, y1, z3), FreeCAD.Rotation(0, 0, 0))
 			
 			try:
-				MagicPanels.copyColors(gObj, panel)
+				MagicPanels.copyColors(obj1Ref, panel)
 			except:
 				skip = 1
 
 			FreeCAD.ActiveDocument.recompute()
+			MagicPanels.moveToFirst([ panel ], obj1Ref)
 
 	except:
 		
@@ -357,10 +389,8 @@ def panelMove(iType):
 		
 		for o in selection:
 
-			gObj = MagicPanels.getReference(o)
-
 			sizes = []
-			sizes = MagicPanels.getSizes(gObj)
+			sizes = MagicPanels.getSizes(o)
 			sizes.sort()
 
 			x = 0
@@ -386,14 +416,14 @@ def panelMove(iType):
 				z = - sizes[0]
 
 			try:
-				[ x, y, z ] = MagicPanels.convertPosition(gObj, x, y, z)
+				[ x, y, z ] = MagicPanels.convertPosition(o, x, y, z)
 			except:
 				skip = 1
 				
 			[ x, y, z ] = MagicPanels.getModelRotation(x, y, z)
 
-			[ px, py, pz, r ] = MagicPanels.getPlacement(gObj)
-			MagicPanels.setPlacement(gObj, px+x, py+y, pz+z, r)
+			[ px, py, pz, r ] = MagicPanels.getPlacement(o)
+			MagicPanels.setPlacement(o, px+x, py+y, pz+z, r)
 
 			FreeCAD.ActiveDocument.recompute()
 	
@@ -418,178 +448,178 @@ def panelResize(iType):
 		
 		for o in objects:
 
-			gObj = MagicPanels.getReference(o)
+			objRef = MagicPanels.getReference(o)
 
 			sizes = []
-			sizes = MagicPanels.getSizes(gObj)
+			sizes = MagicPanels.getSizes(objRef)
 			sizes.sort()
 			thick = sizes[0]
 
-			if gObj.isDerivedFrom("Part::Cylinder"):
+			if objRef.isDerivedFrom("Part::Cylinder"):
 				
-				R, H = gObj.Radius.Value, gObj.Height.Value
+				R, H = objRef.Radius.Value, objRef.Height.Value
 				
 				if iType == "1":
-					gObj.Height = gObj.Height.Value + thick
+					objRef.Height = objRef.Height.Value + thick
 
 				if iType == "2":
 					if H - thick > 0:
-						gObj.Height = gObj.Height.Value - thick
+						objRef.Height = objRef.Height.Value - thick
 
 				if iType == "3":
-					gObj.Radius = gObj.Radius.Value + thick
+					objRef.Radius = objRef.Radius.Value + thick
 					
 				if iType == "4":
 					if R - thick > 0:
-						gObj.Radius = gObj.Radius.Value - thick
+						objRef.Radius = objRef.Radius.Value - thick
 
 				if iType == "5":
-					gObj.Radius = gObj.Radius.Value + thick/2
+					objRef.Radius = objRef.Radius.Value + thick/2
 
 				if iType == "6":
 					if R - thick/2 > 0:
-						gObj.Radius = gObj.Radius.Value - thick/2
+						objRef.Radius = objRef.Radius.Value - thick/2
 
-			if gObj.isDerivedFrom("Part::Cone"):
+			if objRef.isDerivedFrom("Part::Cone"):
 				
-				R1, R2, H = gObj.Radius1.Value, gObj.Radius2.Value, gObj.Height.Value
+				R1, R2, H = objRef.Radius1.Value, objRef.Radius2.Value, objRef.Height.Value
 				
 				if iType == "1":
-					gObj.Height = gObj.Height.Value + thick
+					objRef.Height = objRef.Height.Value + thick
 
 				if iType == "2":
 					if H - thick > 0:
-						gObj.Height = gObj.Height.Value - thick
+						objRef.Height = objRef.Height.Value - thick
 
 				if iType == "3":
-					gObj.Radius2 = gObj.Radius2.Value + thick/2
+					objRef.Radius2 = objRef.Radius2.Value + thick/2
 
 				if iType == "4":
 					if R2 - thick/2 > 0:
-						gObj.Radius2 = gObj.Radius2.Value - thick/2
+						objRef.Radius2 = objRef.Radius2.Value - thick/2
 
 				if iType == "5":
-					gObj.Radius1 = gObj.Radius1.Value + thick/2
+					objRef.Radius1 = objRef.Radius1.Value + thick/2
 
 				if iType == "6":
 					if R1 - thick/2 > 0:
-						gObj.Radius1 = gObj.Radius1.Value - thick/2
+						objRef.Radius1 = objRef.Radius1.Value - thick/2
 
-			if gObj.isDerivedFrom("Part::Box"):
+			if objRef.isDerivedFrom("Part::Box"):
 
-				L, W, H = gObj.Length.Value, gObj.Width.Value, gObj.Height.Value
+				L, W, H = objRef.Length.Value, objRef.Width.Value, objRef.Height.Value
 					
 				if iType == "1":
 					if L == sizes[2]:
-						gObj.Length = gObj.Length.Value + thick
+						objRef.Length = objRef.Length.Value + thick
 
 					if W == sizes[2]:
-						gObj.Width = gObj.Width.Value + thick
+						objRef.Width = objRef.Width.Value + thick
 						
 					if H == sizes[2]:
-						gObj.Height = gObj.Height.Value + thick
+						objRef.Height = objRef.Height.Value + thick
 
 				if iType == "2":
 					if L == sizes[2]:
-						if gObj.Length.Value - thick > 0:
-							gObj.Length = gObj.Length.Value - thick
+						if objRef.Length.Value - thick > 0:
+							objRef.Length = objRef.Length.Value - thick
 						
 					if W == sizes[2]:
-						if gObj.Width.Value - thick > 0:
-							gObj.Width = gObj.Width.Value - thick
+						if objRef.Width.Value - thick > 0:
+							objRef.Width = objRef.Width.Value - thick
 						
 					if H == sizes[2]:
-						if gObj.Height.Value - thick > 0:
-							gObj.Height = gObj.Height.Value - thick
+						if objRef.Height.Value - thick > 0:
+							objRef.Height = objRef.Height.Value - thick
 
 				if iType == "3":
 					if L == sizes[1]:
-						gObj.Length = gObj.Length.Value + thick
+						objRef.Length = objRef.Length.Value + thick
 
 					if W == sizes[1]:
-						gObj.Width = gObj.Width.Value + thick
+						objRef.Width = objRef.Width.Value + thick
 
 					if H == sizes[1]:
-						gObj.Height = gObj.Height.Value + thick
+						objRef.Height = objRef.Height.Value + thick
 
 				if iType == "4":
 					if L == sizes[1]:
-						if gObj.Length.Value - thick > 0:
-							gObj.Length = gObj.Length.Value - thick
+						if objRef.Length.Value - thick > 0:
+							objRef.Length = objRef.Length.Value - thick
 
 					if W == sizes[1]:
-						if gObj.Width.Value - thick > 0:
-							gObj.Width = gObj.Width.Value - thick
+						if objRef.Width.Value - thick > 0:
+							objRef.Width = objRef.Width.Value - thick
 
 					if H == sizes[1]:
-						if gObj.Height.Value - thick > 0:
-							gObj.Height = gObj.Height.Value - thick
+						if objRef.Height.Value - thick > 0:
+							objRef.Height = objRef.Height.Value - thick
 
 				if iType == "5":
 					if L == sizes[0]:
-						gObj.Length = gObj.Length.Value + 1
+						objRef.Length = objRef.Length.Value + 1
 
 					if W == sizes[0]:
-						gObj.Width = gObj.Width.Value + 1
+						objRef.Width = objRef.Width.Value + 1
 
 					if H == sizes[0]:
-						gObj.Height = gObj.Height.Value + 1
+						objRef.Height = objRef.Height.Value + 1
 
 				if iType == "6":
 					if L == sizes[0]:
-						if gObj.Length.Value - 1 > 0:
-							gObj.Length = gObj.Length.Value - 1
+						if objRef.Length.Value - 1 > 0:
+							objRef.Length = objRef.Length.Value - 1
 
 					if W == sizes[0]:
-						if gObj.Width.Value - 1 > 0:
-							gObj.Width = gObj.Width.Value - 1
+						if objRef.Width.Value - 1 > 0:
+							objRef.Width = objRef.Width.Value - 1
 
 					if H == sizes[0]:
-						if gObj.Height.Value - 1 > 0:
-							gObj.Height = gObj.Height.Value - 1
+						if objRef.Height.Value - 1 > 0:
+							objRef.Height = objRef.Height.Value - 1
 
-			if gObj.isDerivedFrom("PartDesign::Pad"):
+			if objRef.isDerivedFrom("PartDesign::Pad"):
 			
-				[ sizeX, sizeY, thick ] = MagicPanels.getSizes(gObj)
+				[ sizeX, sizeY, thick ] = MagicPanels.getSizes(objRef)
 				
 				if iType == "1":
 					
 					if sizeX > sizeY:
-						gObj.Profile[0].setDatum("SizeX", FreeCAD.Units.Quantity(sizeX + thick))
+						objRef.Profile[0].setDatum("SizeX", FreeCAD.Units.Quantity(sizeX + thick))
 					else:
-						gObj.Profile[0].setDatum("SizeY", FreeCAD.Units.Quantity(sizeY + thick))
+						objRef.Profile[0].setDatum("SizeY", FreeCAD.Units.Quantity(sizeY + thick))
 			
 				if iType == "2":
 					
 					if sizeX > sizeY:
 						if sizeX - thick > 0:
-							gObj.Profile[0].setDatum("SizeX", FreeCAD.Units.Quantity(sizeX - thick))
+							objRef.Profile[0].setDatum("SizeX", FreeCAD.Units.Quantity(sizeX - thick))
 					else:
 						if sizeY - thick > 0:
-							gObj.Profile[0].setDatum("SizeY", FreeCAD.Units.Quantity(sizeY - thick))
+							objRef.Profile[0].setDatum("SizeY", FreeCAD.Units.Quantity(sizeY - thick))
 
 				if iType == "3":
 					
 					if sizeX < sizeY:
-						gObj.Profile[0].setDatum("SizeX", FreeCAD.Units.Quantity(sizeX + thick))
+						objRef.Profile[0].setDatum("SizeX", FreeCAD.Units.Quantity(sizeX + thick))
 					else:
-						gObj.Profile[0].setDatum("SizeY", FreeCAD.Units.Quantity(sizeY + thick))
+						objRef.Profile[0].setDatum("SizeY", FreeCAD.Units.Quantity(sizeY + thick))
 			
 				if iType == "4":
 					
 					if sizeX < sizeY:
 						if sizeX - thick > 0:
-							gObj.Profile[0].setDatum("SizeX", FreeCAD.Units.Quantity(sizeX - thick))
+							objRef.Profile[0].setDatum("SizeX", FreeCAD.Units.Quantity(sizeX - thick))
 					else:
 						if sizeY - thick > 0:
-							gObj.Profile[0].setDatum("SizeY", FreeCAD.Units.Quantity(sizeY - thick))
+							objRef.Profile[0].setDatum("SizeY", FreeCAD.Units.Quantity(sizeY - thick))
 				
 				if iType == "5":
 					
 					if o.isDerivedFrom("PartDesign::Thickness"):
 						o.Value.Value = o.Value.Value + 1
 					else:
-						gObj.Length = gObj.Length.Value + 1
+						objRef.Length = objRef.Length.Value + 1
 				
 				if iType == "6":
 					
@@ -597,8 +627,8 @@ def panelResize(iType):
 						if o.Value.Value -1 > 0:
 							o.Value.Value = o.Value.Value - 1
 					else:
-						if gObj.Length.Value - 1 > 0:
-							gObj.Length = gObj.Length.Value - 1
+						if objRef.Length.Value - 1 > 0:
+							objRef.Length = objRef.Length.Value - 1
 					
 
 		FreeCAD.ActiveDocument.recompute()

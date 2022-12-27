@@ -45,10 +45,12 @@ class SelectionObserver:
 			minVertexName = ""
 			minOffset = ""
 			
+			[ oX, oY, oZ, oR ] = MagicPanels.getContainersOffset(o)
+			
 			i = 0
 			for v in ves:
 				
-				fv = FreeCAD.Vector(v.X, v.Y, v.Z)
+				fv = FreeCAD.Vector(v.X+oX, v.Y+oY, v.Z+oZ)
 				offset = vpos.distanceToPoint(fv)
 				
 				if minOffset == "":
@@ -74,6 +76,8 @@ class SelectionObserver:
 			o = FreeCAD.ActiveDocument.getObject(obj)
 			gLastSelected = o
 			
+			[ oX, oY, oZ, oR ] = MagicPanels.getContainersOffset(o)
+			
 			if str(gGUI.shapeLE1.text()) == "first":
 				sizes = MagicPanels.getSizesFromVertices(o)
 				sizes.sort()
@@ -84,7 +88,7 @@ class SelectionObserver:
 			index = int(sub.replace("Vertex",""))
 			v = ves[index-1]
 			
-			gVertices.append(( v.X, v.Y, v.Z ))
+			gVertices.append(( v.X+oX, v.Y+oY, v.Z+oZ ))
 			gVerticesInfo.append(str(o.Label) + ", " + str(sub) + "\n")
 			gGUI.refreshVerticesInfo()
 			
@@ -112,7 +116,7 @@ def showQtGUI():
 		gPanelIndex = 0
 
 		gAnchorArr = []
-		gAnchorIndex = 1
+		gAnchorIndex = 0
 
 		gSizeArr = []
 		gSizeIndex = 0
@@ -120,11 +124,14 @@ def showQtGUI():
 		gOffsetTypes = []
 		gOffsetIndex = 0
 		
-		gSelection = ""
-		gObj = ""
-		gObjThick = 0
-		gObjShort = 0
-		gObjLong = 0
+		gSelection1 = ""
+		gObj1 = ""
+		gObj1Thick = 0
+		gObj1Short = 0
+		gObj1Long = 0
+
+		gSelection2 = ""
+		gObj2 = ""
 
 		gFace1 = ""
 		gFace2 = ""
@@ -157,7 +164,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 260
-			toolSH = 470
+			toolSH = 490
 			
 			# active screen size - FreeCAD main window
 			gSW = FreeCADGui.getMainWindow().width()
@@ -190,12 +197,20 @@ def showQtGUI():
 			col3 = 140
 			col4 = 200
 			
-			row = 30
+			row = 10
 			
-			# screen
-			self.oModeL = QtGui.QLabel(spaceInfoScreen, self)
-			self.oModeL.move(col1, 10)
+			# screen - face
+			self.oModeL1 = QtGui.QLabel(spaceInfoScreen, self)
+			self.oModeL1.move(col1, row)
 
+			row += 20
+
+			# screen - between
+			self.oModeL2 = QtGui.QLabel(spaceInfoScreen, self)
+			self.oModeL2.move(col1, row)
+			
+			row += 20
+			
 			# button - refresh
 			self.oModeB1 = QtGui.QPushButton(translate('magicManager', 'refresh selection'), self)
 			self.oModeB1.clicked.connect(self.setMode)
@@ -404,11 +419,14 @@ def showQtGUI():
 			self.gPanelArr = []
 			self.gPanelIndex = 0
 			
-			self.gSelection = ""
-			self.gObj = ""
-			self.gObjThick = 0
-			self.gObjShort = 0
-			self.gObjLong = 0
+			self.gSelection1 = ""
+			self.gObj1 = ""
+			self.gObj1Thick = 0
+			self.gObj1Short = 0
+			self.gObj1Long = 0
+		
+			self.gSelection2 = ""
+			self.gObj2 = ""
 		
 			self.gFace1 = ""
 			self.gFace2 = ""
@@ -417,7 +435,7 @@ def showQtGUI():
 			gFace2Plane = ""
 			
 			self.gAnchorArr = []
-			self.gAnchorIndex = 1
+			self.gAnchorIndex = 0
 			
 			self.gSizeArr = []
 			self.gSizeIndex = 0
@@ -472,7 +490,8 @@ def showQtGUI():
 			offset = self.gOffsetTypes[self.gOffsetIndex]
 			anchor = self.gAnchorArr[self.gAnchorIndex]
 			x, y, z = anchor[0], anchor[1], anchor[2]
-			[ L, W, H ] = MagicPanels.sizesToCubePanel(self.gObj, iType)
+			[ L, W, H ] = MagicPanels.sizesToCubePanel(self.gObj1, iType)
+			[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(self.gSelection1)
 
 			# set custom sizes for short edge
 
@@ -489,10 +508,10 @@ def showQtGUI():
 			if iType == "ZY":
 				W = size
 
-			# check if panel is valid
+			# check if panel is valid and show only valid panels
 			if L <= 0 or W <= 0 or H <= 0:
 				return -1
-				
+			
 			# set offsets
 			if offset == 2:
 				x = x - size
@@ -507,6 +526,11 @@ def showQtGUI():
 			if offset == 7:
 				z = z + size
 
+			# add cointainer offset
+			x = x + coX
+			y = y + coY
+			z = z + coZ
+			
 			# create panel
 			self.gPanel = FreeCAD.ActiveDocument.addObject("Part::Box", "panelFace"+iType)
 			self.gPanel.Length, self.gPanel.Width, self.gPanel.Height = L, W, H
@@ -517,13 +541,26 @@ def showQtGUI():
 			self.gPanel.ViewObject.Transparency = 83
 			FreeCAD.ActiveDocument.recompute()
 
+		# ############################################################################
 		def projectPanelBetween(self, iType):
 
 			# get settings
 			size = self.gSizeArr[self.gSizeIndex]
 			offset = self.gOffsetTypes[self.gOffsetIndex]
 			anchor = self.gAnchorArr[self.gAnchorIndex]
-			facesDistance = MagicPanels.getDistanceBetweenFaces(self.gFace1, self.gFace2)
+
+			if self.gSelection1.isDerivedFrom("Part::Cut"):
+				c1 = self.gSelection1
+			else:
+				c1 = self.gObj1
+				
+			if self.gSelection2.isDerivedFrom("Part::Cut"):
+				c2 = self.gSelection2
+			else:
+				c2 = self.gObj2
+			
+			facesDistance = MagicPanels.getDistanceBetweenFaces(c1, c2, self.gFace1, self.gFace2)
+			
 			x, y, z = anchor[0], anchor[1], anchor[2]
 			L, W, H = 0, 0, 0
 
@@ -535,11 +572,11 @@ def showQtGUI():
 				if iType == "XY":
 					L = facesDistance
 					W = size
-					H = self.gObjThick
+					H = self.gObj1Thick
 
 				if iType ==	"XZ":
 					L = facesDistance
-					W = self.gObjThick
+					W = self.gObj1Thick
 					H = size
 
 			# set panel sizes along Y
@@ -548,10 +585,10 @@ def showQtGUI():
 				if iType == "XY":
 					L = size
 					W = facesDistance
-					H = self.gObjThick
+					H = self.gObj1Thick
 
 				if iType == "YZ":
-					L = self.gObjThick
+					L = self.gObj1Thick
 					W = facesDistance
 					H = size
 
@@ -560,15 +597,15 @@ def showQtGUI():
 
 				if iType ==	"XZ":
 					L = size
-					W = self.gObjThick
+					W = self.gObj1Thick
 					H = facesDistance
 
 				if iType == "YZ":
-					L = self.gObjThick
+					L = self.gObj1Thick
 					W = size
 					H = facesDistance
 
-			# check if panel is valid
+			# check if panel is valid and show only valid panels
 			if L <= 0 or W <= 0 or H <= 0:
 				return -1
 
@@ -586,6 +623,13 @@ def showQtGUI():
 			if offset == 7:
 				z = z + size
 
+			# add cointainer offset for PartDesign object and skip Cut
+			if not self.gSelection1.isDerivedFrom("Part::Cut"):
+				[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(self.gObj1)
+				x = x + coX
+				y = y + coY
+				z = z + coZ
+
 			# create panel
 			self.gPanel = FreeCAD.ActiveDocument.addObject("Part::Box", "panelBetween"+iType)
 			self.gPanel.Length, self.gPanel.Width, self.gPanel.Height = L, W, H
@@ -596,6 +640,7 @@ def showQtGUI():
 			self.gPanel.ViewObject.Transparency = 83
 			FreeCAD.ActiveDocument.recompute()
 
+		# ############################################################################
 		def previewPanel(self):
 
 			try:
@@ -638,21 +683,38 @@ def showQtGUI():
 			if self.gFace1 == "":
 
 				self.gMode = ""
-				self.oModeL.setText(translate('magicManager', 'select 1 or 2 faces'))
+				self.oModeL1.setText(translate('magicManager', '1. select single face for panel at face'))
+				self.oModeL2.setText(translate('magicManager', '2. select 2 faces for panel between'))
 
 				return
 
 			if self.gFace2 == "":
 
 				self.gMode = "Face"
-				self.oModeL.setText(translate('magicManager', 'Selection: 1 face'))
+				
+				index = MagicPanels.getFaceIndex(self.gSelection1, self.gFace1)
+				info = str(self.gSelection1.Label) + ", " + "Face" + str(index)
+				
+				self.oModeL1.setText(info)
+				self.oModeL2.setText("")
 				
 				self.gPanelArr = [ "XY", "YX", "XZ", "ZX", "YZ", "ZY" ]
 				self.gPanelIndex = 5
 				
 			else:
 				self.gMode = "Between"
-				self.oModeL.setText(translate('magicManager', 'Selection: 2 faces'))
+				index1 = MagicPanels.getFaceIndex(self.gSelection1, self.gFace1)
+				index2 = MagicPanels.getFaceIndex(self.gSelection2, self.gFace2)
+				
+				info = ""
+				info += str(self.gSelection1.Label)
+				info += ", " + "Face" + str(index1)
+				self.oModeL1.setText(info)
+				
+				info = ""
+				info += str(self.gSelection2.Label)
+				info += ", " + "Face" + str(index2)
+				self.oModeL2.setText(info)
 				
 				if self.gFace1Plane == "YZ":
 					self.gPanelArr = [ "XY", "XZ" ]
@@ -666,36 +728,44 @@ def showQtGUI():
 			# init panel
 			self.setNextPanel()
 		
+		# ############################################################################
 		def setSelection(self):
 			
 			self.resetGUIGlobals()
 			
 			try:
-				self.gObj = MagicPanels.getReference()
-				self.gSelection = FreeCADGui.Selection.getSelection()[0]
+				self.gSelection1 = FreeCADGui.Selection.getSelection()[0]
+				self.gObj1 = MagicPanels.getReference(self.gSelection1)
+				
+			except:
+				return
+
+			try:
+				self.gSelection2 = FreeCADGui.Selection.getSelection()[1]
+				self.gObj2 = MagicPanels.getReference(self.gSelection2)
 			except:
 				skip = 1
-				
+
 			try:
 				self.gFace1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 				self.gFace1Plane = MagicPanels.getFacePlane(self.gFace1)
 				
-				sizes = MagicPanels.getSizes(self.gObj)
+				sizes = MagicPanels.getSizes(self.gObj1)
 				sizes.sort()
-				self.gObjThick = sizes[0]
-				self.gObjShort = sizes[1]
-				self.gObjLong = sizes[2]
+				self.gObj1Thick = sizes[0]
+				self.gObj1Short = sizes[1]
+				self.gObj1Long = sizes[2]
 
 				self.gAnchorArr = MagicPanels.getFaceVertices(self.gFace1, "all")
-				[ a1, edges, a2, a3, a4 ] = MagicPanels.getFaceEdges(self.gSelection, self.gFace1)
+				[ a1, edges, a2, a3, a4 ] = MagicPanels.getFaceEdges(self.gSelection1, self.gFace1)
 
 				noRepeat = dict()
 				for e in edges:
 					noRepeat[str(e.Length)] = e.Length
 
-				noRepeat[str(self.gObjThick)] = self.gObjThick
-				noRepeat[str(self.gObjShort)] = self.gObjShort
-				noRepeat[str(self.gObjLong)] = self.gObjLong
+				noRepeat[str(self.gObj1Thick)] = self.gObj1Thick
+				noRepeat[str(self.gObj1Short)] = self.gObj1Short
+				noRepeat[str(self.gObj1Long)] = self.gObj1Long
 				
 				self.gSizeArr = list(noRepeat.values())
 
@@ -786,15 +856,23 @@ def showQtGUI():
 		
 		# ############################################################################
 		def setPanel(self):
+			
 			if self.gPanel != "":
+				
 				try:
-					MagicPanels.copyColors(self.gObj, self.gPanel)
+					MagicPanels.copyColors(self.gObj1, self.gPanel)
 				except:
 					skip = 1
 
+				if self.gMode == "Between" and self.gObj1 == self.gObj2:
+					MagicPanels.moveToContainer([ self.gPanel ], self.gObj1)
+				else:
+					MagicPanels.moveToFirst([ self.gPanel ], self.gObj1)
+			
 				self.gPanel.ViewObject.Transparency = 0
 				self.gPanel = ""
 		
+		# ############################################################################
 		def setPanelFromVertices(self):
 			
 			global gVertices, gVerticesInfo
@@ -833,6 +911,8 @@ def showQtGUI():
 			draftSketch.Visibility = False
 			doc.recompute()
 			
+			MagicPanels.moveToFirst([ part ], gLastSelected)
+			
 			# set color of last selected object
 			try:
 				MagicPanels.copyColors(gLastSelected, pad)
@@ -842,9 +922,10 @@ def showQtGUI():
 			# turn off observer after operation
 			if gObserver != "":
 				self.observerOFF()
-			
+		
+		# ############################################################################
 		def createPanel(self):
-			
+
 			if gObserver != "":
 				self.setPanelFromVertices()
 			else:

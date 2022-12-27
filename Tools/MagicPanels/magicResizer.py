@@ -291,6 +291,8 @@ def showQtGUI():
 
 				[ edgeV1, edgeV2 ] = MagicPanels.getEdgeVertices(self.gResizeObj)
 				[ faceV1, faceV2, faceV3, faceV4 ] = MagicPanels.getFaceVertices(self.gFace)
+				[ faceV1, faceV2, faceV3, faceV4 ] = MagicPanels.getVerticesOffset(
+					[ faceV1, faceV2, faceV3, faceV4 ], self.gFaceObj, "array")
 				plane = MagicPanels.getEdgePlane(self.gResizeObj)
 				
 				if plane == "X":

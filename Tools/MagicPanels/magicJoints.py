@@ -627,6 +627,11 @@ def showQtGUI():
 			[ x, y, z, r ] = MagicPanels.getSketchPlacement(self.gObj1, "global")
 			[ v1, v2, v3, v4 ] = MagicPanels.getFaceVertices(self.gObj2Face)
 		
+			v = [ x, y, z ]
+			[ v ] = MagicPanels.getVerticesOffset([ v ], self.gObj1, "array")
+			[ v1, v2, v3, v4 ] = MagicPanels.getVerticesOffset([ v1, v2, v3, v4 ], self.gObj2, "array")
+			x, y, z = v[0], v[1], v[2]
+			
 			self.gAnchorArr = []
 			self.gAnchorArr.append([x, y, z])
 			self.gAnchorArr.append(v1)

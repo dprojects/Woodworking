@@ -660,6 +660,11 @@ def showQtGUI():
 					# create dowel
 					# ############################################################################
 					
+					[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(self.gObj)
+					x = x + coX
+					y = y + coY
+					z = z + coZ
+			
 					d = self.createDrillBit(x, y, z)
 					self.gDrillBits.append(d)
 					
@@ -756,6 +761,11 @@ def showQtGUI():
 					# create dowel
 					# ############################################################################
 					
+					[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(self.gObj)
+					x = x + coX
+					y = y + coY
+					z = z + coZ
+			
 					d = self.createDrillBit(x, y, z)
 					self.gDrillBits.append(d)
 					

@@ -469,14 +469,20 @@ def showQtGUI():
 			MagicPanels.setPlacement(mirror, cx+mx, cy+my, cz+mz, r)
 			
 			# hehe ;-)
-			try:
-				for o in self.gObj.OutListRecursive:
-					s = str(o.getAllDerivedFrom()[0])
-					if s.startswith("Part::") or s.startswith("PartDesign::"):
-						MagicPanels.copyColors(o, mirror)
-						raise
-			except:
-				skip = 1
+			if len(self.gObj.OutListRecursive) == 0:
+				MagicPanels.copyColors(self.gObj, mirror)
+			else:
+				
+				# try to copy colors from container content
+				try:
+					for o in self.gObj.OutListRecursive:
+						s = str(o.getAllDerivedFrom()[0])
+						
+						if s.startswith("Part::") or s.startswith("PartDesign::"):
+							MagicPanels.copyColors(o, mirror)
+							raise
+				except:
+					skip = 1
 			
 		# ############################################################################
 		# actions - functions for actions
@@ -489,7 +495,7 @@ def showQtGUI():
 
 				self.resetGlobals()
 				
-				self.gObj = MagicPanels.getReference()
+				self.gObj = FreeCADGui.Selection.getSelection()[0]
 				
 				sizes = []
 				sizes = MagicPanels.getSizes(self.gObj)

@@ -18,12 +18,18 @@ try:
 	x, y, z = v1[0], v1[1], v1[2]
 		
 	r = MagicPanels.getFaceObjectRotation(base, face)
-		
+	
+	[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(base)
+	x = x + coX
+	y = y + coY
+	z = z + coZ
+	
 	MagicPanels.setPlacement(joint, x, y, z, r)
 	[ part, body, sketch, pad ] = MagicPanels.makePad(joint, joint.Label)
 	
 	FreeCAD.ActiveDocument.removeObject(joint.Name)
 	FreeCAD.ActiveDocument.recompute()
+	MagicPanels.moveToFirst([ part ], base)
 	
 except:
 	

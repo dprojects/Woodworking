@@ -17,8 +17,8 @@ Functions at this library:
 # Globals
 
 
-gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
-
+gRoundPrecision = 2      # should be set according to the user FreeCAD GUI settings
+gSearchDepth = 200       # recursive search depth
 
 # Functions for general purpose
 ### equal(iA, iB):
@@ -79,22 +79,22 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 		return normalized version for comparison if b1 == b2: you can set your own precision here
 
 # Vertices
-### showVertex(iVertex, iRadius):
+### showVertex(iVertices, iRadius=5):
 
-	showVertex(iVertex) - create sphere at given vertex, to show where is the point for debug purposes.
+	showVertex(iVertices) - create sphere at given vertices, to show where are the points for debug purposes.
 	
 ##### Args:
 	
-		iVertex: vertex object
-		iRadius: ball Radius
+		iVertices: array with FreeCAD.Vector objects
+		iRadius (optional): ball Radius
 
 ##### Usage:
 	
-		MagicPanels.showVertex(obj.Shape.CenterOfMass, 20)
+		MagicPanels.showVertex([ obj.Shape.CenterOfMass ], 20)
 
 ##### Result:
 	
-		show vertex
+		remove old vertices and show new ones
 ### getVertex(iFace, iEdge, iVertex):
 
 	getVertex(iFace, iEdge, iVertex) - get vertex values for face, edge and vertex index.
@@ -602,18 +602,20 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 	
 		Create measure object, draw it and return measure object for further processing. 
 
-### getDistanceBetweenFaces(iFace1, iFace2):
+### getDistanceBetweenFaces(iObj1, iObj2, iFace1, iFace2):
 
-	getDistanceBetweenFaces(iFace1, iFace2) - get distance between iFace1 and iFace2
+	getDistanceBetweenFaces(iObj1, iObj2, iFace1, iFace2) - get distance between iFace1 and iFace2
 	
 ##### Args:
 	
+		iObj1: object of iFace1
+		iObj2: object of iFace2
 		iFace1: face object
 		iFace2: face object
 
 ##### Usage:
 	
-		size = MagicPanels.getDistanceBetweenFaces(face1, face2)
+		size = MagicPanels.getDistanceBetweenFaces(o1, o2, face1, face2)
 
 ##### Result:
 
@@ -655,6 +657,22 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 		Returns iType: "XY", "YX", "XZ", "ZX", "YZ", "ZY"
 
 # Position, Placement, Move
+### resetPlacement(iObj):
+
+	resetPlacement(iObj) - reset placement for given object. Needed to set rotation for object at face.
+	
+##### Args:
+	
+		iObj: object to reset placement
+
+##### Usage:
+	
+		MagicPanels.resetPlacement(obj)
+
+##### Result:
+	
+		Object obj return to base position.
+
 ### getPlacement(iObj):
 
 	getPlacement(iObj) - get placement with rotation info for given object.
@@ -697,29 +715,6 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 		z: Z Axis object position
 		r: Rotation object
 
-### getContainersOffset(iObj):
-
-	getContainersOffset(iObj) - if the object is in the container like Part, Body, LingGroup the vertices are 
-	not updated by FreeCAD. From FreeCAD perspective the object is still in the same place. This function 
-	is trying to solve this problem and calculates all offsets of all containers.
-	
-##### Args:
-	
-		iObj: object to get containers offset
-
-##### Usage:
-	
-		[ oX, oY, oZ, oR ] = MagicPanels.getContainersOffset(o)
-
-##### Result:
-	
-		return [ oX, oY, oZ, oR ] array with offsets for placement:
-		
-		oX: X Axis object position
-		oY: Y Axis object position
-		oZ: Z Axis object position
-		oR: Rotation object (not implemented right now)
-
 ### setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
 
 	setPlacement(iObj, iX, iY, iZ, iR, iAnchor="") - set placement with rotation for given object.
@@ -740,22 +735,6 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 ##### Result:
 	
 		Object gObj should be moved into 100, 100, 200 position without rotation.
-
-### resetPlacement(iObj):
-
-	resetPlacement(iObj) - reset placement for given object. Needed to set rotation for object at face.
-	
-##### Args:
-	
-		iObj: object to reset placement
-
-##### Usage:
-	
-		MagicPanels.resetPlacement(obj)
-
-##### Result:
-	
-		Object obj return to base position.
 
 ### getSketchPlacement(iSketch, iType):
 
@@ -795,6 +774,8 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 		iType: 
 			"global" - global Sketch position, good before Pocket or any other operation, Sketch global position is temporary, FreeCAD bug? after Sketch edit the Sketch position will be lost, use "attach" to keep it
 			"attach" - AttachmentOffset position, global position will be converted to AttachmentOffset, make sure the Support is set for Sketch, the Clones may not have Support, use global instead
+			"auto" - recognize if Sketch has Support, if yes this will be "attach", if no Support this will be "global", it 
+			is useful to move Pads
 
 ##### Usage:
 	
@@ -861,6 +842,153 @@ gRoundPrecision = 2 # should be set according to the user FreeCAD GUI settings
 ##### Result:
 
 		Returns [ Length, Width, Height ] for YZ object placement.
+
+# Containers
+### getContainersOffset(iObj):
+
+	getContainersOffset(iObj) - if the object is in the container like Part, Body, LingGroup the vertices are 
+	not updated by FreeCAD. From FreeCAD perspective the object is still in the same place. This function 
+	is trying to solve this problem and calculates all offsets of all containers.
+	
+##### Args:
+	
+		iObj: object to get containers offset
+
+##### Usage:
+	
+		[ oX, oY, oZ, oR ] = MagicPanels.getContainersOffset(o)
+
+##### Result:
+	
+		return [ oX, oY, oZ, oR ] array with offsets for placement:
+		
+		oX: X Axis object position
+		oY: Y Axis object position
+		oZ: Z Axis object position
+		oR: Rotation object (not implemented right now)
+
+### getVerticesOffset(iVertices, iObj, iType="array"):
+
+	getVerticesOffset(iVertices, iObj) - get iObj container offset for vertices iVertices.
+	
+##### Args:
+	
+		iObj: object to get containers offset
+		iVertices: vertices array
+		iType:
+			"array" - array with floats [ 1, 2, 3 ]
+			"vector" - array with FreeCAD.Vector types
+		
+##### Usage:
+	
+		vertices = MagicPanels.getVerticesOffset(vertices, o, "array")
+
+##### Result:
+	
+		return vertices array with correct container offset
+
+### moveToContainer(iObjects, iSelection):
+
+	moveToContainer(iObjects, iSelection) - move objects iObjects to container for iSelection object. 
+	Container need to be in the clean path, no other objects except Group or LinkGroup, 
+	for example LinkGroup -> LinkGroup is clean path, only containers, but the Mirror -> LinkGroup is not 
+	considered as clean container path here.
+	
+##### Args:
+	
+		iObjects: list of objects to move to container, for example new created Cube
+		iSelection: selected object, for example Pad
+
+##### Usage:
+	
+		MagicPanels.moveToContainer([ o ], pad)
+
+##### Result:
+	
+		No return, move object.
+
+### moveToFirst(iObjects, iSelection):
+
+	moveToFirst(iObjects, iSelection) - move objects iObjects to first container above Body for iSelection object.
+	This can be used to force object at face to be moved into Mirror -> LinkGroup.
+	
+##### Args:
+	
+		iObjects: list of objects to move to container, for example new created Cube
+		iSelection: selected object, for example Pad
+
+##### Usage:
+	
+		MagicPanels.moveToFirst([ o ], pad)
+
+##### Result:
+	
+		No return, move object.
+
+### getContainerPlacement(iObj):
+
+	getContainerPlacement(iObj) - this function returns placement for the object with all containers offsets. 
+	The given object might be container or selected object, the base Cube or Pad.
+	
+##### Args:
+	
+		iObj: object to get placement
+
+##### Usage:
+	
+		[ x, y, z, r ] = MagicPanels.getContainerPlacement(o)
+
+##### Result:
+	
+		return [ x, y, z, r ] array with placement info, where:
+		
+		x: X Axis object position
+		y: Y Axis object position
+		z: Z Axis object position
+		r: Rotation object - not supported yet
+
+### getObjectToMove(iObj):
+
+	getObjectToMove(iObj) - this function returns object to move.
+	
+##### Args:
+	
+		iObj: object to get placement, selected container or base reference object
+
+##### Usage:
+	
+		toMove = MagicPanels.getObjectToMove(o)
+
+##### Result:
+	
+		For example: 
+		for Cube: returns Cube
+		for Pad: returns Body
+		for Cube in LinkGroup: returns LinkGroup
+		for Pad in LinkGroup: returns Body
+		for Cube in LinkGroup > LinkGroup: returns first LinkGroup
+		for Cube in Cut: returns Cut
+		for Cut: returns Cut
+
+### setContainerPlacement(iObj, iX, iY, iZ, iR):
+
+	setContainerPlacement(iObj, iX, iY, iZ, iR) - set placement for given container object.
+	
+##### Args:
+
+		iObj: container object to set placement, for example Body, LinkGroup, Cut
+		iX: X Axis object position
+		iX: Y Axis object position
+		iZ: Z Axis object position
+		iR: Rotation object
+		
+##### Usage:
+	
+		MagicPanels.setContainerPlacement(base, 100, 100, 200, r)
+
+##### Result:
+	
+		Object base should be moved into 100, 100, 200 position
 
 # Replace
 ### makePad(iObj, iPadLabel="Pad"):

@@ -13,10 +13,12 @@ try:
 		
 	base = selectedObjects[0]
 	objects = selectedObjects[1:]
+	baseRef = MagicPanels.getReference(base)
+	[ baseX, baseY, baseZ, baseR ] = MagicPanels.getContainerPlacement(baseRef)
 
-	sx, sy, sz = "", "", ""
 
 	# sub-object selection
+	sx, sy, sz = "", "", ""
 	try:
 		sub = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 		
@@ -46,17 +48,6 @@ try:
 
 		skip = 1
 
-	# object selection
-	if base.isDerivedFrom("PartDesign::Pad"):
-		
-		x = base.Profile[0].Placement.Base.x
-		y = base.Profile[0].Placement.Base.y
-		z = base.Profile[0].Placement.Base.z
-
-	else:
-		
-		[ x, y, z, r ] = MagicPanels.getGlobalPlacement(base)
-		
 	# objects to move
 	for o in objects:
 
@@ -78,16 +69,40 @@ try:
 		elif o.isDerivedFrom("Part::Cylinder"):
 			
 			[ oX, oY, oZ, oR ] = MagicPanels.getPlacement(o)
-			
+
 			if sx != "" and sy != "" and sz != "":
 				MagicPanels.setPlacement(o, sx, sy, sz, oR)
 			else:
 				MagicPanels.setPlacement(o, x, y, z, oR)
 
 		else:
+			
+			objRef = MagicPanels.getReference(o)
+			objMove = MagicPanels.getObjectToMove(objRef)
+			[ gX, gY, gZ, gR ] = MagicPanels.getContainerPlacement(objRef)
+			[ X, Y, Z, R ] = MagicPanels.getPlacement(objMove)
 
-			[ oX, oY, oZ, oR ] = MagicPanels.getPlacement(o)
-			MagicPanels.setPlacement(o, x, y, z, oR)
+			dX = MagicPanels.getVertexAxisCross(gX, baseX)
+			dY = MagicPanels.getVertexAxisCross(gY, baseY)
+			dZ = MagicPanels.getVertexAxisCross(gZ, baseZ)
+			
+			if gX < baseX:
+				X = X + dX
+			else:
+				X = X - dX
+
+			if gY < baseY:
+				Y = Y + dY
+			else:
+				Y = Y - dY
+
+			if gZ < baseZ:
+				Z = Z + dZ
+			else:
+				Z = Z - dZ
+
+			MagicPanels.setContainerPlacement(objMove, X, Y, Z, R)
+			FreeCAD.ActiveDocument.recompute()
 
 	FreeCADGui.Selection.clearSelection()
 	FreeCAD.ActiveDocument.recompute()

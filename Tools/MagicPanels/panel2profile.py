@@ -20,7 +20,7 @@ try:
 		sizes.sort()
 		
 		# need to be equal to cut ends
-		if sizes[0] != sizes[1]:
+		if not MagicPanels.equal(sizes[0], sizes[1]):
 			raise
 		
 		if obj.isDerivedFrom("Part::Box"):

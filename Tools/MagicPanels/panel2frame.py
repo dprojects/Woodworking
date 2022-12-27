@@ -27,15 +27,6 @@ try:
 	
 	frames = MagicPanels.makeFrame45cut(objects, faces)
 
-	# set colors
-	for f in frames:
-		
-		color = (0.5098039507865906, 0.3137255012989044, 0.1568627506494522, 0.0)
-
-		f.ViewObject.ShapeColor = color
-		f.ViewObject.DiffuseColor = color
-		FreeCAD.ActiveDocument.recompute()
-
 except:
 	
 	info = ""

@@ -28,6 +28,11 @@ try:
 		
 		r = MagicPanels.getFaceObjectRotation(base, face)
 		
+		[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(base)
+		x = x + coX
+		y = y + coY
+		z = z + coZ
+
 		MagicPanels.setPlacement(d, x, y, z, r)
 		
 		# default drill bit colors (middle, bottom, top)
