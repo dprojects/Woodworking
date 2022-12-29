@@ -33,14 +33,9 @@ try:
 			else:
 				objMove = objRef._Body
 
-		[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(objRef)
-		[ X, Y, Z, R ] = MagicPanels.getPlacement(objMove)
-		[ refX, refY, refZ, refR ] = MagicPanels.getPlacement(objRef)
+		[ X, Y, Z, R ] = MagicPanels.getContainerPlacement(objMove, "clean")
+		[ gX, gY, gZ, gR ] = MagicPanels.getContainerPlacement(objRef, "offset")
 	
-		gX = coX + refX
-		gY = coY + refY
-		gZ = coZ + refZ
-
 		if basePlane == "XY":
 			d = MagicPanels.getVertexAxisCross(gZ, v1[2])
 			if gZ < v1[2]:

@@ -105,10 +105,15 @@ try:
 			else:
 				X = X - offset
 
-		objMove = MagicPanels.getObjectToMove(oRef)
-		[ x, y, z, r ] = MagicPanels.getPlacement(objMove)
+		if oRef.isDerivedFrom("Part::Box"):
+			[ x, y, z, r ] = MagicPanels.getPlacement(oRef)
+			MagicPanels.setPlacement(oRef, X, Y, Z, r, centerAnchor)
 		
-		MagicPanels.setPlacement(objMove, X, Y, Z, r, centerAnchor)
+		else:
+			objMove = MagicPanels.getObjectToMove(oRef)
+			[ x, y, z, r ] = MagicPanels.getPlacement(objMove)
+			MagicPanels.setPlacement(objMove, X, Y, Z, r, centerAnchor)
+		
 		FreeCAD.activeDocument().recompute()
 
 except:

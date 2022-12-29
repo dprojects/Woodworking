@@ -417,6 +417,8 @@ def showQtGUI():
 				FreeCAD.ActiveDocument.recompute()
 				[ self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR ] = MagicPanels.getPlacement(copy)
 			
+			MagicPanels.moveToFirst([ copy ], self.gObj)
+			
 			try:
 				MagicPanels.copyColors(self.gObj, copy)
 			except:

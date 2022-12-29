@@ -2748,49 +2748,6 @@ def moveToFirst(iObjects, iSelection):
 
 
 # ###################################################################################################################
-def getContainerPlacement(iObj):
-	'''
-	getContainerPlacement(iObj) - this function returns placement for the object with all containers offsets. 
-	The given object might be container or selected object, the base Cube or Pad.
-	
-	Args:
-	
-		iObj: object to get placement
-
-	Usage:
-	
-		[ x, y, z, r ] = MagicPanels.getContainerPlacement(o)
-
-	Result:
-	
-		return [ x, y, z, r ] array with placement info, where:
-		
-		x: X Axis object position
-		y: Y Axis object position
-		z: Z Axis object position
-		r: Rotation object - not supported yet
-
-	'''
-
-	objRef = getReference(iObj)
-
-	if objRef.isDerivedFrom("PartDesign::Pad"):
-		ref = objRef.Profile[0]
-
-	else:
-		ref = objRef
-
-	[ coX, coY, coZ, coR ] = getContainersOffset(ref)
-
-	x = ref.Placement.Base.x + coX
-	y = ref.Placement.Base.y + coY
-	z = ref.Placement.Base.z + coZ
-	r = ref.Placement.Rotation
-
-	return [ x, y, z, r ]
-
-
-# ###################################################################################################################
 def getObjectToMove(iObj):
 	'''
 	getObjectToMove(iObj) - this function returns object to move.
@@ -2835,6 +2792,69 @@ def getObjectToMove(iObj):
 		i = i + 1
 
 	return objRef
+
+
+# ###################################################################################################################
+def getContainerPlacement(iObj, iType="clean"):
+	'''
+	getContainerPlacement(iObj, iType="clean") - this function returns placement for the object with all 
+	containers offsets. The given object might be container or selected object, the base Cube or Pad.
+	
+	Args:
+	
+		iObj: object to get placement
+		iType (optional): 
+			"clean" - to get iObj.Placement, 
+			"offset" to get iObj.Placement with containers offset.
+
+	Usage:
+	
+		[ x, y, z, r ] = MagicPanels.getContainerPlacement(o)
+
+	Result:
+	
+		return [ x, y, z, r ] array with placement info, where:
+		
+		x: X Axis object position
+		y: Y Axis object position
+		z: Z Axis object position
+		r: Rotation object - not supported yet
+
+	'''
+
+	if iType == "clean":
+		
+		x = iObj.Placement.Base.x
+		y = iObj.Placement.Base.y
+		z = iObj.Placement.Base.z
+		r = iObj.Placement.Rotation
+		
+		return [ x, y, z, r ]
+	
+	if iType == "offset":
+		
+		objRef = getReference(iObj)
+		
+		if objRef.isDerivedFrom("PartDesign::Pad"):
+
+			[ x, y, z, r ] = getSketchPlacement(objRef.Profile[0], "global")
+			return [ x, y, z, r ]
+			
+		else:
+
+			x = objRef.Placement.Base.x
+			y = objRef.Placement.Base.y
+			z = objRef.Placement.Base.z
+			r = objRef.Placement.Rotation
+			
+			[ coX, coY, coZ, coR ] = getContainersOffset(objRef)
+			x = x + coX
+			y = y + coY
+			z = z + coZ
+
+			return [ x, y, z, r ]
+
+	return [ "", "", "", "" ]
 
 
 # ###################################################################################################################
@@ -3568,7 +3588,7 @@ def makeCounterbores2x(iObj, iFace, iCones):
 		holeSketch2 = body.newObject('Sketcher::SketchObject','Sketch')
 		holeSketch2.MapMode = 'FlatFace'
 
-		axis = o.Placement.Rotation.Axis
+		axis = FreeCAD.Vector(0, 0, 1)
 		r1 = float(2 * o.Radius1)
 		r2 = float(2 * o.Radius2)
 		sr1 = str(r1)+" mm"

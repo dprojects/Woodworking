@@ -14,8 +14,7 @@ try:
 	base = selectedObjects[0]
 	objects = selectedObjects[1:]
 	baseRef = MagicPanels.getReference(base)
-	[ baseX, baseY, baseZ, baseR ] = MagicPanels.getContainerPlacement(baseRef)
-
+	[ baseX, baseY, baseZ, baseR ] = MagicPanels.getContainerPlacement(baseRef, "offset")
 
 	# sub-object selection
 	sx, sy, sz = "", "", ""
@@ -79,8 +78,8 @@ try:
 			
 			objRef = MagicPanels.getReference(o)
 			objMove = MagicPanels.getObjectToMove(objRef)
-			[ gX, gY, gZ, gR ] = MagicPanels.getContainerPlacement(objRef)
-			[ X, Y, Z, R ] = MagicPanels.getPlacement(objMove)
+			[ gX, gY, gZ, gR ] = MagicPanels.getContainerPlacement(objRef, "offset")
+			[ X, Y, Z, R ] = MagicPanels.getContainerPlacement(objMove, "clean")
 
 			dX = MagicPanels.getVertexAxisCross(gX, baseX)
 			dY = MagicPanels.getVertexAxisCross(gY, baseY)
