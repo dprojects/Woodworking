@@ -864,11 +864,11 @@ def showQtGUI():
 				except:
 					skip = 1
 
-				if self.gMode == "Between" and self.gObj1 == self.gObj2:
+				if self.gMode == "Between" and self.gSelection2.isDerivedFrom("Part::Mirroring"):
 					MagicPanels.moveToContainer([ self.gPanel ], self.gObj1)
 				else:
 					MagicPanels.moveToFirst([ self.gPanel ], self.gObj1)
-			
+
 				self.gPanel.ViewObject.Transparency = 0
 				self.gPanel = ""
 		
