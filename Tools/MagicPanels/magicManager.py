@@ -38,21 +38,22 @@ class SelectionObserver:
 		if sub.find("Edge") != -1 or sub.find("Face") != -1:
 			
 			vpos = FreeCAD.Vector(pos)
+			
 			o = FreeCAD.ActiveDocument.getObject(obj)
 			gLastSelected = o
+			
 			ves = MagicPanels.touchTypo(o.Shape)
+			ves = MagicPanels.getVerticesPosition(ves, o, "vertex")
 			
 			minVertexName = ""
 			minOffset = ""
 			
-			[ oX, oY, oZ, oR ] = MagicPanels.getContainersOffset(o)
-			
 			i = 0
 			for v in ves:
 				
-				fv = FreeCAD.Vector(v.X+oX, v.Y+oY, v.Z+oZ)
+				fv = FreeCAD.Vector(v.X, v.Y, v.Z)
 				offset = vpos.distanceToPoint(fv)
-				
+
 				if minOffset == "":
 					minOffset = offset
 					minVertexName = "Vertex"+str(i+1)
@@ -76,8 +77,6 @@ class SelectionObserver:
 			o = FreeCAD.ActiveDocument.getObject(obj)
 			gLastSelected = o
 			
-			[ oX, oY, oZ, oR ] = MagicPanels.getContainersOffset(o)
-			
 			if str(gGUI.shapeLE1.text()) == "first":
 				sizes = MagicPanels.getSizesFromVertices(o)
 				sizes.sort()
@@ -85,10 +84,11 @@ class SelectionObserver:
 				gGUI.shapeLE1.setText(str(round(gStep, MagicPanels.gRoundPrecision)))
 			
 			ves = MagicPanels.touchTypo(o.Shape)
+			ves = MagicPanels.getVerticesPosition(ves, o, "vertex")
 			index = int(sub.replace("Vertex",""))
 			v = ves[index-1]
 			
-			gVertices.append(( v.X+oX, v.Y+oY, v.Z+oZ ))
+			gVertices.append(( v.X, v.Y, v.Z ))
 			gVerticesInfo.append(str(o.Label) + ", " + str(sub) + "\n")
 			gGUI.refreshVerticesInfo()
 			
@@ -632,6 +632,7 @@ def showQtGUI():
 
 			# create panel
 			self.gPanel = FreeCAD.ActiveDocument.addObject("Part::Box", "panelBetween"+iType)
+			self.gPanel.Visibility = False
 			self.gPanel.Length, self.gPanel.Width, self.gPanel.Height = L, W, H
 
 			# add settings to panel
@@ -644,7 +645,7 @@ def showQtGUI():
 		def previewPanel(self):
 
 			try:
-				FreeCAD.activeDocument().removeObject(str(self.gPanel.Name))
+				FreeCAD.ActiveDocument.removeObject(str(self.gPanel.Name))
 			except:
 				skip = 1
 
@@ -670,11 +671,20 @@ def showQtGUI():
 			if self.gMode == "Between":
 				self.projectPanelBetween(self.gPanelArr[self.gPanelIndex])
 
+			# move to container
+
+			if self.gMode == "Between" and self.gSelection2.isDerivedFrom("Part::Mirroring"):
+				MagicPanels.moveToContainer([ self.gPanel ], self.gObj1)
+			else:
+				MagicPanels.moveToFirst([ self.gPanel ], self.gObj1)
+
+			self.gPanel.Visibility = True
+
 		# ############################################################################
 		def setMode(self):
 			
 			try:
-				FreeCAD.activeDocument().removeObject(str(self.gPanel.Name))
+				FreeCAD.ActiveDocument.removeObject(str(self.gPanel.Name))
 			except:
 				skip = 1
 				
@@ -864,11 +874,6 @@ def showQtGUI():
 				except:
 					skip = 1
 
-				if self.gMode == "Between" and self.gSelection2.isDerivedFrom("Part::Mirroring"):
-					MagicPanels.moveToContainer([ self.gPanel ], self.gObj1)
-				else:
-					MagicPanels.moveToFirst([ self.gPanel ], self.gObj1)
-
 				self.gPanel.ViewObject.Transparency = 0
 				self.gPanel = ""
 		
@@ -911,7 +916,7 @@ def showQtGUI():
 			draftSketch.Visibility = False
 			doc.recompute()
 			
-			MagicPanels.moveToFirst([ part ], gLastSelected)
+			MagicPanels.moveToFirstWithInverse([ part ], gLastSelected)
 			
 			# set color of last selected object
 			try:

@@ -696,7 +696,8 @@ def showQtGUI():
 			# ############################################################################
 
 			self.setRotation()
-
+			MagicPanels.moveToFirst(self.gDowels, self.gObj)
+			
 		# ############################################################################
 		# actions - functions for actions
 		# ############################################################################
@@ -1163,9 +1164,7 @@ def showQtGUI():
 							d.ViewObject.ShapeColor = self.gObj.ViewObject.ShapeColor
 						except:
 							skip = 1
-						
-					MagicPanels.moveToFirst(self.gDowels, self.gObj)
-						
+
 				self.gDowels = []
 				FreeCAD.ActiveDocument.recompute()
 			

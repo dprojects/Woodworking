@@ -9,19 +9,8 @@ try:
 
 	if len(selectedObjects) < 1:
 		raise
-		
-	linkgroup = FreeCAD.ActiveDocument.addObject('App::LinkGroup','LinkGroup')
-	linkgroup.setLink(selectedObjects)
-
-	for o in selectedObjects:
-		o.Visibility = False
-
-	FreeCAD.ActiveDocument.recompute()
-
-	try:
-		MagicPanels.copyColors(selectedObjects[0], linkgroup)
-	except:
-		skip = 1
+	
+	container = MagicPanels.createContainer(selectedObjects)
 
 except:
 	

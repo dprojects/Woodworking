@@ -26,18 +26,19 @@ try:
 		[ v1, v2, v3, v4 ] = MagicPanels.getFaceVertices(face)
 		x, y, z = v1[0], v1[1], v1[2]
 		
-		r = MagicPanels.getFaceObjectRotation(base, face)
-		
 		[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(base)
 		x = x + coX
 		y = y + coY
 		z = z + coZ
-
-		MagicPanels.setPlacement(d, x, y, z, r)
+		r = MagicPanels.getFaceObjectRotation(base, face)
+		
+		MagicPanels.setContainerPlacement(d, x, y, z, r, "clean")
 		
 		# default drill bit colors (middle, bottom, top)
 		colors = [ (0.0, 0.0, 1.0, 0.0), (0.0, 1.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0) ]
 		d.ViewObject.DiffuseColor = colors
+		
+		MagicPanels.moveToFirst([ d ], base)
 
 	else:
 	

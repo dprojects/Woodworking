@@ -15,7 +15,7 @@ try:
 	baseFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 	basePlane = MagicPanels.getFacePlane(baseFace)
 	[ v1, v2, v3, v4 ] = MagicPanels.getFaceVertices(baseFace)
-	[ v1, v2, v3, v4 ] = MagicPanels.getVerticesOffset([ v1, v2, v3, v4 ], base, "array")
+	[ v1, v2, v3, v4 ] = MagicPanels.getVerticesPosition([ v1, v2, v3, v4 ], base, "array")
 	
 	objects = selectedObjects[1:]
 
@@ -57,7 +57,7 @@ try:
 			else:
 				X = X - d
 
-		MagicPanels.setPlacement(objMove, X, Y, Z, R)
+		MagicPanels.setContainerPlacement(objMove, X, Y, Z, 0, "clean")
 		FreeCAD.ActiveDocument.recompute()
 
 except:

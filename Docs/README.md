@@ -164,7 +164,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 ### magicMove
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicMove.png"> This tool allows to move panel with custom step. It automatically show center axes and resize the corner axes. You can also resize the corner axes or turn on and off the center axes. This tool recognize holding button, so you can press once the arrow and hold it, and the selected part will be moving in desired direction with exact step. This approach allows, to precisely move objects and also do it quickly without clicking arrows icons many times. You can also copy objects along coordinate axes. At FreeCAD you can use arrays but arrays make problems in case of edgeband because arrays have more than 6 faces. With this copy option you can quickly create many objects and avoid the multiple faces problem. 
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicMove.png"> This tool allows to move, copy or mirror panel with custom step. This tool support multi-selection, so you can move, copy or mirror many objects at once. It automatically show coordinate center and resize the corner axes. You can also resize the corner axes or turn on and off the center axes. This tool recognize holding button, so you can press once the arrow and hold it, and the selected part will be moving in desired direction with exact step. This approach allows, to precisely move objects and also do it quickly without clicking arrows icons many times. You can also copy objects along coordinate axes or make mirror. At FreeCAD you can use arrays but arrays make problems in case of edgeband because arrays have more than 6 faces. With this copy option you can quickly create many objects and avoid the multiple faces problem. 
 
 **Options:**
 
@@ -176,7 +176,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
   * `Link` if you want to copy `LinkGroup` and generate cut-list, it is better to set this copy option. 
   * `Copy offset` this is offset between original selected object or last copied element and next copied element. If this is set to `0` the next element will be created without space in relation to the last element. For example if you set `10` and click `X+` many times, the space before each copied elements will be `10`.
 
-* **Mirror:** This option create mirror with offset. You can select single element like `Cube` or container like `LinkGroup` with more elements inside. This tool calculates occupied space by the selected element and add new element with given offset. If you have dowels the space will be calculated from dowels to dowels.
+* **Mirror:** This option create mirror with offset. You can select single element like `Cube` or container like `LinkGroup` with more elements inside. This tool calculates occupied space by the selected element and add new element with given offset. If you have dowels the space will be calculated from dowels to dowels. This option recognize if the selected object is LinkGroup container and if not, it will create `LinkGroup` for the object, so you will be able to extend, build on this object later.
 
 **Video tutorials:** 
 * [Smart move & copy](https://www.youtube.com/watch?v=gh0Sc0eLooQ)

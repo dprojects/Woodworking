@@ -14,7 +14,9 @@ try:
 	base = selectedObjects[0]
 	objects = selectedObjects[1:]
 	baseRef = MagicPanels.getReference(base)
-	[ baseX, baseY, baseZ, baseR ] = MagicPanels.getContainerPlacement(baseRef, "offset")
+	# [ baseX, baseY, baseZ, baseR ] = MagicPanels.getContainerPlacement(baseRef, "offset")
+	[ baseX, baseY, baseZ, baseR ] = MagicPanels.getContainerPlacement(baseRef, "clean")
+	[[ baseX, baseY, baseZ ]] = MagicPanels.getVerticesPosition([[ baseX, baseY, baseZ ]], baseRef, "array")
 
 	# sub-object selection
 	sx, sy, sz = "", "", ""
@@ -100,7 +102,7 @@ try:
 			else:
 				Z = Z - dZ
 
-			MagicPanels.setContainerPlacement(objMove, X, Y, Z, R)
+			MagicPanels.setContainerPlacement(objMove, X, Y, Z, 0, "clean")
 			FreeCAD.ActiveDocument.recompute()
 
 	FreeCADGui.Selection.clearSelection()

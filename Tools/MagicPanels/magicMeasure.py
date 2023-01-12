@@ -82,7 +82,7 @@ class SelectionObserver:
 		if edge.Curve.isDerivedFrom("Part::GeomLine"):
 			
 			[ v1, v2 ] = MagicPanels.getEdgeVertices(edge)
-			[ v1, v2 ] = MagicPanels.getVerticesOffset([ v1, v2 ], o, "array")
+			[ v1, v2 ] = MagicPanels.getVerticesPosition([ v1, v2 ], o, "array")
 
 			p1 = FreeCAD.Vector(v1)
 			p2 = FreeCAD.Vector(v2)
@@ -103,7 +103,7 @@ class SelectionObserver:
 		
 			p1 = FreeCAD.Vector(edge.Curve.Location.x, edge.Curve.Location.y, edge.Curve.Location.z)
 			p2 = FreeCAD.Vector(edge.SubShapes[1].X, edge.SubShapes[1].Y, edge.SubShapes[1].Z)
-			[ p1, p2 ] = MagicPanels.getVerticesOffset([ p1, p2 ], o, "vector")
+			[ p1, p2 ] = MagicPanels.getVerticesPosition([ p1, p2 ], o, "vector")
 			
 			# show measure
 			size = round(p1.distanceToPoint(p2), MagicPanels.gRoundPrecision)
@@ -126,7 +126,7 @@ class SelectionObserver:
 
 			v = edge.Curve.value(0)
 			p2 = FreeCAD.Vector(v[0], v[1], v[2])
-			[ p1, p2 ] = MagicPanels.getVerticesOffset([ p1, p2 ], o, "vector")
+			[ p1, p2 ] = MagicPanels.getVerticesPosition([ p1, p2 ], o, "vector")
 			
 			s1 = round(p1.distanceToPoint(p2), MagicPanels.gRoundPrecision)
 			
@@ -139,7 +139,7 @@ class SelectionObserver:
 			
 			v = edge.Curve.value(math.pi / 2)
 			p2 = FreeCAD.Vector(v[0], v[1], v[2])
-			[ p1, p2 ] = MagicPanels.getVerticesOffset([ p1, p2 ], o, "vector")
+			[ p1, p2 ] = MagicPanels.getVerticesPosition([ p1, p2 ], o, "vector")
 			
 			s2 = round(p1.distanceToPoint(p2), MagicPanels.gRoundPrecision)
 			
@@ -186,7 +186,7 @@ class SelectionObserver:
 			i = i + 1
 			
 			[ v1, v2 ] = MagicPanels.getEdgeVertices(e)
-			[ v1, v2 ] = MagicPanels.getVerticesOffset([ v1, v2 ], o, "array")
+			[ v1, v2 ] = MagicPanels.getVerticesPosition([ v1, v2 ], o, "array")
 			p1 = FreeCAD.Vector(v1)
 			p2 = FreeCAD.Vector(v2)
 			val = round(p1.distanceToPoint(p2), MagicPanels.gRoundPrecision)
@@ -241,7 +241,7 @@ class SelectionObserver:
 			if gP1 != "":
 				
 				[ v1, v2 ] = MagicPanels.getEdgeVertices(edge)
-				[ v1, v2 ] = MagicPanels.getVerticesOffset([ v1, v2 ], o, "array")
+				[ v1, v2 ] = MagicPanels.getVerticesPosition([ v1, v2 ], o, "array")
 				axis = MagicPanels.getEdgePlane(edge)
 				
 				if axis == "X":
@@ -254,7 +254,7 @@ class SelectionObserver:
 			# get both vertices from edge, and draw measure for entire edge
 			else:
 				[ v1, v2 ] = MagicPanels.getEdgeVertices(edge)
-				[ v1, v2 ] = MagicPanels.getVerticesOffset([ v1, v2 ], o, "array")
+				[ v1, v2 ] = MagicPanels.getVerticesPosition([ v1, v2 ], o, "array")
 				gP1 = FreeCAD.Vector(v1)
 				gP2 = FreeCAD.Vector(v2)
 		
@@ -265,10 +265,10 @@ class SelectionObserver:
 			
 			if gP1 == "":
 				gP1 = FreeCAD.Vector(edge.Curve.Location.x, edge.Curve.Location.y, edge.Curve.Location.z)
-				[ gP1 ] = MagicPanels.getVerticesOffset([ gP1 ], o, "vector")
+				[ gP1 ] = MagicPanels.getVerticesPosition([ gP1 ], o, "vector")
 			else:
 				gP2 = FreeCAD.Vector(edge.Curve.Location.x, edge.Curve.Location.y, edge.Curve.Location.z)
-				[ gP2 ] = MagicPanels.getVerticesOffset([ gP2 ], o, "vector")
+				[ gP2 ] = MagicPanels.getVerticesPosition([ gP2 ], o, "vector")
 		
 		# skip if there is no data to show measurement
 		if skip == 1 or gP1 == "" or gP2 == "":
@@ -307,7 +307,7 @@ class SelectionObserver:
 		if gP1 != "":
 			
 			[ v1, v2 ] = MagicPanels.getEdgeVertices(face.Edges[0])
-			[ v1, v2 ] = MagicPanels.getVerticesOffset([ v1, v2 ], o, "array")
+			[ v1, v2 ] = MagicPanels.getVerticesPosition([ v1, v2 ], o, "array")
 			axis = MagicPanels.getFacePlane(face)
 			
 			if axis == "YZ":

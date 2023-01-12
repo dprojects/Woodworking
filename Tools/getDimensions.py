@@ -45,9 +45,19 @@ sRPQDsc = {
 # Visibility (Toggle Visibility Feature):
 sTVF = "off"
 sTVFDsc = {
-	"on" : translate("getDimensions", "skip all hidden objects and groups"),
-	"edge" : translate("getDimensions", "show all hidden objects and groups but not add to the edge size"),
-	"off" : translate("getDimensions", "show and calculate all objects and groups")
+	"off" : translate("getDimensions", "normal mode, show and calculate all objects and groups"),
+	"on" : translate("getDimensions", "simple mode, not show hidden objects for simple structures"),
+	"edge" : translate("getDimensions", "simple edge mode, show all but not add hidden to the edge size"),
+	"parent" : translate("getDimensions", "simple nesting, inherit visibility from the nearest container"),
+	"inherit" : translate("getDimensions", "advanced nesting, inherit visibility from the highest container")
+}
+
+# Part Cut Visibility:
+sPartCut = "all"
+sPartCutDsc = {
+	"all" : translate("getDimensions", "Woodworking workbench approach, show Base and Tool"),
+	"base" : translate("getDimensions", "FreeCAD default approach, show Base only"),
+	"tool" : translate("getDimensions", "custom approach, show Tool only")
 }
 
 # Units for dimensions:
@@ -123,7 +133,7 @@ sQT = "yes"
 # 1 - debug mode
 # 0 - keep console clean
 gDEBUG = 0
-
+gDebugLoop = 0
 
 # ###################################################################################################################
 # Autoconfig - define globals ( NOT CHANGE HERE )
@@ -135,6 +145,9 @@ gAD = ""
 
 # objects to parse init
 gOBs = ""
+
+# currently parsed object called from main loop
+gCallerObj = ""
 
 # spreadsheet result init
 gSheet = gAD
@@ -248,7 +261,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 600
-			toolSH = 550
+			toolSH = 570
 			
 			# active screen size - FreeCAD main window
 			gSW = FreeCADGui.getMainWindow().width()
@@ -388,7 +401,30 @@ def showQtGUI():
 
 			# info screen
 			self.visibilityIS = QtGui.QLabel(str(sTVFDsc[sTVF]) + sEmptyDsc, self)
-			self.visibilityIS.move(80, vLine + vLineNextRow + 3)
+			self.visibilityIS.move(90, vLine + vLineNextRow + 3)
+
+			# ############################################################################
+			# part cut visibility
+			# ############################################################################
+
+			# set line separator
+			vLine = vLine + vLineOffset
+
+			# label
+			self.pcvisibilityL = QtGui.QLabel(translate("getDimensions", "Part :: Cut content visibility:"), self)
+			self.pcvisibilityL.move(10, vLine + 3)
+			
+			# options
+			self.pcvisibilityList = tuple(sPartCutDsc.keys())
+			self.pcvisibilityO = QtGui.QComboBox(self)
+			self.pcvisibilityO.addItems(self.pcvisibilityList)
+			self.pcvisibilityO.setCurrentIndex(self.pcvisibilityList.index(str(sPartCut)))
+			self.pcvisibilityO.activated[str].connect(self.setPartCutVisibility)
+			self.pcvisibilityO.move(10, vLine + vLineNextRow)
+
+			# info screen
+			self.pcvisibilityIS = QtGui.QLabel(str(sPartCutDsc[sPartCut]) + sEmptyDsc, self)
+			self.pcvisibilityIS.move(90, vLine + vLineNextRow + 3)
 			
 			# ############################################################################
 			# units for dimensions
@@ -494,17 +530,18 @@ def showQtGUI():
 			# ############################################################################
 
 			# button - cancel
-			self.cancelButton = QtGui.QPushButton(translate("getDimensions", "Cancel"), self)
-			self.cancelButton.clicked.connect(self.onCancel)
-			self.cancelButton.setAutoDefault(True)
-			self.cancelButton.resize(200, 40)
-			self.cancelButton.move(50, toolSH-50)
+			#self.cancelButton = QtGui.QPushButton(translate("getDimensions", "Cancel"), self)
+			#self.cancelButton.clicked.connect(self.onCancel)
+			#self.cancelButton.setAutoDefault(True)
+			#self.cancelButton.resize(200, 40)
+			#self.cancelButton.move(50, toolSH-50)
 			
 			# button - ok
-			self.okButton = QtGui.QPushButton(translate("getDimensions", "OK"), self)
+			info = translate("getDimensions", "create spreadsheet toCut with dimensions, cut-list, BOM")
+			self.okButton = QtGui.QPushButton(info, self)
 			self.okButton.clicked.connect(self.onOk)
-			self.okButton.resize(200, 40)
-			self.okButton.move(toolSW-250, toolSH-50)
+			self.okButton.resize(toolSW-100, 40)
+			self.okButton.move(50, toolSH-50)
 
 			# ############################################################################
 			# show
@@ -530,6 +567,11 @@ def showQtGUI():
 			global sTVF
 			sTVF = selectedText
 			self.visibilityIS.setText(str(sTVFDsc[sTVF]) + sEmptyDsc)
+
+		def setPartCutVisibility(self, selectedText):
+			global sPartCut
+			sPartCut = selectedText
+			self.pcvisibilityIS.setText(str(sPartCutDsc[sPartCut]) + sEmptyDsc)
 
 		def setDFO(self, selectedText):
 			global sUnitsMetric
@@ -636,9 +678,9 @@ def showQtGUI():
 			self.ecti.setText(str(tmpColor))
 		
 		# buttons
-		def onCancel(self):
-			self.result = userCancelled
-			self.close()
+		#def onCancel(self):
+		#	self.result = userCancelled
+		#	self.close()
 		def onOk(self):
 			self.result = userOK
 			self.close()
@@ -1990,6 +2032,10 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 		# support for LinkGroup but called only from transformations
 		if iObj.isDerivedFrom("App::LinkGroup"):
 			setAppLinkGroup(iObj, iCaller)
+			
+		# support for Cut but called only from transformations
+		if iObj.isDerivedFrom("Part::Cut"):
+			setPartCut(iObj, iCaller)
 
 		# support for Mirror on Body
 		if iObj.isDerivedFrom("PartDesign::Body") and iObj.Name.startswith("Body"):
@@ -2059,7 +2105,7 @@ def setAppLinkGroup(iObj, iCaller="setAppLinkGroup"):
 	if iObj.isDerivedFrom("App::LinkGroup"):
 
 		try:
-			
+
 			# set reference point to the objects list
 			key = iObj.ElementList
 
@@ -2070,6 +2116,29 @@ def setAppLinkGroup(iObj, iCaller="setAppLinkGroup"):
 			
 			# if there is wrong structure
 			showError(iCaller, iObj, "setAppLinkGroup", "wrong structure")
+			return -1
+	
+	return 0
+
+
+# ###################################################################################################################
+def setPartCut(iObj, iCaller="setPartCut"):
+
+	# support for Cut
+	if iObj.isDerivedFrom("Part::Cut"):
+
+		try:
+
+			# set reference point to the objects list
+			key = iObj.OutList
+
+			# call scan for each object at the list
+			scanObjects(key, iCaller)
+		
+		except:
+			
+			# if there is wrong structure
+			showError(iCaller, iObj, "setPartCut", "wrong structure")
 			return -1
 	
 	return 0
@@ -2362,21 +2431,155 @@ def setPartDesignMultiTransform(iObj, iCaller="setPartDesignMultiTransform"):
 # Scan objects (MAIN CALCULATIONS LOOP)
 # ###################################################################################################################
 
+# ###################################################################################################################
+def getCutContentPath(iObj, iType, iCaller="getCutContentPath"):
+
+	visibility = True
+	assign = ""
+	
+	try:
+		# not check Cut containers
+		if not iObj.isDerivedFrom("Part::Cut"):
+			
+			# if is Base but the Tool is called
+			if str(iObj.Name) == str(iObj.InList[0].Base.Name):
+				if iType == "Tool":
+					visibility = False
+	
+			# if is Tool but the Base is called
+			if str(iObj.Name) == str(iObj.InList[0].Tool.Name):
+				if iType == "Base":
+					visibility = False
+
+	# if there is no Cut structure
+	except:
+		skip = 1
+
+	return visibility
+
+
+# ###################################################################################################################
+def getParentVisibility(iObj, iCaller="getParentVisibility"):
+
+	# set starting point if there is no parent
+	if gCallerObj.Visibility == True:
+		v = True
+	else:
+		v = False
+
+	# try to get parent
+	try:
+		if iObj.InList[0].Visibility == True:
+			v = True
+		else:
+			v = False
+	
+	# if there is no correct parent
+	except:
+		skip = 1
+
+	return v
+
+
+# ###################################################################################################################
+def getInheritedVisibility(iObj, iCaller="getInheritedVisibility"):
+
+	# set starting point
+	v = True
+	
+	try:
+
+		# if the caller highest object is visible break
+		if gCallerObj.Visibility == True:
+			return True
+		
+		# inherit visibility from the highest container only if the object is hidden
+		for o in iObj.InListRecursive:
+			
+			if (
+				o.isDerivedFrom("App::LinkGroup") or 
+				o.isDerivedFrom("Part::Compound") or 
+				o.isDerivedFrom("Part::Cut") or 
+				o.isDerivedFrom("App::Part") or 
+				o.isDerivedFrom("PartDesign::Body") 
+				):
+				
+				if o.Visibility == False:
+					v = False
+				else:
+					v = True
+
+	except:
+		skip = 1
+
+	return v
+
 
 # ###################################################################################################################
 def scanObjects(iOBs, iCaller="main"):
-
+	
+	global gCallerObj
+	
 	# search all objects in document and set database for correct ones
 	for obj in iOBs:
 
-		# if feature is on, just skip all hidden elements
-		if sTVF == "on":
-			if FreeCADGui.ActiveDocument.getObject(obj.Name).Visibility == False:
-				continue
+		# set currently parsed object called from main loop
+		if iCaller == "main":
+			gCallerObj = obj
 
+		# ##################################################################
+		# debug section
+		# ##################################################################
+		
+		if gDebugLoop == True:
+			
+			FreeCAD.Console.PrintMessage("\n\n")
+			FreeCAD.Console.PrintMessage("scanObjects")
+			FreeCAD.Console.PrintMessage("\n")
+			FreeCAD.Console.PrintMessage("Caller function: "+str(iCaller))
+			FreeCAD.Console.PrintMessage("\n")
+			FreeCAD.Console.PrintMessage("Caller object: "+str(gCallerObj.Label))
+			FreeCAD.Console.PrintMessage("\n")
+			FreeCAD.Console.PrintMessage("Parsed object: "+str(obj.Label))
+			
+		# ##################################################################
+		# check if parsing is allowed
+		# ##################################################################
+		
+		# check copy listing special property
 		if hasattr(obj, "BOM"):
 			if obj.BOM == False:
 				continue
+
+		# simple object visibility
+		if sTVF == "on":
+			if obj.Visibility == False:
+				continue
+
+		# inherit visibility from nearest parent
+		if sTVF == "parent":
+			if getParentVisibility(obj, iCaller) == False:
+				continue
+
+		# inherit visibility from highest container
+		# linking from middle visible container in highest hidden container
+		if sTVF == "inherit":
+			if getInheritedVisibility(obj, iCaller) == False:
+				continue
+
+		# show only Base objects from Part :: Cut
+		if sPartCut == "base":
+			if getCutContentPath(obj, "Base", iCaller) == False:
+				continue
+				
+		# show only Tool objects from Part :: Cut
+		if sPartCut == "tool":
+			if getCutContentPath(obj, "Tool", iCaller) == False:
+				continue
+
+		# ##################################################################
+		# run functions and time travel machine ;-)
+		# ##################################################################
 
 		# select and set furniture part
 		selectFurniturePart(obj, iCaller)

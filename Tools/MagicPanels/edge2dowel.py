@@ -33,7 +33,7 @@ try:
 		d.Radius = edgeRadius
 		d.Height = 40
 
-		MagicPanels.setPlacement(d, x, y, z, r)
+		MagicPanels.setContainerPlacement(d, x, y, z, r, "clean")
 		MagicPanels.moveToFirst([ d ], objRef)
 
 except:

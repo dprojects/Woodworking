@@ -4,23 +4,20 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 
 ![intro](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/intro.gif)
 
-**For more details see:** 
-* YouTube channel dedicated for this workbench at: [youtube.com/@dprojects.woodworking](https://www.youtube.com/@dprojects.woodworking/videos)
-* Woodworking workbench documentation available at: [Docs folder](https://github.com/dprojects/Woodworking/tree/master/Docs)
+* **Furniture from scratch & redesign:** [YouTube playlist](https://www.youtube.com/playlist?list=PLSKOS_LK45BBHkWPjdWX49qh-GEsF511v)
+* **Joinery examples:** [YouTube playlist](https://www.youtube.com/watch?v=qx_kAxG7GO0&list=PLSKOS_LK45BBG8kJ2AZvQKBfOSfzhTrLt)
+* **Parametrization solutions:** [YouTube playlist](https://www.youtube.com/playlist?list=PLSKOS_LK45BCzvg_B7oSTk1IsQnu5thtZ)
+* **Workbench features & development:** [YouTube playlist](https://www.youtube.com/playlist?list=PLSKOS_LK45BDiLCETxbH_PV-uN3RAA0qz)
 
-|   |   |
-|---|---|
-| [![c1r1](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r1.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r1.png) | [![c2r1](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r1.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r1.png) |
-| [![c1r2](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r2.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r2.png) | [![c2r2](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r2.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r2.png) |
-| [![c1r3](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r3.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r3.png) | [![c2r3](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r3.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r3.png) |
-| [![c1r4](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r4.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r4.png) | [![c2r4](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r4.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r4.png) |
+* **Woodworking workbench YouTube channel:** [all videos](https://www.youtube.com/@dprojects.woodworking/videos)
+* **Woodworking workbench documentation:** [Woodworking/Docs](https://github.com/dprojects/Woodworking/tree/master/Docs)
 
 # Certified platforms
 
 * Stable certified versions download at: [Woodworking/releases](https://github.com/dprojects/Woodworking/releases)
 * For cutting edge features download:
-	* Woodworking workbench development version from: [the master branch](https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip)
 	* FreeCAD version from: [FreeCAD_weekly-builds-30486-2022-09-29-conda-Linux-x86_64-py310.AppImage](https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/weekly-builds/FreeCAD_weekly-builds-30486-2022-09-29-conda-Linux-x86_64-py310.AppImage)
+	* Woodworking workbench development version from: [the master branch](https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip)
 
 * Current development platform:
 
@@ -35,11 +32,20 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 		Installed mods: 
 		* Woodworking 0.21.30486
 
-* I don't have `Windows` or `macOS`, so I am not able to test and certify this workbench for those systems. However, if you use `FreeCAD AppImage` there is big chance this will be working correctly.
+**Note:**
 
-**Note:** To get better stability make sure your current Woodworking workbench version has always the same version number as the FreeCAD version. You can also verify this via [debuginfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool. 
+* I don't have `Windows` or `macOS`, so I am not able to test and certify this workbench for those systems. However, if you use `FreeCAD AppImage` there is big chance this will be working correctly.
+* To get better stability make sure your current Woodworking workbench version has always the same version number as the FreeCAD version. You can also verify this via [debuginfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool. 
 
 # Installation
+
+**Getting FreeCAD Mod folder localization:**
+
+* From FreeCAD python console run command:
+
+		FreeCAD.ConfigDump()["UserAppData"]
+
+* If there is no `Mod` folder, create it.
 
 **Xubuntu:**
 
@@ -66,24 +72,35 @@ This woodworking workbench is delivered with several useful extras:
 * [Fixture examples](https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture) - this is new approach to 3D modeling. For example you can replace any Cylinder with realistic looking detailed screw. This is very powerful feature and gives a lot of flexibility and simplifies the process of making model detailed.
 * [Texture samples](https://commons.wikimedia.org/w/index.php?title=Special:ListFiles/Dprojects&ilshowall=1) - sample textures for woodworking projects purposes.
 
+# API for developers
+
+The Woodworking workbench has also API for developers. This library contains functions that solve the Topology Naming Problem. You can also leaglly create your own tools and extend the workbench in your private repository in accordance with the MIT license:
+	
+* **View library API documentation:** [MagicPanelsAPI.md](https://github.com/dprojects/Woodworking/blob/master/Docs/MagicPanelsAPI.md)
+* **View library code:** [MagicPanels.py](https://github.com/dprojects/Woodworking/blob/master/Tools/MagicPanels/MagicPanels.py)
+* **Download & install library:** [raw version](https://raw.githubusercontent.com/dprojects/Woodworking/master/Tools/MagicPanels/MagicPanels.py)
+
+**Note:**
+
+* If you have Woodowrking workbench installed you don't have to install the `MagicPanels` library manaually. Also you can view the library directly from Woodworking workbench via: [scanObjects](https://github.com/dprojects/Woodworking/tree/master/Docs#scanobjects) tool.
+* For programming I use simple [Krusader](https://en.wikipedia.org/wiki/Krusader) with `F4` [KWrite](https://en.wikipedia.org/wiki/KWrite) editor. I have set tabulators as indent: `Settings` -> `Configure Editor` -> `Editing` -> `Indentation` -> `Tabulators` -> `Tab width: 4 characters`.
+
 # Translations
 
 For Woodworking workbench translation see dedicated directory: [translations](https://github.com/dprojects/Woodworking/tree/master/translations)
 
-# API for developers
+# License
 
-The Woodworking workbench has also API for developers. You can also create your own tools and extend the workbench: 
-* MagicPanels library available at: [MagicPanels.py](https://raw.githubusercontent.com/dprojects/Woodworking/master/Tools/MagicPanels/MagicPanels.py)
-* API documentation: [MagicPanelsAPI.md](https://github.com/dprojects/Woodworking/blob/master/Docs/MagicPanelsAPI.md)
-* You can also browse MagicPanels library directly from Woodworking workbench via: [scanObjects tool](https://github.com/dprojects/Woodworking/tree/master/Docs#scanobjects)
-
-**Note:** For programming I use simple [KWrite](https://en.wikipedia.org/wiki/KWrite) editor. I have set tabulators as indent: `Settings` -> `Configure Editor` -> `Editing` -> `Indentation` -> `Tabulators` -> `Tab width: 4 characters`.
+[MIT](https://github.com/dprojects/Woodworking/blob/master/LICENSE) for all Woodworking workbench content.
 
 # Contact
 
 * For questions, comments, feature requests, improvements, please open issue at: [issue tracker](https://github.com/dprojects/Woodworking/issues)
 * Also we can discuss at: [FreeCAD forum thread](https://forum.freecadweb.org/viewtopic.php?f=3&t=8247)
 
-# License
-
-[MIT](https://github.com/dprojects/Woodworking/blob/master/LICENSE) for all Woodworking workbench content.
+|   |   |
+|---|---|
+| [![c1r1](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r1.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r1.png) | [![c2r1](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r1.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r1.png) |
+| [![c1r2](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r2.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r2.png) | [![c2r2](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r2.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r2.png) |
+| [![c1r3](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r3.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r3.png) | [![c2r3](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r3.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r3.png) |
+| [![c1r4](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r4.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r4.png) | [![c2r4](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r4.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r4.png) |

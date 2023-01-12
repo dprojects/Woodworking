@@ -61,20 +61,21 @@ try:
 
 		[ v1 ] = MagicPanels.getVerticesOffset([ v1 ], obj1Ref, "vector")
 		[ v2 ] = MagicPanels.getVerticesOffset([ v2 ], obj2Ref, "vector")
-		plane = MagicPanels.getVerticesPlane(v1, v2)
 		
 		[ cx, cy, cz ] = MagicPanels.getObjectCenter(oRef)
 		c = FreeCAD.Vector(cx, cy, cz)
 		[ c ] = MagicPanels.getVerticesOffset([ c ], oRef, "vector")
-
+		
 		X, Y, Z = v1[0], v1[1], v1[2]
-
+		plane = MagicPanels.getVerticesPlane(v1, v2)
+		
 		if plane == "XY":
 
-			centerAnchor = FreeCAD.Vector(v1[0], v1[1], c[2])
+			edgeCenter = FreeCAD.Vector(v1[0], v1[1], c[2])
 
 			# along Z
 			offset = MagicPanels.getVertexAxisCross(v1[2], v2[2]) / 2
+			
 
 			if v1[2] < v2[2]:
 				Z = Z + offset
@@ -83,11 +84,11 @@ try:
 
 		if plane == "XZ":
 
-			centerAnchor = FreeCAD.Vector(v1[0], c[1], v1[2])
+			edgeCenter = FreeCAD.Vector(v1[0], c[1], v1[2])
 
 			# along Y
 			offset = MagicPanels.getVertexAxisCross(v1[1], v2[1]) / 2
-
+			
 			if v1[1] < v2[1]:
 				Y = Y + offset
 			else:
@@ -95,26 +96,19 @@ try:
 			
 		if plane == "YZ":
 
-			centerAnchor = FreeCAD.Vector(c[0], v1[1], v1[2])
+			edgeCenter = FreeCAD.Vector(c[0], v1[1], v1[2])
 
 			# along X
 			offset = MagicPanels.getVertexAxisCross(v1[0], v2[0]) / 2
-
+					
 			if v1[0] < v2[0]:
 				X = X + offset
 			else:
 				X = X - offset
 
-		if oRef.isDerivedFrom("Part::Box"):
-			[ x, y, z, r ] = MagicPanels.getPlacement(oRef)
-			MagicPanels.setPlacement(oRef, X, Y, Z, r, centerAnchor)
-		
-		else:
-			objMove = MagicPanels.getObjectToMove(oRef)
-			[ x, y, z, r ] = MagicPanels.getPlacement(objMove)
-			MagicPanels.setPlacement(objMove, X, Y, Z, r, centerAnchor)
-		
-		FreeCAD.activeDocument().recompute()
+		toMove = MagicPanels.getObjectToMove(oRef)
+		MagicPanels.setContainerPlacement(toMove, X, Y, Z, 0, edgeCenter)
+		FreeCAD.ActiveDocument.recompute()
 
 except:
 	

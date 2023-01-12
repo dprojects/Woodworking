@@ -387,6 +387,9 @@ def panelMove(iType):
 
 		selection = FreeCADGui.Selection.getSelection()
 		
+		if len(selection) < 1:
+			raise
+
 		for o in selection:
 
 			sizes = []

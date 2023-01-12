@@ -75,9 +75,10 @@ Tools = [
 	# #################################################################################################################################
 
 	# project manage
+	"MagicPanels", "selected2Group", "png", "selected to Group", "Click to see info.",
 	"MagicPanels", "selected2LinkGroup", "png", "selected to LinkGroup", "Click to see info.",
 	"MagicPanels", "selected2Link", "png", "selected to Link", "Click to see info.",
-
+	
 	# drilling
 	
 	"MagicPanels", "drillHoles", "png", "drill bit, drill simple holes", "Click to see info.",

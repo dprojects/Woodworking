@@ -42,6 +42,7 @@ for line in data:
 	if commentOpen == True or globalsOpen == True:
 		out = line
 		out = out.replace("\n","")
+		out = out.replace("\tArgs:","##### Description:")
 		out = out.replace("\tArgs:","##### Args:")
 		out = out.replace("\tUsage:","##### Usage:")
 		out = out.replace("\tResult:","##### Result:")

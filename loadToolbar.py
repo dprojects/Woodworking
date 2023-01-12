@@ -184,9 +184,9 @@ def getItems(iType):
 			"Std_Save",
 			"Std_Open",
 			"Std_MergeProjects",
-			"Std_Group",
 			"selected2LinkGroup",
-			"selected2Link"
+			"selected2Link",
+			"selected2Group"
 		]
 
 	if iType == "Woodworking - code and debug":

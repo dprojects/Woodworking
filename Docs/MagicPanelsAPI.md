@@ -23,11 +23,13 @@ gSearchDepth = 200       # recursive search depth
 # Functions for general purpose
 ### equal(iA, iB):
 
-	equal(iA, iB) - At FreeCAD there are many values like 1.000006, especially for PartDesign objects. 
-	So if you want to compare such values this sometimes might be True and sometimes False. 
-	So, finally I decided to write my own function for comparison.
+	Description:
 	
-##### Args:
+		At FreeCAD there are many values like 1.000006, especially for PartDesign objects. 
+		So if you want to compare such values this sometimes might be True and sometimes False. 
+		So, finally I decided to write my own function for comparison.
+	
+##### Description:
 	
 		iA: float value
 		iB: float value
@@ -43,9 +45,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### touchTypo(iObj):
 
-	touchTypo(iObj) - touch the typo so that the typo-snake does not notice it ;-) LOL
+	Description:
 	
-##### Args:
+		Touch the typo so that the typo-snake does not notice it ;-) LOL
+	
+##### Description:
 	
 		iObj: object to touch
 
@@ -59,10 +63,12 @@ gSearchDepth = 200       # recursive search depth
 
 ### normalizeBoundBox(iBoundBox):
 
-	normalizeBoundBox(iBoundBox) - return normalized version of BoundBox. All values 0.01 will be rounded 
-	allowing comparison, and searches for the same face or edge.
+	Description:
 	
-##### Args:
+		Return normalized version of BoundBox. All values 0.01 will be rounded 
+		allowing comparison, and searches for the same face or edge.
+	
+##### Description:
 	
 		iBoundBox: directly pass BoundBox object
 
@@ -81,11 +87,13 @@ gSearchDepth = 200       # recursive search depth
 # Vertices
 ### showVertex(iVertices, iRadius=5):
 
-	showVertex(iVertices) - create sphere at given vertices, to show where are the points for debug purposes.
+	Description:
 	
-##### Args:
+		Create sphere at given vertices, to show where are the points for debug purposes.
 	
-		iVertices: array with FreeCAD.Vector objects
+##### Description:
+	
+		iVertices: array with Vertex or floats objects
 		iRadius (optional): ball Radius
 
 ##### Usage:
@@ -94,12 +102,14 @@ gSearchDepth = 200       # recursive search depth
 
 ##### Result:
 	
-		remove old vertices and show new ones
+		remove old vertices and show new ones, return array of objects, spheres
 ### getVertex(iFace, iEdge, iVertex):
 
-	getVertex(iFace, iEdge, iVertex) - get vertex values for face, edge and vertex index.
+	Description:
 	
-##### Args:
+		Get vertex values for face, edge and vertex index.
+	
+##### Description:
 	
 		iFace: face object
 		iEdge: edge array index
@@ -115,9 +125,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### getVertexAxisCross(iA, iB):
 
-	getVertexAxisCross(iA, iB) - get (iB - iA) value.
+	Description:
 	
-##### Args:
+		Return difference between iB and iA values with respect of coordinate axes.
+	
+##### Description:
 	
 		iA: vertex float value
 		iB: vertex float value
@@ -132,9 +144,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### getVerticesPlane(iV1, iV2):
 
-	getVerticesPlane(iV1, iV2) - get axes with the same values
+	Description:
 	
-##### Args:
+		Gets axes with the same values.
+	
+##### Description:
 	
 		iV1: vertex object
 		iV2: vertex object
@@ -149,10 +163,14 @@ gSearchDepth = 200       # recursive search depth
 
 ### setVertexPadding(iObj, iVertex, iPadding, iAxis):
 
-	setVertexPadding(iObj, iVertex, iPadding, iAxis) - set padding offset from given vertex to inside the object.
-	Do not use it at getPlacement for Pads. Use 0 vertex instead.
+	Description:
 	
-##### Args:
+		Sets padding offset from given vertex to inside the object.
+		Do not use it at getPlacement for Pads. Use 0 vertex instead.
+		
+		Note: This need to be improved.
+	
+##### Description:
 	
 		iObj: object
 		iVertex: vertex object FreeCAD.Vector(x, y, z)
@@ -171,9 +189,11 @@ gSearchDepth = 200       # recursive search depth
 # Edges
 ### getEdgeVertices(iEdge):
 
-	getEdgeVertices(iEdge) - get all vertices values for edge.
+	Description:
 	
-##### Args:
+		Gets all vertices values for edge.
+	
+##### Description:
 	
 		iEdge: edge object
 
@@ -187,10 +207,12 @@ gSearchDepth = 200       # recursive search depth
 
 ### getEdgeNormalized(iV1, iV2):
 
-	getEdgeNormalized(iV1, iV2) - returns vertices with exact sorted order V1 > V2, mostly used 
-	to normalize Pad vertices
+	Description:
 	
-##### Args:
+		Returns vertices with exact sorted order V1 > V2, mostly used 
+		to normalize Pad vertices.
+	
+##### Description:
 	
 		iV1: array with vertices e.g. [ 1, 1, 1 ]
 		iV2: array with vertices e.g. [ 2, 2, 2 ]
@@ -205,9 +227,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### getEdgeIndex(iObj, iEdge):
 
-	getEdgeIndex(iObj, iEdge) - returns edge index for given object and edge.
+	Description:
 	
-##### Args:
+		Returns edge index for given object and edge.
+	
+##### Description:
 	
 		iObj: object of the edge
 		iEdge: edge object
@@ -222,9 +246,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### getEdgeIndexByKey(iObj, iBoundBox):
 
-	getEdgeIndexByKey(iObj, iBoundBox) - returns edge index for given edge BoundBox.
+	Description:
 	
-##### Args:
+		Returns edge index for given edge BoundBox.
+	
+##### Description:
 	
 		iObj: object of the edge
 		iBoundBox: edge BoundBox as key
@@ -239,9 +265,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### getEdgePlane(iEdge):
 
-	getEdgePlane(iEdge) - returns orientation for the edge, changed axis, as "X", "Y" or "Z".
+	Description:
 	
-##### Args:
+		Returns orientation for the edge, changed axis, as "X", "Y" or "Z".
+	
+##### Description:
 	
 		iEdge: edge object
 
@@ -256,12 +284,14 @@ gSearchDepth = 200       # recursive search depth
 # Router
 ### getSubByKey(iObj, iKey, iType, iSubType):
 
-	getSubByKey(iObj, iKey, iType, iSubType) - this is extended version of getEdgeIndexByKey function. 
-	This function has been created to solve resized edge problem. If you cut the edge the next edge will 
-	change the Length. So, also the BoundBox will be changed. With this function you can customize 
-	reference key to solve the Topology Naming Problem.
+	Description:
 	
-##### Args:
+		This is extended version of getEdgeIndexByKey function. 
+		This function has been created to solve resized edge problem. If you cut the edge the next 
+		edge will change the Length. So, also the BoundBox will be changed. With this function you 
+		can customize reference key to solve the Topology Naming Problem.
+	
+##### Description:
 	
 		iObj: object for the sub-object
 		iKey: array with keys
@@ -279,11 +309,13 @@ gSearchDepth = 200       # recursive search depth
 
 ### getSketchPatternRotation(iObj, iSub):
 
-	getSketchPatternRotation(iObj, iSub) - returns Rotation object which can be passed directly to setSketchPlacement 
-	functions. The Sketch will be perpendicular to the iSub object, so it can be used as router bit to cut the 
-	edge or face.
+	Description:
 	
-##### Args:
+		Returns Rotation object which can be passed directly to setSketchPlacement 
+		functions. The Sketch will be perpendicular to the iSub object, so it can be used as 
+		router bit to cut the edge or face.
+	
+##### Description:
 	
 		iObj: object for sub-object
 		iSub: selected sub-object, edge or face
@@ -299,10 +331,12 @@ gSearchDepth = 200       # recursive search depth
 
 ### edgeRouter(iPad, iSub, iSketch, iLength, iLabel, iType):
 
-	edgeRouter(iPad, iSub, iSketch, iLength, iLabel, iType) - this function is router for the edge. It cut the 
-	iSub with iSketch pattern. The new object will get iLabel label.
+	Description:
 	
-##### Args:
+		This function is router for the edge. It cut the 
+		iSub with iSketch pattern. The new object will get iLabel label.
+	
+##### Description:
 	
 		iPad: Pad object of the sub-object, for routing
 		iSub: sub-object, edge or face
@@ -321,11 +355,13 @@ gSearchDepth = 200       # recursive search depth
 
 ### makePockets(iObjects, iLength):
 
-	makePockets(iObjects, iLength) - this function is multi Pocket. First object from iObjects will be base
-	object to Pocket, all others should be Sketches. The Length is depth for Pocket. If the Length is 0 
-	the Pocket will be ThroughAll.
+	Description:
 	
-##### Args:
+		This function is multi Pocket. First object from iObjects will be base
+		object to Pocket, all others should be Sketches. The Length is depth for Pocket. 
+		If the Length is 0 the Pocket will be ThroughAll.
+	
+##### Description:
 	
 		iObjects: First base objects, next sketches
 		iLength: length to cut, float or int value, 0 means ThroughAll
@@ -341,9 +377,11 @@ gSearchDepth = 200       # recursive search depth
 # Faces
 ### getFaceIndex(iObj, iFace):
 
-	getFaceIndex(iObj, iFace) - returns face index for given object and face.
+	Description:
 	
-##### Args:
+		Returns face index for given object and face.
+	
+##### Description:
 	
 		iObj: object of the face
 		iFace: face object
@@ -358,9 +396,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### getFaceIndexByKey(iObj, iBoundBox):
 
-	getFaceIndexByKey(iObj, iBoundBox) - returns face index for given face BoundBox.
+	Description:
 	
-##### Args:
+		Returns face index for given face BoundBox.
+	
+##### Description:
 	
 		iObj: object of the face
 		iBoundBox: face BoundBox as key
@@ -375,9 +415,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### getFaceVertices(iFace, iType="4"):
 
-	getFaceVertices(iFace, iType="4") - get all vertices values for face.
+	Description:
 	
-##### Args:
+		Gets all vertices values for face.
+	
+##### Description:
 	
 		iFace: face object
 		iType (optional): 
@@ -395,9 +437,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### getFaceType(iObj, iFace):
 
-	getFaceType(iObj, iFace) - get face type, if this is "edge" or "surface".
+	Description:
 	
-##### Args:
+		Gets face type, if this is "edge" or "surface".
+	
+##### Description:
 	
 		iObj: object where is the face
 		iFace: face object
@@ -412,9 +456,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### getFaceEdges(iObj, iFace):
 
-	getFaceEdges(iObj, iFace) - get all edges for given face grouped by sizes.
+	Description:
 	
-##### Args:
+		Gets all edges for given face grouped by sizes.
+	
+##### Description:
 	
 		iObj: object where is the face
 		iFace: face object
@@ -435,9 +481,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### getFacePlane(iFace):
 
-	getFacePlane(iFace) - get face plane in notation "XY", "XZ", "YZ". 
+	Description:
+	
+		Gets face plane in notation "XY", "XZ", "YZ". 
 
-##### Args:
+##### Description:
 	
 		iFace: face object
 
@@ -451,9 +499,11 @@ gSearchDepth = 200       # recursive search depth
 		
 ### getFaceSink(iObj, iFace):
 
-	getFaceSink(iObj, iFace) - get face sink axis direction in notation "+", or "-".
+	Description:
+	
+		Gets face sink axis direction in notation "+", or "-".
 
-##### Args:
+##### Description:
 	
 		iObj: object with the face
 		iFace: face object
@@ -469,10 +519,12 @@ gSearchDepth = 200       # recursive search depth
 
 ### getFaceObjectRotation(iObj, iFace):
 
-	getFaceObjectRotation(iObj, iFace) - get face object rotation to apply to the new created object at face. 
-	Object created at face with this rotation should be up from the face.
+	Description:
+	
+		Gets face object rotation to apply to the new created object at face. 
+		Object created at face with this rotation should be up from the face.
 
-##### Args:
+##### Description:
 	
 		iObj: object with the face
 		iFace: face object
@@ -487,9 +539,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### getFaceDetails(iObj, iFace):
 
-	getFaceDetails(iObj, iFace) - allow to get detailed information for face direction.
+	Description:
 	
-##### Args:
+		Allows to get detailed information for face direction.
+	
+##### Description:
 	
 		iObj: selected object
 		iFace: selected face object
@@ -510,9 +564,11 @@ gSearchDepth = 200       # recursive search depth
 # References
 ### getReference(iObj="none"):
 
-	getReference(iObj="none") - get reference to the selected or given object.
+	Description:
 	
-##### Args:
+		Gets reference to the selected or given object.
+	
+##### Description:
 	
 		iObj (optional): object to get reference (to return base object)
 	
@@ -528,9 +584,12 @@ gSearchDepth = 200       # recursive search depth
 # Sizes
 ### getSizes(iObj):
 
-	getSizes(iObj) - allow to get sizes for object (iObj), according to the object type. The values are not sorted.
+	Description:
 	
-##### Args:
+		Allows to get sizes for object (iObj), according to the object type. 
+		The values are not sorted.
+	
+##### Description:
 	
 		iObj: object to get sizes
 
@@ -544,9 +603,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### getSizesFromVertices(iObj):
 
-	getSizesFromVertices(iObj) - get occupied space by the object from vertices.
+	Description:
 	
-##### Args:
+		Gets occupied space by the object from vertices.
+	
+##### Description:
 	
 		iObj: object
 	
@@ -563,10 +624,12 @@ gSearchDepth = 200       # recursive search depth
 
 ### getSizesFromBoundBox(iObj):
 
-	getSizesFromBoundBox(iObj) - get occupied space by the object from BoundBox. This can be useful for round shapes, 
-	where is no vertices at object edges, e.g. cylinders, circle at Sketch.
+	Description:
 	
-##### Args:
+		Gets occupied space by the object from BoundBox. This can be useful for round shapes, 
+		where is no vertices at object edges, e.g. cylinders, circle at Sketch.
+	
+##### Description:
 	
 		iObj: object
 	
@@ -584,11 +647,13 @@ gSearchDepth = 200       # recursive search depth
 # Measurements
 ### showMeasure(iP1, iP2, iRef=""):
 
-	showMeasure(iP1, iP2, iRef="") - create measurements object, I mean draw it. Now it use FreeCAD function 
-	to create and draw object. But in the future this can be changed to more beautiful drawing without changing
-	tools. 
+	Description:
 	
-##### Args:
+		Creates measurements object, I mean draw it. Now it use FreeCAD function 
+		to create and draw object. But in the future this can be changed to 
+		more beautiful drawing without changing tools. 
+	
+##### Description:
 	
 		iP1: starting point vertex object
 		iP2: ending point vertex object
@@ -604,9 +669,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### getDistanceBetweenFaces(iObj1, iObj2, iFace1, iFace2):
 
-	getDistanceBetweenFaces(iObj1, iObj2, iFace1, iFace2) - get distance between iFace1 and iFace2
+	Description:
 	
-##### Args:
+		Gets distance between iFace1 and iFace2.
+	
+##### Description:
 	
 		iObj1: object of iFace1
 		iObj2: object of iFace2
@@ -624,9 +691,11 @@ gSearchDepth = 200       # recursive search depth
 # Direction, Plane, Orientation, Axis
 ### getModelRotation(iX, iY, iZ):
 
-	getModelRotation() - transform given iX, iY, iZ values to the correct vector, if the user rotated 3D model.
+	Description:
+	
+		Transform given iX, iY, iZ values to the correct vector, if the user rotated 3D model.
 
-##### Args:
+##### Description:
 	
 		iX: X value to transform
 		iY: Y value to transform
@@ -642,9 +711,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### getDirection(iObj):
 
-	getDirection(iObj) - allow to get Cube object direction (iType).
+	Description:
 	
-##### Args:
+		Allows to get Cube object direction (iType).
+	
+##### Description:
 	
 		iObj: selected object
 
@@ -659,9 +730,11 @@ gSearchDepth = 200       # recursive search depth
 # Position, Placement, Move
 ### resetPlacement(iObj):
 
-	resetPlacement(iObj) - reset placement for given object. Needed to set rotation for object at face.
+	Description:
 	
-##### Args:
+		Reset placement for given object. Needed to set rotation for object at face.
+	
+##### Description:
 	
 		iObj: object to reset placement
 
@@ -675,9 +748,12 @@ gSearchDepth = 200       # recursive search depth
 
 ### getPlacement(iObj):
 
-	getPlacement(iObj) - get placement with rotation info for given object.
+	Description:
 	
-##### Args:
+		Gets placement with rotation info for given object.
+		Note: This is useful if you not use containers. 
+	
+##### Description:
 	
 		iObj: object to get placement
 
@@ -696,9 +772,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### getGlobalPlacement(iObj):
 
-	getGlobalPlacement(iObj) - call FreeCAD getGlobalPlacement at base object, and return useful form of placement
+	Description:
 	
-##### Args:
+		Calls FreeCAD getGlobalPlacement at base object, and return useful form of placement.
+	
+##### Description:
 	
 		iObj: object to get placement
 
@@ -717,9 +795,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
 
-	setPlacement(iObj, iX, iY, iZ, iR, iAnchor="") - set placement with rotation for given object.
+	Description:
 	
-##### Args:
+		Sets placement with rotation for given object.
+	
+##### Description:
 
 		iObj: object to set custom placement and rotation
 		iX: X Axis object position
@@ -738,14 +818,17 @@ gSearchDepth = 200       # recursive search depth
 
 ### getSketchPlacement(iSketch, iType):
 
-	getSketchPlacement(iSketch, iType) - get placement dedicated to move and copy Sketch directly.
+	Description:
 	
-##### Args:
+		Gets placement dedicated to move and copy Sketch directly.
+	
+##### Description:
 	
 		iSketch: Sketch object
 		iType: 
-			"global" - global Sketch position
-			"attach" - AttachmentOffset position
+			"attach" - AttachmentOffset position, need to be converted later
+			"clean" - directly from Placement, so the AttachmentOffset don't need to be converted
+			"global" - global Sketch position, can be directly set to object
 
 ##### Usage:
 	
@@ -762,9 +845,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### setSketchPlacement(iSketch, iX, iY, iZ, iR, iType):
 
-	setSketchPlacement(iSketch, iX, iY, iZ, iR, iType) - set placement with rotation dedicated to move and copy Sketch directly.
+	Description:
 	
-##### Args:
+		Set placement with rotation dedicated to move and copy Sketch directly.
+	
+##### Description:
 
 		iSketch: Sketch object to set custom placement and rotation
 		iX: X Axis object position
@@ -772,47 +857,35 @@ gSearchDepth = 200       # recursive search depth
 		iZ: Z Axis object position
 		iR: Rotation object
 		iType: 
-			"global" - global Sketch position, good before Pocket or any other operation, Sketch global position is temporary, FreeCAD bug? after Sketch edit the Sketch position will be lost, use "attach" to keep it
-			"attach" - AttachmentOffset position, global position will be converted to AttachmentOffset, make sure the Support is set for Sketch, the Clones may not have Support, use global instead
-			"auto" - recognize if Sketch has Support, if yes this will be "attach", if no Support this will be "global", it 
-			is useful to move Pads
+			"global" - global Sketch position, good before Pocket or any other operation, Sketch global 
+						position is temporary, FreeCAD bug? after Sketch edit the Sketch position will 
+						be lost, use "attach" to keep it
+			"attach" - AttachmentOffset position, global position will be converted to AttachmentOffset, 
+						make sure the Support is set for Sketch, the Clones may not have Support, 
+						use global instead
+			"auto" - recognize if Sketch has Support, if yes this will be "attach", if no Support this 
+						will be "global", it is useful to move Pads
 
 ##### Usage:
 	
-		MagicPanels.setSketchPlacement(sketch, 100, 100, 200, r, "attach")
+		MagicPanels.setSketchPlacement(sketch, 100, 100, 200, r, "global")
 
 ##### Result:
 	
 		Object Sketch should be moved.
 
-### convertPosition(iObj, iX, iY, iZ):
-
-	convertPosition(iObj, iX, iY, iZ) - convert given position vector to correct position values according 
-	to the object direction.
-	
-##### Args:
-	
-		iObj: object
-		iX: x position
-		iY: y position
-		iZ: z position
-
-##### Usage:
-	
-		[ x, y, z ] = MagicPanels.convertPosition(obj, 0, 400, 0)
-
-##### Result:
-	
-		For Pad object in XZ direction return the AttachmentOffset order [ 0, 0, -400 ]
-
 ### getObjectCenter(iObj):
 
-	getObjectCenter(iObj) - return Shape.CenterOfMass for the object or calculates center from vertices. 
-	However, for Cone the CenterOfMass is not the center of object. More reliable is calculation 
-	from vertices but some objects do not have all vertices to calculation. So, for now to handle 
-	simple Pad objects and LinkGroups the CenterOfMass will be returned first.
+	Description:
 	
-##### Args:
+		Returns center of the object.
+	
+		Note: This function will be updated later with more reliable 
+		way of getting center of the object, also for LinkGroup and other containers. 
+		Now it returns Shape.CenterOfMass for the object and it is not the same 
+		as center of the object.
+	
+##### Description:
 	
 		iObj: object
 
@@ -824,54 +897,38 @@ gSearchDepth = 200       # recursive search depth
 	
 		Returns array with [ cx, cy, cz ] values for center point.
 
-### sizesToCubePanel(iObj, iType):
-
-	sizesToCubePanel(iObj, iType) - converts selected object (iObj) sizes to Cube panel sizes into given direction (iType). 
-	So, the returned values can be directly assigned to Cube object in order to create 
-	panel in exact direction.
-
-##### Args:
-
-		iObj: selected object
-		iType direction: "XY", "YX", "XZ", "ZX", "YZ", "ZY"
-
-##### Usage:
-
-		[ Length, Width, Height ] = MagicPanels.sizesToCubePanel(obj, "YZ")
-
-##### Result:
-
-		Returns [ Length, Width, Height ] for YZ object placement.
-
 # Containers
 ### getContainersOffset(iObj):
 
-	getContainersOffset(iObj) - if the object is in the container like Part, Body, LingGroup the vertices are 
-	not updated by FreeCAD. From FreeCAD perspective the object is still in the same place. This function 
-	is trying to solve this problem and calculates all offsets of all containers.
+	Description:
 	
-##### Args:
+		If the object is in the container like Part, Body, LingGroup the vertices are 
+		not updated by FreeCAD. From FreeCAD perspective the object is still in the 
+		same place. This function is trying to solve this problem and calculates 
+		all offsets of all containers.
+	
+##### Description:
 	
 		iObj: object to get containers offset
 
 ##### Usage:
 	
-		[ oX, oY, oZ, oR ] = MagicPanels.getContainersOffset(o)
+		[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(o)
 
 ##### Result:
 	
-		return [ oX, oY, oZ, oR ] array with offsets for placement:
+		return [ coX, coY, coZ, coR ] array with offsets for placement:
 		
-		oX: X Axis object position
-		oY: Y Axis object position
-		oZ: Z Axis object position
-		oR: Rotation object (not implemented right now)
+		coX: X Axis object position
+		coY: Y Axis object position
+		coZ: Z Axis object position
+		coR: Rotation object
 
 ### getVerticesOffset(iVertices, iObj, iType="array"):
 
-	getVerticesOffset(iVertices, iObj) - get iObj container offset for vertices iVertices.
+	Gets iObj offset of all supported containers for vertices iVertices.
 	
-##### Args:
+##### Description:
 	
 		iObj: object to get containers offset
 		iVertices: vertices array
@@ -887,14 +944,65 @@ gSearchDepth = 200       # recursive search depth
 	
 		return vertices array with correct container offset
 
+### getVerticesPosition(iVertices, iObj, iType="array"):
+
+	Description:
+	
+		Gets iVertices 3D position. This function should be used to show or select iVertices with rotation. 
+		It calculates all offsets with rotation. But this function should not be used for calculation. 
+		Because the vertices at FreeCAD are raw, without containers offset. The vertices at FreeCAD have only 
+		AttachmentOffset applied. If you start calculation with rotation, you need to calculate plane correctly.
+	
+##### Description:
+	
+		iVertices: vertices array
+		iObj: object to get containers offset
+		iType:
+			"array" - array with floats [ 1, 2, 3 ]
+			"vector" - array with FreeCAD.Vector types
+			"vertex" - array with Part.Vertex types
+
+##### Usage:
+	
+		vertices = MagicPanels.getVerticesPosition(vertices, o, "array")
+		MagicPanels.showVertex(iVertices, 10)
+
+##### Result:
+	
+		return vertices array with correct container offset
+
+### removeVerticesOffset(iVertices, iObj, iType="array"):
+
+	Description:
+	
+		Remove iObj container offset for vertices iVertices.
+	
+##### Description:
+	
+		iVertices: vertices array
+		iObj: object to remove containers offset
+		iType:
+			"array" - array with floats [ 1, 2, 3 ]
+			"vector" - array with FreeCAD.Vector types
+
+##### Usage:
+	
+		vertices = MagicPanels.removeVerticesOffset(vertices, o, "array")
+
+##### Result:
+	
+		return vertices array without container offset
+
 ### moveToContainer(iObjects, iSelection):
 
-	moveToContainer(iObjects, iSelection) - move objects iObjects to container for iSelection object. 
-	Container need to be in the clean path, no other objects except Group or LinkGroup, 
-	for example LinkGroup -> LinkGroup is clean path, only containers, but the Mirror -> LinkGroup is not 
-	considered as clean container path here.
+	Description:
 	
-##### Args:
+		Move objects iObjects to container for iSelection object. 
+		Container need to be in the clean path, no other objects except Group or LinkGroup, 
+		for example LinkGroup -> LinkGroup is clean path, only containers, but the 
+		Mirror -> LinkGroup is not considered as clean container path here.
+	
+##### Description:
 	
 		iObjects: list of objects to move to container, for example new created Cube
 		iSelection: selected object, for example Pad
@@ -909,10 +1017,12 @@ gSearchDepth = 200       # recursive search depth
 
 ### moveToFirst(iObjects, iSelection):
 
-	moveToFirst(iObjects, iSelection) - move objects iObjects to first container above Body for iSelection object.
-	This can be used to force object at face to be moved into Mirror -> LinkGroup.
+	Description:
 	
-##### Args:
+		Move objects iObjects to first container above Body for iSelection object.
+		This can be used to force object at face to be moved into Mirror -> LinkGroup.
+	
+##### Description:
 	
 		iObjects: list of objects to move to container, for example new created Cube
 		iSelection: selected object, for example Pad
@@ -925,33 +1035,62 @@ gSearchDepth = 200       # recursive search depth
 	
 		No return, move object.
 
-### getContainerPlacement(iObj):
+### moveToFirstWithInverse(iObjects, iSelection):
 
-	getContainerPlacement(iObj) - this function returns placement for the object with all containers offsets. 
-	The given object might be container or selected object, the base Cube or Pad.
+	Description:
 	
-##### Args:
+		This version remove the placement and rotation offset from iObjects and move the iObjects to first 
+		supported container (LinkGroup). 
+		
+		Note: It is dedicated to move panel created from vertices to the first LinkGroup container. 
+		The object created from vertices have applied offset with rotation after creation 
+		but is outside the container. So if you move it manually it will be in the wrong place because 
+		container apply the placement and rotation again. So, you have to remove the offset and move it. 
+		Yea, that's the beauty of FreeCAD ;-)
 	
-		iObj: object to get placement
+##### Description:
+	
+		iObjects: list of objects to move to container, for example new created Cube
+		iSelection: selected object, for example Pad
 
 ##### Usage:
 	
-		[ x, y, z, r ] = MagicPanels.getContainerPlacement(o)
+		MagicPanels.moveToFirstWithInverse([ o ], pad)
 
 ##### Result:
 	
-		return [ x, y, z, r ] array with placement info, where:
-		
-		x: X Axis object position
-		y: Y Axis object position
-		z: Z Axis object position
-		r: Rotation object - not supported yet
+		No return, move object.
+
+### moveToParent(iObjects, iSelection):
+
+	Description:
+	
+		This version move object to parent container without adding or remove offset. This is useful if you copy the 
+		Sketch, because SKetch after copy is located outside Body, in Part. But if the Part is inside LinkGroup 
+		the copied Sketch will be located outside LinkGroup, in main root folder. This is problematic because 
+		the Sketch after copy has offset from containers. The object to move need to be in root folder to avoid 
+		duplicated already copied objects, Cube.
+	
+##### Description:
+	
+		iObjects: list of objects to move to container, for example new created Sketch
+		iSelection: selected object, for example Sketch
+
+##### Usage:
+	
+		MagicPanels.moveToParent([ copy ], sketch)
+
+##### Result:
+	
+		No return, move object.
 
 ### getObjectToMove(iObj):
 
-	getObjectToMove(iObj) - this function returns object to move.
+	Description:
 	
-##### Args:
+		This function returns object to move.
+	
+##### Description:
 	
 		iObj: object to get placement, selected container or base reference object
 
@@ -962,40 +1101,169 @@ gSearchDepth = 200       # recursive search depth
 ##### Result:
 	
 		For example: 
-		for Cube: returns Cube
-		for Pad: returns Body
-		for Cube in LinkGroup: returns LinkGroup
-		for Pad in LinkGroup: returns Body
-		for Cube in LinkGroup > LinkGroup: returns first LinkGroup
-		for Cube in Cut: returns Cut
+
+		for Cube: always returns Cube
+		for Pad: always returns Body
+		for LinkGroup: returns LinkGroup
 		for Cut: returns Cut
+		for other PartDesign objects: try to return Body
+		for any other object: returns object
 
-### setContainerPlacement(iObj, iX, iY, iZ, iR):
+### createContainer(iObjects, iLabel=""):
 
-	setContainerPlacement(iObj, iX, iY, iZ, iR) - set placement for given container object.
+	Description:
 	
-##### Args:
+		This function creates container for given iObjects. The label for new container will be get from 
+		first element of iObjects (iObjects[0]).
+	
+##### Description:
+	
+		iObjects: array of object to create container for them
+		iLabel: container label
 
-		iObj: container object to set placement, for example Body, LinkGroup, Cut
-		iX: X Axis object position
-		iX: Y Axis object position
-		iZ: Z Axis object position
-		iR: Rotation object
-		
 ##### Usage:
 	
-		MagicPanels.setContainerPlacement(base, 100, 100, 200, r)
+		container = MagicPanels.createContainer([c1, c2])
 
 ##### Result:
 	
-		Object base should be moved into 100, 100, 200 position
+		Created container and objects inside the container, return container object.
+
+### getContainerPlacement(iObj, iType="clean"):
+
+	Description:
+	
+		This function returns placement for the object with all 
+		containers offsets or clean. The given object might be container or 
+		selected object, the base Cube or Pad.
+	
+##### Description:
+	
+		iObj: object to get placement
+		iType (optional): 
+			"clean" - to get iObj.Placement, 
+			"offset" to get iObj.Placement with containers offset.
+
+##### Usage:
+	
+		[ x, y, z, r ] = MagicPanels.getContainerPlacement(o, "clean")
+		[ x, y, z, r ] = MagicPanels.getContainerPlacement(o, "offset")
+
+##### Result:
+	
+		return [ x, y, z, r ] array with placement info, where:
+		
+		x: X Axis object position
+		y: Y Axis object position
+		z: Z Axis object position
+		r: Rotation object - not supported yet
+
+### getPlacementDiff(iStart, iDestination):
+
+	Description:
+	
+		Return diff that should be added to iStart to move object from iStart to iDestination position. 
+		If you want to move back you can minus the diff from iDestination.
+		
+##### Description:
+	
+		iStart: start vertex float value
+		iDestination: destination vertex float value
+	
+##### Usage:
+		
+		[ moveX, moveY, moveZ ] = MagicPanels.getPlacementDiff(v1, v2)
+		
+##### Result:
+	
+		Return [ moveX, moveY, moveZ ] array with X, Y, Z floats to move object.
+
+### setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="auto"):
+
+	Description:
+	
+		Little more advanced set placement function, especially used with containers.
+		Adding offset here not make sense, because object can be moved via container so all the vertices might 
+		be equal. Vertices not have containers offsets. They are only impacted by AttachmentOffset. 
+		So you need to add all needed offsets and call this function with offsets.
+	
+##### Description:
+
+		iObj: object or container to set placement, for example Body, LinkGroup, Cut, Pad, Cube, Sketch, Cylinder
+		iX: X Axis object position
+		iX: Y Axis object position
+		iZ: Z Axis object position
+		iR: 
+			0 - means auto rotation value set to iObj.Placement.Rotation
+			R - custom FreeCAD.Placement.Rotation object
+		iAnchor (optional):
+			"clean" - set directly to iObj.Placement, if object is Pad set to Sketch directly
+			"auto" - default object anchor with auto adjust to match iX, iY, iZ
+			"center" - center of the object with auto adjust to match iX, iY, iZ
+			[ iAX, iAY, iAZ ] - custom vertex with auto adjust to match iX, iY, iZ
+		
+##### Usage:
+		
+		MagicPanels.setContainerPlacement(cube, 100, 100, 200, 0, "clean")
+		MagicPanels.setContainerPlacement(pad, 100, 100, 200, 0, "auto")
+		MagicPanels.setContainerPlacement(body, 100, 100, 200, 0, "center")
+
+##### Result:
+	
+		Object should be moved into 100, 100, 200 position with exact anchor.
+
+# Conversion
+### convertPosition(iObj, iX, iY, iZ):
+
+	Description:
+	
+		Convert given position vector to correct position values according 
+		to the object direction.
+	
+##### Description:
+	
+		iObj: object
+		iX: x position
+		iY: y position
+		iZ: z position
+
+##### Usage:
+	
+		[ x, y, z ] = MagicPanels.convertPosition(obj, 0, 400, 0)
+
+##### Result:
+	
+		For Pad object in XZ direction return the AttachmentOffset order [ 0, 0, -400 ]
+
+### sizesToCubePanel(iObj, iType):
+
+	Description:
+	
+		Converts selected object (iObj) sizes to Cube panel sizes into given direction (iType). 
+		So, the returned values can be directly assigned to Cube object in order to create 
+		panel in exact direction.
+
+##### Description:
+
+		iObj: selected object
+		iType direction: "XY", "YX", "XZ", "ZX", "YZ", "ZY"
+
+##### Usage:
+
+		[ Length, Width, Height ] = MagicPanels.sizesToCubePanel(obj, "YZ")
+
+##### Result:
+
+		Returns [ Length, Width, Height ] for YZ object placement.
 
 # Replace
 ### makePad(iObj, iPadLabel="Pad"):
 
-	makePad(iObj, iPadLabel="Pad") - allows to create Part, Plane, Body, Pad, Sketch objects.
+	Description:
 	
-##### Args:
+		Allows to create Part, Plane, Body, Pad, Sketch objects.
+	
+##### Description:
 	
 		iObj: object Cube to change into Pad
 		iPadLabel: Label for the new created Pad, the Name will be Pad
@@ -1011,9 +1279,11 @@ gSearchDepth = 200       # recursive search depth
 # Holes
 ### makeHoles(iObj, iFace, iCylinders):
 
-	makeHoles(iObj, iFace, iCylinders) - make holes
+	Description:
+	
+		Making holes.
 
-##### Args:
+##### Description:
 
 		iObj: base object to make hole
 		iFace: face of base object to make hole
@@ -1029,9 +1299,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### makeCountersinks(iObj, iFace, iCones):
 
-	makeCountersinks(iObj, iFace, iCones) - make countersinks
+	Description:
+	
+		Making countersinks.
 
-##### Args:
+##### Description:
 
 		iObj: base object to drill
 		iFace: face of base object to drill
@@ -1047,9 +1319,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### makeCounterbores(iObj, iFace, iCones):
 
-	makeCounterbores(iObj, iFace, iCones) - make counterbores
+	Description:
+	
+		Making counterbores.
 
-##### Args:
+##### Description:
 
 		iObj: base object to drill
 		iFace: face of base object to drill
@@ -1065,9 +1339,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### makePocketHoles(iObj, iFace, iCones):
 
-	makePocketHoles(iObj, iFace, iCones) - make pocket holes for invisible connections
+	Description:
+	
+		Making pocket holes for invisible connections.
 
-##### Args:
+##### Description:
 
 		iObj: base object to drill
 		iFace: face of base object to drill
@@ -1083,9 +1359,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### makeCounterbores2x(iObj, iFace, iCones):
 
-	makeCounterbores2x(iObj, iFace, iCones) - make counterbores from both sides
+	Description:
+	
+		Making counterbores from both sides.
 
-##### Args:
+##### Description:
 
 		iObj: base object to drill
 		iFace: face of base object to drill
@@ -1102,10 +1380,13 @@ gSearchDepth = 200       # recursive search depth
 # Joinery
 ### makeCuts(iObjects):
 
-	makeCuts(iObjects) - allows to create multi bool cut operation at given objects. First objects 
-	from iObjects is the base element and all other will cut the base. The copies will be created for cut. 
+	Description:
 	
-##### Args:
+		Allows to create multi bool cut operation at given objects. First objects 
+		from iObjects is the base element and all other will cut the base. 
+		The copies will be created for cut. 
+	
+##### Description:
 	
 		iObjects: objects to parse by multi bool cut
 
@@ -1119,10 +1400,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### makeFrame45cut(iObjects, iFaces):
 
-	makeFrame45cut(iObjects, iFaces) - makes 45 frame cut with PartDesing Chamfer. 
-	For each face the ends will be cut.
+	Description:
 	
-##### Args:
+		Makes 45 frame cut with PartDesing Chamfer. For each face the ends will be cut.
+	
+##### Description:
 	
 		iObjects: array of objects to cut
 		iFaces: dict() of faces for Chamfer cut direction, the key is iObjects value (object), 
@@ -1138,12 +1420,14 @@ gSearchDepth = 200       # recursive search depth
 
 ### makeChamferCut(iObjects, iEdges, iSizes, iLabels):
 
-	makeChamferCut(iObjects, iEdges, iSizes, iLabels) - makes PartDesing Chamfer cut for edges array. But you can set 
-	different size for each edge. Yes, you give edge objects, and you make chamfer for each edge, one by one, 
-	with different size, but the most funny part is that the selected edge not exists because the Cube 
-	object not exists ;-)
+	Description:
+	
+		Makes PartDesing Chamfer cut for edges array. But you can set different size for each edge. 
+		Yes, you give edge objects, and you make chamfer for each edge, one by one, with different 
+		size, but the most funny part is that the selected edge not exists because the Cube 
+		object not exists ;-)
 
-##### Args:
+##### Description:
 	
 		iObjects: array of objects to cut
 		iEdges: dict() of arrays [ edgeObj1, edgeObj2 ], edgeArr = iEdges[iObjects[0]]
@@ -1160,9 +1444,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### makeMortise(iSketch, iDepth, iPad, iFace):
 
-	makeMortise(iSketch, iDepth, iPad, iFace) - make Mortise pocket for given iSketch pattern
+	Description:
+	
+		Make Mortise pocket for given iSketch pattern.
 
-##### Args:
+##### Description:
 
 		iSketch: Sketch object as pattern for Mortise
 		iDepth: depth of the pocket
@@ -1179,9 +1465,11 @@ gSearchDepth = 200       # recursive search depth
 
 ### makeTenon(iSketch, iLength, iPad, iFace):
 
-	makeTenon(iSketch, iLength, iPad, iFace) - make Tenon pad for given iSketch pattern
+	Description:
+	
+		Make Tenon pad for given iSketch pattern.
 
-##### Args:
+##### Description:
 
 		iSketch: Sketch object as pattern for Mortise
 		iLength: Length for the Tenon pad
@@ -1199,9 +1487,11 @@ gSearchDepth = 200       # recursive search depth
 # Colors
 ### copyColors(iSource, iTarget):
 
-	copyColors(iSource, iTarget) - allows to copy colors from iSource object to iTarget object
+	Description:
+	
+		Allows to copy colors from iSource object to iTarget object.
 
-##### Args:
+##### Description:
 
 		iSource: source object
 		iTarget: target object
@@ -1220,9 +1510,11 @@ gSearchDepth = 200       # recursive search depth
 # Spreadsheet
 ### sheetGetKey(iC, iR):
 
-	sheetGetKey(iC, iR) - allow to get key as letters for spreadsheet from given column and row index.
+	Description:
+	
+		Allows to get key as letters for spreadsheet from given column and row index.
 
-##### Args:
+##### Description:
 	
 		iC: column index
 		iR: row index
@@ -1238,9 +1530,11 @@ gSearchDepth = 200       # recursive search depth
 # Info screen
 ### showInfo(iCaller, iInfo, iNote="yes"):
 
-	showInfo(iCaller, iInfo, iNote="yes") - allow to show Gui info box for all available function and multiple calls.
+	Description:
+	
+		Allows to show Gui info box for all available function and multiple calls.
 
-##### Args:
+##### Description:
 	
 		iCaller: window title
 		iInfo: HTML text to show

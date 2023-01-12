@@ -37,6 +37,8 @@ def showQtGUI():
 		gInfoMirrorZ = translate('magicMove', 'Mirror along Z:')
 		gInfoMirrorStep = translate('magicMove', 'Mirror offset:')
 		
+		gObjects = ""
+		
 		gObj = ""
 		gThick = 0
 		gStep = 1
@@ -45,10 +47,10 @@ def showQtGUI():
 		gMaxY = 0
 		gMaxZ = 0
 		
-		gLCPX = 0 # Last Copy Position X
-		gLCPY = 0 # Last Copy Position Y
-		gLCPZ = 0 # Last Copy Position Z
-		gLCPR = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 0.00) # Last Copy Position Rotation
+		gLCPX = dict() # Last Copy Position X
+		gLCPY = dict() # Last Copy Position Y
+		gLCPZ = dict() # Last Copy Position Z
+		gLCPR = dict() # Last Copy Position Rotation
 		
 		gCrossCorner = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
 		gCrossCenter = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
@@ -305,186 +307,216 @@ def showQtGUI():
 			self.gMaxY = 0
 			self.gMaxZ = 0
 			
-			self.gLCPX = 0
-			self.gLCPY = 0
-			self.gLCPZ = 0
-			self.gLCPR = 0
-		
-		# ############################################################################
-		def setLastPosition(self):
-			
-			if self.gObj.isDerivedFrom("Sketcher::SketchObject"):
-				[ self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR ] = MagicPanels.getSketchPlacement(self.gObj, "global")
-			else:
-				[ self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR ] = MagicPanels.getPlacement(self.gObj)
+			self.gLCPX = dict() 
+			self.gLCPY = dict() 
+			self.gLCPZ = dict() 
+			self.gLCPR = dict() 
 		
 		# ############################################################################
 		def setMove(self, iType):
 			
-			self.gStep = float(self.o4E.text())
-			
-			x = 0
-			y = 0
-			z = 0
-			
-			if iType == "Xp":
-				x = self.gStep
-			
-			if iType == "Xm":
-				x = - self.gStep
+			for o in self.gObjects:
 
-			if iType == "Yp":
-				y = self.gStep
-
-			if iType == "Ym":
-				y = - self.gStep
-
-			if iType == "Zp":
-				z = self.gStep
-
-			if iType == "Zm":
-				z = - self.gStep
-			
-			if self.gObj.isDerivedFrom("Sketcher::SketchObject"):
+				self.gStep = float(self.o4E.text())
 				
-				gp = self.gObj.getGlobalPlacement()
-				px = gp.Base.x
-				py = gp.Base.y
-				pz = gp.Base.z
-				r = gp.Rotation
-			
-			else:
+				x = 0
+				y = 0
+				z = 0
 				
-				try:
-					[ x, y, z ] = MagicPanels.convertPosition(self.gObj, x, y, z)
-				except:
-					skip = 1
+				if iType == "Xp":
+					x = self.gStep
 				
-				[ px, py, pz, r ] = MagicPanels.getPlacement(self.gObj)
+				if iType == "Xm":
+					x = - self.gStep
+
+				if iType == "Yp":
+					y = self.gStep
+
+				if iType == "Ym":
+					y = - self.gStep
+
+				if iType == "Zp":
+					z = self.gStep
+
+				if iType == "Zm":
+					z = - self.gStep
+				
+				[ px, py, pz, r ] = MagicPanels.getContainerPlacement(o, "clean")
+				MagicPanels.setContainerPlacement(o, px+x, py+y, pz+z, 0, "auto")
+				
+			FreeCAD.ActiveDocument.recompute()
+
+		# ############################################################################
+		def setLastPosition(self):
 			
-			MagicPanels.setPlacement(self.gObj, px+x, py+y, pz+z, r)
-			FreeCAD.activeDocument().recompute()
+			for o in self.gObjects:
+				toMove = MagicPanels.getObjectToMove(o)
+				key = str(o.Name)
+				[ 	self.gLCPX[key], 
+					self.gLCPY[key], 
+					self.gLCPZ[key], 
+					self.gLCPR[key] ] = MagicPanels.getContainerPlacement(toMove, "clean")
 
 		# ############################################################################
 		def createCopy(self, iType):
 			
-			self.gStep = float(self.o4E.text())
-			
-			if self.gCopyType == "copyObject":
-				copy = FreeCAD.ActiveDocument.copyObject(self.gObj)
-				copy.Label = "Copy, " + str(self.gObj.Label) + " "
-			
-			if self.gCopyType == "Clone":
-				import Draft
-				copy = Draft.make_clone(self.gObj)
-				copy.Label = "Clone, " + str(self.gObj.Label) + " "
-			
-			if self.gCopyType == "Link":
-				copyName = "Link_" + str(self.gObj.Name)
-				copy = FreeCAD.ActiveDocument.addObject('App::Link', copyName)
-				copy.setLink(self.gObj)
-				copy.Label = "Link, " + str(self.gObj.Label) + " "
-			
-			x, y, z, r = self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR
-			
-			if iType == "Xp":
-				x = x + self.gMaxX + self.gStep
-			
-			if iType == "Xm":
-				x = x - self.gMaxX - self.gStep
+			for o in self.gObjects:
 
-			if iType == "Yp":
-				y = y + self.gMaxY + self.gStep
+				key = str(o.Name)
+				x, y, z, r = self.gLCPX[key], self.gLCPY[key], self.gLCPZ[key], self.gLCPR[key]
 
-			if iType == "Ym":
-				y = y - self.gMaxY - self.gStep
+				self.gStep = float(self.o4E.text())
 
-			if iType == "Zp":
-				z = z + self.gMaxZ + self.gStep
-
-			if iType == "Zm":
-				z = z - self.gMaxX - self.gStep
-			
-			if copy.isDerivedFrom("Sketcher::SketchObject"):
+				if self.gCopyType == "copyObject":
+					copy = FreeCAD.ActiveDocument.copyObject(o)
+					if (
+						str(o.Label).startswith("Copy, ") or 
+						str(o.Label).startswith("Clone, ") or 
+						str(o.Label).startswith("Link, ") 
+						):
+						copy.Label = str(o.Label)
+					else:
+						copy.Label = "Copy, " + str(o.Label) + " "
 				
-				MagicPanels.setSketchPlacement(copy, x, y, z, r, "global")
+					copy.Label = copy.Label.replace("Clone, ","Copy, ")
+					copy.Label = copy.Label.replace("Link, ","Copy, ")
+					
+				if self.gCopyType == "Clone":
+					import Draft
+					copy = Draft.make_clone(o)
+					if (
+						str(o.Label).startswith("Copy, ") or 
+						str(o.Label).startswith("Clone, ") or 
+						str(o.Label).startswith("Link, ") 
+						):
+						copy.Label = str(o.Label)
+					else:
+						copy.Label = "Clone, " + str(o.Label) + " "
+				
+					copy.Label = copy.Label.replace("Copy, ","Clone, ")
+					copy.Label = copy.Label.replace("Link, ","Clone, ")
+					
+				if self.gCopyType == "Link":
+					copyName = "Link_" + str(o.Name)
+					copy = FreeCAD.ActiveDocument.addObject('App::Link', copyName)
+					copy.setLink(o)
+					if (
+						str(o.Label).startswith("Copy, ") or 
+						str(o.Label).startswith("Clone, ") or 
+						str(o.Label).startswith("Link, ") 
+						):
+						copy.Label = str(o.Label)
+					else:
+						copy.Label = "Link, " + str(o.Label) + " "
+					
+					copy.Label = copy.Label.replace("Copy, ","Link, ")
+					copy.Label = copy.Label.replace("Clone, ","Link, ")
+					
+				MagicPanels.moveToParent([ copy ], o)
+
+				if iType == "Xp":
+					x = x + self.gMaxX + self.gStep
+				
+				if iType == "Xm":
+					x = x - self.gMaxX - self.gStep
+
+				if iType == "Yp":
+					y = y + self.gMaxY + self.gStep
+
+				if iType == "Ym":
+					y = y - self.gMaxY - self.gStep
+
+				if iType == "Zp":
+					z = z + self.gMaxZ + self.gStep
+
+				if iType == "Zm":
+					z = z - self.gMaxZ - self.gStep
+
+				MagicPanels.setContainerPlacement(copy, x, y, z, 0, "auto")
 				FreeCAD.ActiveDocument.recompute()
-				[ self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR ] = MagicPanels.getSketchPlacement(copy, "global")
-			
-			else:
-			
-				MagicPanels.setPlacement(copy, x, y, z, r)
-				FreeCAD.ActiveDocument.recompute()
-				[ self.gLCPX, self.gLCPY, self.gLCPZ, self.gLCPR ] = MagicPanels.getPlacement(copy)
-			
-			MagicPanels.moveToFirst([ copy ], self.gObj)
-			
-			try:
-				MagicPanels.copyColors(self.gObj, copy)
-			except:
-				skip = 1
+				
+				try:
+					MagicPanels.copyColors(o, copy)
+				except:
+					skip = 1
+
+				[ 	self.gLCPX[key], 
+					self.gLCPY[key], 
+					self.gLCPZ[key], 
+					self.gLCPR[key] ] = MagicPanels.getContainerPlacement(copy, "clean")
 
 		# ############################################################################
 		def createMirror(self, iType):
 			
-			self.gStep = float(self.o4E.text())
-			
-			[ x, y, z, r ] = MagicPanels.getPlacement(self.gObj)
-			mx, my, mz = 0, 0, 0
-			
-			if iType == "Xp":
-				x = x + self.gMaxX
-				mx = self.gStep
-				direction = (1, 0, 0)
-			
-			if iType == "Xm":
-				mx = - self.gStep
-				direction = (1, 0, 0)
+			for o in self.gObjects:
 				
-			if iType == "Yp":
-				y = y + self.gMaxY
-				my = self.gStep
-				direction = (0, 1, 0)
+				# get placement for object not from container
+				# the placement for new created container will be (0, 0, 0)
+				[ x, y, z, r ] = MagicPanels.getContainerPlacement(o, "clean")
+				mx, my, mz = 0, 0, 0
 				
-			if iType == "Ym":
-				my = - self.gStep
-				direction = (0, 1, 0)
+				# not create mirror directly at object because 
+				# it will not be managed, extended later
+				# create LinkGroup and move the object to the LinkGroup
+				# and create Mirror at LinkGroup instead
+				if not o.isDerivedFrom("App::LinkGroup"):
+					o = MagicPanels.createContainer([o])
 
-			if iType == "Zp":
-				z = z + self.gMaxZ
-				mz = self.gStep
-				direction = (0, 0, 1)
+				# calculate
+				self.gStep = float(self.o4E.text())
 				
-			if iType == "Zm":
-				mz = - self.gStep
-				direction = (0, 0, 1)
+				if iType == "Xp":
+					mx = self.gStep
+					direction = (1, 0, 0)
+					x = x + self.gMaxX
 
-			mirror = FreeCAD.ActiveDocument.addObject('Part::Mirroring', "mirror")
-			mirror.Label = "Mirror, " + str(self.gObj.Label) + " "
-			mirror.Source = FreeCAD.ActiveDocument.getObject(self.gObj.Name)
-			mirror.Normal = direction
-			mirror.Base = (x, y, z)
-			
-			FreeCAD.activeDocument().recompute()
-			
-			[ cx, cy, cz, r ] = MagicPanels.getPlacement(mirror)
-			MagicPanels.setPlacement(mirror, cx+mx, cy+my, cz+mz, r)
-			
-			# hehe ;-)
-			if len(self.gObj.OutListRecursive) == 0:
-				MagicPanels.copyColors(self.gObj, mirror)
-			else:
+				if iType == "Xm":
+					mx = - self.gStep
+					direction = (1, 0, 0)
+					
+				if iType == "Yp":
+					my = self.gStep
+					direction = (0, 1, 0)
+					y = y + self.gMaxY
+					
+				if iType == "Ym":
+					my = - self.gStep
+					direction = (0, 1, 0)
+
+				if iType == "Zp":
+					mz = self.gStep
+					direction = (0, 0, 1)
+					z = z + self.gMaxZ
+					
+				if iType == "Zm":
+					mz = - self.gStep
+					direction = (0, 0, 1)
+					
+				mirror = FreeCAD.ActiveDocument.addObject('Part::Mirroring', "mirror")
+				mirror.Label = "Mirror, " + str(o.Label) + " "
+				mirror.Source = FreeCAD.ActiveDocument.getObject(o.Name)
+				mirror.Normal = direction
+				mirror.Base = (x, y, z)
 				
-				# try to copy colors from container content
-				try:
-					for o in self.gObj.OutListRecursive:
-						s = str(o.getAllDerivedFrom()[0])
-						
-						if s.startswith("Part::") or s.startswith("PartDesign::"):
-							MagicPanels.copyColors(o, mirror)
-							raise
-				except:
-					skip = 1
+				[ cx, cy, cz, r ] = MagicPanels.getContainerPlacement(mirror, "clean")
+				MagicPanels.setContainerPlacement(mirror, cx+mx, cy+my, cz+mz, 0, "clean")
+				FreeCAD.ActiveDocument.recompute()
+				
+				# hehe ;-)
+				if len(o.OutListRecursive) == 0:
+					MagicPanels.copyColors(o, mirror)
+				else:
+					
+					# try to copy colors from container content
+					try:
+						for o in o.OutListRecursive:
+							s = str(o.getAllDerivedFrom()[0])
+							
+							if s.startswith("Part::") or s.startswith("PartDesign::"):
+								MagicPanels.copyColors(o, mirror)
+								raise
+					except:
+						skip = 1
 			
 		# ############################################################################
 		# actions - functions for actions
@@ -497,6 +529,7 @@ def showQtGUI():
 
 				self.resetGlobals()
 				
+				self.gObjects = FreeCADGui.Selection.getSelection()
 				self.gObj = FreeCADGui.Selection.getSelection()[0]
 				
 				sizes = []
@@ -506,7 +539,11 @@ def showQtGUI():
 				self.gThick = sizes[0]
 				self.o4E.setText(str(self.gStep))
 				
-				self.s1S.setText(str(self.gObj.Label))
+				if len(self.gObjects) > 1:
+					self.s1S.setText("Multi, "+str(self.gObj.Label))
+				else:
+					self.s1S.setText(str(self.gObj.Label))
+				
 				FreeCADGui.Selection.clearSelection()
 				
 				[ self.gMaxX, self.gMaxY, self.gMaxZ ] = MagicPanels.getSizesFromVertices(self.gObj)
@@ -516,7 +553,7 @@ def showQtGUI():
 
 				self.s1S.setText(self.gNoSelection)
 				return -1
-		
+			
 		def setModeType(self, selectedText):
 			
 			self.gModeType = selectedText
@@ -551,38 +588,39 @@ def showQtGUI():
 			
 		# ############################################################################
 		def setCornerM(self):
-			
+
 			try:
 				s = int(FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize())
 				if s - 1 < 0:
 					FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(0)
 				else:
 					FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(s-1)
-
+					self.gCrossCorner = s-1
 			except:
 				self.s1S.setText(self.gNoSelection)
 			
 		def setCornerP(self):
-			
+
 			try:
 				s = int(FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize())
 				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(s+1)
-					
+				self.gCrossCorner = s+1
 			except:
 				self.s1S.setText(self.gNoSelection)
 		
 		# ############################################################################
 		def setCenterOn(self):
-			
 			try:
 				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
+				self.gCrossCenter = True
 			except:
 				self.s1S.setText(self.gNoSelection)
 			
 		def setCenterOff(self):
-			
+
 			try:
 				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(False)
+				self.gCrossCenter = False
 			except:
 				self.s1S.setText(self.gNoSelection)
 				
@@ -699,3 +737,4 @@ showQtGUI()
 
 
 # ###################################################################################################################
+

@@ -11,10 +11,11 @@ try:
 		raise
 
 	face = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+	objRef = FreeCADGui.Selection.getSelection()[0]
 
 	i = 0
 	for o in objects:
-	
+
 		i = i + 1
 		
 		if i == 1:
@@ -30,25 +31,51 @@ try:
 			
 		if sketch.InList[0].isDerivedFrom("PartDesign::Hole"):
 			hole = sketch.InList[0]
+			htype = "hole"
 			
 		if sketch.InList[1].isDerivedFrom("PartDesign::Hole"):
 			hole = sketch.InList[1]
+			htype = "hole"
+		
+		if sketch.InList[0].isDerivedFrom("PartDesign::Pocket"):
+			hole = sketch.InList[0]
+			htype = "pocket"
 			
+		if sketch.InList[1].isDerivedFrom("PartDesign::Pocket"):
+			hole = sketch.InList[1]
+			htype = "pocket"
+		
 		if hole == "":
 			raise
-				
-		x = sketch.Placement.Base.x
-		y = sketch.Placement.Base.y
-		z = sketch.Placement.Base.z
+		
+		[ x, y, z, r ] = MagicPanels.getSketchPlacement(sketch, "global")
 		r = MagicPanels.getFaceObjectRotation(hole, face)
-			
+		
 		d = FreeCAD.ActiveDocument.addObject("Part::Cylinder","DowelSketch")
 		d.Label = "Dowel - " + str(sketch.Label)
 
-		d.Radius = hole.Diameter / 2
-		d.Height = hole.Depth
-
-		MagicPanels.setPlacement(d, x, y, z, r)
+		if htype == "hole":
+			d.Radius = hole.Diameter / 2
+			d.Height = hole.Depth
+		
+		if htype == "pocket":
+			d.Radius = hole.Profile[0].Geometry[0].Radius
+			loc = hole.Profile[0].Geometry[0].Location
+			x = x + loc[0]
+			y = y + loc[1]
+			z = z + loc[2]
+			
+			if hole.Midplane == 1:
+				d.Height = hole.Length / 2
+			else:
+				d.Height = hole.Length
+			
+		[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(objRef)
+		x = x + coX
+		y = y + coY
+		z = z + coZ
+		MagicPanels.setContainerPlacement(d, x, y, z, r, "clean")
+		MagicPanels.moveToFirst([ d ], objRef)
 
 except:
 	
