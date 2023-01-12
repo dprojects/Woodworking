@@ -5,7 +5,7 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 ![intro](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/intro.gif)
 
 * **Furniture from scratch & redesign:** [YouTube playlist](https://www.youtube.com/playlist?list=PLSKOS_LK45BBHkWPjdWX49qh-GEsF511v)
-* **Joinery examples:** [YouTube playlist](https://www.youtube.com/watch?v=qx_kAxG7GO0&list=PLSKOS_LK45BBG8kJ2AZvQKBfOSfzhTrLt)
+* **Joinery examples:** [YouTube playlist](https://www.youtube.com/playlist?list=PLSKOS_LK45BBG8kJ2AZvQKBfOSfzhTrLt)
 * **Parametrization solutions:** [YouTube playlist](https://www.youtube.com/playlist?list=PLSKOS_LK45BCzvg_B7oSTk1IsQnu5thtZ)
 * **Workbench features & development:** [YouTube playlist](https://www.youtube.com/playlist?list=PLSKOS_LK45BDiLCETxbH_PV-uN3RAA0qz)
 
@@ -16,7 +16,7 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 
 * Stable certified versions download at: [Woodworking/releases](https://github.com/dprojects/Woodworking/releases)
 * For cutting edge features download:
-	* FreeCAD version from: [FreeCAD_weekly-builds-30486-2022-09-29-conda-Linux-x86_64-py310.AppImage](https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/weekly-builds/FreeCAD_weekly-builds-30486-2022-09-29-conda-Linux-x86_64-py310.AppImage)
+	* FreeCAD version: [FreeCAD weekly builds 30486 2022-09-29 AppImage](https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/weekly-builds/FreeCAD_weekly-builds-30486-2022-09-29-conda-Linux-x86_64-py310.AppImage)
 	* Woodworking workbench development version from: [the master branch](https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip)
 
 * Current development platform:

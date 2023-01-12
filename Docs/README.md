@@ -78,6 +78,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
     * [Project manage](#project-manage)
 		* [selected2LinkGroup](#selected2linkgroup)
 		* [selected2Link](#selected2link)
+		* [selected2Group](#selected2group)
 * [Dowels, Screws, Fixture](#dowels-screws-fixture)
 * [Holes, Countersinks, Counterbores](#holes-countersinks-counterbores)
 	* [Drilling serially](#drilling-serially)
@@ -656,6 +657,12 @@ Main features:
 ### selected2Link
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/selected2Link.png"> This tool call FreeCAD simple Link command and set color for new Link objects from first selected object. To select more objects hold left CTRL key during selection.
+
+<br><br><br><br><br><br>
+
+### selected2Group
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/selected2Group.png"> Normally, the FreeCAD Group command not recognize selection and always creates empty folder. This tool improves this command a little bit, creates new Group and move all selected objects to the new Group folder. The Group folder label is from first selected element. To select more objects hold left CTRL key during selection at Tree or 3D view.
 
 <br><br><br><br><br><br>
 
