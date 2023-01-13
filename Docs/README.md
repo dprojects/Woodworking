@@ -79,6 +79,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 		* [selected2LinkGroup](#selected2linkgroup)
 		* [selected2Link](#selected2link)
 		* [selected2Group](#selected2group)
+* [How to use containers](#how-to-use-containers)
 * [Dowels, Screws, Fixture](#dowels-screws-fixture)
 * [Holes, Countersinks, Counterbores](#holes-countersinks-counterbores)
 	* [Drilling serially](#drilling-serially)
@@ -665,6 +666,14 @@ Main features:
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/selected2Group.png"> Normally, the FreeCAD Group command not recognize selection and always creates empty folder. This tool improves this command a little bit, creates new Group and move all selected objects to the new Group folder. The Group folder label is from first selected element. To select more objects hold left CTRL key during selection at Tree or 3D view.
 
 <br><br><br><br><br><br>
+
+# How to use containers
+
+* `Body` is container for single Pad object. If you want to move Pad or any other PartDesign object, it is better to move it via Body container not directly via AttachmentOffset. If you move PartDesign object via AttachmentOffset, all the transformations, for example Hole, need to be recalculated. So, this is very slow and also if you drill holes and move object via AttachmentOffset the holes will disappear. So, move PartDesign objects via Body container.
+* `Part` is good container via many Bodies, more complicated PartDesign objects. For example if you move Pad directly to Body this will be merged with the current Pad in the Body. So, it will be single object. If you want to keep Pad separated, you can create single Body container for each Pad and keep all Bodies in Part. I rather not recommend to mix Cube with PartDesign object inside Part container. Part should rather be used only for PartDesign objects.
+* `LinkGroup` is high level, real container. You can move there many Part containers and also Cube objects. Also you can nesting LinkGroup containers. If you want to move many objects, bigger structures, rotate them, this is good container to do it.
+* `Link` is not container but it is mentioned here, because you should rather avoid linking objects directly. You should rather link LinkGroup. This approach allows you to change LinkGroup content and update the Link in real-time. If you link directly object, and the base Cube object will be replaced with Pad, the link will be broken, because the base object no longer exists. This not happen if you link the LinkGroup with Cube inside. You can replace Cube with Pad inside LinkGroup container and the link will be still correct and also the link will be updated in real-time.
+* `Group` is normal FreeCAD folder. You can't move it or rotate but it is good container to keep LinkGroup structure. 
 
 # Dowels, Screws, Fixture
 
