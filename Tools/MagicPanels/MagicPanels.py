@@ -2447,7 +2447,7 @@ def getContainersOffset(iObj):
 	'''
 	Description:
 	
-		If the object is in the container like Part, Body, LingGroup the vertices are 
+		If the object is in the container like Part, Body, LinkGroup the vertices are 
 		not updated by FreeCAD. From FreeCAD perspective the object is still in the 
 		same place. This function is trying to solve this problem and calculates 
 		all offsets of all containers.
@@ -2977,12 +2977,13 @@ def moveToParent(iObjects, iSelection):
 	parent = iSelection.InList[0]
 	
 	for o in iObjects:
-		
-		# skip already copied objects
-		if len(o.InList) > 0:
-			continue
-		
-		# move object to the same container
+
+		# skip move Link of LinkGroup to the same LinkGroup
+		if iSelection.isDerivedFrom("App::LinkGroup") or iSelection.isDerivedFrom("App::Link"):
+			if o.isDerivedFrom("App::Link"):
+				continue
+
+		# move object
 		FreeCADGui.Selection.addSelection(o)
 		o.adjustRelativeLinks(parent)
 		parent.ViewObject.dropObject(o, None, '', [])
