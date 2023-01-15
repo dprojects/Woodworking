@@ -5,6 +5,7 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 ![intro](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/intro.gif)
 
 * **Furniture from scratch & redesign:** [YouTube playlist](https://www.youtube.com/playlist?list=PLSKOS_LK45BBHkWPjdWX49qh-GEsF511v)
+* **Cut-list, BOM, dimensions:** [YouTube playlist](https://www.youtube.com/playlist?list=PLSKOS_LK45BCnwvCGt4klfF6uVAxfQQTy)
 * **Joinery examples:** [YouTube playlist](https://www.youtube.com/playlist?list=PLSKOS_LK45BBG8kJ2AZvQKBfOSfzhTrLt)
 * **Parametrization solutions:** [YouTube playlist](https://www.youtube.com/playlist?list=PLSKOS_LK45BCzvg_B7oSTk1IsQnu5thtZ)
 * **Workbench features & development:** [YouTube playlist](https://www.youtube.com/playlist?list=PLSKOS_LK45BDiLCETxbH_PV-uN3RAA0qz)

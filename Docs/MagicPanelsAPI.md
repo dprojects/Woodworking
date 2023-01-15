@@ -898,11 +898,31 @@ gSearchDepth = 200       # recursive search depth
 		Returns array with [ cx, cy, cz ] values for center point.
 
 # Containers
+### getNestingLabel(iObj, iLabel):
+
+	Description:
+	
+		This function set label for nesting objects, containers, copied, to not repeat 
+		the prefix and not make the label too long. 
+	
+##### Description:
+	
+		iObj: object for the label check
+		iLabel: string, preferred prefix for the label
+
+##### Usage:
+	
+		o.Label = MagicPanels.getNestingLabel(o, "Container")
+
+##### Result:
+	
+		return string for the new label
+
 ### getContainersOffset(iObj):
 
 	Description:
 	
-		If the object is in the container like Part, Body, LingGroup the vertices are 
+		If the object is in the container like Part, Body, LinkGroup the vertices are 
 		not updated by FreeCAD. From FreeCAD perspective the object is still in the 
 		same place. This function is trying to solve this problem and calculates 
 		all offsets of all containers.
@@ -1109,7 +1129,7 @@ gSearchDepth = 200       # recursive search depth
 		for other PartDesign objects: try to return Body
 		for any other object: returns object
 
-### createContainer(iObjects, iLabel=""):
+### createContainer(iObjects, iLabel="Container"):
 
 	Description:
 	
@@ -1124,6 +1144,7 @@ gSearchDepth = 200       # recursive search depth
 ##### Usage:
 	
 		container = MagicPanels.createContainer([c1, c2])
+		container = MagicPanels.createContainer([c1, c2], "LinkGroup")
 
 ##### Result:
 	

@@ -2443,6 +2443,38 @@ def getObjectCenter(iObj):
 
 
 # ###################################################################################################################
+def getNestingLabel(iObj, iLabel):
+	'''
+	Description:
+	
+		This function set label for nesting objects, containers, copied, to not repeat 
+		the prefix and not make the label too long. 
+	
+	Args:
+	
+		iObj: object for the label check
+		iLabel: string, preferred prefix for the label
+
+	Usage:
+	
+		o.Label = MagicPanels.getNestingLabel(o, "Container")
+
+	Result:
+	
+		return string for the new label
+
+	'''
+
+	label = str(iObj.Label)
+	
+	if label.find(iLabel) != -1:
+		return label
+	
+	newLabel = iLabel + ", " + label + " "
+	return newLabel
+
+
+# ###################################################################################################################
 def getContainersOffset(iObj):
 	'''
 	Description:
@@ -3042,7 +3074,7 @@ def getObjectToMove(iObj):
 
 
 # ###################################################################################################################
-def createContainer(iObjects, iLabel=""):
+def createContainer(iObjects, iLabel="Container"):
 	'''
 	Description:
 	
@@ -3057,6 +3089,7 @@ def createContainer(iObjects, iLabel=""):
 	Usage:
 	
 		container = MagicPanels.createContainer([c1, c2])
+		container = MagicPanels.createContainer([c1, c2], "LinkGroup")
 
 	Result:
 	
@@ -3068,11 +3101,9 @@ def createContainer(iObjects, iLabel=""):
 	container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','container')
 	container.setLink(iObjects)
 	
-	if iLabel == "":
-		container.Label = "Container, " + str(base.Label)
-	else:
-		container.Label = iLabel
-		
+	container.Label = iLabel + ", " + str(base.Label)
+	container.Label = getNestingLabel(base, iLabel)
+	
 	try:
 		MagicPanels.copyColors(base, container)
 	except:

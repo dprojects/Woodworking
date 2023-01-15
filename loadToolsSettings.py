@@ -40,8 +40,6 @@ Tools = [
 
 	"", "colorManager", "png", "colorManager", "Allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected face, object or many faces or objects and see the effect at 3D model in real-time.",
 
-	"", "magicAngle", "png", "magicAngle", "Allows to rotate panels and even other more complicated objects, like construction profiles.",
-
 	"", "showSpaceModel", "png", "show, model, space", "This tool allows you to calculate the overall occupied space in 3D by the model.",
 	
 	"", "showSpaceSelected", "png", "show, selected, space", "This tool allows you to calculate the overall occupied space in 3D by the selected parts.",
@@ -63,6 +61,8 @@ Tools = [
 	"MagicPanels", "magicFixture", "png", "magicFixture", "Allows to add any type of detailed fixture to the furniture. You can create Link to the realistic looking part or Clone it.",
 
 	"MagicPanels", "magicJoints", "png", "magicJoints", "Allows to move, copy joint Sketch pattern and create Mortise and Tenon.",
+
+	"MagicPanels", "magicAngle", "png", "magicAngle", "Allows to rotate panels and even other more complicated objects, like construction profiles.",
 
 	# #################################################################################################################################
 	# tools - not using MagicPanels library, no GUI

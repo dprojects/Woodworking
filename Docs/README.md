@@ -186,9 +186,17 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 ### magicAngle
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicAngle.png"> This tool allows to rotate panels and even other more complicated objects, like construction profiles. If you want to rotate many objects together, use this tool directly at `Part` object or pack all objects into `LinkGroup` and use rotation at the `LinkGroup`. You can also choose center point of rotation by browsing vertices.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicAngle.png"> This tool allows to rotate panels and even other more complicated objects, like construction profiles or containers. It allows for multi-selection, so you can rotate many elements with the same rotation point at once.
 
-<br><br><br>
+**Options:**
+
+* **Sphere radius** Allows you to resize rotation indicator sphere. This tool checks reference for the object, content of containers and get size to set the default size of the sphere. by default the sphere radius is set to object thickness. You can increase or decrease the value or set your custom one.
+* **Rotation point** Allows you to switch between several predefined rotation points. If the predefined points not allows you to rotate the object as you wish, you can add your custom point. You can select vertex, face or edge and click `add selected vertex`. If the selected sub-object is face the vertex will be set to its CenterOfMass. If the sub-object is edge the first vertex for the edge will be set. There is also ration, that show you how many rotation points you have to choose and which one is currently chosen.
+
+* **X, Y, Z** Allows to rotate object according to the axis. There is also screen with current rotation status so you can quickly rotate back the object. You can also choose your custom `Angle step` for rotation. 
+
+**Video tutorials:** 
+* [Quick parametric fence](https://www.youtube.com/watch?v=egmC-uR4aa4)
 
 ### mapPosition
 
