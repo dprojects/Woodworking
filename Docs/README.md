@@ -79,6 +79,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 		* [selected2LinkGroup](#selected2linkgroup)
 		* [selected2Link](#selected2link)
 		* [selected2Group](#selected2group)
+		* [selected2Outside](#selected2outside)
 * [How to use containers](#how-to-use-containers)
 * [Dowels, Screws, Fixture](#dowels-screws-fixture)
 * [Holes, Countersinks, Counterbores](#holes-countersinks-counterbores)
@@ -672,6 +673,12 @@ Main features:
 ### selected2Group
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/selected2Group.png"> Normally, the FreeCAD Group command not recognize selection and always creates empty folder. This tool improves this command a little bit, creates new Group and move all selected objects to the new Group folder. The Group folder label is from first selected element. To select more objects hold left CTRL key during selection at Tree or 3D view.
+
+<br><br><br><br><br><br>
+
+### selected2Outside
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/selected2Outside.png"> This tool allows you to get out the selected objects from containers. Normally, if you get out object from the container manually, the object will change place and rotation. This tool allows you to move the objects and keep the same position and rotation. This feature might be very useful if automatic movement to container is not what you want. For example you want single element to no longer be mirrored or further processed with other objects inside the container. To select more objects hold left CTRL key during selection.
 
 <br><br><br><br><br><br>
 

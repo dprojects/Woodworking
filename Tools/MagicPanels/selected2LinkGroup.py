@@ -12,6 +12,11 @@ try:
 	
 	container = MagicPanels.createContainer(selectedObjects)
 
+	try:
+		MagicPanels.copyColors(selectedObjects[0], container)
+	except:
+		skip = 1
+
 except:
 	
 	info = ""

@@ -793,6 +793,45 @@ FreeCADGui.addCommand("selected2Link", selected2Link())
 
 	
 # ######################################################################################################################
+class selected2Outside():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "selected2Outside.png"),
+				"MenuText": QT_TRANSLATE_NOOP("selected2OutsideMenuText", "move outside the container"),
+				"ToolTip" : QT_TRANSLATE_NOOP("selected2OutsideToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "selected2Outside"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("selected2Outside", selected2Outside())
+
+	
+# ######################################################################################################################
 class drillHoles():
 
 	def GetResources(self):

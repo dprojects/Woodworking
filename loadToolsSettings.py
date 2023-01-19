@@ -78,6 +78,7 @@ Tools = [
 	"MagicPanels", "selected2Group", "png", "selected to Group", "Click to see info.",
 	"MagicPanels", "selected2LinkGroup", "png", "selected to LinkGroup", "Click to see info.",
 	"MagicPanels", "selected2Link", "png", "selected to Link", "Click to see info.",
+	"MagicPanels", "selected2Outside", "png", "move outside the container", "Click to see info.",
 	
 	# drilling
 	

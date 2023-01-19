@@ -85,7 +85,7 @@ gSearchDepth = 200       # recursive search depth
 		return normalized version for comparison if b1 == b2: you can set your own precision here
 
 # Vertices
-### showVertex(iVertices, iRadius=5):
+### showVertex(iVertices, iRadius=5, iColor="red"):
 
 	Description:
 	
@@ -95,6 +95,7 @@ gSearchDepth = 200       # recursive search depth
 	
 		iVertices: array with Vertex or floats objects
 		iRadius (optional): ball Radius
+		iColor: string "red", "green", "blue", or color tuple like (1.0, 0.0, 0.0, 0.0)
 
 ##### Usage:
 	
@@ -964,7 +965,7 @@ gSearchDepth = 200       # recursive search depth
 	
 		return vertices array with correct container offset
 
-### getVerticesPosition(iVertices, iObj, iType="array"):
+### getVerticesPosition(iVertices, iObj, iType="auto"):
 
 	Description:
 	
@@ -978,18 +979,20 @@ gSearchDepth = 200       # recursive search depth
 		iVertices: vertices array
 		iObj: object to get containers offset
 		iType:
-			"array" - array with floats [ 1, 2, 3 ]
-			"vector" - array with FreeCAD.Vector types
-			"vertex" - array with Part.Vertex types
+			"auto" - recognize the iVertices elements type
+			"array" - each element of iVertices is array with floats [ 1, 2, 3 ]
+			"vector" - each element of iVertices is array with FreeCAD.Vector
+			"vertex" - each element of iVertices is array with Part.Vertex
 
 ##### Usage:
 	
 		vertices = MagicPanels.getVerticesPosition(vertices, o, "array")
+		vertices = MagicPanels.getVerticesPosition(vertices, o)
 		MagicPanels.showVertex(iVertices, 10)
 
 ##### Result:
 	
-		return vertices array with correct container offset
+		return vertices array with correct container offset, with the same type
 
 ### removeVerticesOffset(iVertices, iObj, iType="array"):
 

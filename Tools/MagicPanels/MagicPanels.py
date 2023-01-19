@@ -157,7 +157,7 @@ def normalizeBoundBox(iBoundBox):
 
 
 # ###################################################################################################################
-def showVertex(iVertices, iRadius=5):
+def showVertex(iVertices, iRadius=5, iColor="red"):
 	'''
 	Description:
 	
@@ -167,6 +167,7 @@ def showVertex(iVertices, iRadius=5):
 	
 		iVertices: array with Vertex or floats objects
 		iRadius (optional): ball Radius
+		iColor: string "red", "green", "blue", or color tuple like (1.0, 0.0, 0.0, 0.0)
 
 	Usage:
 	
@@ -198,8 +199,16 @@ def showVertex(iVertices, iRadius=5):
 		
 		s1 = FreeCAD.ActiveDocument.addObject("Part::Sphere","showVertex")
 		s1.Placement = FreeCAD.Placement(FreeCAD.Vector(fv), FreeCAD.Rotation(0, 0, 0))
-		s1.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 0.0)
 		s1.Radius = iRadius
+		
+		if iColor == "red":
+			s1.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 0.0)
+		elif iColor == "green":
+			s1.ViewObject.ShapeColor = (0.0, 1.0, 0.0, 0.0)
+		elif iColor == "blue":
+			s1.ViewObject.ShapeColor = (0.0, 0.0, 1.0, 0.0)
+		else:
+			s1.ViewObject.ShapeColor = iColor
 		
 		vertices.append(s1)
 		
@@ -2570,13 +2579,11 @@ def getVerticesOffset(iVertices, iObj, iType="array"):
 		
 		vertices.append(n)
 	
-		
-	
 	return vertices
 
 
 # ###################################################################################################################
-def getVerticesPosition(iVertices, iObj, iType="array"):
+def getVerticesPosition(iVertices, iObj, iType="auto"):
 	'''
 	Description:
 	
@@ -2590,18 +2597,20 @@ def getVerticesPosition(iVertices, iObj, iType="array"):
 		iVertices: vertices array
 		iObj: object to get containers offset
 		iType:
-			"array" - array with floats [ 1, 2, 3 ]
-			"vector" - array with FreeCAD.Vector types
-			"vertex" - array with Part.Vertex types
+			"auto" - recognize the iVertices elements type
+			"array" - each element of iVertices is array with floats [ 1, 2, 3 ]
+			"vector" - each element of iVertices is array with FreeCAD.Vector
+			"vertex" - each element of iVertices is array with Part.Vertex
 
 	Usage:
 	
 		vertices = MagicPanels.getVerticesPosition(vertices, o, "array")
+		vertices = MagicPanels.getVerticesPosition(vertices, o)
 		MagicPanels.showVertex(iVertices, 10)
 
 	Result:
 	
-		return vertices array with correct container offset
+		return vertices array with correct container offset, with the same type
 
 	'''
 
@@ -2609,6 +2618,45 @@ def getVerticesPosition(iVertices, iObj, iType="array"):
 	if iObj.isDerivedFrom("Part::Mirroring"):
 		return iVertices
 
+	# recognize iVertices type
+	if iType == "auto":
+		
+		skip = 0
+		
+		if skip == 0:
+			try:
+				FreeCAD.Console.PrintMessage("\n")
+				FreeCAD.Console.PrintMessage("t2")
+				
+				test = iVertices[0].X
+				iType = "vertex"
+				skip = 1
+			except:
+				skip = 0
+
+		if skip == 0:
+			try:
+				FreeCAD.Console.PrintMessage("\n")
+				FreeCAD.Console.PrintMessage("t3")
+				
+				test = iVertices[0].x
+				iType = "vector"
+				skip = 1
+			except:
+				skip = 0
+		
+		if skip == 0:
+			try:
+				FreeCAD.Console.PrintMessage("\n")
+				FreeCAD.Console.PrintMessage("t1")
+				
+				test = iVertices[0][0]
+				iType = "array"
+				skip = 1
+			except:
+				skip = 0
+
+	# convert iVertices to Vector for calculation
 	vertices = []
 	for v in iVertices:
 		
@@ -2624,6 +2672,7 @@ def getVerticesPosition(iVertices, iObj, iType="array"):
 			
 		vertices.append(n)
 	
+	# calculate position
 	for o in iObj.InListRecursive:
 		
 		if (
@@ -2646,6 +2695,7 @@ def getVerticesPosition(iVertices, iObj, iType="array"):
 				
 				i = i + 1
 
+	# convert to the same type as iVertices
 	i = 0
 	for v in vertices:
 		if iType == "array":
@@ -4902,6 +4952,7 @@ def showInfo(iCaller, iInfo, iNote="yes"):
 	info += "<li>Rather not move objects via AttachmentOffset, move them via container Body, LinkGroup.</li>"
 	info += "<li>Design furniture from Cubes. If you want more detailed model convert exact element to Pad and edit the Sketch. Also for irregular or not rectangle shapes.</li>"
 	info += "<li>Always make backup of your project.</li>"
+	info += "<li>Break all rules, if you know what you are doing.</li>"
 	info += "<ul>"
 	
 	if iNote == "yes":

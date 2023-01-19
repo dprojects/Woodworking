@@ -28,7 +28,9 @@ def showQtGUI():
 		
 		gSphere = ""
 		gSphereSize = 0
-		gCenter = []
+		
+		gCenterVertex = []
+		gCenterObj = []
 		gCenterIndex = 0
 		
 		gAngleX = 0
@@ -297,9 +299,10 @@ def showQtGUI():
 			self.thick = 0
 		
 			self.gSphere = ""
-			self.gCenter = []
+			self.gCenterVertex = []
+			self.gCenterObj = []
 			self.gCenterIndex = 0
-		
+			
 			self.gAngleX = 0
 			self.gAngleY = 0
 			self.gAngleZ = 0
@@ -318,87 +321,109 @@ def showQtGUI():
 		
 		def setCenterPoints(self):
 			
-			self.gCenter = []
+			self.gCenterVertex = []
 			
 			# you can add new center points here, if needed
 			
 			if self.gObj.isDerivedFrom("App::LinkGroup"):
 				v = self.touchTypo(1, 0)
-				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-			
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
+				
 				v = self.touchTypo(1, 1)
-				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
+				
 				v = self.touchTypo(1, 2)
-				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
 
 				v = self.touchTypo(1, 3)
-				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
 				
 				maxIdx = len(self.gObj.Shape.Faces) - 1
 				
 				v = self.touchTypo(maxIdx, 0)
-				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
 			
 				v = self.touchTypo(maxIdx, 1)
-				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
 
 				v = self.touchTypo(maxIdx, 2)
-				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
 
 				v = self.touchTypo(maxIdx, 3)
-				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
 			
 			if self.gObj.isDerivedFrom("Part::Cylinder"):
 				
 				v = self.touchTypo(1, 0)
-				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
 				
 				v = self.touchTypo(2, 0)
-				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
 			
 			if self.gObj.isDerivedFrom("Part::Cone"):
 				
 				v = self.touchTypo(2, 0)
-				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
 				
 				v = self.touchTypo(1, 0)
-				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
 
 			try:
 				
 				v = self.touchTypo(4, 0)
-				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
 			
 				v = self.touchTypo(4, 1)
-				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
 
 				v = self.touchTypo(4, 2)
-				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
 
 				v = self.touchTypo(4, 3)
-				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
 
 				v = self.touchTypo(5, 0)
-				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
 
 				v = self.touchTypo(5, 1)
-				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
 
 				v = self.touchTypo(5, 2)
-				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
 
 				v = self.touchTypo(5, 3)
-				self.gCenter.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
 		
 			except:
 
-				self.gCenter.append(FreeCAD.Vector(float(0.0), float(0.0), float(0.0)))
+				self.gCenterVertex.append(FreeCAD.Vector(float(0.0), float(0.0), float(0.0)))
+				self.gCenterObj.append(self.gObj)
 
 			try:
 				
 				v = self.gObj.Shape.CenterOfMass
-				self.gCenter.append(FreeCAD.Vector(float(v.x), float(v.y), float(v.z)))
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.x), float(v.y), float(v.z)))
+				self.gCenterObj.append(self.gObj)
 				
 			except:
 			
@@ -406,11 +431,13 @@ def showQtGUI():
 				
 		def setCenterSphere(self):
 			
-			info = str(self.gCenterIndex + 1) + " / " + str(len(self.gCenter))
+			info = str(self.gCenterIndex + 1) + " / " + str(len(self.gCenterVertex))
 			self.rpIS.setText(info)
 			
-			v = self.gCenter[self.gCenterIndex]
-			[ v ] = MagicPanels.getVerticesPosition([ v ], self.gObj, "vector")
+			v = self.gCenterVertex[self.gCenterIndex]
+			vObj = self.gCenterObj[self.gCenterIndex]
+			[ v ] = MagicPanels.getVerticesPosition([ v ], vObj)
+
 			self.gSphere.Placement = FreeCAD.Placement(v, FreeCAD.Rotation(0, 0, 0))
 			self.gSphere.Radius = float(self.ssE.text())
 			
@@ -422,8 +449,12 @@ def showQtGUI():
 			self.yaIS.setText(str(self.gAngleY))
 			self.zaIS.setText(str(self.gAngleZ))
 			
+			v = self.gCenterVertex[self.gCenterIndex]
+			vObj = self.gCenterObj[self.gCenterIndex]
+			[ v ] = MagicPanels.getVerticesPosition([ v ], vObj)
+			
 			for o in self.gObjects:
-				Draft.rotate(o, iAngle, self.gCenter[self.gCenterIndex], iAxis, False)
+				Draft.rotate(o, iAngle, v, iAxis, False)
 			
 			FreeCADGui.Selection.clearSelection()
 			FreeCAD.ActiveDocument.recompute()
@@ -498,7 +529,7 @@ def showQtGUI():
 			
 			try:
 				if self.gCenterIndex - 1 < 0:
-					self.gCenterIndex = len(self.gCenter) - 1
+					self.gCenterIndex = len(self.gCenterVertex) - 1
 				else:
 					self.gCenterIndex = self.gCenterIndex - 1
 					
@@ -509,7 +540,7 @@ def showQtGUI():
 		def setCenterN(self):
 			
 			try:
-				if self.gCenterIndex + 1 > len(self.gCenter) - 1:
+				if self.gCenterIndex + 1 > len(self.gCenterVertex) - 1:
 					self.gCenterIndex = 0
 				else:
 					self.gCenterIndex = self.gCenterIndex + 1
@@ -522,27 +553,32 @@ def showQtGUI():
 			
 			try:
 				skip = 0
+				
+				vObj = FreeCADGui.Selection.getSelection()[0]
 				v = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 
 				if str(v.ShapeType) == "Vertex":
 					v = FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z))
-					self.gCenter.append(v)
+					self.gCenterVertex.append(v)
+					self.gCenterObj.append(vObj)
 				
 				elif str(v.ShapeType) == "Edge":
 					[ v, v2 ] = MagicPanels.getEdgeVertices(v)
 					v = FreeCAD.Vector(v[0], v[1], v[2])
-					self.gCenter.append(v)
+					self.gCenterVertex.append(v)
+					self.gCenterObj.append(vObj)
 				
 				elif str(v.ShapeType) == "Face":
 					v = v.CenterOfMass
 					v = FreeCAD.Vector(float(v.x), float(v.y), float(v.z))
-					self.gCenter.append(v)
+					self.gCenterVertex.append(v)
+					self.gCenterObj.append(vObj)
 
 				else:
 					skip = 1
 
 				if skip == 0:
-					self.gCenterIndex = len(self.gCenter) - 1
+					self.gCenterIndex = len(self.gCenterVertex) - 1
 					self.setCenterSphere()
 
 			except:
