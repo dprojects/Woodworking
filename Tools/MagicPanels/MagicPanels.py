@@ -2625,9 +2625,6 @@ def getVerticesPosition(iVertices, iObj, iType="auto"):
 		
 		if skip == 0:
 			try:
-				FreeCAD.Console.PrintMessage("\n")
-				FreeCAD.Console.PrintMessage("t2")
-				
 				test = iVertices[0].X
 				iType = "vertex"
 				skip = 1
@@ -2636,9 +2633,6 @@ def getVerticesPosition(iVertices, iObj, iType="auto"):
 
 		if skip == 0:
 			try:
-				FreeCAD.Console.PrintMessage("\n")
-				FreeCAD.Console.PrintMessage("t3")
-				
 				test = iVertices[0].x
 				iType = "vector"
 				skip = 1
@@ -2647,9 +2641,6 @@ def getVerticesPosition(iVertices, iObj, iType="auto"):
 		
 		if skip == 0:
 			try:
-				FreeCAD.Console.PrintMessage("\n")
-				FreeCAD.Console.PrintMessage("t1")
-				
 				test = iVertices[0][0]
 				iType = "array"
 				skip = 1
