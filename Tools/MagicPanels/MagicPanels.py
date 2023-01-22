@@ -60,6 +60,40 @@ gSearchDepth = 200       # recursive search depth
 
 
 # ###################################################################################################################
+def isType(iObj, iType):
+	'''
+	Description:
+	
+		This function checks if the given object iObj is iType. 
+		It has been created mostly for Clones. The Clones are "Part::FeaturePython" type. 
+		But the problem is that many other FreeCAD objects are "Part::FeaturePython" type as well, 
+		for example Array. So, you can't recognize the Clones only with .isDerivedFrom() function or 
+		even .TypeId. To simplify the code look you can hide the ckecks behind the function.
+	
+	Args:
+	
+		iObj: object
+		iType: string for type:
+			"Clone" - for clones
+
+	Usage:
+	
+		if MagicPanels.isType(o, "Clone"):
+			do something ...
+
+	Result:
+	
+		return True or False, so you can use it directly in if statement
+
+	'''
+	
+	if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Name.startswith("Clone"):
+		return True
+	
+	return False
+	
+
+# ###################################################################################################################
 def equal(iA, iB):
 	'''
 	Description:
@@ -1684,27 +1718,11 @@ def getDistanceBetweenFaces(iObj1, iObj2, iFace1, iFace2):
 	plane2 = getFacePlane(iFace2)
 	[ x1, y1, z1 ] = getVertex(iFace1, 0, 0)
 	[ x2, y2, z2 ] = getVertex(iFace2, 0, 0)
-	
-	if str(iObj1.Name) != str(iObj2.Name):
-		
-		[ o1X, o1Y, o1Z, o1R ] = getContainersOffset(iObj1)
-		[ o2X, o2Y, o2Z, o2R ] = getContainersOffset(iObj2)
 
-		x1 = x1 + o1X
-		y1 = y1 + o1Y
-		z1 = z1 + o1Z
-		
-		x2 = x2 + o2X
-		y2 = y2 + o2Y
-		z2 = z2 + o2Z
+	# if you switch to global be sure the planes are not rotated
+	[[ x1, y1, z1 ]] = getVerticesPosition([[ x1, y1, z1 ]], iObj1)
+	[[ x2, y2, z2 ]] = getVerticesPosition([[ x2, y2, z2 ]], iObj2)
 	
-	else:
-		
-		[ o1X, o1Y, o1Z, o1R ] = getContainersOffset(iObj1)
-		x1 = x1 + o1X
-		y1 = y1 + o1Y
-		z1 = z1 + o1Z
-
 	if plane1 == "XY" and plane2 == "XY":
 		return round(abs(z1-z2), gRoundPrecision)
 
@@ -2452,6 +2470,39 @@ def getObjectCenter(iObj):
 
 
 # ###################################################################################################################
+def getContainers(iObj):
+	'''
+	Description:
+	
+		This function get list of containers for give iObj.
+		
+	
+	Args:
+	
+		iObj: object to get list of containers
+
+	Usage:
+	
+		containers = MagicPanels.getContainers(o)
+
+	Result:
+	
+		return array with objects
+
+	'''
+
+	containers = []
+	
+	for c in iObj.InListRecursive:
+		containers.append(c)
+
+		if len(c.Parents) < 1:
+			break
+
+	return containers
+
+
+# ###################################################################################################################
 def getNestingLabel(iObj, iLabel):
 	'''
 	Description:
@@ -2476,7 +2527,7 @@ def getNestingLabel(iObj, iLabel):
 
 	label = str(iObj.Label)
 	
-	if label.find(iLabel) != -1:
+	if label.find(", ") != -1:
 		return label
 	
 	newLabel = iLabel + ", " + label + " "
@@ -2519,7 +2570,8 @@ def getContainersOffset(iObj):
 	if iObj.isDerivedFrom("Part::Mirroring"):
 		return [ coX, coY, coZ, coR ]
 
-	for o in iObj.InListRecursive:
+	containers = getContainers(iObj)
+	for o in containers:
 		
 		if (
 			o.isDerivedFrom("App::Part") or 
@@ -2535,7 +2587,7 @@ def getContainersOffset(iObj):
 				r = o.Placement.Rotation
 			except:
 				continue
-			
+
 			coX = coX + x
 			coY = coY + y
 			coZ = coZ + z
@@ -2604,9 +2656,11 @@ def getVerticesPosition(iVertices, iObj, iType="auto"):
 
 	Usage:
 	
-		vertices = MagicPanels.getVerticesPosition(vertices, o, "array")
+		[[ x, y, z ]] = MagicPanels.getVerticesPosition([[ x, y, z ]], o, "array")
+		vertices = MagicPanels.getVerticesPosition(vertices, o, "vector")
 		vertices = MagicPanels.getVerticesPosition(vertices, o)
-		MagicPanels.showVertex(iVertices, 10)
+		
+		MagicPanels.showVertex(vertices, 10)
 
 	Result:
 	
@@ -2664,7 +2718,8 @@ def getVerticesPosition(iVertices, iObj, iType="auto"):
 		vertices.append(n)
 	
 	# calculate position
-	for o in iObj.InListRecursive:
+	containers = getContainers(iObj)
+	for o in containers:
 		
 		if (
 			o.isDerivedFrom("App::Part") or 
@@ -2754,14 +2809,17 @@ def removeVerticesOffset(iVertices, iObj, iType="array"):
 
 
 # ###################################################################################################################
-def moveToContainer(iObjects, iSelection):
+def moveToClean(iObjects, iSelection):
 	'''
 	Description:
 	
-		Move objects iObjects to container for iSelection object. 
+		Move objects iObjects to clean container for iSelection object.
 		Container need to be in the clean path, no other objects except Group or LinkGroup, 
-		for example LinkGroup -> LinkGroup is clean path, only containers, but the 
-		Mirror -> LinkGroup is not considered as clean container path here.
+
+		For example:
+
+		clean path: LinkGroup -> LinkGroup
+		not clean: Mirror -> LinkGroup
 	
 	Args:
 	
@@ -2770,7 +2828,7 @@ def moveToContainer(iObjects, iSelection):
 
 	Usage:
 	
-		MagicPanels.moveToContainer([ o ], pad)
+		MagicPanels.moveToClean([ o ], pad)
 
 	Result:
 	
@@ -2778,7 +2836,8 @@ def moveToContainer(iObjects, iSelection):
 
 	'''
 
-	rsize = len(iSelection.InListRecursive)
+	containers = getContainers(iSelection)
+	rsize = len(containers)
 	
 	# if no container, do nothing
 	if rsize == 0:
@@ -2796,7 +2855,7 @@ def moveToContainer(iObjects, iSelection):
 		while i < rsize and i < gSearchDepth:
 			
 			index = rsize - 1 - i
-			c = iSelection.InListRecursive[index]
+			c = containers[index]
 			
 			# if there is supported container
 			if (
@@ -2812,7 +2871,6 @@ def moveToContainer(iObjects, iSelection):
 					coX = coX + c.Placement.Base.x
 					coY = coY + c.Placement.Base.y
 					coZ = coZ + c.Placement.Base.z
-					# coR = coR + c.Placement.Rotation # not supported yet
 				except:
 					skip = 1
 			else:
@@ -2828,14 +2886,13 @@ def moveToContainer(iObjects, iSelection):
 		for o in iObjects:
 		
 			# add containers offset
-			[x, y, z, r ] = getPlacement(o)
+			[x, y, z, r ] = getContainerPlacement(o, "clean")
 			
 			x = x + coX
 			y = y + coY
 			z = z + coZ
-			# r = r + coR # not supported yet
 			
-			setPlacement(o, x, y, z, r)
+			setContainerPlacement(o, x, y, z, 0, "clean")
 			
 			# move object to saved container
 			o.adjustRelativeLinks(toMove)
@@ -2848,38 +2905,49 @@ def moveToContainer(iObjects, iSelection):
 def moveToFirst(iObjects, iSelection):
 	'''
 	Description:
-	
+
 		Move objects iObjects to first container above Body for iSelection object.
 		This can be used to force object at face to be moved into Mirror -> LinkGroup.
-	
+
+		This function removes the offset that should have been added earlier. Why not just copy without offset?
+		If you have 2 objects in separate containers and the second object is only moved via the container Placment, 
+		then from FreeCAD point the objects are in the same place. So you won't be able to compute space between 
+		objects in these containers. FreeCAD uses local positions. It's good because you can calculate many things 
+		without using advanced formulas. Adding an offset and removing it later is a trick for easier calculations.
+
+		You can convert all vertices to global, but in this case you won't be able to determine the plane correctly 
+		in an easy way, for example the vertices on an edge would no longer be along the same coordinate axis, 
+		and thus you'd have to use advanced formulas. It can be done with a trick, but maybe something like 
+		that will come along later if need be.
+
 	Args:
 	
 		iObjects: list of objects to move to container, for example new created Cube
 		iSelection: selected object, for example Pad
 
 	Usage:
-	
+
 		MagicPanels.moveToFirst([ o ], pad)
 
 	Result:
-	
+
 		No return, move object.
 
 	'''
-
-	boX, boY, boZ = 0, 0, 0
-	boR = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 0.00)
-	
-	rsize = len(iSelection.InListRecursive)
 	
 	# if no container, do nothing
+	containers = getContainers(iSelection)
+	rsize = len(containers)
 	if rsize == 0:
 		return
 
+	# check containers
+	boX, boY, boZ = 0, 0, 0
+	boR = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 0.00)
 	i = 0
 	while i < rsize and i < gSearchDepth:
 		
-		c = iSelection.InListRecursive[i]
+		c = containers[i]
 		
 		# if there is supported container
 		if (
@@ -2898,12 +2966,8 @@ def moveToFirst(iObjects, iSelection):
 				y = y - coY + boY
 				z = z - coZ + boZ
 				
-				# not disturb, not needed right now
-				# coR = o.Placement.inverse().Rotation
-				# r = r * coR * boR
-				
 				# set new placement
-				setPlacement(o, x, y, z, r)
+				setContainerPlacement(o, x, y, z, 0, "clean")
 
 				# move the object to this container
 				FreeCADGui.Selection.addSelection(o)
@@ -2925,10 +2989,6 @@ def moveToFirst(iObjects, iSelection):
 				boX = boX + c.Placement.Base.x
 				boY = boY + c.Placement.Base.y
 				boZ = boZ + c.Placement.Base.z
-				
-				# not disturb, not needed right now
-				# boR = boR * c.Placement.Rotation
-				
 			except:
 				skip = 1
 
@@ -2968,7 +3028,8 @@ def moveToFirstWithInverse(iObjects, iSelection):
 
 	'''
 
-	rsize = len(iSelection.InListRecursive)
+	containers = getContainers(iSelection)
+	rsize = len(containers)
 	
 	# if no container, do nothing
 	if rsize == 0:
@@ -2979,7 +3040,7 @@ def moveToFirstWithInverse(iObjects, iSelection):
 	i = 0
 	while i < rsize and i < gSearchDepth:
 
-		c = iSelection.InListRecursive[i]
+		c = containers[i]
 
 		if c.isDerivedFrom("App::LinkGroup"):
 			try:
@@ -2997,7 +3058,7 @@ def moveToFirstWithInverse(iObjects, iSelection):
 	i = 0
 	while i < rsize and i < gSearchDepth:
 		
-		c = iSelection.InListRecursive[i]
+		c = containers[i]
 
 		if c.isDerivedFrom("App::LinkGroup"):
 			for o in iObjects:
@@ -3497,9 +3558,12 @@ def sizesToCubePanel(iObj, iType):
 		else:
 			sizes = [ iObj.Length.Value, sizeX, sizeY ]
 	
-	else:
-		
+	elif hasattr(iObj, "Base_Length"):
+
 		sizes = [ iObj.Base_Length.Value, iObj.Base_Width.Value, iObj.Base_Height.Value ]
+
+	else:
+		sizes = getSizesFromVertices(iObj)
 
 	sizes.sort()
 
@@ -3576,7 +3640,7 @@ def makePad(iObj, iPadLabel="Pad"):
 	if direction == "YX" or direction == "ZX" or direction == "ZY":
 		s = [ sizes[1], sizes[2], sizes[0] ]
 
-	[ X, Y, Z, r ] = getPlacement(iObj)
+	[ X, Y, Z, R ] = getContainerPlacement(iObj, "clean")
 	
 	if direction == "XY" or direction == "YX":
 		[ x, y, z ] = [ X, Y, Z ]
@@ -3640,7 +3704,7 @@ def makePad(iObj, iPadLabel="Pad"):
 	sketch.renameConstraint(10, u'SizeY')
 
 	position = FreeCAD.Vector(x, y, z)
-	sketch.AttachmentOffset = FreeCAD.Placement(position, r)
+	sketch.AttachmentOffset = FreeCAD.Placement(position, R)
 
 	pad = body.newObject('PartDesign::Pad', "Pad")
 	pad.Label = iPadLabel
@@ -4599,12 +4663,12 @@ def makeMortise(iSketch, iDepth, iPad, iFace):
 	sketch = FreeCAD.ActiveDocument.copyObject(iSketch)
 	sketch.Support = ""
 	
-	[ x, y, z, r ] = getPlacement(sketch)
+	[ x, y, z, r ] = getContainerPlacement(sketch, "clean")
 	[ coX, coY, coZ, coR ] = getContainersOffset(pad)
 	x = x - coX
 	y = y - coY
 	z = z - coZ
-	setPlacement(sketch, x, y, z, r)
+	setContainerPlacement(sketch, x, y, z, 0, "clean")
 
 	sketch.adjustRelativeLinks(body)
 	body.ViewObject.dropObject(sketch, None, '', [])
@@ -4693,12 +4757,12 @@ def makeTenon(iSketch, iLength, iPad, iFace):
 	sketch = FreeCAD.ActiveDocument.copyObject(iSketch)
 	sketch.Support = ""
 	
-	[ x, y, z, r ] = getPlacement(sketch)
+	[ x, y, z, r ] = getContainerPlacement(sketch, "clean")
 	[ coX, coY, coZ, coR ] = getContainersOffset(pad)
 	x = x - coX
 	y = y - coY
 	z = z - coZ
-	setPlacement(sketch, x, y, z, r)
+	setContainerPlacement(sketch, x, y, z, 0, "clean")
 
 	sketch.adjustRelativeLinks(body)
 	body.ViewObject.dropObject(sketch, None, '', [])

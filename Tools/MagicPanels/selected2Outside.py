@@ -13,11 +13,13 @@ try:
 	for o in selectedObjects:
 
 		[ X, Y, Z, R ] = MagicPanels.getContainerPlacement(o, "clean")
-		[[ X, Y, Z ]] = MagicPanels.getVerticesPosition([[ X, Y, Z ]], o, "array")
-		MagicPanels.setContainerPlacement(o, X, Y, Z, R, "clean")
+		[[ X, Y, Z ]] = MagicPanels.getVerticesPosition([[ X, Y, Z ]], o)
+		MagicPanels.setContainerPlacement(o, X, Y, Z, 0, "clean")
 
 		# seriously? the highest container should be first? very intuitive... LOL
-		for c in reversed(o.InListRecursive):
+		# for more details see: https://forum.freecadweb.org/viewtopic.php?f=22&t=75343
+		containers = MagicPanels.getContainers(o)
+		for c in reversed(containers):
 			try:
 				coR = c.Placement.Rotation
 			except:
@@ -27,7 +29,8 @@ try:
 
 		container = o.InList[0]
 		container.ViewObject.dragObject(o)
-		FreeCAD.ActiveDocument.recompute()
+		
+	FreeCAD.ActiveDocument.recompute()
 
 except:
 	

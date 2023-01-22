@@ -530,7 +530,7 @@ def showQtGUI():
 			x = x + coX
 			y = y + coY
 			z = z + coZ
-			
+
 			# create panel
 			self.gPanel = FreeCAD.ActiveDocument.addObject("Part::Box", "panelFace"+iType)
 			self.gPanel.Length, self.gPanel.Width, self.gPanel.Height = L, W, H
@@ -558,14 +558,12 @@ def showQtGUI():
 				c2 = self.gSelection2
 			else:
 				c2 = self.gObj2
-			
+
 			facesDistance = MagicPanels.getDistanceBetweenFaces(c1, c2, self.gFace1, self.gFace2)
-			
+
 			x, y, z = anchor[0], anchor[1], anchor[2]
 			L, W, H = 0, 0, 0
 
-			# set panel sizes
-			
 			# set panel sizes along X
 			if self.gFace1Plane == "YZ":
 
@@ -624,7 +622,9 @@ def showQtGUI():
 				z = z + size
 
 			# add cointainer offset for PartDesign object and skip Cut
-			if not self.gSelection1.isDerivedFrom("Part::Cut"):
+			if self.gSelection1.isDerivedFrom("Part::Cut"):
+				skip = 1
+			else:
 				[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(self.gObj1)
 				x = x + coX
 				y = y + coY
@@ -674,7 +674,7 @@ def showQtGUI():
 			# move to container
 
 			if self.gMode == "Between" and self.gSelection2.isDerivedFrom("Part::Mirroring"):
-				MagicPanels.moveToContainer([ self.gPanel ], self.gObj1)
+				MagicPanels.moveToClean([ self.gPanel ], self.gObj1)
 			else:
 				MagicPanels.moveToFirst([ self.gPanel ], self.gObj1)
 
@@ -745,14 +745,21 @@ def showQtGUI():
 			
 			try:
 				self.gSelection1 = FreeCADGui.Selection.getSelection()[0]
-				self.gObj1 = MagicPanels.getReference(self.gSelection1)
 				
+				if MagicPanels.isType(self.gSelection1, "Clone"):
+					self.gObj1 = self.gSelection1
+				else:
+					self.gObj1 = MagicPanels.getReference(self.gSelection1)
 			except:
 				return
 
 			try:
 				self.gSelection2 = FreeCADGui.Selection.getSelection()[1]
-				self.gObj2 = MagicPanels.getReference(self.gSelection2)
+				
+				if MagicPanels.isType(self.gSelection2, "Clone"):
+					self.gObj2 = self.gSelection2
+				else:
+					self.gObj2 = MagicPanels.getReference(self.gSelection2)
 			except:
 				skip = 1
 
@@ -760,7 +767,11 @@ def showQtGUI():
 				self.gFace1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 				self.gFace1Plane = MagicPanels.getFacePlane(self.gFace1)
 				
-				sizes = MagicPanels.getSizes(self.gObj1)
+				if MagicPanels.isType(self.gSelection1, "Clone"):
+					sizes = MagicPanels.getSizesFromVertices(self.gObj1)
+				else:
+					sizes = MagicPanels.getSizes(self.gObj1)
+
 				sizes.sort()
 				self.gObj1Thick = sizes[0]
 				self.gObj1Short = sizes[1]

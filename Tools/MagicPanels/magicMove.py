@@ -369,49 +369,19 @@ def showQtGUI():
 
 				if self.gCopyType == "copyObject":
 					copy = FreeCAD.ActiveDocument.copyObject(o)
-					if (
-						str(o.Label).startswith("Copy, ") or 
-						str(o.Label).startswith("Clone, ") or 
-						str(o.Label).startswith("Link, ") 
-						):
-						copy.Label = str(o.Label)
-					else:
-						copy.Label = "Copy, " + str(o.Label) + " "
-				
-					copy.Label = copy.Label.replace("Clone, ","Copy, ")
-					copy.Label = copy.Label.replace("Link, ","Copy, ")
+					copy.Label = MagicPanels.getNestingLabel(copy, "Copy")
 					
 				if self.gCopyType == "Clone":
 					import Draft
 					copy = Draft.make_clone(o)
-					if (
-						str(o.Label).startswith("Copy, ") or 
-						str(o.Label).startswith("Clone, ") or 
-						str(o.Label).startswith("Link, ") 
-						):
-						copy.Label = str(o.Label)
-					else:
-						copy.Label = "Clone, " + str(o.Label) + " "
-				
-					copy.Label = copy.Label.replace("Copy, ","Clone, ")
-					copy.Label = copy.Label.replace("Link, ","Clone, ")
+					copy.Label = MagicPanels.getNestingLabel(copy, "Clone")
 					
 				if self.gCopyType == "Link":
 					copyName = "Link_" + str(o.Name)
 					copy = FreeCAD.ActiveDocument.addObject('App::Link', copyName)
 					copy.setLink(o)
-					if (
-						str(o.Label).startswith("Copy, ") or 
-						str(o.Label).startswith("Clone, ") or 
-						str(o.Label).startswith("Link, ") 
-						):
-						copy.Label = str(o.Label)
-					else:
-						copy.Label = "Link, " + str(o.Label) + " "
-					
-					copy.Label = copy.Label.replace("Copy, ","Link, ")
-					copy.Label = copy.Label.replace("Clone, ","Link, ")
-					
+					copy.Label = MagicPanels.getNestingLabel(copy, "Link")
+				
 				MagicPanels.moveToParent([ copy ], o)
 
 				if iType == "Xp":

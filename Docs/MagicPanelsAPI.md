@@ -21,6 +21,31 @@ gRoundPrecision = 2      # should be set according to the user FreeCAD GUI setti
 gSearchDepth = 200       # recursive search depth
 
 # Functions for general purpose
+### isType(iObj, iType):
+
+	Description:
+	
+		This function checks if the given object iObj is iType. 
+		It has been created mostly for Clones. The Clones are "Part::FeaturePython" type. 
+		But the problem is that many other FreeCAD objects are "Part::FeaturePython" type as well, 
+		for example Array. So, you can't recognize the Clones only with .isDerivedFrom() function or 
+		even .TypeId. To simplify the code look you can hide the ckecks behind the function.
+	
+##### Description:
+	
+		iObj: object
+		iType: string for type:
+			"Clone" - for clones
+
+##### Usage:
+	
+		if MagicPanels.isType(o, "Clone"):
+			do something ...
+
+##### Result:
+	
+		return True or False, so you can use it directly in if statement
+
 ### equal(iA, iB):
 
 	Description:
@@ -899,6 +924,25 @@ gSearchDepth = 200       # recursive search depth
 		Returns array with [ cx, cy, cz ] values for center point.
 
 # Containers
+### getContainers(iObj):
+
+	Description:
+	
+		This function get list of containers for give iObj.
+		
+	
+##### Description:
+	
+		iObj: object to get list of containers
+
+##### Usage:
+	
+		containers = MagicPanels.getContainers(o)
+
+##### Result:
+	
+		return array with objects
+
 ### getNestingLabel(iObj, iLabel):
 
 	Description:
@@ -986,9 +1030,11 @@ gSearchDepth = 200       # recursive search depth
 
 ##### Usage:
 	
-		vertices = MagicPanels.getVerticesPosition(vertices, o, "array")
+		[[ x, y, z ]] = MagicPanels.getVerticesPosition([[ x, y, z ]], o, "array")
+		vertices = MagicPanels.getVerticesPosition(vertices, o, "vector")
 		vertices = MagicPanels.getVerticesPosition(vertices, o)
-		MagicPanels.showVertex(iVertices, 10)
+		
+		MagicPanels.showVertex(vertices, 10)
 
 ##### Result:
 	
@@ -1016,14 +1062,17 @@ gSearchDepth = 200       # recursive search depth
 	
 		return vertices array without container offset
 
-### moveToContainer(iObjects, iSelection):
+### moveToClean(iObjects, iSelection):
 
 	Description:
 	
-		Move objects iObjects to container for iSelection object. 
+		Move objects iObjects to clean container for iSelection object.
 		Container need to be in the clean path, no other objects except Group or LinkGroup, 
-		for example LinkGroup -> LinkGroup is clean path, only containers, but the 
-		Mirror -> LinkGroup is not considered as clean container path here.
+
+		For example:
+
+		clean path: LinkGroup -> LinkGroup
+		not clean: Mirror -> LinkGroup
 	
 ##### Description:
 	
@@ -1032,7 +1081,7 @@ gSearchDepth = 200       # recursive search depth
 
 ##### Usage:
 	
-		MagicPanels.moveToContainer([ o ], pad)
+		MagicPanels.moveToClean([ o ], pad)
 
 ##### Result:
 	
@@ -1041,21 +1090,32 @@ gSearchDepth = 200       # recursive search depth
 ### moveToFirst(iObjects, iSelection):
 
 	Description:
-	
+
 		Move objects iObjects to first container above Body for iSelection object.
 		This can be used to force object at face to be moved into Mirror -> LinkGroup.
-	
+
+		This function removes the offset that should have been added earlier. Why not just copy without offset?
+		If you have 2 objects in separate containers and the second object is only moved via the container Placment, 
+		then from FreeCAD point the objects are in the same place. So you won't be able to compute space between 
+		objects in these containers. FreeCAD uses local positions. It's good because you can calculate many things 
+		without using advanced formulas. Adding an offset and removing it later is a trick for easier calculations.
+
+		You can convert all vertices to global, but in this case you won't be able to determine the plane correctly 
+		in an easy way, for example the vertices on an edge would no longer be along the same coordinate axis, 
+		and thus you'd have to use advanced formulas. It can be done with a trick, but maybe something like 
+		that will come along later if need be.
+
 ##### Description:
 	
 		iObjects: list of objects to move to container, for example new created Cube
 		iSelection: selected object, for example Pad
 
 ##### Usage:
-	
+
 		MagicPanels.moveToFirst([ o ], pad)
 
 ##### Result:
-	
+
 		No return, move object.
 
 ### moveToFirstWithInverse(iObjects, iSelection):
