@@ -19,6 +19,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 		* [magicAngle](#magicangle)
 		* [mapPosition](#mapposition)
 		* [panelMove2Face](#panelmove2face)
+		* [panelMove2Anchor](#panelmove2anchor)
 		* [panelMove2Center](#panelmove2center)
 		* [arrows](#arrows)
 	* [Dowels and Screws](#dowels-and-screws)
@@ -214,6 +215,22 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 **Video tutorials:** 
 * [Simple table](https://www.youtube.com/watch?v=Xru52f8uyBk)
 * [Move to face](https://www.youtube.com/watch?v=i9pXqdEhahU)
+
+<br><br><br>
+
+### panelMove2Anchor
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMove2Anchor.png"> This tool allows to align panels more precisely, with anchor. To align panels with anchors first select anchor at base object, next select anchor at each object to move. Hold left CTRL key to select anchors.
+
+Available anchors to select: 
+
+* **vertex** - selected vertex will be set as anchor,
+* **edge** - CenterOfMass of the selected face will be set as anchor,
+* **face** - CenterOfMass of the selected face will be set as anchor,
+* **object** - default object anchor, of the Placement, will be set as anchor.
+
+**Video tutorials:** 
+* [Align to anchor](https://www.youtube.com/watch?v=IfVJVXVc9r8)
 
 <br><br><br>
 

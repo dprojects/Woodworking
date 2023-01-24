@@ -506,8 +506,8 @@ def showQtGUI():
 		def setSphereSizeP(self):
 			
 			try:
-				if self.gSphereSize > 1:
-					self.gSphere.Radius = self.gSphereSize - 1
+				if self.gSphereSize > 10:
+					self.gSphere.Radius = self.gSphereSize - 10
 					self.gSphereSize = int(self.gSphere.Radius.Value)
 					self.ssE.setText(str(self.gSphereSize))
 					self.gSphere.recompute()
@@ -517,7 +517,7 @@ def showQtGUI():
 		def setSphereSizeN(self):
 			
 			try:
-				self.gSphere.Radius = self.gSphereSize + 1
+				self.gSphere.Radius = self.gSphereSize + 10
 				self.gSphereSize = int(self.gSphere.Radius.Value)
 				self.ssE.setText(str(self.gSphereSize))
 				self.gSphere.recompute()
