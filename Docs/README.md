@@ -178,6 +178,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
   * `copyObject` by default, good for simple objects like `Cube`.
   * `Clone` is useful, if you want to make copy of `Body` or `Part` with many Bodies.
   * `Link` if you want to copy `LinkGroup` and generate cut-list, it is better to set this copy option. 
+  * `copy to new container` button allows to create LinkGroup container for new copies. If you click the button this will turn into disabled and will be waiting for new copy created. If you click to create new copies, all the copies will be moved to the new created container. This allows for better Tree manage without manual searching all the objects.
   * `Copy offset` this is offset between original selected object or last copied element and next copied element. If this is set to `0` the next element will be created without space in relation to the last element. For example if you set `10` and click `X+` many times, the space before each copied elements will be `10`.
 
 * **Mirror:** This option create mirror with offset. You can select single element like `Cube` or container like `LinkGroup` with more elements inside. This tool calculates occupied space by the selected element and add new element with given offset. If you have dowels the space will be calculated from dowels to dowels. This option recognize if the selected object is LinkGroup container and if not, it will create `LinkGroup` for the object, so you will be able to extend, build on this object later.

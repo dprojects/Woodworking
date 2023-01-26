@@ -52,6 +52,9 @@ def showQtGUI():
 		gLCPZ = dict() # Last Copy Position Z
 		gLCPR = dict() # Last Copy Position Rotation
 		
+		gNewFolder = False
+		gToCopy = dict()
+		
 		gCrossCorner = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
 		gCrossCenter = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
 
@@ -73,7 +76,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 220
-			toolSH = 330
+			toolSH = 360
 			
 			# active screen size (FreeCAD main window)
 			gSW = FreeCADGui.getMainWindow().width()
@@ -147,6 +150,20 @@ def showQtGUI():
 			self.sCopyType.setFixedWidth(105)
 			self.sCopyType.move(105, row)
 			self.sCopyType.hide()
+
+			# ############################################################################
+			# options - new folder
+			# ############################################################################
+
+			row += 30
+
+			# button
+			self.oNewFolderB1 = QtGui.QPushButton(translate('magicMove', 'copy to new container'), self)
+			self.oNewFolderB1.clicked.connect(self.setNewFolder)
+			self.oNewFolderB1.setFixedWidth(200)
+			self.oNewFolderB1.setFixedHeight(20)
+			self.oNewFolderB1.move(10, row)
+			self.oNewFolderB1.hide()
 			
 			# ############################################################################
 			# options - X axis
@@ -310,8 +327,11 @@ def showQtGUI():
 			self.gLCPX = dict() 
 			self.gLCPY = dict() 
 			self.gLCPZ = dict() 
-			self.gLCPR = dict() 
-		
+			self.gLCPR = dict()
+
+			gNewFolder = False
+			gToCopy = dict()
+
 		# ############################################################################
 		def setMove(self, iType):
 			
@@ -357,8 +377,15 @@ def showQtGUI():
 					self.gLCPZ[key], 
 					self.gLCPR[key] ] = MagicPanels.getContainerPlacement(toMove, "clean")
 
+		def setToCopy(self):
+			
+			for o in self.gObjects:
+				self.gToCopy[str(o.Name)] = o
+
 		# ############################################################################
 		def createCopy(self, iType):
+			
+			container = ""
 			
 			for o in self.gObjects:
 
@@ -381,8 +408,16 @@ def showQtGUI():
 					copy = FreeCAD.ActiveDocument.addObject('App::Link', copyName)
 					copy.setLink(o)
 					copy.Label = MagicPanels.getNestingLabel(copy, "Link")
-				
-				MagicPanels.moveToParent([ copy ], o)
+
+				if self.gNewFolder == True:
+					self.gToCopy[str(o.Name)] = copy
+					if container == "":
+						container = MagicPanels.createContainer([ copy ])
+						containerRef = copy
+					else:
+						MagicPanels.moveToParent([ copy ], containerRef)
+				else:
+					MagicPanels.moveToParent([ copy ], self.gToCopy[str(o.Name)])
 
 				if iType == "Xp":
 					x = x + self.gMaxX + self.gStep
@@ -414,6 +449,11 @@ def showQtGUI():
 					self.gLCPY[key], 
 					self.gLCPZ[key], 
 					self.gLCPR[key] ] = MagicPanels.getContainerPlacement(copy, "clean")
+			
+			# end of the loop, after copy all objects
+			if self.gNewFolder == True:
+				self.gNewFolder = False
+				self.oNewFolderB1.setDisabled(False)
 
 		# ############################################################################
 		def createMirror(self, iType):
@@ -518,12 +558,14 @@ def showQtGUI():
 				
 				[ self.gMaxX, self.gMaxY, self.gMaxZ ] = MagicPanels.getSizesFromVertices(self.gObj)
 				self.setLastPosition()
+				self.setToCopy()
 
 			except:
 
 				self.s1S.setText(self.gNoSelection)
 				return -1
-			
+		
+		# ############################################################################	
 		def setModeType(self, selectedText):
 			
 			self.gModeType = selectedText
@@ -534,6 +576,7 @@ def showQtGUI():
 				self.o3L.setText(self.gInfoMoveZ)
 				self.o4L.setText(self.gInfoMoveStep)
 				self.sCopyType.hide()
+				self.oNewFolderB1.hide()
 				self.setLastPosition()
 
 			if selectedText == "Copy":
@@ -542,6 +585,7 @@ def showQtGUI():
 				self.o3L.setText(self.gInfoCopyZ)
 				self.o4L.setText(self.gInfoCopyStep)
 				self.sCopyType.show()
+				self.oNewFolderB1.show()
 				self.setLastPosition()
 
 			if selectedText == "Mirror":
@@ -550,12 +594,16 @@ def showQtGUI():
 				self.o3L.setText(self.gInfoMirrorZ)
 				self.o4L.setText(self.gInfoMirrorStep)
 				self.sCopyType.hide()
+				self.oNewFolderB1.hide()
 				self.setLastPosition()
 
 		def setCopyType(self, selectedText):
-			
 			self.gCopyType = selectedText
-			
+		
+		def setNewFolder(self):
+			self.gNewFolder = True
+			self.oNewFolderB1.setDisabled(True)
+		
 		# ############################################################################
 		def setCornerM(self):
 
@@ -593,7 +641,7 @@ def showQtGUI():
 				self.gCrossCenter = False
 			except:
 				self.s1S.setText(self.gNoSelection)
-				
+		
 		# ############################################################################
 		def setX1(self):
 			
