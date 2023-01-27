@@ -25,7 +25,7 @@ try:
 			continue
 
 		knifeCopy = FreeCAD.ActiveDocument.copyObject(knife)
-		knifeCopy.Label = "knife" + " " + str(i-1) + ", " + knifeLabel
+		knifeCopy.Label = MagicPanels.getNestingLabel(knife, "Knife")
 		
 		if not hasattr(knifeCopy, "BOM"):
 			info = QT_TRANSLATE_NOOP("App::Property", "Allows to skip this duplicated copy in BOM, cut-list report.")
@@ -37,9 +37,9 @@ try:
 		cut = FreeCAD.ActiveDocument.addObject("Part::Cut", cutName)
 		cut.Base = o
 		cut.Tool = knifeCopy
-		cut.Label = "Cut, " + o.Label
+		cut.Label = MagicPanels.getNestingLabel(o, "Cut")
 		
-		FreeCAD.activeDocument().recompute()
+		FreeCAD.ActiveDocument.recompute()
 	
 	FreeCADGui.Selection.clearSelection()
 

@@ -4437,7 +4437,7 @@ def makeCuts(iObjects):
 			continue
 
 		copy = FreeCAD.ActiveDocument.copyObject(o)
-		copy.Label = "copy, " + o.Label
+		copy.Label = getNestingLabel(o, "Copy")
 		
 		if not hasattr(copy, "BOM"):
 			info = QT_TRANSLATE_NOOP("App::Property", "Allows to skip this duplicated copy in BOM, cut-list report.")
@@ -4449,14 +4449,14 @@ def makeCuts(iObjects):
 		cut = FreeCAD.ActiveDocument.addObject("Part::Cut", cutName)
 		cut.Base = base
 		cut.Tool = copy
-		cut.Label = "Cut " + str(i-1) + ", " + baseLabel
+		cut.Label = getNestingLabel(base, "Cut")
 		
 		FreeCAD.ActiveDocument.recompute()
 		
 		base = cut
 		cuts.append(cut)
 		
-	cut.Label = "Cut, " + baseLabel
+	cut.Label = getNestingLabel(base, "Cut")
 
 	return cuts
 
