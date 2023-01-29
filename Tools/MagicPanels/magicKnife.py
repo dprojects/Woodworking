@@ -33,8 +33,7 @@ try:
 		
 		knifeCopy.BOM = False
 		
-		cutName = "cut_" + o.Name
-		cut = FreeCAD.ActiveDocument.addObject("Part::Cut", cutName)
+		cut = FreeCAD.ActiveDocument.addObject("Part::Cut", "Cut")
 		cut.Base = o
 		cut.Tool = knifeCopy
 		cut.Label = MagicPanels.getNestingLabel(o, "Cut")

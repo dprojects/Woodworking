@@ -11,12 +11,15 @@ try:
 		raise
 
 	for o in selectedObjects:
-		[ x, y, z, r ] = MagicPanels.getPlacement(o)
+		[ x, y, z, r ] = MagicPanels.getContainerPlacement(o, "clean")
 		link = FreeCAD.ActiveDocument.addObject('App::Link','Link')
 		link.setLink(o)
-		MagicPanels.setPlacement(link, x, y, z, r)
+		MagicPanels.setContainerPlacement(link, x, y, z, 0, "clean")
 		FreeCAD.ActiveDocument.recompute()
 		
+		link.Label = str(o.Label)
+		link.Label = MagicPanels.getNestingLabel(o, "Link")
+	
 		try:
 			MagicPanels.copyColors(o, link)
 		except:

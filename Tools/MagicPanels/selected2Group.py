@@ -11,7 +11,7 @@ try:
 		raise
 		
 	group = FreeCAD.ActiveDocument.addObject('App::DocumentObjectGroup','Group')
-	group.Label = "Group, " + str(selectedObjects[0].Label)
+	group.Label = MagicPanels.getNestingLabel(selectedObjects[0], "Group")
 	
 	for o in selectedObjects:
 		group.addObject(o)

@@ -396,19 +396,19 @@ def showQtGUI():
 
 				if self.gCopyType == "copyObject":
 					copy = FreeCAD.ActiveDocument.copyObject(o)
-					copy.Label = MagicPanels.getNestingLabel(copy, "Copy")
+					copy.Label = MagicPanels.getNestingLabel(o, "Copy")
 					
 				if self.gCopyType == "Clone":
 					import Draft
 					copy = Draft.make_clone(o)
-					copy.Label = MagicPanels.getNestingLabel(copy, "Clone")
+					copy.Label = MagicPanels.getNestingLabel(o, "Clone")
 					
 				if self.gCopyType == "Link":
-					copyName = "Link_" + str(o.Name)
-					copy = FreeCAD.ActiveDocument.addObject('App::Link', copyName)
+					copy = FreeCAD.ActiveDocument.addObject('App::Link', "Link")
 					copy.setLink(o)
-					copy.Label = MagicPanels.getNestingLabel(copy, "Link")
-
+					copy.Label = str(o.Label)
+					copy.Label = MagicPanels.getNestingLabel(o, "Link")
+					
 				if self.gNewFolder == True:
 					self.gToCopy[str(o.Name)] = copy
 					if container == "":

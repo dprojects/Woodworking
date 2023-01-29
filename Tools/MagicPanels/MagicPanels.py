@@ -2503,7 +2503,7 @@ def getContainers(iObj):
 
 
 # ###################################################################################################################
-def getNestingLabel(iObj, iLabel):
+def getNestingLabel(iObj, iPrefix):
 	'''
 	Description:
 	
@@ -2513,7 +2513,7 @@ def getNestingLabel(iObj, iLabel):
 	Args:
 	
 		iObj: object for the label check
-		iLabel: string, preferred prefix for the label
+		iPrefix: string, preferred prefix for the label
 
 	Usage:
 	
@@ -2526,11 +2526,14 @@ def getNestingLabel(iObj, iLabel):
 	'''
 
 	label = str(iObj.Label)
-	
-	if label.find(", ") != -1:
-		return label
-	
-	newLabel = iLabel + ", " + label + " "
+
+	if label.find(", ") == -1:
+		newLabel = iPrefix + ", " + label + " "
+
+	else:
+		prefix = label.split(", ")[0]
+		newLabel = label.replace(prefix, iPrefix)
+
 	return newLabel
 
 
@@ -3200,10 +3203,9 @@ def createContainer(iObjects, iLabel="Container"):
 	'''
 
 	base = iObjects[0]
-	container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','container')
+	container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','LinkGroup')
 	container.setLink(iObjects)
 	
-	container.Label = iLabel + ", " + str(base.Label)
 	container.Label = getNestingLabel(base, iLabel)
 	
 	try:
@@ -4445,18 +4447,16 @@ def makeCuts(iObjects):
 		
 		copy.BOM = False
 		
-		cutName = baseName + str(i-1)
-		cut = FreeCAD.ActiveDocument.addObject("Part::Cut", cutName)
+		cut = FreeCAD.ActiveDocument.addObject("Part::Cut", "Cut")
 		cut.Base = base
 		cut.Tool = copy
 		cut.Label = getNestingLabel(base, "Cut")
-		
-		FreeCAD.ActiveDocument.recompute()
 		
 		base = cut
 		cuts.append(cut)
 		
 	cut.Label = getNestingLabel(base, "Cut")
+	FreeCAD.ActiveDocument.recompute()
 
 	return cuts
 

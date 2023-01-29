@@ -20,9 +20,10 @@ try:
 			continue
 		
 		linkName = "Link_" + str(o.Name)
-		link = FreeCAD.activeDocument().addObject('App::Link', linkName)
+		link = FreeCAD.activeDocument().addObject('App::Link', "Link")
 		link.setLink(base)
-		link.Label = "Link, " + o.Label
+		link.Label = str(o.Label)
+		link.Label = MagicPanels.getNestingLabel(o, "Link")
 		
 		[ x, y, z, r ] = MagicPanels.getPlacement(o)
 		[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(o)
@@ -33,7 +34,8 @@ try:
 		MagicPanels.moveToFirst([ link ], o)
 		
 		FreeCAD.ActiveDocument.removeObject(str(o.Name))
-		FreeCAD.ActiveDocument.recompute()
+	
+	FreeCAD.ActiveDocument.recompute()
 
 except:
 	

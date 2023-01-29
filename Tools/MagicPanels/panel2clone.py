@@ -20,7 +20,7 @@ try:
 			continue
 		
 		clone = Draft.make_clone(base)
-		clone.Label = "Clone, " + o.Label
+		clone.Label = MagicPanels.getNestingLabel(o, "Clone")
 		
 		[ x, y, z, r ] = MagicPanels.getPlacement(o)
 		[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(o)
@@ -31,7 +31,8 @@ try:
 		MagicPanels.moveToFirst([ clone ], o)
 		
 		FreeCAD.ActiveDocument.removeObject(str(o.Name))
-		FreeCAD.ActiveDocument.recompute()
+	
+	FreeCAD.ActiveDocument.recompute()
 
 except:
 	
