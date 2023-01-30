@@ -4427,17 +4427,14 @@ def makeCuts(iObjects):
 	
 	cuts = []
 	
-	i = 0
-	for o in iObjects:
+	base = iObjects[0]
+	baseName = str(base.Name)
+	baseLabel = str(base.Label)
+	
+	objects = iObjects[1:]
+	
+	for o in objects:
 		
-		i = i + 1
-		
-		if i == 1:
-			base = o
-			baseName = str(base.Name)
-			baseLabel = str(base.Label)
-			continue
-
 		copy = FreeCAD.ActiveDocument.copyObject(o)
 		copy.Label = getNestingLabel(o, "Copy")
 		

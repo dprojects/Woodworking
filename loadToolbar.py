@@ -137,7 +137,8 @@ def getItems(iType):
 			"drillCountersinks",
 			"drillCounterbores",
 			"drillCounterbores2x",
-			"magicCNC"
+			"magicCNC",
+			"cutDowels"
 		]
 
 	if iType == "Woodworking - router":

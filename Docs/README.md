@@ -38,6 +38,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 		* [drillCounterbores](#drillcounterbores)
 		* [drillCounterbores2x](#drillcounterbores2x)
 		* [magicCNC](#magiccnc)
+		* [cutDowels](#cutdowels)
 	* [Construction](#construction)
 		* [panel2profile](#panel2profile)
 		* [panel2angle](#panel2angle)
@@ -346,6 +347,13 @@ Available anchors to select:
 ### magicCNC
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicCNC.png"> This tool is some kind of CNC drilling machine simulator. It is the same [magicMove](#magicmove) tool but improved for the drilling purposes. The axis which move the drill bit up and down is automatically hidden at this tool. So, you can move the drill bit at the surface and you not move the drill bit up or down by mistake and cause incorrect hole depth. Also this tool has option to drill by button click. It recognize the drill bit type by the label. For the countersink the label need to contains "countersink", and for counterbore need to contains "counterbore". For other label the simple hole will be drilled. This tool also allows for turn on and off the manuall edit mode, transform FreeCAD. So, you can move the drill bit by hand and drill holes by clicking buttons. This option can be useful for artists whom want to make holes in artistic way, not with mathematical precision. For more info see: [Drilling via magicCNC](#drilling-via-magiccnc)
+
+### cutDowels
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/cutDowels.png"> This tool is designed to allow drilling for designing approach based on Cut holes using Cylinders without creating PartDesign objects. This tool allows you to automatically cut all dowels from selected panel. You do not have to select and search exact dowels that belongs to the selected panel. If you select panel, this tool search for all dowels that belongs to the selected panel and apply Boolean Cut on the panel. You can select many panels at once to cut dowels. To select more panels hold left CTRL key during selection. During this process only the copies will be used to cut, so the original Cylinders will not be moved at the objects Tree and will be visible at cut-list report. This feature is sensitive for visibility of Cylinders. So, you can hide Cylinders you do not want to be cut out from the panel.
+
+**Video tutorials:** 
+* [Search and cut dowels](https://www.youtube.com/watch?v=Oogs8LqkReQ)
 
 ## Construction
 
