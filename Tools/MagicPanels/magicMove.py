@@ -362,8 +362,8 @@ def showQtGUI():
 					z = - self.gStep
 				
 				[ px, py, pz, r ] = MagicPanels.getContainerPlacement(o, "clean")
-				MagicPanels.setContainerPlacement(o, px+x, py+y, pz+z, 0, "auto")
-				
+				MagicPanels.setContainerPlacement(o, px+x, py+y, pz+z, 0, "clean")
+
 			FreeCAD.ActiveDocument.recompute()
 
 		# ############################################################################
@@ -437,7 +437,7 @@ def showQtGUI():
 				if iType == "Zm":
 					z = z - self.gMaxZ - self.gStep
 
-				MagicPanels.setContainerPlacement(copy, x, y, z, 0, "auto")
+				MagicPanels.setContainerPlacement(copy, x, y, z, 0, "clean")
 				FreeCAD.ActiveDocument.recompute()
 				
 				try:

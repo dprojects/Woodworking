@@ -55,6 +55,8 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 	* [Preview](#preview)
 		* [fitModel](#fitmodel)
 		* [makeTransparent](#maketransparent)
+		* [showVertex](#showvertex)
+		* [selectVertex](#selectvertex)
 	* [Router](#router)
 		* [Router bit - Cove](#router-bit---cove)
 		* [Router bit - Round Over](#router-bit---round-over)
@@ -472,6 +474,24 @@ Available anchors to select:
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/makeTransparent.png"> This tool allows to make all parts transparent and back to normal. You can preview all pilot holes, countersinks or any other joints like that, very simply.
 
 <br><br><br><br><br>
+
+### showVertex
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showVertex.png"> This tool allows you to resize all vertices for easier selection. Also it change vertices color to red for better visibility. If the object have already resized vertex or changed color it will back to FreeCAD default settings. So, you can keep the model good looking with small vertices and if you have problem with vertex selection, you can quickly resize vertices for selection purposes only and back to normal later.
+
+**Video tutorials:** 
+* [Helping Vertex selection](https://www.youtube.com/watch?v=qSsua04AKg8)
+
+<br><br><br>
+
+### selectVertex
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/selectVertex.png"> This tool helps vertex selection. If you click this tool icon the tool activates observer and listen for your selection. If you select Face or Edge the nearest Vertex will be selected instead. If you select Vertex the Vertex will stay selected. The observer is closed after selection so this help works only once to not disturb face or edge selection later. If you want select more vertices with help of this tool, you have to hold left CTRL key during Edge or Face selection, you can also hold it during icon click. 
+
+**Video tutorials:** 
+* [Helping Vertex selection](https://www.youtube.com/watch?v=qSsua04AKg8)
+
+<br><br><br>
 
 ## Router
 

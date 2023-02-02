@@ -943,7 +943,7 @@ gSearchDepth = 200       # recursive search depth
 	
 		return array with objects
 
-### getNestingLabel(iObj, iLabel):
+### getNestingLabel(iObj, iPrefix):
 
 	Description:
 	
@@ -953,7 +953,7 @@ gSearchDepth = 200       # recursive search depth
 ##### Description:
 	
 		iObj: object for the label check
-		iLabel: string, preferred prefix for the label
+		iPrefix: string, preferred prefix for the label
 
 ##### Usage:
 	
@@ -1040,27 +1040,33 @@ gSearchDepth = 200       # recursive search depth
 	
 		return vertices array with correct container offset, with the same type
 
-### removeVerticesOffset(iVertices, iObj, iType="array"):
+### removeVerticesPosition(iVertices, iObj, iType="auto"):
 
 	Description:
 	
-		Remove iObj container offset for vertices iVertices.
+		Remove iVertices 3D position. This function removes offset calculated with getVerticesPosition.
 	
 ##### Description:
 	
 		iVertices: vertices array
 		iObj: object to remove containers offset
 		iType:
-			"array" - array with floats [ 1, 2, 3 ]
-			"vector" - array with FreeCAD.Vector types
+			"auto" - recognize the iVertices elements type
+			"array" - each element of iVertices is array with floats [ 1, 2, 3 ]
+			"vector" - each element of iVertices is array with FreeCAD.Vector
+			"vertex" - each element of iVertices is array with Part.Vertex
 
 ##### Usage:
 	
-		vertices = MagicPanels.removeVerticesOffset(vertices, o, "array")
+		[[ x, y, z ]] = MagicPanels.removeVerticesPosition([[ x, y, z ]], o, "array")
+		vertices = MagicPanels.removeVerticesPosition(vertices, o, "vector")
+		vertices = MagicPanels.removeVerticesPosition(vertices, o)
+		
+		MagicPanels.showVertex(vertices, 10)
 
 ##### Result:
 	
-		return vertices array without container offset
+		return vertices array without container offset, with the same type
 
 ### moveToClean(iObjects, iSelection):
 
@@ -1262,14 +1268,11 @@ gSearchDepth = 200       # recursive search depth
 	
 		Return [ moveX, moveY, moveZ ] array with X, Y, Z floats to move object.
 
-### setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="auto"):
+### setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="normal"):
 
 	Description:
 	
-		Little more advanced set placement function, especially used with containers.
-		Adding offset here not make sense, because object can be moved via container so all the vertices might 
-		be equal. Vertices not have containers offsets. They are only impacted by AttachmentOffset. 
-		So you need to add all needed offsets and call this function with offsets.
+		Set placement function, especially used with containers.
 	
 ##### Description:
 
@@ -1278,18 +1281,18 @@ gSearchDepth = 200       # recursive search depth
 		iX: Y Axis object position
 		iZ: Z Axis object position
 		iR: 
-			0 - means auto rotation value set to iObj.Placement.Rotation
+			0 - means rotation value set to iObj.Placement.Rotation
 			R - custom FreeCAD.Placement.Rotation object
 		iAnchor (optional):
 			"clean" - set directly to iObj.Placement, if object is Pad set to Sketch directly
-			"auto" - default object anchor with auto adjust to match iX, iY, iZ
-			"center" - center of the object with auto adjust to match iX, iY, iZ
-			[ iAX, iAY, iAZ ] - custom vertex with auto adjust to match iX, iY, iZ
-		
+			"normal" - default object anchor with global vertices calculation
+			"center" - anchor will be center of the object (CenterOfMass)
+			[ iAX, iAY, iAZ ] - custom anchor, this should be global position
+
 ##### Usage:
 		
 		MagicPanels.setContainerPlacement(cube, 100, 100, 200, 0, "clean")
-		MagicPanels.setContainerPlacement(pad, 100, 100, 200, 0, "auto")
+		MagicPanels.setContainerPlacement(pad, 100, 100, 200, 0, "normal")
 		MagicPanels.setContainerPlacement(body, 100, 100, 200, 0, "center")
 
 ##### Result:

@@ -2762,53 +2762,124 @@ def getVerticesPosition(iVertices, iObj, iType="auto"):
 
 
 # ###################################################################################################################
-def removeVerticesOffset(iVertices, iObj, iType="array"):
+def removeVerticesPosition(iVertices, iObj, iType="auto"):
 	'''
 	Description:
 	
-		Remove iObj container offset for vertices iVertices.
+		Remove iVertices 3D position. This function removes offset calculated with getVerticesPosition.
 	
 	Args:
 	
 		iVertices: vertices array
 		iObj: object to remove containers offset
 		iType:
-			"array" - array with floats [ 1, 2, 3 ]
-			"vector" - array with FreeCAD.Vector types
+			"auto" - recognize the iVertices elements type
+			"array" - each element of iVertices is array with floats [ 1, 2, 3 ]
+			"vector" - each element of iVertices is array with FreeCAD.Vector
+			"vertex" - each element of iVertices is array with Part.Vertex
 
 	Usage:
 	
-		vertices = MagicPanels.removeVerticesOffset(vertices, o, "array")
+		[[ x, y, z ]] = MagicPanels.removeVerticesPosition([[ x, y, z ]], o, "array")
+		vertices = MagicPanels.removeVerticesPosition(vertices, o, "vector")
+		vertices = MagicPanels.removeVerticesPosition(vertices, o)
+		
+		MagicPanels.showVertex(vertices, 10)
 
 	Result:
 	
-		return vertices array without container offset
+		return vertices array without container offset, with the same type
 
 	'''
 
-	objRef = getReference(iObj)
-	
-	if objRef.isDerivedFrom("PartDesign::Pad"):
-	
-		[ x, y, z, r ] = getContainerPlacement(objRef, "clean")
-		
-		vertices = []
-		for v in iVertices:
-			
-			if iType == "array":
-				n = FreeCAD.Vector(v[0]-x, v[1]-y, v[2]-z)
-			else:
-				n = FreeCAD.Vector(v.x-x, v.y-y, v.z-z)
-				
-			vertices.append(n)
-	
-		return vertices
-		
-	else: 
-		
+	# not unpack mirroring
+	if iObj.isDerivedFrom("Part::Mirroring"):
 		return iVertices
 
-	return ""
+	# recognize iVertices type
+	if iType == "auto":
+		
+		skip = 0
+		
+		if skip == 0:
+			try:
+				test = iVertices[0].X
+				iType = "vertex"
+				skip = 1
+			except:
+				skip = 0
+
+		if skip == 0:
+			try:
+				test = iVertices[0].x
+				iType = "vector"
+				skip = 1
+			except:
+				skip = 0
+		
+		if skip == 0:
+			try:
+				test = iVertices[0][0]
+				iType = "array"
+				skip = 1
+			except:
+				skip = 0
+
+	# convert iVertices to Vector for calculation
+	vertices = []
+	for v in iVertices:
+		
+		if iType == "array":
+			n = FreeCAD.Vector(v[0], v[1], v[2])
+		
+		elif iType == "vertex":
+			import Part
+			n = FreeCAD.Vector(v.X, v.Y, v.Z)
+
+		else:
+			n = v
+			
+		vertices.append(n)
+	
+	# calculate position
+	containers = getContainers(iObj)
+	for o in containers:
+		
+		if (
+			o.isDerivedFrom("App::Part") or 
+			o.isDerivedFrom("PartDesign::Body") or 
+			o.isDerivedFrom("App::LinkGroup") or 
+			o.isDerivedFrom("Part::Cut") 
+			):
+			
+			try:
+				p = o.Placement.inverse()
+			except:
+				continue
+			
+			i = 0
+			for v in vertices:
+
+				n = p.multVec(v)
+				vertices[i] = n
+				
+				i = i + 1
+
+	# convert to the same type as iVertices
+	i = 0
+	for v in vertices:
+		if iType == "array":
+			vertices[i] = [ v.x, v.y, v.z ]
+				
+		elif iType == "vertex":
+			vertices[i] = Part.Vertex(v.x, v.y, v.z)
+				
+		else:
+			vertices[i] = v
+		
+		i = i + 1
+
+	return vertices
 
 
 # ###################################################################################################################
@@ -3354,14 +3425,11 @@ def getPlacementDiff(iStart, iDestination):
 
 
 # ###################################################################################################################
-def setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="auto"):
+def setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="normal"):
 	'''
 	Description:
 	
-		Little more advanced set placement function, especially used with containers.
-		Adding offset here not make sense, because object can be moved via container so all the vertices might 
-		be equal. Vertices not have containers offsets. They are only impacted by AttachmentOffset. 
-		So you need to add all needed offsets and call this function with offsets.
+		Set placement function, especially used with containers.
 	
 	Args:
 
@@ -3370,18 +3438,18 @@ def setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="auto"):
 		iX: Y Axis object position
 		iZ: Z Axis object position
 		iR: 
-			0 - means auto rotation value set to iObj.Placement.Rotation
+			0 - means rotation value set to iObj.Placement.Rotation
 			R - custom FreeCAD.Placement.Rotation object
 		iAnchor (optional):
 			"clean" - set directly to iObj.Placement, if object is Pad set to Sketch directly
-			"auto" - default object anchor with auto adjust to match iX, iY, iZ
-			"center" - center of the object with auto adjust to match iX, iY, iZ
-			[ iAX, iAY, iAZ ] - custom vertex with auto adjust to match iX, iY, iZ
-		
+			"normal" - default object anchor with global vertices calculation
+			"center" - anchor will be center of the object (CenterOfMass)
+			[ iAX, iAY, iAZ ] - custom anchor, this should be global position
+
 	Usage:
 		
 		MagicPanels.setContainerPlacement(cube, 100, 100, 200, 0, "clean")
-		MagicPanels.setContainerPlacement(pad, 100, 100, 200, 0, "auto")
+		MagicPanels.setContainerPlacement(pad, 100, 100, 200, 0, "normal")
 		MagicPanels.setContainerPlacement(body, 100, 100, 200, 0, "center")
 
 	Result:
@@ -3391,16 +3459,16 @@ def setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="auto"):
 	'''
 	
 	X, Y, Z, R = iX, iY, iZ, iR
-	
+
 	if iR == 0:
 		R = iObj.Placement.Rotation
 
 	# ###############################################################################
 	# direct set
 	# ###############################################################################
-	
+
 	if iAnchor == "clean":
-		
+
 		if iObj.isDerivedFrom("PartDesign::Pad"):
 			setSketchPlacement(iObj.Profile[0], X, Y, Z, R, "global")
 		else:
@@ -3408,40 +3476,47 @@ def setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="auto"):
 			iObj.Placement.Rotation = R
 
 		return
-	
+
 	# ###############################################################################
 	# custom set
 	# ###############################################################################
-	
+
 	# set starting point
 	[ oX, oY, oZ, oR ] = getContainerPlacement(iObj, "clean")
 	
+	# switch from local to global vertices
+	[[ goX, goY, goZ ]] = getVerticesPosition([[ oX, oY, oZ ]], iObj)
+
 	# save object placement for later use
-	X, Y, Z, R = oX, oY, oZ, oR
-	
+	X, Y, Z = goX, goY, goZ
+
 	# custom anchor = object anchor
-	if iAnchor == "auto":
-		aX, aY, aZ, aR = oX, oY, oZ, oR
+	if iAnchor == "normal":
+		aX, aY, aZ = goX, goY, goZ
 
 	elif iAnchor == "center":
 		[ aX, aY, aZ ] = getObjectCenter(iObj)
-	
+		[[ aX, aY, aZ ]] = getVerticesPosition([[ aX, aY, aZ ]], iObj)
+
 	else:
 		aX, aY, aZ = iAnchor[0], iAnchor[1], iAnchor[2]
 
 	# calculate diff between object anchor and custom anchor
-	if iAnchor != "auto":
-		[ moveX, moveY, moveZ ] = getPlacementDiff([oX, oY, oZ], [ aX, aY, aZ])
+	if iAnchor != "normal":
+		[ moveX, moveY, moveZ ] = getPlacementDiff([goX, goY, goZ], [ aX, aY, aZ])
 		X = X - moveX
 		Y = Y - moveY
 		Z = Z - moveZ
-	
+
 	# calculate diff between object anchor and new given position iX, iY, iZ
-	[ moveX, moveY, moveZ ] = getPlacementDiff([oX, oY, oZ], [ iX, iY, iZ])
+	[ moveX, moveY, moveZ ] = getPlacementDiff([goX, goY, goZ], [ iX, iY, iZ])
 	X = X + moveX
 	Y = Y + moveY
 	Z = Z + moveZ
-	
+
+	# switch from global to local vertices
+	[[ X, Y, Z ]] = removeVerticesPosition([[ X, Y, Z ]], iObj)
+
 	# set placement
 	iObj.Placement.Base = FreeCAD.Vector(X, Y, Z)
 	iObj.Placement.Rotation = R

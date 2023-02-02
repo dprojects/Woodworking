@@ -21,20 +21,11 @@ try:
 
 	for o in objects:
 		
-		objRef = MagicPanels.getReference(o)
-		
-		if o.isDerivedFrom("Part::Cut"):
-			objMove = o
+		oRef = MagicPanels.getReference(o)
+		toMove = MagicPanels.getObjectToMove(oRef)
 
-		else:
-		
-			if objRef.isDerivedFrom("Part::Box"):
-				objMove = objRef
-			else:
-				objMove = objRef._Body
-
-		[ X, Y, Z, R ] = MagicPanels.getContainerPlacement(objMove, "clean")
-		[ gX, gY, gZ, gR ] = MagicPanels.getContainerPlacement(objRef, "offset")
+		[ X, Y, Z, R ] = MagicPanels.getContainerPlacement(toMove, "clean")
+		[ gX, gY, gZ, gR ] = MagicPanels.getContainerPlacement(oRef, "offset")
 	
 		if basePlane == "XY":
 			d = MagicPanels.getVertexAxisCross(gZ, v1[2])
@@ -57,14 +48,14 @@ try:
 			else:
 				X = X - d
 
-		MagicPanels.setContainerPlacement(objMove, X, Y, Z, 0, "clean")
+		MagicPanels.setContainerPlacement(toMove, X, Y, Z, 0, "clean")
 		FreeCAD.ActiveDocument.recompute()
 
 except:
 	
 	info = ""
 
-	info += translate('panelMove2FaceInfo', '<b>First select face, and next object that should be aligned to the face position. </b><br><br><b>Note:</b> This tool allows to align panels or any other objects to face position. You can select objects at objects Tree window holding left CTRL key. This tool allows to avoid thickness step problem, if you want to move panel to the other edge but the way is not a multiple of the panel thickness.')
+	info += translate('panelMove2FaceInfo', '<b>First select face, and next object that should be aligned to the face position. </b><br><br><b>Note:</b> This tool allows to align panels or any other objects to face position. You can select objects at objects Tree window holding left CTRL key. This tool allows to avoid thickness step problem, if you want to move panel to the other edge but the way is not a multiple of the panel thickness. For rotated containers use panelMove2Anchor.')
 	
 	MagicPanels.showInfo("panelMove2Face", info)
 

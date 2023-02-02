@@ -1534,6 +1534,84 @@ FreeCADGui.addCommand("fitModel", fitModel())
 
 	
 # ######################################################################################################################
+class showVertex():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "showVertex.png"),
+				"MenuText": QT_TRANSLATE_NOOP("showVertexMenuText", "showVertex"),
+				"ToolTip" : QT_TRANSLATE_NOOP("showVertexToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "showVertex"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("showVertex", showVertex())
+
+	
+# ######################################################################################################################
+class selectVertex():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "selectVertex.png"),
+				"MenuText": QT_TRANSLATE_NOOP("selectVertexMenuText", "selectVertex"),
+				"ToolTip" : QT_TRANSLATE_NOOP("selectVertexToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "selectVertex"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("selectVertex", selectVertex())
+
+	
+# ######################################################################################################################
 class panelDefaultXY():
 
 	def GetResources(self):

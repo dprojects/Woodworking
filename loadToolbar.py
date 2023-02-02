@@ -221,7 +221,9 @@ def getItems(iType):
 		
 		parts = [
 			"fitModel",
-			"makeTransparent"
+			"makeTransparent",
+			"showVertex",
+			"selectVertex"
 		]
 
 	return parts

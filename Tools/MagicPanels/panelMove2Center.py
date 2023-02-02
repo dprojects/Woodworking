@@ -59,15 +59,26 @@ try:
 		else:
 			v2 = FreeCAD.Vector(sv2.X, sv2.Y, sv2.Z)
 
-		[ v1 ] = MagicPanels.getVerticesOffset([ v1 ], obj1Ref, "vector")
-		[ v2 ] = MagicPanels.getVerticesOffset([ v2 ], obj2Ref, "vector")
-		
 		[ cx, cy, cz ] = MagicPanels.getObjectCenter(oRef)
 		c = FreeCAD.Vector(cx, cy, cz)
-		[ c ] = MagicPanels.getVerticesOffset([ c ], oRef, "vector")
+		
+		[ globalV1 ] = MagicPanels.getVerticesPosition([ v1 ], obj1Ref)
+		[ globalV2 ] = MagicPanels.getVerticesPosition([ v2 ], obj2Ref)
+
+		plane = MagicPanels.getVerticesPlane(globalV1, globalV2)
+		
+		# I don't like this way but this is working solution to get the plane correctly and calculate position
+		# I need to re-think better solution someday with general plane recognition for rotatated containers
+		verticesType = ""
+		if plane == "":
+			plane = MagicPanels.getVerticesPlane(v1, v2)
+			verticesType = "local"
+		else:
+			v1, v2 = globalV1, globalV2
+			[ c ] = MagicPanels.getVerticesPosition([ c ], oRef)
+			verticesType = "global"
 		
 		X, Y, Z = v1[0], v1[1], v1[2]
-		plane = MagicPanels.getVerticesPlane(v1, v2)
 		
 		if plane == "XY":
 
@@ -107,7 +118,13 @@ try:
 				X = X - offset
 
 		toMove = MagicPanels.getObjectToMove(oRef)
-		MagicPanels.setContainerPlacement(toMove, X, Y, Z, 0, edgeCenter)
+		
+		if verticesType == "global":
+			MagicPanels.setContainerPlacement(toMove, X, Y, Z, 0, edgeCenter)
+		
+		if verticesType == "local":
+			MagicPanels.setPlacement(toMove, X, Y, Z, toMove.Placement.Rotation, edgeCenter)
+		
 		FreeCAD.ActiveDocument.recompute()
 
 except:

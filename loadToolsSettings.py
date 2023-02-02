@@ -112,6 +112,8 @@ Tools = [
 	# preview
 	
 	"MagicPanels", "fitModel", "png", "fitModel", "Click to see info.",
+	"MagicPanels", "showVertex", "png", "showVertex", "Click to see info.",
+	"MagicPanels", "selectVertex", "png", "selectVertex", "Click to see info.",
 
 	# default
 	
