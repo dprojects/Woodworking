@@ -430,6 +430,7 @@ Available anchors to select:
 
 **Video tutorials:** 
 * [Skip copies in cut-list](https://www.youtube.com/watch?v=rFEDLaD8lxM)
+* [Boolean cut with containers](https://www.youtube.com/watch?v=OVwazL8MQwI)
 
 <br><br><br>
 
@@ -439,6 +440,7 @@ Available anchors to select:
 
 **Video tutorials:** 
 * [Skip copies in cut-list](https://www.youtube.com/watch?v=rFEDLaD8lxM)
+* [Boolean cut with containers](https://www.youtube.com/watch?v=OVwazL8MQwI)
 
 ### jointTenon
 
@@ -726,7 +728,9 @@ Main features:
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/selected2Outside.png"> This tool allows you to get out the selected objects from containers. Normally, if you get out object from the container manually, the object will change place and rotation. This tool allows you to move the objects and keep the same position and rotation. This feature might be very useful if automatic movement to container is not what you want. For example you want single element to no longer be mirrored or further processed with other objects inside the container. To select more objects hold left CTRL key during selection.
 
-<br><br><br><br><br><br>
+* [Boolean cut with containers](https://www.youtube.com/watch?v=OVwazL8MQwI)
+
+<br><br><br>
 
 # How to use containers
 
@@ -735,6 +739,8 @@ Main features:
 * `LinkGroup` is high level, real container. You can move there many Part containers and also Cube objects. Also you can nesting LinkGroup containers. If you want to move many objects, bigger structures, rotate them, this is good container to do it.
 * `Link` is not container but it is mentioned here, because you should rather avoid linking objects directly. You should rather link LinkGroup. This approach allows you to change LinkGroup content and update the Link in real-time. If you link directly object, and the base Cube object will be replaced with Pad, the link will be broken, because the base object no longer exists. This not happen if you link the LinkGroup with Cube inside. You can replace Cube with Pad inside LinkGroup container and the link will be still correct and also the link will be updated in real-time.
 * `Group` is normal FreeCAD folder. You can't move it or rotate but it is good container to keep LinkGroup structure. 
+
+**Note:** If you want to use `Part :: Boolean :: Cut` inside `LinkGroup` container, first you have to get out of the container all the elements using [selected2Outside](#selected2outside). See video: [Boolean cut with containers](https://www.youtube.com/watch?v=OVwazL8MQwI)
 
 # Dowels, Screws, Fixture
 
