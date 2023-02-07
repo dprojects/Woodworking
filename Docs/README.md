@@ -152,7 +152,11 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 * **Selected edge only:** If you select edge only you can resize the edge with `Resize step` via `resize -` and `resize +` buttons. This is simple resize with current `Resize step` and edge selection. In this mode the tool search for all sizes with selected edge size and resize each one with `Resize step`. Use `resize -` and `resize +` buttons in this mode.
 
-* **Selected edge and face:** The second mode allows to resize object to the nearest face of other object. To use this mode, first select edge to resize and next select nearest face of any other object. If the face is at the right side this tool will calculate space needed to resize and will change the exact size. If the face is before the selected edge the object will be resized and moved to the left. So, the result will be resized object from the left side. Use `resize to nearest face` button in this mode. If you have selected face the `Resize step` should be automatically calculated. You can also undo this operation via `resize -` button.
+* **Selected edge and face:** This mode allows to resize object to the nearest face of other object. To use this mode, first select edge to resize and next select nearest face of any other object. If the face is at the right side this tool will calculate space needed to resize and will change the exact size. If the face is before the selected edge the object will be resized and moved to the left. So, the result will be resized object from the left side. Use `resize to nearest` button in this mode. If you have selected face the `Resize step` should be automatically calculated. You can also undo this operation via `resize -` button.
+
+* **Selected edge and edge:** This mode allows to resize the object more precisely. If the container is rotated the face may not be good choice. So, you can select edge. In this case the CenterOfMass of the edge will be used as reference point. To use this mode, first select edge to resize and next select nearest edge of any other object. Use `resize to nearest` button in this mode.
+
+* **Selected edge and vertex:** This mode allows to resize the object more precisely. You can select vertex to resize the object exactly to the selected point. To use this mode, first select edge to resize and next select nearest vertex of any other object. Use `resize to nearest` button in this mode.
 
 **Video tutorials:** 
 * [Smart resizer tool](https://www.youtube.com/watch?v=t1G7qnRfAgY)

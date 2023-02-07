@@ -1,14 +1,14 @@
 # ###################################################################################################################
 '''
+This is externally linked standalone macro. Woodworking workbench is using improved version. 
+It has been renamed to avoid cache problem.
 
-This magicAngle macro allows to rotate panels and even other more complicated objects, like construction profiles. 
+This macro allows to rotate panels and even other more complicated objects, like construction profiles. 
 If you want to rotate many objects together, use this tool directly at Part object or pack all objects into 
 LinkGroup and use rotation at the LinkGroup.
 
-Note: This FreeCAD macro is part of Woodworking workbench. However, it can be used as standalone macro.
-
 Author: Darek L (github.com/dprojects)
-Latest version: https://github.com/dprojects/Woodworking/blob/master/Tools/magicAngle.py
+Latest version: https://github.com/dprojects/Woodworking/blob/master/Tools/x_magicAngle.py
 
 Certified platform:
 

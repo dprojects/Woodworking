@@ -21,8 +21,8 @@ def showQtGUI():
 
 		gObj = ""
 		
-		gFaceObj = ""
-		gFace = ""
+		gNearSubObj = ""
+		gNearSub = ""
 		
 		gResizeObj = ""
 		gResizeVal = 0
@@ -34,7 +34,7 @@ def showQtGUI():
 		gDest = 0
 
 		gNoSelection1 = translate('magicResizer', 'select edge to resize')
-		gNoSelection2 = translate('magicResizer', 'select nearest face')
+		gNoSelection2 = translate('magicResizer', 'select face, edge or vertex')
 		
 		# ############################################################################
 		# init
@@ -94,7 +94,7 @@ def showQtGUI():
 			row += 30
 
 			# button
-			self.s1B1 = QtGui.QPushButton(translate('magicResizer', 'refresh edge and face'), self)
+			self.s1B1 = QtGui.QPushButton(translate('magicResizer', 'refresh selection'), self)
 			self.s1B1.clicked.connect(self.getSelected)
 			self.s1B1.setFixedWidth(toolSW-20)
 			self.s1B1.setFixedHeight(40)
@@ -145,7 +145,7 @@ def showQtGUI():
 			row += 50
 
 			# button
-			self.s2B1 = QtGui.QPushButton(translate('magicResizer', 'resize to nearest face'), self)
+			self.s2B1 = QtGui.QPushButton(translate('magicResizer', 'resize to nearest'), self)
 			self.s2B1.clicked.connect(self.resizeToFace)
 			self.s2B1.setFixedWidth(toolSW-20)
 			self.s2B1.setFixedHeight(40)
@@ -168,8 +168,8 @@ def showQtGUI():
 		def resetGlobals(self):
 			
 			self.gObj = ""
-			self.gFaceObj = ""
-			self.gFace = ""
+			self.gNearSubObj = ""
+			self.gNearSub = ""
 			self.gResizeObj = ""
 			self.gResizeVal = 0
 			self.gStep = 1
@@ -177,12 +177,14 @@ def showQtGUI():
 			self.gMoveAxis = ""
 			self.gDest = 0
 		
+		# ############################################################################
 		def resetScreen(self):
 			
 			self.s1S.setText(self.gNoSelection1)
 			self.s2S.setText(self.gNoSelection2)
 
-		def setSelectedSize(self):
+		# ############################################################################
+		def setEdgeSize(self):
 			
 			self.gResizeObj = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 			
@@ -193,9 +195,10 @@ def showQtGUI():
 			info = str(round(self.gResizeVal, MagicPanels.gRoundPrecision)) + " | " + str(self.gObj.Label)
 			self.s1S.setText(info)
 
+		# ############################################################################
 		def setSize(self, iType):
 			
-			self.setSelectedSize()
+			self.setEdgeSize()
 			
 			if self.gObj.isDerivedFrom("Part::Box"):
 				
@@ -276,51 +279,58 @@ def showQtGUI():
 				self.gMoveFlag = False
 
 			FreeCAD.ActiveDocument.recompute()
-			self.setSelectedSize()
+			self.setEdgeSize()
 			
 		# ############################################################################
 		# actions - functions for actions
 		# ############################################################################
 
-		def getSelectedFace(self):
+		def getNearSub(self):
 			
 			try:
-				
-				self.gFaceObj = FreeCADGui.Selection.getSelection()[1]
-				self.gFace = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+
+				self.gNearSubObj = FreeCADGui.Selection.getSelection()[1]
+				self.gNearSub = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+
+				if self.gNearSub.ShapeType == "Face":
+					ves = MagicPanels.getFaceVertices(self.gNearSub)
+					ves = MagicPanels.getVerticesPosition(ves, self.gNearSubObj)
+					v = ves[0]
+
+				if self.gNearSub.ShapeType == "Edge":
+					ves = [ self.gNearSub.CenterOfMass ]
+					ves = MagicPanels.getVerticesPosition(ves, self.gNearSubObj)
+					v = [ ves[0].x, ves[0].y, ves[0].z ]
+
+				if self.gNearSub.ShapeType == "Vertex":
+					ves = MagicPanels.touchTypo(self.gNearSub)
+					ves = MagicPanels.getVerticesPosition(ves, self.gNearSubObj)
+					v = [ ves[0].X, ves[0].Y, ves[0].Z ]
 
 				[ edgeV1, edgeV2 ] = MagicPanels.getEdgeVertices(self.gResizeObj)
-				[ faceV1, faceV2, faceV3, faceV4 ] = MagicPanels.getFaceVertices(self.gFace)
-				
-				[ 	faceV1, 
-					faceV2, 
-					faceV3, 
-					faceV4 ] = MagicPanels.getVerticesPosition(
-								[ faceV1, faceV2, faceV3, faceV4 ], self.gFaceObj, "array")
-					
 				plane = MagicPanels.getEdgePlane(self.gResizeObj)
-				
+
 				if plane == "X":
-					self.gDest = faceV1[0]
+					self.gDest = v[0]
 					vStart1 = edgeV1[0]
 					vStart2 = edgeV2[0]
 					self.gMoveAxis = "X"
-					
+
 				if plane == "Y":
-					self.gDest = faceV1[1]
+					self.gDest = v[1]
 					vStart1 = edgeV1[1]
 					vStart2 = edgeV2[1]
 					self.gMoveAxis = "Y"
-					
+
 				if plane == "Z":
-					self.gDest = faceV1[2]
+					self.gDest = v[2]
 					vStart1 = edgeV1[2]
 					vStart2 = edgeV2[2]
 					self.gMoveAxis = "Z"
 					
 				road1 = MagicPanels.getVertexAxisCross(self.gDest, vStart1)
 				road2 = MagicPanels.getVertexAxisCross(self.gDest, vStart2)
-				
+
 				if road1 < road2:
 					self.gStep = road1
 				else:
@@ -328,19 +338,19 @@ def showQtGUI():
 				
 				self.oStepE.setText(str(round(self.gStep, MagicPanels.gRoundPrecision)))
 
-				info = str(round(self.gStep, MagicPanels.gRoundPrecision)) + " | " + self.gFaceObj.Label
+				info = str(round(self.gStep, MagicPanels.gRoundPrecision)) + " | " + self.gNearSubObj.Label
 				self.s2S.setText(info)
 				
 				# check if movement is needed
 				
 				if self.gDest < vStart1 and self.gDest < vStart2:
 					self.gMoveFlag = True
-			
+
 			except:
 
 				self.s2S.setText(self.gNoSelection2)
 				return -1
-			
+
 
 		# ############################################################################
 		def getSelected(self):
@@ -359,16 +369,17 @@ def showQtGUI():
 				self.gStep = sizes[0]
 				self.oStepE.setText(str(round(self.gStep, MagicPanels.gRoundPrecision)))
 
-				self.setSelectedSize()
-				self.getSelectedFace()
+				self.setEdgeSize()
+				self.getNearSub()
 				
 				if self.gResizeVal == 0:
 					raise
-			
+
 			except:
 
 				self.s1S.setText(self.gNoSelection1)
 				return -1
+
 
 		# ############################################################################
 		def setM(self):
