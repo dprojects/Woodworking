@@ -188,11 +188,19 @@ This tool allows to preview panel before creation. It allows to see panel at sin
   * `copy to new container` button allows to create LinkGroup container for new copies. If you click the button this will turn into disabled and will be waiting for new copy created. If you click to create new copies, all the copies will be moved to the new created container. This allows for better Tree manage without manual searching all the objects.
   * `Copy offset` this is offset between original selected object or last copied element and next copied element. If this is set to `0` the next element will be created without space in relation to the last element. For example if you set `10` and click `X+` many times, the space before each copied elements will be `10`.
 
+* **Copy Path:** This mode allows to create panels along the path. If the panel is already at the path, next panel will be created with the offset from selected panel. With this approach you can remove some panels and fill the gap in a different way, for example with different rotation. If the panel is outside the path, the first panel will be created at the 0 point of the path.
+  * `copyObject`, `Clone`, `Link`, `copy to new container` are the same as described above for `Copy` mode.
+  * `Rotation X, Y, Z` allows to apply rotation angle for the new panel. The rotation is added to the last panel rotation. This approach allows to add rotation during panel creation, so you can adjust each panel during creation to fit the curve.
+  * `Next point step` is offset for new panel. This is related to the point at the path. By default it is set to second size of the panel.
+  * `set` allows to load the path or reset start position. You can refresh only path here without changing objects to copy. The path can be Wire, Sketch, Helix, or any edge, also edge of the hole.
+  * `copy along path` creates new panel along the path. This button has auto-repeat mode, if you hold it this will be creating panels without clicking many times.
+
 * **Mirror:** This option create mirror with offset. You can select single element like `Cube` or container like `LinkGroup` with more elements inside. This tool calculates occupied space by the selected element and add new element with given offset. If you have dowels the space will be calculated from dowels to dowels. This option recognize if the selected object is LinkGroup container and if not, it will create `LinkGroup` for the object, so you will be able to extend, build on this object later.
 
 **Video tutorials:** 
 * [Smart move & copy](https://www.youtube.com/watch?v=gh0Sc0eLooQ)
 * [Mirror with offset](https://www.youtube.com/watch?v=DG7eUsz8-0c)
+* [Copy along path](https://www.youtube.com/watch?v=PIm31aVuBUA)
 
 ### magicAngle
 

@@ -32,10 +32,17 @@ def showQtGUI():
 		gInfoCopyZ = translate('magicMove', 'Copy along Z:')
 		gInfoCopyStep = translate('magicMove', 'Copy offset:')
 
+		gInfoPath1 = translate('magicMove', 'Rotation X, Y, Z:')
+		gInfoPath2 = translate('magicMove', 'Next point step:')
+
 		gInfoMirrorX = translate('magicMove', 'Mirror along X:')
 		gInfoMirrorY = translate('magicMove', 'Mirror along Y:')
 		gInfoMirrorZ = translate('magicMove', 'Mirror along Z:')
 		gInfoMirrorStep = translate('magicMove', 'Mirror offset:')
+		
+		gNoSelection = translate('magicMove', 'select panel or container')
+		gNoPathSelection = translate('magicMove', 'select copy path')
+		gNoPathSelection += "                         "
 		
 		gObjects = ""
 		
@@ -58,7 +65,12 @@ def showQtGUI():
 		gCrossCorner = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
 		gCrossCenter = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
 
-		gNoSelection = translate('magicMove', 'select panel or container')
+		gCopyPathObj = ""
+		gCopyPathStep = 1
+		gCopyPathPoints = []
+		gCopyPathRotation = dict() # last rotation
+		gCopyPathLast = dict() # last path position
+		gCopyPathInit = dict() # if init from 0 or last selected panel
 		
 		# ############################################################################
 		# init
@@ -127,6 +139,7 @@ def showQtGUI():
 			self.sModeList = (
 						"Move",
 						"Copy",
+						"Copy Path",
 						"Mirror"
 						)
 			
@@ -134,7 +147,7 @@ def showQtGUI():
 			self.sMode.addItems(self.sModeList)
 			self.sMode.setCurrentIndex(self.sModeList.index("Move"))
 			self.sMode.activated[str].connect(self.setModeType)
-			self.sMode.setFixedWidth(80)
+			self.sMode.setFixedWidth(90)
 			self.sMode.move(10, row)
 
 			self.sCopyTypeList = (
@@ -236,9 +249,9 @@ def showQtGUI():
 			self.o3B2.setFixedWidth(50)
 			self.o3B2.move(160, row)
 			self.o3B2.setAutoRepeat(True)
-			
+
 			# ############################################################################
-			# options - additional
+			# options - step
 			# ############################################################################
 			
 			row += 30
@@ -253,10 +266,76 @@ def showQtGUI():
 			self.o4E.setFixedWidth(50)
 			self.o4E.move(160, row)
 
+			rowNoPath = row
+			
+			# ############################################################################
+			# options - copy along path
+			# ############################################################################
+			
+			row -= 90
+			
+			self.pathL1 = QtGui.QLabel(self.gInfoPath1, self)
+			self.pathL1.move(10, row+3)
+			self.pathL1.hide()
+			
+			self.pathE1 = QtGui.QLineEdit(self)
+			self.pathE1.setText("0")
+			self.pathE1.setFixedWidth(30)
+			self.pathE1.move(toolSW-10-100, row)
+			self.pathE1.hide()
+			
+			self.pathE2 = QtGui.QLineEdit(self)
+			self.pathE2.setText("0")
+			self.pathE2.setFixedWidth(30)
+			self.pathE2.move(toolSW-10-65, row)
+			self.pathE2.hide()
+	
+			self.pathE3 = QtGui.QLineEdit(self)
+			self.pathE3.setText("0")
+			self.pathE3.setFixedWidth(30)
+			self.pathE3.move(toolSW-10-30, row)
+			self.pathE3.hide()
+
+			row += 30
+			
+			self.pathL2 = QtGui.QLabel(self.gInfoPath2, self)
+			self.pathL2.move(10, row+3)
+			self.pathL2.hide()
+			
+			self.pathE4 = QtGui.QLineEdit(self)
+			self.pathE4.setText("1")
+			self.pathE4.setFixedWidth(65)
+			self.pathE4.move(toolSW-10-65, row)
+			self.pathE4.hide()
+
+			row += 30
+			
+			self.pathB1 = QtGui.QPushButton(translate('magicMove', 'set'), self)
+			self.pathB1.clicked.connect(self.setCopyPath)
+			self.pathB1.setFixedWidth(60)
+			self.pathB1.setFixedHeight(20)
+			self.pathB1.move(10, row)
+			self.pathB1.hide()
+			
+			self.pathL3 = QtGui.QLabel(self.gNoPathSelection, self)
+			self.pathL3.move(80, row+3)
+			self.pathL3.hide()
+
+			row += 30
+			
+			self.pathB2 = QtGui.QPushButton(translate('magicMove', 'copy along path'), self)
+			self.pathB2.clicked.connect(self.createPathPanel)
+			self.pathB2.setFixedWidth(toolSW-20)
+			self.pathB2.setFixedHeight(20)
+			self.pathB2.move(10, row)
+			self.pathB2.setAutoRepeat(True)
+			self.pathB2.hide()
+
 			# ############################################################################
 			# options - corner cross
 			# ############################################################################
 
+			row = rowNoPath
 			row += 40
 			
 			# label
@@ -333,6 +412,37 @@ def showQtGUI():
 			gToCopy = dict()
 
 		# ############################################################################
+		def setLastPosition(self):
+			for o in self.gObjects:
+				toMove = MagicPanels.getObjectToMove(o)
+				key = str(o.Name)
+				[ 	self.gLCPX[key], 
+					self.gLCPY[key], 
+					self.gLCPZ[key], 
+					self.gLCPR[key] ] = MagicPanels.getContainerPlacement(toMove, "clean")
+
+		def setFolderCopies(self):
+			for o in self.gObjects:
+				self.gToCopy[str(o.Name)] = o
+
+		def setLastPathPosition(self):
+			for o in self.gObjects:
+				key = str(o.Name)
+				
+				[ x, y, z, r ] = MagicPanels.getContainerPlacement(o, "clean")
+				v = FreeCAD.Vector(x, y, z)
+				inside = self.gCopyPathObj.Shape.isInside(v, 0, True)
+				
+				if inside:
+					self.gCopyPathLast[key] = self.gCopyPathPoints.index(v)
+					self.gCopyPathInit[key] = False
+				else:
+					self.gCopyPathLast[key] = 0
+					self.gCopyPathInit[key] = True
+
+				self.gCopyPathRotation[key] = r
+
+		# ############################################################################
 		def setMove(self, iType):
 			
 			for o in self.gObjects:
@@ -365,22 +475,6 @@ def showQtGUI():
 				MagicPanels.setContainerPlacement(o, px+x, py+y, pz+z, 0, "clean")
 
 			FreeCAD.ActiveDocument.recompute()
-
-		# ############################################################################
-		def setLastPosition(self):
-			
-			for o in self.gObjects:
-				toMove = MagicPanels.getObjectToMove(o)
-				key = str(o.Name)
-				[ 	self.gLCPX[key], 
-					self.gLCPY[key], 
-					self.gLCPZ[key], 
-					self.gLCPR[key] ] = MagicPanels.getContainerPlacement(toMove, "clean")
-
-		def setToCopy(self):
-			
-			for o in self.gObjects:
-				self.gToCopy[str(o.Name)] = o
 
 		# ############################################################################
 		def createCopy(self, iType):
@@ -527,7 +621,89 @@ def showQtGUI():
 								raise
 					except:
 						skip = 1
+		
+		# ############################################################################
+		def createPathPanel(self):
 			
+			container = ""
+			
+			for o in self.gObjects:
+				
+				key = str(o.Name)
+				index = self.gCopyPathLast[key]
+				
+				# you could add step after object select
+				# bt it is more comfortable for user 
+				# first add object, than change step and click create
+				# so the create function must recalculate the step
+				if self.gCopyPathInit[key] == False:
+					step = int(float(self.pathE4.text()))
+					self.gCopyPathLast[key] = int(self.gCopyPathLast[key] + step)
+					index = index + step
+
+				if index > len(self.gCopyPathPoints) - 1:
+					return
+			
+				x = self.gCopyPathPoints[index].x
+				y = self.gCopyPathPoints[index].y
+				z = self.gCopyPathPoints[index].z
+				
+				if self.gCopyType == "copyObject":
+					copy = FreeCAD.ActiveDocument.copyObject(o)
+					copy.Label = MagicPanels.getNestingLabel(o, "Copy")
+					
+				if self.gCopyType == "Clone":
+					import Draft
+					copy = Draft.make_clone(o)
+					copy.Label = MagicPanels.getNestingLabel(o, "Clone")
+					
+				if self.gCopyType == "Link":
+					copy = FreeCAD.ActiveDocument.addObject('App::Link', "Link")
+					copy.setLink(o)
+					copy.Label = str(o.Label)
+					copy.Label = MagicPanels.getNestingLabel(o, "Link")
+					
+				if self.gNewFolder == True:
+					self.gToCopy[str(o.Name)] = copy
+					if container == "":
+						container = MagicPanels.createContainer([ copy ])
+						containerRef = copy
+					else:
+						MagicPanels.moveToParent([ copy ], containerRef)
+				else:
+					MagicPanels.moveToParent([ copy ], self.gToCopy[str(o.Name)])
+
+				MagicPanels.setContainerPlacement(copy, x, y, z, 0, "clean")
+				FreeCAD.ActiveDocument.recompute()
+				
+				angleX = float(self.pathE1.text())
+				angleY = float(self.pathE2.text())
+				angleZ = float(self.pathE3.text())
+				
+				rotX = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), angleX)
+				rotY = FreeCAD.Rotation(FreeCAD.Vector(0, 1, 0), angleY)
+				rotZ = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), angleZ)
+				
+				copy.Placement.Rotation = self.gCopyPathRotation[key] * rotX * rotY * rotZ
+				self.gCopyPathRotation[key] = copy.Placement.Rotation
+				
+				try:
+					MagicPanels.copyColors(o, copy)
+				except:
+					skip = 1
+
+				FreeCAD.ActiveDocument.recompute()
+				
+				# set next position
+				step = int(float(self.pathE4.text()))
+				self.gCopyPathLast[key] = int(self.gCopyPathLast[key] + step)
+				self.gCopyPathInit[key] = True
+
+			# end of the loop, after copy all objects
+			if self.gNewFolder == True:
+				self.gNewFolder = False
+				self.oNewFolderB1.setDisabled(False)
+
 		# ############################################################################
 		# actions - functions for actions
 		# ############################################################################
@@ -547,7 +723,10 @@ def showQtGUI():
 				sizes.sort()
 				self.gStep = sizes[0]
 				self.gThick = sizes[0]
+				self.gCopyPathStep = sizes[1]
+				
 				self.o4E.setText(str(self.gStep))
+				self.pathE4.setText(str(self.gCopyPathStep))
 				
 				if len(self.gObjects) > 1:
 					self.s1S.setText("Multi, "+str(self.gObj.Label))
@@ -558,17 +737,45 @@ def showQtGUI():
 				
 				[ self.gMaxX, self.gMaxY, self.gMaxZ ] = MagicPanels.getSizesFromVertices(self.gObj)
 				self.setLastPosition()
-				self.setToCopy()
+				self.setFolderCopies()
+				
+				if self.gCopyPathObj != "":
+					self.setLastPathPosition()
 
 			except:
 
 				self.s1S.setText(self.gNoSelection)
 				return -1
-		
+			
 		# ############################################################################	
 		def setModeType(self, selectedText):
 			
 			self.gModeType = selectedText
+
+			self.pathE1.hide()
+			self.pathE2.hide()
+			self.pathE3.hide()
+			self.pathE4.hide()
+			self.pathB1.hide()
+			self.pathB2.hide()
+			self.pathL1.hide()
+			self.pathL2.hide()
+			self.pathL3.hide()
+			
+			self.o1L.show()
+			self.o1B1.show()
+			self.o1B2.show()
+			
+			self.o2L.show()
+			self.o2B1.show()
+			self.o2B2.show()
+			
+			self.o3L.show()
+			self.o3B1.show()
+			self.o3B2.show()
+			
+			self.o4L.show()
+			self.o4E.show()
 			
 			if selectedText == "Move":
 				self.o1L.setText(self.gInfoMoveX)
@@ -588,6 +795,37 @@ def showQtGUI():
 				self.oNewFolderB1.show()
 				self.setLastPosition()
 
+			if selectedText == "Copy Path":
+				
+				self.o1L.hide()
+				self.o1B1.hide()
+				self.o1B2.hide()
+				
+				self.o2L.hide()
+				self.o2B1.hide()
+				self.o2B2.hide()
+				
+				self.o3L.hide()
+				self.o3B1.hide()
+				self.o3B2.hide()
+				
+				self.o4L.hide()
+				self.o4E.hide()
+				
+				self.pathE1.show()
+				self.pathE2.show()
+				self.pathE3.show()
+				self.pathE4.show()
+				self.pathB1.show()
+				self.pathB2.show()
+				self.pathL1.show()
+				self.pathL2.show()
+				self.pathL3.show()
+
+				self.sCopyType.show()
+				self.oNewFolderB1.show()
+				self.setLastPosition()
+
 			if selectedText == "Mirror":
 				self.o1L.setText(self.gInfoMirrorX)
 				self.o2L.setText(self.gInfoMirrorY)
@@ -603,7 +841,38 @@ def showQtGUI():
 		def setNewFolder(self):
 			self.gNewFolder = True
 			self.oNewFolderB1.setDisabled(True)
-		
+
+		def setCopyPath(self):
+			try:
+				self.gCopyPathObj = FreeCADGui.Selection.getSelection()[0]
+				
+				# support wire, sketch, helix
+				test1 = self.gCopyPathObj.isDerivedFrom("Sketcher::SketchObject")
+				test2 = self.gCopyPathObj.isDerivedFrom("Part::Part2DObjectPython")
+				test3 = self.gCopyPathObj.isDerivedFrom("Part::Helix")
+				
+				if test1 or test2 or test3:
+					
+					self.gCopyPathPoints = self.gCopyPathObj.Shape.getPoints(1)[0]
+					self.pathL3.setText(self.gCopyPathObj.Label)
+					self.setLastPathPosition()
+				
+				# support edges
+				else:
+					
+					sub = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+					
+					if sub.ShapeType != "Edge":
+						raise
+					
+					self.gCopyPathPoints = sub.getPoints(1)[0]
+					index = MagicPanels.getEdgeIndex(self.gCopyPathObj, sub)
+					self.pathL3.setText(self.gCopyPathObj.Label + ", Edge" + str(index))
+					self.setLastPathPosition()
+			
+			except:
+				self.pathL3.setText(self.gNoPathSelection)
+
 		# ############################################################################
 		def setCornerM(self):
 
