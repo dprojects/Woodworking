@@ -1401,6 +1401,10 @@ def getReference(iObj="none"):
 	if obj.isDerivedFrom("PartDesign::Pad") and obj.BaseFeature == None:
 		return obj
 	
+	# not search for Sketch reference
+	if obj.isDerivedFrom("Sketcher::SketchObject"):
+		return obj
+
 	# try to unpack base object for other objects
 	try:
 		depth = len(obj.OutListRecursive)
