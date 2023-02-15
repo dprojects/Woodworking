@@ -280,6 +280,44 @@ def getVertex(iFace, iEdge, iVertex):
 
 
 # ###################################################################################################################
+def getVertexIndex(iObj, iVertex):
+	'''
+	Description:
+	
+		Returns vertex index for given object and vertex object.
+	
+	Args:
+	
+		iObj: object of the vertex
+		iVertex: vertex object
+
+	Usage:
+	
+		vertexIndex = MagicPanels.getVertexIndex(o, v)
+
+	Result:
+	
+		return int value for vertex name, so you can create string Vertex + vertexIndex, 
+		or get vertex from vertices array
+
+	'''
+
+	index = 1
+	ves = touchTypo(iObj.Shape)
+	for v in ves:
+		if (
+			equal(v.X, iVertex.X) and 
+			equal(v.Y, iVertex.Y) and 
+			equal(v.Z, iVertex.Z) 
+			):
+			return index
+
+		index = index + 1
+	
+	return -1
+
+
+# ###################################################################################################################
 def getVertexAxisCross(iA, iB):
 	'''
 	Description:
@@ -412,7 +450,72 @@ def setVertexPadding(iObj, iVertex, iPadding, iAxis):
 			return iVertex.Z - iPadding
 
 	return ""
+
+
+# ###################################################################################################################
+def getOnCurve(iPoint, iCurve):
+	'''
+	Description:
 	
+		This function has been created to replace python .index() function. 
+		FreeCAD has not rounded float values at Vectors, so if you call 
+		iCurve.Shape.getPoints(1)[0].index(vector_of_iPoint) this may not find the index 
+		of vector_of_iPoint at the iCurve not because it is not there, but because there is 
+		small not rounded difference, for example 0.0000006. So, this function scan the iCurve vectors 
+		and compare rounded values to return the index.
+	
+	Args:
+	
+		iPoint: Part.Vertex object or FreeCAD.Vector or array of floats like [ x, y, z ]
+		iCurve: object that has .getPoints() function, for example Wire, Sketch, Helix, Edge
+
+	Usage:
+	
+		index = MagicPanels.getOnCurve(v, Sketch)
+		
+	Result:
+	
+		Return int value index for iPoint on iCurve.
+
+	'''
+
+	curvePoints = iCurve.Shape.getPoints(1)[0]
+	
+	skip = 0
+	if skip == 0:
+		try:
+			targetVector = FreeCAD.Vector(iPoint.X, iPoint.Y, iPoint.Z)
+			skip = 1
+		except:
+			skip = 0
+
+	if skip == 0:
+		try:
+			targetVector = FreeCAD.Vector(iPoint.x, iPoint.x, iPoint.x)
+			skip = 1
+		except:
+			skip = 0
+	
+	if skip == 0:
+		try:
+			targetVector = FreeCAD.Vector(iPoint[0], iPoint[1], iPoint[2])
+			skip = 1
+		except:
+			skip = 0
+
+	index = 0
+	for v in curvePoints:
+		if (
+			equal(v.x, targetVector.x) and 
+			equal(v.y, targetVector.y) and 
+			equal(v.z, targetVector.z) 
+			):
+			return index
+		
+		index = index + 1
+	
+	return -1
+
 
 # ###################################################################################################################
 '''
@@ -604,6 +707,7 @@ def getEdgePlane(iEdge):
 # ###################################################################################################################
 
 
+# ###################################################################################################################
 def getSubByKey(iObj, iKey, iType, iSubType):
 	'''
 	Description:
@@ -765,6 +869,7 @@ def getSketchPatternRotation(iObj, iSub):
 	return r
 
 
+# ###################################################################################################################
 def edgeRouter(iPad, iSub, iSketch, iLength, iLabel, iType):
 	'''
 	Description:
@@ -821,8 +926,9 @@ def edgeRouter(iPad, iSub, iSketch, iLength, iLabel, iType):
 		return router
 
 	return ""
-	
 
+
+# ###################################################################################################################
 def makePockets(iObjects, iLength):
 	'''
 	Description:

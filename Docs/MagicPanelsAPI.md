@@ -149,6 +149,26 @@ gSearchDepth = 200       # recursive search depth
 
 		Return vertex position.
 
+### getVertexIndex(iObj, iVertex):
+
+	Description:
+	
+		Returns vertex index for given object and vertex object.
+	
+##### Description:
+	
+		iObj: object of the vertex
+		iVertex: vertex object
+
+##### Usage:
+	
+		vertexIndex = MagicPanels.getVertexIndex(o, v)
+
+##### Result:
+	
+		return int value for vertex name, so you can create string Vertex + vertexIndex, 
+		or get vertex from vertices array
+
 ### getVertexAxisCross(iA, iB):
 
 	Description:
@@ -211,6 +231,30 @@ gSearchDepth = 200       # recursive search depth
 ##### Result:
 	
 		Return return new position value for given axis.
+
+### getOnCurve(iPoint, iCurve):
+
+	Description:
+	
+		This function has been created to replace python .index() function. 
+		FreeCAD has not rounded float values at Vectors, so if you call 
+		iCurve.Shape.getPoints(1)[0].index(vector_of_iPoint) this may not find the index 
+		of vector_of_iPoint at the iCurve not because it is not there, but because there is 
+		small not rounded difference, for example 0.0000006. So, this function scan the iCurve vectors 
+		and compare rounded values to return the index.
+	
+##### Description:
+	
+		iPoint: Part.Vertex object or FreeCAD.Vector or array of floats like [ x, y, z ]
+		iCurve: object that has .getPoints() function, for example Wire, Sketch, Helix, Edge
+
+##### Usage:
+	
+		index = MagicPanels.getOnCurve(v, Sketch)
+		
+##### Result:
+	
+		Return int value index for iPoint on iCurve.
 
 # Edges
 ### getEdgeVertices(iEdge):

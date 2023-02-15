@@ -35,6 +35,7 @@ def getItems(iType):
 			"panelMove2Face",
 			"panelMove2Anchor",
 			"panelMove2Center",
+			"align2Curve",
 			"panelMoveXp",
 			"panelMoveXm",
 			"panelMoveYp",
@@ -223,7 +224,8 @@ def getItems(iType):
 			"fitModel",
 			"makeTransparent",
 			"showVertex",
-			"selectVertex"
+			"selectVertex",
+			"roundCurve"
 		]
 
 	return parts

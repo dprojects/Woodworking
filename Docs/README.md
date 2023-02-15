@@ -21,6 +21,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 		* [panelMove2Face](#panelmove2face)
 		* [panelMove2Anchor](#panelmove2anchor)
 		* [panelMove2Center](#panelmove2center)
+		* [align2Curve](#align2curve)
 		* [arrows](#arrows)
 	* [Dowels and Screws](#dowels-and-screws)
 		* [magicDowels](#magicdowels)
@@ -57,6 +58,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 		* [makeTransparent](#maketransparent)
 		* [showVertex](#showvertex)
 		* [selectVertex](#selectvertex)
+		* [roundCurve](#roundcurve)
 	* [Router](#router)
 		* [Router bit - Cove](#router-bit---cove)
 		* [Router bit - Round Over](#router-bit---round-over)
@@ -256,6 +258,21 @@ Available anchors to select:
 
 **Video tutorials:** 
 * [Move to center](https://www.youtube.com/watch?v=zKttrKdahg8)
+
+<br><br><br>
+
+### align2Curve
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/align2Curve.png"> This tool allows to align panels to the curve. It has been created for magicMove Copy Path option, to align panels to the curve. To select more objects hold left CTRL key during selection. To use this tool the panel need to have only single axis rotation offset. For example if you rotate panel 35 degrees around Y axis the vertex will touch the curve. This tool not works if you need to rotate the panel additionally, for example 15 degrees around X axis. For more details see description at documentation page. 
+
+Selection modes:
+
+* **Curve and Edges** In this mode you can select curve and next edge at each object you want to align to the curve. This mode is automatic and this tool will try to calculate the angle between the curve and the selected edge. The selected edge need to be this one with object anchor and the object anchor should be already at the curve. If this tool will be able to determine the angle, it will align the panel. Otherwise the panel will be skipped.
+
+* **Curve and Vertex** In this mode you can select curve and next vertex at each object you want to align to the curve. This mode is more precised and slower. It allow to align panel backwards, so the selected vertex will be before he anchor. In this mode the tool will try to search the curve from the nearest side of the vertex. If the curve will be found the panel will be aligned, otherwise the panel will be skipped.
+
+**Video tutorials:** 
+* [Align to curve](https://www.youtube.com/watch?v=fbJV_SEuNLg)
 
 <br><br><br>
 
@@ -504,6 +521,15 @@ Available anchors to select:
 
 **Video tutorials:** 
 * [Helping Vertex selection](https://www.youtube.com/watch?v=qSsua04AKg8)
+
+<br><br><br>
+
+### roundCurve
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/roundCurve.png"> This tool allows to improve curve visibility. It makes the curve to look more rounded. Normally, circle Sketch is rendering from straight line segments. If you want to align panel to the curve manually this might be problem to hit exactly the point you want at curve. This tool may help for more precised alignment. If you select the curve and click this tool again the curve will back to default settings. To select more object hold left CTRL key during selection. 
+
+**Video tutorials:** 
+* [Align to curve](https://www.youtube.com/watch?v=fbJV_SEuNLg)
 
 <br><br><br>
 

@@ -114,6 +114,7 @@ Tools = [
 	"MagicPanels", "fitModel", "png", "fitModel", "Click to see info.",
 	"MagicPanels", "showVertex", "png", "showVertex", "Click to see info.",
 	"MagicPanels", "selectVertex", "png", "selectVertex", "Click to see info.",
+	"MagicPanels", "roundCurve", "png", "render curve precisely", "Click to see info.",
 
 	# default
 	
@@ -151,6 +152,7 @@ Tools = [
 	"MagicPanels", "panelMove2Face", "png", "panel, move, to face", "Click to see info.",
 	"MagicPanels", "panelMove2Center", "png", "panel, move, to center", "Click to see info.",
 	"MagicPanels", "panelMove2Anchor", "png", "panel, move, to anchor", "Click to see info.",
+	"MagicPanels", "align2Curve", "png", "align panel to curve", "Click to see info.",
 	"MagicPanels", "mapPosition", "png", "move to 1st selected", "Click to see info.",
 
 	# resize
