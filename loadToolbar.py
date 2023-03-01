@@ -126,6 +126,7 @@ def getItems(iType):
 			"magicCut",
 			"magicKnife",
 			"jointTenon",
+			"cutTenons",
 			"jointCustom",
 			"panel2frame"
 		]

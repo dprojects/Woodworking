@@ -51,6 +51,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 		* [magicCut](#magiccut)
 		* [magicKnife](#magicknife)
 		* [jointTenon](#jointtenon)
+		* [cutTenons](#cuttenons)
 		* [jointCustom](#jointcustom)
 		* [panel2frame](#panel2frame)
 	* [Preview](#preview)
@@ -473,9 +474,21 @@ Selection modes:
 
 ### jointTenon
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/jointTenon.png"> Select face to create Tenon joint. This is simple Cube object and will be created in the corner of the selected face (0 vertex), allowing you to move the joint precisely to any place at the face. It has predefined size but you can resize and move the joint to fit to your elements and needs. To make more copies you can use [magicFixture](#magicfixture). If you set all Tenons at the element, you can quickly cut all Mortises for the Tenons with [magicCut](#magiccut). 
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/jointTenon.png"> This tool allows to create quick tenon joint at selected face. You can select multiple faces at single object or multiple faces at multiple objects. The tenon joint offset is 1/4 of the object thickness. The tenon joint is hidden inside the object equally to the visible part. So, you can cut the tenon also at the object and create removable joint similar to the dowels. Tenons have special attribute, so they are not listed at cut-list report. 
 
-<br><br><br>
+**Video tutorials:** 
+* [Quick Tenon and Mortise](https://www.youtube.com/watch?v=fHUjW8-37Pk)
+
+<br><br>
+
+### cutTenons
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/cutTenons.png"> This tool allows to create mortises using tenons. This tool cut all tenons automatically for selected panel. You do not have to select and search exact tenons that belongs to the selected panel. If you select panel, this tool search for all tenons that belongs to the selected panel and apply Boolean Cut on the panel. You can select multiply panels at once to cut tenons. To select more panels hold left CTRL key during selection. During this process only the copies will be used to cut, so the original tenon will not be moved at the objects Tree. This feature is sensitive for visibility of tenons. So, you can hide tenons you do not want to be cut out from the panel. 
+
+**Video tutorials:** 
+* [Quick Tenon and Mortise](https://www.youtube.com/watch?v=fHUjW8-37Pk)
+
+<br><br>
 
 ### jointCustom
 

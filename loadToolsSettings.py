@@ -103,6 +103,7 @@ Tools = [
 	"MagicPanels", "jointTenon", "png", "joint, Tenon", "Click to see info.",
 	"MagicPanels", "jointCustom", "png", "joint, Custom", "Click to see info.",
 	"MagicPanels", "panel2frame", "png", "cubes to frames", "Click to see info.",
+	"MagicPanels", "cutTenons", "png", "cut all tenons from panel", "Click to see info.",
 	
 	# dimensions
 	
