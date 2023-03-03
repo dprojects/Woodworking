@@ -1529,6 +1529,26 @@ gSearchDepth = 200       # recursive search depth
 	
 		Array of cut objects will be returned.
 
+### makeCutsLinks(iObjects):
+
+	Description:
+	
+		Allows to create multi bool cut operation at given objects. First objects 
+		from iObjects is the base element and all other will cut the base. 
+		At this function version App::Link is used to create copy.
+	
+##### Description:
+	
+		iObjects: objects to parse by multi bool cut
+
+##### Usage:
+	
+		cuts = MagicPanels.makeCutsLinks(objects)
+
+##### Result:
+	
+		Array of cut objects will be returned.
+
 ### makeFrame45cut(iObjects, iFaces):
 
 	Description:
