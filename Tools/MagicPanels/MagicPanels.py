@@ -4644,6 +4644,73 @@ def makeCuts(iObjects):
 
 
 # ###################################################################################################################
+def makeCutsLinks(iObjects):
+	'''
+	Description:
+	
+		Allows to create multi bool cut operation at given objects. First objects 
+		from iObjects is the base element and all other will cut the base. 
+		At this function version App::Link is used to create copy.
+	
+	Args:
+	
+		iObjects: objects to parse by multi bool cut
+
+	Usage:
+	
+		cuts = MagicPanels.makeCutsLinks(objects)
+
+	Result:
+	
+		Array of cut objects will be returned.
+
+	'''
+
+	cuts = []
+
+	base = iObjects[0]
+	baseName = str(base.Name)
+	baseLabel = str(base.Label)
+
+	objects = iObjects[1:]
+
+	for o in objects:
+
+		if not o.isDerivedFrom("App::LinkGroup"):
+			o = createContainer([o])
+
+		copy = FreeCAD.ActiveDocument.addObject('App::Link', "Link")
+		copy.setLink(o)
+		copy.Label = getNestingLabel(o, "Copy")
+
+		if not hasattr(copy, "BOM"):
+			info = QT_TRANSLATE_NOOP("App::Property", "Allows to skip this duplicated copy in BOM, cut-list report.")
+			copy.addProperty("App::PropertyBool", "BOM", "Woodworking", info)
+
+		copy.BOM = False
+
+		cut = FreeCAD.ActiveDocument.addObject("Part::Cut", "Cut")
+		cut.Base = base
+		cut.Tool = copy
+		cut.Label = getNestingLabel(base, "Cut")
+
+		base = cut
+		cuts.append(cut)
+
+	cut.Label = getNestingLabel(base, "Cut")
+	FreeCAD.ActiveDocument.recompute()
+	
+	try:
+		copyColors(iObjects[0], cut)
+	except:
+		skip = 1
+
+	FreeCAD.ActiveDocument.recompute()
+
+	return cuts
+
+
+# ###################################################################################################################
 def makeFrame45cut(iObjects, iFaces):
 	'''
 	Description:

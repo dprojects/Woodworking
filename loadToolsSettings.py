@@ -98,8 +98,10 @@ Tools = [
 	
 	# joinery
 	
-	"MagicPanels", "magicCut", "png", "magicCut, single panel cut by many knives", "Click to see info.",
-	"MagicPanels", "magicKnife", "png", "magicKnife, single knife cut many panels", "Click to see info.",
+	"MagicPanels", "magicCut", "png", "single panel cut by many knives with copies", "Click to see info.",
+	"MagicPanels", "magicCutLinks", "png", "single panel cut by many knives with links", "Click to see info.",
+	"MagicPanels", "magicKnife", "png", "single knife cut many panels with copies", "Click to see info.",
+	"MagicPanels", "magicKnifeLinks", "png", "single knife cut many panels with links", "Click to see info.",
 	"MagicPanels", "jointTenon", "png", "joint, Tenon", "Click to see info.",
 	"MagicPanels", "jointCustom", "png", "joint, Custom", "Click to see info.",
 	"MagicPanels", "panel2frame", "png", "cubes to frames", "Click to see info.",
