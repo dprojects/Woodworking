@@ -75,6 +75,7 @@ Tools = [
 	# #################################################################################################################################
 
 	# project manage
+	
 	"MagicPanels", "selected2Group", "png", "selected to Group", "Click to see info.",
 	"MagicPanels", "selected2LinkGroup", "png", "selected to LinkGroup", "Click to see info.",
 	"MagicPanels", "selected2Link", "png", "selected to Link", "Click to see info.",
@@ -106,6 +107,9 @@ Tools = [
 	"MagicPanels", "jointCustom", "png", "joint, Custom", "Click to see info.",
 	"MagicPanels", "panel2frame", "png", "cubes to frames", "Click to see info.",
 	"MagicPanels", "cutTenons", "png", "cut all tenons from panel", "Click to see info.",
+	"MagicPanels", "grainH", "png", "grain direction marker, horizontal", "Click to see info.",
+	"MagicPanels", "grainV", "png", "grain direction marker, vertical", "Click to see info.",
+	"MagicPanels", "grainX", "png", "grain direction marker, no grain", "Click to see info.",
 	
 	# dimensions
 	

@@ -1534,6 +1534,123 @@ FreeCADGui.addCommand("cutTenons", cutTenons())
 
 	
 # ######################################################################################################################
+class grainH():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "grainH.png"),
+				"MenuText": QT_TRANSLATE_NOOP("grainHMenuText", "grain direction marker, horizontal"),
+				"ToolTip" : QT_TRANSLATE_NOOP("grainHToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "grainH"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("grainH", grainH())
+
+	
+# ######################################################################################################################
+class grainV():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "grainV.png"),
+				"MenuText": QT_TRANSLATE_NOOP("grainVMenuText", "grain direction marker, vertical"),
+				"ToolTip" : QT_TRANSLATE_NOOP("grainVToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "grainV"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("grainV", grainV())
+
+	
+# ######################################################################################################################
+class grainX():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "grainX.png"),
+				"MenuText": QT_TRANSLATE_NOOP("grainXMenuText", "grain direction marker, no grain"),
+				"ToolTip" : QT_TRANSLATE_NOOP("grainXToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "grainX"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("grainX", grainX())
+
+	
+# ######################################################################################################################
 class showAlias():
 
 	def GetResources(self):

@@ -130,7 +130,10 @@ def getItems(iType):
 			"jointTenon",
 			"cutTenons",
 			"jointCustom",
-			"panel2frame"
+			"panel2frame",
+			"grainH",
+			"grainV",
+			"grainX"
 		]
 		
 	if iType == "Woodworking - drilling holes":

@@ -56,6 +56,9 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 		* [cutTenons](#cuttenons)
 		* [jointCustom](#jointcustom)
 		* [panel2frame](#panel2frame)
+		* [grainH](#grainh)
+		* [grainV](#grainv)
+		* [grainX](#grainx)
 	* [Preview](#preview)
 		* [fitModel](#fitmodel)
 		* [makeTransparent](#maketransparent)
@@ -520,6 +523,33 @@ Selection modes:
 
 **Video tutorials:** 
 * [Quick 45 cut joint](https://www.youtube.com/watch?v=aFe9p4At41c)
+
+<br><br><br>
+
+### grainH
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/grainH.png"> This tool creates horizontal grain direction description at selected face. You can select multiple faces and multiple objects. Hold left CTRL key during selection. The Grain attribute will be added to the object. After adding grain direction description the object can be moved and the grain description will be moved together with the object.
+
+**Video tutorials:** 
+* [Grain Direction Marker](https://www.youtube.com/watch?v=PXXKBrtAtzQ)
+
+<br><br><br>
+
+### grainV
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/grainV.png"> This tool creates horizontal grain direction description at selected face. You can select multiple faces and multiple objects. Hold left CTRL key during selection. The Grain attribute will be added to the object. After adding grain direction description the object can be moved and the grain description will be moved together with the object.
+
+**Video tutorials:** 
+* [Grain Direction Marker](https://www.youtube.com/watch?v=PXXKBrtAtzQ)
+
+<br><br><br>
+
+### grainX
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/grainX.png"> This tool creates horizontal grain direction description at selected face. You can select multiple faces and multiple objects. Hold left CTRL key during selection. The Grain attribute will be added to the object. After adding grain direction description the object can be moved and the grain description will be moved together with the object.
+
+**Video tutorials:** 
+* [Grain Direction Marker](https://www.youtube.com/watch?v=PXXKBrtAtzQ)
 
 <br><br><br>
 
