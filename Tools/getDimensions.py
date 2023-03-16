@@ -114,6 +114,7 @@ sARME = True      # measurements
 sARM = True       # mounting
 sARP = True       # profiles
 sARD = False      # decoration
+sARGD = True      # grain direction
 
 
 # ###################################################################################################################
@@ -186,6 +187,9 @@ gLang20 = ""
 gLang21 = ""
 gLang22 = ""
 gLang23 = ""
+gLang24 = ""
+gLang25 = ""
+gLang26 = ""
 
 
 # ###################################################################################################################
@@ -333,6 +337,12 @@ def showQtGUI():
 			self.arpCB = QtGui.QCheckBox(translate('getDimensions', '- construction profiles'), self)
 			self.arpCB.setCheckState(QtCore.Qt.Checked)
 			self.arpCB.move(200, vLine + vLineNextRow)
+			
+			vLine = vLine + vLineNextRow
+			
+			self.argdCB = QtGui.QCheckBox(translate('getDimensions', '- grain direction'), self)
+			self.argdCB.setCheckState(QtCore.Qt.Checked)
+			self.argdCB.move(10, vLine + vLineNextRow)
 			
 			# ############################################################################
 			# languages
@@ -642,6 +652,7 @@ def showQtGUI():
 				self.ardCB.hide()
 				self.armCB.hide()
 				self.arpCB.hide()
+				self.argdCB.hide()
 			else:
 				self.ufdL.show()
 				self.ufdO.show()
@@ -660,6 +671,7 @@ def showQtGUI():
 				self.ardCB.show()
 				self.armCB.show()
 				self.arpCB.show()
+				self.argdCB.show()
 
 		def setUFA(self, selectedText):
 			global sUnitsArea
@@ -700,30 +712,9 @@ def showQtGUI():
 		pass
 	
 	if form.result == userOK:
-		global sEColor, sARME
+		global sEColor
+		global sARME, sARM, sARP, sARD, sARGD
 
-
-	
-
-		'''
-		def setARD(self, selectedText):
-			global sARD
-			sARD = selectedText
-
-		def setARM(self, selectedText):
-			global sARM
-			sARM = selectedText
-
-		def setARP(self, selectedText):
-			global sARP
-			sARP = selectedText
-		
-		def setARME(self, selectedText):
-			global sARME
-			sARME = selectedText
-		'''
-		
-		
 		# set edgeband code from text form
 		sEColor = form.ecti.text()
 		
@@ -750,7 +741,13 @@ def showQtGUI():
 			sARD = True
 		else:
 			sARD = False
-			
+
+		# grain direction
+		if form.argdCB.isChecked():
+			sARGD = True
+		else:
+			sARGD = False
+
 		gExecute = "yes"
 
 
@@ -1957,8 +1954,8 @@ def setMeasurementsList(iObj, iCaller="setMeasurementsList"):
 			# add new entry
 			
 			# set name for entry
-			v = "string;" + str(sub)
-			vArrNames.append(sub)
+			v = str(sub)
+			vArrNames.append(v)
 			
 			# set value for entry
 			v = "f;" + str(iObj.Distance.Value)
@@ -1972,6 +1969,52 @@ def setMeasurementsList(iObj, iCaller="setMeasurementsList"):
 		
 		# if there is wrong structure
 		showError(iCaller, iObj, "setMeasurementsList", "wrong structure")
+		return -1
+
+	return 0
+
+
+# ###################################################################################################################
+def setGrainDirection(iObj, iCaller="setGrainDirection"):
+
+	try:
+
+		# init variables
+		vArrNames = []
+		vArrValues = []
+		vType = ""
+
+		if hasattr(iObj, "Grain"):
+
+			faces = iObj.Grain
+
+			i = 1
+			for f in faces:
+			
+				if str(f) != "x":
+					v = "Face" + str(i)
+					vArrNames.append(v)
+					
+					if str(f) == "h":
+						v = "string;" + gLang25
+					if str(f) == "v":
+						v = "string;" + gLang26
+					
+					vArrValues.append(v)
+	
+				i = i + 1
+
+			# set key
+			vType = gLang24 + ", " + str(iObj.Label)
+
+		# set db for additional report
+		if vType != "":
+			setDBAdditional(iObj, vType, vArrNames, vArrValues, "", iCaller)
+
+	except:
+		
+		# if there is wrong structure
+		showError(iCaller, iObj, "setGrainDirection", "wrong structure")
 		return -1
 
 	return 0
@@ -2064,6 +2107,10 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 	# additional report - decoration
 	if sARD == True:
 		setDecoration(iObj, iCaller)
+	
+	# additional report - grain direction
+	if sARGD == True:
+		setGrainDirection(iObj, iCaller)
 		
 	# skip not supported furniture parts with no error
 	# Sheet, Transformations will be handling later
@@ -2625,6 +2672,9 @@ def initLang():
 	global gLang21
 	global gLang22
 	global gLang23
+	global gLang24
+	global gLang25
+	global gLang26
 
 	# Polish language
 	if sLang  == "pl":
@@ -2659,6 +2709,9 @@ def initLang():
 		gLang21 = "Długość"
 		gLang22 = "Obszar"
 		gLang23 = "Własne pomiary"
+		gLang24 = "Kierunek słojów"
+		gLang25 = "poziomo"
+		gLang26 = "pionowo"
 
 	# English language
 	else:
@@ -2693,6 +2746,9 @@ def initLang():
 		gLang21 = "Length"
 		gLang22 = "Area"
 		gLang23 = "Custom measurements"
+		gLang24 = "Grain Direction"
+		gLang25 = "horizontal"
+		gLang26 = "vertical"
 
 
 # ###################################################################################################################
