@@ -532,6 +532,7 @@ Selection modes:
 
 **Video tutorials:** 
 * [Grain Direction Marker](https://www.youtube.com/watch?v=PXXKBrtAtzQ)
+* [Grain Direction Report](https://www.youtube.com/watch?v=4W6Lnkh3DRs)
 
 <br><br><br>
 
@@ -541,6 +542,7 @@ Selection modes:
 
 **Video tutorials:** 
 * [Grain Direction Marker](https://www.youtube.com/watch?v=PXXKBrtAtzQ)
+* [Grain Direction Report](https://www.youtube.com/watch?v=4W6Lnkh3DRs)
 
 <br><br><br>
 
@@ -550,6 +552,7 @@ Selection modes:
 
 **Video tutorials:** 
 * [Grain Direction Marker](https://www.youtube.com/watch?v=PXXKBrtAtzQ)
+* [Grain Direction Report](https://www.youtube.com/watch?v=4W6Lnkh3DRs)
 
 <br><br><br>
 

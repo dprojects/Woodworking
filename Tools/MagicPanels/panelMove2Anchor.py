@@ -15,7 +15,7 @@ try:
 
 	try:
 		baseSub = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-		
+
 		if str(baseSub.ShapeType) == "Vertex":
 			[ X, Y, Z ] = [ float(baseSub.X), float(baseSub.Y), float(baseSub.Z) ]
 
@@ -34,10 +34,10 @@ try:
 
 	i = 1
 	for o in objects:
-		
+
 		try:
 			sub = FreeCADGui.Selection.getSelectionEx()[i].SubObjects[0]
-			
+
 			if str(sub.ShapeType) == "Vertex":
 				anchor = [ float(sub.X), float(sub.Y), float(sub.Z) ]
 				[ anchor ] = MagicPanels.getVerticesPosition([ anchor ], o)
@@ -53,11 +53,8 @@ try:
 		except:
 			anchor = "auto"
 
-		objRef = MagicPanels.getReference(o)
-		toMove = MagicPanels.getObjectToMove(objRef)
-		
+		toMove = MagicPanels.getObjectToMove(o)
 		MagicPanels.setContainerPlacement(toMove, X, Y, Z, 0, anchor)
-		
 		i = i + 1
 
 	FreeCAD.ActiveDocument.recompute()
@@ -69,3 +66,4 @@ except:
 	info += translate('panelMove2AnchorInfo', '<b>First select anchor at base object, next select anchor at each object to move.</b><br><br> Available anchors to select: <ul><li><b>vertex</b> - selected vertex,</li><li><b>edge</b> - edge CenterOfMass,</li><li><b>face</b> - face CenterOfMass,</li><li><b>object</b> - default object anchor.</li></ul><b>Note:</b> This tool allows to align panels more precisely, with anchor. The anchor is recognized at base object as well. Hold left CTRL key to select anchors.')
 	
 	MagicPanels.showInfo("panelMove2Anchor", info)
+
