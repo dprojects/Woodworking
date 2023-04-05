@@ -1027,13 +1027,13 @@ def getGroup(iObj, iCaller="getGroup"):
 	# get parent for LinkGroup
 	if vGroup == "":
 		try:
-			vGroup = iObj.InListRecursive[0].Label
+			vGroup = iObj.InListRecursive[1].Label
 		except:
 			vGroup = ""
 	
 	if vGroup == "":
 		try:
-			vGroup = iObj.InListRecursive[1].Label
+			vGroup = iObj.InListRecursive[0].Label
 		except:
 			vGroup = ""
 	
