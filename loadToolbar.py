@@ -133,7 +133,8 @@ def getItems(iType):
 			"panel2frame",
 			"grainH",
 			"grainV",
-			"grainX"
+			"grainX",
+			"magicCorner"
 		]
 		
 	if iType == "Woodworking - drilling holes":

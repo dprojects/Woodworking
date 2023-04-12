@@ -110,6 +110,7 @@ Tools = [
 	"MagicPanels", "grainH", "png", "grain direction marker, horizontal", "Click to see info.",
 	"MagicPanels", "grainV", "png", "grain direction marker, vertical", "Click to see info.",
 	"MagicPanels", "grainX", "png", "grain direction marker, no grain", "Click to see info.",
+	"MagicPanels", "magicCorner", "png", "create corner connection", "Click to see info.",
 	
 	# dimensions
 	

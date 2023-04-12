@@ -1651,6 +1651,45 @@ FreeCADGui.addCommand("grainX", grainX())
 
 	
 # ######################################################################################################################
+class magicCorner():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "magicCorner.png"),
+				"MenuText": QT_TRANSLATE_NOOP("magicCornerMenuText", "create corner connection"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicCornerToolTip", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "magicCorner"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("magicCorner", magicCorner())
+
+	
+# ######################################################################################################################
 class showAlias():
 
 	def GetResources(self):

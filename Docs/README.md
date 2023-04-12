@@ -59,6 +59,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 		* [grainH](#grainh)
 		* [grainV](#grainv)
 		* [grainX](#grainx)
+		* [magicCorner](#magiccorner)
 	* [Preview](#preview)
 		* [fitModel](#fitmodel)
 		* [makeTransparent](#maketransparent)
@@ -553,6 +554,15 @@ Selection modes:
 **Video tutorials:** 
 * [Grain Direction Marker](https://www.youtube.com/watch?v=PXXKBrtAtzQ)
 * [Grain Direction Report](https://www.youtube.com/watch?v=4W6Lnkh3DRs)
+
+<br><br><br>
+
+### magicCorner
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicCorner.png"> This tool allows to create corner connection via Part :: Embed object FreeCAD feature. To fit corners, first select base object that will be cut, next panels that should be fited to the base object. To select multiple panels hold left CTRL key during selection.
+
+**Video tutorials:** 
+* [Corner connection](https://www.youtube.com/watch?v=lIZFvDqgWdQ)
 
 <br><br><br>
 
