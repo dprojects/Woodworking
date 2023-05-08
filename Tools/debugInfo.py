@@ -30,7 +30,7 @@ def setTests():
 		gTests["qApp"] = True
 	except:
 		gTests["qApp"] = False
-		gTests["status"] += "qApp, "
+	#	gTests["status"] += "qApp, "
 
 	# ######################################
 	# test: QtWidgets
@@ -260,17 +260,18 @@ def getDebugInfo():
 	if error == 1 and gTests["QtWidgets"] == True:
 		try:
 			from PySide2 import QtWidgets
-			
+
 			class AboutInfo(QtCore.QObject):
 				def eventFilter(self, obj, ev):
 					if obj.metaObject().className() == 'Gui::Dialog::AboutDialog':
 						if ev.type() == ev.ChildPolished:
-							if hasattr(obj, 'on_copyButton_clicked'):
+							copyBut = obj.findChild(QtWidgets.QPushButton, 'copyButton')
+							if copyBut:
 								QtWidgets.QApplication.instance().removeEventFilter(self)
-								obj.on_copyButton_clicked()
+								copyBut.click()
 								QtCore.QMetaObject.invokeMethod(obj, 'reject', QtCore.Qt.QueuedConnection)
 					return False
-
+          
 			ai = AboutInfo()
 			QtWidgets.QApplication.instance().installEventFilter(ai)
 			FreeCADGui.runCommand('Std_About')

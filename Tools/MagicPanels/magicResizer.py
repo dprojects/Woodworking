@@ -308,7 +308,7 @@ def showQtGUI():
 					v = [ ves[0].X, ves[0].Y, ves[0].Z ]
 
 				[ edgeV1, edgeV2 ] = MagicPanels.getEdgeVertices(self.gResizeObj)
-				plane = MagicPanels.getEdgePlane(self.gResizeObj)
+				plane = MagicPanels.getEdgePlane(self.gNearSubObj, self.gResizeObj)
 
 				if plane == "X":
 					self.gDest = v[0]

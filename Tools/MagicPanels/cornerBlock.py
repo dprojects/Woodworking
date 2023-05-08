@@ -21,8 +21,13 @@ try:
 	i = 0
 	for o in objects:
 
-		s = MagicPanels.getSizesFromVertices(o)
-		s.sort()
+		oRef = MagicPanels.getReference(o)
+		if MagicPanels.isRotated(oRef):
+			s = MagicPanels.getSizes(oRef)
+			s.sort()
+		else:
+			s = MagicPanels.getSizesFromVertices(oRef)
+			s.sort()
 
 		edges[o] = [ FreeCADGui.Selection.getSelectionEx()[i].SubObjects[0] ]
 		sizes[o] = [ s[0] ]

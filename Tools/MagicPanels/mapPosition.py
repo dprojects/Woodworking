@@ -21,9 +21,9 @@ try:
 	sx, sy, sz = "", "", ""
 	try:
 		sub = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-		
+
 		if sub.ShapeType == "Edge":
-		
+
 			if sub.Curve.isDerivedFrom("Part::GeomLine"):
 				sx = sub.CenterOfMass.x
 				sy = sub.CenterOfMass.y
@@ -45,7 +45,6 @@ try:
 			sz = sub.Z
 
 	except:
-
 		skip = 1
 
 	# objects to move
@@ -57,7 +56,10 @@ try:
 			
 			try:
 				plane = o.Support[0][0].Label
-				t = "attach"
+				if plane.startswith("XY") or plane.startswith("XZ") or plane.startswith("YZ"):
+					t = "attach"
+				else:
+					raise
 			except:
 				t = "global"
 			
@@ -114,4 +116,3 @@ except:
 	info += translate('mapPosition', '<b>First select object to copy position, next select objects to move. </b><br><br><b>Note:</b> This tool allows to move objects to the same position as first selected object. The objects will be moved without rotation. Only the placement will change. If the first selected object is rotated the objects may not match exactly the starting point. This tool is very useful if you want to redesign furniture and you want to create new element. Using this tool you can quickly move the new element to the same position of old element and remove the old element. To select more objects hold left CTRL key during selection. With this tool you can also move Cylinders and Sketches more precisely. If first you select Edge or Face the Cylinders or Sketches will be moved to the CenterOfMass. If first you select Vertex the Cylinders or Sketches will be moved to the selected Vertex position.')
 	
 	MagicPanels.showInfo("mapPosition", info)
-

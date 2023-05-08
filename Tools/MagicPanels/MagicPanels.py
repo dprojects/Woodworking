@@ -666,7 +666,7 @@ def getEdgeIndexByKey(iObj, iBoundBox):
 
 
 # ###################################################################################################################
-def getEdgePlane(iEdge):
+def getEdgePlane(iObj, iEdge):
 	'''
 	Description:
 	
@@ -674,11 +674,12 @@ def getEdgePlane(iEdge):
 	
 	Args:
 	
+		iObj: object with the edge
 		iEdge: edge object
 
 	Usage:
 	
-		plane = MagicPanels.getEdgePlane(edge)
+		plane = MagicPanels.getEdgePlane(o, edge)
 
 	Result:
 	
@@ -686,18 +687,59 @@ def getEdgePlane(iEdge):
 
 	'''
 
-	[ v1, v2 ] = getEdgeVertices(iEdge)
+	rotated = False
+	o = getReference(iObj)
 	
+	if isRotated(o):
+		
+		import Part, math
+	
+		rotated = True
+		w = Part.Wire(iEdge)
+		wire = Part.show(w)
+		wire.Label = "wire"
+		
+		offset = ""
+		
+		if o.isDerivedFrom("PartDesign::Pad"):
+			
+			ref = o.Profile[0].Placement
+			support = o.Profile[0].Support[0][0]
+			
+			if support.Label.startswith("XZ"):
+				offset = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 90)
+				
+			if support.Label.startswith("YZ"):
+				offset = FreeCAD.Rotation(FreeCAD.Vector(0.58, 0.58, 0.58), 120)
+
+		else:
+			ref = o.Placement
+
+		wire.Placement.Rotation = ref.Rotation
+		wire.Placement.Rotation.Angle = - wire.Placement.Rotation.Angle
+		FreeCAD.ActiveDocument.recompute()
+
+		[ v1, v2 ] = getEdgeVertices(wire.Shape)
+	
+	else:
+
+		[ v1, v2 ] = getEdgeVertices(iEdge)
+	
+	plane = ""
 	if not equal(v1[0], v2[0]):
-		return "X"
+		plane = "X"
 
 	if not equal(v1[1], v2[1]):
-		return "Y"
+		plane = "Y"
 
 	if not equal(v1[2], v2[2]):
-		return "Z"
-		
-	return ""
+		plane = "Z"
+
+	if rotated == True:
+		FreeCAD.ActiveDocument.removeObject(wire.Name)
+		FreeCAD.ActiveDocument.recompute()
+
+	return plane
 
 
 # ###################################################################################################################
@@ -748,7 +790,7 @@ def getSubByKey(iObj, iKey, iType, iSubType):
 			
 			for e in iObj.Shape.Edges:
 				
-				p = getEdgePlane(e)
+				p = getEdgePlane(iObj, e)
 				
 				if p == plane:
 					if plane == "X":
@@ -833,7 +875,7 @@ def getSketchPatternRotation(iObj, iSub):
 	
 	if iSub.ShapeType == "Edge":
 	
-		plane = getEdgePlane(iSub)
+		plane = getEdgePlane(iObj, iSub)
 
 		if plane == "X":
 			r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 1.00, 0.00), 90.00)
@@ -850,11 +892,11 @@ def getSketchPatternRotation(iObj, iSub):
 		[ faceType, arrAll, arrThick, arrShort, arrLong ] = getFaceEdges(iObj, iSub)
 		
 		if len(arrLong) > 0:
-			subPlane = getEdgePlane(arrLong[0])
+			subPlane = getEdgePlane(iObj, arrLong[0])
 		elif len(arrShort) > 0:
-			subPlane = getEdgePlane(arrShort[0])
+			subPlane = getEdgePlane(iObj, arrShort[0])
 		elif len(arrAll) > 0:
-			subPlane = getEdgePlane(arrAll[0])
+			subPlane = getEdgePlane(iObj, arrAll[0])
 		
 		if subPlane == "X":
 			r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 1.00, 0.00), 90.00)
@@ -1853,6 +1895,90 @@ def getDistanceBetweenFaces(iObj1, iObj2, iFace1, iFace2):
 
 
 # ###################################################################################################################
+def isRotated(iObj):
+	'''
+	Description:
+	
+		Function to check if object iObj is rotated or not.
+
+	Args:
+	
+		iObj: object to check rotation
+
+	Usage:
+	
+		if MagicPanels.isRotated(o):
+
+	Result:
+	
+		Return True if the object is rotated or False otherwise.
+
+	'''
+
+	import math
+	
+	if iObj.isDerivedFrom("PartDesign::Pad"):
+
+		ref = iObj.Profile[0]
+		angle = math.degrees(ref.Placement.Rotation.Angle)
+		
+		if equal(angle, 0) or equal(angle, 120) or equal(angle, 90):
+			return False
+		else:
+			return True
+	
+	else:
+		
+		ref = iObj
+		angle = math.degrees(ref.Placement.Rotation.Angle)
+		
+		if equal(angle, 0):
+			return False
+		else:
+			return True
+
+
+# ###################################################################################################################
+def addRotation(iObj, iTarget):
+	'''
+	Description:
+	
+		This function checks if the iObj is rotated and add the rotation to the iTarget objects.
+
+	Args:
+	
+		iObj: object to check rotation
+		iTarget: array with objects to set rotation
+
+	Usage:
+	
+		MagicPanels.addRotation(base, [ o ]):
+
+	Result:
+	
+		If the iObj is rotated, set the same rotation to iTarget
+
+	'''
+
+	o = getReference(iObj)
+	
+	if not isRotated(o):
+		return
+
+	if o.isDerivedFrom("PartDesign::Pad"):
+		ref = o.Profile[0]
+	else:
+		ref = o
+
+	for t in iTarget:
+
+		pos = t.Placement.Base
+		rot = ref.Placement.Rotation * t.Placement.Rotation
+
+		t.Placement = FreeCAD.Placement(pos, rot)
+
+
+# ###################################################################################################################
 def getModelRotation(iX, iY, iZ):
 	'''
 	Description:
@@ -2490,33 +2616,31 @@ def setSketchPlacement(iSketch, iX, iY, iZ, iR, iType):
 
 	if iType == "attach":
 
+		import math
 		plane = iSketch.Support[0][0].Label
 
 		rX = iR.Axis.x
 		rY = iR.Axis.y
 		rZ = iR.Axis.z
-		rAngle = iR.Angle
-
-		# the Sketch AttachmentOffset position is rocket science for me ;-)
-		# it has been invented by time travelers or what? ;-)
-
+		rAngle = math.degrees(iR.Angle)
+		
 		if plane.startswith("XY"):
 			x, y, z = iX, iY, iZ
 			r = FreeCAD.Rotation(FreeCAD.Vector(rX, rY, rZ), rAngle)
-			
+
 		if plane.startswith("XZ"):
 			x, y, z = iX, iZ, -iY
 			r = FreeCAD.Rotation(FreeCAD.Vector(rX, rZ, -rY), rAngle)
-			
-		if plane.startswith("YZ"):
-			x, y, z = iY, iZ, iX
-			r = FreeCAD.Rotation(FreeCAD.Vector(rY, rZ, rX), rAngle)
 
+		if plane.startswith("YZ"):
+			x, y, z = iX, iY, iZ
+			r = FreeCAD.Rotation(FreeCAD.Vector(rY, rZ, rX), rAngle)
+		
 		iSketch.AttachmentOffset.Base = FreeCAD.Vector(x, y, z)
 		iSketch.AttachmentOffset.Rotation = r
-		
+
 	if iType == "global":
-		
+
 		iSketch.Placement.Base = FreeCAD.Vector(iX, iY, iZ)
 		iSketch.Placement.Rotation = iR
 
@@ -3833,7 +3957,7 @@ def makePad(iObj, iPadLabel="Pad"):
 		[ x, y, z ] = [ X, Y, Z ]
 	
 	if direction == "XZ" or direction == "ZX":
-		[ x, y, z ] = [ X, Z, -(Y+sizes[0]) ]
+		[ x, y, z ] = [ X, Y, Z ]
 
 	if direction == "YZ" or direction == "ZY":
 		[ x, y, z ] = [ Y, Z, X ]
@@ -3841,6 +3965,7 @@ def makePad(iObj, iPadLabel="Pad"):
 	import Part, PartDesign
 	import Sketcher
 	import PartDesignGui
+	import math
 
 	doc = FreeCAD.ActiveDocument
 	
@@ -3890,14 +4015,28 @@ def makePad(iObj, iPadLabel="Pad"):
 	sketch.setDatum(10,FreeCAD.Units.Quantity(s[1]))
 	sketch.renameConstraint(10, u'SizeY')
 
-	position = FreeCAD.Vector(x, y, z)
-	sketch.AttachmentOffset = FreeCAD.Placement(position, R)
+	if isRotated(iObj):
+
+		if direction == "XZ" or direction == "ZX":
+			sketch.Placement.Rotation.Angle = sketch.Placement.Rotation.Angle - math.radians(90)
+		if direction == "YZ" or direction == "ZY":
+			sketch.Placement.Rotation.Angle = sketch.Placement.Rotation.Angle - math.radians(120)
+
+		rotation = R * sketch.Placement.Rotation
+
+	else:
+		rotation = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 0)
+
+	setSketchPlacement(sketch, x, y, z, rotation, "attach")
 
 	pad = body.newObject('PartDesign::Pad', "Pad")
 	pad.Label = iPadLabel
 	pad.Profile = sketch
 	pad.Length = FreeCAD.Units.Quantity(s[2])
 	sketch.Visibility = False
+
+	if direction == "XZ" or direction == "ZX":
+		pad.Reversed = True
 
 	try:
 		copyColors(iObj, pad)

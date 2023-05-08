@@ -539,6 +539,9 @@ def showQtGUI():
 			self.gPanel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
 			self.gPanel.ViewObject.ShapeColor = (0.0, 0.0, 0.0, 0.0)
 			self.gPanel.ViewObject.Transparency = 83
+			
+			MagicPanels.addRotation(self.gObj1, [ self.gPanel ])
+			
 			FreeCAD.ActiveDocument.recompute()
 
 		# ############################################################################

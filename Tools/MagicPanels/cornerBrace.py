@@ -25,14 +25,20 @@ try:
 		sizes[o] = []
 		labels[o] = "cornerBrace "
 		
-		s = MagicPanels.getSizesFromVertices(o)
-		s.sort()
+		oRef = MagicPanels.getReference(o)
+		if MagicPanels.isRotated(oRef):
+			s = MagicPanels.getSizes(oRef)
+			s.sort()
+		else:
+			s = MagicPanels.getSizesFromVertices(oRef)
+			s.sort()
+
 		thick = s[0]
 		
 		edgeSelected = FreeCADGui.Selection.getSelectionEx()[i].SubObjects[0]
 		[ vb1, vb2 ] = MagicPanels.getEdgeVertices(edgeSelected)
 		vbv1 = FreeCAD.Vector(vb1)
-		planeB = MagicPanels.getEdgePlane(edgeSelected)
+		planeB = MagicPanels.getEdgePlane(o, edgeSelected)
 		
 		for e in o.Shape.Edges:
 			
@@ -41,7 +47,7 @@ try:
 			vsv2 = FreeCAD.Vector(vs2)
 			distance1 = round(vbv1.distanceToPoint(vsv1), MagicPanels.gRoundPrecision)
 			distance2 = round(vbv1.distanceToPoint(vsv2), MagicPanels.gRoundPrecision)
-			planeS = MagicPanels.getEdgePlane(e)
+			planeS = MagicPanels.getEdgePlane(o, e)
 			
 			if planeB == planeS and distance1 > thick and distance2 > thick:
 			

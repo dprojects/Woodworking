@@ -47,7 +47,7 @@ try:
 		for e in o.Shape.Edges:
 			if MagicPanels.equal(e.Length, float(o.Value.Value)):
 
-				plane = MagicPanels.getEdgePlane(e)
+				plane = MagicPanels.getEdgePlane(o, e)
 				
 				if selectionFacePlane.find(plane) == -1:
 					edgesCut.append("Edge"+str(index+1))

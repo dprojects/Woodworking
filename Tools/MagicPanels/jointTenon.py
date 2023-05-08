@@ -41,7 +41,7 @@ try:
 			jointSize = thick - offset
 			size = edge.Length - offset
 
-			plane = MagicPanels.getEdgePlane(edge)
+			plane = MagicPanels.getEdgePlane(objFace, edge)
 
 			if plane == "X":
 				Length = size

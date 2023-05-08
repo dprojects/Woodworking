@@ -242,7 +242,7 @@ class SelectionObserver:
 				
 				[ v1, v2 ] = MagicPanels.getEdgeVertices(edge)
 				[ v1, v2 ] = MagicPanels.getVerticesPosition([ v1, v2 ], o, "array")
-				axis = MagicPanels.getEdgePlane(edge)
+				axis = MagicPanels.getEdgePlane(o, edge)
 				
 				if axis == "X":
 					gP2 = FreeCAD.Vector(gP1[0], v1[1], v1[2])

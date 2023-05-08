@@ -126,6 +126,8 @@ def panelFace(iType):
 		z = z + coZ
 		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
 		
+		MagicPanels.addRotation(objRef, [ panel ])
+		
 		try:
 			MagicPanels.copyColors(objRef, panel)
 		except:
@@ -248,6 +250,8 @@ def panelSide(iType):
 		z = z + coZ
 		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
 		
+		MagicPanels.addRotation(objRef, [ panel ])
+		
 		try:
 			MagicPanels.copyColors(objRef, panel)
 		except:
@@ -307,6 +311,8 @@ def panelBackOut():
 
 			panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x1, y1, z3), FreeCAD.Rotation(0, 0, 0))
 			
+			MagicPanels.addRotation(obj1Ref, [ panel ])
+			
 			try:
 				MagicPanels.copyColors(obj1Ref, panel)
 			except:
@@ -362,6 +368,8 @@ def panelCover(iType):
 			panel.Height = H
 
 			panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x1, y1, z3), FreeCAD.Rotation(0, 0, 0))
+			
+			MagicPanels.addRotation(obj1Ref, [ panel ])
 			
 			try:
 				MagicPanels.copyColors(obj1Ref, panel)
@@ -682,9 +690,15 @@ def routerBitSelect(iType):
 		i = 0
 		for o in selectedObjects:
 			
-			sizes = MagicPanels.getSizesFromVertices(o)
-			sizes.sort()
-			thick = sizes[0]
+			oRef = MagicPanels.getReference(o)
+			if MagicPanels.isRotated(oRef):
+				sizes = MagicPanels.getSizes(oRef)
+				sizes.sort()
+				thick = sizes[0]
+			else:
+				sizes = MagicPanels.getSizesFromVertices(oRef)
+				sizes.sort()
+				thick = sizes[0]
 
 			subs = []
 			
@@ -744,12 +758,16 @@ def routerBitSelect(iType):
 						bit = float(thick/2)
 					if iType == "Chamfer4":
 						bit = float(thick/4)
-						
+
 					sketchPattern = body.newObject('Sketcher::SketchObject','routerPattern')
 					RouterPatterns.setRouterPattern(sketchPattern, [ bit ], iType)
 					FreeCAD.ActiveDocument.recompute()
-
+					
 					router = MagicPanels.edgeRouter(pad, s, sketchPattern, 0, iType, "simple")
+					FreeCAD.ActiveDocument.recompute()
+					
+					MagicPanels.addRotation(pad, [ sketchPattern ])
+					FreeCAD.ActiveDocument.recompute()
 
 	except:
 		
@@ -758,7 +776,7 @@ def routerBitSelect(iType):
 		info += translate(iType+'Info', '<b>Please select edges or faces to use router. </b><br><br><b>Note:</b> This tool allows to create decoration router bits effect. You can select many edges or faces. The selected edges or faces do not have to be at the same object. You can select edges or faces at any object. But each edge or face need to be according to the XYZ coordinate axis to get correct plane of the edge or face. For face the routing path is the CenterOfMass of the face and also along the longest edge. Hold left CTRL key during edges or faces selection. The router bits get size from object thickness. If the router bit is for example Cove2, it means the size of the Cove will be 1/2 of the object thickness.')
 
 		MagicPanels.showInfo("router"+iType, info)
-
+	
 
 # ###################################################################################################################
 def multiPocket(iType):
