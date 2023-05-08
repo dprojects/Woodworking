@@ -333,7 +333,7 @@ gSearchDepth = 200       # recursive search depth
 	
 		return int value for edge
 
-### getEdgePlane(iEdge):
+### getEdgePlane(iObj, iEdge):
 
 	Description:
 	
@@ -341,11 +341,12 @@ gSearchDepth = 200       # recursive search depth
 	
 ##### Description:
 	
+		iObj: object with the edge
 		iEdge: edge object
 
 ##### Usage:
 	
-		plane = MagicPanels.getEdgePlane(edge)
+		plane = MagicPanels.getEdgePlane(o, edge)
 
 ##### Result:
 	
@@ -759,6 +760,43 @@ gSearchDepth = 200       # recursive search depth
 		return distance between face1 object and face2 object
 
 # Direction, Plane, Orientation, Axis
+### isRotated(iObj):
+
+	Description:
+	
+		Function to check if object iObj is rotated or not.
+
+##### Description:
+	
+		iObj: object to check rotation
+
+##### Usage:
+	
+		if MagicPanels.isRotated(o):
+
+##### Result:
+	
+		Return True if the object is rotated or False otherwise.
+
+### addRotation(iObj, iTarget):
+
+	Description:
+	
+		This function checks if the iObj is rotated and add the rotation to the iTarget objects.
+
+##### Description:
+	
+		iObj: object to check rotation
+		iTarget: array with objects to set rotation
+
+##### Usage:
+	
+		MagicPanels.addRotation(base, [ o ]):
+
+##### Result:
+	
+		If the iObj is rotated, set the same rotation to iTarget
+
 ### getModelRotation(iX, iY, iZ):
 
 	Description:
