@@ -4201,47 +4201,47 @@ def setTechDraw(iCaller="setTechDraw"):
 		gAD.removeObject("toPrint")
 
 	# create TechDraw page for print
-	gAD.addObject("TechDraw::DrawPage","toPrint")
-	gAD.addObject("TechDraw::DrawSVGTemplate","Template")
+	gPrint = gAD.addObject("TechDraw::DrawPage","toPrint")
+	gPrintTemplate = gAD.addObject("TechDraw::DrawSVGTemplate","Template")
 	
 	if sLTF == "a":
-		gAD.Template.Template = FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Landscape_blank.svg"
+		gPrintTemplate.Template = FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Landscape_blank.svg"
 	else:
-		gAD.Template.Template = FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Portrait_blank.svg"
+		gPrintTemplate.Template = FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Portrait_blank.svg"
 	
-	gAD.toPrint.Template = gAD.Template
+	gPrint.Template = gPrintTemplate
 
 	# add spreadsheet to TechDraw page
-	gAD.addObject("TechDraw::DrawViewSpreadsheet","Sheet")
-	gAD.Sheet.Source = gAD.toCut
-	gAD.toPrint.addView(gAD.Sheet)
+	gPrintSheet = gAD.addObject("TechDraw::DrawViewSpreadsheet","Sheet")
+	gPrintSheet.Source = gAD.toCut
+	gPrint.addView(gPrintSheet)
 
 	# set in the center of the template
-	gAD.getObject("Sheet").X = int(float(gAD.getObject("Template").Width) / 2)
-	gAD.getObject("Sheet").Y = int(float(gAD.getObject("Template").Height) / 2)
+	gPrintSheet.X = int(float(gPrintTemplate.Width) / 2)
+	gPrintSheet.Y = int(float(gPrintTemplate.Height) / 2)
 
 	# try to set fonts
 	try:
-		gAD.getObject("Sheet").Font = "DejaVu Sans"
+		gPrintSheet.Font = "DejaVu Sans"
 	except:
-		gAD.getObject("Sheet").Font = "Arial"
+		gPrintSheet.Font = "Arial"
 
-	gAD.getObject("Sheet").TextSize = 13
+	gPrintSheet.TextSize = 13
 
 	# turn off grid if any
 	try:
-		gAD.getObject("toPrint").ViewObject.ShowGrid = False
+		gPrint.ViewObject.ShowGrid = False
 	except:
 		skip = 1
 
 	# set border line width
-	gAD.getObject("Sheet").LineWidth = 0.10
+	gPrintSheet.LineWidth = 0.10
 
 	# fix FreeCAD bug
 	if sLTF == "a":
-		gAD.getObject("Sheet").CellEnd = "K" + str(gSheetRow)
+		gPrintSheet.CellEnd = "K" + str(gSheetRow)
 	else:
-		gAD.getObject("Sheet").CellEnd = "G" + str(gSheetRow)
+		gPrintSheet.CellEnd = "G" + str(gSheetRow)
 
 
 # ###################################################################################################################
