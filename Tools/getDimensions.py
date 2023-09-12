@@ -115,6 +115,8 @@ sARM = True       # mounting
 sARP = True       # profiles
 sARD = False      # decoration
 sARGD = True      # grain direction
+sATS = True       # thickness summary
+sAEI = True       # edgeband info
 
 
 # ###################################################################################################################
@@ -320,29 +322,37 @@ def showQtGUI():
 			self.ardL = QtGui.QLabel(translate("getDimensions", "Additional reports:"), self)
 			self.ardL.move(10, vLine + 3)
 			
+			self.atsCB = QtGui.QCheckBox(translate('getDimensions', '- thickness summary'), self)
+			self.atsCB.setCheckState(QtCore.Qt.Checked)
+			self.atsCB.move(10, vLine + vLineNextRow)
+			
+			self.aeiCB = QtGui.QCheckBox(translate('getDimensions', '- edgeband info'), self)
+			self.aeiCB.setCheckState(QtCore.Qt.Checked)
+			self.aeiCB.move(200, vLine + vLineNextRow)
+			
 			self.armeCB = QtGui.QCheckBox(translate('getDimensions', '- custom measurements'), self)
 			self.armeCB.setCheckState(QtCore.Qt.Checked)
-			self.armeCB.move(10, vLine + vLineNextRow)
+			self.armeCB.move(400, vLine + vLineNextRow)
+
+			vLine = vLine + vLineNextRow
 
 			self.armCB = QtGui.QCheckBox(translate('getDimensions', '- dowels and screws'), self)
 			self.armCB.setCheckState(QtCore.Qt.Checked)
-			self.armCB.move(200, vLine + vLineNextRow)
+			self.armCB.move(10, vLine + vLineNextRow)
+			
+			self.arpCB = QtGui.QCheckBox(translate('getDimensions', '- construction profiles'), self)
+			self.arpCB.setCheckState(QtCore.Qt.Checked)
+			self.arpCB.move(200, vLine + vLineNextRow)
+			
+			self.argdCB = QtGui.QCheckBox(translate('getDimensions', '- grain direction'), self)
+			self.argdCB.setCheckState(QtCore.Qt.Checked)
+			self.argdCB.move(400, vLine + vLineNextRow)
 			
 			vLine = vLine + vLineNextRow
 			
 			self.ardCB = QtGui.QCheckBox(translate('getDimensions', '- decorations'), self)
 			self.ardCB.setCheckState(QtCore.Qt.Unchecked)
 			self.ardCB.move(10, vLine + vLineNextRow)
-			
-			self.arpCB = QtGui.QCheckBox(translate('getDimensions', '- construction profiles'), self)
-			self.arpCB.setCheckState(QtCore.Qt.Checked)
-			self.arpCB.move(200, vLine + vLineNextRow)
-			
-			vLine = vLine + vLineNextRow
-			
-			self.argdCB = QtGui.QCheckBox(translate('getDimensions', '- grain direction'), self)
-			self.argdCB.setCheckState(QtCore.Qt.Checked)
-			self.argdCB.move(10, vLine + vLineNextRow)
 			
 			# ############################################################################
 			# languages
@@ -714,6 +724,7 @@ def showQtGUI():
 	if form.result == userOK:
 		global sEColor
 		global sARME, sARM, sARP, sARD, sARGD
+		global sATS, sAEI
 
 		# set edgeband code from text form
 		sEColor = form.ecti.text()
@@ -747,6 +758,18 @@ def showQtGUI():
 			sARGD = True
 		else:
 			sARGD = False
+
+		# thickness summary
+		if form.atsCB.isChecked():
+			sATS = True
+		else:
+			sATS = False
+			
+		# edgeband info
+		if form.aeiCB.isChecked():
+			sAEI = True
+		else:
+			sAEI = False
 
 		gExecute = "yes"
 
@@ -2836,6 +2859,9 @@ def setViewQ(iCaller="setViewQ"):
 	# thickness part - depends on view columns order, so better here
 	# ########################################################
 
+	if sATS == False:
+		return
+
 	# add summary title for thickness
 	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
 	gSheet.mergeCells(vCell)
@@ -3027,6 +3053,9 @@ def setViewN(iCaller="setViewN"):
 	# thickness part - depends on view columns order, so better here
 	# ########################################################
 
+	if sATS == False:
+		return
+
 	# add summary title for thickness
 	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
 	gSheet.mergeCells(vCell)
@@ -3119,6 +3148,9 @@ def setViewG(iCaller="setViewG"):
 	# ########################################################
 	# thickness part - depends on view columns order, so better here
 	# ########################################################
+
+	if sATS == False:
+		return
 
 	# add summary title for thickness
 	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
@@ -3354,6 +3386,9 @@ def setViewE(iCaller="setViewE"):
 	# ########################################################
 	# thickness part - depends on view columns order, so better here
 	# ########################################################
+
+	if sATS == False:
+		return
 
 	# add summary title for thickness
 	vCell = "A" + str(gSheetRow) + ":D" + str(gSheetRow)
@@ -3700,6 +3735,9 @@ def setViewD(iCaller="setViewD"):
 	# ########################################################
 	# thickness part - depends on view columns order, so better here
 	# ########################################################
+
+	if sATS == False:
+		return
 
 	# add summary title for thickness
 	vCell = "A" + str(gSheetRow) + ":D" + str(gSheetRow)
@@ -4139,27 +4177,37 @@ def selectView(iCaller="selectView"):
 	# main report - quantity
 	if sLTF == "q":
 		setViewQ(iCaller)
-		setViewEdge(iCaller)
+		
+		if sAEI == True:
+			setViewEdge(iCaller)
 
 	# main report - name
 	if sLTF == "n":
 		setViewN(iCaller)
-		setViewEdge(iCaller)
+		
+		if sAEI == True:
+			setViewEdge(iCaller)
 
 	# main report - group
 	if sLTF == "g":
 		setViewG(iCaller)
-		setViewEdge(iCaller)
+		
+		if sAEI == True:
+			setViewEdge(iCaller)
 
 	# main report - edge extended
 	if sLTF == "e":
 		setViewE(iCaller)
-		setViewEdge(iCaller)
+		
+		if sAEI == True:
+			setViewEdge(iCaller)
 
 	# main report - detailed holes
 	if sLTF == "d":
 		setViewD(iCaller)
-		setViewEdge(iCaller)
+		
+		if sAEI == True:
+			setViewEdge(iCaller)
 
 	# main report - constraints (custom report)
 	if sLTF == "c":
