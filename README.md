@@ -1,6 +1,6 @@
 # Description
 
-FreeCAD is great software and this is extension for Woodworking. The main goal for this workbench is to make furniture designing process at FreeCAD more simple. If you want to make simple furniture for your garage which costs `150 PLN` this workbench is for you.
+FreeCAD is great software and this is extension for Woodworking. The main goal for this workbench is to make furniture designing process at FreeCAD more simple.
 
 ![intro](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/intro.gif)
 
@@ -13,30 +13,28 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 * **Woodworking workbench YouTube channel:** [all videos](https://www.youtube.com/@dprojects.woodworking/videos)
 * **Woodworking workbench documentation:** [Woodworking/Docs](https://github.com/dprojects/Woodworking/tree/master/Docs)
 
-# Certified platforms
+# Release notes
 
-* Stable certified versions download at: [Woodworking/releases](https://github.com/dprojects/Woodworking/releases)
-* For cutting edge features download:
-	* FreeCAD version: [FreeCAD weekly builds 30486 2022-09-29 AppImage](https://github.com/FreeCAD/FreeCAD-Bundle/releases/download/weekly-builds/FreeCAD_weekly-builds-30486-2022-09-29-conda-Linux-x86_64-py310.AppImage)
-	* Woodworking workbench development version from: [the master branch](https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip)
+**New significant changes since the last stable version:**
 
-* Current development platform:
-
-		OS: Ubuntu 22.04.1 LTS (XFCE/xubuntu)
-		Word size of FreeCAD: 64-bit
-		Version: 0.21.30486 (Git) AppImage
-		Build type: Release
-		Branch: master
-		Hash: eb546e25d3f952869e3ec87dca02b58653cb3936
-		Python 3.10.6, Qt 5.15.4, Coin 4.0.0, Vtk 9.1.0, OCC 7.6.3
-		Locale: English/United States (en_US)
-		Installed mods: 
-		* Woodworking 0.21.30486
-
-**Note:**
-
-* I don't have `Windows` or `macOS`, so I am not able to test and certify this workbench for those systems. However, if you use `FreeCAD AppImage` there is big chance this will be working correctly.
-* To get better stability make sure your current Woodworking workbench version has always the same version number as the FreeCAD version. You can also verify this via [debuginfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool. 
+* improve support for rotation
+* corner connection feature
+* grain direction marker feature
+* quick tenon and mortise
+* align to curve feature
+* copy along path feature
+* search & cut dowels feature
+* align to anchor feature
+* improve nesting naming
+* support for containers & improve references
+* sketch2clone for automatic parametrization
+* multiPocket feature
+* router feature
+* debbuger scanObjects selection filter
+* new debugInfo screen with workbench upgrade button
+* corner blocks & braces
+* tool for Mortise and Tenon
+* panel from vertices
 
 # Installation
 
@@ -64,6 +62,29 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 * Copy the folder `Woodworking` to the FreeCAD module directory (`Mod` folder).
 
 **Note:** You can update this workbench later via [debuginfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool.
+
+# Certified platforms
+
+* Stable certified versions download at: [Woodworking/releases](https://github.com/dprojects/Woodworking/releases)
+* For cutting edge features download: [the master branch](https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip)
+
+* Current development platform:
+
+		OS: Ubuntu 22.04.1 LTS (XFCE/xubuntu)
+		Word size of FreeCAD: 64-bit
+		Version: 0.21.30486 (Git) AppImage
+		Build type: Release
+		Branch: master
+		Hash: eb546e25d3f952869e3ec87dca02b58653cb3936
+		Python 3.10.6, Qt 5.15.4, Coin 4.0.0, Vtk 9.1.0, OCC 7.6.3
+		Locale: English/United States (en_US)
+		Installed mods: 
+		* Woodworking 0.21.30486
+
+**Note:**
+
+* I don't have `Windows` or `macOS`, so I am not able to test and certify this workbench for those systems. However, if you use `FreeCAD AppImage` there is big chance this will be working correctly.
+* To get better stability make sure your current Woodworking workbench version has always the same version number as the FreeCAD version. You can also verify this via [debuginfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool. 
 
 # Extras
 
