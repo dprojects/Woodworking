@@ -30,7 +30,7 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 * sketch2clone for automatic parametrization
 * multiPocket feature
 * router feature
-* debbuger scanObjects selection filter
+* scanObjects selection filter
 * new debugInfo screen with workbench upgrade button
 * corner blocks & braces
 * tool for Mortise and Tenon
@@ -38,7 +38,7 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 
 # Installation
 
-**Getting FreeCAD Mod folder localization:**
+**Step 1. Getting FreeCAD Mod folder localization:**
 
 * From FreeCAD python console run command:
 
@@ -46,7 +46,7 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 
 * If there is no `Mod` folder, create it.
 
-**Xubuntu:**
+**Step 2. Installation in Xubuntu operating system:**
 
 * Go to FreeCAD `Mod` directory:
 
@@ -56,7 +56,7 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 
 		git clone https://github.com/dprojects/Woodworking.git
 
-**Other:**
+**Step 2. Installation in other operating systems:**
 
 * Download and unpack `Woodworking` repository.
 * Copy the folder `Woodworking` to the FreeCAD module directory (`Mod` folder).
