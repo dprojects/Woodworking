@@ -70,21 +70,26 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 
 * Current development platform:
 
-		OS: Ubuntu 22.04.1 LTS (XFCE/xubuntu)
+		OS: Ubuntu 22.04.3 LTS (XFCE/xubuntu)
 		Word size of FreeCAD: 64-bit
-		Version: 0.21.30486 (Git) AppImage
+		Version: 0.21.1.33694 (Git) AppImage
 		Build type: Release
-		Branch: master
-		Hash: eb546e25d3f952869e3ec87dca02b58653cb3936
-		Python 3.10.6, Qt 5.15.4, Coin 4.0.0, Vtk 9.1.0, OCC 7.6.3
+		Branch: (HEAD detached at 0.21.1)
+		Hash: f6708547a9bb3f71a4aaade12109f511a72c207c
+		Python 3.10.12, Qt 5.15.8, Coin 4.0.0, Vtk 9.2.5, OCC 7.6.3
 		Locale: English/United States (en_US)
 		Installed mods: 
-		* Woodworking 0.21.30486
+		* Woodworking 0.21.1.33694
 
 **Note:**
 
 * I don't have `Windows` or `macOS`, so I am not able to test and certify this workbench for those systems. However, if you use `FreeCAD AppImage` there is big chance this will be working correctly.
 * To get better stability make sure your current Woodworking workbench version has always the same version number as the FreeCAD version. You can also verify this via [debuginfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool. 
+
+# Known issues
+
+* **Issue**: Cut-list, BOM, report `toPrint` is not in the center of the page. 
+	* **Workaround**: FreeCAD 0.21.1 has bug related to the TechDraw template. The TechDraw template size is always zero, so the center of the page cannot be calculated correctly. If this is issue for you, can adjust the report manually or please try higher FreeCAD version with this bug fixed (0.22).
 
 # Extras
 
