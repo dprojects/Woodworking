@@ -6,6 +6,10 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 
 * [Dowels](#dowels)
 	* [Dowel 8 x 35 mm](#dowel-8-x-35-mm)
+* [Biscuits](#biscuits)
+	* [Biscuits 4 x 16 x 48 mm](#biscuits-4-x-16-x-48-mm)
+	* [Biscuits 4 x 21 x 54 mm](#biscuits-4-x-21-x-54-mm)
+	* [Biscuits 4 x 24 x 57 mm](#biscuits-4-x-24-x-57-mm)
 * [Screws](#screws)
 	* [Screw 3 x 12 mm](#screw-3-x-12-mm)
 	* [Screw 3 x 20 mm](#screw-3-x-20-mm)
@@ -38,6 +42,38 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 | **Download:** | [Dowel_8_x_35_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Dowel_8_x_35_mm.FCStd)
 
 ![Dowel_8_x_35_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Dowel_8_x_35_mm.png)
+
+# Biscuits
+
+### Biscuits 4 x 16 x 48 mm
+
+|   |   |
+|:--|:--|
+| **FreeCAD version:** | `0.21.1.33694 (Stable, Linux, x86_64, AppImage)` |
+| **OS:** | `Xubuntu 22.04.3 LTS x86_64` |
+| **Download:** | [Biscuits_4_x_16_x_48_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Biscuits_4_x_16_x_48_mm.FCStd)
+
+![Biscuits_4_x_16_x_48_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Biscuits_4_x_16_x_48_mm.png)
+
+### Biscuits 4 x 21 x 54 mm
+
+|   |   |
+|:--|:--|
+| **FreeCAD version:** | `0.21.1.33694 (Stable, Linux, x86_64, AppImage)` |
+| **OS:** | `Xubuntu 22.04.3 LTS x86_64` |
+| **Download:** | [Biscuits_4_x_21_x_54_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Biscuits_4_x_21_x_54_mm.FCStd)
+
+![Biscuits_4_x_21_x_54_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Biscuits_4_x_21_x_54_mm.png)
+
+### Biscuits 4 x 24 x 57 mm
+
+|   |   |
+|:--|:--|
+| **FreeCAD version:** | `0.21.1.33694 (Stable, Linux, x86_64, AppImage)` |
+| **OS:** | `Xubuntu 22.04.3 LTS x86_64` |
+| **Download:** | [Biscuits_4_x_24_x_57_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Biscuits_4_x_24_x_57_mm.FCStd)
+
+![Biscuits_4_x_24_x_57_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Biscuits_4_x_24_x_57_mm.png)
 
 # Screws
 

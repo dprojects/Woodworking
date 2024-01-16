@@ -241,6 +241,9 @@ def showQtGUI():
 						"Dowel 6 x 35 mm ",
 						"Dowel 8 x 35 mm ",
 						"Dowel 10 x 35 mm ",
+						"Biscuits 16 x 48 mm ",
+						"Biscuits 21 x 54 mm ",
+						"Biscuits 24 x 57 mm ",
 						"Screw 3 x 20 mm ",
 						"Screw 4.5 x 40 mm ",
 						"Screw 4 x 40 mm ",
@@ -1022,6 +1025,30 @@ def showQtGUI():
 					self.gDOCorner = 50
 					self.gDONext = 32
 				
+				if selectedText == "Biscuits 16 x 48 mm ":
+					self.gDDiameter = 4
+					self.gDSize = 16
+					self.gDSink = 8
+					self.gDNum = 4
+					self.gDOCorner = 50
+					self.gDONext = 64
+					
+				if selectedText == "Biscuits 21 x 54 mm ":
+					self.gDDiameter = 4
+					self.gDSize = 21
+					self.gDSink = 11
+					self.gDNum = 4
+					self.gDOCorner = 50
+					self.gDONext = 64
+				
+				if selectedText == "Biscuits 24 x 57 mm ":
+					self.gDDiameter = 4
+					self.gDSize = 24
+					self.gDSink = 12
+					self.gDNum = 4
+					self.gDOCorner = 50
+					self.gDONext = 64
+
 				if selectedText == "Screw 3 x 20 mm ":
 					self.gDDiameter = 3
 					self.gDSize = 20
