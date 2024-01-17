@@ -18,6 +18,11 @@ try:
 	i = 0
 	for o in objects:
 
+		rotated = MagicPanels.isRotated(o)
+		if rotated:
+			angle = o.Placement.Rotation.Angle
+			o.Placement.Rotation.Angle = 0
+
 		faces = subObjects[i].SubObjects
 		i = i + 1
 		
@@ -78,6 +83,27 @@ try:
 				if sink == "+":
 					p.Rotation = FreeCAD.Rotation(FreeCAD.Vector(-0.71, 0.00, 0.71), 180.00)
 
+			try:
+				label = str(o.Label) + ", " + "Face" + str(faceIndex) + ", " + "Grain Horizontal" + " "
+				rmo = FreeCAD.ActiveDocument.getObjectsByLabel(label)[0]
+				FreeCAD.ActiveDocument.removeObject(str(rmo.Name))
+			except:
+				skip = 1
+				
+			try:
+				label = str(o.Label) + ", " + "Face" + str(faceIndex) + ", " + "Grain Vertical" + " "
+				rmo = FreeCAD.ActiveDocument.getObjectsByLabel(label)[0]
+				FreeCAD.ActiveDocument.removeObject(str(rmo.Name))
+			except:
+				skip = 1
+			
+			try:
+				label = str(o.Label) + ", " + "Face" + str(faceIndex) + ", " + "No Grain" + " "
+				rmo = FreeCAD.ActiveDocument.getObjectsByLabel(label)[0]
+				FreeCAD.ActiveDocument.removeObject(str(rmo.Name))
+			except:
+				skip = 1
+
 			arrows = "No Grain"
 			txt = Draft.make_text(arrows, placement=p)
 			txt.Label = str(o.Label) + ", " + "Face" + str(faceIndex) + ", " + "No Grain" + " "
@@ -96,8 +122,13 @@ try:
 			grain[faceIndex-1] = "x"
 
 		o.Grain = grain
-		MagicPanels.moveToFirst([ txt ], o)
 		
+		if rotated:
+			o.Placement.Rotation.Angle = angle
+
+		MagicPanels.moveToFirst([ txt ], o)
+		MagicPanels.addRotation(o, [ txt ])
+
 	FreeCAD.ActiveDocument.recompute()
 	FreeCADGui.Selection.clearSelection()
 
