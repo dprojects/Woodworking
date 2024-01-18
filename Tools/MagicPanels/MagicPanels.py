@@ -3942,7 +3942,7 @@ def makePad(iObj, iPadLabel="Pad"):
 
 	sizes = getSizes(iObj)
 	sizes.sort()
-	
+
 	direction = getDirection(iObj)
 	
 	if direction == "XY" or direction == "XZ" or direction == "YZ":
@@ -4037,6 +4037,26 @@ def makePad(iObj, iPadLabel="Pad"):
 
 	if direction == "XZ" or direction == "ZX":
 		pad.Reversed = True
+
+	# try copy expressions from Cube to Pad
+	if iObj.ExpressionEngine != []:
+		
+		doc.recompute()
+		
+		for ex in iObj.ExpressionEngine:
+			
+			ev = iObj.evalExpression(str(ex[1])).Value
+			if equal(ev, s[0]):
+				sketch.setExpression('.Constraints.SizeX', str(ex[1]))
+				
+			elif equal(ev, s[1]):
+				sketch.setExpression('.Constraints.SizeY', str(ex[1]))
+				
+			elif equal(ev, s[2]):
+				pad.setExpression('Length', str(ex[1]))
+
+			else:
+				skip = 1
 
 	try:
 		copyColors(iObj, pad)
