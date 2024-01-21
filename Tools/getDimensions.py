@@ -136,7 +136,8 @@ sQT = "yes"
 # 1 - debug mode
 # 0 - keep console clean
 gDEBUG = 0
-gDebugLoop = 0
+gDebugLoop = False
+
 
 # ###################################################################################################################
 # Autoconfig - define globals ( NOT CHANGE HERE )
@@ -2147,7 +2148,7 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 	# additional report - grain direction
 	if sARGD == True:
 		setGrainDirection(iObj, iCaller)
-		
+	
 	# skip not supported furniture parts with no error
 	# Sheet, Transformations will be handling later
 	return 0
@@ -2205,6 +2206,29 @@ def setAppLinkGroup(iObj, iCaller="setAppLinkGroup"):
 
 
 # ###################################################################################################################
+def setAppLink(iObj, iCaller="setAppLink"):
+
+	# support for Link
+	if iObj.isDerivedFrom("App::Link"):
+
+		try:
+			
+			# set reference point to the objects list
+			key = iObj.LinkedObject
+
+			# select and add furniture part
+			selectFurniturePart(key, iCaller)
+		
+		except:
+			
+			# if there is wrong structure
+			showError(iCaller, iObj, "setAppLink", "wrong structure")
+			return -1
+	
+	return 0
+
+
+# ###################################################################################################################
 def setPartCut(iObj, iCaller="setPartCut"):
 
 	# support for Cut
@@ -2222,29 +2246,6 @@ def setPartCut(iObj, iCaller="setPartCut"):
 			
 			# if there is wrong structure
 			showError(iCaller, iObj, "setPartCut", "wrong structure")
-			return -1
-	
-	return 0
-
-
-# ###################################################################################################################
-def setAppLink(iObj, iCaller="setAppLink"):
-
-	# support for Link
-	if iObj.isDerivedFrom("App::Link"):
-
-		try:
-
-			# set reference point to the objects list
-			key = iObj.LinkedObject
-
-			# select and add furniture part
-			selectFurniturePart(key, iCaller)
-		
-		except:
-			
-			# if there is wrong structure
-			showError(iCaller, iObj, "setAppLink", "wrong structure")
 			return -1
 	
 	return 0
@@ -2380,7 +2381,7 @@ def setDraftClone(iObj, iCaller="setDraftClone"):
 
 			# call scanner for each object at the list
 			scanObjects(key, iCaller)
-		
+
 		except:
 			
 			# if there is wrong structure
@@ -2602,7 +2603,7 @@ def getInheritedVisibility(iObj, iCaller="getInheritedVisibility"):
 def scanObjects(iOBs, iCaller="main"):
 	
 	global gCallerObj
-	
+
 	# search all objects in document and set database for correct ones
 	for obj in iOBs:
 
@@ -2670,7 +2671,10 @@ def scanObjects(iOBs, iCaller="main"):
 		# set transformations
 		setPartMirroring(obj)
 		setDraftArray(obj)
-		setDraftClone(obj)
+
+		if not gCallerObj.isDerivedFrom("App::Link"):
+			setDraftClone(obj)
+
 		setPartDesignMirrored(obj)
 		setPartDesignMultiTransform(obj)
 		setPartDesignLinearPattern(obj)
