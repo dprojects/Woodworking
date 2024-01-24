@@ -53,16 +53,16 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 
 * Current development platform:
 
-	OS: Ubuntu 22.04.3 LTS (XFCE/xubuntu)
-	Word size of FreeCAD: 64-bit
-	Version: 0.21.2.33771 (Git) AppImage
-	Build type: Release
-	Branch: (HEAD detached at 0.21.2)
-	Hash: b9bfa5c5507506e4515816414cd27f4851d00489
-	Python 3.10.13, Qt 5.15.8, Coin 4.0.0, Vtk 9.2.6, OCC 7.6.3
-	Locale: English/United States (en_US)
-	Installed mods: 
-	* Woodworking 0.21.2.33771
+		OS: Ubuntu 22.04.3 LTS (XFCE/xubuntu)
+		Word size of FreeCAD: 64-bit
+		Version: 0.21.2.33771 (Git) AppImage
+		Build type: Release
+		Branch: (HEAD detached at 0.21.2)
+		Hash: b9bfa5c5507506e4515816414cd27f4851d00489
+		Python 3.10.13, Qt 5.15.8, Coin 4.0.0, Vtk 9.2.6, OCC 7.6.3
+		Locale: English/United States (en_US)
+		Installed mods: 
+		* Woodworking 0.21.2.33771
 
 **Note:**
 
