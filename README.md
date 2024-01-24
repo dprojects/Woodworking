@@ -17,24 +17,7 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 
 **New significant changes since the last stable version:**
 
-* improve support for rotation
-* corner connection feature
-* grain direction marker feature
-* quick tenon and mortise
-* align to curve feature
-* copy along path feature
-* search & cut dowels feature
-* align to anchor feature
-* improve nesting naming
-* support for containers & improve references
-* sketch2clone for automatic parametrization
-* multiPocket feature
-* router feature
-* scanObjects selection filter
-* new debugInfo screen with workbench upgrade button
-* corner blocks & braces
-* tool for Mortise and Tenon
-* panel from vertices
+* nothing yet...
 
 # Installation
 
