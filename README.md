@@ -21,7 +21,11 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 
 # Installation
 
-**Step 1. Getting FreeCAD Mod folder localization:**
+**Step 0. Install correct FreeCAD version:**
+
+* Download and install: [FreeCAD 0.21.2](https://github.com/FreeCAD/FreeCAD/releases/tag/0.21.2)
+
+**Step 1. Get FreeCAD Mod folder localization:**
 
 * From FreeCAD python console run command:
 
@@ -29,13 +33,13 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 
 * If there is no `Mod` folder, create it.
 
-**Step 2. Installation in Xubuntu operating system:**
+**Step 2. Install Woodworking workbench:** 
 
-* Go to FreeCAD `Mod` directory:
+* Go to FreeCAD `Mod` directory, for example, in Xubuntu operating system:
 
 		cd  ~/.local/share/FreeCAD/Mod/
 
-* Get the latest repository:
+* Get the latest Woodworking workbench repository:
 
 		git clone https://github.com/dprojects/Woodworking.git
 
