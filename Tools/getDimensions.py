@@ -2102,33 +2102,6 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 		if iObj.isDerivedFrom("PartDesign::Hole"):
 			setConstraints(iObj, iCaller)
 
-	# all reports, skip main scan loop
-	if iCaller != "main":
-
-		# support for Part but called only from LinkGroup or Link
-		if iObj.isDerivedFrom("App::Part"):
-			setAppPart(iObj, iCaller)
-
-		# support for LinkGroup but called only from transformations
-		if iObj.isDerivedFrom("App::LinkGroup"):
-			setAppLinkGroup(iObj, iCaller)
-			
-		# support for Cut but called only from transformations
-		if iObj.isDerivedFrom("Part::Cut"):
-			setPartCut(iObj, iCaller)
-
-		# support for Mirror on Body
-		if iObj.isDerivedFrom("PartDesign::Body") and iObj.Name.startswith("Body"):
-			setPartMirroringBody(iObj, iCaller)
-
-		# support for Mirror on Clone
-		if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Name.startswith("Clone"):
-			setDraftClone(iObj, iCaller)
-
-		# support for Clone as PartDesign :: FeatureBase
-		if iObj.isDerivedFrom("PartDesign::FeatureBase") and iObj.Name.startswith("Clone"):
-			setDraftClone(iObj, iCaller)
-
 	# additional report - measurements
 	if sARME == True:
 		setMeasurementsList(iObj, iCaller)
@@ -2217,7 +2190,7 @@ def setAppLink(iObj, iCaller="setAppLink"):
 			key = iObj.LinkedObject
 
 			# select and add furniture part
-			selectFurniturePart(key, iCaller)
+			scanObjects([ key ], iCaller)
 		
 		except:
 			
@@ -2286,7 +2259,7 @@ def setPartMirroring(iObj, iCaller="setPartMirroring"):
 			key = iObj.Source
 
 			# select and add furniture part
-			selectFurniturePart(key, iCaller)
+			scanObjects([ key ], iCaller)
 
 		except:
 
@@ -2335,7 +2308,7 @@ def setDraftArray(iObj, iCaller="setDraftArray"):
 				for c in key.Links:
 					k = 0
 					while k < vArray:
-						selectFurniturePart(c, iCaller)
+						scanObjects([ c ], iCaller)
 						k = k + 1
 				
 			# single array
@@ -2343,7 +2316,7 @@ def setDraftArray(iObj, iCaller="setDraftArray"):
 			
 				k = 0
 				while k < vArray:
-					selectFurniturePart(key, iCaller)
+					scanObjects([ key ], iCaller)
 					k = k + 1
 
 		except:
@@ -2379,6 +2352,7 @@ def setDraftClone(iObj, iCaller="setDraftClone"):
 				# for single object Clone
 				key = iObj.Objects
 
+
 			# call scanner for each object at the list
 			scanObjects(key, iCaller)
 
@@ -2407,7 +2381,7 @@ def setPartDesignMirrored(iObj, iCaller="setPartDesignMirrored"):
 			key = iObj.Originals[0]
 
 			# if object is Mirror this create new furniture part
-			selectFurniturePart(key, iCaller)
+			scanObjects([ key ], iCaller)
 		
 		except:
 			
@@ -2443,7 +2417,7 @@ def setPartDesignLinearPattern(iObj, iCaller="setPartDesignLinearPattern"):
 					key = iObj.Originals[0]
 
 					# select furniture part
-					selectFurniturePart(key, iCaller)
+					scanObjects([ key ], iCaller)
 					k = k + 1
 		except:
 
@@ -2498,7 +2472,7 @@ def setPartDesignMultiTransform(iObj, iCaller="setPartDesignMultiTransform"):
 
 				# select furniture part for all objects
 				for key in iObj.Originals:
-					selectFurniturePart(key, iCaller)
+					scanObjects([ key ], iCaller)
 
 				k = k + 1
 
@@ -2666,20 +2640,26 @@ def scanObjects(iOBs, iCaller="main"):
 		# ##################################################################
 
 		# select and set furniture part
-		selectFurniturePart(obj, iCaller)
+		selectFurniturePart(obj)
 
 		# set transformations
+
 		setPartMirroring(obj)
 		setDraftArray(obj)
 
-		if not gCallerObj.isDerivedFrom("App::Link"):
-			setDraftClone(obj)
-
+		setPartDesignLinearPattern(obj)
 		setPartDesignMirrored(obj)
 		setPartDesignMultiTransform(obj)
-		setPartDesignLinearPattern(obj)
-		setAppLink(obj)
 
+		setDraftClone(obj)
+		setAppLink(obj)
+		
+		if iCaller != "main":
+			setAppPart(obj)
+			setPartCut(obj)
+			setPartMirroringBody(obj)
+			setAppLinkGroup(obj)
+			
 
 # ###################################################################################################################
 # View types (regiester each view at view selector)
