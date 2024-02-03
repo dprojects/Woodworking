@@ -17,6 +17,7 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 
 **New significant changes since the last stable version:**
 
+* tenon option at magicDowels tool
 * getDimensions engine improved
 
 # Installation

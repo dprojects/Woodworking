@@ -305,6 +305,7 @@ Selection modes:
 **Video tutorials:** 
 * [Adding dowels](https://www.youtube.com/watch?v=q7tJffBBUGY)
 * [Make quickly 168 dowels](https://www.youtube.com/watch?v=_a_Q7BjEHLA)
+* [Tenons with magicDowels](https://www.youtube.com/watch?v=xXfy9KaYJC4)
 
 ### panel2link
 
