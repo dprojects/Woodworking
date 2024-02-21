@@ -1,6 +1,6 @@
 # Description
 
-FreeCAD is great software and this is extension for Woodworking. The main goal for this workbench is to make furniture designing process at FreeCAD more simple.
+FreeCAD is great software. This workbench extends the features of FreeCAD for Woodworking. The main goal for this workbench is to make the furniture designing process in FreeCAD simpler.
 
 ![intro](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/intro.gif)
 
@@ -71,7 +71,7 @@ FreeCAD is great software and this is extension for Woodworking. The main goal f
 
 **Note:**
 
-* I don't have `Windows` or `macOS`, so I am not able to test and certify this workbench for those systems. However, if you use `FreeCAD AppImage` there is big chance this will be working correctly.
+* I don't have `Windows` or `macOS`, so I am not able to test and certify this workbench for those systems. However, if you use `FreeCAD AppImage` there is a good chance this will be working correctly.
 * To get better stability make sure your current Woodworking workbench version has always the same version number as the FreeCAD version. You can also verify this via [debuginfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool. 
 
 # Known issues
@@ -89,7 +89,7 @@ This woodworking workbench is delivered with several useful extras:
 
 # API for developers
 
-The Woodworking workbench has also API for developers. This library contains functions that solve the Topology Naming Problem. You can also leaglly create your own tools and extend the workbench in your private repository in accordance with the MIT license:
+The Woodworking workbench also has an API for developers. This library contains functions that solve the Topology Naming Problem. You can also leaglly create your own tools and extend the workbench in your private repository in accordance with the MIT license:
 	
 * **View library API documentation:** [MagicPanelsAPI.md](https://github.com/dprojects/Woodworking/blob/master/Docs/MagicPanelsAPI.md)
 * **View library code:** [MagicPanels.py](https://github.com/dprojects/Woodworking/blob/master/Tools/MagicPanels/MagicPanels.py)
