@@ -30,7 +30,7 @@ try:
 		knifeLink.Label = MagicPanels.getNestingLabel(knife, "Knife")
 
 		if not hasattr(knifeLink, "BOM"):
-			info = QT_TRANSLATE_NOOP("App::Property", "Allows to skip this duplicated copy in BOM, cut-list report.")
+			info = translate("App::Property", "Allows to skip this duplicated copy in BOM, cut-list report.")
 			knifeLink.addProperty("App::PropertyBool", "BOM", "Woodworking", info)
 
 		knifeLink.BOM = False

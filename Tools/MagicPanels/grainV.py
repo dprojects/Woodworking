@@ -27,7 +27,7 @@ try:
 		i = i + 1
 		
 		if not hasattr(o, "Grain"):
-			info = QT_TRANSLATE_NOOP("App::PropertyStringList", 
+			info = translate("App::PropertyStringList", 
 							"face grain direction information, h - horizontal, v - vertical, x - no grain direction")
 			o.addProperty("App::PropertyStringList", "Grain", "Woodworking", info)
 

@@ -65,7 +65,7 @@ try:
 			MagicPanels.moveToFirst([ joint ], objRef)
 
 			if not hasattr(joint, "BOM"):
-				info = QT_TRANSLATE_NOOP("App::Property", "Allows to skip at BOM, cut-list report.")
+				info = translate("App::Property", "Allows to skip at BOM, cut-list report.")
 				joint.addProperty("App::PropertyBool", "BOM", "Woodworking", info)
 		
 			joint.BOM = False

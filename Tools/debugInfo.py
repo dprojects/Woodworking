@@ -563,7 +563,7 @@ def showQtGUI():
 			# #########################
 			
 			info = self.odie.toPlainText() + "\n"
-			info += translate('debugInfo', 'Disable old workbech...')
+			info += translate('debugInfo', 'Disable old workbench...')
 			self.odie.setPlainText(info)
 			self.odie.repaint()
 			
