@@ -266,6 +266,90 @@ FreeCADGui.addCommand("AUTOUPDATE", AUTOUPDATE())
 
 
 # ######################################################################################################################
+class TRANSLATION():
+
+	gUpdated = ""
+	gSkipped = ""
+
+	def updateTool(self, iTrans, iVersion, iRoot="https://github.com/dprojects/Woodworking-translations/raw"):
+		
+		import urllib.request
+		
+		try:
+			
+			filePath = os.path.join(path, "translations")
+			filePath = os.path.join(filePath, iTrans)
+			
+			httplink = iRoot
+			httplink += "/" + iVersion + "/" + iTrans
+			urllib.request.urlretrieve(httplink, filePath)
+			
+			self.gUpdated += iTrans + ", "
+		except:
+			self.gSkipped += iTrans + ", "
+		
+		return
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "autoupdate.png"),
+				"MenuText": QT_TRANSLATE_NOOP('Workbench', 'Download and update all translations'),
+				"ToolTip" : QT_TRANSLATE_NOOP('Workbench', 'Download latest versions for all translations.'),
+				"Accel"   : ""}
+
+	def Activated(self):
+
+		self.gUpdated = ""
+		self.gSkipped = ""
+		info = ""
+		
+		locales = FreeCADGui.supportedLocales()
+
+		try:
+			wb = FreeCADGui.activeWorkbench()
+			package = os.path.join(wb.path, "package.xml")
+			md = FreeCAD.Metadata(package)
+		except:
+			info += translate('manuAutoupdate', 'Error during getting FreeCAD supported locales.')
+			info += "\n\n"
+		
+		try:
+			version = str(md.Version)[:4]
+		except:
+			info += translate('manuAutoupdate', 'Error during getting workbench version from package.xml.')
+			info += "\n\n"
+
+		for key in locales:
+			find = "Woodworking_" + str(locales[key] + ".qm")
+			self.updateTool(find, version)
+
+		if info == "":
+		
+			if self.gUpdated != "":
+				info += translate('manuAutoupdate', 'Updated translations:')
+				info += "\n\n"
+				info += self.gUpdated
+				info += "\n\n"
+			
+			if self.gSkipped != "":
+				info += translate('manuAutoupdate', 'Not available translations:')
+				info += "\n\n"
+				info += self.gSkipped
+				info += "\n\n"
+		
+		from PySide import QtGui, QtCore
+		title = translate('manuAutoupdate', 'Translations - autoupdate')
+		QtGui.QMessageBox.information(None, title, str(info))
+		
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("TRANSLATION", TRANSLATION())
+
+
+# ######################################################################################################################
 def getItems():
 
 	parts = []
@@ -279,7 +363,8 @@ def getItems():
 		"DOCSsheet2export",
 		"DOCSsetTextures",
 		"DOCSscanObjects",
-		"AUTOUPDATE"
+		"AUTOUPDATE",
+		"TRANSLATION"
 	]
 
 	return parts

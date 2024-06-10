@@ -17,6 +17,7 @@ FreeCAD is great software. This workbench extends the features of FreeCAD for Wo
 
 **New significant changes since the last stable version:**
 
+* translations update tool and community support
 * tenon option at magicDowels tool
 * getDimensions engine improved
 
@@ -102,7 +103,7 @@ The Woodworking workbench also has an API for developers. This library contains 
 
 # Translations
 
-For Woodworking workbench translation see dedicated directory: [translations](https://github.com/dprojects/Woodworking/tree/master/translations)
+Please see translation repository at: [github.com/dprojects/Woodworking-translations](https://github.com/dprojects/Woodworking-translations)
 
 # License
 

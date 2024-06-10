@@ -13,7 +13,7 @@ class WoodworkingWorkbench (Workbench):
 	translationsPath = os.path.join(path, "translations")
 
 	MenuText = QT_TRANSLATE_NOOP("Workbench", "Woodworking")
-	ToolTip = QT_TRANSLATE_NOOP("Workbench", "Workbech for woodworking.")
+	ToolTip = QT_TRANSLATE_NOOP("Workbench", "Workbench for woodworking.")
 	Icon = os.path.join(iconPath, "Woodworking.png")
 
 	def Initialize(self):
