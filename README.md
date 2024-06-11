@@ -98,12 +98,20 @@ The Woodworking workbench also has an API for developers. This library contains 
 
 **Note:**
 
-* If you have Woodowrking workbench installed you don't have to install the `MagicPanels` library manaually. Also you can view the library directly from Woodworking workbench via: [scanObjects](https://github.com/dprojects/Woodworking/tree/master/Docs#scanobjects) tool.
+* If you have Woodworking workbench installed you don't have to install the `MagicPanels` library manaually. Also you can view the library directly from Woodworking workbench via: [scanObjects](https://github.com/dprojects/Woodworking/tree/master/Docs#scanobjects) tool.
 * For programming I use simple [Krusader](https://en.wikipedia.org/wiki/Krusader) with `F4` [KWrite](https://en.wikipedia.org/wiki/KWrite) editor. I have set tabulators as indent: `Settings` -> `Configure Editor` -> `Editing` -> `Indentation` -> `Tabulators` -> `Tab width: 4 characters`.
 
 # Translations
 
-Please see translation repository at: [github.com/dprojects/Woodworking-translations](https://github.com/dprojects/Woodworking-translations)
+Translations are managed externaly at [github.com/dprojects/Woodworking-translations](https://github.com/dprojects/Woodworking-translations) repository and are created only for stable versions. This approach allows translations community to work without time presure, independed from master branch development, beacuse code of stable releases will not be changed. 
+
+### 0.21 stable
+
+To install translation for [Woodworking workbench version 0.21 stable](https://github.com/dprojects/Woodworking/releases/tag/0.21) you have to download all `.qm` files from [0.21 translations branch](https://github.com/dprojects/Woodworking-translations/tree/0.21) and move them to `translations` folder inside Woodworking workbench folder. 
+
+### 0.22 and above
+
+You can use `translations update tool` available under drop down menu `Woodworking -> Download and update all translations`. This tool will automatically download all available `.qm` files into `translations` folder for you Woodworking workbench version.
 
 # License
 
