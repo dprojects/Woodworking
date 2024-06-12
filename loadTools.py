@@ -17,8 +17,8 @@ class getDimensions():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "getDimensions.png"),
-				"MenuText": QT_TRANSLATE_NOOP("getDimensionsMenuText", "getDimensions, BOM, cutlist"),
-				"ToolTip" : QT_TRANSLATE_NOOP("getDimensionsToolTip", "Creates spreadsheet with dimensions to cut."),
+				"MenuText": QT_TRANSLATE_NOOP("getDimensions", "getDimensions, BOM, cutlist"),
+				"ToolTip" : QT_TRANSLATE_NOOP("getDimensions", "Creates spreadsheet with dimensions to cut."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -56,8 +56,8 @@ class sheet2export():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "sheet2export.png"),
-				"MenuText": QT_TRANSLATE_NOOP("sheet2exportMenuText", "sheet2export"),
-				"ToolTip" : QT_TRANSLATE_NOOP("sheet2exportToolTip", "Exports spreadsheet to chosen file format."),
+				"MenuText": QT_TRANSLATE_NOOP("sheet2export", "sheet2export"),
+				"ToolTip" : QT_TRANSLATE_NOOP("sheet2export", "Exports spreadsheet to chosen file format."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -95,8 +95,8 @@ class scanObjects():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "scanObjects.png"),
-				"MenuText": QT_TRANSLATE_NOOP("scanObjectsMenuText", "scanObjects"),
-				"ToolTip" : QT_TRANSLATE_NOOP("scanObjectsToolTip", "Inspection tool for FreeCAD macro development & project debug (live API)."),
+				"MenuText": QT_TRANSLATE_NOOP("scanObjects", "scanObjects"),
+				"ToolTip" : QT_TRANSLATE_NOOP("scanObjects", "Inspection tool for FreeCAD macro development & project debug (live API)."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -134,8 +134,8 @@ class setTextures():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "setTextures.png"),
-				"MenuText": QT_TRANSLATE_NOOP("setTexturesMenuText", "setTextures"),
-				"ToolTip" : QT_TRANSLATE_NOOP("setTexturesToolTip", "Store textures information and allows to load textures. Solves problem with texture sharing without huge project file size."),
+				"MenuText": QT_TRANSLATE_NOOP("setTextures", "setTextures"),
+				"ToolTip" : QT_TRANSLATE_NOOP("setTextures", "Store textures information and allows to load textures. Solves problem with texture sharing without huge project file size."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -173,8 +173,8 @@ class makeTransparent():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "makeTransparent.png"),
-				"MenuText": QT_TRANSLATE_NOOP("makeTransparentMenuText", "transparent or normal mode"),
-				"ToolTip" : QT_TRANSLATE_NOOP("makeTransparentToolTip", "Make all parts transparent, so you can see all the joints, pilot holes, screws, countersinks. If you click next one all parts will back to normal. The transparent default is 83, so do not set any part to this number if you want e.g. to keep glass part of the furniture transparent after this preview."),
+				"MenuText": QT_TRANSLATE_NOOP("makeTransparent", "transparent or normal mode"),
+				"ToolTip" : QT_TRANSLATE_NOOP("makeTransparent", "Make all parts transparent, so you can see all the joints, pilot holes, screws, countersinks. If you click next one all parts will back to normal. The transparent default is 83, so do not set any part to this number if you want e.g. to keep glass part of the furniture transparent after this preview."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -212,8 +212,8 @@ class colorManager():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "colorManager.png"),
-				"MenuText": QT_TRANSLATE_NOOP("colorManagerMenuText", "colorManager"),
-				"ToolTip" : QT_TRANSLATE_NOOP("colorManagerToolTip", "Allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected face, object or many faces or objects and see the effect at 3D model in real-time."),
+				"MenuText": QT_TRANSLATE_NOOP("colorManager", "colorManager"),
+				"ToolTip" : QT_TRANSLATE_NOOP("colorManager", "Allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected face, object or many faces or objects and see the effect at 3D model in real-time."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -251,8 +251,8 @@ class showSpaceModel():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "showSpaceModel.png"),
-				"MenuText": QT_TRANSLATE_NOOP("showSpaceModelMenuText", "show, model, space"),
-				"ToolTip" : QT_TRANSLATE_NOOP("showSpaceModelToolTip", "This tool allows you to calculate the overall occupied space in 3D by the model."),
+				"MenuText": QT_TRANSLATE_NOOP("showSpaceModel", "show, model, space"),
+				"ToolTip" : QT_TRANSLATE_NOOP("showSpaceModel", "This tool allows you to calculate the overall occupied space in 3D by the model."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -290,8 +290,8 @@ class showSpaceSelected():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "showSpaceSelected.png"),
-				"MenuText": QT_TRANSLATE_NOOP("showSpaceSelectedMenuText", "show, selected, space"),
-				"ToolTip" : QT_TRANSLATE_NOOP("showSpaceSelectedToolTip", "This tool allows you to calculate the overall occupied space in 3D by the selected parts."),
+				"MenuText": QT_TRANSLATE_NOOP("showSpaceSelected", "show, selected, space"),
+				"ToolTip" : QT_TRANSLATE_NOOP("showSpaceSelected", "This tool allows you to calculate the overall occupied space in 3D by the selected parts."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -329,8 +329,8 @@ class magicMove():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "magicMove.png"),
-				"MenuText": QT_TRANSLATE_NOOP("magicMoveMenuText", "magicMove"),
-				"ToolTip" : QT_TRANSLATE_NOOP("magicMoveToolTip", "If you have problem with unexpected result of panel movements via dedicated icons, you can use this tool to precisely move panel into desired direction. This tool allow to turn off and on axis cross and resize corner cross size."),
+				"MenuText": QT_TRANSLATE_NOOP("magicMove", "magicMove"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicMove", "If you have problem with unexpected result of panel movements via dedicated icons, you can use this tool to precisely move panel into desired direction. This tool allow to turn off and on axis cross and resize corner cross size."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -368,8 +368,8 @@ class magicManager():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "magicManager.png"),
-				"MenuText": QT_TRANSLATE_NOOP("magicManagerMenuText", "magicManager"),
-				"ToolTip" : QT_TRANSLATE_NOOP("magicManagerToolTip", "If you have problem with unexpected result of Magic Panels, you can use this tool to preview panel before creation. It may take more time to create panel, but you can select exact panel to apply, also the edge and vertex position. This tool allows to create panel at selected face or between two faces."),
+				"MenuText": QT_TRANSLATE_NOOP("magicManager", "magicManager"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicManager", "If you have problem with unexpected result of Magic Panels, you can use this tool to preview panel before creation. It may take more time to create panel, but you can select exact panel to apply, also the edge and vertex position. This tool allows to create panel at selected face or between two faces."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -407,8 +407,8 @@ class magicDowels():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "magicDowels.png"),
-				"MenuText": QT_TRANSLATE_NOOP("magicDowelsMenuText", "magicDowels"),
-				"ToolTip" : QT_TRANSLATE_NOOP("magicDowelsToolTip", "Allows to add mounting points to the furniture. For example you can easily add screws, dowels, shelf supporter pins or custom mounting points."),
+				"MenuText": QT_TRANSLATE_NOOP("magicDowels", "magicDowels"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicDowels", "Allows to add mounting points to the furniture. For example you can easily add screws, dowels, shelf supporter pins or custom mounting points."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -446,8 +446,8 @@ class magicDriller():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "magicDriller.png"),
-				"MenuText": QT_TRANSLATE_NOOP("magicDrillerMenuText", "magicDriller"),
-				"ToolTip" : QT_TRANSLATE_NOOP("magicDrillerToolTip", "Allows to drill holes, countersinks or counterbores in a series with predefined or custom sequences."),
+				"MenuText": QT_TRANSLATE_NOOP("magicDriller", "magicDriller"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicDriller", "Allows to drill holes, countersinks or counterbores in a series with predefined or custom sequences."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -485,8 +485,8 @@ class magicCNC():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "magicCNC.png"),
-				"MenuText": QT_TRANSLATE_NOOP("magicCNCMenuText", "magicCNC, drill bit move machine"),
-				"ToolTip" : QT_TRANSLATE_NOOP("magicCNCToolTip", "This tool allows to move drill bit at the selected face and drill holes."),
+				"MenuText": QT_TRANSLATE_NOOP("magicCNC", "magicCNC, drill bit move machine"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicCNC", "This tool allows to move drill bit at the selected face and drill holes."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -524,8 +524,8 @@ class magicFixture():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "magicFixture.png"),
-				"MenuText": QT_TRANSLATE_NOOP("magicFixtureMenuText", "magicFixture"),
-				"ToolTip" : QT_TRANSLATE_NOOP("magicFixtureToolTip", "Allows to add any type of detailed fixture to the furniture. You can create Link to the realistic looking part or Clone it."),
+				"MenuText": QT_TRANSLATE_NOOP("magicFixture", "magicFixture"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicFixture", "Allows to add any type of detailed fixture to the furniture. You can create Link to the realistic looking part or Clone it."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -563,8 +563,8 @@ class magicJoints():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "magicJoints.png"),
-				"MenuText": QT_TRANSLATE_NOOP("magicJointsMenuText", "magicJoints"),
-				"ToolTip" : QT_TRANSLATE_NOOP("magicJointsToolTip", "Allows to move, copy joint Sketch pattern and create Mortise and Tenon."),
+				"MenuText": QT_TRANSLATE_NOOP("magicJoints", "magicJoints"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicJoints", "Allows to move, copy joint Sketch pattern and create Mortise and Tenon."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -602,8 +602,8 @@ class magicAngle():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "magicAngle.png"),
-				"MenuText": QT_TRANSLATE_NOOP("magicAngleMenuText", "magicAngle"),
-				"ToolTip" : QT_TRANSLATE_NOOP("magicAngleToolTip", "Allows to rotate panels and even other more complicated objects, like construction profiles."),
+				"MenuText": QT_TRANSLATE_NOOP("magicAngle", "magicAngle"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicAngle", "Allows to rotate panels and even other more complicated objects, like construction profiles."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -641,8 +641,8 @@ class debugInfo():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "debugInfo.png"),
-				"MenuText": QT_TRANSLATE_NOOP("debugInfoMenuText", "debugInfo"),
-				"ToolTip" : QT_TRANSLATE_NOOP("debugInfoToolTip", "Copy platform details to clipboard for bug report purposes."),
+				"MenuText": QT_TRANSLATE_NOOP("debugInfo", "debugInfo"),
+				"ToolTip" : QT_TRANSLATE_NOOP("debugInfo", "Copy platform details to clipboard for bug report purposes."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -680,8 +680,8 @@ class selected2Group():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "selected2Group.png"),
-				"MenuText": QT_TRANSLATE_NOOP("selected2GroupMenuText", "selected to Group"),
-				"ToolTip" : QT_TRANSLATE_NOOP("selected2GroupToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("selected2Group", "selected to Group"),
+				"ToolTip" : QT_TRANSLATE_NOOP("selected2Group", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -719,8 +719,8 @@ class selected2LinkGroup():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "selected2LinkGroup.png"),
-				"MenuText": QT_TRANSLATE_NOOP("selected2LinkGroupMenuText", "selected to LinkGroup"),
-				"ToolTip" : QT_TRANSLATE_NOOP("selected2LinkGroupToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("selected2LinkGroup", "selected to LinkGroup"),
+				"ToolTip" : QT_TRANSLATE_NOOP("selected2LinkGroup", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -758,8 +758,8 @@ class selected2Link():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "selected2Link.png"),
-				"MenuText": QT_TRANSLATE_NOOP("selected2LinkMenuText", "selected to Link"),
-				"ToolTip" : QT_TRANSLATE_NOOP("selected2LinkToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("selected2Link", "selected to Link"),
+				"ToolTip" : QT_TRANSLATE_NOOP("selected2Link", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -797,8 +797,8 @@ class selected2Outside():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "selected2Outside.png"),
-				"MenuText": QT_TRANSLATE_NOOP("selected2OutsideMenuText", "move outside the container"),
-				"ToolTip" : QT_TRANSLATE_NOOP("selected2OutsideToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("selected2Outside", "move outside the container"),
+				"ToolTip" : QT_TRANSLATE_NOOP("selected2Outside", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -836,8 +836,8 @@ class drillHoles():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "drillHoles.png"),
-				"MenuText": QT_TRANSLATE_NOOP("drillHolesMenuText", "drill bit, drill simple holes"),
-				"ToolTip" : QT_TRANSLATE_NOOP("drillHolesToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("drillHoles", "drill bit, drill simple holes"),
+				"ToolTip" : QT_TRANSLATE_NOOP("drillHoles", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -875,8 +875,8 @@ class drillCountersinks():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "drillCountersinks.png"),
-				"MenuText": QT_TRANSLATE_NOOP("drillCountersinksMenuText", "drill bit, drill countersinks"),
-				"ToolTip" : QT_TRANSLATE_NOOP("drillCountersinksToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("drillCountersinks", "drill bit, drill countersinks"),
+				"ToolTip" : QT_TRANSLATE_NOOP("drillCountersinks", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -914,8 +914,8 @@ class drillCounterbores():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "drillCounterbores.png"),
-				"MenuText": QT_TRANSLATE_NOOP("drillCounterboresMenuText", "drill bit, drill counterbores"),
-				"ToolTip" : QT_TRANSLATE_NOOP("drillCounterboresToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("drillCounterbores", "drill bit, drill counterbores"),
+				"ToolTip" : QT_TRANSLATE_NOOP("drillCounterbores", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -953,8 +953,8 @@ class drillCounterbores2x():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "drillCounterbores2x.png"),
-				"MenuText": QT_TRANSLATE_NOOP("drillCounterbores2xMenuText", "drill bit, drill counterbores from both sides"),
-				"ToolTip" : QT_TRANSLATE_NOOP("drillCounterbores2xToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("drillCounterbores2x", "drill bit, drill counterbores from both sides"),
+				"ToolTip" : QT_TRANSLATE_NOOP("drillCounterbores2x", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -992,8 +992,8 @@ class edge2drillbit():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "edge2drillbit.png"),
-				"MenuText": QT_TRANSLATE_NOOP("edge2drillbitMenuText", "drill bit from edge hole"),
-				"ToolTip" : QT_TRANSLATE_NOOP("edge2drillbitToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("edge2drillbit", "drill bit from edge hole"),
+				"ToolTip" : QT_TRANSLATE_NOOP("edge2drillbit", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1031,8 +1031,8 @@ class cutDowels():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "cutDowels.png"),
-				"MenuText": QT_TRANSLATE_NOOP("cutDowelsMenuText", "cut dowels from panel"),
-				"ToolTip" : QT_TRANSLATE_NOOP("cutDowelsToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("cutDowels", "cut dowels from panel"),
+				"ToolTip" : QT_TRANSLATE_NOOP("cutDowels", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1070,8 +1070,8 @@ class panel2link():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panel2link.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panel2linkMenuText", "replace with links"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panel2linkToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panel2link", "replace with links"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panel2link", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1109,8 +1109,8 @@ class panel2clone():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panel2clone.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panel2cloneMenuText", "replace with clones"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panel2cloneToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panel2clone", "replace with clones"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panel2clone", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1148,8 +1148,8 @@ class sketch2dowel():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "sketch2dowel.png"),
-				"MenuText": QT_TRANSLATE_NOOP("sketch2dowelMenuText", "dowel from sketch hole and face"),
-				"ToolTip" : QT_TRANSLATE_NOOP("sketch2dowelToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("sketch2dowel", "dowel from sketch hole and face"),
+				"ToolTip" : QT_TRANSLATE_NOOP("sketch2dowel", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1187,8 +1187,8 @@ class edge2dowel():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "edge2dowel.png"),
-				"MenuText": QT_TRANSLATE_NOOP("edge2dowelMenuText", "dowel from edge hole"),
-				"ToolTip" : QT_TRANSLATE_NOOP("edge2dowelToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("edge2dowel", "dowel from edge hole"),
+				"ToolTip" : QT_TRANSLATE_NOOP("edge2dowel", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1226,8 +1226,8 @@ class magicCut():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "magicCut.png"),
-				"MenuText": QT_TRANSLATE_NOOP("magicCutMenuText", "single panel cut by many knives with copies"),
-				"ToolTip" : QT_TRANSLATE_NOOP("magicCutToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("magicCut", "single panel cut by many knives with copies"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicCut", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1265,8 +1265,8 @@ class magicCutLinks():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "magicCutLinks.png"),
-				"MenuText": QT_TRANSLATE_NOOP("magicCutLinksMenuText", "single panel cut by many knives with links"),
-				"ToolTip" : QT_TRANSLATE_NOOP("magicCutLinksToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("magicCutLinks", "single panel cut by many knives with links"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicCutLinks", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1304,8 +1304,8 @@ class magicKnife():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "magicKnife.png"),
-				"MenuText": QT_TRANSLATE_NOOP("magicKnifeMenuText", "single knife cut many panels with copies"),
-				"ToolTip" : QT_TRANSLATE_NOOP("magicKnifeToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("magicKnife", "single knife cut many panels with copies"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicKnife", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1343,8 +1343,8 @@ class magicKnifeLinks():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "magicKnifeLinks.png"),
-				"MenuText": QT_TRANSLATE_NOOP("magicKnifeLinksMenuText", "single knife cut many panels with links"),
-				"ToolTip" : QT_TRANSLATE_NOOP("magicKnifeLinksToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("magicKnifeLinks", "single knife cut many panels with links"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicKnifeLinks", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1382,8 +1382,8 @@ class jointTenon():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "jointTenon.png"),
-				"MenuText": QT_TRANSLATE_NOOP("jointTenonMenuText", "joint, Tenon"),
-				"ToolTip" : QT_TRANSLATE_NOOP("jointTenonToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("jointTenon", "joint, Tenon"),
+				"ToolTip" : QT_TRANSLATE_NOOP("jointTenon", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1421,8 +1421,8 @@ class jointCustom():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "jointCustom.png"),
-				"MenuText": QT_TRANSLATE_NOOP("jointCustomMenuText", "joint, Custom"),
-				"ToolTip" : QT_TRANSLATE_NOOP("jointCustomToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("jointCustom", "joint, Custom"),
+				"ToolTip" : QT_TRANSLATE_NOOP("jointCustom", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1460,8 +1460,8 @@ class panel2frame():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panel2frame.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panel2frameMenuText", "cubes to frames"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panel2frameToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panel2frame", "cubes to frames"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panel2frame", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1499,8 +1499,8 @@ class cutTenons():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "cutTenons.png"),
-				"MenuText": QT_TRANSLATE_NOOP("cutTenonsMenuText", "cut all tenons from panel"),
-				"ToolTip" : QT_TRANSLATE_NOOP("cutTenonsToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("cutTenons", "cut all tenons from panel"),
+				"ToolTip" : QT_TRANSLATE_NOOP("cutTenons", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1538,8 +1538,8 @@ class grainH():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "grainH.png"),
-				"MenuText": QT_TRANSLATE_NOOP("grainHMenuText", "grain direction marker, horizontal"),
-				"ToolTip" : QT_TRANSLATE_NOOP("grainHToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("grainH", "grain direction marker, horizontal"),
+				"ToolTip" : QT_TRANSLATE_NOOP("grainH", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1577,8 +1577,8 @@ class grainV():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "grainV.png"),
-				"MenuText": QT_TRANSLATE_NOOP("grainVMenuText", "grain direction marker, vertical"),
-				"ToolTip" : QT_TRANSLATE_NOOP("grainVToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("grainV", "grain direction marker, vertical"),
+				"ToolTip" : QT_TRANSLATE_NOOP("grainV", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1616,8 +1616,8 @@ class grainX():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "grainX.png"),
-				"MenuText": QT_TRANSLATE_NOOP("grainXMenuText", "grain direction marker, no grain"),
-				"ToolTip" : QT_TRANSLATE_NOOP("grainXToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("grainX", "grain direction marker, no grain"),
+				"ToolTip" : QT_TRANSLATE_NOOP("grainX", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1655,8 +1655,8 @@ class magicCorner():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "magicCorner.png"),
-				"MenuText": QT_TRANSLATE_NOOP("magicCornerMenuText", "create corner connection"),
-				"ToolTip" : QT_TRANSLATE_NOOP("magicCornerToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("magicCorner", "create corner connection"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicCorner", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1694,8 +1694,8 @@ class showAlias():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "showAlias.png"),
-				"MenuText": QT_TRANSLATE_NOOP("showAliasMenuText", "select objects with alias"),
-				"ToolTip" : QT_TRANSLATE_NOOP("showAliasToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("showAlias", "select objects with alias"),
+				"ToolTip" : QT_TRANSLATE_NOOP("showAlias", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1733,8 +1733,8 @@ class magicMeasure():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "magicMeasure.png"),
-				"MenuText": QT_TRANSLATE_NOOP("magicMeasureMenuText", "magicMeasure"),
-				"ToolTip" : QT_TRANSLATE_NOOP("magicMeasureToolTip", "Quick measurement preview on hover or by selection."),
+				"MenuText": QT_TRANSLATE_NOOP("magicMeasure", "magicMeasure"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicMeasure", "Quick measurement preview on hover or by selection."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1772,8 +1772,8 @@ class fitModel():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "fitModel.png"),
-				"MenuText": QT_TRANSLATE_NOOP("fitModelMenuText", "fitModel"),
-				"ToolTip" : QT_TRANSLATE_NOOP("fitModelToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("fitModel", "fitModel"),
+				"ToolTip" : QT_TRANSLATE_NOOP("fitModel", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1811,8 +1811,8 @@ class showVertex():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "showVertex.png"),
-				"MenuText": QT_TRANSLATE_NOOP("showVertexMenuText", "showVertex"),
-				"ToolTip" : QT_TRANSLATE_NOOP("showVertexToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("showVertex", "showVertex"),
+				"ToolTip" : QT_TRANSLATE_NOOP("showVertex", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1850,8 +1850,8 @@ class selectVertex():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "selectVertex.png"),
-				"MenuText": QT_TRANSLATE_NOOP("selectVertexMenuText", "selectVertex"),
-				"ToolTip" : QT_TRANSLATE_NOOP("selectVertexToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("selectVertex", "selectVertex"),
+				"ToolTip" : QT_TRANSLATE_NOOP("selectVertex", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1889,8 +1889,8 @@ class roundCurve():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "roundCurve.png"),
-				"MenuText": QT_TRANSLATE_NOOP("roundCurveMenuText", "render curve precisely"),
-				"ToolTip" : QT_TRANSLATE_NOOP("roundCurveToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("roundCurve", "render curve precisely"),
+				"ToolTip" : QT_TRANSLATE_NOOP("roundCurve", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1928,8 +1928,8 @@ class panelDefaultXY():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelDefaultXY.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelDefaultXYMenuText", "panel, XY, 600x300, 18 thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelDefaultXYToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelDefaultXY", "panel, XY, 600x300, 18 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelDefaultXY", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -1967,8 +1967,8 @@ class panelDefaultYX():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelDefaultYX.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelDefaultYXMenuText", "panel, YX, 300x600, 18 thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelDefaultYXToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelDefaultYX", "panel, YX, 300x600, 18 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelDefaultYX", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2006,8 +2006,8 @@ class panelDefaultXZ():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelDefaultXZ.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelDefaultXZMenuText", "panel, XZ, 600x300, 18 thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelDefaultXZToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelDefaultXZ", "panel, XZ, 600x300, 18 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelDefaultXZ", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2045,8 +2045,8 @@ class panelDefaultZX():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelDefaultZX.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelDefaultZXMenuText", "panel, ZX, 300x600, 18 thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelDefaultZXToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelDefaultZX", "panel, ZX, 300x600, 18 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelDefaultZX", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2084,8 +2084,8 @@ class panelDefaultYZ():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelDefaultYZ.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelDefaultYZMenuText", "panel, YZ, 600x300, 18 thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelDefaultYZToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelDefaultYZ", "panel, YZ, 600x300, 18 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelDefaultYZ", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2123,8 +2123,8 @@ class panelDefaultZY():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelDefaultZY.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelDefaultZYMenuText", "panel, ZY, 300x600, 18 thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelDefaultZYToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelDefaultZY", "panel, ZY, 300x600, 18 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelDefaultZY", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2162,8 +2162,8 @@ class panelCopyXY():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelCopyXY.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelCopyXYMenuText", "copy panel, XY"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelCopyXYToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelCopyXY", "copy panel, XY"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelCopyXY", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2201,8 +2201,8 @@ class panelCopyYX():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelCopyYX.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelCopyYXMenuText", "copy panel, YX"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelCopyYXToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelCopyYX", "copy panel, YX"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelCopyYX", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2240,8 +2240,8 @@ class panelCopyXZ():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelCopyXZ.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelCopyXZMenuText", "copy panel, XZ"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelCopyXZToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelCopyXZ", "copy panel, XZ"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelCopyXZ", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2279,8 +2279,8 @@ class panelCopyZX():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelCopyZX.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelCopyZXMenuText", "copy panel, ZX"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelCopyZXToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelCopyZX", "copy panel, ZX"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelCopyZX", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2318,8 +2318,8 @@ class panelCopyYZ():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelCopyYZ.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelCopyYZMenuText", "copy panel, YZ"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelCopyYZToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelCopyYZ", "copy panel, YZ"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelCopyYZ", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2357,8 +2357,8 @@ class panelCopyZY():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelCopyZY.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelCopyZYMenuText", "copy panel, ZY"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelCopyZYToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelCopyZY", "copy panel, ZY"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelCopyZY", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2396,8 +2396,8 @@ class panelMoveXp():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelMoveXp.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelMoveXpMenuText", "panel, move, back"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelMoveXpToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelMoveXp", "panel, move, back"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelMoveXp", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2435,8 +2435,8 @@ class panelMoveXm():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelMoveXm.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelMoveXmMenuText", "panel, move, forward"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelMoveXmToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelMoveXm", "panel, move, forward"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelMoveXm", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2474,8 +2474,8 @@ class panelMoveYp():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelMoveYp.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelMoveYpMenuText", "panel, move, right"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelMoveYpToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelMoveYp", "panel, move, right"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelMoveYp", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2513,8 +2513,8 @@ class panelMoveYm():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelMoveYm.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelMoveYmMenuText", "panel, move, left"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelMoveYmToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelMoveYm", "panel, move, left"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelMoveYm", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2552,8 +2552,8 @@ class panelMoveZp():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelMoveZp.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelMoveZpMenuText", "panel, move, up"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelMoveZpToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelMoveZp", "panel, move, up"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelMoveZp", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2591,8 +2591,8 @@ class panelMoveZm():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelMoveZm.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelMoveZmMenuText", "panel, move, down"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelMoveZmToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelMoveZm", "panel, move, down"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelMoveZm", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2630,8 +2630,8 @@ class panelMove2Face():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelMove2Face.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelMove2FaceMenuText", "panel, move, to face"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelMove2FaceToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelMove2Face", "panel, move, to face"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelMove2Face", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2669,8 +2669,8 @@ class panelMove2Center():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelMove2Center.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelMove2CenterMenuText", "panel, move, to center"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelMove2CenterToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelMove2Center", "panel, move, to center"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelMove2Center", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2708,8 +2708,8 @@ class panelMove2Anchor():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelMove2Anchor.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelMove2AnchorMenuText", "panel, move, to anchor"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelMove2AnchorToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelMove2Anchor", "panel, move, to anchor"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelMove2Anchor", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2747,8 +2747,8 @@ class align2Curve():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "align2Curve.png"),
-				"MenuText": QT_TRANSLATE_NOOP("align2CurveMenuText", "align panel to curve"),
-				"ToolTip" : QT_TRANSLATE_NOOP("align2CurveToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("align2Curve", "align panel to curve"),
+				"ToolTip" : QT_TRANSLATE_NOOP("align2Curve", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2786,8 +2786,8 @@ class mapPosition():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "mapPosition.png"),
-				"MenuText": QT_TRANSLATE_NOOP("mapPositionMenuText", "move to 1st selected"),
-				"ToolTip" : QT_TRANSLATE_NOOP("mapPositionToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("mapPosition", "move to 1st selected"),
+				"ToolTip" : QT_TRANSLATE_NOOP("mapPosition", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2825,8 +2825,8 @@ class magicResizer():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "magicResizer.png"),
-				"MenuText": QT_TRANSLATE_NOOP("magicResizerMenuText", "magicResizer, smart resizer tool"),
-				"ToolTip" : QT_TRANSLATE_NOOP("magicResizerToolTip", "This tool allows to resize object via selected edge or to the nearest face of other object."),
+				"MenuText": QT_TRANSLATE_NOOP("magicResizer", "magicResizer, smart resizer tool"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicResizer", "This tool allows to resize object via selected edge or to the nearest face of other object."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2864,8 +2864,8 @@ class showConstraints():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "showConstraints.png"),
-				"MenuText": QT_TRANSLATE_NOOP("showConstraintsMenuText", "select edges equal to constraints"),
-				"ToolTip" : QT_TRANSLATE_NOOP("showConstraintsToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("showConstraints", "select edges equal to constraints"),
+				"ToolTip" : QT_TRANSLATE_NOOP("showConstraints", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2903,8 +2903,8 @@ class panelResize1():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelResize1.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelResize1MenuText", "panel, bigger, long+"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelResize1ToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelResize1", "panel, bigger, long+"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelResize1", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2942,8 +2942,8 @@ class panelResize2():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelResize2.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelResize2MenuText", "panel, smaller, long-"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelResize2ToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelResize2", "panel, smaller, long-"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelResize2", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -2981,8 +2981,8 @@ class panelResize3():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelResize3.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelResize3MenuText", "panel, bigger, short+"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelResize3ToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelResize3", "panel, bigger, short+"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelResize3", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3020,8 +3020,8 @@ class panelResize4():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelResize4.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelResize4MenuText", "panel, smaller, short-"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelResize4ToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelResize4", "panel, smaller, short-"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelResize4", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3059,8 +3059,8 @@ class panelResize5():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelResize5.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelResize5MenuText", "panel, bigger, thickness+"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelResize5ToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelResize5", "panel, bigger, thickness+"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelResize5", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3098,8 +3098,8 @@ class panelResize6():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelResize6.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelResize6MenuText", "panel, smaller, thickness-"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelResize6ToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelResize6", "panel, smaller, thickness-"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelResize6", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3137,8 +3137,8 @@ class panelSideLeft():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelSideLeft.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelSideLeftMenuText", "panel, side, left"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelSideLeftToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelSideLeft", "panel, side, left"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelSideLeft", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3176,8 +3176,8 @@ class panelSideLeftUP():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelSideLeftUP.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelSideLeftUPMenuText", "panel, side, left, up"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelSideLeftUPToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelSideLeftUP", "panel, side, left, up"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelSideLeftUP", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3215,8 +3215,8 @@ class panelSideRight():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelSideRight.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelSideRightMenuText", "panel, side, right"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelSideRightToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelSideRight", "panel, side, right"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelSideRight", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3254,8 +3254,8 @@ class panelSideRightUP():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelSideRightUP.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelSideRightUPMenuText", "panel, side, right, up"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelSideRightUPToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelSideRightUP", "panel, side, right, up"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelSideRightUP", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3293,8 +3293,8 @@ class panelBackOut():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelBackOut.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelBackOutMenuText", "panel, back, out"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelBackOutToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelBackOut", "panel, back, out"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelBackOut", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3332,8 +3332,8 @@ class panelCoverXY():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelCoverXY.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelCoverXYMenuText", "panel, top, cover"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelCoverXYToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelCoverXY", "panel, top, cover"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelCoverXY", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3371,8 +3371,8 @@ class routerCove():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "routerCove.png"),
-				"MenuText": QT_TRANSLATE_NOOP("routerCoveMenuText", "edge to cove, thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("routerCoveToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("routerCove", "edge to cove, thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerCove", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3410,8 +3410,8 @@ class routerCove2():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "routerCove2.png"),
-				"MenuText": QT_TRANSLATE_NOOP("routerCove2MenuText", "edge to cove, 1/2 thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("routerCove2ToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("routerCove2", "edge to cove, 1/2 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerCove2", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3449,8 +3449,8 @@ class routerCove4():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "routerCove4.png"),
-				"MenuText": QT_TRANSLATE_NOOP("routerCove4MenuText", "edge to cove, 1/4 thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("routerCove4ToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("routerCove4", "edge to cove, 1/4 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerCove4", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3488,8 +3488,8 @@ class routerRoundOver():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "routerRoundOver.png"),
-				"MenuText": QT_TRANSLATE_NOOP("routerRoundOverMenuText", "edge to round over, thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("routerRoundOverToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("routerRoundOver", "edge to round over, thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerRoundOver", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3527,8 +3527,8 @@ class routerRoundOver2():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "routerRoundOver2.png"),
-				"MenuText": QT_TRANSLATE_NOOP("routerRoundOver2MenuText", "edge to round over, 1/2 thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("routerRoundOver2ToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("routerRoundOver2", "edge to round over, 1/2 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerRoundOver2", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3566,8 +3566,8 @@ class routerRoundOver4():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "routerRoundOver4.png"),
-				"MenuText": QT_TRANSLATE_NOOP("routerRoundOver4MenuText", "edge to round over, 1/4 thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("routerRoundOver4ToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("routerRoundOver4", "edge to round over, 1/4 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerRoundOver4", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3605,8 +3605,8 @@ class routerStraight2():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "routerStraight2.png"),
-				"MenuText": QT_TRANSLATE_NOOP("routerStraight2MenuText", "edge to straight, 1/2 thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("routerStraight2ToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("routerStraight2", "edge to straight, 1/2 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerStraight2", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3644,8 +3644,8 @@ class routerStraight3():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "routerStraight3.png"),
-				"MenuText": QT_TRANSLATE_NOOP("routerStraight3MenuText", "edge to straight, 1/3 thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("routerStraight3ToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("routerStraight3", "edge to straight, 1/3 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerStraight3", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3683,8 +3683,8 @@ class routerStraight4():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "routerStraight4.png"),
-				"MenuText": QT_TRANSLATE_NOOP("routerStraight4MenuText", "edge to straight, 1/4 thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("routerStraight4ToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("routerStraight4", "edge to straight, 1/4 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerStraight4", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3722,8 +3722,8 @@ class routerChamfer():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "routerChamfer.png"),
-				"MenuText": QT_TRANSLATE_NOOP("routerChamferMenuText", "edge to chamfer, thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("routerChamferToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("routerChamfer", "edge to chamfer, thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerChamfer", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3761,8 +3761,8 @@ class routerChamfer2():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "routerChamfer2.png"),
-				"MenuText": QT_TRANSLATE_NOOP("routerChamfer2MenuText", "edge to chamfer, 1/2 thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("routerChamfer2ToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("routerChamfer2", "edge to chamfer, 1/2 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerChamfer2", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3800,8 +3800,8 @@ class routerChamfer4():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "routerChamfer4.png"),
-				"MenuText": QT_TRANSLATE_NOOP("routerChamfer4MenuText", "edge to chamfer, 1/4 thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("routerChamfer4ToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("routerChamfer4", "edge to chamfer, 1/4 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("routerChamfer4", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3839,8 +3839,8 @@ class multiPocket():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "multiPocket.png"),
-				"MenuText": QT_TRANSLATE_NOOP("multiPocketMenuText", "multi Sketch to Pocket, thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("multiPocketToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("multiPocket", "multi Sketch to Pocket, thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("multiPocket", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3878,8 +3878,8 @@ class multiPocket2():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "multiPocket2.png"),
-				"MenuText": QT_TRANSLATE_NOOP("multiPocket2MenuText", "multi Sketch to Pocket, 1/2 thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("multiPocket2ToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("multiPocket2", "multi Sketch to Pocket, 1/2 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("multiPocket2", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3917,8 +3917,8 @@ class multiPocket4():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "multiPocket4.png"),
-				"MenuText": QT_TRANSLATE_NOOP("multiPocket4MenuText", "multi Sketch to Pocket, 1/4 thickness"),
-				"ToolTip" : QT_TRANSLATE_NOOP("multiPocket4ToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("multiPocket4", "multi Sketch to Pocket, 1/4 thickness"),
+				"ToolTip" : QT_TRANSLATE_NOOP("multiPocket4", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3956,8 +3956,8 @@ class panel2pad():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panel2pad.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panel2padMenuText", "cube to pad"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panel2padToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panel2pad", "cube to pad"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panel2pad", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3995,8 +3995,8 @@ class sketch2clone():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "sketch2clone.png"),
-				"MenuText": QT_TRANSLATE_NOOP("sketch2cloneMenuText", "convert sketches to clones"),
-				"ToolTip" : QT_TRANSLATE_NOOP("sketch2cloneToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("sketch2clone", "convert sketches to clones"),
+				"ToolTip" : QT_TRANSLATE_NOOP("sketch2clone", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4034,8 +4034,8 @@ class panel2profile():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panel2profile.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panel2profileMenuText", "construction profile"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panel2profileToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panel2profile", "construction profile"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panel2profile", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4073,8 +4073,8 @@ class panel2angle():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panel2angle.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panel2angleMenuText", "construction angle"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panel2angleToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panel2angle", "construction angle"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panel2angle", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4112,8 +4112,8 @@ class panel2angle45cut():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panel2angle45cut.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panel2angle45cutMenuText", "construction angle 45 cut"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panel2angle45cutToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panel2angle45cut", "construction angle 45 cut"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panel2angle45cut", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4151,8 +4151,8 @@ class cornerBlock():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "cornerBlock.png"),
-				"MenuText": QT_TRANSLATE_NOOP("cornerBlockMenuText", "table corner block"),
-				"ToolTip" : QT_TRANSLATE_NOOP("cornerBlockToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("cornerBlock", "table corner block"),
+				"ToolTip" : QT_TRANSLATE_NOOP("cornerBlock", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4190,8 +4190,8 @@ class cornerBrace():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "cornerBrace.png"),
-				"MenuText": QT_TRANSLATE_NOOP("cornerBraceMenuText", "table corner brace"),
-				"ToolTip" : QT_TRANSLATE_NOOP("cornerBraceToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("cornerBrace", "table corner brace"),
+				"ToolTip" : QT_TRANSLATE_NOOP("cornerBrace", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4229,8 +4229,8 @@ class panelFaceXY():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelFaceXY.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelFaceXYMenuText", "copy panel, face, XY"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelFaceXYToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelFaceXY", "copy panel, face, XY"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelFaceXY", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4268,8 +4268,8 @@ class panelFaceYX():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelFaceYX.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelFaceYXMenuText", "copy panel, face, YX"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelFaceYXToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelFaceYX", "copy panel, face, YX"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelFaceYX", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4307,8 +4307,8 @@ class panelFaceXZ():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelFaceXZ.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelFaceXZMenuText", "copy panel, face, XZ"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelFaceXZToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelFaceXZ", "copy panel, face, XZ"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelFaceXZ", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4346,8 +4346,8 @@ class panelFaceZX():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelFaceZX.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelFaceZXMenuText", "copy panel, face, ZX"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelFaceZXToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelFaceZX", "copy panel, face, ZX"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelFaceZX", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4385,8 +4385,8 @@ class panelFaceYZ():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelFaceYZ.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelFaceYZMenuText", "copy panel, face, YZ"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelFaceYZToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelFaceYZ", "copy panel, face, YZ"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelFaceYZ", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4424,8 +4424,8 @@ class panelFaceZY():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelFaceZY.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelFaceZYMenuText", "copy panel, face, ZY"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelFaceZYToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelFaceZY", "copy panel, face, ZY"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelFaceZY", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4463,8 +4463,8 @@ class panelBetweenXY():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelBetweenXY.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelBetweenXYMenuText", "panel, between, XY"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelBetweenXYToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelBetweenXY", "panel, between, XY"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelBetweenXY", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4502,8 +4502,8 @@ class panelBetweenYX():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelBetweenYX.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelBetweenYXMenuText", "panel, between, YX"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelBetweenYXToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelBetweenYX", "panel, between, YX"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelBetweenYX", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4541,8 +4541,8 @@ class panelBetweenXZ():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelBetweenXZ.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelBetweenXZMenuText", "panel, between, XZ"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelBetweenXZToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelBetweenXZ", "panel, between, XZ"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelBetweenXZ", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4580,8 +4580,8 @@ class panelBetweenZX():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelBetweenZX.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelBetweenZXMenuText", "panel, between, ZX"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelBetweenZXToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelBetweenZX", "panel, between, ZX"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelBetweenZX", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4619,8 +4619,8 @@ class panelBetweenYZ():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelBetweenYZ.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelBetweenYZMenuText", "panel, between, YZ"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelBetweenYZToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelBetweenYZ", "panel, between, YZ"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelBetweenYZ", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4658,8 +4658,8 @@ class panelBetweenZY():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelBetweenZY.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelBetweenZYMenuText", "panel, between, ZY"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panelBetweenZYToolTip", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panelBetweenZY", "panel, between, ZY"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelBetweenZY", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):

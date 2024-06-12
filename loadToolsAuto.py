@@ -34,8 +34,8 @@ class '''+arr[i+1]+'''():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "'''+arr[i+1]+'''.'''+arr[i+2]+'''"),
-				"MenuText": QT_TRANSLATE_NOOP("'''+arr[i+1]+'''MenuText", "'''+arr[i+3]+'''"),
-				"ToolTip" : QT_TRANSLATE_NOOP("'''+arr[i+1]+'''ToolTip", "'''+arr[i+4]+'''"),
+				"MenuText": QT_TRANSLATE_NOOP("'''+arr[i+1]+'''", "'''+arr[i+3]+'''"),
+				"ToolTip" : QT_TRANSLATE_NOOP("'''+arr[i+1]+'''", "'''+arr[i+4]+'''"),
 				"Accel"   : "" }
 
 	def Activated(self):
