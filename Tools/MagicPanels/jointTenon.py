@@ -3,9 +3,6 @@ import MagicPanels
 
 translate = FreeCAD.Qt.translate
 
-def QT_TRANSLATE_NOOP(context, text):
-	return text
-
 try:
 
 	selection = FreeCADGui.Selection.getSelection()
@@ -65,7 +62,7 @@ try:
 			MagicPanels.moveToFirst([ joint ], objRef)
 
 			if not hasattr(joint, "BOM"):
-				info = QT_TRANSLATE_NOOP("App::Property", "Allows to skip at BOM, cut-list report.")
+				info = translate("jointTenon", "Allows to skip tenon at BOM, cut-list report.")
 				joint.addProperty("App::PropertyBool", "BOM", "Woodworking", info)
 		
 			joint.BOM = False
@@ -82,7 +79,7 @@ except:
 	
 	info = ""
 	
-	info += translate('jointTenonInfo', '<b>Please select face to create Tenon joint at the selected face. </b><br><br><b>Note:</b> This tool allows to create quick tenon joint at selected face. You can select multiple faces at single object or multiple faces at multiple objects. The tenon joint offset is 1/4 of the object thickness. The tenon joint is hidden inside the object equally to the visible part. So, you can cut the tenon also at the object and create removable joint similar to the dowels. Tenons have special attribute, so they are not listed at cut-list report.')
+	info += translate('jointTenon', '<b>Please select face to create Tenon joint at the selected face. </b><br><br><b>Note:</b> This tool allows to create quick tenon joint at selected face. You can select multiple faces at single object or multiple faces at multiple objects. The tenon joint offset is 1/4 of the object thickness. The tenon joint is hidden inside the object equally to the visible part. So, you can cut the tenon also at the object and create removable joint similar to the dowels. Tenons have special attribute, so they are not listed at cut-list report.')
 
 	MagicPanels.showInfo("jointTenon", info)
 

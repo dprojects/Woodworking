@@ -70,6 +70,6 @@ except:
 	if gObserver != "":
 		FreeCADGui.Selection.removeObserver(gObserver)
 	
-	info = translate('selectVertexInfo', '<b>Please select Face or Edge to select nearest Vertex. </b><br><br><b>Note:</b> This tool helps vertex selection. If you click this tool icon the tool activates observer and listen for your selection. If you select Face or Edge the nearest Vertex will be selected instead. If you select Vertex the Vertex will stay selected. The observer is closed after selection so this help works only once to not disturb face or edge selection later. If you want select more vertices with help of this tool, you have to hold left CTRL key during Edge or Face selection, you can also hold it during icon click. ')
+	info = translate('selectVertex', '<b>Please select Face or Edge to select nearest Vertex. </b><br><br><b>Note:</b> This tool helps vertex selection. If you click this tool icon the tool activates observer and listen for your selection. If you select Face or Edge the nearest Vertex will be selected instead. If you select Vertex the Vertex will stay selected. The observer is closed after selection so this help works only once to not disturb face or edge selection later. If you want select more vertices with help of this tool, you have to hold left CTRL key during Edge or Face selection, you can also hold it during icon click. ')
 	
 	MagicPanels.showInfo("selectVertex", info)

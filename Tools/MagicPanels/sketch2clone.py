@@ -55,7 +55,7 @@ except:
 	
 	info = ""
 	
-	info += translate('sketch2cloneInfo', '<b>Please select valid sketches to make parametric model. </b><br><br><b>Note:</b> This tool allows to replace selected Sketches with Clones and thanks to it, convert static model to parametric. First selected Sketch will be changed into "Parametric Pattern" for all other selected Sketches. After this operation, if you change the "Parametric Pattern" all other Sketches will be automatically updated with new pattern. For example if you have Pad, it will change the shape. Make sure the center of coordinate axes XYZ for each selected Sketch is in the middle of the pattern, this will allow for correct positioning of the Sketches. To select more objects hold left CTRL key during selection. For more complicated objects use panel2link or panel2clone at the whole Part. ')
+	info += translate('sketch2clone', '<b>Please select valid sketches to make parametric model. </b><br><br><b>Note:</b> This tool allows to replace selected Sketches with Clones and thanks to it, convert static model to parametric. First selected Sketch will be changed into "Parametric Pattern" for all other selected Sketches. After this operation, if you change the "Parametric Pattern" all other Sketches will be automatically updated with new pattern. For example if you have Pad, it will change the shape. Make sure the center of coordinate axes XYZ for each selected Sketch is in the middle of the pattern, this will allow for correct positioning of the Sketches. To select more objects hold left CTRL key during selection. For more complicated objects use panel2link or panel2clone at the whole Part. ')
 
 	MagicPanels.showInfo("sketch2clone", info)
 

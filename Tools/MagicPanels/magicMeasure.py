@@ -5,7 +5,6 @@ import MagicPanels
 
 translate = FreeCAD.Qt.translate
 
-
 # ###################################################################################################################
 #
 # Globals are good as pizza ;-)

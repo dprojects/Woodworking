@@ -4783,7 +4783,7 @@ def makeCuts(iObjects):
 		copy.Label = getNestingLabel(o, "Copy")
 		
 		if not hasattr(copy, "BOM"):
-			info = QT_TRANSLATE_NOOP("App::Property", "Allows to skip this duplicated copy in BOM, cut-list report.")
+			info = translate("makeCuts", "Allows to skip this duplicated copy in BOM, cut-list report.")
 			copy.addProperty("App::PropertyBool", "BOM", "Woodworking", info)
 		
 		copy.BOM = False
@@ -4843,7 +4843,7 @@ def makeCutsLinks(iObjects):
 		copy.Label = getNestingLabel(o, "Copy")
 
 		if not hasattr(copy, "BOM"):
-			info = QT_TRANSLATE_NOOP("App::Property", "Allows to skip this duplicated copy in BOM, cut-list report.")
+			info = translate("makeCutsLinks", "Allows to skip this duplicated copy in BOM, cut-list report.")
 			copy.addProperty("App::PropertyBool", "BOM", "Woodworking", info)
 
 		copy.BOM = False

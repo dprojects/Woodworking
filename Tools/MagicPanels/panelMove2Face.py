@@ -55,7 +55,7 @@ except:
 	
 	info = ""
 
-	info += translate('panelMove2FaceInfo', '<b>First select face, and next object that should be aligned to the face position. </b><br><br><b>Note:</b> This tool allows to align panels or any other objects to face position. You can select objects at objects Tree window holding left CTRL key. This tool allows to avoid thickness step problem, if you want to move panel to the other edge but the way is not a multiple of the panel thickness. For rotated containers use panelMove2Anchor.')
+	info += translate('panelMove2Face', '<b>First select face, and next object that should be aligned to the face position. </b><br><br><b>Note:</b> This tool allows to align panels or any other objects to face position. You can select objects at objects Tree window holding left CTRL key. This tool allows to avoid thickness step problem, if you want to move panel to the other edge but the way is not a multiple of the panel thickness. For rotated containers use panelMove2Anchor.')
 	
 	MagicPanels.showInfo("panelMove2Face", info)
 

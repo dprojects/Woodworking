@@ -2,7 +2,6 @@ import FreeCAD, FreeCADGui
 import MagicPanels
 
 translate = FreeCAD.Qt.translate
-
 curvePoints = []
 
 # ###################################################################################################################
@@ -185,7 +184,7 @@ except:
 	
 	info = ""
 
-	info += translate('align2CurveInfo', '<b>First select curve, next select edge at each object you want to align.</b> Also to align panel to the curve you can <b>First select curve, next select vertex at each object you want to align, this might be slower.</b></b><br><br><b>Note:</b> This tool allows to align panels to the curve. It has been created for magicMove Copy Path option, to align panels to the curve. To select more objects hold left CTRL key during selection. To use this tool the panel need to have only single axis rotation offset. For example if you rotate panel 35 degrees around Y axis the vertex will touch the curve. This tool not works if you need to rotate the panel additionally, for example 15 degrees around X axis. For more details see description at documentation page.')
+	info += translate('align2Curve', '<b>First select curve, next select edge at each object you want to align.</b> Also to align panel to the curve you can <b>First select curve, next select vertex at each object you want to align, this might be slower.</b></b><br><br><b>Note:</b> This tool allows to align panels to the curve. It has been created for magicMove Copy Path option, to align panels to the curve. To select more objects hold left CTRL key during selection. To use this tool the panel need to have only single axis rotation offset. For example if you rotate panel 35 degrees around Y axis the vertex will touch the curve. This tool not works if you need to rotate the panel additionally, for example 15 degrees around X axis. For more details see description at documentation page.')
 	
 	MagicPanels.showInfo("align2Curve", info)
 

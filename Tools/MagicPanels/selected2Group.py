@@ -22,6 +22,6 @@ except:
 	
 	info = ""
 	
-	info += translate('selected2GroupInfo', '<b>Please select objects to create Group. </b><br><br><b>Note:</b> This tool call FreeCAD Group command. The group name is from first selected object. To select more objects hold left CTRL key during selection.')
+	info += translate('selected2Group', '<b>Please select objects to create Group. </b><br><br><b>Note:</b> This tool call FreeCAD Group command. The group name is from first selected object. To select more objects hold left CTRL key during selection.')
 
 	MagicPanels.showInfo("selected2Group", info)

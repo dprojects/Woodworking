@@ -69,7 +69,7 @@ except:
 	
 	info = ""
 	
-	info += translate('cornerBraceInfo', '<b>Please select single edge at each panel you want to change into corner brace. </b><br><br><b>Note:</b> This tool allows to create corner brace from selected edge (the single visible edge). The cut size will be the panel thickness for the first edge and for the second edge half of the thickness. So, you get nice looking corner brace with single click. For example you can create Cube 100 mm x 100 mm x 100 mm in the corner of the table to support table leg, and you can change it into corner brace, quickly with single click. You can replace more than one panel at once. Hold left CTRL key during edges selection.')
+	info += translate('cornerBrace', '<b>Please select single edge at each panel you want to change into corner brace. </b><br><br><b>Note:</b> This tool allows to create corner brace from selected edge (the single visible edge). The cut size will be the panel thickness for the first edge and for the second edge half of the thickness. So, you get nice looking corner brace with single click. For example you can create Cube 100 mm x 100 mm x 100 mm in the corner of the table to support table leg, and you can change it into corner brace, quickly with single click. You can replace more than one panel at once. Hold left CTRL key during edges selection.')
 
 	MagicPanels.showInfo("cornerBrace", info)
 

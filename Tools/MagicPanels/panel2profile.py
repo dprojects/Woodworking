@@ -74,7 +74,7 @@ except:
 	
 	info = ""
 	
-	info += translate('panel2profileInfo', '<b>Please select valid Cube or Pad object imitating profile. The selected Cube or Pad objects need to have two equal sizes e.g. 20 mm x 20 mm x 300 mm to replace it with construction profile. </b><br><br><b>Note:</b> This tool allows to replace panel with construction profile. You can replace more than one panel at once. To select more panels hold left CTRL key during selection. The new created construction profile will get the same dimensions, placement and rotation as the selected panel. If you have all construction created with simple panel objects that imitating profiles, you can replace all of them with realistic looking construction profiles with single click.')
+	info += translate('panel2profile', '<b>Please select valid Cube or Pad object imitating profile. The selected Cube or Pad objects need to have two equal sizes e.g. 20 mm x 20 mm x 300 mm to replace it with construction profile. </b><br><br><b>Note:</b> This tool allows to replace panel with construction profile. You can replace more than one panel at once. To select more panels hold left CTRL key during selection. The new created construction profile will get the same dimensions, placement and rotation as the selected panel. If you have all construction created with simple panel objects that imitating profiles, you can replace all of them with realistic looking construction profiles with single click.')
 
 	MagicPanels.showInfo("panel2profile", info)
 

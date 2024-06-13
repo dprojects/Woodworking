@@ -36,6 +36,6 @@ except:
 	
 	info = ""
 	
-	info += translate('selected2OutsideInfo', '<b>Please select objects to move them outside all containers to the root folder. </b><br><br><b>Note:</b> This tool allows you to get out the selected objects from containers. Normally, if you get out object from the container manually, the object will change place and rotation. This tool allows you to move the objects and keep the same position and rotation. This feature might be very useful if automatic movement to container is not what you want. For example you want single element to no longer be mirrored or further processed with other objects inside the container. To select more objects hold left CTRL key during selection.')
+	info += translate('selected2Outside', '<b>Please select objects to move them outside all containers to the root folder. </b><br><br><b>Note:</b> This tool allows you to get out the selected objects from containers. Normally, if you get out object from the container manually, the object will change place and rotation. This tool allows you to move the objects and keep the same position and rotation. This feature might be very useful if automatic movement to container is not what you want. For example you want single element to no longer be mirrored or further processed with other objects inside the container. To select more objects hold left CTRL key during selection.')
 
 	MagicPanels.showInfo("selected2Outside", info)

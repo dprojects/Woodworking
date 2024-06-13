@@ -3,9 +3,6 @@ import MagicPanels
 
 translate = FreeCAD.Qt.translate
 
-def QT_TRANSLATE_NOOP(context, text):
-	return text
-
 try:
 
 	objects = FreeCADGui.Selection.getSelection()
@@ -28,7 +25,7 @@ try:
 		knifeCopy.Label = MagicPanels.getNestingLabel(knife, "Knife")
 		
 		if not hasattr(knifeCopy, "BOM"):
-			info = QT_TRANSLATE_NOOP("App::Property", "Allows to skip this duplicated copy in BOM, cut-list report.")
+			info = translate("magicKnife", "Allows to skip this duplicated copy in BOM, cut-list report.")
 			knifeCopy.addProperty("App::PropertyBool", "BOM", "Woodworking", info)
 		
 		knifeCopy.BOM = False

@@ -4,9 +4,6 @@ import MagicPanels
 
 translate = FreeCAD.Qt.translate
 
-def QT_TRANSLATE_NOOP(context, text):
-	return text
-
 try:
 
 	objects = FreeCADGui.Selection.getSelection()
@@ -27,8 +24,7 @@ try:
 		i = i + 1
 		
 		if not hasattr(o, "Grain"):
-			info = QT_TRANSLATE_NOOP("App::PropertyStringList", 
-							"face grain direction information, h - horizontal, v - vertical, x - no grain direction")
+			info = translate("grainX", "face grain direction, h - horizontal, v - vertical, x - no grain")
 			o.addProperty("App::PropertyStringList", "Grain", "Woodworking", info)
 
 		if len(o.Grain) == len(o.Shape.Faces):
@@ -136,6 +132,6 @@ except:
 	
 	info = ""
 	
-	info += translate('grainXInfo', '<b>Please select face to create no grain direction description. </b><br><br><b>Note:</b> This tool creates no grain direction description at selected face. You can select multiple faces and multiple objects. Hold left CTRL key during selection. The Grain attribute will be added to the object. After adding grain direction description the object can be moved and the grain description will be moved together with the object.')
+	info += translate('grainX', '<b>Please select face to create no grain direction description. </b><br><br><b>Note:</b> This tool creates no grain direction description at selected face. You can select multiple faces and multiple objects. Hold left CTRL key during selection. The Grain attribute will be added to the object. After adding grain direction description the object can be moved and the grain description will be moved together with the object.')
 
 	MagicPanels.showInfo("grainX", info)

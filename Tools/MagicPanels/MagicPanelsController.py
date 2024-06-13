@@ -14,9 +14,6 @@ import MagicPanels
 
 translate = FreeCAD.Qt.translate
 
-def QT_TRANSLATE_NOOP(context, text):
-	return text
-
 
 # ###################################################################################################################
 def panelDefault(iType):
@@ -64,7 +61,7 @@ def panelDefault(iType):
 	
 		info = ""
 		
-		info += translate('panelDefaultInfo', '<b>To create default panel, first create active document. </b><br><br><b>Note:</b> This tool creates default panel that can be easily resized. You can clearly see where should be the thickness to keep exact panel XYZ axis orientation. All furniture elements should be created according to the XYZ axis plane, if possible. Avoid building whole furniture with rotated elements. If you want to rotate panel with dowels, better create panel with dowels without rotation, pack panel with dowels into LinkGroup, and use magicAngle to rotate whole LinkGroup. You can rotate whole furniture like this with single click.')
+		info += translate('panelDefault', '<b>To create default panel, first create active document. </b><br><br><b>Note:</b> This tool creates default panel that can be easily resized. You can clearly see where should be the thickness to keep exact panel XYZ axis orientation. All furniture elements should be created according to the XYZ axis plane, if possible. Avoid building whole furniture with rotated elements. If you want to rotate panel with dowels, better create panel with dowels without rotation, pack panel with dowels into LinkGroup, and use magicAngle to rotate whole LinkGroup. You can rotate whole furniture like this with single click.')
 
 		MagicPanels.showInfo("panelDefault"+iType, info)
 
@@ -92,7 +89,7 @@ def panelCopy(iType):
 
 		info = ""
 		
-		info += translate('panelCopyInfo', '<b>To create copy of panel in exact direction, select valid panel first. </b><br><br><b>Note:</b> This tool copy selected panel into exact XYZ axis orientation. By default you can copy any panel based on Cube object. If you want to copy Pad, you need to have Constraints named "SizeX" and "SizeY" at the Sketch. For custom objects types you need to have Length, Width, Height properties at object (Group: "Base", Type: "App::PropertyLength"). The new panel will be created at (0, 0, 0) coordinate XYZ axis position. You can use mapPosition tool to move the new panel to the original panel position. To copy panel without changing orientation, you can use magicMove tool or CTRL-C and CTRL-V keys with arrows to move the copy.') 
+		info += translate('panelCopy', '<b>To create copy of panel in exact direction, select valid panel first. </b><br><br><b>Note:</b> This tool copy selected panel into exact XYZ axis orientation. By default you can copy any panel based on Cube object. If you want to copy Pad, you need to have Constraints named "SizeX" and "SizeY" at the Sketch. For custom objects types you need to have Length, Width, Height properties at object (Group: "Base", Type: "App::PropertyLength"). The new panel will be created at (0, 0, 0) coordinate XYZ axis position. You can use mapPosition tool to move the new panel to the original panel position. To copy panel without changing orientation, you can use magicMove tool or CTRL-C and CTRL-V keys with arrows to move the copy.') 
 
 		MagicPanels.showInfo("panelCopy"+iType, info)
 
@@ -140,7 +137,7 @@ def panelFace(iType):
 		
 		info = ""
 		
-		info += translate('panelFaceInfo', '<b>Please select face to create panel. </b><br><br><b>Note:</b> This tool creates new panel at selected face. The blue panel represents the selected object and the red one represents the new created object. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view. The new created panel will get the same dimensions as panel of the selected face. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
+		info += translate('panelFace', '<b>Please select face to create panel. </b><br><br><b>Note:</b> This tool creates new panel at selected face. The blue panel represents the selected object and the red one represents the new created object. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view. The new created panel will get the same dimensions as panel of the selected face. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
 
 		MagicPanels.showInfo("panelFace"+iType, info)
 
@@ -198,7 +195,7 @@ def panelBetween(iType):
 		
 		info = ""
 		
-		info += translate('panelBetweenInfo', '<b>Please select two valid faces at two different valid objects, to create panel between them. </b><br><br><b>Note:</b> This tool creates new panel between two selected faces. Selection faces order is important. To select more than one face, hold left CTRL key during second face selection. The blue panels represents the selected objects and the red one represents the new created object. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view.  If the two selected panels will be matching the icon, the new created panel should fill the gap between the selected faces. You can experiment with selection faces outside to resize the new panel. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
+		info += translate('panelBetween', '<b>Please select two valid faces at two different valid objects, to create panel between them. </b><br><br><b>Note:</b> This tool creates new panel between two selected faces. Selection faces order is important. To select more than one face, hold left CTRL key during second face selection. The blue panels represents the selected objects and the red one represents the new created object. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view.  If the two selected panels will be matching the icon, the new created panel should fill the gap between the selected faces. You can experiment with selection faces outside to resize the new panel. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
 
 		MagicPanels.showInfo("panelBetween"+iType, info)
 
@@ -264,7 +261,7 @@ def panelSide(iType):
 		
 		info = ""
 		
-		info += translate('panelSideInfo', '<b>Please select valid face, to create panel. </b><br><br><b>Note:</b> This tool creates new panel at selected face. The blue panel represents the selected object and the red one represents the new created object. The arrow describe if the panel will be created up or down. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
+		info += translate('panelSide', '<b>Please select valid face, to create panel. </b><br><br><b>Note:</b> This tool creates new panel at selected face. The blue panel represents the selected object and the red one represents the new created object. The arrow describe if the panel will be created up or down. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
 
 		if iType == "1":
 			MagicPanels.showInfo("panelSideLeft", info)
@@ -329,7 +326,7 @@ def panelBackOut():
 			
 		info = ""
 		
-		info += translate('panelBackOutInfo', '<b>Please select three faces according to the icon. </b><br><br><b>Note:</b> This tool allows to create back of the furniture with single click. To create back of the furniture you have to select 3 faces in the order described by the icon. To select more than one face, hold left CTRL key during face selection. The red edges at blue panels represents the selected faces. The transparent red panel represents the new created object. The icon refers to the back of the furniture.')
+		info += translate('panelBackOut', '<b>Please select three faces according to the icon. </b><br><br><b>Note:</b> This tool allows to create back of the furniture with single click. To create back of the furniture you have to select 3 faces in the order described by the icon. To select more than one face, hold left CTRL key during face selection. The red edges at blue panels represents the selected faces. The transparent red panel represents the new created object. The icon refers to the back of the furniture.')
 		
 		MagicPanels.showInfo("panelBackOut", info)
 
@@ -383,7 +380,7 @@ def panelCover(iType):
 		
 		info = ""
 		
-		info += translate('panelCoverInfo', '<b>Please select three faces according to the icon. </b><br><br><b>Note:</b> This tool allows to create top cover of the furniture with single click. To create top cover of the furniture you have to select 3 faces in the order described by the icon. To select more than one face, hold left CTRL key during face selection. The red edges at blue panels represents the selected faces. The transparent red panel represents the new created object. The icon refers to the base XY model view (0 key position). Click fitModel to set model into referred view.')
+		info += translate('panelCover', '<b>Please select three faces according to the icon. </b><br><br><b>Note:</b> This tool allows to create top cover of the furniture with single click. To create top cover of the furniture you have to select 3 faces in the order described by the icon. To select more than one face, hold left CTRL key during face selection. The red edges at blue panels represents the selected faces. The transparent red panel represents the new created object. The icon refers to the base XY model view (0 key position). Click fitModel to set model into referred view.')
 
 		MagicPanels.showInfo("panelCover"+iType, info)
 
@@ -442,7 +439,7 @@ def panelMove(iType):
 		
 		info = ""
 		
-		info += translate('panelMoveInfo', '<b>Please select valid objects to move. </b><br><br><b>Note:</b> With the arrows you can quickly move many Cube panels or even any other objects at once. If the thickness of the selected object can be recognized, the move step will be the thickness. So, you can solve common furniture problem with thickness offset. If the thickness will not be recognized the step will be 100. This allow you to move whole furniture segments very quickly. The arrows recognize the view model rotation. If you want precisely move object, use magicMove tool, instead. ')
+		info += translate('panelMove', '<b>Please select valid objects to move. </b><br><br><b>Note:</b> With the arrows you can quickly move many Cube panels or even any other objects at once. If the thickness of the selected object can be recognized, the move step will be the thickness. So, you can solve common furniture problem with thickness offset. If the thickness will not be recognized the step will be 100. This allow you to move whole furniture segments very quickly. The arrows recognize the view model rotation. If you want precisely move object, use magicMove tool, instead. ')
 		
 		MagicPanels.showInfo("panelMove"+iType, info)
 
@@ -648,7 +645,7 @@ def panelResize(iType):
 		
 		info = ""
 		
-		info += translate('panelResizeInfo', '<b>Please select valid panels to resize. </b><br><br><b>Note:</b> This tool allows to resize quickly panels or even other objects. The resize step is the panel thickness. Panel is resized into direction described by the icon for XY panel. However, in some cases the panel may be resized into opposite direction, if the panel is not supported or the sides are equal. You can also resize Cylinders (drill bits), the long side will be Height, the short will be diameter, the thickness will be Radius. For Cone objects (drill bits - countersinks, counterbore) the long side will be Height, the thickness will be Radius1 (bottom radius) and the short will be Radius2 (top radius).')
+		info += translate('panelResize', '<b>Please select valid panels to resize. </b><br><br><b>Note:</b> This tool allows to resize quickly panels or even other objects. The resize step is the panel thickness. Panel is resized into direction described by the icon for XY panel. However, in some cases the panel may be resized into opposite direction, if the panel is not supported or the sides are equal. You can also resize Cylinders (drill bits), the long side will be Height, the short will be diameter, the thickness will be Radius. For Cone objects (drill bits - countersinks, counterbore) the long side will be Height, the thickness will be Radius1 (bottom radius) and the short will be Radius2 (top radius).')
 		
 		MagicPanels.showInfo("panelResize"+iType, info)
 
@@ -773,7 +770,7 @@ def routerBitSelect(iType):
 		
 		info = ""
 		
-		info += translate(iType+'Info', '<b>Please select edges or faces to use router. </b><br><br><b>Note:</b> This tool allows to create decoration router bits effect. You can select many edges or faces. The selected edges or faces do not have to be at the same object. You can select edges or faces at any object. But each edge or face need to be according to the XYZ coordinate axis to get correct plane of the edge or face. For face the routing path is the CenterOfMass of the face and also along the longest edge. Hold left CTRL key during edges or faces selection. The router bits get size from object thickness. If the router bit is for example Cove2, it means the size of the Cove will be 1/2 of the object thickness.')
+		info += translate('routerBitSelect', '<b>Please select edges or faces to use router. </b><br><br><b>Note:</b> This tool allows to create decoration router bits effect. You can select many edges or faces. The selected edges or faces do not have to be at the same object. You can select edges or faces at any object. But each edge or face need to be according to the XYZ coordinate axis to get correct plane of the edge or face. For face the routing path is the CenterOfMass of the face and also along the longest edge. Hold left CTRL key during edges or faces selection. The router bits get size from object thickness. If the router bit is for example Cove2, it means the size of the Cove will be 1/2 of the object thickness.')
 
 		MagicPanels.showInfo("router"+iType, info)
 	
@@ -803,7 +800,7 @@ def multiPocket(iType):
 		
 		info = ""
 		
-		info += translate('multiPocket'+iType, '<b>Please select object, next Sketches to create Pockets. </b><br><br><b>Note:</b> This tool allows to create custom decoration from Sketches. You can select many Sketches at once. The selected Sketches will make Pockets at the first selected object. The Sketches need to be correctly aligned at the object. Hold left CTRL key during Sketches selection. For 2 and 4 variant this tool gets first selected object size and create Pocket with 1/2 thickness or 1/4 thickness.')
+		info += translate('multiPocket', '<b>Please select object, next Sketches to create Pockets. </b><br><br><b>Note:</b> This tool allows to create custom decoration from Sketches. You can select many Sketches at once. The selected Sketches will make Pockets at the first selected object. The Sketches need to be correctly aligned at the object. Hold left CTRL key during Sketches selection. For 2 and 4 variant this tool gets first selected object size and create Pocket with 1/2 thickness or 1/4 thickness.')
 
 		MagicPanels.showInfo("multiPocket"+iType, info)
 

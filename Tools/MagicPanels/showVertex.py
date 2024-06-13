@@ -56,6 +56,6 @@ try:
 
 except:
 	
-	info = translate('showVertexInfo', '<b>Please create model to resize vertices for easier selection. </b><br><br><b>Note:</b> This tool allows you to resize all vertices for easier selection. Also it change vertices color to red for better visibility. If the object have already resized vertex or changed color it will back to FreeCAD default settings. So, you can keep the model good looking with small vertices and if you have problem with vertex selection, you can quickly resize vertices for selection purposes only and back to normal later.')
+	info = translate('showVertex', '<b>Please create model to resize vertices for easier selection. </b><br><br><b>Note:</b> This tool allows you to resize all vertices for easier selection. Also it change vertices color to red for better visibility. If the object have already resized vertex or changed color it will back to FreeCAD default settings. So, you can keep the model good looking with small vertices and if you have problem with vertex selection, you can quickly resize vertices for selection purposes only and back to normal later.')
 	
 	MagicPanels.showInfo("showVertex", info)

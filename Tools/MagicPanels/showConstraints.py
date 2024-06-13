@@ -3,7 +3,6 @@ import MagicPanels
 
 translate = FreeCAD.Qt.translate
 
-
 try:
 
 	objects = FreeCADGui.Selection.getSelection()

@@ -48,6 +48,6 @@ except:
 
 	info = ""
 
-	info += translate('magicCornerInfo', '<b>First select base object and later all panels you want to fit to the base object. </b><br><br><b>Note:</b> This tool allows to create corner connection via Part :: Embed object FreeCAD feature. To fit corners, first select base object that will be cut, next panels that should be fited to the base object. To select multiple panels hold left CTRL key during selection.')
+	info += translate('magicCorner', '<b>First select base object and later all panels you want to fit to the base object. </b><br><br><b>Note:</b> This tool allows to create corner connection via Part :: Embed object FreeCAD feature. To fit corners, first select base object that will be cut, next panels that should be fited to the base object. To select multiple panels hold left CTRL key during selection.')
 
 	MagicPanels.showInfo("magicCorner", info)
