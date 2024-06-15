@@ -104,7 +104,7 @@ The Woodworking workbench also has an API for developers. This library contains 
 
 # Translations
 
-Translations are managed externaly at [github.com/dprojects/Woodworking-translations](https://github.com/dprojects/Woodworking-translations) repository and are created only for stable versions. This approach allows translations community to work without time presure, independed from master branch development, beacuse code of stable releases will not be changed. 
+Translations are available at [github.com/dprojects/Woodworking-translations](https://github.com/dprojects/Woodworking-translations) repository and are created only for stable versions. This approach allows the translator community to work without time pressure and independently of the development of the main branch, because the code of stable releases will not be changed.
 
 ### 0.21 stable
 
