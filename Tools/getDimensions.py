@@ -60,14 +60,6 @@ sPartCutDsc = {
 	"tool" : translate("getDimensions", "custom approach, show Tool only")
 }
 
-# Units for dimensions:
-sUnitsMetric = "mm"
-sUnitsMetricDsc = {
-	"mm" : translate("getDimensions", "millimeter"),
-	"m" : translate("getDimensions", "meter"),
-	"in" : translate("getDimensions", "inch")
-}
-
 # Report customization (Label Type Feature):
 sLTF = "q"
 sLTFDsc = {
@@ -79,6 +71,14 @@ sLTFDsc = {
 	"c" : translate("getDimensions", "constraints names, totally custom report"),
 	"p" : translate("getDimensions", "pads, show list of all constraints"),
 	"a" : translate("getDimensions", "approximation of needed material")
+}
+
+# Units for dimensions:
+sUnitsMetric = "mm"
+sUnitsMetricDsc = {
+	"mm" : translate("getDimensions", "millimeter"),
+	"m" : translate("getDimensions", "meter"),
+	"in" : translate("getDimensions", "inch")
 }
 
 # Units for area:
@@ -97,6 +97,30 @@ sUnitsEdgeDsc = {
 	"in" : translate("getDimensions", "inch")
 }
 
+# Precision Defaults - Dimensions (d)
+sPrecisionDD = {
+	"mm" : 0,
+	"m" : 3,
+	"in" : 3
+}
+sPDD = sPrecisionDD[sUnitsMetric]
+
+# Precision Defaults - Edge
+sPrecisionDE = {
+	"mm" : 0,
+	"m" : 3,
+	"in" : 3
+}
+sPDE = sPrecisionDE[sUnitsEdge]
+
+# Precision Defaults - Area
+sPrecisionDA = {
+	"mm" : 0,
+	"m" : 6,
+	"in" : 6
+}
+sPDA = sPrecisionDA[sUnitsArea]
+
 # Edgeband code:
 sEColorD = "PL55 PVC"
 sEColorDsc = {
@@ -106,7 +130,6 @@ sEColorDsc = {
 	"bronze" : "bronze"
 }
 sEColor = sEColorDsc[sEColorD]
-
 
 # checkboxes - additional reports
 
@@ -268,7 +291,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 600
-			toolSH = 570
+			toolSH = 650
 			
 			# active screen size - FreeCAD main window
 			gSW = FreeCADGui.getMainWindow().width()
@@ -476,7 +499,7 @@ def showQtGUI():
 
 			# label
 			self.ufaL = QtGui.QLabel(translate("getDimensions", "Units for area:"), self)
-			self.ufaL.move(170, vLine + 3)
+			self.ufaL.move(190, vLine + 3)
 			
 			# options
 			self.ufaList = tuple(sUnitsAreaDsc.keys())
@@ -484,11 +507,11 @@ def showQtGUI():
 			self.ufaO.addItems(self.ufaList)
 			self.ufaO.setCurrentIndex(self.ufaList.index(str(sUnitsArea)))
 			self.ufaO.activated[str].connect(self.setUFA)
-			self.ufaO.move(170, vLine + vLineNextRow)
+			self.ufaO.move(190, vLine + vLineNextRow)
 
 			# info screen
 			self.ufaIS = QtGui.QLabel(str(sUnitsAreaDsc[sUnitsArea]) + sEmptyDsc, self)
-			self.ufaIS.move(230, vLine + vLineNextRow + 3)
+			self.ufaIS.move(250, vLine + vLineNextRow + 3)
 
 			# ############################################################################
 			# units for edge size
@@ -496,7 +519,7 @@ def showQtGUI():
 
 			# label
 			self.ufsL = QtGui.QLabel(translate("getDimensions", "Units for edge size:"), self)
-			self.ufsL.move(410, vLine + 3)
+			self.ufsL.move(430, vLine + 3)
 			
 			# options
 			self.ufsList = tuple(sUnitsEdgeDsc.keys())
@@ -504,11 +527,56 @@ def showQtGUI():
 			self.ufsO.addItems(self.ufsList)
 			self.ufsO.setCurrentIndex(self.ufsList.index(str(sUnitsEdge)))
 			self.ufsO.activated[str].connect(self.setUFS)
-			self.ufsO.move(410, vLine + vLineNextRow)
+			self.ufsO.move(430, vLine + vLineNextRow)
 
 			# info screen
 			self.ufsIS = QtGui.QLabel(str(sUnitsEdgeDsc[sUnitsEdge]) + sEmptyDsc, self)
-			self.ufsIS.move(470, vLine + vLineNextRow + 3)
+			self.ufsIS.move(500, vLine + vLineNextRow + 3)
+
+			# ############################################################################
+			# precision for dimensions
+			# ############################################################################
+
+			# set line separator
+			vLine = vLine + vLineOffset
+
+			# label
+			self.pufdL = QtGui.QLabel(translate("getDimensions", "Precision for dimensions:"), self)
+			self.pufdL.move(10, vLine + 3)
+
+			# text input
+			self.pufde = QtGui.QLineEdit(self)
+			self.pufde.setText(str(sPDD))
+			self.pufde.setFixedWidth(75)
+			self.pufde.move(10, vLine + vLineNextRow)
+
+			# ############################################################################
+			# precision for area
+			# ############################################################################
+
+			# label
+			self.pufaL = QtGui.QLabel(translate("getDimensions", "Precision for area:"), self)
+			self.pufaL.move(190, vLine + 3)
+	
+			# text input
+			self.pufae = QtGui.QLineEdit(self)
+			self.pufae.setText(str(sPDA))
+			self.pufae.setFixedWidth(75)
+			self.pufae.move(190, vLine + vLineNextRow)
+
+			# ############################################################################
+			# precision for edge size
+			# ############################################################################
+
+			# label
+			self.pufsL = QtGui.QLabel(translate("getDimensions", "Precision for edge size:"), self)
+			self.pufsL.move(430, vLine + 3)
+			
+			# text input
+			self.pufse = QtGui.QLineEdit(self)
+			self.pufse.setText(str(sPDE))
+			self.pufse.setFixedWidth(75)
+			self.pufse.move(430, vLine + vLineNextRow)
 
 			# ############################################################################
 			# edgeband code
@@ -594,11 +662,6 @@ def showQtGUI():
 			sPartCut = selectedText
 			self.pcvisibilityIS.setText(str(sPartCutDsc[sPartCut]) + sEmptyDsc)
 
-		def setDFO(self, selectedText):
-			global sUnitsMetric
-			sUnitsMetric = selectedText
-			self.ufdIS.setText(str(sUnitsMetricDsc[sUnitsMetric]) + sEmptyDsc)
-
 		# submenu for report types
 		def setSubmenu(self, iAction):
 
@@ -664,6 +727,14 @@ def showQtGUI():
 				self.armCB.hide()
 				self.arpCB.hide()
 				self.argdCB.hide()
+				
+				self.pufdL.hide()
+				self.pufde.hide()
+				self.pufaL.hide()
+				self.pufae.hide()
+				self.pufsL.hide()
+				self.pufse.hide()
+				
 			else:
 				self.ufdL.show()
 				self.ufdO.show()
@@ -683,17 +754,38 @@ def showQtGUI():
 				self.armCB.show()
 				self.arpCB.show()
 				self.argdCB.show()
+				
+				self.pufdL.show()
+				self.pufde.show()
+				self.pufaL.show()
+				self.pufae.show()
+				self.pufsL.show()
+				self.pufse.show()
+
+		def setDFO(self, selectedText):
+			global sUnitsMetric, sPDD
+			sUnitsMetric = selectedText
+			self.ufdIS.setText(str(sUnitsMetricDsc[sUnitsMetric]) + sEmptyDsc)
+			# set precision
+			sPDD = sPrecisionDD[sUnitsMetric]
+			self.pufde.setText(str(sPDD))
 
 		def setUFA(self, selectedText):
-			global sUnitsArea
+			global sUnitsArea, sPDA
 			sUnitsArea = selectedText
 			self.ufaIS.setText(str(sUnitsAreaDsc[sUnitsArea]) + sEmptyDsc)
-
+			# set precision
+			sPDA = sPrecisionDA[sUnitsArea]
+			self.pufae.setText(str(sPDA))
+			
 		def setUFS(self, selectedText):
-			global sUnitsEdge
+			global sUnitsEdge, sPDE
 			sUnitsEdge = selectedText
 			self.ufsIS.setText(str(sUnitsEdgeDsc[sUnitsEdge]) + sEmptyDsc)
-
+			# set precision
+			sPDE = sPrecisionDE[sUnitsEdge]
+			self.pufse.setText(str(sPDE))
+			
 		# here is different you set description to variable
 		def setEColor(self, selectedText):
 			global sEColor
@@ -726,9 +818,15 @@ def showQtGUI():
 		global sEColor
 		global sARME, sARM, sARP, sARD, sARGD
 		global sATS, sAEI
-
+		global sPDD, sPDA, sPDE
+		
 		# set edgeband code from text form
 		sEColor = form.ecti.text()
+		
+		# set precisions
+		sPDD = int(form.pufde.text())
+		sPDA = int(form.pufae.text())
+		sPDE = int(form.pufse.text())
 		
 		# measurements
 		if form.armeCB.isChecked():
@@ -821,28 +919,16 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 		v = gFakeCube.Length.getValueAs(gUnitC).Value
 
 		if sUnitsMetric == "mm":
-			return str( int(round(v, 0)) )
-		
-		if sUnitsMetric == "m":
-			return str( round(v * float(0.001), 3) )
-		
-		if sUnitsMetric == "in":
-			return str( round(v * float(0.0393700787), 3) )
-	
-	# for dimensions
-	if iType == "f":
-	
-		gFakeCube.Length = float(iValue)
-		v = gFakeCube.Length.getValueAs(gUnitC).Value
+			if sPDD == 0:
+				return str( int(round(v, 0)) )
+			else:
+				return str( float(round(v, sPDD)) )
 
-		if sUnitsMetric == "mm":
-			return str( round(v, 1) )
-		
 		if sUnitsMetric == "m":
-			return str( round(v * float(0.001), 3) )
+			return str( round(v * float(0.001), sPDD) )
 		
 		if sUnitsMetric == "in":
-			return str( round(v * float(0.0393700787), 3) )
+			return str( round(v * float(0.0393700787), sPDD) )
 	
 	# for edge
 	if iType == "edge":
@@ -851,13 +937,16 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 		v = gFakeCube.Length.getValueAs(gUnitC).Value
 
 		if sUnitsEdge == "mm":
-			return str( int(round(v, 0)) )
+			if sPDE == 0:
+				return str( int(round(v, 0)) )
+			else:
+				return str( float(round(v, sPDE)) )
 		
 		if sUnitsEdge == "m":
-			return str( round(v * float(0.001), 3) )
+			return str( round(v * float(0.001), sPDE) )
 		
 		if sUnitsEdge == "in":
-			return str( round(v * float(0.0393700787), 3) )
+			return str( round(v * float(0.0393700787), sPDE) )
 	
 	# for area
 	if iType == "area":
@@ -866,13 +955,16 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 		v = gFakeCube.Length.getValueAs(gUnitC).Value
 		
 		if sUnitsArea == "mm":
-			return str( int(round(v, 0)) )
+			if sPDA == 0:
+				return str( int(round(v, 0)) )
+			else:
+				return str( float(round(v, sPDA)) )
 		
 		if sUnitsArea == "m":
-			return str( round(v * float(0.000001), 6) )
+			return str( round(v * float(0.000001), sPDA) )
 		
 		if sUnitsArea == "in":
-			return str( round(v * float(0.0015500031), 6) )
+			return str( round(v * float(0.0015500031), sPDA) )
 	
 	# for to-angle conversion
 	if iType == "to-angle":
@@ -892,16 +984,14 @@ def toSheet(iValue, iType, iCaller="toSheet"):
 	if iType == "d":
 		return  "=<<" + getUnit(iValue, iType, iCaller) + " " + sUnitsMetric + ">>"
 
-	if iType == "f":
-		return  "=<<" + getUnit(iValue, iType, iCaller) + " " + sUnitsMetric + ">>"
-
 	# for edge
 	if iType == "edge":
 		return  "=<<" + getUnit(iValue, iType, iCaller) + " " + sUnitsEdge + ">>"
 
 	# for area
 	if iType == "area":
-		return  getUnit(iValue, iType, iCaller)
+		#return  getUnit(iValue, iType, iCaller)
+		return  "=<<" + getUnit(iValue, iType, iCaller) + ">>"
 
 	# for raw angle
 	if iType == "to-angle":
@@ -1844,7 +1934,7 @@ def setMounting(iObj, iCaller="setMounting"):
 			vType += ", " + str(2 * iObj.Radius.Value) + " x " + str(int(iObj.Height.Value))
 
 			vArrNames.append(gLang20)
-			v = "f;" + str(2 * iObj.Radius.Value)
+			v = "d;" + str(2 * iObj.Radius.Value)
 			vArrValues.append(v)
 
 			vArrNames.append(gLang21)
@@ -1995,7 +2085,7 @@ def setMeasurementsList(iObj, iCaller="setMeasurementsList"):
 			vArrNames.append(v)
 			
 			# set value for entry
-			v = "f;" + str(iObj.Distance.Value)
+			v = "d;" + str(iObj.Distance.Value)
 			vArrValues.append(v)
 
 		# set db for additional report
