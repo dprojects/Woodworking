@@ -77,11 +77,6 @@ FreeCAD is great software. This workbench extends the features of FreeCAD for Wo
 * I don't have `Windows` or `macOS`, so I am not able to test and certify this workbench for those systems. However, if you use `FreeCAD AppImage` there is a good chance this will be working correctly.
 * To get better stability make sure your current Woodworking workbench version has always the same version number as the FreeCAD version. You can also verify this via [debuginfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool. 
 
-# Known issues
-
-* **Issue**: Cut-list, BOM, report `toPrint` is not in the center of the page. 
-	* **Workaround**: FreeCAD 0.21.2 has bug related to the TechDraw template. The TechDraw template size is always zero, so the center of the page cannot be calculated correctly. If this is issue for you, can adjust the report manually or please try higher FreeCAD version with this bug fixed (0.22).
-
 # Extras
 
 This woodworking workbench is delivered with several useful extras:
@@ -111,7 +106,7 @@ Translations are available at [github.com/dprojects/Woodworking-translations](ht
 
 To install translation for [Woodworking workbench version 0.21 stable](https://github.com/dprojects/Woodworking/releases/tag/0.21) you have to download all `.qm` files from [0.21 translations branch](https://github.com/dprojects/Woodworking-translations/tree/0.21) and move them to `translations` folder inside Woodworking workbench folder. 
 
-### 0.22 and above
+### 1.0 and above
 
 You can use `translations update tool` available under drop down menu `Woodworking -> Download and update all translations`. This tool will automatically download all available `.qm` files into `translations` folder for you Woodworking workbench version.
 

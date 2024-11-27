@@ -990,7 +990,6 @@ def toSheet(iValue, iType, iCaller="toSheet"):
 
 	# for area
 	if iType == "area":
-		#return  getUnit(iValue, iType, iCaller)
 		return  "=<<" + getUnit(iValue, iType, iCaller) + ">>"
 
 	# for raw angle
@@ -4328,8 +4327,22 @@ def setTechDraw(iCaller="setTechDraw"):
 	
 	if sLTF == "a":
 		gPrintTemplate.Template = FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Landscape_blank.svg"
+
+		templateWidth = float(gPrintTemplate.Width)
+		templateHeight = float(gPrintTemplate.Height)
+
+		if templateWidth == 0 or templateHeight == 0:
+			templateWidth = float(297)
+			templateHeight = float(210)
 	else:
 		gPrintTemplate.Template = FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Portrait_blank.svg"
+
+		templateWidth = float(gPrintTemplate.Width)
+		templateHeight = float(gPrintTemplate.Height)
+
+		if templateWidth == 0 or templateHeight == 0:
+			templateWidth = float(210)
+			templateHeight = float(297)
 	
 	gPrint.Template = gPrintTemplate
 
@@ -4339,8 +4352,8 @@ def setTechDraw(iCaller="setTechDraw"):
 	gPrint.addView(gPrintSheet)
 
 	# set in the center of the template
-	gPrintSheet.X = int(float(gPrintTemplate.Width) / 2)
-	gPrintSheet.Y = int(float(gPrintTemplate.Height) / 2)
+	gPrintSheet.X = int(templateWidth / 2)
+	gPrintSheet.Y = int(templateHeight / 2)
 
 	# try to set fonts
 	try:
