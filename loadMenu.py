@@ -302,25 +302,26 @@ class TRANSLATION():
 		self.gSkipped = ""
 		info = ""
 		
-		locales = FreeCADGui.supportedLocales()
-
 		try:
-			wb = FreeCADGui.activeWorkbench()
-			package = os.path.join(wb.path, "package.xml")
-			md = FreeCAD.Metadata(package)
+			locales = FreeCADGui.supportedLocales()
 		except:
 			info += translate('manuAutoupdate', 'Error during getting FreeCAD supported locales.')
 			info += "\n\n"
-		
+			return
+
 		try:
-			version = str(md.Version)[:4]
+			wb = FreeCADGui.activeWorkbench()
+			wbreleasefilepath = os.path.join(wb.path, "wbrelease.txt")
+			fh = open(wbreleasefilepath)
+			wbrelease = str(fh.readlines()[0])[:-1]
+			fh.close()
 		except:
-			info += translate('manuAutoupdate', 'Error during getting workbench version from package.xml.')
+			info += translate('manuAutoupdate', 'Error during getting workbench release from file: '+str(wbreleasefilepath))
 			info += "\n\n"
 
 		for key in locales:
 			find = "Woodworking_" + str(locales[key] + ".qm")
-			self.updateTool(find, version)
+			self.updateTool(find, wbrelease)
 
 		if info == "":
 		

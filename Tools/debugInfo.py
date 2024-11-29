@@ -1,6 +1,7 @@
 import FreeCAD, FreeCADGui
 import os, sys
 from PySide import QtGui, QtCore
+from datetime import datetime
 
 translate = FreeCAD.Qt.translate
 
@@ -13,6 +14,9 @@ gMaster = "https://github.com/dprojects/Woodworking/archive/refs/heads/master.zi
 gTests = dict()
 gWBCurrent = dict()
 gWBLatest = dict()
+
+gJokeDates = [ "01-04" ]
+gCurrentDate = datetime.today().strftime("%d-%m")
 
 # ###################################################################################################################
 # tests
@@ -341,14 +345,29 @@ def showQtGUI():
 			# worm status
 			try:
 				if gWBCurrent["up-to-date"] == "yes" and gTests["status"] == "" and gWBCurrent["Certified"] == "yes":
-					info += self.getIcon("worm_unhappy", 200, "right")
+					if gCurrentDate in gJokeDates:
+						info += self.getIcon("worm_unhappy", 200, "right")
+					else:
+						info += self.getIcon("yes", 200, "right")
+				
 				elif gWBCurrent["up-to-date"] == "no" and gTests["status"] != "" and gWBCurrent["Certified"] == "no":
+					if gCurrentDate in gJokeDates:
+						info += self.getIcon("worm_happy", 200, "right")
+					else:
+						info += self.getIcon("no", 200, "right")
+				
+				else:
+					if gCurrentDate in gJokeDates:
+						info += self.getIcon("worm_undecided", 200, "right")
+					else:
+						info += self.getIcon("unknown", 200, "right")
+			except:
+				
+				if gCurrentDate in gJokeDates:
 					info += self.getIcon("worm_happy", 200, "right")
 				else:
-					info += self.getIcon("worm_undecided", 200, "right")
-			except:
-				info += self.getIcon("worm_happy", 200, "right")
-
+					info += self.getIcon("no", 200, "right")
+					
 			# up-to-date status
 			try:
 				if gWBCurrent["info"] == "1":

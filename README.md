@@ -100,15 +100,15 @@ The Woodworking workbench also has an API for developers. This library contains 
 
 # Translations
 
-Translations are available at [github.com/dprojects/Woodworking-translations](https://github.com/dprojects/Woodworking-translations) repository and are created only for stable versions. This approach allows the translator community to work without time pressure and independently of the development of the main branch, because the code of stable releases will not be changed.
+Translations are available at [github.com/dprojects/Woodworking-translations](https://github.com/dprojects/Woodworking-translations) repository and are created only for [Woodworking workbench releases](https://github.com/dprojects/Woodworking/releases). This approach allows the translator community to work without time pressure and independently of the development of the main branch, because the code of stable releases will not be changed.
 
-### 0.21 stable
+### Woodworking workbench release 0.21
 
-To install translation for [Woodworking workbench version 0.21 stable](https://github.com/dprojects/Woodworking/releases/tag/0.21) you have to download all `.qm` files from [0.21 translations branch](https://github.com/dprojects/Woodworking-translations/tree/0.21) and move them to `translations` folder inside Woodworking workbench folder. 
+To install translation for [Woodworking workbench release 0.21](https://github.com/dprojects/Woodworking/releases/tag/0.21) you have to download all `.qm` files from [0.21 translations branch](https://github.com/dprojects/Woodworking-translations/tree/0.21), if there such any, and move them to `translations` folder inside Woodworking workbench folder. You can also create your own translations.
 
-### 1.0 and above
+### Woodworking workbench release 0.22 and above
 
-You can use `translations update tool` available under drop down menu `Woodworking -> Download and update all translations`. This tool will automatically download all available `.qm` files into `translations` folder for you Woodworking workbench version.
+You can use `translations update tool` available under drop down menu `Woodworking -> Download and update all translations`. This tool will automatically download all available `.qm` files into `translations` folder for you Woodworking workbench release.
 
 # License
 
