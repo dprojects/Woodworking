@@ -704,7 +704,10 @@ def getEdgePlane(iObj, iEdge):
 		if o.isDerivedFrom("PartDesign::Pad"):
 			
 			ref = o.Profile[0].Placement
-			support = o.Profile[0].Support[0][0]
+			try:
+				support = o.Profile[0].Support[0][0]
+			except:
+				support = o.Profile[0].AttachmentSupport[0][0]
 			
 			if support.Label.startswith("XZ"):
 				offset = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 90)
@@ -2263,7 +2266,11 @@ def getDirection(iObj):
 
 	else:
 		
-		ref = iObj.Profile[0].Support[0][0]
+		try:
+			ref = iObj.Profile[0].Support[0][0]
+		except:
+			ref = iObj.Profile[0].AttachmentSupport[0][0]
+			
 		[ sX, sY, thick ] = getSizes(iObj)
 		
 		if ref.Label.startswith("XY"):
@@ -2608,7 +2615,11 @@ def setSketchPlacement(iSketch, iX, iY, iZ, iR, iType):
 		
 		iType = "global"
 		try:
-			plane = iSketch.Support[0][0].Label
+			try:
+				plane = iSketch.Support[0][0].Name
+			except:
+				plane = iSketch.AttachmentSupport[0][0].Name
+				
 			if plane.startswith("XY") or plane.startswith("XZ") or plane.startswith("YZ"):
 				iType = "attach"
 		except:
@@ -2617,7 +2628,11 @@ def setSketchPlacement(iSketch, iX, iY, iZ, iR, iType):
 	if iType == "attach":
 
 		import math
-		plane = iSketch.Support[0][0].Label
+		
+		try:
+			plane = iSketch.Support[0][0].Name
+		except:
+			plane = iSketch.AttachmentSupport[0][0].Name
 
 		rX = iR.Axis.x
 		rY = iR.Axis.y
@@ -3791,8 +3806,13 @@ def convertPosition(iObj, iX, iY, iZ):
 	# it is better to use Sketch.getGlobalPlacement()
 	if iObj.isDerivedFrom("Sketcher::SketchObject"):
 		
-		obj = iObj.Support[0][0]
-		faceName = str(iObj.Support[0][1]).replace("'","").replace(",","").replace("(","").replace(")","")
+		try:
+			obj = iObj.Support[0][0]
+			faceName = str(iObj.Support[0][1]).replace("'","").replace(",","").replace("(","").replace(")","")
+		except:
+			obj = iObj.AttachmentSupport[0][0]
+			faceName = str(iObj.AttachmentSupport[0][1]).replace("'","").replace(",","").replace("(","").replace(")","")
+			
 		face = obj.getSubObject(faceName)
 		axis = getFacePlane(face)
 		
@@ -3979,12 +3999,20 @@ def makePad(iObj, iPadLabel="Pad"):
 	sketch = body.newObject('Sketcher::SketchObject', 'Sketch')
 	sketch.Label = "Pattern, "+iPadLabel
 	
-	if direction == "XY" or direction == "YX":
-		sketch.Support = (body.Origin.OriginFeatures[3])
-	if direction == "XZ" or direction == "ZX":
-		sketch.Support = (body.Origin.OriginFeatures[4])
-	if direction == "YZ" or direction == "ZY":
-		sketch.Support = (body.Origin.OriginFeatures[5])
+	try:
+		if direction == "XY" or direction == "YX":
+			sketch.Support = (body.Origin.OriginFeatures[3])
+		if direction == "XZ" or direction == "ZX":
+			sketch.Support = (body.Origin.OriginFeatures[4])
+		if direction == "YZ" or direction == "ZY":
+			sketch.Support = (body.Origin.OriginFeatures[5])
+	except:
+		if direction == "XY" or direction == "YX":
+			sketch.AttachmentSupport = (body.Origin.OriginFeatures[3])
+		if direction == "XZ" or direction == "ZX":
+			sketch.AttachmentSupport = (body.Origin.OriginFeatures[4])
+		if direction == "YZ" or direction == "ZY":
+			sketch.AttachmentSupport = (body.Origin.OriginFeatures[5])
 
 	sketch.MapMode = 'FlatFace'
 
@@ -5069,7 +5097,10 @@ def makeMortise(iSketch, iDepth, iPad, iFace):
 		pad = iPad
 
 	sketch = FreeCAD.ActiveDocument.copyObject(iSketch)
-	sketch.Support = ""
+	try:
+		sketch.Support = ""
+	except:
+		sketch.AttachmentSupport = ""
 	
 	[ x, y, z, r ] = getContainerPlacement(sketch, "clean")
 	[ coX, coY, coZ, coR ] = getContainersOffset(pad)
@@ -5163,7 +5194,10 @@ def makeTenon(iSketch, iLength, iPad, iFace):
 		pad = iPad
 
 	sketch = FreeCAD.ActiveDocument.copyObject(iSketch)
-	sketch.Support = ""
+	try:
+		sketch.Support = ""
+	except:
+		sketch.AttachmentSupport = ""
 	
 	[ x, y, z, r ] = getContainerPlacement(sketch, "clean")
 	[ coX, coY, coZ, coR ] = getContainersOffset(pad)

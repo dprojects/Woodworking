@@ -55,7 +55,11 @@ try:
 			[ oX, oY, oZ, oR ] = MagicPanels.getSketchPlacement(o, "global")
 			
 			try:
-				plane = o.Support[0][0].Label
+				try:
+					plane = o.Support[0][0].Name
+				except:
+					plane = o.AttachmentSupport[0][0].Name
+				
 				if plane.startswith("XY") or plane.startswith("XZ") or plane.startswith("YZ"):
 					t = "attach"
 				else:
