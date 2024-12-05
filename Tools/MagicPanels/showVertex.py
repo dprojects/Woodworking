@@ -1,11 +1,17 @@
-import FreeCAD
+import FreeCAD, FreeCADGui
 import MagicPanels
 
 translate = FreeCAD.Qt.translate
 
 try:
-	if len(FreeCAD.ActiveDocument.Objects) < 1:
-		raise
+	
+	objects = FreeCADGui.Selection.getSelection()
+
+	if len(objects) < 1:
+		if len(FreeCAD.ActiveDocument.Objects) < 1:
+			raise
+		else:
+			objects = FreeCAD.ActiveDocument.Objects
 
 	# settings
 	setPointSize = 10
@@ -20,7 +26,7 @@ try:
 	pointColor = dict()
 
 	# prepare db for objects to change
-	for o in FreeCAD.ActiveDocument.Objects:
+	for o in objects:
 
 		try:
 			test = o.ViewObject.PointSize
@@ -56,6 +62,6 @@ try:
 
 except:
 	
-	info = translate('showVertex', '<b>Please create model to resize vertices for easier selection. </b><br><br><b>Note:</b> This tool allows you to resize all vertices for easier selection. Also it change vertices color to red for better visibility. If the object have already resized vertex or changed color it will back to FreeCAD default settings. So, you can keep the model good looking with small vertices and if you have problem with vertex selection, you can quickly resize vertices for selection purposes only and back to normal later.')
+	info = translate('showVertex', '<b>Please create object to resize vertices for easier selection. </b><br><br><b>Note:</b> This tool allows you to resize all vertices for selected objects or for all objects if there is no selected objects. Resized vertices are easier to select. This tool also change vertices color to red for better visibility. If the object have already resized or red vertices it will be changed back to normal. So, you can keep the model good looking with small vertices and if you have problem with vertices selection, you can quickly resize vertices for selection purposes only and back to normal later.')
 	
 	MagicPanels.showInfo("showVertex", info)

@@ -17,6 +17,7 @@ FreeCAD is great software. This workbench extends the features of FreeCAD for Wo
 
 **New significant changes since the last stable version:**
 
+* showVertex also for selected objects
 * precision feature at getDimensions
 * improve code for translations
 * translations update tool and community support

@@ -145,26 +145,39 @@ def setWBCurrent():
 		gWBCurrent["Name"] = str(md.Name)
 	except:
 		skip = 1
-		
+
 	try:
 		gWBCurrent["Description"] = str(md.Description)
 	except:
 		skip = 1
+
 	try:
 		gWBCurrent["Author"] = str(md.Author)
 	except:
 		skip = 1
+
 	try:
 		gWBCurrent["Maintainer"] = str(md.Maintainer)
 	except:
 		skip = 1
+
 	try:
 		gWBCurrent["Urls"] = str(md.Urls)
 	except:
 		skip = 1
-	
+
 	try:
-		gWBCurrent["Version"] = str(md.Version)
+		gWBCurrent["DedicatedFreeCAD"] = ".".join(str(md.Version).split(".")[:-3])
+	except:
+		skip = 1
+
+	try:
+		gWBCurrent["Release"] = ".".join(str(md.Version).split(".")[-3:-1])
+	except:
+		skip = 1
+
+	try:
+		gWBCurrent["ReleaseState"] = ".".join(str(md.Version).split(".")[-1:])
 	except:
 		skip = 1
 
@@ -187,7 +200,7 @@ def setFreeCADVersion():
 def setCertified():
 
 	try:
-		if gWBCurrent["Version"] == gWBCurrent["FreeCADVersion"]:
+		if gWBCurrent["DedicatedFreeCAD"] == gWBCurrent["FreeCADVersion"]:
 			gWBCurrent["Certified"] = "yes"
 		else:
 			gWBCurrent["Certified"] = "no"
@@ -202,7 +215,7 @@ def setUpToDate():
 		gWBCurrent["update"] = ""
 
 		# update the same version branch
-		if gWBCurrent["Version"] == gWBLatest["Version"]:
+		if gWBCurrent["DedicatedFreeCAD"] == gWBLatest["Version"]:
 			
 			if gWBCurrent["Date"] == gWBLatest["Date"]:
 				gWBCurrent["up-to-date"] = "yes"
@@ -314,7 +327,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 470
-			toolSH = 540
+			toolSH = 600
 			
 			# active screen size - FreeCAD main window
 			gSW = FreeCADGui.getMainWindow().width()
@@ -333,16 +346,57 @@ def showQtGUI():
 			self.setWindowTitle(translate('debugInfo', 'debugInfo'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
+			
 			# ############################################################################
-			# validation
+			# release info
 			# ############################################################################
-
-			row = 10
+			
+			row = 0
+			iconSize = 10
+			iconAlign = "left"
+			info = ""
+			
+			# set info
+			
+			info += "<div style='font-size:20px'>"
+			info += gWBCurrent["Release"] + " "
+			if gWBCurrent["ReleaseState"] == "0":
+				info += "(release)"
+			else:
+				info += "(development)"
+			info += "</div>"
+			
+			info += "<div>"
+			info += translate('debugInfo', 'Woodworking workbench version ')
+			info += gWBCurrent["Release"] + " "
+			if gWBCurrent["ReleaseState"] == "0":
+				info += "(release)"
+			else:
+				info += "(development)"
+			info += "</div>"
+			info += "<div>"
+			info += translate('debugInfo', 'dedicated for FreeCAD version ')
+			info += gWBCurrent["DedicatedFreeCAD"]
+			info += "</div>"
+			
+			# show info
+			self.ori = QtGui.QLabel(info, self)
+			self.ori.setFixedWidth(toolSW - 20)
+			self.ori.setWordWrap(False)
+			self.ori.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.ori.setOpenExternalLinks(True)
+			self.ori.move(10, row)
+			
+			# ############################################################################
+			# validation status
+			# ############################################################################
+			
+			row = 70
 			iconSize = 40
 			iconAlign = "left"
 			info = ""
 			
-			# worm status
+			# overall icon
 			try:
 				if gWBCurrent["up-to-date"] == "yes" and gTests["status"] == "" and gWBCurrent["Certified"] == "yes":
 					if gCurrentDate in gJokeDates:

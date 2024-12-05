@@ -311,12 +311,11 @@ class TRANSLATION():
 
 		try:
 			wb = FreeCADGui.activeWorkbench()
-			wbreleasefilepath = os.path.join(wb.path, "wbrelease.txt")
-			fh = open(wbreleasefilepath)
-			wbrelease = str(fh.readlines()[0])[:-1]
-			fh.close()
+			package = os.path.join(wb.path, "package.xml")
+			md = FreeCAD.Metadata(package)
+			wbrelease = ".".join(str(md.Version).split(".")[-3:-1])
 		except:
-			info += translate('manuAutoupdate', 'Error during getting workbench release from file: '+str(wbreleasefilepath))
+			info += translate('manuAutoupdate', 'Error during getting workbench release from file: '+str(package))
 			info += "\n\n"
 
 		for key in locales:
