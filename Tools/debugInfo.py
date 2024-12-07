@@ -167,6 +167,11 @@ def setWBCurrent():
 		skip = 1
 
 	try:
+		gWBCurrent["Version"] = str(md.Version)
+	except:
+		skip = 1
+
+	try:
 		gWBCurrent["DedicatedFreeCAD"] = ".".join(str(md.Version).split(".")[:-3])
 	except:
 		skip = 1
@@ -215,7 +220,7 @@ def setUpToDate():
 		gWBCurrent["update"] = ""
 
 		# update the same version branch
-		if gWBCurrent["DedicatedFreeCAD"] == gWBLatest["Version"]:
+		if gWBCurrent["Version"] == gWBLatest["Version"]:
 			
 			if gWBCurrent["Date"] == gWBLatest["Date"]:
 				gWBCurrent["up-to-date"] = "yes"
