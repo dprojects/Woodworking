@@ -15,14 +15,9 @@ The main goal for this workbench is to make simpler the furniture designing proc
 
 # Release notes
 
-**New significant changes since the last release:**
+**New significant changes since the last release 0.22 stable:**
 
-* showVertex also for selected objects
-* precision feature at getDimensions
-* improve code for translations
-* translations update tool and community support
-* tenon option at magicDowels tool
-* getDimensions engine improved
+* nothing yet, the same as 0.22 stable release...
 
 # Installation in Xubuntu
 
