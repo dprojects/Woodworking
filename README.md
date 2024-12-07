@@ -1,6 +1,6 @@
 # Description
 
-FreeCAD is great software. This workbench extends the features of FreeCAD for Woodworking. The main goal for this workbench is to make the furniture designing process in FreeCAD simpler.
+The main goal for this workbench is to make simpler the furniture designing process in FreeCAD.
 
 ![intro](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/intro.gif)
 
@@ -15,7 +15,7 @@ FreeCAD is great software. This workbench extends the features of FreeCAD for Wo
 
 # Release notes
 
-**New significant changes since the last stable version:**
+**New significant changes since the last release:**
 
 * showVertex also for selected objects
 * precision feature at getDimensions
@@ -24,13 +24,20 @@ FreeCAD is great software. This workbench extends the features of FreeCAD for Wo
 * tenon option at magicDowels tool
 * getDimensions engine improved
 
-# Installation
+# Installation in Xubuntu
 
 **Step 0. Install correct FreeCAD version:**
 
 * Download and install: [FreeCAD 0.21.2](https://github.com/FreeCAD/FreeCAD/releases/tag/0.21.2)
 
-**Step 1. Get FreeCAD Mod folder localization:**
+**Step 1. Download Woodworking workbench:** 
+
+* Stable certified versions download at: [Woodworking/releases](https://github.com/dprojects/Woodworking/releases)
+* For cutting edge features download: [the master branch](https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip) or run command:
+	
+		git clone https://github.com/dprojects/Woodworking.git
+
+**Step 2. Get FreeCAD Mod folder localization:**
 
 * From FreeCAD python console run command:
 
@@ -38,45 +45,27 @@ FreeCAD is great software. This workbench extends the features of FreeCAD for Wo
 
 * If there is no `Mod` folder, create it.
 
-**Step 2. Install Woodworking workbench:** 
+**Step 3. Install Woodworking workbench:** 
 
-* Go to FreeCAD `Mod` directory, for example, in Xubuntu operating system:
+* Go to FreeCAD `Mod` folder, for example, in Xubuntu operating system:
 
 		cd  ~/.local/share/FreeCAD/Mod/
 
-* Get the latest Woodworking workbench repository:
+* Unpack woodworking workbench, if needed, and copy `Woodworking` folder to `Mod` folder. This should be:
 
-		git clone https://github.com/dprojects/Woodworking.git
-
-**Step 2. Installation in other operating systems:**
-
-* Download and unpack `Woodworking` repository.
-* Copy the folder `Woodworking` to the FreeCAD module directory (`Mod` folder).
-
-**Note:** You can update this workbench later via [debuginfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool.
-
-# Certified platforms
-
-* Stable certified versions download at: [Woodworking/releases](https://github.com/dprojects/Woodworking/releases)
-* For cutting edge features download: [the master branch](https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip)
-
-* Current development platform:
-
-		OS: Ubuntu 22.04.3 LTS (XFCE/xubuntu)
-		Word size of FreeCAD: 64-bit
-		Version: 0.21.2.33771 (Git) AppImage
-		Build type: Release
-		Branch: (HEAD detached at 0.21.2)
-		Hash: b9bfa5c5507506e4515816414cd27f4851d00489
-		Python 3.10.13, Qt 5.15.8, Coin 4.0.0, Vtk 9.2.6, OCC 7.6.3
-		Locale: English/United States (en_US)
-		Installed mods: 
-		* Woodworking 0.21.2.33771
+		~/.local/share/FreeCAD/Mod/Woodworking/
 
 **Note:**
 
-* I don't have `Windows` or `macOS`, so I am not able to test and certify this workbench for those systems. However, if you use `FreeCAD AppImage` there is a good chance this will be working correctly.
-* To get better stability make sure your current Woodworking workbench version has always the same version number as the FreeCAD version. You can also verify this via [debuginfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool. 
+* You can update this workbench later via [debuginfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool.
+* To get better stability make sure your current Woodworking workbench version has always the same prefix version number as the FreeCAD version. You can also verify this via [debuginfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool. 
+
+# Installation in other operating systems
+
+* Download and unpack `Woodworking` repository.
+* Copy the folder `Woodworking` to the FreeCAD `Mod` folder.
+
+**Note:** I don't have `Windows` or `macOS`, so I am not able to test and certify this workbench for those systems. However, if you use `FreeCAD AppImage` there is a good chance this will be working correctly.
 
 # Extras
 
@@ -88,7 +77,7 @@ This woodworking workbench is delivered with several useful extras:
 
 # API for developers
 
-The Woodworking workbench also has an API for developers. This library contains functions that solve the Topology Naming Problem. You can also leaglly create your own tools and extend the workbench in your private repository in accordance with the MIT license:
+The Woodworking workbench also has an API for developers. This library contains functions that [solve the Topology Naming Problem](https://wiki.freecad.org/Macro_TNP_Solution). You can also leaglly create your own tools and extend the workbench in your private repository in accordance with the MIT license:
 	
 * **View library API documentation:** [MagicPanelsAPI.md](https://github.com/dprojects/Woodworking/blob/master/Docs/MagicPanelsAPI.md)
 * **View library code:** [MagicPanels.py](https://github.com/dprojects/Woodworking/blob/master/Tools/MagicPanels/MagicPanels.py)
