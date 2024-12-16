@@ -95,6 +95,19 @@ To install translation for [Woodworking workbench release 0.21](https://github.c
 
 You can use `translations update tool` available under drop down menu `Woodworking -> Download and update all translations`. This tool will automatically download all available `.qm` files into `translations` folder for you Woodworking workbench release.
 
+# Support FreeCAD 1.0 and later
+
+Currently there are no plans to support FreeCAD 1.0 and later. 
+
+The main reason for that is that FreeCAD 1.0 no longer allow for direct Sketch move, the [FreeCAD team consider direct Sketch moving as bug](https://forum.freecad.org/viewtopic.php?p=794690#p794690), so they fixed this "bug"... 
+
+Using FreeCAD 1.0 with Woodworking workbench for example you can't use [magicMove](https://github.com/dprojects/Woodworking/tree/master/Docs#magicmove) to move Sketch or Pad. Also you can't move holes after drilling or center holes or Pads. So this "fix" impact many advanced features at Woodworking workbench.
+
+However all these feature works fine with FreeCAD 0.21.2 and personally I don't see any reason to use FreeCAD 1.0. 
+Also I am happy with FreeCAD 0.21.2 and I don't see any reason to chase all the FreeCAD team changes and "fixes" and adjust Woodworking workbench code only to have new FreeCAD number...
+
+The Woodworking workbench now has its own [release versioning system](https://github.com/dprojects/Woodworking/releases), the 0.22 release has been published, and will be developed regardless of FreeCAD politics.
+
 # License
 
 [MIT](https://github.com/dprojects/Woodworking/blob/master/LICENSE) for all Woodworking workbench content.
