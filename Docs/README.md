@@ -6,6 +6,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 * [Main features](#main-features)
 	* [Making panels](#making-panels)
+		* [magicStart](#magicstart)
 		* [Default panels](#default-panels)
 		* [Copy panels](#copy-panels)
 		* [Dedicated panels](#dedicated-panels)
@@ -71,7 +72,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 		* [Router bit - Round Over](#router-bit---round-over)
 		* [Router bit - Straight](#router-bit---straight)
 		* [Router bit - Chamfer](#router-bit---chamfer)
-		* [multiPocket](#multiPocket)
+		* [multiPocket](#multipocket)
 	* [Decoration](#decoration)
 		* [colorManager](#colormanager)
 		* [setTextures](#settextures)
@@ -88,7 +89,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 	* [Code and Debug](#code-and-debug)
 		* [scanObjects](#scanobjects)
 		* [debugInfo](#debuginfo)
-    * [Project manage](#project-manage)
+	* [Project manage](#project-manage)
 		* [selected2LinkGroup](#selected2linkgroup)
 		* [selected2Link](#selected2link)
 		* [selected2Group](#selected2group)
@@ -114,6 +115,14 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 # Main features
 
 ## Making panels
+
+### magicStart
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicStart.png">
+This tool allows you to start designing furniture faster. It contains several examples of furniture and accessories that you can use and adjust in your project. With the other tools, you can quickly adjust and modify a given piece of furniture.
+
+**Video tutorials:** 
+* [Furniture creation tool](https://www.youtube.com/watch?v=lHQ1J9Nahcs)
 
 ### Default panels
 

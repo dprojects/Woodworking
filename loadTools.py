@@ -2158,6 +2158,45 @@ FreeCADGui.addCommand("panelDefaultZY", panelDefaultZY())
 
 	
 # ######################################################################################################################
+class magicStart():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "magicStart.png"),
+				"MenuText": QT_TRANSLATE_NOOP("magicStart", "tool to create furniture"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicStart", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "magicStart"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("magicStart", magicStart())
+
+	
+# ######################################################################################################################
 class panelCopyXY():
 
 	def GetResources(self):

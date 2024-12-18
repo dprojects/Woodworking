@@ -17,7 +17,7 @@ The main goal for this workbench is to make simpler the furniture designing proc
 
 **New significant changes since the last release 0.22 stable:**
 
-* nothing yet, the same as 0.22 stable release...
+* magicStart tool to create furniture
 
 # Installation in Xubuntu
 

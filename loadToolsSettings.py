@@ -135,6 +135,8 @@ Tools = [
 	"MagicPanels", "panelDefaultYZ", "png", "panel, YZ, 600x300, 18 thickness", "Click to see info.",
 	"MagicPanels", "panelDefaultZY", "png", "panel, ZY, 300x600, 18 thickness", "Click to see info.",
 
+	"MagicPanels", "magicStart", "png", "tool to create furniture", "Click to see info.",
+
 	# copy
 	
 	"MagicPanels", "panelCopyXY", "png", "copy panel, XY", "Click to see info.",
