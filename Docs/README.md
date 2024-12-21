@@ -121,6 +121,8 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicStart.png">
 This tool allows you to start designing furniture faster. It contains several examples of furniture and accessories that you can use and adjust in your project. With the other tools, you can quickly adjust and modify a given piece of furniture.
 
+<br><br><br>
+
 **Video tutorials:** 
 * [Furniture creation tool](https://www.youtube.com/watch?v=lHQ1J9Nahcs)
 

@@ -23,8 +23,9 @@ def showQtGUI():
 		gFSZ = 760   # furniture size Z (height)
 		gThick = 18  # wood thickness
 		
-		gSelectedFurniture = "F1"
+		gSelectedFurniture = "F0"
 		gColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 0.0)
+		gR = FreeCAD.Rotation(0, 0, 0)
 		
 		# ############################################################################
 		# init
@@ -201,7 +202,8 @@ def showQtGUI():
 			o1.Length = self.gFSX
 			o1.Height = self.gThick
 			o1.Width = self.gFSY
-			o1.Placement = FreeCAD.Placement(FreeCAD.Vector(0, 0, 0), FreeCAD.Rotation(0, 0, 0))
+			pl = FreeCAD.Vector(0, 0, 0)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
 			o1.ViewObject.DiffuseColor = self.gColor
 			
 			# Left Side
@@ -210,7 +212,8 @@ def showQtGUI():
 			o2.Length = self.gThick
 			o2.Height = self.gFSZ - (2 * self.gThick)
 			o2.Width = self.gFSY
-			o2.Placement = FreeCAD.Placement(FreeCAD.Vector(0, 0, self.gThick), FreeCAD.Rotation(0, 0, 0))
+			pl = FreeCAD.Vector(0, 0, self.gThick)
+			o2.Placement = FreeCAD.Placement(pl, self.gR)
 			o2.ViewObject.DiffuseColor = self.gColor
 			
 			# Right Side
@@ -219,7 +222,8 @@ def showQtGUI():
 			o3.Length = self.gThick
 			o3.Height = self.gFSZ - (2 * self.gThick)
 			o3.Width = self.gFSY
-			o3.Placement = FreeCAD.Placement(FreeCAD.Vector(self.gFSX - self.gThick, 0, self.gThick), FreeCAD.Rotation(0, 0, 0))
+			pl = FreeCAD.Vector(self.gFSX - self.gThick, 0, self.gThick)
+			o3.Placement = FreeCAD.Placement(pl, self.gR)
 			o3.ViewObject.DiffuseColor = self.gColor
 			
 			# Back
@@ -228,7 +232,8 @@ def showQtGUI():
 			o4.Length = self.gFSX - (2 * self.gThick)
 			o4.Height = self.gFSZ - (2 * self.gThick)
 			o4.Width = self.gThick
-			o4.Placement = FreeCAD.Placement(FreeCAD.Vector(self.gThick, self.gFSY - self.gThick, self.gThick), FreeCAD.Rotation(0, 0, 0))
+			pl = FreeCAD.Vector(self.gThick, self.gFSY - self.gThick, self.gThick)
+			o4.Placement = FreeCAD.Placement(pl, self.gR)
 			o4.ViewObject.DiffuseColor = self.gColor
 			
 			# Top
@@ -237,7 +242,8 @@ def showQtGUI():
 			o5.Length = self.gFSX
 			o5.Height = self.gThick
 			o5.Width = self.gFSY
-			o5.Placement = FreeCAD.Placement(FreeCAD.Vector(0, 0, self.gFSZ - self.gThick), FreeCAD.Rotation(0, 0, 0))
+			pl = FreeCAD.Vector(0, 0, self.gFSZ - self.gThick)
+			o5.Placement = FreeCAD.Placement(pl, self.gR)
 			o5.ViewObject.DiffuseColor = self.gColor
 			
 			# Front
@@ -246,7 +252,8 @@ def showQtGUI():
 			o6.Length = self.gFSX - self.gThick
 			o6.Height = self.gFSZ - self.gThick - 4
 			o6.Width = self.gThick
-			o6.Placement = FreeCAD.Placement(FreeCAD.Vector(self.gThick / 2, - self.gThick, (self.gThick / 2) + 2), FreeCAD.Rotation(0, 0, 0))
+			pl = FreeCAD.Vector(self.gThick / 2, - self.gThick, (self.gThick / 2) + 2)
+			o6.Placement = FreeCAD.Placement(pl, self.gR)
 			o6.ViewObject.DiffuseColor = self.gColor
 			
 			# Shelf
@@ -255,10 +262,10 @@ def showQtGUI():
 			o7.Length = self.gFSX - (2 * self.gThick)
 			o7.Height = self.gThick
 			o7.Width = self.gFSY - (3 * self.gThick)
-			o7.Placement = FreeCAD.Placement(FreeCAD.Vector(self.gThick, 2 * self.gThick, (self.gFSZ / 2) - (self.gThick / 2)), FreeCAD.Rotation(0, 0, 0))
+			pl = FreeCAD.Vector(self.gThick, 2 * self.gThick, (self.gFSZ / 2) - (self.gThick / 2))
+			o7.Placement = FreeCAD.Placement(pl, self.gR)
 			o7.ViewObject.DiffuseColor = self.gColor
-			
-			
+
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
 		
@@ -271,7 +278,8 @@ def showQtGUI():
 			o1.Length = self.gFSX - (2 * self.gThick)
 			o1.Height = self.gThick
 			o1.Width = self.gFSY
-			o1.Placement = FreeCAD.Placement(FreeCAD.Vector(self.gThick, 0, self.gFSZ / 10), FreeCAD.Rotation(0, 0, 0))
+			pl = FreeCAD.Vector(self.gThick, 0, self.gFSZ / 10)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
 			o1.ViewObject.DiffuseColor = self.gColor
 			
 			# Left Side
@@ -280,7 +288,8 @@ def showQtGUI():
 			o2.Length = self.gThick
 			o2.Height = self.gFSZ
 			o2.Width = self.gFSY
-			o2.Placement = FreeCAD.Placement(FreeCAD.Vector(0, 0, 0), FreeCAD.Rotation(0, 0, 0))
+			pl = FreeCAD.Vector(0, 0, 0)
+			o2.Placement = FreeCAD.Placement(pl, self.gR)
 			o2.ViewObject.DiffuseColor = self.gColor
 			
 			# Right Side
@@ -289,7 +298,8 @@ def showQtGUI():
 			o3.Length = self.gThick
 			o3.Height = self.gFSZ
 			o3.Width = self.gFSY
-			o3.Placement = FreeCAD.Placement(FreeCAD.Vector(self.gFSX - self.gThick, 0, 0), FreeCAD.Rotation(0, 0, 0))
+			pl = FreeCAD.Vector(self.gFSX - self.gThick, 0, 0)
+			o3.Placement = FreeCAD.Placement(pl, self.gR)
 			o3.ViewObject.DiffuseColor = self.gColor
 			
 			# Back
@@ -298,7 +308,8 @@ def showQtGUI():
 			o4.Length = self.gFSX
 			o4.Height = self.gFSZ - (self.gFSZ / 10)
 			o4.Width = 3
-			o4.Placement = FreeCAD.Placement(FreeCAD.Vector(0, self.gFSY, self.gFSZ / 10), FreeCAD.Rotation(0, 0, 0))
+			pl = FreeCAD.Vector(0, self.gFSY, self.gFSZ / 10)
+			o4.Placement = FreeCAD.Placement(pl, self.gR)
 			o4.ViewObject.DiffuseColor = self.gColor
 			
 			# Top
@@ -307,7 +318,8 @@ def showQtGUI():
 			o5.Length = self.gFSX - (2 * self.gThick)
 			o5.Height = self.gThick
 			o5.Width = self.gFSY
-			o5.Placement = FreeCAD.Placement(FreeCAD.Vector(self.gThick, 0, self.gFSZ - self.gThick), FreeCAD.Rotation(0, 0, 0))
+			pl = FreeCAD.Vector(self.gThick, 0, self.gFSZ - self.gThick)
+			o5.Placement = FreeCAD.Placement(pl, self.gR)
 			o5.ViewObject.DiffuseColor = self.gColor
 
 			# Shelf
@@ -316,10 +328,10 @@ def showQtGUI():
 			o6.Length = self.gFSX - (2 * self.gThick)
 			o6.Height = self.gThick
 			o6.Width = self.gFSY
-			o6.Placement = FreeCAD.Placement(FreeCAD.Vector(self.gThick, 0, (self.gFSZ / 2) - (self.gThick / 2)), FreeCAD.Rotation(0, 0, 0))
+			pl = FreeCAD.Vector(self.gThick, 0, (self.gFSZ / 2) - (self.gThick / 2))
+			o6.Placement = FreeCAD.Placement(pl, self.gR)
 			o6.ViewObject.DiffuseColor = self.gColor
-			
-			
+
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
 		
@@ -344,7 +356,8 @@ def showQtGUI():
 				o1.Length = self.gFSX
 				o1.Height = self.gThick
 				o1.Width = self.gFSY
-				o1.Placement = FreeCAD.Placement(FreeCAD.Vector(0, 0, posZ), FreeCAD.Rotation(0, 0, 0))
+				pl = FreeCAD.Vector(0, 0, posZ)
+				o1.Placement = FreeCAD.Placement(pl, self.gR)
 				o1.ViewObject.DiffuseColor = self.gColor
 				
 				# Left Side
@@ -353,7 +366,8 @@ def showQtGUI():
 				o2.Length = self.gThick
 				o2.Height = sideZ
 				o2.Width = self.gFSY
-				o2.Placement = FreeCAD.Placement(FreeCAD.Vector(0, 0, posZ + self.gThick), FreeCAD.Rotation(0, 0, 0))
+				pl = FreeCAD.Vector(0, 0, posZ + self.gThick)
+				o2.Placement = FreeCAD.Placement(pl, self.gR)
 				o2.ViewObject.DiffuseColor = self.gColor
 				
 				# Right Side
@@ -362,7 +376,8 @@ def showQtGUI():
 				o3.Length = self.gThick
 				o3.Height = sideZ
 				o3.Width = self.gFSY
-				o3.Placement = FreeCAD.Placement(FreeCAD.Vector(self.gFSX - self.gThick, 0, posZ + self.gThick), FreeCAD.Rotation(0, 0, 0))
+				pl = FreeCAD.Vector(self.gFSX - self.gThick, 0, posZ + self.gThick)
+				o3.Placement = FreeCAD.Placement(pl, self.gR)
 				o3.ViewObject.DiffuseColor = self.gColor
 				
 				# Back
@@ -371,7 +386,8 @@ def showQtGUI():
 				o4.Length = self.gFSX - (2 * self.gThick)
 				o4.Height = sideZ
 				o4.Width = self.gThick
-				o4.Placement = FreeCAD.Placement(FreeCAD.Vector(self.gThick, self.gFSY - self.gThick, posZ + self.gThick), FreeCAD.Rotation(0, 0, 0))
+				pl = FreeCAD.Vector(self.gThick, self.gFSY - self.gThick, posZ + self.gThick)
+				o4.Placement = FreeCAD.Placement(pl, self.gR)
 				o4.ViewObject.DiffuseColor = self.gColor
 				
 				# Front
@@ -380,7 +396,8 @@ def showQtGUI():
 				o5.Length = self.gFSX - self.gThick
 				o5.Height = sideZ + self.gThick - 4
 				o5.Width = self.gThick
-				o5.Placement = FreeCAD.Placement(FreeCAD.Vector(self.gThick / 2, - self.gThick, posZ + (self.gThick / 2) + 2), FreeCAD.Rotation(0, 0, 0))
+				pl = FreeCAD.Vector(self.gThick / 2, - self.gThick, posZ + (self.gThick / 2) + 2)
+				o5.Placement = FreeCAD.Placement(pl, self.gR)
 				o5.ViewObject.DiffuseColor = self.gColor
 				
 				# Shelf
@@ -390,7 +407,8 @@ def showQtGUI():
 				o6.Height = self.gThick
 				o6.Width = self.gFSY - (3 * self.gThick)
 				pZ = ((2 * i) + 1) * ((self.gThick + sideZ) / 2)
-				o6.Placement = FreeCAD.Placement(FreeCAD.Vector(self.gThick, 2 * self.gThick, pZ), FreeCAD.Rotation(0, 0, 0))
+				pl = FreeCAD.Vector(self.gThick, 2 * self.gThick, pZ)
+				o6.Placement = FreeCAD.Placement(pl, self.gR)
 				o6.ViewObject.DiffuseColor = self.gColor
 				
 				# create folder
@@ -414,10 +432,10 @@ def showQtGUI():
 			t1.Height = self.gThick
 			t1.Width = self.gFSY
 			pZ = mNum * (self.gThick + sideZ)
-			t1.Placement = FreeCAD.Placement(FreeCAD.Vector(0, 0, pZ), FreeCAD.Rotation(0, 0, 0))
+			pl = FreeCAD.Vector(0, 0, pZ)
+			t1.Placement = FreeCAD.Placement(pl, self.gR)
 			t1.ViewObject.DiffuseColor = self.gColor
-			
-			
+
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
 		
