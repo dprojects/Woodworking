@@ -23,7 +23,7 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 	* [Pocket screw 4 x 40 mm](#pocket-screw-4-x-40-mm)
 	* [Pocket screw 4 x 60 mm](#pocket-screw-4-x-60-mm)
 * [Bolts](#bolts)
-	* [Conterbore2x 5 x 60 mm](#conterbore2x-5-x-60-mm)
+	* [Counterbore2x 5 x 60 mm](#counterbore2x-5-x-60-mm)
 * [Pins](#pins)
 	* [Shelf Pin 5 x 16 mm](#shelf-pin-5-x-16-mm)
 * [Angles](#angles)
@@ -191,16 +191,16 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 
 # Bolts
 
-### Conterbore2x 5 x 60 mm
+### Counterbore2x 5 x 60 mm
 
 |   |   |
 |:--|:--|
 | **Usage:** | This type of bolts can be used for counterbore 2x. |
 | **FreeCAD version:** | `0.20.29177 (Stable, Linux, x86_64, AppImage)` |
 | **OS:** | `Xubuntu 22.04 LTS x86_64` |
-| **Download:** | [Conterbore2x_5_x_60_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Conterbore2x_5_x_60_mm.FCStd)
+| **Download:** | [Counterbore2x_5_x_60_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Counterbore2x_5_x_60_mm.FCStd)
 
-![Conterbore2x_5_x_60_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Conterbore2x_5_x_60_mm.png)
+![Counterbore2x_5_x_60_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Counterbore2x_5_x_60_mm.png)
 
 # Pins
 

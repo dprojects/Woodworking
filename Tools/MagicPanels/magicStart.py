@@ -79,7 +79,12 @@ def showQtGUI():
 				translate('magicStart', 'Storage box (import parametric)'), 
 				translate('magicStart', 'Dowel 8x35 mm (import parametric)'), 
 				translate('magicStart', 'Screw 4x40 mm (import parametric)'), 
-				translate('magicStart', 'Modular storage')
+				translate('magicStart', 'Modular storage'), 
+				translate('magicStart', 'Screw 3x20 mm for HDF (import parametric)'), 
+				translate('magicStart', 'Screw 5x50 mm (import parametric)'), 
+				translate('magicStart', 'Counterbore 2x 5x60 mm (import parametric)'), 
+				translate('magicStart', 'Shelf Pin 5x16 mm (import parametric)'), 
+				translate('magicStart', 'Angle 40x40x100 mm (import parametric)')
 				)
 			
 			self.sMode = QtGui.QComboBox(self)
@@ -477,6 +482,13 @@ def showQtGUI():
 				path = str(os.path.join(path, "Fixture"))
 				path = str(os.path.join(path, "Mount"))
 				path = str(os.path.join(path, iName))
+			
+			if iType == "angles":
+				path = FreeCADGui.activeWorkbench().path
+				path = str(os.path.join(path, "Examples"))
+				path = str(os.path.join(path, "Fixture"))
+				path = str(os.path.join(path, "Angles"))
+				path = str(os.path.join(path, iName))
 				
 			return path
 
@@ -560,7 +572,22 @@ def showQtGUI():
 			
 			if self.gSelectedFurniture == "F10":
 				self.createF2()
+			
+			if self.gSelectedFurniture == "F11":
+				self.mergeF("Screw_3_x_20_mm.FCStd", "mount")
 				
+			if self.gSelectedFurniture == "F12":
+				self.mergeF("Screw_5_x_50_mm.FCStd", "mount")
+			
+			if self.gSelectedFurniture == "F13":
+				self.mergeF("Counterbore2x_5_x_60_mm.FCStd", "mount")
+			
+			if self.gSelectedFurniture == "F14":
+				self.mergeF("Shelf_Pin_5_x_16.FCStd", "mount")
+			
+			if self.gSelectedFurniture == "F15":
+				self.mergeF("Angle_40_x_40_x_100_mm.FCStd", "angles")
+			
 		# ############################################################################	
 		def selectedOption(self, selectedIndex):
 			
@@ -610,6 +637,26 @@ def showQtGUI():
 				self.gSelectedFurniture = "F10"
 				self.setIcon("msf010")
 
+			if selectedIndex == 11:
+				self.gSelectedFurniture = "F11"
+				self.setIcon("msf011")
+
+			if selectedIndex == 12:
+				self.gSelectedFurniture = "F12"
+				self.setIcon("msf012")
+				
+			if selectedIndex == 13:
+				self.gSelectedFurniture = "F13"
+				self.setIcon("msf013")
+				
+			if selectedIndex == 14:
+				self.gSelectedFurniture = "F14"
+				self.setIcon("msf014")
+
+			if selectedIndex == 15:
+				self.gSelectedFurniture = "F15"
+				self.setIcon("msf015")
+
 			if (
 				selectedIndex == 2 or  
 				selectedIndex == 3 or
@@ -618,7 +665,12 @@ def showQtGUI():
 				selectedIndex == 6 or 
 				selectedIndex == 7 or 
 				selectedIndex == 8 or 
-				selectedIndex == 9
+				selectedIndex == 9 or 
+				selectedIndex == 11 or 
+				selectedIndex == 12 or 
+				selectedIndex == 13 or 
+				selectedIndex == 14 or 
+				selectedIndex == 15
 				):
 				self.setMergeInfo("show")
 			else:

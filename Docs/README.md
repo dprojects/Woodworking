@@ -306,14 +306,24 @@ Selection modes:
 
 **Options:**
 
-* **Select edge:** You can choose the edge for the dowels. Normally, there are 4 edges but if the object is for example `boolean Cut` there might be as many edges, as the panel has been cut.
+* **+:** You have to select face and click `+` to start using this tool. Also you can change face with this button. However you can also first select face and next open this tool, so this tool will open GUI with the face loaded.
+* **1 / 4:** For example it means you have selected `1` edge from `4` edges available. The same for other selections.
+* **Select edge:** You can choose the edge for the dowels. Normally, for surface there are 4 edges but if the object is for example `boolean Cut` there might be much more edges or only 2 edges if this is edge of the board.
+* **position autodetect:** this checkbox is checked by default and allows for searching correct edge offset, sink and rotation. The edge selection might be slower but no further adjustment will be needed, I hope.
+* **create:** This store the dowels permanently.
+
+For manual adjust you can use:
+
 * **Adjust edge:** Allows to adjust offset from the edge. This option is useful if by default the dowels not sink to the surface, so there is problem with correct positioning by default. 
-* **Adjust sink:** With this option you can change the sign for the sink. Sometimes it solves the problem with correct positioning and further adjust is not needed. The `0` is to set the sink to zero. It is useful if you want to add reference points for custom screw types. 
+* **Adjust sink:** With this option you can change the sign for the sink. Sometimes it solves the problem with correct positioning and further adjust is not needed.
 * **Adjust rotation:** You can rotate the dowels. There are some predefined rotations according to the current face plane  to speed up this process.
 * **Select sides:** You can choose the side for the dowels, left side only, right side only or both sides.
-* **Text inputs:** You can set your custom values here and click `set custom values` to apply the settings to the dowels and see how they change. If you select new object `Offset from edge` will be automatically set to the selected panel thickenss but all other settings will stay as they are allowing you to keep the custom settings. If you change predefined settings all the custom settings will be replaced with predefined values. 
+* **Text inputs:** You can set your custom values here and click `show custom values` to see if the dowels fits your needs. 
+* **keep custom settings:** This checkbox allows you to keep custom values, for example custom dowels size or dowels per side, while you changing the faces.
+* **show custom values:** Allows you to preview the custom settings but you need to click `create` button to store dowels.
 
 **Video tutorials:** 
+* [Adding dowels improved](https://www.youtube.com/watch?v=6qixKpVKA-0)
 * [Adding dowels](https://www.youtube.com/watch?v=q7tJffBBUGY)
 * [Make quickly 168 dowels](https://www.youtube.com/watch?v=_a_Q7BjEHLA)
 * [Tenons with magicDowels](https://www.youtube.com/watch?v=xXfy9KaYJC4)

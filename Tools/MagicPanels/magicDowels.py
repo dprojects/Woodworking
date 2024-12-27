@@ -7,9 +7,29 @@ import MagicPanels
 translate = FreeCAD.Qt.translate
 
 # ############################################################################
-# Qt Main
+# global default settings
 # ############################################################################
 
+gDS = {
+	"gDowelLabel": translate('magicDowels', 'Dowel 8 x 35 mm '),
+	"gDOFESet": 9,             # dowel offset from edge (adjust edge)
+	"gDOFSSet": 20,            # dowel offset from surface (adjust sink)
+	"gSides": 0,               # adjust sides
+	"gDDiameter": 8,           # dowel diameter
+	"gDSize": 35,              # dowel long size
+	"gDNum": 2,                # dowel numbers per side
+	"gDOCorner": 50,           # dowel offset from corner
+	"gDONext": 32,             # space to next dowel (32 mm woodworking system)
+	"gDShape": 0,              # dowel shape (cylinder 0 or box 1)
+	"gTenonT": 6,              # tenon thickness size
+	"gTenonL": 50,             # tenon long size
+	"gTenonH": 20,             # tenon height size (sink)
+	"gCurrentSelection": 1     # currently selected menu index
+}
+
+# ############################################################################
+# Qt Main
+# ############################################################################
 
 def showQtGUI():
 	
@@ -19,48 +39,68 @@ def showQtGUI():
 		# globals
 		# ############################################################################
 
+		# tool screen size
+		toolSW = 270
+		toolSH = 690
+		
+		# object settings
 		gObj = ""
 		gObjBase = ""
 		gThick = 0
 		
+		# face settings
 		gFace = ""
 		gFIndex = 0
 		gFPlane = ""
 		gFType = ""
 		
+		# select edge
+		gEdgeIndex = 0
+		gEdgeArr = []
 		gEdge = ""
-		gEArr = []
-		gEIndex = 0
 
-		gPosition = 0
-		gRAxis = ""
-		gRAngles = []
-		gRIndex = 0
+		# dowel offset from edge (adjust edge)
+		gDOFEIndex = 0
+		gDOFEArr = []
+		gDOFESet = gDS["gDOFESet"]
 
-		# should not be reset if object change
-		gSides = 0
+		# adjust rotation
+		gRotationIndex = 0
+		gRotationArr = []
+		gRotation = ""
+		
+		# dowel offset from surface (adjust sink)
+		gDOFSIndex = 0
+		gDOFSArr = []
+		gDOFSSet = gDS["gDOFSSet"]
+		
+		# adjust sides
+		gSidesIndex = 0
+		gSidesArr = []
+		gSides = gDS["gSides"]
+		
+		# current visible dowels
 		gDowels = []
-		gDowelLabel = ""
-		gDDiameter = 8
-		gDSize = 35
-		gDSink = 20
-		gDNum = 2
-		gDOCorner = 50
-		gDONext = 32
-		gDOEdge = 0
-		gDSinkSave = 20
 		
-		gDShape = 0
-		gDSizeX = 0
-		gDSizeY = 0
-		gDSizeZ = 0
-		gTenonLong = 50
-		gTenonDepth = 20
-		gTenonThick = 6
+		# for tenon
+		gDSizeX = 0  # tenon cube size along X axis
+		gDSizeY = 0  # tenon cube size along Y axis
+		gDSizeZ = 0  # tenon cube size along Z axis
 		
-		gInit = 1
 		gNoSelection = translate('magicDowels', 'please select face')
-		
+
+		gDowelLabel = gDS["gDowelLabel"]
+		gDDiameter = gDS["gDDiameter"]
+		gDSize = gDS["gDSize"]
+		gDNum = gDS["gDNum"]
+		gDOCorner = gDS["gDOCorner"]
+		gDONext = gDS["gDONext"]
+		gDShape = gDS["gDShape"]
+		gTenonL = gDS["gTenonL"]
+		gTenonH = gDS["gTenonH"]
+		gTenonT = gDS["gTenonT"]
+		gCurrentSelection = gDS["gCurrentSelection"]
+
 		# ############################################################################
 		# init
 		# ############################################################################
@@ -75,24 +115,20 @@ def showQtGUI():
 			# set screen
 			# ############################################################################
 			
-			# tool screen size
-			toolSW = 220
-			toolSH = 620
-			
 			# active screen size (FreeCAD main window)
 			gSW = FreeCADGui.getMainWindow().width()
 			gSH = FreeCADGui.getMainWindow().height()
 
 			# tool screen position
-			gPW = int( gSW - toolSW )
-			gPH = int( gSH - toolSH )
+			gPW = int( gSW - self.toolSW )
+			gPH = int( gSH - self.toolSH )
 
 			# ############################################################################
 			# main window
 			# ############################################################################
 			
 			self.result = userCancelled
-			self.setGeometry(gPW, gPH, toolSW, toolSH)
+			self.setGeometry(gPW, gPH, self.toolSW, self.toolSH)
 			self.setWindowTitle(translate('magicDowels', 'magicDowels'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
@@ -105,10 +141,7 @@ def showQtGUI():
 			
 			# show window
 			self.show()
-
-			# init
-			self.getSelected()
-
+			
 		# ############################################################################
 		# actions - internal functions
 		# ############################################################################
@@ -122,21 +155,23 @@ def showQtGUI():
 				# options - selection mode
 				# ############################################################################
 				
+				row = 10
+				
 				# screen
 				info = ""
 				info += "                                             "
 				info += "                                             "
 				info += "                                             "
-				self.s1S = QtGui.QLabel(info, self)
-				self.s1S.move(10, 10)
+				self.faceinfo = QtGui.QLabel(info, self)
+				self.faceinfo.move(10, row)
 
+				#row += 20
+				
 				# button
-				self.s1B1 = QtGui.QPushButton(translate('magicDowels', 'refresh selection'), self)
-				self.s1B1.clicked.connect(self.getSelected)
-				self.s1B1.setFixedWidth(200)
-				self.s1B1.move(10, 40)
-
-				row = 50
+				self.faceinfoB1 = QtGui.QPushButton("+", self)
+				self.faceinfoB1.clicked.connect(self.setFaceSettins)
+				self.faceinfoB1.setFixedWidth(50)
+				self.faceinfoB1.move(self.toolSW - 60, row)
 
 				# ############################################################################
 				# options - select edge
@@ -145,23 +180,86 @@ def showQtGUI():
 				row += 30
 
 				# label
-				self.s2L = QtGui.QLabel(translate('magicDowels', 'Select edge:'), self)
-				self.s2L.move(10, row+3)
+				self.seL = QtGui.QLabel(translate('magicDowels', 'Select edge:'), self)
+				self.seL.move(10, row+3)
 
 				# button
-				self.s2B1 = QtGui.QPushButton("<", self)
-				self.s2B1.clicked.connect(self.setEdgeP)
-				self.s2B1.setFixedWidth(50)
-				self.s2B1.move(105, row)
-				self.s2B1.setAutoRepeat(True)
+				self.seB1 = QtGui.QPushButton("<", self)
+				self.seB1.clicked.connect(self.selectEdgeP)
+				self.seB1.setFixedWidth(50)
+				self.seB1.move(self.toolSW - 165, row)
+				self.seB1.setAutoRepeat(True)
+				
+				# label
+				self.seIS = QtGui.QLabel("                  ", self)
+				self.seIS.move(self.toolSW - 105, row+3)
 				
 				# button
-				self.s2B2 = QtGui.QPushButton(">", self)
-				self.s2B2.clicked.connect(self.setEdgeN)
-				self.s2B2.setFixedWidth(50)
-				self.s2B2.move(160, row)
-				self.s2B2.setAutoRepeat(True)
+				self.seB2 = QtGui.QPushButton(">", self)
+				self.seB2.clicked.connect(self.selectEdgeN)
+				self.seB2.setFixedWidth(50)
+				self.seB2.move(self.toolSW - 60, row)
+				self.seB2.setAutoRepeat(True)
 
+				# ############################################################################
+				# options - autodetect checkbox
+				# ############################################################################
+				
+				row += 30
+				
+				self.pacb = QtGui.QCheckBox(translate('magicDowels', ' - position autodetect'), self)
+				self.pacb.setCheckState(QtCore.Qt.Checked)
+				self.pacb.move(10, row+3)
+
+				# ############################################################################
+				# options - save dowels button
+				# ############################################################################
+
+				row += 30
+
+				# button
+				self.e2B1 = QtGui.QPushButton(translate('magicDowels', 'create'), self)
+				self.e2B1.clicked.connect(self.setDowels)
+				self.e2B1.setFixedWidth(self.toolSW - 20)
+				self.e2B1.setFixedHeight(40)
+				self.e2B1.move(10, row)
+
+				# ############################################################################
+				# options - connection samples
+				# ############################################################################
+
+				row += 80
+				
+				# dowel type selection
+				self.dtslist = (
+							translate('magicDowels', 'Dowel 6 x 35 mm '), 
+							translate('magicDowels', 'Dowel 8 x 35 mm '), 
+							translate('magicDowels', 'Dowel 10 x 35 mm '), 
+							translate('magicDowels', 'Biscuits 16 x 48 mm '), 
+							translate('magicDowels', 'Biscuits 21 x 54 mm '), 
+							translate('magicDowels', 'Biscuits 24 x 57 mm '), 
+							translate('magicDowels', 'Screw 3 x 20 mm '), 
+							translate('magicDowels', 'Screw 4.5 x 40 mm '), 
+							translate('magicDowels', 'Screw 4 x 40 mm '), 
+							translate('magicDowels', 'Screw 5 x 50 mm '), 
+							translate('magicDowels', 'Screw 6 x 60 mm '), 
+							translate('magicDowels', 'Confirmation 7 x 40 mm '), 
+							translate('magicDowels', 'Confirmation 7 x 50 mm '), 
+							translate('magicDowels', 'Confirmation 7 x 70 mm '), 
+							translate('magicDowels', 'Shelf Pin 5 x 16 mm '), 
+							translate('magicDowels', 'Profile Pin 5 x 30 mm '), 
+							translate('magicDowels', 'Profile Pin 8 x 40 mm '), 
+							translate('magicDowels', 'Tenon joint '), 
+							translate('magicDowels', 'Custom mount point ')
+							)
+				
+				self.dts = QtGui.QComboBox(self)
+				self.dts.addItems(self.dtslist)
+				self.dts.setCurrentIndex(self.dtslist.index(self.gDowelLabel))
+				self.dts.activated[int].connect(self.setMenuItem)
+				self.dts.setFixedWidth(self.toolSW - 20)
+				self.dts.move(10, row)
+				
 				# ############################################################################
 				# options - adjust position
 				# ############################################################################
@@ -169,22 +267,26 @@ def showQtGUI():
 				row += 30
 				
 				# label
-				self.s3L = QtGui.QLabel(translate('magicDowels', 'Adjust edge:'), self)
-				self.s3L.move(10, row+3)
+				self.aeL = QtGui.QLabel(translate('magicDowels', 'Adjust edge:'), self)
+				self.aeL.move(10, row+3)
 
 				# button
-				self.s3B1 = QtGui.QPushButton("<", self)
-				self.s3B1.clicked.connect(self.setPosition)
-				self.s3B1.setFixedWidth(50)
-				self.s3B1.move(105, row)
-				self.s3B1.setAutoRepeat(True)
+				self.aeB1 = QtGui.QPushButton("<", self)
+				self.aeB1.clicked.connect(self.adjustEdgeP)
+				self.aeB1.setFixedWidth(50)
+				self.aeB1.move(self.toolSW - 165, row)
+				self.aeB1.setAutoRepeat(True)
+				
+				# label
+				self.aeIS = QtGui.QLabel("                  ", self)
+				self.aeIS.move(self.toolSW - 105, row+3)
 				
 				# button
-				self.s3B2 = QtGui.QPushButton(">", self)
-				self.s3B2.clicked.connect(self.setPosition)
-				self.s3B2.setFixedWidth(50)
-				self.s3B2.move(160, row)
-				self.s3B2.setAutoRepeat(True)
+				self.aeB2 = QtGui.QPushButton(">", self)
+				self.aeB2.clicked.connect(self.adjustEdgeN)
+				self.aeB2.setFixedWidth(50)
+				self.aeB2.move(self.toolSW - 60, row)
+				self.aeB2.setAutoRepeat(True)
 
 				# ############################################################################
 				# options - adjust sink
@@ -193,22 +295,26 @@ def showQtGUI():
 				row += 30
 				
 				# label
-				self.s7L = QtGui.QLabel(translate('magicDowels', 'Adjust sink:'), self)
-				self.s7L.move(10, row+3)
+				self.asL = QtGui.QLabel(translate('magicDowels', 'Adjust sink:'), self)
+				self.asL.move(10, row+3)
 
 				# button
-				self.s7B1 = QtGui.QPushButton("< >", self)
-				self.s7B1.clicked.connect(self.setSink)
-				self.s7B1.setFixedWidth(50)
-				self.s7B1.move(105, row)
-				self.s7B1.setAutoRepeat(True)
+				self.asB1 = QtGui.QPushButton("<", self)
+				self.asB1.clicked.connect(self.adjustSinkP)
+				self.asB1.setFixedWidth(50)
+				self.asB1.move(self.toolSW - 165, row)
+				self.asB1.setAutoRepeat(True)
+				
+				# label
+				self.asIS = QtGui.QLabel("                  ", self)
+				self.asIS.move(self.toolSW - 105, row+3)
 				
 				# button
-				self.s7B2 = QtGui.QPushButton("0", self)
-				self.s7B2.clicked.connect(self.setSink0)
-				self.s7B2.setFixedWidth(50)
-				self.s7B2.move(160, row)
-				self.s7B2.setAutoRepeat(True)
+				self.asB2 = QtGui.QPushButton(">", self)
+				self.asB2.clicked.connect(self.adjustSinkN)
+				self.asB2.setFixedWidth(50)
+				self.asB2.move(self.toolSW - 60, row)
+				self.asB2.setAutoRepeat(True)
 
 				# ############################################################################
 				# options - adjust rotation
@@ -217,22 +323,26 @@ def showQtGUI():
 				row += 30
 				
 				# label
-				self.s4L = QtGui.QLabel(translate('magicDowels', 'Adjust rotation:'), self)
-				self.s4L.move(10, row+3)
+				self.arL = QtGui.QLabel(translate('magicDowels', 'Adjust rotation:'), self)
+				self.arL.move(10, row+3)
 
 				# button
-				self.s4B1 = QtGui.QPushButton("<", self)
-				self.s4B1.clicked.connect(self.setRotationP)
-				self.s4B1.setFixedWidth(50)
-				self.s4B1.move(105, row)
-				self.s4B1.setAutoRepeat(True)
+				self.arB1 = QtGui.QPushButton("<", self)
+				self.arB1.clicked.connect(self.setRotationP)
+				self.arB1.setFixedWidth(50)
+				self.arB1.move(self.toolSW - 165, row)
+				self.arB1.setAutoRepeat(True)
+				
+				# label
+				self.arIS = QtGui.QLabel("                  ", self)
+				self.arIS.move(self.toolSW - 105, row+3)
 				
 				# button
-				self.s4B2 = QtGui.QPushButton(">", self)
-				self.s4B2.clicked.connect(self.setRotationN)
-				self.s4B2.setFixedWidth(50)
-				self.s4B2.move(160, row)
-				self.s4B2.setAutoRepeat(True)
+				self.arB2 = QtGui.QPushButton(">", self)
+				self.arB2.clicked.connect(self.setRotationN)
+				self.arB2.setFixedWidth(50)
+				self.arB2.move(self.toolSW - 60, row)
+				self.arB2.setAutoRepeat(True)
 
 				# ############################################################################
 				# options - select sides
@@ -241,65 +351,33 @@ def showQtGUI():
 				row += 30
 
 				# label
-				self.s5L = QtGui.QLabel(translate('magicDowels', 'Select sides:'), self)
-				self.s5L.move(10, row+3)
+				self.ssL = QtGui.QLabel(translate('magicDowels', 'Select sides:'), self)
+				self.ssL.move(10, row+3)
 
 				# button
-				self.s5B1 = QtGui.QPushButton("<", self)
-				self.s5B1.clicked.connect(self.setSidesP)
-				self.s5B1.setFixedWidth(50)
-				self.s5B1.move(105, row)
-				self.s5B1.setAutoRepeat(True)
+				self.ssB1 = QtGui.QPushButton("<", self)
+				self.ssB1.clicked.connect(self.selectSidesP)
+				self.ssB1.setFixedWidth(50)
+				self.ssB1.move(self.toolSW - 165, row)
+				self.ssB1.setAutoRepeat(True)
 				
+				# label
+				self.ssIS = QtGui.QLabel("                  ", self)
+				self.ssIS.move(self.toolSW - 105, row+3)
+								
 				# button
-				self.s5B2 = QtGui.QPushButton(">", self)
-				self.s5B2.clicked.connect(self.setSidesN)
-				self.s5B2.setFixedWidth(50)
-				self.s5B2.move(160, row)
-				self.s5B2.setAutoRepeat(True)
+				self.ssB2 = QtGui.QPushButton(">", self)
+				self.ssB2.clicked.connect(self.selectSidesN)
+				self.ssB2.setFixedWidth(50)
+				self.ssB2.move(self.toolSW - 60, row)
+				self.ssB2.setAutoRepeat(True)
 
-				# ############################################################################
-				# options - mounting samples
-				# ############################################################################
-
-				row += 30
-
-				# border options
-				self.s6Slist = (
-							"Dowel 6 x 35 mm ",
-							"Dowel 8 x 35 mm ",
-							"Dowel 10 x 35 mm ",
-							"Biscuits 16 x 48 mm ",
-							"Biscuits 21 x 54 mm ",
-							"Biscuits 24 x 57 mm ",
-							"Screw 3 x 20 mm ",
-							"Screw 4.5 x 40 mm ",
-							"Screw 4 x 40 mm ",
-							"Screw 5 x 50 mm ",
-							"Screw 6 x 60 mm ",
-							"Confirmation 7 x 40 mm ",
-							"Confirmation 7 x 50 mm ",
-							"Confirmation 7 x 70 mm ",
-							"Shelf Pin 5 x 16 mm ",
-							"Profile Pin 5 x 30 mm ",
-							"Profile Pin 8 x 40 mm ",
-							"Tenon joint ",
-							"Custom mount point "
-							)
 				
-				self.gDowelLabel = "Dowel 8 x 35 mm "
-				self.s6S = QtGui.QComboBox(self)
-				self.s6S.addItems(self.s6Slist)
-				self.s6S.setCurrentIndex(self.s6Slist.index(self.gDowelLabel))
-				self.s6S.activated[str].connect(self.setCustomMount)
-				self.s6S.setFixedWidth(200)
-				self.s6S.move(10, row)
-
 				# ############################################################################
 				# options - mount label
 				# ############################################################################
 
-				row += 30
+				row += 50
 				
 				# label
 				self.oDowelLabelL = QtGui.QLabel(translate('magicDowels', 'Label:'), self)
@@ -308,7 +386,7 @@ def showQtGUI():
 				# text input
 				self.oDowelLabelE = QtGui.QLineEdit(self)
 				self.oDowelLabelE.setText(str(self.gDowelLabel))
-				self.oDowelLabelE.setFixedWidth(150)
+				self.oDowelLabelE.setFixedWidth(self.toolSW - 70)
 				self.oDowelLabelE.move(60, row)
 
 				# ############################################################################
@@ -327,7 +405,7 @@ def showQtGUI():
 				self.oDNumE = QtGui.QLineEdit(self)
 				self.oDNumE.setText(str(self.gDNum))
 				self.oDNumE.setFixedWidth(50)
-				self.oDNumE.move(160, row)
+				self.oDNumE.move(self.toolSW - 60, row)
 
 				# ############################################################################
 				# options - tenon long
@@ -336,14 +414,14 @@ def showQtGUI():
 				row += 30
 
 				# label
-				self.oTenonLongL = QtGui.QLabel(translate('magicDowels', 'Tenon long:'), self)
-				self.oTenonLongL.move(10, row+3)
+				self.oTenonLL = QtGui.QLabel(translate('magicDowels', 'Tenon long:'), self)
+				self.oTenonLL.move(10, row+3)
 
 				# text input
-				self.oTenonLongE = QtGui.QLineEdit(self)
-				self.oTenonLongE.setText(str(self.gTenonLong))
-				self.oTenonLongE.setFixedWidth(50)
-				self.oTenonLongE.move(160, row)
+				self.oTenonLE = QtGui.QLineEdit(self)
+				self.oTenonLE.setText(str(self.gTenonL))
+				self.oTenonLE.setFixedWidth(50)
+				self.oTenonLE.move(self.toolSW - 60, row)
 
 				# ############################################################################
 				# options - dowels diameter & tenon thick
@@ -359,17 +437,17 @@ def showQtGUI():
 				self.oDDiameterE = QtGui.QLineEdit(self)
 				self.oDDiameterE.setText(str(self.gDDiameter))
 				self.oDDiameterE.setFixedWidth(50)
-				self.oDDiameterE.move(160, row)
+				self.oDDiameterE.move(self.toolSW - 60, row)
 
 				# label
-				self.oTenonThickL = QtGui.QLabel(translate('magicDowels', 'Tenon thick:'), self)
-				self.oTenonThickL.move(10, row+3)
+				self.oTenonTL = QtGui.QLabel(translate('magicDowels', 'Tenon thick:'), self)
+				self.oTenonTL.move(10, row+3)
 
 				# text input
-				self.oTenonThickE = QtGui.QLineEdit(self)
-				self.oTenonThickE.setText(str(self.gTenonThick))
-				self.oTenonThickE.setFixedWidth(50)
-				self.oTenonThickE.move(160, row)
+				self.oTenonTE = QtGui.QLineEdit(self)
+				self.oTenonTE.setText(str(self.gTenonT))
+				self.oTenonTE.setFixedWidth(50)
+				self.oTenonTE.move(self.toolSW - 60, row)
 
 				# ############################################################################
 				# options - dowels size & tenon depth
@@ -385,17 +463,17 @@ def showQtGUI():
 				self.oDSizeE = QtGui.QLineEdit(self)
 				self.oDSizeE.setText(str(self.gDSize))
 				self.oDSizeE.setFixedWidth(50)
-				self.oDSizeE.move(160, row)
+				self.oDSizeE.move(self.toolSW - 60, row)
 
 				# label
-				self.oTenonDepthL = QtGui.QLabel(translate('magicDowels', 'Tenon depth:'), self)
-				self.oTenonDepthL.move(10, row+3)
+				self.oTenonHL = QtGui.QLabel(translate('magicDowels', 'Tenon depth:'), self)
+				self.oTenonHL.move(10, row+3)
 
 				# text input
-				self.oTenonDepthE = QtGui.QLineEdit(self)
-				self.oTenonDepthE.setText(str(self.gTenonDepth))
-				self.oTenonDepthE.setFixedWidth(50)
-				self.oTenonDepthE.move(160, row)
+				self.oTenonHE = QtGui.QLineEdit(self)
+				self.oTenonHE.setText(str(self.gTenonH))
+				self.oTenonHE.setFixedWidth(50)
+				self.oTenonHE.move(self.toolSW - 60, row)
 
 				# ############################################################################
 				# options - dowels sink
@@ -411,9 +489,9 @@ def showQtGUI():
 				
 				# text input
 				self.oDSinkE = QtGui.QLineEdit(self)
-				self.oDSinkE.setText(str(self.gDSink))
+				self.oDSinkE.setText(str(self.gDOFSSet))
 				self.oDSinkE.setFixedWidth(50)
-				self.oDSinkE.move(160, row)
+				self.oDSinkE.move(self.toolSW - 60, row)
 
 				# ############################################################################
 				# options - offset from corner
@@ -429,7 +507,7 @@ def showQtGUI():
 				self.oDOCornerE = QtGui.QLineEdit(self)
 				self.oDOCornerE.setText(str(self.gDOCorner))
 				self.oDOCornerE.setFixedWidth(50)
-				self.oDOCornerE.move(160, row)
+				self.oDOCornerE.move(self.toolSW - 60, row)
 
 				# ############################################################################
 				# options - offset between dowels
@@ -447,7 +525,7 @@ def showQtGUI():
 				self.oDONextE = QtGui.QLineEdit(self)
 				self.oDONextE.setText(str(self.gDONext))
 				self.oDONextE.setFixedWidth(50)
-				self.oDONextE.move(160, row)
+				self.oDONextE.move(self.toolSW - 60, row)
 
 				# ############################################################################
 				# options - offset from edge
@@ -461,48 +539,53 @@ def showQtGUI():
 
 				# text input
 				self.oDOEdgeE = QtGui.QLineEdit(self)
-				self.oDOEdgeE.setText(str(self.gDOEdge))
+				self.oDOEdgeE.setText(str(self.gDOFESet))
 				self.oDOEdgeE.setFixedWidth(50)
-				self.oDOEdgeE.move(160, row)
+				self.oDOEdgeE.move(self.toolSW - 60, row)
 
 				# ############################################################################
-				# options - end settings
+				# options - keep custom settings checkbox
+				# ############################################################################
+				
+				row += 30
+				
+				self.kcscb = QtGui.QCheckBox(translate('magicDowels', ' - keep custom settings'), self)
+				self.kcscb.setCheckState(QtCore.Qt.Unchecked)
+				self.kcscb.move(10, row+3)
+
+				# ############################################################################
+				# options - save custom settings button
 				# ############################################################################
 
 				row += 30
 
 				# button
-				self.e1B1 = QtGui.QPushButton(translate('magicDowels', 'set custom values'), self)
-				self.e1B1.clicked.connect(self.refreshSettings)
-				self.e1B1.setFixedWidth(200)
+				self.e1B1 = QtGui.QPushButton(translate('magicDowels', 'show custom values'), self)
+				self.e1B1.clicked.connect(self.setCustomValues)
+				self.e1B1.setFixedWidth(self.toolSW - 20)
 				self.e1B1.move(10, row)
-
-				row += 40
-
-				# button
-				self.e2B1 = QtGui.QPushButton(translate('magicDowels', 'apply dowels to this position'), self)
-				self.e2B1.clicked.connect(self.setDowels)
-				self.e2B1.setFixedWidth(200)
-				self.e2B1.setFixedHeight(40)
-				self.e2B1.move(10, row)
-				self.e2B1T = QtGui.QPushButton(translate('magicDowels', 'apply tenons to this position'), self)
-				self.e2B1T.clicked.connect(self.setDowels)
-				self.e2B1T.setFixedWidth(200)
-				self.e2B1T.setFixedHeight(40)
-				self.e2B1T.move(10, row)
+			
+				# ############################################################################
+				# set if face is selected before GUI open
+				# ############################################################################
 				
+				self.setFaceSettins()
+			
+			# ############################################################################
+			# GUI for init & dowel
+			# ############################################################################
+			
 			if schema == "init" or schema == "dowel":
 				
-				self.oTenonLongL.hide()
-				self.oTenonLongE.hide()
-				self.oTenonThickL.hide()
-				self.oTenonThickE.hide()
-				self.oTenonDepthL.hide()
-				self.oTenonDepthE.hide()
+				self.oTenonLL.hide()
+				self.oTenonLE.hide()
+				self.oTenonTL.hide()
+				self.oTenonTE.hide()
+				self.oTenonHL.hide()
+				self.oTenonHE.hide()
 				self.oDNumLT.hide()
 				self.oDSinkLT.hide()
 				self.oDONextLT.hide()
-				self.e2B1T.hide()
 				
 				self.oDDiameterL.show()
 				self.oDDiameterE.show()
@@ -511,20 +594,22 @@ def showQtGUI():
 				self.oDNumL.show()
 				self.oDSinkL.show()
 				self.oDONextL.show()
-				self.e2B1.show()
-				
+			
+			# ############################################################################
+			# GUI for tenon
+			# ############################################################################
+			
 			if schema == "tenon":
 				
-				self.oTenonLongL.show()
-				self.oTenonLongE.show()
-				self.oTenonThickL.show()
-				self.oTenonThickE.show()
-				self.oTenonDepthL.show()
-				self.oTenonDepthE.show()
+				self.oTenonLL.show()
+				self.oTenonLE.show()
+				self.oTenonTL.show()
+				self.oTenonTE.show()
+				self.oTenonHL.show()
+				self.oTenonHE.show()
 				self.oDNumLT.show()
 				self.oDSinkLT.show()
 				self.oDONextLT.show()
-				self.e2B1T.show()
 				
 				self.oDDiameterL.hide()
 				self.oDDiameterE.hide()
@@ -533,24 +618,6 @@ def showQtGUI():
 				self.oDNumL.hide()
 				self.oDSinkL.hide()
 				self.oDONextL.hide()
-				self.e2B1.hide()
-
-		# ############################################################################
-		def setTenon(self):
-		
-			if self.gEdge == "":
-				self.gEdge = self.gEArr[self.gEIndex]
-
-			self.gTenonLong = float(self.gEdge.Length) - (2 * self.gDOCorner)
-			self.gTenonThick = 2 * ( float(self.gThick) / 4)
-			self.gTenonDepth = float(self.gThick)
-
-			self.gDSink = self.gTenonDepth / 2
-			self.gDOEdge = (float(self.gThick) / 2) - (self.gTenonThick / 2)
-
-			self.oTenonLongE.setText(str(self.gTenonLong))
-			self.oTenonThickE.setText(str(self.gTenonThick))
-			self.oTenonDepthE.setText(str(self.gTenonDepth))
 
 		# ############################################################################
 		def setRotation(self):
@@ -559,8 +626,8 @@ def showQtGUI():
 			for d in self.gDowels:
 				d.Placement.Rotation = reset
 			
-			angle = self.gRAngles[self.gRIndex]
-			axis = self.gRAxis
+			angle = self.gRotationArr[self.gRotationIndex]
+			axis = self.gRotation
 
 			for d in self.gDowels:
 				
@@ -576,11 +643,9 @@ def showQtGUI():
 			FreeCAD.activeDocument().recompute()
 
 		# ############################################################################
-		def showDowels(self, iCall=0):
-			
-			# ############################################################################
+		def showDowels(self):
+
 			# remove all dowels
-			# ############################################################################
 			
 			if len(self.gDowels) != 0:
 				for d in self.gDowels:
@@ -591,16 +656,14 @@ def showQtGUI():
 			
 			self.gDowels = []
 			
-			# get settings
-			[ v1, v2 ] = MagicPanels.getEdgeVertices(self.gEArr[self.gEIndex])
+			# get vertices info
+			
+			[ v1, v2 ] = MagicPanels.getEdgeVertices(self.gEdgeArr[self.gEdgeIndex])
 			
 			if not self.gObj.isDerivedFrom("Part::Box"):
 				[ v1, v2 ] = MagicPanels.getEdgeNormalized(v1, v2)
 			
-
-			# ############################################################################
-			# dowels at 1st side
-			# ############################################################################
+			# dowels for 1st side
 			
 			if self.gSides == 0 or self.gSides == 1:
 			
@@ -617,116 +680,102 @@ def showQtGUI():
 							x = X - self.gDOCorner
 							if i != 0:
 								x = x - ( i * self.gDONext)
-							y = Y + self.gDOEdge
-							z = Z - self.gDSink
+							y = Y + self.gDOFESet
+							z = Z - self.gDOFSSet
 							
-							self.gDSizeX = self.gTenonLong
-							self.gDSizeY = self.gTenonThick
-							self.gDSizeZ = self.gTenonDepth
+							self.gDSizeX = self.gTenonL
+							self.gDSizeY = self.gTenonT
+							self.gDSizeZ = self.gTenonH
 						
 						if self.gFPlane == "XZ":
 							x = X - self.gDOCorner
 							if i != 0:
 								x = x - ( i * self.gDONext)
-							y = Y - self.gDSink
-							z = Z + self.gDOEdge
+							y = Y - self.gDOFSSet
+							z = Z + self.gDOFESet
 				
-							self.gDSizeX = self.gTenonLong
-							self.gDSizeY = self.gTenonThick
-							self.gDSizeZ = self.gTenonDepth
+							self.gDSizeX = self.gTenonL
+							self.gDSizeY = self.gTenonT
+							self.gDSizeZ = self.gTenonH
 				
 						# this should not exist
 						if self.gFPlane == "YZ":
 							[ x, y, z ] = [ X, Y, Z ]
 							
-							self.gDSizeX = self.gTenonThick
-							self.gDSizeY = self.gTenonLong
-							self.gDSizeZ = self.gTenonDepth
+							self.gDSizeX = self.gTenonT
+							self.gDSizeY = self.gTenonL
+							self.gDSizeZ = self.gTenonH
 
 					# edge along Y
 					if not MagicPanels.equal(v1[1], v2[1]):
 						
 						if self.gFPlane == "XY":
-							x = X + self.gDOEdge
+							x = X + self.gDOFESet
 							y = Y - self.gDOCorner
 							if i != 0:
 								y = y - ( i * self.gDONext)
-							z = Z - self.gDSink
+							z = Z - self.gDOFSSet
 					
-							self.gDSizeX = self.gTenonThick
-							self.gDSizeY = self.gTenonLong
-							self.gDSizeZ = self.gTenonDepth
+							self.gDSizeX = self.gTenonT
+							self.gDSizeY = self.gTenonL
+							self.gDSizeZ = self.gTenonH
 					
 						# this should not exist
 						if self.gFPlane == "XZ":
 							[ x, y, z ] = [ X, Y, Z ]
 							
-							self.gDSizeX = self.gTenonLong
-							self.gDSizeY = self.gTenonDepth
-							self.gDSizeZ = self.gTenonThick
+							self.gDSizeX = self.gTenonL
+							self.gDSizeY = self.gTenonH
+							self.gDSizeZ = self.gTenonT
 					
 						if self.gFPlane == "YZ":
-							x = X - self.gDSink
+							x = X - self.gDOFSSet
 							y = Y - self.gDOCorner
 							if i != 0:
 								y = y - ( i * self.gDONext)
-							z = Z + self.gDOEdge
+							z = Z + self.gDOFESet
 
-							self.gDSizeX = self.gTenonThick
-							self.gDSizeY = self.gTenonLong
-							self.gDSizeZ = self.gTenonDepth
+							self.gDSizeX = self.gTenonT
+							self.gDSizeY = self.gTenonL
+							self.gDSizeZ = self.gTenonH
 
 					# edge along Z
 					if not MagicPanels.equal(v1[2], v2[2]):
 						
 						if self.gFPlane == "XY":
-							x = X + self.gDOEdge
-							y = Y - self.gDSink
+							x = X + self.gDOFESet
+							y = Y - self.gDOFSSet
 							z = Z - self.gDOCorner
 							if i != 0:
 								z = z - ( i * self.gDONext)
 						
-							self.gDSizeX = self.gTenonDepth
-							self.gDSizeY = self.gTenonLong
-							self.gDSizeZ = self.gTenonThick
+							self.gDSizeX = self.gTenonH
+							self.gDSizeY = self.gTenonL
+							self.gDSizeZ = self.gTenonT
 						
 						if self.gFPlane == "XZ":
-							x = X - self.gDOEdge
-							y = Y - self.gDSink
+							x = X - self.gDOFESet
+							y = Y - self.gDOFSSet
 							z = Z - self.gDOCorner
 							if i != 0:
 								z = z - ( i * self.gDONext)
 							
-							self.gDSizeX = self.gTenonThick
-							self.gDSizeY = self.gTenonLong
-							self.gDSizeZ = self.gTenonDepth
+							self.gDSizeX = self.gTenonT
+							self.gDSizeY = self.gTenonL
+							self.gDSizeZ = self.gTenonH
 							
 						if self.gFPlane == "YZ":
-							x = X - self.gDSink
-							y = Y + self.gDOEdge
+							x = X - self.gDOFSSet
+							y = Y + self.gDOFESet
 							z = Z - self.gDOCorner
 							if i != 0:
 								z = z - ( i * self.gDONext)
 
-							self.gDSizeX = self.gTenonLong
-							self.gDSizeY = self.gTenonThick
-							self.gDSizeZ = self.gTenonDepth
-
-					# ############################################################################
-					# try auto-reposition dowels
-					# ############################################################################
+							self.gDSizeX = self.gTenonL
+							self.gDSizeY = self.gTenonT
+							self.gDSizeZ = self.gTenonH
 					
-					if iCall == 1:
-					
-						inside = self.gObj.Shape.BoundBox.isInside(FreeCAD.Vector(x, y, z))
-						
-						if inside == False:
-							self.setPosition()
-							return
-					
-					# ############################################################################
-					# create dowel
-					# ############################################################################
+					# create dowels
 					
 					[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(self.gObj)
 					x = x + coX
@@ -760,10 +809,8 @@ def showQtGUI():
 					
 					i = i + 1
 			
-			# ############################################################################
-			# dowels at 2nd side
-			# ############################################################################
-
+			# dowels for 2nd side
+			
 			if self.gSides == 0 or self.gSides == 2:
 			
 				[ X, Y, Z ] = [ v2[0], v2[1], v2[2] ]
@@ -779,104 +826,102 @@ def showQtGUI():
 							x = X + self.gDOCorner
 							if i != 0:
 								x = x + ( i * self.gDONext)
-							y = Y + self.gDOEdge
-							z = Z - self.gDSink
+							y = Y + self.gDOFESet
+							z = Z - self.gDOFSSet
 					
-							self.gDSizeX = self.gTenonLong
-							self.gDSizeY = self.gTenonThick
-							self.gDSizeZ = self.gTenonDepth
+							self.gDSizeX = self.gTenonL
+							self.gDSizeY = self.gTenonT
+							self.gDSizeZ = self.gTenonH
 						
 						if self.gFPlane == "XZ":
 							x = X + self.gDOCorner
 							if i != 0:
 								x = x + ( i * self.gDONext)
-							y = Y - self.gDSink
-							z = Z + self.gDOEdge
+							y = Y - self.gDOFSSet
+							z = Z + self.gDOFESet
 						
-							self.gDSizeX = self.gTenonLong
-							self.gDSizeY = self.gTenonThick
-							self.gDSizeZ = self.gTenonDepth
+							self.gDSizeX = self.gTenonL
+							self.gDSizeY = self.gTenonT
+							self.gDSizeZ = self.gTenonH
 				
 						# this should not exist
 						if self.gFPlane == "YZ":
 							[ x, y, z ] = [ X, Y, Z ]
 							
-							self.gDSizeX = self.gTenonThick
-							self.gDSizeY = self.gTenonLong
-							self.gDSizeZ = self.gTenonDepth
+							self.gDSizeX = self.gTenonT
+							self.gDSizeY = self.gTenonL
+							self.gDSizeZ = self.gTenonH
 
 					# edge along Y
 					if not MagicPanels.equal(v1[1], v2[1]):
 
 						if self.gFPlane == "XY":
-							x = X + self.gDOEdge
+							x = X + self.gDOFESet
 							y = Y + self.gDOCorner
 							if i != 0:
 								y = y + ( i * self.gDONext)
-							z = Z - self.gDSink
+							z = Z - self.gDOFSSet
 					
-							self.gDSizeX = self.gTenonThick
-							self.gDSizeY = self.gTenonLong
-							self.gDSizeZ = self.gTenonDepth
+							self.gDSizeX = self.gTenonT
+							self.gDSizeY = self.gTenonL
+							self.gDSizeZ = self.gTenonH
 					
 						# this should not exist
 						if self.gFPlane == "XZ":
 							[ x, y, z ] = [ X, Y, Z ]
 							
-							self.gDSizeX = self.gTenonLong
-							self.gDSizeY = self.gTenonDepth
-							self.gDSizeZ = self.gTenonThick
+							self.gDSizeX = self.gTenonL
+							self.gDSizeY = self.gTenonH
+							self.gDSizeZ = self.gTenonT
 					
 						if self.gFPlane == "YZ":
-							x = X - self.gDSink
+							x = X - self.gDOFSSet
 							y = Y + self.gDOCorner
 							if i != 0:
 								y = y + ( i * self.gDONext)
-							z = Z + self.gDOEdge
+							z = Z + self.gDOFESet
 
-							self.gDSizeX = self.gTenonThick
-							self.gDSizeY = self.gTenonLong
-							self.gDSizeZ = self.gTenonDepth
+							self.gDSizeX = self.gTenonT
+							self.gDSizeY = self.gTenonL
+							self.gDSizeZ = self.gTenonH
 
 					# edge along Z
 					if not MagicPanels.equal(v1[2], v2[2]):
 
 						if self.gFPlane == "XY":
-							x = X + self.gDOEdge
-							y = Y - self.gDSink
+							x = X + self.gDOFESet
+							y = Y - self.gDOFSSet
 							z = Z + self.gDOCorner
 							if i != 0:
 								z = z + ( i * self.gDONext)
 					
-							self.gDSizeX = self.gTenonDepth
-							self.gDSizeY = self.gTenonLong
-							self.gDSizeZ = self.gTenonThick
+							self.gDSizeX = self.gTenonH
+							self.gDSizeY = self.gTenonL
+							self.gDSizeZ = self.gTenonT
 					
 						if self.gFPlane == "XZ":
-							x = X - self.gDOEdge
-							y = Y - self.gDSink
+							x = X - self.gDOFESet
+							y = Y - self.gDOFSSet
 							z = Z + self.gDOCorner
 							if i != 0:
 								z = z + ( i * self.gDONext)
 					
-							self.gDSizeX = self.gTenonThick
-							self.gDSizeY = self.gTenonLong
-							self.gDSizeZ = self.gTenonDepth
+							self.gDSizeX = self.gTenonT
+							self.gDSizeY = self.gTenonL
+							self.gDSizeZ = self.gTenonH
 					
 						if self.gFPlane == "YZ":
-							x = X - self.gDSink
-							y = Y + self.gDOEdge
+							x = X - self.gDOFSSet
+							y = Y + self.gDOFESet
 							z = Z + self.gDOCorner
 							if i != 0:
 								z = z + ( i * self.gDONext)
 								
-							self.gDSizeX = self.gTenonLong
-							self.gDSizeY = self.gTenonThick
-							self.gDSizeZ = self.gTenonDepth
+							self.gDSizeX = self.gTenonL
+							self.gDSizeY = self.gTenonT
+							self.gDSizeZ = self.gTenonH
 
-					# ############################################################################
-					# create dowel
-					# ############################################################################
+					# create dowels
 					
 					[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(self.gObj)
 					x = x + coX
@@ -910,49 +955,658 @@ def showQtGUI():
 					
 					i = i + 1
 				
-			# ############################################################################
-			# set rotation at dowels
-			# ############################################################################
-
+			# set rotations
+			
 			self.setRotation()
 			MagicPanels.moveToFirst(self.gDowels, self.gObj)
+
+		# ############################################################################
+		def setDowelsSettings(self, selectedIndex):
 			
-		# ############################################################################
-		# actions - functions for actions
-		# ############################################################################
-
-		# ############################################################################
-		def resetGlobals(self):
-
-			self.gObj = ""
-			self.gThick = 0
+			try:
 			
-			self.gFace = ""
-			self.gFIndex = 0
-			self.gFPlane = ""
-			self.gFType = ""
+				self.gCurrentSelection = selectedIndex
+				
+				# set GUI view
+				
+				if self.gCurrentSelection == 17:
+					self.setGUI("tenon")
+				else:
+					self.setGUI("dowel")
+			
+				# offset from edge
+
+				self.gDOFEArr = []
+				self.gDOFESet = self.gThick / 2
+				self.gDOFEArr.append(self.gDOFESet)
+				self.gDOFEArr.append(-self.gDOFESet)
+				self.gDOFEIndex = 0
+				self.gDOFESet = self.gDOFEArr[self.gDOFEIndex]
+			
+				# sink
+				
+				[ self.gFType, 
+						arrAll, 
+						arrThick, 
+						arrShort, 
+						arrLong ] = MagicPanels.getFaceEdges(self.gObj, self.gFace)
+					
+				if self.gFType == "surface":
+					self.gDOFSSet = 15
+				
+				if self.gFType == "edge":
+					self.gDOFSSet = 20
+			
+				self.gDOFSArr = []
+				self.gDOFSArr.append(self.gDOFSSet)
+				self.gDOFSArr.append(-self.gDOFSSet)
+				self.gDOFSArr.append(0)
+				self.gDOFSArr.append(self.gDSize)
+				self.gDOFSArr.append(-self.gDSize)
+				self.gDOFSArr.append(self.gDSize - self.gDOFSSet)
+				self.gDOFSArr.append(-self.gDSize + self.gDOFSSet)
+				self.gDOFSIndex = 0
+				self.gDOFSSet = self.gDOFSArr[self.gDOFSIndex]
+
+				# sides
+				
+				self.gSidesArr = []
+				self.gSidesArr.append(0)
+				self.gSidesArr.append(1)
+				self.gSidesArr.append(2)
+				self.gSidesIndex = 0
+				self.gSides = self.gSidesArr[self.gSidesIndex]
+				
+				# refresh text fields
+				self.oDOEdgeE.setText(str(self.gDOFESet))
+				self.oDSinkE.setText(str(self.gDOFSSet))
+				
+				# refresh info screens
+				self.asIS.setText(str(self.gDOFSIndex+1) + " / " + str(len(self.gDOFSArr)))
+				self.aeIS.setText(str(self.gDOFEIndex+1) + " / " + str(len(self.gDOFEArr)))
+				self.ssIS.setText(str(self.gSidesIndex+1) + " / " + str(len(self.gSidesArr)))
 		
-			self.gEdge = ""
-			self.gEArr = []
-			self.gEIndex = 0
+				# overwrite later if needed
+				self.gDowelLabel = str(self.dts.currentText())
+				self.gDDiameter = gDS["gDDiameter"]
+				self.gDSize = gDS["gDSize"]
+				self.gDNum = gDS["gDNum"]
+				self.gDOCorner = gDS["gDOCorner"]
+				self.gDONext = gDS["gDONext"]
+				self.gDShape = gDS["gDShape"]
+				self.gSides = gDS["gSides"]
+				
+				# Dowel 6 x 35 mm
+				if self.gCurrentSelection == 0: 
+					self.gDDiameter = 6
+				
+				# Dowel 8 x 35 mm
+				if self.gCurrentSelection == 1:
+					skip = 1
+
+				# Dowel 10 x 35 mm
+				if self.gCurrentSelection == 2:
+					self.gDDiameter = 10
+				
+				# Biscuits 16 x 48 mm
+				if self.gCurrentSelection == 3:
+					self.gDDiameter = 4
+					self.gDSize = 16
+					self.gDOFSSet = 8
+					self.gDNum = 4
+					self.gDONext = 64
+				
+				# Biscuits 21 x 54 mm
+				if self.gCurrentSelection == 4:
+					self.gDDiameter = 4
+					self.gDSize = 21
+					self.gDOFSSet = 11
+					self.gDNum = 4
+					self.gDONext = 64
+				
+				# Biscuits 24 x 57 mm
+				if self.gCurrentSelection == 5:
+					self.gDDiameter = 4
+					self.gDSize = 24
+					self.gDOFSSet = 12
+					self.gDNum = 4
+					self.gDONext = 64
+
+				# Screw 3 x 20 mm
+				if self.gCurrentSelection == 6:
+					self.gDDiameter = 3
+					self.gDSize = 20
+					self.gDOFSSet = 19
+					
+					# reset offsets from edge
+					self.gDOFESet = 9
+					self.gDOFEArr = []
+					self.gDOFEArr.append(self.gDOFESet)
+					self.gDOFEArr.append(-self.gDOFESet)
+					self.gDOFEIndex = 0
+					self.gDOFESet = self.gDOFEArr[self.gDOFEIndex]
+					self.oDOEdgeE.setText(str(self.gDOFESet))
+					self.aeIS.setText(str(self.gDOFEIndex+1) + " / " + str(len(self.gDOFEArr)))
+
+					self.gDNum = int((float(self.gEdge.Length) / 64) - 1)
+				
+				# Screw 4.5 x 40 mm
+				if self.gCurrentSelection == 7:
+					self.gDDiameter = 4.5
+					self.gDSize = 40
+					self.gDOFSSet = 23
+
+				# Screw 4 x 40 mm
+				if self.gCurrentSelection == 8:
+					self.gDDiameter = 4
+					self.gDSize = 40
+					self.gDOFSSet = 23
+					self.gDNum = 2
+
+				# Screw 5 x 50 mm
+				if self.gCurrentSelection == 9:
+					self.gDDiameter = 5
+					self.gDSize = 50
+					self.gDOFSSet = 33
+					self.gDNum = 1
+				
+				# Screw 6 x 60 mm
+				if self.gCurrentSelection == 10:
+					self.gDDiameter = 6
+					self.gDSize = 60
+					self.gDOFSSet = 45
+					self.gDNum = 1
+				
+				# Confirmation 7 x 40 mm
+				if self.gCurrentSelection == 11:
+					self.gDDiameter = 7
+					self.gDSize = 40
+					self.gDOFSSet = 25
+					self.gDNum = 1
+				
+				# Confirmation 7 x 50 mm
+				if self.gCurrentSelection == 12:
+					self.gDDiameter = 7
+					self.gDSize = 50
+					self.gDOFSSet = 35
+					self.gDNum = 1
+				
+				# Confirmation 7 x 70 mm
+				if self.gCurrentSelection == 13:
+					self.gDDiameter = 7
+					self.gDSize = 70
+					self.gDOFSSet = 55
+					self.gDNum = 1
+				
+				# Shelf Pin 5 x 16 mm
+				if self.gCurrentSelection == 14:
+					self.gDDiameter = 5
+					self.gDSize = 16
+					self.gDOFSSet = 8
+					self.gSides = 1
+					self.gDOCorner = 32
+					
+					self.gDOFEArr = []
+					self.gDOFEArr.append(64)
+					self.gDOFEArr.append(-64)
+					self.gDOFEIndex = 0
+					self.gDOFESet = self.gDOFEArr[self.gDOFEIndex]
+					
+					self.gDNum = int((float(self.gEdge.Length) / 32) - 1)
+
+				# Profile Pin 5 x 30 mm
+				if self.gCurrentSelection == 15:
+					self.gDDiameter = 5
+					self.gDSize = 30
+					self.gDOFSSet = 25
+					self.gDOCorner = 5
+
+				# Profile Pin 8 x 40 mm
+				if self.gCurrentSelection == 16:
+					self.gDDiameter = 8
+					self.gDSize = 40
+					self.gDOFSSet = 35
+					self.gDNum = 1
+
+				# Tenon joint
+				if self.gCurrentSelection == 17:
+					self.gDShape = 1
+					self.gDNum = 1
+					self.gDOCorner = 32
+					self.gDONext = 100
+					self.gSides = 2
+					
+					self.gTenonT = float(self.gThick) / 2
+					self.gTenonL = float(self.gEdge.Length) - (2 * self.gDOCorner)
+					self.gTenonH = float(self.gThick)
+					self.gDSize = self.gTenonH
+					
+					self.oTenonLE.setText(str(self.gTenonL))
+					self.oTenonTE.setText(str(self.gTenonT))
+					self.oTenonHE.setText(str(self.gTenonH))
+					
+					# adjust edge
+					self.gDOFEArr = []
+					self.gDOFEArr.append(  (float(self.gThick) / 4) )
+					self.gDOFEArr.append( -(float(self.gThick) / 4) )
+					self.gDOFEArr.append(  ((float(self.gThick) / 4) + float(self.gTenonT)) )
+					self.gDOFEArr.append( -((float(self.gThick) / 4) + float(self.gTenonT)) )
+					
+					self.gDOFEIndex = 0
+					self.gDOFESet = self.gDOFEArr[self.gDOFEIndex]
+					
+					self.seIS.setText(str(self.gEdgeIndex+1) + " / " + str(len(self.gEdgeArr)))
+					
+					# sink
+					self.gDOFSSet = self.gTenonH / 2
+					
+				# Custom mount point
+				if self.gCurrentSelection == 18:
+					skip = 1
+
+				# set adjust sink
+				self.gDOFSArr = []
+				self.gDOFSArr.append(self.gDOFSSet)
+				self.gDOFSArr.append(-self.gDOFSSet)
+				self.gDOFSArr.append(0)
+				self.gDOFSArr.append(self.gDSize)
+				self.gDOFSArr.append(-self.gDSize)
+				self.gDOFSArr.append(self.gDSize - self.gDOFSSet)
+				self.gDOFSArr.append(-self.gDSize + self.gDOFSSet)
+				self.gDOFSIndex = 0
+
+				# set current sides
+				self.gSidesIndex = self.gSides
+				self.ssIS.setText(str(self.gSidesIndex+1) + " / " + str(len(self.gSidesArr)))
+
+				# set custom settings to GUI fields
+				self.oDowelLabelE.setText(str(self.gDowelLabel))
+				self.oDDiameterE.setText(str(self.gDDiameter))
+				self.oDSizeE.setText(str(self.gDSize))
+				self.oDSinkE.setText(str(self.gDOFSSet))
+				self.oDNumE.setText(str(self.gDNum))
+				self.oDOCornerE.setText(str(self.gDOCorner))
+				self.oDONextE.setText(str(self.gDONext))
+				self.oDOEdgeE.setText(str(self.gDOFESet))
+				
+				# show dowels with default settings after menu change
+				self.showDowels()
+				
+				# try autodetect dowels position
+				if self.pacb.isChecked():
+					self.autodetectDowelsPosition()
 		
-			self.gPosition = 0
+			except:
+				self.faceinfo.setText(self.gNoSelection)
 		
-			self.gRAxis = ""
-			self.gRAngles = []
-			self.gRIndex = 0
+		# ############################################################################
+		def setMenuItem(self, selectedIndex):
+		
+			self.setDowelsSettings(selectedIndex)
 
 		# ############################################################################
-		def getSelected(self):
+		def setCustomValues(self):
+			
+			try:
+			
+				# set custom settings to GUI fields
+				self.gDowelLabel = str(self.oDowelLabelE.text())
+				self.gDDiameter = float(self.oDDiameterE.text())
+				self.gDSize = float(self.oDSizeE.text())
+				self.gDOFSSet = float(self.oDSinkE.text())
+				self.gDNum = int(self.oDNumE.text())
+				self.gDOCorner = float(self.oDOCornerE.text())
+				self.gDONext = float(self.oDONextE.text())
+				self.gDOFESet = float(self.oDOEdgeE.text())
+				self.gTenonL = float(self.oTenonLE.text())
+				self.gTenonT = float(self.oTenonTE.text())
+				self.gTenonH = float(self.oTenonHE.text())
+				
+				# show dowels with custom settings
+				self.showDowels()
+			
+			except:
+				self.faceinfo.setText(self.gNoSelection)
+
+		# ############################################################################
+		def setDowels(self):
+			
+			try:
+				if len(self.gDowels) != 0:
+					for d in self.gDowels:
+						try:
+							d.ViewObject.DiffuseColor = self.gObj.ViewObject.DiffuseColor
+						except:
+							skip = 1
+
+				self.gDowels = []
+				FreeCAD.ActiveDocument.recompute()
+			
+			except:
+				self.faceinfo.setText(self.gNoSelection)
+
+		# ############################################################################
+		def selectEdgeP(self):
+			
+			try:
+				if self.gEdgeIndex - 1 < 0:
+					self.gEdgeIndex = len(self.gEdgeArr) - 1
+				else:
+					self.gEdgeIndex = self.gEdgeIndex - 1
+					
+				self.gEdge = self.gEdgeArr[self.gEdgeIndex]
+				self.seIS.setText(str(self.gEdgeIndex+1) + " / " + str(len(self.gEdgeArr)))
+				
+				if not self.kcscb.isChecked():
+
+					if self.gCurrentSelection == 6:
+						self.gDNum = int((float(self.gEdge.Length) / 64) - 1)
+						self.oDNumE.setText(str(self.gDNum))
+
+					if self.gCurrentSelection == 14:
+						self.gDNum = int((float(self.gEdge.Length) / 32) - 1)
+						self.oDNumE.setText(str(self.gDNum))
+				
+					if self.gCurrentSelection == 17:
+						self.gTenonL = float(self.gEdge.Length) - (2 * self.gDOCorner)
+				
+				self.showDowels()
+				
+				if self.pacb.isChecked():
+					self.autodetectDowelsPosition()
+
+			except:
+				self.faceinfo.setText(self.gNoSelection)
+			
+		def selectEdgeN(self):
+			
+			try:
+				if self.gEdgeIndex + 1 > len(self.gEdgeArr) - 1:
+					self.gEdgeIndex = 0
+				else:
+					self.gEdgeIndex = self.gEdgeIndex + 1
+					
+				self.gEdge = self.gEdgeArr[self.gEdgeIndex]
+				self.seIS.setText(str(self.gEdgeIndex+1) + " / " + str(len(self.gEdgeArr)))
+				
+				if not self.kcscb.isChecked():
+					
+					if self.gCurrentSelection == 6:
+						self.gDNum = int((float(self.gEdge.Length) / 64) - 1)
+						self.oDNumE.setText(str(self.gDNum))
+						
+					if self.gCurrentSelection == 14:
+						self.gDNum = int((float(self.gEdge.Length) / 32) - 1)
+						self.oDNumE.setText(str(self.gDNum))
+						
+					if self.gCurrentSelection == 17:
+						self.gTenonL = float(self.gEdge.Length) - (2 * self.gDOCorner)
+
+				self.showDowels()
+				
+				if self.pacb.isChecked():
+					self.autodetectDowelsPosition()
+
+			except:
+				self.faceinfo.setText(self.gNoSelection)
+
+		# ############################################################################
+		def adjustEdgeP(self):
+			
+			try:
+				if self.gDOFEIndex - 1 < 0:
+					self.gDOFEIndex = len(self.gDOFEArr) - 1
+				else:
+					self.gDOFEIndex = self.gDOFEIndex - 1
+					
+				self.gDOFESet = self.gDOFEArr[self.gDOFEIndex]
+				self.aeIS.setText(str(self.gDOFEIndex+1) + " / " + str(len(self.gDOFEArr)))
+				self.oDOEdgeE.setText(str(self.gDOFESet))
+				
+				self.showDowels()
+			
+			except:
+				self.faceinfo.setText(self.gNoSelection)
+
+		def adjustEdgeN(self):
+		
+			try:
+				if self.gDOFEIndex + 1 > len(self.gDOFEArr) - 1:
+					self.gDOFEIndex = 0
+				else:
+					self.gDOFEIndex = self.gDOFEIndex + 1
+					
+				self.gDOFESet = self.gDOFEArr[self.gDOFEIndex]
+				self.aeIS.setText(str(self.gDOFEIndex+1) + " / " + str(len(self.gDOFEArr)))
+				self.oDOEdgeE.setText(str(self.gDOFESet))
+				
+				self.showDowels()
+			
+			except:
+				self.faceinfo.setText(self.gNoSelection)
+
+		# ############################################################################
+		def adjustSinkP(self):
+			
+			try:
+				if self.gDOFSIndex - 1 < 0:
+					self.gDOFSIndex = len(self.gDOFSArr) - 1
+				else:
+					self.gDOFSIndex = self.gDOFSIndex - 1
+					
+				self.gDOFSSet = self.gDOFSArr[self.gDOFSIndex]
+				self.asIS.setText(str(self.gDOFSIndex+1) + " / " + str(len(self.gDOFSArr)))
+				self.oDSinkE.setText(str(self.gDOFSSet))
+				
+				self.showDowels()
+			
+			except:
+				self.faceinfo.setText(self.gNoSelection)
+			
+		def adjustSinkN(self):
+			
+			try:
+				if self.gDOFSIndex + 1 > len(self.gDOFSArr) - 1:
+					self.gDOFSIndex = 0
+				else:
+					self.gDOFSIndex = self.gDOFSIndex + 1
+					
+				self.gDOFSSet = self.gDOFSArr[self.gDOFSIndex]
+				self.asIS.setText(str(self.gDOFSIndex+1) + " / " + str(len(self.gDOFSArr)))
+				self.oDSinkE.setText(str(self.gDOFSSet))
+				
+				self.showDowels()
+			
+			except:
+				self.faceinfo.setText(self.gNoSelection)
+	
+		# ############################################################################
+		def setRotationP(self):
+			
+			try:
+				if self.gRotationIndex - 1 < 0:
+					self.gRotationIndex = len(self.gRotationArr) - 1
+				else:
+					self.gRotationIndex = self.gRotationIndex - 1
+					
+				self.arIS.setText(str(self.gRotationIndex+1) + " / " + str(len(self.gRotationArr)))
+				
+				self.showDowels()
+			
+			except:
+				self.faceinfo.setText(self.gNoSelection)
+				
+		def setRotationN(self):
+			
+			try:
+				if self.gRotationIndex + 1 > len(self.gRotationArr) - 1:
+					self.gRotationIndex = 0
+				else:
+					self.gRotationIndex = self.gRotationIndex + 1
+				
+				self.arIS.setText(str(self.gRotationIndex+1) + " / " + str(len(self.gRotationArr)))
+				
+				self.showDowels()
+			
+			except:
+				self.faceinfo.setText(self.gNoSelection)
+
+		# ############################################################################
+		def selectSidesP(self):
+			
+			try:
+				if self.gSidesIndex - 1 < 0:
+					self.gSidesIndex = len(self.gSidesArr) - 1
+				else:
+					self.gSidesIndex = self.gSidesIndex - 1
+					
+				self.gSides = self.gSidesArr[self.gSidesIndex]
+				self.ssIS.setText(str(self.gSidesIndex+1) + " / " + str(len(self.gSidesArr)))
+				
+				self.showDowels()
+			
+			except:
+				self.faceinfo.setText(self.gNoSelection)
+			
+		def selectSidesN(self):
+			
+			try:
+				if self.gSidesIndex + 1 > len(self.gSidesArr) - 1:
+					self.gSidesIndex = 0
+				else:
+					self.gSidesIndex = self.gSidesIndex + 1
+					
+				self.gSides = self.gSidesArr[self.gSidesIndex]
+				self.ssIS.setText(str(self.gSidesIndex+1) + " / " + str(len(self.gSidesArr)))
+				
+				self.showDowels()
+			
+			except:
+				self.faceinfo.setText(self.gNoSelection)
+	
+		# ############################################################################	
+		def searchDowelInside(self):
+			
+			# try auto-reposition dowels
+			for r in range(len(self.gRotationArr)):
+				inside = self.gObj.Shape.BoundBox.isInside(self.gDowels[0].Placement.Base)
+				if inside == True:
+					return
+				
+				for s in range(len(self.gDOFSArr)):
+					inside = self.gObj.Shape.BoundBox.isInside(self.gDowels[0].Placement.Base)
+					if inside == True:
+						return
+					
+					for e in range(len(self.gDOFEArr)):
+						inside = self.gObj.Shape.BoundBox.isInside(self.gDowels[0].Placement.Base)
+						if inside == True:
+							return
+				
+						self.adjustEdgeN()
+					self.adjustSinkN()
+				self.setRotationN()
+
+		# ############################################################################
+		def autodetectDowelsPosition(self):
+		
+			# first set dowels inside selected face
+			if not self.gCurrentSelection == 17:
+				self.searchDowelInside()
+			
+			# try adjust only sink for screws (screw head should be flat with the surface)
+			if ( 
+				self.gCurrentSelection == 6 or 
+				self.gCurrentSelection == 7 or 
+				self.gCurrentSelection == 8 or 
+				self.gCurrentSelection == 9 or 
+				self.gCurrentSelection == 10 or 
+				self.gCurrentSelection == 11 or 
+				self.gCurrentSelection == 12 or 
+				self.gCurrentSelection == 13
+				):
+			
+				# if CenterOfMass of selected face will be the same as CenterOfMass of dowel face3
+				# this will not be working (bug) but currently I do not see better solution, 
+				# let me know (open issue) if you know better solution
+				
+				for s in range(len(self.gDOFSArr)):
+					
+					fx = self.gFace.CenterOfMass.x
+					dx = self.gDowels[0].Shape.Faces[2].CenterOfMass.x
+				
+					fy = self.gFace.CenterOfMass.y
+					dy = self.gDowels[0].Shape.Faces[2].CenterOfMass.y
+					
+					fz = self.gFace.CenterOfMass.z
+					dz = self.gDowels[0].Shape.Faces[2].CenterOfMass.z
+					
+					if MagicPanels.equal(fx, dx) or MagicPanels.equal(fy, dy) or MagicPanels.equal(fz, dz):
+						return
+					
+					self.adjustSinkN()
+			
+			# try adjust tenons
+			if self.gCurrentSelection == 17:
+				
+				# skip both sides option
+				self.gSidesArr = []
+				self.gSidesArr.append(1)
+				self.gSidesArr.append(2)
+				self.gSidesIndex = 0
+				self.gSides = self.gSidesArr[self.gSidesIndex]
+				self.ssIS.setText(str(self.gSidesIndex+1) + " / " + str(len(self.gSidesArr)))
+
+				for sink in range(len(self.gDOFSArr)):
+					for side in range(len(self.gSidesArr)):
+						for e in range(len(self.gDOFEArr)):
+							
+							x0 = MagicPanels.touchTypo(self.gDowels[0].Shape.Faces[4])[0].X
+							y0 = MagicPanels.touchTypo(self.gDowels[0].Shape.Faces[4])[0].Y
+							z0 = MagicPanels.touchTypo(self.gDowels[0].Shape.Faces[4])[0].Z
+							
+							x1 = MagicPanels.touchTypo(self.gDowels[0].Shape.Faces[4])[1].X
+							y1 = MagicPanels.touchTypo(self.gDowels[0].Shape.Faces[4])[1].Y
+							z1 = MagicPanels.touchTypo(self.gDowels[0].Shape.Faces[4])[1].Z
+							
+							x2 = MagicPanels.touchTypo(self.gDowels[0].Shape.Faces[4])[2].X
+							y2 = MagicPanels.touchTypo(self.gDowels[0].Shape.Faces[4])[2].Y
+							z2 = MagicPanels.touchTypo(self.gDowels[0].Shape.Faces[4])[2].Z
+							
+							x3 = MagicPanels.touchTypo(self.gDowels[0].Shape.Faces[4])[3].X
+							y3 = MagicPanels.touchTypo(self.gDowels[0].Shape.Faces[4])[3].Y
+							z3 = MagicPanels.touchTypo(self.gDowels[0].Shape.Faces[4])[3].Z
+							
+							inside0 = self.gObj.Shape.BoundBox.isInside(FreeCAD.Vector(x0, y0, z0))
+							inside1 = self.gObj.Shape.BoundBox.isInside(FreeCAD.Vector(x1, y1, z1))
+							inside2 = self.gObj.Shape.BoundBox.isInside(FreeCAD.Vector(x2, y2, z2))
+							inside3 = self.gObj.Shape.BoundBox.isInside(FreeCAD.Vector(x3, y3, z3))
+							
+							if inside0 == True and inside1 == True and inside2 == True and inside3 == True:
+								return
+					
+							self.adjustEdgeN()
+						self.selectSidesN()
+					self.adjustSinkN()
+
+		# ############################################################################
+		def setFaceSettins(self):
 
 			try:
-
-				# ############################################################################
-				# global config
-				# ############################################################################
+			
+				# remove dowels if there is no init state
 				
-				self.resetGlobals()
-
+				if len(self.gDowels) != 0:
+					for d in self.gDowels:
+						try:
+							FreeCAD.activeDocument().removeObject(str(d.Name))
+						except:
+							skip = 1
+			
+				self.gDowels = []
+			
+				# read selected face info
+				
 				self.gObjBase = MagicPanels.getReference()
 				
 				self.gObj = FreeCADGui.Selection.getSelection()[0]
@@ -965,11 +1619,14 @@ def showQtGUI():
 				n += ", "
 				n += "Face"
 				n += str(self.gFIndex)
-				self.s1S.setText(n)
+				self.faceinfo.setText(n)
 				
-				# ############################################################################
+				# set thickness
+				s = MagicPanels.getSizes(self.gObjBase)
+				s.sort()
+				self.gThick = s[0]
+				
 				# get plane and type
-				# ############################################################################
 				
 				self.gFPlane = MagicPanels.getFacePlane(self.gFace)
 				
@@ -979,460 +1636,91 @@ def showQtGUI():
 					arrShort, 
 					arrLong ] = MagicPanels.getFaceEdges(self.gObj, self.gFace)
 				
-				# ############################################################################
 				# set possible edges
-				# ############################################################################
+				
+				self.gEdgeArr = []
 				
 				if self.gFType == "edge":
 					
 					if len(arrShort) == 0:
-						self.gEArr = arrLong
+						self.gEdgeArr = arrLong
 					
 					if len(arrLong) == 0:
-						self.gEArr = arrShort
+						self.gEdgeArr = arrShort
 
 				if self.gFType == "surface":
-					self.gEArr = arrAll
-					
-				# ############################################################################
-				# set possible rotations
-				# ############################################################################
+					self.gEdgeArr = arrAll
 				
-				if self.gFPlane == "XY":
-					self.gRAngles.append(0)
-					self.gRAngles.append(180)
-					self.gRAxis = FreeCAD.Vector(1, 0, 0)
-
-				if self.gFPlane == "XZ":
-					self.gRAngles.append(90)
-					self.gRAngles.append(270)
-					self.gRAxis = FreeCAD.Vector(1, 0, 0)
-					
-				if self.gFPlane == "YZ":
-					self.gRAngles.append(90)
-					self.gRAngles.append(270)
-					self.gRAxis = FreeCAD.Vector(0, 1, 0)
+				self.gEdgeIndex = 0
+				self.gEdge = self.gEdgeArr[self.gEdgeIndex]
+				self.seIS.setText(str(self.gEdgeIndex+1) + " / " + str(len(self.gEdgeArr)))
 				
-				# ############################################################################
-				# set default
-				# ############################################################################
-
-				s = MagicPanels.getSizes(self.gObjBase)
-				s.sort()
-				self.gThick = s[0]
-				
-				self.gDOEdge = self.gThick / 2
-				self.gDSink = abs(self.gDSink)
-				self.gRIndex = 0
-				
-				# ############################################################################
-				# try auto adjust dowel
-				# ############################################################################
-
-				# set default sink
-				if self.gInit == 1 and self.gFType == "surface":
-					self.gDSink = 15
-
-				if self.gFType == "surface" and self.gDSink == 20:
-					self.gDSink = 15
-				
-				if self.gFType == "edge" and self.gDSink == 15:
-					self.gDSink = 20
-				
-				# adjust sink
+				# get face sink
 				sink = MagicPanels.getFaceSink(self.gObj, self.gFace)
 				
-				if sink == "+":
-					self.gDSink = - abs(self.gDSink)
+				# set possible rotations
+
+				self.gRotationArr = []
 				
+				if self.gFPlane == "XY":
+					self.gRotationArr.append(0)
+					self.gRotationArr.append(180)
+					self.gRotation = FreeCAD.Vector(1, 0, 0)
+
+				if self.gFPlane == "XZ":
+					self.gRotationArr.append(90)
+					self.gRotationArr.append(270)
+					self.gRotation = FreeCAD.Vector(1, 0, 0)
+					
+				if self.gFPlane == "YZ":
+					self.gRotationArr.append(90)
+					self.gRotationArr.append(270)
+					self.gRotation = FreeCAD.Vector(0, 1, 0)
+				
+				self.gRotationIndex = 0
+
 				# adjust rotation
+				
 				if sink == "+":
 					
 					if self.gFPlane == "XY":
-						self.gRIndex = 1
+						self.gRotationIndex = 1
 						
 					if self.gFPlane == "XZ":
-						self.gRIndex = 0
+						self.gRotationIndex = 0
 						
 					if self.gFPlane == "YZ":
-						self.gRIndex = 1
+						self.gRotationIndex = 1
 
 				else:
 				
 					if self.gFPlane == "XY":
-						self.gRIndex = 0
+						self.gRotationIndex = 0
 						
 					if self.gFPlane == "XZ":
-						self.gRIndex = 1
+						self.gRotationIndex = 1
 						
 					if self.gFPlane == "YZ":
-						self.gRIndex = 0
+						self.gRotationIndex = 0
 				
-				self.oDSinkE.setText(str(self.gDSink))
-				self.oDOEdgeE.setText(str(self.gDOEdge))
-				
-				self.setTenon()
-				self.showDowels(1)
-				self.gInit = 0
+				self.arIS.setText(str(self.gRotationIndex+1) + " / " + str(len(self.gRotationArr)))
 
+				# set other settings related to dowels not face
+				if not self.kcscb.isChecked():
+					self.setDowelsSettings(self.dts.currentIndex())
+					
+				# show dowels
+				self.showDowels()
+
+				# try autodetect dowels position
+				if self.pacb.isChecked():
+					self.autodetectDowelsPosition()
+		
 			except:
 
-				self.s1S.setText(self.gNoSelection)
+				self.faceinfo.setText(self.gNoSelection)
 				return -1
 
-		# ############################################################################
-		def setSidesP(self):
-			
-			try:
-				if self.gSides - 1 < 0:
-					self.gSides = 2
-				else:
-					self.gSides = self.gSides - 1
-					
-				self.showDowels()
-		
-			except:
-				self.s1S.setText(self.gNoSelection)
-				
-		def setSidesN(self):
-			
-			try:
-				if self.gSides + 1 > 2:
-					self.gSides = 0
-				else:
-					self.gSides = self.gSides + 1
-					
-				self.showDowels()
-			
-			except:
-				self.s1S.setText(self.gNoSelection)
-
-		# ############################################################################
-		def setEdgeP(self):
-			
-			try:
-				if self.gEIndex - 1 < 0:
-					self.gEIndex = len(self.gEArr) - 1
-				else:
-					self.gEIndex = self.gEIndex - 1
-					
-				self.gEdge = self.gEArr[self.gEIndex]
-				
-				self.setTenon()
-				self.showDowels(1)
-			
-			except:
-				self.s1S.setText(self.gNoSelection)
-			
-		def setEdgeN(self):
-			
-			try:
-				if self.gEIndex + 1 > len(self.gEArr) - 1:
-					self.gEIndex = 0
-				else:
-					self.gEIndex = self.gEIndex + 1
-					
-				self.gEdge = self.gEArr[self.gEIndex]
-				
-				self.setTenon()
-				self.showDowels(1)
-			
-			except:
-				self.s1S.setText(self.gNoSelection)
-		
-		# ############################################################################
-		def setSink(self):
-			try:
-				if self.gDSink == 0:
-					self.gDSink = self.gDSinkSave
-					
-				self.gDSink = - self.gDSink
-				self.oDSinkE.setText(str(self.gDSink))
-				
-				self.showDowels()
-				
-			except:
-				self.s1S.setText(self.gNoSelection)
-		
-		def setSink0(self):
-			try:
-				self.gDSinkSave = self.gDSink
-				self.gDSink = 0
-				self.oDSinkE.setText(str(self.gDSink))
-				
-				self.showDowels()
-				
-			except:
-				self.s1S.setText(self.gNoSelection)
-				
-		# ############################################################################
-		def setPosition(self):
-			
-			try:
-				if self.gPosition == 0:
-					self.gPosition = 1
-				else:
-					self.gPosition = 0
-				
-				self.gDOEdge = - self.gDOEdge
-				self.oDOEdgeE.setText(str(self.gDOEdge))
-				
-				self.showDowels()
-				
-			except:
-				self.s1S.setText(self.gNoSelection)
-
-		# ############################################################################
-		def setRotationP(self):
-			
-			try:
-				if self.gRIndex - 1 < 0:
-					self.gRIndex = len(self.gRAngles) - 1
-				else:
-					self.gRIndex = self.gRIndex - 1
-					
-				self.showDowels()
-			
-			except:
-				self.s1S.setText(self.gNoSelection)
-				
-		def setRotationN(self):
-			
-			try:
-				if self.gRIndex + 1 > len(self.gRAngles) - 1:
-					self.gRIndex = 0
-				else:
-					self.gRIndex = self.gRIndex + 1
-					
-				self.showDowels()
-			
-			except:
-				self.s1S.setText(self.gNoSelection)
-		
-		# ############################################################################
-		def setCustomMount(self, selectedText):
-			
-			try:
-			
-				self.setGUI("dowel")
-			
-				self.gDOEdge = self.gThick / 2
-				self.gDowelLabel = selectedText
-				self.gSides = 0
-				self.gDShape = 0
-				
-				if selectedText == "Dowel 6 x 35 mm ":
-					self.gDDiameter = 6
-					self.gDSize = 35
-					self.gDSink = 20
-					self.gDNum = 2
-					self.gDOCorner = 50
-					self.gDONext = 32
-					
-				if selectedText == "Dowel 8 x 35 mm ":
-					self.gDDiameter = 8
-					self.gDSize = 35
-					self.gDSink = 20
-					self.gDNum = 2
-					self.gDOCorner = 50
-					self.gDONext = 32
-
-				if selectedText == "Dowel 10 x 35 mm ":
-					self.gDDiameter = 10
-					self.gDSize = 35
-					self.gDSink = 20
-					self.gDNum = 2
-					self.gDOCorner = 50
-					self.gDONext = 32
-				
-				if selectedText == "Biscuits 16 x 48 mm ":
-					self.gDDiameter = 4
-					self.gDSize = 16
-					self.gDSink = 8
-					self.gDNum = 4
-					self.gDOCorner = 50
-					self.gDONext = 64
-					
-				if selectedText == "Biscuits 21 x 54 mm ":
-					self.gDDiameter = 4
-					self.gDSize = 21
-					self.gDSink = 11
-					self.gDNum = 4
-					self.gDOCorner = 50
-					self.gDONext = 64
-				
-				if selectedText == "Biscuits 24 x 57 mm ":
-					self.gDDiameter = 4
-					self.gDSize = 24
-					self.gDSink = 12
-					self.gDNum = 4
-					self.gDOCorner = 50
-					self.gDONext = 64
-
-				if selectedText == "Screw 3 x 20 mm ":
-					self.gDDiameter = 3
-					self.gDSize = 20
-					self.gDSink = 19
-					self.gDNum = 5
-					self.gDOCorner = 50
-					self.gDONext = 32
-					self.gDOEdge = 9
-				
-				if selectedText == "Screw 4.5 x 40 mm ":
-					self.gDDiameter = 4.5
-					self.gDSize = 40
-					self.gDSink = 23
-					self.gDNum = 2
-					self.gDOCorner = 50
-					self.gDONext = 32
-
-				if selectedText == "Screw 4 x 40 mm ":
-					self.gDDiameter = 4
-					self.gDSize = 40
-					self.gDSink = 23
-					self.gDNum = 1
-					self.gDOCorner = 50
-					self.gDONext = 32
-
-				if selectedText == "Screw 5 x 50 mm ":
-					self.gDDiameter = 5
-					self.gDSize = 50
-					self.gDSink = 33
-					self.gDNum = 1
-					self.gDOCorner = 50
-					self.gDONext = 32
-
-				if selectedText == "Screw 6 x 60 mm ":
-					self.gDDiameter = 6
-					self.gDSize = 60
-					self.gDSink = 45
-					self.gDNum = 1
-					self.gDOCorner = 50
-					self.gDONext = 32
-					
-				if selectedText == "Confirmation 7 x 40 mm ":
-					self.gDDiameter = 7
-					self.gDSize = 40
-					self.gDSink = 25
-					self.gDNum = 1
-					self.gDOCorner = 50
-					self.gDONext = 32
-					
-				if selectedText == "Confirmation 7 x 50 mm ":
-					self.gDDiameter = 7
-					self.gDSize = 50
-					self.gDSink = 35
-					self.gDNum = 1
-					self.gDOCorner = 50
-					self.gDONext = 32
-					
-				if selectedText == "Confirmation 7 x 70 mm ":
-					self.gDDiameter = 7
-					self.gDSize = 70
-					self.gDSink = 55
-					self.gDNum = 1
-					self.gDOCorner = 50
-					self.gDONext = 32
-					
-				if selectedText == "Shelf Pin 5 x 16 mm ":
-					self.gDDiameter = 5
-					self.gDSize = 16
-					self.gDSink = 8
-					self.gDNum = 15
-					self.gDOCorner = 50
-					self.gDONext = 32
-					self.gDOEdge = 50
-					self.gSides = 1
-
-				if selectedText == "Profile Pin 5 x 30 mm ":
-					self.gDDiameter = 5
-					self.gDSize = 30
-					self.gDSink = 25
-					self.gDNum = 2
-					self.gDOCorner = 5
-					self.gDONext = 32
-
-				if selectedText == "Profile Pin 8 x 40 mm ":
-					self.gDDiameter = 8
-					self.gDSize = 40
-					self.gDSink = 35
-					self.gDNum = 1
-					self.gDOCorner = 50
-					self.gDONext = 32
-
-				if selectedText == "Tenon joint ":
-					self.gDShape = 1
-					self.gDDiameter = 6
-					self.gDSize = 35
-					self.gDNum = 1
-					self.gDOCorner = 32
-					self.gDONext = 100
-					self.gSides = 2
-					
-					self.setTenon()
-					self.setGUI("tenon")
-
-				if selectedText == "Custom mount point ":
-					self.gDDiameter = 8
-					self.gDSize = 35
-					self.gDSink = 20
-					self.gDNum = 2
-					self.gDOCorner = 50
-					self.gDONext = 32
-
-				self.oDowelLabelE.setText(str(self.gDowelLabel))
-				self.oDDiameterE.setText(str(self.gDDiameter))
-				self.oDSizeE.setText(str(self.gDSize))
-				self.oDSinkE.setText(str(self.gDSink))
-				self.oDNumE.setText(str(self.gDNum))
-				self.oDOCornerE.setText(str(self.gDOCorner))
-				self.oDONextE.setText(str(self.gDONext))
-				self.oDOEdgeE.setText(str(self.gDOEdge))
-
-				self.showDowels()
-		
-			except:
-				self.s1S.setText(self.gNoSelection)
-		
-		# ############################################################################
-		def refreshSettings(self):
-			
-			try:
-			
-				self.gDowelLabel = str(self.oDowelLabelE.text())
-				self.gDDiameter = float(self.oDDiameterE.text())
-				self.gDSize = float(self.oDSizeE.text())
-				self.gDSink = float(self.oDSinkE.text())
-				self.gDNum = int(self.oDNumE.text())
-				self.gDOCorner = float(self.oDOCornerE.text())
-				self.gDONext = float(self.oDONextE.text())
-				self.gDOEdge = float(self.oDOEdgeE.text())
-				self.gTenonLong = float(self.oTenonLongE.text())
-				self.gTenonThick = float(self.oTenonThickE.text())
-				self.gTenonDepth = float(self.oTenonDepthE.text())
-				
-				self.showDowels()
-			
-			except:
-				self.s1S.setText(self.gNoSelection)
-				
-		# ############################################################################
-		def setDowels(self):
-			
-			try:
-				if len(self.gDowels) != 0:
-					for d in self.gDowels:
-						try:
-							d.ViewObject.ShapeColor = self.gObj.ViewObject.ShapeColor
-						except:
-							skip = 1
-
-				self.gDowels = []
-				FreeCAD.ActiveDocument.recompute()
-			
-			except:
-				self.s1S.setText(self.gNoSelection)
-				
 	# ############################################################################
 	# final settings
 	# ############################################################################
@@ -1451,6 +1739,7 @@ def showQtGUI():
 				except:
 					skip = 1
 		pass
+
 
 # ###################################################################################################################
 # MAIN
