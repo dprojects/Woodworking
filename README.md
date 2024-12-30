@@ -17,6 +17,7 @@ The main goal for this workbench is to make simpler the furniture designing proc
 
 **New significant changes since the last release 0.22 stable:**
 
+* feet solutions & drawer into the gap (magicStart)
 * magicDowels improved (GUI redesign, position autodetect, keep settings, menu translation, fixes)
 * magicStart tool to create furniture
 
