@@ -43,7 +43,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 450
-			toolSH = 530
+			toolSH = 550
 			
 			# active screen size - FreeCAD main window
 			gSW = FreeCADGui.getMainWindow().width()
@@ -231,14 +231,14 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			info = translate('magicStart', 'Please select 2 edges to calculate gap for drawer. First edge is starting position and second selected edge is end position. If only one edge will be selected, the starting Z axis point will be 0.')
+			info = translate('magicStart', 'Please select 2 edges and face to calculate gap for drawer. First edge is starting Z axis position. Second selected edge is Z axis end position. Face is to calculate depth. If only one edge is selected, the starting Z axis point will be 0. If no face is selected, depth will be calculated from shortest shelf.')
 			self.og1i = QtGui.QLabel(info, self)
 			self.og1i.move(10, rowgap+3)
 			self.og1i.setFixedWidth(200)
 			self.og1i.setWordWrap(True)
 			self.og1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
 			
-			rowgap += 120
+			rowgap += 150
 			
 			# button
 			self.og4B1 = QtGui.QPushButton(translate('magicStart', 'calculate gap'), self)
@@ -904,9 +904,14 @@ def showQtGUI():
 		
 		# ############################################################################
 		def calculateGap(self):
-		
+			
+			obj1 = False
+			obj2 = False
+			obj3 = False
+			
 			edge1 = False
 			edge2 = False
+			face1 = False
 			
 			try:
 				obj1 = FreeCADGui.Selection.getSelection()[0]
@@ -922,30 +927,69 @@ def showQtGUI():
 			except:
 				skip = 1
 			
+			try:
+				obj3 = FreeCADGui.Selection.getSelection()[1]
+				face1 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
+			
+			except:
+				skip = 1
+				
 			FreeCADGui.Selection.clearSelection()
 
+			startX = 0
+			startY = 0
+			startZ = 0
+			width = 0
+			height = 0
+			depth = 0
+				
 			if edge1 != False and edge2 != False:
 				
-				diff = abs(float(MagicPanels.touchTypo(edge2)[1].Z)) - abs(float(MagicPanels.touchTypo(edge1)[1].Z))
-
-				self.og2E.setText(str(MagicPanels.touchTypo(edge1)[1].X))
-				self.og3E.setText(str(MagicPanels.touchTypo(edge1)[1].Y))
-				self.og4E.setText(str(MagicPanels.touchTypo(edge1)[1].Z))
-				self.og5E.setText(str(edge1.Length))
-				self.og6E.setText(str(diff))
-				self.og7E.setText(str(obj1.Width.Value))
+				height = float(MagicPanels.touchTypo(edge2)[1].Z) - float(MagicPanels.touchTypo(edge1)[1].Z)
+				
+				# first short shelf and second long top
+				if float(edge1.Length) < float(edge2.Length):
+					width = float(edge1.Length)
+					startX = float(MagicPanels.touchTypo(edge1)[1].X)
+					startY = float(MagicPanels.touchTypo(edge2)[1].Y) # but shelf might be inside
+					startZ = float(MagicPanels.touchTypo(edge1)[1].Z) # Z start should always be first selected
+				
+				# first long bottom floor and second short shelf
+				else:
+					width = float(edge2.Length)
+					startX = float(MagicPanels.touchTypo(edge2)[1].X)
+					startY = float(MagicPanels.touchTypo(edge1)[1].Y) # but shelf might be inside
+					startZ = float(MagicPanels.touchTypo(edge1)[1].Z) # Z start should always be first selected
+				
+				# first short shelf and second long top
+				if float(obj1.Width.Value) < float(obj2.Width.Value):
+					depth = float(obj1.Width.Value)
+				
+				# first long bottom floor and second short shelf
+				else:
+					depth = float(obj2.Width.Value)
 
 			if edge1 != False and edge2 == False:
 				
-				diff = abs(float(MagicPanels.touchTypo(edge1)[1].Z))
-				
-				self.og2E.setText(str(MagicPanels.touchTypo(edge1)[1].X))
-				self.og3E.setText(str(MagicPanels.touchTypo(edge1)[1].Y))
-				self.og4E.setText(str(MagicPanels.touchTypo(edge1)[1].Z))
-				self.og5E.setText(str(edge1.Length))
-				self.og6E.setText(str(diff))
-				self.og7E.setText(str(obj1.Width.Value))
-				
+				width = float(edge1.Length)
+				height = float(MagicPanels.touchTypo(edge1)[1].Z)
+				depth = float(obj1.Width.Value)
+				startX = float(MagicPanels.touchTypo(edge1)[1].X)
+				startY = float(MagicPanels.touchTypo(edge1)[1].Y)
+				startZ = 0
+			
+			# try to fix depth if face selected
+			if face1 != False:
+				depth = float(face1.CenterOfMass.y) - startY
+			
+			# set values to text fields
+			self.og2E.setText(str(startX))
+			self.og3E.setText(str(startY))
+			self.og4E.setText(str(startZ))
+			self.og5E.setText(str(width))
+			self.og6E.setText(str(height))
+			self.og7E.setText(str(depth))
+
 		# ############################################################################
 		def createF21(self):
 			
