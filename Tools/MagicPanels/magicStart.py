@@ -928,8 +928,8 @@ def showQtGUI():
 				
 				diff = abs(float(MagicPanels.touchTypo(edge2)[1].Z)) - abs(float(MagicPanels.touchTypo(edge1)[1].Z))
 
-				self.og2E.setText(str(self.gThick))
-				self.og3E.setText(str(0))
+				self.og2E.setText(str(MagicPanels.touchTypo(edge1)[1].X))
+				self.og3E.setText(str(MagicPanels.touchTypo(edge1)[1].Y))
 				self.og4E.setText(str(MagicPanels.touchTypo(edge1)[1].Z))
 				self.og5E.setText(str(edge1.Length))
 				self.og6E.setText(str(diff))
@@ -939,9 +939,9 @@ def showQtGUI():
 				
 				diff = abs(float(MagicPanels.touchTypo(edge1)[1].Z))
 				
-				self.og2E.setText(str(self.gThick))
-				self.og3E.setText("0")
-				self.og4E.setText("0")
+				self.og2E.setText(str(MagicPanels.touchTypo(edge1)[1].X))
+				self.og3E.setText(str(MagicPanels.touchTypo(edge1)[1].Y))
+				self.og4E.setText(str(MagicPanels.touchTypo(edge1)[1].Z))
 				self.og5E.setText(str(edge1.Length))
 				self.og6E.setText(str(diff))
 				self.og7E.setText(str(obj1.Width.Value))
@@ -981,7 +981,7 @@ def showQtGUI():
 			o2.Length = thick
 			o2.Height = gapZ - bottomOF - topOF - 3
 			o2.Width = gapY - backOF
-			pl = FreeCAD.Vector(p0X + gapX - thick - sideOF, 0, p0Z + bottomOF + 3)
+			pl = FreeCAD.Vector(p0X + gapX - thick - sideOF, p0Y, p0Z + bottomOF + 3)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
 			o2.ViewObject.DiffuseColor = self.gColor
 			
@@ -991,7 +991,7 @@ def showQtGUI():
 			o3.Length = gapX - (2 * thick) - sidesOF
 			o3.Height = gapZ - bottomOF - topOF - 3
 			o3.Width = thick
-			pl = FreeCAD.Vector(p0X + sideOF + thick, gapY - thick - backOF, p0Z + bottomOF + 3)
+			pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + gapY - thick - backOF, p0Z + bottomOF + 3)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
 			o3.ViewObject.DiffuseColor = self.gColor
 			
