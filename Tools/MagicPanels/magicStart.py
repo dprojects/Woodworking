@@ -1510,11 +1510,7 @@ def showQtGUI():
 			pl = FreeCAD.Vector(p0X, p0Y, p0Z)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
 			o1.ViewObject.DiffuseColor = self.gColor
-			
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
-			container.setLink([o1])
-			container.Label = "Container, Drawer"
-		
+
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
 		
@@ -1539,10 +1535,6 @@ def showQtGUI():
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
 			o1.ViewObject.DiffuseColor = self.gColor
 			
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
-			container.setLink([o1])
-			container.Label = "Container, Drawer"
-		
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
 		
