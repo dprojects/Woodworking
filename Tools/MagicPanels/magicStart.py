@@ -94,7 +94,10 @@ def showQtGUI():
 				translate('magicStart', 'Foot ( more stable )'), 
 				translate('magicStart', 'Foot ( decorated )'), 
 				translate('magicStart', 'Foot ( chair style )'), 
-				translate('magicStart', 'Drawer ( fit into the shelf gap )')
+				translate('magicStart', 'Drawer with front outside ( fit into the shelf gap )'), 
+				translate('magicStart', 'Drawer with front inside ( fit into the shelf gap )'), 
+				translate('magicStart', 'Front outside ( fit into gap )'), 
+				translate('magicStart', 'Front inside ( fit into gap )')
 				)
 			
 			self.sMode = QtGui.QComboBox(self)
@@ -106,6 +109,8 @@ def showQtGUI():
 
 			row += 50
 			rowgap = row
+			rowfoot = row
+			rowfront = row
 
 			# ############################################################################
 			# selection icon
@@ -122,7 +127,7 @@ def showQtGUI():
 			self.setIcon("msf000")
 
 			# ############################################################################
-			# options - merge info
+			# GUI for merge (hidden by default)
 			# ############################################################################
 
 			# label
@@ -135,9 +140,9 @@ def showQtGUI():
 			self.minfo.hide()
 
 			# ############################################################################
-			# options - sizes width
+			# GUI for furniture (visible by default)
 			# ############################################################################
-
+			
 			# label
 			self.o1L = QtGui.QLabel(translate('magicStart', 'Furniture width:'), self)
 			self.o1L.move(10, row+3)
@@ -147,10 +152,6 @@ def showQtGUI():
 			self.o1E.setText(str(self.gFSX))
 			self.o1E.setFixedWidth(90)
 			self.o1E.move(120, row)
-
-			# ############################################################################
-			# options - sizes height
-			# ############################################################################
 
 			row += 30
 
@@ -164,27 +165,6 @@ def showQtGUI():
 			self.o2E.setFixedWidth(90)
 			self.o2E.move(120, row)
 
-			# foot
-			# ############################################################################
-			
-			# label
-			self.of2L = QtGui.QLabel(translate('magicStart', 'Foot height:'), self)
-			self.of2L.move(10, row+3)
-
-			# text input
-			self.of2E = QtGui.QLineEdit(self)
-			self.of2E.setText("100")
-			self.of2E.setFixedWidth(90)
-			self.of2E.move(120, row)
-			
-			# hide by default
-			self.of2L.hide()
-			self.of2E.hide()
-
-			# ############################################################################
-			# options - sizes depth
-			# ############################################################################
-
 			row += 30
 			
 			# label
@@ -196,10 +176,6 @@ def showQtGUI():
 			self.o3E.setText(str(self.gFSY))
 			self.o3E.setFixedWidth(90)
 			self.o3E.move(120, row)
-
-			# ############################################################################
-			# options - sizes thickness
-			# ############################################################################
 
 			row += 30
 
@@ -213,10 +189,6 @@ def showQtGUI():
 			self.o4E.setFixedWidth(90)
 			self.o4E.move(120, row)
 
-			# ############################################################################
-			# options - create button
-			# ############################################################################
-			
 			row += 60
 
 			# button
@@ -225,6 +197,90 @@ def showQtGUI():
 			self.s1B1.setFixedWidth(200)
 			self.s1B1.setFixedHeight(40)
 			self.s1B1.move(10, row)
+
+			# ############################################################################
+			# GUI for foot (hidden by default)
+			# ############################################################################
+			
+			# label
+			self.of1L = QtGui.QLabel(translate('magicStart', 'Furniture width:'), self)
+			self.of1L.move(10, rowfoot+3)
+			
+			# text input
+			self.of1E = QtGui.QLineEdit(self)
+			self.of1E.setText(str(self.gFSX))
+			self.of1E.setFixedWidth(90)
+			self.of1E.move(120, rowfoot)
+
+			rowfoot += 30
+
+			# label
+			self.of2L = QtGui.QLabel(translate('magicStart', 'Furniture depth:'), self)
+			self.of2L.move(10, rowfoot+3)
+
+			# text input
+			self.of2E = QtGui.QLineEdit(self)
+			self.of2E.setText(str(self.gFSY))
+			self.of2E.setFixedWidth(90)
+			self.of2E.move(120, rowfoot)
+
+			rowfoot += 60
+
+			# label
+			self.of3L = QtGui.QLabel(translate('magicStart', 'Foot height:'), self)
+			self.of3L.move(10, rowfoot+3)
+
+			# text input
+			self.of3E = QtGui.QLineEdit(self)
+			self.of3E.setText("100")
+			self.of3E.setFixedWidth(90)
+			self.of3E.move(120, rowfoot)
+
+			rowfoot += 30
+
+			# label
+			self.of4L = QtGui.QLabel(translate('magicStart', 'Foot thickness:'), self)
+			self.of4L.move(10, rowfoot+3)
+
+			# text input
+			self.of4E = QtGui.QLineEdit(self)
+			self.of4E.setText(str(self.gThick))
+			self.of4E.setFixedWidth(90)
+			self.of4E.move(120, rowfoot)
+
+			rowfoot += 30
+
+			# label
+			self.of5L = QtGui.QLabel(translate('magicStart', 'Front offset:'), self)
+			self.of5L.move(10, rowfoot+3)
+
+			# text input
+			self.of5E = QtGui.QLineEdit(self)
+			self.of5E.setText(str(self.gThick))
+			self.of5E.setFixedWidth(90)
+			self.of5E.move(120, rowfoot)
+			
+			rowfoot += 60
+
+			# button
+			self.of6B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
+			self.of6B1.clicked.connect(self.createObject)
+			self.of6B1.setFixedWidth(200)
+			self.of6B1.setFixedHeight(40)
+			self.of6B1.move(10, rowfoot)
+			
+			# hide by default
+			self.of1L.hide()
+			self.of1E.hide()
+			self.of2L.hide()
+			self.of2E.hide()
+			self.of3L.hide()
+			self.of3E.hide()
+			self.of4L.hide()
+			self.of4E.hide()
+			self.of5L.hide()
+			self.of5E.hide()
+			self.of6B1.hide()
 
 			# ############################################################################
 			# GUI for drawer GAP (hidden by default)
@@ -242,7 +298,7 @@ def showQtGUI():
 			
 			# button
 			self.og4B1 = QtGui.QPushButton(translate('magicStart', 'calculate gap'), self)
-			self.og4B1.clicked.connect(self.calculateGap)
+			self.og4B1.clicked.connect(self.calculateGapForDrawer)
 			self.og4B1.setFixedWidth(200)
 			self.og4B1.setFixedHeight(40)
 			self.og4B1.move(10, rowgap)
@@ -405,6 +461,170 @@ def showQtGUI():
 			self.og9B1.hide()
 			
 			# ############################################################################
+			# GUI for Front from GAP (hidden by default)
+			# ############################################################################
+
+			# label
+			info = translate('magicStart', 'Please select 4 edges around the gap to calculate front size in this order: <br><br> 1. selection - bottom edge <br> 2. selection - top edge <br> 3. selection - left edge <br> 4. selection - right edge')
+			self.ofr1i = QtGui.QLabel(info, self)
+			self.ofr1i.move(10, rowfront+3)
+			self.ofr1i.setFixedWidth(200)
+			self.ofr1i.setWordWrap(True)
+			self.ofr1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			
+			rowfront += 130
+			
+			# label
+			self.ofr7L = QtGui.QLabel(translate('magicStart', 'Front thickness:'), self)
+			self.ofr7L.move(10, rowfront+3)
+
+			# text input
+			self.ofr7E = QtGui.QLineEdit(self)
+			self.ofr7E.setText("18")
+			self.ofr7E.setFixedWidth(90)
+			self.ofr7E.move(120, rowfront)
+		
+			rowfront += 40
+			
+			# label
+			self.ofr8L = QtGui.QLabel(translate('magicStart', 'Front offsets:'), self)
+			self.ofr8L.move(10, rowfront+3)
+
+			rowfront += 20
+			
+			# label
+			self.ofr81L = QtGui.QLabel(translate('magicStart', 'Left side:'), self)
+			self.ofr81L.move(10, rowfront+3)
+			
+			# label
+			self.ofr82L = QtGui.QLabel(translate('magicStart', 'Right side:'), self)
+			self.ofr82L.move(110, rowfront+3)
+			
+			# label
+			self.ofr83L = QtGui.QLabel(translate('magicStart', 'Top:'), self)
+			self.ofr83L.move(210, rowfront+3)
+			
+			# label
+			self.ofr84L = QtGui.QLabel(translate('magicStart', 'Bottom:'), self)
+			self.ofr84L.move(310, rowfront+3)
+
+			rowfront += 20
+			
+			# text input
+			self.ofr81E = QtGui.QLineEdit(self)
+			self.ofr81E.setText("0")
+			self.ofr81E.setFixedWidth(50)
+			self.ofr81E.move(10, rowfront)
+			
+			# text input
+			self.ofr82E = QtGui.QLineEdit(self)
+			self.ofr82E.setText("0")
+			self.ofr82E.setFixedWidth(50)
+			self.ofr82E.move(110, rowfront)
+			
+			# text input
+			self.ofr83E = QtGui.QLineEdit(self)
+			self.ofr83E.setText("0")
+			self.ofr83E.setFixedWidth(50)
+			self.ofr83E.move(210, rowfront)
+			
+			# text input
+			self.ofr84E = QtGui.QLineEdit(self)
+			self.ofr84E.setText("0")
+			self.ofr84E.setFixedWidth(50)
+			self.ofr84E.move(310, rowfront)
+
+			rowfront += 40
+			
+			# button
+			self.ofr4B1 = QtGui.QPushButton(translate('magicStart', 'calculate front'), self)
+			self.ofr4B1.clicked.connect(self.calculateFrontFromGap)
+			self.ofr4B1.setFixedWidth(200)
+			self.ofr4B1.setFixedHeight(40)
+			self.ofr4B1.move(10, rowfront)
+			
+			rowfront += 80
+			
+			# label
+			self.ofr2L = QtGui.QLabel(translate('magicStart', 'Front start XYZ:'), self)
+			self.ofr2L.move(10, rowfront+3)
+			
+			# text input
+			self.ofr2E = QtGui.QLineEdit(self)
+			self.ofr2E.setText("0")
+			self.ofr2E.setFixedWidth(90)
+			self.ofr2E.move(120, rowfront)
+			
+			# text input
+			self.ofr3E = QtGui.QLineEdit(self)
+			self.ofr3E.setText("0")
+			self.ofr3E.setFixedWidth(90)
+			self.ofr3E.move(220, rowfront)
+			
+			# text input
+			self.ofr4E = QtGui.QLineEdit(self)
+			self.ofr4E.setText("0")
+			self.ofr4E.setFixedWidth(90)
+			self.ofr4E.move(320, rowfront)
+			
+			rowfront += 30
+
+			# label
+			self.ofr5L = QtGui.QLabel(translate('magicStart', 'Front width:'), self)
+			self.ofr5L.move(10, rowfront+3)
+			
+			# text input
+			self.ofr5E = QtGui.QLineEdit(self)
+			self.ofr5E.setText("0")
+			self.ofr5E.setFixedWidth(90)
+			self.ofr5E.move(120, rowfront)
+			
+			rowfront += 30
+			
+			# label
+			self.ofr6L = QtGui.QLabel(translate('magicStart', 'Front height:'), self)
+			self.ofr6L.move(10, rowfront+3)
+
+			# text input
+			self.ofr6E = QtGui.QLineEdit(self)
+			self.ofr6E.setText("0")
+			self.ofr6E.setFixedWidth(90)
+			self.ofr6E.move(120, rowfront)
+			
+			rowfront += 40
+
+			# button
+			self.ofr8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
+			self.ofr8B1.clicked.connect(self.createObject)
+			self.ofr8B1.setFixedWidth(toolSW - 20)
+			self.ofr8B1.setFixedHeight(40)
+			self.ofr8B1.move(10, rowfront)
+
+			# hide by default
+			self.ofr1i.hide()
+			self.ofr2L.hide()
+			self.ofr2E.hide()
+			self.ofr3E.hide()
+			self.ofr4E.hide()
+			self.ofr4B1.hide()
+			self.ofr5L.hide()
+			self.ofr5E.hide()
+			self.ofr6L.hide()
+			self.ofr6E.hide()
+			self.ofr7L.hide()
+			self.ofr7E.hide()
+			self.ofr8L.hide()
+			self.ofr81L.hide()
+			self.ofr82L.hide()
+			self.ofr83L.hide()
+			self.ofr84L.hide()
+			self.ofr81E.hide()
+			self.ofr82E.hide()
+			self.ofr83E.hide()
+			self.ofr84E.hide()
+			self.ofr8B1.hide()
+			
+			# ############################################################################
 			# show & init defaults
 			# ############################################################################
 
@@ -418,13 +638,15 @@ def showQtGUI():
 		# ############################################################################
 		def createF0(self):
 			
+			depth = self.gFSY - self.gThick
+			
 			# Floor
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
 			o1.Label = translate('magicStart', 'Floor')
 			o1.Length = self.gFSX
 			o1.Height = self.gThick
-			o1.Width = self.gFSY
-			pl = FreeCAD.Vector(0, 0, 0)
+			o1.Width = depth
+			pl = FreeCAD.Vector(0, self.gThick, 0)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
 			o1.ViewObject.DiffuseColor = self.gColor
 			
@@ -433,8 +655,8 @@ def showQtGUI():
 			o2.Label = translate('magicStart', 'Left')
 			o2.Length = self.gThick
 			o2.Height = self.gFSZ - (2 * self.gThick)
-			o2.Width = self.gFSY
-			pl = FreeCAD.Vector(0, 0, self.gThick)
+			o2.Width = depth
+			pl = FreeCAD.Vector(0, self.gThick, self.gThick)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
 			o2.ViewObject.DiffuseColor = self.gColor
 			
@@ -443,8 +665,8 @@ def showQtGUI():
 			o3.Label = translate('magicStart', 'Right')
 			o3.Length = self.gThick
 			o3.Height = self.gFSZ - (2 * self.gThick)
-			o3.Width = self.gFSY
-			pl = FreeCAD.Vector(self.gFSX - self.gThick, 0, self.gThick)
+			o3.Width = depth
+			pl = FreeCAD.Vector(self.gFSX - self.gThick, self.gThick, self.gThick)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
 			o3.ViewObject.DiffuseColor = self.gColor
 			
@@ -454,7 +676,7 @@ def showQtGUI():
 			o4.Length = self.gFSX - (2 * self.gThick)
 			o4.Height = self.gFSZ - (2 * self.gThick)
 			o4.Width = self.gThick
-			pl = FreeCAD.Vector(self.gThick, self.gFSY - self.gThick, self.gThick)
+			pl = FreeCAD.Vector(self.gThick, depth, self.gThick)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
 			o4.ViewObject.DiffuseColor = self.gColor
 			
@@ -463,8 +685,8 @@ def showQtGUI():
 			o5.Label = translate('magicStart', 'Top')
 			o5.Length = self.gFSX
 			o5.Height = self.gThick
-			o5.Width = self.gFSY
-			pl = FreeCAD.Vector(0, 0, self.gFSZ - self.gThick)
+			o5.Width = depth
+			pl = FreeCAD.Vector(0, self.gThick, self.gFSZ - self.gThick)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
 			o5.ViewObject.DiffuseColor = self.gColor
 			
@@ -474,7 +696,7 @@ def showQtGUI():
 			o6.Length = self.gFSX - self.gThick
 			o6.Height = self.gFSZ - self.gThick - 4
 			o6.Width = self.gThick
-			pl = FreeCAD.Vector(self.gThick / 2, - self.gThick, (self.gThick / 2) + 2)
+			pl = FreeCAD.Vector(self.gThick / 2, 0, (self.gThick / 2) + 2)
 			o6.Placement = FreeCAD.Placement(pl, self.gR)
 			o6.ViewObject.DiffuseColor = self.gColor
 			
@@ -483,8 +705,8 @@ def showQtGUI():
 			o7.Label = translate('magicStart', 'Shelf')
 			o7.Length = self.gFSX - (2 * self.gThick)
 			o7.Height = self.gThick
-			o7.Width = self.gFSY - (3 * self.gThick)
-			pl = FreeCAD.Vector(self.gThick, 2 * self.gThick, (self.gFSZ / 2) - (self.gThick / 2))
+			o7.Width = depth - (3 * self.gThick)
+			pl = FreeCAD.Vector(self.gThick, 3 * self.gThick, (self.gFSZ / 2) - (self.gThick / 2))
 			o7.Placement = FreeCAD.Placement(pl, self.gR)
 			o7.ViewObject.DiffuseColor = self.gColor
 
@@ -494,12 +716,14 @@ def showQtGUI():
 		# ############################################################################
 		def createF1(self):
 			
+			depth = self.gFSY - 3
+			
 			# Floor
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
 			o1.Label = translate('magicStart', 'Floor')
 			o1.Length = self.gFSX - (2 * self.gThick)
 			o1.Height = self.gThick
-			o1.Width = self.gFSY
+			o1.Width = depth
 			pl = FreeCAD.Vector(self.gThick, 0, self.gFSZ / 10)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
 			o1.ViewObject.DiffuseColor = self.gColor
@@ -509,7 +733,7 @@ def showQtGUI():
 			o2.Label = translate('magicStart', 'Left')
 			o2.Length = self.gThick
 			o2.Height = self.gFSZ
-			o2.Width = self.gFSY
+			o2.Width = depth
 			pl = FreeCAD.Vector(0, 0, 0)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
 			o2.ViewObject.DiffuseColor = self.gColor
@@ -519,7 +743,7 @@ def showQtGUI():
 			o3.Label = translate('magicStart', 'Right')
 			o3.Length = self.gThick
 			o3.Height = self.gFSZ
-			o3.Width = self.gFSY
+			o3.Width = depth
 			pl = FreeCAD.Vector(self.gFSX - self.gThick, 0, 0)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
 			o3.ViewObject.DiffuseColor = self.gColor
@@ -530,7 +754,7 @@ def showQtGUI():
 			o4.Length = self.gFSX
 			o4.Height = self.gFSZ - (self.gFSZ / 10)
 			o4.Width = 3
-			pl = FreeCAD.Vector(0, self.gFSY, self.gFSZ / 10)
+			pl = FreeCAD.Vector(0, depth, self.gFSZ / 10)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
 			o4.ViewObject.DiffuseColor = self.gColor
 			
@@ -539,7 +763,7 @@ def showQtGUI():
 			o5.Label = translate('magicStart', 'Top')
 			o5.Length = self.gFSX - (2 * self.gThick)
 			o5.Height = self.gThick
-			o5.Width = self.gFSY
+			o5.Width = depth
 			pl = FreeCAD.Vector(self.gThick, 0, self.gFSZ - self.gThick)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
 			o5.ViewObject.DiffuseColor = self.gColor
@@ -549,7 +773,7 @@ def showQtGUI():
 			o6.Label = translate('magicStart', 'Shelf')
 			o6.Length = self.gFSX - (2 * self.gThick)
 			o6.Height = self.gThick
-			o6.Width = self.gFSY
+			o6.Width = depth
 			pl = FreeCAD.Vector(self.gThick, 0, (self.gFSZ / 2) - (self.gThick / 2))
 			o6.Placement = FreeCAD.Placement(pl, self.gR)
 			o6.ViewObject.DiffuseColor = self.gColor
@@ -563,6 +787,7 @@ def showQtGUI():
 			# calculation
 			mNum = 3
 			sideZ = ((self.gFSZ - self.gThick - (mNum * self.gThick)) / mNum)
+			depth = self.gFSY - self.gThick
 			
 			# #######################
 			# Modules
@@ -577,8 +802,8 @@ def showQtGUI():
 				o1.Label = translate('magicStart', 'Floor M'+str(i))
 				o1.Length = self.gFSX
 				o1.Height = self.gThick
-				o1.Width = self.gFSY
-				pl = FreeCAD.Vector(0, 0, posZ)
+				o1.Width = depth
+				pl = FreeCAD.Vector(0, self.gThick, posZ)
 				o1.Placement = FreeCAD.Placement(pl, self.gR)
 				o1.ViewObject.DiffuseColor = self.gColor
 				
@@ -587,8 +812,8 @@ def showQtGUI():
 				o2.Label = translate('magicStart', 'Left M'+str(i))
 				o2.Length = self.gThick
 				o2.Height = sideZ
-				o2.Width = self.gFSY
-				pl = FreeCAD.Vector(0, 0, posZ + self.gThick)
+				o2.Width = depth
+				pl = FreeCAD.Vector(0, self.gThick, posZ + self.gThick)
 				o2.Placement = FreeCAD.Placement(pl, self.gR)
 				o2.ViewObject.DiffuseColor = self.gColor
 				
@@ -597,8 +822,8 @@ def showQtGUI():
 				o3.Label = translate('magicStart', 'Right M'+str(i))
 				o3.Length = self.gThick
 				o3.Height = sideZ
-				o3.Width = self.gFSY
-				pl = FreeCAD.Vector(self.gFSX - self.gThick, 0, posZ + self.gThick)
+				o3.Width = depth
+				pl = FreeCAD.Vector(self.gFSX - self.gThick, self.gThick, posZ + self.gThick)
 				o3.Placement = FreeCAD.Placement(pl, self.gR)
 				o3.ViewObject.DiffuseColor = self.gColor
 				
@@ -608,7 +833,7 @@ def showQtGUI():
 				o4.Length = self.gFSX - (2 * self.gThick)
 				o4.Height = sideZ
 				o4.Width = self.gThick
-				pl = FreeCAD.Vector(self.gThick, self.gFSY - self.gThick, posZ + self.gThick)
+				pl = FreeCAD.Vector(self.gThick, depth, posZ + self.gThick)
 				o4.Placement = FreeCAD.Placement(pl, self.gR)
 				o4.ViewObject.DiffuseColor = self.gColor
 				
@@ -618,7 +843,7 @@ def showQtGUI():
 				o5.Length = self.gFSX - self.gThick
 				o5.Height = sideZ + self.gThick - 4
 				o5.Width = self.gThick
-				pl = FreeCAD.Vector(self.gThick / 2, - self.gThick, posZ + (self.gThick / 2) + 2)
+				pl = FreeCAD.Vector(self.gThick / 2, 0, posZ + (self.gThick / 2) + 2)
 				o5.Placement = FreeCAD.Placement(pl, self.gR)
 				o5.ViewObject.DiffuseColor = self.gColor
 				
@@ -627,9 +852,9 @@ def showQtGUI():
 				o6.Label = translate('magicStart', 'Shelf M'+str(i))
 				o6.Length = self.gFSX - (2 * self.gThick)
 				o6.Height = self.gThick
-				o6.Width = self.gFSY - (3 * self.gThick)
+				o6.Width = depth - (3 * self.gThick)
 				pZ = ((2 * i) + 1) * ((self.gThick + sideZ) / 2)
-				pl = FreeCAD.Vector(self.gThick, 2 * self.gThick, pZ)
+				pl = FreeCAD.Vector(self.gThick, 3 * self.gThick, pZ)
 				o6.Placement = FreeCAD.Placement(pl, self.gR)
 				o6.ViewObject.DiffuseColor = self.gColor
 				
@@ -652,9 +877,9 @@ def showQtGUI():
 			t1.Label = translate('magicStart', 'Top cover')
 			t1.Length = self.gFSX
 			t1.Height = self.gThick
-			t1.Width = self.gFSY
+			t1.Width = depth
 			pZ = mNum * (self.gThick + sideZ)
-			pl = FreeCAD.Vector(0, 0, pZ)
+			pl = FreeCAD.Vector(0, self.gThick, pZ)
 			t1.Placement = FreeCAD.Placement(pl, self.gR)
 			t1.ViewObject.DiffuseColor = self.gColor
 
@@ -664,23 +889,30 @@ def showQtGUI():
 		# ############################################################################
 		def createF16(self):
 			
+			FSX = float(self.of1E.text())
+			FSY = float(self.of2E.text())
+			height = float(self.of3E.text())
+			thick = float(self.of4E.text())
+			frontOF = float(self.of5E.text())
+			depth = self.gFSY - frontOF
+			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootLeft")
 			o1.Label = translate('magicStart', 'Foot Left')
-			o1.Length = self.gThick
-			o1.Height = self.gFSZ
-			o1.Width = self.gFSY
-			pl = FreeCAD.Vector(0, 0, -self.gFSZ)
+			o1.Length = thick
+			o1.Height = height
+			o1.Width = depth
+			pl = FreeCAD.Vector(0, frontOF, -height)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
 			o1.ViewObject.DiffuseColor = self.gColor
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRight")
 			o2.Label = translate('magicStart', 'Foot Right')
-			o2.Length = self.gThick
-			o2.Height = self.gFSZ
-			o2.Width = self.gFSY
-			pl = FreeCAD.Vector(self.gFSX - self.gThick, 0, -self.gFSZ)
+			o2.Length = thick
+			o2.Height = height
+			o2.Width = depth
+			pl = FreeCAD.Vector(FSX - thick, frontOF, -height)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
 			o2.ViewObject.DiffuseColor = self.gColor
 			
@@ -694,43 +926,50 @@ def showQtGUI():
 		# ############################################################################
 		def createF17(self):
 			
+			FSX = float(self.of1E.text())
+			FSY = float(self.of2E.text())
+			height = float(self.of3E.text())
+			thick = float(self.of4E.text())
+			frontOF = float(self.of5E.text())
+			depth = FSY - frontOF
+			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootLeft")
 			o1.Label = translate('magicStart', 'Foot Left')
-			o1.Length = self.gThick
-			o1.Height = self.gFSZ
-			o1.Width = self.gFSY
-			pl = FreeCAD.Vector(0, 0, -self.gFSZ)
+			o1.Length = thick
+			o1.Height = height
+			o1.Width = depth
+			pl = FreeCAD.Vector(0, frontOF, -height)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
 			o1.ViewObject.DiffuseColor = self.gColor
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRight")
 			o2.Label = translate('magicStart', 'Foot Right')
-			o2.Length = self.gThick
-			o2.Height = self.gFSZ
-			o2.Width = self.gFSY
-			pl = FreeCAD.Vector(self.gFSX - self.gThick, 0, -self.gFSZ)
+			o2.Length = thick
+			o2.Height = height
+			o2.Width = depth
+			pl = FreeCAD.Vector(FSX - thick, frontOF, -height)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
 			o2.ViewObject.DiffuseColor = self.gColor
 			
 			# Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootBack")
 			o3.Label = translate('magicStart', 'Foot Back')
-			o3.Length = self.gFSX - (2 * self.gThick)
-			o3.Height = self.gFSZ
-			o3.Width = self.gThick
-			pl = FreeCAD.Vector(self.gThick, self.gFSY - self.gThick, -self.gFSZ)
+			o3.Length = FSX - (2 * thick)
+			o3.Height = height
+			o3.Width = thick
+			pl = FreeCAD.Vector(thick, frontOF + depth - thick, -height)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
 			o3.ViewObject.DiffuseColor = self.gColor
 			
 			# Front
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootFront")
 			o4.Label = translate('magicStart', 'Foot Front')
-			o4.Length = self.gFSX - (2 * self.gThick)
-			o4.Height = self.gFSZ
-			o4.Width = self.gThick
-			pl = FreeCAD.Vector(self.gThick, 0, -self.gFSZ)
+			o4.Length = FSX - (2 * thick)
+			o4.Height = height
+			o4.Width = thick
+			pl = FreeCAD.Vector(thick, frontOF, -height)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
 			o4.ViewObject.DiffuseColor = self.gColor
 
@@ -744,54 +983,61 @@ def showQtGUI():
 		# ############################################################################
 		def createF18(self):
 			
+			FSX = float(self.of1E.text())
+			FSY = float(self.of2E.text())
+			height = float(self.of3E.text())
+			thick = float(self.of4E.text())
+			frontOF = float(self.of5E.text())
+			depth = FSY - frontOF
+
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootLeft")
 			o1.Label = translate('magicStart', 'Foot Left')
-			o1.Length = self.gThick
-			o1.Height = self.gFSZ
-			o1.Width = self.gFSY
-			pl = FreeCAD.Vector(0, 0, -self.gFSZ)
+			o1.Length = thick
+			o1.Height = height
+			o1.Width = depth
+			pl = FreeCAD.Vector(0, frontOF, -height)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
 			o1.ViewObject.DiffuseColor = self.gColor
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRight")
 			o2.Label = translate('magicStart', 'Foot Right')
-			o2.Length = self.gThick
-			o2.Height = self.gFSZ
-			o2.Width = self.gFSY
-			pl = FreeCAD.Vector(self.gFSX - self.gThick, 0, -self.gFSZ)
+			o2.Length = thick
+			o2.Height = height
+			o2.Width = depth
+			pl = FreeCAD.Vector(FSX - thick, frontOF, -height)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
 			o2.ViewObject.DiffuseColor = self.gColor
 			
 			# Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootBack")
 			o3.Label = translate('magicStart', 'Foot Back')
-			o3.Length = self.gFSX - (2 * self.gThick)
-			o3.Height = self.gFSZ
-			o3.Width = self.gThick
-			pl = FreeCAD.Vector(self.gThick, self.gFSY - self.gThick, -self.gFSZ)
+			o3.Length = FSX - (2 * thick)
+			o3.Height = height
+			o3.Width = thick
+			pl = FreeCAD.Vector(thick, frontOF + depth - thick, -height)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
 			o3.ViewObject.DiffuseColor = self.gColor
 			
 			# Front
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootFront")
 			o4.Label = translate('magicStart', 'Foot Front')
-			o4.Length = self.gFSX - (2 * self.gThick)
-			o4.Height = self.gFSZ
-			o4.Width = self.gThick
-			pl = FreeCAD.Vector(self.gThick, 0, -self.gFSZ)
+			o4.Length = FSX - (2 * thick)
+			o4.Height = height
+			o4.Width = thick
+			pl = FreeCAD.Vector(thick, frontOF, -height)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
 			o4.ViewObject.DiffuseColor = self.gColor
 			
 			# Center
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootCenter")
 			o5.Label = translate('magicStart', 'Foot Center')
-			o5.Length = self.gFSX - (2 * self.gThick)
-			o5.Height = self.gFSZ
-			o5.Width = self.gThick
-			py = ((self.gFSY - (2 * self.gThick)) / 2) + (self.gThick / 2)
-			pl = FreeCAD.Vector(self.gThick, py, -self.gFSZ)
+			o5.Length = FSX - (2 * thick)
+			o5.Height = height
+			o5.Width = thick
+			py = frontOF + (depth / 2) - (thick / 2)
+			pl = FreeCAD.Vector(thick, py, -height)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
 			o5.ViewObject.DiffuseColor = self.gColor
 
@@ -805,46 +1051,53 @@ def showQtGUI():
 		# ############################################################################
 		def createF19(self):
 			
+			FSX = float(self.of1E.text())
+			FSY = float(self.of2E.text())
+			height = float(self.of3E.text())
+			thick = float(self.of4E.text())
+			frontOF = float(self.of5E.text())
+			depth = FSY - frontOF
+
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootLeft")
 			o1.Label = translate('magicStart', 'Foot Left')
-			o1.Length = self.gThick
-			o1.Height = self.gFSZ
-			o1.Width = self.gFSY
-			pl = FreeCAD.Vector(0, 0, -self.gFSZ)
+			o1.Length = thick
+			o1.Height = height
+			o1.Width = depth
+			pl = FreeCAD.Vector(0, frontOF, -height)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
 			o1.ViewObject.DiffuseColor = self.gColor
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRight")
 			o2.Label = translate('magicStart', 'Foot Right')
-			o2.Length = self.gThick
-			o2.Height = self.gFSZ
-			o2.Width = self.gFSY
-			pl = FreeCAD.Vector(self.gFSX - self.gThick, 0, -self.gFSZ)
+			o2.Length = thick
+			o2.Height = height
+			o2.Width = depth
+			pl = FreeCAD.Vector(FSX - thick, frontOF, -height)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
 			o2.ViewObject.DiffuseColor = self.gColor
 			
 			# Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootBack")
 			o3.Label = translate('magicStart', 'Foot Back')
-			o3.Length = self.gFSX - (2 * self.gThick)
-			o3.Height = self.gFSZ
-			o3.Width = self.gThick
-			pl = FreeCAD.Vector(self.gThick, self.gFSY - self.gThick, -self.gFSZ)
+			o3.Length = FSX - (2 * thick)
+			o3.Height = height
+			o3.Width = thick
+			pl = FreeCAD.Vector(thick, frontOF + depth - thick, -height)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
 			o3.ViewObject.DiffuseColor = self.gColor
 			
 			# Front
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootFront")
 			o4.Label = translate('magicStart', 'Foot Front')
-			o4.Length = self.gFSX - (2 * self.gThick)
-			o4.Height = self.gFSZ
-			o4.Width = self.gThick
-			pl = FreeCAD.Vector(self.gThick, self.gThick, -self.gFSZ)
+			o4.Length = FSX - (2 * thick)
+			o4.Height = height
+			o4.Width = thick
+			pl = FreeCAD.Vector(thick, frontOF + thick, -height)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
 			o4.ViewObject.DiffuseColor = self.gColor
-
+			
 			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFoot')
 			container.setLink([o1, o2, o3, o4])
 			container.Label = "Container, Foot"
@@ -855,43 +1108,50 @@ def showQtGUI():
 		# ############################################################################
 		def createF20(self):
 			
+			FSX = float(self.of1E.text())
+			FSY = float(self.of2E.text())
+			height = float(self.of3E.text())
+			thick = float(self.of4E.text())
+			frontOF = float(self.of5E.text())
+			depth = FSY - frontOF
+			
 			# Left Front
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootLeftFront")
 			o1.Label = translate('magicStart', 'Foot Left Front')
-			o1.Length = self.gThick
-			o1.Height = self.gFSZ
-			o1.Width = self.gThick
-			pl = FreeCAD.Vector(0, 0, -self.gFSZ)
+			o1.Length = thick
+			o1.Height = height
+			o1.Width = thick
+			pl = FreeCAD.Vector(0, frontOF, -height)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
 			o1.ViewObject.DiffuseColor = self.gColor
 			
 			# Left Back
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootLeftBack")
 			o2.Label = translate('magicStart', 'Foot Left Back')
-			o2.Length = self.gThick
-			o2.Height = self.gFSZ
-			o2.Width = self.gThick
-			pl = FreeCAD.Vector(0, self.gFSY - self.gThick, -self.gFSZ)
+			o2.Length = thick
+			o2.Height = height
+			o2.Width = thick
+			pl = FreeCAD.Vector(0, frontOF + depth - thick, -height)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
 			o2.ViewObject.DiffuseColor = self.gColor
 			
 			# Right Front
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRightFront")
 			o3.Label = translate('magicStart', 'Foot Right Front')
-			o3.Length = self.gThick
-			o3.Height = self.gFSZ
-			o3.Width = self.gThick
-			pl = FreeCAD.Vector(self.gFSX - self.gThick, 0, -self.gFSZ)
+			o3.Length = thick
+			o3.Height = height
+			o3.Width = thick
+			pl = FreeCAD.Vector(FSX - thick, frontOF, -height)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
 			o3.ViewObject.DiffuseColor = self.gColor
 			
 			# Right Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRightBack")
 			o4.Label = translate('magicStart', 'Foot Right Back')
-			o4.Length = self.gThick
-			o4.Height = self.gFSZ
-			o4.Width = self.gThick
-			pl = FreeCAD.Vector(self.gFSX - self.gThick, self.gFSY - self.gThick, -self.gFSZ)
+			o4.Length = thick
+			o4.Height = height
+			o4.Width = thick
+			pl = FreeCAD.Vector(FSX - thick, frontOF + depth - thick, -height)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
 			o4.ViewObject.DiffuseColor = self.gColor
 			
@@ -903,7 +1163,7 @@ def showQtGUI():
 			FreeCAD.ActiveDocument.recompute()
 		
 		# ############################################################################
-		def calculateGap(self):
+		def calculateGapForDrawer(self):
 			
 			obj1 = False
 			obj2 = False
@@ -1077,6 +1337,216 @@ def showQtGUI():
 			FreeCAD.ActiveDocument.recompute()
 		
 		# ############################################################################
+		def createF22(self):
+			
+			p0X = float(self.og2E.text())
+			p0Y = float(self.og3E.text())
+			p0Z = float(self.og4E.text())
+			
+			gapX = float(self.og5E.text())
+			gapZ = float(self.og6E.text())
+			gapY = float(self.og7E.text())
+			
+			thick = float(self.og8E.text())
+			
+			sidesOF = float(self.og91E.text())
+			sideOF = sidesOF / 2
+			backOF = float(self.og92E.text())
+			topOF = float(self.og93E.text())
+			bottomOF = float(self.og94E.text())
+			
+			# Left Side
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
+			o1.Label = translate('magicStart', 'Drawer Left')
+			o1.Length = thick
+			o1.Height = gapZ - bottomOF - topOF - 3
+			o1.Width = gapY - backOF - thick
+			pl = FreeCAD.Vector(p0X + sideOF, p0Y + thick, p0Z + bottomOF + 3)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			o1.ViewObject.DiffuseColor = self.gColor
+			
+			# Right Side
+			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
+			o2.Label = translate('magicStart', 'Drawer Right')
+			o2.Length = thick
+			o2.Height = gapZ - bottomOF - topOF - 3
+			o2.Width = gapY - backOF - thick
+			pl = FreeCAD.Vector(p0X + gapX - thick - sideOF, p0Y + thick, p0Z + bottomOF + 3)
+			o2.Placement = FreeCAD.Placement(pl, self.gR)
+			o2.ViewObject.DiffuseColor = self.gColor
+			
+			# Back
+			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
+			o3.Label = translate('magicStart', 'Drawer Back')
+			o3.Length = gapX - (2 * thick) - sidesOF
+			o3.Height = gapZ - bottomOF - topOF - 3
+			o3.Width = thick
+			pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + gapY - thick - backOF, p0Z + bottomOF + 3)
+			o3.Placement = FreeCAD.Placement(pl, self.gR)
+			o3.ViewObject.DiffuseColor = self.gColor
+			
+			# Front inside
+			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
+			o4.Label = translate('magicStart', 'Drawer Front Inside')
+			o4.Length = gapX - (2 * thick) - sidesOF
+			o4.Height = gapZ - bottomOF - topOF - 3
+			o4.Width = thick
+			pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + thick, p0Z + bottomOF + 3)
+			o4.Placement = FreeCAD.Placement(pl, self.gR)
+			o4.ViewObject.DiffuseColor = self.gColor
+
+			# HDF bottom
+			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
+			o5.Label = translate('magicStart', 'Drawer Bottom HDF')
+			o5.Length = gapX - sidesOF
+			o5.Height = 3
+			o5.Width = gapY - backOF - thick
+			pl = FreeCAD.Vector(p0X + sideOF, p0Y + thick, p0Z  + bottomOF)
+			o5.Placement = FreeCAD.Placement(pl, self.gR)
+			o5.ViewObject.DiffuseColor = self.gColor
+
+			# Front outside make inside as well
+			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
+			o6.Label = translate('magicStart', 'Drawer Front Outside')
+			o6.Length = gapX - 4
+			o6.Height = gapZ - 4
+			o6.Width = thick
+			pl = FreeCAD.Vector(p0X + 2, p0Y, p0Z + 2)
+			o6.Placement = FreeCAD.Placement(pl, self.gR)
+			o6.ViewObject.DiffuseColor = self.gColor
+
+			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
+			container.setLink([o1, o2, o3, o4, o5, o6])
+			container.Label = "Container, Drawer"
+		
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+		
+		# ############################################################################
+		def calculateFrontFromGap(self):
+			
+			obj1 = False
+			obj2 = False
+			obj3 = False
+			obj4 = False
+			
+			edge1 = False
+			edge2 = False
+			edge3 = False
+			edge4 = False
+			
+			try:
+				obj1 = FreeCADGui.Selection.getSelection()[0]
+				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				
+				obj2 = FreeCADGui.Selection.getSelection()[0]
+				edge2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+				
+				obj3 = FreeCADGui.Selection.getSelection()[0]
+				edge3 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
+				
+				obj4 = FreeCADGui.Selection.getSelection()[0]
+				edge4 = FreeCADGui.Selection.getSelectionEx()[3].SubObjects[0]
+				
+			except:
+				return
+				
+			FreeCADGui.Selection.clearSelection()
+
+			gh = float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z)
+			gw = float(edge4.CenterOfMass.x) - float(edge3.CenterOfMass.x)
+			
+			sx = float(MagicPanels.touchTypo(edge1)[1].X)
+			sy = float(MagicPanels.touchTypo(edge1)[1].Y)
+			sz = float(MagicPanels.touchTypo(edge1)[1].Z)
+			
+			thick = float(self.ofr7E.text())
+			
+			offsetL = float(self.ofr81E.text())
+			offsetR = float(self.ofr82E.text())
+			offsetT = float(self.ofr83E.text())
+			offsetB = float(self.ofr84E.text())
+			
+			# outside
+			if self.gSelectedFurniture == "F23":
+				width = offsetL + gw + offsetR
+				height = offsetB + gh + offsetT
+				startX = sx - offsetL
+				startY = sy - thick
+				startZ = sz - offsetB
+
+			# inside
+			if self.gSelectedFurniture == "F24":
+				width = gw - offsetL - offsetR
+				height = gh - offsetB - offsetT
+				startX = sx + offsetL
+				startY = sy
+				startZ = sz + offsetB
+	
+			# set values to text fields
+			self.ofr2E.setText(str(startX))
+			self.ofr3E.setText(str(startY))
+			self.ofr4E.setText(str(startZ))
+			self.ofr5E.setText(str(width))
+			self.ofr6E.setText(str(height))
+
+		# ############################################################################
+		def createF23(self):
+			
+			p0X = float(self.ofr2E.text())
+			p0Y = float(self.ofr3E.text())
+			p0Z = float(self.ofr4E.text())
+			
+			width = float(self.ofr5E.text())
+			height = float(self.ofr6E.text())
+			thick = float(self.ofr7E.text())
+			
+			# Front outside
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FrontOutside")
+			o1.Label = translate('magicStart', 'Front outside')
+			o1.Length = width
+			o1.Height = height
+			o1.Width = thick
+			pl = FreeCAD.Vector(p0X, p0Y, p0Z)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			o1.ViewObject.DiffuseColor = self.gColor
+			
+			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
+			container.setLink([o1])
+			container.Label = "Container, Drawer"
+		
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+		
+		# ############################################################################
+		def createF24(self):
+
+			p0X = float(self.ofr2E.text())
+			p0Y = float(self.ofr3E.text())
+			p0Z = float(self.ofr4E.text())
+			
+			width = float(self.ofr5E.text())
+			height = float(self.ofr6E.text())
+			thick = float(self.ofr7E.text())
+			
+			# Front outside
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FrontInside")
+			o1.Label = translate('magicStart', 'Front inside')
+			o1.Length = width
+			o1.Height = height
+			o1.Width = thick
+			pl = FreeCAD.Vector(p0X, p0Y, p0Z)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			o1.ViewObject.DiffuseColor = self.gColor
+			
+			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
+			container.setLink([o1])
+			container.Label = "Container, Drawer"
+		
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+		
+		# ############################################################################
 		def setIcon(self, iName):
 			
 			path = FreeCADGui.activeWorkbench().path
@@ -1136,27 +1606,127 @@ def showQtGUI():
 		# ############################################################################
 		def setGUIInfo(self, iType="furniture"):
 
-			if iType == "gap":
+			# ##############################################
+			# hide everything first
+			# ##############################################
 
-				# normal
-				self.o1L.hide()
-				self.o1E.hide()
-				self.o2L.hide()
-				self.o2E.hide()
-				self.o3L.hide()
-				self.o3E.hide()
-				self.o4L.hide()
-				self.o4E.hide()
-				self.s1B1.hide()
+			# front
+			self.ofr1i.hide()
+			self.ofr2L.hide()
+			self.ofr2E.hide()
+			self.ofr3E.hide()
+			self.ofr4E.hide()
+			self.ofr4B1.hide()
+			self.ofr5L.hide()
+			self.ofr5E.hide()
+			self.ofr6L.hide()
+			self.ofr6E.hide()
+			self.ofr7L.hide()
+			self.ofr7E.hide()
+			self.ofr8L.hide()
+			self.ofr81L.hide()
+			self.ofr82L.hide()
+			self.ofr83L.hide()
+			self.ofr84L.hide()
+			self.ofr81E.hide()
+			self.ofr82E.hide()
+			self.ofr83E.hide()
+			self.ofr84E.hide()
+			self.ofr8B1.hide()
+		
+			# gap
+			self.og1i.hide()
+			self.og2L.hide()
+			self.og2E.hide()
+			self.og3E.hide()
+			self.og4E.hide()
+			self.og4B1.hide()
+			self.og5L.hide()
+			self.og5E.hide()
+			self.og6L.hide()
+			self.og6E.hide()
+			self.og7L.hide()
+			self.og7E.hide()
+			self.og8L.hide()
+			self.og8E.hide()
+			self.og9L.hide()
+			self.og91L.hide()
+			self.og92L.hide()
+			self.og93L.hide()
+			self.og94L.hide()
+			self.og91E.hide()
+			self.og92E.hide()
+			self.og93E.hide()
+			self.og94E.hide()
+			self.og9B1.hide()
+		
+			# foot
+			self.of1L.hide()
+			self.of1E.hide()
+			self.of2L.hide()
+			self.of2E.hide()
+			self.of3L.hide()
+			self.of3E.hide()
+			self.of4L.hide()
+			self.of4E.hide()
+			self.of5L.hide()
+			self.of5E.hide()
+			self.of6B1.hide()
+			
+			# merge
+			self.minfo.hide()
+			
+			# furniture (default)
+			self.o1L.hide()
+			self.o1E.hide()
+			self.o2L.hide()
+			self.o2E.hide()
+			self.o3L.hide()
+			self.o3E.hide()
+			self.o4L.hide()
+			self.o4E.hide()
+			self.s1B1.hide()
+			
+			# ##############################################
+			# show only needed
+			# ##############################################
+			
+			if iType == "furniture":
+				self.o1L.show()
+				self.o1E.show()
+				self.o2L.show()
+				self.o2E.show()
+				self.o3L.show()
+				self.o3E.show()
+				self.o4L.show()
+				self.o4E.show()
+				self.s1B1.show()
+
+			if iType == "front":
+				self.ofr1i.show()
+				self.ofr2L.show()
+				self.ofr2E.show()
+				self.ofr3E.show()
+				self.ofr4E.show()
+				self.ofr4B1.show()
+				self.ofr5L.show()
+				self.ofr5E.show()
+				self.ofr6L.show()
+				self.ofr6E.show()
+				self.ofr7L.show()
+				self.ofr7E.show()
+				self.ofr8L.show()
+				self.ofr81L.show()
+				self.ofr82L.show()
+				self.ofr83L.show()
+				self.ofr84L.show()
+				self.ofr81E.show()
+				self.ofr82E.show()
+				self.ofr83E.show()
+				self.ofr84E.show()
+				self.ofr8B1.show()
 				
-				# foot
-				self.of2L.hide()
-				self.of2E.hide()
-				
-				# merge
-				self.minfo.hide()
-				
-				# gap
+			if iType == "gap":
 				self.og1i.show()
 				self.og2L.show()
 				self.og2E.show()
@@ -1183,142 +1753,20 @@ def showQtGUI():
 				self.og9B1.show()
 
 			if iType == "foot":
-
-				# gap
-				self.og1i.hide()
-				self.og2L.hide()
-				self.og2E.hide()
-				self.og3E.hide()
-				self.og4E.hide()
-				self.og4B1.hide()
-				self.og5L.hide()
-				self.og5E.hide()
-				self.og6L.hide()
-				self.og6E.hide()
-				self.og7L.hide()
-				self.og7E.hide()
-				self.og8L.hide()
-				self.og8E.hide()
-				self.og9L.hide()
-				self.og91L.hide()
-				self.og92L.hide()
-				self.og93L.hide()
-				self.og94L.hide()
-				self.og91E.hide()
-				self.og92E.hide()
-				self.og93E.hide()
-				self.og94E.hide()
-				self.og9B1.hide()
-			
-				# merge
-				self.minfo.hide()
-
-				# normal
-				self.o1L.show()
-				self.o1E.show()
-				self.o2L.hide()
-				self.o2E.hide()
-				self.o3L.show()
-				self.o3E.show()
-				self.o4L.show()
-				self.o4E.show()
-				self.s1B1.show()
-				
-				# foot
+				self.of1L.show()
+				self.of1E.show()
 				self.of2L.show()
 				self.of2E.show()
+				self.of3L.show()
+				self.of3E.show()
+				self.of4L.show()
+				self.of4E.show()
+				self.of5L.show()
+				self.of5E.show()
+				self.of6B1.show()
 			
 			if iType == "merge":
-				
-				# gap
-				self.og1i.hide()
-				self.og2L.hide()
-				self.og2E.hide()
-				self.og3E.hide()
-				self.og4E.hide()
-				self.og4B1.hide()
-				self.og5L.hide()
-				self.og5E.hide()
-				self.og6L.hide()
-				self.og6E.hide()
-				self.og7L.hide()
-				self.og7E.hide()
-				self.og8L.hide()
-				self.og8E.hide()
-				self.og9L.hide()
-				self.og91L.hide()
-				self.og92L.hide()
-				self.og93L.hide()
-				self.og94L.hide()
-				self.og91E.hide()
-				self.og92E.hide()
-				self.og93E.hide()
-				self.og94E.hide()
-				self.og9B1.hide()
-			
-				# foot
-				self.of2L.hide()
-				self.of2E.hide()
-				
-				# normal
-				self.o1L.hide()
-				self.o1E.hide()
-				self.o2L.hide()
-				self.o2E.hide()
-				self.o3L.hide()
-				self.o3E.hide()
-				self.o4L.hide()
-				self.o4E.hide()
-				self.s1B1.show()
-				
-				# merge
 				self.minfo.show()
-				
-			if iType == "furniture":
-				
-				# gap
-				self.og1i.hide()
-				self.og2L.hide()
-				self.og2E.hide()
-				self.og3E.hide()
-				self.og4E.hide()
-				self.og4B1.hide()
-				self.og5L.hide()
-				self.og5E.hide()
-				self.og6L.hide()
-				self.og6E.hide()
-				self.og7L.hide()
-				self.og7E.hide()
-				self.og8L.hide()
-				self.og8E.hide()
-				self.og9L.hide()
-				self.og91L.hide()
-				self.og92L.hide()
-				self.og93L.hide()
-				self.og94L.hide()
-				self.og91E.hide()
-				self.og92E.hide()
-				self.og93E.hide()
-				self.og94E.hide()
-				self.og9B1.hide()
-			
-				# foot
-				self.of2L.hide()
-				self.of2E.hide()
-				
-				# merge
-				self.minfo.hide()
-
-				# normal
-				self.o1L.show()
-				self.o1E.show()
-				self.o2L.show()
-				self.o2E.show()
-				self.o3L.show()
-				self.o3E.show()
-				self.o4L.show()
-				self.o4E.show()
-				self.s1B1.show()
 
 		# ############################################################################
 		def createObject(self):
@@ -1377,28 +1825,32 @@ def showQtGUI():
 				self.mergeF("Angle_40_x_40_x_100_mm.FCStd", "angles")
 			
 			if self.gSelectedFurniture == "F16":
-				self.gFSZ = float(self.of2E.text())
 				self.createF16()
 			
 			if self.gSelectedFurniture == "F17":
-				self.gFSZ = float(self.of2E.text())
 				self.createF17()
 				
 			if self.gSelectedFurniture == "F18":
-				self.gFSZ = float(self.of2E.text())
 				self.createF18()
 				
 			if self.gSelectedFurniture == "F19":
-				self.gFSZ = float(self.of2E.text())
 				self.createF19()
 				
 			if self.gSelectedFurniture == "F20":
-				self.gFSZ = float(self.of2E.text())
 				self.createF20()
 			
 			if self.gSelectedFurniture == "F21":
 				self.createF21()
 			
+			if self.gSelectedFurniture == "F22":
+				self.createF22()
+			
+			if self.gSelectedFurniture == "F23":
+				self.createF23()
+			
+			if self.gSelectedFurniture == "F24":
+				self.createF24()
+
 		# ############################################################################	
 		def selectedOption(self, selectedIndex):
 			
@@ -1446,18 +1898,34 @@ def showQtGUI():
 				):
 				self.setGUIInfo("foot")
 			
-			if selectedIndex == 21:
+			if selectedIndex == 21 or selectedIndex == 22:
 				self.setGUIInfo("gap")
-
+			
+			if selectedIndex == 23:
+				self.setGUIInfo("front")
+				self.ofr7E.setText("18")
+				self.ofr81E.setText("9")
+				self.ofr82E.setText("9")
+				self.ofr83E.setText("7")
+				self.ofr84E.setText("7")
+			
+			if selectedIndex == 24:
+				self.setGUIInfo("front")
+				self.ofr7E.setText("18")
+				self.ofr81E.setText("2")
+				self.ofr82E.setText("2")
+				self.ofr83E.setText("2")
+				self.ofr84E.setText("2")
+				
 			if selectedIndex == 10:
 				self.o2E.setText("2300")
 			else:
 				self.o2E.setText("760")
 				
 			if selectedIndex == 20:
-				self.o4E.setText("80")
+				self.of4E.setText("80")
 			else:
-				self.o4E.setText("18")
+				self.of4E.setText("18")
 			
 	# ############################################################################
 	# final settings

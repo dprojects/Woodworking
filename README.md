@@ -17,9 +17,11 @@ The main goal for this workbench is to make simpler the furniture designing proc
 
 **New significant changes since the last release 0.22 stable:**
 
-* feet solutions & drawer into the gap (magicStart)
+* front outside or inside for selected gap (magicStart)
+* drawer with front outside or inside for selected gap (magicStart)
+* foot solutions (magicStart)
 * magicDowels improved (GUI redesign, position autodetect, keep settings, menu translation, fixes)
-* magicStart tool to create furniture
+* magicStart tool to create & import furniture, fixture, drawers, ...
 
 # Installation in Xubuntu
 
