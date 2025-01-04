@@ -98,7 +98,8 @@ def showQtGUI():
 				translate('magicStart', 'Drawer with front inside ( fit into the shelf gap )'), 
 				translate('magicStart', 'Front outside ( fit into gap )'), 
 				translate('magicStart', 'Front inside ( fit into gap )'), 
-				translate('magicStart', 'Shelf ( fit into gap )')
+				translate('magicStart', 'Shelf ( fit into gap )'), 
+				translate('magicStart', 'Center side ( fit into gap )')
 				)
 			
 			self.sMode = QtGui.QComboBox(self)
@@ -113,6 +114,7 @@ def showQtGUI():
 			rowfoot = row
 			rowfront = row
 			rowshelf = row
+			rowside = row
 
 			# ############################################################################
 			# selection icon
@@ -805,6 +807,186 @@ def showQtGUI():
 			self.osh7L.hide()
 			self.osh7E.hide()
 			self.osh8B1.hide()
+
+			# ############################################################################
+			# GUI for Center side from GAP (hidden by default)
+			# ############################################################################
+			
+			rowside -= 20
+			
+			# label
+			info = translate('magicStart', 'Please select 2 edges (top or bottom at Y axis direction) and 1 face (bottom or top at XY plane) to calculate side in the center: <br><br> 1. selection - left Y edge <br> 2. selection - right Y edge <br> 3. selection - XY face')
+			self.ocs1i = QtGui.QLabel(info, self)
+			self.ocs1i.move(10, rowside+3)
+			self.ocs1i.setFixedWidth(200)
+			self.ocs1i.setWordWrap(True)
+			self.ocs1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			
+			rowside += 150
+			
+			# label
+			self.ocs1L = QtGui.QLabel(translate('magicStart', 'Side thickness:'), self)
+			self.ocs1L.move(10, rowside+3)
+
+			# text input
+			self.ocs1E = QtGui.QLineEdit(self)
+			self.ocs1E.setText("18")
+			self.ocs1E.setFixedWidth(90)
+			self.ocs1E.move(120, rowside)
+		
+			rowside += 30
+			
+			# label
+			self.ocs2L = QtGui.QLabel(translate('magicStart', 'Side by depth:'), self)
+			self.ocs2L.move(10, rowside+3)
+
+			# text input
+			self.ocs2E = QtGui.QLineEdit(self)
+			self.ocs2E.setText("0")
+			self.ocs2E.setFixedWidth(90)
+			self.ocs2E.move(120, rowside)
+			
+			rowside += 30
+			
+			# label
+			self.ocs3L = QtGui.QLabel(translate('magicStart', 'Side by offsets:'), self)
+			self.ocs3L.move(10, rowside+3)
+
+			rowside += 20
+			
+			# label
+			self.ocs31L = QtGui.QLabel(translate('magicStart', 'Top:'), self)
+			self.ocs31L.move(10, rowside+3)
+			
+			# label
+			self.ocs32L = QtGui.QLabel(translate('magicStart', 'Bottom:'), self)
+			self.ocs32L.move(110, rowside+3)
+			
+			# label
+			self.ocs33L = QtGui.QLabel(translate('magicStart', 'Front:'), self)
+			self.ocs33L.move(210, rowside+3)
+			
+			# label
+			self.ocs34L = QtGui.QLabel(translate('magicStart', 'Back:'), self)
+			self.ocs34L.move(310, rowside+3)
+
+			rowside += 20
+			
+			# text input
+			self.ocs31E = QtGui.QLineEdit(self)
+			self.ocs31E.setText("0")
+			self.ocs31E.setFixedWidth(50)
+			self.ocs31E.move(10, rowside)
+			
+			# text input
+			self.ocs32E = QtGui.QLineEdit(self)
+			self.ocs32E.setText("0")
+			self.ocs32E.setFixedWidth(50)
+			self.ocs32E.move(110, rowside)
+			
+			# text input
+			self.ocs33E = QtGui.QLineEdit(self)
+			self.ocs33E.setText("0")
+			self.ocs33E.setFixedWidth(50)
+			self.ocs33E.move(210, rowside)
+			
+			# text input
+			self.ocs34E = QtGui.QLineEdit(self)
+			self.ocs34E.setText("0")
+			self.ocs34E.setFixedWidth(50)
+			self.ocs34E.move(310, rowside)
+
+			rowside += 40
+			
+			# button
+			self.ocs4B1 = QtGui.QPushButton(translate('magicStart', 'calculate side'), self)
+			self.ocs4B1.clicked.connect(self.calculateSideFromGap)
+			self.ocs4B1.setFixedWidth(200)
+			self.ocs4B1.setFixedHeight(40)
+			self.ocs4B1.move(10, rowside)
+			
+			rowside += 70
+			
+			# label
+			self.ocs5L = QtGui.QLabel(translate('magicStart', 'Side start XYZ:'), self)
+			self.ocs5L.move(10, rowside+3)
+			
+			# text input
+			self.ocs51E = QtGui.QLineEdit(self)
+			self.ocs51E.setText("0")
+			self.ocs51E.setFixedWidth(90)
+			self.ocs51E.move(120, rowside)
+			
+			# text input
+			self.ocs52E = QtGui.QLineEdit(self)
+			self.ocs52E.setText("0")
+			self.ocs52E.setFixedWidth(90)
+			self.ocs52E.move(220, rowside)
+			
+			# text input
+			self.ocs53E = QtGui.QLineEdit(self)
+			self.ocs53E.setText("0")
+			self.ocs53E.setFixedWidth(90)
+			self.ocs53E.move(320, rowside)
+			
+			rowside += 30
+
+			# label
+			self.ocs6L = QtGui.QLabel(translate('magicStart', 'Calculated center side height:'), self)
+			self.ocs6L.move(10, rowside+3)
+			
+			# text input
+			self.ocs6E = QtGui.QLineEdit(self)
+			self.ocs6E.setText("0")
+			self.ocs6E.setFixedWidth(90)
+			self.ocs6E.move(220, rowside)
+			
+			rowside += 30
+			
+			# label
+			self.ocs7L = QtGui.QLabel(translate('magicStart', 'Calculated center side depth:'), self)
+			self.ocs7L.move(10, rowside+3)
+
+			# text input
+			self.ocs7E = QtGui.QLineEdit(self)
+			self.ocs7E.setText("0")
+			self.ocs7E.setFixedWidth(90)
+			self.ocs7E.move(220, rowside)
+			
+			rowside += 40
+
+			# button
+			self.ocs8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
+			self.ocs8B1.clicked.connect(self.createObject)
+			self.ocs8B1.setFixedWidth(toolSW - 20)
+			self.ocs8B1.setFixedHeight(40)
+			self.ocs8B1.move(10, rowside)
+
+			# hide by default
+			self.ocs1i.hide()
+			self.ocs1L.hide()
+			self.ocs1E.hide()
+			self.ocs2L.hide()
+			self.ocs2E.hide()
+			self.ocs3L.hide()
+			self.ocs31L.hide()
+			self.ocs32L.hide()
+			self.ocs33L.hide()
+			self.ocs34L.hide()
+			self.ocs31E.hide()
+			self.ocs32E.hide()
+			self.ocs33E.hide()
+			self.ocs34E.hide()
+			self.ocs4B1.hide()
+			self.ocs5L.hide()
+			self.ocs51E.hide()
+			self.ocs52E.hide()
+			self.ocs53E.hide()
+			self.ocs6L.hide()
+			self.ocs6E.hide()
+			self.ocs7L.hide()
+			self.ocs7E.hide()
+			self.ocs8B1.hide()
 			
 			# ############################################################################
 			# show & init defaults
@@ -1370,7 +1552,7 @@ def showQtGUI():
 				skip = 1
 			
 			try:
-				obj3 = FreeCADGui.Selection.getSelection()[1]
+				obj3 = FreeCADGui.Selection.getSelection()[2]
 				face1 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
 			
 			except:
@@ -1621,13 +1803,13 @@ def showQtGUI():
 				obj1 = FreeCADGui.Selection.getSelection()[0]
 				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 				
-				obj2 = FreeCADGui.Selection.getSelection()[0]
+				obj2 = FreeCADGui.Selection.getSelection()[1]
 				edge2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
 				
-				obj3 = FreeCADGui.Selection.getSelection()[0]
+				obj3 = FreeCADGui.Selection.getSelection()[2]
 				edge3 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
 				
-				obj4 = FreeCADGui.Selection.getSelection()[0]
+				obj4 = FreeCADGui.Selection.getSelection()[3]
 				edge4 = FreeCADGui.Selection.getSelectionEx()[3].SubObjects[0]
 				
 			except:
@@ -1735,10 +1917,10 @@ def showQtGUI():
 				obj1 = FreeCADGui.Selection.getSelection()[0]
 				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 				
-				obj2 = FreeCADGui.Selection.getSelection()[0]
+				obj2 = FreeCADGui.Selection.getSelection()[1]
 				edge2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
 				
-				obj3 = FreeCADGui.Selection.getSelection()[0]
+				obj3 = FreeCADGui.Selection.getSelection()[2]
 				face1 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
 				
 			except:
@@ -1813,6 +1995,126 @@ def showQtGUI():
 			FreeCAD.ActiveDocument.recompute()
 
 		# ############################################################################
+		def calculateSideFromGap(self):
+			
+			obj1 = False
+			obj2 = False
+			obj3 = False
+			
+			edge1 = False
+			edge2 = False
+			face1 = False
+			
+			try:
+				obj1 = FreeCADGui.Selection.getSelection()[0]
+				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				
+				obj2 = FreeCADGui.Selection.getSelection()[1]
+				edge2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+				
+				obj3 = FreeCADGui.Selection.getSelection()[2]
+				face1 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
+				
+			except:
+			
+				try:
+					obj1 = FreeCADGui.Selection.getSelection()[0]
+					edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+					
+					obj2 = FreeCADGui.Selection.getSelection()[0]
+					edge2 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[1]
+					
+					obj3 = FreeCADGui.Selection.getSelection()[1]
+					face1 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+					
+				except:
+					return
+				
+			FreeCADGui.Selection.clearSelection()
+			
+			# face below
+			if float(face1.CenterOfMass.z) < float(edge1.CenterOfMass.z):
+				gheight = float(edge1.CenterOfMass.z) - float(face1.CenterOfMass.z)
+				sz = float(face1.CenterOfMass.z)
+				
+			# face above I hope so :-)
+			else: 
+				gheight = float(face1.CenterOfMass.z) - float(edge1.CenterOfMass.z)
+				sz = float(MagicPanels.touchTypo(edge1)[0].Z)
+				
+			gdepth = float(edge1.Length)
+			
+			# prefer closer point to start
+			if float(MagicPanels.touchTypo(edge1)[0].Y) < float(MagicPanels.touchTypo(edge1)[1].Y):
+				sx = float(MagicPanels.touchTypo(edge1)[0].X)
+				sy = float(MagicPanels.touchTypo(edge1)[0].Y)
+				
+			else:
+				sx = float(MagicPanels.touchTypo(edge1)[1].X)
+				sy = float(MagicPanels.touchTypo(edge1)[1].Y)
+				
+			
+			thick = float(self.ocs1E.text())
+			udepth = float(self.ocs2E.text())
+			
+			offTo = float(self.ocs31E.text())
+			offBo = float(self.ocs32E.text())
+			offFr = float(self.ocs33E.text())
+			offBa = float(self.ocs34E.text())
+			
+			height = gheight - offBo - offTo
+			
+			if udepth == 0:
+				depth = gdepth - offFr - offBa
+			else:
+				depth = udepth
+				offBa = 0
+				offFr = gdepth - depth
+			
+			width = float(edge2.CenterOfMass.x) - float(edge1.CenterOfMass.x)
+			startX = sx + (width / 2) - (thick / 2) 
+			startY = sy + offFr
+			startZ = sz + offBo
+
+			# set values to text fields
+			self.ocs2E.setText(str(depth))
+			self.ocs31E.setText(str(offTo))
+			self.ocs32E.setText(str(offBo))
+			self.ocs33E.setText(str(offFr))
+			self.ocs34E.setText(str(offBa))
+			
+			self.ocs51E.setText(str(startX))
+			self.ocs52E.setText(str(startY))
+			self.ocs53E.setText(str(startZ))
+			
+			self.ocs6E.setText(str(height))
+			self.ocs7E.setText(str(depth))
+
+		# ############################################################################
+		def createF26(self):
+	
+			p0X = float(self.ocs51E.text())
+			p0Y = float(self.ocs52E.text())
+			p0Z = float(self.ocs53E.text())
+			
+			height = float(self.ocs6E.text())
+			depth = float(self.ocs7E.text())
+			thick = float(self.ocs1E.text())
+			
+			# Front outside
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "SideCenter")
+			o1.Label = translate('magicStart', 'Side Center')
+			o1.Length = thick
+			o1.Height = height
+			o1.Width = depth
+			pl = FreeCAD.Vector(p0X, p0Y, p0Z)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			o1.ViewObject.DiffuseColor = self.gColor
+			
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+
+		# ############################################################################
 		def setIcon(self, iName):
 			
 			path = FreeCADGui.activeWorkbench().path
@@ -1875,6 +2177,32 @@ def showQtGUI():
 			# ##############################################
 			# hide everything first
 			# ##############################################
+			
+			# side
+			self.ocs1i.hide()
+			self.ocs1L.hide()
+			self.ocs1E.hide()
+			self.ocs2L.hide()
+			self.ocs2E.hide()
+			self.ocs3L.hide()
+			self.ocs31L.hide()
+			self.ocs32L.hide()
+			self.ocs33L.hide()
+			self.ocs34L.hide()
+			self.ocs31E.hide()
+			self.ocs32E.hide()
+			self.ocs33E.hide()
+			self.ocs34E.hide()
+			self.ocs4B1.hide()
+			self.ocs5L.hide()
+			self.ocs51E.hide()
+			self.ocs52E.hide()
+			self.ocs53E.hide()
+			self.ocs6L.hide()
+			self.ocs6E.hide()
+			self.ocs7L.hide()
+			self.ocs7E.hide()
+			self.ocs8B1.hide()
 			
 			# shelf
 			self.osh1i.hide()
@@ -1993,6 +2321,32 @@ def showQtGUI():
 				self.o4L.show()
 				self.o4E.show()
 				self.s1B1.show()
+
+			if iType == "side":
+				self.ocs1i.show()
+				self.ocs1L.show()
+				self.ocs1E.show()
+				self.ocs2L.show()
+				self.ocs2E.show()
+				self.ocs3L.show()
+				self.ocs31L.show()
+				self.ocs32L.show()
+				self.ocs33L.show()
+				self.ocs34L.show()
+				self.ocs31E.show()
+				self.ocs32E.show()
+				self.ocs33E.show()
+				self.ocs34E.show()
+				self.ocs4B1.show()
+				self.ocs5L.show()
+				self.ocs51E.show()
+				self.ocs52E.show()
+				self.ocs53E.show()
+				self.ocs6L.show()
+				self.ocs6E.show()
+				self.ocs7L.show()
+				self.ocs7E.show()
+				self.ocs8B1.show()
 
 			if iType == "shelf":
 				self.osh1i.show()
@@ -2171,7 +2525,10 @@ def showQtGUI():
 			
 			if self.gSelectedFurniture == "F25":
 				self.createF25()
-				
+			
+			if self.gSelectedFurniture == "F26":
+				self.createF26()
+
 		# ############################################################################	
 		def selectedOption(self, selectedIndex):
 			
@@ -2240,7 +2597,10 @@ def showQtGUI():
 			
 			if selectedIndex == 25:
 				self.setGUIInfo("shelf")
-				
+			
+			if selectedIndex == 26:
+				self.setGUIInfo("side")
+
 			if selectedIndex == 10:
 				self.o2E.setText("2300")
 			else:
