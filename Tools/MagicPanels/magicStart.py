@@ -469,7 +469,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			info = translate('magicStart', 'Please select 4 edges around the gap to calculate front size in this order: <br><br> 1. selection - bottom edge <br> 2. selection - top edge <br> 3. selection - left edge <br> 4. selection - right edge')
+			info = translate('magicStart', 'Please select 4 edges around the gap to calculate front size in this order: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
 			self.ofr1i = QtGui.QLabel(info, self)
 			self.ofr1i.move(10, rowfront+3)
 			self.ofr1i.setFixedWidth(200)
@@ -635,7 +635,7 @@ def showQtGUI():
 			rowshelf -= 20
 			
 			# label
-			info = translate('magicStart', 'Please select 2 edges and face to calculate shelf: <br><br> 1. selection - left edge <br> 2. selection - right edge <br> 3. selection - back face <br><br> Please add "Shelf by depth" or "Shelf by offsets", if you do not want full depth.')
+			info = translate('magicStart', 'Please select 2 edges and face to calculate shelf: <br><br> 1. selection - Z left edge <br> 2. selection - Z right edge <br> 3. selection - back face <br><br> Please add "Shelf by depth" or "Shelf by offsets", if you do not want full depth.')
 			self.osh1i = QtGui.QLabel(info, self)
 			self.osh1i.move(10, rowshelf+3)
 			self.osh1i.setFixedWidth(200)
@@ -1820,9 +1820,9 @@ def showQtGUI():
 			gh = float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z)
 			gw = float(edge4.CenterOfMass.x) - float(edge3.CenterOfMass.x)
 			
-			sx = float(MagicPanels.touchTypo(edge1)[1].X)
-			sy = float(MagicPanels.touchTypo(edge1)[1].Y)
-			sz = float(MagicPanels.touchTypo(edge1)[1].Z)
+			sx = float(edge3.CenterOfMass.x)
+			sy = float(edge3.CenterOfMass.y)
+			sz = float(edge1.CenterOfMass.z)
 			
 			thick = float(self.ofr7E.text())
 			
