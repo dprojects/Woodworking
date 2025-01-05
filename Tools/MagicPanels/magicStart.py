@@ -7,6 +7,40 @@ import MagicPanels
 translate = FreeCAD.Qt.translate
 
 # ############################################################################
+# Global definitions
+# ############################################################################
+
+getMenuIndex = {
+	translate('magicStart', 'Simple storage'): 0, 
+	translate('magicStart', 'Simple bookcase'): 1, 
+	translate('magicStart', 'Bookcase ( import parametric )'): 2, 
+	translate('magicStart', 'Simple drawer ( import parametric )'): 3, 
+	translate('magicStart', 'Simple chair ( import parametric )'): 4, 
+	translate('magicStart', 'Picture frame ( import parametric )'): 5, 
+	translate('magicStart', 'Simple table ( import parametric )'): 6, 
+	translate('magicStart', 'Storage box ( import parametric )'): 7, 
+	translate('magicStart', 'Dowel 8x35 mm ( import parametric )'): 8, 
+	translate('magicStart', 'Screw 4x40 mm ( import parametric )'): 9, 
+	translate('magicStart', 'Modular storage'): 10, 
+	translate('magicStart', 'Screw 3x20 mm for HDF ( import parametric )'): 11, 
+	translate('magicStart', 'Screw 5x50 mm ( import parametric )'): 12, 
+	translate('magicStart', 'Counterbore 2x 5x60 mm ( import parametric )'): 13, 
+	translate('magicStart', 'Shelf Pin 5x16 mm ( import parametric )'): 14, 
+	translate('magicStart', 'Angle 40x40x100 mm ( import parametric )'): 15, 
+	translate('magicStart', 'Foot ( good for cleaning )'): 16, 
+	translate('magicStart', 'Foot ( standard )'): 17, 
+	translate('magicStart', 'Foot ( more stable )'): 18, 
+	translate('magicStart', 'Foot ( decorated )'): 19, 
+	translate('magicStart', 'Foot ( chair style )'): 20, 
+	translate('magicStart', 'Drawer with front outside ( fit into the shelf gap )'): 21, 
+	translate('magicStart', 'Drawer with front inside ( fit into the shelf gap )'): 22, 
+	translate('magicStart', 'Front outside ( fit into gap )'): 23, 
+	translate('magicStart', 'Front inside ( fit into gap )'): 24, 
+	translate('magicStart', 'Shelf ( fit into gap )'): 25, 
+	translate('magicStart', 'Center side ( fit into gap )'): 26
+}
+
+# ############################################################################
 # Qt Main
 # ############################################################################
 
@@ -75,37 +109,37 @@ def showQtGUI():
 			self.sModeList = (
 				translate('magicStart', 'Simple storage'), 
 				translate('magicStart', 'Simple bookcase'), 
-				translate('magicStart', 'Bookcase ( import parametric )'), 
-				translate('magicStart', 'Simple drawer ( import parametric )'), 
-				translate('magicStart', 'Simple chair ( import parametric )'), 
-				translate('magicStart', 'Picture frame ( import parametric )'), 
-				translate('magicStart', 'Simple table ( import parametric )'), 
-				translate('magicStart', 'Storage box ( import parametric )'), 
-				translate('magicStart', 'Dowel 8x35 mm ( import parametric )'), 
-				translate('magicStart', 'Screw 4x40 mm ( import parametric )'), 
 				translate('magicStart', 'Modular storage'), 
-				translate('magicStart', 'Screw 3x20 mm for HDF ( import parametric )'), 
-				translate('magicStart', 'Screw 5x50 mm ( import parametric )'), 
-				translate('magicStart', 'Counterbore 2x 5x60 mm ( import parametric )'), 
-				translate('magicStart', 'Shelf Pin 5x16 mm ( import parametric )'), 
-				translate('magicStart', 'Angle 40x40x100 mm ( import parametric )'), 
-				translate('magicStart', 'Foot ( good for cleaning )'), 
-				translate('magicStart', 'Foot ( standard )'), 
-				translate('magicStart', 'Foot ( more stable )'), 
-				translate('magicStart', 'Foot ( decorated )'), 
-				translate('magicStart', 'Foot ( chair style )'), 
 				translate('magicStart', 'Drawer with front outside ( fit into the shelf gap )'), 
 				translate('magicStart', 'Drawer with front inside ( fit into the shelf gap )'), 
 				translate('magicStart', 'Front outside ( fit into gap )'), 
 				translate('magicStart', 'Front inside ( fit into gap )'), 
 				translate('magicStart', 'Shelf ( fit into gap )'), 
-				translate('magicStart', 'Center side ( fit into gap )')
+				translate('magicStart', 'Center side ( fit into gap )'), 
+				translate('magicStart', 'Foot ( good for cleaning )'), 
+				translate('magicStart', 'Foot ( standard )'), 
+				translate('magicStart', 'Foot ( more stable )'), 
+				translate('magicStart', 'Foot ( decorated )'), 
+				translate('magicStart', 'Foot ( chair style )'), 
+				translate('magicStart', 'Dowel 8x35 mm ( import parametric )'), 
+				translate('magicStart', 'Screw 4x40 mm ( import parametric )'), 
+				translate('magicStart', 'Screw 3x20 mm for HDF ( import parametric )'), 
+				translate('magicStart', 'Screw 5x50 mm ( import parametric )'), 
+				translate('magicStart', 'Counterbore 2x 5x60 mm ( import parametric )'), 
+				translate('magicStart', 'Shelf Pin 5x16 mm ( import parametric )'), 
+				translate('magicStart', 'Angle 40x40x100 mm ( import parametric )'), 
+				translate('magicStart', 'Bookcase ( import parametric )'), 
+				translate('magicStart', 'Simple drawer ( import parametric )'), 
+				translate('magicStart', 'Simple chair ( import parametric )'), 
+				translate('magicStart', 'Picture frame ( import parametric )'), 
+				translate('magicStart', 'Simple table ( import parametric )'), 
+				translate('magicStart', 'Storage box ( import parametric )')
 				)
 			
 			self.sMode = QtGui.QComboBox(self)
 			self.sMode.addItems(self.sModeList)
 			self.sMode.setCurrentIndex(0)
-			self.sMode.activated[int].connect(self.selectedOption)
+			self.sMode.activated[str].connect(self.selectedOption)
 			self.sMode.setFixedWidth(toolSW - 20)
 			self.sMode.move(10, row)
 
@@ -2530,10 +2564,12 @@ def showQtGUI():
 				self.createF26()
 
 		# ############################################################################	
-		def selectedOption(self, selectedIndex):
+		def selectedOption(self, selectedText):
 			
 			global gSelectedFurniture
 			
+			# the key is from translation so this needs to be tested...
+			selectedIndex = getMenuIndex[selectedText]
 			self.gSelectedFurniture = "F"+str(selectedIndex)
 			
 			if selectedIndex < 10:
