@@ -17,6 +17,7 @@ The main goal for this workbench is to make simpler the furniture designing proc
 
 **New significant changes since the last release 0.22 stable:**
 
+* building complex furniture from modules by selected edge, face, vertex or custom offset (magicStart)
 * center side for selected gap by depth, by offsets, custom offsets, automatically adjusted (magicStart)
 * shelf for selected gap by depth, by offsets, custom offsets, automatically adjusted (magicStart)
 * front outside or inside for selected gap (magicStart)
