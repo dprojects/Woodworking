@@ -21,6 +21,32 @@ from PySide import QtGui, QtCore
 
 translate = FreeCAD.Qt.translate
 
+# ############################################################################
+# Global definitions
+# ############################################################################
+
+# add new items only at the end and change self.sColorsList
+getMenuIndex = {
+	"Select predefined color:": 0, 
+	"reset": 1, 
+	"Wood - white": 2, 
+	"Wood - black": 3, 
+	"Wood - pink": 4, 
+	"Wood - plywood": 5, 
+	"Wood - beech": 6, 
+	"Wood - oak": 7, 
+	"Wood - mahogany": 8, 
+	"Wood 1": 9, 
+	"Wood 2": 10, 
+	"Wood 3": 11, 
+	"Wood 4": 12, 
+	"Wood 5": 13, 
+	"Wood 6": 14, 
+	"set colors from spreadsheet": 15, 
+	"Wood - red": 16, 
+	"Wood - green": 17, 
+	"Wood - blue": 18
+}
 
 # ############################################################################
 # Qt Main
@@ -107,24 +133,27 @@ def showQtGUI():
 
 			row += 50
 
-			# border options
+			# not write here, copy text from getMenuIndex to avoid typo
 			self.sColorsList = (
-						"Select predefined color:",
-						"reset",
-						"Wood - white",
-						"Wood - black",
-						"Wood - pink",
-						"Wood - plywood",
-						"Wood - beech",
-						"Wood - oak",
-						"Wood - mahogany",
-						"Wood 1",
-						"Wood 2",
-						"Wood 3",
-						"Wood 4",
-						"Wood 5",
-						"Wood 6",
-						"set colors from spreadsheet"
+						"Select predefined color:", 
+						"reset", 
+						"Wood - white", 
+						"Wood - red", 
+						"Wood - green", 
+						"Wood - blue", 
+						"Wood - black", 
+						"Wood - pink", 
+						"Wood - plywood", 
+						"Wood - beech", 
+						"Wood - oak", 
+						"Wood - mahogany", 
+						"Wood 1", 
+						"Wood 2", 
+						"Wood 3", 
+						"Wood 4", 
+						"Wood 5", 
+						"Wood 6", 
+						"set colors from spreadsheet" 
 			)
 			
 			self.sColors = QtGui.QComboBox(self)
@@ -243,7 +272,7 @@ def showQtGUI():
 			row += 30
 			
 			# update button
-			self.o5B1 = QtGui.QPushButton(translate('colorManager', 'set color custom values'), self)
+			self.o5B1 = QtGui.QPushButton(translate('colorManager', 'set custom color'), self)
 			self.o5B1.clicked.connect(self.setColor)
 			self.o5B1.setFixedWidth(toolSW-20)
 			self.o5B1.setFixedHeight(40)
@@ -327,13 +356,14 @@ def showQtGUI():
 		# ############################################################################
 		def resetFaces(self):
 
-			resetColor = self.gObj.ViewObject.ShapeColor
-			faceArr = []
+			if len(self.gObj.ViewObject.DiffuseColor) == 1:
+				resetColor = self.gObj.ViewObject.DiffuseColor[0]
+				faceArr = []
 			
-			for f in self.gObj.Shape.Faces:
-				faceArr.append(resetColor)
-
-			self.gObj.ViewObject.DiffuseColor = faceArr
+				for f in self.gObj.Shape.Faces:
+					faceArr.append(resetColor)
+					
+				self.gObj.ViewObject.DiffuseColor = faceArr
 
 		# ############################################################################
 		def convertToRGB(self, iColor):
@@ -723,6 +753,8 @@ def showQtGUI():
 		# ############################################################################
 		def setPredefinedColors(self, selectedText):
 			
+			selectedIndex = getMenuIndex[selectedText]
+			
 			self.o1L.show()
 			self.o1B1.show()
 			self.o1E.show()
@@ -745,91 +777,91 @@ def showQtGUI():
 			self.sheetInfo.hide()
 			self.sheetB1.hide()
 			
-			if selectedText == "reset":
+			if selectedIndex == 1:
 				self.o1E.setText("204")
 				self.o2E.setText("204")
 				self.o3E.setText("204")
 				self.setColor()
 			
-			if selectedText == "Wood - white":
+			if selectedIndex == 2:
 				self.o1E.setText("255")
 				self.o2E.setText("255")
 				self.o3E.setText("255")
 				self.setColor()
 			
-			if selectedText == "Wood - black":
+			if selectedIndex == 3:
 				self.o1E.setText("0")
 				self.o2E.setText("0")
 				self.o3E.setText("0")
 				self.setColor()
 			
-			if selectedText == "Wood - pink":
+			if selectedIndex == 4:
 				self.o1E.setText("255")
 				self.o2E.setText("0")
 				self.o3E.setText("255")
 				self.setColor()
 				
-			if selectedText == "Wood - plywood":
+			if selectedIndex == 5:
 				self.o1E.setText("222")
 				self.o2E.setText("184")
 				self.o3E.setText("135")
 				self.setColor()
 		
-			if selectedText == "Wood - beech":
+			if selectedIndex == 6:
 				self.o1E.setText("247")
 				self.o2E.setText("185")
 				self.o3E.setText("108")
 				self.setColor()
 
-			if selectedText == "Wood - oak":
+			if selectedIndex == 7:
 				self.o1E.setText("174")
 				self.o2E.setText("138")
 				self.o3E.setText("105")
 				self.setColor()
 				
-			if selectedText == "Wood - mahogany":
+			if selectedIndex == 8:
 				self.o1E.setText("175")
 				self.o2E.setText("91")
 				self.o3E.setText("76")
 				self.setColor()
 				
-			if selectedText == "Wood 1":
+			if selectedIndex == 9:
 				self.o1E.setText("205")
 				self.o2E.setText("170")
 				self.o3E.setText("125")
 				self.setColor()
 		
-			if selectedText == "Wood 2":
+			if selectedIndex == 10:
 				self.o1E.setText("207")
 				self.o2E.setText("141")
 				self.o3E.setText("91")
 				self.setColor()
 		
-			if selectedText == "Wood 3":
+			if selectedIndex == 11:
 				self.o1E.setText("163")
 				self.o2E.setText("104")
 				self.o3E.setText("70")
 				self.setColor()
 				
-			if selectedText == "Wood 4":
+			if selectedIndex == 12:
 				self.o1E.setText("125")
 				self.o2E.setText("83")
 				self.o3E.setText("62")
 				self.setColor()
 		
-			if selectedText == "Wood 5":
+			if selectedIndex == 13:
 				self.o1E.setText("68")
 				self.o2E.setText("48")
 				self.o3E.setText("40")
 				self.setColor()
 		
-			if selectedText == "Wood 6":
+			if selectedIndex == 14:
 				self.o1E.setText("63")
 				self.o2E.setText("25")
 				self.o3E.setText("17")
 				self.setColor()
 			
-			if selectedText == "set colors from spreadsheet":
+			if selectedIndex == 15:
 				
 				self.o1L.hide()
 				self.o1B1.hide()
@@ -852,6 +884,24 @@ def showQtGUI():
 				
 				self.sheetInfo.show()
 				self.sheetB1.show()
+			
+			if selectedIndex == 16:
+				self.o1E.setText("255")
+				self.o2E.setText("0")
+				self.o3E.setText("0")
+				self.setColor()
+			
+			if selectedIndex == 17:
+				self.o1E.setText("0")
+				self.o2E.setText("255")
+				self.o3E.setText("0")
+				self.setColor()
+			
+			if selectedIndex == 18:
+				self.o1E.setText("0")
+				self.o2E.setText("0")
+				self.o3E.setText("255")
+				self.setColor()
 				
 	# ############################################################################
 	# final settings
