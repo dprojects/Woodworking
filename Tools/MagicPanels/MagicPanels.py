@@ -1899,19 +1899,35 @@ def showMeasure(iP1, iP2, iRef=""):
 	'''
 
 	m = FreeCAD.ActiveDocument.addObject('App::MeasureDistance', "measure")
-	m.P1 = iP1
-	m.P2 = iP2
 	
+	# support for FreeCAD 0.21.2
+	try:
+		
+		m.P1 = iP1
+		m.P2 = iP2
+		
+		m.ViewObject.LineColor = (1.0, 0.0, 0.0, 0.0)
+		m.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
+		m.ViewObject.FontSize = 24
+		m.ViewObject.DistFactor = 0.25
+	
+	# support for FreeCAD 1.0+
+	except:
+		
+		m.Position1 = iP1
+		m.Position2 = iP2
+		
+		m.ViewObject.LineColor = (1.0, 0.0, 0.0, 0.0)
+		m.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
+		m.ViewObject.FontSize = 24
+		
 	if iRef != "":
+
 		m.Label = "Measure "
 		m.Label2 = str(iRef)
+
 	else:
 		m.Label = "Measure "
-	
-	m.ViewObject.LineColor = (1.0, 0.0, 0.0, 0.0)
-	m.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
-	m.ViewObject.FontSize = 24
-	m.ViewObject.DistFactor = 0.25
 	
 	FreeCAD.ActiveDocument.recompute()
 	
