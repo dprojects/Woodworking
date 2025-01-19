@@ -272,6 +272,7 @@ def showQtGUI():
 			self.owclist = (
 				"matrix blue pill",
 				"beautiful pinky world",
+				"lavender not works", 
 				"the Sun is free?",
 				"the sky is blue",
 				"my world is gray",
@@ -280,7 +281,7 @@ def showQtGUI():
 				"matrix red pill"
 			)
 
-			gDefaultColors = "matrix blue pill"
+			gDefaultColors = "lavender not works"
 
 			self.owcqb = QtGui.QComboBox(self)
 			self.owcqb.addItems(self.owclist)
@@ -1036,6 +1037,7 @@ def showQtGUI():
 			if (
 				selectedText == "my world is gray" or
 				selectedText == "beautiful pinky world" or
+				selectedText == "lavender not works" or 
 				selectedText == "the Sun is free?" or
 				selectedText == "the sky is blue" or
 				selectedText == "grass is green everywhere" or
@@ -1046,7 +1048,12 @@ def showQtGUI():
 					color1 = "#FF00EE"
 					color2 = "#FFFFFF"
 					color3 = "#FF00EE"
-
+				
+				if selectedText == "lavender not works":
+					color1 = "#B57EDC"
+					color2 = "#FFFFFF"
+					color3 = "#BF94E4"
+					
 				if selectedText == "the sky is blue":
 					color1 = "#AAAAFF"
 					color2 = "#FFFFFF"

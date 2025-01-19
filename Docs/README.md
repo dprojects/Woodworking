@@ -195,32 +195,59 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 ### magicMove
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicMove.png"> This tool allows to move, copy or mirror panel with custom step. This tool support multi-selection, so you can move, copy or mirror many objects at once. It automatically show coordinate center and resize the corner axes. You can also resize the corner axes or turn on and off the center axes. This tool recognize holding button, so you can press once the arrow and hold it, and the selected part will be moving in desired direction with exact step. This approach allows, to precisely move objects and also do it quickly without clicking arrows icons many times. You can also copy objects along coordinate axes or make mirror. At FreeCAD you can use arrays but arrays make problems in case of edgeband because arrays have more than 6 faces. With this copy option you can quickly create many objects and avoid the multiple faces problem. 
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicMove.png"> This tool allows you to move and copy objects more easily. This tool supports multi-selection, hold left-CTRL key during selection to select more objects, so you can move or copy many objects at once. 
 
 **Options:**
 
-* **Move:** In this mode you can move any object with custom step. If the object is recognized the `Move step` will be set by default with selected object thickness. You can also move containers. It can be used if you want to move many objects, for exampe panel with dowels.
+* **refresh selection:** loads new objects.
 
-* **Copy:** In copy mode you can quickly create arrays, sets of many objects perfectly aligned with custom offset. 
-  * `copyObject` by default, good for simple objects like `Cube`.
-  * `Clone` is useful, if you want to make copy of `Body` or `Part` with many Bodies.
-  * `Link` if you want to copy `LinkGroup` and generate cut-list, it is better to set this copy option. 
-  * `copy to new container` button allows to create LinkGroup container for new copies. If you click the button this will turn into disabled and will be waiting for new copy created. If you click to create new copies, all the copies will be moved to the new created container. This allows for better Tree manage without manual searching all the objects.
-  * `Copy offset` this is offset between original selected object or last copied element and next copied element. If this is set to `0` the next element will be created without space in relation to the last element. For example if you set `10` and click `X+` many times, the space before each copied elements will be `10`.
+* **Move:** In this mode you can move any object with custom step. You can also move containers, for example panel with dowels inside `LinkGroup`.
+  * buttons: `X-`, `X+`, `Y-`, `Y+`, `Z-`, `Z+` move object into the chosen axis direction, there is auto-repeat so you can hold the button to move objects more quickly.
+  * `Move step` if the object is recognized the `Move step` will be set by default with selected object thickness. The offset is calculated from objects anchors, usually left bottom corner (vertex).
 
-* **Copy Path:** This mode allows to create panels along the path. If the panel is already at the path, next panel will be created with the offset from selected panel. With this approach you can remove some panels and fill the gap in a different way, for example with different rotation. If the panel is outside the path, the first panel will be created at the 0 point of the path.
-  * `copyObject`, `Clone`, `Link`, `copy to new container` are the same as described above for `Copy` mode.
-  * `Rotation X, Y, Z` allows to apply rotation angle for the new panel. The rotation is added to the last panel rotation. This approach allows to add rotation during panel creation, so you can adjust each panel during creation to fit the curve.
+* **Copy:** In this mode you can copy any object with custom offset. For example you can quickly create shelves with equal space or garden floor from small panels.
+  * `auto` by default, if the object is `Cube` the `copyObject` will be used, otherwise `Clone` will be created.
+  * `copyObject` good for simple objects like `Cube`.
+  * `Clone` is useful if you want to make copy of `Body` or `Part` with many Bodies.
+  * `Link` if you want to copy `LinkGroup` and generate cut-list, it is better to set this copy option, not `copyObject`. 
+  * `copy to new container` next element will be copied to new `LinkGroup` container. If you click the button this will turn into disabled and will be waiting for new copy created to avoid double clicks.
+  * `Copy offset` this is offset between objects but calculated from objects sides. If this is set to `0` the next element will be created without space in relation to the last element.
+  * buttons: `X-`, `X+`, `Y-`, `Y+`, `Z-`, `Z+` copy object into the chosen axis direction, there is auto-repeat so you can hold the button to copy objects more quickly.
+
+* **Copy by Edge:** In this mode you can copy any object but using selected edge as position reference. This feature allows you, for example, to copy part of the furniture without further positioning each element one by one.
+  * `auto` by default, if the object is `Cube` the `copyObject` will be used, otherwise `Clone` will be created.
+  * `copyObject` good for simple objects like `Cube`.
+  * `Clone` is useful if you want to make copy of `Body` or `Part` with many Bodies.
+  * `Link` if you want to copy `LinkGroup` and generate cut-list, it is better to set this copy option, not `copyObject`. 
+  * `set` allows to set edge as copy reference point.
+  * `Additional offset` this offset will be added to the object offset. For example, if the objects distance from the selected edge on the `X` axis is `18`, i.e. the shelves are touching the right side of the furniture inside, but the selected edge is the right outer edge of the furniture, and the additional offset is set to `-18`, then the shelves will be created `18 (distance) - 18 (additional offset) = 0` from the edge, touching the right outer side of the furniture. So for example you can copy shelves from left to right and ignore the thickness of the right side board of the furniture and quickly extend the furniture to the right.
+  * `create` creates panel in the chosen axis direction. The axis for edge plane is disabled to avoid user mistake.
+  
+* **Copy by Path:** This mode allows you to create panels along the path. If the panel is already at the path, next panel will be created with the offset from selected panel. With this approach you can remove some panels and fill the gap in a different way, for example with different rotation. If the panel is outside the path, the first panel will be created at the 0 point of the path. This feature allows you, for example, to create irregular shpes like garden sunbed.
+  * `auto` by default, if the object is `Cube` the `copyObject` will be used, otherwise `Clone` will be created.
+  * `copyObject` good for simple objects like `Cube`.
+  * `Clone` is useful if you want to make copy of `Body` or `Part` with many Bodies.
+  * `Link` if you want to copy `LinkGroup` and generate cut-list, it is better to set this copy option, not `copyObject`. 
+  * `copy to new container` next element will be copied to new `LinkGroup` container. If you click the button this will turn into disabled and will be waiting for new copy created to avoid double clicks.
+  * `Rotation X, Y, Z` allows to apply rotation angle for the new object before it will be created. The rotation is added to the last panel rotation, so to stop rotate you have to set 0 again. This approach allows to add rotation during panel creation, so you can adjust each panel during creation to fit the curve, see also [align2Curve)(#align2curve).
   * `Next point step` is offset for new panel. This is related to the point at the path. By default it is set to second size of the panel.
   * `set` allows to load the path or reset start position. You can refresh only path here without changing objects to copy. The path can be Wire, Sketch, Helix, or any edge, also edge of the hole.
   * `copy along path` creates new panel along the path. This button has auto-repeat mode, if you hold it this will be creating panels without clicking many times.
 
-* **Mirror:** This option create mirror with offset. You can select single element like `Cube` or container like `LinkGroup` with more elements inside. This tool calculates occupied space by the selected element and add new element with given offset. If you have dowels the space will be calculated from dowels to dowels. This option recognize if the selected object is LinkGroup container and if not, it will create `LinkGroup` for the object, so you will be able to extend, build on this object later.
+* **Mirror:** This option create mirror with reference as edge, face or vertex, also you can add additinal offset. You can select single element like `Cube` or container like `LinkGroup` with more elements inside. This option recognize if the selected object is `LinkGroup` container and if not, it will create `LinkGroup` for the object, so you will be able to extend, build on this object later.
+  * `set` allows to load the reference point for mirror as edge, face or vertex.
+  * `Mirror XYZ:` is base position for mirror, the object will be in the middle between object and new created mirror if there is no additinal offset.
+  * `Additional offset` this offset will be added to the mirror position.
+  * `create` creates mirror in the chosen axis direction.
+
+* **Cross:**
+  * `Corner cross:` buttons `-`, `+` resize the cross in the right bottom of the screen, it has auto-repeat.
+  * `Center cross:` buttons `on`, `off` turn on and off the center cross at the screen.
+  * `keep custom cross settings` allows to store the custom cross setting after this tool exit.
 
 **Video tutorials:** 
-* [Smart move & copy](https://www.youtube.com/watch?v=gh0Sc0eLooQ)
-* [Mirror with offset](https://www.youtube.com/watch?v=DG7eUsz8-0c)
-* [Copy along path](https://www.youtube.com/watch?v=PIm31aVuBUA)
+* [How to use magicMove](https://www.youtube.com/watch?v=DpU2zlckv88)
+* [How to copy part of the furniture](https://www.youtube.com/watch?v=oxNiwtZV-Uc)
 
 ### magicAngle
 

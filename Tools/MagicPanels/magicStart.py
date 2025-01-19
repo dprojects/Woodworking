@@ -1215,7 +1215,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(sx, sy + self.gThick, sz)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.DiffuseColor = self.gColor
+			o1.ViewObject.ShapeColor = self.gColor
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
@@ -1225,7 +1225,7 @@ def showQtGUI():
 			o2.Width = depth
 			pl = FreeCAD.Vector(sx, sy + self.gThick, sz + self.gThick)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.DiffuseColor = self.gColor
+			o2.ViewObject.ShapeColor = self.gColor
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
@@ -1235,7 +1235,7 @@ def showQtGUI():
 			o3.Width = depth
 			pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy + self.gThick, sz + self.gThick)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.DiffuseColor = self.gColor
+			o3.ViewObject.ShapeColor = self.gColor
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
@@ -1245,7 +1245,7 @@ def showQtGUI():
 			o4.Width = self.gThick
 			pl = FreeCAD.Vector(sx + self.gThick, sy + depth, sz + self.gThick)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.DiffuseColor = self.gColor
+			o4.ViewObject.ShapeColor = self.gColor
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
@@ -1255,7 +1255,7 @@ def showQtGUI():
 			o5.Width = depth
 			pl = FreeCAD.Vector(sx, sy + self.gThick, sz + self.gFSZ - self.gThick)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.DiffuseColor = self.gColor
+			o5.ViewObject.ShapeColor = self.gColor
 			
 			# Front
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
@@ -1265,7 +1265,7 @@ def showQtGUI():
 			o6.Width = self.gThick
 			pl = FreeCAD.Vector(sx + (self.gThick / 2), sy, sz + (self.gThick / 2) + 2)
 			o6.Placement = FreeCAD.Placement(pl, self.gR)
-			o6.ViewObject.DiffuseColor = self.gColor
+			o6.ViewObject.ShapeColor = self.gColor
 			
 			# Shelf
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
@@ -1275,7 +1275,7 @@ def showQtGUI():
 			o7.Width = depth - (3 * self.gThick)
 			pl = FreeCAD.Vector(sx + self.gThick, sy + (3 * self.gThick), sz + (self.gFSZ / 2) - (self.gThick / 2))
 			o7.Placement = FreeCAD.Placement(pl, self.gR)
-			o7.ViewObject.DiffuseColor = self.gColor
+			o7.ViewObject.ShapeColor = self.gColor
 
 			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','FurnitureModule')
 			container.setLink([o1, o2, o3, o4, o5, o6, o7])
@@ -1301,7 +1301,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(sx + self.gThick, sy, sz + (self.gFSZ / 10))
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.DiffuseColor = self.gColor
+			o1.ViewObject.ShapeColor = self.gColor
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
@@ -1311,7 +1311,7 @@ def showQtGUI():
 			o2.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.DiffuseColor = self.gColor
+			o2.ViewObject.ShapeColor = self.gColor
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
@@ -1321,7 +1321,7 @@ def showQtGUI():
 			o3.Width = depth
 			pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy, sz)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.DiffuseColor = self.gColor
+			o3.ViewObject.ShapeColor = self.gColor
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
@@ -1331,7 +1331,7 @@ def showQtGUI():
 			o4.Width = 3
 			pl = FreeCAD.Vector(sx, sy + depth, sz + (self.gFSZ / 10))
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.DiffuseColor = self.gColor
+			o4.ViewObject.ShapeColor = self.gColor
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
@@ -1341,7 +1341,7 @@ def showQtGUI():
 			o5.Width = depth
 			pl = FreeCAD.Vector(sx + self.gThick, sy, sz + self.gFSZ - self.gThick)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.DiffuseColor = self.gColor
+			o5.ViewObject.ShapeColor = self.gColor
 
 			# Shelf
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
@@ -1351,7 +1351,7 @@ def showQtGUI():
 			o6.Width = depth
 			pl = FreeCAD.Vector(sx + self.gThick, sy, sz + (self.gFSZ / 2) - (self.gThick / 2))
 			o6.Placement = FreeCAD.Placement(pl, self.gR)
-			o6.ViewObject.DiffuseColor = self.gColor
+			o6.ViewObject.ShapeColor = self.gColor
 
 			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','FurnitureModule')
 			container.setLink([o1, o2, o3, o4, o5, o6])
@@ -1388,7 +1388,7 @@ def showQtGUI():
 				o1.Width = depth
 				pl = FreeCAD.Vector(sx, sy + self.gThick, sz + posZ)
 				o1.Placement = FreeCAD.Placement(pl, self.gR)
-				o1.ViewObject.DiffuseColor = self.gColor
+				o1.ViewObject.ShapeColor = self.gColor
 				
 				# Left Side
 				o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
@@ -1398,7 +1398,7 @@ def showQtGUI():
 				o2.Width = depth
 				pl = FreeCAD.Vector(sx, sy + self.gThick, sz + posZ + self.gThick)
 				o2.Placement = FreeCAD.Placement(pl, self.gR)
-				o2.ViewObject.DiffuseColor = self.gColor
+				o2.ViewObject.ShapeColor = self.gColor
 				
 				# Right Side
 				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
@@ -1408,7 +1408,7 @@ def showQtGUI():
 				o3.Width = depth
 				pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy + self.gThick, sz + posZ + self.gThick)
 				o3.Placement = FreeCAD.Placement(pl, self.gR)
-				o3.ViewObject.DiffuseColor = self.gColor
+				o3.ViewObject.ShapeColor = self.gColor
 				
 				# Back
 				o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
@@ -1418,7 +1418,7 @@ def showQtGUI():
 				o4.Width = self.gThick
 				pl = FreeCAD.Vector(sx + self.gThick, sy + depth, sz + posZ + self.gThick)
 				o4.Placement = FreeCAD.Placement(pl, self.gR)
-				o4.ViewObject.DiffuseColor = self.gColor
+				o4.ViewObject.ShapeColor = self.gColor
 				
 				# Front
 				o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
@@ -1428,7 +1428,7 @@ def showQtGUI():
 				o5.Width = self.gThick
 				pl = FreeCAD.Vector(sx + (self.gThick / 2), sy, sz + posZ + (self.gThick / 2) + 2)
 				o5.Placement = FreeCAD.Placement(pl, self.gR)
-				o5.ViewObject.DiffuseColor = self.gColor
+				o5.ViewObject.ShapeColor = self.gColor
 				
 				# Shelf
 				o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
@@ -1439,7 +1439,7 @@ def showQtGUI():
 				pZ = ((2 * i) + 1) * ((self.gThick + sideZ) / 2)
 				pl = FreeCAD.Vector(sx + self.gThick, sy + (3 * self.gThick), sz + pZ)
 				o6.Placement = FreeCAD.Placement(pl, self.gR)
-				o6.ViewObject.DiffuseColor = self.gColor
+				o6.ViewObject.ShapeColor = self.gColor
 				
 				# create folder
 				group = FreeCAD.ActiveDocument.addObject('App::DocumentObjectGroup','Group')
@@ -1464,7 +1464,7 @@ def showQtGUI():
 			pZ = mNum * (self.gThick + sideZ)
 			pl = FreeCAD.Vector(sx, sy + self.gThick, sz + pZ)
 			t1.Placement = FreeCAD.Placement(pl, self.gR)
-			t1.ViewObject.DiffuseColor = self.gColor
+			t1.ViewObject.ShapeColor = self.gColor
 
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -1487,7 +1487,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(0, frontOF, -height)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.DiffuseColor = self.gColor
+			o1.ViewObject.ShapeColor = self.gColor
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRight")
@@ -1497,7 +1497,7 @@ def showQtGUI():
 			o2.Width = depth
 			pl = FreeCAD.Vector(FSX - thick, frontOF, -height)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.DiffuseColor = self.gColor
+			o2.ViewObject.ShapeColor = self.gColor
 			
 			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFoot')
 			container.setLink([o1, o2])
@@ -1524,7 +1524,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(0, frontOF, -height)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.DiffuseColor = self.gColor
+			o1.ViewObject.ShapeColor = self.gColor
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRight")
@@ -1534,7 +1534,7 @@ def showQtGUI():
 			o2.Width = depth
 			pl = FreeCAD.Vector(FSX - thick, frontOF, -height)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.DiffuseColor = self.gColor
+			o2.ViewObject.ShapeColor = self.gColor
 			
 			# Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootBack")
@@ -1544,7 +1544,7 @@ def showQtGUI():
 			o3.Width = thick
 			pl = FreeCAD.Vector(thick, frontOF + depth - thick, -height)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.DiffuseColor = self.gColor
+			o3.ViewObject.ShapeColor = self.gColor
 			
 			# Front
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootFront")
@@ -1554,7 +1554,7 @@ def showQtGUI():
 			o4.Width = thick
 			pl = FreeCAD.Vector(thick, frontOF, -height)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.DiffuseColor = self.gColor
+			o4.ViewObject.ShapeColor = self.gColor
 
 			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFoot')
 			container.setLink([o1, o2, o3, o4])
@@ -1581,7 +1581,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(0, frontOF, -height)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.DiffuseColor = self.gColor
+			o1.ViewObject.ShapeColor = self.gColor
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRight")
@@ -1591,7 +1591,7 @@ def showQtGUI():
 			o2.Width = depth
 			pl = FreeCAD.Vector(FSX - thick, frontOF, -height)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.DiffuseColor = self.gColor
+			o2.ViewObject.ShapeColor = self.gColor
 			
 			# Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootBack")
@@ -1601,7 +1601,7 @@ def showQtGUI():
 			o3.Width = thick
 			pl = FreeCAD.Vector(thick, frontOF + depth - thick, -height)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.DiffuseColor = self.gColor
+			o3.ViewObject.ShapeColor = self.gColor
 			
 			# Front
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootFront")
@@ -1611,7 +1611,7 @@ def showQtGUI():
 			o4.Width = thick
 			pl = FreeCAD.Vector(thick, frontOF, -height)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.DiffuseColor = self.gColor
+			o4.ViewObject.ShapeColor = self.gColor
 			
 			# Center
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootCenter")
@@ -1622,7 +1622,7 @@ def showQtGUI():
 			py = frontOF + (depth / 2) - (thick / 2)
 			pl = FreeCAD.Vector(thick, py, -height)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.DiffuseColor = self.gColor
+			o5.ViewObject.ShapeColor = self.gColor
 
 			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFoot')
 			container.setLink([o1, o2, o3, o4, o5])
@@ -1649,7 +1649,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(0, frontOF, -height)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.DiffuseColor = self.gColor
+			o1.ViewObject.ShapeColor = self.gColor
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRight")
@@ -1659,7 +1659,7 @@ def showQtGUI():
 			o2.Width = depth
 			pl = FreeCAD.Vector(FSX - thick, frontOF, -height)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.DiffuseColor = self.gColor
+			o2.ViewObject.ShapeColor = self.gColor
 			
 			# Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootBack")
@@ -1669,7 +1669,7 @@ def showQtGUI():
 			o3.Width = thick
 			pl = FreeCAD.Vector(thick, frontOF + depth - thick, -height)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.DiffuseColor = self.gColor
+			o3.ViewObject.ShapeColor = self.gColor
 			
 			# Front
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootFront")
@@ -1679,7 +1679,7 @@ def showQtGUI():
 			o4.Width = thick
 			pl = FreeCAD.Vector(thick, frontOF + thick, -height)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.DiffuseColor = self.gColor
+			o4.ViewObject.ShapeColor = self.gColor
 			
 			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFoot')
 			container.setLink([o1, o2, o3, o4])
@@ -1706,7 +1706,7 @@ def showQtGUI():
 			o1.Width = thick
 			pl = FreeCAD.Vector(0, frontOF, -height)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.DiffuseColor = self.gColor
+			o1.ViewObject.ShapeColor = self.gColor
 			
 			# Left Back
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootLeftBack")
@@ -1716,7 +1716,7 @@ def showQtGUI():
 			o2.Width = thick
 			pl = FreeCAD.Vector(0, frontOF + depth - thick, -height)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.DiffuseColor = self.gColor
+			o2.ViewObject.ShapeColor = self.gColor
 			
 			# Right Front
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRightFront")
@@ -1726,7 +1726,7 @@ def showQtGUI():
 			o3.Width = thick
 			pl = FreeCAD.Vector(FSX - thick, frontOF, -height)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.DiffuseColor = self.gColor
+			o3.ViewObject.ShapeColor = self.gColor
 			
 			# Right Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRightBack")
@@ -1736,7 +1736,7 @@ def showQtGUI():
 			o4.Width = thick
 			pl = FreeCAD.Vector(FSX - thick, frontOF + depth - thick, -height)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.DiffuseColor = self.gColor
+			o4.ViewObject.ShapeColor = self.gColor
 			
 			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFoot')
 			container.setLink([o1, o2, o3, o4])
@@ -1860,7 +1860,7 @@ def showQtGUI():
 			o1.Width = gapY - backOF
 			pl = FreeCAD.Vector(p0X + sideOF, p0Y, p0Z + bottomOF + 3)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.DiffuseColor = self.gColor
+			o1.ViewObject.ShapeColor = self.gColor
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
@@ -1870,7 +1870,7 @@ def showQtGUI():
 			o2.Width = gapY - backOF
 			pl = FreeCAD.Vector(p0X + gapX - thick - sideOF, p0Y, p0Z + bottomOF + 3)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.DiffuseColor = self.gColor
+			o2.ViewObject.ShapeColor = self.gColor
 			
 			# Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
@@ -1880,7 +1880,7 @@ def showQtGUI():
 			o3.Width = thick
 			pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + gapY - thick - backOF, p0Z + bottomOF + 3)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.DiffuseColor = self.gColor
+			o3.ViewObject.ShapeColor = self.gColor
 			
 			# Front inside
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
@@ -1890,7 +1890,7 @@ def showQtGUI():
 			o4.Width = thick
 			pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y, p0Z + bottomOF + 3)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.DiffuseColor = self.gColor
+			o4.ViewObject.ShapeColor = self.gColor
 
 			# HDF bottom
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
@@ -1900,7 +1900,7 @@ def showQtGUI():
 			o5.Width = gapY - backOF
 			pl = FreeCAD.Vector(p0X + sideOF, p0Y, p0Z  + bottomOF)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.DiffuseColor = self.gColor
+			o5.ViewObject.ShapeColor = self.gColor
 
 			# Front outside
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
@@ -1910,7 +1910,7 @@ def showQtGUI():
 			o6.Width = thick
 			pl = FreeCAD.Vector(p0X - (thick / 2), p0Y - thick, p0Z - (thick / 2) + 2)
 			o6.Placement = FreeCAD.Placement(pl, self.gR)
-			o6.ViewObject.DiffuseColor = self.gColor
+			o6.ViewObject.ShapeColor = self.gColor
 
 			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
 			container.setLink([o1, o2, o3, o4, o5, o6])
@@ -1946,7 +1946,7 @@ def showQtGUI():
 			o1.Width = gapY - backOF - thick
 			pl = FreeCAD.Vector(p0X + sideOF, p0Y + thick, p0Z + bottomOF + 3)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.DiffuseColor = self.gColor
+			o1.ViewObject.ShapeColor = self.gColor
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
@@ -1956,7 +1956,7 @@ def showQtGUI():
 			o2.Width = gapY - backOF - thick
 			pl = FreeCAD.Vector(p0X + gapX - thick - sideOF, p0Y + thick, p0Z + bottomOF + 3)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.DiffuseColor = self.gColor
+			o2.ViewObject.ShapeColor = self.gColor
 			
 			# Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
@@ -1966,7 +1966,7 @@ def showQtGUI():
 			o3.Width = thick
 			pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + gapY - thick - backOF, p0Z + bottomOF + 3)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.DiffuseColor = self.gColor
+			o3.ViewObject.ShapeColor = self.gColor
 			
 			# Front inside
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
@@ -1976,7 +1976,7 @@ def showQtGUI():
 			o4.Width = thick
 			pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + thick, p0Z + bottomOF + 3)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.DiffuseColor = self.gColor
+			o4.ViewObject.ShapeColor = self.gColor
 
 			# HDF bottom
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
@@ -1986,7 +1986,7 @@ def showQtGUI():
 			o5.Width = gapY - backOF - thick
 			pl = FreeCAD.Vector(p0X + sideOF, p0Y + thick, p0Z  + bottomOF)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.DiffuseColor = self.gColor
+			o5.ViewObject.ShapeColor = self.gColor
 
 			# Front outside make inside as well
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
@@ -1996,7 +1996,7 @@ def showQtGUI():
 			o6.Width = thick
 			pl = FreeCAD.Vector(p0X + 2, p0Y, p0Z + 2)
 			o6.Placement = FreeCAD.Placement(pl, self.gR)
-			o6.ViewObject.DiffuseColor = self.gColor
+			o6.ViewObject.ShapeColor = self.gColor
 
 			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
 			container.setLink([o1, o2, o3, o4, o5, o6])
@@ -2045,26 +2045,26 @@ def showQtGUI():
 			
 			thick = float(self.ofr7E.text())
 			
-			offsetL = float(self.ofr81E.text())
-			offsetR = float(self.ofr82E.text())
-			offsetT = float(self.ofr83E.text())
-			offsetB = float(self.ofr84E.text())
+			offL = float(self.ofr81E.text())
+			offR = float(self.ofr82E.text())
+			offT = float(self.ofr83E.text())
+			offB = float(self.ofr84E.text())
 			
 			# outside
 			if self.gSelectedFurniture == "F23":
-				width = offsetL + gw + offsetR
-				height = offsetB + gh + offsetT
-				startX = sx - offsetL
+				width = offL + gw + offR
+				height = offB + gh + offT
+				startX = sx - offL
 				startY = sy - thick
-				startZ = sz - offsetB
+				startZ = sz - offB
 
 			# inside
 			if self.gSelectedFurniture == "F24":
-				width = gw - offsetL - offsetR
-				height = gh - offsetB - offsetT
-				startX = sx + offsetL
+				width = gw - offL - offR
+				height = gh - offB - offT
+				startX = sx + offL
 				startY = sy
-				startZ = sz + offsetB
+				startZ = sz + offB
 	
 			# set values to text fields
 			self.ofr2E.setText(str(startX))
@@ -2092,7 +2092,7 @@ def showQtGUI():
 			o1.Width = thick
 			pl = FreeCAD.Vector(p0X, p0Y, p0Z)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.DiffuseColor = self.gColor
+			o1.ViewObject.ShapeColor = self.gColor
 
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -2116,7 +2116,7 @@ def showQtGUI():
 			o1.Width = thick
 			pl = FreeCAD.Vector(p0X, p0Y, p0Z)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.DiffuseColor = self.gColor
+			o1.ViewObject.ShapeColor = self.gColor
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -2157,30 +2157,30 @@ def showQtGUI():
 			thick = float(self.osh1E.text())
 			udepth = float(self.osh2E.text())
 			
-			offsetL = float(self.osh31E.text())
-			offsetR = float(self.osh32E.text())
-			offsetF = float(self.osh33E.text())
-			offsetB = float(self.osh34E.text())
+			offL = float(self.osh31E.text())
+			offR = float(self.osh32E.text())
+			offF = float(self.osh33E.text())
+			offB = float(self.osh34E.text())
 			
-			width = gwidth - offsetL - offsetR
+			width = gwidth - offL - offR
 			
 			if udepth == 0:
-				depth = gdepth - offsetF - offsetB
+				depth = gdepth - offF - offB
 			else:
 				depth = udepth
-				offsetB = 0
-				offsetF = gdepth - depth
+				offB = 0
+				offF = gdepth - depth
 			
-			startX = sx + offsetL
-			startY = sy + offsetF
+			startX = sx + offL
+			startY = sy + offF
 			startZ = sz
 
 			# set values to text fields
 			self.osh2E.setText(str(depth))
-			self.osh31E.setText(str(offsetL))
-			self.osh32E.setText(str(offsetR))
-			self.osh33E.setText(str(offsetF))
-			self.osh34E.setText(str(offsetB))
+			self.osh31E.setText(str(offL))
+			self.osh32E.setText(str(offR))
+			self.osh33E.setText(str(offF))
+			self.osh34E.setText(str(offB))
 			
 			self.osh51E.setText(str(startX))
 			self.osh52E.setText(str(startY))
@@ -2208,7 +2208,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(p0X, p0Y, p0Z)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.DiffuseColor = self.gColor
+			o1.ViewObject.ShapeColor = self.gColor
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -2328,7 +2328,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(p0X, p0Y, p0Z)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.DiffuseColor = self.gColor
+			o1.ViewObject.ShapeColor = self.gColor
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -2350,7 +2350,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(sx, sy + self.gThick, sz)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.DiffuseColor = self.gColor
+			o1.ViewObject.ShapeColor = self.gColor
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
@@ -2360,7 +2360,7 @@ def showQtGUI():
 			o2.Width = depth
 			pl = FreeCAD.Vector(sx, sy + self.gThick, sz + self.gThick)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.DiffuseColor = self.gColor
+			o2.ViewObject.ShapeColor = self.gColor
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
@@ -2370,7 +2370,7 @@ def showQtGUI():
 			o3.Width = depth
 			pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy + self.gThick, sz + self.gThick)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.DiffuseColor = self.gColor
+			o3.ViewObject.ShapeColor = self.gColor
 			
 			# Back HDF
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "BackHDF")
@@ -2380,7 +2380,7 @@ def showQtGUI():
 			o4.Width = 3
 			pl = FreeCAD.Vector(sx, sy + depth + self.gThick, sz)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.DiffuseColor = self.gColor
+			o4.ViewObject.ShapeColor = self.gColor
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
@@ -2390,7 +2390,7 @@ def showQtGUI():
 			o5.Width = depth
 			pl = FreeCAD.Vector(sx, sy + self.gThick, sz + self.gFSZ - self.gThick)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.DiffuseColor = self.gColor
+			o5.ViewObject.ShapeColor = self.gColor
 			
 			# Front
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
@@ -2400,7 +2400,7 @@ def showQtGUI():
 			o6.Width = self.gThick
 			pl = FreeCAD.Vector(sx + (self.gThick / 2), sy, sz + (self.gThick / 2) + 2)
 			o6.Placement = FreeCAD.Placement(pl, self.gR)
-			o6.ViewObject.DiffuseColor = self.gColor
+			o6.ViewObject.ShapeColor = self.gColor
 			
 			# Shelf
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
@@ -2410,7 +2410,7 @@ def showQtGUI():
 			o7.Width = depth
 			pl = FreeCAD.Vector(sx + self.gThick, sy + self.gThick, sz + (self.gFSZ / 2) - (self.gThick / 2))
 			o7.Placement = FreeCAD.Placement(pl, self.gR)
-			o7.ViewObject.DiffuseColor = self.gColor
+			o7.ViewObject.ShapeColor = self.gColor
 
 			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','FurnitureModule')
 			container.setLink([o1, o2, o3, o4, o5, o6, o7])
@@ -2436,7 +2436,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.DiffuseColor = self.gColor
+			o1.ViewObject.ShapeColor = self.gColor
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
@@ -2446,7 +2446,7 @@ def showQtGUI():
 			o2.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz + self.gThick)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.DiffuseColor = self.gColor
+			o2.ViewObject.ShapeColor = self.gColor
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
@@ -2456,7 +2456,7 @@ def showQtGUI():
 			o3.Width = depth
 			pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy, sz + self.gThick)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.DiffuseColor = self.gColor
+			o3.ViewObject.ShapeColor = self.gColor
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
@@ -2466,7 +2466,7 @@ def showQtGUI():
 			o4.Width = self.gThick
 			pl = FreeCAD.Vector(sx + self.gThick, sy + depth - self.gThick, sz + self.gThick)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.DiffuseColor = self.gColor
+			o4.ViewObject.ShapeColor = self.gColor
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
@@ -2476,7 +2476,7 @@ def showQtGUI():
 			o5.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz + self.gFSZ - self.gThick)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.DiffuseColor = self.gColor
+			o5.ViewObject.ShapeColor = self.gColor
 			
 			# Front
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
@@ -2486,7 +2486,7 @@ def showQtGUI():
 			o6.Width = self.gThick
 			pl = FreeCAD.Vector(sx + self.gThick + 2, sy, sz + self.gThick + 2)
 			o6.Placement = FreeCAD.Placement(pl, self.gR)
-			o6.ViewObject.DiffuseColor = self.gColor
+			o6.ViewObject.ShapeColor = self.gColor
 			
 			# Shelf
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
@@ -2496,7 +2496,7 @@ def showQtGUI():
 			o7.Width = depth - (3 * self.gThick)
 			pl = FreeCAD.Vector(sx + self.gThick, sy + (2 * self.gThick), sz + (self.gFSZ / 2) - (self.gThick / 2))
 			o7.Placement = FreeCAD.Placement(pl, self.gR)
-			o7.ViewObject.DiffuseColor = self.gColor
+			o7.ViewObject.ShapeColor = self.gColor
 
 			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','FurnitureModule')
 			container.setLink([o1, o2, o3, o4, o5, o6, o7])
@@ -2522,7 +2522,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.DiffuseColor = self.gColor
+			o1.ViewObject.ShapeColor = self.gColor
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
@@ -2532,7 +2532,7 @@ def showQtGUI():
 			o2.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz + self.gThick)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.DiffuseColor = self.gColor
+			o2.ViewObject.ShapeColor = self.gColor
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
@@ -2542,7 +2542,7 @@ def showQtGUI():
 			o3.Width = depth
 			pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy, sz + self.gThick)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.DiffuseColor = self.gColor
+			o3.ViewObject.ShapeColor = self.gColor
 			
 			# Back HDF
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
@@ -2552,7 +2552,7 @@ def showQtGUI():
 			o4.Width = 3
 			pl = FreeCAD.Vector(sx, sy + depth, sz)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.DiffuseColor = self.gColor
+			o4.ViewObject.ShapeColor = self.gColor
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
@@ -2562,7 +2562,7 @@ def showQtGUI():
 			o5.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz + self.gFSZ - self.gThick)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.DiffuseColor = self.gColor
+			o5.ViewObject.ShapeColor = self.gColor
 			
 			# Front
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
@@ -2572,7 +2572,7 @@ def showQtGUI():
 			o6.Width = self.gThick
 			pl = FreeCAD.Vector(sx + self.gThick + 2, sy, sz + self.gThick + 2)
 			o6.Placement = FreeCAD.Placement(pl, self.gR)
-			o6.ViewObject.DiffuseColor = self.gColor
+			o6.ViewObject.ShapeColor = self.gColor
 			
 			# Shelf
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
@@ -2582,7 +2582,7 @@ def showQtGUI():
 			o7.Width = depth - (2 * self.gThick)
 			pl = FreeCAD.Vector(sx + self.gThick, sy + (2 * self.gThick), sz + (self.gFSZ / 2) - (self.gThick / 2))
 			o7.Placement = FreeCAD.Placement(pl, self.gR)
-			o7.ViewObject.DiffuseColor = self.gColor
+			o7.ViewObject.ShapeColor = self.gColor
 
 			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','FurnitureModule')
 			container.setLink([o1, o2, o3, o4, o5, o6, o7])

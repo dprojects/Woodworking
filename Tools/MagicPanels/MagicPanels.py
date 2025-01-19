@@ -185,6 +185,79 @@ def normalizeBoundBox(iBoundBox):
 
 # ###################################################################################################################
 '''
+# Copy
+'''
+# ###################################################################################################################
+
+
+# ###################################################################################################################
+def copyPanel(iObjects, iType="auto"):
+	'''
+	Description:
+	
+		This function has been created for magicMove tool to copy any object type.
+
+	Args:
+	
+		iObjects: array with objects to copy
+		iType (optional): copy type:
+			* "auto" - if the object is Cube it will be copyObject, otherwise Clone will be used to copy
+			* "copyObject" - force copyObject copy type, however not use at LinkGroup because it will be visible as single object if you remove the copy the base LinkGroup will be removed as well, and the copy will not be visible at cut-list report
+			* "Clone" - force Clone copy type, if you make Clone from Pad and the Pad has Sketch.AttachmentOffset the Clone has Placement set to XYZ (0,0,0) but is not in the zero position so you have to remove Sketch offset from the Clone, I guess the BoundBox is the correct solution here
+			* "Link" - force Link copy type, it is faster than Clone but sometimes might be broken
+
+	Usage:
+	
+		copies = MagicPanels.copyPanel([ o ])
+		copies = MagicPanels.copyPanel([ o ], "auto")
+		copies = MagicPanels.copyPanel([ o ], "copyObject")
+		copies = MagicPanels.copyPanel([ o ], "Clone")
+		copies = MagicPanels.copyPanel([ o ], "Link")
+		copy = MagicPanels.copyPanel([ o ], "auto")[0]
+		copy = MagicPanels.copyPanel([ o ])[0]
+
+	Result:
+	
+		return array with copies
+	'''
+	
+	copies = []
+	copy = ""
+	
+	for o in iObjects:
+		
+		if iType == "auto":
+			
+			if o.isDerivedFrom("Part::Box"):
+				copy = FreeCAD.ActiveDocument.copyObject(o)
+				copy.Label = getNestingLabel(o, "Copy")
+			else:
+				import Draft
+				copy = Draft.make_clone(o)
+				copy.Label = getNestingLabel(o, "Clone")
+		
+		if iType == "copyObject":
+			copy = FreeCAD.ActiveDocument.copyObject(o)
+			copy.Label = getNestingLabel(o, "Copy")
+		
+		if iType == "Clone":
+			import Draft
+			copy = Draft.make_clone(o)
+			copy.Label = getNestingLabel(o, "Clone")
+		
+		if iType == "Link":
+			copy = FreeCAD.ActiveDocument.addObject('App::Link', "Link")
+			copy.setLink(o)
+			copy.Label = str(o.Label)
+			copy.Label = getNestingLabel(o, "Link")
+		
+		copies.append(copy)
+	
+	return copies
+
+
+# ###################################################################################################################
+'''
 # Vertices
 '''
 # ###################################################################################################################
@@ -2343,7 +2416,7 @@ def resetPlacement(iObj):
 
 
 # ###################################################################################################################
-def getPlacement(iObj):
+def getPlacement(iObj, iType="clean"):
 	'''
 	Description:
 	
@@ -2353,10 +2426,15 @@ def getPlacement(iObj):
 	Args:
 	
 		iObj: object to get placement
+		iType: 
+			* "clean" - old way good for simple objects but it not works if the object has AttachmentOffset set or there are multiple Pads and only the first one has AttachmentOffset set
+			* "BoundBox" - return [ XMin, YMin, ZMin ] from object BoundBox, this way solves the problem with AttachmentOffset but you need to be careful, but if the object has containers offset, for example Placement set at Part, Body or LinkGroups additionally you have to add the containers offset, also there will be problem with additional rotation
 
 	Usage:
 	
-		[ x, y, z, r ] = MagicPanels.getPlacement(gObj)
+		[ x, y, z, r ] = MagicPanels.getPlacement(o)
+		[ x, y, z, r ] = MagicPanels.getPlacement(o, "clean")
+		[ x, y, z, r ] = MagicPanels.getPlacement(o, "BoundBox")
 
 	Result:
 	
@@ -2369,38 +2447,49 @@ def getPlacement(iObj):
 
 	'''
 
-	if iObj.isDerivedFrom("PartDesign::Pad"):
+	if iType == "BoundBox":
 		
-		skip = 0
-		
-		try:
-			direction = getDirection(iObj)
-		except:
-			skip = 1
-		
-		# for normal rectangular Pad
-		if skip == 0:
-			ref = iObj.Profile[0].AttachmentOffset
-			
-		# for irregular shapes
-		else:
-			ref = iObj.Profile[0].Placement
-		
-	elif iObj.isDerivedFrom("Sketcher::SketchObject"):
-		ref = iObj.AttachmentOffset
-	else:
-		ref = iObj.Placement
-		
-	x = ref.Base.x
-	y = ref.Base.y
-	z = ref.Base.z
-	r = ref.Rotation
+		x = float(iObj.Shape.BoundBox.XMin)
+		y = float(iObj.Shape.BoundBox.YMin)
+		z = float(iObj.Shape.BoundBox.ZMin)
+		r = iObj.Placement.Rotation
 
-	return [ x, y, z, r ]
+		return [ x, y, z, r ]
+
+	if iType == "clean":
+		
+		if iObj.isDerivedFrom("PartDesign::Pad"):
+			
+			skip = 0
+			
+			try:
+				direction = getDirection(iObj)
+			except:
+				skip = 1
+			
+			# for normal rectangular Pad
+			if skip == 0:
+				ref = iObj.Profile[0].AttachmentOffset
+				
+			# for irregular shapes
+			else:
+				ref = iObj.Profile[0].Placement
+			
+		elif iObj.isDerivedFrom("Sketcher::SketchObject"):
+			ref = iObj.AttachmentOffset
+		else:
+			ref = iObj.Placement
+			
+		x = ref.Base.x
+		y = ref.Base.y
+		z = ref.Base.z
+		r = ref.Rotation
+
+		return [ x, y, z, r ]
 
 
 # ###################################################################################################################
-def getGlobalPlacement(iObj):
+def getGlobalPlacement(iObj, iType="FreeCAD"):
 	'''
 	Description:
 	
@@ -2409,10 +2498,13 @@ def getGlobalPlacement(iObj):
 	Args:
 	
 		iObj: object to get placement
-
+		iType:
+			* "FreeCAD" - return getGlobalPlacement for object or for Sketch if iObj is Pad 
+			* "BoundBox" - return [ XMin, YMin, ZMin ] from BoundBox
 	Usage:
 	
 		[ x, y, z, r ] = MagicPanels.getGlobalPlacement(o)
+		[ x, y, z, r ] = MagicPanels.getGlobalPlacement(o, "BoundBox")
 
 	Result:
 	
@@ -2425,22 +2517,33 @@ def getGlobalPlacement(iObj):
 
 	'''
 
-	o = getReference(iObj)
+	if iType == "FreeCAD":
+		
+		o = getReference(iObj)
 
-	if o.isDerivedFrom("PartDesign::Pad"):
-		ref = o.Profile[0]
-	else:
-		ref = o
+		if o.isDerivedFrom("PartDesign::Pad"):
+			ref = o.Profile[0]
+		else:
+			ref = o
 
-	p = ref.getGlobalPlacement()
+		p = ref.getGlobalPlacement()
 
-	x = p.Base.x
-	y = p.Base.y
-	z = p.Base.z
-	r = p.Rotation
+		x = p.Base.x
+		y = p.Base.y
+		z = p.Base.z
+		r = p.Rotation
 
-	return [ x, y, z, r ]
+		return [ x, y, z, r ]
 
+	if iType == "BoundBox":
+		
+		return [ 
+			iObj.Shape.BoundBox.XMin, 
+			iObj.Shape.BoundBox.YMin, 
+			iObj.Shape.BoundBox.ZMin, 
+			iObj.Placement.Rotation
+			]
+		
 
 # ###################################################################################################################
 def setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
@@ -2453,7 +2556,7 @@ def setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
 
 		iObj: object to set custom placement and rotation
 		iX: X Axis object position
-		iX: Y Axis object position
+		iY: Y Axis object position
 		iZ: Z Axis object position
 		iR: Rotation object
 		iAnchor="" (optional): anchor for placement instead of 0 vertex, FreeCAD.Vector(x, y, z)
@@ -2588,7 +2691,7 @@ def setSketchPlacement(iSketch, iX, iY, iZ, iR, iType):
 
 		iSketch: Sketch object to set custom placement and rotation
 		iX: X Axis object position
-		iX: Y Axis object position
+		iY: Y Axis object position
 		iZ: Z Axis object position
 		iR: Rotation object
 		iType: 
@@ -2709,6 +2812,41 @@ def getObjectCenter(iObj):
 		return [ cx, cy, cz ]
 		
 	return ""
+
+
+# ###################################################################################################################
+def adjustClonePosition(iPad, iX, iY, iZ):
+	'''
+	Description:
+	
+		This function has been created for magicMove tool to adjust Clone position.
+		If you make Clone from Pad and the Pad has not zero Sketch.AttachmentOffset, 
+		the Clone has Placement set to XYZ (0,0,0) but is not in the zero position. 
+		So you have to remove Sketch offset from the Clone position. 
+		I guess the BoundBox is the correct solution here.
+	
+	Args:
+	
+		iPad: Pad object with not zero Sketch.AttachmentOffset used to create new Clone
+		iX: X Axis object position
+		iY: Y Axis object position
+		iZ: Z Axis object position
+
+	Usage:
+	
+		[ x, y, z ] = MagicPanels.adjustClonePosition(o, x, y, z)
+
+	Result:
+	
+		Returns array with new correct [ x, y, z ] values.
+
+	'''
+
+	x = iX - float(iPad.Shape.BoundBox.XMin)
+	y = iY - float(iPad.Shape.BoundBox.YMin)
+	z = iZ - float(iPad.Shape.BoundBox.ZMin)
+
+	return [ x, y, z ]
 
 
 # ###################################################################################################################
@@ -3225,6 +3363,39 @@ def moveToClean(iObjects, iSelection):
 
 
 # ###################################################################################################################
+def moveToContainer(iObjects, iContainer):
+	'''
+	Description:
+
+		Move objects iObjects to iContainer.
+
+	Args:
+	
+		iObjects: list of objects to move to iContainer, for example new created Cube
+		iContainer: container object, for example LinkGroup, this should be object
+
+	Usage:
+
+		MagicPanels.moveToContainer([ o ], container)
+
+	Result:
+
+		No return, move object.
+
+	'''
+	
+	for o in iObjects:
+	
+		# move the object to this container
+		FreeCADGui.Selection.addSelection(o)
+		o.adjustRelativeLinks(iContainer)
+		iContainer.ViewObject.dropObject(o, None, '', [])
+		FreeCADGui.Selection.clearSelection()
+
+	FreeCAD.ActiveDocument.recompute()
+
+
+# ###################################################################################################################
 def moveToFirst(iObjects, iSelection):
 	'''
 	Description:
@@ -3684,7 +3855,7 @@ def setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="normal"):
 
 		iObj: object or container to set placement, for example Body, LinkGroup, Cut, Pad, Cube, Sketch, Cylinder
 		iX: X Axis object position
-		iX: Y Axis object position
+		iY: Y Axis object position
 		iZ: Z Axis object position
 		iR: 
 			0 - means rotation value set to iObj.Placement.Rotation

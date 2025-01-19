@@ -109,6 +109,35 @@ gSearchDepth = 200       # recursive search depth
 	
 		return normalized version for comparison if b1 == b2: you can set your own precision here
 
+# Copy
+### copyPanel(iObjects, iType="auto"):
+
+	Description:
+	
+		This function has been created for magicMove tool to copy any object type.
+
+##### Description:
+	
+		iObjects: array with objects to copy
+		iType (optional): copy type:
+			* "auto" - if the object is Cube it will be copyObject, otherwise Clone will be used to copy
+			* "copyObject" - force copyObject copy type, however not use at LinkGroup because it will be visible as single object if you remove the copy the base LinkGroup will be removed as well, and the copy will not be visible at cut-list report
+			* "Clone" - force Clone copy type, if you make Clone from Pad and the Pad has Sketch.AttachmentOffset the Clone has Placement set to XYZ (0,0,0) but is not in the zero position so you have to remove Sketch offset from the Clone, I guess the BoundBox is the correct solution here
+			* "Link" - force Link copy type, it is faster than Clone but sometimes might be broken
+
+##### Usage:
+	
+		copies = MagicPanels.copyPanel([ o ])
+		copies = MagicPanels.copyPanel([ o ], "auto")
+		copies = MagicPanels.copyPanel([ o ], "copyObject")
+		copies = MagicPanels.copyPanel([ o ], "Clone")
+		copies = MagicPanels.copyPanel([ o ], "Link")
+		copy = MagicPanels.copyPanel([ o ], "auto")[0]
+		copy = MagicPanels.copyPanel([ o ])[0]
+
+##### Result:
+	
+		return array with copies
 # Vertices
 ### showVertex(iVertices, iRadius=5, iColor="red"):
 
@@ -854,7 +883,7 @@ gSearchDepth = 200       # recursive search depth
 	
 		Object obj return to base position.
 
-### getPlacement(iObj):
+### getPlacement(iObj, iType="clean"):
 
 	Description:
 	
@@ -864,10 +893,15 @@ gSearchDepth = 200       # recursive search depth
 ##### Description:
 	
 		iObj: object to get placement
+		iType: 
+			* "clean" - old way good for simple objects but it not works if the object has AttachmentOffset set or there are multiple Pads and only the first one has AttachmentOffset set
+			* "BoundBox" - return [ XMin, YMin, ZMin ] from object BoundBox, this way solves the problem with AttachmentOffset but you need to be careful, but if the object has containers offset, for example Placement set at Part, Body or LinkGroups additionally you have to add the containers offset, also there will be problem with additional rotation
 
 ##### Usage:
 	
-		[ x, y, z, r ] = MagicPanels.getPlacement(gObj)
+		[ x, y, z, r ] = MagicPanels.getPlacement(o)
+		[ x, y, z, r ] = MagicPanels.getPlacement(o, "clean")
+		[ x, y, z, r ] = MagicPanels.getPlacement(o, "BoundBox")
 
 ##### Result:
 	
@@ -878,7 +912,7 @@ gSearchDepth = 200       # recursive search depth
 		z: Z Axis object position
 		r: Rotation object
 
-### getGlobalPlacement(iObj):
+### getGlobalPlacement(iObj, iType="FreeCAD"):
 
 	Description:
 	
@@ -887,10 +921,13 @@ gSearchDepth = 200       # recursive search depth
 ##### Description:
 	
 		iObj: object to get placement
-
+		iType:
+			* "FreeCAD" - return getGlobalPlacement for object or for Sketch if iObj is Pad 
+			* "BoundBox" - return [ XMin, YMin, ZMin ] from BoundBox
 ##### Usage:
 	
 		[ x, y, z, r ] = MagicPanels.getGlobalPlacement(o)
+		[ x, y, z, r ] = MagicPanels.getGlobalPlacement(o, "BoundBox")
 
 ##### Result:
 	
@@ -911,7 +948,7 @@ gSearchDepth = 200       # recursive search depth
 
 		iObj: object to set custom placement and rotation
 		iX: X Axis object position
-		iX: Y Axis object position
+		iY: Y Axis object position
 		iZ: Z Axis object position
 		iR: Rotation object
 		iAnchor="" (optional): anchor for placement instead of 0 vertex, FreeCAD.Vector(x, y, z)
@@ -961,7 +998,7 @@ gSearchDepth = 200       # recursive search depth
 
 		iSketch: Sketch object to set custom placement and rotation
 		iX: X Axis object position
-		iX: Y Axis object position
+		iY: Y Axis object position
 		iZ: Z Axis object position
 		iR: Rotation object
 		iType: 
@@ -1004,6 +1041,31 @@ gSearchDepth = 200       # recursive search depth
 ##### Result:
 	
 		Returns array with [ cx, cy, cz ] values for center point.
+
+### adjustClonePosition(iPad, iX, iY, iZ):
+
+	Description:
+	
+		This function has been created for magicMove tool to adjust Clone position.
+		If you make Clone from Pad and the Pad has not zero Sketch.AttachmentOffset, 
+		the Clone has Placement set to XYZ (0,0,0) but is not in the zero position. 
+		So you have to remove Sketch offset from the Clone position. 
+		I guess the BoundBox is the correct solution here.
+	
+##### Description:
+	
+		iPad: Pad object with not zero Sketch.AttachmentOffset used to create new Clone
+		iX: X Axis object position
+		iY: Y Axis object position
+		iZ: Z Axis object position
+
+##### Usage:
+	
+		[ x, y, z ] = MagicPanels.adjustClonePosition(o, x, y, z)
+
+##### Result:
+	
+		Returns array with new correct [ x, y, z ] values.
 
 # Containers
 ### getContainers(iObj):
@@ -1173,6 +1235,25 @@ gSearchDepth = 200       # recursive search depth
 
 ##### Result:
 	
+		No return, move object.
+
+### moveToContainer(iObjects, iContainer):
+
+	Description:
+
+		Move objects iObjects to iContainer.
+
+##### Description:
+	
+		iObjects: list of objects to move to iContainer, for example new created Cube
+		iContainer: container object, for example LinkGroup, this should be object
+
+##### Usage:
+
+		MagicPanels.moveToContainer([ o ], container)
+
+##### Result:
+
 		No return, move object.
 
 ### moveToFirst(iObjects, iSelection):
@@ -1360,7 +1441,7 @@ gSearchDepth = 200       # recursive search depth
 
 		iObj: object or container to set placement, for example Body, LinkGroup, Cut, Pad, Cube, Sketch, Cylinder
 		iX: X Axis object position
-		iX: Y Axis object position
+		iY: Y Axis object position
 		iZ: Z Axis object position
 		iR: 
 			0 - means rotation value set to iObj.Placement.Rotation

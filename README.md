@@ -17,6 +17,10 @@ The main goal for this workbench is to make simpler the furniture designing proc
 
 **New significant changes since the last release 0.22 stable:**
 
+* magicMove improvements (container, auto object type, translation, cross save, fixes)
+* add edge, face, vertex reference to Mirror feature (magicMove)
+* feature Copy by Edge to copy part of the furniture (magicMove)
+* new laveder color for API inspection tool (scanObjects)
 * building complex furniture from modules by selected edge, face, vertex or custom offset (magicStart)
 * center side for selected gap by depth, by offsets, custom offsets, automatically adjusted (magicStart)
 * shelf for selected gap by depth, by offsets, custom offsets, automatically adjusted (magicStart)
