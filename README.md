@@ -30,20 +30,25 @@ The main goal for this workbench is to make simpler the furniture designing proc
 * magicDowels improved (GUI redesign, position autodetect, keep settings, menu translation, fixes)
 * magicStart tool to create & import furniture, fixture, drawers, ...
 
-# Installation in Xubuntu
+# Installation
 
-**Step 0. Install correct FreeCAD version:**
+### Step 0. Install correct FreeCAD version:
 
-* Download and install: [FreeCAD 0.21.2](https://github.com/FreeCAD/FreeCAD/releases/tag/0.21.2)
+* Recommended version for Xubuntu: [FreeCAD-0.21.2-Linux-x86_64.AppImage](https://github.com/FreeCAD/FreeCAD/releases/download/0.21.2/FreeCAD-0.21.2-Linux-x86_64.AppImage)
+* For other operating systems download and install: [FreeCAD 0.21.2](https://github.com/FreeCAD/FreeCAD/releases/tag/0.21.2)
 
-**Step 1. Download Woodworking workbench:** 
+**Note:** 
+
+I don't have `Windows` or `macOS`, so I am not able to test and certify this workbench for those systems. However, if you use `FreeCAD AppImage` there is a good chance this will be working correctly.
+
+### Step 1. Download Woodworking workbench:
 
 * Stable certified versions download at: [Woodworking/releases](https://github.com/dprojects/Woodworking/releases)
 * For cutting edge features download: [the master branch](https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip) or run command:
 	
 		git clone https://github.com/dprojects/Woodworking.git
 
-**Step 2. Get FreeCAD Mod folder localization:**
+### Step 2. Get FreeCAD Mod folder localization:
 
 * From FreeCAD python console run command:
 
@@ -51,13 +56,13 @@ The main goal for this workbench is to make simpler the furniture designing proc
 
 * If there is no `Mod` folder, create it.
 
-**Step 3. Install Woodworking workbench:** 
+### Step 3. Install Woodworking workbench:
 
 * Go to FreeCAD `Mod` folder, for example, in Xubuntu operating system:
 
 		cd  ~/.local/share/FreeCAD/Mod/
 
-* Unpack woodworking workbench, if needed, and copy `Woodworking` folder to `Mod` folder. This should be:
+* Unpack woodworking workbench, if needed, and copy `Woodworking` folder directly to `Mod` folder. This should be:
 
 		~/.local/share/FreeCAD/Mod/Woodworking/
 
@@ -65,13 +70,6 @@ The main goal for this workbench is to make simpler the furniture designing proc
 
 * You can update this workbench later via [debuginfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool.
 * To get better stability make sure your current Woodworking workbench version has always the same prefix version number as the FreeCAD version. You can also verify this via [debuginfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool. 
-
-# Installation in other operating systems
-
-* Download and unpack `Woodworking` repository.
-* Copy the folder `Woodworking` to the FreeCAD `Mod` folder.
-
-**Note:** I don't have `Windows` or `macOS`, so I am not able to test and certify this workbench for those systems. However, if you use `FreeCAD AppImage` there is a good chance this will be working correctly.
 
 # Extras
 
@@ -108,16 +106,9 @@ You can use `translations update tool` available under drop down menu `Woodworki
 
 # Support FreeCAD 1.0 and later
 
-Currently there are no plans to support FreeCAD 1.0 and later. 
+Currently there are no plans to support FreeCAD 1.0 and later. The main reason for that is that FreeCAD 1.0 no longer allows for direct Sketch move and the [FreeCAD team consider direct Sketch moving as bug](https://forum.freecad.org/viewtopic.php?p=794690#p794690), so they fixed this "bug"... 
 
-The main reason for that is that FreeCAD 1.0 no longer allow for direct Sketch move, the [FreeCAD team consider direct Sketch moving as bug](https://forum.freecad.org/viewtopic.php?p=794690#p794690), so they fixed this "bug"... 
-
-Using FreeCAD 1.0 with Woodworking workbench for example you can't use [magicMove](https://github.com/dprojects/Woodworking/tree/master/Docs#magicmove) to move Sketch or Pad. Also you can't move holes after drilling or center holes or Pads. So this "fix" impact many advanced features at Woodworking workbench.
-
-However all these feature works fine with FreeCAD 0.21.2 and personally I don't see any reason to use FreeCAD 1.0. 
-Also I am happy with FreeCAD 0.21.2 and I don't see any reason to chase all the FreeCAD team changes and "fixes" and adjust Woodworking workbench code only to have new FreeCAD number...
-
-The Woodworking workbench now has its own [release versioning system](https://github.com/dprojects/Woodworking/releases), the 0.22 release has been published, and will be developed regardless of FreeCAD politics.
+For more information see: [issue about FreeCAD 1.0+ support](https://github.com/dprojects/Woodworking/issues/49)
 
 # License
 
