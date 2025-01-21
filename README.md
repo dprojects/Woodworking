@@ -17,6 +17,7 @@ The main goal for this workbench is to make simpler the furniture designing proc
 
 **New significant changes since the last release 0.22 stable:**
 
+* drawer series feature to create many drawers at once (magicStart)
 * magicMove improvements (container, auto object type, translation, cross save, fixes)
 * add edge, face, vertex reference to Mirror feature (magicMove)
 * feature Copy by Edge to copy part of the furniture (magicMove)
