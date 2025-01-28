@@ -82,10 +82,12 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 		* [showSpaceModel](#showspacemodel)
 		* [showSpaceSelected](#showspaceselected)
 		* [magicMeasure](#magicmeasure)
-	* [Advanced](#advanced)
-		* [panel2pad](#panel2pad)
+	* [Parameterization](#parameterization)
+		* [magicGlue](#magicglue)
 		* [sketch2clone](#sketch2clone)
 		* [showAlias](#showalias)
+	* [Advanced](#advanced)
+		* [panel2pad](#panel2pad)
 	* [Code and Debug](#code-and-debug)
 		* [scanObjects](#scanobjects)
 		* [debugInfo](#debuginfo)
@@ -180,6 +182,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 **Video tutorials:** 
 * [Smart resizer tool](https://www.youtube.com/watch?v=t1G7qnRfAgY)
+* [How to handle dimension changes](https://www.youtube.com/watch?v=HED1-BH66BU)
 
 ### showConstraints
 
@@ -248,6 +251,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 **Video tutorials:** 
 * [How to use magicMove](https://www.youtube.com/watch?v=DpU2zlckv88)
 * [How to copy part of the furniture](https://www.youtube.com/watch?v=oxNiwtZV-Uc)
+* [How to handle dimension changes](https://www.youtube.com/watch?v=HED1-BH66BU)
 
 ### magicAngle
 
@@ -796,16 +800,44 @@ Tool repository: [github.com/dprojects/sheet2export](https://github.com/dproject
 * [Smart measurement tool](https://www.youtube.com/watch?v=d2FRECuHy2o)
 * [Custom measurements & BOM](https://www.youtube.com/watch?v=-Mmwvw_Bue4)
 
-## Advanced
+## Parameterization
 
-### panel2pad
+### magicGlue
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2pad.png"> This tool allows to replace `Cube` panel with `Pad` panel. The new created `Pad` panel will get the same dimensions, placement and rotation as the selected `Cube` panel. You can transform many `Cube` panels into `Pad` at once. To select more `Cubes` hold `left CTRL key` during selection. This tool is mostly dedicated to add decoration that is not supported for `Cube` objects by FreeCAD PartDesign workbench. You can also change shape by changing the `Sketch`. This is mostly used for decoration that can be applied only to `Pad`, like `Fillet`.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicGlue.png"> This tool allows you to add or remove expressions to keep objects position and size.
 
-<br><br><br>
+**Options:**
+
+* **Glue position:** This option allows you to glue position of target objects to the source object position.
+  * `set` **for source** allows you to add source object postition. The source can be vertex or face. For vertex the `XYZ` placement will be get as reference point. For face the `CenterOfMass` will be the reference point, so you need to be careful with linking to this face source because the `CenterOfMass` move `1/2` of the object move way. However it can be used to glue object to the center, for example center furniture side.
+  * `set` **for target** allows you to add target objects to set expressions. If the object is Cube `Part::Box` the expression will be set at `Placement` of the `Cube`. If the object is Pad `PartDesign::Pad` the expression will be set at `Placement` of its `Body`.
+  * `refresh all selection` allows you to add quickly source and targets. First selected vertex or face will be the source and all other objects will be considered as targets to set expressions. Also this is default init option, for example if you select vertex and 2 objects and open the tool this will be ready to set glue position.
+  * `add glue` for `X` direction allows you to add expression for moving objects along `X` axis.
+  * `add glue` for `Y` direction allows you to add expression for moving objects along `Y` axis.
+  * `add glue` for `Z` direction allows you to add expression for moving objects along `Z` axis.
+
+* **Glue size:** 
+  * `set` **for source** allows you to add source object postition. The source can be edge. The selected `edge.Length` will be the reference point.
+  * `set` **for target** allows you to add target objects to set expressions. The selected objects should be edges. 
+    * If the object is Cube `Part::Box` the expression will be set to `Length` or `Width` or `Height` of the `Cube` according to the selected edge plane. 
+    * If the object is Pad `PartDesign::Pad` the expression will be set at `Length` property or `Sketch` constraints.
+    * If the object is for example Profile `PartDesign::Thickness` the expression will be set at `Value` property or `Sketch` constraints.
+    * If the object is for example cornerBlock `PartDesign::Chamfer` the expression will be set at `Size` property or `Sketch` constraints.
+  * `refresh all selection` allows you to add quickly source and targets. First selected edge will be the source and all other edges will be considered as targets to set expressions.
+  * `add glue size` allows you to add expression for size changes of source edge.
+  
+* **Clean glue:** 
+  * `refresh all selection` allows you to add target objects to clean expressions.
+  * `clean glue position` clean all position expressions. Make sure you do not have your private expressions.
+  * `clean glue size` clean all size expressions. Make sure you do not have your private expressions.
+
+* **Cross:**
+  * `Corner cross:` buttons `-`, `+` resize the cross in the right bottom of the screen, it has auto-repeat.
+  * `Center cross:` buttons `on`, `off` turn on and off the center cross at the screen.
+  * `keep custom cross settings` allows to store the custom cross setting after this tool exit.
 
 **Video tutorials:** 
-* [Automatic parametrization](https://www.youtube.com/watch?v=JuZsAjrQr6M)
+* [How to make parametric furniture quickly](https://www.youtube.com/watch?v=z2rpVoLgqWI)
 
 ### sketch2clone
 
@@ -820,6 +852,17 @@ Tool repository: [github.com/dprojects/sheet2export](https://github.com/dproject
 
 **Video tutorials:** 
 * [Preview alias](https://www.youtube.com/watch?v=tS9pvkPH5RI)
+
+## Advanced
+
+### panel2pad
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2pad.png"> This tool allows to replace `Cube` panel with `Pad` panel. The new created `Pad` panel will get the same dimensions, placement and rotation as the selected `Cube` panel. You can transform many `Cube` panels into `Pad` at once. To select more `Cubes` hold `left CTRL key` during selection. This tool is mostly dedicated to add decoration that is not supported for `Cube` objects by FreeCAD PartDesign workbench. You can also change shape by changing the `Sketch`. This is mostly used for decoration that can be applied only to `Pad`, like `Fillet`.
+
+<br><br><br>
+
+**Video tutorials:** 
+* [Automatic parametrization](https://www.youtube.com/watch?v=JuZsAjrQr6M)
 
 <br><br><br>
 

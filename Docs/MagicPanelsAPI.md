@@ -381,6 +381,25 @@ gSearchDepth = 200       # recursive search depth
 	
 		return string "X", "Y" or "Z".
 
+### getSizeByEdge(iObj, iEdge):
+
+	Description:
+	
+		Returns iObj property (objects field name) to change for iEdge. 
+	
+##### Description:
+	
+		iObj: object with the edge
+		iEdge: edge object
+
+##### Usage:
+	
+		name = MagicPanels.getSizeByEdge(o, edge)
+
+##### Result:
+	
+		For Cube (Part::Box) object returns string "Length", "Width" or "Height".
+
 # Router
 ### getSubByKey(iObj, iKey, iType, iSubType):
 

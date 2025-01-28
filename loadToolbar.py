@@ -212,14 +212,20 @@ def getItems(iType):
 			"Std_DlgMacroExecute",
 			"Std_DlgMacroExecuteDirect"
 		]
+	
+	if iType == "Woodworking - parameterization":
+	
+		parts = [
+			"magicGlue", 
+			"sketch2clone",
+			"Spreadsheet_CreateSheet",
+			"showAlias"
+		]
 		
 	if iType == "Woodworking - advanced":
 		
 		parts = [
 			"panel2pad",
-			"sketch2clone",
-			"Spreadsheet_CreateSheet",
-			"showAlias",
 			"Std_Part",
 			"PartDesign_Body", 
 			"PartDesign_NewSketch",

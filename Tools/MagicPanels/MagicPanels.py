@@ -819,6 +819,41 @@ def getEdgePlane(iObj, iEdge):
 
 
 # ###################################################################################################################
+def getSizeByEdge(iObj, iEdge):
+	'''
+	Description:
+	
+		Returns iObj property (objects field name) to change for iEdge. 
+	
+	Args:
+	
+		iObj: object with the edge
+		iEdge: edge object
+
+	Usage:
+	
+		name = MagicPanels.getSizeByEdge(o, edge)
+
+	Result:
+	
+		For Cube (Part::Box) object returns string "Length", "Width" or "Height".
+
+	'''
+
+	#oplane = getDirection(iObj)
+	eplane = getEdgePlane(iObj, iEdge)
+	
+	if eplane == "X":
+		return "Length"
+		
+	if eplane == "Y":
+		return "Width"
+	
+	if eplane == "Z":
+		return "Height"
+
+
+# ###################################################################################################################
 '''
 # Router
 '''
