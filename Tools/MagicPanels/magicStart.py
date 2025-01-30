@@ -43,7 +43,11 @@ getMenuIndex = {
 	translate('magicStart', 'Simple storage ( front inside, back full )'): 28, 
 	translate('magicStart', 'Simple storage ( front inside, back HDF )'): 29, 
 	translate('magicStart', 'Drawer series with front outside ( fit into the shelf gap )'): 30, 
-	translate('magicStart', 'Drawer series with front inside ( fit into the shelf gap )'): 31 
+	translate('magicStart', 'Drawer series with front inside ( fit into the shelf gap )'): 31, 
+	translate('magicStart', 'Face Frame outside ( frame around, fit into gap )'): 32, 
+	translate('magicStart', 'Face Frame outside ( frame with center, fit into gap )'): 33, 
+	translate('magicStart', 'Face Frame outside ( frame for custom changes, fit into gap )'): 34, 
+	translate('magicStart', 'Simple bookcase with Face Frame ( no front, back HDF )'): 35 # no comma 
 }
 
 # ############################################################################
@@ -119,11 +123,15 @@ def showQtGUI():
 				translate('magicStart', 'Simple storage ( front inside, back full )'), 
 				translate('magicStart', 'Simple storage ( front inside, back HDF )'), 
 				translate('magicStart', 'Simple bookcase ( no front, back HDF )'), 
+				translate('magicStart', 'Simple bookcase with Face Frame ( no front, back HDF )'), 
 				translate('magicStart', 'Modular storage ( front outside, 3 modules )'), 
 				translate('magicStart', 'Drawer with front outside ( fit into the shelf gap )'), 
 				translate('magicStart', 'Drawer with front inside ( fit into the shelf gap )'), 
 				translate('magicStart', 'Drawer series with front outside ( fit into the shelf gap )'), 
 				translate('magicStart', 'Drawer series with front inside ( fit into the shelf gap )'), 
+				translate('magicStart', 'Face Frame outside ( frame around, fit into gap )'), 
+				translate('magicStart', 'Face Frame outside ( frame with center, fit into gap )'), 
+				translate('magicStart', 'Face Frame outside ( frame for custom changes, fit into gap )'), 
 				translate('magicStart', 'Front outside ( fit into gap )'), 
 				translate('magicStart', 'Front inside ( fit into gap )'), 
 				translate('magicStart', 'Shelf ( fit into gap )'), 
@@ -145,7 +153,7 @@ def showQtGUI():
 				translate('magicStart', 'Simple chair ( import parametric )'), 
 				translate('magicStart', 'Picture frame ( import parametric )'), 
 				translate('magicStart', 'Simple table ( import parametric )'), 
-				translate('magicStart', 'Storage box ( import parametric )')
+				translate('magicStart', 'Storage box ( import parametric )') # no comma
 				)
 			
 			self.sMode = QtGui.QComboBox(self)
@@ -156,10 +164,15 @@ def showQtGUI():
 			self.sMode.move(10, row)
 
 			row += 50
+			
+			createSize = 40
+			createRow = toolSH - createSize - 10
+			
 			rowgap = row
 			rowds = row - 20
 			rowfoot = row
 			rowfront = row
+			rowfframe = row - 20
 			rowshelf = row
 			rowside = row
 
@@ -315,8 +328,8 @@ def showQtGUI():
 			self.s1B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.s1B1.clicked.connect(self.createObject)
 			self.s1B1.setFixedWidth(toolSW - 20)
-			self.s1B1.setFixedHeight(40)
-			self.s1B1.move(10, row)
+			self.s1B1.setFixedHeight(createSize)
+			self.s1B1.move(10, createRow)
 
 			# ############################################################################
 			# GUI for foot (hidden by default)
@@ -551,8 +564,8 @@ def showQtGUI():
 			self.og9B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.og9B1.clicked.connect(self.createObject)
 			self.og9B1.setFixedWidth(toolSW - 20)
-			self.og9B1.setFixedHeight(40)
-			self.og9B1.move(10, rowgap)
+			self.og9B1.setFixedHeight(createSize)
+			self.og9B1.move(10, createRow)
 
 			# hide by default
 			self.og1i.hide()
@@ -753,8 +766,8 @@ def showQtGUI():
 			self.ods10B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ods10B.clicked.connect(self.createObject)
 			self.ods10B.setFixedWidth(toolSW - 20)
-			self.ods10B.setFixedHeight(40)
-			self.ods10B.move(10, rowds)
+			self.ods10B.setFixedHeight(createSize)
+			self.ods10B.move(10, createRow)
 
 			# hide by default
 			self.ods1i.hide()
@@ -923,8 +936,8 @@ def showQtGUI():
 			self.ofr8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ofr8B1.clicked.connect(self.createObject)
 			self.ofr8B1.setFixedWidth(toolSW - 20)
-			self.ofr8B1.setFixedHeight(40)
-			self.ofr8B1.move(10, rowfront)
+			self.ofr8B1.setFixedHeight(createSize)
+			self.ofr8B1.move(10, createRow)
 
 			# hide by default
 			self.ofr1i.hide()
@@ -950,6 +963,153 @@ def showQtGUI():
 			self.ofr84E.hide()
 			self.ofr8B1.hide()
 			
+			# ############################################################################
+			# GUI for Face Frame from GAP (hidden by default)
+			# ############################################################################
+
+			# label
+			info = translate('magicStart', 'Please select 4 edges around the gap to calculate Face Frame: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
+			self.offrame1i = QtGui.QLabel(info, self)
+			self.offrame1i.move(10, rowfframe+3)
+			self.offrame1i.setFixedWidth(200)
+			self.offrame1i.setWordWrap(True)
+			self.offrame1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			
+			rowfframe += 120
+			
+			# label
+			self.offrame2L = QtGui.QLabel(translate('magicStart', 'Single bar width:'), self)
+			self.offrame2L.move(10, rowfframe+3)
+			
+			# text input
+			self.offrame2E = QtGui.QLineEdit(self)
+			self.offrame2E.setText("38")
+			self.offrame2E.setFixedWidth(90)
+			self.offrame2E.move(150, rowfframe)
+			
+			rowfframe += 30
+			
+			# label
+			self.offrame3L = QtGui.QLabel(translate('magicStart', 'Single bar thickness:'), self)
+			self.offrame3L.move(10, rowfframe+3)
+
+			# text input
+			self.offrame3E = QtGui.QLineEdit(self)
+			self.offrame3E.setText("19")
+			self.offrame3E.setFixedWidth(90)
+			self.offrame3E.move(150, rowfframe)
+		
+			rowfframe += 30
+
+			# label
+			self.offrame4L = QtGui.QLabel(translate('magicStart', 'Lip outside:'), self)
+			self.offrame4L.move(10, rowfframe+3)
+
+			# text input
+			self.offrame4E = QtGui.QLineEdit(self)
+			self.offrame4E.setText("0")
+			self.offrame4E.setFixedWidth(90)
+			self.offrame4E.move(150, rowfframe)
+			
+			rowfframe += 30
+			
+			# label
+			self.offrame5L = QtGui.QLabel(translate('magicStart', 'Delve into furniture:'), self)
+			self.offrame5L.move(10, rowfframe+3)
+
+			# text input
+			self.offrame5E = QtGui.QLineEdit(self)
+			self.offrame5E.setText("0")
+			self.offrame5E.setFixedWidth(90)
+			self.offrame5E.move(150, rowfframe)
+			
+			rowfframe += 40
+			
+			# button
+			self.offrame6B = QtGui.QPushButton(translate('magicStart', 'calculate Face Frame'), self)
+			self.offrame6B.clicked.connect(self.calculateFaceframeFromGap)
+			self.offrame6B.setFixedWidth(200)
+			self.offrame6B.setFixedHeight(40)
+			self.offrame6B.move(10, rowfframe)
+			
+			rowfframe += 80
+			
+			# label
+			self.offrame7L = QtGui.QLabel(translate('magicStart', 'Frame start XYZ:'), self)
+			self.offrame7L.move(10, rowfframe+3)
+			
+			# text input
+			self.offrame71E = QtGui.QLineEdit(self)
+			self.offrame71E.setText("0")
+			self.offrame71E.setFixedWidth(90)
+			self.offrame71E.move(120, rowfframe)
+			
+			# text input
+			self.offrame72E = QtGui.QLineEdit(self)
+			self.offrame72E.setText("0")
+			self.offrame72E.setFixedWidth(90)
+			self.offrame72E.move(220, rowfframe)
+			
+			# text input
+			self.offrame73E = QtGui.QLineEdit(self)
+			self.offrame73E.setText("0")
+			self.offrame73E.setFixedWidth(90)
+			self.offrame73E.move(320, rowfframe)
+			
+			rowfframe += 30
+			
+			# label
+			self.offrame8L = QtGui.QLabel(translate('magicStart', 'Calculated Face Frame width:'), self)
+			self.offrame8L.move(10, rowfframe+3)
+			
+			# text input
+			self.offrame8E = QtGui.QLineEdit(self)
+			self.offrame8E.setText("0")
+			self.offrame8E.setFixedWidth(90)
+			self.offrame8E.move(220, rowfframe)
+			
+			rowfframe += 30
+			
+			# label
+			self.offrame9L = QtGui.QLabel(translate('magicStart', 'Calculated Face Frame height:'), self)
+			self.offrame9L.move(10, rowfframe+3)
+
+			# text input
+			self.offrame9E = QtGui.QLineEdit(self)
+			self.offrame9E.setText("0")
+			self.offrame9E.setFixedWidth(90)
+			self.offrame9E.move(220, rowfframe)
+		
+			rowfframe += 40
+
+			# button
+			self.offrame10B = QtGui.QPushButton(translate('magicStart', 'create'), self)
+			self.offrame10B.clicked.connect(self.createObject)
+			self.offrame10B.setFixedWidth(toolSW - 20)
+			self.offrame10B.setFixedHeight(createSize)
+			self.offrame10B.move(10, createRow)
+
+			# hide by default
+			self.offrame1i.hide()
+			self.offrame2L.hide()
+			self.offrame2E.hide()
+			self.offrame3L.hide()
+			self.offrame3E.hide()
+			self.offrame4L.hide()
+			self.offrame4E.hide()
+			self.offrame5L.hide()
+			self.offrame5E.hide()
+			self.offrame6B.hide()
+			self.offrame7L.hide()
+			self.offrame71E.hide()
+			self.offrame72E.hide()
+			self.offrame73E.hide()
+			self.offrame8L.hide()
+			self.offrame8E.hide()
+			self.offrame9L.hide()
+			self.offrame9E.hide()
+			self.offrame10B.hide()
+
 			# ############################################################################
 			# GUI for Shelf from GAP (hidden by default)
 			# ############################################################################
@@ -1101,8 +1261,8 @@ def showQtGUI():
 			self.osh8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.osh8B1.clicked.connect(self.createObject)
 			self.osh8B1.setFixedWidth(toolSW - 20)
-			self.osh8B1.setFixedHeight(40)
-			self.osh8B1.move(10, rowshelf)
+			self.osh8B1.setFixedHeight(createSize)
+			self.osh8B1.move(10, createRow)
 
 			# hide by default
 			self.osh1i.hide()
@@ -1281,8 +1441,8 @@ def showQtGUI():
 			self.ocs8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ocs8B1.clicked.connect(self.createObject)
 			self.ocs8B1.setFixedWidth(toolSW - 20)
-			self.ocs8B1.setFixedHeight(40)
-			self.ocs8B1.move(10, rowside)
+			self.ocs8B1.setFixedHeight(createSize)
+			self.ocs8B1.move(10, createRow)
 
 			# hide by default
 			self.ocs1i.hide()
@@ -1318,7 +1478,685 @@ def showQtGUI():
 			self.show()
 
 		# ############################################################################
-		# actions - internal functions
+		# actions - GUI
+		# ############################################################################
+
+		# ############################################################################
+		def setGUIInfo(self, iType="furniture"):
+
+			# ##############################################
+			# hide everything first
+			# ##############################################
+			
+			# side
+			self.ocs1i.hide()
+			self.ocs1L.hide()
+			self.ocs1E.hide()
+			self.ocs2L.hide()
+			self.ocs2E.hide()
+			self.ocs3L.hide()
+			self.ocs31L.hide()
+			self.ocs32L.hide()
+			self.ocs33L.hide()
+			self.ocs34L.hide()
+			self.ocs31E.hide()
+			self.ocs32E.hide()
+			self.ocs33E.hide()
+			self.ocs34E.hide()
+			self.ocs4B1.hide()
+			self.ocs5L.hide()
+			self.ocs51E.hide()
+			self.ocs52E.hide()
+			self.ocs53E.hide()
+			self.ocs6L.hide()
+			self.ocs6E.hide()
+			self.ocs7L.hide()
+			self.ocs7E.hide()
+			self.ocs8B1.hide()
+			
+			# shelf
+			self.osh1i.hide()
+			self.osh1L.hide()
+			self.osh1E.hide()
+			self.osh2L.hide()
+			self.osh2E.hide()
+			self.osh3L.hide()
+			self.osh31L.hide()
+			self.osh32L.hide()
+			self.osh33L.hide()
+			self.osh34L.hide()
+			self.osh31E.hide()
+			self.osh32E.hide()
+			self.osh33E.hide()
+			self.osh34E.hide()
+			self.osh4B1.hide()
+			self.osh5L.hide()
+			self.osh51E.hide()
+			self.osh52E.hide()
+			self.osh53E.hide()
+			self.osh6L.hide()
+			self.osh6E.hide()
+			self.osh7L.hide()
+			self.osh7E.hide()
+			self.osh8B1.hide()
+
+			# front
+			self.ofr1i.hide()
+			self.ofr2L.hide()
+			self.ofr2E.hide()
+			self.ofr3E.hide()
+			self.ofr4E.hide()
+			self.ofr4B1.hide()
+			self.ofr5L.hide()
+			self.ofr5E.hide()
+			self.ofr6L.hide()
+			self.ofr6E.hide()
+			self.ofr7L.hide()
+			self.ofr7E.hide()
+			self.ofr8L.hide()
+			self.ofr81L.hide()
+			self.ofr82L.hide()
+			self.ofr83L.hide()
+			self.ofr84L.hide()
+			self.ofr81E.hide()
+			self.ofr82E.hide()
+			self.ofr83E.hide()
+			self.ofr84E.hide()
+			self.ofr8B1.hide()
+		
+			# face frame
+			self.offrame1i.hide()
+			self.offrame2L.hide()
+			self.offrame2E.hide()
+			self.offrame3L.hide()
+			self.offrame3E.hide()
+			self.offrame4L.hide()
+			self.offrame4E.hide()
+			self.offrame5L.hide()
+			self.offrame5E.hide()
+			self.offrame6B.hide()
+			self.offrame7L.hide()
+			self.offrame71E.hide()
+			self.offrame72E.hide()
+			self.offrame73E.hide()
+			self.offrame8L.hide()
+			self.offrame8E.hide()
+			self.offrame9L.hide()
+			self.offrame9E.hide()
+			self.offrame10B.hide()
+			
+			# drawer
+			self.og1i.hide()
+			self.og2L.hide()
+			self.og2E.hide()
+			self.og3E.hide()
+			self.og4E.hide()
+			self.og4B1.hide()
+			self.og5L.hide()
+			self.og5E.hide()
+			self.og6L.hide()
+			self.og6E.hide()
+			self.og7L.hide()
+			self.og7E.hide()
+			self.og8L.hide()
+			self.og8E.hide()
+			self.og9L.hide()
+			self.og91L.hide()
+			self.og92L.hide()
+			self.og93L.hide()
+			self.og94L.hide()
+			self.og91E.hide()
+			self.og92E.hide()
+			self.og93E.hide()
+			self.og94E.hide()
+			self.og9B1.hide()
+		
+			# drawer series
+			self.ods1i.hide()
+			self.ods2L.hide()
+			self.ods2E.hide()
+			self.ods3L.hide()
+			self.ods3E.hide()
+			self.ods40L.hide()
+			self.ods40E.hide()
+			self.ods4L.hide()
+			self.ods41L.hide()
+			self.ods42L.hide()
+			self.ods43L.hide()
+			self.ods44L.hide()
+			self.ods41E.hide()
+			self.ods42E.hide()
+			self.ods43E.hide()
+			self.ods44E.hide()
+			self.ods5B.hide()
+			self.ods6L.hide()
+			self.ods61E.hide()
+			self.ods62E.hide()
+			self.ods63E.hide()
+			self.ods7L.hide()
+			self.ods7E.hide()
+			self.ods8L.hide()
+			self.ods8E.hide()
+			self.ods9L.hide()
+			self.ods9E.hide()
+			self.ods10B.hide()
+		
+			# foot
+			self.of1L.hide()
+			self.of1E.hide()
+			self.of2L.hide()
+			self.of2E.hide()
+			self.of3L.hide()
+			self.of3E.hide()
+			self.of4L.hide()
+			self.of4E.hide()
+			self.of5L.hide()
+			self.of5E.hide()
+			self.of6B1.hide()
+			
+			# merge
+			self.minfo.hide()
+			
+			# furniture (default)
+			self.oo1i.hide()
+			self.oo1L.hide()
+			self.oo11E.hide()
+			self.oo12E.hide()
+			self.oo13E.hide()
+			self.oooL.hide()
+			self.ooo1E.hide()
+			self.ooo2E.hide()
+			self.ooo3E.hide()
+			self.oo1B1.hide()
+			self.o1L.hide()
+			self.o1E.hide()
+			self.o2L.hide()
+			self.o2E.hide()
+			self.o3L.hide()
+			self.o3E.hide()
+			self.o4L.hide()
+			self.o4E.hide()
+			self.s1B1.hide()
+			
+			# ##############################################
+			# show only needed
+			# ##############################################
+			
+			if iType == "furniture":
+				self.oo1i.show()
+				self.oooL.show()
+				self.ooo1E.show()
+				self.ooo2E.show()
+				self.ooo3E.show()
+				self.oo1L.show()
+				self.oo11E.show()
+				self.oo12E.show()
+				self.oo13E.show()
+				self.oo1B1.show()
+				self.o1L.show()
+				self.o1E.show()
+				self.o2L.show()
+				self.o2E.show()
+				self.o3L.show()
+				self.o3E.show()
+				self.o4L.show()
+				self.o4E.show()
+				self.s1B1.show()
+
+			if iType == "side":
+				self.ocs1i.show()
+				self.ocs1L.show()
+				self.ocs1E.show()
+				self.ocs2L.show()
+				self.ocs2E.show()
+				self.ocs3L.show()
+				self.ocs31L.show()
+				self.ocs32L.show()
+				self.ocs33L.show()
+				self.ocs34L.show()
+				self.ocs31E.show()
+				self.ocs32E.show()
+				self.ocs33E.show()
+				self.ocs34E.show()
+				self.ocs4B1.show()
+				self.ocs5L.show()
+				self.ocs51E.show()
+				self.ocs52E.show()
+				self.ocs53E.show()
+				self.ocs6L.show()
+				self.ocs6E.show()
+				self.ocs7L.show()
+				self.ocs7E.show()
+				self.ocs8B1.show()
+
+			if iType == "shelf":
+				self.osh1i.show()
+				self.osh1L.show()
+				self.osh1E.show()
+				self.osh2L.show()
+				self.osh2E.show()
+				self.osh3L.show()
+				self.osh31L.show()
+				self.osh32L.show()
+				self.osh33L.show()
+				self.osh34L.show()
+				self.osh31E.show()
+				self.osh32E.show()
+				self.osh33E.show()
+				self.osh34E.show()
+				self.osh4B1.show()
+				self.osh5L.show()
+				self.osh51E.show()
+				self.osh52E.show()
+				self.osh53E.show()
+				self.osh6L.show()
+				self.osh6E.show()
+				self.osh7L.show()
+				self.osh7E.show()
+				self.osh8B1.show()
+
+			if iType == "front":
+				self.ofr1i.show()
+				self.ofr2L.show()
+				self.ofr2E.show()
+				self.ofr3E.show()
+				self.ofr4E.show()
+				self.ofr4B1.show()
+				self.ofr5L.show()
+				self.ofr5E.show()
+				self.ofr6L.show()
+				self.ofr6E.show()
+				self.ofr7L.show()
+				self.ofr7E.show()
+				self.ofr8L.show()
+				self.ofr81L.show()
+				self.ofr82L.show()
+				self.ofr83L.show()
+				self.ofr84L.show()
+				self.ofr81E.show()
+				self.ofr82E.show()
+				self.ofr83E.show()
+				self.ofr84E.show()
+				self.ofr8B1.show()
+			
+			if iType == "face frame":
+				self.offrame1i.show()
+				self.offrame2L.show()
+				self.offrame2E.show()
+				self.offrame3L.show()
+				self.offrame3E.show()
+				self.offrame4L.show()
+				self.offrame4E.show()
+				self.offrame5L.show()
+				self.offrame5E.show()
+				self.offrame6B.show()
+				self.offrame7L.show()
+				self.offrame71E.show()
+				self.offrame72E.show()
+				self.offrame73E.show()
+				self.offrame8L.show()
+				self.offrame8E.show()
+				self.offrame9L.show()
+				self.offrame9E.show()
+				self.offrame10B.show()
+
+			if iType == "drawer":
+				self.og1i.show()
+				self.og2L.show()
+				self.og2E.show()
+				self.og3E.show()
+				self.og4E.show()
+				self.og4B1.show()
+				self.og5L.show()
+				self.og5E.show()
+				self.og6L.show()
+				self.og6E.show()
+				self.og7L.show()
+				self.og7E.show()
+				self.og8L.show()
+				self.og8E.show()
+				self.og9L.show()
+				self.og91L.show()
+				self.og92L.show()
+				self.og93L.show()
+				self.og94L.show()
+				self.og91E.show()
+				self.og92E.show()
+				self.og93E.show()
+				self.og94E.show()
+				self.og9B1.show()
+
+			if iType == "drawer series":
+				self.ods1i.show()
+				self.ods2L.show()
+				self.ods2E.show()
+				self.ods3L.show()
+				self.ods3E.show()
+				self.ods40L.show()
+				self.ods40E.show()
+				self.ods4L.show()
+				self.ods41L.show()
+				self.ods42L.show()
+				self.ods43L.show()
+				self.ods44L.show()
+				self.ods41E.show()
+				self.ods42E.show()
+				self.ods43E.show()
+				self.ods44E.show()
+				self.ods5B.show()
+				self.ods6L.show()
+				self.ods61E.show()
+				self.ods62E.show()
+				self.ods63E.show()
+				self.ods7L.show()
+				self.ods7E.show()
+				self.ods8L.show()
+				self.ods8E.show()
+				self.ods9L.show()
+				self.ods9E.show()
+				self.ods10B.show()
+
+			if iType == "foot":
+				self.of1L.show()
+				self.of1E.show()
+				self.of2L.show()
+				self.of2E.show()
+				self.of3L.show()
+				self.of3E.show()
+				self.of4L.show()
+				self.of4E.show()
+				self.of5L.show()
+				self.of5E.show()
+				self.of6B1.show()
+			
+			if iType == "merge":
+				self.minfo.show()
+
+		# ############################################################################	
+		def selectedOption(self, selectedText):
+			
+			global gSelectedFurniture
+			
+			# the key is from translation so this needs to be tested...
+			selectedIndex = getMenuIndex[selectedText]
+			self.gSelectedFurniture = "F"+str(selectedIndex)
+			
+			# set icon
+			
+			if selectedIndex < 10:
+				self.setIcon("msf00"+str(selectedIndex))
+			if selectedIndex >= 10 and selectedIndex < 100:
+				self.setIcon("msf0"+str(selectedIndex))
+			if selectedIndex >= 100:
+				self.setIcon("msf"+str(selectedIndex))
+			
+			# set GUI
+			
+			if (
+				selectedIndex == 2 or 
+				selectedIndex == 3 or 
+				selectedIndex == 4 or 
+				selectedIndex == 5 or 
+				selectedIndex == 6 or 
+				selectedIndex == 7 or 
+				selectedIndex == 8 or 
+				selectedIndex == 9 or 
+				selectedIndex == 11 or 
+				selectedIndex == 12 or 
+				selectedIndex == 13 or 
+				selectedIndex == 14 or 
+				selectedIndex == 15
+				):
+				self.setGUIInfo("merge")
+				
+			if (
+				selectedIndex == 0 or 
+				selectedIndex == 1 or 
+				selectedIndex == 10 or 
+				selectedIndex == 35
+				):
+				self.setGUIInfo()
+			
+			if (
+				selectedIndex == 16 or 
+				selectedIndex == 17 or 
+				selectedIndex == 18 or 
+				selectedIndex == 19 or 
+				selectedIndex == 20
+				):
+				self.setGUIInfo("foot")
+			
+			if selectedIndex == 21 or selectedIndex == 22:
+				self.setGUIInfo("drawer")
+			
+			if selectedIndex == 23:
+				self.setGUIInfo("front")
+
+			if selectedIndex == 24:
+				self.setGUIInfo("front")
+
+			if selectedIndex == 25:
+				self.setGUIInfo("shelf")
+			
+			if selectedIndex == 26:
+				self.setGUIInfo("side")
+
+			if selectedIndex == 30 or selectedIndex == 31:
+				self.setGUIInfo("drawer series")
+			
+			if selectedIndex == 32 or selectedIndex == 33 or selectedIndex == 34:
+				self.setGUIInfo("face frame")
+			
+			# custom settings
+			
+			if selectedIndex == 10:
+				self.o2E.setText("2300")
+			else:
+				self.o2E.setText("760")
+				
+			if selectedIndex == 20:
+				self.of4E.setText("80")
+			else:
+				self.of4E.setText("18")
+			
+			if selectedIndex == 23:
+				self.ofr7E.setText("18")
+				self.ofr81E.setText("9")
+				self.ofr82E.setText("9")
+				self.ofr83E.setText("7")
+				self.ofr84E.setText("7")
+				
+			if selectedIndex == 24:
+				self.ofr7E.setText("18")
+				self.ofr81E.setText("2")
+				self.ofr82E.setText("2")
+				self.ofr83E.setText("2")
+				self.ofr84E.setText("2")
+			
+			if selectedIndex == 35:
+				self.o1E.setText("900")
+			else:
+				self.o1E.setText("500")
+
+		# ############################################################################
+		def createObject(self):
+
+			self.gFSX = float(self.o1E.text())
+			self.gFSZ = float(self.o2E.text())
+			self.gFSY = float(self.o3E.text())
+			self.gThick = float(self.o4E.text())
+
+			if self.gSelectedFurniture == "F0":
+				self.createF0()
+			
+			if self.gSelectedFurniture == "F1":
+				self.createF1()
+			
+			if self.gSelectedFurniture == "F2":
+				self.mergeF("Bookcase_002.FCStd")
+
+			if self.gSelectedFurniture == "F3":
+				self.mergeF("Drawer_001.FCStd")
+			
+			if self.gSelectedFurniture == "F4":
+				self.mergeF("Chair_001.FCStd")
+				
+			if self.gSelectedFurniture == "F5":
+				self.mergeF("PictureFrame_002.FCStd")
+			
+			if self.gSelectedFurniture == "F6":
+				self.mergeF("Table_001.FCStd")
+			
+			if self.gSelectedFurniture == "F7":
+				self.mergeF("StorageBox_001.FCStd", "box")
+			
+			if self.gSelectedFurniture == "F8":
+				self.mergeF("Dowel_8_x_35_mm.FCStd", "mount")
+			
+			if self.gSelectedFurniture == "F9":
+				self.mergeF("Screw_4_x_40_mm.FCStd", "mount")
+			
+			if self.gSelectedFurniture == "F10":
+				self.createF10()
+			
+			if self.gSelectedFurniture == "F11":
+				self.mergeF("Screw_3_x_20_mm.FCStd", "mount")
+				
+			if self.gSelectedFurniture == "F12":
+				self.mergeF("Screw_5_x_50_mm.FCStd", "mount")
+			
+			if self.gSelectedFurniture == "F13":
+				self.mergeF("Counterbore2x_5_x_60_mm.FCStd", "mount")
+			
+			if self.gSelectedFurniture == "F14":
+				self.mergeF("Shelf_Pin_5_x_16.FCStd", "mount")
+			
+			if self.gSelectedFurniture == "F15":
+				self.mergeF("Angle_40_x_40_x_100_mm.FCStd", "angles")
+			
+			if self.gSelectedFurniture == "F16":
+				self.createF16()
+			
+			if self.gSelectedFurniture == "F17":
+				self.createF17()
+				
+			if self.gSelectedFurniture == "F18":
+				self.createF18()
+				
+			if self.gSelectedFurniture == "F19":
+				self.createF19()
+				
+			if self.gSelectedFurniture == "F20":
+				self.createF20()
+			
+			if self.gSelectedFurniture == "F21":
+				self.createF21()
+			
+			if self.gSelectedFurniture == "F22":
+				self.createF22()
+			
+			if self.gSelectedFurniture == "F23":
+				self.createF23()
+			
+			if self.gSelectedFurniture == "F24":
+				self.createF24()
+			
+			if self.gSelectedFurniture == "F25":
+				self.createF25()
+			
+			if self.gSelectedFurniture == "F26":
+				self.createF26()
+			
+			if self.gSelectedFurniture == "F27":
+				self.createF27()
+			
+			if self.gSelectedFurniture == "F28":
+				self.createF28()
+				
+			if self.gSelectedFurniture == "F29":
+				self.createF29()
+			
+			if self.gSelectedFurniture == "F30":
+				self.createF30()
+			
+			if self.gSelectedFurniture == "F31":
+				self.createF31()
+			
+			if self.gSelectedFurniture == "F32":
+				self.createF32()
+			
+			if self.gSelectedFurniture == "F33":
+				self.createF33()
+				
+			if self.gSelectedFurniture == "F34":
+				self.createF34()
+			
+			if self.gSelectedFurniture == "F35":
+				self.createF35()
+				
+		# ############################################################################
+		# actions - special functions
+		# ############################################################################
+		
+		# ############################################################################
+		def setIcon(self, iName):
+			
+			path = FreeCADGui.activeWorkbench().path
+			iconPath = str(os.path.join(path, "Icons"))
+			f = os.path.join(iconPath, iName+".png")
+			
+			if os.path.exists(f):
+				filename = f
+				icon = '<img src="'+ filename + '" width="200" height="200" align="right">'
+				self.si.hide()
+				self.si = QtGui.QLabel(icon, self)
+				self.si.move(250, 50)
+				self.si.show()
+
+		# ############################################################################
+		def getPathToMerge(self, iName, iType):
+			
+			if iType == "F":
+				path = FreeCADGui.activeWorkbench().path
+				path = str(os.path.join(path, "Examples"))
+				path = str(os.path.join(path, "Parametric"))
+				path = str(os.path.join(path, "Furniture"))
+				path = str(os.path.join(path, iName))
+
+			if iType == "box":
+				path = FreeCADGui.activeWorkbench().path
+				path = str(os.path.join(path, "Examples"))
+				path = str(os.path.join(path, "Parametric"))
+				path = str(os.path.join(path, "Storage boxes"))
+				path = str(os.path.join(path, iName))
+			
+			if iType == "mount":
+				path = FreeCADGui.activeWorkbench().path
+				path = str(os.path.join(path, "Examples"))
+				path = str(os.path.join(path, "Fixture"))
+				path = str(os.path.join(path, "Mount"))
+				path = str(os.path.join(path, iName))
+			
+			if iType == "angles":
+				path = FreeCADGui.activeWorkbench().path
+				path = str(os.path.join(path, "Examples"))
+				path = str(os.path.join(path, "Fixture"))
+				path = str(os.path.join(path, "Angles"))
+				path = str(os.path.join(path, iName))
+				
+			return path
+
+		# ############################################################################
+		def mergeF(self, iName, iType="F"):
+		
+			# merge
+			FreeCAD.ActiveDocument.mergeProject(self.getPathToMerge(iName, iType))
+		
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+
+		# ############################################################################
+		# actions - calculation functions
 		# ############################################################################
 
 		# ############################################################################
@@ -1374,7 +2212,11 @@ def showQtGUI():
 				elif self.gSelectedFurniture == "F29":
 					depth = float(obj.Width.Value) + 3
 					startY = float(sub.Placement.Base.y)
-					
+				
+				if self.gSelectedFurniture == "F35":
+					depth = float(obj.Width.Value) + 3 + 19
+					startY = float(sub.Placement.Base.y) - 19
+
 				else:
 					depth = float(obj.Width.Value) + woodt
 					startY = float(sub.Placement.Base.y) - woodt
@@ -1408,6 +2250,451 @@ def showQtGUI():
 			
 			if depth != 0:
 				self.o3E.setText(str(depth))
+
+		# ############################################################################
+		def calculateGapForDrawer(self):
+			
+			obj1 = False
+			obj2 = False
+			obj3 = False
+			
+			edge1 = False
+			edge2 = False
+			face1 = False
+			
+			try:
+				obj1 = FreeCADGui.Selection.getSelection()[0]
+				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+			
+			except:
+				skip = 1
+				
+			try:
+				obj2 = FreeCADGui.Selection.getSelection()[1]
+				edge2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+				
+			except:
+				skip = 1
+			
+			try:
+				obj3 = FreeCADGui.Selection.getSelection()[2]
+				face1 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
+			
+			except:
+				skip = 1
+				
+			FreeCADGui.Selection.clearSelection()
+
+			startX = 0
+			startY = 0
+			startZ = 0
+			width = 0
+			height = 0
+			depth = 0
+				
+			if edge1 != False and edge2 != False:
+				
+				height = float(MagicPanels.touchTypo(edge2)[1].Z) - float(MagicPanels.touchTypo(edge1)[1].Z)
+				
+				# first short shelf and second long top
+				if float(edge1.Length) < float(edge2.Length):
+					width = float(edge1.Length)
+					startX = float(MagicPanels.touchTypo(edge1)[1].X)
+					startY = float(MagicPanels.touchTypo(edge2)[1].Y) # but shelf might be inside
+					startZ = float(MagicPanels.touchTypo(edge1)[1].Z) # Z start should always be first selected
+				
+				# first long bottom floor and second short shelf
+				else:
+					width = float(edge2.Length)
+					startX = float(MagicPanels.touchTypo(edge2)[1].X)
+					startY = float(MagicPanels.touchTypo(edge1)[1].Y) # but shelf might be inside
+					startZ = float(MagicPanels.touchTypo(edge1)[1].Z) # Z start should always be first selected
+				
+				# first short shelf and second long top
+				if float(obj1.Width.Value) < float(obj2.Width.Value):
+					depth = float(obj1.Width.Value)
+				
+				# first long bottom floor and second short shelf
+				else:
+					depth = float(obj2.Width.Value)
+
+			if edge1 != False and edge2 == False:
+				
+				width = float(edge1.Length)
+				height = float(MagicPanels.touchTypo(edge1)[1].Z)
+				depth = float(obj1.Width.Value)
+				startX = float(MagicPanels.touchTypo(edge1)[1].X)
+				startY = float(MagicPanels.touchTypo(edge1)[1].Y)
+				startZ = 0
+			
+			# try to fix depth if face selected
+			if face1 != False:
+				depth = float(face1.CenterOfMass.y) - startY
+			
+			# set values to text fields
+			self.og2E.setText(str(startX))
+			self.og3E.setText(str(startY))
+			self.og4E.setText(str(startZ))
+			self.og5E.setText(str(width))
+			self.og6E.setText(str(height))
+			self.og7E.setText(str(depth))
+
+		# ############################################################################
+		def calculateFrontFromGap(self):
+			
+			obj1 = False
+			obj2 = False
+			obj3 = False
+			obj4 = False
+			
+			edge1 = False
+			edge2 = False
+			edge3 = False
+			edge4 = False
+			
+			try:
+				obj1 = FreeCADGui.Selection.getSelection()[0]
+				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				
+				obj2 = FreeCADGui.Selection.getSelection()[1]
+				edge2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+				
+				obj3 = FreeCADGui.Selection.getSelection()[2]
+				edge3 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
+				
+				obj4 = FreeCADGui.Selection.getSelection()[3]
+				edge4 = FreeCADGui.Selection.getSelectionEx()[3].SubObjects[0]
+				
+			except:
+				return
+				
+			FreeCADGui.Selection.clearSelection()
+
+			gh = float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z)
+			gw = float(edge4.CenterOfMass.x) - float(edge3.CenterOfMass.x)
+			
+			sx = float(edge3.CenterOfMass.x)
+			sy = float(edge3.CenterOfMass.y)
+			sz = float(edge1.CenterOfMass.z)
+			
+			thick = float(self.ofr7E.text())
+			
+			offL = float(self.ofr81E.text())
+			offR = float(self.ofr82E.text())
+			offT = float(self.ofr83E.text())
+			offB = float(self.ofr84E.text())
+			
+			# outside
+			if self.gSelectedFurniture == "F23":
+				width = offL + gw + offR
+				height = offB + gh + offT
+				startX = sx - offL
+				startY = sy - thick
+				startZ = sz - offB
+
+			# inside
+			if self.gSelectedFurniture == "F24":
+				width = gw - offL - offR
+				height = gh - offB - offT
+				startX = sx + offL
+				startY = sy
+				startZ = sz + offB
+	
+			# set values to text fields
+			self.ofr2E.setText(str(startX))
+			self.ofr3E.setText(str(startY))
+			self.ofr4E.setText(str(startZ))
+			self.ofr5E.setText(str(width))
+			self.ofr6E.setText(str(height))
+
+		# ############################################################################
+		def calculateFaceframeFromGap(self):
+			
+			obj1 = False
+			obj2 = False
+			obj3 = False
+			obj4 = False
+			
+			edge1 = False
+			edge2 = False
+			edge3 = False
+			edge4 = False
+			
+			try:
+				obj1 = FreeCADGui.Selection.getSelection()[0]
+				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				
+				obj2 = FreeCADGui.Selection.getSelection()[1]
+				edge2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+				
+				obj3 = FreeCADGui.Selection.getSelection()[2]
+				edge3 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
+				
+				obj4 = FreeCADGui.Selection.getSelection()[3]
+				edge4 = FreeCADGui.Selection.getSelectionEx()[3].SubObjects[0]
+				
+			except:
+				return
+				
+			FreeCADGui.Selection.clearSelection()
+
+			gh = abs(float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z))
+			gw = abs(float(edge4.CenterOfMass.x) - float(edge3.CenterOfMass.x))
+			
+			gsx = float(edge3.CenterOfMass.x)
+			gsy = float(edge3.CenterOfMass.y)
+			gsz = float(edge1.CenterOfMass.z)
+			
+			barThick = float(self.offrame3E.text())
+			offX = float(self.offrame4E.text())
+			offY = float(self.offrame5E.text())
+			
+			# get furniture thickness from left side
+			sizes = []
+			sizes = MagicPanels.getSizes(obj3)
+			sizes.sort()
+			sideThick = sizes[0]
+			
+			width = offX + sideThick + gw + sideThick + offX
+			height = offX + sideThick + gh + sideThick + offX
+			startX = gsx - sideThick - offX
+			startY = gsy - barThick + offY
+			startZ = gsz - sideThick - offX
+
+			# set values to text fields
+			self.offrame71E.setText(str(startX))
+			self.offrame72E.setText(str(startY))
+			self.offrame73E.setText(str(startZ))
+			self.offrame8E.setText(str(width))
+			self.offrame9E.setText(str(height))
+
+		# ############################################################################
+		def calculateShelfFromGap(self):
+			
+			obj1 = False
+			obj2 = False
+			obj3 = False
+			
+			edge1 = False
+			edge2 = False
+			face1 = False
+			
+			try:
+				obj1 = FreeCADGui.Selection.getSelection()[0]
+				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				
+				obj2 = FreeCADGui.Selection.getSelection()[1]
+				edge2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+				
+				obj3 = FreeCADGui.Selection.getSelection()[2]
+				face1 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
+				
+			except:
+				return
+				
+			FreeCADGui.Selection.clearSelection()
+
+			gdepth = float(face1.CenterOfMass.y) - float(edge1.CenterOfMass.y)
+			gwidth = float(edge2.CenterOfMass.x) - float(edge1.CenterOfMass.x)
+			
+			sx = float(edge1.CenterOfMass.x)
+			sy = float(edge1.CenterOfMass.y)
+			sz = float(edge1.CenterOfMass.z)
+			
+			thick = float(self.osh1E.text())
+			udepth = float(self.osh2E.text())
+			
+			offL = float(self.osh31E.text())
+			offR = float(self.osh32E.text())
+			offF = float(self.osh33E.text())
+			offB = float(self.osh34E.text())
+			
+			width = gwidth - offL - offR
+			
+			if udepth == 0:
+				depth = gdepth - offF - offB
+			else:
+				depth = udepth
+				offB = 0
+				offF = gdepth - depth
+			
+			startX = sx + offL
+			startY = sy + offF
+			startZ = sz
+
+			# set values to text fields
+			self.osh2E.setText(str(depth))
+			self.osh31E.setText(str(offL))
+			self.osh32E.setText(str(offR))
+			self.osh33E.setText(str(offF))
+			self.osh34E.setText(str(offB))
+			
+			self.osh51E.setText(str(startX))
+			self.osh52E.setText(str(startY))
+			self.osh53E.setText(str(startZ))
+			
+			self.osh6E.setText(str(width))
+			self.osh7E.setText(str(depth))
+
+		# ############################################################################
+		def calculateSideFromGap(self):
+			
+			obj1 = False
+			obj2 = False
+			obj3 = False
+			
+			edge1 = False
+			edge2 = False
+			face1 = False
+			
+			try:
+				obj1 = FreeCADGui.Selection.getSelection()[0]
+				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				
+				obj2 = FreeCADGui.Selection.getSelection()[1]
+				edge2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+				
+				obj3 = FreeCADGui.Selection.getSelection()[2]
+				face1 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
+				
+			except:
+			
+				try:
+					obj1 = FreeCADGui.Selection.getSelection()[0]
+					edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+					
+					obj2 = FreeCADGui.Selection.getSelection()[0]
+					edge2 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[1]
+					
+					obj3 = FreeCADGui.Selection.getSelection()[1]
+					face1 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+					
+				except:
+					return
+				
+			FreeCADGui.Selection.clearSelection()
+			
+			# face below
+			if float(face1.CenterOfMass.z) < float(edge1.CenterOfMass.z):
+				gheight = float(edge1.CenterOfMass.z) - float(face1.CenterOfMass.z)
+				sz = float(face1.CenterOfMass.z)
+				
+			# face above I hope so :-)
+			else: 
+				gheight = float(face1.CenterOfMass.z) - float(edge1.CenterOfMass.z)
+				sz = float(MagicPanels.touchTypo(edge1)[0].Z)
+				
+			gdepth = float(edge1.Length)
+			
+			# prefer closer point to start
+			if float(MagicPanels.touchTypo(edge1)[0].Y) < float(MagicPanels.touchTypo(edge1)[1].Y):
+				sx = float(MagicPanels.touchTypo(edge1)[0].X)
+				sy = float(MagicPanels.touchTypo(edge1)[0].Y)
+				
+			else:
+				sx = float(MagicPanels.touchTypo(edge1)[1].X)
+				sy = float(MagicPanels.touchTypo(edge1)[1].Y)
+				
+			
+			thick = float(self.ocs1E.text())
+			udepth = float(self.ocs2E.text())
+			
+			offTo = float(self.ocs31E.text())
+			offBo = float(self.ocs32E.text())
+			offFr = float(self.ocs33E.text())
+			offBa = float(self.ocs34E.text())
+			
+			height = gheight - offBo - offTo
+			
+			if udepth == 0:
+				depth = gdepth - offFr - offBa
+			else:
+				depth = udepth
+				offBa = 0
+				offFr = gdepth - depth
+			
+			width = float(edge2.CenterOfMass.x) - float(edge1.CenterOfMass.x)
+			startX = sx + (width / 2) - (thick / 2) 
+			startY = sy + offFr
+			startZ = sz + offBo
+
+			# set values to text fields
+			self.ocs2E.setText(str(depth))
+			self.ocs31E.setText(str(offTo))
+			self.ocs32E.setText(str(offBo))
+			self.ocs33E.setText(str(offFr))
+			self.ocs34E.setText(str(offBa))
+			
+			self.ocs51E.setText(str(startX))
+			self.ocs52E.setText(str(startY))
+			self.ocs53E.setText(str(startZ))
+			
+			self.ocs6E.setText(str(height))
+			self.ocs7E.setText(str(depth))
+
+		# ############################################################################
+		def calculateGapForDrawerSeries(self):
+			
+			obj1 = False
+			obj2 = False
+			obj3 = False
+			obj4 = False
+			obj5 = False
+			
+			edge1 = False
+			edge2 = False
+			edge3 = False
+			edge4 = False
+			
+			face1 = False
+			
+			try:
+				obj1 = FreeCADGui.Selection.getSelection()[0]
+				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				
+				obj2 = FreeCADGui.Selection.getSelection()[1]
+				edge2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+				
+				obj3 = FreeCADGui.Selection.getSelection()[2]
+				edge3 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
+				
+				obj4 = FreeCADGui.Selection.getSelection()[3]
+				edge4 = FreeCADGui.Selection.getSelectionEx()[3].SubObjects[0]
+				
+				obj5 = FreeCADGui.Selection.getSelection()[4]
+				face1 = FreeCADGui.Selection.getSelectionEx()[4].SubObjects[0]
+			
+			except:
+				return
+
+			FreeCADGui.Selection.clearSelection()
+
+			startX = float(edge3.CenterOfMass.x)
+			startY = float(edge3.CenterOfMass.y)
+			startZ = float(edge1.CenterOfMass.z)
+			
+			gw = abs(float(edge4.CenterOfMass.x) - float(edge3.CenterOfMass.x))
+			gh = abs(float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z))
+			gd = abs(float(face1.CenterOfMass.y) - float(edge3.CenterOfMass.y))
+			
+			num = int(self.ods2E.text())
+			offset = float(self.ods40E.text())
+			
+			width = gw
+			height = ( gh - ((num + 1) * offset) ) / num
+			depth = gd
+			
+			# set values to text fields
+			self.ods61E.setText(str(startX))
+			self.ods62E.setText(str(startY))
+			self.ods63E.setText(str(startZ))
+			self.ods7E.setText(str(width))
+			self.ods8E.setText(str(height))
+			self.ods9E.setText(str(depth))
+
+		# ############################################################################
+		# actions - draw functions
+		# ############################################################################
 
 		# ############################################################################
 		def createF0(self):
@@ -1957,94 +3244,6 @@ def showQtGUI():
 			FreeCAD.ActiveDocument.recompute()
 		
 		# ############################################################################
-		def calculateGapForDrawer(self):
-			
-			obj1 = False
-			obj2 = False
-			obj3 = False
-			
-			edge1 = False
-			edge2 = False
-			face1 = False
-			
-			try:
-				obj1 = FreeCADGui.Selection.getSelection()[0]
-				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-			
-			except:
-				skip = 1
-				
-			try:
-				obj2 = FreeCADGui.Selection.getSelection()[1]
-				edge2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-				
-			except:
-				skip = 1
-			
-			try:
-				obj3 = FreeCADGui.Selection.getSelection()[2]
-				face1 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
-			
-			except:
-				skip = 1
-				
-			FreeCADGui.Selection.clearSelection()
-
-			startX = 0
-			startY = 0
-			startZ = 0
-			width = 0
-			height = 0
-			depth = 0
-				
-			if edge1 != False and edge2 != False:
-				
-				height = float(MagicPanels.touchTypo(edge2)[1].Z) - float(MagicPanels.touchTypo(edge1)[1].Z)
-				
-				# first short shelf and second long top
-				if float(edge1.Length) < float(edge2.Length):
-					width = float(edge1.Length)
-					startX = float(MagicPanels.touchTypo(edge1)[1].X)
-					startY = float(MagicPanels.touchTypo(edge2)[1].Y) # but shelf might be inside
-					startZ = float(MagicPanels.touchTypo(edge1)[1].Z) # Z start should always be first selected
-				
-				# first long bottom floor and second short shelf
-				else:
-					width = float(edge2.Length)
-					startX = float(MagicPanels.touchTypo(edge2)[1].X)
-					startY = float(MagicPanels.touchTypo(edge1)[1].Y) # but shelf might be inside
-					startZ = float(MagicPanels.touchTypo(edge1)[1].Z) # Z start should always be first selected
-				
-				# first short shelf and second long top
-				if float(obj1.Width.Value) < float(obj2.Width.Value):
-					depth = float(obj1.Width.Value)
-				
-				# first long bottom floor and second short shelf
-				else:
-					depth = float(obj2.Width.Value)
-
-			if edge1 != False and edge2 == False:
-				
-				width = float(edge1.Length)
-				height = float(MagicPanels.touchTypo(edge1)[1].Z)
-				depth = float(obj1.Width.Value)
-				startX = float(MagicPanels.touchTypo(edge1)[1].X)
-				startY = float(MagicPanels.touchTypo(edge1)[1].Y)
-				startZ = 0
-			
-			# try to fix depth if face selected
-			if face1 != False:
-				depth = float(face1.CenterOfMass.y) - startY
-			
-			# set values to text fields
-			self.og2E.setText(str(startX))
-			self.og3E.setText(str(startY))
-			self.og4E.setText(str(startZ))
-			self.og5E.setText(str(width))
-			self.og6E.setText(str(height))
-			self.og7E.setText(str(depth))
-
-		# ############################################################################
 		def createF21(self):
 			
 			p0X = float(self.og2E.text())
@@ -2217,74 +3416,6 @@ def showQtGUI():
 			FreeCAD.ActiveDocument.recompute()
 		
 		# ############################################################################
-		def calculateFrontFromGap(self):
-			
-			obj1 = False
-			obj2 = False
-			obj3 = False
-			obj4 = False
-			
-			edge1 = False
-			edge2 = False
-			edge3 = False
-			edge4 = False
-			
-			try:
-				obj1 = FreeCADGui.Selection.getSelection()[0]
-				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-				
-				obj2 = FreeCADGui.Selection.getSelection()[1]
-				edge2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-				
-				obj3 = FreeCADGui.Selection.getSelection()[2]
-				edge3 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
-				
-				obj4 = FreeCADGui.Selection.getSelection()[3]
-				edge4 = FreeCADGui.Selection.getSelectionEx()[3].SubObjects[0]
-				
-			except:
-				return
-				
-			FreeCADGui.Selection.clearSelection()
-
-			gh = float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z)
-			gw = float(edge4.CenterOfMass.x) - float(edge3.CenterOfMass.x)
-			
-			sx = float(edge3.CenterOfMass.x)
-			sy = float(edge3.CenterOfMass.y)
-			sz = float(edge1.CenterOfMass.z)
-			
-			thick = float(self.ofr7E.text())
-			
-			offL = float(self.ofr81E.text())
-			offR = float(self.ofr82E.text())
-			offT = float(self.ofr83E.text())
-			offB = float(self.ofr84E.text())
-			
-			# outside
-			if self.gSelectedFurniture == "F23":
-				width = offL + gw + offR
-				height = offB + gh + offT
-				startX = sx - offL
-				startY = sy - thick
-				startZ = sz - offB
-
-			# inside
-			if self.gSelectedFurniture == "F24":
-				width = gw - offL - offR
-				height = gh - offB - offT
-				startX = sx + offL
-				startY = sy
-				startZ = sz + offB
-	
-			# set values to text fields
-			self.ofr2E.setText(str(startX))
-			self.ofr3E.setText(str(startY))
-			self.ofr4E.setText(str(startZ))
-			self.ofr5E.setText(str(width))
-			self.ofr6E.setText(str(height))
-
-		# ############################################################################
 		def createF23(self):
 			
 			p0X = float(self.ofr2E.text())
@@ -2331,74 +3462,6 @@ def showQtGUI():
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
-		
-		# ############################################################################
-		def calculateShelfFromGap(self):
-			
-			obj1 = False
-			obj2 = False
-			obj3 = False
-			
-			edge1 = False
-			edge2 = False
-			face1 = False
-			
-			try:
-				obj1 = FreeCADGui.Selection.getSelection()[0]
-				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-				
-				obj2 = FreeCADGui.Selection.getSelection()[1]
-				edge2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-				
-				obj3 = FreeCADGui.Selection.getSelection()[2]
-				face1 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
-				
-			except:
-				return
-				
-			FreeCADGui.Selection.clearSelection()
-
-			gdepth = float(face1.CenterOfMass.y) - float(edge1.CenterOfMass.y)
-			gwidth = float(edge2.CenterOfMass.x) - float(edge1.CenterOfMass.x)
-			
-			sx = float(edge1.CenterOfMass.x)
-			sy = float(edge1.CenterOfMass.y)
-			sz = float(edge1.CenterOfMass.z)
-			
-			thick = float(self.osh1E.text())
-			udepth = float(self.osh2E.text())
-			
-			offL = float(self.osh31E.text())
-			offR = float(self.osh32E.text())
-			offF = float(self.osh33E.text())
-			offB = float(self.osh34E.text())
-			
-			width = gwidth - offL - offR
-			
-			if udepth == 0:
-				depth = gdepth - offF - offB
-			else:
-				depth = udepth
-				offB = 0
-				offF = gdepth - depth
-			
-			startX = sx + offL
-			startY = sy + offF
-			startZ = sz
-
-			# set values to text fields
-			self.osh2E.setText(str(depth))
-			self.osh31E.setText(str(offL))
-			self.osh32E.setText(str(offR))
-			self.osh33E.setText(str(offF))
-			self.osh34E.setText(str(offB))
-			
-			self.osh51E.setText(str(startX))
-			self.osh52E.setText(str(startY))
-			self.osh53E.setText(str(startZ))
-			
-			self.osh6E.setText(str(width))
-			self.osh7E.setText(str(depth))
 
 		# ############################################################################
 		def createF25(self):
@@ -2423,102 +3486,6 @@ def showQtGUI():
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
-
-		# ############################################################################
-		def calculateSideFromGap(self):
-			
-			obj1 = False
-			obj2 = False
-			obj3 = False
-			
-			edge1 = False
-			edge2 = False
-			face1 = False
-			
-			try:
-				obj1 = FreeCADGui.Selection.getSelection()[0]
-				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-				
-				obj2 = FreeCADGui.Selection.getSelection()[1]
-				edge2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-				
-				obj3 = FreeCADGui.Selection.getSelection()[2]
-				face1 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
-				
-			except:
-			
-				try:
-					obj1 = FreeCADGui.Selection.getSelection()[0]
-					edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-					
-					obj2 = FreeCADGui.Selection.getSelection()[0]
-					edge2 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[1]
-					
-					obj3 = FreeCADGui.Selection.getSelection()[1]
-					face1 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-					
-				except:
-					return
-				
-			FreeCADGui.Selection.clearSelection()
-			
-			# face below
-			if float(face1.CenterOfMass.z) < float(edge1.CenterOfMass.z):
-				gheight = float(edge1.CenterOfMass.z) - float(face1.CenterOfMass.z)
-				sz = float(face1.CenterOfMass.z)
-				
-			# face above I hope so :-)
-			else: 
-				gheight = float(face1.CenterOfMass.z) - float(edge1.CenterOfMass.z)
-				sz = float(MagicPanels.touchTypo(edge1)[0].Z)
-				
-			gdepth = float(edge1.Length)
-			
-			# prefer closer point to start
-			if float(MagicPanels.touchTypo(edge1)[0].Y) < float(MagicPanels.touchTypo(edge1)[1].Y):
-				sx = float(MagicPanels.touchTypo(edge1)[0].X)
-				sy = float(MagicPanels.touchTypo(edge1)[0].Y)
-				
-			else:
-				sx = float(MagicPanels.touchTypo(edge1)[1].X)
-				sy = float(MagicPanels.touchTypo(edge1)[1].Y)
-				
-			
-			thick = float(self.ocs1E.text())
-			udepth = float(self.ocs2E.text())
-			
-			offTo = float(self.ocs31E.text())
-			offBo = float(self.ocs32E.text())
-			offFr = float(self.ocs33E.text())
-			offBa = float(self.ocs34E.text())
-			
-			height = gheight - offBo - offTo
-			
-			if udepth == 0:
-				depth = gdepth - offFr - offBa
-			else:
-				depth = udepth
-				offBa = 0
-				offFr = gdepth - depth
-			
-			width = float(edge2.CenterOfMass.x) - float(edge1.CenterOfMass.x)
-			startX = sx + (width / 2) - (thick / 2) 
-			startY = sy + offFr
-			startZ = sz + offBo
-
-			# set values to text fields
-			self.ocs2E.setText(str(depth))
-			self.ocs31E.setText(str(offTo))
-			self.ocs32E.setText(str(offBo))
-			self.ocs33E.setText(str(offFr))
-			self.ocs34E.setText(str(offBa))
-			
-			self.ocs51E.setText(str(startX))
-			self.ocs52E.setText(str(startY))
-			self.ocs53E.setText(str(startZ))
-			
-			self.ocs6E.setText(str(height))
-			self.ocs7E.setText(str(depth))
 
 		# ############################################################################
 		def createF26(self):
@@ -2803,66 +3770,6 @@ def showQtGUI():
 			FreeCAD.ActiveDocument.recompute()
 
 		# ############################################################################
-		def calculateGapForDrawerSeries(self):
-			
-			obj1 = False
-			obj2 = False
-			obj3 = False
-			obj4 = False
-			obj5 = False
-			
-			edge1 = False
-			edge2 = False
-			edge3 = False
-			edge4 = False
-			
-			face1 = False
-			
-			try:
-				obj1 = FreeCADGui.Selection.getSelection()[0]
-				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-				
-				obj2 = FreeCADGui.Selection.getSelection()[1]
-				edge2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-				
-				obj3 = FreeCADGui.Selection.getSelection()[2]
-				edge3 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
-				
-				obj4 = FreeCADGui.Selection.getSelection()[3]
-				edge4 = FreeCADGui.Selection.getSelectionEx()[3].SubObjects[0]
-				
-				obj5 = FreeCADGui.Selection.getSelection()[4]
-				face1 = FreeCADGui.Selection.getSelectionEx()[4].SubObjects[0]
-			
-			except:
-				return
-
-			FreeCADGui.Selection.clearSelection()
-
-			startX = float(edge3.CenterOfMass.x)
-			startY = float(edge3.CenterOfMass.y)
-			startZ = float(edge1.CenterOfMass.z)
-			
-			gw = abs(float(edge4.CenterOfMass.x) - float(edge3.CenterOfMass.x))
-			gh = abs(float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z))
-			gd = abs(float(face1.CenterOfMass.y) - float(edge3.CenterOfMass.y))
-			
-			num = int(self.ods2E.text())
-			offset = float(self.ods40E.text())
-			
-			width = gw
-			height = ( gh - ((num + 1) * offset) ) / num
-			depth = gd
-			
-			# set values to text fields
-			self.ods61E.setText(str(startX))
-			self.ods62E.setText(str(startY))
-			self.ods63E.setText(str(startZ))
-			self.ods7E.setText(str(width))
-			self.ods8E.setText(str(height))
-			self.ods9E.setText(str(depth))
-
-		# ############################################################################
 		def createF30(self):
 			
 			p0X = float(self.ods61E.text())
@@ -3048,604 +3955,365 @@ def showQtGUI():
 			FreeCAD.ActiveDocument.recompute()
 		
 		# ############################################################################
-		def setIcon(self, iName):
+		def createF32(self):
 			
-			path = FreeCADGui.activeWorkbench().path
-			iconPath = str(os.path.join(path, "Icons"))
-			f = os.path.join(iconPath, iName+".png")
+			barWidth = float(self.offrame2E.text())
+			barThick = float(self.offrame3E.text())
 			
-			if os.path.exists(f):
-				filename = f
-				icon = '<img src="'+ filename + '" width="200" height="200" align="right">'
-				self.si.hide()
-				self.si = QtGui.QLabel(icon, self)
-				self.si.move(250, 50)
-				self.si.show()
-
-		# ############################################################################
-		def getPathToMerge(self, iName, iType):
+			FSX = float(self.offrame71E.text())
+			FSY = float(self.offrame72E.text())
+			FSZ = float(self.offrame73E.text())
 			
-			if iType == "F":
-				path = FreeCADGui.activeWorkbench().path
-				path = str(os.path.join(path, "Examples"))
-				path = str(os.path.join(path, "Parametric"))
-				path = str(os.path.join(path, "Furniture"))
-				path = str(os.path.join(path, iName))
-
-			if iType == "box":
-				path = FreeCADGui.activeWorkbench().path
-				path = str(os.path.join(path, "Examples"))
-				path = str(os.path.join(path, "Parametric"))
-				path = str(os.path.join(path, "Storage boxes"))
-				path = str(os.path.join(path, iName))
+			FFWidth = float(self.offrame8E.text())
+			FFHeight = float(self.offrame9E.text())
 			
-			if iType == "mount":
-				path = FreeCADGui.activeWorkbench().path
-				path = str(os.path.join(path, "Examples"))
-				path = str(os.path.join(path, "Fixture"))
-				path = str(os.path.join(path, "Mount"))
-				path = str(os.path.join(path, iName))
+			# Left Side
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFLeft")
+			o1.Label = translate('magicStart', 'Face Frame Left')
+			o1.Length = barWidth
+			o1.Height = FFHeight - (2 * barWidth)
+			o1.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ + barWidth)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			o1.ViewObject.ShapeColor = self.gColor
 			
-			if iType == "angles":
-				path = FreeCADGui.activeWorkbench().path
-				path = str(os.path.join(path, "Examples"))
-				path = str(os.path.join(path, "Fixture"))
-				path = str(os.path.join(path, "Angles"))
-				path = str(os.path.join(path, iName))
-				
-			return path
-
-		# ############################################################################
-		def mergeF(self, iName, iType="F"):
-		
-			# merge
-			FreeCAD.ActiveDocument.mergeProject(self.getPathToMerge(iName, iType))
-		
+			# Right Side
+			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFRight")
+			o2.Label = translate('magicStart', 'Face Frame Right')
+			o2.Length = barWidth
+			o2.Height = FFHeight - (2 * barWidth)
+			o2.Width = barThick
+			pl = FreeCAD.Vector(FSX + FFWidth - barWidth, FSY, FSZ + barWidth)
+			o2.Placement = FreeCAD.Placement(pl, self.gR)
+			o2.ViewObject.ShapeColor = self.gColor
+			
+			# Bottom
+			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFBottom")
+			o3.Label = translate('magicStart', 'Face Frame Bottom')
+			o3.Length = FFWidth
+			o3.Height = barWidth
+			o3.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ)
+			o3.Placement = FreeCAD.Placement(pl, self.gR)
+			o3.ViewObject.ShapeColor = self.gColor
+			
+			# Top
+			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFTop")
+			o4.Label = translate('magicStart', 'Face Frame Top')
+			o4.Length = FFWidth
+			o4.Height = barWidth
+			o4.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ + FFHeight - barWidth)
+			o4.Placement = FreeCAD.Placement(pl, self.gR)
+			o4.ViewObject.ShapeColor = self.gColor
+			
+			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFF')
+			container.setLink([o1, o2, o3, o4])
+			container.Label = "Container, Face Frame"
+			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
-		
-		# ############################################################################
-		def setGUIInfo(self, iType="furniture"):
-
-			# ##############################################
-			# hide everything first
-			# ##############################################
-			
-			# side
-			self.ocs1i.hide()
-			self.ocs1L.hide()
-			self.ocs1E.hide()
-			self.ocs2L.hide()
-			self.ocs2E.hide()
-			self.ocs3L.hide()
-			self.ocs31L.hide()
-			self.ocs32L.hide()
-			self.ocs33L.hide()
-			self.ocs34L.hide()
-			self.ocs31E.hide()
-			self.ocs32E.hide()
-			self.ocs33E.hide()
-			self.ocs34E.hide()
-			self.ocs4B1.hide()
-			self.ocs5L.hide()
-			self.ocs51E.hide()
-			self.ocs52E.hide()
-			self.ocs53E.hide()
-			self.ocs6L.hide()
-			self.ocs6E.hide()
-			self.ocs7L.hide()
-			self.ocs7E.hide()
-			self.ocs8B1.hide()
-			
-			# shelf
-			self.osh1i.hide()
-			self.osh1L.hide()
-			self.osh1E.hide()
-			self.osh2L.hide()
-			self.osh2E.hide()
-			self.osh3L.hide()
-			self.osh31L.hide()
-			self.osh32L.hide()
-			self.osh33L.hide()
-			self.osh34L.hide()
-			self.osh31E.hide()
-			self.osh32E.hide()
-			self.osh33E.hide()
-			self.osh34E.hide()
-			self.osh4B1.hide()
-			self.osh5L.hide()
-			self.osh51E.hide()
-			self.osh52E.hide()
-			self.osh53E.hide()
-			self.osh6L.hide()
-			self.osh6E.hide()
-			self.osh7L.hide()
-			self.osh7E.hide()
-			self.osh8B1.hide()
-
-			# front
-			self.ofr1i.hide()
-			self.ofr2L.hide()
-			self.ofr2E.hide()
-			self.ofr3E.hide()
-			self.ofr4E.hide()
-			self.ofr4B1.hide()
-			self.ofr5L.hide()
-			self.ofr5E.hide()
-			self.ofr6L.hide()
-			self.ofr6E.hide()
-			self.ofr7L.hide()
-			self.ofr7E.hide()
-			self.ofr8L.hide()
-			self.ofr81L.hide()
-			self.ofr82L.hide()
-			self.ofr83L.hide()
-			self.ofr84L.hide()
-			self.ofr81E.hide()
-			self.ofr82E.hide()
-			self.ofr83E.hide()
-			self.ofr84E.hide()
-			self.ofr8B1.hide()
-		
-			# drawer
-			self.og1i.hide()
-			self.og2L.hide()
-			self.og2E.hide()
-			self.og3E.hide()
-			self.og4E.hide()
-			self.og4B1.hide()
-			self.og5L.hide()
-			self.og5E.hide()
-			self.og6L.hide()
-			self.og6E.hide()
-			self.og7L.hide()
-			self.og7E.hide()
-			self.og8L.hide()
-			self.og8E.hide()
-			self.og9L.hide()
-			self.og91L.hide()
-			self.og92L.hide()
-			self.og93L.hide()
-			self.og94L.hide()
-			self.og91E.hide()
-			self.og92E.hide()
-			self.og93E.hide()
-			self.og94E.hide()
-			self.og9B1.hide()
-		
-			# drawer series
-			self.ods1i.hide()
-			self.ods2L.hide()
-			self.ods2E.hide()
-			self.ods3L.hide()
-			self.ods3E.hide()
-			self.ods40L.hide()
-			self.ods40E.hide()
-			self.ods4L.hide()
-			self.ods41L.hide()
-			self.ods42L.hide()
-			self.ods43L.hide()
-			self.ods44L.hide()
-			self.ods41E.hide()
-			self.ods42E.hide()
-			self.ods43E.hide()
-			self.ods44E.hide()
-			self.ods5B.hide()
-			self.ods6L.hide()
-			self.ods61E.hide()
-			self.ods62E.hide()
-			self.ods63E.hide()
-			self.ods7L.hide()
-			self.ods7E.hide()
-			self.ods8L.hide()
-			self.ods8E.hide()
-			self.ods9L.hide()
-			self.ods9E.hide()
-			self.ods10B.hide()
-		
-			# foot
-			self.of1L.hide()
-			self.of1E.hide()
-			self.of2L.hide()
-			self.of2E.hide()
-			self.of3L.hide()
-			self.of3E.hide()
-			self.of4L.hide()
-			self.of4E.hide()
-			self.of5L.hide()
-			self.of5E.hide()
-			self.of6B1.hide()
-			
-			# merge
-			self.minfo.hide()
-			
-			# furniture (default)
-			self.oo1i.hide()
-			self.oo1L.hide()
-			self.oo11E.hide()
-			self.oo12E.hide()
-			self.oo13E.hide()
-			self.oooL.hide()
-			self.ooo1E.hide()
-			self.ooo2E.hide()
-			self.ooo3E.hide()
-			self.oo1B1.hide()
-			self.o1L.hide()
-			self.o1E.hide()
-			self.o2L.hide()
-			self.o2E.hide()
-			self.o3L.hide()
-			self.o3E.hide()
-			self.o4L.hide()
-			self.o4E.hide()
-			self.s1B1.hide()
-			
-			# ##############################################
-			# show only needed
-			# ##############################################
-			
-			if iType == "furniture":
-				self.oo1i.show()
-				self.oooL.show()
-				self.ooo1E.show()
-				self.ooo2E.show()
-				self.ooo3E.show()
-				self.oo1L.show()
-				self.oo11E.show()
-				self.oo12E.show()
-				self.oo13E.show()
-				self.oo1B1.show()
-				self.o1L.show()
-				self.o1E.show()
-				self.o2L.show()
-				self.o2E.show()
-				self.o3L.show()
-				self.o3E.show()
-				self.o4L.show()
-				self.o4E.show()
-				self.s1B1.show()
-
-			if iType == "side":
-				self.ocs1i.show()
-				self.ocs1L.show()
-				self.ocs1E.show()
-				self.ocs2L.show()
-				self.ocs2E.show()
-				self.ocs3L.show()
-				self.ocs31L.show()
-				self.ocs32L.show()
-				self.ocs33L.show()
-				self.ocs34L.show()
-				self.ocs31E.show()
-				self.ocs32E.show()
-				self.ocs33E.show()
-				self.ocs34E.show()
-				self.ocs4B1.show()
-				self.ocs5L.show()
-				self.ocs51E.show()
-				self.ocs52E.show()
-				self.ocs53E.show()
-				self.ocs6L.show()
-				self.ocs6E.show()
-				self.ocs7L.show()
-				self.ocs7E.show()
-				self.ocs8B1.show()
-
-			if iType == "shelf":
-				self.osh1i.show()
-				self.osh1L.show()
-				self.osh1E.show()
-				self.osh2L.show()
-				self.osh2E.show()
-				self.osh3L.show()
-				self.osh31L.show()
-				self.osh32L.show()
-				self.osh33L.show()
-				self.osh34L.show()
-				self.osh31E.show()
-				self.osh32E.show()
-				self.osh33E.show()
-				self.osh34E.show()
-				self.osh4B1.show()
-				self.osh5L.show()
-				self.osh51E.show()
-				self.osh52E.show()
-				self.osh53E.show()
-				self.osh6L.show()
-				self.osh6E.show()
-				self.osh7L.show()
-				self.osh7E.show()
-				self.osh8B1.show()
-
-			if iType == "front":
-				self.ofr1i.show()
-				self.ofr2L.show()
-				self.ofr2E.show()
-				self.ofr3E.show()
-				self.ofr4E.show()
-				self.ofr4B1.show()
-				self.ofr5L.show()
-				self.ofr5E.show()
-				self.ofr6L.show()
-				self.ofr6E.show()
-				self.ofr7L.show()
-				self.ofr7E.show()
-				self.ofr8L.show()
-				self.ofr81L.show()
-				self.ofr82L.show()
-				self.ofr83L.show()
-				self.ofr84L.show()
-				self.ofr81E.show()
-				self.ofr82E.show()
-				self.ofr83E.show()
-				self.ofr84E.show()
-				self.ofr8B1.show()
-				
-			if iType == "drawer":
-				self.og1i.show()
-				self.og2L.show()
-				self.og2E.show()
-				self.og3E.show()
-				self.og4E.show()
-				self.og4B1.show()
-				self.og5L.show()
-				self.og5E.show()
-				self.og6L.show()
-				self.og6E.show()
-				self.og7L.show()
-				self.og7E.show()
-				self.og8L.show()
-				self.og8E.show()
-				self.og9L.show()
-				self.og91L.show()
-				self.og92L.show()
-				self.og93L.show()
-				self.og94L.show()
-				self.og91E.show()
-				self.og92E.show()
-				self.og93E.show()
-				self.og94E.show()
-				self.og9B1.show()
-
-			if iType == "drawer series":
-				self.ods1i.show()
-				self.ods2L.show()
-				self.ods2E.show()
-				self.ods3L.show()
-				self.ods3E.show()
-				self.ods40L.show()
-				self.ods40E.show()
-				self.ods4L.show()
-				self.ods41L.show()
-				self.ods42L.show()
-				self.ods43L.show()
-				self.ods44L.show()
-				self.ods41E.show()
-				self.ods42E.show()
-				self.ods43E.show()
-				self.ods44E.show()
-				self.ods5B.show()
-				self.ods6L.show()
-				self.ods61E.show()
-				self.ods62E.show()
-				self.ods63E.show()
-				self.ods7L.show()
-				self.ods7E.show()
-				self.ods8L.show()
-				self.ods8E.show()
-				self.ods9L.show()
-				self.ods9E.show()
-				self.ods10B.show()
-
-			if iType == "foot":
-				self.of1L.show()
-				self.of1E.show()
-				self.of2L.show()
-				self.of2E.show()
-				self.of3L.show()
-				self.of3E.show()
-				self.of4L.show()
-				self.of4E.show()
-				self.of5L.show()
-				self.of5E.show()
-				self.of6B1.show()
-			
-			if iType == "merge":
-				self.minfo.show()
 
 		# ############################################################################
-		def createObject(self):
+		def createF33(self):
+			
+			barWidth = float(self.offrame2E.text())
+			barThick = float(self.offrame3E.text())
+			
+			FSX = float(self.offrame71E.text())
+			FSY = float(self.offrame72E.text())
+			FSZ = float(self.offrame73E.text())
+			
+			FFWidth = float(self.offrame8E.text())
+			FFHeight = float(self.offrame9E.text())
+			
+			centerFSX = FSX + (FFWidth / 2) - barWidth
 
-			self.gFSX = float(self.o1E.text())
-			self.gFSZ = float(self.o2E.text())
-			self.gFSY = float(self.o3E.text())
-			self.gThick = float(self.o4E.text())
+			# Left Side
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFLeft")
+			o1.Label = translate('magicStart', 'Face Frame Left')
+			o1.Length = barWidth
+			o1.Height = FFHeight - (2 * barWidth)
+			o1.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ + barWidth)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			o1.ViewObject.ShapeColor = self.gColor
+			
+			# Right Side
+			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFRight")
+			o2.Label = translate('magicStart', 'Face Frame Right')
+			o2.Length = barWidth
+			o2.Height = FFHeight - (2 * barWidth)
+			o2.Width = barThick
+			pl = FreeCAD.Vector(FSX + FFWidth - barWidth, FSY, FSZ + barWidth)
+			o2.Placement = FreeCAD.Placement(pl, self.gR)
+			o2.ViewObject.ShapeColor = self.gColor
+			
+			# Bottom
+			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFBottom")
+			o3.Label = translate('magicStart', 'Face Frame Bottom')
+			o3.Length = FFWidth
+			o3.Height = barWidth
+			o3.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ)
+			o3.Placement = FreeCAD.Placement(pl, self.gR)
+			o3.ViewObject.ShapeColor = self.gColor
+			
+			# Top
+			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFTop")
+			o4.Label = translate('magicStart', 'Face Frame Top')
+			o4.Length = FFWidth
+			o4.Height = barWidth
+			o4.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ + FFHeight - barWidth)
+			o4.Placement = FreeCAD.Placement(pl, self.gR)
+			o4.ViewObject.ShapeColor = self.gColor
+			
+			# Center Side
+			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFCenter")
+			o5.Label = translate('magicStart', 'Face Frame Center')
+			o5.Length = 2 * barWidth
+			o5.Height = FFHeight - (2 * barWidth)
+			o5.Width = barThick
+			pl = FreeCAD.Vector(centerFSX, FSY, FSZ + barWidth)
+			o5.Placement = FreeCAD.Placement(pl, self.gR)
+			o5.ViewObject.ShapeColor = self.gColor
+			
+			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFF')
+			container.setLink([o1, o2, o3, o4, o5])
+			container.Label = "Container, Face Frame"
+			
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
 
-			if self.gSelectedFurniture == "F0":
-				self.createF0()
+		# ############################################################################
+		def createF34(self):
 			
-			if self.gSelectedFurniture == "F1":
-				self.createF1()
+			barWidth = float(self.offrame2E.text())
+			barThick = float(self.offrame3E.text())
 			
-			if self.gSelectedFurniture == "F2":
-				self.mergeF("Bookcase_002.FCStd")
+			FSX = float(self.offrame71E.text())
+			FSY = float(self.offrame72E.text())
+			FSZ = float(self.offrame73E.text())
+			
+			FFWidth = float(self.offrame8E.text())
+			FFHeight = float(self.offrame9E.text())
+			
+			centerFSX = FSX + (FFWidth / 2) - barWidth
+			horizontalFSX = FSX + (FFWidth / 2) + barWidth
+			horizontalFSZ = FSZ + (FFHeight / 2) - barWidth
+			
+			# Left Side
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFLeft")
+			o1.Label = translate('magicStart', 'Face Frame Left')
+			o1.Length = barWidth
+			o1.Height = FFHeight - (2 * barWidth)
+			o1.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ + barWidth)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			o1.ViewObject.ShapeColor = self.gColor
+			
+			# Right Side
+			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFRight")
+			o2.Label = translate('magicStart', 'Face Frame Right')
+			o2.Length = barWidth
+			o2.Height = FFHeight - (2 * barWidth)
+			o2.Width = barThick
+			pl = FreeCAD.Vector(FSX + FFWidth - barWidth, FSY, FSZ + barWidth)
+			o2.Placement = FreeCAD.Placement(pl, self.gR)
+			o2.ViewObject.ShapeColor = self.gColor
+			
+			# Bottom
+			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFBottom")
+			o3.Label = translate('magicStart', 'Face Frame Bottom')
+			o3.Length = FFWidth
+			o3.Height = barWidth
+			o3.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ)
+			o3.Placement = FreeCAD.Placement(pl, self.gR)
+			o3.ViewObject.ShapeColor = self.gColor
+			
+			# Top
+			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFTop")
+			o4.Label = translate('magicStart', 'Face Frame Top')
+			o4.Length = FFWidth
+			o4.Height = barWidth
+			o4.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ + FFHeight - barWidth)
+			o4.Placement = FreeCAD.Placement(pl, self.gR)
+			o4.ViewObject.ShapeColor = self.gColor
+			
+			# Center Side
+			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFCenter")
+			o5.Label = translate('magicStart', 'Face Frame Center')
+			o5.Length = 2 * barWidth
+			o5.Height = FFHeight - (2 * barWidth)
+			o5.Width = barThick
+			pl = FreeCAD.Vector(centerFSX, FSY, FSZ + barWidth)
+			o5.Placement = FreeCAD.Placement(pl, self.gR)
+			o5.ViewObject.ShapeColor = self.gColor
+			
+			# Horizontal bar
+			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFHorizontal")
+			o6.Label = translate('magicStart', 'Face Frame Horizontal')
+			o6.Length = (FFWidth / 2) - barWidth - barWidth
+			o6.Height = 2 * barWidth
+			o6.Width = barThick
+			pl = FreeCAD.Vector(horizontalFSX, FSY, horizontalFSZ)
+			o6.Placement = FreeCAD.Placement(pl, self.gR)
+			o6.ViewObject.ShapeColor = self.gColor
 
-			if self.gSelectedFurniture == "F3":
-				self.mergeF("Drawer_001.FCStd")
+			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFF')
+			container.setLink([o1, o2, o3, o4, o5, o6])
+			container.Label = "Container, Face Frame"
 			
-			if self.gSelectedFurniture == "F4":
-				self.mergeF("Chair_001.FCStd")
-				
-			if self.gSelectedFurniture == "F5":
-				self.mergeF("PictureFrame_002.FCStd")
-			
-			if self.gSelectedFurniture == "F6":
-				self.mergeF("Table_001.FCStd")
-			
-			if self.gSelectedFurniture == "F7":
-				self.mergeF("StorageBox_001.FCStd", "box")
-			
-			if self.gSelectedFurniture == "F8":
-				self.mergeF("Dowel_8_x_35_mm.FCStd", "mount")
-			
-			if self.gSelectedFurniture == "F9":
-				self.mergeF("Screw_4_x_40_mm.FCStd", "mount")
-			
-			if self.gSelectedFurniture == "F10":
-				self.createF10()
-			
-			if self.gSelectedFurniture == "F11":
-				self.mergeF("Screw_3_x_20_mm.FCStd", "mount")
-				
-			if self.gSelectedFurniture == "F12":
-				self.mergeF("Screw_5_x_50_mm.FCStd", "mount")
-			
-			if self.gSelectedFurniture == "F13":
-				self.mergeF("Counterbore2x_5_x_60_mm.FCStd", "mount")
-			
-			if self.gSelectedFurniture == "F14":
-				self.mergeF("Shelf_Pin_5_x_16.FCStd", "mount")
-			
-			if self.gSelectedFurniture == "F15":
-				self.mergeF("Angle_40_x_40_x_100_mm.FCStd", "angles")
-			
-			if self.gSelectedFurniture == "F16":
-				self.createF16()
-			
-			if self.gSelectedFurniture == "F17":
-				self.createF17()
-				
-			if self.gSelectedFurniture == "F18":
-				self.createF18()
-				
-			if self.gSelectedFurniture == "F19":
-				self.createF19()
-				
-			if self.gSelectedFurniture == "F20":
-				self.createF20()
-			
-			if self.gSelectedFurniture == "F21":
-				self.createF21()
-			
-			if self.gSelectedFurniture == "F22":
-				self.createF22()
-			
-			if self.gSelectedFurniture == "F23":
-				self.createF23()
-			
-			if self.gSelectedFurniture == "F24":
-				self.createF24()
-			
-			if self.gSelectedFurniture == "F25":
-				self.createF25()
-			
-			if self.gSelectedFurniture == "F26":
-				self.createF26()
-			
-			if self.gSelectedFurniture == "F27":
-				self.createF27()
-			
-			if self.gSelectedFurniture == "F28":
-				self.createF28()
-				
-			if self.gSelectedFurniture == "F29":
-				self.createF29()
-			
-			if self.gSelectedFurniture == "F30":
-				self.createF30()
-			
-			if self.gSelectedFurniture == "F31":
-				self.createF31()
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
 
-		# ############################################################################	
-		def selectedOption(self, selectedText):
+		# ############################################################################
+		def createF35(self):
 			
-			global gSelectedFurniture
+			# Furniture part
 			
-			# the key is from translation so this needs to be tested...
-			selectedIndex = getMenuIndex[selectedText]
-			self.gSelectedFurniture = "F"+str(selectedIndex)
+			sx = float(self.oo11E.text())
+			sy = float(self.oo12E.text())
+			sz = float(self.oo13E.text())
 			
-			if selectedIndex < 10:
-				self.setIcon("msf00"+str(selectedIndex))
-			if selectedIndex >= 10 and selectedIndex < 100:
-				self.setIcon("msf0"+str(selectedIndex))
-			if selectedIndex >= 100:
-				self.setIcon("msf"+str(selectedIndex))
+			depth = self.gFSY - 3
 			
-			# custom settings
+			# Floor
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
+			o1.Label = translate('magicStart', 'Floor')
+			o1.Length = self.gFSX - (2 * self.gThick)
+			o1.Height = self.gThick
+			o1.Width = depth
+			pl = FreeCAD.Vector(sx + self.gThick, sy, sz + self.gThick)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			o1.ViewObject.ShapeColor = self.gColor
 			
-			if (
-				selectedIndex == 2 or 
-				selectedIndex == 3 or 
-				selectedIndex == 4 or 
-				selectedIndex == 5 or 
-				selectedIndex == 6 or 
-				selectedIndex == 7 or 
-				selectedIndex == 8 or 
-				selectedIndex == 9 or 
-				selectedIndex == 11 or 
-				selectedIndex == 12 or 
-				selectedIndex == 13 or 
-				selectedIndex == 14 or 
-				selectedIndex == 15
-				):
-				self.setGUIInfo("merge")
-				
-			if (
-				selectedIndex == 0 or 
-				selectedIndex == 1 or 
-				selectedIndex == 10
-				):
-				self.setGUIInfo()
+			# Left Side
+			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
+			o2.Label = translate('magicStart', 'Left')
+			o2.Length = self.gThick
+			o2.Height = self.gFSZ
+			o2.Width = depth
+			pl = FreeCAD.Vector(sx, sy, sz)
+			o2.Placement = FreeCAD.Placement(pl, self.gR)
+			o2.ViewObject.ShapeColor = self.gColor
 			
-			if (
-				selectedIndex == 16 or 
-				selectedIndex == 17 or 
-				selectedIndex == 18 or 
-				selectedIndex == 19 or 
-				selectedIndex == 20
-				):
-				self.setGUIInfo("foot")
+			# Right Side
+			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
+			o3.Label = translate('magicStart', 'Right')
+			o3.Length = self.gThick
+			o3.Height = self.gFSZ
+			o3.Width = depth
+			pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy, sz)
+			o3.Placement = FreeCAD.Placement(pl, self.gR)
+			o3.ViewObject.ShapeColor = self.gColor
 			
-			if selectedIndex == 21 or selectedIndex == 22:
-				self.setGUIInfo("drawer")
+			# Back
+			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
+			o4.Label = translate('magicStart', 'Back')
+			o4.Length = self.gFSX
+			o4.Height = self.gFSZ - (2 * self.gThick)
+			o4.Width = 3
+			pl = FreeCAD.Vector(sx, sy + depth, sz + self.gThick)
+			o4.Placement = FreeCAD.Placement(pl, self.gR)
+			o4.ViewObject.ShapeColor = self.gColor
 			
-			if selectedIndex == 23:
-				self.setGUIInfo("front")
-				self.ofr7E.setText("18")
-				self.ofr81E.setText("9")
-				self.ofr82E.setText("9")
-				self.ofr83E.setText("7")
-				self.ofr84E.setText("7")
-			
-			if selectedIndex == 24:
-				self.setGUIInfo("front")
-				self.ofr7E.setText("18")
-				self.ofr81E.setText("2")
-				self.ofr82E.setText("2")
-				self.ofr83E.setText("2")
-				self.ofr84E.setText("2")
-			
-			if selectedIndex == 25:
-				self.setGUIInfo("shelf")
-			
-			if selectedIndex == 26:
-				self.setGUIInfo("side")
+			# Top
+			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
+			o5.Label = translate('magicStart', 'Top')
+			o5.Length = self.gFSX - (2 * self.gThick)
+			o5.Height = self.gThick
+			o5.Width = depth
+			pl = FreeCAD.Vector(sx + self.gThick, sy, sz + self.gFSZ - (2 * self.gThick))
+			o5.Placement = FreeCAD.Placement(pl, self.gR)
+			o5.ViewObject.ShapeColor = self.gColor
 
-			if selectedIndex == 30 or selectedIndex == 31:
-				self.setGUIInfo("drawer series")
+			# Face Frame part
 
-			if selectedIndex == 10:
-				self.o2E.setText("2300")
-			else:
-				self.o2E.setText("760")
-				
-			if selectedIndex == 20:
-				self.of4E.setText("80")
-			else:
-				self.of4E.setText("18")
+			barWidth = 38
+			barThick = 19
 			
+			FSX = sx
+			FSY = sy - barThick
+			FSZ = sz + self.gThick
+			
+			FFWidth = self.gFSX
+			FFHeight = self.gFSZ - (2 * self.gThick)
+			
+			centerFSX = FSX + (FFWidth / 2) - barWidth
+			horizontalFSX = FSX + (FFWidth / 2) + barWidth
+			horizontalFSZ = FSZ + (FFHeight / 2) - barWidth
+			
+			# Left Side
+			ff1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFLeft")
+			ff1.Label = translate('magicStart', 'Face Frame Left')
+			ff1.Length = barWidth
+			ff1.Height = FFHeight - (2 * barWidth)
+			ff1.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ + barWidth)
+			ff1.Placement = FreeCAD.Placement(pl, self.gR)
+			ff1.ViewObject.ShapeColor = self.gColor
+			
+			# Right Side
+			ff2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFRight")
+			ff2.Label = translate('magicStart', 'Face Frame Right')
+			ff2.Length = barWidth
+			ff2.Height = FFHeight - (2 * barWidth)
+			ff2.Width = barThick
+			pl = FreeCAD.Vector(FSX + FFWidth - barWidth, FSY, FSZ + barWidth)
+			ff2.Placement = FreeCAD.Placement(pl, self.gR)
+			ff2.ViewObject.ShapeColor = self.gColor
+			
+			# Bottom
+			ff3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFBottom")
+			ff3.Label = translate('magicStart', 'Face Frame Bottom')
+			ff3.Length = FFWidth
+			ff3.Height = barWidth
+			ff3.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ)
+			ff3.Placement = FreeCAD.Placement(pl, self.gR)
+			ff3.ViewObject.ShapeColor = self.gColor
+			
+			# Top
+			ff4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFTop")
+			ff4.Label = translate('magicStart', 'Face Frame Top')
+			ff4.Length = FFWidth
+			ff4.Height = barWidth
+			ff4.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ + FFHeight - barWidth)
+			ff4.Placement = FreeCAD.Placement(pl, self.gR)
+			ff4.ViewObject.ShapeColor = self.gColor
+			
+			# Center Side
+			ff5 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFCenter")
+			ff5.Label = translate('magicStart', 'Face Frame Center')
+			ff5.Length = 2 * barWidth
+			ff5.Height = FFHeight - (2 * barWidth)
+			ff5.Width = barThick
+			pl = FreeCAD.Vector(centerFSX, FSY, FSZ + barWidth)
+			ff5.Placement = FreeCAD.Placement(pl, self.gR)
+			ff5.ViewObject.ShapeColor = self.gColor
+			
+			# Horizontal bar
+			ff6 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFHorizontal")
+			ff6.Label = translate('magicStart', 'Face Frame Horizontal')
+			ff6.Length = (FFWidth / 2) - barWidth - barWidth
+			ff6.Height = 2 * barWidth
+			ff6.Width = barThick
+			pl = FreeCAD.Vector(horizontalFSX, FSY, horizontalFSZ)
+			ff6.Placement = FreeCAD.Placement(pl, self.gR)
+			ff6.ViewObject.ShapeColor = self.gColor
+
+			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','FurnitureModule')
+			container.setLink([o1, o2, o3, o4, o5, ff1, ff2, ff3, ff4, ff5, ff6])
+			container.Label = "Furniture, Module"
+
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+
 	# ############################################################################
 	# final settings
 	# ############################################################################
