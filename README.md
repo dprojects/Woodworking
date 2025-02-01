@@ -17,6 +17,7 @@ The main goal for this workbench is to make simpler the furniture designing proc
 
 **New significant changes since the last release 0.22 stable:**
 
+* improve magicMeasure (new GUI, descriptions, auto preselection recognize, vertices size)
 * face frame (around, with center bar, with horizontal bar) and predefined furniture (magicStart)
 * tool to quickly add or remove expressions for position and size (magicGlue)
 * drawer series feature to create many drawers at once (magicStart)

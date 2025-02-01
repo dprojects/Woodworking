@@ -7,7 +7,7 @@ translate = FreeCAD.Qt.translate
 
 # ###################################################################################################################
 #
-# Globals are good as pizza ;-)
+# Globals
 #
 # ###################################################################################################################
 
@@ -16,24 +16,27 @@ gGUI = "" # do not reset this ;-)
 gP1 = ""
 gP2 = ""
 gRef = ""
-gHoverMode = True
-gHoverMeasure = []
+gPSMMode = True
+gPSMMeasure = []
 
 def resetGlobals():
 
-	global gP1, gP2, gRef, gHoverMeasure
+	global gP1, gP2, gRef, gPSMMeasure
 
 	gP1 = ""
 	gP2 = ""
 	gRef = ""
-	gHoverMeasure = []
+	gPSMMeasure = []
 
-def removeHoverMeasure():
+def removePSMMeasure():
 	
-	if len(gHoverMeasure) != 0:
-		for h in gHoverMeasure:
+	if len(gPSMMeasure) != 0:
+		for h in gPSMMeasure:
 			try:
-				FreeCAD.ActiveDocument.removeObject(str(h.Name))
+				if str(h.Name) == "":
+					raise
+				else:
+					FreeCAD.ActiveDocument.removeObject(str(h.Name))
 			except:
 				skip = 1
 
@@ -41,8 +44,8 @@ def clearInfoScreens():
 	
 	try:
 		if gGUI != "":
-			gGUI.hoverIS.setPlainText("")
-			gGUI.sizeIS.setPlainText("")
+			gGUI.moi.setPlainText("")
+			gGUI.mos.setPlainText("")
 	except:
 		skip = 1
 
@@ -57,13 +60,13 @@ def clearInfoScreens():
 class SelectionObserver:
 	
 	# ############################################################################
-	# preselect - hover mode, use locals here
+	# preselect - preselection mode, use locals here
 	# ############################################################################
 
 	# ############################################################################
 	def edgePreselect(self, doc, obj, sub):
 		
-		removeHoverMeasure()
+		removePSMMeasure()
 		clearInfoScreens()
 		
 		o = FreeCAD.ActiveDocument.getObject(obj)
@@ -89,13 +92,13 @@ class SelectionObserver:
 			# show measure
 			size = round(p1.distanceToPoint(p2), MagicPanels.gRoundPrecision)
 			
-			gGUI.hoverIS.setText(str(label) + ", " + str(sub))
-			gGUI.hoverIS.setText(str(obj) + ", " + str(sub))
-			gGUI.sizeIS.setPlainText("Size:" + " " + str(size))
+			gGUI.moi.setText(str(label) + ", " + str(sub))
+			gGUI.moi.setText(str(obj) + ", " + str(sub))
+			gGUI.mos.setPlainText("Size:" + " " + str(size))
 			
-			if gHoverMode == True:
+			if gPSMMode == True:
 				m = MagicPanels.showMeasure(p1, p2, str(o.Label) + ", " + str(sub))
-				gHoverMeasure.append(m)
+				gPSMMeasure.append(m)
 			
 		# hole edge
 		if edge.Curve.isDerivedFrom("Part::GeomCircle"):
@@ -107,13 +110,13 @@ class SelectionObserver:
 			# show measure
 			size = round(p1.distanceToPoint(p2), MagicPanels.gRoundPrecision)
 			
-			gGUI.hoverIS.setText(str(label) + ", " + str(sub))
-			gGUI.hoverIS.setText(str(obj) + ", " + str(sub))
-			gGUI.sizeIS.setPlainText("Size:" + " " + str(size))
+			gGUI.moi.setText(str(label) + ", " + str(sub))
+			gGUI.moi.setText(str(obj) + ", " + str(sub))
+			gGUI.mos.setPlainText("Size:" + " " + str(size))
 			
-			if gHoverMode == True:
+			if gPSMMode == True:
 				m = MagicPanels.showMeasure(p1, p2, str(o.Label) + ", " + str(sub))
-				gHoverMeasure.append(m)
+				gPSMMeasure.append(m)
 		
 		# ellipse edge
 		if edge.Curve.isDerivedFrom("Part::GeomEllipse"):
@@ -129,9 +132,9 @@ class SelectionObserver:
 			
 			s1 = round(p1.distanceToPoint(p2), MagicPanels.gRoundPrecision)
 			
-			if gHoverMode == True:
+			if gPSMMode == True:
 				m = MagicPanels.showMeasure(p1, p2, str(o.Label) + ", " + str(sub))
-				gHoverMeasure.append(m)
+				gPSMMeasure.append(m)
 	
 			# 2nd measure
 			p1 = FreeCAD.Vector(edge.Curve.Location.x, edge.Curve.Location.y, edge.Curve.Location.z)
@@ -142,22 +145,22 @@ class SelectionObserver:
 			
 			s2 = round(p1.distanceToPoint(p2), MagicPanels.gRoundPrecision)
 			
-			if gHoverMode == True:
+			if gPSMMode == True:
 				m = MagicPanels.showMeasure(p1, p2, str(o.Label) + ", " + str(sub))
-				gHoverMeasure.append(m)
+				gPSMMeasure.append(m)
 				
 			# screen update
 			
 			size = str(s1) + ", " + str(s2)
 	
-			gGUI.hoverIS.setText(str(label) + ", " + str(sub))
-			gGUI.hoverIS.setText(str(obj) + ", " + str(sub))
-			gGUI.sizeIS.setPlainText("Size:" + " " + str(size))
+			gGUI.moi.setText(str(label) + ", " + str(sub))
+			gGUI.moi.setText(str(obj) + ", " + str(sub))
+			gGUI.mos.setPlainText("Size:" + " " + str(size))
 
 	# ############################################################################
 	def facePreselect(self, doc, obj, sub):
 		
-		removeHoverMeasure()
+		removePSMMeasure()
 		clearInfoScreens()
 		
 		o = FreeCAD.ActiveDocument.getObject(obj)
@@ -174,7 +177,7 @@ class SelectionObserver:
 		edges = face.Edges
 		
 		size = ""
-		hover = dict()
+		preselection = dict()
 		
 		i = 0
 		for e in edges:
@@ -196,15 +199,15 @@ class SelectionObserver:
 			
 			size += s
 			
-			if gHoverMode == True:
-				if not s in hover.keys():
+			if gPSMMode == True:
+				if not s in preselection.keys():
 					m = MagicPanels.showMeasure(p1, p2, str(o.Label) + ", " + str(sub))
-					gHoverMeasure.append(m)
-					hover[s] = 1
+					gPSMMeasure.append(m)
+					preselection[s] = 1
 		
-		gGUI.hoverIS.setText(str(label) + ", " + str(sub))
-		gGUI.hoverIS.setText(str(obj) + ", " + str(sub))
-		gGUI.sizeIS.setPlainText("Size:" + " " + str(size))
+		gGUI.moi.setText(str(label) + ", " + str(sub))
+		gGUI.moi.setText(str(obj) + ", " + str(sub))
+		gGUI.mos.setPlainText("Size:" + " " + str(size))
 	
 	# ############################################################################
 	# select - selection mode, use globals here, to store first selection
@@ -215,7 +218,7 @@ class SelectionObserver:
 		
 		global gP1, gP2, gRef
 		
-		removeHoverMeasure()
+		removePSMMeasure()
 		clearInfoScreens()
 		
 		o = FreeCAD.ActiveDocument.getObject(obj)
@@ -275,9 +278,9 @@ class SelectionObserver:
 		
 		size = round(gP1.distanceToPoint(gP2), MagicPanels.gRoundPrecision)
 		
-		gGUI.hoverIS.setText(str(label) + ", " + str(sub))
-		gGUI.hoverIS.setText(str(obj) + ", " + str(sub))
-		gGUI.sizeIS.setPlainText("Size:" + " " + str(size))
+		gGUI.moi.setText(str(label) + ", " + str(sub))
+		gGUI.moi.setText(str(obj) + ", " + str(sub))
+		gGUI.mos.setPlainText("Size:" + " " + str(size))
 		
 		m = MagicPanels.showMeasure(gP1, gP2, str(o.Label) + ", " + str(sub))
 		resetGlobals()
@@ -287,7 +290,7 @@ class SelectionObserver:
 		
 		global gP1, gP2, gRef
 		
-		removeHoverMeasure()
+		removePSMMeasure()
 		clearInfoScreens()
 		
 		skip = 0
@@ -326,9 +329,9 @@ class SelectionObserver:
 		
 		size = round(gP1.distanceToPoint(gP2), MagicPanels.gRoundPrecision)
 		
-		gGUI.hoverIS.setText(str(label) + ", " + str(sub))
-		gGUI.hoverIS.setText(str(obj) + ", " + str(sub))
-		gGUI.sizeIS.setPlainText("Size:" + " " + str(size))
+		gGUI.moi.setText(str(label) + ", " + str(sub))
+		gGUI.moi.setText(str(obj) + ", " + str(sub))
+		gGUI.mos.setPlainText("Size:" + " " + str(size))
 		
 		m = MagicPanels.showMeasure(gP1, gP2, str(o.Label) + ", " + str(sub))
 		resetGlobals()
@@ -338,7 +341,7 @@ class SelectionObserver:
 		
 		global gP1, gP2, gRef
 		
-		removeHoverMeasure()
+		removePSMMeasure()
 		clearInfoScreens()
 	
 		o = FreeCAD.ActiveDocument.getObject(obj)
@@ -370,7 +373,7 @@ class SelectionObserver:
 	
 	def addSelection(self, doc, obj, sub, pos):
 		
-		if gHoverMode == True:
+		if gPSMMode == True:
 			resetGlobals()
 			return
 		
@@ -412,10 +415,51 @@ def showQtGUI():
 		# ############################################################################
 
 		gObserver = ""
-		gInfoMeasureON = "Measuring: ON"
-		gInfoMeasureOFF = "Measuring: OFF"
-		gInfoHoverON = "hover & click to store measurement"
-		gInfoHoverOFF = "select to create measurement"
+		
+		# preselection ON - info
+		gObserverOff = '<div>'
+		gObserverOff += translate('magicMeasure', 'The observer is currently <b>disabled</b>, please click observer <b>start</b> button to start measuring.') + '<br><br>'
+		gObserverOff += translate('magicMeasure', 'This tool works in two modes:')
+		gObserverOff += '<ul>'
+		gObserverOff += '<li><b>' + translate('magicMeasure', 'Preselection mode: ') + '</b>'
+		gObserverOff += translate('magicMeasure', 'this mode allows you to measure objects quickly only by moving mouse cursor over the object.') + '</li>'
+		gObserverOff += '<li><b>' + translate('magicMeasure', 'Selection mode: ') + '</b>'
+		gObserverOff += translate('magicMeasure', 'this mode allows you to measure objects by selecting vertex, face or holes.') + '</li>'
+		gObserverOff += '</ul>'
+		gObserverOff += '</div>'
+		
+		# preselection ON - status
+		gPsOnS = translate('magicMeasure', 'Preselection mode is: ') + '<b>' + translate('magicMeasure', 'ON') + '</b>'
+
+		# preselection ON - info
+		gPsOnI = '<div>'
+		gPsOnI += '<ul>'
+		gPsOnI += '<li>'
+		gPsOnI += translate('magicMeasure', 'In this mode you can measure: ')
+		gPsOnI += '<b>' + translate('magicMeasure', 'edge') + ', </b>'
+		gPsOnI += '<b>' + translate('magicMeasure', 'face') + ', </b>'
+		gPsOnI += '<b>' + translate('magicMeasure', 'hole diameter') + ', </b>'
+		gPsOnI += '<b>' + translate('magicMeasure', 'and hole depth') + '. </b>'
+		gPsOnI += '</li>'
+		gPsOnI += '<li>' + translate('magicMeasure', 'To see measurements, in this preselection mode, you have to move cursor over the object.') + '</li>' 
+		gPsOnI += '<li>' + translate('magicMeasure', 'If you click left mouse button the current visible measurements will be stored.') + '</li>'
+		gPsOnI += '<li>' + translate('magicMeasure', 'For more detailed measurements turn off preselection mode.') + '</li>'
+		gPsOnI += '</ul>'
+		gPsOnI += '<br>'
+		gPsOnI += '</div>'
+		
+		# preselection OFF - status
+		gPsOffS = translate('magicMeasure', 'Preselection mode is: ') + '<b>' + translate('magicMeasure', 'OFF') + '</b>'
+		
+		# preselection OFF - info
+		gPsOffI = '<div>'
+		gPsOffI += translate('magicMeasure', 'In this mode you have possible selections:')
+		gPsOffI += '<ul>'
+		gPsOffI += '<li>' + translate('magicMeasure', '<b>Edge</b>: to measure edge size,') + '</li>'
+		gPsOffI += '<li>' + translate('magicMeasure', '<b>Vertex -> Face</b> or <b>Vertex -> Edge</b> or <b>Vertex -> Hole</b> or <b>Vertex -> Vertex</b>: to measure distance from vertex to the other selected object,') + '</li>'
+		gPsOffI += '<li>' + translate('magicMeasure', '<b>Hole -> Hole</b> or <b>Hole -> Edge</b> or <b>Hole -> Face</b> or <b>Hole -> Vertex</b>: to measure distance from hole to the other selected object.') + '</li>'
+		gPsOffI += '</ul>'
+		gPsOffI += '</div>'
 		
 		# ############################################################################
 		# init
@@ -433,7 +477,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 260
-			toolSH = 250
+			toolSH = 510
 			
 			# active screen size - FreeCAD main window
 			gSW = FreeCADGui.getMainWindow().width()
@@ -452,82 +496,118 @@ def showQtGUI():
 			self.setWindowTitle(translate('magicMeasure', 'magicMeasure'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
-			# ############################################################################
-			# options - info screens
-			# ############################################################################
-			
-			info = ""
-			info += "                                             "
-			info += "                                             "
-			info += "                                             "
-
 			row = 10
 			
-			# mode screen - measure
-			self.modeMIS = QtGui.QLabel(info, self)
-			self.modeMIS.move(10, row)
-			
-			row += 20
-			
-			# mode screen - hover
-			self.modeHIS = QtGui.QLabel(info, self)
-			self.modeHIS.move(10, row)
-
-			row += 20
-
-			# hover screen - label
-			self.hoverIS = QtGui.QLabel(info, self)
-			self.hoverIS.move(10, row)
-
-			row += 20
-
-			# hover screen - size
-			self.sizeIS = QtGui.QTextEdit(self)
-			self.sizeIS.setMinimumSize(toolSW-20, 60)
-			self.sizeIS.setMaximumSize(toolSW-20, 60)
-			self.sizeIS.move(10, row)
-			self.sizeIS.setPlainText("")
-			
 			# ############################################################################
-			# options - modes selection
+			# measure observer
 			# ############################################################################
-
-			row += 80
 			
-			# button
-			self.modeB1 = QtGui.QPushButton(translate('magicMeasure', 'measuring ON'), self)
-			self.modeB1.clicked.connect(self.measureStart)
-			self.modeB1.setFixedWidth((toolSW/2)-20)
-			self.modeB1.setFixedHeight(40)
-			self.modeB1.move(10, row)
-
-			# button
-			self.modeB2 = QtGui.QPushButton(translate('magicMeasure', 'measuring OFF'), self)
-			self.modeB2.clicked.connect(self.measureFinish)
-			self.modeB2.setFixedWidth((toolSW/2)-20)
-			self.modeB2.setFixedHeight(40)
-			self.modeB2.move((toolSW/2)+10, row)
-
-			# ############################################################################
-			# options - hover selection
-			# ############################################################################
-
+			# measurement observer active status
+			self.moas = QtGui.QLabel(translate('magicMeasure', 'Measurement observer:'), self)
+			self.moas.move(10, row+10)
+			
+			# measurement observer active button
+			self.moaBON = QtGui.QPushButton(translate('magicMeasure', 'START'), self)
+			self.moaBON.clicked.connect(self.measureStart)
+			self.moaBON.setFixedWidth(80)
+			self.moaBON.setFixedHeight(40)
+			self.moaBON.move(toolSW - 90, row)
+			
+			# measurement observer active button
+			self.moaBPAUSE = QtGui.QPushButton(translate('magicMeasure', 'PAUSE'), self)
+			self.moaBPAUSE.clicked.connect(self.measureFinish)
+			self.moaBPAUSE.setFixedWidth(80)
+			self.moaBPAUSE.setFixedHeight(40)
+			self.moaBPAUSE.move(toolSW - 90, row)
+		
 			row += 50
 			
-			# button
-			self.modeHoverB1 = QtGui.QPushButton(translate('magicMeasure', 'hover ON'), self)
-			self.modeHoverB1.clicked.connect(self.setHoverOn)
-			self.modeHoverB1.setFixedWidth((toolSW/2)-20)
-			self.modeHoverB1.setFixedHeight(40)
-			self.modeHoverB1.move(10, row)
+			# ############################################################################
+			# preselection
+			# ############################################################################
+			
+			# preselection mode label
+			self.psmL = QtGui.QLabel(translate('magicMeasure', 'Preselection mode:'), self)
+			self.psmL.move(10, row+10)
+			
+			# preselection mode button
+			self.psmB1 = QtGui.QPushButton(translate('magicMeasure', 'ON'), self)
+			self.psmB1.clicked.connect(self.setPSMOn)
+			self.psmB1.setFixedWidth(80)
+			self.psmB1.setFixedHeight(40)
+			self.psmB1.move(toolSW - 90, row)
+			
+			# preselection mode button
+			self.psmB2 = QtGui.QPushButton(translate('magicMeasure', 'OFF'), self)
+			self.psmB2.clicked.connect(self.setPSMOff)
+			self.psmB2.setFixedWidth(80)
+			self.psmB2.setFixedHeight(40)
+			self.psmB2.move(toolSW - 90, row)
+			
+			# ############################################################################
+			# resize vertex
+			# ############################################################################
+			
+			row += 50
+			
+			# measurement observer active status
+			self.vsL = QtGui.QLabel(translate('magicMeasure', 'Vertices size:'), self)
+			self.vsL.move(10, row+10)
+			
+			# measurement observer active button
+			self.vsBM = QtGui.QPushButton('- 5', self)
+			self.vsBM.clicked.connect(self.vertexSizeM)
+			self.vsBM.setFixedWidth(60)
+			self.vsBM.setFixedHeight(40)
+			self.vsBM.move(toolSW - 140, row)
+			
+			# measurement observer active button
+			self.vsBP = QtGui.QPushButton('+ 5', self)
+			self.vsBP.clicked.connect(self.vertexSizeP)
+			self.vsBP.setFixedWidth(60)
+			self.vsBP.setFixedHeight(40)
+			self.vsBP.move(toolSW - 70, row)
+			
+			# ############################################################################
+			# selection description info
+			# ############################################################################
+			
+			row += 50
+			
+			# preselection mode active status
+			self.psmas = QtGui.QLabel("", self)
+			self.psmas.setFixedWidth(toolSW - 20)
+			self.psmas.move(10, row+3)
+			
+			row -= 20
+			
+			# mode description
+			self.sdi = QtGui.QLabel(self.gObserverOff, self)
+			self.sdi.setFixedWidth(toolSW - 20)
+			self.sdi.setFixedHeight(300)
+			self.sdi.setWordWrap(True)
+			self.sdi.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.sdi.move(10, row)
+			
+			row += 265
+			
+			# ############################################################################
+			# # measure data
+			# ############################################################################
 
-			# button
-			self.modeHoverB2 = QtGui.QPushButton(translate('magicMeasure', 'hover OFF'), self)
-			self.modeHoverB2.clicked.connect(self.setHoverOff)
-			self.modeHoverB2.setFixedWidth((toolSW/2)-20)
-			self.modeHoverB2.setFixedHeight(40)
-			self.modeHoverB2.move((toolSW/2)+10, row)
+			# measure object info
+			self.moi = QtGui.QLabel("", self)
+			self.moi.setFixedWidth(toolSW - 20)
+			self.moi.move(10, row+3)
 
+			row += 30
+
+			# measure object size
+			self.mos = QtGui.QTextEdit(self)
+			self.mos.setMinimumSize(toolSW-20, 60)
+			self.mos.setMaximumSize(toolSW-20, 60)
+			self.mos.move(10, row)
+			self.mos.setPlainText("")
 
 			# ############################################################################
 			# show & init defaults
@@ -549,14 +629,72 @@ def showQtGUI():
 			try:
 				resetGlobals()
 				
-				self.measureStart()
-				self.modeMIS.setText(self.gInfoMeasureON)
-				self.modeHIS.setText(self.gInfoHoverON)
+				# support for FreeCAD 0.21.2
+				try:
+					Viewer = FreeCADGui.ActiveDocument.ActiveView.getViewer()
+					UserState = Viewer.getSceneGraph().highlightMode.getValue()
+					
+				# support for FreeCAD 1.0+
+				except:
+					import Draft
+					Viewer = FreeCADGui.ActiveDocument.ActiveView.getViewer()
+					UserState = Viewer.getSceneGraph().highlightMode.getValue()
 				
+				# FreeCAD GUI preselection off
+				if UserState == 2:
+					self.measureStart()
+					self.setPSMOff()
+					
+					self.psmB1.show()
+					self.psmB2.hide()
+					
+					self.psmas.setText(self.gPsOffS)
+					self.sdi.setText(self.gPsOffI)
+				
+				# FreeCAD GUI preselection on
+				else:
+					self.measureStart()
+					
+					self.psmB1.hide()
+					self.psmB2.show()
+					
+					self.psmas.setText(self.gPsOnS)
+					self.sdi.setText(self.gPsOnI)
+					
+				self.moaBON.hide()
+				self.moaBPAUSE.show()
+
 			except:
 
-				self.modeMIS.setText(self.gInfoMeasureOFF)
+				self.moaBON.show()
+				self.moaBPAUSE.hide()
 				return -1
+
+		# ############################################################################
+		def setPSMOn(self):
+			
+			global gPSMMode
+			
+			gPSMMode = True
+			
+			self.psmB1.hide()
+			self.psmB2.show()
+			
+			self.psmas.setText(self.gPsOnS)
+			self.sdi.setText(self.gPsOnI)
+
+		def setPSMOff(self):
+			
+			global gPSMMode
+			
+			gPSMMode = False
+			removePSMMeasure()
+			
+			self.psmB1.show()
+			self.psmB2.hide()
+			
+			self.psmas.setText(self.gPsOffS)
+			self.sdi.setText(self.gPsOffI)
 
 		# ############################################################################
 		def measureStart(self):
@@ -568,41 +706,56 @@ def showQtGUI():
 					gGUI = self
 					self.gObserver = SelectionObserver()
 					FreeCADGui.Selection.addObserver(self.gObserver)
-					self.modeMIS.setText(self.gInfoMeasureON)
-				
+					
+					self.moaBON.hide()
+					self.moaBPAUSE.show()
+					
+					if gPSMMode == True:
+						self.setPSMOn()
+					else:
+						self.setPSMOff()
 			except:
-				skip = 1
-
+				
+				self.moaBON.show()
+				self.moaBPAUSE.hide()
+				
 		def measureFinish(self):
+			
 			try:
 				FreeCADGui.Selection.removeObserver(self.gObserver)
 				self.gObserver = ""
-				self.modeMIS.setText(self.gInfoMeasureOFF)
+
+				self.moaBON.show()
+				self.moaBPAUSE.hide()
+				
+				self.psmas.setText("")
+				self.sdi.setText(self.gObserverOff)
+
 			except:
-				skip = 1
+				
+				self.moaBON.hide()
+				self.moaBPAUSE.show()
 		
 		# ############################################################################
-		def setHoverOn(self):
+		def vertexSizeM(self):
 			
-			global gHoverMode
-			
-			try:
-				gHoverMode = True
-				self.modeHIS.setText(self.gInfoHoverON)
-			except:
-				skip = 1
+			objects = FreeCAD.ActiveDocument.Objects
 
-		def setHoverOff(self):
+			for o in objects:
+				try:
+					o.ViewObject.PointSize = o.ViewObject.PointSize - 5
+				except:
+					skip = 1
+
+		def vertexSizeP(self):
 			
-			global gHoverMode
+			objects = FreeCAD.ActiveDocument.Objects
 			
-			try:
-				gHoverMode = False
-				self.modeHIS.setText(self.gInfoHoverOFF)
-				removeHoverMeasure()
-				
-			except:
-				skip = 1
+			for o in objects:
+				try:
+					o.ViewObject.PointSize = o.ViewObject.PointSize + 5
+				except:
+					skip = 1
 
 	# ############################################################################
 	# final settings
@@ -619,11 +772,10 @@ def showQtGUI():
 		try:
 			FreeCADGui.Selection.removeObserver(form.gObserver)
 			form.gObserver = ""
-			form.modeMIS.setText(self.gInfoMeasureOFF)
 		except:
 			skip = 1
 		
-		removeHoverMeasure()
+		removePSMMeasure()
 		
 		pass
 

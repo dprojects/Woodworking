@@ -794,11 +794,42 @@ Tool repository: [github.com/dprojects/sheet2export](https://github.com/dproject
 
 ### magicMeasure
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicMeasure.png"> This tool allows for quick measure on objects hover or by selection. At hover mode you can measure e.g. all edges for face, single edge, single hole radius, face inside hole to get depth, ellipse both radius and also depth. At selection mode you can measure e.g. distance from vertex to another vertex, distance from hole to hole, distance from hole to edge, distance from vertex to face. This tool save also references to the measured object for further processing. So, you can easily get all your custom measurements.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicMeasure.png"> 
+This tool allows you to quickly measure objects. All measurements are recognized by the [getDimensions](#getdimensions) tool and can be listed in the cut-list report with a reference to the object. This tool works in two modes:
+
+* **Preselection mode** - this mode allows you to quickly measure objects by just moving the mouse cursor over the object. In this mode you can measure: edge, surface (all edges), hole diameter and hole depth. If you left-click, the current visible measurements will be saved.
     
+* **Selection mode** - this mode allows you to measure objects by selecting vertices, surfaces or holes. In this mode you have the following choices:
+  * select `Edge`: to measure edge size, 
+  * select `Vertex` and next `Face`: to measure distance between vertex and face, for example shelf space,
+  * select `Vertex` and next `Edge`: to measure distance between vertex and edge, for example space between front and side of the furniture, 
+  * select `Vertex` and next `Hole`: to measure distance between vertex and hole center point, for example drill point, 
+  * select `Vertex` and next any other `Vertex`: to measure distance between two vertices, for any purposes, 
+  * select `Hole edge` and next `Hole edge`: to measure distance between holes center points, for example to verify 32 mm system, 
+  * select `Hole edge` and next any other `Edge`: to measure distance between hole and edge, for example to verify pilot hole offset,
+  * select `Hole` and next any `Face`: to measure distance between hole and face, for example to measure angle mounting point, 
+  * select `Hole` and next `Vertex`: to measure distance between hole and vertex.
+
+**Note:** This tool automatically recognizes the FreeCAD `Edit->Preferences->Display->Colors->Enable preselection highlighting` settings and if you set this option, it will start in `Preselection mode`, otherwise in `Selection` mode, so you don't have to switch it at the beginning.
+
+* **Measurement observer:**
+  * `START` button allows you to start the measurement process,
+  * `PAUSE` button allows you to stop the measurement process, without leaving this tool's graphical interface, for example if you want to select or create objects.
+
+* **Preselection mode:**
+  * `ON` button allows you to start preselection mode and also exit selection mode,
+  * `OFF` button allows you to start selection mode and also exit preselection mode.
+  
+* **Vertices size:**
+  * `-5` button allows you to make smaller all vertices of all objects by `-5` points, 
+  * `+5` button allows you to make bigger all vertices of all objects by `+5` points.
+
+**Note:** You can also use [showVertex](#showvertex), but here you can adjust the vertices more precisely and it works for all vertices, so you don't have to unselect the object or select a specific object. 
+
+**Text field** the text box shows the current measurements, so you can easily copy these dimensions for later use.
+
 **Video tutorials:** 
-* [Smart measurement tool](https://www.youtube.com/watch?v=d2FRECuHy2o)
-* [Custom measurements & BOM](https://www.youtube.com/watch?v=-Mmwvw_Bue4)
+* [How to use magicMeasure](https://www.youtube.com/watch?v=_yGLzNmeK0Q)
 
 ## Parameterization
 
