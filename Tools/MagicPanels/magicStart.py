@@ -1012,6 +1012,7 @@ def showQtGUI():
 			
 			# label
 			self.ofglass3L = QtGui.QLabel(translate('magicStart', 'Overlap horizontal:'), self)
+			self.ofglass3L.setFixedWidth(120)
 			self.ofglass3L.move(10, rowfglass+3)
 
 			# text input
@@ -1024,6 +1025,7 @@ def showQtGUI():
 
 			# label
 			self.ofglass4L = QtGui.QLabel(translate('magicStart', 'Overlap vertical:'), self)
+			self.ofglass4L.setFixedWidth(120)
 			self.ofglass4L.move(10, rowfglass+3)
 
 			# text input
@@ -2218,10 +2220,14 @@ def showQtGUI():
 			if selectedIndex == 37 or selectedIndex == 38:
 				self.ofglass3E.setText("9")
 				self.ofglass4E.setText("7")
-			
+				self.ofglass3L.setText(translate('magicStart', 'Overlap horizontal:'))
+				self.ofglass4L.setText(translate('magicStart', 'Overlap vertical:'))
+
 			if selectedIndex == 39 or selectedIndex == 40:
 				self.ofglass3E.setText("2")
 				self.ofglass4E.setText("2")
+				self.ofglass3L.setText(translate('magicStart', 'Offset horizontal:'))
+				self.ofglass4L.setText(translate('magicStart', 'Offset vertical:'))
 
 		# ############################################################################
 		def createObject(self):

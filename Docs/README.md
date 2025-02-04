@@ -839,7 +839,7 @@ Tool repository: [github.com/dprojects/sheet2export](https://github.com/dproject
 ### magicMeasure
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicMeasure.png"> 
-This tool allows you to quickly measure objects. All measurements are recognized by the [getDimensions](#getdimensions) tool and can be listed in the cut-list report with a reference to the object. This tool works in two modes:
+This tool allows you to quickly measure objects. All measurements are recognized by the getDimensions tool and can be listed in the cut-list report with a reference to the object. This tool works in two modes:
 
 * **Preselection mode** - this mode allows you to quickly measure objects by just moving the mouse cursor over the object. In this mode you can measure: edge, surface (all edges), hole diameter and hole depth. If you left-click, the current visible measurements will be saved.
     
