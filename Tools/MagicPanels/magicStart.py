@@ -48,7 +48,11 @@ getMenuIndex = {
 	translate('magicStart', 'Face Frame outside ( frame with center, fit into gap )'): 33, 
 	translate('magicStart', 'Face Frame outside ( frame for custom changes, fit into gap )'): 34, 
 	translate('magicStart', 'Simple bookcase ( face frame, no front, back HDF )'): 35, 
-	translate('magicStart', 'Simple storage ( face frame, no front, back HDF )'): 36 # no comma 
+	translate('magicStart', 'Simple storage ( face frame, no front, back HDF )'): 36, 
+	translate('magicStart', 'Front outside with glass ( simple frame, fit into gap )'): 37, 
+	translate('magicStart', 'Front outside with glass ( frame with decoration, fit into gap )'): 38, 
+	translate('magicStart', 'Front inside with glass ( simple frame, fit into gap )'): 39, 
+	translate('magicStart', 'Front inside with glass ( frame with decoration, fit into gap )'): 40 # no comma  
 }
 
 # ############################################################################
@@ -135,7 +139,11 @@ def showQtGUI():
 				translate('magicStart', 'Face Frame outside ( frame with center, fit into gap )'), 
 				translate('magicStart', 'Face Frame outside ( frame for custom changes, fit into gap )'), 
 				translate('magicStart', 'Front outside ( fit into gap )'), 
+				translate('magicStart', 'Front outside with glass ( simple frame, fit into gap )'), 
+				translate('magicStart', 'Front outside with glass ( frame with decoration, fit into gap )'), 
 				translate('magicStart', 'Front inside ( fit into gap )'), 
+				translate('magicStart', 'Front inside with glass ( simple frame, fit into gap )'), 
+				translate('magicStart', 'Front inside with glass ( frame with decoration, fit into gap )'), 
 				translate('magicStart', 'Shelf ( fit into gap )'), 
 				translate('magicStart', 'Center side ( fit into gap )'), 
 				translate('magicStart', 'Foot ( good for cleaning )'), 
@@ -174,6 +182,7 @@ def showQtGUI():
 			rowds = row - 20
 			rowfoot = row
 			rowfront = row
+			rowfglass = row - 20
 			rowfframe = row - 20
 			rowshelf = row
 			rowside = row
@@ -198,6 +207,16 @@ def showQtGUI():
 
 			# label
 			info = translate('magicStart', 'This object has its own settings in spreadsheet and will be imported from Woodworking workbench Examples folder.')
+			info += '<br><br>'
+			info += translate('magicStart', 'More examples see at: ')
+			info += '<ul>'
+			info += '<li><a href="https://github.com/dprojects/Woodworking/tree/master/Examples/Parametric">'
+			info += translate('magicStart', 'Fully parametric examples')
+			info += '</a></li>'
+			info += '<li><a href="https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture">'
+			info += translate('magicStart', 'Fixture examples')
+			info += '</a></li>'
+			info += '</ul>'
 			self.minfo = QtGui.QLabel(info, self)
 			self.minfo.move(10, row+3)
 			self.minfo.setFixedWidth(200)
@@ -966,6 +985,167 @@ def showQtGUI():
 			self.ofr8B1.hide()
 			
 			# ############################################################################
+			# GUI for Front with glass (hidden by default)
+			# ############################################################################
+
+			# label
+			info = translate('magicStart', 'Please select 4 edges around the gap to calculate Front with glass: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
+			self.ofglass1i = QtGui.QLabel(info, self)
+			self.ofglass1i.move(10, rowfglass+3)
+			self.ofglass1i.setFixedWidth(200)
+			self.ofglass1i.setWordWrap(True)
+			self.ofglass1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			
+			rowfglass += 120
+			
+			# label
+			self.ofglass2L = QtGui.QLabel(translate('magicStart', 'Wood thickness:'), self)
+			self.ofglass2L.move(10, rowfglass+3)
+			
+			# text input
+			self.ofglass2E = QtGui.QLineEdit(self)
+			self.ofglass2E.setText("18")
+			self.ofglass2E.setFixedWidth(90)
+			self.ofglass2E.move(150, rowfglass)
+			
+			rowfglass += 30
+			
+			# label
+			self.ofglass3L = QtGui.QLabel(translate('magicStart', 'Overlap horizontal:'), self)
+			self.ofglass3L.move(10, rowfglass+3)
+
+			# text input
+			self.ofglass3E = QtGui.QLineEdit(self)
+			self.ofglass3E.setText("0")
+			self.ofglass3E.setFixedWidth(90)
+			self.ofglass3E.move(150, rowfglass)
+		
+			rowfglass += 30
+
+			# label
+			self.ofglass4L = QtGui.QLabel(translate('magicStart', 'Overlap vertical:'), self)
+			self.ofglass4L.move(10, rowfglass+3)
+
+			# text input
+			self.ofglass4E = QtGui.QLineEdit(self)
+			self.ofglass4E.setText("0")
+			self.ofglass4E.setFixedWidth(90)
+			self.ofglass4E.move(150, rowfglass)
+			
+			rowfglass += 30
+			
+			# label
+			self.ofglass5L = QtGui.QLabel(translate('magicStart', 'Glass thickness:'), self)
+			self.ofglass5L.move(10, rowfglass+3)
+
+			# text input
+			self.ofglass5E = QtGui.QLineEdit(self)
+			self.ofglass5E.setText("4")
+			self.ofglass5E.setFixedWidth(90)
+			self.ofglass5E.move(150, rowfglass)
+			
+			rowfglass += 40
+			
+			# button
+			self.ofglass6B = QtGui.QPushButton(translate('magicStart', 'calculate front with glass'), self)
+			self.ofglass6B.clicked.connect(self.calculateFrontWithGlass)
+			self.ofglass6B.setFixedWidth(200)
+			self.ofglass6B.setFixedHeight(40)
+			self.ofglass6B.move(10, rowfglass)
+			
+			rowfglass += 80
+			
+			# label
+			self.ofglass7L = QtGui.QLabel(translate('magicStart', 'Front start XYZ:'), self)
+			self.ofglass7L.move(10, rowfglass+3)
+			
+			# text input
+			self.ofglass71E = QtGui.QLineEdit(self)
+			self.ofglass71E.setText("0")
+			self.ofglass71E.setFixedWidth(90)
+			self.ofglass71E.move(120, rowfglass)
+			
+			# text input
+			self.ofglass72E = QtGui.QLineEdit(self)
+			self.ofglass72E.setText("0")
+			self.ofglass72E.setFixedWidth(90)
+			self.ofglass72E.move(220, rowfglass)
+			
+			# text input
+			self.ofglass73E = QtGui.QLineEdit(self)
+			self.ofglass73E.setText("0")
+			self.ofglass73E.setFixedWidth(90)
+			self.ofglass73E.move(320, rowfglass)
+			
+			rowfglass += 30
+			
+			# label
+			self.ofglass8L = QtGui.QLabel(translate('magicStart', 'Calculated single bar width:'), self)
+			self.ofglass8L.move(10, rowfglass+3)
+			
+			# text input
+			self.ofglass8E = QtGui.QLineEdit(self)
+			self.ofglass8E.setText("0")
+			self.ofglass8E.setFixedWidth(90)
+			self.ofglass8E.move(220, rowfglass)
+			
+			rowfglass += 30
+			
+			# label
+			self.ofglass9L = QtGui.QLabel(translate('magicStart', 'Calculated front width:'), self)
+			self.ofglass9L.move(10, rowfglass+3)
+			
+			# text input
+			self.ofglass9E = QtGui.QLineEdit(self)
+			self.ofglass9E.setText("0")
+			self.ofglass9E.setFixedWidth(90)
+			self.ofglass9E.move(220, rowfglass)
+			
+			rowfglass += 30
+			
+			# label
+			self.ofglass10L = QtGui.QLabel(translate('magicStart', 'Calculated front height:'), self)
+			self.ofglass10L.move(10, rowfglass+3)
+
+			# text input
+			self.ofglass10E = QtGui.QLineEdit(self)
+			self.ofglass10E.setText("0")
+			self.ofglass10E.setFixedWidth(90)
+			self.ofglass10E.move(220, rowfglass)
+		
+			rowfglass += 40
+
+			# button
+			self.ofglass11B = QtGui.QPushButton(translate('magicStart', 'create'), self)
+			self.ofglass11B.clicked.connect(self.createObject)
+			self.ofglass11B.setFixedWidth(toolSW - 20)
+			self.ofglass11B.setFixedHeight(createSize)
+			self.ofglass11B.move(10, createRow)
+
+			# hide by default
+			self.ofglass1i.hide()
+			self.ofglass2L.hide()
+			self.ofglass2E.hide()
+			self.ofglass3L.hide()
+			self.ofglass3E.hide()
+			self.ofglass4L.hide()
+			self.ofglass4E.hide()
+			self.ofglass5L.hide()
+			self.ofglass5E.hide()
+			self.ofglass6B.hide()
+			self.ofglass7L.hide()
+			self.ofglass71E.hide()
+			self.ofglass72E.hide()
+			self.ofglass73E.hide()
+			self.ofglass8L.hide()
+			self.ofglass8E.hide()
+			self.ofglass9L.hide()
+			self.ofglass9E.hide()
+			self.ofglass10L.hide()
+			self.ofglass10E.hide()
+			self.ofglass11B.hide()
+			
+			# ############################################################################
 			# GUI for Face Frame from GAP (hidden by default)
 			# ############################################################################
 
@@ -1566,6 +1746,29 @@ def showQtGUI():
 			self.ofr84E.hide()
 			self.ofr8B1.hide()
 		
+			# front with glass
+			self.ofglass1i.hide()
+			self.ofglass2L.hide()
+			self.ofglass2E.hide()
+			self.ofglass3L.hide()
+			self.ofglass3E.hide()
+			self.ofglass4L.hide()
+			self.ofglass4E.hide()
+			self.ofglass5L.hide()
+			self.ofglass5E.hide()
+			self.ofglass6B.hide()
+			self.ofglass7L.hide()
+			self.ofglass71E.hide()
+			self.ofglass72E.hide()
+			self.ofglass73E.hide()
+			self.ofglass8L.hide()
+			self.ofglass8E.hide()
+			self.ofglass9L.hide()
+			self.ofglass9E.hide()
+			self.ofglass10L.hide()
+			self.ofglass10E.hide()
+			self.ofglass11B.hide()
+		
 			# face frame
 			self.offrame1i.hide()
 			self.offrame2L.hide()
@@ -1781,6 +1984,29 @@ def showQtGUI():
 				self.ofr84E.show()
 				self.ofr8B1.show()
 			
+			if iType == "front with glass":
+				self.ofglass1i.show()
+				self.ofglass2L.show()
+				self.ofglass2E.show()
+				self.ofglass3L.show()
+				self.ofglass3E.show()
+				self.ofglass4L.show()
+				self.ofglass4E.show()
+				self.ofglass5L.show()
+				self.ofglass5E.show()
+				self.ofglass6B.show()
+				self.ofglass7L.show()
+				self.ofglass71E.show()
+				self.ofglass72E.show()
+				self.ofglass73E.show()
+				self.ofglass8L.show()
+				self.ofglass8E.show()
+				self.ofglass9L.show()
+				self.ofglass9E.show()
+				self.ofglass10L.show()
+				self.ofglass10E.show()
+				self.ofglass11B.show()
+			
 			if iType == "face frame":
 				self.offrame1i.show()
 				self.offrame2L.show()
@@ -1950,6 +2176,14 @@ def showQtGUI():
 			if selectedIndex == 32 or selectedIndex == 33 or selectedIndex == 34:
 				self.setGUIInfo("face frame")
 			
+			if (
+				selectedIndex == 37 or 
+				selectedIndex == 38 or 
+				selectedIndex == 39 or 
+				selectedIndex == 40
+				):
+				self.setGUIInfo("front with glass")
+				
 			# custom settings
 			
 			if selectedIndex == 10:
@@ -1980,6 +2214,14 @@ def showQtGUI():
 				self.o1E.setText("900")
 			else:
 				self.o1E.setText("500")
+				
+			if selectedIndex == 37 or selectedIndex == 38:
+				self.ofglass3E.setText("9")
+				self.ofglass4E.setText("7")
+			
+			if selectedIndex == 39 or selectedIndex == 40:
+				self.ofglass3E.setText("2")
+				self.ofglass4E.setText("2")
 
 		# ############################################################################
 		def createObject(self):
@@ -2099,7 +2341,13 @@ def showQtGUI():
 			
 			if self.gSelectedFurniture == "F36":
 				self.createF36()
-				
+			
+			if self.gSelectedFurniture == "F37" or self.gSelectedFurniture == "F39":
+				self.createF37()
+			
+			if self.gSelectedFurniture == "F38" or self.gSelectedFurniture == "F40":
+				self.createF38()
+
 		# ############################################################################
 		# actions - special functions
 		# ############################################################################
@@ -2416,6 +2664,84 @@ def showQtGUI():
 			self.ofr4E.setText(str(startZ))
 			self.ofr5E.setText(str(width))
 			self.ofr6E.setText(str(height))
+
+		# ############################################################################
+		def calculateFrontWithGlass(self):
+			
+			obj1 = False
+			obj2 = False
+			obj3 = False
+			obj4 = False
+			
+			edge1 = False
+			edge2 = False
+			edge3 = False
+			edge4 = False
+			
+			try:
+				obj1 = FreeCADGui.Selection.getSelection()[0]
+				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				
+				obj2 = FreeCADGui.Selection.getSelection()[1]
+				edge2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+				
+				obj3 = FreeCADGui.Selection.getSelection()[2]
+				edge3 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
+				
+				obj4 = FreeCADGui.Selection.getSelection()[3]
+				edge4 = FreeCADGui.Selection.getSelectionEx()[3].SubObjects[0]
+				
+			except:
+				return
+				
+			FreeCADGui.Selection.clearSelection()
+
+			gh = abs(float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z))
+			gw = abs(float(edge4.CenterOfMass.x) - float(edge3.CenterOfMass.x))
+			
+			gsx = float(edge3.CenterOfMass.x)
+			gsy = float(edge3.CenterOfMass.y)
+			gsz = float(edge1.CenterOfMass.z)
+			
+			thick = float(self.ofglass2E.text())
+			overlapH = float(self.ofglass3E.text())
+			overlapV = float(self.ofglass4E.text())
+			
+			# outside
+			if self.gSelectedFurniture == "F37" or self.gSelectedFurniture == "F38":
+				
+				width = gw + (2 * overlapH)
+				height = gh + (2 * overlapV)
+			
+				startX = gsx - overlapH
+				startY = gsy - thick
+				startZ = gsz - overlapV
+
+			# inside
+			if self.gSelectedFurniture == "F39" or self.gSelectedFurniture == "F40":
+				
+				width = gw - (2 * overlapH)
+				height = gh - (2 * overlapV)
+			
+				startX = gsx + overlapH
+				startY = gsy
+				startZ = gsz + overlapV
+
+			# simple
+			if self.gSelectedFurniture == "F37" or self.gSelectedFurniture == "F39":
+				barWidth = int(width / 10)
+
+			# decorated
+			if self.gSelectedFurniture == "F38" or self.gSelectedFurniture == "F40":
+				barWidth = int(width / 20)
+				
+			# set values to text fields
+			self.ofglass71E.setText(str(startX))
+			self.ofglass72E.setText(str(startY))
+			self.ofglass73E.setText(str(startZ))
+			self.ofglass8E.setText(str(barWidth))
+			self.ofglass9E.setText(str(width))
+			self.ofglass10E.setText(str(height))
 
 		# ############################################################################
 		def calculateFaceframeFromGap(self):
@@ -4491,6 +4817,229 @@ def showQtGUI():
 			container.setLink([o1, o2, o3, o4, o5, ff1, ff2, ff3, ff4, ff5, ff6, ff7])
 			container.Label = "Furniture, Module"
 
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+
+		# ############################################################################
+		def createF37(self):
+			
+			barThick = float(self.ofglass2E.text())
+			barWidth = float(self.ofglass8E.text())
+			
+			glassThick = float(self.ofglass5E.text())
+			glassSink = 6
+			
+			FSX = float(self.ofglass71E.text())
+			FSY = float(self.ofglass72E.text())
+			FSZ = float(self.ofglass73E.text())
+			
+			FFWidth = float(self.ofglass9E.text())
+			FFHeight = float(self.ofglass10E.text())
+			
+			# Left Side
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGLeft")
+			o1.Label = translate('magicStart', 'FG Left')
+			o1.Length = barWidth
+			o1.Height = FFHeight - (2 * barWidth)
+			o1.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ + barWidth)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			o1.ViewObject.ShapeColor = self.gColor
+			
+			# Right Side
+			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGRight")
+			o2.Label = translate('magicStart', 'FG Right')
+			o2.Length = barWidth
+			o2.Height = FFHeight - (2 * barWidth)
+			o2.Width = barThick
+			pl = FreeCAD.Vector(FSX + FFWidth - barWidth, FSY, FSZ + barWidth)
+			o2.Placement = FreeCAD.Placement(pl, self.gR)
+			o2.ViewObject.ShapeColor = self.gColor
+			
+			# Bottom
+			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGBottom")
+			o3.Label = translate('magicStart', 'FG Bottom')
+			o3.Length = FFWidth
+			o3.Height = barWidth
+			o3.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ)
+			o3.Placement = FreeCAD.Placement(pl, self.gR)
+			o3.ViewObject.ShapeColor = self.gColor
+			
+			# Top
+			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGTop")
+			o4.Label = translate('magicStart', 'FG Top')
+			o4.Length = FFWidth
+			o4.Height = barWidth
+			o4.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ + FFHeight - barWidth)
+			o4.Placement = FreeCAD.Placement(pl, self.gR)
+			o4.ViewObject.ShapeColor = self.gColor
+			
+			# Glass
+			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGGlass")
+			o5.Label = translate('magicStart', 'FG Glass')
+			o5.Length = FFWidth - (2 * barWidth) + (2 * glassSink)
+			o5.Height = FFHeight - (2 * barWidth) + (2 * glassSink)
+			o5.Width = glassThick
+			plx = FSX + barWidth - glassSink
+			ply = FSY + (barThick/2) - (glassThick/2)
+			plz = FSZ + barWidth - glassSink
+			pl = FreeCAD.Vector(plx, ply, plz)
+			o5.Placement = FreeCAD.Placement(pl, self.gR)
+			o5.ViewObject.ShapeColor = (255, 255, 255)
+			o5.ViewObject.Transparency = 60
+			
+			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFG')
+			container.setLink([o1, o2, o3, o4, o5])
+			container.Label = "Container, Front with GLass"
+			
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+
+		# ############################################################################
+		def createF38(self):
+			
+			barThick = float(self.ofglass2E.text())
+			barWidth = float(self.ofglass8E.text())
+			
+			glassThick = float(self.ofglass5E.text())
+			glassSink = 6
+			
+			decWidth = int(barWidth/4)
+			decThick = int( (barThick - glassThick) / 2 )
+			
+			FSX = float(self.ofglass71E.text())
+			FSY = float(self.ofglass72E.text())
+			FSZ = float(self.ofglass73E.text())
+			
+			FFWidth = float(self.ofglass9E.text())
+			FFHeight = float(self.ofglass10E.text())
+			
+			# Left Side
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGLeft")
+			o1.Label = translate('magicStart', 'FG Left')
+			o1.Length = barWidth
+			o1.Height = FFHeight - (2 * barWidth)
+			o1.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ + barWidth)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			o1.ViewObject.ShapeColor = self.gColor
+			
+			# Right Side
+			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGRight")
+			o2.Label = translate('magicStart', 'FG Right')
+			o2.Length = barWidth
+			o2.Height = FFHeight - (2 * barWidth)
+			o2.Width = barThick
+			pl = FreeCAD.Vector(FSX + FFWidth - barWidth, FSY, FSZ + barWidth)
+			o2.Placement = FreeCAD.Placement(pl, self.gR)
+			o2.ViewObject.ShapeColor = self.gColor
+			
+			# Bottom
+			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGBottom")
+			o3.Label = translate('magicStart', 'FG Bottom')
+			o3.Length = FFWidth
+			o3.Height = barWidth
+			o3.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ)
+			o3.Placement = FreeCAD.Placement(pl, self.gR)
+			o3.ViewObject.ShapeColor = self.gColor
+			
+			# Top
+			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGTop")
+			o4.Label = translate('magicStart', 'FG Top')
+			o4.Length = FFWidth
+			o4.Height = barWidth
+			o4.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ + FFHeight - barWidth)
+			o4.Placement = FreeCAD.Placement(pl, self.gR)
+			o4.ViewObject.ShapeColor = self.gColor
+			
+			# Glass
+			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGGlass")
+			o5.Label = translate('magicStart', 'FG Glass')
+			o5.Length = FFWidth - (2 * barWidth) + (2 * glassSink)
+			o5.Height = FFHeight - (2 * barWidth) + (2 * glassSink)
+			o5.Width = glassThick
+			plx = FSX + barWidth - glassSink
+			ply = FSY + (barThick/2) - (glassThick/2)
+			plz = FSZ + barWidth - glassSink
+			pl = FreeCAD.Vector(plx, ply, plz)
+			o5.Placement = FreeCAD.Placement(pl, self.gR)
+			o5.ViewObject.ShapeColor = (255, 255, 255)
+			o5.ViewObject.Transparency = 60
+			
+			# Vertical decoration
+			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGVertical")
+			o6.Label = translate('magicStart', 'FG Vertical')
+			o6.Length = decWidth
+			o6.Height = FFHeight - (2 * barWidth)
+			o6.Width = decThick
+			plx = FSX + (FFWidth / 2) - (decWidth / 2)
+			pl = FreeCAD.Vector(plx, FSY, FSZ + barWidth)
+			o6.Placement = FreeCAD.Placement(pl, self.gR)
+			o6.ViewObject.ShapeColor = self.gColor
+			
+			h14 = ((FFHeight - (2 * barWidth)) / 4) - (decWidth / 2)
+			h34 = ( 3 * (FFHeight - (2 * barWidth)) / 4) - (decWidth / 2)
+			
+			# Horizontal decoration 1
+			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGHorizontal1")
+			o7.Label = translate('magicStart', 'FG Horizontal 1')
+			o7.Length = (FFWidth - (2 * barWidth) - decWidth) / 2
+			o7.Height = decWidth
+			o7.Width = decThick
+			plx = FSX + barWidth
+			ply = FSY
+			plz = FSZ + barWidth +  h14
+			pl = FreeCAD.Vector(plx, ply, plz)
+			o7.Placement = FreeCAD.Placement(pl, self.gR)
+			o7.ViewObject.ShapeColor = self.gColor
+		
+			# Horizontal decoration 2
+			o8 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGHorizontal2")
+			o8.Label = translate('magicStart', 'FG Horizontal 2')
+			o8.Length = (FFWidth - (2 * barWidth) - decWidth) / 2
+			o8.Height = decWidth
+			o8.Width = decThick
+			plx = FSX + barWidth
+			ply = FSY
+			plz = FSZ + barWidth +  h34
+			pl = FreeCAD.Vector(plx, ply, plz)
+			o8.Placement = FreeCAD.Placement(pl, self.gR)
+			o8.ViewObject.ShapeColor = self.gColor
+		
+			# Horizontal decoration 3
+			o9 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGHorizontal3")
+			o9.Label = translate('magicStart', 'FG Horizontal 3')
+			o9.Length = (FFWidth - (2 * barWidth) - decWidth) / 2
+			o9.Height = decWidth
+			o9.Width = decThick
+			plx = FSX + (FFWidth / 2) + (decWidth / 2)
+			ply = FSY
+			plz = FSZ + barWidth +  h14
+			pl = FreeCAD.Vector(plx, ply, plz)
+			o9.Placement = FreeCAD.Placement(pl, self.gR)
+			o9.ViewObject.ShapeColor = self.gColor
+		
+			# Horizontal decoration 4
+			o10 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGHorizontal4")
+			o10.Label = translate('magicStart', 'FG Horizontal 4')
+			o10.Length = (FFWidth - (2 * barWidth) - decWidth) / 2
+			o10.Height = decWidth
+			o10.Width = decThick
+			plx = FSX + (FFWidth / 2) + (decWidth / 2)
+			ply = FSY
+			plz = FSZ + barWidth +  h34
+			pl = FreeCAD.Vector(plx, ply, plz)
+			o10.Placement = FreeCAD.Placement(pl, self.gR)
+			o10.ViewObject.ShapeColor = self.gColor
+			
+			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFG')
+			container.setLink([o1, o2, o3, o4, o5, o6, o7, o8, o9, o10])
+			container.Label = "Container, Front with GLass"
+			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
 

@@ -40,26 +40,17 @@ Currently there are no plans to support FreeCAD 1.0 and later. The main reason f
 
 For more information see: [issue about FreeCAD 1.0+ support](https://github.com/dprojects/Woodworking/issues/49)
 
-# Release notes
+# Translations
 
-**New significant changes since the last release 0.22 stable:**
+Translations are developed at [github.com/dprojects/Woodworking-translations](https://github.com/dprojects/Woodworking-translations) repository and are created only for [Woodworking workbench releases](https://github.com/dprojects/Woodworking/releases). This approach allows the translator community to work without time pressure and independently of the development of the main branch, because the code of stable releases will not be changed.
 
-* improve magicMeasure (new GUI, descriptions, auto preselection recognize, vertices size)
-* face frame (around, with center bar, with horizontal bar) and predefined furniture (magicStart)
-* tool to quickly add or remove expressions for position and size (magicGlue)
-* drawer series feature to create many drawers at once (magicStart)
-* magicMove improvements (container, auto object type, translation, cross save, fixes)
-* add edge, face, vertex reference to Mirror feature (magicMove)
-* feature Copy by Edge to copy part of the furniture (magicMove)
-* new laveder color for API inspection tool (scanObjects)
-* building complex furniture from modules by selected edge, face, vertex or custom offset (magicStart)
-* center side for selected gap by depth, by offsets, custom offsets, automatically adjusted (magicStart)
-* shelf for selected gap by depth, by offsets, custom offsets, automatically adjusted (magicStart)
-* front outside or inside for selected gap (magicStart)
-* drawer with front outside or inside for selected gap (magicStart)
-* foot solutions (magicStart)
-* magicDowels improved (GUI redesign, position autodetect, keep settings, menu translation, fixes)
-* magicStart tool to create & import furniture, fixture, drawers, ...
+### Woodworking workbench release 0.21
+
+To install translation for [Woodworking workbench release 0.21](https://github.com/dprojects/Woodworking/releases/tag/0.21) you have to download all `.qm` files from [0.21 translations branch](https://github.com/dprojects/Woodworking-translations/tree/0.21), if there such any, and move them to `translations` folder inside Woodworking workbench folder. You can also create your own translations.
+
+### Woodworking workbench release 0.22 and above
+
+You can use `translations update tool` available under drop down menu `Woodworking -> Download and update all translations`. This tool will automatically download all available `.qm` files into `translations` folder for you Woodworking workbench release.
 
 # Installation step by step
 
@@ -78,6 +69,26 @@ I don't have `Windows` or `macOS`, so I am not able to test and certify this wor
 * For cutting edge features download: [the master branch](https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip) or run command:
 	
 		git clone https://github.com/dprojects/Woodworking.git
+
+	**New significant changes since the last release 0.22 stable:**
+
+	* front with glass, simple and decorated, outside or inside, fit into gap (magicStart)
+	* improve magicMeasure (new GUI, descriptions, auto preselection recognize, vertices size)
+	* face frame (around, with center bar, with horizontal bar) and predefined furniture (magicStart)
+	* tool to quickly add or remove expressions for position and size (magicGlue)
+	* drawer series feature to create many drawers at once (magicStart)
+	* magicMove improvements (container, auto object type, translation, cross save, fixes)
+	* add edge, face, vertex reference to Mirror feature (magicMove)
+	* feature Copy by Edge to copy part of the furniture (magicMove)
+	* new laveder color for API inspection tool (scanObjects)
+	* building complex furniture from modules by selected edge, face, vertex or custom offset (magicStart)
+	* center side for selected gap by depth, by offsets, custom offsets, automatically adjusted (magicStart)
+	* shelf for selected gap by depth, by offsets, custom offsets, automatically adjusted (magicStart)
+	* front outside or inside for selected gap (magicStart)
+	* drawer with front outside or inside for selected gap (magicStart)
+	* foot solutions (magicStart)
+	* magicDowels improved (GUI redesign, position autodetect, keep settings, menu translation, fixes)
+	* magicStart tool to create & import furniture, fixture, drawers, ...
 
 ### Step 2. Get FreeCAD Mod folder localization:
 
@@ -114,18 +125,6 @@ The Woodworking workbench also has an API for developers. This library contains 
 
 * If you have Woodworking workbench installed you don't have to install the `MagicPanels` library manaually. Also you can view the library directly from Woodworking workbench via: [scanObjects](https://github.com/dprojects/Woodworking/tree/master/Docs#scanobjects) tool.
 * For programming I use simple [Krusader](https://en.wikipedia.org/wiki/Krusader) with `F4` [KWrite](https://en.wikipedia.org/wiki/KWrite) editor. I have set tabulators as indent: `Settings` -> `Configure Editor` -> `Editing` -> `Indentation` -> `Tabulators` -> `Tab width: 4 characters`.
-
-# Translations
-
-Translations are developed at [github.com/dprojects/Woodworking-translations](https://github.com/dprojects/Woodworking-translations) repository and are created only for [Woodworking workbench releases](https://github.com/dprojects/Woodworking/releases). This approach allows the translator community to work without time pressure and independently of the development of the main branch, because the code of stable releases will not be changed.
-
-### Woodworking workbench release 0.21
-
-To install translation for [Woodworking workbench release 0.21](https://github.com/dprojects/Woodworking/releases/tag/0.21) you have to download all `.qm` files from [0.21 translations branch](https://github.com/dprojects/Woodworking-translations/tree/0.21), if there such any, and move them to `translations` folder inside Woodworking workbench folder. You can also create your own translations.
-
-### Woodworking workbench release 0.22 and above
-
-You can use `translations update tool` available under drop down menu `Woodworking -> Download and update all translations`. This tool will automatically download all available `.qm` files into `translations` folder for you Woodworking workbench release.
 
 # License
 

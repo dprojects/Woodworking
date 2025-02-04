@@ -164,6 +164,10 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 * Face Frame outside ( frame for custom changes, fit into gap )
 * Simple bookcase ( face frame, no front, back HDF )
 * Simple storage ( face frame, no front, back HDF )
+* Front outside with glass ( simple frame, fit into gap )
+* Front outside with glass ( frame with decoration, fit into gap )
+* Front inside with glass ( simple frame, fit into gap )
+* Front inside with glass ( frame with decoration, fit into gap )
 
 **Video tutorials:** 
 * [Furniture creation tool](https://www.youtube.com/watch?v=lHQ1J9Nahcs)
@@ -844,10 +848,10 @@ This tool allows you to quickly measure objects. All measurements are recognized
   * select `Vertex` and next `Face`: to measure distance between vertex and face, for example shelf space,
   * select `Vertex` and next `Edge`: to measure distance between vertex and edge, for example space between front and side of the furniture, 
   * select `Vertex` and next `Hole`: to measure distance between vertex and hole center point, for example drill point, 
-  * select `Vertex` and next any other `Vertex`: to measure distance between two vertices, for any purposes, 
-  * select `Hole edge` and next `Hole edge`: to measure distance between holes center points, for example to verify 32 mm system, 
-  * select `Hole edge` and next any other `Edge`: to measure distance between hole and edge, for example to verify pilot hole offset,
-  * select `Hole` and next any `Face`: to measure distance between hole and face, for example to measure angle mounting point, 
+  * select `Vertex` and next `Vertex`: to measure distance between two vertices, for any purposes, 
+  * select `Hole` and next `Hole`: to measure distance between holes center points, for example to verify 32 mm system, 
+  * select `Hole` and next `Edge`: to measure distance between hole and edge, for example to verify pilot hole offset,
+  * select `Hole` and next `Face`: to measure distance between hole and face, for example to measure angle mounting point, 
   * select `Hole` and next `Vertex`: to measure distance between hole and vertex.
 
 **Note:** This tool automatically recognizes the FreeCAD `Edit->Preferences->Display->Colors->Enable preselection highlighting` settings and if you set this option, it will start in `Preselection` mode, otherwise in `Selection` mode, so you don't have to switch it at the beginning.
