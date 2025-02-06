@@ -22,6 +22,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 		* [panelMove2Face](#panelmove2face)
 		* [panelMove2Anchor](#panelmove2anchor)
 		* [panelMove2Center](#panelmove2center)
+		* [shelvesEqual](#shelvesequal)
 		* [align2Curve](#align2curve)
 		* [arrows](#arrows)
 	* [Dowels and Screws](#dowels-and-screws)
@@ -168,6 +169,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 * Front outside with glass ( frame with decoration, fit into gap )
 * Front inside with glass ( simple frame, fit into gap )
 * Front inside with glass ( frame with decoration, fit into gap )
+* Shelf series with equal space ( fit into gap )
 
 **Video tutorials:** 
 * [Furniture creation tool](https://www.youtube.com/watch?v=lHQ1J9Nahcs)
@@ -321,9 +323,15 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 ### panelMove2Face
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMove2Face.png"> This tool allows to align panels or any other objects to face position. First select face and next select objects you want to align with face position. You can select objects at objects `Tree` window holding `left CTRL key`. This tool allows to avoid thickness step problem, if you want to move panel to the other edge but the way is not a multiple of the panel thickness. However, it not cover all possible situations. This tool move object to the first `0 vertex` (beginning of the panel).
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMove2Face.png">To adjust panel to face please select: 
+
+1. selection: **face**
+2. selection: **objects to align**
+
+**Note:** This tool allows to align panels to face position. You can select more objects holding left CTRL key. This tool allows you to avoid thickness step problem, if you want to move panel to the other edge but the way is not a multiple of the panel thickness. For rotated containers use [panelMove2Anchor](#panelmove2anchor).
 
 **Video tutorials:** 
+* [How to create shelves with equal space](https://www.youtube.com/watch?v=2odJa0baGqw)
 * [Simple table](https://www.youtube.com/watch?v=Xru52f8uyBk)
 * [Move to face](https://www.youtube.com/watch?v=i9pXqdEhahU)
 
@@ -353,6 +361,21 @@ Available anchors to select:
 * [Move to center](https://www.youtube.com/watch?v=zKttrKdahg8)
 
 <br><br><br>
+
+### shelvesEqual
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/shelvesEqual.png">To set equal space between shelves please select: 
+
+1. selection: **X axis edge**
+2. selection: **X axis edge**
+3. selection: **shelves to set equal space**
+
+**Note:** This tool allows you to set equal space for selected shelves. It works only at Z axis. To select more objects hold left CTRL key during selection.
+
+**Video tutorials:** 
+* [How to create shelves with equal space](https://www.youtube.com/watch?v=2odJa0baGqw)
+
+<br><br><br><br><br>
 
 ### align2Curve
 

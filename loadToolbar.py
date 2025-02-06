@@ -36,6 +36,7 @@ def getItems(iType):
 			"panelMove2Face",
 			"panelMove2Anchor",
 			"panelMove2Center",
+			"shelvesEqual",
 			"align2Curve",
 			"panelMoveXp",
 			"panelMoveXm",

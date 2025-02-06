@@ -52,7 +52,8 @@ getMenuIndex = {
 	translate('magicStart', 'Front outside with glass ( simple frame, fit into gap )'): 37, 
 	translate('magicStart', 'Front outside with glass ( frame with decoration, fit into gap )'): 38, 
 	translate('magicStart', 'Front inside with glass ( simple frame, fit into gap )'): 39, 
-	translate('magicStart', 'Front inside with glass ( frame with decoration, fit into gap )'): 40 # no comma  
+	translate('magicStart', 'Front inside with glass ( frame with decoration, fit into gap )'): 40, 
+	translate('magicStart', 'Shelf series with equal space ( fit into gap )'): 41 # no comma 
 }
 
 # ############################################################################
@@ -145,6 +146,7 @@ def showQtGUI():
 				translate('magicStart', 'Front inside with glass ( simple frame, fit into gap )'), 
 				translate('magicStart', 'Front inside with glass ( frame with decoration, fit into gap )'), 
 				translate('magicStart', 'Shelf ( fit into gap )'), 
+				translate('magicStart', 'Shelf series with equal space ( fit into gap )'), 
 				translate('magicStart', 'Center side ( fit into gap )'), 
 				translate('magicStart', 'Foot ( good for cleaning )'), 
 				translate('magicStart', 'Foot ( standard )'), 
@@ -163,7 +165,7 @@ def showQtGUI():
 				translate('magicStart', 'Simple chair ( import parametric )'), 
 				translate('magicStart', 'Picture frame ( import parametric )'), 
 				translate('magicStart', 'Simple table ( import parametric )'), 
-				translate('magicStart', 'Storage box ( import parametric )') # no comma
+				translate('magicStart', 'Storage box ( import parametric )')   # no comma
 				)
 			
 			self.sMode = QtGui.QComboBox(self)
@@ -185,6 +187,7 @@ def showQtGUI():
 			rowfglass = row - 20
 			rowfframe = row - 20
 			rowshelf = row
+			rowsseries = row - 20
 			rowside = row
 
 			# ############################################################################
@@ -1475,6 +1478,139 @@ def showQtGUI():
 			self.osh8B1.hide()
 
 			# ############################################################################
+			# GUI for Shelf series (hidden by default)
+			# ############################################################################
+			
+			# label
+			info = translate('magicStart', 'Please select 4 edges and face to calculate shelf series: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge <br> 5. selection - back face')
+			self.oshs1i = QtGui.QLabel(info, self)
+			self.oshs1i.move(10, rowsseries+3)
+			self.oshs1i.setFixedWidth(200)
+			self.oshs1i.setWordWrap(True)
+			self.oshs1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			
+			rowsseries += 150
+			
+			# label
+			self.oshs1L = QtGui.QLabel(translate('magicStart', 'Single shelf thickness:'), self)
+			self.oshs1L.move(10, rowsseries+3)
+
+			# text input
+			self.oshs1E = QtGui.QLineEdit(self)
+			self.oshs1E.setText("18")
+			self.oshs1E.setFixedWidth(90)
+			self.oshs1E.move(150, rowsseries)
+		
+			rowsseries += 30
+			
+			# label
+			self.oshs2L = QtGui.QLabel(translate('magicStart', 'Number of shelves:'), self)
+			self.oshs2L.move(10, rowsseries+3)
+
+			# text input
+			self.oshs2E = QtGui.QLineEdit(self)
+			self.oshs2E.setText("3")
+			self.oshs2E.setFixedWidth(90)
+			self.oshs2E.move(150, rowsseries)
+			
+			rowsseries += 40
+			
+			# button
+			self.oshs3B = QtGui.QPushButton(translate('magicStart', 'calculate shelf series'), self)
+			self.oshs3B.clicked.connect(self.calculateShelfSeries)
+			self.oshs3B.setFixedWidth(200)
+			self.oshs3B.setFixedHeight(40)
+			self.oshs3B.move(10, rowsseries)
+			
+			rowsseries += 70
+			
+			# label
+			self.oshs4L = QtGui.QLabel(translate('magicStart', 'Shelf start XYZ:'), self)
+			self.oshs4L.move(10, rowsseries+3)
+			
+			# text input
+			self.oshs41E = QtGui.QLineEdit(self)
+			self.oshs41E.setText("0")
+			self.oshs41E.setFixedWidth(90)
+			self.oshs41E.move(120, rowsseries)
+			
+			# text input
+			self.oshs42E = QtGui.QLineEdit(self)
+			self.oshs42E.setText("0")
+			self.oshs42E.setFixedWidth(90)
+			self.oshs42E.move(220, rowsseries)
+			
+			# text input
+			self.oshs43E = QtGui.QLineEdit(self)
+			self.oshs43E.setText("0")
+			self.oshs43E.setFixedWidth(90)
+			self.oshs43E.move(320, rowsseries)
+			
+			rowsseries += 30
+
+			# label
+			self.oshs5L = QtGui.QLabel(translate('magicStart', 'Calculated shelf width:'), self)
+			self.oshs5L.move(10, rowsseries+3)
+			
+			# text input
+			self.oshs5E = QtGui.QLineEdit(self)
+			self.oshs5E.setText("0")
+			self.oshs5E.setFixedWidth(90)
+			self.oshs5E.move(220, rowsseries)
+			
+			rowsseries += 30
+			
+			# label
+			self.oshs6L = QtGui.QLabel(translate('magicStart', 'Calculated shelf depth:'), self)
+			self.oshs6L.move(10, rowsseries+3)
+
+			# text input
+			self.oshs6E = QtGui.QLineEdit(self)
+			self.oshs6E.setText("0")
+			self.oshs6E.setFixedWidth(90)
+			self.oshs6E.move(220, rowsseries)
+			
+			rowsseries += 30
+
+			# label
+			self.oshs7L = QtGui.QLabel(translate('magicStart', 'Calculated shelves space:'), self)
+			self.oshs7L.move(10, rowsseries+3)
+			
+			# text input
+			self.oshs7E = QtGui.QLineEdit(self)
+			self.oshs7E.setText("0")
+			self.oshs7E.setFixedWidth(90)
+			self.oshs7E.move(220, rowsseries)
+			
+			rowsseries += 40
+
+			# button
+			self.oshs8B = QtGui.QPushButton(translate('magicStart', 'create'), self)
+			self.oshs8B.clicked.connect(self.createObject)
+			self.oshs8B.setFixedWidth(toolSW - 20)
+			self.oshs8B.setFixedHeight(createSize)
+			self.oshs8B.move(10, createRow)
+
+			# hide by default
+			self.oshs1i.hide()
+			self.oshs1L.hide()
+			self.oshs1E.hide()
+			self.oshs2L.hide()
+			self.oshs2E.hide()
+			self.oshs3B.hide()
+			self.oshs4L.hide()
+			self.oshs41E.hide()
+			self.oshs42E.hide()
+			self.oshs43E.hide()
+			self.oshs5L.hide()
+			self.oshs5E.hide()
+			self.oshs6L.hide()
+			self.oshs6E.hide()
+			self.oshs7L.hide()
+			self.oshs7E.hide()
+			self.oshs8B.hide()
+
+			# ############################################################################
 			# GUI for Center side from GAP (hidden by default)
 			# ############################################################################
 			
@@ -1724,6 +1860,25 @@ def showQtGUI():
 			self.osh7E.hide()
 			self.osh8B1.hide()
 
+			# shelf series
+			self.oshs1i.hide()
+			self.oshs1L.hide()
+			self.oshs1E.hide()
+			self.oshs2L.hide()
+			self.oshs2E.hide()
+			self.oshs3B.hide()
+			self.oshs4L.hide()
+			self.oshs41E.hide()
+			self.oshs42E.hide()
+			self.oshs43E.hide()
+			self.oshs5L.hide()
+			self.oshs5E.hide()
+			self.oshs6L.hide()
+			self.oshs6E.hide()
+			self.oshs7L.hide()
+			self.oshs7E.hide()
+			self.oshs8B.hide()
+
 			# front
 			self.ofr1i.hide()
 			self.ofr2L.hide()
@@ -1962,6 +2117,25 @@ def showQtGUI():
 				self.osh7E.show()
 				self.osh8B1.show()
 
+			if iType == "shelf series":
+				self.oshs1i.show()
+				self.oshs1L.show()
+				self.oshs1E.show()
+				self.oshs2L.show()
+				self.oshs2E.show()
+				self.oshs3B.show()
+				self.oshs4L.show()
+				self.oshs41E.show()
+				self.oshs42E.show()
+				self.oshs43E.show()
+				self.oshs5L.show()
+				self.oshs5E.show()
+				self.oshs6L.show()
+				self.oshs6E.show()
+				self.oshs7L.show()
+				self.oshs7E.show()
+				self.oshs8B.show()
+			
 			if iType == "front":
 				self.ofr1i.show()
 				self.ofr2L.show()
@@ -2185,6 +2359,9 @@ def showQtGUI():
 				selectedIndex == 40
 				):
 				self.setGUIInfo("front with glass")
+			
+			if selectedIndex == 41:
+				self.setGUIInfo("shelf series")
 				
 			# custom settings
 			
@@ -2353,6 +2530,12 @@ def showQtGUI():
 			
 			if self.gSelectedFurniture == "F38" or self.gSelectedFurniture == "F40":
 				self.createF38()
+			
+			if self.gSelectedFurniture == "F41":
+				self.createF41()
+
+			# here to allow recalculation with selection
+			FreeCADGui.Selection.clearSelection()
 
 		# ############################################################################
 		# actions - special functions
@@ -2498,8 +2681,6 @@ def showQtGUI():
 			startX = startX + float(self.ooo1E.text())
 			startY = startY + float(self.ooo2E.text())
 			startZ = startZ + float(self.ooo3E.text())
-			
-			FreeCADGui.Selection.clearSelection()
 
 			# set values to text fields
 			self.oo11E.setText(str(startX))
@@ -2546,8 +2727,6 @@ def showQtGUI():
 			
 			except:
 				skip = 1
-				
-			FreeCADGui.Selection.clearSelection()
 
 			startX = 0
 			startY = 0
@@ -2631,8 +2810,6 @@ def showQtGUI():
 				
 			except:
 				return
-				
-			FreeCADGui.Selection.clearSelection()
 
 			gh = float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z)
 			gw = float(edge4.CenterOfMass.x) - float(edge3.CenterOfMass.x)
@@ -2699,8 +2876,6 @@ def showQtGUI():
 				
 			except:
 				return
-				
-			FreeCADGui.Selection.clearSelection()
 
 			gh = abs(float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z))
 			gw = abs(float(edge4.CenterOfMass.x) - float(edge3.CenterOfMass.x))
@@ -2777,8 +2952,6 @@ def showQtGUI():
 				
 			except:
 				return
-				
-			FreeCADGui.Selection.clearSelection()
 
 			gh = abs(float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z))
 			gw = abs(float(edge4.CenterOfMass.x) - float(edge3.CenterOfMass.x))
@@ -2833,8 +3006,6 @@ def showQtGUI():
 				
 			except:
 				return
-				
-			FreeCADGui.Selection.clearSelection()
 
 			gdepth = float(face1.CenterOfMass.y) - float(edge1.CenterOfMass.y)
 			gwidth = float(edge2.CenterOfMass.x) - float(edge1.CenterOfMass.x)
@@ -2879,6 +3050,69 @@ def showQtGUI():
 			self.osh7E.setText(str(depth))
 
 		# ############################################################################
+		def calculateShelfSeries(self):
+			
+			obj1 = False
+			obj2 = False
+			obj3 = False
+			obj4 = False
+			obj5 = False
+			
+			edge1 = False
+			edge2 = False
+			edge3 = False
+			edge4 = False
+			face1 = False
+			
+			try:
+				obj1 = FreeCADGui.Selection.getSelection()[0]
+				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				
+				obj2 = FreeCADGui.Selection.getSelection()[1]
+				edge2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+				
+				obj3 = FreeCADGui.Selection.getSelection()[2]
+				edge3 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
+				
+				obj4 = FreeCADGui.Selection.getSelection()[3]
+				edge4 = FreeCADGui.Selection.getSelectionEx()[3].SubObjects[0]
+				
+				obj5 = FreeCADGui.Selection.getSelection()[4]
+				face1 = FreeCADGui.Selection.getSelectionEx()[4].SubObjects[0]
+				
+			except:
+				return
+				
+			gh = abs(float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z))
+			gw = abs(float(edge4.CenterOfMass.x) - float(edge3.CenterOfMass.x))
+			gd = abs(float(face1.CenterOfMass.y) - float(edge3.CenterOfMass.y))
+			
+			sx = float(edge3.CenterOfMass.x)
+			sy = float(edge3.CenterOfMass.y)
+			sz = float(edge1.CenterOfMass.z)
+			
+			thick = float(self.oshs1E.text())
+			num = int(self.oshs2E.text())
+			
+			startX = sx
+			startY = sy
+			startZ = sz
+			
+			width = gw
+			depth = gd
+			
+			offset = (gh - (num * thick)) / (num + 1)
+			
+			# set values to text fields
+			self.oshs41E.setText(str(startX))
+			self.oshs42E.setText(str(startY))
+			self.oshs43E.setText(str(startZ))
+
+			self.oshs5E.setText(str(width))
+			self.oshs6E.setText(str(depth))
+			self.oshs7E.setText(str(offset))
+
+		# ############################################################################
 		def calculateSideFromGap(self):
 			
 			obj1 = False
@@ -2914,8 +3148,6 @@ def showQtGUI():
 				except:
 					return
 				
-			FreeCADGui.Selection.clearSelection()
-			
 			# face below
 			if float(face1.CenterOfMass.z) < float(edge1.CenterOfMass.z):
 				gheight = float(edge1.CenterOfMass.z) - float(face1.CenterOfMass.z)
@@ -3008,8 +3240,6 @@ def showQtGUI():
 			
 			except:
 				return
-
-			FreeCADGui.Selection.clearSelection()
 
 			startX = float(edge3.CenterOfMass.x)
 			startY = float(edge3.CenterOfMass.y)
@@ -5045,6 +5275,44 @@ def showQtGUI():
 			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFG')
 			container.setLink([o1, o2, o3, o4, o5, o6, o7, o8, o9, o10])
 			container.Label = "Container, Front with GLass"
+			
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+
+		# ############################################################################
+		def createF41(self):
+	
+			thick = float(self.oshs1E.text())
+			num = int(self.oshs2E.text())
+			
+			p0X = float(self.oshs41E.text())
+			p0Y = float(self.oshs42E.text())
+			p0Z = float(self.oshs43E.text())
+			
+			width = float(self.oshs5E.text())
+			depth = float(self.oshs6E.text())
+			offset = float(self.oshs7E.text())
+			
+			shelvesArr = []
+			
+			for i in range(0, num):
+				
+				# single shelf
+				o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "ShelfSeries")
+				o1.Label = translate('magicStart', 'Shelf '+str(i+1))
+				o1.Length = width
+				o1.Height = thick
+				o1.Width = depth
+				pz = p0Z + ((i + 1) * offset) + (i * thick)
+				pl = FreeCAD.Vector(p0X, p0Y, pz)
+				o1.Placement = FreeCAD.Placement(pl, self.gR)
+				o1.ViewObject.ShapeColor = self.gColor
+				
+				shelvesArr.append(o1)
+			
+			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerShelfSeries')
+			container.setLink(shelvesArr)
+			container.Label = "Container, Shelf Series"
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()

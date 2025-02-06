@@ -57,6 +57,7 @@ Tools = [
 	"MagicPanels", "panelMove2Face", "png", "panel, move, to face", "Click to see info.",
 	"MagicPanels", "panelMove2Anchor", "png", "panel, move, to anchor", "Click to see info.",
 	"MagicPanels", "panelMove2Center", "png", "panel, move, to center", "Click to see info.",
+	"MagicPanels", "shelvesEqual", "png", "make equal space between shelves", "Click to see info.",
 	"MagicPanels", "align2Curve", "png", "align panel to curve", "Click to see info.",
 	"MagicPanels", "panelMoveXp", "png", "panel, move, back", "Click to see info.",
 	"MagicPanels", "panelMoveXm", "png", "panel, move, forward", "Click to see info.",

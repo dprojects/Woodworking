@@ -17,6 +17,18 @@ try:
 	[ v1, v2, v3, v4 ] = MagicPanels.getFaceVertices(baseFace)
 	[ v1, v2, v3, v4 ] = MagicPanels.getVerticesPosition([ v1, v2, v3, v4 ], base, "array")
 	
+	bx = v1[0]
+	by = v1[1]
+	bz = v1[2]
+
+	fcx = float(baseFace.CenterOfMass.x)
+	fcy = float(baseFace.CenterOfMass.y)
+	fcz = float(baseFace.CenterOfMass.z)
+	
+	bcx = float(base.Shape.CenterOfMass.x)
+	bcy = float(base.Shape.CenterOfMass.y)
+	bcz = float(base.Shape.CenterOfMass.z)
+
 	objects = selectedObjects[1:]
 
 	for o in objects:
@@ -25,28 +37,44 @@ try:
 		toMove = MagicPanels.getObjectToMove(oRef)
 
 		[ X, Y, Z, R ] = MagicPanels.getContainerPlacement(toMove, "clean")
-		[ gX, gY, gZ, gR ] = MagicPanels.getContainerPlacement(oRef, "offset")
-	
+		[ refX, refY, refZ, refR ] = MagicPanels.getContainerPlacement(oRef, "offset")
+		[ sizeX, sizeY, sizeZ ] = MagicPanels.getSizesFromVertices(o)
+		
 		if basePlane == "XY":
-			d = MagicPanels.getVertexAxisCross(gZ, v1[2])
-			if gZ < v1[2]:
+			
+			d = MagicPanels.getVertexAxisCross(refZ, bz)
+			
+			if refZ < bz:
 				Z = Z + d
 			else:
 				Z = Z - d
 
+			if fcz < bcz:
+				Z = Z - sizeZ
+
 		if basePlane == "XZ":
-			d = MagicPanels.getVertexAxisCross(gY, v1[1])
-			if gY < v1[1]:
+
+			d = MagicPanels.getVertexAxisCross(refY, by)
+
+			if refY < by:
 				Y = Y + d
 			else:
 				Y = Y - d
 
+			if fcy < bcy:
+				Y = Y - sizeY
+
 		if basePlane == "YZ":
-			d = MagicPanels.getVertexAxisCross(gX, v1[0])
-			if gX < v1[0]:
+
+			d = MagicPanels.getVertexAxisCross(refX, bx)
+
+			if refX < bx:
 				X = X + d
 			else:
 				X = X - d
+
+			if fcx < bcx:
+				X = X - sizeX
 
 		MagicPanels.setContainerPlacement(toMove, X, Y, Z, 0, "clean")
 		FreeCAD.ActiveDocument.recompute()
@@ -55,7 +83,7 @@ except:
 	
 	info = ""
 
-	info += translate('panelMove2Face', '<b>First select face, and next object that should be aligned to the face position. </b><br><br><b>Note:</b> This tool allows to align panels or any other objects to face position. You can select objects at objects Tree window holding left CTRL key. This tool allows to avoid thickness step problem, if you want to move panel to the other edge but the way is not a multiple of the panel thickness. For rotated containers use panelMove2Anchor.')
+	info += translate('panelMove2Face', 'To adjust panel to face please select: <br><br>1. selection: <b>face</b><br>2. selection: <b>objects to align</b><br><br><b>Note:</b> This tool allows to align panels to face position. You can select more objects holding left CTRL key. This tool allows you to avoid thickness step problem, if you want to move panel to the other edge but the way is not a multiple of the panel thickness. For rotated containers use panelMove2Anchor.')
 	
 	MagicPanels.showInfo("panelMove2Face", info)
 
