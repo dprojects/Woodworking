@@ -53,7 +53,13 @@ getMenuIndex = {
 	translate('magicStart', 'Front outside with glass ( frame with decoration, fit into gap )'): 38, 
 	translate('magicStart', 'Front inside with glass ( simple frame, fit into gap )'): 39, 
 	translate('magicStart', 'Front inside with glass ( frame with decoration, fit into gap )'): 40, 
-	translate('magicStart', 'Shelf series with equal space ( fit into gap )'): 41 # no comma 
+	translate('magicStart', 'Shelf series with equal space ( fit into gap )'): 41, 
+	translate('magicStart', 'Table ( kitchen simple style )'): 42, 
+	translate('magicStart', 'Table ( coffee simple style )'): 43, 
+	translate('magicStart', 'Table ( kitchen modern style )'): 44, 
+	translate('magicStart', 'Table ( coffee modern style )'): 45, 
+	translate('magicStart', 'Table ( kitchen decorated style )'): 46, 
+	translate('magicStart', 'Table ( coffee decorated style )'): 47 # no comma 
 }
 
 # ############################################################################
@@ -153,6 +159,12 @@ def showQtGUI():
 				translate('magicStart', 'Foot ( more stable )'), 
 				translate('magicStart', 'Foot ( decorated )'), 
 				translate('magicStart', 'Foot ( chair style )'), 
+				translate('magicStart', 'Table ( kitchen simple style )'), 
+				translate('magicStart', 'Table ( kitchen modern style )'), 
+				translate('magicStart', 'Table ( kitchen decorated style )'), 
+				translate('magicStart', 'Table ( coffee simple style )'), 
+				translate('magicStart', 'Table ( coffee modern style )'), 
+				translate('magicStart', 'Table ( coffee decorated style )'), 
 				translate('magicStart', 'Dowel 8x35 mm ( import parametric )'), 
 				translate('magicStart', 'Screw 4x40 mm ( import parametric )'), 
 				translate('magicStart', 'Screw 3x20 mm for HDF ( import parametric )'), 
@@ -183,6 +195,7 @@ def showQtGUI():
 			rowgap = row
 			rowds = row - 20
 			rowfoot = row
+			rowtbl = row - 20
 			rowfront = row
 			rowfglass = row - 20
 			rowfframe = row - 20
@@ -438,6 +451,153 @@ def showQtGUI():
 			self.of5L.hide()
 			self.of5E.hide()
 			self.of6B1.hide()
+
+			# ############################################################################
+			# GUI for Table (hidden by default)
+			# ############################################################################
+			
+			# label
+			info = translate('magicStart', 'Possible selections: <br><br>1. Vertex - to set XYZ position <br><br>2. no selection - to create with custom settings')
+			self.otb1i = QtGui.QLabel(info, self)
+			self.otb1i.move(10, rowtbl+3)
+			self.otb1i.setFixedWidth(200)
+			self.otb1i.setWordWrap(True)
+			self.otb1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+		
+			rowtbl += 120
+			
+			# label
+			self.otb1L = QtGui.QLabel(translate('magicStart', 'Table width X:'), self)
+			self.otb1L.move(10, rowtbl+3)
+			
+			# text input
+			self.otb1E = QtGui.QLineEdit(self)
+			self.otb1E.setText("990")
+			self.otb1E.setFixedWidth(90)
+			self.otb1E.move(120, rowtbl)
+
+			rowtbl += 30
+
+			# label
+			self.otb2L = QtGui.QLabel(translate('magicStart', 'Table depth Y:'), self)
+			self.otb2L.move(10, rowtbl+3)
+
+			# text input
+			self.otb2E = QtGui.QLineEdit(self)
+			self.otb2E.setText("525")
+			self.otb2E.setFixedWidth(90)
+			self.otb2E.move(120, rowtbl)
+
+			rowtbl += 30
+
+			# label
+			self.otb3L = QtGui.QLabel(translate('magicStart', 'Table height Z:'), self)
+			self.otb3L.move(10, rowtbl+3)
+
+			# text input
+			self.otb3E = QtGui.QLineEdit(self)
+			self.otb3E.setText("430")
+			self.otb3E.setFixedWidth(90)
+			self.otb3E.move(120, rowtbl)
+
+			rowtbl += 30
+
+			# label
+			self.otb4L = QtGui.QLabel(translate('magicStart', 'Table top thickness:'), self)
+			self.otb4L.move(10, rowtbl+3)
+
+			# text input
+			self.otb4E = QtGui.QLineEdit(self)
+			self.otb4E.setText("18")
+			self.otb4E.setFixedWidth(90)
+			self.otb4E.move(220, rowtbl)
+
+			rowtbl += 30
+
+			# label
+			self.otb5L = QtGui.QLabel(translate('magicStart', 'Legs and Supporters thickness:'), self)
+			self.otb5L.move(10, rowtbl+3)
+
+			# text input
+			self.otb5E = QtGui.QLineEdit(self)
+			self.otb5E.setText("80")
+			self.otb5E.setFixedWidth(90)
+			self.otb5E.move(220, rowtbl)
+			
+			rowtbl += 30
+
+			# label
+			self.otb6L = QtGui.QLabel(translate('magicStart', 'Table top offset:'), self)
+			self.otb6L.move(10, rowtbl+3)
+
+			# text input
+			self.otb6E = QtGui.QLineEdit(self)
+			self.otb6E.setText("35")
+			self.otb6E.setFixedWidth(90)
+			self.otb6E.move(220, rowtbl)
+		
+			rowtbl += 60
+			
+			# button
+			self.otb7B = QtGui.QPushButton(translate('magicStart', 'calculate table position'), self)
+			self.otb7B.clicked.connect(self.calculateTable)
+			self.otb7B.setFixedWidth(200)
+			self.otb7B.setFixedHeight(40)
+			self.otb7B.move(10, rowtbl)
+			
+			rowtbl += 70
+			
+			# label
+			self.otb8L = QtGui.QLabel(translate('magicStart', 'Start XYZ:'), self)
+			self.otb8L.move(10, rowtbl+3)
+			
+			# text input
+			self.otb81E = QtGui.QLineEdit(self)
+			self.otb81E.setText("0")
+			self.otb81E.setFixedWidth(90)
+			self.otb81E.move(120, rowtbl)
+			
+			# text input
+			self.otb82E = QtGui.QLineEdit(self)
+			self.otb82E.setText("0")
+			self.otb82E.setFixedWidth(90)
+			self.otb82E.move(220, rowtbl)
+			
+			# text input
+			self.otb83E = QtGui.QLineEdit(self)
+			self.otb83E.setText("0")
+			self.otb83E.setFixedWidth(90)
+			self.otb83E.move(320, rowtbl)
+			
+			rowtbl += 40
+
+			# button
+			self.otb9B = QtGui.QPushButton(translate('magicStart', 'create'), self)
+			self.otb9B.clicked.connect(self.createObject)
+			self.otb9B.setFixedWidth(toolSW - 20)
+			self.otb9B.setFixedHeight(createSize)
+			self.otb9B.move(10, createRow)
+			
+			# hide by default
+			self.otb1i.hide()
+			self.otb1L.hide()
+			self.otb1E.hide()
+			self.otb2L.hide()
+			self.otb2E.hide()
+			self.otb3L.hide()
+			self.otb3E.hide()
+			self.otb4L.hide()
+			self.otb4E.hide()
+			self.otb5L.hide()
+			self.otb5E.hide()
+			self.otb6L.hide()
+			self.otb6E.hide()
+			self.otb7B.hide()
+			self.otb8L.hide()
+			self.otb81E.hide()
+			self.otb82E.hide()
+			self.otb83E.hide()
+			self.otb9B.hide()
 
 			# ############################################################################
 			# GUI for drawer GAP (hidden by default)
@@ -2016,6 +2176,27 @@ def showQtGUI():
 			self.of5E.hide()
 			self.of6B1.hide()
 			
+			# table
+			self.otb1i.hide()
+			self.otb1L.hide()
+			self.otb1E.hide()
+			self.otb2L.hide()
+			self.otb2E.hide()
+			self.otb3L.hide()
+			self.otb3E.hide()
+			self.otb4L.hide()
+			self.otb4E.hide()
+			self.otb5L.hide()
+			self.otb5E.hide()
+			self.otb6L.hide()
+			self.otb6E.hide()
+			self.otb7B.hide()
+			self.otb8L.hide()
+			self.otb81E.hide()
+			self.otb82E.hide()
+			self.otb83E.hide()
+			self.otb9B.hide()
+
 			# merge
 			self.minfo.hide()
 			
@@ -2272,7 +2453,28 @@ def showQtGUI():
 				self.of5L.show()
 				self.of5E.show()
 				self.of6B1.show()
-			
+		
+			if iType == "table":
+				self.otb1i.show()
+				self.otb1L.show()
+				self.otb1E.show()
+				self.otb2L.show()
+				self.otb2E.show()
+				self.otb3L.show()
+				self.otb3E.show()
+				self.otb4L.show()
+				self.otb4E.show()
+				self.otb5L.show()
+				self.otb5E.show()
+				self.otb6L.show()
+				self.otb6E.show()
+				self.otb7B.show()
+				self.otb8L.show()
+				self.otb81E.show()
+				self.otb82E.show()
+				self.otb83E.show()
+				self.otb9B.show()
+
 			if iType == "merge":
 				self.minfo.show()
 
@@ -2285,7 +2487,9 @@ def showQtGUI():
 			selectedIndex = getMenuIndex[selectedText]
 			self.gSelectedFurniture = "F"+str(selectedIndex)
 			
+			# ####################################################
 			# set icon
+			# ####################################################
 			
 			if selectedIndex < 10:
 				self.setIcon("msf00"+str(selectedIndex))
@@ -2294,7 +2498,9 @@ def showQtGUI():
 			if selectedIndex >= 100:
 				self.setIcon("msf"+str(selectedIndex))
 			
+			# ####################################################
 			# set GUI
+			# ####################################################
 			
 			if (
 				selectedIndex == 2 or 
@@ -2362,8 +2568,20 @@ def showQtGUI():
 			
 			if selectedIndex == 41:
 				self.setGUIInfo("shelf series")
+			
+			if (
+				selectedIndex == 42 or 
+				selectedIndex == 43 or 
+				selectedIndex == 44 or 
+				selectedIndex == 45 or 
+				selectedIndex == 46 or 
+				selectedIndex == 47
+				):
+				self.setGUIInfo("table")
 				
+			# ####################################################
 			# custom settings
+			# ####################################################
 			
 			if selectedIndex == 10:
 				self.o2E.setText("2300")
@@ -2405,6 +2623,54 @@ def showQtGUI():
 				self.ofglass4E.setText("2")
 				self.ofglass3L.setText(translate('magicStart', 'Offset horizontal:'))
 				self.ofglass4L.setText(translate('magicStart', 'Offset vertical:'))
+			
+			if selectedIndex == 42:
+				self.otb1E.setText("1050")
+				self.otb2E.setText("600")
+				self.otb3E.setText("780")
+				self.otb4E.setText("18")
+				self.otb5E.setText("60")
+				self.otb6E.setText("35")
+				
+			if selectedIndex == 43:
+				self.otb1E.setText("990")
+				self.otb2E.setText("525")
+				self.otb3E.setText("430")
+				self.otb4E.setText("18")
+				self.otb5E.setText("80")
+				self.otb6E.setText("35")
+
+			if selectedIndex == 44:
+				self.otb1E.setText("1050")
+				self.otb2E.setText("600")
+				self.otb3E.setText("780")
+				self.otb4E.setText("18")
+				self.otb5E.setText("150")
+				self.otb6E.setText("0")
+				
+			if selectedIndex == 45:
+				self.otb1E.setText("990")
+				self.otb2E.setText("525")
+				self.otb3E.setText("430")
+				self.otb4E.setText("18")
+				self.otb5E.setText("150")
+				self.otb6E.setText("0")
+			
+			if selectedIndex == 46:
+				self.otb1E.setText("1150")
+				self.otb2E.setText("700")
+				self.otb3E.setText("780")
+				self.otb4E.setText("36")
+				self.otb5E.setText("100")
+				self.otb6E.setText("40")
+				
+			if selectedIndex == 47:
+				self.otb1E.setText("1150")
+				self.otb2E.setText("700")
+				self.otb3E.setText("450")
+				self.otb4E.setText("36")
+				self.otb5E.setText("80")
+				self.otb6E.setText("0")
 
 		# ############################################################################
 		def createObject(self):
@@ -2533,6 +2799,15 @@ def showQtGUI():
 			
 			if self.gSelectedFurniture == "F41":
 				self.createF41()
+			
+			if self.gSelectedFurniture == "F42" or self.gSelectedFurniture == "F43":
+				self.createF42()
+			
+			if self.gSelectedFurniture == "F44" or self.gSelectedFurniture == "F45":
+				self.createF44()
+			
+			if self.gSelectedFurniture == "F46" or self.gSelectedFurniture == "F47":
+				self.createF46()
 
 			# here to allow recalculation with selection
 			FreeCADGui.Selection.clearSelection()
@@ -3263,6 +3538,30 @@ def showQtGUI():
 			self.ods7E.setText(str(width))
 			self.ods8E.setText(str(height))
 			self.ods9E.setText(str(depth))
+
+		# ############################################################################
+		def calculateTable(self):
+
+			obj = False
+			sub = False
+			
+			try:
+				obj = FreeCADGui.Selection.getSelection()[0]
+				sub = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+
+			except:
+				return
+			
+			if sub.ShapeType == "Vertex":
+				
+				startX = float(sub.Point.x)
+				startY = float(sub.Point.y)
+				startZ = float(sub.Point.z)
+
+				# set values to text fields
+				self.otb81E.setText(str(startX))
+				self.otb82E.setText(str(startY))
+				self.otb83E.setText(str(startZ))
 
 		# ############################################################################
 		# actions - draw functions
@@ -5313,6 +5612,431 @@ def showQtGUI():
 			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerShelfSeries')
 			container.setLink(shelvesArr)
 			container.Label = "Container, Shelf Series"
+			
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+
+		# ############################################################################
+		def createF42(self):
+			
+			width = float(self.otb1E.text())
+			depth = float(self.otb2E.text())
+			height = float(self.otb3E.text())
+			topThick = float(self.otb4E.text())
+			legThick = float(self.otb5E.text())
+			offset = float(self.otb6E.text())
+			
+			sx = float(self.otb81E.text())
+			sy = float(self.otb82E.text())
+			sz = float(self.otb83E.text())
+			
+			# Leg Left Front
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLF")
+			o1.Label = translate('magicStart', 'Table Leg LF')
+			o1.Length = legThick
+			o1.Height = height - topThick
+			o1.Width = legThick
+			pl = FreeCAD.Vector(sx + offset, sy + offset, sz)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			o1.ViewObject.ShapeColor = self.gColor
+			
+			# Leg Left Back
+			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLB")
+			o2.Label = translate('magicStart', 'Table Leg LB')
+			o2.Length = legThick
+			o2.Height = height - topThick
+			o2.Width = legThick
+			psy = sy + depth - offset - legThick
+			pl = FreeCAD.Vector(sx + offset, psy, sz)
+			o2.Placement = FreeCAD.Placement(pl, self.gR)
+			o2.ViewObject.ShapeColor = self.gColor
+			
+			# Leg Right Front
+			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRF")
+			o3.Label = translate('magicStart', 'Table Leg RF')
+			o3.Length = legThick
+			o3.Height = height - topThick
+			o3.Width = legThick
+			psx = sx + width - offset - legThick
+			pl = FreeCAD.Vector(psx, sy + offset, sz)
+			o3.Placement = FreeCAD.Placement(pl, self.gR)
+			o3.ViewObject.ShapeColor = self.gColor
+			
+			# Leg Right Back
+			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRB")
+			o4.Label = translate('magicStart', 'Table Leg RB')
+			o4.Length = legThick
+			o4.Height = height - topThick
+			o4.Width = legThick
+			psx = sx + width - offset - legThick
+			psy = sy + depth - offset - legThick
+			pl = FreeCAD.Vector(psx, psy, sz)
+			o4.Placement = FreeCAD.Placement(pl, self.gR)
+			o4.ViewObject.ShapeColor = self.gColor
+			
+			# Supporter Front
+			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSF")
+			o5.Label = translate('magicStart', 'Table Supporter Front')
+			o5.Length = width - (2 * offset) - (2 * legThick)
+			o5.Height = legThick
+			o5.Width = legThick
+			psx = sx + offset + legThick
+			psy = sy + offset
+			psz = sz + height - topThick - legThick
+			pl = FreeCAD.Vector(psx, psy, psz)
+			o5.Placement = FreeCAD.Placement(pl, self.gR)
+			o5.ViewObject.ShapeColor = self.gColor
+			
+			# Supporter Back
+			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSB")
+			o6.Label = translate('magicStart', 'Table Supporter Back')
+			o6.Length = width - (2 * offset) - (2 * legThick)
+			o6.Height = legThick
+			o6.Width = legThick
+			psx = sx + offset + legThick
+			psy = sy + depth - offset - legThick
+			psz = sz + height - topThick - legThick
+			pl = FreeCAD.Vector(psx, psy, psz)
+			o6.Placement = FreeCAD.Placement(pl, self.gR)
+			o6.ViewObject.ShapeColor = self.gColor
+			
+			# Supporter Left
+			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSL")
+			o7.Label = translate('magicStart', 'Table Supporter Left')
+			o7.Length = legThick
+			o7.Height = legThick
+			o7.Width = depth - (2 * offset) - (2 * legThick)
+			psx = sx + offset
+			psy = sy + offset + legThick
+			psz = sz + height - topThick - legThick
+			pl = FreeCAD.Vector(psx, psy, psz)
+			o7.Placement = FreeCAD.Placement(pl, self.gR)
+			o7.ViewObject.ShapeColor = self.gColor
+			
+			# Supporter Right
+			o8 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSR")
+			o8.Label = translate('magicStart', 'Table Supporter Right')
+			o8.Length = legThick
+			o8.Height = legThick
+			o8.Width = depth - (2 * offset) - (2 * legThick)
+			psx = sx + width - offset - legThick
+			psy = sy + offset + legThick
+			psz = sz + height - topThick - legThick
+			pl = FreeCAD.Vector(psx, psy, psz)
+			o8.Placement = FreeCAD.Placement(pl, self.gR)
+			o8.ViewObject.ShapeColor = self.gColor
+			
+			# Table Top
+			o9 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableTop")
+			o9.Label = translate('magicStart', 'Table Top')
+			o9.Length = width
+			o9.Height = topThick
+			o9.Width = depth
+			pl = FreeCAD.Vector(sx, sy, sz + height - topThick)
+			o9.Placement = FreeCAD.Placement(pl, self.gR)
+			o9.ViewObject.ShapeColor = self.gColor
+			
+			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerTable')
+			container.setLink([o1, o2, o3, o4, o5, o6, o7, o8, o9])
+			container.Label = "Container, Table"
+			
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+		
+		# ############################################################################
+		def createF44(self):
+			
+			width = float(self.otb1E.text())
+			depth = float(self.otb2E.text())
+			height = float(self.otb3E.text())
+			topThick = float(self.otb4E.text())
+			legThick = float(self.otb5E.text())
+			offset = float(self.otb6E.text())
+			
+			sx = float(self.otb81E.text())
+			sy = float(self.otb82E.text())
+			sz = float(self.otb83E.text())
+			
+			# Leg Left Front
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLF1")
+			o1.Label = translate('magicStart', 'Table Leg LF1')
+			o1.Length = topThick
+			o1.Height = height - topThick
+			o1.Width = legThick
+			pl = FreeCAD.Vector(sx + offset, sy + offset, sz)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			o1.ViewObject.ShapeColor = self.gColor
+			
+			# Leg Left Front
+			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLF2")
+			o2.Label = translate('magicStart', 'Table Leg LF2')
+			o2.Length = legThick
+			o2.Height = height - topThick
+			o2.Width = topThick
+			pl = FreeCAD.Vector(sx + offset, sy + offset, sz)
+			o2.Placement = FreeCAD.Placement(pl, self.gR)
+			o2.ViewObject.ShapeColor = self.gColor
+			
+			# Leg Left Back
+			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLB1")
+			o3.Label = translate('magicStart', 'Table Leg LB1')
+			o3.Length = topThick
+			o3.Height = height - topThick
+			o3.Width = legThick
+			psy = sy + depth - offset - legThick
+			pl = FreeCAD.Vector(sx + offset, psy, sz)
+			o3.Placement = FreeCAD.Placement(pl, self.gR)
+			o3.ViewObject.ShapeColor = self.gColor
+			
+			# Leg Left Back
+			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLB2")
+			o4.Label = translate('magicStart', 'Table Leg LB2')
+			o4.Length = legThick
+			o4.Height = height - topThick
+			o4.Width = topThick
+			psy = sy + depth - offset - topThick
+			pl = FreeCAD.Vector(sx + offset, psy, sz)
+			o4.Placement = FreeCAD.Placement(pl, self.gR)
+			o4.ViewObject.ShapeColor = self.gColor
+			
+			# Leg Right Front
+			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRF1")
+			o5.Label = translate('magicStart', 'Table Leg RF1')
+			o5.Length = legThick
+			o5.Height = height - topThick
+			o5.Width = topThick
+			psx = sx + width - offset - legThick
+			pl = FreeCAD.Vector(psx, sy + offset, sz)
+			o5.Placement = FreeCAD.Placement(pl, self.gR)
+			o5.ViewObject.ShapeColor = self.gColor
+			
+			# Leg Right Front
+			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRF2")
+			o6.Label = translate('magicStart', 'Table Leg RF2')
+			o6.Length = topThick
+			o6.Height = height - topThick
+			o6.Width = legThick
+			psx = sx + width - offset - topThick
+			pl = FreeCAD.Vector(psx, sy + offset, sz)
+			o6.Placement = FreeCAD.Placement(pl, self.gR)
+			o6.ViewObject.ShapeColor = self.gColor
+			
+			# Leg Right Back
+			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRB1")
+			o7.Label = translate('magicStart', 'Table Leg RB1')
+			o7.Length = topThick
+			o7.Height = height - topThick
+			o7.Width = legThick
+			psx = sx + width - offset - topThick
+			psy = sy + depth - offset - legThick
+			pl = FreeCAD.Vector(psx, psy, sz)
+			o7.Placement = FreeCAD.Placement(pl, self.gR)
+			o7.ViewObject.ShapeColor = self.gColor
+			
+			# Leg Right Back
+			o8 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRB2")
+			o8.Label = translate('magicStart', 'Table Leg RB2')
+			o8.Length = legThick
+			o8.Height = height - topThick
+			o8.Width = topThick
+			psx = sx + width - offset - legThick
+			psy = sy + depth - offset - topThick
+			pl = FreeCAD.Vector(psx, psy, sz)
+			o8.Placement = FreeCAD.Placement(pl, self.gR)
+			o8.ViewObject.ShapeColor = self.gColor
+			
+			# Supporter Front
+			o9 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSF")
+			o9.Label = translate('magicStart', 'Table Supporter Front')
+			o9.Length = width - (2 * offset) - (2 * topThick)
+			o9.Height = legThick
+			o9.Width = topThick
+			psx = sx + offset + topThick
+			psy = sy + offset + topThick
+			psz = sz + height - topThick - legThick
+			pl = FreeCAD.Vector(psx, psy, psz)
+			o9.Placement = FreeCAD.Placement(pl, self.gR)
+			o9.ViewObject.ShapeColor = self.gColor
+			
+			# Supporter Back
+			o10 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSB")
+			o10.Label = translate('magicStart', 'Table Supporter Back')
+			o10.Length = width - (2 * offset) - (2 * topThick)
+			o10.Height = legThick
+			o10.Width = topThick
+			psx = sx + offset + topThick
+			psy = sy + depth - offset - topThick - topThick
+			psz = sz + height - topThick - legThick
+			pl = FreeCAD.Vector(psx, psy, psz)
+			o10.Placement = FreeCAD.Placement(pl, self.gR)
+			o10.ViewObject.ShapeColor = self.gColor
+			
+			# Supporter Left
+			o11 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSL")
+			o11.Label = translate('magicStart', 'Table Supporter Left')
+			o11.Length = topThick
+			o11.Height = legThick
+			o11.Width = depth - (2 * offset) - (2 * topThick)
+			psx = sx + offset + topThick
+			psy = sy + offset + topThick
+			psz = sz + height - topThick - legThick
+			pl = FreeCAD.Vector(psx, psy, psz)
+			o11.Placement = FreeCAD.Placement(pl, self.gR)
+			o11.ViewObject.ShapeColor = self.gColor
+			
+			# Supporter Right
+			o12 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSR")
+			o12.Label = translate('magicStart', 'Table Supporter Right')
+			o12.Length = topThick
+			o12.Height = legThick
+			o12.Width = depth - (2 * offset) - (2 * topThick)
+			psx = sx + width - offset - topThick - topThick
+			psy = sy + offset + topThick
+			psz = sz + height - topThick - legThick
+			pl = FreeCAD.Vector(psx, psy, psz)
+			o12.Placement = FreeCAD.Placement(pl, self.gR)
+			o12.ViewObject.ShapeColor = self.gColor
+			
+			# Table Top
+			o13 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableTop")
+			o13.Label = translate('magicStart', 'Table Top')
+			o13.Length = width
+			o13.Height = topThick
+			o13.Width = depth
+			pl = FreeCAD.Vector(sx, sy, sz + height - topThick)
+			o13.Placement = FreeCAD.Placement(pl, self.gR)
+			o13.ViewObject.ShapeColor = self.gColor
+			
+			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerTable')
+			container.setLink([o1, o2, o3, o4, o5, o6, o7, o8, o9, o10, o11, o12, o13])
+			container.Label = "Container, Table"
+			
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+
+		# ############################################################################
+		def createF46(self):
+			
+			width = float(self.otb1E.text())
+			depth = float(self.otb2E.text())
+			height = float(self.otb3E.text())
+			topThick = float(self.otb4E.text())
+			legThick = float(self.otb5E.text())
+			offset = float(self.otb6E.text())
+			
+			sx = float(self.otb81E.text())
+			sy = float(self.otb82E.text())
+			sz = float(self.otb83E.text())
+			
+			# Leg Left Front
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLF")
+			o1.Label = translate('magicStart', 'Table Leg LF')
+			o1.Length = legThick
+			o1.Height = height - topThick
+			o1.Width = legThick / 2
+			pl = FreeCAD.Vector(sx + offset, sy + offset, sz)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			o1.ViewObject.ShapeColor = (0, 0, 0, 0)
+			
+			# Leg Left Back
+			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLB")
+			o2.Label = translate('magicStart', 'Table Leg LB')
+			o2.Length = legThick
+			o2.Height = height - topThick
+			o2.Width = legThick / 2
+			psy = sy + depth - offset - (legThick / 2)
+			pl = FreeCAD.Vector(sx + offset, psy, sz)
+			o2.Placement = FreeCAD.Placement(pl, self.gR)
+			o2.ViewObject.ShapeColor = (0, 0, 0, 0)
+			
+			# Leg Right Front
+			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRF")
+			o3.Label = translate('magicStart', 'Table Leg RF')
+			o3.Length = legThick
+			o3.Height = height - topThick
+			o3.Width = legThick / 2
+			psx = sx + width - offset - legThick
+			pl = FreeCAD.Vector(psx, sy + offset, sz)
+			o3.Placement = FreeCAD.Placement(pl, self.gR)
+			o3.ViewObject.ShapeColor = (0, 0, 0, 0)
+			
+			# Leg Right Back
+			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRB")
+			o4.Label = translate('magicStart', 'Table Leg RB')
+			o4.Length = legThick
+			o4.Height = height - topThick
+			o4.Width = legThick / 2
+			psx = sx + width - offset - legThick
+			psy = sy + depth - offset - (legThick / 2)
+			pl = FreeCAD.Vector(psx, psy, sz)
+			o4.Placement = FreeCAD.Placement(pl, self.gR)
+			o4.ViewObject.ShapeColor = (0, 0, 0, 0)
+			
+			# Supporter Left Top
+			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSLT")
+			o5.Label = translate('magicStart', 'Table SLT')
+			o5.Length = legThick
+			o5.Height = legThick / 2
+			o5.Width = depth - (2 * offset) - legThick
+			psx = sx + offset
+			psy = sy + offset + (legThick / 2)
+			psz = sz + height - topThick - (legThick / 2)
+			pl = FreeCAD.Vector(psx, psy, psz)
+			o5.Placement = FreeCAD.Placement(pl, self.gR)
+			o5.ViewObject.ShapeColor = (0, 0, 0, 0)
+			
+			# Supporter Left Bottom
+			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSLB")
+			o6.Label = translate('magicStart', 'Table SLB')
+			o6.Length = legThick
+			o6.Height = legThick / 2
+			o6.Width = depth - (2 * offset) - legThick
+			psx = sx + offset
+			psy = sy + offset + (legThick / 2)
+			psz = sz
+			pl = FreeCAD.Vector(psx, psy, psz)
+			o6.Placement = FreeCAD.Placement(pl, self.gR)
+			o6.ViewObject.ShapeColor = (0, 0, 0, 0)
+			
+			# Supporter Right Top
+			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSRT")
+			o7.Label = translate('magicStart', 'Table SRT')
+			o7.Length = legThick
+			o7.Height = legThick / 2
+			o7.Width = depth - (2 * offset) - legThick
+			psx = sx + width - offset - legThick
+			psy = sy + offset + (legThick / 2)
+			psz = sz + height - topThick - (legThick / 2)
+			pl = FreeCAD.Vector(psx, psy, psz)
+			o7.Placement = FreeCAD.Placement(pl, self.gR)
+			o7.ViewObject.ShapeColor = (0, 0, 0, 0)
+			
+			# Supporter Right Bottom
+			o8 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSRB")
+			o8.Label = translate('magicStart', 'Table SRB')
+			o8.Length = legThick
+			o8.Height = legThick / 2
+			o8.Width = depth - (2 * offset) - legThick
+			psx = sx + width - offset - legThick
+			psy = sy + offset + (legThick / 2)
+			psz = sz
+			pl = FreeCAD.Vector(psx, psy, psz)
+			o8.Placement = FreeCAD.Placement(pl, self.gR)
+			o8.ViewObject.ShapeColor = (0, 0, 0, 0)
+			
+			# Table Top
+			o9 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableTop")
+			o9.Label = translate('magicStart', 'Table Top')
+			o9.Length = width
+			o9.Height = topThick
+			o9.Width = depth
+			pl = FreeCAD.Vector(sx, sy, sz + height - topThick)
+			o9.Placement = FreeCAD.Placement(pl, self.gR)
+			o9.ViewObject.ShapeColor = self.gColor
+			
+			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerTable')
+			container.setLink([o1, o2, o3, o4, o5, o6, o7, o8, o9])
+			container.Label = "Container, Table"
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()

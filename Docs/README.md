@@ -170,6 +170,12 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 * Front inside with glass ( simple frame, fit into gap )
 * Front inside with glass ( frame with decoration, fit into gap )
 * Shelf series with equal space ( fit into gap )
+* Table ( kitchen simple style )
+* Table ( coffee simple style )
+* Table ( kitchen modern style )
+* Table ( coffee modern style )
+* Table ( kitchen decorated style )
+* Table ( coffee decorated style )
 
 **Video tutorials:** 
 * [Furniture creation tool](https://www.youtube.com/watch?v=lHQ1J9Nahcs)
