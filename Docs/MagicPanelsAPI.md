@@ -362,7 +362,7 @@ gSearchDepth = 200       # recursive search depth
 	
 		return int value for edge
 
-### getEdgePlane(iObj, iEdge):
+### getEdgePlane(iObj, iEdge, iType="auto"):
 
 	Description:
 	
@@ -372,6 +372,9 @@ gSearchDepth = 200       # recursive search depth
 	
 		iObj: object with the edge
 		iEdge: edge object
+		iType:
+			* "auto" - check if panel is rotated and get edge plane from its base not rotated position
+			* "clean" - return plane for current edge position
 
 ##### Usage:
 	

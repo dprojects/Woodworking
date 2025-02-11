@@ -739,7 +739,7 @@ def getEdgeIndexByKey(iObj, iBoundBox):
 
 
 # ###################################################################################################################
-def getEdgePlane(iObj, iEdge):
+def getEdgePlane(iObj, iEdge, iType="auto"):
 	'''
 	Description:
 	
@@ -749,6 +749,9 @@ def getEdgePlane(iObj, iEdge):
 	
 		iObj: object with the edge
 		iEdge: edge object
+		iType:
+			* "auto" - check if panel is rotated and get edge plane from its base not rotated position
+			* "clean" - return plane for current edge position
 
 	Usage:
 	
@@ -760,45 +763,50 @@ def getEdgePlane(iObj, iEdge):
 
 	'''
 
-	rotated = False
 	o = getReference(iObj)
 	
-	if isRotated(o):
+	if iType == "auto":
 		
-		import Part, math
-	
-		rotated = True
-		w = Part.Wire(iEdge)
-		wire = Part.show(w)
-		wire.Label = "wire"
-		
-		offset = ""
-		
-		if o.isDerivedFrom("PartDesign::Pad"):
+		rotated = False
+		if isRotated(o):
 			
-			ref = o.Profile[0].Placement
-			try:
-				support = o.Profile[0].Support[0][0]
-			except:
-				support = o.Profile[0].AttachmentSupport[0][0]
+			import Part, math
+		
+			rotated = True
+			w = Part.Wire(iEdge)
+			wire = Part.show(w)
+			wire.Label = "wire"
 			
-			if support.Label.startswith("XZ"):
-				offset = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 90)
+			offset = ""
+			
+			if o.isDerivedFrom("PartDesign::Pad"):
 				
-			if support.Label.startswith("YZ"):
-				offset = FreeCAD.Rotation(FreeCAD.Vector(0.58, 0.58, 0.58), 120)
+				ref = o.Profile[0].Placement
+				try:
+					support = o.Profile[0].Support[0][0]
+				except:
+					support = o.Profile[0].AttachmentSupport[0][0]
+				
+				if support.Label.startswith("XZ"):
+					offset = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 90)
+					
+				if support.Label.startswith("YZ"):
+					offset = FreeCAD.Rotation(FreeCAD.Vector(0.58, 0.58, 0.58), 120)
 
+			else:
+				ref = o.Placement
+
+			wire.Placement.Rotation = ref.Rotation
+			wire.Placement.Rotation.Angle = - wire.Placement.Rotation.Angle
+			FreeCAD.ActiveDocument.recompute()
+
+			[ v1, v2 ] = getEdgeVertices(wire.Shape)
+		
 		else:
-			ref = o.Placement
 
-		wire.Placement.Rotation = ref.Rotation
-		wire.Placement.Rotation.Angle = - wire.Placement.Rotation.Angle
-		FreeCAD.ActiveDocument.recompute()
-
-		[ v1, v2 ] = getEdgeVertices(wire.Shape)
+			[ v1, v2 ] = getEdgeVertices(iEdge)
 	
-	else:
-
+	if iType == "clean":
 		[ v1, v2 ] = getEdgeVertices(iEdge)
 	
 	plane = ""
@@ -811,7 +819,7 @@ def getEdgePlane(iObj, iEdge):
 	if not equal(v1[2], v2[2]):
 		plane = "Z"
 
-	if rotated == True:
+	if iType == "auto" and rotated == True:
 		FreeCAD.ActiveDocument.removeObject(wire.Name)
 		FreeCAD.ActiveDocument.recompute()
 

@@ -761,23 +761,6 @@ def showQtGUI():
 				
 				index = MagicPanels.getEdgeIndex(self.gCBEObj, self.gCBEEdge)
 				self.cbe1L.setText(self.gCBEObj.Label + ", Edge" + str(index))
-				
-				self.gCBEPlane = MagicPanels.getEdgePlane(self.gCBEObj, self.gCBEEdge)
-				
-				if self.gCBEPlane == "X":
-					self.cbe2B.setDisabled(True)
-					self.cbe3B.setEnabled(True)
-					self.cbe4B.setEnabled(True)
-			
-				if self.gCBEPlane == "Y":
-					self.cbe2B.setEnabled(True)
-					self.cbe3B.setDisabled(True)
-					self.cbe4B.setEnabled(True)
-
-				if self.gCBEPlane == "Z":
-					self.cbe2B.setEnabled(True)
-					self.cbe3B.setEnabled(True)
-					self.cbe4B.setDisabled(True)
 
 			except:
 				self.cbe1L.setText(self.gNoCopyByEdge)

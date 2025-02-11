@@ -71,7 +71,7 @@ def showQtGUI():
 	class QtMainClass(QtGui.QDialog):
 		
 		# ############################################################################
-		# globals
+		# globals with self.
 		# ############################################################################
 		
 		gFSX = 500   # furniture size X (width)
@@ -82,6 +82,14 @@ def showQtGUI():
 		gSelectedFurniture = "F0"
 		gColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 0.0)
 		gR = FreeCAD.Rotation(0, 0, 0)
+		
+		gSingleDrawerPlane = "X"
+		gSingleDrawerDirection = "+"
+		
+		toolSW = 0
+		toolSH = 0
+		gPW = 0
+		gPH = 0
 		
 		# ############################################################################
 		# init
@@ -98,27 +106,23 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 450
-			toolSH = 550
+			self.toolSW = 450
+			self.toolSH = 550
 			
 			# active screen size - FreeCAD main window
 			gSW = FreeCADGui.getMainWindow().width()
 			gSH = FreeCADGui.getMainWindow().height()
 
-			# active screen size (FreeCAD main window)
-			gSW = FreeCADGui.getMainWindow().width()
-			gSH = FreeCADGui.getMainWindow().height()
-
 			# tool screen position
-			gPW = 0 + 50
-			gPH = int( gSH - toolSH ) - 30
+			self.gPW = 0 + 50
+			self.gPH = int( gSH - self.toolSH ) - 30
 
 			# ############################################################################
 			# main window
 			# ############################################################################
 			
 			self.result = userCancelled
-			self.setGeometry(gPW, gPH, toolSW, toolSH)
+			self.setGeometry(self.gPW, self.gPH, self.toolSW, self.toolSH)
 			self.setWindowTitle(translate('magicStart', 'magicStart'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
@@ -184,15 +188,15 @@ def showQtGUI():
 			self.sMode.addItems(self.sModeList)
 			self.sMode.setCurrentIndex(0)
 			self.sMode.activated[str].connect(self.selectedOption)
-			self.sMode.setFixedWidth(toolSW - 20)
+			self.sMode.setFixedWidth(self.toolSW - 20)
 			self.sMode.move(10, row)
 
 			row += 50
 			
 			createSize = 40
-			createRow = toolSH - createSize - 10
+			createRow = self.toolSH - createSize - 10
 			
-			rowgap = row
+			rowgap = row - 20
 			rowds = row - 20
 			rowfoot = row
 			rowtbl = row - 20
@@ -364,7 +368,7 @@ def showQtGUI():
 			# button
 			self.s1B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.s1B1.clicked.connect(self.createObject)
-			self.s1B1.setFixedWidth(toolSW - 20)
+			self.s1B1.setFixedWidth(self.toolSW - 20)
 			self.s1B1.setFixedHeight(createSize)
 			self.s1B1.move(10, createRow)
 
@@ -574,7 +578,7 @@ def showQtGUI():
 			# button
 			self.otb9B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.otb9B.clicked.connect(self.createObject)
-			self.otb9B.setFixedWidth(toolSW - 20)
+			self.otb9B.setFixedWidth(self.toolSW - 20)
 			self.otb9B.setFixedHeight(createSize)
 			self.otb9B.move(10, createRow)
 			
@@ -600,22 +604,78 @@ def showQtGUI():
 			self.otb9B.hide()
 
 			# ############################################################################
-			# GUI for drawer GAP (hidden by default)
+			# GUI for Single drawer (hidden by default)
 			# ############################################################################
 
+			# button
+			self.oghelpON = QtGui.QPushButton(translate('magicStart', 'show help'), self)
+			self.oghelpON.clicked.connect(self.showSingleDrawerHelpON)
+			self.oghelpON.setFixedWidth(90)
+			self.oghelpON.setFixedHeight(20)
+			self.oghelpON.move(10, rowgap)
+
+			# button
+			self.oghelpOFF = QtGui.QPushButton(translate('magicStart', 'hide help'), self)
+			self.oghelpOFF.clicked.connect(self.showSingleDrawerHelpOFF)
+			self.oghelpOFF.setFixedWidth(90)
+			self.oghelpOFF.setFixedHeight(20)
+			self.oghelpOFF.move(10, rowgap)
+			self.oghelpOFF.hide()
+			
 			# label
-			info = translate('magicStart', 'Please select 2 edges and face to calculate gap for drawer. First edge is starting Z axis position. Second selected edge is Z axis end position. Face is to calculate depth. If only one edge is selected, the starting Z axis point will be 0. If no face is selected, depth will be calculated from shortest shelf.')
+			info = '<ul>'
+			info += '<li><b>'
+			info += translate('magicStart', 'top edge') + '</b>: '
+			info += translate('magicStart', 'The drawer will be created from the 0 position on the Z coordinate axis to the position of the selected top edge. The width of the drawer will be taken from the selected top edge size. The depth of the drawer will be taken from the object from the selected top edge. This is a kind of "quick shot" to create the drawer as quickly as possible without a long selection.')
+			info += '</li>'
+			info += '<li><b>'
+			info += translate('magicStart', 'top edge + back face') + '</b>: '
+			info += translate('magicStart', 'This is the same as above, but here selecting the back face allows you to set the depth in a more detailed way.')
+			info += '</li>'
+			info += '<li><b>'
+			info += translate('magicStart', 'bottom edge + top edge') + '</b>: '
+			info += translate('magicStart', 'The drawer will be created from the position of the first selected bottom edge to the position of the second selected top edge. The width and depth of the drawer will be taken from the object with the shortest edge. This is a kind of "quick shot" to create the drawer quickly without a long selection.')
+			info += '</li>'
+			info += '<li><b>'
+			info += translate('magicStart', 'bottom edge + top edge + back face') + '</b>: '
+			info += translate('magicStart', 'This is the same as above, but here selecting the back face allows you to set the depth in a more detailed way.')
+			info += '</li>'
+			info += '<li><b>'
+			info += translate('magicStart', 'bottom edge + top edge + left edge + right edge + back face') + '</b>: '
+			info += translate('magicStart', 'The drawer will be created from the position of the first selected bottom edge to the position of the second selected top edge. The width of the drawer will be obtained from the difference of the third and fourth selected edges. The depth of the drawer will be obtained from the selected back face. There are many more objects to select here, but this is the most precise version of determining the size of the drawer. So if you have trouble with any of the above, I recommend trying this method. Also this method solves the problem with longest bottom and top edges.')
+			info += '</li>'
+			info += '</ul>'
+			info += translate('magicStart', 'The edges can be in line with the X or Y coordinate axis, so the drawer can be created on all four sides of the furniture.')
+			self.oghelpInfo = QtGui.QLabel(info, self)
+			self.oghelpInfo.move(self.toolSW + 10, 10)
+			self.oghelpInfo.setFixedWidth(360)
+			self.oghelpInfo.setWordWrap(True)
+			self.oghelpInfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.oghelpInfo.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
+
+			# label
+			info = translate('magicStart', 'Possible selections:')
 			self.og1i = QtGui.QLabel(info, self)
-			self.og1i.move(10, rowgap+3)
-			self.og1i.setFixedWidth(200)
+			self.og1i.move(110, rowgap+3)
+			self.og1i.setFixedWidth(self.toolSW - 240)
 			self.og1i.setWordWrap(True)
 			self.og1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
 			
-			rowgap += 150
+			rowgap += 20
 			
+			# label
+			info = translate('magicStart', '1. top edge<br>2. top edge + back face<br>3. bottom edge + top edge<br>4. bottom edge + top edge + back face<br>5. bottom edge + top edge + left edge + right edge + back face<br><br>The edge can be along X or Y axis.')
+			self.og2i = QtGui.QLabel(info, self)
+			self.og2i.move(10, rowgap+3)
+			self.og2i.setFixedWidth(self.toolSW - 240)
+			self.og2i.setWordWrap(True)
+			self.og2i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			
+			rowgap += 150
+
 			# button
-			self.og4B1 = QtGui.QPushButton(translate('magicStart', 'calculate gap'), self)
-			self.og4B1.clicked.connect(self.calculateGapForDrawer)
+			self.og4B1 = QtGui.QPushButton(translate('magicStart', 'calculate gap for drawer'), self)
+			self.og4B1.clicked.connect(self.calculateSingleDrawer)
 			self.og4B1.setFixedWidth(200)
 			self.og4B1.setFixedHeight(40)
 			self.og4B1.move(10, rowgap)
@@ -747,12 +807,16 @@ def showQtGUI():
 			# button
 			self.og9B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.og9B1.clicked.connect(self.createObject)
-			self.og9B1.setFixedWidth(toolSW - 20)
+			self.og9B1.setFixedWidth(self.toolSW - 20)
 			self.og9B1.setFixedHeight(createSize)
 			self.og9B1.move(10, createRow)
 
 			# hide by default
+			self.oghelpON.hide()
+			self.oghelpOFF.hide()
+			self.oghelpInfo.hide()
 			self.og1i.hide()
+			self.og2i.hide()
 			self.og2L.hide()
 			self.og2E.hide()
 			self.og3E.hide()
@@ -879,7 +943,7 @@ def showQtGUI():
 			
 			# button
 			self.ods5B = QtGui.QPushButton(translate('magicStart', 'calculate gaps'), self)
-			self.ods5B.clicked.connect(self.calculateGapForDrawerSeries)
+			self.ods5B.clicked.connect(self.calculateDrawerSeries)
 			self.ods5B.setFixedWidth(200)
 			self.ods5B.setFixedHeight(40)
 			self.ods5B.move(10, rowds)
@@ -949,7 +1013,7 @@ def showQtGUI():
 			# button
 			self.ods10B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ods10B.clicked.connect(self.createObject)
-			self.ods10B.setFixedWidth(toolSW - 20)
+			self.ods10B.setFixedWidth(self.toolSW - 20)
 			self.ods10B.setFixedHeight(createSize)
 			self.ods10B.move(10, createRow)
 
@@ -1119,7 +1183,7 @@ def showQtGUI():
 			# button
 			self.ofr8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ofr8B1.clicked.connect(self.createObject)
-			self.ofr8B1.setFixedWidth(toolSW - 20)
+			self.ofr8B1.setFixedWidth(self.toolSW - 20)
 			self.ofr8B1.setFixedHeight(createSize)
 			self.ofr8B1.move(10, createRow)
 
@@ -1283,7 +1347,7 @@ def showQtGUI():
 			# button
 			self.ofglass11B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ofglass11B.clicked.connect(self.createObject)
-			self.ofglass11B.setFixedWidth(toolSW - 20)
+			self.ofglass11B.setFixedWidth(self.toolSW - 20)
 			self.ofglass11B.setFixedHeight(createSize)
 			self.ofglass11B.move(10, createRow)
 
@@ -1432,7 +1496,7 @@ def showQtGUI():
 			# button
 			self.offrame10B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.offrame10B.clicked.connect(self.createObject)
-			self.offrame10B.setFixedWidth(toolSW - 20)
+			self.offrame10B.setFixedWidth(self.toolSW - 20)
 			self.offrame10B.setFixedHeight(createSize)
 			self.offrame10B.move(10, createRow)
 
@@ -1607,7 +1671,7 @@ def showQtGUI():
 			# button
 			self.osh8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.osh8B1.clicked.connect(self.createObject)
-			self.osh8B1.setFixedWidth(toolSW - 20)
+			self.osh8B1.setFixedWidth(self.toolSW - 20)
 			self.osh8B1.setFixedHeight(createSize)
 			self.osh8B1.move(10, createRow)
 
@@ -1747,7 +1811,7 @@ def showQtGUI():
 			# button
 			self.oshs8B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.oshs8B.clicked.connect(self.createObject)
-			self.oshs8B.setFixedWidth(toolSW - 20)
+			self.oshs8B.setFixedWidth(self.toolSW - 20)
 			self.oshs8B.setFixedHeight(createSize)
 			self.oshs8B.move(10, createRow)
 
@@ -1920,7 +1984,7 @@ def showQtGUI():
 			# button
 			self.ocs8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ocs8B1.clicked.connect(self.createObject)
-			self.ocs8B1.setFixedWidth(toolSW - 20)
+			self.ocs8B1.setFixedWidth(self.toolSW - 20)
 			self.ocs8B1.setFixedHeight(createSize)
 			self.ocs8B1.move(10, createRow)
 
@@ -1967,6 +2031,8 @@ def showQtGUI():
 			# ##############################################
 			# hide everything first
 			# ##############################################
+			
+			self.setGeometry(self.gPW, self.gPH, self.toolSW, self.toolSH)
 			
 			# side
 			self.ocs1i.hide()
@@ -2108,7 +2174,11 @@ def showQtGUI():
 			self.offrame10B.hide()
 			
 			# drawer
+			self.oghelpON.hide()
+			self.oghelpOFF.hide()
+			self.oghelpInfo.hide()
 			self.og1i.hide()
+			self.og2i.hide()
 			self.og2L.hide()
 			self.og2E.hide()
 			self.og3E.hide()
@@ -2386,7 +2456,11 @@ def showQtGUI():
 				self.offrame10B.show()
 
 			if iType == "drawer":
+				self.oghelpON.show()
+				self.oghelpOFF.hide()
+				self.oghelpInfo.show()
 				self.og1i.show()
+				self.og2i.show()
 				self.og2L.show()
 				self.og2E.show()
 				self.og3E.show()
@@ -2480,8 +2554,6 @@ def showQtGUI():
 
 		# ############################################################################	
 		def selectedOption(self, selectedText):
-			
-			global gSelectedFurniture
 			
 			# the key is from translation so this needs to be tested...
 			selectedIndex = getMenuIndex[selectedText]
@@ -2874,6 +2946,59 @@ def showQtGUI():
 			FreeCAD.ActiveDocument.recompute()
 
 		# ############################################################################
+		def getStartVertex(self, iEdge, iEdgePlane):
+		
+			# prefer left vertex
+			
+			if iEdgePlane == "X":
+				
+				v0 =  float(MagicPanels.touchTypo(iEdge)[0].X)
+				v1 =  float(MagicPanels.touchTypo(iEdge)[1].X)
+				
+				if self.gSingleDrawerDirection == "+":
+					if  v0 < v1:
+						return v0
+					else:
+						return v1
+			
+				if self.gSingleDrawerDirection == "-":
+					if  v0 > v1:
+						return v0
+					else:
+						return v1
+						
+			if iEdgePlane == "Y":
+				
+				v0 =  float(MagicPanels.touchTypo(iEdge)[0].Y)
+				v1 =  float(MagicPanels.touchTypo(iEdge)[1].Y)
+			
+				if self.gSingleDrawerDirection == "+":
+					if  v0 > v1:
+						return v0
+					else:
+						return v1
+			
+				if self.gSingleDrawerDirection == "-":
+					if  v0 < v1:
+						return v0
+					else:
+						return v1
+		
+		def showSingleDrawerHelpON(self):
+			
+			self.setGeometry(self.gPW, self.gPH, self.toolSW+400, self.toolSH)
+			self.oghelpON.hide()
+			self.oghelpOFF.show()
+			self.oghelpInfo.show()
+			
+		def showSingleDrawerHelpOFF(self):
+			
+			self.setGeometry(self.gPW, self.gPH, self.toolSW, self.toolSH)
+			self.oghelpON.show()
+			self.oghelpOFF.hide()
+			self.oghelpInfo.hide()
+
+		# ############################################################################
 		# actions - calculation functions
 		# ############################################################################
 
@@ -2972,36 +3097,83 @@ def showQtGUI():
 				self.o3E.setText(str(depth))
 
 		# ############################################################################
-		def calculateGapForDrawer(self):
+		def calculateSingleDrawer(self):
 			
 			obj1 = False
 			obj2 = False
 			obj3 = False
+			obj4 = False
+			obj5 = False
 			
 			edge1 = False
 			edge2 = False
-			face1 = False
+			edge3 = False
+			edge4 = False
+			edge5 = False
+			face1 = False # 2, 3, 5
+			
+			# possible selections
+			# edge1
+			# edge1 + face
+			# edge1 + edge2
+			# edge1 + edge2 + face
+			# edge1 + edge2 + edge3 + edge4 + face
 			
 			try:
 				obj1 = FreeCADGui.Selection.getSelection()[0]
-				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-			
+				sub = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+
+				if sub.ShapeType == "Edge":
+					edge1 = sub
+				else:
+					return
 			except:
 				skip = 1
-				
+			
 			try:
 				obj2 = FreeCADGui.Selection.getSelection()[1]
-				edge2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-				
+				sub = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+
+				if sub.ShapeType == "Edge":
+					edge2 = sub
+			
+				if sub.ShapeType == "Face":
+					face1 = sub
 			except:
 				skip = 1
 			
 			try:
 				obj3 = FreeCADGui.Selection.getSelection()[2]
-				face1 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
+				sub = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
+				
+				if sub.ShapeType == "Edge":
+					edge3 = sub
 			
+				if sub.ShapeType == "Face":
+					face1 = sub
 			except:
 				skip = 1
+
+			try:
+				obj4 = FreeCADGui.Selection.getSelection()[3]
+				sub = FreeCADGui.Selection.getSelectionEx()[3].SubObjects[0]
+				
+				if sub.ShapeType == "Edge":
+					edge4 = sub
+			except:
+				skip = 1
+
+			try:
+				obj5 = FreeCADGui.Selection.getSelection()[4]
+				sub = FreeCADGui.Selection.getSelectionEx()[4].SubObjects[0]
+				
+				if sub.ShapeType == "Face":
+					face1 = sub
+			except:
+				skip = 1
+
+			# set edge plane
+			self.gSingleDrawerPlane = MagicPanels.getEdgePlane(obj1, edge1, "clean")
 
 			startX = 0
 			startY = 0
@@ -3009,46 +3181,161 @@ def showQtGUI():
 			width = 0
 			height = 0
 			depth = 0
+			
+			if self.gSingleDrawerPlane == "X":
 				
-			if edge1 != False and edge2 != False:
-				
-				height = float(MagicPanels.touchTypo(edge2)[1].Z) - float(MagicPanels.touchTypo(edge1)[1].Z)
-				
-				# first short shelf and second long top
-				if float(edge1.Length) < float(edge2.Length):
-					width = float(edge1.Length)
-					startX = float(MagicPanels.touchTypo(edge1)[1].X)
-					startY = float(MagicPanels.touchTypo(edge2)[1].Y) # but shelf might be inside
-					startZ = float(MagicPanels.touchTypo(edge1)[1].Z) # Z start should always be first selected
-				
-				# first long bottom floor and second short shelf
-				else:
-					width = float(edge2.Length)
-					startX = float(MagicPanels.touchTypo(edge2)[1].X)
-					startY = float(MagicPanels.touchTypo(edge1)[1].Y) # but shelf might be inside
-					startZ = float(MagicPanels.touchTypo(edge1)[1].Z) # Z start should always be first selected
-				
-				# first short shelf and second long top
-				if float(obj1.Width.Value) < float(obj2.Width.Value):
-					depth = float(obj1.Width.Value)
-				
-				# first long bottom floor and second short shelf
-				else:
-					depth = float(obj2.Width.Value)
+				startZ = float(edge1.CenterOfMass.z)
 
-			if edge1 != False and edge2 == False:
+				# set drawer direction
+				if face1 != False:
+
+					sign = float(face1.CenterOfMass.y) - float(edge1.CenterOfMass.y)
+					
+					if sign >= 0:
+						self.gSingleDrawerDirection = "+"
+					else:
+						self.gSingleDrawerDirection = "-"
+					
+				if edge1 != False and edge2 == False:
+					
+					width = float(edge1.Length)
+					height = float(edge1.CenterOfMass.z)
+					depth = float(obj1.Width.Value)
+					startX = self.getStartVertex(edge1, "X")
+					startY = float(edge1.CenterOfMass.y)
+					startZ = 0
+
+				if edge1 != False and edge2 != False:
+					
+					height = float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z)
+					
+					# first short shelf and second long top
+					if float(edge1.Length) < float(edge2.Length):
+						width = float(edge1.Length)
+						startX = self.getStartVertex(edge1, "X")
+						startY = float(edge2.CenterOfMass.y) # shelf might be inside, so depth to other
+					
+					# first long bottom floor and second short shelf
+					else:
+						width = float(edge2.Length)
+						startX = self.getStartVertex(edge2, "X")
+						startY = float(edge1.CenterOfMass.y) # shelf might be inside, so depth to other
+					
+					# first short shelf and second long top
+					if float(obj1.Width.Value) < float(obj2.Width.Value):
+						depth = float(obj1.Width.Value)
+					
+					# first long bottom floor and second short shelf
+					else:
+						depth = float(obj2.Width.Value)
 				
-				width = float(edge1.Length)
-				height = float(MagicPanels.touchTypo(edge1)[1].Z)
-				depth = float(obj1.Width.Value)
-				startX = float(MagicPanels.touchTypo(edge1)[1].X)
-				startY = float(MagicPanels.touchTypo(edge1)[1].Y)
-				startZ = 0
+				# try to fix depth if face selected
+				if face1 != False:
+					depth = abs(float(face1.CenterOfMass.y) - startY)
 			
-			# try to fix depth if face selected
-			if face1 != False:
-				depth = float(face1.CenterOfMass.y) - startY
+				if (
+					edge1 != False and 
+					edge2 != False and 
+					edge3 != False and 
+					edge4 != False and 
+					face1 != False
+					):
+					
+					startX = float(edge3.CenterOfMass.x)
+					startY = float(edge1.CenterOfMass.y)
+					startZ = float(edge1.CenterOfMass.z)
+					
+					width = abs(float(edge4.CenterOfMass.x) - float(edge3.CenterOfMass.x))
+					height = abs(float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z))
+					
+					# set drawer direction
+					if face1 != False:
+
+						depth = float(face1.CenterOfMass.y) - startY
+						
+						if sign >= 0:
+							self.gSingleDrawerDirection = "+"
+						else:
+							self.gSingleDrawerDirection = "-"
+							depth = abs(depth)
+
+			if self.gSingleDrawerPlane == "Y":
+				
+				startZ = float(edge1.CenterOfMass.z)
+
+				# set drawer direction
+				if face1 != False:
+
+					sign = float(face1.CenterOfMass.x) - float(edge1.CenterOfMass.x)
+					
+					if sign >= 0:
+						self.gSingleDrawerDirection = "+"
+					else:
+						self.gSingleDrawerDirection = "-"
+					
+				if edge1 != False and edge2 == False:
+					
+					width = float(edge1.Length)
+					height = float(edge1.CenterOfMass.z)
+					depth = float(obj1.Length.Value)
+					startX = float(edge1.CenterOfMass.x)
+					startY = self.getStartVertex(edge1, "Y")
+					startZ = 0
+
+				if edge1 != False and edge2 != False:
+					
+					height = float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z)
+					
+					# first short shelf and second long top
+					if float(edge1.Length) < float(edge2.Length):
+						width = float(edge1.Length)
+						startX = float(edge2.CenterOfMass.x) # shelf might be inside, so depth to other
+						startY = self.getStartVertex(edge1, "Y")
+					
+					# first long bottom floor and second short shelf
+					else:
+						width = float(edge2.Length)
+						startX = float(edge1.CenterOfMass.x) # shelf might be inside, so depth to other
+						startY = self.getStartVertex(edge2, "Y")
+					
+					# first short shelf and second long top
+					if float(obj1.Length.Value) < float(obj2.Length.Value):
+						depth = float(obj1.Length.Value)
+					
+					# first long bottom floor and second short shelf
+					else:
+						depth = float(obj2.Length.Value)
+				
+				# try to fix depth if face selected
+				if face1 != False:
+					depth = abs(float(face1.CenterOfMass.x) - startX)
 			
+				if (
+					edge1 != False and 
+					edge2 != False and 
+					edge3 != False and 
+					edge4 != False and 
+					face1 != False
+					):
+					
+					startX = float(edge1.CenterOfMass.x)
+					startY = float(edge3.CenterOfMass.y)
+					startZ = float(edge1.CenterOfMass.z)
+					
+					width = abs(float(edge4.CenterOfMass.y) - float(edge3.CenterOfMass.y))
+					height = abs(float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z))
+					
+					# set drawer direction
+					if face1 != False:
+
+						depth = float(face1.CenterOfMass.x) - startX
+						
+						if sign >= 0:
+							self.gSingleDrawerDirection = "+"
+						else:
+							self.gSingleDrawerDirection = "-"
+							depth = abs(depth)
+
 			# set values to text fields
 			self.og2E.setText(str(startX))
 			self.og3E.setText(str(startY))
@@ -3482,7 +3769,7 @@ def showQtGUI():
 			self.ocs7E.setText(str(depth))
 
 		# ############################################################################
-		def calculateGapForDrawerSeries(self):
+		def calculateDrawerSeries(self):
 			
 			obj1 = False
 			obj2 = False
@@ -4121,9 +4408,9 @@ def showQtGUI():
 			p0Y = float(self.og3E.text())
 			p0Z = float(self.og4E.text())
 			
-			gapX = float(self.og5E.text())
-			gapZ = float(self.og6E.text())
-			gapY = float(self.og7E.text())
+			width = float(self.og5E.text())
+			height = float(self.og6E.text())
+			depth = float(self.og7E.text())
 			
 			thick = float(self.og8E.text())
 			
@@ -4133,73 +4420,286 @@ def showQtGUI():
 			topOF = float(self.og93E.text())
 			bottomOF = float(self.og94E.text())
 			
-			# Left Side
-			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
-			o1.Label = translate('magicStart', 'Drawer Left')
-			o1.Length = thick
-			o1.Height = gapZ - bottomOF - topOF - 3
-			o1.Width = gapY - backOF
-			pl = FreeCAD.Vector(p0X + sideOF, p0Y, p0Z + bottomOF + 3)
-			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			if self.gSingleDrawerPlane == "X":
 			
-			# Right Side
-			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
-			o2.Label = translate('magicStart', 'Drawer Right')
-			o2.Length = thick
-			o2.Height = gapZ - bottomOF - topOF - 3
-			o2.Width = gapY - backOF
-			pl = FreeCAD.Vector(p0X + gapX - thick - sideOF, p0Y, p0Z + bottomOF + 3)
-			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+				if self.gSingleDrawerDirection == "+":
+
+					# Left Side
+					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
+					o1.Label = translate('magicStart', 'Drawer Left')
+					o1.Length = thick
+					o1.Height = height - bottomOF - topOF - 3
+					o1.Width = depth - backOF
+					pl = FreeCAD.Vector(p0X + sideOF, p0Y, p0Z + bottomOF + 3)
+					o1.Placement = FreeCAD.Placement(pl, self.gR)
+					o1.ViewObject.ShapeColor = self.gColor
+					
+					# Right Side
+					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
+					o2.Label = translate('magicStart', 'Drawer Right')
+					o2.Length = thick
+					o2.Height = height - bottomOF - topOF - 3
+					o2.Width = depth - backOF
+					pl = FreeCAD.Vector(p0X + width - thick - sideOF, p0Y, p0Z + bottomOF + 3)
+					o2.Placement = FreeCAD.Placement(pl, self.gR)
+					o2.ViewObject.ShapeColor = self.gColor
+					
+					# Back
+					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
+					o3.Label = translate('magicStart', 'Drawer Back')
+					o3.Length = width - (2 * thick) - sidesOF
+					o3.Height = height - bottomOF - topOF - 3
+					o3.Width = thick
+					pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + depth - thick - backOF, p0Z + bottomOF + 3)
+					o3.Placement = FreeCAD.Placement(pl, self.gR)
+					o3.ViewObject.ShapeColor = self.gColor
+					
+					# Front inside
+					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
+					o4.Label = translate('magicStart', 'Drawer Front Inside')
+					o4.Length = width - (2 * thick) - sidesOF
+					o4.Height = height - bottomOF - topOF - 3
+					o4.Width = thick
+					pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y, p0Z + bottomOF + 3)
+					o4.Placement = FreeCAD.Placement(pl, self.gR)
+					o4.ViewObject.ShapeColor = self.gColor
+
+					# HDF bottom
+					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
+					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
+					o5.Length = width - sidesOF
+					o5.Height = 3
+					o5.Width = depth - backOF
+					pl = FreeCAD.Vector(p0X + sideOF, p0Y, p0Z  + bottomOF)
+					o5.Placement = FreeCAD.Placement(pl, self.gR)
+					o5.ViewObject.ShapeColor = self.gColor
+
+					# Front outside
+					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
+					o6.Label = translate('magicStart', 'Drawer Front Outside')
+					o6.Length = width + thick
+					o6.Height = height + thick - 4
+					o6.Width = thick
+					pl = FreeCAD.Vector(p0X - (thick / 2), p0Y - thick, p0Z - (thick / 2) + 2)
+					o6.Placement = FreeCAD.Placement(pl, self.gR)
+					o6.ViewObject.ShapeColor = self.gColor
+
+					container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
+					container.setLink([o1, o2, o3, o4, o5, o6])
+					container.Label = "Container, Drawer"
+				
+					# recompute
+					FreeCAD.ActiveDocument.recompute()
 			
-			# Back
-			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
-			o3.Label = translate('magicStart', 'Drawer Back')
-			o3.Length = gapX - (2 * thick) - sidesOF
-			o3.Height = gapZ - bottomOF - topOF - 3
-			o3.Width = thick
-			pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + gapY - thick - backOF, p0Z + bottomOF + 3)
-			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+				if self.gSingleDrawerDirection == "-":
+
+					# Left Side
+					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
+					o1.Label = translate('magicStart', 'Drawer Left')
+					o1.Length = thick
+					o1.Height = height - bottomOF - topOF - 3
+					o1.Width = depth - backOF
+					pl = FreeCAD.Vector(p0X - sideOF - thick, p0Y - depth + backOF, p0Z + bottomOF + 3)
+					o1.Placement = FreeCAD.Placement(pl, self.gR)
+					o1.ViewObject.ShapeColor = self.gColor
+					
+					# Right Side
+					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
+					o2.Label = translate('magicStart', 'Drawer Right')
+					o2.Length = thick
+					o2.Height = height - bottomOF - topOF - 3
+					o2.Width = depth - backOF
+					pl = FreeCAD.Vector(p0X - width + sideOF, p0Y - depth + backOF, p0Z + bottomOF + 3)
+					o2.Placement = FreeCAD.Placement(pl, self.gR)
+					o2.ViewObject.ShapeColor = self.gColor
+					
+					# Back
+					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
+					o3.Label = translate('magicStart', 'Drawer Back')
+					o3.Length = width - (2 * thick) - sidesOF
+					o3.Height = height - bottomOF - topOF - 3
+					o3.Width = thick
+					pl = FreeCAD.Vector(p0X - width + sideOF + thick, p0Y - depth + backOF, p0Z + bottomOF + 3)
+					o3.Placement = FreeCAD.Placement(pl, self.gR)
+					o3.ViewObject.ShapeColor = self.gColor
+					
+					# Front inside
+					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
+					o4.Label = translate('magicStart', 'Drawer Front Inside')
+					o4.Length = width - (2 * thick) - sidesOF
+					o4.Height = height - bottomOF - topOF - 3
+					o4.Width = thick
+					pl = FreeCAD.Vector(p0X - width + sideOF + thick, p0Y - thick, p0Z + bottomOF + 3)
+					o4.Placement = FreeCAD.Placement(pl, self.gR)
+					o4.ViewObject.ShapeColor = self.gColor
+
+					# HDF bottom
+					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
+					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
+					o5.Length = width - sidesOF
+					o5.Height = 3
+					o5.Width = depth - backOF
+					pl = FreeCAD.Vector(p0X - width + sideOF, p0Y - depth + backOF, p0Z  + bottomOF)
+					o5.Placement = FreeCAD.Placement(pl, self.gR)
+					o5.ViewObject.ShapeColor = self.gColor
+
+					# Front outside
+					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
+					o6.Label = translate('magicStart', 'Drawer Front Outside')
+					o6.Length = width + thick
+					o6.Height = height + thick - 4
+					o6.Width = thick
+					pl = FreeCAD.Vector(p0X - width - (thick / 2), p0Y, p0Z - (thick / 2) + 2)
+					o6.Placement = FreeCAD.Placement(pl, self.gR)
+					o6.ViewObject.ShapeColor = self.gColor
+
+					container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
+					container.setLink([o1, o2, o3, o4, o5, o6])
+					container.Label = "Container, Drawer"
+				
+					# recompute
+					FreeCAD.ActiveDocument.recompute()
+
+			if self.gSingleDrawerPlane == "Y":
 			
-			# Front inside
-			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
-			o4.Label = translate('magicStart', 'Drawer Front Inside')
-			o4.Length = gapX - (2 * thick) - sidesOF
-			o4.Height = gapZ - bottomOF - topOF - 3
-			o4.Width = thick
-			pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y, p0Z + bottomOF + 3)
-			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+				if self.gSingleDrawerDirection == "+":
+				
+					# Left Side
+					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
+					o1.Label = translate('magicStart', 'Drawer Left')
+					o1.Length = depth - backOF
+					o1.Height = height - bottomOF - topOF - 3
+					o1.Width = thick
+					pl = FreeCAD.Vector(p0X, p0Y - sideOF - thick, p0Z + bottomOF + 3)
+					o1.Placement = FreeCAD.Placement(pl, self.gR)
+					o1.ViewObject.ShapeColor = self.gColor
+					
+					# Right Side
+					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
+					o2.Label = translate('magicStart', 'Drawer Right')
+					o2.Length = depth - backOF
+					o2.Height = height - bottomOF - topOF - 3
+					o2.Width = thick
+					pl = FreeCAD.Vector(p0X, p0Y - width + sideOF, p0Z + bottomOF + 3)
+					o2.Placement = FreeCAD.Placement(pl, self.gR)
+					o2.ViewObject.ShapeColor = self.gColor
+					
+					# Back
+					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
+					o3.Label = translate('magicStart', 'Drawer Back')
+					o3.Length = thick
+					o3.Height = height - bottomOF - topOF - 3
+					o3.Width = width - (2 * thick) - sidesOF
+					pl = FreeCAD.Vector(p0X + depth - thick - backOF, p0Y - width + sideOF + thick, p0Z + bottomOF + 3)
+					o3.Placement = FreeCAD.Placement(pl, self.gR)
+					o3.ViewObject.ShapeColor = self.gColor
+					
+					# Front inside
+					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
+					o4.Label = translate('magicStart', 'Drawer Front Inside')
+					o4.Length = thick
+					o4.Height = height - bottomOF - topOF - 3
+					o4.Width = width - (2 * thick) - sidesOF
+					pl = FreeCAD.Vector(p0X, p0Y - width + sideOF + thick, p0Z + bottomOF + 3)
+					o4.Placement = FreeCAD.Placement(pl, self.gR)
+					o4.ViewObject.ShapeColor = self.gColor
 
-			# HDF bottom
-			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
-			o5.Label = translate('magicStart', 'Drawer Bottom HDF')
-			o5.Length = gapX - sidesOF
-			o5.Height = 3
-			o5.Width = gapY - backOF
-			pl = FreeCAD.Vector(p0X + sideOF, p0Y, p0Z  + bottomOF)
-			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.ShapeColor = self.gColor
+					# HDF bottom
+					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
+					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
+					o5.Length = depth - backOF
+					o5.Height = 3
+					o5.Width = width - sidesOF
+					pl = FreeCAD.Vector(p0X, p0Y - width + sideOF, p0Z  + bottomOF)
+					o5.Placement = FreeCAD.Placement(pl, self.gR)
+					o5.ViewObject.ShapeColor = self.gColor
 
-			# Front outside
-			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
-			o6.Label = translate('magicStart', 'Drawer Front Outside')
-			o6.Length = gapX + thick
-			o6.Height = gapZ + thick - 4
-			o6.Width = thick
-			pl = FreeCAD.Vector(p0X - (thick / 2), p0Y - thick, p0Z - (thick / 2) + 2)
-			o6.Placement = FreeCAD.Placement(pl, self.gR)
-			o6.ViewObject.ShapeColor = self.gColor
+					# Front outside
+					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
+					o6.Label = translate('magicStart', 'Drawer Front Outside')
+					o6.Length = thick
+					o6.Height = height + thick - 4
+					o6.Width = width + thick
+					pl = FreeCAD.Vector(p0X - thick, p0Y - width - (thick / 2), p0Z - (thick / 2) + 2)
+					o6.Placement = FreeCAD.Placement(pl, self.gR)
+					o6.ViewObject.ShapeColor = self.gColor
 
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
-			container.setLink([o1, o2, o3, o4, o5, o6])
-			container.Label = "Container, Drawer"
+					container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
+					container.setLink([o1, o2, o3, o4, o5, o6])
+					container.Label = "Container, Drawer"
+				
+					# recompute
+					FreeCAD.ActiveDocument.recompute()
 		
-			# recompute
-			FreeCAD.ActiveDocument.recompute()
-		
+				if self.gSingleDrawerDirection == "-":
+				
+					# Left Side
+					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
+					o1.Label = translate('magicStart', 'Drawer Left')
+					o1.Length = depth - backOF
+					o1.Height = height - bottomOF - topOF - 3
+					o1.Width = thick
+					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF, p0Z + bottomOF + 3)
+					o1.Placement = FreeCAD.Placement(pl, self.gR)
+					o1.ViewObject.ShapeColor = self.gColor
+					
+					# Right Side
+					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
+					o2.Label = translate('magicStart', 'Drawer Right')
+					o2.Length = depth - backOF
+					o2.Height = height - bottomOF - topOF - 3
+					o2.Width = thick
+					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + width - sideOF - thick, p0Z + bottomOF + 3)
+					o2.Placement = FreeCAD.Placement(pl, self.gR)
+					o2.ViewObject.ShapeColor = self.gColor
+					
+					# Back
+					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
+					o3.Label = translate('magicStart', 'Drawer Back')
+					o3.Length = thick
+					o3.Height = height - bottomOF - topOF - 3
+					o3.Width = width - (2 * thick) - sidesOF
+					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF + thick, p0Z + bottomOF + 3)
+					o3.Placement = FreeCAD.Placement(pl, self.gR)
+					o3.ViewObject.ShapeColor = self.gColor
+					
+					# Front inside
+					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
+					o4.Label = translate('magicStart', 'Drawer Front Inside')
+					o4.Length = thick
+					o4.Height = height - bottomOF - topOF - 3
+					o4.Width = width - (2 * thick) - sidesOF
+					pl = FreeCAD.Vector(p0X - thick, p0Y + sideOF + thick, p0Z + bottomOF + 3)
+					o4.Placement = FreeCAD.Placement(pl, self.gR)
+					o4.ViewObject.ShapeColor = self.gColor
+
+					# HDF bottom
+					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
+					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
+					o5.Length = depth - backOF
+					o5.Height = 3
+					o5.Width = width - sidesOF
+					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF, p0Z  + bottomOF)
+					o5.Placement = FreeCAD.Placement(pl, self.gR)
+					o5.ViewObject.ShapeColor = self.gColor
+
+					# Front outside
+					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
+					o6.Label = translate('magicStart', 'Drawer Front Outside')
+					o6.Length = thick
+					o6.Height = height + thick - 4
+					o6.Width = width + thick
+					pl = FreeCAD.Vector(p0X, p0Y - (thick / 2), p0Z - (thick / 2) + 2)
+					o6.Placement = FreeCAD.Placement(pl, self.gR)
+					o6.ViewObject.ShapeColor = self.gColor
+
+					container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
+					container.setLink([o1, o2, o3, o4, o5, o6])
+					container.Label = "Container, Drawer"
+				
+					# recompute
+					FreeCAD.ActiveDocument.recompute()
+
 		# ############################################################################
 		def createF22(self):
 			
@@ -4207,9 +4707,9 @@ def showQtGUI():
 			p0Y = float(self.og3E.text())
 			p0Z = float(self.og4E.text())
 			
-			gapX = float(self.og5E.text())
-			gapZ = float(self.og6E.text())
-			gapY = float(self.og7E.text())
+			width = float(self.og5E.text())
+			height = float(self.og6E.text())
+			depth = float(self.og7E.text())
 			
 			thick = float(self.og8E.text())
 			
@@ -4219,72 +4719,285 @@ def showQtGUI():
 			topOF = float(self.og93E.text())
 			bottomOF = float(self.og94E.text())
 			
-			# Left Side
-			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
-			o1.Label = translate('magicStart', 'Drawer Left')
-			o1.Length = thick
-			o1.Height = gapZ - bottomOF - topOF - 3
-			o1.Width = gapY - backOF - thick
-			pl = FreeCAD.Vector(p0X + sideOF, p0Y + thick, p0Z + bottomOF + 3)
-			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			if self.gSingleDrawerPlane == "X":
 			
-			# Right Side
-			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
-			o2.Label = translate('magicStart', 'Drawer Right')
-			o2.Length = thick
-			o2.Height = gapZ - bottomOF - topOF - 3
-			o2.Width = gapY - backOF - thick
-			pl = FreeCAD.Vector(p0X + gapX - thick - sideOF, p0Y + thick, p0Z + bottomOF + 3)
-			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+				if self.gSingleDrawerDirection == "+":
+
+					# Left Side
+					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
+					o1.Label = translate('magicStart', 'Drawer Left')
+					o1.Length = thick
+					o1.Height = height - bottomOF - topOF - 3
+					o1.Width = depth - backOF - thick
+					pl = FreeCAD.Vector(p0X + sideOF, p0Y + thick, p0Z + bottomOF + 3)
+					o1.Placement = FreeCAD.Placement(pl, self.gR)
+					o1.ViewObject.ShapeColor = self.gColor
+					
+					# Right Side
+					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
+					o2.Label = translate('magicStart', 'Drawer Right')
+					o2.Length = thick
+					o2.Height = height - bottomOF - topOF - 3
+					o2.Width = depth - backOF - thick
+					pl = FreeCAD.Vector(p0X + width - thick - sideOF, p0Y + thick, p0Z + bottomOF + 3)
+					o2.Placement = FreeCAD.Placement(pl, self.gR)
+					o2.ViewObject.ShapeColor = self.gColor
+					
+					# Back
+					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
+					o3.Label = translate('magicStart', 'Drawer Back')
+					o3.Length = width - (2 * thick) - sidesOF
+					o3.Height = height - bottomOF - topOF - 3
+					o3.Width = thick
+					pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + depth - thick - backOF, p0Z + bottomOF + 3)
+					o3.Placement = FreeCAD.Placement(pl, self.gR)
+					o3.ViewObject.ShapeColor = self.gColor
+					
+					# Front inside
+					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
+					o4.Label = translate('magicStart', 'Drawer Front Inside')
+					o4.Length = width - (2 * thick) - sidesOF
+					o4.Height = height - bottomOF - topOF - 3
+					o4.Width = thick
+					pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + thick, p0Z + bottomOF + 3)
+					o4.Placement = FreeCAD.Placement(pl, self.gR)
+					o4.ViewObject.ShapeColor = self.gColor
+
+					# HDF bottom
+					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
+					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
+					o5.Length = width - sidesOF
+					o5.Height = 3
+					o5.Width = depth - backOF - thick
+					pl = FreeCAD.Vector(p0X + sideOF, p0Y + thick, p0Z  + bottomOF)
+					o5.Placement = FreeCAD.Placement(pl, self.gR)
+					o5.ViewObject.ShapeColor = self.gColor
+
+					# Front outside make inside as well
+					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
+					o6.Label = translate('magicStart', 'Drawer Front Outside')
+					o6.Length = width - 4
+					o6.Height = height - 4
+					o6.Width = thick
+					pl = FreeCAD.Vector(p0X + 2, p0Y, p0Z + 2)
+					o6.Placement = FreeCAD.Placement(pl, self.gR)
+					o6.ViewObject.ShapeColor = self.gColor
+
+					container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
+					container.setLink([o1, o2, o3, o4, o5, o6])
+					container.Label = "Container, Drawer"
+				
+					# recompute
+					FreeCAD.ActiveDocument.recompute()
 			
-			# Back
-			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
-			o3.Label = translate('magicStart', 'Drawer Back')
-			o3.Length = gapX - (2 * thick) - sidesOF
-			o3.Height = gapZ - bottomOF - topOF - 3
-			o3.Width = thick
-			pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + gapY - thick - backOF, p0Z + bottomOF + 3)
-			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+				if self.gSingleDrawerDirection == "-":
+
+					# Left Side
+					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
+					o1.Label = translate('magicStart', 'Drawer Left')
+					o1.Length = thick
+					o1.Height = height - bottomOF - topOF - 3
+					o1.Width = depth - backOF - thick
+					pl = FreeCAD.Vector(p0X - sideOF - thick, p0Y - depth + backOF, p0Z + bottomOF + 3)
+					o1.Placement = FreeCAD.Placement(pl, self.gR)
+					o1.ViewObject.ShapeColor = self.gColor
+					
+					# Right Side
+					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
+					o2.Label = translate('magicStart', 'Drawer Right')
+					o2.Length = thick
+					o2.Height = height - bottomOF - topOF - 3
+					o2.Width = depth - backOF - thick
+					pl = FreeCAD.Vector(p0X - width + sideOF, p0Y - depth + backOF, p0Z + bottomOF + 3)
+					o2.Placement = FreeCAD.Placement(pl, self.gR)
+					o2.ViewObject.ShapeColor = self.gColor
+					
+					# Back
+					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
+					o3.Label = translate('magicStart', 'Drawer Back')
+					o3.Length = width - (2 * thick) - sidesOF
+					o3.Height = height - bottomOF - topOF - 3
+					o3.Width = thick
+					pl = FreeCAD.Vector(p0X - width + sideOF + thick, p0Y - depth + backOF, p0Z + bottomOF + 3)
+					o3.Placement = FreeCAD.Placement(pl, self.gR)
+					o3.ViewObject.ShapeColor = self.gColor
+					
+					# Front inside
+					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
+					o4.Label = translate('magicStart', 'Drawer Front Inside')
+					o4.Length = width - (2 * thick) - sidesOF
+					o4.Height = height - bottomOF - topOF - 3
+					o4.Width = thick
+					pl = FreeCAD.Vector(p0X - width + sideOF + thick, p0Y - (2 * thick), p0Z + bottomOF + 3)
+					o4.Placement = FreeCAD.Placement(pl, self.gR)
+					o4.ViewObject.ShapeColor = self.gColor
+
+					# HDF bottom
+					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
+					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
+					o5.Length = width - sidesOF
+					o5.Height = 3
+					o5.Width = depth - backOF - thick
+					pl = FreeCAD.Vector(p0X - width + sideOF, p0Y - depth + backOF, p0Z  + bottomOF)
+					o5.Placement = FreeCAD.Placement(pl, self.gR)
+					o5.ViewObject.ShapeColor = self.gColor
+
+					# Front outside
+					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
+					o6.Label = translate('magicStart', 'Drawer Front Outside')
+					o6.Length = width - 4
+					o6.Height = height - 4
+					o6.Width = thick
+					pl = FreeCAD.Vector(p0X - width + 2, p0Y - thick, p0Z + 2)
+					o6.Placement = FreeCAD.Placement(pl, self.gR)
+					o6.ViewObject.ShapeColor = self.gColor
+
+					container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
+					container.setLink([o1, o2, o3, o4, o5, o6])
+					container.Label = "Container, Drawer"
+				
+					# recompute
+					FreeCAD.ActiveDocument.recompute()
+
+			if self.gSingleDrawerPlane == "Y":
 			
-			# Front inside
-			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
-			o4.Label = translate('magicStart', 'Drawer Front Inside')
-			o4.Length = gapX - (2 * thick) - sidesOF
-			o4.Height = gapZ - bottomOF - topOF - 3
-			o4.Width = thick
-			pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + thick, p0Z + bottomOF + 3)
-			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+				if self.gSingleDrawerDirection == "+":
+				
+					# Left Side
+					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
+					o1.Label = translate('magicStart', 'Drawer Left')
+					o1.Length = depth - backOF - thick
+					o1.Height = height - bottomOF - topOF - 3
+					o1.Width = thick
+					pl = FreeCAD.Vector(p0X + thick, p0Y - sideOF - thick, p0Z + bottomOF + 3)
+					o1.Placement = FreeCAD.Placement(pl, self.gR)
+					o1.ViewObject.ShapeColor = self.gColor
+					
+					# Right Side
+					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
+					o2.Label = translate('magicStart', 'Drawer Right')
+					o2.Length = depth - backOF - thick
+					o2.Height = height - bottomOF - topOF - 3
+					o2.Width = thick
+					pl = FreeCAD.Vector(p0X + thick, p0Y - width + sideOF, p0Z + bottomOF + 3)
+					o2.Placement = FreeCAD.Placement(pl, self.gR)
+					o2.ViewObject.ShapeColor = self.gColor
+					
+					# Back
+					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
+					o3.Label = translate('magicStart', 'Drawer Back')
+					o3.Length = thick
+					o3.Height = height - bottomOF - topOF - 3
+					o3.Width = width - (2 * thick) - sidesOF
+					pl = FreeCAD.Vector(p0X + depth - backOF - thick, p0Y - width + sideOF + thick, p0Z + bottomOF + 3)
+					o3.Placement = FreeCAD.Placement(pl, self.gR)
+					o3.ViewObject.ShapeColor = self.gColor
+					
+					# Front inside
+					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
+					o4.Label = translate('magicStart', 'Drawer Front Inside')
+					o4.Length = thick
+					o4.Height = height - bottomOF - topOF - 3
+					o4.Width = width - (2 * thick) - sidesOF
+					pl = FreeCAD.Vector(p0X + thick, p0Y - width + sideOF + thick, p0Z + bottomOF + 3)
+					o4.Placement = FreeCAD.Placement(pl, self.gR)
+					o4.ViewObject.ShapeColor = self.gColor
 
-			# HDF bottom
-			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
-			o5.Label = translate('magicStart', 'Drawer Bottom HDF')
-			o5.Length = gapX - sidesOF
-			o5.Height = 3
-			o5.Width = gapY - backOF - thick
-			pl = FreeCAD.Vector(p0X + sideOF, p0Y + thick, p0Z  + bottomOF)
-			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.ShapeColor = self.gColor
+					# HDF bottom
+					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
+					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
+					o5.Length = depth - backOF - thick
+					o5.Height = 3
+					o5.Width = width - sidesOF
+					pl = FreeCAD.Vector(p0X + thick, p0Y - width + sideOF, p0Z  + bottomOF)
+					o5.Placement = FreeCAD.Placement(pl, self.gR)
+					o5.ViewObject.ShapeColor = self.gColor
 
-			# Front outside make inside as well
-			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
-			o6.Label = translate('magicStart', 'Drawer Front Outside')
-			o6.Length = gapX - 4
-			o6.Height = gapZ - 4
-			o6.Width = thick
-			pl = FreeCAD.Vector(p0X + 2, p0Y, p0Z + 2)
-			o6.Placement = FreeCAD.Placement(pl, self.gR)
-			o6.ViewObject.ShapeColor = self.gColor
+					# Front outside
+					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
+					o6.Label = translate('magicStart', 'Drawer Front Outside')
+					o6.Length = thick
+					o6.Height = height - 4
+					o6.Width = width - 4
+					pl = FreeCAD.Vector(p0X, p0Y - width + 2, p0Z + 2)
+					o6.Placement = FreeCAD.Placement(pl, self.gR)
+					o6.ViewObject.ShapeColor = self.gColor
 
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
-			container.setLink([o1, o2, o3, o4, o5, o6])
-			container.Label = "Container, Drawer"
+					container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
+					container.setLink([o1, o2, o3, o4, o5, o6])
+					container.Label = "Container, Drawer"
+				
+					# recompute
+					FreeCAD.ActiveDocument.recompute()
 		
-			# recompute
-			FreeCAD.ActiveDocument.recompute()
+				if self.gSingleDrawerDirection == "-":
+				
+					# Left Side
+					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
+					o1.Label = translate('magicStart', 'Drawer Left')
+					o1.Length = depth - backOF - thick
+					o1.Height = height - bottomOF - topOF - 3
+					o1.Width = thick
+					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF, p0Z + bottomOF + 3)
+					o1.Placement = FreeCAD.Placement(pl, self.gR)
+					o1.ViewObject.ShapeColor = self.gColor
+					
+					# Right Side
+					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
+					o2.Label = translate('magicStart', 'Drawer Right')
+					o2.Length = depth - backOF - thick
+					o2.Height = height - bottomOF - topOF - 3
+					o2.Width = thick
+					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + width - sideOF - thick, p0Z + bottomOF + 3)
+					o2.Placement = FreeCAD.Placement(pl, self.gR)
+					o2.ViewObject.ShapeColor = self.gColor
+					
+					# Back
+					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
+					o3.Label = translate('magicStart', 'Drawer Back')
+					o3.Length = thick
+					o3.Height = height - bottomOF - topOF - 3
+					o3.Width = width - (2 * thick) - sidesOF
+					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF + thick, p0Z + bottomOF + 3)
+					o3.Placement = FreeCAD.Placement(pl, self.gR)
+					o3.ViewObject.ShapeColor = self.gColor
+					
+					# Front inside
+					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
+					o4.Label = translate('magicStart', 'Drawer Front Inside')
+					o4.Length = thick
+					o4.Height = height - bottomOF - topOF - 3
+					o4.Width = width - (2 * thick) - sidesOF
+					pl = FreeCAD.Vector(p0X - (2 * thick), p0Y + sideOF + thick, p0Z + bottomOF + 3)
+					o4.Placement = FreeCAD.Placement(pl, self.gR)
+					o4.ViewObject.ShapeColor = self.gColor
+
+					# HDF bottom
+					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
+					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
+					o5.Length = depth - backOF - thick
+					o5.Height = 3
+					o5.Width = width - sidesOF
+					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF, p0Z  + bottomOF)
+					o5.Placement = FreeCAD.Placement(pl, self.gR)
+					o5.ViewObject.ShapeColor = self.gColor
+
+					# Front outside
+					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
+					o6.Label = translate('magicStart', 'Drawer Front Outside')
+					o6.Length = thick
+					o6.Height = height - 4
+					o6.Width = width - 4
+					pl = FreeCAD.Vector(p0X - thick, p0Y + 2, p0Z + 2)
+					o6.Placement = FreeCAD.Placement(pl, self.gR)
+					o6.ViewObject.ShapeColor = self.gColor
+
+					container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
+					container.setLink([o1, o2, o3, o4, o5, o6])
+					container.Label = "Container, Drawer"
+				
+					# recompute
+					FreeCAD.ActiveDocument.recompute()
 		
 		# ############################################################################
 		def createF23(self):
