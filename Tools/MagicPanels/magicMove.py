@@ -93,7 +93,6 @@ def showQtGUI():
 		# copy by edge
 		gCBEObj = ""
 		gCBEEdge = ""
-		gCBEPlane = ""
 		
 		# mirror copy
 		gMObj = ""

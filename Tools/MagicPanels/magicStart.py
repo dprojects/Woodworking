@@ -2032,7 +2032,7 @@ def showQtGUI():
 			# hide everything first
 			# ##############################################
 			
-			self.setGeometry(self.gPW, self.gPH, self.toolSW, self.toolSH)
+			self.resize(self.toolSW, self.toolSH)
 			
 			# side
 			self.ocs1i.hide()
@@ -2986,14 +2986,14 @@ def showQtGUI():
 		
 		def showSingleDrawerHelpON(self):
 			
-			self.setGeometry(self.gPW, self.gPH, self.toolSW+400, self.toolSH)
+			self.resize(self.toolSW+400, self.toolSH)
 			self.oghelpON.hide()
 			self.oghelpOFF.show()
 			self.oghelpInfo.show()
 			
 		def showSingleDrawerHelpOFF(self):
 			
-			self.setGeometry(self.gPW, self.gPH, self.toolSW, self.toolSH)
+			self.resize(self.toolSW, self.toolSH)
 			self.oghelpON.show()
 			self.oghelpOFF.hide()
 			self.oghelpInfo.hide()
