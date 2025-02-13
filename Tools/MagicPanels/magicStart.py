@@ -59,7 +59,8 @@ getMenuIndex = {
 	translate('magicStart', 'Table ( kitchen modern style )'): 44, 
 	translate('magicStart', 'Table ( coffee modern style )'): 45, 
 	translate('magicStart', 'Table ( kitchen decorated style )'): 46, 
-	translate('magicStart', 'Table ( coffee decorated style )'): 47 # no comma 
+	translate('magicStart', 'Table ( coffee decorated style )'): 47, 
+	translate('magicStart', 'Side ( fit into gap )'): 48 # no comma 
 }
 
 # ############################################################################
@@ -85,6 +86,9 @@ def showQtGUI():
 		
 		gSingleDrawerPlane = "X"
 		gSingleDrawerDirection = "+"
+		
+		gSideEdgePlane = "X"
+		gSideDirection = "+"
 		
 		toolSW = 0
 		toolSH = 0
@@ -157,6 +161,7 @@ def showQtGUI():
 				translate('magicStart', 'Front inside with glass ( frame with decoration, fit into gap )'), 
 				translate('magicStart', 'Shelf ( fit into gap )'), 
 				translate('magicStart', 'Shelf series with equal space ( fit into gap )'), 
+				translate('magicStart', 'Side ( fit into gap )'), 
 				translate('magicStart', 'Center side ( fit into gap )'), 
 				translate('magicStart', 'Foot ( good for cleaning )'), 
 				translate('magicStart', 'Foot ( standard )'), 
@@ -205,7 +210,8 @@ def showQtGUI():
 			rowfframe = row - 20
 			rowshelf = row
 			rowsseries = row - 20
-			rowside = row
+			rowcside = row
+			rowside = row - 20
 
 			# ############################################################################
 			# selection icon
@@ -609,14 +615,14 @@ def showQtGUI():
 
 			# button
 			self.oghelpON = QtGui.QPushButton(translate('magicStart', 'show help'), self)
-			self.oghelpON.clicked.connect(self.showSingleDrawerHelpON)
+			self.oghelpON.clicked.connect(self.showHelpON)
 			self.oghelpON.setFixedWidth(90)
 			self.oghelpON.setFixedHeight(20)
 			self.oghelpON.move(10, rowgap)
 
 			# button
 			self.oghelpOFF = QtGui.QPushButton(translate('magicStart', 'hide help'), self)
-			self.oghelpOFF.clicked.connect(self.showSingleDrawerHelpOFF)
+			self.oghelpOFF.clicked.connect(self.showHelpOFF)
 			self.oghelpOFF.setFixedWidth(90)
 			self.oghelpOFF.setFixedHeight(20)
 			self.oghelpOFF.move(10, rowgap)
@@ -1835,151 +1841,392 @@ def showQtGUI():
 			self.oshs8B.hide()
 
 			# ############################################################################
+			# GUI for Side from GAP (hidden by default)
+			# ############################################################################
+			
+			# button
+			self.osidehelpON = QtGui.QPushButton(translate('magicStart', 'show help'), self)
+			self.osidehelpON.clicked.connect(self.showHelpON)
+			self.osidehelpON.setFixedWidth(90)
+			self.osidehelpON.setFixedHeight(20)
+			self.osidehelpON.move(10, rowside)
+
+			# button
+			self.osidehelpOFF = QtGui.QPushButton(translate('magicStart', 'hide help'), self)
+			self.osidehelpOFF.clicked.connect(self.showHelpOFF)
+			self.osidehelpOFF.setFixedWidth(90)
+			self.osidehelpOFF.setFixedHeight(20)
+			self.osidehelpOFF.move(10, rowside)
+			self.osidehelpOFF.hide()
+			
+			# label
+			info = ""
+			info += translate('magicStart', 'To create a side, you need to select 4 edges in the correct order around the free space where you want to create the side:')
+			info += '<ul>'
+			info += '<li><b>'
+			info += translate('magicStart', 'X or Y bottom edge') + '</b>: '
+			info += translate('magicStart', 'means that the selected edge is to be the bottom edge, along the X or Y coordinate axis.')
+			info += '</li>'
+			info += '<li><b>'
+			info += translate('magicStart', 'X or Y top edge') + '</b>: '
+			info += translate('magicStart', 'means that the selected edge is to be the top edge, along the X or Y coordinate axis.')
+			info += '</li>'
+			info += '<li><b>'
+			info += translate('magicStart', 'Z left edge') + '</b>: '
+			info += translate('magicStart', 'means that the selected edge is to be the left edge, along the Z coordinate axis, i.e. vertical.')
+			info += '</li>'
+			info += '<li><b>'
+			info += translate('magicStart', 'Z right edge') + '</b>: '
+			info += translate('magicStart', 'means that the selected edge is to be the right edge, along the Z coordinate axis, i.e. vertical.')
+			info += '</li>'
+			info += '</ul>'
+			info += translate('magicStart', 'Next, you need to decide how the side to be created is to be calculated. There are 3 cases:')
+			info += '<ul>'
+			info += '<li><b>'
+			info += translate('magicStart', '0 width and 0 offsets') + '</b>: '
+			info += translate('magicStart', 'If you do not fill the widths and gaps, the side will fill the entire selected space.')
+			info += '</li>'
+			info += '<li><b>'
+			info += translate('magicStart', 'custom width and 0 offsets') + '</b>: '
+			info += translate('magicStart', 'If a width is given, the right spacing will be the difference between the width of the free space and the previously set desired width.')
+			info += '</li>'
+			info += '<li><b>'
+			info += translate('magicStart', '0 width and custom offsets') + '</b>: '
+			info += translate('magicStart', 'If offsets are set and the width is set to 0, the width and height of the side to be created will be calculated with the offsets taken into account.')
+			info += '</li>'
+			info += '</ul>'
+			self.osidehelpInfo = QtGui.QLabel(info, self)
+			self.osidehelpInfo.move(self.toolSW + 10, 10)
+			self.osidehelpInfo.setFixedWidth(360)
+			self.osidehelpInfo.setWordWrap(True)
+			self.osidehelpInfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.osidehelpInfo.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
+			
+			rowside += 20
+			
+			# label
+			info = translate('magicStart', 'Please select 4 edges around the gap to calculate Side: <br><br> 1. selection - X or Y bottom edge <br> 2. selection - X or Y top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
+			self.oside1i = QtGui.QLabel(info, self)
+			self.oside1i.move(10, rowside+3)
+			self.oside1i.setFixedWidth(200)
+			self.oside1i.setWordWrap(True)
+			self.oside1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			
+			rowside += 120
+			
+			# label
+			self.oside1L = QtGui.QLabel(translate('magicStart', 'Side thickness:'), self)
+			self.oside1L.move(10, rowside+3)
+
+			# text input
+			self.oside1E = QtGui.QLineEdit(self)
+			self.oside1E.setText("18")
+			self.oside1E.setFixedWidth(90)
+			self.oside1E.move(120, rowside)
+		
+			rowside += 30
+			
+			# label
+			self.oside2L = QtGui.QLabel(translate('magicStart', 'Side by width:'), self)
+			self.oside2L.move(10, rowside+3)
+
+			# text input
+			self.oside2E = QtGui.QLineEdit(self)
+			self.oside2E.setText("0")
+			self.oside2E.setFixedWidth(90)
+			self.oside2E.move(120, rowside)
+			
+			rowside += 30
+			
+			# label
+			self.oside3L = QtGui.QLabel(translate('magicStart', 'Side by offsets:'), self)
+			self.oside3L.move(10, rowside+3)
+
+			rowside += 20
+			
+			# label
+			self.oside31L = QtGui.QLabel(translate('magicStart', 'Left:'), self)
+			self.oside31L.move(10, rowside+3)
+			
+			# label
+			self.oside32L = QtGui.QLabel(translate('magicStart', 'Right:'), self)
+			self.oside32L.move(110, rowside+3)
+			
+			# label
+			self.oside33L = QtGui.QLabel(translate('magicStart', 'Top:'), self)
+			self.oside33L.move(210, rowside+3)
+			
+			# label
+			self.oside34L = QtGui.QLabel(translate('magicStart', 'Bottom:'), self)
+			self.oside34L.move(310, rowside+3)
+
+			rowside += 20
+			
+			# text input
+			self.oside31E = QtGui.QLineEdit(self)
+			self.oside31E.setText("0")
+			self.oside31E.setFixedWidth(50)
+			self.oside31E.move(10, rowside)
+			
+			# text input
+			self.oside32E = QtGui.QLineEdit(self)
+			self.oside32E.setText("0")
+			self.oside32E.setFixedWidth(50)
+			self.oside32E.move(110, rowside)
+			
+			# text input
+			self.oside33E = QtGui.QLineEdit(self)
+			self.oside33E.setText("0")
+			self.oside33E.setFixedWidth(50)
+			self.oside33E.move(210, rowside)
+			
+			# text input
+			self.oside34E = QtGui.QLineEdit(self)
+			self.oside34E.setText("0")
+			self.oside34E.setFixedWidth(50)
+			self.oside34E.move(310, rowside)
+
+			rowside += 40
+			
+			# button
+			self.oside4B1 = QtGui.QPushButton(translate('magicStart', 'calculate side'), self)
+			self.oside4B1.clicked.connect(self.calculateSideFromGap)
+			self.oside4B1.setFixedWidth(200)
+			self.oside4B1.setFixedHeight(40)
+			self.oside4B1.move(10, rowside)
+			
+			rowside += 70
+			
+			# label
+			self.oside5L = QtGui.QLabel(translate('magicStart', 'Side start XYZ:'), self)
+			self.oside5L.move(10, rowside+3)
+			
+			# text input
+			self.oside51E = QtGui.QLineEdit(self)
+			self.oside51E.setText("0")
+			self.oside51E.setFixedWidth(90)
+			self.oside51E.move(120, rowside)
+			
+			# text input
+			self.oside52E = QtGui.QLineEdit(self)
+			self.oside52E.setText("0")
+			self.oside52E.setFixedWidth(90)
+			self.oside52E.move(220, rowside)
+			
+			# text input
+			self.oside53E = QtGui.QLineEdit(self)
+			self.oside53E.setText("0")
+			self.oside53E.setFixedWidth(90)
+			self.oside53E.move(320, rowside)
+			
+			rowside += 30
+
+			# label
+			self.oside6L = QtGui.QLabel(translate('magicStart', 'Calculated side width:'), self)
+			self.oside6L.move(10, rowside+3)
+			
+			# text input
+			self.oside6E = QtGui.QLineEdit(self)
+			self.oside6E.setText("0")
+			self.oside6E.setFixedWidth(90)
+			self.oside6E.move(220, rowside)
+			
+			rowside += 30
+			
+			# label
+			self.oside7L = QtGui.QLabel(translate('magicStart', 'Calculated side height:'), self)
+			self.oside7L.move(10, rowside+3)
+
+			# text input
+			self.oside7E = QtGui.QLineEdit(self)
+			self.oside7E.setText("0")
+			self.oside7E.setFixedWidth(90)
+			self.oside7E.move(220, rowside)
+			
+			rowside += 40
+
+			# button
+			self.oside8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
+			self.oside8B1.clicked.connect(self.createObject)
+			self.oside8B1.setFixedWidth(self.toolSW - 20)
+			self.oside8B1.setFixedHeight(createSize)
+			self.oside8B1.move(10, createRow)
+
+			# hide by default
+			self.osidehelpON.hide()
+			self.osidehelpOFF.hide()
+			self.osidehelpInfo.hide()
+			self.oside1i.hide()
+			self.oside1L.hide()
+			self.oside1E.hide()
+			self.oside2L.hide()
+			self.oside2E.hide()
+			self.oside3L.hide()
+			self.oside31L.hide()
+			self.oside32L.hide()
+			self.oside33L.hide()
+			self.oside34L.hide()
+			self.oside31E.hide()
+			self.oside32E.hide()
+			self.oside33E.hide()
+			self.oside34E.hide()
+			self.oside4B1.hide()
+			self.oside5L.hide()
+			self.oside51E.hide()
+			self.oside52E.hide()
+			self.oside53E.hide()
+			self.oside6L.hide()
+			self.oside6E.hide()
+			self.oside7L.hide()
+			self.oside7E.hide()
+			self.oside8B1.hide()
+
+			# ############################################################################
 			# GUI for Center side from GAP (hidden by default)
 			# ############################################################################
 			
-			rowside -= 20
+			rowcside -= 20
 			
 			# label
 			info = translate('magicStart', 'Please select 2 edges (top or bottom at Y axis direction) and 1 face (bottom or top at XY plane) to calculate side in the center: <br><br> 1. selection - left Y edge <br> 2. selection - right Y edge <br> 3. selection - XY face')
 			self.ocs1i = QtGui.QLabel(info, self)
-			self.ocs1i.move(10, rowside+3)
+			self.ocs1i.move(10, rowcside+3)
 			self.ocs1i.setFixedWidth(200)
 			self.ocs1i.setWordWrap(True)
 			self.ocs1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
 			
-			rowside += 150
+			rowcside += 150
 			
 			# label
 			self.ocs1L = QtGui.QLabel(translate('magicStart', 'Side thickness:'), self)
-			self.ocs1L.move(10, rowside+3)
+			self.ocs1L.move(10, rowcside+3)
 
 			# text input
 			self.ocs1E = QtGui.QLineEdit(self)
 			self.ocs1E.setText("18")
 			self.ocs1E.setFixedWidth(90)
-			self.ocs1E.move(120, rowside)
+			self.ocs1E.move(120, rowcside)
 		
-			rowside += 30
+			rowcside += 30
 			
 			# label
 			self.ocs2L = QtGui.QLabel(translate('magicStart', 'Side by depth:'), self)
-			self.ocs2L.move(10, rowside+3)
+			self.ocs2L.move(10, rowcside+3)
 
 			# text input
 			self.ocs2E = QtGui.QLineEdit(self)
 			self.ocs2E.setText("0")
 			self.ocs2E.setFixedWidth(90)
-			self.ocs2E.move(120, rowside)
+			self.ocs2E.move(120, rowcside)
 			
-			rowside += 30
+			rowcside += 30
 			
 			# label
 			self.ocs3L = QtGui.QLabel(translate('magicStart', 'Side by offsets:'), self)
-			self.ocs3L.move(10, rowside+3)
+			self.ocs3L.move(10, rowcside+3)
 
-			rowside += 20
+			rowcside += 20
 			
 			# label
 			self.ocs31L = QtGui.QLabel(translate('magicStart', 'Top:'), self)
-			self.ocs31L.move(10, rowside+3)
+			self.ocs31L.move(10, rowcside+3)
 			
 			# label
 			self.ocs32L = QtGui.QLabel(translate('magicStart', 'Bottom:'), self)
-			self.ocs32L.move(110, rowside+3)
+			self.ocs32L.move(110, rowcside+3)
 			
 			# label
 			self.ocs33L = QtGui.QLabel(translate('magicStart', 'Front:'), self)
-			self.ocs33L.move(210, rowside+3)
+			self.ocs33L.move(210, rowcside+3)
 			
 			# label
 			self.ocs34L = QtGui.QLabel(translate('magicStart', 'Back:'), self)
-			self.ocs34L.move(310, rowside+3)
+			self.ocs34L.move(310, rowcside+3)
 
-			rowside += 20
+			rowcside += 20
 			
 			# text input
 			self.ocs31E = QtGui.QLineEdit(self)
 			self.ocs31E.setText("0")
 			self.ocs31E.setFixedWidth(50)
-			self.ocs31E.move(10, rowside)
+			self.ocs31E.move(10, rowcside)
 			
 			# text input
 			self.ocs32E = QtGui.QLineEdit(self)
 			self.ocs32E.setText("0")
 			self.ocs32E.setFixedWidth(50)
-			self.ocs32E.move(110, rowside)
+			self.ocs32E.move(110, rowcside)
 			
 			# text input
 			self.ocs33E = QtGui.QLineEdit(self)
 			self.ocs33E.setText("0")
 			self.ocs33E.setFixedWidth(50)
-			self.ocs33E.move(210, rowside)
+			self.ocs33E.move(210, rowcside)
 			
 			# text input
 			self.ocs34E = QtGui.QLineEdit(self)
 			self.ocs34E.setText("0")
 			self.ocs34E.setFixedWidth(50)
-			self.ocs34E.move(310, rowside)
+			self.ocs34E.move(310, rowcside)
 
-			rowside += 40
+			rowcside += 40
 			
 			# button
 			self.ocs4B1 = QtGui.QPushButton(translate('magicStart', 'calculate side'), self)
-			self.ocs4B1.clicked.connect(self.calculateSideFromGap)
+			self.ocs4B1.clicked.connect(self.calculateCenterSideFromGap)
 			self.ocs4B1.setFixedWidth(200)
 			self.ocs4B1.setFixedHeight(40)
-			self.ocs4B1.move(10, rowside)
+			self.ocs4B1.move(10, rowcside)
 			
-			rowside += 70
+			rowcside += 70
 			
 			# label
 			self.ocs5L = QtGui.QLabel(translate('magicStart', 'Side start XYZ:'), self)
-			self.ocs5L.move(10, rowside+3)
+			self.ocs5L.move(10, rowcside+3)
 			
 			# text input
 			self.ocs51E = QtGui.QLineEdit(self)
 			self.ocs51E.setText("0")
 			self.ocs51E.setFixedWidth(90)
-			self.ocs51E.move(120, rowside)
+			self.ocs51E.move(120, rowcside)
 			
 			# text input
 			self.ocs52E = QtGui.QLineEdit(self)
 			self.ocs52E.setText("0")
 			self.ocs52E.setFixedWidth(90)
-			self.ocs52E.move(220, rowside)
+			self.ocs52E.move(220, rowcside)
 			
 			# text input
 			self.ocs53E = QtGui.QLineEdit(self)
 			self.ocs53E.setText("0")
 			self.ocs53E.setFixedWidth(90)
-			self.ocs53E.move(320, rowside)
+			self.ocs53E.move(320, rowcside)
 			
-			rowside += 30
+			rowcside += 30
 
 			# label
 			self.ocs6L = QtGui.QLabel(translate('magicStart', 'Calculated center side height:'), self)
-			self.ocs6L.move(10, rowside+3)
+			self.ocs6L.move(10, rowcside+3)
 			
 			# text input
 			self.ocs6E = QtGui.QLineEdit(self)
 			self.ocs6E.setText("0")
 			self.ocs6E.setFixedWidth(90)
-			self.ocs6E.move(220, rowside)
+			self.ocs6E.move(220, rowcside)
 			
-			rowside += 30
+			rowcside += 30
 			
 			# label
 			self.ocs7L = QtGui.QLabel(translate('magicStart', 'Calculated center side depth:'), self)
-			self.ocs7L.move(10, rowside+3)
+			self.ocs7L.move(10, rowcside+3)
 
 			# text input
 			self.ocs7E = QtGui.QLineEdit(self)
 			self.ocs7E.setText("0")
 			self.ocs7E.setFixedWidth(90)
-			self.ocs7E.move(220, rowside)
+			self.ocs7E.move(220, rowcside)
 			
-			rowside += 40
+			rowcside += 40
 
 			# button
 			self.ocs8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
@@ -2035,6 +2282,35 @@ def showQtGUI():
 			self.resize(self.toolSW, self.toolSH)
 			
 			# side
+			self.osidehelpON.hide()
+			self.osidehelpOFF.hide()
+			self.osidehelpInfo.hide()
+			self.oside1i.hide()
+			self.oside1L.hide()
+			self.oside1E.hide()
+			self.oside2L.hide()
+			self.oside2E.hide()
+			self.oside3L.hide()
+			self.oside31L.hide()
+			self.oside32L.hide()
+			self.oside33L.hide()
+			self.oside34L.hide()
+			self.oside31E.hide()
+			self.oside32E.hide()
+			self.oside33E.hide()
+			self.oside34E.hide()
+			self.oside4B1.hide()
+			self.oside5L.hide()
+			self.oside51E.hide()
+			self.oside52E.hide()
+			self.oside53E.hide()
+			self.oside6L.hide()
+			self.oside6E.hide()
+			self.oside7L.hide()
+			self.oside7E.hide()
+			self.oside8B1.hide()
+			
+			# center side
 			self.ocs1i.hide()
 			self.ocs1L.hide()
 			self.ocs1E.hide()
@@ -2315,8 +2591,37 @@ def showQtGUI():
 				self.o4L.show()
 				self.o4E.show()
 				self.s1B1.show()
-
+			
 			if iType == "side":
+				self.osidehelpON.show()
+				self.osidehelpOFF.hide()
+				self.osidehelpInfo.show()
+				self.oside1i.show()
+				self.oside1L.show()
+				self.oside1E.show()
+				self.oside2L.show()
+				self.oside2E.show()
+				self.oside3L.show()
+				self.oside31L.show()
+				self.oside32L.show()
+				self.oside33L.show()
+				self.oside34L.show()
+				self.oside31E.show()
+				self.oside32E.show()
+				self.oside33E.show()
+				self.oside34E.show()
+				self.oside4B1.show()
+				self.oside5L.show()
+				self.oside51E.show()
+				self.oside52E.show()
+				self.oside53E.show()
+				self.oside6L.show()
+				self.oside6E.show()
+				self.oside7L.show()
+				self.oside7E.show()
+				self.oside8B1.show()
+
+			if iType == "center side":
 				self.ocs1i.show()
 				self.ocs1L.show()
 				self.ocs1E.show()
@@ -2622,7 +2927,7 @@ def showQtGUI():
 				self.setGUIInfo("shelf")
 			
 			if selectedIndex == 26:
-				self.setGUIInfo("side")
+				self.setGUIInfo("center side")
 
 			if selectedIndex == 30 or selectedIndex == 31:
 				self.setGUIInfo("drawer series")
@@ -2650,7 +2955,10 @@ def showQtGUI():
 				selectedIndex == 47
 				):
 				self.setGUIInfo("table")
-				
+			
+			if selectedIndex == 48:
+				self.setGUIInfo("side")
+
 			# ####################################################
 			# custom settings
 			# ####################################################
@@ -2880,7 +3188,10 @@ def showQtGUI():
 			
 			if self.gSelectedFurniture == "F46" or self.gSelectedFurniture == "F47":
 				self.createF46()
-
+			
+			if self.gSelectedFurniture == "F48":
+				self.createF48()
+				
 			# here to allow recalculation with selection
 			FreeCADGui.Selection.clearSelection()
 
@@ -2984,20 +3295,36 @@ def showQtGUI():
 					else:
 						return v1
 		
-		def showSingleDrawerHelpON(self):
+		# ############################################################################
+		def showHelpON(self):
 			
-			self.resize(self.toolSW+400, self.toolSH)
-			self.oghelpON.hide()
-			self.oghelpOFF.show()
-			self.oghelpInfo.show()
+			if self.gSelectedFurniture == "F21" or self.gSelectedFurniture == "F22":
+				self.resize(self.toolSW+400, self.toolSH)
+				self.oghelpON.hide()
+				self.oghelpOFF.show()
+				self.oghelpInfo.show()
 			
-		def showSingleDrawerHelpOFF(self):
+			if self.gSelectedFurniture == "F48":
+				self.resize(self.toolSW+400, self.toolSH)
+				self.osidehelpON.hide()
+				self.osidehelpOFF.show()
+				self.osidehelpInfo.show()
+				
+		# ############################################################################
+		def showHelpOFF(self):
 			
-			self.resize(self.toolSW, self.toolSH)
-			self.oghelpON.show()
-			self.oghelpOFF.hide()
-			self.oghelpInfo.hide()
+			if self.gSelectedFurniture == "F21" or self.gSelectedFurniture == "F22":
+				self.resize(self.toolSW, self.toolSH)
+				self.oghelpON.show()
+				self.oghelpOFF.hide()
+				self.oghelpInfo.hide()
 
+			if self.gSelectedFurniture == "F48":
+				self.resize(self.toolSW, self.toolSH)
+				self.osidehelpON.show()
+				self.osidehelpOFF.hide()
+				self.osidehelpInfo.hide()
+				
 		# ############################################################################
 		# actions - calculation functions
 		# ############################################################################
@@ -3676,6 +4003,174 @@ def showQtGUI():
 
 		# ############################################################################
 		def calculateSideFromGap(self):
+			
+			obj1 = False
+			obj2 = False
+			obj3 = False
+			obj4 = False
+			
+			edge1 = False
+			edge2 = False
+			edge3 = False
+			edge4 = False
+			
+			try:
+				obj1 = FreeCADGui.Selection.getSelection()[0]
+				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				
+				obj2 = FreeCADGui.Selection.getSelection()[1]
+				edge2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+				
+				obj3 = FreeCADGui.Selection.getSelection()[2]
+				edge3 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
+				
+				obj4 = FreeCADGui.Selection.getSelection()[3]
+				edge4 = FreeCADGui.Selection.getSelectionEx()[3].SubObjects[0]
+
+			except:
+				return
+			
+			thick = float(self.oside1E.text())
+			uwidth = float(self.oside2E.text())
+			offL = float(self.oside31E.text())
+			offR = float(self.oside32E.text())
+			offT = float(self.oside33E.text())
+			offB = float(self.oside34E.text())
+			
+			self.gSideEdgePlane = MagicPanels.getEdgePlane(obj1, edge1, "clean")
+			
+			if self.gSideEdgePlane == "X":
+				
+				gheight = abs(float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z))
+				gwidth = float(edge4.CenterOfMass.x) - float(edge3.CenterOfMass.x)
+				
+				if gwidth > 0:
+					self.gSideDirection = "+"
+				else:
+					self.gSideDirection = "-"
+					gwidth = abs(gwidth)
+
+				if uwidth == 0:
+					width = gwidth - offL - offR
+					height = gheight - offT - offB
+				
+				else:
+					width = uwidth
+					offL = 0
+					offR = gwidth - width
+					
+					height = gheight
+					offT = 0
+					offB = 0
+				
+				if self.gSideDirection == "+":
+					startX = float(edge3.CenterOfMass.x) + offL
+					startY = float(edge3.CenterOfMass.y)
+					startZ = float(edge1.CenterOfMass.z) + offB
+
+				if self.gSideDirection == "-":
+					startX = float(edge3.CenterOfMass.x) - offL - width
+					startY = float(edge3.CenterOfMass.y) - thick 
+					startZ = float(edge1.CenterOfMass.z) + offB
+
+			if self.gSideEdgePlane == "Y":
+				
+				gheight = abs(float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z))
+				gwidth = float(edge4.CenterOfMass.y) - float(edge3.CenterOfMass.y)
+				
+				if gwidth > 0:
+					self.gSideDirection = "+"
+				else:
+					self.gSideDirection = "-"
+					gwidth = abs(gwidth)
+
+				if uwidth == 0:
+					width = gwidth - offL - offR
+					height = gheight - offT - offB
+				
+				else:
+					width = uwidth
+					offL = 0
+					offR = gwidth - width
+					
+					height = gheight
+					offT = 0
+					offB = 0
+				
+				if self.gSideDirection == "+":
+					startX = float(edge3.CenterOfMass.x) - thick
+					startY = float(edge3.CenterOfMass.y) + offL
+					startZ = float(edge1.CenterOfMass.z) + offB
+
+				if self.gSideDirection == "-":
+					startX = float(edge3.CenterOfMass.x)
+					startY = float(edge3.CenterOfMass.y) - offL - width
+					startZ = float(edge1.CenterOfMass.z) + offB
+
+			# set values to text fields
+			self.oside2E.setText(str(width))
+			self.oside31E.setText(str(offL))
+			self.oside32E.setText(str(offR))
+			self.oside33E.setText(str(offT))
+			self.oside34E.setText(str(offB))
+			
+			self.oside51E.setText(str(startX))
+			self.oside52E.setText(str(startY))
+			self.oside53E.setText(str(startZ))
+			
+			self.oside6E.setText(str(width))
+			self.oside7E.setText(str(height))
+
+			
+			
+			'''
+			# face below
+			if float(face1.CenterOfMass.z) < float(edge1.CenterOfMass.z):
+				gheight = float(edge1.CenterOfMass.z) - float(face1.CenterOfMass.z)
+				sz = float(face1.CenterOfMass.z)
+				
+			# face above I hope so :-)
+			else: 
+				gheight = float(face1.CenterOfMass.z) - float(edge1.CenterOfMass.z)
+				sz = float(MagicPanels.touchTypo(edge1)[0].Z)
+				
+			gdepth = float(edge1.Length)
+			
+			# prefer closer point to start
+			if float(MagicPanels.touchTypo(edge1)[0].Y) < float(MagicPanels.touchTypo(edge1)[1].Y):
+				sx = float(MagicPanels.touchTypo(edge1)[0].X)
+				sy = float(MagicPanels.touchTypo(edge1)[0].Y)
+				
+			else:
+				sx = float(MagicPanels.touchTypo(edge1)[1].X)
+				sy = float(MagicPanels.touchTypo(edge1)[1].Y)
+				
+			
+			thick = float(self.ocs1E.text())
+			udepth = float(self.ocs2E.text())
+			
+			offTo = float(self.ocs31E.text())
+			offBo = float(self.ocs32E.text())
+			offFr = float(self.ocs33E.text())
+			offBa = float(self.ocs34E.text())
+			
+			height = gheight - offBo - offTo
+			
+			if udepth == 0:
+				depth = gdepth - offFr - offBa
+			else:
+				depth = udepth
+				offBa = 0
+				offFr = gdepth - depth
+			
+			width = float(edge2.CenterOfMass.x) - float(edge1.CenterOfMass.x)
+			startX = sx + (width / 2) - (thick / 2) 
+			startY = sy + offFr
+			startZ = sz + offBo
+			'''
+			
+		# ############################################################################
+		def calculateCenterSideFromGap(self):
 			
 			obj1 = False
 			obj2 = False
@@ -5082,7 +5577,7 @@ def showQtGUI():
 			depth = float(self.ocs7E.text())
 			thick = float(self.ocs1E.text())
 			
-			# Front outside
+			# Side center
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "SideCenter")
 			o1.Label = translate('magicStart', 'Side Center')
 			o1.Length = thick
@@ -6753,6 +7248,47 @@ def showQtGUI():
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
+
+		# ############################################################################
+		def createF48(self):
+	
+			p0X = float(self.oside51E.text())
+			p0Y = float(self.oside52E.text())
+			p0Z = float(self.oside53E.text())
+			
+			width = float(self.oside6E.text())
+			height = float(self.oside7E.text())
+			thick = float(self.oside1E.text())
+			
+			if self.gSideEdgePlane == "X":
+				
+				# Side
+				o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Side")
+				o1.Label = translate('magicStart', 'Side')
+				o1.Length = width
+				o1.Height = height
+				o1.Width = thick
+				pl = FreeCAD.Vector(p0X, p0Y, p0Z)
+				o1.Placement = FreeCAD.Placement(pl, self.gR)
+				o1.ViewObject.ShapeColor = self.gColor
+				
+				# recompute
+				FreeCAD.ActiveDocument.recompute()
+			
+			if self.gSideEdgePlane == "Y":
+				
+				# Side
+				o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Side")
+				o1.Label = translate('magicStart', 'Side')
+				o1.Length = thick
+				o1.Height = height
+				o1.Width = width
+				pl = FreeCAD.Vector(p0X, p0Y, p0Z)
+				o1.Placement = FreeCAD.Placement(pl, self.gR)
+				o1.ViewObject.ShapeColor = self.gColor
+				
+				# recompute
+				FreeCAD.ActiveDocument.recompute()
 
 	# ############################################################################
 	# final settings

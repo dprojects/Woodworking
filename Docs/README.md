@@ -176,6 +176,7 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 * Table ( coffee modern style )
 * Table ( kitchen decorated style )
 * Table ( coffee decorated style )
+* Side ( fit into gap )
 
 **Video tutorials:** 
 * [Furniture creation tool](https://www.youtube.com/watch?v=lHQ1J9Nahcs)
