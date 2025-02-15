@@ -70,6 +70,22 @@ def panelDefault(iType):
 def panelCopy(iType):
 	
 	try:
+		
+		sub = False
+		try:
+			obj = FreeCADGui.Selection.getSelection()[1]
+			sub = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+			
+			if sub.ShapeType == "Vertex":
+				[ X, Y, Z ] = [ float(sub.X), float(sub.Y), float(sub.Z) ]
+
+			elif sub.ShapeType == "Edge" or sub.ShapeType == "Face":
+				v = sub.CenterOfMass
+				[ X, Y, Z ] = [ float(v.x), float(v.y), float(v.z) ]
+			else:
+				skip = 1
+		except:
+			skip = 1
 
 		objRef = MagicPanels.getReference()
 		
@@ -83,13 +99,35 @@ def panelCopy(iType):
 		except:
 			skip = 1
 
+		if sub != False:
+			MagicPanels.setContainerPlacement(panel, X, Y, Z, 0, "clean")
+
 		FreeCAD.ActiveDocument.recompute()
 
 	except:
 
 		info = ""
 		
-		info += translate('panelCopy', '<b>To create copy of panel in exact direction, select valid panel first. </b><br><br><b>Note:</b> This tool copy selected panel into exact XYZ axis orientation. By default you can copy any panel based on Cube object. If you want to copy Pad, you need to have Constraints named "SizeX" and "SizeY" at the Sketch. For custom objects types you need to have Length, Width, Height properties at object (Group: "Base", Type: "App::PropertyLength"). The new panel will be created at (0, 0, 0) coordinate XYZ axis position. You can use mapPosition tool to move the new panel to the original panel position. To copy panel without changing orientation, you can use magicMove tool or CTRL-C and CTRL-V keys with arrows to move the copy.') 
+		info += translate('panelCopy', 'This tool creates a new Cube (Part::Box) object based on a selected object of any type. The newly created object will be consistent with the selected orientation relative to the XYZ planes visible on the icon. You have the following selections for creating a new object:')
+		info += '<ul>'
+		info += '<li>'
+		info += '<b>' + translate('panelCopy', 'object') + ': </b>'
+		info += translate('panelCopy', 'in this case the new object will be created at position (0, 0, 0) on the XYZ axis.')
+		info += '</li>'
+		info += '<li>'
+		info += '<b>' + translate('panelCopy', 'object and face') + ': </b>'
+		info += translate('panelCopy', 'to start in CenterOfMass of the face.')
+		info += '</li>'
+		info += '<li>'
+		info += '<b>' + translate('panelCopy', 'object and edge') + ': </b>'
+		info += translate('panelCopy', 'to start in CenterOfMass of the edge.')
+		info += '</li>'
+		info += '<li>'
+		info += '<b>' + translate('panelCopy', 'object and vertex') + ': </b>'
+		info += translate('panelCopy', 'to start in CenterOfMass of the vertex.')
+		info += '</li>'
+		info += '</ul>'
+		info += translate('panelCopy', '<b>Note:</b> If you want to copy Pad, you need to have Constraints named "SizeX" and "SizeY" at the Sketch. For custom objects types you need to have Length, Width, Height properties at object (Group: "Base", Type: "App::PropertyLength").') 
 
 		MagicPanels.showInfo("panelCopy"+iType, info)
 

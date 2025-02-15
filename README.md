@@ -72,6 +72,7 @@ I don't have `Windows` or `macOS`, so I am not able to test and certify this wor
 
 	**New significant changes since the last release 0.22 stable:**
 
+	* panelCopy feature improved to start at face, edge or vertex
 	* side fit into the gap, by width, by offsets, X or Y plane (magicStart)
 	* table solutions, kitchen or coffee, simple, modern and decorated style (magicStart)
 	* shelvesEqual tool to set equal space between existing shelves
