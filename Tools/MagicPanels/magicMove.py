@@ -15,7 +15,8 @@ getMenuIndex1 = {
 	translate('magicMove', 'Copy'): 1, 
 	translate('magicMove', 'Copy by Path'): 2, 
 	translate('magicMove', 'Mirror'): 3, 
-	translate('magicMove', 'Copy by Edge'): 4
+	translate('magicMove', 'Copy by Edge'): 4, 
+	translate('magicMove', 'Move to Equal'): 5 # no comma 
 }
 
 # add new items only at the end and change self.sCopyTypeList
@@ -23,7 +24,7 @@ getMenuIndex2 = {
 	translate('magicMove', 'copyObject'): 0, 
 	translate('magicMove', 'Clone'): 1, 
 	translate('magicMove', 'Link'): 2, 
-	translate('magicMove', 'auto'): 3
+	translate('magicMove', 'auto'): 3 # no comma 
 }
 
 # ############################################################################
@@ -59,6 +60,8 @@ def showQtGUI():
 		gNoPathSelection = translate('magicMove', 'select copy path')
 		gNoCopyByEdge = translate('magicMove', 'please select edge')
 		gNoMirrorPoint = translate('magicMove', 'edge, face or vertex')
+		gNoMEEdgeStart = translate('magicMove', 'select start edge')
+		gNoMEEdgeEnd = translate('magicMove', 'select end edge')
 		
 		gObjects = ""
 		
@@ -89,6 +92,13 @@ def showQtGUI():
 		gCopyPathRotation = dict() # last rotation
 		gCopyPathLast = dict() # last path position
 		gCopyPathInit = dict() # if init from 0 or last selected panel
+		
+		# move to equal start
+		gMTESObj = ""
+		gMTESEdge = ""
+		# move to equal end
+		gMTEEObj = ""
+		gMTEEEdge = ""
 		
 		# copy by edge
 		gCBEObj = ""
@@ -161,6 +171,7 @@ def showQtGUI():
 			# not write here, copy text from getMenuIndex1 to avoid typo
 			self.sModeList = (
 						translate('magicMove', 'Move'), # default
+						translate('magicMove', 'Move to Equal'), 
 						translate('magicMove', 'Copy'), 
 						translate('magicMove', 'Copy by Edge'), 
 						translate('magicMove', 'Copy by Path'), 
@@ -195,6 +206,7 @@ def showQtGUI():
 			# ############################################################################
 
 			rowcbe = row
+			rowmte = row
 			rowmc = row
 			rowpath = row + 70
 			
@@ -296,6 +308,99 @@ def showQtGUI():
 			rbs = 30
 			rbo = 5
 			rbc = rside - (3 * rbs) - (2 * rbo) + 10
+
+			# ############################################################################
+			# GUI for Move to Equal (hidden by default)
+			# ############################################################################
+			
+			rowmte += 40
+			
+			self.mte1B = QtGui.QPushButton(translate('magicMove', 'set'), self)
+			self.mte1B.clicked.connect(self.setMEEdgeStart)
+			self.mte1B.setFixedWidth(60)
+			self.mte1B.setFixedHeight(20)
+			self.mte1B.move(10, rowmte)
+			self.mte1B.hide()
+			
+			self.mte1L = QtGui.QLabel(self.gNoMEEdgeStart, self)
+			self.mte1L.setFixedWidth(rside - 80)
+			self.mte1L.move(80, rowmte+3)
+			self.mte1L.hide()
+
+			rowmte += 30
+			
+			self.mte2B = QtGui.QPushButton(translate('magicMove', 'set'), self)
+			self.mte2B.clicked.connect(self.setMEEdgeEnd)
+			self.mte2B.setFixedWidth(60)
+			self.mte2B.setFixedHeight(20)
+			self.mte2B.move(10, rowmte)
+			self.mte2B.hide()
+			
+			self.mte2L = QtGui.QLabel(self.gNoMEEdgeEnd, self)
+			self.mte2L.setFixedWidth(rside - 80)
+			self.mte2L.move(80, rowmte+3)
+			self.mte2L.hide()
+
+			rowmte += 30
+			
+			# button
+			self.mte12B = QtGui.QPushButton(translate('magicMove', 'set both edges'), self)
+			self.mte12B.clicked.connect(self.setMEEdge)
+			self.mte12B.setFixedWidth(rside)
+			self.mte12B.setFixedHeight(20)
+			self.mte12B.move(10, rowmte)
+
+			rowmte += 30
+			
+			# label
+			self.mte3L = QtGui.QLabel(translate('magicMove', 'Equal space along X:'), self)
+			self.mte3L.move(10, rowmte+3)
+
+			# button
+			self.mte3B = QtGui.QPushButton(translate('magicMove', 'move'), self)
+			self.mte3B.clicked.connect(self.createMoveToEqualX)
+			self.mte3B.setFixedWidth(btsize+20)
+			self.mte3B.move(cbt2-20, rowmte)
+			self.mte3B.setAutoRepeat(False)
+			
+			rowmte += 30
+
+			# label
+			self.mte4L = QtGui.QLabel(translate('magicMove', 'Equal space along Y:'), self)
+			self.mte4L.move(10, rowmte+3)
+
+			# button
+			self.mte4B = QtGui.QPushButton(translate('magicMove', 'move'), self)
+			self.mte4B.clicked.connect(self.createMoveToEqualY)
+			self.mte4B.setFixedWidth(btsize+20)
+			self.mte4B.move(cbt2-20, rowmte)
+			self.mte4B.setAutoRepeat(False)
+	
+			rowmte += 30
+			
+			# label
+			self.mte5L = QtGui.QLabel(translate('magicMove', 'Equal space along Z:'), self)
+			self.mte5L.move(10, rowmte+3)
+
+			# button
+			self.mte5B = QtGui.QPushButton(translate('magicMove', 'move'), self)
+			self.mte5B.clicked.connect(self.createMoveToEqualZ)
+			self.mte5B.setFixedWidth(btsize+20)
+			self.mte5B.move(cbt2-20, rowmte)
+			self.mte5B.setAutoRepeat(False)
+			
+			# hide by default
+			self.mte1L.hide()
+			self.mte1B.hide()
+			self.mte2L.hide()
+			self.mte2B.hide()
+			self.mte12B.hide()
+			self.mte3L.hide()
+			self.mte3B.hide()
+			self.mte4L.hide()
+			self.mte4B.hide()
+			self.mte5L.hide()
+			self.mte5B.hide()
 			
 			# ############################################################################
 			# GUI for Copy by Edge (hidden by default)
@@ -683,6 +788,127 @@ def showQtGUI():
 			FreeCAD.ActiveDocument.recompute()
 		
 		# ############################################################################
+		def setMEEdgeStart(self):
+			
+			try:
+				self.gMTESObj = FreeCADGui.Selection.getSelection()[0]
+				self.gMTESEdge = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				
+				if self.gMTESEdge.ShapeType != "Edge":
+					raise
+				
+				index = MagicPanels.getEdgeIndex(self.gMTESObj, self.gMTESEdge)
+				self.mte1L.setText(self.gMTESObj.Label + ", Edge" + str(index))
+				
+				FreeCADGui.Selection.clearSelection()
+
+			except:
+				self.mte1L.setText(self.gNoMEEdgeStart)
+		
+		# ############################################################################
+		def setMEEdgeEnd(self):
+			
+			try:
+				self.gMTEEObj = FreeCADGui.Selection.getSelection()[0]
+				self.gMTEEEdge = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				
+				if self.gMTEEEdge.ShapeType != "Edge":
+					raise
+				
+				index = MagicPanels.getEdgeIndex(self.gMTEEObj, self.gMTEEEdge)
+				self.mte2L.setText(self.gMTEEObj.Label + ", Edge" + str(index))
+				
+				FreeCADGui.Selection.clearSelection()
+
+			except:
+				self.mte2L.setText(self.gNoMEEdgeEnd)
+		
+		# ############################################################################
+		def setMEEdge(self):
+			
+			try:
+			
+				self.gMTESObj = FreeCADGui.Selection.getSelection()[0]
+				self.gMTESEdge = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				self.gMTEEObj = FreeCADGui.Selection.getSelection()[1]
+				self.gMTEEEdge = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+				
+				if self.gMTESEdge.ShapeType != "Edge":
+					raise
+				
+				if self.gMTEEEdge.ShapeType != "Edge":
+					raise
+				
+				index = MagicPanels.getEdgeIndex(self.gMTESObj, self.gMTESEdge)
+				self.mte1L.setText(self.gMTESObj.Label + ", Edge" + str(index))
+				
+				index = MagicPanels.getEdgeIndex(self.gMTEEObj, self.gMTEEEdge)
+				self.mte2L.setText(self.gMTEEObj.Label + ", Edge" + str(index))
+				
+				FreeCADGui.Selection.clearSelection()
+
+			except:
+				self.mte1L.setText(self.gNoMEEdgeStart)
+				self.mte2L.setText(self.gNoMEEdgeEnd)
+			
+		# ############################################################################
+		def createMoveToEqual(self, iType):
+			
+			num = len(self.gObjects)
+			thick = 0
+			
+			if iType == "X":
+				gap = abs(float(self.gMTEEEdge.CenterOfMass.x) - float(self.gMTESEdge.CenterOfMass.x))
+				start = float(self.gMTESEdge.CenterOfMass.x)
+			
+			if iType == "Y":
+				gap = abs(float(self.gMTEEEdge.CenterOfMass.y) - float(self.gMTESEdge.CenterOfMass.y))
+				start = float(self.gMTESEdge.CenterOfMass.y)
+			
+			if iType == "Z":
+				gap = abs(float(self.gMTEEEdge.CenterOfMass.z) - float(self.gMTESEdge.CenterOfMass.z))
+				start = float(self.gMTESEdge.CenterOfMass.z)
+	
+			for o in self.gObjects:
+				
+				[ sizeX, sizeY, sizeZ ] = MagicPanels.getSizesFromVertices(o)
+				
+				if iType == "X":
+					thick = thick + sizeX
+				
+				if iType == "Y":
+					thick = thick + sizeY
+				
+				if iType == "Z":
+					thick = thick + sizeZ
+
+			offset = (gap - thick) / (num + 1)
+			
+			i = 0
+			for o in self.gObjects:
+				
+				[ sizeX, sizeY, sizeZ ] = MagicPanels.getSizesFromVertices(o)
+				
+				oRef = MagicPanels.getReference(o)
+				toMove = MagicPanels.getObjectToMove(oRef)
+				[ X, Y, Z, R ] = MagicPanels.getContainerPlacement(toMove, "clean")
+
+				if iType == "X":
+					X = start + ((i + 1) * offset) + (i * sizeX)
+				
+				if iType == "Y":
+					Y = start + ((i + 1) * offset) + (i * sizeY)
+				
+				if iType == "Z":
+					Z = start + ((i + 1) * offset) + (i * sizeZ)
+				
+				MagicPanels.setContainerPlacement(toMove, X, Y, Z, 0, "clean")
+				i = i + 1
+
+			FreeCAD.ActiveDocument.recompute()
+				
+		
+		# ############################################################################
 		def createCopy(self, iType):
 			
 			for o in self.gObjects:
@@ -707,6 +933,7 @@ def showQtGUI():
 					self.gContainerRef = container
 					self.gNewContainerON = False
 					self.gNewContainerB1.setDisabled(False)
+					MagicPanels.moveToParent([ container ], o)
 				
 				# move copy to container if there is current container
 				else:
@@ -731,10 +958,6 @@ def showQtGUI():
 				if iType == "Zm":
 					z = z - self.gMaxZ - self.gStep
 
-				#if not o.isDerivedFrom("Part::Box"):
-				#	if self.gCopyType == 1 or self.gCopyType == 3:
-				#		[ x, y, z ] = MagicPanels.adjustClonePosition(o, x, y, z)
-
 				MagicPanels.setContainerPlacement(copy, x, y, z, 0, "clean")
 				FreeCAD.ActiveDocument.recompute()
 				
@@ -747,6 +970,9 @@ def showQtGUI():
 					self.gLCPY[key], 
 					self.gLCPZ[key], 
 					self.gLCPR[key] ] = MagicPanels.getContainerPlacement(copy, "clean")
+				
+				if self.gContainerRef == "root":
+					MagicPanels.moveToParent([ copy ], o)
 
 		# ############################################################################
 		def setCopyByEdge(self):
@@ -839,6 +1065,8 @@ def showQtGUI():
 					MagicPanels.copyColors(o, copy)
 				except:
 					skip = 1
+
+				MagicPanels.moveToParent([ copy ], o)
 
 			FreeCAD.ActiveDocument.recompute()
 		
@@ -934,6 +1162,7 @@ def showQtGUI():
 					self.gContainerRef = container
 					self.gNewContainerON = False
 					self.gNewContainerB1.setDisabled(False)
+					MagicPanels.moveToParent([ container ], o)
 				
 				# move copy to container if there is current container
 				else:
@@ -969,6 +1198,9 @@ def showQtGUI():
 				step = int(float(self.pathE4.text()))
 				self.gCopyPathLast[key] = int(self.gCopyPathLast[key] + step)
 				self.gCopyPathInit[key] = True
+
+				if self.gContainerRef == "root":
+					MagicPanels.moveToParent([ copy ], o)
 
 		# ############################################################################
 		def setMirrorPoint(self):
@@ -1083,6 +1315,19 @@ def showQtGUI():
 			self.gModeType = selectedIndex
 
 			# first hide all
+			
+			self.mte1L.hide()
+			self.mte1B.hide()
+			self.mte2L.hide()
+			self.mte2B.hide()
+			self.mte12B.hide()
+			self.mte3L.hide()
+			self.mte3B.hide()
+			self.mte4L.hide()
+			self.mte4B.hide()
+			self.mte5L.hide()
+			self.mte5B.hide()
+			
 			self.cbe1L.hide()
 			self.cbe1B.hide()
 			self.cbe2L.hide()
@@ -1247,7 +1492,23 @@ def showQtGUI():
 				self.cbe5E.show()
 				
 				self.sCopyType.show()
-				
+			
+			
+			# Move to Equal
+			if selectedIndex == 5:
+
+				self.mte1L.show()
+				self.mte1B.show()
+				self.mte2L.show()
+				self.mte2B.show()
+				self.mte12B.show()
+				self.mte3L.show()
+				self.mte3B.show()
+				self.mte4L.show()
+				self.mte4B.show()
+				self.mte5L.show()
+				self.mte5B.show()
+			
 		# ############################################################################
 		def setCopyType(self, selectedText):
 			self.gCopyType = getMenuIndex2[selectedText]
@@ -1338,6 +1599,16 @@ def showQtGUI():
 
 			except:
 				self.s1S.setText(self.gNoSelection)
+
+		# ############################################################################
+		def createMoveToEqualX(self):
+			self.createMoveToEqual("X")
+			
+		def createMoveToEqualY(self):
+			self.createMoveToEqual("Y")
+			
+		def createMoveToEqualZ(self):
+			self.createMoveToEqual("Z")
 
 		# ############################################################################
 		def createCopyByEdgeX(self):

@@ -267,6 +267,11 @@ This tool allows to preview panel before creation. It allows to see panel at sin
   * buttons: `X-`, `X+`, `Y-`, `Y+`, `Z-`, `Z+` move object into the chosen axis direction, there is auto-repeat so you can hold the button to move objects more quickly.
   * `Move step` if the object is recognized the `Move step` will be set by default with selected object thickness. The offset is calculated from objects anchors, usually left bottom corner (vertex).
 
+* **Move to Equal:** In this mode you can set equal space between objects. This feature works in the same way as [shelvesEqual](#shelvesequal) but here you can choose the coordinate axis.
+  * `set` allows to set edge as start or end reference point. Sometimes if the access to edge require hide object it can be more useful to set one by one or if you want to update only single edge.
+  * `set both edges` allows to set both edge at once as start and end reference point. This is much quicker way.
+  * `move` set equal space between all selected objects along X, Y or Z coordinate axis. 
+  
 * **Copy:** In this mode you can copy any object with custom offset. For example you can quickly create shelves with equal space or garden floor from small panels.
   * `auto` by default, if the object is `Cube` the `copyObject` will be used, otherwise `Clone` will be created.
   * `copyObject` good for simple objects like `Cube`.
@@ -309,6 +314,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 **Video tutorials:** 
 * [How to use magicMove](https://www.youtube.com/watch?v=DpU2zlckv88)
+* [How to set equal space between objects](https://www.youtube.com/watch?v=4EfNV-ur6Rw)
 * [How to copy part of the furniture](https://www.youtube.com/watch?v=oxNiwtZV-Uc)
 * [How to handle dimension changes](https://www.youtube.com/watch?v=HED1-BH66BU)
 
