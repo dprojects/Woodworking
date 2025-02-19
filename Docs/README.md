@@ -953,8 +953,12 @@ This tool allows you to quickly measure objects. All measurements are recognized
   * `Center cross:` buttons `on`, `off` turn on and off the center cross at the screen.
   * `keep custom cross settings` allows to store the custom cross setting after this tool exit.
 
+**Known issues:** Sometimes after adding glue it doesn't work, FreeCAD shows a corrupted file in the tree. However, the expressions set by magicGlue tool are correct, this is because FreeCAD expression parser works when opening the file and has a very basic parsing solution, magicGlue skills are too advanced for this parser.
+**Workaround:** To make it work you can reopen the file and move the source element, the errors should disappear.
+
 **Video tutorials:** 
 * [How to make parametric furniture quickly](https://www.youtube.com/watch?v=z2rpVoLgqWI)
+* [Table with adjustable height](https://www.youtube.com/watch?v=JhbRkCsrQWg)
 
 ### sketch2clone
 

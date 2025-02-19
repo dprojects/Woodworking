@@ -139,8 +139,7 @@ The Woodworking workbench also has an API for developers. This library contains 
 
 # Contact
 
-* For questions, comments, feature requests, improvements, please open issue at: [issue tracker](https://github.com/dprojects/Woodworking/issues)
-* Also we can discuss at: [FreeCAD forum thread](https://forum.freecadweb.org/viewtopic.php?f=3&t=8247)
+* For questions, feature requests, please open issue at: [github.com/dprojects/Woodworking/issues](https://github.com/dprojects/Woodworking/issues)
 
 |   |   |
 |---|---|

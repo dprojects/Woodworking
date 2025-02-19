@@ -33,34 +33,44 @@ getMenuIndex = {
 	translate('magicStart', 'Foot ( more stable )'): 18, 
 	translate('magicStart', 'Foot ( decorated )'): 19, 
 	translate('magicStart', 'Foot ( chair style )'): 20, 
-	translate('magicStart', 'Drawer with front outside ( fit into the shelf gap )'): 21, 
-	translate('magicStart', 'Drawer with front inside ( fit into the shelf gap )'): 22, 
-	translate('magicStart', 'Front outside ( fit into gap )'): 23, 
-	translate('magicStart', 'Front inside ( fit into gap )'): 24, 
-	translate('magicStart', 'Shelf ( fit into gap )'): 25, 
-	translate('magicStart', 'Center side ( fit into gap )'): 26, 
+	translate('magicStart', 'Drawer with front outside'): 21, 
+	translate('magicStart', 'Drawer with front inside'): 22, 
+	translate('magicStart', 'Front outside'): 23, 
+	translate('magicStart', 'Front inside'): 24, 
+	translate('magicStart', 'Shelf'): 25, 
+	translate('magicStart', 'Center side'): 26, 
 	translate('magicStart', 'Simple storage ( front outside, back HDF )'): 27, 
 	translate('magicStart', 'Simple storage ( front inside, back full )'): 28, 
 	translate('magicStart', 'Simple storage ( front inside, back HDF )'): 29, 
-	translate('magicStart', 'Drawer series with front outside ( fit into the shelf gap )'): 30, 
-	translate('magicStart', 'Drawer series with front inside ( fit into the shelf gap )'): 31, 
-	translate('magicStart', 'Face Frame outside ( frame around, fit into gap )'): 32, 
-	translate('magicStart', 'Face Frame outside ( frame with center, fit into gap )'): 33, 
-	translate('magicStart', 'Face Frame outside ( frame for custom changes, fit into gap )'): 34, 
+	translate('magicStart', 'Drawer series with front outside'): 30, 
+	translate('magicStart', 'Drawer series with front inside'): 31, 
+	translate('magicStart', 'Face Frame outside ( frame around )'): 32, 
+	translate('magicStart', 'Face Frame outside ( frame with center )'): 33, 
+	translate('magicStart', 'Face Frame outside ( frame for custom changes )'): 34, 
 	translate('magicStart', 'Simple bookcase ( face frame, no front, back HDF )'): 35, 
 	translate('magicStart', 'Simple storage ( face frame, no front, back HDF )'): 36, 
-	translate('magicStart', 'Front outside with glass ( simple frame, fit into gap )'): 37, 
-	translate('magicStart', 'Front outside with glass ( frame with decoration, fit into gap )'): 38, 
-	translate('magicStart', 'Front inside with glass ( simple frame, fit into gap )'): 39, 
-	translate('magicStart', 'Front inside with glass ( frame with decoration, fit into gap )'): 40, 
-	translate('magicStart', 'Shelf series with equal space ( fit into gap )'): 41, 
+	translate('magicStart', 'Front outside with glass ( simple frame )'): 37, 
+	translate('magicStart', 'Front outside with glass ( frame with decoration )'): 38, 
+	translate('magicStart', 'Front inside with glass ( simple frame )'): 39, 
+	translate('magicStart', 'Front inside with glass ( frame with decoration )'): 40, 
+	translate('magicStart', 'Shelf series with equal space'): 41, 
 	translate('magicStart', 'Table ( kitchen simple style )'): 42, 
 	translate('magicStart', 'Table ( coffee simple style )'): 43, 
 	translate('magicStart', 'Table ( kitchen modern style )'): 44, 
 	translate('magicStart', 'Table ( coffee modern style )'): 45, 
 	translate('magicStart', 'Table ( kitchen decorated style )'): 46, 
 	translate('magicStart', 'Table ( coffee decorated style )'): 47, 
-	translate('magicStart', 'Side ( fit into gap )'): 48 # no comma 
+	translate('magicStart', 'Side'): 48, 
+	translate('magicStart', 'Biscuits 4x16x48 mm ( import parametric )'): 49, 
+	translate('magicStart', 'Biscuits 4x21x54 mm ( import parametric )'): 50, 
+	translate('magicStart', 'Biscuits 4x24x57 mm ( import parametric )'): 51, 
+	translate('magicStart', 'Pocket screw 4x40 mm ( import parametric )'): 52, 
+	translate('magicStart', 'Angle 30x30x25 mm ( import parametric )'): 53, 
+	translate('magicStart', 'Angle 80x80x20 mm ( import parametric )'): 54, 
+	translate('magicStart', 'Front right (decoration, import parametric )'): 55, 
+	translate('magicStart', 'Front left (decoration, import parametric )'): 56, 
+	translate('magicStart', 'Top (decoration, import parametric )'): 57, 
+	translate('magicStart', 'Drawer (decoration, import parametric )'): 58 # no comma 
 }
 
 # ############################################################################
@@ -96,6 +106,419 @@ def showQtGUI():
 		gPH = 0
 		
 		# ############################################################################
+		# help info
+		# ############################################################################
+
+		# ############################################################################
+		gHelpInfoF0 = "" 
+		gHelpInfoF0 += translate('magicStart', 'To pre-calculate the starting point for creating the furniture and its dimensions, select one of the options 1, 2, 3, or 4, fill in the "Wood thickness" and, if necessary, "Offset XYZ" fields, if the furniture is to have an offset relative to the selected edge, vertex or plane, and then press the "calculate furniture" button.') + '<br><br>'
+		gHelpInfoF0 += '<ul>'
+		gHelpInfoF0 += '<li><b>'
+		gHelpInfoF0 += translate('magicStart', 'X edge') + '</b>: '
+		gHelpInfoF0 += translate('magicStart', 'means any edge along the X coordinate axis. In this case, the starting point will be the vertex of the edge and the width of the furniture will be the length of the edge.')
+		gHelpInfoF0 += '</li>'
+		gHelpInfoF0 += '<li><b>'
+		gHelpInfoF0 += translate('magicStart', 'XY face') + '</b>: '
+		gHelpInfoF0 += translate('magicStart', 'means the plane on the object along the X and Y coordinate axes, i.e. horizontal, such as the top of the object, to create the next furniture module on top. In this case, the width of the furniture and its depth will be calculated from the selected plane so that the furniture is in line with the previous identical module.')
+		gHelpInfoF0 += '</li>'
+		gHelpInfoF0 += '<li><b>'
+		gHelpInfoF0 += translate('magicStart', 'Vertex') + '</b>: '
+		gHelpInfoF0 += translate('magicStart', 'means selecting any vertex of the object. In this case, only the starting point for creating the furniture will be calculated.')
+		gHelpInfoF0 += '</li>'
+		gHelpInfoF0 += '</ul>'
+		gHelpInfoF0 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
+		
+		# ############################################################################
+		gHelpInfoF16 = "" 
+		gHelpInfoF16 += '<ul>'
+		gHelpInfoF16 += '<li><b>'
+		gHelpInfoF16 += translate('magicStart', 'Furniture width') + '</b>: '
+		gHelpInfoF16 += translate('magicStart', 'means the width of the furniture for which the base is to be created. This means the size of the furniture in the direction of the X coordinate axis.')
+		gHelpInfoF16 += '</li>'
+		gHelpInfoF16 += '<li><b>'
+		gHelpInfoF16 += translate('magicStart', 'Furniture depth') + '</b>: '
+		gHelpInfoF16 += translate('magicStart', 'means the depth of the furniture for which the base is to be created. This means the size of the furniture in the direction of the Y coordinate axis.')
+		gHelpInfoF16 += '</li>'
+		gHelpInfoF16 += '<li><b>'
+		gHelpInfoF16 += translate('magicStart', 'Foot height') + '</b>: '
+		gHelpInfoF16 += translate('magicStart', 'means the height of the base to be created, i.e. the size of the base in the direction of the Z coordinate axis.')
+		gHelpInfoF16 += '</li>'
+		gHelpInfoF16 += '<li><b>'
+		gHelpInfoF16 += translate('magicStart', 'Foot thickness') + '</b>: '
+		gHelpInfoF16 += translate('magicStart', 'means the thickness of the elements from which the base will be created, i.e. the thickness of the wood.')
+		gHelpInfoF16 += '</li>'
+		gHelpInfoF16 += '<li><b>'
+		gHelpInfoF16 += translate('magicStart', 'Front offset') + '</b>: '
+		gHelpInfoF16 += translate('magicStart', 'means the distance from the front, i.e. in the direction of the Y coordinate axis.')
+		gHelpInfoF16 += '</li>'
+		gHelpInfoF16 += '</ul>'
+		gHelpInfoF16 += translate('magicStart', 'The foot will be created at the starting position of the XYZ coordinate axis taking into account the height of the foot.')
+
+		# ############################################################################
+		gHelpInfoF21 = "" 
+		gHelpInfoF21 += '<ul>'
+		gHelpInfoF21 += '<li><b>'
+		gHelpInfoF21 += translate('magicStart', 'top edge') + '</b>: '
+		gHelpInfoF21 += translate('magicStart', 'The drawer will be created from the 0 position on the Z coordinate axis to the position of the selected top edge. The width of the drawer will be taken from the selected top edge size. The depth of the drawer will be taken from the object from the selected top edge. This is a kind of "quick shot" to create the drawer as quickly as possible without a long selection.')
+		gHelpInfoF21 += '</li>'
+		gHelpInfoF21 += '<li><b>'
+		gHelpInfoF21 += translate('magicStart', 'top edge + back face') + '</b>: '
+		gHelpInfoF21 += translate('magicStart', 'This is the same as above, but here selecting the back face allows you to set the depth in a more detailed way.')
+		gHelpInfoF21 += '</li>'
+		gHelpInfoF21 += '<li><b>'
+		gHelpInfoF21 += translate('magicStart', 'bottom edge + top edge') + '</b>: '
+		gHelpInfoF21 += translate('magicStart', 'The drawer will be created from the position of the first selected bottom edge to the position of the second selected top edge. The width and depth of the drawer will be taken from the object with the shortest edge. This is a kind of "quick shot" to create the drawer quickly without a long selection.')
+		gHelpInfoF21 += '</li>'
+		gHelpInfoF21 += '<li><b>'
+		gHelpInfoF21 += translate('magicStart', 'bottom edge + top edge + back face') + '</b>: '
+		gHelpInfoF21 += translate('magicStart', 'This is the same as above, but here selecting the back face allows you to set the depth in a more detailed way.')
+		gHelpInfoF21 += '</li>'
+		gHelpInfoF21 += '<li><b>'
+		gHelpInfoF21 += translate('magicStart', 'bottom edge + top edge + left edge + right edge + back face') + '</b>: '
+		gHelpInfoF21 += translate('magicStart', 'The drawer will be created from the position of the first selected bottom edge to the position of the second selected top edge. The width of the drawer will be obtained from the difference of the third and fourth selected edges. The depth of the drawer will be obtained from the selected back face. There are many more objects to select here, but this is the most precise version of determining the size of the drawer. So if you have trouble with any of the above, I recommend trying this method. Also this method solves the problem with longest bottom and top edges.')
+		gHelpInfoF21 += '</li>'
+		gHelpInfoF21 += '</ul>'
+		gHelpInfoF21 += translate('magicStart', 'The edges can be in line with the X or Y coordinate axis, so the drawer can be created on all four sides of the furniture.')
+
+		# ############################################################################
+		gHelpInfoF23 = "" 
+		gHelpInfoF23 += translate('magicStart', 'To initially calculate the starting point of the front and its dimensions, make selection, fill in the appropriate fields and click the "calculate front" button.')
+		gHelpInfoF23 += '<ul>'
+		gHelpInfoF23 += '<li><b>'
+		gHelpInfoF23 += translate('magicStart', 'X bottom edge') + '</b>: '
+		gHelpInfoF23 += translate('magicStart', 'means the inner bottom edge of the shelf or floor of the furniture along the X coordinate axis.')
+		gHelpInfoF23 += '</li>'
+		gHelpInfoF23 += '<li><b>'
+		gHelpInfoF23 += translate('magicStart', 'X top edge') + '</b>: '
+		gHelpInfoF23 += translate('magicStart', 'means the inner top edge of the shelf or top of the furniture along the X coordinate axis.')
+		gHelpInfoF23 += '</li>'
+		gHelpInfoF23 += '<li><b>'
+		gHelpInfoF23 += translate('magicStart', 'Z left edge') + '</b>: '
+		gHelpInfoF23 += translate('magicStart', 'means the inner left edge of the side of the furniture along the Z coordinate axis.')
+		gHelpInfoF23 += '</li>'
+		gHelpInfoF23 += '<li><b>'
+		gHelpInfoF23 += translate('magicStart', 'Z right edge') + '</b>: '
+		gHelpInfoF23 += translate('magicStart', 'means the inner right edge of the side of the furniture along the Z coordinate axis.')
+		gHelpInfoF23 += '</li>'
+		gHelpInfoF23 += '<li><b>'
+		gHelpInfoF23 += translate('magicStart', 'Front thickness') + '</b>: '
+		gHelpInfoF23 += translate('magicStart', 'means the thickness of the front, in line with the Y coordinate axis.')
+		gHelpInfoF23 += '</li>'
+		gHelpInfoF23 += '<li><b>'
+		gHelpInfoF23 += translate('magicStart', 'Front offsets') + '</b>: '
+		gHelpInfoF23 += translate('magicStart', 'in the case of an external front, it means how much the front will overlap the furniture, and in the case of an internal front, it means how big the gap will be between the front and the remaining parts of the furniture.')
+		gHelpInfoF23 += '</li>'
+		gHelpInfoF23 += '</ul>'
+		gHelpInfoF23 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
+
+		# ############################################################################
+		gHelpInfoF25 = "" 
+		gHelpInfoF25 += translate('magicStart', 'To initially calculate the starting point of the shelf and its dimensions, make selection, fill in the appropriate fields and click the "calculate shelf" button. To calculate a shelf, you need to select the two side edges of the space where the shelf is to be placed and the back face of the gap to determine the shelf depth. There are two ways to create a shelf:')
+		gHelpInfoF25 += '<ul>'
+		gHelpInfoF25 += '<li><b>'
+		gHelpInfoF25 += translate('magicStart', 'Method 1') + '</b>: '
+		gHelpInfoF25 += translate('magicStart', 'By setting the shelf depth, then the front gap will be calculated as the difference between the free space and the desired shelf depth.')
+		gHelpInfoF25 += '</li>'
+		gHelpInfoF25 += '<li><b>'
+		gHelpInfoF25 += translate('magicStart', 'Method 2') + '</b>: '
+		gHelpInfoF25 += translate('magicStart', 'By entering a value of 0 as the depth and setting the offsets for the shelf. Then the depth and width of the shelf will be calculated taking into account the given offsets.')
+		gHelpInfoF25 += '</li>'
+		gHelpInfoF25 += '</ul>'
+		gHelpInfoF25 += translate('magicStart', 'Meaning:')
+		gHelpInfoF25 += '<ul>'
+		gHelpInfoF25 += '<li><b>'
+		gHelpInfoF25 += translate('magicStart', 'Z left edge') + '</b>: '
+		gHelpInfoF25 += translate('magicStart', 'means the left inner edge of the side of the furniture in line with the Z coordinate axis, i.e. vertical.')
+		gHelpInfoF25 += '</li>'
+		gHelpInfoF25 += '<li><b>'
+		gHelpInfoF25 += translate('magicStart', 'Z right edge') + '</b>: '
+		gHelpInfoF25 += translate('magicStart', 'means the right inner edge of the side of the furniture in line with the Z coordinate axis, i.e. vertical.')
+		gHelpInfoF25 += '</li>'
+		gHelpInfoF25 += '<li><b>'
+		gHelpInfoF25 += translate('magicStart', 'back face') + '</b>: '
+		gHelpInfoF25 += translate('magicStart', 'means the inner plane of the back wall of the furniture. The plane should be in line with the X and Z coordinate axes.')
+		gHelpInfoF25 += '</li>'
+		gHelpInfoF25 += '<li><b>'
+		gHelpInfoF25 += translate('magicStart', 'Shelf thickness') + '</b>: '
+		gHelpInfoF25 += translate('magicStart', 'means the thickness of the shelf, i.e. in the direction of the Z coordinate axis.')
+		gHelpInfoF25 += '</li>'
+		gHelpInfoF25 += '</ul>'
+		gHelpInfoF25 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
+
+		# ############################################################################
+		gHelpInfoF26 = "" 
+		gHelpInfoF26 += translate('magicStart', 'To initially calculate the starting point of the center side and its dimensions, make selection, fill in the appropriate fields and click the "calculate center side" button. There are two ways of selection:')
+		gHelpInfoF26 += '<ul>'
+		gHelpInfoF26 += '<li><b>'
+		gHelpInfoF26 += translate('magicStart', 'Method 1') + '</b>: '
+		gHelpInfoF26 += translate('magicStart', 'X top left edge + X top right edge + XY bottom face')
+		gHelpInfoF26 += '</li>'
+		gHelpInfoF26 += '<li><b>'
+		gHelpInfoF26 += translate('magicStart', 'Method 2') + '</b>: '
+		gHelpInfoF26 += translate('magicStart', 'X bottom left edge + X bottom right edge + XY top face')
+		gHelpInfoF26 += '</li>'
+		gHelpInfoF26 += '</ul>'
+		gHelpInfoF26 += translate('magicStart', 'There are two ways to create a center side:')
+		gHelpInfoF26 += '<ul>'
+		gHelpInfoF26 += '<li><b>'
+		gHelpInfoF26 += translate('magicStart', 'Method 1') + '</b>: '
+		gHelpInfoF26 += translate('magicStart', 'By setting the side depth, then the front gap will be calculated as the difference between the free space and the desired side depth.')
+		gHelpInfoF26 += '</li>'
+		gHelpInfoF26 += '<li><b>'
+		gHelpInfoF26 += translate('magicStart', 'Method 2') + '</b>: '
+		gHelpInfoF26 += translate('magicStart', 'By entering a value of 0 as the depth and setting the offsets for the side. Then the depth and height of the center side will be calculated taking into account the given offsets.')
+		gHelpInfoF26 += '</li>'
+		gHelpInfoF26 += '</ul>'
+		gHelpInfoF26 += translate('magicStart', 'Meaning:')
+		gHelpInfoF26 += '<ul>'
+		gHelpInfoF26 += '<li><b>'
+		gHelpInfoF26 += translate('magicStart', 'Y left edge') + '</b>: '
+		gHelpInfoF26 += translate('magicStart', 'means the left inner edge of the side of the furniture in line with the Y coordinate axis.')
+		gHelpInfoF26 += '</li>'
+		gHelpInfoF26 += '<li><b>'
+		gHelpInfoF26 += translate('magicStart', 'Y right edge') + '</b>: '
+		gHelpInfoF26 += translate('magicStart', 'means the right inner edge of the side of the furniture in line with the Y coordinate axis.')
+		gHelpInfoF26 += '</li>'
+		gHelpInfoF26 += '<li><b>'
+		gHelpInfoF26 += translate('magicStart', 'XY face') + '</b>: '
+		gHelpInfoF26 += translate('magicStart', 'means the inner plane of the gap, for example top or bottom surface of the shelf. The plane should be in line with the X and Y coordinate axes.')
+		gHelpInfoF26 += '</li>'
+		gHelpInfoF26 += '<li><b>'
+		gHelpInfoF26 += translate('magicStart', 'Side thickness') + '</b>: '
+		gHelpInfoF26 += translate('magicStart', 'means the thickness of the center side, i.e. in the direction of the X coordinate axis.')
+		gHelpInfoF26 += '</li>'
+		gHelpInfoF26 += '</ul>'
+		gHelpInfoF26 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
+
+		# ############################################################################
+		gHelpInfoF30 = "" 
+		gHelpInfoF30 += translate('magicStart', 'To pre-calculate the starting point for series of drawers and its dimensions, make selection, fill desired fields and press the "calculate gaps" button.')
+		gHelpInfoF30 += '<ul>'
+		gHelpInfoF30 += '<li><b>'
+		gHelpInfoF30 += translate('magicStart', 'X bottom edge') + '</b>: '
+		gHelpInfoF30 += translate('magicStart', 'means the bottom edge in line with the X coordinate axis of the free space where you want to create a series of drawers, i.e. the horizontal edge of the bottom shelf.')
+		gHelpInfoF30 += '</li>'
+		gHelpInfoF30 += '<li><b>'
+		gHelpInfoF30 += translate('magicStart', 'X top edge') + '</b>: '
+		gHelpInfoF30 += translate('magicStart', 'means the top edge in line with the X coordinate axis of the free space where you want to create a series of drawers, i.e. the horizontal edge of the top shelf.')
+		gHelpInfoF30 += '</li>'
+		gHelpInfoF30 += '<li><b>'
+		gHelpInfoF30 += translate('magicStart', 'Z left edge') + '</b>: '
+		gHelpInfoF30 += translate('magicStart', 'means the left edge in line with the Z coordinate axis of the free space where you want to create a series of drawers, i.e. the vertical edge of the left side.')
+		gHelpInfoF30 += '</li>'
+		gHelpInfoF30 += '<li><b>'
+		gHelpInfoF30 += translate('magicStart', 'Z right edge') + '</b>: '
+		gHelpInfoF30 += translate('magicStart', 'means the right edge in line with the Z coordinate axis of the free space where you want to create a series of drawers, i.e. the vertical edge of the right side.')
+		gHelpInfoF30 += '</li>'
+		gHelpInfoF30 += '<li><b>'
+		gHelpInfoF30 += translate('magicStart', 'back face') + '</b>: '
+		gHelpInfoF30 += translate('magicStart', 'means the inner plane of the back wall of the furniture. The plane should be in line with the X and Z coordinate axes, i.e. vertical faced to the front.')
+		gHelpInfoF30 += '</li>'
+		gHelpInfoF30 += '<li><b>'
+		gHelpInfoF30 += translate('magicStart', 'Wood thickness') + '</b>: '
+		gHelpInfoF30 += translate('magicStart', 'means the thickness of the wood from which the walls and the front of the drawer will be made.')
+		gHelpInfoF30 += '</li>'
+		gHelpInfoF30 += '<li><b>'
+		gHelpInfoF30 += translate('magicStart', 'Space between drawers') + '</b>: '
+		gHelpInfoF30 += translate('magicStart', 'this is additional space between drawer fronts and drawers so that drawer fronts do not rub against each other.')
+		gHelpInfoF30 += '</li>'
+		gHelpInfoF30 += '<li><b>'
+		gHelpInfoF30 += translate('magicStart', 'Drawer system offsets') + '</b>: '
+		gHelpInfoF30 += translate('magicStart', 'these are the distances that must be taken into account when installing the drawer system rail. The most important is "Sides" for side guides.')
+		gHelpInfoF30 += '</li>'
+		gHelpInfoF30 += '</ul>'
+		gHelpInfoF30 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
+
+		# ############################################################################
+		gHelpInfoF32 = "" 
+		gHelpInfoF32 += translate('magicStart', 'To pre-calculate the starting point for Face Frame and its dimensions, make selection, fill desired fields and press the "calculate Face Frame" button.')
+		gHelpInfoF32 += '<ul>'
+		gHelpInfoF32 += '<li><b>'
+		gHelpInfoF32 += translate('magicStart', 'X bottom edge') + '</b>: '
+		gHelpInfoF32 += translate('magicStart', 'means the inner edge of the furniture floor in line with the X coordinate axis.')
+		gHelpInfoF32 += '</li>'
+		gHelpInfoF32 += '<li><b>'
+		gHelpInfoF32 += translate('magicStart', 'X top edge') + '</b>: '
+		gHelpInfoF32 += translate('magicStart', 'means the inner edge of the top of the furniture in line with the X coordinate axis.')
+		gHelpInfoF32 += '</li>'
+		gHelpInfoF32 += '<li><b>'
+		gHelpInfoF32 += translate('magicStart', 'Z left edge') + '</b>: '
+		gHelpInfoF32 += translate('magicStart', 'means the inner edge of the left side of the furniture in line with the Z coordinate axis.')
+		gHelpInfoF32 += '</li>'
+		gHelpInfoF32 += '<li><b>'
+		gHelpInfoF32 += translate('magicStart', 'Z right edge') + '</b>: '
+		gHelpInfoF32 += translate('magicStart', 'means the inner edge of the right side of the furniture in line with the Z coordinate axis.')
+		gHelpInfoF32 += '</li>'
+		gHelpInfoF32 += '<li><b>'
+		gHelpInfoF32 += translate('magicStart', 'Single bar width') + '</b>: '
+		gHelpInfoF32 += translate('magicStart', 'means the width of the beam from which the Face Frame will be built, in line with the X coordinate axis.')
+		gHelpInfoF32 += '</li>'
+		gHelpInfoF32 += '<li><b>'
+		gHelpInfoF32 += translate('magicStart', 'Single bar thickness') + '</b>: '
+		gHelpInfoF32 += translate('magicStart', 'means the thickness of the beam from which the Face Frame will be built, in line with the Y coordinate axis.')
+		gHelpInfoF32 += '</li>'
+		gHelpInfoF32 += '<li><b>'
+		gHelpInfoF32 += translate('magicStart', 'Lip outside') + '</b>: '
+		gHelpInfoF32 += translate('magicStart', 'means how much the Face Frame will protrude outside the furniture.')
+		gHelpInfoF32 += '</li>'
+		gHelpInfoF32 += '<li><b>'
+		gHelpInfoF32 += translate('magicStart', 'Delve into furniture') + '</b>: '
+		gHelpInfoF32 += translate('magicStart', 'means sinking the Face Frame towards the furniture, i.e. in the direction of the Y coordinate axis. This allows you to take into account a possible groove, thanks to which the Face Frame can be placed on the edges of the furniture, which will stiffen the entire structure of the furniture.')
+		gHelpInfoF32 += '</li>'
+		gHelpInfoF32 += '</ul>'
+		gHelpInfoF32 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
+		
+		# ############################################################################
+		gHelpInfoF37 = "" 
+		gHelpInfoF37 += translate('magicStart', 'To pre-calculate the starting point for the Front with glass and its dimensions, make selection, fill in the required fields and press the "calculate front with glass" button.')
+		gHelpInfoF37 += '<ul>'
+		gHelpInfoF37 += '<li><b>'
+		gHelpInfoF37 += translate('magicStart', 'X bottom edge') + '</b>: '
+		gHelpInfoF37 += translate('magicStart', 'means the inner bottom edge of the space, in line with the X coordinate axis.')
+		gHelpInfoF37 += '</li>'
+		gHelpInfoF37 += '<li><b>'
+		gHelpInfoF37 += translate('magicStart', 'X top edge') + '</b>: '
+		gHelpInfoF37 += translate('magicStart', 'means the inner top edge of the space, in line with the X coordinate axis.')
+		gHelpInfoF37 += '</li>'
+		gHelpInfoF37 += '<li><b>'
+		gHelpInfoF37 += translate('magicStart', 'Z left edge') + '</b>: '
+		gHelpInfoF37 += translate('magicStart', 'means the inner left edge of the space, in line with the Z coordinate axis.')
+		gHelpInfoF37 += '</li>'
+		gHelpInfoF37 += '<li><b>'
+		gHelpInfoF37 += translate('magicStart', 'Z right edge') + '</b>: '
+		gHelpInfoF37 += translate('magicStart', 'means the inner right edge of the space, in line with the Z coordinate axis.')
+		gHelpInfoF37 += '</li>'
+		gHelpInfoF37 += '<li><b>'
+		gHelpInfoF37 += translate('magicStart', 'Wood thickness') + '</b>: '
+		gHelpInfoF37 += translate('magicStart', 'means the thickness of the beam of the frame, in line with the Y coordinate axis.')
+		gHelpInfoF37 += '</li>'
+		gHelpInfoF37 += '<li><b>'
+		gHelpInfoF37 += translate('magicStart', 'Overlap horizontal') + '</b>: '
+		gHelpInfoF37 += translate('magicStart', 'in the case of an outside front, this is the width by which the glass front will overlap the furniture elements. If the front is to cover the entire surface, set the same value as Wood thickness.')
+		gHelpInfoF37 += '</li>'
+		gHelpInfoF37 += '<li><b>'
+		gHelpInfoF37 += translate('magicStart', 'Overlap vertical') + '</b>: '
+		gHelpInfoF37 += translate('magicStart', 'in the case of an outside front, this is the height by which the glass front will overlap the furniture elements. If the front is to cover the entire surface, set the same value as Wood thickness.')
+		gHelpInfoF37 += '</li>'
+		gHelpInfoF37 += '<li><b>'
+		gHelpInfoF37 += translate('magicStart', 'Offset horizontal') + '</b>: '
+		gHelpInfoF37 += translate('magicStart', 'in the case of an inside front, this is the width of the gap between the front frame and the furniture elements.')
+		gHelpInfoF37 += '</li>'
+		gHelpInfoF37 += '<li><b>'
+		gHelpInfoF37 += translate('magicStart', 'Offset vertical') + '</b>: '
+		gHelpInfoF37 += translate('magicStart', 'in the case of an inside front, this is the height of the gap between the front frame and the furniture elements.')
+		gHelpInfoF37 += '</li>'
+		gHelpInfoF37 += '<li><b>'
+		gHelpInfoF37 += translate('magicStart', 'Glass thickness') + '</b>: '
+		gHelpInfoF37 += translate('magicStart', 'means the thickness of the glass, in line with the Y coordinate axis.')
+		gHelpInfoF37 += '</li>'
+		gHelpInfoF37 += '</ul>'
+		gHelpInfoF37 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
+
+		# ############################################################################
+		gHelpInfoF41 = "" 
+		gHelpInfoF41 += translate('magicStart', 'To pre-calculate the starting point for shelf series and its dimensions, make selection, fill desired fields and press the "calculate shelf series" button.')
+		gHelpInfoF41 += '<ul>'
+		gHelpInfoF41 += '<li><b>'
+		gHelpInfoF41 += translate('magicStart', 'X bottom edge') + '</b>: '
+		gHelpInfoF41 += translate('magicStart', 'means the lower inner edge from which the series of shelves is to start. The selected edge should be in line with the X coordinate axis.')
+		gHelpInfoF41 += '</li>'
+		gHelpInfoF41 += '<li><b>'
+		gHelpInfoF41 += translate('magicStart', 'X top edge') + '</b>: '
+		gHelpInfoF41 += translate('magicStart', 'means the upper inner edge to which the series of shelves is to end. The selected edge should be in line with the X coordinate axis.')
+		gHelpInfoF41 += '</li>'
+		gHelpInfoF41 += '<li><b>'
+		gHelpInfoF41 += translate('magicStart', 'Z left edge') + '</b>: '
+		gHelpInfoF41 += translate('magicStart', 'means the left inner edge of the free space in which the series of shelves is to be created. The selected edge should be in line with the Z coordinate axis, i.e. the inner edge of the left side of the furniture.')
+		gHelpInfoF41 += '</li>'
+		gHelpInfoF41 += '<li><b>'
+		gHelpInfoF41 += translate('magicStart', 'Z right edge') + '</b>: '
+		gHelpInfoF41 += translate('magicStart', 'means the right inner edge of the free space in which the series of shelves is to be created. The selected edge should be in line with the Z coordinate axis, i.e. the inner edge of the right side of the furniture.')
+		gHelpInfoF41 += '</li>'
+		gHelpInfoF41 += '<li><b>'
+		gHelpInfoF41 += translate('magicStart', 'back face') + '</b>: '
+		gHelpInfoF41 += translate('magicStart', 'means the internal surface of the back wall of the furniture, which is in line with the X and Z coordinate axes.')
+		gHelpInfoF41 += '</li>'
+		gHelpInfoF41 += '<li><b>'
+		gHelpInfoF41 += translate('magicStart', 'Single shelf thickness') + '</b>: '
+		gHelpInfoF41 += translate('magicStart', 'means the thickness of a single shelf, i.e. in the direction of the Z coordinate axis.')
+		gHelpInfoF41 += '</li>'
+		gHelpInfoF41 += '<li><b>'
+		gHelpInfoF41 += translate('magicStart', 'Number of shelves') + '</b>: '
+		gHelpInfoF41 += translate('magicStart', 'means the number of shelves to be created at equal distances.')
+		gHelpInfoF41 += '</li>'
+		gHelpInfoF41 += '</ul>'
+		gHelpInfoF41 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
+		
+		# ############################################################################
+		gHelpInfoF42 = "" 
+		gHelpInfoF42 += translate('magicStart', 'To pre-calculate the location where the table will be created, select any vertex and press the "calculate table position" button.')
+		gHelpInfoF42 += '<ul>'
+		gHelpInfoF42 += '<li><b>'
+		gHelpInfoF42 += translate('magicStart', 'Table width X') + '</b>: '
+		gHelpInfoF42 += translate('magicStart', 'means the width of the table, i.e. the size according to the X coordinate axis.')
+		gHelpInfoF42 += '</li>'
+		gHelpInfoF42 += '<li><b>'
+		gHelpInfoF42 += translate('magicStart', 'Table depth Y') + '</b>: '
+		gHelpInfoF42 += translate('magicStart', 'means the depth of the table, i.e. the size according to the Y coordinate axis.')
+		gHelpInfoF42 += '</li>'
+		gHelpInfoF42 += '<li><b>'
+		gHelpInfoF42 += translate('magicStart', 'Table height Z') + '</b>: '
+		gHelpInfoF42 += translate('magicStart', 'means the height of the table, i.e. the size according to the Z coordinate axis.')
+		gHelpInfoF42 += '</li>'
+		gHelpInfoF42 += '<li><b>'
+		gHelpInfoF42 += translate('magicStart', 'Table top thickness') + '</b>: '
+		gHelpInfoF42 += translate('magicStart', 'means the thickness of the table top, i.e. the size according to the Z coordinate axis.')
+		gHelpInfoF42 += '</li>'
+		gHelpInfoF42 += '<li><b>'
+		gHelpInfoF42 += translate('magicStart', 'Legs and Supporters thickness') + '</b>: '
+		gHelpInfoF42 += translate('magicStart', 'this is the thickness of the wood from which the table legs and the supporting beams under the top will be made.')
+		gHelpInfoF42 += '</li>'
+		gHelpInfoF42 += '<li><b>'
+		gHelpInfoF42 += translate('magicStart', 'Table top offset') + '</b>: '
+		gHelpInfoF42 += translate('magicStart', 'means the distance of the legs and supporting beams from the top. If the top is not to have protruding corners, the value 0 should be entered.')
+		gHelpInfoF42 += '</li>'
+		gHelpInfoF42 += '</ul>'
+		gHelpInfoF42 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
+		
+		# ############################################################################
+		gHelpInfoF48 = ""
+		gHelpInfoF48 += translate('magicStart', 'To create a side, you need to select 4 edges in the correct order around the free space where you want to create the side:')
+		gHelpInfoF48 += '<ul>'
+		gHelpInfoF48 += '<li><b>'
+		gHelpInfoF48 += translate('magicStart', 'X or Y bottom edge') + '</b>: '
+		gHelpInfoF48 += translate('magicStart', 'means that the selected edge is to be the bottom edge, along the X or Y coordinate axis.')
+		gHelpInfoF48 += '</li>'
+		gHelpInfoF48 += '<li><b>'
+		gHelpInfoF48 += translate('magicStart', 'X or Y top edge') + '</b>: '
+		gHelpInfoF48 += translate('magicStart', 'means that the selected edge is to be the top edge, along the X or Y coordinate axis.')
+		gHelpInfoF48 += '</li>'
+		gHelpInfoF48 += '<li><b>'
+		gHelpInfoF48 += translate('magicStart', 'Z left edge') + '</b>: '
+		gHelpInfoF48 += translate('magicStart', 'means that the selected edge is to be the left edge, along the Z coordinate axis, i.e. vertical.')
+		gHelpInfoF48 += '</li>'
+		gHelpInfoF48 += '<li><b>'
+		gHelpInfoF48 += translate('magicStart', 'Z right edge') + '</b>: '
+		gHelpInfoF48 += translate('magicStart', 'means that the selected edge is to be the right edge, along the Z coordinate axis, i.e. vertical.')
+		gHelpInfoF48 += '</li>'
+		gHelpInfoF48 += '</ul>'
+		gHelpInfoF48 += translate('magicStart', 'Next, you need to decide how the side to be created is to be calculated. There are 3 cases:')
+		gHelpInfoF48 += '<ul>'
+		gHelpInfoF48 += '<li><b>'
+		gHelpInfoF48 += translate('magicStart', '0 width and 0 offsets') + '</b>: '
+		gHelpInfoF48 += translate('magicStart', 'If you do not fill the widths and gaps, the side will fill the entire selected space.')
+		gHelpInfoF48 += '</li>'
+		gHelpInfoF48 += '<li><b>'
+		gHelpInfoF48 += translate('magicStart', 'custom width and 0 offsets') + '</b>: '
+		gHelpInfoF48 += translate('magicStart', 'If a width is given, the right spacing will be the difference between the width of the free space and the previously set desired width.')
+		gHelpInfoF48 += '</li>'
+		gHelpInfoF48 += '<li><b>'
+		gHelpInfoF48 += translate('magicStart', '0 width and custom offsets') + '</b>: '
+		gHelpInfoF48 += translate('magicStart', 'If offsets are set and the width is set to 0, the width and height of the side to be created will be calculated with the offsets taken into account.')
+		gHelpInfoF48 += '</li>'
+		gHelpInfoF48 += '</ul>'
+
+		# ############################################################################
 		# init
 		# ############################################################################
 
@@ -111,7 +534,7 @@ def showQtGUI():
 			
 			# tool screen size
 			self.toolSW = 450
-			self.toolSH = 550
+			self.toolSH = 570
 			
 			# active screen size - FreeCAD main window
 			gSW = FreeCADGui.getMainWindow().width()
@@ -146,23 +569,23 @@ def showQtGUI():
 				translate('magicStart', 'Simple bookcase ( no front, back HDF )'), 
 				translate('magicStart', 'Simple bookcase ( face frame, no front, back HDF )'), 
 				translate('magicStart', 'Modular storage ( front outside, 3 modules )'), 
-				translate('magicStart', 'Drawer with front outside ( fit into the shelf gap )'), 
-				translate('magicStart', 'Drawer with front inside ( fit into the shelf gap )'), 
-				translate('magicStart', 'Drawer series with front outside ( fit into the shelf gap )'), 
-				translate('magicStart', 'Drawer series with front inside ( fit into the shelf gap )'), 
-				translate('magicStart', 'Face Frame outside ( frame around, fit into gap )'), 
-				translate('magicStart', 'Face Frame outside ( frame with center, fit into gap )'), 
-				translate('magicStart', 'Face Frame outside ( frame for custom changes, fit into gap )'), 
-				translate('magicStart', 'Front outside ( fit into gap )'), 
-				translate('magicStart', 'Front outside with glass ( simple frame, fit into gap )'), 
-				translate('magicStart', 'Front outside with glass ( frame with decoration, fit into gap )'), 
-				translate('magicStart', 'Front inside ( fit into gap )'), 
-				translate('magicStart', 'Front inside with glass ( simple frame, fit into gap )'), 
-				translate('magicStart', 'Front inside with glass ( frame with decoration, fit into gap )'), 
-				translate('magicStart', 'Shelf ( fit into gap )'), 
-				translate('magicStart', 'Shelf series with equal space ( fit into gap )'), 
-				translate('magicStart', 'Side ( fit into gap )'), 
-				translate('magicStart', 'Center side ( fit into gap )'), 
+				translate('magicStart', 'Drawer with front outside'), 
+				translate('magicStart', 'Drawer with front inside'), 
+				translate('magicStart', 'Drawer series with front outside'), 
+				translate('magicStart', 'Drawer series with front inside'), 
+				translate('magicStart', 'Face Frame outside ( frame around )'), 
+				translate('magicStart', 'Face Frame outside ( frame with center )'), 
+				translate('magicStart', 'Face Frame outside ( frame for custom changes )'), 
+				translate('magicStart', 'Front outside'), 
+				translate('magicStart', 'Front outside with glass ( simple frame )'), 
+				translate('magicStart', 'Front outside with glass ( frame with decoration )'), 
+				translate('magicStart', 'Front inside'), 
+				translate('magicStart', 'Front inside with glass ( simple frame )'), 
+				translate('magicStart', 'Front inside with glass ( frame with decoration )'), 
+				translate('magicStart', 'Shelf'), 
+				translate('magicStart', 'Shelf series with equal space'), 
+				translate('magicStart', 'Side'), 
+				translate('magicStart', 'Center side'), 
 				translate('magicStart', 'Foot ( good for cleaning )'), 
 				translate('magicStart', 'Foot ( standard )'), 
 				translate('magicStart', 'Foot ( more stable )'), 
@@ -174,33 +597,79 @@ def showQtGUI():
 				translate('magicStart', 'Table ( coffee simple style )'), 
 				translate('magicStart', 'Table ( coffee modern style )'), 
 				translate('magicStart', 'Table ( coffee decorated style )'), 
-				translate('magicStart', 'Dowel 8x35 mm ( import parametric )'), 
-				translate('magicStart', 'Screw 4x40 mm ( import parametric )'), 
+				translate('magicStart', 'Dowel 8x35 mm ( import parametric )'),
+				translate('magicStart', 'Biscuits 4x16x48 mm ( import parametric )'), 
+				translate('magicStart', 'Biscuits 4x21x54 mm ( import parametric )'), 
+				translate('magicStart', 'Biscuits 4x24x57 mm ( import parametric )'), 
 				translate('magicStart', 'Screw 3x20 mm for HDF ( import parametric )'), 
+				translate('magicStart', 'Screw 4x40 mm ( import parametric )'), 
 				translate('magicStart', 'Screw 5x50 mm ( import parametric )'), 
+				translate('magicStart', 'Pocket screw 4x40 mm ( import parametric )'), 
 				translate('magicStart', 'Counterbore 2x 5x60 mm ( import parametric )'), 
 				translate('magicStart', 'Shelf Pin 5x16 mm ( import parametric )'), 
+				translate('magicStart', 'Angle 30x30x25 mm ( import parametric )'), 
+				translate('magicStart', 'Angle 80x80x20 mm ( import parametric )'), 
 				translate('magicStart', 'Angle 40x40x100 mm ( import parametric )'), 
+				translate('magicStart', 'Front left (decoration, import parametric )'), 
+				translate('magicStart', 'Front right (decoration, import parametric )'), 
+				translate('magicStart', 'Top (decoration, import parametric )'), 
 				translate('magicStart', 'Bookcase ( import parametric )'), 
 				translate('magicStart', 'Simple drawer ( import parametric )'), 
+				translate('magicStart', 'Drawer (decoration, import parametric )'), 
 				translate('magicStart', 'Simple chair ( import parametric )'), 
 				translate('magicStart', 'Picture frame ( import parametric )'), 
 				translate('magicStart', 'Simple table ( import parametric )'), 
 				translate('magicStart', 'Storage box ( import parametric )')   # no comma
 				)
 			
+			helpButtonSize = 80
+			
 			self.sMode = QtGui.QComboBox(self)
 			self.sMode.addItems(self.sModeList)
 			self.sMode.setCurrentIndex(0)
 			self.sMode.activated[str].connect(self.selectedOption)
-			self.sMode.setFixedWidth(self.toolSW - 20)
-			self.sMode.move(10, row)
+			self.sMode.setFixedWidth(self.toolSW - 20 - 10 - helpButtonSize)
+			self.sMode.setFixedHeight(40)
+			self.sMode.move(10, 10)
 
-			row += 50
+			# ############################################################################
+			# help buttons and info screen
+			# ############################################################################
+			
+			# button
+			self.helpBSHOW = QtGui.QPushButton(translate('magicStart', 'HELP >'), self)
+			self.helpBSHOW.clicked.connect(self.helpSHOW)
+			self.helpBSHOW.setFixedWidth(helpButtonSize)
+			self.helpBSHOW.setFixedHeight(40)
+			self.helpBSHOW.move(self.toolSW - helpButtonSize - 10, 10)
+
+			# button
+			self.helpBHIDE = QtGui.QPushButton(translate('magicStart', '< HELP'), self)
+			self.helpBHIDE.clicked.connect(self.helpHIDE)
+			self.helpBHIDE.setFixedWidth(80)
+			self.helpBHIDE.setFixedHeight(40)
+			self.helpBHIDE.move(self.toolSW - helpButtonSize - 10, 10)
+			self.helpBHIDE.hide()
+			
+			# label
+			self.helpInfo = QtGui.QLabel(self.gHelpInfoF0, self)
+			self.helpInfo.move(self.toolSW + 10, 10)
+			self.helpInfo.setFixedWidth(self.toolSW - 90)
+			self.helpInfo.setFixedHeight(self.toolSH - 20)
+			self.helpInfo.setWordWrap(True)
+			self.helpInfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.helpInfo.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
+
+			# ############################################################################
+			# custom row settings
+			# ############################################################################
+
+			row += 70
 			
 			createSize = 40
 			createRow = self.toolSH - createSize - 10
 			
+			rowhelp = row - 20
 			rowgap = row - 20
 			rowds = row - 20
 			rowfoot = row
@@ -249,7 +718,15 @@ def showQtGUI():
 			self.minfo.setWordWrap(True)
 			self.minfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
 			self.minfo.hide()
-
+			
+			# button
+			self.mergeB = QtGui.QPushButton(translate('magicStart', 'import from examples'), self)
+			self.mergeB.clicked.connect(self.createObject)
+			self.mergeB.setFixedWidth(self.toolSW - 20)
+			self.mergeB.setFixedHeight(createSize)
+			self.mergeB.move(10, createRow)
+			self.mergeB.hide()
+			
 			# ############################################################################
 			# GUI for furniture (visible by default)
 			# ############################################################################
@@ -613,71 +1090,15 @@ def showQtGUI():
 			# GUI for Single drawer (hidden by default)
 			# ############################################################################
 
-			# button
-			self.oghelpON = QtGui.QPushButton(translate('magicStart', 'show help'), self)
-			self.oghelpON.clicked.connect(self.showHelpON)
-			self.oghelpON.setFixedWidth(90)
-			self.oghelpON.setFixedHeight(20)
-			self.oghelpON.move(10, rowgap)
-
-			# button
-			self.oghelpOFF = QtGui.QPushButton(translate('magicStart', 'hide help'), self)
-			self.oghelpOFF.clicked.connect(self.showHelpOFF)
-			self.oghelpOFF.setFixedWidth(90)
-			self.oghelpOFF.setFixedHeight(20)
-			self.oghelpOFF.move(10, rowgap)
-			self.oghelpOFF.hide()
-			
 			# label
-			info = '<ul>'
-			info += '<li><b>'
-			info += translate('magicStart', 'top edge') + '</b>: '
-			info += translate('magicStart', 'The drawer will be created from the 0 position on the Z coordinate axis to the position of the selected top edge. The width of the drawer will be taken from the selected top edge size. The depth of the drawer will be taken from the object from the selected top edge. This is a kind of "quick shot" to create the drawer as quickly as possible without a long selection.')
-			info += '</li>'
-			info += '<li><b>'
-			info += translate('magicStart', 'top edge + back face') + '</b>: '
-			info += translate('magicStart', 'This is the same as above, but here selecting the back face allows you to set the depth in a more detailed way.')
-			info += '</li>'
-			info += '<li><b>'
-			info += translate('magicStart', 'bottom edge + top edge') + '</b>: '
-			info += translate('magicStart', 'The drawer will be created from the position of the first selected bottom edge to the position of the second selected top edge. The width and depth of the drawer will be taken from the object with the shortest edge. This is a kind of "quick shot" to create the drawer quickly without a long selection.')
-			info += '</li>'
-			info += '<li><b>'
-			info += translate('magicStart', 'bottom edge + top edge + back face') + '</b>: '
-			info += translate('magicStart', 'This is the same as above, but here selecting the back face allows you to set the depth in a more detailed way.')
-			info += '</li>'
-			info += '<li><b>'
-			info += translate('magicStart', 'bottom edge + top edge + left edge + right edge + back face') + '</b>: '
-			info += translate('magicStart', 'The drawer will be created from the position of the first selected bottom edge to the position of the second selected top edge. The width of the drawer will be obtained from the difference of the third and fourth selected edges. The depth of the drawer will be obtained from the selected back face. There are many more objects to select here, but this is the most precise version of determining the size of the drawer. So if you have trouble with any of the above, I recommend trying this method. Also this method solves the problem with longest bottom and top edges.')
-			info += '</li>'
-			info += '</ul>'
-			info += translate('magicStart', 'The edges can be in line with the X or Y coordinate axis, so the drawer can be created on all four sides of the furniture.')
-			self.oghelpInfo = QtGui.QLabel(info, self)
-			self.oghelpInfo.move(self.toolSW + 10, 10)
-			self.oghelpInfo.setFixedWidth(360)
-			self.oghelpInfo.setWordWrap(True)
-			self.oghelpInfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.oghelpInfo.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
-
-			# label
-			info = translate('magicStart', 'Possible selections:')
+			info = translate('magicStart', 'Possible selections: <br><br>1. top edge<br>2. top edge + back face<br>3. bottom edge + top edge<br>4. bottom edge + top edge + back face<br>5. bottom edge + top edge + left edge + right edge + back face<br><br>The edge can be along X or Y axis.')
 			self.og1i = QtGui.QLabel(info, self)
-			self.og1i.move(110, rowgap+3)
+			self.og1i.move(10, rowgap+3)
 			self.og1i.setFixedWidth(self.toolSW - 240)
 			self.og1i.setWordWrap(True)
 			self.og1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
 			
-			rowgap += 20
-			
-			# label
-			info = translate('magicStart', '1. top edge<br>2. top edge + back face<br>3. bottom edge + top edge<br>4. bottom edge + top edge + back face<br>5. bottom edge + top edge + left edge + right edge + back face<br><br>The edge can be along X or Y axis.')
-			self.og2i = QtGui.QLabel(info, self)
-			self.og2i.move(10, rowgap+3)
-			self.og2i.setFixedWidth(self.toolSW - 240)
-			self.og2i.setWordWrap(True)
-			self.og2i.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			
-			rowgap += 150
+			rowgap += 170
 
 			# button
 			self.og4B1 = QtGui.QPushButton(translate('magicStart', 'calculate gap for drawer'), self)
@@ -818,11 +1239,7 @@ def showQtGUI():
 			self.og9B1.move(10, createRow)
 
 			# hide by default
-			self.oghelpON.hide()
-			self.oghelpOFF.hide()
-			self.oghelpInfo.hide()
 			self.og1i.hide()
-			self.og2i.hide()
 			self.og2L.hide()
 			self.og2E.hide()
 			self.og3E.hide()
@@ -1844,64 +2261,6 @@ def showQtGUI():
 			# GUI for Side from GAP (hidden by default)
 			# ############################################################################
 			
-			# button
-			self.osidehelpON = QtGui.QPushButton(translate('magicStart', 'show help'), self)
-			self.osidehelpON.clicked.connect(self.showHelpON)
-			self.osidehelpON.setFixedWidth(90)
-			self.osidehelpON.setFixedHeight(20)
-			self.osidehelpON.move(10, rowside)
-
-			# button
-			self.osidehelpOFF = QtGui.QPushButton(translate('magicStart', 'hide help'), self)
-			self.osidehelpOFF.clicked.connect(self.showHelpOFF)
-			self.osidehelpOFF.setFixedWidth(90)
-			self.osidehelpOFF.setFixedHeight(20)
-			self.osidehelpOFF.move(10, rowside)
-			self.osidehelpOFF.hide()
-			
-			# label
-			info = ""
-			info += translate('magicStart', 'To create a side, you need to select 4 edges in the correct order around the free space where you want to create the side:')
-			info += '<ul>'
-			info += '<li><b>'
-			info += translate('magicStart', 'X or Y bottom edge') + '</b>: '
-			info += translate('magicStart', 'means that the selected edge is to be the bottom edge, along the X or Y coordinate axis.')
-			info += '</li>'
-			info += '<li><b>'
-			info += translate('magicStart', 'X or Y top edge') + '</b>: '
-			info += translate('magicStart', 'means that the selected edge is to be the top edge, along the X or Y coordinate axis.')
-			info += '</li>'
-			info += '<li><b>'
-			info += translate('magicStart', 'Z left edge') + '</b>: '
-			info += translate('magicStart', 'means that the selected edge is to be the left edge, along the Z coordinate axis, i.e. vertical.')
-			info += '</li>'
-			info += '<li><b>'
-			info += translate('magicStart', 'Z right edge') + '</b>: '
-			info += translate('magicStart', 'means that the selected edge is to be the right edge, along the Z coordinate axis, i.e. vertical.')
-			info += '</li>'
-			info += '</ul>'
-			info += translate('magicStart', 'Next, you need to decide how the side to be created is to be calculated. There are 3 cases:')
-			info += '<ul>'
-			info += '<li><b>'
-			info += translate('magicStart', '0 width and 0 offsets') + '</b>: '
-			info += translate('magicStart', 'If you do not fill the widths and gaps, the side will fill the entire selected space.')
-			info += '</li>'
-			info += '<li><b>'
-			info += translate('magicStart', 'custom width and 0 offsets') + '</b>: '
-			info += translate('magicStart', 'If a width is given, the right spacing will be the difference between the width of the free space and the previously set desired width.')
-			info += '</li>'
-			info += '<li><b>'
-			info += translate('magicStart', '0 width and custom offsets') + '</b>: '
-			info += translate('magicStart', 'If offsets are set and the width is set to 0, the width and height of the side to be created will be calculated with the offsets taken into account.')
-			info += '</li>'
-			info += '</ul>'
-			self.osidehelpInfo = QtGui.QLabel(info, self)
-			self.osidehelpInfo.move(self.toolSW + 10, 10)
-			self.osidehelpInfo.setFixedWidth(360)
-			self.osidehelpInfo.setWordWrap(True)
-			self.osidehelpInfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.osidehelpInfo.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
-			
 			rowside += 20
 			
 			# label
@@ -2053,9 +2412,6 @@ def showQtGUI():
 			self.oside8B1.move(10, createRow)
 
 			# hide by default
-			self.osidehelpON.hide()
-			self.osidehelpOFF.hide()
-			self.osidehelpInfo.hide()
 			self.oside1i.hide()
 			self.oside1L.hide()
 			self.oside1E.hide()
@@ -2088,7 +2444,7 @@ def showQtGUI():
 			rowcside -= 20
 			
 			# label
-			info = translate('magicStart', 'Please select 2 edges (top or bottom at Y axis direction) and 1 face (bottom or top at XY plane) to calculate side in the center: <br><br> 1. selection - left Y edge <br> 2. selection - right Y edge <br> 3. selection - XY face')
+			info = translate('magicStart', 'Please select 2 edges (top or bottom at Y axis direction) and 1 face (bottom or top at XY plane) to calculate side in the center: <br><br> 1. selection - Y left edge <br> 2. selection - Y right edge <br> 3. selection - XY face')
 			self.ocs1i = QtGui.QLabel(info, self)
 			self.ocs1i.move(10, rowcside+3)
 			self.ocs1i.setFixedWidth(200)
@@ -2172,7 +2528,7 @@ def showQtGUI():
 			rowcside += 40
 			
 			# button
-			self.ocs4B1 = QtGui.QPushButton(translate('magicStart', 'calculate side'), self)
+			self.ocs4B1 = QtGui.QPushButton(translate('magicStart', 'calculate center side'), self)
 			self.ocs4B1.clicked.connect(self.calculateCenterSideFromGap)
 			self.ocs4B1.setFixedWidth(200)
 			self.ocs4B1.setFixedHeight(40)
@@ -2279,12 +2635,7 @@ def showQtGUI():
 			# hide everything first
 			# ##############################################
 			
-			self.resize(self.toolSW, self.toolSH)
-			
 			# side
-			self.osidehelpON.hide()
-			self.osidehelpOFF.hide()
-			self.osidehelpInfo.hide()
 			self.oside1i.hide()
 			self.oside1L.hide()
 			self.oside1E.hide()
@@ -2450,11 +2801,7 @@ def showQtGUI():
 			self.offrame10B.hide()
 			
 			# drawer
-			self.oghelpON.hide()
-			self.oghelpOFF.hide()
-			self.oghelpInfo.hide()
 			self.og1i.hide()
-			self.og2i.hide()
 			self.og2L.hide()
 			self.og2E.hide()
 			self.og3E.hide()
@@ -2545,6 +2892,7 @@ def showQtGUI():
 
 			# merge
 			self.minfo.hide()
+			self.mergeB.hide()
 			
 			# furniture (default)
 			self.oo1i.hide()
@@ -2593,9 +2941,6 @@ def showQtGUI():
 				self.s1B1.show()
 			
 			if iType == "side":
-				self.osidehelpON.show()
-				self.osidehelpOFF.hide()
-				self.osidehelpInfo.show()
 				self.oside1i.show()
 				self.oside1L.show()
 				self.oside1E.show()
@@ -2761,11 +3106,7 @@ def showQtGUI():
 				self.offrame10B.show()
 
 			if iType == "drawer":
-				self.oghelpON.show()
-				self.oghelpOFF.hide()
-				self.oghelpInfo.show()
 				self.og1i.show()
-				self.og2i.show()
 				self.og2L.show()
 				self.og2E.show()
 				self.og3E.show()
@@ -2856,6 +3197,7 @@ def showQtGUI():
 
 			if iType == "merge":
 				self.minfo.show()
+				self.mergeB.show()
 
 		# ############################################################################	
 		def selectedOption(self, selectedText):
@@ -2876,7 +3218,7 @@ def showQtGUI():
 				self.setIcon("msf"+str(selectedIndex))
 			
 			# ####################################################
-			# set GUI
+			# set GUI and help info
 			# ####################################################
 			
 			if (
@@ -2895,15 +3237,20 @@ def showQtGUI():
 				selectedIndex == 15
 				):
 				self.setGUIInfo("merge")
+				self.helpInfo.setText("")
 				
 			if (
 				selectedIndex == 0 or 
 				selectedIndex == 1 or 
-				selectedIndex == 10 or 
+				selectedIndex == 10 or
+				selectedIndex == 27 or 
+				selectedIndex == 28 or 
+				selectedIndex == 29 or 
 				selectedIndex == 35 or 
 				selectedIndex == 36
 				):
 				self.setGUIInfo()
+				self.helpInfo.setText(self.gHelpInfoF0)
 			
 			if (
 				selectedIndex == 16 or 
@@ -2913,27 +3260,31 @@ def showQtGUI():
 				selectedIndex == 20
 				):
 				self.setGUIInfo("foot")
+				self.helpInfo.setText(self.gHelpInfoF16)
 			
 			if selectedIndex == 21 or selectedIndex == 22:
 				self.setGUIInfo("drawer")
+				self.helpInfo.setText(self.gHelpInfoF21)
 			
-			if selectedIndex == 23:
+			if selectedIndex == 23 or selectedIndex == 24:
 				self.setGUIInfo("front")
-
-			if selectedIndex == 24:
-				self.setGUIInfo("front")
+				self.helpInfo.setText(self.gHelpInfoF23)
 
 			if selectedIndex == 25:
 				self.setGUIInfo("shelf")
+				self.helpInfo.setText(self.gHelpInfoF25)
 			
 			if selectedIndex == 26:
 				self.setGUIInfo("center side")
+				self.helpInfo.setText(self.gHelpInfoF26)
 
 			if selectedIndex == 30 or selectedIndex == 31:
 				self.setGUIInfo("drawer series")
+				self.helpInfo.setText(self.gHelpInfoF30)
 			
 			if selectedIndex == 32 or selectedIndex == 33 or selectedIndex == 34:
 				self.setGUIInfo("face frame")
+				self.helpInfo.setText(self.gHelpInfoF32)
 			
 			if (
 				selectedIndex == 37 or 
@@ -2942,9 +3293,11 @@ def showQtGUI():
 				selectedIndex == 40
 				):
 				self.setGUIInfo("front with glass")
+				self.helpInfo.setText(self.gHelpInfoF37)
 			
 			if selectedIndex == 41:
 				self.setGUIInfo("shelf series")
+				self.helpInfo.setText(self.gHelpInfoF41)
 			
 			if (
 				selectedIndex == 42 or 
@@ -2955,9 +3308,11 @@ def showQtGUI():
 				selectedIndex == 47
 				):
 				self.setGUIInfo("table")
+				self.helpInfo.setText(self.gHelpInfoF42)
 			
 			if selectedIndex == 48:
 				self.setGUIInfo("side")
+				self.helpInfo.setText(self.gHelpInfoF48)
 
 			# ####################################################
 			# custom settings
@@ -3191,6 +3546,36 @@ def showQtGUI():
 			
 			if self.gSelectedFurniture == "F48":
 				self.createF48()
+			
+			if self.gSelectedFurniture == "F49":
+				self.mergeF("Biscuits_4_x_16_x_48_mm.FCStd", "mount")
+			
+			if self.gSelectedFurniture == "F50":
+				self.mergeF("Biscuits_4_x_21_x_54_mm.FCStd", "mount")
+				
+			if self.gSelectedFurniture == "F51":
+				self.mergeF("Biscuits_4_x_24_x_57_mm.FCStd", "mount")
+			
+			if self.gSelectedFurniture == "F52":
+				self.mergeF("Pocket_screw_4_x_40_mm.FCStd", "mount")
+			
+			if self.gSelectedFurniture == "F53":
+				self.mergeF("Angle_30_x_30_x_25_mm.FCStd", "angles")
+				
+			if self.gSelectedFurniture == "F54":
+				self.mergeF("Angle_80_x_80_x_20_mm.FCStd", "angles")
+			
+			if self.gSelectedFurniture == "F55":
+				self.mergeF("Front_001.FCStd")
+			
+			if self.gSelectedFurniture == "F56":
+				self.mergeF("Front_002.FCStd")
+				
+			if self.gSelectedFurniture == "F57":
+				self.mergeF("Top_001.FCStd")
+			
+			if self.gSelectedFurniture == "F58":
+				self.mergeF("Drawer_002.FCStd")
 				
 			# here to allow recalculation with selection
 			FreeCADGui.Selection.clearSelection()
@@ -3296,35 +3681,21 @@ def showQtGUI():
 						return v1
 		
 		# ############################################################################
-		def showHelpON(self):
+		def helpSHOW(self):
 			
-			if self.gSelectedFurniture == "F21" or self.gSelectedFurniture == "F22":
-				self.resize(self.toolSW+400, self.toolSH)
-				self.oghelpON.hide()
-				self.oghelpOFF.show()
-				self.oghelpInfo.show()
-			
-			if self.gSelectedFurniture == "F48":
-				self.resize(self.toolSW+400, self.toolSH)
-				self.osidehelpON.hide()
-				self.osidehelpOFF.show()
-				self.osidehelpInfo.show()
-				
-		# ############################################################################
-		def showHelpOFF(self):
-			
-			if self.gSelectedFurniture == "F21" or self.gSelectedFurniture == "F22":
-				self.resize(self.toolSW, self.toolSH)
-				self.oghelpON.show()
-				self.oghelpOFF.hide()
-				self.oghelpInfo.hide()
+			self.resize(self.toolSW + 400, self.toolSH)
+			self.helpBSHOW.hide()
+			self.helpBHIDE.show()
+			self.helpInfo.show()
 
-			if self.gSelectedFurniture == "F48":
-				self.resize(self.toolSW, self.toolSH)
-				self.osidehelpON.show()
-				self.osidehelpOFF.hide()
-				self.osidehelpInfo.hide()
-				
+		# ############################################################################
+		def helpHIDE(self):
+			
+			self.resize(self.toolSW, self.toolSH)
+			self.helpBSHOW.show()
+			self.helpBHIDE.hide()
+			self.helpInfo.hide()
+
 		# ############################################################################
 		# actions - calculation functions
 		# ############################################################################
