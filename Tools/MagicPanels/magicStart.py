@@ -3234,7 +3234,17 @@ def showQtGUI():
 				selectedIndex == 12 or 
 				selectedIndex == 13 or 
 				selectedIndex == 14 or 
-				selectedIndex == 15
+				selectedIndex == 15 or 
+				selectedIndex == 49 or 
+				selectedIndex == 50 or 
+				selectedIndex == 51 or 
+				selectedIndex == 52 or 
+				selectedIndex == 53 or 
+				selectedIndex == 54 or 
+				selectedIndex == 55 or 
+				selectedIndex == 56 or 
+				selectedIndex == 57 or 
+				selectedIndex == 58
 				):
 				self.setGUIInfo("merge")
 				self.helpInfo.setText("")

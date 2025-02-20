@@ -2,11 +2,23 @@
 
 <img align="right" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/Woodworking.png"> FreeCAD is a very cool software and allows to design a lot of interesting things. However, FreeCAD is not dedicated to be software only for furniture designing. For this reason, some tasks when designing furniture can be challenging at the beginning. Despite the fact that I finished math, I have a problem with counting in my memory. For me, constantly calculating wood thickness and adding this to the position was a problem without a calculator. In addition, for me constantly starting from the `10 x 10 x 10` box `Cube` and setting it in the right position is a bit annoying. 
 
-Woodworking workbench has been created because of my woodworking and coding hobby. Everything started from [getDimensions](https://github.com/dprojects/getDimensions/commits/master) project long time ago. I wanted to have [simple cut-list for chipboards order](https://github.com/dprojects/getDimensions/commit/a6f0a2221e90f717be95bd0dc1cc9f1ede95a329) and I found FreeCAD with low hardware requirements and possibility to implement the cut-list. Now it has been transformed into whole Woodworking workbench. The main goal for this workbench is to make the furniture designing process at FreeCAD more simple.
+Woodworking workbench has been created because of my woodworking and coding hobby. Everything started from [getDimensions](https://github.com/dprojects/getDimensions/commits/master) project long time ago. I wanted to have [simple cut-list for chipboards order](https://github.com/dprojects/getDimensions/commit/a6f0a2221e90f717be95bd0dc1cc9f1ede95a329) and I found FreeCAD with low hardware requirements and possibility to implement the cut-list. 
+
+Later it has been transformed into whole Woodworking workbench, I added many tools, and now Woodworking workbench has so many features and simplifications that it can be considered as a new CAD program based only on the FreeCAD kernel. It is mainly intended to make cabinet creation more simple, although it has many solutions to speed up and make more simple typical carpentry work and other CAD projects. I hope you will find something for yourself here.
 
 * [Main features](#main-features)
+	* [magicStart](#magicstart)
+		* [Cabinet structure](#cabinet-structure)
+		* [Drawers for cabinets](#drawers-for-cabinets)
+		* [Face Frame for cabinets](#face-frame-for-cabinets)
+		* [Fronts for cabinets](#fronts-for-cabinets)
+		* [Shelves and top for cabinets](#shelves-and-top-for-cabinets)
+		* [Sides for cabinets](#sides-for-cabinets)
+		* [Foot for cabinets](#foot-for-cabinets)
+		* [Table](#table)
+		* [Accessories - connections](#accessories---connections)
+		* [Accessories - other](#accessories---other)
 	* [Making panels](#making-panels)
-		* [magicStart](#magicstart)
 		* [Default panels](#default-panels)
 		* [Copy panels](#copy-panels)
 		* [Dedicated panels](#dedicated-panels)
@@ -117,69 +129,144 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 # Main features
 
-## Making panels
-
-### magicStart
+## magicStart
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicStart.png">This tool was created to make it easier to start designing furniture. It contains some structures that I often use personally, as well as other carpentry solutions suggested by users. However, this tool does not contain a complete list of solutions, because there are too many of them in the world of carpentry, practically every carpenter and manufacturer of furniture or accessories has their own standards. I try to adjust the contents of this tool in such a way that it gives the greatest possible possibilities for later processing and adapting the initial structure to your own needs. If you have any interesting woodworking idea or solution, worth to be added, please let me know.
 
-* **calculate** button is intended to pre-calculate the remaining dimensions based on those given above this button, although in some cases you can skip this button and create an object or furniture with default settings
-* **create** button is intended to create a given object, furniture
+* **calculate** button is intended to pre-calculate the remaining dimensions based on those given above this button, although in some cases you can skip this button and create an object or furniture with default settings.
+* **create** button is intended to create a given object, furniture.
 
 **Currently available solutions:**
 
+### Cabinet structure
+
 * Simple storage ( front outside, back full )
+* Simple storage ( front outside, back HDF )
+* Simple storage ( front inside, back full )
+* Simple storage ( front inside, back HDF )'),
+* Simple storage ( face frame, no front, back HDF )
 * Simple bookcase ( no front, back HDF )
-* Bookcase ( import parametric )
-* Simple drawer ( import parametric )
-* Simple chair ( import parametric )
-* Picture frame ( import parametric )
-* Simple table ( import parametric )
-* Storage box ( import parametric )
-* Dowel 8x35 mm ( import parametric )
-* Screw 4x40 mm ( import parametric )
+* Simple bookcase ( face frame, no front, back HDF )
 * Modular storage ( front outside, 3 modules )
-* Screw 3x20 mm for HDF ( import parametric )
-* Screw 5x50 mm ( import parametric )
-* Counterbore 2x 5x60 mm ( import parametric )
-* Shelf Pin 5x16 mm ( import parametric )
-* Angle 40x40x100 mm ( import parametric )
+* Bookcase ( import parametric )
+
+**Video tutorials:** 
+* [Furniture creation tool](https://www.youtube.com/watch?v=lHQ1J9Nahcs)
+* [How to build complex furniture from modules](https://www.youtube.com/watch?v=SUm_N2rjXbs)
+
+### Drawers for cabinets
+
+* Drawer with front outside
+* Drawer with front inside
+* Drawer series with front outside
+* Drawer series with front inside
+* Simple drawer ( import parametric )
+* Drawer (decoration, import parametric )
+
+**Video tutorials:** 
+* [How to create drawer at each side](https://www.youtube.com/watch?v=4qEbQQhwmns)
+* [How to make drawer series](https://www.youtube.com/watch?v=tncytX82NSY)
+* [How to connect drawer elements together](https://www.youtube.com/watch?v=FwyzZR5V05c)
+
+### Face Frame for cabinets
+
+* Face Frame outside ( frame around )
+* Face Frame outside ( frame with center )
+* Face Frame outside ( frame for custom changes )
+
+**Video tutorials:** 
+* [How to add Face Frame to the furniture](https://www.youtube.com/watch?v=CtWfvxd4UmI)
+* [Kitchen cabinet with face frame](https://www.youtube.com/watch?v=WW8du2l_ZuY)
+
+### Fronts for cabinets
+
+* Front outside
+* Front outside with glass ( simple frame )
+* Front outside with glass ( frame with decoration )
+* Front inside
+* Front inside with glass ( simple frame )
+* Front inside with glass ( frame with decoration )
+* Front left (decoration, import parametric )
+* Front right (decoration, import parametric )
+
+**Video tutorials:** 
+* [How to create front with glass](https://www.youtube.com/watch?v=csZK_k8GpnQ)
+
+### Shelves and top for cabinets
+
+* Shelf
+* Shelf series with equal space
+* Top (decoration, import parametric )
+
+**Video tutorials:** 
+* [How to create shelf inside gap](https://www.youtube.com/watch?v=zbhK4dNWQl0)
+* [How to create shelves with equal space](https://www.youtube.com/watch?v=2odJa0baGqw)
+
+### Sides for cabinets
+
+* Side
+* Center side
+
+**Video tutorials:** 
+* [How to create side anywhere](https://www.youtube.com/watch?v=IS3MDLzv6Ko)
+* [How to create center side](https://www.youtube.com/watch?v=0rSwB46ssEk)
+
+### Foot for cabinets
+
 * Foot ( good for cleaning )
 * Foot ( standard )
 * Foot ( more stable )
 * Foot ( decorated )
 * Foot ( chair style )
-* Drawer with front outside ( fit into the shelf gap )
-* Drawer with front inside ( fit into the shelf gap )
-* Front outside ( fit into gap )
-* Front inside ( fit into gap )
-* Shelf ( fit into gap )
-* Center side ( fit into gap )
-* Simple storage ( front outside, back HDF )
-* Simple storage ( front inside, back full )
-* Simple storage ( front inside, back HDF )
-* Drawer series with front outside ( fit into the shelf gap )
-* Drawer series with front inside ( fit into the shelf gap )
-* Face Frame outside ( frame around, fit into gap )
-* Face Frame outside ( frame with center, fit into gap )
-* Face Frame outside ( frame for custom changes, fit into gap )
-* Simple bookcase ( face frame, no front, back HDF )
-* Simple storage ( face frame, no front, back HDF )
-* Front outside with glass ( simple frame, fit into gap )
-* Front outside with glass ( frame with decoration, fit into gap )
-* Front inside with glass ( simple frame, fit into gap )
-* Front inside with glass ( frame with decoration, fit into gap )
-* Shelf series with equal space ( fit into gap )
-* Table ( kitchen simple style )
-* Table ( coffee simple style )
-* Table ( kitchen modern style )
-* Table ( coffee modern style )
-* Table ( kitchen decorated style )
-* Table ( coffee decorated style )
-* Side ( fit into gap )
 
 **Video tutorials:** 
-* [Furniture creation tool](https://www.youtube.com/watch?v=lHQ1J9Nahcs)
+* [How to add feet](https://www.youtube.com/watch?v=E4yfRFIqops)
+
+### Table
+
+* Table ( kitchen simple style )
+* Table ( kitchen modern style )
+* Table ( kitchen decorated style )
+* Table ( coffee simple style )
+* Table ( coffee modern style )
+* Table ( coffee decorated style )
+* Simple table ( import parametric )
+
+**Video tutorials:** 
+* [How to create table](https://www.youtube.com/watch?v=-_ePqw0f1NU)
+* [Simple table with drawers quickly](https://www.youtube.com/watch?v=0b5DRSQg52U)
+
+### Accessories - connections
+
+* Dowel 8x35 mm ( import parametric )'),
+* Biscuits 4x16x48 mm ( import parametric )
+* Biscuits 4x21x54 mm ( import parametric )
+* Biscuits 4x24x57 mm ( import parametric )
+* Screw 3x20 mm for HDF ( import parametric )
+* Screw 4x40 mm ( import parametric )
+* Screw 5x50 mm ( import parametric )
+* Pocket screw 4x40 mm ( import parametric )
+* Counterbore 2x 5x60 mm ( import parametric )
+
+**Video tutorials:** 
+* [Biscuits joints](https://www.youtube.com/watch?v=NCf07IwuRJI)
+* [How to add screws, 2 ways](https://www.youtube.com/watch?v=B0kChgAFAJU)
+* [How to add screws to HDF back](https://www.youtube.com/watch?v=MvIRFPDGKYQ)
+
+### Accessories - other
+
+* Shelf Pin 5x16 mm ( import parametric )
+* Angle 30x30x25 mm ( import parametric )
+* Angle 80x80x20 mm ( import parametric )
+* Angle 40x40x100 mm ( import parametric )
+* Simple chair ( import parametric )
+* Picture frame ( import parametric )
+* Storage box ( import parametric )
+
+**Video tutorials:** 
+* [How to add feet](https://www.youtube.com/watch?v=E4yfRFIqops)
+
+## Making panels
 
 ### Default panels
 
@@ -785,6 +872,7 @@ For manual adjust you can use:
 <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/multiPocket4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/multiPocket2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/multiPocket.png"> **Note:** This tool allows to create custom decoration from Sketches. You can select many Sketches at once. The selected Sketches will make Pockets at the first selected object. The Sketches need to be correctly aligned at the object. Hold left CTRL key during Sketches selection. For 2 and 4 variant this tool gets first selected object size and create Pocket with 1/2 thickness or 1/4 thickness.
 
 **Video tutorials:** 
+* [How to create custom decoration](https://www.youtube.com/watch?v=sZDToy3qCk4)
 * [multiPocket custom decoration](https://www.youtube.com/watch?v=FHups7Zvl5E)
 * [Future of parametric modeling](https://www.youtube.com/watch?v=0M9EW0I9iwg)
 

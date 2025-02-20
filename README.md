@@ -1,6 +1,6 @@
 # Description
 
-The main goal for this workbench is to make simpler the furniture designing process in FreeCAD.
+The program started as a simple cut list, as a macro for FreeCAD. However, Woodworking workbench now has so many features and simplifications that it can be considered as a new CAD program based only on the FreeCAD kernel. The program is mainly intended to make cabinet creation more simple, although it has many solutions to speed up and make more simple typical carpentry work and other CAD projects. I hope you will find something for yourself here.
 
 ![intro](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/intro.gif)
 
@@ -139,7 +139,7 @@ The Woodworking workbench also has an API for developers. This library contains 
 
 # Contact
 
-* For questions, feature requests, please open issue at: [github.com/dprojects/Woodworking/issues](https://github.com/dprojects/Woodworking/issues)
+For questions, feature requests, please open issue at: [github.com/dprojects/Woodworking/issues](https://github.com/dprojects/Woodworking/issues)
 
 |   |   |
 |---|---|
