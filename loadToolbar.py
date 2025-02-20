@@ -175,7 +175,8 @@ def getItems(iType):
 		
 		parts = [
 			"colorManager",
-			"setTextures"
+			"setTextures",
+			"makeBeautiful"
 		]
 
 	if iType == "Woodworking - dimensions":

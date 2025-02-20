@@ -4030,6 +4030,45 @@ FreeCADGui.addCommand("setTextures", setTextures())
 
 	
 # ######################################################################################################################
+class makeBeautiful():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "makeBeautiful.png"),
+				"MenuText": QT_TRANSLATE_NOOP("makeBeautiful", "make all objects more beautiful"),
+				"ToolTip" : QT_TRANSLATE_NOOP("makeBeautiful", "This tool change all objects to look better at the picture. It can be used to make better looking screenshot. If you click again all objects will be changed back to default settings."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "makeBeautiful"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("makeBeautiful", makeBeautiful())
+
+	
+# ######################################################################################################################
 class getDimensions():
 
 	def GetResources(self):

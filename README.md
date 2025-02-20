@@ -72,6 +72,7 @@ I don't have `Windows` or `macOS`, so I am not able to test and certify this wor
 
 	**New significant changes since the last release 0.22 stable:**
 
+	* makeBeautiful tools for screenshot purposes
 	* Move to Equal feature to set equal space between objects along X, Y or Z (magicMove)
 	* panelCopy feature improved to start at face, edge or vertex
 	* side fit into the gap, by width, by offsets, X or Y plane (magicStart)

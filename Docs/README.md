@@ -89,6 +89,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 	* [Decoration](#decoration)
 		* [colorManager](#colormanager)
 		* [setTextures](#settextures)
+		* [makeBeautiful](#makebeautiful)
 	* [Dimensions](#dimensions)
 		* [getDimensions](#getdimensions)
 		* [sheet2export](#sheet2export)
@@ -899,6 +900,12 @@ Main features:
 * Small GUI interface in corner to see 3D model refresh.
 
 Tool repository: [github.com/dprojects/setTextures](https://github.com/dprojects/setTextures)
+
+### makeBeautiful
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/makeBeautiful.png"> This tool change all objects look, make edges and vertices smaller to look better at screenshots. If you click it again all objects will be changed to default values.
+
+<br><br><br><br>
 
 ## Dimensions
 
