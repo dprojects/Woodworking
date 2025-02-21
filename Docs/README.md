@@ -6,6 +6,10 @@ Woodworking workbench has been created because of my woodworking and coding hobb
 
 Later it has been transformed into whole Woodworking workbench, I added many tools, and now Woodworking workbench has so many features and simplifications that it can be considered as a new CAD program based only on the FreeCAD kernel. It is mainly intended to make cabinet creation more simple, although it has many solutions to speed up and make more simple typical carpentry work and other CAD projects. I hope you will find something for yourself here.
 
+* [Installation](#installation)
+* [API for developers](#api-for-developers)
+* [Translations](#translations)
+* [Extras](#extras)
 * [Main features](#main-features)
 	* [magicStart](#magicstart)
 		* [Cabinet structure](#cabinet-structure)
@@ -110,6 +114,8 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 		* [selected2Link](#selected2link)
 		* [selected2Group](#selected2group)
 		* [selected2Outside](#selected2outside)
+* [Objects](#objects)
+* [Workflow](#workflow)
 * [How to use containers](#how-to-use-containers)
 * [Dowels, Screws, Fixture](#dowels-screws-fixture)
 * [Holes, Countersinks, Counterbores](#holes-countersinks-counterbores)
@@ -127,6 +133,106 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 	* [Counterbore 2x with bolt](#counterbore-2x-with-bolt)
 * [Raw wood, Lumber](#raw-wood-lumber)
 	* [Glued table top](#glued-table-top)
+
+# Installation
+
+**Step 0. Install correct FreeCAD version:**
+
+* Recommended version for Xubuntu: [FreeCAD-0.21.2-Linux-x86_64.AppImage](https://github.com/FreeCAD/FreeCAD/releases/download/0.21.2/FreeCAD-0.21.2-Linux-x86_64.AppImage)
+* For other operating systems download and install: [FreeCAD 0.21.2](https://github.com/FreeCAD/FreeCAD/releases/tag/0.21.2)
+
+**Note:** 
+
+I don't have `Windows` or `macOS`, so I am not able to test and certify this workbench for those systems. However, if you use `FreeCAD AppImage` there is a good chance this will be working correctly.
+
+**Step 1. Download Woodworking workbench:**
+
+* Stable certified versions download at: [Woodworking/releases](https://github.com/dprojects/Woodworking/releases)
+* For cutting edge features download: [the master branch](https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip) or run command:
+	
+		git clone https://github.com/dprojects/Woodworking.git
+
+	**New significant changes since the last release 0.22 stable:**
+
+	* makeBeautiful tool for screenshot purposes
+	* Move to Equal feature to set equal space between objects along X, Y or Z (magicMove)
+	* panelCopy feature improved to start at face, edge or vertex
+	* side fit into the gap, by width, by offsets, X or Y plane (magicStart)
+	* table solutions, kitchen or coffee, simple, modern and decorated style (magicStart)
+	* shelvesEqual tool to set equal space between existing shelves
+	* panelMove2Face improve to adjust position with object size
+	* shelf series to create shelves into gap with equal space (magicStart)
+	* front with glass, simple and decorated, outside or inside, fit into gap (magicStart)
+	* improve magicMeasure (new GUI, descriptions, auto preselection recognize, vertices size)
+	* face frame (around, with center bar, with horizontal bar) and predefined furniture (magicStart)
+	* tool to quickly add or remove expressions for position and size (magicGlue)
+	* drawer series feature to create many drawers at once (magicStart)
+	* magicMove improvements (container, auto object type, translation, cross save, fixes)
+	* add edge, face, vertex reference to Mirror feature (magicMove)
+	* feature Copy by Edge to copy part of the furniture (magicMove)
+	* new laveder color for API inspection tool (scanObjects)
+	* building complex furniture from modules by selected edge, face, vertex or custom offset (magicStart)
+	* center side for selected gap by depth, by offsets, custom offsets, automatically adjusted (magicStart)
+	* shelf for selected gap by depth, by offsets, custom offsets, automatically adjusted (magicStart)
+	* front outside or inside for selected gap (magicStart)
+	* drawer with front outside or inside for selected gap (magicStart)
+	* foot solutions (magicStart)
+	* magicDowels improved (GUI redesign, position autodetect, keep settings, menu translation, fixes)
+	* magicStart tool to create & import furniture, fixture, drawers, ...
+
+**Step 2. Get FreeCAD Mod folder localization:**
+
+* From FreeCAD python console run command:
+
+		FreeCAD.ConfigDump()["UserAppData"]
+
+* If there is no `Mod` folder, create it.
+
+**Step 3. Install Woodworking workbench:**
+
+* Go to FreeCAD `Mod` folder, for example, in Xubuntu operating system:
+
+		cd  ~/.local/share/FreeCAD/Mod/
+
+* Unpack woodworking workbench, if needed, and copy `Woodworking` folder directly to `Mod` folder. This should be:
+
+		~/.local/share/FreeCAD/Mod/Woodworking/
+
+**Note:**
+
+* You can update this workbench later via [debuginfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool.
+* To get better stability make sure your current Woodworking workbench version has always the same prefix version number as the FreeCAD version. You can also verify this via [debuginfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool. 
+
+# API for developers
+
+The Woodworking workbench also has an API for developers. This library contains functions that [solve the Topology Naming Problem](https://wiki.freecad.org/Macro_TNP_Solution). You can also leaglly create your own tools and extend the workbench in your private repository in accordance with the MIT license:
+	
+* **View library API documentation:** [MagicPanelsAPI.md](https://github.com/dprojects/Woodworking/blob/master/Docs/MagicPanelsAPI.md)
+* **View library code:** [MagicPanels.py](https://github.com/dprojects/Woodworking/blob/master/Tools/MagicPanels/MagicPanels.py)
+* **Download & install library:** [raw version](https://raw.githubusercontent.com/dprojects/Woodworking/master/Tools/MagicPanels/MagicPanels.py)
+
+**Note:**
+
+* If you have Woodworking workbench installed you don't have to install the `MagicPanels` library manaually. Also you can view the library directly from Woodworking workbench via: [scanObjects](https://github.com/dprojects/Woodworking/tree/master/Docs#scanobjects) tool.
+* For programming I use simple [Krusader](https://en.wikipedia.org/wiki/Krusader) with `F4` [KWrite](https://en.wikipedia.org/wiki/KWrite) editor. I have set tabulators as indent: `Settings` -> `Configure Editor` -> `Editing` -> `Indentation` -> `Tabulators` -> `Tab width: 4 characters`.
+
+# Translations
+
+Currently there are no translations available. However, the code is ready for translations. 
+
+The transformations are developed at [github.com/dprojects/Woodworking-translations](https://github.com/dprojects/Woodworking-translations) repository and in my opinion should be created only for [Woodworking workbench releases](https://github.com/dprojects/Woodworking/releases). This approach allows the translator community to work without time pressure and independently of the development of the main branch, because the code of stable releases will not be changed. 
+
+Since Woodworking workbench release 0.22 there is `translations update tool` available under drop down menu `Woodworking -> Download and update all translations`. This tool will automatically download all available `.qm` files into `translations` folder for you Woodworking workbench release.
+
+Of course, if someone is interested in doing a translation, please contact me, because I personally do not know all the possible languages ​​and I can only do a translation into Polish.
+
+# Extras
+
+This woodworking workbench is delivered with several useful extras:
+
+* [Fully parametric examples](https://github.com/dprojects/Woodworking/tree/master/Examples/Parametric) - this folder inside woodworking workbench contains sample furniture projects. All of the furniture examples are parametric. So, you can quickly adopt it to your current project, without designing e.g. bookcase from scratch. You can also add decoration, if needed, or even merge with other projects.
+* [Fixture examples](https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture) - this is new approach to 3D modeling. For example you can replace any Cylinder with realistic looking detailed screw. This is very powerful feature and gives a lot of flexibility and simplifies the process of making model detailed.
+* [Texture samples](https://commons.wikimedia.org/w/index.php?title=Special:ListFiles/Dprojects&ilshowall=1) - sample textures for woodworking projects purposes.
 
 # Main features
 
@@ -1151,6 +1257,18 @@ Main features:
 * [Boolean cut with containers](https://www.youtube.com/watch?v=OVwazL8MQwI)
 
 <br><br><br>
+
+# Objects
+
+Woodworking workbench does not create any specific objects. Objects created by Woodworking workbench can be further processed using standard FreeCAD tools.
+
+# Workflow
+
+Woodworking workbench does not have a pre-defined workflow. It is just a set of additional tools that you can use to make your work easier.
+
+The general rule of FreeCAD is that you create an object in Sketch and then assemble the objects using Assembly. However, in the case of cabinets where each board is practically the same, it makes no sense to draw each board from scratch in Sketch, save it in a separate file and then assemble it. Of course, if someone wants to do it in this way, they can do this.
+
+I personally design furniture structures directly. The techniques I show also allow you to avoid problems caused by Sketch or PartDesign objects, and FreeCAD bugs in general.
 
 # How to use containers
 
