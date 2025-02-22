@@ -1127,7 +1127,7 @@ This tool allows you to quickly measure objects. All measurements are recognized
 **Options:**
 
 * **Glue position:** This option allows you to glue position of target objects to the source object position.
-  * `set` **for source** allows you to add source object postition. The source can be vertex or face. For vertex the `XYZ` placement will be get as reference point. For face the `CenterOfMass` will be the reference point, so you need to be careful with linking to this face source because the `CenterOfMass` move `1/2` of the object move way. However it can be used to glue object to the center, for example center furniture side.
+  * `set` **for source** allows you to add source object position. The source can be vertex or face. For vertex the `XYZ` placement will be get as reference point. For face the `CenterOfMass` will be the reference point, so you need to be careful with linking to this face source because the `CenterOfMass` move `1/2` of the object move way. However it can be used to glue object to the center, for example center furniture side.
   * `set` **for target** allows you to add target objects to set expressions. If the object is Cube `Part::Box` the expression will be set at `Placement` of the `Cube`. If the object is Pad `PartDesign::Pad` the expression will be set at `Placement` of its `Body`.
   * `refresh all selection` allows you to add quickly source and targets. First selected vertex or face will be the source and all other objects will be considered as targets to set expressions. Also this is default init option, for example if you select vertex and 2 objects and open the tool this will be ready to set glue position.
   * `add glue` for `X` direction allows you to add expression for moving objects along `X` axis.
@@ -1135,7 +1135,7 @@ This tool allows you to quickly measure objects. All measurements are recognized
   * `add glue` for `Z` direction allows you to add expression for moving objects along `Z` axis.
 
 * **Glue size:** 
-  * `set` **for source** allows you to add source object postition. The source can be edge. The selected `edge.Length` will be the reference point.
+  * `set` **for source** allows you to add source object position. The source can be edge. The selected `edge.Length` will be the reference point.
   * `set` **for target** allows you to add target objects to set expressions. The selected objects should be edges. 
     * If the object is Cube `Part::Box` the expression will be set to `Length` or `Width` or `Height` of the `Cube` according to the selected edge plane. 
     * If the object is Pad `PartDesign::Pad` the expression will be set at `Length` property or `Sketch` constraints.

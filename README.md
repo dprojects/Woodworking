@@ -11,7 +11,7 @@ The program started as a simple cut list, as a macro for FreeCAD. However, Woodw
 * **Step 2:** Unpack Woodworking workbench to `Mod` folder, the `README.md` file should be: `~/.local/share/FreeCAD/Mod/Woodworking/README.md`.
 * **Step 3:** Start `FreeCAD-0.21.2-Linux-x86_64.AppImage` file or FreeCAD in other OS.
 
-Form more details see: [Woodworking workbench documentation](https://github.com/dprojects/Woodworking/tree/master/Docs#installation)
+For more details see: [Woodworking workbench documentation](https://github.com/dprojects/Woodworking/tree/master/Docs#installation)
 
 # Documentation
 
@@ -36,7 +36,6 @@ Form more details see: [Woodworking workbench documentation](https://github.com/
 
 For questions, feature requests, please open issue at: [github.com/dprojects/Woodworking/issues](https://github.com/dprojects/Woodworking/issues)
 
-# Sample screenshots
 
 |   |   |
 |---|---|

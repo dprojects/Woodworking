@@ -161,7 +161,6 @@ sQT = "yes"
 gDEBUG = 0
 gDebugLoop = False
 
-
 # ###################################################################################################################
 # Autoconfig - define globals ( NOT CHANGE HERE )
 # ###################################################################################################################
@@ -2653,6 +2652,10 @@ def getInheritedVisibility(iObj, iCaller="getInheritedVisibility"):
 				
 				if o.Visibility == False:
 					v = False
+					
+					# first hidden LinkGroup
+					if o.isDerivedFrom("App::LinkGroup"):
+						return False
 				else:
 					v = True
 

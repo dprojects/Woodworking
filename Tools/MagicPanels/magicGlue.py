@@ -560,7 +560,7 @@ def showQtGUI():
 						expr += ".Shape.Faces[" + str(subArrIndex) + "].CenterOfMass.x"
 					
 					if sub.ShapeType == "Vertex":
-						expr += ".Shape.Vertexes[" + str(subArrIndex) + "].X"
+						expr += ".Shape.Vertex"+"es[" + str(subArrIndex) + "].X"
 					
 					if opx > sX:
 						expr += " + " + str(offset)
@@ -580,7 +580,7 @@ def showQtGUI():
 						expr += ".Shape.Faces[" + str(subArrIndex) + "].CenterOfMass.y"
 					
 					if sub.ShapeType == "Vertex":
-						expr += ".Shape.Vertexes[" + str(subArrIndex) + "].Y"
+						expr += ".Shape.Vertex"+"es[" + str(subArrIndex) + "].Y"
 					
 					if opy > sY:
 						expr += " + " + str(offset)
@@ -600,7 +600,7 @@ def showQtGUI():
 						expr += ".Shape.Faces[" + str(subArrIndex) + "].CenterOfMass.z"
 					
 					if sub.ShapeType == "Vertex":
-						expr += ".Shape.Vertexes[" + str(subArrIndex) + "].Z"
+						expr += ".Shape.Vertex"+"es[" + str(subArrIndex) + "].Z"
 					
 					if opz > sZ:
 						expr += " + " + str(offset)
