@@ -70,7 +70,11 @@ getMenuIndex = {
 	translate('magicStart', 'Front right (decoration, import parametric )'): 55, 
 	translate('magicStart', 'Front left (decoration, import parametric )'): 56, 
 	translate('magicStart', 'Top (decoration, import parametric )'): 57, 
-	translate('magicStart', 'Drawer (decoration, import parametric )'): 58 # no comma 
+	translate('magicStart', 'Drawer (decoration, import parametric )'): 58, 
+	translate('magicStart', 'Front outside ( decorative )'): 59, 
+	translate('magicStart', 'Front inside ( decorative )'): 60, 
+	translate('magicStart', 'Front decoration ( simple frame )'): 61, 
+	translate('magicStart', 'Side decoration ( simple frame )'): 62 # no comma 
 }
 
 # ############################################################################
@@ -519,6 +523,131 @@ def showQtGUI():
 		gHelpInfoF48 += '</ul>'
 
 		# ############################################################################
+		gHelpInfoF59 = "" 
+		gHelpInfoF59 += translate('magicStart', 'To pre-calculate the starting point for the Decorative front and its dimensions, make selection, fill in the required fields and press the "calculate decorative front" button.')
+		gHelpInfoF59 += '<ul>'
+		gHelpInfoF59 += '<li><b>'
+		gHelpInfoF59 += translate('magicStart', 'X bottom edge') + '</b>: '
+		gHelpInfoF59 += translate('magicStart', 'means the inner bottom edge of the space, in line with the X coordinate axis.')
+		gHelpInfoF59 += '</li>'
+		gHelpInfoF59 += '<li><b>'
+		gHelpInfoF59 += translate('magicStart', 'X top edge') + '</b>: '
+		gHelpInfoF59 += translate('magicStart', 'means the inner top edge of the space, in line with the X coordinate axis.')
+		gHelpInfoF59 += '</li>'
+		gHelpInfoF59 += '<li><b>'
+		gHelpInfoF59 += translate('magicStart', 'Z left edge') + '</b>: '
+		gHelpInfoF59 += translate('magicStart', 'means the inner left edge of the space, in line with the Z coordinate axis.')
+		gHelpInfoF59 += '</li>'
+		gHelpInfoF59 += '<li><b>'
+		gHelpInfoF59 += translate('magicStart', 'Z right edge') + '</b>: '
+		gHelpInfoF59 += translate('magicStart', 'means the inner right edge of the space, in line with the Z coordinate axis.')
+		gHelpInfoF59 += '</li>'
+		gHelpInfoF59 += '<li><b>'
+		gHelpInfoF59 += translate('magicStart', 'Single beam thickness') + '</b>: '
+		gHelpInfoF59 += translate('magicStart', 'means the thickness of the beam of the frame, in line with the Y coordinate axis.')
+		gHelpInfoF59 += '</li>'
+		gHelpInfoF59 += '<li><b>'
+		gHelpInfoF59 += translate('magicStart', 'Front overlap horizontal') + '</b>: '
+		gHelpInfoF59 += translate('magicStart', 'in the case of an outside front, this is the width by which the front will overlap the furniture elements. If the front is to cover the entire surface, set the same value as "Single beam thickness".')
+		gHelpInfoF59 += '</li>'
+		gHelpInfoF59 += '<li><b>'
+		gHelpInfoF59 += translate('magicStart', 'Front overlap vertical') + '</b>: '
+		gHelpInfoF59 += translate('magicStart', 'in the case of an outside front, this is the height by which the front will overlap the furniture elements. If the front is to cover the entire surface, set the same value as "Single beam thickness".')
+		gHelpInfoF59 += '</li>'
+		gHelpInfoF59 += '<li><b>'
+		gHelpInfoF59 += translate('magicStart', 'Front offset horizontal') + '</b>: '
+		gHelpInfoF59 += translate('magicStart', 'in the case of an inside front, this is the width of the gap between the front frame and the furniture elements.')
+		gHelpInfoF59 += '</li>'
+		gHelpInfoF59 += '<li><b>'
+		gHelpInfoF59 += translate('magicStart', 'Front offset vertical') + '</b>: '
+		gHelpInfoF59 += translate('magicStart', 'in the case of an inside front, this is the height of the gap between the front frame and the furniture elements.')
+		gHelpInfoF59 += '</li>'
+		gHelpInfoF59 += '<li><b>'
+		gHelpInfoF59 += translate('magicStart', 'Inner board thickness') + '</b>: '
+		gHelpInfoF59 += translate('magicStart', 'means the thickness of the board inside the frame, in line with the Y coordinate axis.')
+		gHelpInfoF59 += '</li>'
+		gHelpInfoF59 += '</ul>'
+		gHelpInfoF59 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
+
+		# ############################################################################
+		gHelpInfoF61 = "" 
+		gHelpInfoF61 += translate('magicStart', 'To pre-calculate the starting point for the Front decoration and its dimensions, make selection, fill in the required fields and press the "calculate front decoration" button.')
+		gHelpInfoF61 += '<ul>'
+		gHelpInfoF61 += '<li><b>'
+		gHelpInfoF61 += translate('magicStart', 'XZ face of front') + '</b>: '
+		gHelpInfoF61 += translate('magicStart', 'means the front surface where you want to place the decoration, in line with the X and Z coordinate axes.')
+		gHelpInfoF61 += '</li>'
+		gHelpInfoF61 += '<li><b>'
+		gHelpInfoF61 += translate('magicStart', 'X bottom edge') + '</b>: '
+		gHelpInfoF61 += translate('magicStart', 'means the bottom edge of the front where you want to place the decoration, in line with the X coordinate axis.')
+		gHelpInfoF61 += '</li>'
+		gHelpInfoF61 += '<li><b>'
+		gHelpInfoF61 += translate('magicStart', 'X top edge') + '</b>: '
+		gHelpInfoF61 += translate('magicStart', 'means the top edge of the front where you want to place the decoration, in line with the X coordinate axis.')
+		gHelpInfoF61 += '</li>'
+		gHelpInfoF61 += '<li><b>'
+		gHelpInfoF61 += translate('magicStart', 'Z left edge') + '</b>: '
+		gHelpInfoF61 += translate('magicStart', 'means the left edge of the front where you want to place the decoration, in line with the Z coordinate axis.')
+		gHelpInfoF61 += '</li>'
+		gHelpInfoF61 += '<li><b>'
+		gHelpInfoF61 += translate('magicStart', 'Z right edge') + '</b>: '
+		gHelpInfoF61 += translate('magicStart', 'means the right edge of the front where you want to place the decoration, in line with the Z coordinate axis.')
+		gHelpInfoF61 += '</li>'
+		gHelpInfoF61 += '<li><b>'
+		gHelpInfoF61 += translate('magicStart', 'Single bar width') + '</b>: '
+		gHelpInfoF61 += translate('magicStart', 'means the width of the beam of the frame, in line with the X or Z coordinate axis.')
+		gHelpInfoF61 += '</li>'
+		gHelpInfoF61 += '<li><b>'
+		gHelpInfoF61 += translate('magicStart', 'Single bar thickness') + '</b>: '
+		gHelpInfoF61 += translate('magicStart', 'means the thickness of the beam of the frame, in line with the Y coordinate axis.')
+		gHelpInfoF61 += '</li>'
+		gHelpInfoF61 += '<li><b>'
+		gHelpInfoF61 += translate('magicStart', 'Offset from edge') + '</b>: '
+		gHelpInfoF61 += translate('magicStart', 'this is the distance of the decoration from the selected edges of the front towards the inside of the front.')
+		gHelpInfoF61 += '</li>'
+		gHelpInfoF61 += '</ul>'
+		gHelpInfoF61 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
+
+		# ############################################################################
+		gHelpInfoF62 = "" 
+		gHelpInfoF62 += translate('magicStart', 'To pre-calculate the starting point for the Side decoration and its dimensions, make selection, fill in the required fields and press the "calculate side decoration" button.')
+		gHelpInfoF62 += '<ul>'
+		gHelpInfoF62 += '<li><b>'
+		gHelpInfoF62 += translate('magicStart', 'YZ face of side') + '</b>: '
+		gHelpInfoF62 += translate('magicStart', 'means the side surface where you want to place the decoration, in line with the Y and Z coordinate axes.')
+		gHelpInfoF62 += '</li>'
+		gHelpInfoF62 += '<li><b>'
+		gHelpInfoF62 += translate('magicStart', 'Y bottom edge') + '</b>: '
+		gHelpInfoF62 += translate('magicStart', 'means the bottom edge of the side where you want to place the decoration, in line with the Y coordinate axis.')
+		gHelpInfoF62 += '</li>'
+		gHelpInfoF62 += '<li><b>'
+		gHelpInfoF62 += translate('magicStart', 'Y top edge') + '</b>: '
+		gHelpInfoF62 += translate('magicStart', 'means the top edge of the side where you want to place the decoration, in line with the Y coordinate axis.')
+		gHelpInfoF62 += '</li>'
+		gHelpInfoF62 += '<li><b>'
+		gHelpInfoF62 += translate('magicStart', 'Z left edge') + '</b>: '
+		gHelpInfoF62 += translate('magicStart', 'means the left edge of the side where you want to place the decoration, in line with the Z coordinate axis.')
+		gHelpInfoF62 += '</li>'
+		gHelpInfoF62 += '<li><b>'
+		gHelpInfoF62 += translate('magicStart', 'Z right edge') + '</b>: '
+		gHelpInfoF62 += translate('magicStart', 'means the right edge of the side where you want to place the decoration, in line with the Z coordinate axis.')
+		gHelpInfoF62 += '</li>'
+		gHelpInfoF62 += '<li><b>'
+		gHelpInfoF62 += translate('magicStart', 'Single bar width') + '</b>: '
+		gHelpInfoF62 += translate('magicStart', 'means the width of the beam of the frame, in line with the Y or Z coordinate axis.')
+		gHelpInfoF62 += '</li>'
+		gHelpInfoF62 += '<li><b>'
+		gHelpInfoF62 += translate('magicStart', 'Single bar thickness') + '</b>: '
+		gHelpInfoF62 += translate('magicStart', 'means the thickness of the beam of the frame, in line with the X coordinate axis.')
+		gHelpInfoF62 += '</li>'
+		gHelpInfoF62 += '<li><b>'
+		gHelpInfoF62 += translate('magicStart', 'Offset from edge') + '</b>: '
+		gHelpInfoF62 += translate('magicStart', 'this is the distance of the decoration from the selected edges of the side towards the inside of the side.')
+		gHelpInfoF62 += '</li>'
+		gHelpInfoF62 += '</ul>'
+		gHelpInfoF62 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
+		
+		# ############################################################################
 		# init
 		# ############################################################################
 
@@ -577,15 +706,19 @@ def showQtGUI():
 				translate('magicStart', 'Face Frame outside ( frame with center )'), 
 				translate('magicStart', 'Face Frame outside ( frame for custom changes )'), 
 				translate('magicStart', 'Front outside'), 
+				translate('magicStart', 'Front outside ( decorative )'), 
 				translate('magicStart', 'Front outside with glass ( simple frame )'), 
 				translate('magicStart', 'Front outside with glass ( frame with decoration )'), 
 				translate('magicStart', 'Front inside'), 
+				translate('magicStart', 'Front inside ( decorative )'), 
 				translate('magicStart', 'Front inside with glass ( simple frame )'), 
 				translate('magicStart', 'Front inside with glass ( frame with decoration )'), 
+				translate('magicStart', 'Front decoration ( simple frame )'), 
 				translate('magicStart', 'Shelf'), 
 				translate('magicStart', 'Shelf series with equal space'), 
 				translate('magicStart', 'Side'), 
 				translate('magicStart', 'Center side'), 
+				translate('magicStart', 'Side decoration ( simple frame )'), 
 				translate('magicStart', 'Foot ( good for cleaning )'), 
 				translate('magicStart', 'Foot ( standard )'), 
 				translate('magicStart', 'Foot ( more stable )'), 
@@ -676,12 +809,15 @@ def showQtGUI():
 			rowtbl = row - 20
 			rowfront = row
 			rowfglass = row - 20
+			rowfdec = row - 20
+			rowodf = row - 20
 			rowfframe = row - 20
 			rowshelf = row
 			rowsseries = row - 20
 			rowcside = row
 			rowside = row - 20
-
+			rowsdec = row - 20
+			
 			# ############################################################################
 			# selection icon
 			# ############################################################################
@@ -1798,6 +1934,304 @@ def showQtGUI():
 			self.ofglass11B.hide()
 			
 			# ############################################################################
+			# GUI for Decorative front (hidden by default)
+			# ############################################################################
+
+			# label
+			info = translate('magicStart', 'Please select 4 edges around the gap to calculate decorative front: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
+			self.odf1i = QtGui.QLabel(info, self)
+			self.odf1i.move(10, rowodf+3)
+			self.odf1i.setFixedWidth(200)
+			self.odf1i.setWordWrap(True)
+			self.odf1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			
+			rowodf += 120
+			
+			# label
+			self.odf2L = QtGui.QLabel(translate('magicStart', 'Single beam thickness:'), self)
+			self.odf2L.setFixedWidth(160)
+			self.odf2L.move(10, rowodf+3)
+			
+			# text input
+			self.odf2E = QtGui.QLineEdit(self)
+			self.odf2E.setText("18")
+			self.odf2E.setFixedWidth(90)
+			self.odf2E.move(170, rowodf)
+			
+			rowodf += 30
+			
+			# label
+			self.odf3L = QtGui.QLabel(translate('magicStart', 'Front overlap horizontal:'), self)
+			self.odf3L.setFixedWidth(160)
+			self.odf3L.move(10, rowodf+3)
+
+			# text input
+			self.odf3E = QtGui.QLineEdit(self)
+			self.odf3E.setText("0")
+			self.odf3E.setFixedWidth(90)
+			self.odf3E.move(170, rowodf)
+		
+			rowodf += 30
+
+			# label
+			self.odf4L = QtGui.QLabel(translate('magicStart', 'Front overlap vertical:'), self)
+			self.odf4L.setFixedWidth(160)
+			self.odf4L.move(10, rowodf+3)
+
+			# text input
+			self.odf4E = QtGui.QLineEdit(self)
+			self.odf4E.setText("0")
+			self.odf4E.setFixedWidth(90)
+			self.odf4E.move(170, rowodf)
+			
+			rowodf += 30
+			
+			# label
+			self.odf5L = QtGui.QLabel(translate('magicStart', 'Inner board thickness:'), self)
+			self.odf5L.setFixedWidth(160)
+			self.odf5L.move(10, rowodf+3)
+
+			# text input
+			self.odf5E = QtGui.QLineEdit(self)
+			self.odf5E.setText("6")
+			self.odf5E.setFixedWidth(90)
+			self.odf5E.move(170, rowodf)
+			
+			rowodf += 40
+			
+			# button
+			self.odf6B = QtGui.QPushButton(translate('magicStart', 'calculate decorative front'), self)
+			self.odf6B.clicked.connect(self.calculateDecorativeFront)
+			self.odf6B.setFixedWidth(200)
+			self.odf6B.setFixedHeight(40)
+			self.odf6B.move(10, rowodf)
+			
+			rowodf += 80
+			
+			# label
+			self.odf7L = QtGui.QLabel(translate('magicStart', 'Front start XYZ:'), self)
+			self.odf7L.move(10, rowodf+3)
+			
+			# text input
+			self.odf71E = QtGui.QLineEdit(self)
+			self.odf71E.setText("0")
+			self.odf71E.setFixedWidth(90)
+			self.odf71E.move(120, rowodf)
+			
+			# text input
+			self.odf72E = QtGui.QLineEdit(self)
+			self.odf72E.setText("0")
+			self.odf72E.setFixedWidth(90)
+			self.odf72E.move(220, rowodf)
+			
+			# text input
+			self.odf73E = QtGui.QLineEdit(self)
+			self.odf73E.setText("0")
+			self.odf73E.setFixedWidth(90)
+			self.odf73E.move(320, rowodf)
+			
+			rowodf += 30
+			
+			# label
+			self.odf8L = QtGui.QLabel(translate('magicStart', 'Calculated single beam width:'), self)
+			self.odf8L.move(10, rowodf+3)
+			
+			# text input
+			self.odf8E = QtGui.QLineEdit(self)
+			self.odf8E.setText("0")
+			self.odf8E.setFixedWidth(90)
+			self.odf8E.move(220, rowodf)
+			
+			rowodf += 30
+			
+			# label
+			self.odf9L = QtGui.QLabel(translate('magicStart', 'Calculated front width:'), self)
+			self.odf9L.move(10, rowodf+3)
+			
+			# text input
+			self.odf9E = QtGui.QLineEdit(self)
+			self.odf9E.setText("0")
+			self.odf9E.setFixedWidth(90)
+			self.odf9E.move(220, rowodf)
+			
+			rowodf += 30
+			
+			# label
+			self.odf10L = QtGui.QLabel(translate('magicStart', 'Calculated front height:'), self)
+			self.odf10L.move(10, rowodf+3)
+
+			# text input
+			self.odf10E = QtGui.QLineEdit(self)
+			self.odf10E.setText("0")
+			self.odf10E.setFixedWidth(90)
+			self.odf10E.move(220, rowodf)
+		
+			rowodf += 40
+
+			# button
+			self.odf11B = QtGui.QPushButton(translate('magicStart', 'create'), self)
+			self.odf11B.clicked.connect(self.createObject)
+			self.odf11B.setFixedWidth(self.toolSW - 20)
+			self.odf11B.setFixedHeight(createSize)
+			self.odf11B.move(10, createRow)
+
+			# hide by default
+			self.odf1i.hide()
+			self.odf2L.hide()
+			self.odf2E.hide()
+			self.odf3L.hide()
+			self.odf3E.hide()
+			self.odf4L.hide()
+			self.odf4E.hide()
+			self.odf5L.hide()
+			self.odf5E.hide()
+			self.odf6B.hide()
+			self.odf7L.hide()
+			self.odf71E.hide()
+			self.odf72E.hide()
+			self.odf73E.hide()
+			self.odf8L.hide()
+			self.odf8E.hide()
+			self.odf9L.hide()
+			self.odf9E.hide()
+			self.odf10L.hide()
+			self.odf10E.hide()
+			self.odf11B.hide()
+			
+			# ############################################################################
+			# GUI for Front decoration (hidden by default)
+			# ############################################################################
+
+			# label
+			info = translate('magicStart', 'Please select face or 4 edges around the front to calculate Front decoration: <br><br> 1. selection - XZ face of front<br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
+			self.ofdec1i = QtGui.QLabel(info, self)
+			self.ofdec1i.move(10, rowfdec+3)
+			self.ofdec1i.setFixedWidth(200)
+			self.ofdec1i.setWordWrap(True)
+			self.ofdec1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			
+			rowfdec += 170
+			
+			# label
+			self.ofdec2L = QtGui.QLabel(translate('magicStart', 'Single bar width:'), self)
+			self.ofdec2L.move(10, rowfdec+3)
+			
+			# text input
+			self.ofdec2E = QtGui.QLineEdit(self)
+			self.ofdec2E.setText("25")
+			self.ofdec2E.setFixedWidth(90)
+			self.ofdec2E.move(150, rowfdec)
+			
+			rowfdec += 30
+			
+			# label
+			self.ofdec3L = QtGui.QLabel(translate('magicStart', 'Single bar thickness:'), self)
+			self.ofdec3L.move(10, rowfdec+3)
+
+			# text input
+			self.ofdec3E = QtGui.QLineEdit(self)
+			self.ofdec3E.setText("20")
+			self.ofdec3E.setFixedWidth(90)
+			self.ofdec3E.move(150, rowfdec)
+		
+			rowfdec += 30
+
+			# label
+			self.ofdec4L = QtGui.QLabel(translate('magicStart', 'Offset from edge:'), self)
+			self.ofdec4L.move(10, rowfdec+3)
+
+			# text input
+			self.ofdec4E = QtGui.QLineEdit(self)
+			self.ofdec4E.setText("50")
+			self.ofdec4E.setFixedWidth(90)
+			self.ofdec4E.move(150, rowfdec)
+			
+			rowfdec += 40
+			
+			# button
+			self.ofdec5B = QtGui.QPushButton(translate('magicStart', 'calculate front decoration'), self)
+			self.ofdec5B.clicked.connect(self.calculateFrontDecoration)
+			self.ofdec5B.setFixedWidth(200)
+			self.ofdec5B.setFixedHeight(40)
+			self.ofdec5B.move(10, rowfdec)
+			
+			rowfdec += 80
+			
+			# label
+			self.ofdec6L = QtGui.QLabel(translate('magicStart', 'Start XYZ:'), self)
+			self.ofdec6L.move(10, rowfdec+3)
+			
+			# text input
+			self.ofdec61E = QtGui.QLineEdit(self)
+			self.ofdec61E.setText("0")
+			self.ofdec61E.setFixedWidth(90)
+			self.ofdec61E.move(120, rowfdec)
+			
+			# text input
+			self.ofdec62E = QtGui.QLineEdit(self)
+			self.ofdec62E.setText("0")
+			self.ofdec62E.setFixedWidth(90)
+			self.ofdec62E.move(220, rowfdec)
+			
+			# text input
+			self.ofdec63E = QtGui.QLineEdit(self)
+			self.ofdec63E.setText("0")
+			self.ofdec63E.setFixedWidth(90)
+			self.ofdec63E.move(320, rowfdec)
+			
+			rowfdec += 30
+			
+			# label
+			self.ofdec7L = QtGui.QLabel(translate('magicStart', 'Calculated decoration width:'), self)
+			self.ofdec7L.move(10, rowfdec+3)
+			
+			# text input
+			self.ofdec7E = QtGui.QLineEdit(self)
+			self.ofdec7E.setText("0")
+			self.ofdec7E.setFixedWidth(90)
+			self.ofdec7E.move(220, rowfdec)
+			
+			rowfdec += 30
+			
+			# label
+			self.ofdec8L = QtGui.QLabel(translate('magicStart', 'Calculated decoration height:'), self)
+			self.ofdec8L.move(10, rowfdec+3)
+
+			# text input
+			self.ofdec8E = QtGui.QLineEdit(self)
+			self.ofdec8E.setText("0")
+			self.ofdec8E.setFixedWidth(90)
+			self.ofdec8E.move(220, rowfdec)
+		
+			rowfdec += 40
+
+			# button
+			self.ofdec9B = QtGui.QPushButton(translate('magicStart', 'create'), self)
+			self.ofdec9B.clicked.connect(self.createObject)
+			self.ofdec9B.setFixedWidth(self.toolSW - 20)
+			self.ofdec9B.setFixedHeight(createSize)
+			self.ofdec9B.move(10, createRow)
+
+			# hide by default
+			self.ofdec1i.hide()
+			self.ofdec2L.hide()
+			self.ofdec2E.hide()
+			self.ofdec3L.hide()
+			self.ofdec3E.hide()
+			self.ofdec4L.hide()
+			self.ofdec4E.hide()
+			self.ofdec5B.hide()
+			self.ofdec6L.hide()
+			self.ofdec61E.hide()
+			self.ofdec62E.hide()
+			self.ofdec63E.hide()
+			self.ofdec7L.hide()
+			self.ofdec7E.hide()
+			self.ofdec8L.hide()
+			self.ofdec8E.hide()
+			self.ofdec9B.hide()
+
+			# ############################################################################
 			# GUI for Face Frame from GAP (hidden by default)
 			# ############################################################################
 
@@ -2618,6 +3052,139 @@ def showQtGUI():
 			self.ocs8B1.hide()
 			
 			# ############################################################################
+			# GUI for Side decoration (hidden by default)
+			# ############################################################################
+
+			# label
+			info = translate('magicStart', 'Please select face or 4 edges around the side to calculate Side decoration: <br><br> 1. selection - YZ face of side <br><br> 1. selection - Y bottom edge <br> 2. selection - Y top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
+			self.osdec1i = QtGui.QLabel(info, self)
+			self.osdec1i.move(10, rowsdec+3)
+			self.osdec1i.setFixedWidth(200)
+			self.osdec1i.setWordWrap(True)
+			self.osdec1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			
+			rowsdec += 170
+			
+			# label
+			self.osdec2L = QtGui.QLabel(translate('magicStart', 'Single bar width:'), self)
+			self.osdec2L.move(10, rowsdec+3)
+			
+			# text input
+			self.osdec2E = QtGui.QLineEdit(self)
+			self.osdec2E.setText("25")
+			self.osdec2E.setFixedWidth(90)
+			self.osdec2E.move(150, rowsdec)
+			
+			rowsdec += 30
+			
+			# label
+			self.osdec3L = QtGui.QLabel(translate('magicStart', 'Single bar thickness:'), self)
+			self.osdec3L.move(10, rowsdec+3)
+
+			# text input
+			self.osdec3E = QtGui.QLineEdit(self)
+			self.osdec3E.setText("20")
+			self.osdec3E.setFixedWidth(90)
+			self.osdec3E.move(150, rowsdec)
+		
+			rowsdec += 30
+
+			# label
+			self.osdec4L = QtGui.QLabel(translate('magicStart', 'Offset from edge:'), self)
+			self.osdec4L.move(10, rowsdec+3)
+
+			# text input
+			self.osdec4E = QtGui.QLineEdit(self)
+			self.osdec4E.setText("50")
+			self.osdec4E.setFixedWidth(90)
+			self.osdec4E.move(150, rowsdec)
+			
+			rowsdec += 40
+			
+			# button
+			self.osdec5B = QtGui.QPushButton(translate('magicStart', 'calculate side decoration'), self)
+			self.osdec5B.clicked.connect(self.calculateSideDecoration)
+			self.osdec5B.setFixedWidth(200)
+			self.osdec5B.setFixedHeight(40)
+			self.osdec5B.move(10, rowsdec)
+			
+			rowsdec += 80
+			
+			# label
+			self.osdec6L = QtGui.QLabel(translate('magicStart', 'Start XYZ:'), self)
+			self.osdec6L.move(10, rowsdec+3)
+			
+			# text input
+			self.osdec61E = QtGui.QLineEdit(self)
+			self.osdec61E.setText("0")
+			self.osdec61E.setFixedWidth(90)
+			self.osdec61E.move(120, rowsdec)
+			
+			# text input
+			self.osdec62E = QtGui.QLineEdit(self)
+			self.osdec62E.setText("0")
+			self.osdec62E.setFixedWidth(90)
+			self.osdec62E.move(220, rowsdec)
+			
+			# text input
+			self.osdec63E = QtGui.QLineEdit(self)
+			self.osdec63E.setText("0")
+			self.osdec63E.setFixedWidth(90)
+			self.osdec63E.move(320, rowsdec)
+			
+			rowsdec += 30
+			
+			# label
+			self.osdec7L = QtGui.QLabel(translate('magicStart', 'Calculated decoration width:'), self)
+			self.osdec7L.move(10, rowsdec+3)
+			
+			# text input
+			self.osdec7E = QtGui.QLineEdit(self)
+			self.osdec7E.setText("0")
+			self.osdec7E.setFixedWidth(90)
+			self.osdec7E.move(220, rowsdec)
+			
+			rowsdec += 30
+			
+			# label
+			self.osdec8L = QtGui.QLabel(translate('magicStart', 'Calculated decoration height:'), self)
+			self.osdec8L.move(10, rowsdec+3)
+
+			# text input
+			self.osdec8E = QtGui.QLineEdit(self)
+			self.osdec8E.setText("0")
+			self.osdec8E.setFixedWidth(90)
+			self.osdec8E.move(220, rowsdec)
+		
+			rowsdec += 40
+
+			# button
+			self.osdec9B = QtGui.QPushButton(translate('magicStart', 'create'), self)
+			self.osdec9B.clicked.connect(self.createObject)
+			self.osdec9B.setFixedWidth(self.toolSW - 20)
+			self.osdec9B.setFixedHeight(createSize)
+			self.osdec9B.move(10, createRow)
+
+			# hide by default
+			self.osdec1i.hide()
+			self.osdec2L.hide()
+			self.osdec2E.hide()
+			self.osdec3L.hide()
+			self.osdec3E.hide()
+			self.osdec4L.hide()
+			self.osdec4E.hide()
+			self.osdec5B.hide()
+			self.osdec6L.hide()
+			self.osdec61E.hide()
+			self.osdec62E.hide()
+			self.osdec63E.hide()
+			self.osdec7L.hide()
+			self.osdec7E.hide()
+			self.osdec8L.hide()
+			self.osdec8E.hide()
+			self.osdec9B.hide()
+			
+			# ############################################################################
 			# show & init defaults
 			# ############################################################################
 
@@ -2686,6 +3253,25 @@ def showQtGUI():
 			self.ocs7L.hide()
 			self.ocs7E.hide()
 			self.ocs8B1.hide()
+			
+			# side decoration
+			self.osdec1i.hide()
+			self.osdec2L.hide()
+			self.osdec2E.hide()
+			self.osdec3L.hide()
+			self.osdec3E.hide()
+			self.osdec4L.hide()
+			self.osdec4E.hide()
+			self.osdec5B.hide()
+			self.osdec6L.hide()
+			self.osdec61E.hide()
+			self.osdec62E.hide()
+			self.osdec63E.hide()
+			self.osdec7L.hide()
+			self.osdec7E.hide()
+			self.osdec8L.hide()
+			self.osdec8E.hide()
+			self.osdec9B.hide()
 			
 			# shelf
 			self.osh1i.hide()
@@ -2778,6 +3364,48 @@ def showQtGUI():
 			self.ofglass10L.hide()
 			self.ofglass10E.hide()
 			self.ofglass11B.hide()
+		
+			# decorative front
+			self.odf1i.hide()
+			self.odf2L.hide()
+			self.odf2E.hide()
+			self.odf3L.hide()
+			self.odf3E.hide()
+			self.odf4L.hide()
+			self.odf4E.hide()
+			self.odf5L.hide()
+			self.odf5E.hide()
+			self.odf6B.hide()
+			self.odf7L.hide()
+			self.odf71E.hide()
+			self.odf72E.hide()
+			self.odf73E.hide()
+			self.odf8L.hide()
+			self.odf8E.hide()
+			self.odf9L.hide()
+			self.odf9E.hide()
+			self.odf10L.hide()
+			self.odf10E.hide()
+			self.odf11B.hide()
+		
+			# front decoration
+			self.ofdec1i.hide()
+			self.ofdec2L.hide()
+			self.ofdec2E.hide()
+			self.ofdec3L.hide()
+			self.ofdec3E.hide()
+			self.ofdec4L.hide()
+			self.ofdec4E.hide()
+			self.ofdec5B.hide()
+			self.ofdec6L.hide()
+			self.ofdec61E.hide()
+			self.ofdec62E.hide()
+			self.ofdec63E.hide()
+			self.ofdec7L.hide()
+			self.ofdec7E.hide()
+			self.ofdec8L.hide()
+			self.ofdec8E.hide()
+			self.ofdec9B.hide()
 		
 			# face frame
 			self.offrame1i.hide()
@@ -2992,6 +3620,25 @@ def showQtGUI():
 				self.ocs7E.show()
 				self.ocs8B1.show()
 
+			if iType == "side decoration":
+				self.osdec1i.show()
+				self.osdec2L.show()
+				self.osdec2E.show()
+				self.osdec3L.show()
+				self.osdec3E.show()
+				self.osdec4L.show()
+				self.osdec4E.show()
+				self.osdec5B.show()
+				self.osdec6L.show()
+				self.osdec61E.show()
+				self.osdec62E.show()
+				self.osdec63E.show()
+				self.osdec7L.show()
+				self.osdec7E.show()
+				self.osdec8L.show()
+				self.osdec8E.show()
+				self.osdec9B.show()
+
 			if iType == "shelf":
 				self.osh1i.show()
 				self.osh1L.show()
@@ -3061,6 +3708,29 @@ def showQtGUI():
 				self.ofr84E.show()
 				self.ofr8B1.show()
 			
+			if iType == "decorative front":
+				self.odf1i.show()
+				self.odf2L.show()
+				self.odf2E.show()
+				self.odf3L.show()
+				self.odf3E.show()
+				self.odf4L.show()
+				self.odf4E.show()
+				self.odf5L.show()
+				self.odf5E.show()
+				self.odf6B.show()
+				self.odf7L.show()
+				self.odf71E.show()
+				self.odf72E.show()
+				self.odf73E.show()
+				self.odf8L.show()
+				self.odf8E.show()
+				self.odf9L.show()
+				self.odf9E.show()
+				self.odf10L.show()
+				self.odf10E.show()
+				self.odf11B.show()
+			
 			if iType == "front with glass":
 				self.ofglass1i.show()
 				self.ofglass2L.show()
@@ -3083,6 +3753,25 @@ def showQtGUI():
 				self.ofglass10L.show()
 				self.ofglass10E.show()
 				self.ofglass11B.show()
+			
+			if iType == "front decoration":
+				self.ofdec1i.show()
+				self.ofdec2L.show()
+				self.ofdec2E.show()
+				self.ofdec3L.show()
+				self.ofdec3E.show()
+				self.ofdec4L.show()
+				self.ofdec4E.show()
+				self.ofdec5B.show()
+				self.ofdec6L.show()
+				self.ofdec61E.show()
+				self.ofdec62E.show()
+				self.ofdec63E.show()
+				self.ofdec7L.show()
+				self.ofdec7E.show()
+				self.ofdec8L.show()
+				self.ofdec8E.show()
+				self.ofdec9B.show()
 			
 			if iType == "face frame":
 				self.offrame1i.show()
@@ -3324,6 +4013,18 @@ def showQtGUI():
 				self.setGUIInfo("side")
 				self.helpInfo.setText(self.gHelpInfoF48)
 
+			if selectedIndex == 59 or selectedIndex == 60:
+				self.setGUIInfo("decorative front")
+				self.helpInfo.setText(self.gHelpInfoF59)
+
+			if selectedIndex == 61:
+				self.setGUIInfo("front decoration")
+				self.helpInfo.setText(self.gHelpInfoF61)
+			
+			if selectedIndex == 62:
+				self.setGUIInfo("side decoration")
+				self.helpInfo.setText(self.gHelpInfoF62)
+				
 			# ####################################################
 			# custom settings
 			# ####################################################
@@ -3417,6 +4118,18 @@ def showQtGUI():
 				self.otb5E.setText("80")
 				self.otb6E.setText("0")
 
+			if selectedIndex == 59:
+				self.odf3E.setText("9")
+				self.odf4E.setText("7")
+				self.odf3L.setText(translate('magicStart', 'Front overlap horizontal:'))
+				self.odf4L.setText(translate('magicStart', 'Front overlap vertical:'))
+
+			if selectedIndex == 60:
+				self.odf3E.setText("2")
+				self.odf4E.setText("2")
+				self.odf3L.setText(translate('magicStart', 'Front offset horizontal:'))
+				self.odf4L.setText(translate('magicStart', 'Front offset vertical:'))
+			
 		# ############################################################################
 		def createObject(self):
 
@@ -3586,6 +4299,18 @@ def showQtGUI():
 			
 			if self.gSelectedFurniture == "F58":
 				self.mergeF("Drawer_002.FCStd")
+			
+			if self.gSelectedFurniture == "F58":
+				self.mergeF("Drawer_002.FCStd")
+			
+			if self.gSelectedFurniture == "F59" or self.gSelectedFurniture == "F60":
+				self.createF59()
+			
+			if self.gSelectedFurniture == "F61":
+				self.createF61()
+			
+			if self.gSelectedFurniture == "F62":
+				self.createF62()
 				
 			# here to allow recalculation with selection
 			FreeCADGui.Selection.clearSelection()
@@ -4195,6 +4920,143 @@ def showQtGUI():
 			self.ofglass10E.setText(str(height))
 
 		# ############################################################################
+		def calculateDecorativeFront(self):
+			
+			obj1 = False
+			obj2 = False
+			obj3 = False
+			obj4 = False
+			
+			edge1 = False
+			edge2 = False
+			edge3 = False
+			edge4 = False
+			
+			try:
+				obj1 = FreeCADGui.Selection.getSelection()[0]
+				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				
+				obj2 = FreeCADGui.Selection.getSelection()[1]
+				edge2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+				
+				obj3 = FreeCADGui.Selection.getSelection()[2]
+				edge3 = FreeCADGui.Selection.getSelectionEx()[2].SubObjects[0]
+				
+				obj4 = FreeCADGui.Selection.getSelection()[3]
+				edge4 = FreeCADGui.Selection.getSelectionEx()[3].SubObjects[0]
+				
+			except:
+				return
+
+			gh = abs(float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z))
+			gw = abs(float(edge4.CenterOfMass.x) - float(edge3.CenterOfMass.x))
+			
+			gsx = float(edge3.CenterOfMass.x)
+			gsy = float(edge3.CenterOfMass.y)
+			gsz = float(edge1.CenterOfMass.z)
+			
+			thick = float(self.odf2E.text())
+			overlapH = float(self.odf3E.text())
+			overlapV = float(self.odf4E.text())
+			
+			# outside
+			if self.gSelectedFurniture == "F59":
+				
+				width = gw + (2 * overlapH)
+				height = gh + (2 * overlapV)
+			
+				startX = gsx - overlapH
+				startY = gsy - thick
+				startZ = gsz - overlapV
+
+			# inside
+			if self.gSelectedFurniture == "F60":
+				
+				width = gw - (2 * overlapH)
+				height = gh - (2 * overlapV)
+			
+				startX = gsx + overlapH
+				startY = gsy
+				startZ = gsz + overlapV
+
+			# simple
+			if self.gSelectedFurniture == "F59" or self.gSelectedFurniture == "F60":
+				barWidth = int(width / 10)
+
+			# set values to text fields
+			self.odf71E.setText(str(startX))
+			self.odf72E.setText(str(startY))
+			self.odf73E.setText(str(startZ))
+			self.odf8E.setText(str(barWidth))
+			self.odf9E.setText(str(width))
+			self.odf10E.setText(str(height))
+
+		# ############################################################################
+		def calculateFrontDecoration(self):
+			
+			obj1 = False
+			
+			edge1 = False
+			edge2 = False
+			edge3 = False
+			edge4 = False
+			
+			try:
+				obj1 = FreeCADGui.Selection.getSelection()[0]
+				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+			
+			except:
+				return
+
+			try:
+				edge2 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[1]
+				edge3 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[2]
+				edge4 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[3]
+			
+			except:
+				skip = 1
+			
+			if edge1.ShapeType == "Face":
+				
+				face = edge1
+				
+				if obj1.isDerivedFrom("Part::Box"):
+					edge1 = face.Edges[0]
+					edge2 = face.Edges[2]
+					edge3 = face.Edges[3]
+					edge4 = face.Edges[1]
+				
+				else:
+					edge1 = face.Edges[2]
+					edge2 = face.Edges[0]
+					edge3 = face.Edges[3]
+					edge4 = face.Edges[1]
+
+			gh = abs(float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z))
+			gw = abs(float(edge4.CenterOfMass.x) - float(edge3.CenterOfMass.x))
+			
+			gsx = float(edge3.CenterOfMass.x)
+			gsy = float(edge3.CenterOfMass.y)
+			gsz = float(edge1.CenterOfMass.z)
+			
+			barWidth = float(self.ofdec2E.text())
+			barThick = float(self.ofdec3E.text())
+			offset = float(self.ofdec4E.text())
+			
+			width = gw - (2 * offset)
+			height = gh - (2 * offset)
+			startX = gsx + offset
+			startY = gsy - barThick
+			startZ = gsz + offset
+
+			# set values to text fields
+			self.ofdec61E.setText(str(startX))
+			self.ofdec62E.setText(str(startY))
+			self.ofdec63E.setText(str(startZ))
+			self.ofdec7E.setText(str(width))
+			self.ofdec8E.setText(str(height))
+
+		# ############################################################################
 		def calculateFaceframeFromGap(self):
 			
 			obj1 = False
@@ -4502,54 +5364,6 @@ def showQtGUI():
 			self.oside6E.setText(str(width))
 			self.oside7E.setText(str(height))
 
-			
-			
-			'''
-			# face below
-			if float(face1.CenterOfMass.z) < float(edge1.CenterOfMass.z):
-				gheight = float(edge1.CenterOfMass.z) - float(face1.CenterOfMass.z)
-				sz = float(face1.CenterOfMass.z)
-				
-			# face above I hope so :-)
-			else: 
-				gheight = float(face1.CenterOfMass.z) - float(edge1.CenterOfMass.z)
-				sz = float(MagicPanels.touchTypo(edge1)[0].Z)
-				
-			gdepth = float(edge1.Length)
-			
-			# prefer closer point to start
-			if float(MagicPanels.touchTypo(edge1)[0].Y) < float(MagicPanels.touchTypo(edge1)[1].Y):
-				sx = float(MagicPanels.touchTypo(edge1)[0].X)
-				sy = float(MagicPanels.touchTypo(edge1)[0].Y)
-				
-			else:
-				sx = float(MagicPanels.touchTypo(edge1)[1].X)
-				sy = float(MagicPanels.touchTypo(edge1)[1].Y)
-				
-			
-			thick = float(self.ocs1E.text())
-			udepth = float(self.ocs2E.text())
-			
-			offTo = float(self.ocs31E.text())
-			offBo = float(self.ocs32E.text())
-			offFr = float(self.ocs33E.text())
-			offBa = float(self.ocs34E.text())
-			
-			height = gheight - offBo - offTo
-			
-			if udepth == 0:
-				depth = gdepth - offFr - offBa
-			else:
-				depth = udepth
-				offBa = 0
-				offFr = gdepth - depth
-			
-			width = float(edge2.CenterOfMass.x) - float(edge1.CenterOfMass.x)
-			startX = sx + (width / 2) - (thick / 2) 
-			startY = sy + offFr
-			startZ = sz + offBo
-			'''
-			
 		# ############################################################################
 		def calculateCenterSideFromGap(self):
 			
@@ -4643,6 +5457,103 @@ def showQtGUI():
 			
 			self.ocs6E.setText(str(height))
 			self.ocs7E.setText(str(depth))
+
+		# ############################################################################
+		def calculateSideDecoration(self):
+			
+			obj1 = False
+			
+			edge1 = False
+			edge2 = False
+			edge3 = False
+			edge4 = False
+			
+			try:
+				obj1 = FreeCADGui.Selection.getSelection()[0]
+				edge1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+
+			except:
+				return
+
+			try:
+				edge2 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[1]
+				edge3 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[2]
+				edge4 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[3]
+			
+			except:
+				skip = 1
+			
+			if edge1.ShapeType == "Face":
+				
+				face = edge1
+				sink = MagicPanels.getFaceSink(obj1, face)
+				
+				if obj1.isDerivedFrom("Part::Box"):
+					
+					if sink == "-":
+						edge1 = face.Edges[3]
+						edge2 = face.Edges[1]
+						edge3 = face.Edges[0]
+						edge4 = face.Edges[2]
+					else:
+						edge1 = face.Edges[3]
+						edge2 = face.Edges[1]
+						edge3 = face.Edges[2]
+						edge4 = face.Edges[0]
+
+				else:
+				
+					if sink == "-":
+						edge1 = face.Edges[2]
+						edge2 = face.Edges[0]
+						edge3 = face.Edges[3]
+						edge4 = face.Edges[1]
+					else:
+						edge1 = face.Edges[2]
+						edge2 = face.Edges[0]
+						edge3 = face.Edges[1]
+						edge4 = face.Edges[3]
+			
+			barWidth = float(self.osdec2E.text())
+			barThick = float(self.osdec3E.text())
+			offset = float(self.osdec4E.text())
+			
+			self.gSideEdgePlane = MagicPanels.getEdgePlane(obj1, edge1, "clean")
+			
+			if self.gSideEdgePlane == "Y":
+				
+				gheight = abs(float(edge2.CenterOfMass.z) - float(edge1.CenterOfMass.z))
+				gwidth = float(edge4.CenterOfMass.y) - float(edge3.CenterOfMass.y)
+				
+				
+				if gwidth > 0:
+					self.gSideDirection = "+"
+				else:
+					self.gSideDirection = "-"
+					gwidth = abs(gwidth)
+				
+				width = gwidth - (2 * offset)
+				height = gheight - (2 * offset)
+			
+				if self.gSideDirection == "+":
+					startX = float(edge3.CenterOfMass.x)
+					startY = float(edge3.CenterOfMass.y) + offset
+					startZ = float(edge1.CenterOfMass.z) + offset
+
+				if self.gSideDirection == "-":
+					startX = float(edge3.CenterOfMass.x) - barThick
+					startY = float(edge3.CenterOfMass.y) - offset - width
+					startZ = float(edge1.CenterOfMass.z) + offset
+			
+			else:
+				return
+
+			# set values to text fields
+			self.osdec61E.setText(str(startX))
+			self.osdec62E.setText(str(startY))
+			self.osdec63E.setText(str(startZ))
+			self.osdec7E.setText(str(width))
+			self.osdec8E.setText(str(height))
 
 		# ############################################################################
 		def calculateDrawerSeries(self):
@@ -7670,6 +8581,204 @@ def showQtGUI():
 				
 				# recompute
 				FreeCAD.ActiveDocument.recompute()
+
+		# ############################################################################
+		def createF59(self):
+			
+			barThick = float(self.odf2E.text())
+			barWidth = float(self.odf8E.text())
+			
+			innerThick = float(self.odf5E.text())
+			innerSink = 6
+			
+			FSX = float(self.odf71E.text())
+			FSY = float(self.odf72E.text())
+			FSZ = float(self.odf73E.text())
+			
+			FFWidth = float(self.odf9E.text())
+			FFHeight = float(self.odf10E.text())
+			
+			# Left Side
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DFLeft")
+			o1.Label = translate('magicStart', 'DF Left')
+			o1.Length = barWidth
+			o1.Height = FFHeight
+			o1.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			o1.ViewObject.ShapeColor = self.gColor
+			
+			# Right Side
+			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DFRight")
+			o2.Label = translate('magicStart', 'DF Right')
+			o2.Length = barWidth
+			o2.Height = FFHeight
+			o2.Width = barThick
+			pl = FreeCAD.Vector(FSX + FFWidth - barWidth, FSY, FSZ)
+			o2.Placement = FreeCAD.Placement(pl, self.gR)
+			o2.ViewObject.ShapeColor = self.gColor
+			
+			# Bottom
+			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DFBottom")
+			o3.Label = translate('magicStart', 'DF Bottom')
+			o3.Length = FFWidth - (2 * barWidth)
+			o3.Height = barWidth
+			o3.Width = barThick
+			pl = FreeCAD.Vector(FSX + barWidth, FSY, FSZ)
+			o3.Placement = FreeCAD.Placement(pl, self.gR)
+			o3.ViewObject.ShapeColor = self.gColor
+			
+			# Top
+			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DFTop")
+			o4.Label = translate('magicStart', 'DF Top')
+			o4.Length = FFWidth - (2 * barWidth)
+			o4.Height = barWidth
+			o4.Width = barThick
+			pl = FreeCAD.Vector(FSX + barWidth, FSY, FSZ + FFHeight - barWidth)
+			o4.Placement = FreeCAD.Placement(pl, self.gR)
+			o4.ViewObject.ShapeColor = self.gColor
+			
+			# Inner
+			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DFInner")
+			o5.Label = translate('magicStart', 'DF Inner')
+			o5.Length = FFWidth - (2 * barWidth) + (2 * innerSink)
+			o5.Height = FFHeight - (2 * barWidth) + (2 * innerSink)
+			o5.Width = innerThick
+			plx = FSX + barWidth - innerSink
+			ply = FSY + (barThick/2) - (innerThick/2)
+			plz = FSZ + barWidth - innerSink
+			pl = FreeCAD.Vector(plx, ply, plz)
+			o5.Placement = FreeCAD.Placement(pl, self.gR)
+			o5.ViewObject.ShapeColor = self.gColor
+			
+			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDF')
+			container.setLink([o1, o2, o3, o4, o5])
+			container.Label = "Container, Decorative front"
+			
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+
+		# ############################################################################
+		def createF61(self):
+			
+			barWidth = float(self.ofdec2E.text())
+			barThick = float(self.ofdec3E.text())
+			offset = float(self.ofdec4E.text())
+			
+			FSX = float(self.ofdec61E.text())
+			FSY = float(self.ofdec62E.text())
+			FSZ = float(self.ofdec63E.text())
+			
+			FFWidth = float(self.ofdec7E.text())
+			FFHeight = float(self.ofdec8E.text())
+			
+			# Left Side
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FDLeft")
+			o1.Label = translate('magicStart', 'FD Left')
+			o1.Length = barWidth
+			o1.Height = FFHeight
+			o1.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			o1.ViewObject.ShapeColor = self.gColor
+			
+			# Right Side
+			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FDRight")
+			o2.Label = translate('magicStart', 'FD Right')
+			o2.Length = barWidth
+			o2.Height = FFHeight
+			o2.Width = barThick
+			pl = FreeCAD.Vector(FSX + FFWidth - barWidth, FSY, FSZ)
+			o2.Placement = FreeCAD.Placement(pl, self.gR)
+			o2.ViewObject.ShapeColor = self.gColor
+			
+			# Bottom
+			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FDBottom")
+			o3.Label = translate('magicStart', 'FD Bottom')
+			o3.Length = FFWidth
+			o3.Height = barWidth
+			o3.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ)
+			o3.Placement = FreeCAD.Placement(pl, self.gR)
+			o3.ViewObject.ShapeColor = self.gColor
+			
+			# Top
+			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FDTop")
+			o4.Label = translate('magicStart', 'FD Top')
+			o4.Length = FFWidth
+			o4.Height = barWidth
+			o4.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ + FFHeight - barWidth)
+			o4.Placement = FreeCAD.Placement(pl, self.gR)
+			o4.ViewObject.ShapeColor = self.gColor
+			
+			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFD')
+			container.setLink([o1, o2, o3, o4])
+			container.Label = "Container, Front decoration"
+			
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+
+			# ############################################################################
+		def createF62(self):
+			
+			barWidth = float(self.osdec2E.text())
+			barThick = float(self.osdec3E.text())
+			offset = float(self.osdec4E.text())
+			
+			FSX = float(self.osdec61E.text())
+			FSY = float(self.osdec62E.text())
+			FSZ = float(self.osdec63E.text())
+			
+			FFWidth = float(self.osdec7E.text())
+			FFHeight = float(self.osdec8E.text())
+			
+			# Left Side
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "SDLeft")
+			o1.Label = translate('magicStart', 'SD Left')
+			o1.Length = barThick
+			o1.Height = FFHeight
+			o1.Width = barWidth
+			pl = FreeCAD.Vector(FSX, FSY, FSZ)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			o1.ViewObject.ShapeColor = self.gColor
+			
+			# Right Side
+			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "SDRight")
+			o2.Label = translate('magicStart', 'SD Right')
+			o2.Length = barThick
+			o2.Height = FFHeight
+			o2.Width = barWidth
+			pl = FreeCAD.Vector(FSX, FSY + FFWidth - barWidth, FSZ)
+			o2.Placement = FreeCAD.Placement(pl, self.gR)
+			o2.ViewObject.ShapeColor = self.gColor
+			
+			# Bottom
+			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "SDBottom")
+			o3.Label = translate('magicStart', 'SD Bottom')
+			o3.Length = barThick
+			o3.Height = barWidth
+			o3.Width = FFWidth
+			pl = FreeCAD.Vector(FSX, FSY, FSZ)
+			o3.Placement = FreeCAD.Placement(pl, self.gR)
+			o3.ViewObject.ShapeColor = self.gColor
+			
+			# Top
+			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "SDTop")
+			o4.Label = translate('magicStart', 'SD Top')
+			o4.Length = barThick
+			o4.Height = barWidth
+			o4.Width = FFWidth
+			pl = FreeCAD.Vector(FSX, FSY, FSZ + FFHeight - barWidth)
+			o4.Placement = FreeCAD.Placement(pl, self.gR)
+			o4.ViewObject.ShapeColor = self.gColor
+			
+			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerSD')
+			container.setLink([o1, o2, o3, o4])
+			container.Label = "Container, Side decoration"
+			
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
 
 	# ############################################################################
 	# final settings

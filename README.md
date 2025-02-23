@@ -1,6 +1,4 @@
-# Description
-
-The program started as a simple cut list, as a macro for FreeCAD. However, Woodworking workbench now has so many features and simplifications that it can be considered as a new CAD program based only on the FreeCAD kernel. The program is mainly intended to make cabinet creation more simple, although it has many solutions to speed up and make more simple typical carpentry work and other CAD projects. I hope you will find something for yourself here.
+The Woodworking workbench started as a simple cut-list, as a macro for FreeCAD. However, Woodworking workbench now has so many additional tools, features and simplifications that it can be considered as a new CAD program based only on the FreeCAD kernel. The Woodworking workbench is mainly intended to make cabinet creation more simple, although it has many solutions to speed up and make more simple typical carpentry work and other CAD projects. I hope you will find something for yourself here.
 
 ![intro](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/intro.gif)
 

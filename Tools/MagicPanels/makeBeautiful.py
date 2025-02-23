@@ -47,9 +47,9 @@ try:
 
 			# PointSize
 			if dbPointSize[key] == origPointSize:
-				o.ViewObject.PointSize = restorePointColor
-			else:
 				o.ViewObject.PointSize = newPointSize
+			else:
+				o.ViewObject.PointSize = origPointSize
 
 		except:
 			skip = 1
