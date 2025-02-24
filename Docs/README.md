@@ -223,7 +223,7 @@ The Woodworking workbench also has an API for developers. This library contains 
 
 Currently there are no translations available. However, the code is ready for translations. 
 
-The transformations are developed at [github.com/dprojects/Woodworking-translations](https://github.com/dprojects/Woodworking-translations) repository and in my opinion should be created only for [Woodworking workbench releases](https://github.com/dprojects/Woodworking/releases). This approach allows the translator community to work without time pressure and independently of the development of the main branch, because the code of stable releases will not be changed. 
+The translations are developed at [github.com/dprojects/Woodworking-translations](https://github.com/dprojects/Woodworking-translations) repository and in my opinion should be created only for [Woodworking workbench releases](https://github.com/dprojects/Woodworking/releases). This approach allows the translator community to work without time pressure and independently of the development of the main branch, because the code of stable releases will not be changed. 
 
 Since Woodworking workbench release 0.22 there is `translations update tool` available under drop down menu `Woodworking -> Download and update all translations`. This tool will automatically download all available `.qm` files into `translations` folder for you Woodworking workbench release.
 
