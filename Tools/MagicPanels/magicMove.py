@@ -81,11 +81,21 @@ def showQtGUI():
 		gNewContainerON = False
 		gContainerRef = "root"
 		
-		gCrossCorner = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
-		gCrossCenter = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
-		gCrossCornerOrig = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
-		gCrossCenterOrig = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
-
+		gCornerCrossSupport = True
+		gAxisCrossSupport = True
+		
+		try:
+			gCornerCross = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
+			gCornerCrossOrig = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
+		except:
+			gCornerCrossSupport = False
+			
+		try:
+			gAxisCross = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
+			gAxisCrossOrig = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
+		except:
+			gAxisCrossSupport = False
+		
 		gCopyPathObj = ""
 		gCopyPathStep = 1
 		gCopyPathPoints = []
@@ -663,49 +673,55 @@ def showQtGUI():
 			
 			row = toolSH - 90
 			
-			# label
-			self.o0L = QtGui.QLabel(translate('magicMove', 'Corner cross:'), self)
-			self.o0L.move(10, row+3)
-
-			# button
-			self.o0B1 = QtGui.QPushButton("-", self)
-			self.o0B1.clicked.connect(self.setCornerM)
-			self.o0B1.setFixedWidth(btsize)
-			self.o0B1.move(cbt1, row)
-			self.o0B1.setAutoRepeat(True)
+			if self.gCornerCrossSupport == True:
 			
-			# button
-			self.o0B2 = QtGui.QPushButton("+", self)
-			self.o0B2.clicked.connect(self.setCornerP)
-			self.o0B2.setFixedWidth(btsize)
-			self.o0B2.move(cbt2, row)
-			self.o0B2.setAutoRepeat(True)
+				# label
+				self.cocL = QtGui.QLabel(translate('magicMove', 'Corner cross:'), self)
+				self.cocL.move(10, row+3)
 
-			row += 30
-			
-			# label
-			self.o0L = QtGui.QLabel(translate('magicMove', 'Center cross:'), self)
-			self.o0L.move(10, row+3)
+				# button
+				self.cocB1 = QtGui.QPushButton("-", self)
+				self.cocB1.clicked.connect(self.setCornerM)
+				self.cocB1.setFixedWidth(btsize)
+				self.cocB1.move(cbt1, row)
+				self.cocB1.setAutoRepeat(True)
+				
+				# button
+				self.cocB2 = QtGui.QPushButton("+", self)
+				self.cocB2.clicked.connect(self.setCornerP)
+				self.cocB2.setFixedWidth(btsize)
+				self.cocB2.move(cbt2, row)
+				self.cocB2.setAutoRepeat(True)
 
-			# button
-			self.o0B1 = QtGui.QPushButton(translate('magicMove', 'on'), self)
-			self.o0B1.clicked.connect(self.setCenterOn)
-			self.o0B1.setFixedWidth(btsize)
-			self.o0B1.move(cbt1, row)
-			self.o0B1.setAutoRepeat(True)
-			
-			# button
-			self.o0B2 = QtGui.QPushButton(translate('magicMove', 'off'), self)
-			self.o0B2.clicked.connect(self.setCenterOff)
-			self.o0B2.setFixedWidth(btsize)
-			self.o0B2.move(cbt2, row)
-			self.o0B2.setAutoRepeat(True)
+			if self.gAxisCrossSupport == True:
+				
+				row += 30
+				
+				# label
+				self.cecL = QtGui.QLabel(translate('magicMove', 'Center cross:'), self)
+				self.cecL.move(10, row+3)
 
-			row += 25
-			
-			self.kccscb = QtGui.QCheckBox(translate('magicDowels', ' - keep custom cross settings'), self)
-			self.kccscb.setCheckState(QtCore.Qt.Unchecked)
-			self.kccscb.move(10, row+3)
+				# button
+				self.cecB1 = QtGui.QPushButton(translate('magicMove', 'on'), self)
+				self.cecB1.clicked.connect(self.setCenterOn)
+				self.cecB1.setFixedWidth(btsize)
+				self.cecB1.move(cbt1, row)
+				self.cecB1.setAutoRepeat(True)
+				
+				# button
+				self.cecB2 = QtGui.QPushButton(translate('magicMove', 'off'), self)
+				self.cecB2.clicked.connect(self.setCenterOff)
+				self.cecB2.setFixedWidth(btsize)
+				self.cecB2.move(cbt2, row)
+				self.cecB2.setAutoRepeat(True)
+
+			if self.gCornerCrossSupport == True or self.gAxisCrossSupport == True:
+				
+				row += 25
+				
+				self.kccscb = QtGui.QCheckBox(translate('magicDowels', ' - keep custom cross settings'), self)
+				self.kccscb.setCheckState(QtCore.Qt.Unchecked)
+				self.kccscb.move(10, row+3)
 			
 			# ############################################################################
 			# show & init defaults
@@ -715,8 +731,12 @@ def showQtGUI():
 			self.show()
 
 			# init
-			FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
-			FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(50)
+			if self.gAxisCrossSupport == True:
+				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
+			
+			if self.gCornerCrossSupport == True:
+				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(50)
+			
 			self.getSelected()
 
 		# ############################################################################
@@ -1639,7 +1659,7 @@ def showQtGUI():
 					FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(0)
 				else:
 					FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(s-1)
-					self.gCrossCorner = s-1
+					self.gCornerCross = s-1
 			except:
 				self.s1S.setText(self.gNoSelection)
 			
@@ -1648,7 +1668,7 @@ def showQtGUI():
 			try:
 				s = int(FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize())
 				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(s+1)
-				self.gCrossCorner = s+1
+				self.gCornerCross = s+1
 			except:
 				self.s1S.setText(self.gNoSelection)
 		
@@ -1656,7 +1676,7 @@ def showQtGUI():
 		def setCenterOn(self):
 			try:
 				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
-				self.gCrossCenter = True
+				self.gAxisCross = True
 			except:
 				self.s1S.setText(self.gNoSelection)
 			
@@ -1664,7 +1684,7 @@ def showQtGUI():
 
 			try:
 				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(False)
-				self.gCrossCenter = False
+				self.gAxisCross = False
 			except:
 				self.s1S.setText(self.gNoSelection)
 		
@@ -1726,8 +1746,12 @@ def showQtGUI():
 	if form.result == userCancelled:
 		
 		if not form.kccscb.isChecked():
-			FreeCADGui.ActiveDocument.ActiveView.setAxisCross(form.gCrossCenterOrig)
-			FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(form.gCrossCornerOrig)
+
+			if form.gAxisCrossSupport == True:
+				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(form.gAxisCrossOrig)
+				
+			if form.gCornerCrossSupport == True:
+				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(form.gCornerCrossOrig)
 
 		pass
 

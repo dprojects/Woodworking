@@ -87,6 +87,26 @@ def setTests():
 		gTests["status"] += "ProfileLib.RegularPolygon, "
 
 	# ######################################
+	# test: getCornerCrossSize
+	# ######################################
+	try:
+		test1 = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
+		gTests["getCornerCrossSize"] = True
+	except:
+		gTests["getCornerCrossSize"] = False
+		gTests["status"] += "getCornerCrossSize, "
+
+	# ######################################
+	# test: hasAxisCross
+	# ######################################
+	try:
+		test1 = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
+		gTests["hasAxisCross"] = True
+	except:
+		gTests["hasAxisCross"] = False
+		gTests["status"] += "hasAxisCross, "
+		
+	# ######################################
 	# end cut
 	# ######################################
 	
@@ -332,7 +352,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 470
-			toolSH = 600
+			toolSH = 630
 			
 			# active screen size - FreeCAD main window
 			gSW = FreeCADGui.getMainWindow().width()
@@ -356,19 +376,27 @@ def showQtGUI():
 			# release info
 			# ############################################################################
 			
-			row = 0
+			row = 10
 			iconSize = 10
 			iconAlign = "left"
 			info = ""
 			
 			# set info
 			
-			info += "<div style='font-size:20px'>"
+			info += "<div style='margin-bottom:10px;'>"
+			
+			info += "<span style='font-size:20px;font-weight:bold;'>"
+			info += translate('debugInfo', 'Woodworking') + ": "
 			info += gWBCurrent["Release"] + " "
+			info += "</span>"
+			
+			info += "<span style='font-size:20px;'>"
 			if gWBCurrent["ReleaseState"] == "0":
 				info += "(release)"
 			else:
 				info += "(development)"
+			info += "</span>"
+			
 			info += "</div>"
 			
 			info += "<div>"
@@ -396,7 +424,7 @@ def showQtGUI():
 			# validation status
 			# ############################################################################
 			
-			row = 70
+			row = 100
 			iconSize = 40
 			iconAlign = "left"
 			info = ""
