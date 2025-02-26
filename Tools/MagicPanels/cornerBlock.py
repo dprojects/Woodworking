@@ -39,8 +39,10 @@ try:
 	# main call
 	# ###################################################################################################################
 
+	FreeCAD.ActiveDocument.openTransaction("cornerBlock")
 	cuts = MagicPanels.makeChamferCut(objects, edges, sizes, labels)
-
+	FreeCAD.ActiveDocument.commitTransaction()
+	
 except:
 	
 	info = ""

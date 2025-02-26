@@ -12,10 +12,14 @@ try:
 
 	for o in objects:
 		
+		FreeCAD.ActiveDocument.openTransaction("panel2pad "+str(o.Label))
+		
 		objRef = MagicPanels.getReference(o)
 		[ part, body, sketch, pad ] = MagicPanels.makePad(objRef, "panel2pad")
 		FreeCAD.ActiveDocument.removeObject(objRef.Name)
 		FreeCAD.ActiveDocument.recompute()
+		
+		FreeCAD.ActiveDocument.commitTransaction()
 		
 except:
 	

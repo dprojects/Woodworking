@@ -426,6 +426,8 @@ def panelCover(iType):
 # ###################################################################################################################
 def panelMove(iType):
 	
+	FreeCAD.ActiveDocument.openTransaction("panelMove"+str(iType))
+
 	try:
 
 		selection = FreeCADGui.Selection.getSelection()
@@ -481,9 +483,13 @@ def panelMove(iType):
 		
 		MagicPanels.showInfo("panelMove"+iType, info)
 
+	FreeCAD.ActiveDocument.commitTransaction()
+
 
 # ###################################################################################################################
 def panelResize(iType):
+	
+	FreeCAD.ActiveDocument.openTransaction("panelResize"+str(iType))
 	
 	try:
 
@@ -686,6 +692,8 @@ def panelResize(iType):
 		info += translate('panelResize', '<b>Please select valid panels to resize. </b><br><br><b>Note:</b> This tool allows to resize quickly panels or even other objects. The resize step is the panel thickness. Panel is resized into direction described by the icon for XY panel. However, in some cases the panel may be resized into opposite direction, if the panel is not supported or the sides are equal. You can also resize Cylinders (drill bits), the long side will be Height, the short will be diameter, the thickness will be Radius. For Cone objects (drill bits - countersinks, counterbore) the long side will be Height, the thickness will be Radius1 (bottom radius) and the short will be Radius2 (top radius).')
 		
 		MagicPanels.showInfo("panelResize"+iType, info)
+
+	FreeCAD.ActiveDocument.commitTransaction()
 
 
 # ###################################################################################################################

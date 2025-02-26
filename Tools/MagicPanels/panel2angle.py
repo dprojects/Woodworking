@@ -34,6 +34,8 @@ try:
 		if len(faces[o]) == 0:
 			raise
 		
+		FreeCAD.ActiveDocument.openTransaction("panel2angle "+str(o.Label))
+		
 		# store selected faces keys
 		facesKeys = []
 		for f in faces[o]:
@@ -164,7 +166,8 @@ try:
 			
 		except:
 			skip = 1
-
+		
+		FreeCAD.ActiveDocument.commitTransaction()
 except:
 	
 	info = ""

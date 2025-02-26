@@ -586,6 +586,8 @@ def showQtGUI():
 		# ############################################################################
 		def setX1(self):
 			
+			FreeCAD.ActiveDocument.openTransaction("magicAngleX1")
+			
 			try:
 				self.gStep = int(self.asE.text())
 				self.gAngleX = self.gAngleX - self.gStep
@@ -593,7 +595,11 @@ def showQtGUI():
 			except:
 				self.mIS.setText(self.gNoSelection)
 			
+			FreeCAD.ActiveDocument.commitTransaction()
+			
 		def setX2(self):
+			
+			FreeCAD.ActiveDocument.openTransaction("magicAngleX2")
 			
 			try:
 				self.gStep = int(self.asE.text())
@@ -602,7 +608,11 @@ def showQtGUI():
 			except:
 				self.mIS.setText(self.gNoSelection)
 			
+			FreeCAD.ActiveDocument.commitTransaction()
+			
 		def setY1(self):
+			
+			FreeCAD.ActiveDocument.openTransaction("magicAngleY1")
 			
 			try:
 				self.gStep = int(self.asE.text())
@@ -610,8 +620,12 @@ def showQtGUI():
 				self.setRotation(FreeCAD.Vector(0, 1, 0), self.gStep)
 			except:
 				self.mIS.setText(self.gNoSelection)
-		
+			
+			FreeCAD.ActiveDocument.commitTransaction()
+			
 		def setY2(self):
+			
+			FreeCAD.ActiveDocument.openTransaction("magicAngleY2")
 			
 			try:
 				self.gStep = int(self.asE.text())
@@ -619,8 +633,12 @@ def showQtGUI():
 				self.setRotation(FreeCAD.Vector(0, 1, 0), -self.gStep)
 			except:
 				self.mIS.setText(self.gNoSelection)
-
+	
+			FreeCAD.ActiveDocument.commitTransaction()
+			
 		def setZ1(self):
+			
+			FreeCAD.ActiveDocument.openTransaction("magicAngleZ1")
 			
 			try:
 				self.gStep = int(self.asE.text())
@@ -628,8 +646,12 @@ def showQtGUI():
 				self.setRotation(FreeCAD.Vector(0, 0, 1), self.gStep)
 			except:
 				self.mIS.setText(self.gNoSelection)
+				
+			FreeCAD.ActiveDocument.commitTransaction()
 		
 		def setZ2(self):
+			
+			FreeCAD.ActiveDocument.openTransaction("magicAngleZ2")
 			
 			try:
 				self.gStep = int(self.asE.text())
@@ -637,6 +659,8 @@ def showQtGUI():
 				self.setRotation(FreeCAD.Vector(0, 0, 1), -self.gStep)
 			except:
 				self.mIS.setText(self.gNoSelection)
+			
+			FreeCAD.ActiveDocument.commitTransaction()
 
 	# ############################################################################
 	# final settings

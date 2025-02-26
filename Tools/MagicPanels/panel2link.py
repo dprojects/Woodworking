@@ -13,6 +13,8 @@ try:
 	i = 0
 	for o in objects:
 		
+		FreeCAD.ActiveDocument.openTransaction("panel2link "+str(o.Label))
+		
 		i = i + 1
 		
 		if i == 1:
@@ -34,7 +36,8 @@ try:
 		MagicPanels.moveToFirst([ link ], o)
 		
 		FreeCAD.ActiveDocument.removeObject(str(o.Name))
-	
+		FreeCAD.ActiveDocument.commitTransaction()
+		
 	FreeCAD.ActiveDocument.recompute()
 
 except:

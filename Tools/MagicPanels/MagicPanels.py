@@ -2659,6 +2659,8 @@ def setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
 	
 	# default anchor 0 vertex if not set above
 	
+	FreeCAD.ActiveDocument.openTransaction("setPlacement "+str(iObj.Label))
+	
 	if iObj.isDerivedFrom("PartDesign::Pad"):
 		
 		skip = 0
@@ -2686,6 +2688,8 @@ def setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
 		iObj.Placement.Base = FreeCAD.Vector(iX, iY, iZ)
 		iObj.Placement.Rotation = iR
 	
+	FreeCAD.ActiveDocument.commitTransaction()
+
 
 # ###################################################################################################################
 def getSketchPlacement(iSketch, iType):
@@ -2773,6 +2777,8 @@ def setSketchPlacement(iSketch, iX, iY, iZ, iR, iType):
 
 	'''
 
+	FreeCAD.ActiveDocument.openTransaction("setSketchPlacement "+str(iType))
+
 	if iType == "auto":
 		
 		iType = "global"
@@ -2820,6 +2826,8 @@ def setSketchPlacement(iSketch, iX, iY, iZ, iR, iType):
 
 		iSketch.Placement.Base = FreeCAD.Vector(iX, iY, iZ)
 		iSketch.Placement.Rotation = iR
+
+	FreeCAD.ActiveDocument.commitTransaction()
 
 
 # ###################################################################################################################
@@ -3947,13 +3955,16 @@ def setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="normal"):
 	# ###############################################################################
 
 	if iAnchor == "clean":
-
+		
+		FreeCAD.ActiveDocument.openTransaction("setContainerPlacement "+str(iAnchor))
+		
 		if iObj.isDerivedFrom("PartDesign::Pad"):
 			setSketchPlacement(iObj.Profile[0], X, Y, Z, R, "global")
 		else:
 			iObj.Placement.Base = FreeCAD.Vector(X, Y, Z)
 			iObj.Placement.Rotation = R
 
+		FreeCAD.ActiveDocument.commitTransaction()
 		return
 
 	# ###############################################################################
@@ -3996,9 +4007,11 @@ def setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="normal"):
 	# switch from global to local vertices
 	[[ X, Y, Z ]] = removeVerticesPosition([[ X, Y, Z ]], iObj)
 
+	FreeCAD.ActiveDocument.openTransaction("setContainerPlacement "+str(iAnchor))
 	# set placement
 	iObj.Placement.Base = FreeCAD.Vector(X, Y, Z)
 	iObj.Placement.Rotation = R
+	FreeCAD.ActiveDocument.commitTransaction()
 
 
 # ###################################################################################################################
@@ -5154,6 +5167,8 @@ def makeFrame45cut(iObjects, iFaces):
 
 	for o in iObjects:
 	
+		FreeCAD.ActiveDocument.openTransaction("makeFrame45cut "+str(o.Label))
+	
 		face = iFaces[o][0]
 
 		sizes = getSizes(o)
@@ -5203,6 +5218,8 @@ def makeFrame45cut(iObjects, iFaces):
 			skip = 1
 		
 		frames.append(frame)
+	
+		FreeCAD.ActiveDocument.commitTransaction()
 	
 	return frames
 

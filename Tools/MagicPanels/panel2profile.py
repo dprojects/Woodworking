@@ -16,6 +16,8 @@ try:
 
 	for obj in objects:
 	
+		FreeCAD.ActiveDocument.openTransaction("panel2profile "+str(obj.Label))
+		
 		sizes = MagicPanels.getSizes(obj)
 		sizes.sort()
 		
@@ -69,6 +71,7 @@ try:
 		profile.ViewObject.DiffuseColor = colors
 
 		FreeCAD.ActiveDocument.recompute()
+		FreeCAD.ActiveDocument.commitTransaction()
 
 except:
 	
