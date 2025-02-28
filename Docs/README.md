@@ -52,6 +52,22 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 	* [selected2Group](#selected2group)
 	* [selected2Outside](#selected2outside)
 * [How to use containers - short tutorial](#how-to-use-containers---short-tutorial)
+* [Dimensions, BOM, Cut-list](#dimensions-bom-cut-list)
+	* [getDimensions - cut-list, BOM creation tool](#getdimensions---cut-list-bom-creation-tool)
+	* [sheet2export](#sheet2export)
+	* [showSpaceModel](#showspacemodel)
+	* [showSpaceSelected](#showspaceselected)
+	* [magicMeasure](#magicmeasure)
+* [Decoration](#decoration)
+	* [colorManager](#colormanager)
+	* [setTextures](#settextures)
+	* [makeBeautiful](#makebeautiful)
+* [Router](#router)
+	* [Router bit - Cove](#router-bit---cove)
+	* [Router bit - Round Over](#router-bit---round-over)
+	* [Router bit - Straight](#router-bit---straight)
+	* [Router bit - Chamfer](#router-bit---chamfer)
+	* [multiPocket](#multipocket)
 * [Dowels and Screws](#dowels-and-screws)
 	* [magicDowels](#magicdowels)
 	* [panel2link](#panel2link)
@@ -105,28 +121,12 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 	* [magicCorner](#magiccorner)
 * [Raw wood, Lumber](#raw-wood-lumber)
 	* [Glued table top](#glued-table-top)
-* [Advanced](#advanced)
-	* [panel2pad](#panel2pad)
-* [Router](#router)
-	* [Router bit - Cove](#router-bit---cove)
-	* [Router bit - Round Over](#router-bit---round-over)
-	* [Router bit - Straight](#router-bit---straight)
-	* [Router bit - Chamfer](#router-bit---chamfer)
-	* [multiPocket](#multipocket)
-* [Decoration](#decoration)
-	* [colorManager](#colormanager)
-	* [setTextures](#settextures)
-	* [makeBeautiful](#makebeautiful)
-* [Dimensions, BOM, Cut-list](#dimensions-bom-cut-list)
-	* [getDimensions - cut-list, BOM creation tool](#getdimensions---cut-list-bom-creation-tool)
-	* [sheet2export](#sheet2export)
-	* [showSpaceModel](#showspacemodel)
-	* [showSpaceSelected](#showspaceselected)
-	* [magicMeasure](#magicmeasure)
 * [Parameterization](#parameterization)
 	* [magicGlue](#magicglue)
 	* [sketch2clone](#sketch2clone)
 	* [showAlias](#showalias)
+* [Advanced](#advanced)
+	* [panel2pad](#panel2pad)
 * [Code and Debug](#code-and-debug)
 	* [scanObjects](#scanobjects)
 	* [debugInfo](#debuginfo)
@@ -456,7 +456,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showConstraints.png"> To use this tool first select objects to see edges with the same size as defined constraints. **Note:** This tool search all constraints for selected objects. If the constraints is non-zero this tool search for all edges with the same size. It allows for quick preview if all the edges are defined by the Sketch. However, in some cases, if the constraints is offset and it is equal edge size this will give false result. To select more objects hold left CTRL key during selection. 
 
-<br><br><br>
+<br><br>
 
 ## Quick resize icons
 
@@ -563,8 +563,6 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 * [Simple table](https://www.youtube.com/watch?v=Xru52f8uyBk)
 * [Move to face](https://www.youtube.com/watch?v=i9pXqdEhahU)
 
-<br><br><br>
-
 ## panelMove2Anchor
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMove2Anchor.png"> This tool allows to align panels more precisely, with anchor. To align panels with anchors first select anchor at base object, next select anchor at each object to move. Hold left CTRL key to select anchors.
@@ -579,16 +577,12 @@ Available anchors to select:
 **Video tutorials:** 
 * [Align to anchor](https://www.youtube.com/watch?v=IfVJVXVc9r8)
 
-<br><br><br>
-
 ## panelMove2Center
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMove2Center.png"> This tool allows to move objects to the center of two holes or two vertices. The edge holes or vertices should lie on one of the coordinate axes `XYZ`. The object can be `Cylinder`, `Cone` (dril bit), `Cube` (panel), `Pad` or `LinkGroup` with as many objects you want. If you want to move `Pad`, select `Body`. If you want to move many Pads, select Body or pack all `Part` into `LinkGroup` and select `LinkGroup` to move. Make sure you do not have `Sketch` position set. This tool use `.Shape.CenterOfMass` but if it is not available for object like it is for `LinkGroup` the center will be calculated from vertices. You can move to the center many objects at once. Hold left CTRL key during selection. 
 
 **Video tutorials:** 
 * [Move to center](https://www.youtube.com/watch?v=zKttrKdahg8)
-
-<br><br><br>
 
 ## shelvesEqual
 
@@ -603,8 +597,6 @@ Available anchors to select:
 **Video tutorials:** 
 * [How to create shelves with equal space](https://www.youtube.com/watch?v=2odJa0baGqw)
 
-<br><br><br><br><br>
-
 ## align2Curve
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/align2Curve.png"> This tool allows to align panels to the curve. It has been created for magicMove Copy Path option, to align panels to the curve. To select more objects hold left CTRL key during selection. To use this tool the panel need to have only single axis rotation offset. For example if you rotate panel 35 degrees around Y axis the and the vertex will touch the curve. This tool not works if you need to rotate the panel additionally, for example 15 degrees around X axis. For more details see description at documentation page. 
@@ -617,8 +609,6 @@ Selection modes:
 
 **Video tutorials:** 
 * [Align to curve](https://www.youtube.com/watch?v=fbJV_SEuNLg)
-
-<br><br><br>
 
 ## Arrows
 
@@ -645,7 +635,7 @@ Selection modes:
 **Video tutorials:** 
 * [Helping Vertex selection](https://www.youtube.com/watch?v=qSsua04AKg8)
 
-<br><br><br>
+<br><br>
 
 ## selectVertex
 
@@ -653,8 +643,6 @@ Selection modes:
 
 **Video tutorials:** 
 * [Helping Vertex selection](https://www.youtube.com/watch?v=qSsua04AKg8)
-
-<br><br><br>
 
 ## roundCurve
 
@@ -683,13 +671,15 @@ Selection modes:
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/selected2Group.png"> Normally, the FreeCAD Group command not recognize selection and always creates empty folder. This tool improves this command a little bit, creates new Group and move all selected objects to the new Group folder. The Group folder label is from first selected element. To select more objects hold left CTRL key during selection at Tree or 3D view.
 
-<br><br><br><br><br><br>
+<br><br><br><br><br>
 
 ## selected2Outside
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/selected2Outside.png"> This tool allows you to get out the selected objects from containers. Normally, if you get out object from the container manually, the object will change place and rotation. This tool allows you to move the objects and keep the same position and rotation. This feature might be very useful if automatic movement to container is not what you want. For example you want single element to no longer be mirrored or further processed with other objects inside the container. To select more objects hold left CTRL key during selection.
 
 * [Boolean cut with containers](https://www.youtube.com/watch?v=OVwazL8MQwI)
+
+<br><br>
 
 # How to use containers - short tutorial
 
@@ -700,6 +690,186 @@ Selection modes:
 * `Group` is normal FreeCAD folder. You can't move it or rotate but it is good container to keep LinkGroup structure. 
 
 **Note:** If you want to use `Part :: Boolean :: Cut` inside `LinkGroup` container, first you have to get out of the container all the elements using [selected2Outside](#selected2outside). See video: [Boolean cut with containers](https://www.youtube.com/watch?v=OVwazL8MQwI)
+
+# Dimensions, BOM, Cut-list
+
+## getDimensions - cut-list, BOM creation tool
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/getDimensions.png"> This tool allows to create spreadsheet with dimensions to cut, cut-list, BOM.
+
+Main features:
+
+* Languages: Polish, English.
+* Units: millimeters, meters, inches.
+* Report types:
+    * quick, quantity first (q - report type),
+    * names, objects listing (n - report type),
+    * group, grandparent or parent folder name first (g - report type),
+    * edgeband, extended edge (e - report type),
+    * detailed, edgeband, drill holes, countersinks (d - report type),
+    * constraints names, totally custom report (c - report type),
+    * pads, all constraints (p - report type),
+    * approximation of needed material (a - report type), it can be imported at [cutlistoptimizer.com](https://www.cutlistoptimizer.com/).
+* Additional reports:
+    * custom measurements,
+    * dowels and screws,
+    * construction profiles,
+* Other:
+    * wood properties - grain direction, type of wood, color of wood,
+    * edgeband (quick way, described, detailed by selection),
+
+Tool repository: [github.com/dprojects/getDimensions](https://github.com/dprojects/getDimensions)
+  
+**Video tutorials:** 
+* [Cut-list, BOM](https://www.youtube.com/watch?v=lYssiliONVo)
+* [Custom measurements & BOM](https://www.youtube.com/watch?v=-Mmwvw_Bue4)
+* [Preview furniture & cut-list](https://www.youtube.com/watch?v=xEMQUH665Vw)
+
+## sheet2export
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/sheet2export.png"> This tool allows to export cut-list, BOM to more flexible file formats. Useful if you want to print multi-page report. 
+
+Main features:
+
+* Supported file types:
+    * .csv - Comma-separated values,
+    * .html - HyperText Markup Language,
+    * .json - JavaScript Object Notation,
+    * .md - MarkDown.
+
+* Additional features:
+    * export selected spreadsheet or all spreadsheets,
+    * custom CSV separator,
+    * custom empty cell content,
+    * custom CSS decoration for each cell.
+
+Tool repository: [github.com/dprojects/sheet2export](https://github.com/dprojects/sheet2export)
+
+## showSpaceModel
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showSpaceModel.png"> This tool allows to calculate occupied space in 3D by the model. This approach might be very useful at furniture designing process. For example you can see how much space in your room will take opened front of the furniture. Normally, all the `Pad` or `Cube` elements, should be created according to the `XYZ` plane, so there will be no difference between the real dimensions and occupied space in 3D. 
+
+<br><br><br>
+
+## showSpaceSelected
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showSpaceSelected.png"> This tool allows to calculate occupied space in 3D by selected elements. This approach might be very useful at furniture designing process. For example you can see how much space take selected parts of the furniture. Normally, all the `Pad` or `Cube` elements, should be created according to the `XYZ` plane, so there will be no difference between the real dimensions and occupied space in 3D.
+
+<br><br><br>
+
+## magicMeasure
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicMeasure.png"> 
+This tool allows you to quickly measure objects. All measurements are recognized by the getDimensions tool and can be listed in the cut-list report with a reference to the object. This tool works in two modes:
+
+* **Preselection mode** - this mode allows you to quickly measure objects by just moving the mouse cursor over the object. In this mode you can measure: edge, surface (all edges), hole diameter and hole depth. If you left-click, the current visible measurements will be saved.
+    
+* **Selection mode** - this mode allows you to measure objects by selecting vertices, surfaces or holes. In this mode you have the following choices:
+  * select `Edge`: to measure edge size, 
+  * select `Vertex` and next `Face`: to measure distance between vertex and face, for example shelf space,
+  * select `Vertex` and next `Edge`: to measure distance between vertex and edge, for example space between front and side of the furniture, 
+  * select `Vertex` and next `Hole`: to measure distance between vertex and hole center point, for example drill point, 
+  * select `Vertex` and next `Vertex`: to measure distance between two vertices, for any purposes, 
+  * select `Hole` and next `Hole`: to measure distance between holes center points, for example to verify 32 mm system, 
+  * select `Hole` and next `Edge`: to measure distance between hole and edge, for example to verify pilot hole offset,
+  * select `Hole` and next `Face`: to measure distance between hole and face, for example to measure angle mounting point, 
+  * select `Hole` and next `Vertex`: to measure distance between hole and vertex.
+
+**Note:** This tool automatically recognizes the FreeCAD `Edit->Preferences->Display->Colors->Enable preselection highlighting` settings and if you set this option, it will start in `Preselection` mode, otherwise in `Selection` mode, so you don't have to switch it at the beginning.
+
+* **Measurement observer:**
+  * `START` button allows you to start the measurement process,
+  * `PAUSE` button allows you to stop the measurement process, without leaving this tool's graphical interface, for example if you want to select or create objects.
+
+* **Preselection mode:**
+  * `ON` button allows you to start preselection mode and also exit selection mode,
+  * `OFF` button allows you to start selection mode and also exit preselection mode.
+  
+* **Vertices size:**
+  * `-5` button allows you to make smaller all vertices of all objects by `-5` points, 
+  * `+5` button allows you to make bigger all vertices of all objects by `+5` points.
+
+**Note:** You can also use [showVertex](#showvertex), but here you can adjust the vertices more precisely and it works for all vertices, so you don't have to unselect the object or select a specific object. 
+
+**Text field** the text box shows the current measurements, so you can easily copy these dimensions for later use.
+
+**Video tutorials:** 
+* [How to use magicMeasure](https://www.youtube.com/watch?v=_yGLzNmeK0Q)
+
+# Decoration
+
+## colorManager
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/colorManager.png"> This tool allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected faces or objects and see the effect at 3D model in real-time.
+
+<br><br><br><br>
+
+## setTextures
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/setTextures.png"> This is FreeCAD macro for woodworking to apply and store textures.
+
+Main features:
+
+* Store texture URL or local HDD path, repeat factor, rotation and fit mode in object's property.
+* Download and show textures from stored URL or local HDD path.
+* Set and refresh texture for all objects or selected object only.
+* Auto fit mode to object shape type.
+* Small GUI interface in corner to see 3D model refresh.
+
+Tool repository: [github.com/dprojects/setTextures](https://github.com/dprojects/setTextures)
+
+## makeBeautiful
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/makeBeautiful.png"> This tool change all objects look, make edges and vertices smaller to look better at screenshots. If you click it again all objects will be changed to default values.
+
+<br><br><br><br>
+
+# Router
+
+## Router bit - Cove
+
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerCove4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerCove2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerCove.png"> **Note:** This tool allows to create decoration router bits effect. You can select many edges or faces. The selected edges or faces do not have to be at the same object. You can select edges or faces at any object. But each edge or face need to be according to the XYZ coordinate axis to get correct plane of the edge or face. For face the routing path is the CenterOfMass of the face and also along the longest edge. Hold left CTRL key during edges or faces selection. The router bits get size from object thickness. If the router bit is for example Cove2, it means the size of the Cove will be 1/2 of the object thickness.
+
+**Video tutorials:** 
+* [Router Cove](https://www.youtube.com/watch?v=MQYaZ4NEiBI)
+* [Decoration testing with router bits](https://www.youtube.com/watch?v=K229hhMt8Vc)
+* [How to use decoration features](https://www.youtube.com/watch?v=R9u6ikswO_0)
+
+## Router bit - Round Over
+
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerRoundOver4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerRoundOver2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerRoundOver.png"> **Note:** This tool allows to create decoration router bits effect. You can select many edges or faces. The selected edges or faces do not have to be at the same object. You can select edges or faces at any object. But each edge or face need to be according to the XYZ coordinate axis to get correct plane of the edge or face. For face the routing path is the CenterOfMass of the face and also along the longest edge. Hold left CTRL key during edges or faces selection. The router bits get size from object thickness. If the router bit is for example Cove2, it means the size of the Cove will be 1/2 of the object thickness.
+
+**Video tutorials:** 
+* [Router Round Over](https://www.youtube.com/watch?v=RErYZpqbqAY)
+* [Decoration testing with router bits](https://www.youtube.com/watch?v=K229hhMt8Vc)
+* [How to use decoration features](https://www.youtube.com/watch?v=R9u6ikswO_0)
+
+## Router bit - Straight
+
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerStraight4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerStraight3.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerStraight2.png"> **Note:** This tool allows to create decoration router bits effect. You can select many edges or faces. The selected edges or faces do not have to be at the same object. You can select edges or faces at any object. But each edge or face need to be according to the XYZ coordinate axis to get correct plane of the edge or face. For face the routing path is the CenterOfMass of the face and also along the longest edge. Hold left CTRL key during edges or faces selection. The router bits get size from object thickness. If the router bit is for example Cove2, it means the size of the Cove will be 1/2 of the object thickness.
+
+**Video tutorials:** 
+* [Router Straight](https://www.youtube.com/watch?v=NDBLmh2SwwI)
+* [Decoration testing with router bits](https://www.youtube.com/watch?v=K229hhMt8Vc)
+
+## Router bit - Chamfer
+
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerChamfer4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerChamfer2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerChamfer.png"> **Note:** This tool allows to create decoration router bits effect. You can select many edges or faces. The selected edges or faces do not have to be at the same object. You can select edges or faces at any object. But each edge or face need to be according to the XYZ coordinate axis to get correct plane of the edge or face. For face the routing path is the CenterOfMass of the face and also along the longest edge. Hold left CTRL key during edges or faces selection. The router bits get size from object thickness. If the router bit is for example Cove2, it means the size of the Cove will be 1/2 of the object thickness.
+
+**Video tutorials:** 
+* [Router Chamfer](https://www.youtube.com/watch?v=Z45TDosmb-U)
+* [Decoration testing with router bits](https://www.youtube.com/watch?v=K229hhMt8Vc)
+
+## multiPocket
+
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/multiPocket4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/multiPocket2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/multiPocket.png"> **Note:** This tool allows to create custom decoration from Sketches. You can select many Sketches at once. The selected Sketches will make Pockets at the first selected object. The Sketches need to be correctly aligned at the object. Hold left CTRL key during Sketches selection. For 2 and 4 variant this tool gets first selected object size and create Pocket with 1/2 thickness or 1/4 thickness.
+
+**Video tutorials:** 
+* [How to create custom decoration](https://www.youtube.com/watch?v=sZDToy3qCk4)
+* [multiPocket custom decoration](https://www.youtube.com/watch?v=FHups7Zvl5E)
+* [Future of parametric modeling](https://www.youtube.com/watch?v=0M9EW0I9iwg)
+
+<br><br><br>
 
 # Dowels and Screws
 
@@ -791,6 +961,8 @@ For manual adjust you can use:
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/edge2drillbit.png"> This tool can be used to create drill bits above holes of the hinges, angles or other fixture type. You to create drill bits precisely above the hole so that you can drill the hole quickly later. The drill bits will be created above the selected hole edges. To create drill bits select edge of the hole. You can select many edges at once but all the holes need to be at the same object. The drill bit Height will be 16. The drill bits radius will be get from the selected edge hole radius but will be little smaller, 1 mm, than the selected hole, to make correct pilot hole for screw. To select more objects hold left CTRL key during selection.
 
+<br><br>
+
 # Dowels, Screws, Fixture - short tutorial
 
 * Use [magicDowels](#magicdowels) for dowels, screws and other mounting points references.
@@ -815,6 +987,8 @@ However, if you make your own detailed part or order somewhere, you need to fulf
 
 * [Adding dowels](https://www.youtube.com/watch?v=q7tJffBBUGY)
 * [Angles, Pilot holes, Screws](https://www.youtube.com/watch?v=CYaL-sGvIK8)
+
+<br><br>
 
 # Drilling holes
 
@@ -1136,6 +1310,8 @@ Personally, the two side counterbore I use for screwing things to the table. I u
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RealisticCounterbore2x007.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RealisticCounterbore2x008.png)
 
+<br><br>
+
 # Construction
 
 ## panel2profile
@@ -1344,198 +1520,7 @@ Working with raw wood is an art of some sort. This is the true form of working w
 **Video tutorials:** 
 * [Glued table top simulation (force order of operations)](https://www.youtube.com/watch?v=SULl3EmCTsk)
 
-<br><br><br>
-
-# Advanced
-
-## panel2pad
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2pad.png"> This tool allows to replace `Cube` panel with `Pad` panel. The new created `Pad` panel will get the same dimensions, placement and rotation as the selected `Cube` panel. You can transform many `Cube` panels into `Pad` at once. To select more `Cubes` hold `left CTRL key` during selection. This tool is mostly dedicated to add decoration that is not supported for `Cube` objects by FreeCAD PartDesign workbench. You can also change shape by changing the `Sketch`. This is mostly used for decoration that can be applied only to `Pad`, like `Fillet`.
-
-<br><br><br>
-
-**Video tutorials:** 
-* [Automatic parametrization](https://www.youtube.com/watch?v=JuZsAjrQr6M)
-
-# Router
-
-## Router bit - Cove
-
-<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerCove4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerCove2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerCove.png"> **Note:** This tool allows to create decoration router bits effect. You can select many edges or faces. The selected edges or faces do not have to be at the same object. You can select edges or faces at any object. But each edge or face need to be according to the XYZ coordinate axis to get correct plane of the edge or face. For face the routing path is the CenterOfMass of the face and also along the longest edge. Hold left CTRL key during edges or faces selection. The router bits get size from object thickness. If the router bit is for example Cove2, it means the size of the Cove will be 1/2 of the object thickness.
-
-**Video tutorials:** 
-* [Router Cove](https://www.youtube.com/watch?v=MQYaZ4NEiBI)
-* [Decoration testing with router bits](https://www.youtube.com/watch?v=K229hhMt8Vc)
-* [How to use decoration features](https://www.youtube.com/watch?v=R9u6ikswO_0)
-
-## Router bit - Round Over
-
-<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerRoundOver4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerRoundOver2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerRoundOver.png"> **Note:** This tool allows to create decoration router bits effect. You can select many edges or faces. The selected edges or faces do not have to be at the same object. You can select edges or faces at any object. But each edge or face need to be according to the XYZ coordinate axis to get correct plane of the edge or face. For face the routing path is the CenterOfMass of the face and also along the longest edge. Hold left CTRL key during edges or faces selection. The router bits get size from object thickness. If the router bit is for example Cove2, it means the size of the Cove will be 1/2 of the object thickness.
-
-**Video tutorials:** 
-* [Router Round Over](https://www.youtube.com/watch?v=RErYZpqbqAY)
-* [Decoration testing with router bits](https://www.youtube.com/watch?v=K229hhMt8Vc)
-* [How to use decoration features](https://www.youtube.com/watch?v=R9u6ikswO_0)
-
-## Router bit - Straight
-
-<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerStraight4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerStraight3.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerStraight2.png"> **Note:** This tool allows to create decoration router bits effect. You can select many edges or faces. The selected edges or faces do not have to be at the same object. You can select edges or faces at any object. But each edge or face need to be according to the XYZ coordinate axis to get correct plane of the edge or face. For face the routing path is the CenterOfMass of the face and also along the longest edge. Hold left CTRL key during edges or faces selection. The router bits get size from object thickness. If the router bit is for example Cove2, it means the size of the Cove will be 1/2 of the object thickness.
-
-**Video tutorials:** 
-* [Router Straight](https://www.youtube.com/watch?v=NDBLmh2SwwI)
-* [Decoration testing with router bits](https://www.youtube.com/watch?v=K229hhMt8Vc)
-
-## Router bit - Chamfer
-
-<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerChamfer4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerChamfer2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerChamfer.png"> **Note:** This tool allows to create decoration router bits effect. You can select many edges or faces. The selected edges or faces do not have to be at the same object. You can select edges or faces at any object. But each edge or face need to be according to the XYZ coordinate axis to get correct plane of the edge or face. For face the routing path is the CenterOfMass of the face and also along the longest edge. Hold left CTRL key during edges or faces selection. The router bits get size from object thickness. If the router bit is for example Cove2, it means the size of the Cove will be 1/2 of the object thickness.
-
-**Video tutorials:** 
-* [Router Chamfer](https://www.youtube.com/watch?v=Z45TDosmb-U)
-* [Decoration testing with router bits](https://www.youtube.com/watch?v=K229hhMt8Vc)
-
-## multiPocket
-
-<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/multiPocket4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/multiPocket2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/multiPocket.png"> **Note:** This tool allows to create custom decoration from Sketches. You can select many Sketches at once. The selected Sketches will make Pockets at the first selected object. The Sketches need to be correctly aligned at the object. Hold left CTRL key during Sketches selection. For 2 and 4 variant this tool gets first selected object size and create Pocket with 1/2 thickness or 1/4 thickness.
-
-**Video tutorials:** 
-* [How to create custom decoration](https://www.youtube.com/watch?v=sZDToy3qCk4)
-* [multiPocket custom decoration](https://www.youtube.com/watch?v=FHups7Zvl5E)
-* [Future of parametric modeling](https://www.youtube.com/watch?v=0M9EW0I9iwg)
-
-<br><br><br>
-
-# Decoration
-
-## colorManager
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/colorManager.png"> This tool allows to set face colors for all objects from spreadsheet. Also you can browse colors for manually selected faces or objects and see the effect at 3D model in real-time.
-
-<br><br><br><br>
-
-## setTextures
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/setTextures.png"> This is FreeCAD macro for woodworking to apply and store textures.
-
-Main features:
-
-* Store texture URL or local HDD path, repeat factor, rotation and fit mode in object's property.
-* Download and show textures from stored URL or local HDD path.
-* Set and refresh texture for all objects or selected object only.
-* Auto fit mode to object shape type.
-* Small GUI interface in corner to see 3D model refresh.
-
-Tool repository: [github.com/dprojects/setTextures](https://github.com/dprojects/setTextures)
-
-## makeBeautiful
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/makeBeautiful.png"> This tool change all objects look, make edges and vertices smaller to look better at screenshots. If you click it again all objects will be changed to default values.
-
-<br><br><br><br>
-
-# Dimensions, BOM, Cut-list
-
-## getDimensions - cut-list, BOM creation tool
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/getDimensions.png"> This tool allows to create spreadsheet with dimensions to cut, cut-list, BOM.
-
-Main features:
-
-* Languages: Polish, English.
-* Units: millimeters, meters, inches.
-* Report types:
-    * quick, quantity first (q - report type),
-    * names, objects listing (n - report type),
-    * group, grandparent or parent folder name first (g - report type),
-    * edgeband, extended edge (e - report type),
-    * detailed, edgeband, drill holes, countersinks (d - report type),
-    * constraints names, totally custom report (c - report type),
-    * pads, all constraints (p - report type),
-    * approximation of needed material (a - report type), it can be imported at [cutlistoptimizer.com](https://www.cutlistoptimizer.com/).
-* Additional reports:
-    * custom measurements,
-    * dowels and screws,
-    * construction profiles,
-* Other:
-    * wood properties - grain direction, type of wood, color of wood,
-    * edgeband (quick way, described, detailed by selection),
-
-Tool repository: [github.com/dprojects/getDimensions](https://github.com/dprojects/getDimensions)
-  
-**Video tutorials:** 
-* [Cut-list, BOM](https://www.youtube.com/watch?v=lYssiliONVo)
-* [Custom measurements & BOM](https://www.youtube.com/watch?v=-Mmwvw_Bue4)
-* [Preview furniture & cut-list](https://www.youtube.com/watch?v=xEMQUH665Vw)
-
-## sheet2export
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/sheet2export.png"> This tool allows to export cut-list, BOM to more flexible file formats. Useful if you want to print multi-page report. 
-
-Main features:
-
-* Supported file types:
-    * .csv - Comma-separated values,
-    * .html - HyperText Markup Language,
-    * .json - JavaScript Object Notation,
-    * .md - MarkDown.
-
-* Additional features:
-    * export selected spreadsheet or all spreadsheets,
-    * custom CSV separator,
-    * custom empty cell content,
-    * custom CSS decoration for each cell.
-
-Tool repository: [github.com/dprojects/sheet2export](https://github.com/dprojects/sheet2export)
-
-## showSpaceModel
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showSpaceModel.png"> This tool allows to calculate occupied space in 3D by the model. This approach might be very useful at furniture designing process. For example you can see how much space in your room will take opened front of the furniture. Normally, all the `Pad` or `Cube` elements, should be created according to the `XYZ` plane, so there will be no difference between the real dimensions and occupied space in 3D. 
-
-<br><br><br>
-
-## showSpaceSelected
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showSpaceSelected.png"> This tool allows to calculate occupied space in 3D by selected elements. This approach might be very useful at furniture designing process. For example you can see how much space take selected parts of the furniture. Normally, all the `Pad` or `Cube` elements, should be created according to the `XYZ` plane, so there will be no difference between the real dimensions and occupied space in 3D.
-
-<br><br><br>
-
-## magicMeasure
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicMeasure.png"> 
-This tool allows you to quickly measure objects. All measurements are recognized by the getDimensions tool and can be listed in the cut-list report with a reference to the object. This tool works in two modes:
-
-* **Preselection mode** - this mode allows you to quickly measure objects by just moving the mouse cursor over the object. In this mode you can measure: edge, surface (all edges), hole diameter and hole depth. If you left-click, the current visible measurements will be saved.
-    
-* **Selection mode** - this mode allows you to measure objects by selecting vertices, surfaces or holes. In this mode you have the following choices:
-  * select `Edge`: to measure edge size, 
-  * select `Vertex` and next `Face`: to measure distance between vertex and face, for example shelf space,
-  * select `Vertex` and next `Edge`: to measure distance between vertex and edge, for example space between front and side of the furniture, 
-  * select `Vertex` and next `Hole`: to measure distance between vertex and hole center point, for example drill point, 
-  * select `Vertex` and next `Vertex`: to measure distance between two vertices, for any purposes, 
-  * select `Hole` and next `Hole`: to measure distance between holes center points, for example to verify 32 mm system, 
-  * select `Hole` and next `Edge`: to measure distance between hole and edge, for example to verify pilot hole offset,
-  * select `Hole` and next `Face`: to measure distance between hole and face, for example to measure angle mounting point, 
-  * select `Hole` and next `Vertex`: to measure distance between hole and vertex.
-
-**Note:** This tool automatically recognizes the FreeCAD `Edit->Preferences->Display->Colors->Enable preselection highlighting` settings and if you set this option, it will start in `Preselection` mode, otherwise in `Selection` mode, so you don't have to switch it at the beginning.
-
-* **Measurement observer:**
-  * `START` button allows you to start the measurement process,
-  * `PAUSE` button allows you to stop the measurement process, without leaving this tool's graphical interface, for example if you want to select or create objects.
-
-* **Preselection mode:**
-  * `ON` button allows you to start preselection mode and also exit selection mode,
-  * `OFF` button allows you to start selection mode and also exit preselection mode.
-  
-* **Vertices size:**
-  * `-5` button allows you to make smaller all vertices of all objects by `-5` points, 
-  * `+5` button allows you to make bigger all vertices of all objects by `+5` points.
-
-**Note:** You can also use [showVertex](#showvertex), but here you can adjust the vertices more precisely and it works for all vertices, so you don't have to unselect the object or select a specific object. 
-
-**Text field** the text box shows the current measurements, so you can easily copy these dimensions for later use.
-
-**Video tutorials:** 
-* [How to use magicMeasure](https://www.youtube.com/watch?v=_yGLzNmeK0Q)
+<br><br>
 
 # Parameterization
 
@@ -1593,6 +1578,19 @@ This tool allows you to quickly measure objects. All measurements are recognized
 
 **Video tutorials:** 
 * [Preview alias](https://www.youtube.com/watch?v=tS9pvkPH5RI)
+
+<br><br><br>
+
+# Advanced
+
+## panel2pad
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2pad.png"> This tool allows to replace `Cube` panel with `Pad` panel. The new created `Pad` panel will get the same dimensions, placement and rotation as the selected `Cube` panel. You can transform many `Cube` panels into `Pad` at once. To select more `Cubes` hold `left CTRL key` during selection. This tool is mostly dedicated to add decoration that is not supported for `Cube` objects by FreeCAD PartDesign workbench. You can also change shape by changing the `Sketch`. This is mostly used for decoration that can be applied only to `Pad`, like `Fillet`.
+
+<br><br><br>
+
+**Video tutorials:** 
+* [Automatic parametrization](https://www.youtube.com/watch?v=JuZsAjrQr6M)
 
 <br><br><br>
 
