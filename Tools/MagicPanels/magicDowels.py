@@ -165,19 +165,20 @@ def showQtGUI():
 				self.faceinfo = QtGui.QLabel(info, self)
 				self.faceinfo.move(10, row)
 
-				#row += 20
+				row += 20
 				
 				# button
-				self.faceinfoB1 = QtGui.QPushButton("+", self)
+				self.faceinfoB1 = QtGui.QPushButton(translate('magicDowels', 'refresh face selection'), self)
 				self.faceinfoB1.clicked.connect(self.setFaceSettins)
-				self.faceinfoB1.setFixedWidth(50)
-				self.faceinfoB1.move(self.toolSW - 60, row)
+				self.faceinfoB1.setFixedWidth(self.toolSW - 20)
+				self.faceinfoB1.setFixedHeight(40)
+				self.faceinfoB1.move(10, row)
 
 				# ############################################################################
 				# options - select edge
 				# ############################################################################
 
-				row += 30
+				row += 50
 
 				# label
 				self.seL = QtGui.QLabel(translate('magicDowels', 'Select edge:'), self)
@@ -212,23 +213,10 @@ def showQtGUI():
 				self.pacb.move(10, row+3)
 
 				# ############################################################################
-				# options - save dowels button
-				# ############################################################################
-
-				row += 30
-
-				# button
-				self.e2B1 = QtGui.QPushButton(translate('magicDowels', 'create'), self)
-				self.e2B1.clicked.connect(self.setDowels)
-				self.e2B1.setFixedWidth(self.toolSW - 20)
-				self.e2B1.setFixedHeight(40)
-				self.e2B1.move(10, row)
-
-				# ############################################################################
 				# options - connection samples
 				# ############################################################################
 
-				row += 80
+				row += 30
 				
 				# dowel type selection
 				self.dtslist = (
@@ -377,7 +365,7 @@ def showQtGUI():
 				# options - mount label
 				# ############################################################################
 
-				row += 50
+				row += 30
 				
 				# label
 				self.oDowelLabelL = QtGui.QLabel(translate('magicDowels', 'Label:'), self)
@@ -560,11 +548,25 @@ def showQtGUI():
 				row += 30
 
 				# button
-				self.e1B1 = QtGui.QPushButton(translate('magicDowels', 'show custom values'), self)
+				self.e1B1 = QtGui.QPushButton(translate('magicDowels', 'show custom settings'), self)
 				self.e1B1.clicked.connect(self.setCustomValues)
 				self.e1B1.setFixedWidth(self.toolSW - 20)
+				self.e1B1.setFixedHeight(40)
 				self.e1B1.move(10, row)
-			
+				
+				# ############################################################################
+				# options - save dowels button
+				# ############################################################################
+
+				row += 50
+				
+				# button
+				self.e2B1 = QtGui.QPushButton(translate('magicDowels', 'create'), self)
+				self.e2B1.clicked.connect(self.setDowels)
+				self.e2B1.setFixedWidth(self.toolSW - 20)
+				self.e2B1.setFixedHeight(40)
+				self.e2B1.move(10, row)
+
 				# ############################################################################
 				# set if face is selected before GUI open
 				# ############################################################################

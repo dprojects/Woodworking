@@ -5686,17 +5686,33 @@ def showInfo(iCaller, iInfo, iNote="yes"):
 
 
 	info += "<br><br>"
-	info += "<b>Golden rules:</b>"
+	info += "<b>" + translate('showInfoAll','Golden rules:') + "</b>"
 	info += "<ul>"
 	
-	info += "<li>Don't rotate objects directly, rotate them via container LinkGroup.</li>"
-	info += "<li>Don't copy Pad directly. Copy, Clone, Link the Part container.</li>"
-	info += "<li>Don't mix Cut with PartDesign too much. Keep clear and simple design line.</li>"
-	info += "<li>If you want generate cut-list, BOM, dimensions, rather avoid packing objects extremely, for example Array on Array or MultiTransform on MultiTransform.</li>"
-	info += "<li>Rather not move objects via AttachmentOffset, move them via container Body, LinkGroup.</li>"
-	info += "<li>Design furniture from Cubes. If you want more detailed model convert exact element to Pad and edit the Sketch. Also for irregular or not rectangle shapes.</li>"
-	info += "<li>Always make backup of your project.</li>"
-	info += "<li>Break all rules, if you know what you are doing.</li>"
+	info += "<li>"
+	info += translate('showInfoAll','Not rotate objects directly, rotate them via LinkGroup container.')
+	info += "</li>"
+	info += "<li>"
+	info += translate('showInfoAll','Not copy Pad directly. Copy, Clone or Link the Part container.')
+	info += "</li>"
+	info += "<li>"
+	info += translate('showInfoAll','Not mix Cut with PartDesign too much. Keep clear and simple design line based on simple panels.')
+	info += "</li>"
+	info += "<li>"
+	info += translate('showInfoAll','If you want generate cut-list, BOM, dimensions, rather avoid packing objects extremely, for example Array on Array or MultiTransform on MultiTransform.')
+	info += "</li>"
+	info += "<li>"
+	info += translate('showInfoAll','Not move objects via AttachmentOffset, move them via Body or LinkGroup container.')
+	info += "</li>"
+	info += "<li>"
+	info += translate('showInfoAll','Design furniture from simple panels (Part::Box objects). If you want more detailed model convert desired simple panel into Pad and edit the Sketch. Also for irregular or not rectangle shapes.')
+	info + "</li>"
+	info += "<li>"
+	info += translate('showInfoAll','Always make backup of your project. Read documentation, watch videos, learn more or open issue.')
+	info += "</li>"
+	info += "<li>"
+	info += translate('showInfoAll','Break all rules, if you know what you are doing.')
+	info += "</li>"
 	info += "<ul>"
 	
 	if iNote == "yes":

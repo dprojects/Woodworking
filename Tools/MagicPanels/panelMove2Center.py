@@ -131,6 +131,14 @@ except:
 	
 	info = ""
 
-	info += translate('panelMove2Center', '<b>To move object to the center please select single edge of two holes and objects to move. Or select two vertices and objects to move. </b><br><br><b>Note:</b> This tool allows to move object to the center of two holes or two vertices. The edge holes or vertices should lie on one of the coordinate axes XYZ. The object can be Cylinder, Cone (dril bit), Cube (panel), Pad or LinkGroup with as many objects you want. If you want to move Pad, select Body. If you want to move many Pads, select Body or pack all Part into LinkGroup and select LinkGroup to move. Make sure you do not have Sketch position set. This tool use .Shape.CenterOfMass but if it is not available for object like it is for LinkGroup the center will be calculated from vertices. You can move to the center many objects at once. Hold left CTRL key during selection. ')
+	info += "<b>" + translate('panelMove2Center', 'Possible selection methods') + ": " + "</b><ul>"
+	info += "<li>"
+	info += translate('panelMove2Center', 'First select two vertices and next objects to move.')
+	info += "</li>"
+	info += "<li>"
+	info += translate('panelMove2Center', 'First select two holes and next objects to move.')
+	info += "</li></ul>"
+	info += "<b>" + translate('panelMove2Center', 'Note') + ": </b>"
+	info += translate('panelMove2Center', 'This tool allows you to move object to the center of two holes or two vertices. The edge holes or vertices should lie on one of the coordinate axes XYZ. The object can be Cylinder, Cone (dril bit), Cube (panel), Pad or LinkGroup with as many objects you want. If you want to move Pad, select Body. If you want to move many Pads, select Body or pack all Part into LinkGroup and select LinkGroup to move. Make sure you do not have Sketch position set. This tool use .Shape.CenterOfMass but if it is not available for object like it is for LinkGroup the center will be calculated from vertices. You can move to the center many objects at once. Hold left CTRL key during selection. ')
 	
 	MagicPanels.showInfo("panelMove2Center", info)

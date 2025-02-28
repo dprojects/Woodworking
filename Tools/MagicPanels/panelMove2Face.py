@@ -83,7 +83,7 @@ except:
 	
 	info = ""
 
-	info += translate('panelMove2Face', 'To adjust panel to face please select: <br><br>1. selection: <b>face</b><br>2. selection: <b>objects to align</b><br><br><b>Note:</b> This tool allows to align panels to face position. You can select more objects holding left CTRL key. This tool allows you to avoid thickness step problem, if you want to move panel to the other edge but the way is not a multiple of the panel thickness. For rotated containers use panelMove2Anchor.')
+	info += translate('panelMove2Face', '<b>Please first select face, next select objects to move.</b><br><br><b>Note:</b> This tool allows to move panels to the selected face position. You can select more objects holding left CTRL key. This tool allows you to avoid thickness step problem, if you want to move panel to the other edge but the way is not a multiple of the panel thickness. Also you can move shelves to the back or to the sides of the furniture. For rotated containers use panelMove2Anchor.')
 	
 	MagicPanels.showInfo("panelMove2Face", info)
 

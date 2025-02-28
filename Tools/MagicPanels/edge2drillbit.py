@@ -43,6 +43,6 @@ except:
 	
 	info = ""
 	
-	info += translate('edge2drillbit', '<b>Please select valid edge to create drill bit. This feature can be used to create drill bits above holes at hinges, angles or other fixture type. </b><br><br><b>Note:</b> This tool allows to create drill bits for making simple hole. The drill bits will be created above the selected hole edges. To create drill bits select edge of the hole. You can select many edges at once but all the holes need to be at the same object. The drill bit Height will be 16. The drill bits radius will be get from the selected edge hole radius but will be little smaller, 1 mm, than the hole to make pilot hole. To select more objects hold left CTRL key during selection.')
+	info += translate('edge2drillbit', '<b>Please select valid hole edges to create drill bits.</b><br><br><b>Note:</b> This tool can be used to create drill bits above holes of the hinges, angles or other fixture type. You to create drill bits precisely above the hole so that you can drill the hole quickly later. The drill bits will be created above the selected hole edges. To create drill bits select edge of the hole. You can select many edges at once but all the holes need to be at the same object. The drill bit Height will be 16. The drill bits radius will be get from the selected edge hole radius but will be little smaller, 1 mm, than the selected hole, to make correct pilot hole for screw. To select more objects hold left CTRL key during selection.')
 
 	MagicPanels.showInfo("edge2drillbit", info)

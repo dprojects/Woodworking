@@ -44,7 +44,7 @@ except:
 	
 	info = ""
 	
-	info += translate('panel2link', '<b>Please select valid object to be linked, next selected objects will be replaced with Links. </b><br><br><b>Note:</b> This tool allows to replace simple objects with any detailed object, e.g. Cylinders with realistic looking screws. First you have to select detailed object and than simple object that will be replaced with Link. The first selected detailed object can be Part, LinkGroup or any other created manually or merged with your project. You can replace more than one simple object at once with Link. To select more objects hold left CTRL key during selection. The simple objects should imitate the detailed object to replace all of them in-place with realistic looking one. ')
+	info += translate('panel2link', '<b>Please select object to link, next select objects you want to replace with Links. </b><br><br><b>Note:</b> This tool allows to replace simple objects with any detailed object, e.g. Cylinders with realistic looking screws. First you have to select detailed object and than simple object that will be replaced with Link. The first selected detailed object can be Part, LinkGroup or any other created manually or merged with your project. You can replace more than one simple object at once with Link. To select more objects hold left CTRL key during selection. The simple objects should imitate the detailed object to replace all of them in-place with realistic looking one. ')
 
 	info += translate('panel2link', 'For more details please see:')
 	info += ' ' + '<a href="https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture">'

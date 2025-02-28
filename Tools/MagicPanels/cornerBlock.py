@@ -47,7 +47,7 @@ except:
 	
 	info = ""
 	
-	info += translate('cornerBlock', '<b>Please select single edge at each panel you want to change into corner block. </b><br><br><b>Note:</b> This tool allows to create corner block from selected edge. The cut size will be the panel thickness. For example you can create Cube 100 mm x 100 mm x 100 mm in the corner of the table to support table leg, and you can change it into corner block, quickly with single click. You can replace more than one panel at once. Hold left CTRL key during edges selection.')
+	info += translate('cornerBlock', '<b>Please select single edge at each panel you want to change into corner block. </b><br><br><b>Note:</b> This tool allows to create corner block from selected edge. The cut size will be the panel thickness. The cut will be at the other side of selected edge, for better access for example if you create Cube 100 mm x 100 mm x 100 mm in the corner of the table to support table leg, and you want to change it into corner block, quickly with single click. You can replace more than one panel at once. Hold left CTRL key during edges selection.')
 
 	MagicPanels.showInfo("cornerBlock", info)
 

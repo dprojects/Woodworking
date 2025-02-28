@@ -83,7 +83,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 220
-			toolSH = 640
+			toolSH = 660
 			
 			# active screen size (FreeCAD main window)
 			gSW = FreeCADGui.getMainWindow().width()
@@ -106,27 +106,30 @@ def showQtGUI():
 			# options - selection mode
 			# ############################################################################
 			
+			row = 10
+			
 			# screen
 			info = ""
 			info += "                                             "
 			info += "                                             "
 			info += "                                             "
 			self.s1S = QtGui.QLabel(info, self)
-			self.s1S.move(10, 10)
+			self.s1S.move(10, row)
 
+			row += 20
+			
 			# button
-			self.s1B1 = QtGui.QPushButton(translate('magicDriller', 'refresh selection'), self)
+			self.s1B1 = QtGui.QPushButton(translate('magicDriller', 'refresh face selection'), self)
 			self.s1B1.clicked.connect(self.getSelected)
 			self.s1B1.setFixedWidth(200)
-			self.s1B1.move(10, 40)
-
-			row = 50
+			self.s1B1.setFixedHeight(40)
+			self.s1B1.move(10, row)
 
 			# ############################################################################
 			# options - select edge
 			# ############################################################################
 
-			row += 30
+			row += 50
 
 			# label
 			self.s2L = QtGui.QLabel(translate('magicDriller', 'Select edge:'), self)
@@ -426,18 +429,19 @@ def showQtGUI():
 			# options - end settings
 			# ############################################################################
 
-			row += 30
-
-			# button
-			self.e1B1 = QtGui.QPushButton(translate('magicDriller', 'set custom values'), self)
-			self.e1B1.clicked.connect(self.refreshSettings)
-			self.e1B1.setFixedWidth(200)
-			self.e1B1.move(10, row)
-
 			row += 40
 
 			# button
-			self.e2B1 = QtGui.QPushButton(translate('magicDriller', 'drill below drill bits'), self)
+			self.e1B1 = QtGui.QPushButton(translate('magicDriller', 'show custom settings'), self)
+			self.e1B1.clicked.connect(self.refreshSettings)
+			self.e1B1.setFixedWidth(200)
+			self.e1B1.setFixedHeight(40)
+			self.e1B1.move(10, row)
+
+			row += 50
+
+			# button
+			self.e2B1 = QtGui.QPushButton(translate('magicDriller', 'create'), self)
 			self.e2B1.clicked.connect(self.drillHoles)
 			self.e2B1.setFixedWidth(200)
 			self.e2B1.setFixedHeight(40)

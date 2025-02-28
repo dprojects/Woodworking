@@ -47,7 +47,15 @@ except:
 	
 	info = ""
 	
-	info += translate('drillHoles', '<b>Please select face to create drill bit. Or please select face and next drill bits to drill holes at selected face. </b><br><br><b>Note:</b> This is drill bit to make simple hole. The hole will be drilled below the bottom part of the drill bit, below the red face of the cylinder. The radius and depth of the hole will be the same as drill bit radius and height. You can resize the drill bit if you want. If you select face only, the drill bit will be created in the corner of the face (0 vertex). So, you will be able to move the drill bit precisely to any place at the face. Do not move the drill bit up, the drill bit should touch the face to get exact hole depth. If you select face and than any amount of drill bits, the holes will be drilled below each drill bit. To select more objects hold left CTRL key during selection. If the selected element is Cube, it will be replaced with Pad.')
+	info += "<b>" + translate('drillHoles', 'Possible selection methods') + ": " + "</b><ul>"
+	info += "<li>"
+	info += translate('drillHoles', 'Select face to create drill bit.')
+	info += "</li>"
+	info += "<li>"
+	info += translate('drillHoles', 'Select face and next drill bits to drill holes at selected face.')
+	info += "</li></ul>"
+	info += "<b>" + translate('drillHoles', 'Note') + ": </b>"
+	info += translate('drillHoles', 'This is drill bit to make simple hole. The hole will be drilled below the bottom part of the drill bit, below the red face of the cylinder. The radius and depth of the hole will be the same as drill bit radius and height. You can resize the drill bit if you want. If you select face only, the drill bit will be created in the corner of the face (0 vertex). So, you will be able to move the drill bit precisely to any place at the face. Do not move the drill bit up, the drill bit should touch the face to get exact hole depth. If you select face and than any amount of drill bits, the holes will be drilled below each drill bit. To select more objects hold left CTRL key during selection. If the selected element is Cube, it will be replaced with Pad.')
 
 	MagicPanels.showInfo("drillHoles", info)
 

@@ -64,7 +64,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 270
-			toolSH = 480
+			toolSH = 500
 			
 			# active screen size (FreeCAD main window)
 			gSW = FreeCADGui.getMainWindow().width()
@@ -88,7 +88,7 @@ def showQtGUI():
 			# ############################################################################
 			
 			# set grid
-			row = 0
+			row = 10
 			col1 = 100
 			col2 = 155
 			col3 = 210
@@ -98,8 +98,6 @@ def showQtGUI():
 			info += "                                             "
 			info += "                                             "
 			info += "                                             "
-			
-			row += 10
 			
 			# info about base detailed object to link
 			self.ob1S = QtGui.QLabel(info, self)
@@ -111,8 +109,6 @@ def showQtGUI():
 			self.ob2S = QtGui.QLabel(info, self)
 			self.ob2S.move(10, row)
 			
-			row += 20
-			
 			# selection status
 			self.ob3S = QtGui.QLabel(info, self)
 			self.ob3S.move(10, row)
@@ -120,16 +116,17 @@ def showQtGUI():
 			row += 20
 			
 			# button
-			self.s1B1 = QtGui.QPushButton(translate('magicFixture', 'refresh selection'), self)
+			self.s1B1 = QtGui.QPushButton(translate('magicFixture', 'refresh selections'), self)
 			self.s1B1.clicked.connect(self.getSelected)
 			self.s1B1.setFixedWidth(toolSW-20)
+			self.s1B1.setFixedHeight(40)
 			self.s1B1.move(10, row)
 
 			# ############################################################################
 			# options - select edge
 			# ############################################################################
 
-			row += 30
+			row += 50
 
 			# label
 			self.s2L = QtGui.QLabel(translate('magicFixture', 'Edge:'), self)
@@ -298,16 +295,17 @@ def showQtGUI():
 			row += 30
 
 			# button
-			self.e1B1 = QtGui.QPushButton(translate('magicFixture', 'set custom values'), self)
+			self.e1B1 = QtGui.QPushButton(translate('magicFixture', 'show custom settings'), self)
 			self.e1B1.clicked.connect(self.refreshSettings)
 			self.e1B1.setFixedWidth(toolSW-20)
+			self.e1B1.setFixedHeight(40)
 			self.e1B1.move(10, row)
 
 			# ############################################################################
 			# options - transform command
 			# ############################################################################
 
-			row += 40
+			row += 50
 
 			# button
 			self.e2B1 = QtGui.QPushButton(translate('magicFixture', 'set manually'), self)
@@ -327,7 +325,7 @@ def showQtGUI():
 			# options - final save
 			# ############################################################################
 
-			row += 60
+			row += 70
 
 			# radio buttons
 			
@@ -344,7 +342,7 @@ def showQtGUI():
 			row += 30
 
 			# apply button
-			self.e3B1 = QtGui.QPushButton(translate('magicFixture', 'apply fixture to this position'), self)
+			self.e3B1 = QtGui.QPushButton(translate('magicFixture', 'create'), self)
 			self.e3B1.clicked.connect(self.setFixture)
 			self.e3B1.setFixedWidth(toolSW-20)
 			self.e3B1.setFixedHeight(40)
