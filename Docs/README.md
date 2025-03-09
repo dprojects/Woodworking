@@ -150,38 +150,9 @@ I don't have `Windows` or `macOS`, so I am not able to test and certify this wor
 	
 		git clone https://github.com/dprojects/Woodworking.git
 
-	**New significant changes since the last release 0.22 stable:**
+	**New significant changes since the last release 0.23 stable:**
 
-    * Polish language translation
-    * support for undo things
-    * Side decoration (magicStart)
-    * Front decoration (magicStart)
-    * Front outside and inside decorative (magicStart)
-	* makeBeautiful tool for screenshot purposes
-	* Move to Equal feature to set equal space between objects along X, Y or Z (magicMove)
-	* panelCopy feature improved to start at face, edge or vertex
-	* side fit into the gap, by width, by offsets, X or Y plane (magicStart)
-	* table solutions, kitchen or coffee, simple, modern and decorated style (magicStart)
-	* shelvesEqual tool to set equal space between existing shelves
-	* panelMove2Face improve to adjust position with object size
-	* shelf series to create shelves into gap with equal space (magicStart)
-	* front with glass, simple and decorated, outside or inside, fit into gap (magicStart)
-	* improve magicMeasure (new GUI, descriptions, auto preselection recognize, vertices size)
-	* face frame (around, with center bar, with horizontal bar) and predefined furniture (magicStart)
-	* tool to quickly add or remove expressions for position and size (magicGlue)
-	* drawer series feature to create many drawers at once (magicStart)
-	* magicMove improvements (container, auto object type, translation, cross save, fixes)
-	* add edge, face, vertex reference to Mirror feature (magicMove)
-	* feature Copy by Edge to copy part of the furniture (magicMove)
-	* new laveder color for API inspection tool (scanObjects)
-	* building complex furniture from modules by selected edge, face, vertex or custom offset (magicStart)
-	* center side for selected gap by depth, by offsets, custom offsets, automatically adjusted (magicStart)
-	* shelf for selected gap by depth, by offsets, custom offsets, automatically adjusted (magicStart)
-	* front outside or inside for selected gap (magicStart)
-	* drawer with front outside or inside for selected gap (magicStart)
-	* foot solutions (magicStart)
-	* magicDowels improved (GUI redesign, position autodetect, keep settings, menu translation, fixes)
-	* magicStart tool to create & import furniture, fixture, drawers, ...
+    * nothing yet...
 
 **Step 2. Get FreeCAD Mod folder localization:**
 
