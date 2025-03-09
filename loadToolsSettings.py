@@ -222,7 +222,7 @@ Tools = [
 	# #################################################################################################################################
 
 	"", "scanObjects", "png", "scanObjects", "Inspection tool for FreeCAD macro development & project debug (live API).",
-	"", "debugInfo", "png", "debugInfo", "This too shows installation information and allows to update if there is new version available.",
+	"", "debugInfo", "png", "debugInfo", "This tool shows installation information and allows to update if there is new version available.",
 
 	# #################################################################################################################################
 	# Woodworking - parameterization
@@ -243,7 +243,7 @@ Tools = [
 	# #################################################################################################################################
 
 	"MagicPanels", "fitModel", "png", "fitModel", "Click to see info.",
-	"", "makeTransparent",  "png","transparent or normal mode", "Make all parts transparent, so you can see all the joints, pilot holes, screws, countersinks. If you click next one all parts will back to normal. The transparent default is 83, so do not set any part to this number if you want e.g. to keep glass part of the furniture transparent after this preview.",
+	"MagicPanels", "makeTransparent", "png", "make objects transparent or normal", "Click to see info.",
 	"MagicPanels", "showVertex", "png", "showVertex", "Click to see info.",
 	"MagicPanels", "selectVertex", "png", "selectVertex", "Click to see info.",
 	"MagicPanels", "roundCurve", "png", "render curve precisely", "Click to see info." # no comma at the end

@@ -1003,7 +1003,7 @@ def showQtGUI():
 			self.of1E = QtGui.QLineEdit(self)
 			self.of1E.setText(str(self.gFSX))
 			self.of1E.setFixedWidth(90)
-			self.of1E.move(120, rowfoot)
+			self.of1E.move(150, rowfoot)
 
 			rowfoot += 30
 
@@ -1015,7 +1015,7 @@ def showQtGUI():
 			self.of2E = QtGui.QLineEdit(self)
 			self.of2E.setText(str(self.gFSY))
 			self.of2E.setFixedWidth(90)
-			self.of2E.move(120, rowfoot)
+			self.of2E.move(150, rowfoot)
 
 			rowfoot += 60
 
@@ -1027,7 +1027,7 @@ def showQtGUI():
 			self.of3E = QtGui.QLineEdit(self)
 			self.of3E.setText("100")
 			self.of3E.setFixedWidth(90)
-			self.of3E.move(120, rowfoot)
+			self.of3E.move(150, rowfoot)
 
 			rowfoot += 30
 
@@ -1039,7 +1039,7 @@ def showQtGUI():
 			self.of4E = QtGui.QLineEdit(self)
 			self.of4E.setText(str(self.gThick))
 			self.of4E.setFixedWidth(90)
-			self.of4E.move(120, rowfoot)
+			self.of4E.move(150, rowfoot)
 
 			rowfoot += 30
 
@@ -1051,17 +1051,17 @@ def showQtGUI():
 			self.of5E = QtGui.QLineEdit(self)
 			self.of5E.setText(str(self.gThick))
 			self.of5E.setFixedWidth(90)
-			self.of5E.move(120, rowfoot)
+			self.of5E.move(150, rowfoot)
 			
 			rowfoot += 60
 
 			# button
 			self.of6B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.of6B1.clicked.connect(self.createObject)
-			self.of6B1.setFixedWidth(200)
-			self.of6B1.setFixedHeight(40)
-			self.of6B1.move(10, rowfoot)
-			
+			self.of6B1.setFixedWidth(self.toolSW - 20)
+			self.of6B1.setFixedHeight(createSize)
+			self.of6B1.move(10, createRow)
+
 			# hide by default
 			self.of1L.hide()
 			self.of1E.hide()
@@ -1097,7 +1097,7 @@ def showQtGUI():
 			self.otb1E = QtGui.QLineEdit(self)
 			self.otb1E.setText("990")
 			self.otb1E.setFixedWidth(90)
-			self.otb1E.move(120, rowtbl)
+			self.otb1E.move(150, rowtbl)
 
 			rowtbl += 30
 
@@ -1109,7 +1109,7 @@ def showQtGUI():
 			self.otb2E = QtGui.QLineEdit(self)
 			self.otb2E.setText("525")
 			self.otb2E.setFixedWidth(90)
-			self.otb2E.move(120, rowtbl)
+			self.otb2E.move(150, rowtbl)
 
 			rowtbl += 30
 
@@ -1121,7 +1121,7 @@ def showQtGUI():
 			self.otb3E = QtGui.QLineEdit(self)
 			self.otb3E.setText("430")
 			self.otb3E.setFixedWidth(90)
-			self.otb3E.move(120, rowtbl)
+			self.otb3E.move(150, rowtbl)
 
 			rowtbl += 30
 

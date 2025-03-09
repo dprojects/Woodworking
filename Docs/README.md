@@ -152,6 +152,8 @@ I don't have `Windows` or `macOS`, so I am not able to test and certify this wor
 
 	**New significant changes since the last release 0.22 stable:**
 
+    * Polish language translation
+    * support for undo things
     * Side decoration (magicStart)
     * Front decoration (magicStart)
     * Front outside and inside decorative (magicStart)
@@ -214,13 +216,14 @@ This woodworking workbench is delivered with several useful extras:
 
 # Translations
 
-Currently there are no translations available. However, the code is ready for translations. 
+Currently supported languages: 
+  
+* **English** - by default development language
+* **Polish** - my native language supported since 0.23 release
 
-The translations are developed at [github.com/dprojects/Woodworking-translations](https://github.com/dprojects/Woodworking-translations) repository and in my opinion should be created only for [Woodworking workbench releases](https://github.com/dprojects/Woodworking/releases). This approach allows the translator community to work without time pressure and independently of the development of the main branch, because the code of stable releases will not be changed. 
-
-Since Woodworking workbench release 0.22 there is `translations update tool` available under drop down menu `Woodworking -> Download and update all translations`. This tool will automatically download all available `.qm` files into `translations` folder for you Woodworking workbench release.
-
-Of course, if someone is interested in doing a translation, please contact me, because I personally do not know all the possible languages ​​and I can only do a translation into Polish.
+Of course, if someone is interested in doing a translation, please create pull request at: [github.com/dprojects/Woodworking-translations](https://github.com/dprojects/Woodworking-translations) repository.
+  
+Since Woodworking workbench release 0.22 there is `translations update tool` available under drop down menu `Woodworking -> Download and update all translations`. This tool will automatically download all available `.qm` files from [github.com/dprojects/Woodworking-translations](https://github.com/dprojects/Woodworking-translations) repository into `translations` folder for you Woodworking workbench version.
 
 # Objects, Workflow, Golden rules
 

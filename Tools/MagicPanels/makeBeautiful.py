@@ -7,6 +7,9 @@ try:
 	
 	objects = FreeCAD.ActiveDocument.Objects
 
+	if len(objects) < 1:
+		raise
+		
 	# settings
 	origLineWidth = 2
 	origPointSize = 2

@@ -4233,14 +4233,14 @@ def makePad(iObj, iPadLabel="Pad"):
 	doc = FreeCAD.ActiveDocument
 	
 	part = doc.addObject('App::Part', 'Part')
-	part.Label = "Part, "+iPadLabel
+	part.Label = translate('makePad', 'Part') + ", "+iPadLabel
 	
 	body = doc.addObject('PartDesign::Body', 'Body')
-	body.Label = "Body, "+iPadLabel
+	body.Label = translate('makePad', 'Body') + ", "+iPadLabel
 	part.addObject(body)
 	
 	sketch = body.newObject('Sketcher::SketchObject', 'Sketch')
-	sketch.Label = "Pattern, "+iPadLabel
+	sketch.Label = translate('makePad', 'Pattern') + ", "+iPadLabel
 	
 	try:
 		if direction == "XY" or direction == "YX":
@@ -5663,28 +5663,26 @@ def showInfo(iCaller, iInfo, iNote="yes"):
 	path = os.path.dirname(fakemodule.__file__)
 	iconPath = str(os.path.join(path, "Icons"))
 	
-	filename = ""
+	fpng = os.path.join(iconPath, iCaller+".png")
+	fsvg = os.path.join(iconPath, iCaller+".svg")
+	fxpm = os.path.join(iconPath, iCaller+".xpm")
 	
-	f = os.path.join(iconPath, iCaller+".xpm")
-	if os.path.exists(f):
-		filename = f
-		info += '<img src="'+ filename + '" width="200" height="200" align="right"/>'
-	
-	f = os.path.join(iconPath, iCaller+".svg")
-	if os.path.exists(f):
-		filename = f
+	if os.path.exists(fpng):
+		info += '<img src="'+ fpng + '" width="200" height="200" align="right">'
+
+	elif os.path.exists(fsvg):
 		info += '<svg>'
-		info += '<img src="'+ filename + '" width="200" height="200" align="right"/>'
+		info += '<img src="'+ fsvg + '" width="200" height="200" align="right"/>'
 		info += '</svg>'
-		
-	f = os.path.join(iconPath, iCaller+".png")
-	if os.path.exists(f):
-		filename = f
-		info += '<img src="'+ filename + '" width="200" height="200" align="right">'
+	
+	elif os.path.exists(fxpm):
+		info += '<img src="'+ fxpm + '" width="200" height="200" align="right"/>'
+	
+	else:
+		skip = 1
 	
 	info += iInfo
-
-
+	
 	info += "<br><br>"
 	info += "<b>" + translate('showInfoAll','Golden rules:') + "</b>"
 	info += "<ul>"
@@ -5718,16 +5716,38 @@ def showInfo(iCaller, iInfo, iNote="yes"):
 	if iNote == "yes":
 		
 		info += '<br><br>'
-		info += translate('showInfoAll', 'For more details see:') + '<br>'
+		info += translate('showInfoAll', 'For more details see:') + ' '
 		info += '<a href="https://github.com/dprojects/Woodworking/tree/master/Docs">'
 		info += translate('showInfoAll', 'Woodworking workbench documentation')
 		info += '</a>'
-		
+	
 	msg = QtGui.QMessageBox()
 	msg.setWindowTitle(iCaller)
 	msg.setTextFormat(QtCore.Qt.TextFormat.RichText)
 	msg.setText(info)
+	
+	colorR = msg.palette().window().color().red()
+	colorG = msg.palette().window().color().green()
+	colorB = msg.palette().window().color().blue()
+	
+	offset = 8
+	borderColor = "rgb(" + str(colorR-offset) + ", " + str(colorG-offset) + ", " + str(colorB-offset) + ")"
+	txtBgColor = "rgb(" + str(colorR+offset) + ", " + str(colorG+offset) + ", " + str(colorB+offset) + ")"
+	
+	css = '''
+	
+		QLabel { 
+			min-width: 700px; 
+			border: 15px inset ''' + borderColor + ''';
+			background-color: ''' + txtBgColor + ''';
+			padding: 15px;
+			margin: 15px 25px 15px 0px;
+		}
+	
+	'''
+	
+	msg.setStyleSheet(css)
 	msg.exec_()
-
+	
 
 # ###################################################################################################################

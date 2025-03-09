@@ -6,18 +6,6 @@ Author: Darek L (github.com/dprojects)
 Latest version: https://github.com/dprojects/sheet2export
 
 Certified platform:
-
-OS: Ubuntu 22.04 LTS (XFCE/xubuntu)
-Word size of FreeCAD: 64-bit
-Version: 0.20.29177 (Git) AppImage
-Build type: Release
-Branch: (HEAD detached at 0.20)
-Hash: 68e337670e227889217652ddac593c93b5e8dc94
-Python 3.9.13, Qt 5.12.9, Coin 4.0.0, Vtk 9.1.0, OCC 7.5.3
-Locale: English/United States (en_US)
-Installed mods: 
-  * Woodworking 0.20.29177
-
 https://github.com/dprojects/Woodworking
 
 '''
@@ -247,7 +235,7 @@ def showQtMain():
 			self.emptyCellTi = QtGui.QLineEdit(self)
 			self.emptyCellTi.setText(str(sEmptyCell))
 			self.emptyCellTi.setFixedWidth(100)
-			self.emptyCellTi.move(140, 140)
+			self.emptyCellTi.move(200, 140)
 
 			# ############################################################################
 			# CSV separator
@@ -552,14 +540,14 @@ def HTMLrowOpen():
 	global gOUT
 
 	gOUT += " <TR>\n"
-
+	
 
 # ###################################################################################################################
 def HTMLrowClose():
 	global gOUT
 
 	gOUT += " </TR>\n"
-
+	
 
 # ###################################################################################################################
 def HTMLempty(iKey, iC, iR):
@@ -577,6 +565,7 @@ def HTMLempty(iKey, iC, iR):
 	except:
 		gOUT += ''
 
+	
 	gOUT += 'style=' 
 	gOUT += '"'
 	gOUT += str(sCustomCSS)
@@ -1129,7 +1118,7 @@ def setOUTPUT():
 
 				# set the cell content
 				if vCell != "":
-					selectCell(vKey, vCell, c, r)					
+					selectCell(vKey, vCell, c, r)
 				else:
 					selectEmpty(vKey, c, r)
 
@@ -1138,13 +1127,24 @@ def setOUTPUT():
 				# if there was no such cell access point it will be empty cell
 				# if there is open colspan this should be skipped
 				if sFileType == "html":
-					if colSpan == 0 or  rowSpan == 0:
+					if colSpan == 0 or rowSpan == 0:
 						selectEmpty(vKey, c, r)
 
 				# colspan is not supported by the file type
 				else:
 					selectEmpty(vKey, c, r)
 
+			# fix if there is empty row separator
+			if sFileType == "html":
+				cls = ""
+				try:
+					cls = int(dbCPCS[vKey])
+				except:
+					skip = 1
+				
+				if cls == int(dbMaxC):
+					c = int(dbMaxC)
+					
 			# if the cell was written and there is colspan open
 			if colSpan > 0:
 				colSpan = colSpan - 1 
@@ -1156,7 +1156,7 @@ def setOUTPUT():
 		selectRowClose()
 		
 		if rowSpan > 0:
-			rowSpan = rowSpan - 1 		
+			rowSpan = rowSpan - 1
 
 		# set variables for next row
 		c = 1

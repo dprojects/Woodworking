@@ -7,6 +7,9 @@ try:
 
 	selection = FreeCADGui.Selection.getSelection()
 
+	if len(selection) < 1:
+		raise
+
 	i = 0
 	for o in selection:
 

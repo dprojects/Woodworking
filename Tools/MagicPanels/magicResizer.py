@@ -122,7 +122,7 @@ def showQtGUI():
 			row += 30
 
 			# button
-			self.o1B1 = QtGui.QPushButton("resize -", self)
+			self.o1B1 = QtGui.QPushButton(translate('magicResizer', 'resize -'), self)
 			self.o1B1.clicked.connect(self.setM)
 			self.o1B1.setFixedWidth((toolSW/2)-15)
 			self.o1B1.setFixedHeight(40)
@@ -130,7 +130,7 @@ def showQtGUI():
 			self.o1B1.setAutoRepeat(True)
 			
 			# button
-			self.o1B2 = QtGui.QPushButton("resize +", self)
+			self.o1B2 = QtGui.QPushButton(translate('magicResizer', 'resize +'), self)
 			self.o1B2.clicked.connect(self.setP)
 			self.o1B2.setFixedWidth((toolSW/2)-15)
 			self.o1B2.setFixedHeight(40)

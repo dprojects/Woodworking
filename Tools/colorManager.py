@@ -284,14 +284,9 @@ def showQtGUI():
 
 			row -= 120
 			
-			# info
-			info = ""
-			info += "This button below will set face colors from spreadsheet for all objects "
-			info += "in active document. If the faceColors spreadsheet is not available, "
-			info += "it will be created. Make sure you want to overwrite existing colors for "
-			info += "all objects. There is no undo option for that. "
+			info = translate('colorManager', 'This button below will set face colors from spreadsheet for all objects in active document. If the faceColors spreadsheet is not available, it will be created. Make sure you want to overwrite existing colors for all objects. There is no undo option for that. ')
 			
-			self.sheetInfo = QtGui.QLabel(translate('colorManager', info), self)
+			self.sheetInfo = QtGui.QLabel(info, self)
 			self.sheetInfo.setFixedWidth(toolSW-20)
 			self.sheetInfo.move(10, row+3)
 			self.sheetInfo.setWordWrap(True)

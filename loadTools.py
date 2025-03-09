@@ -4464,7 +4464,7 @@ class debugInfo():
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "debugInfo.png"),
 				"MenuText": QT_TRANSLATE_NOOP("debugInfo", "debugInfo"),
-				"ToolTip" : QT_TRANSLATE_NOOP("debugInfo", "This too shows installation information and allows to update if there is new version available."),
+				"ToolTip" : QT_TRANSLATE_NOOP("debugInfo", "This tool shows installation information and allows to update if there is new version available."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4697,8 +4697,8 @@ class makeTransparent():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "makeTransparent.png"),
-				"MenuText": QT_TRANSLATE_NOOP("makeTransparent", "transparent or normal mode"),
-				"ToolTip" : QT_TRANSLATE_NOOP("makeTransparent", "Make all parts transparent, so you can see all the joints, pilot holes, screws, countersinks. If you click next one all parts will back to normal. The transparent default is 83, so do not set any part to this number if you want e.g. to keep glass part of the furniture transparent after this preview."),
+				"MenuText": QT_TRANSLATE_NOOP("makeTransparent", "make objects transparent or normal"),
+				"ToolTip" : QT_TRANSLATE_NOOP("makeTransparent", "Click to see info."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4712,7 +4712,7 @@ class makeTransparent():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		
+		path = os.path.join(path, "MagicPanels")
 		sys.path.append(path)
 
 		if module in sys.modules:
