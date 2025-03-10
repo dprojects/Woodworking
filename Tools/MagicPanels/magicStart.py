@@ -74,7 +74,8 @@ getMenuIndex = {
 	translate('magicStart', 'Front outside ( decorative )'): 59, 
 	translate('magicStart', 'Front inside ( decorative )'): 60, 
 	translate('magicStart', 'Front decoration ( simple frame )'): 61, 
-	translate('magicStart', 'Side decoration ( simple frame )'): 62 # no comma 
+	translate('magicStart', 'Side decoration ( simple frame )'): 62, 
+	translate('magicStart', 'Minifix 15x45 mm ( import parametric )'): 63 # no comma 
 }
 
 # ############################################################################
@@ -738,6 +739,7 @@ def showQtGUI():
 				translate('magicStart', 'Screw 4x40 mm ( import parametric )'), 
 				translate('magicStart', 'Screw 5x50 mm ( import parametric )'), 
 				translate('magicStart', 'Pocket screw 4x40 mm ( import parametric )'), 
+				translate('magicStart', 'Minifix 15x45 mm ( import parametric )'), 
 				translate('magicStart', 'Counterbore 2x 5x60 mm ( import parametric )'), 
 				translate('magicStart', 'Shelf Pin 5x16 mm ( import parametric )'), 
 				translate('magicStart', 'Angle 30x30x25 mm ( import parametric )'), 
@@ -4311,7 +4313,10 @@ def showQtGUI():
 			
 			if self.gSelectedFurniture == "F62":
 				self.createF62()
-				
+			
+			if self.gSelectedFurniture == "F63":
+				self.mergeF("Minifix_15_x_45_mm.FCStd", "mount")
+			
 			# here to allow recalculation with selection
 			FreeCADGui.Selection.clearSelection()
 

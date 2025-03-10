@@ -238,7 +238,8 @@ def showQtGUI():
 							translate('magicDowels', 'Profile Pin 5 x 30 mm '), 
 							translate('magicDowels', 'Profile Pin 8 x 40 mm '), 
 							translate('magicDowels', 'Tenon joint '), 
-							translate('magicDowels', 'Custom mount point ')
+							translate('magicDowels', 'Custom mount point '), 
+							translate('magicDowels', 'Minifix 15 x 45 mm ') # no comma
 							)
 				
 				self.dts = QtGui.QComboBox(self)
@@ -967,6 +968,10 @@ def showQtGUI():
 			
 			try:
 			
+				# ########################################################
+				#  settings
+				# ########################################################
+		
 				self.gCurrentSelection = selectedIndex
 				
 				# set GUI view
@@ -1037,6 +1042,10 @@ def showQtGUI():
 				self.gDONext = gDS["gDONext"]
 				self.gDShape = gDS["gDShape"]
 				self.gSides = gDS["gSides"]
+				
+				# ########################################################
+				# custom settings
+				# ########################################################
 				
 				# Dowel 6 x 35 mm
 				if self.gCurrentSelection == 0: 
@@ -1205,6 +1214,27 @@ def showQtGUI():
 				# Custom mount point
 				if self.gCurrentSelection == 18:
 					skip = 1
+				
+				# Minifix 15 x 45 mm
+				if self.gCurrentSelection == 19:
+					self.gDDiameter = 8
+					self.gDSize = 45
+					self.gDOFSSet = 11
+					self.gDNum = 1
+					
+					# reset offsets from edge
+					self.gDOFESet = float(self.gThick) - 6 # because the thickness of minifix is 13, and not in the center
+					self.gDOFEArr = []
+					self.gDOFEArr.append(self.gDOFESet)
+					self.gDOFEArr.append(-self.gDOFESet)
+					self.gDOFEIndex = 0
+					self.gDOFESet = self.gDOFEArr[self.gDOFEIndex]
+					self.oDOEdgeE.setText(str(self.gDOFESet))
+					self.aeIS.setText(str(self.gDOFEIndex+1) + " / " + str(len(self.gDOFEArr)))
+
+				# ########################################################
+				# set custom value 
+				# ########################################################
 
 				# set adjust sink
 				self.gDOFSArr = []
@@ -1525,7 +1555,7 @@ def showQtGUI():
 				self.gCurrentSelection == 10 or 
 				self.gCurrentSelection == 11 or 
 				self.gCurrentSelection == 12 or 
-				self.gCurrentSelection == 13
+				self.gCurrentSelection == 13 
 				):
 			
 				# if CenterOfMass of selected face will be the same as CenterOfMass of dowel face3

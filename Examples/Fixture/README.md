@@ -22,6 +22,8 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 	* [Pocket screw 4 x 30 mm](#pocket-screw-4-x-30-mm)
 	* [Pocket screw 4 x 40 mm](#pocket-screw-4-x-40-mm)
 	* [Pocket screw 4 x 60 mm](#pocket-screw-4-x-60-mm)
+* [Minifix](#minifix)
+	* [Minifix 15 x 45 mm](#minifix-15-x-45-mm)
 * [Bolts](#bolts)
 	* [Counterbore2x 5 x 60 mm](#counterbore2x-5-x-60-mm)
 * [Pins](#pins)
@@ -188,6 +190,19 @@ For more details see: [Woodworking workbench documentation](https://github.com/d
 | **Download:** | [Pocket_screw_4_x_60_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Pocket_screw_4_x_60_mm.FCStd)
 
 ![Pocket_screw_4_x_60_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Pocket_screw_4_x_60_mm.png)
+
+# Minifix
+
+### Minifix 15 x 45 mm
+
+|   |   |
+|:--|:--|
+| **Usage:** | This type of mount point can be used to imitate minifix connection. |
+| **FreeCAD version:** | `0.21.2.33771 (Stable, Linux, x86_64, AppImage)` |
+| **OS:** | `Xubuntu 22.04 LTS x86_64` |
+| **Download:** | [Minifix_15_x_45_mm.FCStd](https://github.com/dprojects/Woodworking/raw/master/Examples/Fixture/Mount/Minifix_15_x_45_mm.FCStd)
+
+![Minifix_15_x_45_mm](https://raw.githubusercontent.com/dprojects/Woodworking/master/Examples/Fixture/Screenshots/Minifix_15_x_45_mm.png)
 
 # Bolts
 

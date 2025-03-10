@@ -152,7 +152,7 @@ I don't have `Windows` or `macOS`, so I am not able to test and certify this wor
 
 	**New significant changes since the last release 0.23 stable:**
 
-    * nothing yet...
+    * support for minifix, sample and dowels points
 
 **Step 2. Get FreeCAD Mod folder localization:**
 
@@ -233,7 +233,7 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * Simple storage ( front outside, back full )
 * Simple storage ( front outside, back HDF )
 * Simple storage ( front inside, back full )
-* Simple storage ( front inside, back HDF )'),
+* Simple storage ( front inside, back HDF )
 * Simple storage ( face frame, no front, back HDF )
 * Simple bookcase ( no front, back HDF )
 * Simple bookcase ( face frame, no front, back HDF )
@@ -334,13 +334,14 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 
 ## Connections
 
-* Dowel 8x35 mm ( import parametric )'),
+* Dowel 8x35 mm ( import parametric )
 * Biscuits 4x16x48 mm ( import parametric )
 * Biscuits 4x21x54 mm ( import parametric )
 * Biscuits 4x24x57 mm ( import parametric )
 * Screw 3x20 mm for HDF ( import parametric )
 * Screw 4x40 mm ( import parametric )
 * Screw 5x50 mm ( import parametric )
+* Minifix 15x45 mm ( import parametric )
 * Pocket screw 4x40 mm ( import parametric )
 * Counterbore 2x 5x60 mm ( import parametric )
 
@@ -695,6 +696,7 @@ Main features:
 Tool repository: [github.com/dprojects/getDimensions](https://github.com/dprojects/getDimensions)
   
 **Video tutorials:** 
+* [How to create cut-list](https://www.youtube.com/watch?v=_n7SUYSGHls)
 * [Cut-list, BOM](https://www.youtube.com/watch?v=lYssiliONVo)
 * [Custom measurements & BOM](https://www.youtube.com/watch?v=-Mmwvw_Bue4)
 * [Preview furniture & cut-list](https://www.youtube.com/watch?v=xEMQUH665Vw)
@@ -718,6 +720,9 @@ Main features:
     * custom CSS decoration for each cell.
 
 Tool repository: [github.com/dprojects/sheet2export](https://github.com/dprojects/sheet2export)
+
+**Video tutorials:** 
+* [How to create cut-list](https://www.youtube.com/watch?v=_n7SUYSGHls)
 
 ## showSpaceModel
 
