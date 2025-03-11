@@ -346,9 +346,12 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * Counterbore 2x 5x60 mm ( import parametric )
 
 **Video tutorials:** 
-* [Biscuits joints](https://www.youtube.com/watch?v=NCf07IwuRJI)
+* [How to add minifix connection point](https://www.youtube.com/watch?v=ZaEWmqtlj1Y)
+* [How to measure minifix and add to cut-list](https://www.youtube.com/watch?v=l7y0HETobIw)
+* [How to drill holes for minifix](https://www.youtube.com/watch?v=4A9lsZveXPc)
 * [How to add screws, 2 ways](https://www.youtube.com/watch?v=B0kChgAFAJU)
 * [How to add screws to HDF back](https://www.youtube.com/watch?v=MvIRFPDGKYQ)
+* [Biscuits joints](https://www.youtube.com/watch?v=NCf07IwuRJI)
 
 ## Accessories & Other
 
@@ -697,6 +700,7 @@ Tool repository: [github.com/dprojects/getDimensions](https://github.com/dprojec
   
 **Video tutorials:** 
 * [How to create cut-list](https://www.youtube.com/watch?v=_n7SUYSGHls)
+* [How to measure minifix and add to cut-list](https://www.youtube.com/watch?v=l7y0HETobIw)
 * [Cut-list, BOM](https://www.youtube.com/watch?v=lYssiliONVo)
 * [Custom measurements & BOM](https://www.youtube.com/watch?v=-Mmwvw_Bue4)
 * [Preview furniture & cut-list](https://www.youtube.com/watch?v=xEMQUH665Vw)
@@ -990,6 +994,7 @@ However, if you make your own detailed part or order somewhere, you need to fulf
 
 **Video tutorials:** 
 * [Countersinks & realistic screws](https://www.youtube.com/watch?v=N5SpUCtNMY0)
+* [How to drill holes for minifix](https://www.youtube.com/watch?v=4A9lsZveXPc)
 
 ## drillHoles
 
