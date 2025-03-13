@@ -152,7 +152,9 @@ I don't have `Windows` or `macOS`, so I am not able to test and certify this wor
 
 	**New significant changes since the last release 0.23 stable:**
 
+    * support for Assembly objects (tested at Assembly4 workbench + FreeCAD 1.0)
     * support for minifix, sample and dowels points
+
 
 **Step 2. Get FreeCAD Mod folder localization:**
 

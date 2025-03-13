@@ -32,14 +32,14 @@ translate = FreeCAD.Qt.translate
 sLang = "en"
 sLangDsc = { 
 	"en" : translate("getDimensions", "English language"), 
-	"pl" : translate("getDimensions", "Polish language")
+	"pl" : translate("getDimensions", "Polish language") # no comma
 }
 
 # Report print quality:
 sRPQ = "hq"
 sRPQDsc = {
 	"eco" : translate("getDimensions", "low ink mode (good for printing)"),
-	"hq" : translate("getDimensions", "high quality mode (good for pdf or html export)")
+	"hq" : translate("getDimensions", "high quality mode (good for pdf or html export)") # no comma
 }
 
 # Visibility (Toggle Visibility Feature):
@@ -49,7 +49,7 @@ sTVFDsc = {
 	"on" : translate("getDimensions", "simple mode, not show hidden objects for simple structures"),
 	"edge" : translate("getDimensions", "simple edge mode, show all but not add hidden to the edge size"),
 	"parent" : translate("getDimensions", "simple nesting, inherit visibility from the nearest container"),
-	"inherit" : translate("getDimensions", "advanced nesting, inherit visibility from the highest container")
+	"inherit" : translate("getDimensions", "advanced nesting, inherit visibility from the highest container") # no comma
 }
 
 # Part Cut Visibility:
@@ -57,7 +57,14 @@ sPartCut = "all"
 sPartCutDsc = {
 	"all" : translate("getDimensions", "Woodworking workbench approach, show Base and Tool"),
 	"base" : translate("getDimensions", "FreeCAD default approach, show Base only"),
-	"tool" : translate("getDimensions", "custom approach, show Tool only")
+	"tool" : translate("getDimensions", "custom approach, show Tool only") # no comma
+}
+
+# Parse path mode
+sPPM = "default"
+sPPMDsc = {
+	"default" : translate("getDimensions", "normal mode"),
+	"assembly" : translate("getDimensions", "dedicated for Assembly workbench objects") # no comma
 }
 
 # Report customization (Label Type Feature):
@@ -70,7 +77,7 @@ sLTFDsc = {
 	"d" : translate("getDimensions", "detailed, edgeband, drill holes, countersinks"),
 	"c" : translate("getDimensions", "constraints names, totally custom report"),
 	"p" : translate("getDimensions", "pads, show list of all constraints"),
-	"a" : translate("getDimensions", "approximation of needed material")
+	"a" : translate("getDimensions", "approximation of needed material") # no comma
 }
 
 # Units for dimensions:
@@ -78,7 +85,7 @@ sUnitsMetric = "mm"
 sUnitsMetricDsc = {
 	"mm" : translate("getDimensions", "millimeter"),
 	"m" : translate("getDimensions", "meter"),
-	"in" : translate("getDimensions", "inch")
+	"in" : translate("getDimensions", "inch") # no comma
 }
 
 # Units for area:
@@ -86,7 +93,7 @@ sUnitsArea = "m"
 sUnitsAreaDsc = {
 	"m" : translate("getDimensions", "square meter (m2)"),
 	"mm" : translate("getDimensions", "square millimeter (mm2)"),
-	"in" : translate("getDimensions", "square inch (in2)")
+	"in" : translate("getDimensions", "square inch (in2)") # no comma
 }
 
 # Units for edge size:
@@ -94,14 +101,14 @@ sUnitsEdge = "m"
 sUnitsEdgeDsc = {
 	"mm" : translate("getDimensions", "millimeter"),
 	"m" : translate("getDimensions", "meter"),
-	"in" : translate("getDimensions", "inch")
+	"in" : translate("getDimensions", "inch") # no comma
 }
 
 # Precision Defaults - Dimensions (d)
 sPrecisionDD = {
 	"mm" : 0,
 	"m" : 3,
-	"in" : 3
+	"in" : 3 # no comma
 }
 sPDD = sPrecisionDD[sUnitsMetric]
 
@@ -109,7 +116,7 @@ sPDD = sPrecisionDD[sUnitsMetric]
 sPrecisionDE = {
 	"mm" : 0,
 	"m" : 3,
-	"in" : 3
+	"in" : 3 # no comma
 }
 sPDE = sPrecisionDE[sUnitsEdge]
 
@@ -117,7 +124,7 @@ sPDE = sPrecisionDE[sUnitsEdge]
 sPrecisionDA = {
 	"mm" : 0,
 	"m" : 6,
-	"in" : 6
+	"in" : 6 # no comma
 }
 sPDA = sPrecisionDA[sUnitsArea]
 
@@ -127,7 +134,7 @@ sEColorDsc = {
 	"PL55 PVC" : "PL55 PVC",
 	"white" : "white",
 	"black" : "black",
-	"bronze" : "bronze"
+	"bronze" : "bronze" # no comma
 }
 sEColor = sEColorDsc[sEColorD]
 
@@ -158,8 +165,10 @@ sQT = "yes"
 # DEBUG
 # 1 - debug mode
 # 0 - keep console clean
-gDEBUG = 0
-gDebugLoop = False
+gDebugErrors = 0   # for errors
+gDebugLoop = 0     # for main loop
+gDebugParser = 0   # for parser in main loop
+
 
 # ###################################################################################################################
 # Autoconfig - define globals ( NOT CHANGE HERE )
@@ -323,16 +332,24 @@ def showQtGUI():
 			self.rcL.move(10, vLine + 3)
 			
 			# options
+			self.ppmList = tuple(sPPMDsc.keys())
+			self.ppmO = QtGui.QComboBox(self)
+			self.ppmO.addItems(self.ppmList)
+			self.ppmO.setCurrentIndex(self.ppmList.index(str(sPPM)))
+			self.ppmO.activated[str].connect(self.setPPM)
+			self.ppmO.move(10, vLine + vLineNextRow)
+			
+			# options
 			self.rcList = tuple(sLTFDsc.keys())
 			self.rcO = QtGui.QComboBox(self)
 			self.rcO.addItems(self.rcList)
 			self.rcO.setCurrentIndex(self.rcList.index(str(sLTF)))
 			self.rcO.activated[str].connect(self.setRC)
-			self.rcO.move(10, vLine + vLineNextRow)
+			self.rcO.move(100, vLine + vLineNextRow)
 
 			# info screen
 			self.rcIS = QtGui.QLabel(str(sLTFDsc[sLTF]) + sEmptyDsc, self)
-			self.rcIS.move(70, vLine + vLineNextRow + 3)
+			self.rcIS.move(150, vLine + vLineNextRow + 3)
 
 			# ############################################################################
 			# additional reports
@@ -444,7 +461,7 @@ def showQtGUI():
 
 			# info screen
 			self.visibilityIS = QtGui.QLabel(str(sTVFDsc[sTVF]) + sEmptyDsc, self)
-			self.visibilityIS.move(90, vLine + vLineNextRow + 3)
+			self.visibilityIS.move(120, vLine + vLineNextRow + 3)
 
 			# ############################################################################
 			# part cut visibility
@@ -761,6 +778,10 @@ def showQtGUI():
 				self.pufsL.show()
 				self.pufse.show()
 
+		def setPPM(self, selectedText):
+			global sPPM
+			sPPM = selectedText
+
 		def setDFO(self, selectedText):
 			global sUnitsMetric, sPDD
 			sUnitsMetric = selectedText
@@ -880,7 +901,7 @@ def showQtGUI():
 # ###################################################################################################################
 def showError(iCaller, iObj, iPlace, iError):
 
-	if gDEBUG == 1:
+	if gDebugErrors == 1:
 		
 		FreeCAD.Console.PrintMessage("\n ====================================================== \n")
 		
@@ -1107,16 +1128,26 @@ def getGroup(iObj, iCaller="getGroup"):
 		iObj.isDerivedFrom("PartDesign::Pocket")
 		):
 		
+		# get parent reference key
+		try:
+			key = iObj.Profile[0].Parents[0][0]
+			parents = iObj.Profile[0].Parents
+			for p in parents:
+				if p[0].isDerivedFrom("PartDesign::Body"):
+					key = p[0]
+		except:
+			vGroup = ""
+			
 		# get grandparent
 		try:
-			vGroup = iObj.Profile[0].Parents[0][0].getParentGroup().Label
+			vGroup = key.getParentGroup().Label
 		except:
 			vGroup = ""
 		
 		# get parent
 		if vGroup == "":
 			try:
-				vGroup = iObj.Profile[0].Parents[0][0].Label
+				vGroup = key.Label
 			except:
 				vGroup = ""
 
@@ -1645,10 +1676,30 @@ def setPad(iObj, iCaller="setPad"):
 		
 		else:
 		
-			# get values
-			vW = iObj.Profile[0].Shape.OrderedEdges[0].Length
-			vH = iObj.Profile[0].Shape.OrderedEdges[1].Length
-			vL = iObj.Length.Value
+			vW = ""
+			vH = ""
+			vL = ""
+			skip = 0
+		
+			# try get values from named constraints
+			try:
+				constraints = iObj.Profile[0].Constraints
+				for c in constraints:
+					if c.Name == "SizeX":
+						vW = c.Value
+					if c.Name == "SizeY":
+						vL = c.Value
+				
+				vH = iObj.Length.Value
+			
+			# get first dimensions (this may not work for non-rectangle shapes)
+			except:
+				skip = 1
+
+			if vW == "" or vL == "" or vH == "":
+				vW = iObj.Profile[0].Shape.OrderedEdges[0].Length
+				vH = iObj.Profile[0].Shape.OrderedEdges[1].Length
+				vL = iObj.Length.Value
 		
 			# set db for quantity & area & edge size
 			setDB(iObj, vW, vH, vL, iCaller)
@@ -2290,6 +2341,40 @@ def setAppLink(iObj, iCaller="setAppLink"):
 
 
 # ###################################################################################################################
+def setAssembly(iObj, iCaller="setAssembly"):
+
+	# support for Link
+	if (
+		iObj.isDerivedFrom("Assembly::AssemblyObject") or
+		iObj.isDerivedFrom("Assembly::AssemblyLink") 
+		):
+
+		try:
+			
+			# set reference point to the assembly object
+			for gm in iObj.Group:
+				if gm.isDerivedFrom("App::Link"):
+					keys = [ gm.LinkedObject ]
+				
+				elif gm.isDerivedFrom("Assembly::AssemblyLink"):
+					keys = [ gm.Group ]
+
+				else:
+					keys = []
+
+				# parse only the base object from assembly
+				for key in keys:
+					scanObjects([ key ], iCaller)
+		except:
+			
+			# if there is wrong structure
+			showError(iCaller, iObj, "setAssembly", "wrong structure")
+			return -1
+	
+	return 0
+
+
+# ###################################################################################################################
 def setPartCut(iObj, iCaller="setPartCut"):
 
 	# support for Cut
@@ -2313,9 +2398,9 @@ def setPartCut(iObj, iCaller="setPartCut"):
 
 
 # ###################################################################################################################
-def setPartMirroringBody(iObj, iCaller="setPartMirroringBody"):
+def setBody(iObj, iCaller="setBody"):
 
-	# support for Mirror on Body
+	# support for Body object type only
 	if iObj.isDerivedFrom("PartDesign::Body") and iObj.Name.startswith("Body"):
 
 		try:
@@ -2329,7 +2414,7 @@ def setPartMirroringBody(iObj, iCaller="setPartMirroringBody"):
 		except:
 			
 			# if there is wrong structure
-			showError(iCaller, iObj, "setPartMirroringBody", "wrong structure")
+			showError(iCaller, iObj, "setBody", "wrong structure")
 			return -1
 	
 	return 0
@@ -2666,6 +2751,23 @@ def getInheritedVisibility(iObj, iCaller="getInheritedVisibility"):
 
 
 # ###################################################################################################################
+def getAssemblyObject(iObj, iCaller="getAssemblyObject"):
+
+	try:
+		if (
+			iObj.isDerivedFrom("Assembly::AssemblyObject") or 
+			iObj.isDerivedFrom("Assembly::AssemblyLink") 
+			):
+			return True
+		else:
+			return False
+	except:
+		skip = 1
+	
+	return False
+	
+
+# ###################################################################################################################
 def scanObjects(iOBs, iCaller="main"):
 	
 	global gCallerObj
@@ -2681,7 +2783,7 @@ def scanObjects(iOBs, iCaller="main"):
 		# debug section
 		# ##################################################################
 		
-		if gDebugLoop == True:
+		if gDebugLoop == 1:
 			
 			FreeCAD.Console.PrintMessage("\n\n")
 			FreeCAD.Console.PrintMessage("scanObjects")
@@ -2728,30 +2830,59 @@ def scanObjects(iOBs, iCaller="main"):
 				continue
 
 		# ##################################################################
-		# run functions and time travel machine ;-)
+		# support for Assembly workbench objects
+		# ##################################################################
+
+		if sPPM == "assembly":
+			
+			# start assebly parse way only for assembly objects
+			if getAssemblyObject(obj, iCaller) == True:
+				setAssembly(obj)
+			
+			# users have other objects, not used in assembly, 
+			# so go tru assembly path only
+			# but you have to allow for assembly calls to parse 
+			# objects inside assembly
+			if iCaller == "main":
+				continue
+
+		# ##################################################################
+		# debug parser section
+		# ##################################################################
+		
+		if gDebugParser == 1:
+			
+			FreeCAD.Console.PrintMessage("\n\n")
+			FreeCAD.Console.PrintMessage("scanObjects")
+			FreeCAD.Console.PrintMessage("\n")
+			FreeCAD.Console.PrintMessage("Caller function: "+str(iCaller))
+			FreeCAD.Console.PrintMessage("\n")
+			FreeCAD.Console.PrintMessage("Caller object: "+str(gCallerObj.Label))
+			FreeCAD.Console.PrintMessage("\n")
+			FreeCAD.Console.PrintMessage("Parsed object: "+str(obj.Label))
+		
+		# ##################################################################
+		# common parser section
 		# ##################################################################
 
 		# select and set furniture part
 		selectFurniturePart(obj)
 
 		# set transformations
-
 		setPartMirroring(obj)
 		setDraftArray(obj)
-
 		setPartDesignLinearPattern(obj)
 		setPartDesignMirrored(obj)
 		setPartDesignMultiTransform(obj)
-
 		setDraftClone(obj)
 		setAppLink(obj)
 		
 		if iCaller != "main":
 			setAppPart(obj)
 			setPartCut(obj)
-			setPartMirroringBody(obj)
+			setBody(obj)
 			setAppLinkGroup(obj)
-			
+
 
 # ###################################################################################################################
 # View types (regiester each view at view selector)
