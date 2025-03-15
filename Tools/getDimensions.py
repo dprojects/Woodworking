@@ -2111,7 +2111,10 @@ def setMeasurementsList(iObj, iCaller="setMeasurementsList"):
 		vArrValues = []
 		vType = ""
 
-		if iObj.isDerivedFrom("App::MeasureDistance"):
+		if (
+			iObj.isDerivedFrom("App::MeasureDistance") or             # support for FreeCAD 0.21
+			iObj.isDerivedFrom("Measure::MeasureDistanceDetached")    # support for FreeCAD 1.0
+			):
 
 			arr = str(iObj.Label2).split(", ")
 			

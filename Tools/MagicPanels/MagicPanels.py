@@ -48,8 +48,14 @@ def QT_TRANSLATE_NOOP(context, text): #
 
 gRoundPrecision = 2      # should be set according to the user FreeCAD GUI settings
 gSearchDepth = 200       # recursive search depth
+gKernelVersion = 0       # FreeCAD version to add support for new kernel changes
 
 # end globals (for API generator)
+
+try:
+	gKernelVersion = int(FreeCAD.Version()[0])
+except:
+	skip = 1
 
 
 # ###################################################################################################################
@@ -1941,29 +1947,40 @@ def showMeasure(iP1, iP2, iRef=""):
 
 	'''
 
-	m = FreeCAD.ActiveDocument.addObject('App::MeasureDistance', "measure")
-	
+
 	# support for FreeCAD 0.21.2
-	try:
+	if gKernelVersion == 0:
 		
-		m.P1 = iP1
-		m.P2 = iP2
+		try:
+			m = FreeCAD.ActiveDocument.addObject('App::MeasureDistance', "measure")
+			
+			m.P1 = iP1
+			m.P2 = iP2
+			
+			m.ViewObject.LineColor = (1.0, 0.0, 0.0, 0.0)
+			m.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
+			m.ViewObject.FontSize = 24
+			m.ViewObject.DistFactor = 0.25
+
+		except:
+			skip = 1
 		
-		m.ViewObject.LineColor = (1.0, 0.0, 0.0, 0.0)
-		m.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
-		m.ViewObject.FontSize = 24
-		m.ViewObject.DistFactor = 0.25
-	
 	# support for FreeCAD 1.0+
-	except:
+	else:
 		
-		m.Position1 = iP1
-		m.Position2 = iP2
-		
-		m.ViewObject.LineColor = (1.0, 0.0, 0.0, 0.0)
-		m.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
-		m.ViewObject.FontSize = 24
-		
+		try:
+			m = FreeCAD.ActiveDocument.addObject('Measure::MeasureDistanceDetached', "measure")
+			
+			m.Position1 = iP1
+			m.Position2 = iP2
+			
+			m.ViewObject.LineColor = (1.0, 0.0, 0.0, 0.0)
+			m.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
+			m.ViewObject.FontSize = 24
+
+		except:
+			skip = 1
+
 	if iRef != "":
 
 		m.Label = "Measure "

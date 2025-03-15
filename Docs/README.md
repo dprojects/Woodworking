@@ -702,6 +702,7 @@ Tool repository: [github.com/dprojects/getDimensions](https://github.com/dprojec
   
 **Video tutorials:** 
 * [How to create cut-list](https://www.youtube.com/watch?v=_n7SUYSGHls)
+* [How to create cut-list for Assembly objects](https://www.youtube.com/watch?v=9pk5tUGvgFM)
 * [How to measure minifix and add to cut-list](https://www.youtube.com/watch?v=l7y0HETobIw)
 * [Cut-list, BOM](https://www.youtube.com/watch?v=lYssiliONVo)
 * [Custom measurements & BOM](https://www.youtube.com/watch?v=-Mmwvw_Bue4)
@@ -1556,6 +1557,7 @@ Working with raw wood is an art of some sort. This is the true form of working w
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/sketch2clone.png"> This tool allows to replace selected Sketches with Clones and thanks to it, convert static model to parametric. First selected Sketch will be changed into `Parametric Pattern` for all other selected Sketches. After this operation, if you change the `Parametric Pattern` all other Sketches will be automatically updated with new pattern. For example if you have Pad, it will change the shape. Make sure the center of coordinate axes XYZ for each selected Sketch is in the middle of the pattern, this will allow for correct positioning of the Sketches. To select more objects hold left CTRL key during selection. For more complicated objects use [panel2link](#panel2link) or [panel2clone](#panel2clone) at the whole `Part`. 
 
 **Video tutorials:** 
+* [Automatic parametrization](https://www.youtube.com/watch?v=JuZsAjrQr6M)
 * [Playlist for parametrization](https://www.youtube.com/playlist?list=PLSKOS_LK45BCzvg_B7oSTk1IsQnu5thtZ)
 
 ## showAlias
