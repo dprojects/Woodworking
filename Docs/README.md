@@ -152,6 +152,7 @@ I don't have `Windows` or `macOS`, so I am not able to test and certify this wor
 
 	**New significant changes since the last release 0.23 stable:**
 
+    * scanObjects improve (colors at FreeCAD 1.0 behind Material, tuples & fixes)
     * support for Assembly objects (tested at Assembly4 workbench + FreeCAD 1.0)
     * support for minifix, sample and dowels points
 

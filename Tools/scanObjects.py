@@ -252,7 +252,8 @@ def showQtGUI():
 				"modules",
 				"content",
 				"object",
-				"command"
+				"command",
+				"small data"
 			)
 
 			self.owlcb = QtGui.QComboBox(self)
@@ -827,6 +828,8 @@ def showQtGUI():
 		# ############################################################################
 		def setWindowsLayout(self, selectedText):
 
+			self.setGeometry(0, 0, self.gW, self.gH)
+
 			if selectedText == "all windows":
 
 				# options
@@ -1023,6 +1026,45 @@ def showQtGUI():
 				self.o5.show()
 
 				self.o6sw.setGeometry((4*self.gGridCol), (2*self.gGridRow), (1*self.gGridCol), (1*self.gGridRow))
+				self.o6sw.show()
+				self.o6.show()
+
+			if selectedText == "small data":
+
+				self.setGeometry(0, 0, (2*self.gGridCol), (4.5*self.gGridRow))
+
+				# options
+				self.OPTsw.setGeometry(0, (3*self.gGridRow), (1*self.gGridCol), (2*self.gGridRow))
+				self.OPTsw.show()
+
+				# select
+				self.swindow.setGeometry(0, 0, (1*self.gGridCol), (3*self.gGridRow))
+				self.swindow.show()
+				self.slist.show()
+
+				# dir
+				self.o1sw.hide()
+				self.o1.hide()
+
+				# __dict__
+				self.o2sw.hide()
+				self.o2.hide()
+
+				# __doc__
+				self.o3sw.hide()
+				self.o3.hide()
+
+				# getAllDerivedFrom
+				self.o4sw.setGeometry((1*self.gGridCol), 0, (1*self.gGridCol), (2*self.gGridRow))
+				self.o4sw.show()
+				self.o4.show()
+
+				# content
+				self.o5sw.hide()
+				self.o5.hide()
+
+				# object
+				self.o6sw.setGeometry((1*self.gGridCol), (2*self.gGridRow), (1*self.gGridCol), (2*self.gGridRow))
 				self.o6sw.show()
 				self.o6.show()
 
@@ -1270,33 +1312,41 @@ def showQtGUI():
 			# if object is list (eg. faces, edges)
 			elif isinstance(iObj, list):
 				
-				convert = 0
-				
 				i = 0
 				for o in iObj:
 					
 					i = i + 1
 					
 					if str(o).find("Face") != -1:
-						convert = 1
 						tmpO.append(o)
 						tmpL.append("Face"+str(i))
 					
-					if str(o).find("Edge") != -1:
-						convert = 1
+					elif str(o).find("Edge") != -1:
 						tmpO.append(o)
 						tmpL.append("Edge"+str(i))
 				
-					if str(o).find("Vertex") != -1:
-						convert = 1
+					elif str(o).find("Vertex") != -1:
 						tmpO.append(o)
 						tmpL.append("Vertex"+str(i))
 				
-				if convert == 0:
-					tmpO = iObj
-					tmpL = iObj
-				
-				
+					else:
+						try:
+							tmpO.append(o)
+							tmpL.append(str(o))
+						except:
+							skip = 1
+						
+			# if object is tuple (eg. ShapeAppearance Materials)
+			elif isinstance(iObj, tuple):
+			
+				i = 0
+				for o in iList:
+					
+					i = i + 1
+					
+					tmpO.append(o)
+					tmpL.append(str(i)+ ": "+str(o))
+			
 			# other types
 			else:
 				for o in iList:
@@ -1372,6 +1422,9 @@ def showQtGUI():
 					raise
 				elif isinstance(obj, list):
 					newList = obj
+					self.goDeeper(obj, label, newList, "next")
+				elif isinstance(obj, tuple):
+					newList = [ o for o in obj ]
 					self.goDeeper(obj, label, newList, "next")
 				else:
 					try:
