@@ -6,10 +6,16 @@ The Woodworking workbench started as a simple cut-list, as a macro for FreeCAD. 
 
 * **Step 0:** Download FreeCAD 0.21.2 [for Xubuntu](https://github.com/FreeCAD/FreeCAD/releases/download/0.21.2/FreeCAD-0.21.2-Linux-x86_64.AppImage) or [for other OS](https://github.com/FreeCAD/FreeCAD/releases/tag/0.21.2)
 * **Step 1:** Download [the latest Woodworking workbench version](https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip)
-* **Step 2:** Unpack Woodworking workbench to `Mod` folder, the `README.md` file should be: `~/.local/share/FreeCAD/Mod/Woodworking/README.md`.
+* **Step 2:** Unpack Woodworking workbench to `Mod` folder.
 * **Step 3:** Start `FreeCAD-0.21.2-Linux-x86_64.AppImage` file or FreeCAD in other OS.
 
-For more details see: [Woodworking workbench documentation](https://github.com/dprojects/Woodworking/tree/master/Docs#installation)
+> [!WARNING]
+> Read more about: [FreeCAD 1.0+ Support](https://github.com/dprojects/Woodworking/issues/49)
+
+> [!TIP]
+> The `README.md` file should be: `~/.local/share/FreeCAD/Mod/Woodworking/README.md`
+
+For more details see: [Installation section at Woodworking workbench documentation](https://github.com/dprojects/Woodworking/tree/master/Docs#installation)
 
 # Documentation
 
@@ -42,3 +48,4 @@ For questions, feature requests, please open issue at: [github.com/dprojects/Woo
 | [![c1r3](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r3.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r3.png) | [![c2r3](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r3.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r3.png) |
 | [![c1r4](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r4.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r4.png) | [![c2r4](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r4.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r4.png) |
 | [![c1r5](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r5.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r5.png) | [![c2r5](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r5.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r5.png) |
+| [![c1r6](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r6.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c1r6.png) | [![c2r6](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r6.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/matrix/c2r6.png) |
