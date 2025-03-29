@@ -1799,13 +1799,21 @@ def getSizes(iObj):
 	
 	# for custom objects
 	try:
-		
 		return [ iObj.Base_Width.Value, iObj.Base_Height.Value, iObj.Base_Length.Value ]
 		
 	except:
-		
-		# to move all furniture more quickly
-		return [ 100, 100, 100 ]
+		skip = 1
+	
+	# try to get sizes from vertices
+	try:
+		[ sx, sy, sz ] = getSizesFromVertices(iObj)
+		return [ sx, sy, sz ]
+
+	except:
+		skip = 1
+	
+	# if nothing was successful, return 100 to move all furniture quickly
+	return [ 100, 100, 100 ]
 
 
 # ###################################################################################################################

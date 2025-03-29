@@ -436,31 +436,46 @@ def panelMove(iType):
 
 		for o in selection:
 
-			sizes = []
-			sizes = MagicPanels.getSizes(o)
-			sizes.sort()
-
+			# allows to move quickly containers
+			# for example whole furniture module or drawer inside LinkGroup
+			if (
+			o.isDerivedFrom("App::Part") or 
+			o.isDerivedFrom("PartDesign::Body") or 
+			o.isDerivedFrom("App::LinkGroup") or 
+			o.isDerivedFrom("App::Link") 
+			):
+			
+				thick = 100
+			
+			# for single objects
+			else:
+			
+				sizes = []
+				sizes = MagicPanels.getSizes(o)
+				sizes.sort()
+				thick = sizes[0]
+			
 			x = 0
 			y = 0
 			z = 0
 			
 			if iType == "Xp":
-				x = sizes[0]
+				x = thick
 			
 			if iType == "Xm":
-				x = - sizes[0]
+				x = - thick
 
 			if iType == "Yp":
-				y = sizes[0]
+				y = thick
 
 			if iType == "Ym":
-				y = - sizes[0]
+				y = - thick
 
 			if iType == "Zp":
-				z = sizes[0]
+				z = thick
 
 			if iType == "Zm":
-				z = - sizes[0]
+				z = - thick
 
 			try:
 				[ x, y, z ] = MagicPanels.convertPosition(o, x, y, z)
@@ -469,8 +484,14 @@ def panelMove(iType):
 				
 			[ x, y, z ] = MagicPanels.getModelRotation(x, y, z)
 
-			[ px, py, pz, r ] = MagicPanels.getPlacement(o)
-			MagicPanels.setPlacement(o, px+x, py+y, pz+z, r)
+			toMove = o
+			try:
+				toMove = o._Body
+			except:
+				skip = 1
+			
+			[ px, py, pz, r ] = MagicPanels.getPlacement(toMove)
+			MagicPanels.setPlacement(toMove, px+x, py+y, pz+z, r)
 
 			FreeCAD.ActiveDocument.recompute()
 			FreeCAD.ActiveDocument.commitTransaction()
@@ -479,7 +500,7 @@ def panelMove(iType):
 		
 		info = ""
 		
-		info += translate('panelMove', '<b>Please select valid objects to move. </b><br><br><b>Note:</b> With the arrows you can quickly move many Cube panels or even any other objects at once. If the thickness of the selected object can be recognized, the move step will be the thickness. So, you can solve common furniture problem with thickness offset. If the thickness will not be recognized the step will be 100. This allow you to move whole furniture segments very quickly. The arrows recognize the view model rotation. If you want precisely move object, use magicMove tool, instead. ')
+		info += translate('panelMove', '<b>Please select objects to move. </b><br><br>With the arrows you can quickly move panel with thickness step to solve common furniture problem with thickness offset. If you select PartDesign object, it will be moved with thickness step via Body container. If you select containers <code>App::Part</code>, <code>PartDesign::Body</code>, <code>App::LinkGroup</code> and object <code>App::Link</code>, the move step will be 100, to allow move whole furniture modules or drawers inside container more quickly. Also if the thickness will not be recognized the step will be 100. You can also use the arrows for quick copy. Select object at objects Tree, click <code>CTRL-C</code> and <code>CTRL-V</code> to copy in-place the selected object and use arrows to move the object. <br><br><b>Warning:</b> You can move many objects at once, but make sure the objects have the same thickness to avoid moving objects with different step. If you want precisely move many objects with given step, please use magicMove tool, instead. The arrows recognize the view model rotation. However, all possible rotations are not recognized, sometimes the movement may not be correctly aligned with the arrow icon. So, it strongly recommended to click fitModel tool before using arrows.')
 		
 		MagicPanels.showInfo("panelMove"+iType, info)
 
