@@ -303,6 +303,7 @@ def showQtGUI():
 			
 			# label
 			self.o4L = QtGui.QLabel(self.gInfoMoveStep, self)
+			self.o4L.setFixedWidth(100)
 			self.o4L.move(10, row+3)
 
 			# text input
@@ -472,7 +473,7 @@ def showQtGUI():
 			rowcbe += 30
 			
 			# label
-			self.cbe5L = QtGui.QLabel(translate('magicMove', 'Additional offset'), self)
+			self.cbe5L = QtGui.QLabel(translate('magicMove', 'Additional offset:'), self)
 			self.cbe5L.move(10, rowcbe+3)
 
 			# text input
@@ -802,8 +803,16 @@ def showQtGUI():
 				if iType == "Zm":
 					z = - self.gStep
 				
-				[ px, py, pz, r ] = MagicPanels.getContainerPlacement(o, "clean")
-				MagicPanels.setContainerPlacement(o, px+x, py+y, pz+z, 0, "clean")
+				# move PartDesign objects via Body container by default 
+				# to avoid Sketch and decoration movement
+				toMove = o
+				try:
+					toMove = o._Body
+				except:
+					skip = 1
+				
+				[ px, py, pz, r ] = MagicPanels.getContainerPlacement(toMove, "clean")
+				MagicPanels.setContainerPlacement(toMove, px+x, py+y, pz+z, 0, "clean")
 
 			FreeCAD.ActiveDocument.recompute()
 		

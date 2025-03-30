@@ -151,7 +151,9 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 0.23 stable:**
 
-    * improved move via arrows for PartDesign objects
+    * move PartDesign objects via Body container (magicMove)
+    * move PartDesign objects via Body container (arrows)
+    * better thickness recognition (MagicPanels library)
     * scanObjects improve (colors at FreeCAD 1.0 behind Material, tuples & fixes)
     * support for Assembly objects (tested at Assembly4 workbench + FreeCAD 1.0)
     * support for minifix, sample and dowels points
@@ -462,7 +464,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 ## magicMove
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicMove.png"> This tool allows you to move and copy objects more easily. This tool supports multi-selection, hold left-CTRL key during selection to select more objects, so you can move or copy many objects at once. 
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicMove.png"> This tool allows you to move and copy objects more easily. This tool supports multi-selection, hold left-CTRL key during selection to select more objects, so you can move or copy many objects at once with desired step. 
 
 **Options:**
 
