@@ -151,6 +151,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 0.23 stable:**
 
+    * improve drilling holes with offsets at LinkGroup, Part, Body containers
     * move PartDesign objects via Body container (magicMove)
     * move PartDesign objects via Body container (arrows)
     * better thickness recognition (MagicPanels library)
@@ -619,7 +620,7 @@ Selection modes:
 
 > [!WARNING]
 > You can move many objects at once, but make sure the objects have the same thickness to avoid moving objects with different step. If you want precisely move many objects with given step, please use [magicMove](#magicmove) tool, instead. <br>
-> The arrows recognize the view model rotation. However, all possible rotations are not recognized, sometimes the movement may not be correctly aligned with the arrow icon. So, it strongly recommended to click [fitModel](#fitmodel) tool before using arrows.
+> The arrows recognize the view model rotation. However, all possible rotations are not recognized, sometimes the movement may not be correctly aligned with the arrow icon. So, it is strongly recommended to click [fitModel](#fitmodel) tool before using arrows.
 
 # Preview
 

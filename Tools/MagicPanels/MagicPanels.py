@@ -4446,6 +4446,8 @@ def makeHoles(iObj, iFace, iCylinders):
 		
 		# set position to hole Sketch
 		[ x, y, z, r ] = getContainerPlacement(o, "clean")
+		[[ x, y, z ]] = removeVerticesPosition([[ x, y, z ]], base, "array")
+		
 		setSketchPlacement(holeSketch, x, y, z, r, "global")
 		FreeCAD.ActiveDocument.recompute()
 		
@@ -4556,6 +4558,8 @@ def makeCountersinks(iObj, iFace, iCones):
 		
 		# set position to hole Sketch
 		[ x, y, z, r ] = getContainerPlacement(o, "clean")
+		[[ x, y, z ]] = removeVerticesPosition([[ x, y, z ]], base, "array")
+		
 		setSketchPlacement(holeSketch, x, y, z, r, "global")
 		FreeCAD.ActiveDocument.recompute()
 		
@@ -4666,6 +4670,8 @@ def makeCounterbores(iObj, iFace, iCones):
 		
 		# set position to hole Sketch
 		[ x, y, z, r ] = getContainerPlacement(o, "clean")
+		[[ x, y, z ]] = removeVerticesPosition([[ x, y, z ]], base, "array")
+		
 		setSketchPlacement(holeSketch, x, y, z, r, "global")
 		FreeCAD.ActiveDocument.recompute()
 		
@@ -4774,6 +4780,8 @@ def makePocketHoles(iObj, iFace, iCones):
 		
 		# set position to hole Sketch
 		[ x, y, z, r ] = getContainerPlacement(o, "clean")
+		[[ x, y, z ]] = removeVerticesPosition([[ x, y, z ]], base, "array")
+		
 		setSketchPlacement(holeSketch, x, y, z, r, "global")
 		FreeCAD.ActiveDocument.recompute()
 		
@@ -4894,6 +4902,9 @@ def makeCounterbores2x(iObj, iFace, iCones):
 		
 		# get & store drill bit position and set it to sketch
 		[ xs1, ys1, zs1, rs1 ] = getContainerPlacement(o, "clean")
+		[ xs0, ys0, zs0, rs0 ] = [ xs1, ys1, zs1, rs1 ]
+		[[ xs1, ys1, zs1 ]] = removeVerticesPosition([[ xs1, ys1, zs1 ]], base, "array")
+		
 		setSketchPlacement(holeSketch1, xs1, ys1, zs1, rs1, "global")
 		FreeCAD.ActiveDocument.recompute()
 		
@@ -5026,7 +5037,7 @@ def makeCounterbores2x(iObj, iFace, iCones):
 		holes.append(hole)
 		
 		# move & rotate back drill bit
-		setContainerPlacement(o, xs1, ys1, zs1, rs1, "clean")
+		setContainerPlacement(o, xs0, ys0, zs0, rs0, "clean")
 		
 		FreeCAD.ActiveDocument.recompute()
 	

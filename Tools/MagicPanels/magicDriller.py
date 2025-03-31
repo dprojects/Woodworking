@@ -663,10 +663,7 @@ def showQtGUI():
 					# create dowel
 					# ############################################################################
 					
-					[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(self.gObj)
-					x = x + coX
-					y = y + coY
-					z = z + coZ
+					[[ x, y, z ]] = MagicPanels.getVerticesPosition([[ x, y, z ]], self.gObj, "array")
 			
 					d = self.createDrillBit(x, y, z)
 					self.gDrillBits.append(d)
@@ -764,11 +761,8 @@ def showQtGUI():
 					# create dowel
 					# ############################################################################
 					
-					[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(self.gObj)
-					x = x + coX
-					y = y + coY
-					z = z + coZ
-			
+					[[ x, y, z ]] = MagicPanels.getVerticesPosition([[ x, y, z ]], self.gObj, "array")
+					
 					d = self.createDrillBit(x, y, z)
 					self.gDrillBits.append(d)
 					
@@ -779,7 +773,6 @@ def showQtGUI():
 			# ############################################################################
 
 			self.setRotation()
-			MagicPanels.moveToFirst(self.gDrillBits, self.gObj)
 			
 		# ############################################################################
 		# actions - functions for actions
