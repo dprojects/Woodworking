@@ -53,7 +53,7 @@ gKernelVersion = 0       # FreeCAD version to add support for new kernel changes
 # end globals (for API generator)
 
 try:
-	gKernelVersion = int(FreeCAD.Version()[0])
+	gKernelVersion = float( str(FreeCAD.Version()[0]) + "." + str(FreeCAD.Version()[1]) + str(FreeCAD.Version()[2]) )
 except:
 	skip = 1
 
@@ -1956,8 +1956,33 @@ def showMeasure(iP1, iP2, iRef=""):
 	'''
 
 
+# support for FreeCAD 1.0+
+	if gKernelVersion > 0.212:
+		
+		try:
+			m = FreeCAD.ActiveDocument.addObject('Measure::MeasureDistanceDetached', "measure")
+			
+			m.Position1 = iP1
+			m.Position2 = iP2
+			
+			m.ViewObject.LineColor = (1.0, 0.0, 0.0, 0.0)
+			m.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
+			m.ViewObject.FontSize = 24
+
+			# avoid FreeCAD automatic labeling bug and crash
+			label = str(m.Name)
+			if str(m.Name) == "measure":
+				label = translate("showMeasure", "Measure")
+			else:
+				label = translate("showMeasure", "Measure") + " " + str(m.Name)[7:]
+				
+			m.Label = label
+	
+		except:
+			skip = 1
+
 	# support for FreeCAD 0.21.2
-	if gKernelVersion == 0:
+	else:
 		
 		try:
 			m = FreeCAD.ActiveDocument.addObject('App::MeasureDistance', "measure")
@@ -1970,32 +1995,13 @@ def showMeasure(iP1, iP2, iRef=""):
 			m.ViewObject.FontSize = 24
 			m.ViewObject.DistFactor = 0.25
 
-		except:
-			skip = 1
-		
-	# support for FreeCAD 1.0+
-	else:
-		
-		try:
-			m = FreeCAD.ActiveDocument.addObject('Measure::MeasureDistanceDetached', "measure")
-			
-			m.Position1 = iP1
-			m.Position2 = iP2
-			
-			m.ViewObject.LineColor = (1.0, 0.0, 0.0, 0.0)
-			m.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
-			m.ViewObject.FontSize = 24
+			m.Label = translate("showMeasure", "Measure") + " "
 
 		except:
 			skip = 1
-
+	
 	if iRef != "":
-
-		m.Label = "Measure "
 		m.Label2 = str(iRef)
-
-	else:
-		m.Label = "Measure "
 	
 	FreeCAD.ActiveDocument.recompute()
 	

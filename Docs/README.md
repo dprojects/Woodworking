@@ -151,6 +151,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 0.23 stable:**
 
+    * fix to avoid FreeCAD 1.0 automatic labeling bug and crash 
     * improve drilling holes with offsets at LinkGroup, Part, Body containers
     * move PartDesign objects via Body container (magicMove)
     * move PartDesign objects via Body container (arrows)
