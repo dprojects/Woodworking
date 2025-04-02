@@ -151,6 +151,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 0.23 stable:**
 
+    * FreeCAD crash tester (scanObjects)
     * fix to avoid FreeCAD 1.0 automatic labeling bug and crash 
     * improve drilling holes with offsets at LinkGroup, Part, Body containers
     * move PartDesign objects via Body container (magicMove)
@@ -1668,6 +1669,7 @@ Main features:
 * Quick browse via cursors.
 * Selection search filter for quick parse long lists.
 * Allow to quick copy window content.
+* Crash test to test FreeCAD crash during browsing not removed attributes.
 
 Tool repository: [github.com/dprojects/scanObjects](https://github.com/dprojects/scanObjects)
 

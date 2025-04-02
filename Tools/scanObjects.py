@@ -3,7 +3,6 @@
 
 Inspection tool for FreeCAD macro development
 Author: Darek L (github.com/dprojects)
-Latest version: https://github.com/dprojects/scanObjects
 
 Certified platform:
 https://github.com/dprojects/Woodworking
@@ -207,7 +206,8 @@ def showQtGUI():
 				"Module: Spreadsheet",
 				"Module: MagicPanels",
 				"custom module",
-				"custom command result"
+				"custom command result",
+				"CRASH TEST"
 			)
 
 			self.orootcb = QtGui.QComboBox(self)
@@ -309,11 +309,22 @@ def showQtGUI():
 			self.ocrbutton.setFixedHeight(40)
 			
 			# ############################################################################
+			# options - crash test
+			# ############################################################################
+
+			# button
+			self.crashtest = QtGui.QPushButton("CRASH TEST", self)
+			self.crashtest.clicked.connect(self.executeCrashTest)
+			self.crashtest.setFixedWidth((1*self.gGridCol)-20)
+			self.crashtest.setFixedHeight(40)
+			
+			# ############################################################################
 			# options - container
 			# ############################################################################
 
-			self.oseparator = QtGui.QLabel("", self)
-
+			self.oseparator1 = QtGui.QLabel("", self)
+			self.oseparator2 = QtGui.QLabel("", self)
+			
 			self.oclayout = QtGui.QVBoxLayout()
 			self.oclayout.setAlignment(QtGui.Qt.AlignTop)
 			
@@ -325,11 +336,15 @@ def showQtGUI():
 			self.oclayout.addWidget(self.ocrlabel)
 			self.oclayout.addWidget(self.ocrinput)
 			self.oclayout.addWidget(self.ocrbutton)
-			self.oclayout.addWidget(self.oseparator)
+			
+			self.oclayout.addWidget(self.oseparator1)
 			self.oclayout.addWidget(self.owllabel)
 			self.oclayout.addWidget(self.owlcb)
 			self.oclayout.addWidget(self.owclabel)
 			self.oclayout.addWidget(self.owcqb)
+			
+			self.oclayout.addWidget(self.oseparator2)
+			self.oclayout.addWidget(self.crashtest)
 			
 			self.ocmlabel.hide()
 			self.ocminput.hide()
@@ -337,6 +352,8 @@ def showQtGUI():
 			self.ocrlabel.hide()
 			self.ocrinput.hide()
 			self.ocrbutton.hide()
+			self.oseparator2.hide()
+			self.crashtest.hide()
 			
 			self.ocwidget = QtGui.QWidget()
 			self.ocwidget.setLayout(self.oclayout)
@@ -698,7 +715,8 @@ def showQtGUI():
 		def setRootPath(self, selectedText):
 
 			# clear db before root set
-			self.clearDB()
+			if selectedText != "CRASH TEST":
+				self.clearDB()
 			
 			self.ocmlabel.hide()
 			self.ocminput.hide()
@@ -824,6 +842,12 @@ def showQtGUI():
 				self.ocmlabel.hide()
 				self.ocminput.hide()
 				self.ocmbutton.hide()
+			
+			if selectedText == "CRASH TEST":
+				self.orootlabel.show()
+				self.orootcb.show()
+				self.oseparator2.show()
+				self.crashtest.show()
 
 		# ############################################################################
 		def setWindowsLayout(self, selectedText):
@@ -1265,6 +1289,81 @@ def showQtGUI():
 					self.showMsg("This command is outside the matrix: "+command)
 				else:
 					self.showMsg("Can't evaluate command: "+command)
+
+		# ############################################################################
+		def executeCrashTest(self):
+			
+			try:
+			
+				if self.slist.selectionModel().hasSelection() == False:
+					raise
+
+				obj = self.getSelectionObject()
+				label = self.getSelectionLabel()
+
+				items = dir(obj)
+				
+				# this is useful only for successful crash test
+				screenLog = ""
+					
+				for i in items:
+					
+					# if FreeCAD crash you can see last item at terminal
+					# this needs to be before getting attribute
+					FreeCAD.Console.PrintMessage("\n")
+					FreeCAD.Console.PrintMessage("Testing attribute: "+str(i))
+					
+					screenLog += "Testing attribute: "+str(i)+" ..."
+					
+					# you can set additional flags here, 
+					# try will not stop FreeCAD to crash
+					try: 
+						v = getattr(obj, i)
+					except:
+						skip = 1
+					
+					try:
+						test = v.__dict__
+					except:
+						skip = 1
+					
+					try:
+						test = v.__dict__
+					except:
+						skip = 1
+					
+					try:
+						test = v.__doc__
+					except:
+						skip = 1
+						
+					try:
+						test = v.getAllDerivedFrom()
+					except:
+						skip = 1
+					
+					try:
+						test = v.Content
+					except:
+						skip = 1
+					
+					try:
+						test = v.getChildren()
+					except:
+						skip = 1
+
+					screenLog += "OK." + "\n"
+					self.o5.setPlainText(screenLog)
+				
+				screenLog = "It safe to press right key, go deeper." + "\n\n" + screenLog
+				self.o5.setPlainText(screenLog)
+				
+			except:
+
+				if self.gModeType == "matrix":
+					self.showMsg("This matrix is even worst than expected :-)")
+				else:
+					self.showMsg("Please select object to run crash test.")
 
 		# ############################################################################
 		# actions - selection search filter
