@@ -4,62 +4,85 @@ import MagicPanels
 translate = FreeCAD.Qt.translate
 
 try:
+	selection = FreeCADGui.Selection.getSelection()
 
+	# at least 2 subs at the same object should be selected 
+	# and object to center = 2 objects
+	if len(selection) < 2:
+		raise
+
+	startIndex = 0
+	sub1 = "" 
+	sub2 = ""
 	sv1 = ""
 	sv2 = ""
 	obj1Ref = ""
 	obj2Ref = ""
 	objects = []
 
-	selection = FreeCADGui.Selection.getSelection()
-
+	# try selection at single object first
 	try:
-		sv1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-		sv2 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[1]
+		sub1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+		sub2 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[1]
+		
 		obj1Ref = FreeCADGui.Selection.getSelection()[0]
 		obj2Ref = FreeCADGui.Selection.getSelection()[0]
 		
 		objects = FreeCADGui.Selection.getSelection()
-		objects.pop(0)
-		
+		startIndex = 1
 	except:
 		skip = 1
-		
-	if sv1 == "" or sv2 == "" or len(objects) < 1:
-		
+
+	# if selection is at two different objects
+	if sub1 == "" or sub2 == "" or len(objects) < 1:
 		try:
-			sv1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-			sv2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+			sub1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+			sub2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+			
 			obj1Ref = FreeCADGui.Selection.getSelection()[0]
 			obj2Ref = FreeCADGui.Selection.getSelection()[1]
 		
 			objects = FreeCADGui.Selection.getSelection()
-			objects.pop(0)
-			objects.pop(0)
-			
+			startIndex = 2
 		except:
 			skip = 1
+	
+	# set the center reference points
+	try:
+		if sub1.ShapeType == "Edge" and sub2.ShapeType == "Edge":
+			
+			sv1 = sub1.CenterOfMass
+			if hasattr(sub1, "Curve"):
+				if sub1.Curve.isDerivedFrom("Part::GeomCircle"):
+					sv1 = sub1.Curve.Location
+			
+			sv2 = sub2.CenterOfMass
+			if hasattr(sub2, "Curve"):
+				if sub2.Curve.isDerivedFrom("Part::GeomCircle"):
+					sv2 = sub2.Curve.Location
 
-	if sv1 == "" or sv2 == "" or len(objects) < 1:
+		if sub1.ShapeType == "Face" and sub2.ShapeType == "Face":
+			sv1 = sub1.CenterOfMass
+			sv2 = sub2.CenterOfMass
+
+		if sub1.ShapeType == "Vertex" and sub2.ShapeType == "Vertex":
+			sv1 = FreeCAD.Vector(sub1.X, sub1.Y, sub1.Z)
+			sv2 = FreeCAD.Vector(sub2.X, sub2.Y, sub2.Z)
+	except:
+		skip = 1
+
+	# show error info if there are no center reference points
+	if sv1 == "" or sv2 == "":
 		raise
 
-	for o in objects:
+	# start center objects
+	for i in range(startIndex, len(objects)):
 		
-		oRef = MagicPanels.getReference(o)
+		o = objects[i]
+		v1 = sv1
+		v2 = sv2
 		
-		if hasattr(sv1, "Curve"):
-			if sv1.Curve.isDerivedFrom("Part::GeomCircle"):
-				v1 = sv1.Curve.Location
-		else:
-			v1 = FreeCAD.Vector(sv1.X, sv1.Y, sv1.Z)
-
-		if hasattr(sv2, "Curve"):
-			if sv2.Curve.isDerivedFrom("Part::GeomCircle"):
-				v2 = sv2.Curve.Location
-		else:
-			v2 = FreeCAD.Vector(sv2.X, sv2.Y, sv2.Z)
-
-		[ cx, cy, cz ] = MagicPanels.getObjectCenter(oRef)
+		[ cx, cy, cz ] = MagicPanels.getObjectCenter(o)
 		c = FreeCAD.Vector(cx, cy, cz)
 		
 		[ globalV1 ] = MagicPanels.getVerticesPosition([ v1 ], obj1Ref)
@@ -75,7 +98,7 @@ try:
 			verticesType = "local"
 		else:
 			v1, v2 = globalV1, globalV2
-			[ c ] = MagicPanels.getVerticesPosition([ c ], oRef)
+			[ c ] = MagicPanels.getVerticesPosition([ c ], o)
 			verticesType = "global"
 		
 		X, Y, Z = v1[0], v1[1], v1[2]
@@ -117,7 +140,7 @@ try:
 			else:
 				X = X - offset
 
-		toMove = MagicPanels.getObjectToMove(oRef)
+		toMove = MagicPanels.getObjectToMove(o)
 		
 		if verticesType == "global":
 			MagicPanels.setContainerPlacement(toMove, X, Y, Z, 0, edgeCenter)
@@ -131,14 +154,18 @@ except:
 	
 	info = ""
 
-	info += "<b>" + translate('panelMove2Center', 'Possible selection methods') + ": " + "</b><ul>"
-	info += "<li>"
-	info += translate('panelMove2Center', 'First select two vertices and next objects to move.')
-	info += "</li>"
-	info += "<li>"
-	info += translate('panelMove2Center', 'First select two holes and next objects to move.')
-	info += "</li></ul>"
-	info += "<b>" + translate('panelMove2Center', 'Note') + ": </b>"
-	info += translate('panelMove2Center', 'This tool allows you to move object to the center of two holes or two vertices. The edge holes or vertices should lie on one of the coordinate axes XYZ. The object can be Cylinder, Cone (dril bit), Cube (panel), Pad or LinkGroup with as many objects you want. If you want to move Pad, select Body. If you want to move many Pads, select Body or pack all Part into LinkGroup and select LinkGroup to move. Make sure you do not have Sketch position set. This tool use .Shape.CenterOfMass but if it is not available for object like it is for LinkGroup the center will be calculated from vertices. You can move to the center many objects at once. Hold left CTRL key during selection. ')
+	info += translate('panelMove2Center', 'This tool allows you to center objects. Possible selection methods') + ": "
+	info += "<ul>"
+	info += "<li>" + translate('panelMove2Center', '<b>Edge</b> + <b>Edge</b> + <b>Objects</b>') + "</li>"
+	info += "<li>" + translate('panelMove2Center', '<b>Face</b> + <b>Face</b> + <b>Objects</b>') + "</li>"
+	info += "<li>" + translate('panelMove2Center', '<b>Vertex</b> + <b>Vertex</b> + <b>Objects</b>') + "</li>"
+	info += "<li>" + translate('panelMove2Center', '<b>Hole edge</b> + <b>Hole edge</b> + <b>Objects</b>') + "</li>"
+	info += "</ul>"
+	info += translate('panelMove2Center', 'Tip') + ":"
+	info += "<ul>"
+	info += "<li>" + translate('panelMove2Center', '<b>Edge, Face, Vertex or Hole edge</b> - can be at the same object or at two different objects but both should lie on one of the coordinate axes XYZ. Because if there would be for example offset at X and Y, this tool would not be able to recognize to which direction center objects.') + "</li>"
+	info += "<li>" + translate('panelMove2Center', '<b>Objects</b> - The object can be Cylinder, Cone (dril bit), Cube (panel), Pad or LinkGroup with as many objects you want. If you want to move Pad, select Body. If you want to move many Pads, select Body or pack all Part into LinkGroup and select LinkGroup to move. Make sure you do not have Sketch position set. This tool use .Shape.CenterOfMass but if it is not available for object like it is for LinkGroup the center will be calculated from vertices. You can move to the center many objects at once. Hold left CTRL key during selection. ') + "</li>"
+	info += "</ul>"
 	
 	MagicPanels.showInfo("panelMove2Center", info)
+

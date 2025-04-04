@@ -151,6 +151,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 0.23 stable:**
 
+    * add possibility to select edges or faces during center objects (panelMove2Center)
     * FreeCAD crash tester (scanObjects)
     * fix to avoid FreeCAD 1.0 automatic labeling bug and crash 
     * improve drilling holes with offsets at LinkGroup, Part, Body containers
@@ -584,9 +585,18 @@ Available anchors to select:
 
 ## panelMove2Center
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMove2Center.png"> This tool allows to move objects to the center of two holes or two vertices. The edge holes or vertices should lie on one of the coordinate axes `XYZ`. The object can be `Cylinder`, `Cone` (dril bit), `Cube` (panel), `Pad` or `LinkGroup` with as many objects you want. If you want to move `Pad`, select `Body`. If you want to move many Pads, select Body or pack all `Part` into `LinkGroup` and select `LinkGroup` to move. Make sure you do not have `Sketch` position set. This tool use `.Shape.CenterOfMass` but if it is not available for object like it is for `LinkGroup` the center will be calculated from vertices. You can move to the center many objects at once. Hold left CTRL key during selection. 
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMove2Center.png"> ￼This tool allows you to center objects. Possible selection methods: 
+* Edge + Edge + Objects
+* Face + Face + Objects
+* Vertex + Vertex + Objects
+* Hole edge + Hole edge + Objects
+
+> [!TIP]
+> * **Edge, Face, Vertex or Hole edge** - can be at the same object or at two different objects but both should lie on one of the coordinate axes XYZ. Because if there would be for example offset at X and Y, this tool would not be able to recognize to which direction center objects. 
+> * **Objects** - The object can be Cylinder, Cone (dril bit), Cube (panel), Pad or LinkGroup with as many objects you want. If you want to move Pad, select Body. If you want to move many Pads, select Body or pack all Part into LinkGroup and select LinkGroup to move. Make sure you do not have Sketch position set. This tool use .Shape.CenterOfMass but if it is not available for object like it is for LinkGroup the center will be calculated from vertices. You can move to the center many objects at once. Hold left CTRL key during selection. 
 
 **Video tutorials:** 
+* [How to center objects](https://www.youtube.com/watch?v=X1Pg-CccwIg)
 * [Move to center](https://www.youtube.com/watch?v=zKttrKdahg8)
 
 ## shelvesEqual

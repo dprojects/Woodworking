@@ -19,6 +19,7 @@ Functions at this library:
 
 gRoundPrecision = 2      # should be set according to the user FreeCAD GUI settings
 gSearchDepth = 200       # recursive search depth
+gKernelVersion = 0       # FreeCAD version to add support for new kernel changes
 
 # Functions for general purpose
 ### isType(iObj, iType):
@@ -1844,3 +1845,10 @@ gSearchDepth = 200       # recursive search depth
 	
 		Show info Gui.
 
+	
+		QLabel { 
+			min-width: 700px; 
+			padding: 15px;
+			margin: 15px 25px 15px 0px;
+		}
+	

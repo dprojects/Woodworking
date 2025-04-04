@@ -1797,6 +1797,16 @@ def getSizes(iObj):
 		else:
 			return [ sizeX, sizeY, iObj.Base[0].Length.Value ]
 	
+	# set sketch biggest size
+	if iObj.isDerivedFrom("Sketcher::SketchObject"):
+		try:
+			sizes = getSizesFromVertices(iObj)
+			sizes.sort()
+			return [ sizes[2], sizes[2], sizes[2] ]
+			
+		except:
+			return [ 100, 100, 100 ]
+	
 	# for custom objects
 	try:
 		return [ iObj.Base_Width.Value, iObj.Base_Height.Value, iObj.Base_Length.Value ]
