@@ -6,18 +6,6 @@ Author: Darek L (github.com/dprojects)
 Latest version: https://github.com/dprojects/setTextures
 
 Certified platform:
-
-OS: Ubuntu 22.04 LTS (XFCE/xubuntu)
-Word size of FreeCAD: 64-bit
-Version: 0.20.29177 (Git) AppImage
-Build type: Release
-Branch: (HEAD detached at 0.20)
-Hash: 68e337670e227889217652ddac593c93b5e8dc94
-Python 3.9.13, Qt 5.12.9, Coin 4.0.0, Vtk 9.1.0, OCC 7.5.3
-Locale: English/United States (en_US)
-Installed mods: 
-  * Woodworking 0.20.29177
-
 https://github.com/dprojects/Woodworking
 
 '''
@@ -189,7 +177,7 @@ def showQtMain():
 			self.fitO = QtGui.QComboBox(self)
 			self.fitO.addItems(self.fitList)
 			self.fitO.setCurrentIndex(self.fitList.index(self.gFit))
-			self.fitO.activated[str].connect(self.setCoordinate)
+			self.fitO.textActivated[str].connect(self.setCoordinate)
 			self.fitO.setFixedWidth(150)
 			self.fitO.move(10, 250)
 			

@@ -336,7 +336,7 @@ def showQtGUI():
 			self.ppmO = QtGui.QComboBox(self)
 			self.ppmO.addItems(self.ppmList)
 			self.ppmO.setCurrentIndex(self.ppmList.index(str(sPPM)))
-			self.ppmO.activated[str].connect(self.setPPM)
+			self.ppmO.textActivated[str].connect(self.setPPM)
 			self.ppmO.move(10, vLine + vLineNextRow)
 			
 			# options
@@ -344,7 +344,7 @@ def showQtGUI():
 			self.rcO = QtGui.QComboBox(self)
 			self.rcO.addItems(self.rcList)
 			self.rcO.setCurrentIndex(self.rcList.index(str(sLTF)))
-			self.rcO.activated[str].connect(self.setRC)
+			self.rcO.textActivated[str].connect(self.setRC)
 			self.rcO.move(100, vLine + vLineNextRow)
 
 			# info screen
@@ -410,7 +410,7 @@ def showQtGUI():
 			self.LangO = QtGui.QComboBox(self)
 			self.LangO.addItems(self.LangList)
 			self.LangO.setCurrentIndex(self.LangList.index(str(sLang)))
-			self.LangO.activated[str].connect(self.setLang)
+			self.LangO.textActivated[str].connect(self.setLang)
 			self.LangO.move(10, vLine + vLineNextRow)
 
 			# info screen
@@ -433,7 +433,7 @@ def showQtGUI():
 			self.rpqO = QtGui.QComboBox(self)
 			self.rpqO.addItems(self.rpqList)
 			self.rpqO.setCurrentIndex(self.rpqList.index(str(sRPQ)))
-			self.rpqO.activated[str].connect(self.setQuality)
+			self.rpqO.textActivated[str].connect(self.setQuality)
 			self.rpqO.move(10, vLine + vLineNextRow)
 
 			# info screen
@@ -456,7 +456,7 @@ def showQtGUI():
 			self.visibilityO = QtGui.QComboBox(self)
 			self.visibilityO.addItems(self.visibilityList)
 			self.visibilityO.setCurrentIndex(self.visibilityList.index(str(sTVF)))
-			self.visibilityO.activated[str].connect(self.setVisibility)
+			self.visibilityO.textActivated[str].connect(self.setVisibility)
 			self.visibilityO.move(10, vLine + vLineNextRow)
 
 			# info screen
@@ -479,7 +479,7 @@ def showQtGUI():
 			self.pcvisibilityO = QtGui.QComboBox(self)
 			self.pcvisibilityO.addItems(self.pcvisibilityList)
 			self.pcvisibilityO.setCurrentIndex(self.pcvisibilityList.index(str(sPartCut)))
-			self.pcvisibilityO.activated[str].connect(self.setPartCutVisibility)
+			self.pcvisibilityO.textActivated[str].connect(self.setPartCutVisibility)
 			self.pcvisibilityO.move(10, vLine + vLineNextRow)
 
 			# info screen
@@ -502,7 +502,7 @@ def showQtGUI():
 			self.ufdO = QtGui.QComboBox(self)
 			self.ufdO.addItems(self.ufdList)
 			self.ufdO.setCurrentIndex(self.ufdList.index(str(sUnitsMetric)))
-			self.ufdO.activated[str].connect(self.setDFO)
+			self.ufdO.textActivated[str].connect(self.setDFO)
 			self.ufdO.move(10, vLine + vLineNextRow)
 
 			# info screen
@@ -522,7 +522,7 @@ def showQtGUI():
 			self.ufaO = QtGui.QComboBox(self)
 			self.ufaO.addItems(self.ufaList)
 			self.ufaO.setCurrentIndex(self.ufaList.index(str(sUnitsArea)))
-			self.ufaO.activated[str].connect(self.setUFA)
+			self.ufaO.textActivated[str].connect(self.setUFA)
 			self.ufaO.move(190, vLine + vLineNextRow)
 
 			# info screen
@@ -542,7 +542,7 @@ def showQtGUI():
 			self.ufsO = QtGui.QComboBox(self)
 			self.ufsO.addItems(self.ufsList)
 			self.ufsO.setCurrentIndex(self.ufsList.index(str(sUnitsEdge)))
-			self.ufsO.activated[str].connect(self.setUFS)
+			self.ufsO.textActivated[str].connect(self.setUFS)
 			self.ufsO.move(430, vLine + vLineNextRow)
 
 			# info screen
@@ -611,7 +611,7 @@ def showQtGUI():
 			self.ecO = QtGui.QComboBox(self)
 			self.ecO.addItems(self.ecList)
 			self.ecO.setCurrentIndex(self.ecList.index(str(sEColorD)))
-			self.ecO.activated[str].connect(self.setEColor)
+			self.ecO.textActivated[str].connect(self.setEColor)
 			self.ecO.move(10, vLine + vLineNextRow + 3)
 
 			# text input label

@@ -159,7 +159,7 @@ def showQtGUI():
 			self.sColors = QtGui.QComboBox(self)
 			self.sColors.addItems(self.sColorsList)
 			self.sColors.setCurrentIndex(self.sColorsList.index("Select predefined color:"))
-			self.sColors.activated[str].connect(self.setPredefinedColors)
+			self.sColors.textActivated[str].connect(self.setPredefinedColors)
 			self.sColors.setFixedWidth(toolSW-20)
 			self.sColors.move(10, row)
 

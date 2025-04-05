@@ -238,7 +238,7 @@ def showQtGUI():
 			self.s6S = QtGui.QComboBox(self)
 			self.s6S.addItems(self.s6Slist)
 			self.s6S.setCurrentIndex(self.s6Slist.index("Holes"))
-			self.s6S.activated[str].connect(self.setDrillBitType)
+			self.s6S.textActivated[str].connect(self.setDrillBitType)
 			self.s6S.setFixedWidth(200)
 			self.s6S.move(10, row)
 
@@ -267,7 +267,7 @@ def showQtGUI():
 			self.s7S = QtGui.QComboBox(self)
 			self.s7S.addItems(self.s7Slist)
 			self.s7S.setCurrentIndex(self.s7Slist.index(self.gDBLabel))
-			self.s7S.activated[str].connect(self.setCustomDrillbits)
+			self.s7S.textActivated[str].connect(self.setCustomDrillbits)
 			self.s7S.setFixedWidth(200)
 			self.s7S.move(10, row)
 			self.gDBType = "Holes"

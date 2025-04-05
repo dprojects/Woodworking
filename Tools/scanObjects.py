@@ -171,7 +171,7 @@ def showQtGUI():
 			# ############################################################################
 
 			try:
-				test = FreeCAD.activeDocument().Objects
+				test = FreeCAD.ActiveDocument.Objects
 				self.gDefaultRoot = "project"
 			except:
 				self.gDefaultRoot = "FreeCAD"
@@ -196,15 +196,16 @@ def showQtGUI():
 			self.orootlist = (
 				"my project root",
 				"Module: FreeCAD",
-				"Module: Part",
-				"Module: QtGui", 
+				"Module: PySide",
+				"Module: QtGui",
 				"Module: QtCore",
+				"Module: MagicPanels",
+				"Module: Draft",
+				"Module: Part",
 				"Module: coin",
 				"Module: Path",
-				"Module: Draft", 
-				"Module: TechDraw", 
+				"Module: TechDraw",
 				"Module: Spreadsheet",
-				"Module: MagicPanels",
 				"custom module",
 				"custom command result",
 				"CRASH TEST"
@@ -216,7 +217,7 @@ def showQtGUI():
 				self.orootcb.setCurrentIndex(self.orootlist.index("my project root"))
 			else:
 				self.orootcb.setCurrentIndex(self.orootlist.index("Module: FreeCAD"))
-			self.orootcb.activated[str].connect(self.setRootPath)
+			self.orootcb.textActivated[str].connect(self.setRootPath)
 			self.orootcb.setFixedWidth((1*self.gGridCol)-20)
 			
 			# ############################################################################
@@ -259,7 +260,7 @@ def showQtGUI():
 			self.owlcb = QtGui.QComboBox(self)
 			self.owlcb.addItems(self.owllist)
 			self.owlcb.setCurrentIndex(self.owllist.index("all windows"))
-			self.owlcb.activated[str].connect(self.setWindowsLayout)
+			self.owlcb.textActivated[str].connect(self.setWindowsLayout)
 			self.owlcb.setFixedWidth((1*self.gGridCol)-20)
 			
 			# ############################################################################
@@ -287,7 +288,7 @@ def showQtGUI():
 			self.owcqb = QtGui.QComboBox(self)
 			self.owcqb.addItems(self.owclist)
 			self.owcqb.setCurrentIndex(self.owclist.index(gDefaultColors))
-			self.owcqb.activated[str].connect(self.setWindowsColors)
+			self.owcqb.textActivated[str].connect(self.setWindowsColors)
 			self.owcqb.setFixedWidth((1*self.gGridCol)-20)
 			
 			# ############################################################################
@@ -724,12 +725,14 @@ def showQtGUI():
 			self.ocrlabel.hide()
 			self.ocrinput.hide()
 			self.ocrbutton.hide()
-
+			self.oseparator2.hide()
+			self.crashtest.hide()
+			
 			if selectedText == "my project root":
 					
 				try:
-					root = FreeCAD.activeDocument().Objects
-					rootS = "FreeCAD.activeDocument().Objects"
+					root = FreeCAD.ActiveDocument.Objects
+					rootS = "FreeCAD.ActiveDocument.Objects"
 					self.goDeeper("", rootS, root, "init")
 				except:
 					if self.gModeType == "matrix":
@@ -742,6 +745,14 @@ def showQtGUI():
 				root = dir(FreeCAD)
 				rootS = "FreeCAD"
 				self.goDeeper(FreeCAD, rootS, root, "init")
+
+			if selectedText == "Module: PySide":
+
+				import PySide
+
+				root = dir(PySide)
+				rootS = "PySide"
+				self.goDeeper(PySide, rootS, root, "init")
 
 			if selectedText == "Module: QtGui":
 
@@ -766,7 +777,7 @@ def showQtGUI():
 				root = dir(Part)
 				rootS = "Part"
 				self.goDeeper(Part, rootS, root, "init")
-
+			
 			if selectedText == "Module: Path":
 
 				import Path
@@ -809,17 +820,20 @@ def showQtGUI():
 
 			if selectedText == "Module: MagicPanels":
 
-				try:
-					import MagicPanels
+				#try:
+				
+				import importlib
+				MagicPanels = importlib.import_module("MagicPanels", "MagicPanels")
 
-					root = dir(MagicPanels)
-					rootS = "MagicPanels"
-					self.goDeeper(MagicPanels, rootS, root, "init")
+				import MagicPanels
+				root = dir(MagicPanels)
+				rootS = "MagicPanels"
+				self.goDeeper(MagicPanels, rootS, root, "init")
+			
+				self.setWindowsLayout("coding")
 				
-					self.setWindowsLayout("coding")
-				
-				except:
-					self.showMsg("You need to install Woodworking workbench to see the MagicPanels API.")
+				#except:
+				#	self.showMsg("You need to install Woodworking workbench to see the MagicPanels API.")
 				
 			if selectedText == "custom module":
 				self.orootlabel.show()
@@ -1379,8 +1393,8 @@ def showQtGUI():
 					self.slist.selectionModel().clearSelection()
 				
 				search = str(self.sfilter.text())
-				regExp = QtCore.QRegExp(search, QtCore.Qt.CaseInsensitive, QtCore.QRegExp.Wildcard)
-				self.sproxy.setFilterRegExp(regExp)
+				regExp = QtCore.QRegularExpression(search, QtCore.QRegularExpression.CaseInsensitiveOption)
+				self.sproxy.setFilterRegularExpression(regExp)
 				
 				self.slist.selectionModel().selectionChanged.connect(self.selectionChanged)
 
@@ -1389,7 +1403,7 @@ def showQtGUI():
 					self.showMsg("This search is outside the matrix: "+str(self.sfilter.text()))
 				else:
 					self.showMsg("Search not possible: "+str(self.sfilter.text()))
-		
+
 		def cleanFilter(self):
 			self.sfilter.setText("")
 			

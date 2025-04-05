@@ -177,7 +177,7 @@ def showQtMain():
 			self.eTypeO = QtGui.QComboBox(self)
 			self.eTypeO.addItems(self.eTypeList)
 			self.eTypeO.setCurrentIndex(self.eTypeList.index("a"))
-			self.eTypeO.activated[str].connect(self.setEType)
+			self.eTypeO.textActivated[str].connect(self.setEType)
 			self.eTypeO.move(100, 10)
 			
 			# info screen
@@ -216,7 +216,7 @@ def showQtMain():
 			self.fileTypeO = QtGui.QComboBox(self)
 			self.fileTypeO.addItems(self.fileTypeOlist)
 			self.fileTypeO.setCurrentIndex(self.fileTypeOlist.index("html"))
-			self.fileTypeO.activated[str].connect(self.setFileType)
+			self.fileTypeO.textActivated[str].connect(self.setFileType)
 			self.fileTypeO.move(100, 70)
 
 			# info screen
@@ -267,7 +267,7 @@ def showQtMain():
 			self.customCSSbo = QtGui.QComboBox(self)
 			self.customCSSbo.addItems(self.customCSSbol)
 			self.customCSSbo.setCurrentIndex(self.customCSSbol.index("horizontal dotted"))
-			self.customCSSbo.activated[str].connect(self.setCustomCSSbo)
+			self.customCSSbo.textActivated[str].connect(self.setCustomCSSbo)
 			self.customCSSbo.move(180, 190)
 
 			# text input label

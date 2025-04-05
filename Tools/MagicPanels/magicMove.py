@@ -191,7 +191,7 @@ def showQtGUI():
 			self.sMode = QtGui.QComboBox(self)
 			self.sMode.addItems(self.sModeList)
 			self.sMode.setCurrentIndex(0) # default
-			self.sMode.activated[str].connect(self.setModeType)
+			self.sMode.textActivated[str].connect(self.setModeType)
 			self.sMode.setFixedWidth(125)
 			self.sMode.move(10, row)
 
@@ -206,7 +206,7 @@ def showQtGUI():
 			self.sCopyType = QtGui.QComboBox(self)
 			self.sCopyType.addItems(self.sCopyTypeList)
 			self.sCopyType.setCurrentIndex(0) # default
-			self.sCopyType.activated[str].connect(self.setCopyType)
+			self.sCopyType.textActivated[str].connect(self.setCopyType)
 			self.sCopyType.setFixedWidth(95)
 			self.sCopyType.move(rside - 85, row)
 			self.sCopyType.hide()

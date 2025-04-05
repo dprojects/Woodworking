@@ -762,7 +762,7 @@ def showQtGUI():
 			self.sMode = QtGui.QComboBox(self)
 			self.sMode.addItems(self.sModeList)
 			self.sMode.setCurrentIndex(0)
-			self.sMode.activated[str].connect(self.selectedOption)
+			self.sMode.textActivated[str].connect(self.selectedOption)
 			self.sMode.setFixedWidth(self.toolSW - 20 - 10 - helpButtonSize)
 			self.sMode.setFixedHeight(40)
 			self.sMode.move(10, 10)

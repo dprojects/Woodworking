@@ -151,6 +151,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 0.23 stable:**
 
+    * support for PySide6
     * add possibility to select edges or faces during center objects (panelMove2Center)
     * FreeCAD crash tester (scanObjects)
     * fix to avoid FreeCAD 1.0 automatic labeling bug and crash 
@@ -585,7 +586,7 @@ Available anchors to select:
 
 ## panelMove2Center
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMove2Center.png"> ￼This tool allows you to center objects. Possible selection methods: 
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMove2Center.png"> ￼This tool allows you to center objects. Possible selection methods:
 * Edge + Edge + Objects
 * Face + Face + Objects
 * Vertex + Vertex + Objects

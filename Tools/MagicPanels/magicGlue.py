@@ -105,7 +105,7 @@ def showQtGUI():
 			self.sMode = QtGui.QComboBox(self)
 			self.sMode.addItems(self.sModeList)
 			self.sMode.setCurrentIndex(0) # default
-			self.sMode.activated[str].connect(self.setModeType)
+			self.sMode.textActivated[str].connect(self.setModeType)
 			self.sMode.setFixedWidth(rside)
 			self.sMode.move(10, row)
 			
