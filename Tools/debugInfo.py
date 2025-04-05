@@ -1,10 +1,3 @@
-import FreeCAD, FreeCADGui
-import os, sys
-from PySide import QtGui, QtCore
-from datetime import datetime
-
-translate = FreeCAD.Qt.translate
-
 # ###################################################################################################################
 # globals
 # ###################################################################################################################
@@ -15,8 +8,8 @@ gTests = dict()
 gWBCurrent = dict()
 gWBLatest = dict()
 
-gJokeDates = [ "22-03", "01-04", "24-12", "25-12", "26-12", "31-12", "01-01" ]
-gCurrentDate = datetime.today().strftime("%d-%m")
+gJokeDates = [ "22-03", "01-04", "19-12", "24-12", "25-12", "26-12", "31-12", "01-01" ]
+gCurrentDate = ""
 
 # ###################################################################################################################
 # tests
@@ -27,24 +20,84 @@ def setTests():
 	gTests["status"] = ""
 	
 	# ######################################
-	# test: qApp
+	# test: FreeCAD
 	# ######################################
 	try:
-		test = QtGui.qApp
-		gTests["qApp"] = True
+		import FreeCAD
+		gTests["FreeCAD"] = True
 	except:
-		gTests["qApp"] = False
-	#	gTests["status"] += "qApp, "
+		gTests["FreeCAD"] = False
+		gTests["status"] += "FreeCAD, "
+
+	# ######################################
+	# test: FreeCADGui
+	# ######################################
+	try:
+		import FreeCADGui
+		gTests["FreeCADGui"] = True
+	except:
+		gTests["FreeCADGui"] = False
+		gTests["status"] += "FreeCADGui, "
+
+	# ######################################
+	# test: PySide
+	# ######################################
+	try:
+		import PySide
+		gTests["PySide"] = True
+	except:
+		gTests["PySide"] = False
+		gTests["status"] += "PySide, "
+
+	# ######################################
+	# test: QtGui
+	# ######################################
+	try:
+		from PySide import QtGui
+		gTests["QtGui"] = True
+	except:
+		gTests["QtGui"] = False
+		gTests["status"] += "QtGui, "
+
+	# ######################################
+	# test: QtCore
+	# ######################################
+	try:
+		from PySide import QtCore
+		gTests["QtCore"] = True
+	except:
+		gTests["QtCore"] = False
+		gTests["status"] += "QtCore, "
 
 	# ######################################
 	# test: QtWidgets
 	# ######################################
 	try:
-		from PySide2 import QtWidgets
+		from PySide import QtWidgets
 		gTests["QtWidgets"] = True
 	except:
 		gTests["QtWidgets"] = False
 		gTests["status"] += "QtWidgets, "
+
+	# ######################################
+	# test: translate
+	# ######################################
+	try:
+		translate = FreeCAD.Qt.translate
+		gTests["translate"] = True
+	except:
+		gTests["translate"] = False
+		gTests["status"] += "translate, "
+
+	# ######################################
+	# test: os, sys
+	# ######################################
+	try:
+		import os, sys
+		gTests["os, sys"] = True
+	except:
+		gTests["os, sys"] = False
+		gTests["status"] += "os, sys, "
 
 	# ######################################
 	# test: urllib.request
@@ -55,7 +108,19 @@ def setTests():
 	except:
 		gTests["urllib.request"] = False
 		gTests["status"] += "urllib.request, "
-	
+
+	# ######################################
+	# test: datetime
+	# ######################################
+	try:
+		from datetime import datetime
+		gCurrentDate = datetime.today().strftime("%d-%m")
+
+		gTests["datetime"] = True
+	except:
+		gTests["datetime"] = False
+		gTests["status"] += "datetime, "
+
 	# ######################################
 	# test: tempfile
 	# ######################################
@@ -105,7 +170,17 @@ def setTests():
 	except:
 		gTests["hasAxisCross"] = False
 		gTests["status"] += "hasAxisCross, "
-		
+
+	# ######################################
+	# test: qApp
+	# ######################################
+	try:
+		test = QtGui.qApp
+		gTests["qApp"] = True
+	except:
+		gTests["qApp"] = False
+	#	gTests["status"] += "qApp, "
+
 	# ######################################
 	# end cut
 	# ######################################
@@ -274,9 +349,9 @@ def setUpToDate():
 
 def getDebugInfo():
 
-	error = 1
+	getDebug = True
 
-	if error == 1 and gTests["qApp"] == True:
+	if getDebug == True and gTests["qApp"] == True:
 		try:
 			class AboutInfo(QtCore.QObject):
 				def eventFilter(self, obj, ev):
@@ -295,23 +370,25 @@ def getDebugInfo():
 			FreeCADGui.runCommand("Std_About")
 			QtGui.qApp.removeEventFilter(ai)
 	
-			error = 0
+			getDebug = False
 		except:
-			error = 1
+			getDebug = True
 
-	if error == 1 and gTests["QtWidgets"] == True:
+	if getDebug == True and gTests["QtWidgets"] == True:
 		try:
-			from PySide2 import QtWidgets
+			from PySide import QtWidgets
 
 			class AboutInfo(QtCore.QObject):
 				def eventFilter(self, obj, ev):
 					if obj.metaObject().className() == 'Gui::Dialog::AboutDialog':
-						if ev.type() == ev.ChildPolished:
+						
+						if ev.type() == ev.Type.ChildPolished:
 							copyBut = obj.findChild(QtWidgets.QPushButton, 'copyButton')
 							if copyBut:
 								QtWidgets.QApplication.instance().removeEventFilter(self)
 								copyBut.click()
 								QtCore.QMetaObject.invokeMethod(obj, 'reject', QtCore.Qt.QueuedConnection)
+
 					return False
           
 			ai = AboutInfo()
@@ -319,11 +396,11 @@ def getDebugInfo():
 			FreeCADGui.runCommand('Std_About')
 			del ai
 
-			error = 0
+			getDebug = False
 		except:
-			error = 1
+			getDebug = True
 
-	if error == 1:
+	if getDebug == True:
 		try:
 			info = translate('debugInfo', 'This FreeCAD version is too buggy to get debug information.')
 			QtGui.QApplication.clipboard().setText(info)
@@ -698,9 +775,6 @@ def showQtGUI():
 			self.odie.setPlainText(info)
 			self.odie.repaint()
 			
-			import PySide2 
-			from PySide2 import QtWidgets, QtCore, QtGui
-			
 			args = QtWidgets.QApplication.arguments()[1:]
 			if FreeCADGui.getMainWindow().close():
 				QtCore.QProcess.startDetached(
@@ -742,16 +816,46 @@ def showQtGUI():
 
 setTests()
 
-setWBLatest()
-setWBCurrent()
+if (
+	gTests["FreeCAD"] == True and
+	gTests["FreeCADGui"] == True and
+	gTests["PySide"] == True and
+	gTests["QtGui"] == True and 
+	gTests["os, sys"] == True
+	):
 
-setFreeCADVersion()
-setCertified()
-setUpToDate()
+	import FreeCAD, FreeCADGui, PySide
+	from PySide import QtGui, QtCore, QtWidgets
+	import os, sys
+	
+	if gTests["translate"] == True:
+		translate = FreeCAD.Qt.translate
 
-getDebugInfo()
+	setWBLatest()
+	setWBCurrent()
 
-showQtGUI()
+	setFreeCADVersion()
+	setCertified()
+	setUpToDate()
 
+	getDebugInfo()
+
+	showQtGUI()
+	
+else:
+	import FreeCAD
+	
+	if gTests["translate"] == True:
+		translate = FreeCAD.Qt.translate
+		info = translate('debugInfo', 'This FreeCAD version is too buggy to get debug information.') + "\n"
+		info += translate('debugInfo', 'Errors:') + "\n"
+		info += gTests["status"]
+	else:
+		info = "This FreeCAD version is too buggy to get debug information." + "\n"
+		info += "Errors:" + "\n"
+		info += gTests["status"]
+		
+	FreeCAD.Console.PrintMessage(info)
+	
 
 # ###################################################################################################################

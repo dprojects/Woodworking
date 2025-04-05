@@ -151,6 +151,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 0.23 stable:**
 
+    * improve debugInfo tool
     * support for PySide6
     * add possibility to select edges or faces during center objects (panelMove2Center)
     * FreeCAD crash tester (scanObjects)
