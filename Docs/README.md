@@ -59,7 +59,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 	* [showSpaceSelected](#showspaceselected)
 	* [magicMeasure](#magicmeasure)
 * [Decoration](#decoration)
-	* [magicColors](magiccolors)
+	* [magicColors](#magiccolors)
 	* [setTextures](#settextures)
 	* [makeBeautiful](#makebeautiful)
 * [Router](#router)
