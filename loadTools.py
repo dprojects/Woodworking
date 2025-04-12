@@ -3952,12 +3952,12 @@ FreeCADGui.addCommand("multiPocket4", multiPocket4())
 
 	
 # ######################################################################################################################
-class colorManager():
+class magicColors():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "colorManager.png"),
-				"MenuText": QT_TRANSLATE_NOOP("colorManager", "colorManager"),
-				"ToolTip" : QT_TRANSLATE_NOOP("colorManager", "This tool allows you to browse colors for manually selected faces or objects and see the effect at 3D model in real-time. Also you can set face colors for all objects from spreadsheet. "),
+		return {"Pixmap"  : os.path.join(iconPath, "magicColors.png"),
+				"MenuText": QT_TRANSLATE_NOOP("magicColors", "magicColors"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicColors", "This tool allows you to browse colors for manually selected faces or objects and see the effect at 3D model in real-time. Also you can set face colors for all objects from spreadsheet. "),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -3967,11 +3967,11 @@ class colorManager():
 
 		modulePath = sys.path
 		
-		module = "colorManager"
+		module = "magicColors"
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		
+		path = os.path.join(path, "MagicPanels")
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3987,7 +3987,7 @@ class colorManager():
 		# not needed now, maybe in the future
 		return True
 
-FreeCADGui.addCommand("colorManager", colorManager())
+FreeCADGui.addCommand("magicColors", magicColors())
 
 	
 # ######################################################################################################################

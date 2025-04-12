@@ -57,18 +57,18 @@ try:
 
 		FreeCAD.ActiveDocument.recompute()
 		
-		colors = [ (0.0, 0.0, 0.0, 0.0),
-			(0.0, 0.0, 0.0, 0.0),
-			(0.0, 0.0, 0.0, 0.0),
-			(0.0, 0.0, 0.0, 0.0),
-			(0.0, 0.0, 0.0, 0.0),
-			(0.0, 1.0, 0.0, 0.0),
-			(0.0, 0.0, 0.0, 0.0),
-			(0.0, 1.0, 0.0, 0.0),
-			(0.0, 1.0, 0.0, 0.0),
-			(0.0, 1.0, 0.0, 0.0) ]
+		colors = [ (0.0, 0.0, 0.0, 1.0),
+			(0.0, 0.0, 0.0, 1.0),
+			(0.0, 0.0, 0.0, 1.0),
+			(0.0, 0.0, 0.0, 1.0),
+			(0.0, 0.0, 0.0, 1.0),
+			(0.0, 1.0, 0.0, 1.0),
+			(0.0, 0.0, 0.0, 1.0),
+			(0.0, 1.0, 0.0, 1.0),
+			(0.0, 1.0, 0.0, 1.0),
+			(0.0, 1.0, 0.0, 1.0) ]
 
-		profile.ViewObject.DiffuseColor = colors
+		MagicPanels.setColor(profile, 0, colors, "color")
 
 		FreeCAD.ActiveDocument.recompute()
 		FreeCAD.ActiveDocument.commitTransaction()

@@ -798,15 +798,15 @@ def showQtGUI():
 					if self.gDShape == 0:
 						d.Radius = self.gDDiameter / 2
 						d.Height = self.gDSize
-						colors = [ (0.0, 0.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0) ]
+						colors = [ (0.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0) ]
 					else:
 						d.Width = self.gDSizeY
 						d.Height = self.gDSizeZ
 						d.Length = self.gDSizeX
-						colors = [ (0.0, 0.0, 0.0, 0.0), (0.0, 0.0, 0.0, 0.0), (0.0, 0.0, 0.0, 0.0),
-									(0.0, 0.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0) ]
+						colors = [ (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0),
+									(0.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0) ]
 						
-					d.ViewObject.DiffuseColor = colors
+					MagicPanels.setColor(d, 0, colors, "color") 
 					
 					self.gDowels.append(d)
 					
@@ -944,15 +944,15 @@ def showQtGUI():
 					if self.gDShape == 0:
 						d.Radius = self.gDDiameter / 2
 						d.Height = self.gDSize
-						colors = [ (0.0, 0.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0) ]
+						colors = [ (0.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0) ]
 					else:
 						d.Width = self.gDSizeY
 						d.Height = self.gDSizeZ
 						d.Length = self.gDSizeX
-						colors = [ (0.0, 0.0, 0.0, 0.0), (0.0, 0.0, 0.0, 0.0), (0.0, 0.0, 0.0, 0.0),
-									(0.0, 0.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0) ]
+						colors = [ (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0),
+									(0.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0) ]
 						
-					d.ViewObject.DiffuseColor = colors
+					MagicPanels.setColor(d, 0, colors, "color")
 					
 					self.gDowels.append(d)
 					
@@ -1307,7 +1307,8 @@ def showQtGUI():
 				if len(self.gDowels) != 0:
 					for d in self.gDowels:
 						try:
-							d.ViewObject.DiffuseColor = self.gObj.ViewObject.DiffuseColor
+							color = MagicPanels.getColor(self.gObj, self.gFIndex, "color")
+							MagicPanels.setColor(d, 0, color, "color")
 						except:
 							skip = 1
 

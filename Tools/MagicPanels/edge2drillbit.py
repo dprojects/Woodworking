@@ -36,8 +36,8 @@ try:
 		MagicPanels.setPlacement(d, x, y, z, r)
 		
 		# default drill bit colors (middle, bottom, top)
-		colors = [ (1.0, 0.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0) ]
-		d.ViewObject.DiffuseColor = colors
+		colors = [ (1.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0) ]
+		MagicPanels.setColor(d, 0, colors, "color")
 
 except:
 	

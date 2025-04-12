@@ -174,7 +174,7 @@ def getItems(iType):
 	if iType == "Woodworking - decorations":
 		
 		parts = [
-			"colorManager",
+			"magicColors",
 			"setTextures",
 			"makeBeautiful"
 		]

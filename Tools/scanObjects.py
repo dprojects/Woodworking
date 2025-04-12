@@ -254,7 +254,8 @@ def showQtGUI():
 				"content",
 				"object",
 				"command",
-				"small data"
+				"small data", 
+				"small docs"
 			)
 
 			self.owlcb = QtGui.QComboBox(self)
@@ -1096,6 +1097,45 @@ def showQtGUI():
 				self.o4sw.setGeometry((1*self.gGridCol), 0, (1*self.gGridCol), (2*self.gGridRow))
 				self.o4sw.show()
 				self.o4.show()
+
+				# content
+				self.o5sw.hide()
+				self.o5.hide()
+
+				# object
+				self.o6sw.setGeometry((1*self.gGridCol), (2*self.gGridRow), (1*self.gGridCol), (2*self.gGridRow))
+				self.o6sw.show()
+				self.o6.show()
+			
+			if selectedText == "small docs":
+
+				self.setGeometry(0, 0, (2*self.gGridCol), (4.5*self.gGridRow))
+
+				# options
+				self.OPTsw.setGeometry(0, (3*self.gGridRow), (1*self.gGridCol), (2*self.gGridRow))
+				self.OPTsw.show()
+
+				# select
+				self.swindow.setGeometry(0, 0, (1*self.gGridCol), (3*self.gGridRow))
+				self.swindow.show()
+				self.slist.show()
+
+				# dir
+				self.o1sw.hide()
+				self.o1.hide()
+
+				# __dict__
+				self.o2sw.hide()
+				self.o2.hide()
+
+				# __doc__
+				self.o3sw.setGeometry((1*self.gGridCol), 0, (1*self.gGridCol), (2*self.gGridRow))
+				self.o3sw.show()
+				self.o3.show()
+
+				# getAllDerivedFrom
+				self.o4sw.hide()
+				self.o4.hide()
 
 				# content
 				self.o5sw.hide()

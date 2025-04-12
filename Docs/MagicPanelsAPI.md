@@ -20,6 +20,7 @@ Functions at this library:
 gRoundPrecision = 2      # should be set according to the user FreeCAD GUI settings
 gSearchDepth = 200       # recursive search depth
 gKernelVersion = 0       # FreeCAD version to add support for new kernel changes
+gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0) # default color
 
 # Functions for general purpose
 ### isType(iObj, iType):
@@ -1384,7 +1385,7 @@ gKernelVersion = 0       # FreeCAD version to add support for new kernel changes
 		for other PartDesign objects: try to return Body
 		for any other object: returns object
 
-### createContainer(iObjects, iLabel="Container"):
+### createContainer(iObjects, iLabel="Container", iNesting=True):
 
 	Description:
 	
@@ -1394,12 +1395,14 @@ gKernelVersion = 0       # FreeCAD version to add support for new kernel changes
 ##### Description:
 	
 		iObjects: array of object to create container for them
-		iLabel: container label
+		iLabel: string, container label
+		iNesting: boolean, add nesting label prefix (True) or set given label (False)
 
 ##### Usage:
 	
 		container = MagicPanels.createContainer([c1, c2])
 		container = MagicPanels.createContainer([c1, c2], "LinkGroup")
+		container = MagicPanels.createContainer([o1, o2, o3, o4, o5, o6, o7], "Furniture, Module", False)
 
 ##### Result:
 	
@@ -1778,6 +1781,83 @@ gKernelVersion = 0       # FreeCAD version to add support for new kernel changes
 		Make Tenon and return new object and face reference for GUI info screen update and further processing
 
 # Colors
+### getColor(iObj, iFaceIndex, iAttribute="color"):
+
+	Description:
+	
+		Allows to get color for object or face.
+
+##### Description:
+
+		iObj: object
+		iFaceIndex: index to get color for face or 0 to get color for object
+		iAttribute: string, attribute name from FreeCAD.Material structure, e.g.:
+			* "color" - to get color from DiffuseColor attribute
+			* "trans" - to get color from Transparency attribute
+			* "AmbientColor" - to get color from AmbientColor attribute
+			* "DiffuseColor" - to get color from DiffuseColor attribute
+			* "EmissiveColor" - to get color from EmissiveColor attribute
+			* "Shininess" - to get color from Shininess attribute
+			* "SpecularColor" - to get color from SpecularColor attribute
+			* "Transparency" - to get color from Transparency attribute
+
+##### Usage:
+
+		color = MagicPanels.getColor(o, 0, "color") # to get object color
+		color = MagicPanels.getColor(o, 5, "color") # to get face5 color
+
+##### Result:
+
+		For FreeCAD 0.21.2 returns color for object from .ViewObject.ShapeColor or 
+		color for face from .ViewObject.DiffuseColor.
+		
+		Since FreeCAD 1.0+ there is no .ViewObject.ShapeColor for object. Color for object 
+		and faces are stored only at .ViewObject.ShapeAppearance behind FreeCAD.Material 
+		structure. If all the faces have the same color there is only one Material object. 
+		But for example if only single face have different color, there are Material objects 
+		for all faces, but there is no color for object. So in this case the color for 
+		object cannot be determined, so will be returned as empty string "".
+
+### setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
+
+	Description:
+	
+		Allows to set color for object or face.
+
+##### Description:
+
+		iObj: object
+		iFaceIndex: index to set color for face or 0 to set color for object
+		iColor: color according to the FreeCAD.Material structure, e.g.:
+			* "AmbientColor" - (0.33333298563957214, 0.33333298563957214, 0.33333298563957214, 1.0)
+			* "DiffuseColor" - (0.800000011920929, 0.800000011920929, 0.800000011920929, 1.0)
+			* "EmissiveColor" - (0.0, 0.0, 0.0, 1.0)
+			* "Shininess" - 0.8999999761581421
+			* "SpecularColor" - (0.5333330035209656, 0.5333330035209656, 0.5333330035209656, 1.0)
+			* "Transparency" - 0.0
+		iAttribute: string, attribute name from FreeCAD.Material structure, e.g.:
+			* "color" - to set color for DiffuseColor attribute
+			* "trans" - to set color for Transparency attribute
+			* "AmbientColor" - to set color for AmbientColor attribute
+			* "DiffuseColor" - to set color for DiffuseColor attribute
+			* "EmissiveColor" - to set color for EmissiveColor attribute
+			* "Shininess" - to set color for Shininess attribute
+			* "SpecularColor" - to set color for SpecularColor attribute
+			* "Transparency" - to set color for Transparency attribute
+
+##### Usage:
+
+		MagicPanels.setColor(o, 0, (1.0, 1.0, 0.0, 1.0), "color") # to set object color
+		MagicPanels.setColor(o, 5, (1.0, 1.0, 0.0, 1.0), "color") # to set face5 color
+		
+		# to set colors for all faces, e.g. for dowel with 3 faces
+		colors = [ (1.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0) ]
+		MagicPanels.setColor(o, 0, colors, "color")
+
+##### Result:
+
+		no return, setting color to the FreeCAD.Material structure
+
 ### copyColors(iSource, iTarget):
 
 	Description:

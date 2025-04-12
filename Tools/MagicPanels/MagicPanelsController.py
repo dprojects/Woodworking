@@ -52,8 +52,7 @@ def panelDefault(iType):
 			panel.Width = 300
 			panel.Height = 600
 
-		color = (247 / 255, 185 / 255, 108 / 255, 0.0)
-		panel.ViewObject.ShapeColor = color
+		MagicPanels.setColor(panel, 0, MagicPanels.gDefaultColor, "color")
 
 		FreeCAD.ActiveDocument.recompute()
 	

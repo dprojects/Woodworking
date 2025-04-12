@@ -35,8 +35,8 @@ try:
 		MagicPanels.setContainerPlacement(d, x, y, z, r, "clean")
 		
 		# default drill bit colors (middle, bottom, top)
-		colors = [ (0.0, 0.0, 1.0, 0.0), (0.0, 1.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0) ]
-		d.ViewObject.DiffuseColor = colors
+		colors = [ (0.0, 0.0, 1.0, 1.0), (0.0, 1.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0) ]
+		MagicPanels.setColor(d, 0, colors, "color")
 		
 		MagicPanels.moveToFirst([ d ], base)
 

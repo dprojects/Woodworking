@@ -536,7 +536,7 @@ def showQtGUI():
 
 			# add settings to panel
 			self.gPanel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
-			self.gPanel.ViewObject.ShapeColor = (0.0, 0.0, 0.0, 0.0)
+			MagicPanels.setColor(self.gPanel, 0, (0.0, 0.0, 0.0, 1.0), "color")
 			self.gPanel.ViewObject.Transparency = 83
 			
 			MagicPanels.addRotation(self.gObj1, [ self.gPanel ])
@@ -639,7 +639,7 @@ def showQtGUI():
 
 			# add settings to panel
 			self.gPanel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
-			self.gPanel.ViewObject.ShapeColor = (0.0, 0.0, 0.0, 0.0)
+			MagicPanels.setColor(self.gPanel, 0, (0.0, 0.0, 0.0, 1.0), "color")
 			self.gPanel.ViewObject.Transparency = 83
 			FreeCAD.ActiveDocument.recompute()
 

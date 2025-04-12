@@ -485,7 +485,7 @@ def showQtGUI():
 				self.thick = s[0]
 				
 				self.gSphere = FreeCAD.ActiveDocument.addObject("Part::Sphere","magicAnglePoint")
-				self.gSphere.ViewObject.ShapeColor = (1.0, 0.0, 0.0, 0.0)
+				MagicPanels.setColor(self.gSphere, 0, (1.0, 0.0, 0.0, 1.0), "color")
 				self.gSphere.Radius = int(self.thick)
 				self.gSphereSize = int(self.gSphere.Radius.Value)
 				self.ssE.setText(str(self.gSphereSize))

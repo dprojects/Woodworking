@@ -539,10 +539,18 @@ def showQtMain():
 				# try set color
 				if self.checkColor.isChecked():
 					try:
+						test = obj.ViewObject.ShapeAppearance
+						colorsSchema = 1
+					except:
+						colorsSchema = 0
+					
+					if colorsSchema == 0:
 						obj.ViewObject.ShapeColor = (1.0, 1.0, 1.0, 0.0)
 						obj.ViewObject.DiffuseColor = (1.0, 1.0, 1.0, 0.0)
-					except:
-						skip = 1
+					else:
+						m = obj.ViewObject.ShapeAppearance[0]
+						m.DiffuseColor = (1.0, 1.0, 1.0, 0.0)
+						obj.ViewObject.ShapeAppearance = ( m )
 
 				textureURL = self.getTextureURL(obj)
 

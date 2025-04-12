@@ -194,7 +194,7 @@ Tools = [
 	# Woodworking - decorations
 	# #################################################################################################################################
 
-	"", "colorManager", "png", "colorManager", "This tool allows you to browse colors for manually selected faces or objects and see the effect at 3D model in real-time. Also you can set face colors for all objects from spreadsheet. ",
+	"MagicPanels", "magicColors", "png", "magicColors", "This tool allows you to browse colors for manually selected faces or objects and see the effect at 3D model in real-time. Also you can set face colors for all objects from spreadsheet. ",
 	"", "setTextures", "png", "setTextures", "This tool allows to store textures information and load textures. Also solves problem with huge project file size because this tool allows to store only link to texture not texture.",
 	"MagicPanels", "makeBeautiful", "png", "make all objects more beautiful", "This tool change all objects to look better at the picture. It can be used to make better looking screenshot. If you click again all objects will be changed back to default settings.",
 

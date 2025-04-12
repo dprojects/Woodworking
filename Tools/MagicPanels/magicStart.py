@@ -96,7 +96,7 @@ def showQtGUI():
 		gThick = 18  # wood thickness
 		
 		gSelectedFurniture = "F0"
-		gColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 0.0)
+		gColor = MagicPanels.gDefaultColor
 		gR = FreeCAD.Rotation(0, 0, 0)
 		
 		gSingleDrawerPlane = "X"
@@ -5664,7 +5664,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(sx, sy + self.gThick, sz)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
@@ -5674,7 +5674,7 @@ def showQtGUI():
 			o2.Width = depth
 			pl = FreeCAD.Vector(sx, sy + self.gThick, sz + self.gThick)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
@@ -5684,7 +5684,7 @@ def showQtGUI():
 			o3.Width = depth
 			pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy + self.gThick, sz + self.gThick)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
@@ -5694,7 +5694,7 @@ def showQtGUI():
 			o4.Width = self.gThick
 			pl = FreeCAD.Vector(sx + self.gThick, sy + depth, sz + self.gThick)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
@@ -5704,7 +5704,7 @@ def showQtGUI():
 			o5.Width = depth
 			pl = FreeCAD.Vector(sx, sy + self.gThick, sz + self.gFSZ - self.gThick)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o5, 0, self.gColor, "color")
 			
 			# Front
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
@@ -5714,7 +5714,7 @@ def showQtGUI():
 			o6.Width = self.gThick
 			pl = FreeCAD.Vector(sx + (self.gThick / 2), sy, sz + (self.gThick / 2) + 2)
 			o6.Placement = FreeCAD.Placement(pl, self.gR)
-			o6.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o6, 0, self.gColor, "color")
 			
 			# Shelf
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
@@ -5724,12 +5724,12 @@ def showQtGUI():
 			o7.Width = depth - (3 * self.gThick)
 			pl = FreeCAD.Vector(sx + self.gThick, sy + (3 * self.gThick), sz + (self.gFSZ / 2) - (self.gThick / 2))
 			o7.Placement = FreeCAD.Placement(pl, self.gR)
-			o7.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o7, 0, self.gColor, "color")
 
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','FurnitureModule')
-			container.setLink([o1, o2, o3, o4, o5, o6, o7])
-			container.Label = "Furniture, Module"
-
+			objects = [o1, o2, o3, o4, o5, o6, o7]
+			label = "Furniture, Module"
+			container = MagicPanels.createContainer(objects, label, False)
+			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
 		
@@ -5750,7 +5750,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(sx + self.gThick, sy, sz + (self.gFSZ / 10))
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
@@ -5760,7 +5760,7 @@ def showQtGUI():
 			o2.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
@@ -5770,7 +5770,7 @@ def showQtGUI():
 			o3.Width = depth
 			pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy, sz)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
@@ -5780,7 +5780,7 @@ def showQtGUI():
 			o4.Width = 3
 			pl = FreeCAD.Vector(sx, sy + depth, sz + (self.gFSZ / 10))
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
@@ -5790,7 +5790,7 @@ def showQtGUI():
 			o5.Width = depth
 			pl = FreeCAD.Vector(sx + self.gThick, sy, sz + self.gFSZ - self.gThick)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o5, 0, self.gColor, "color")
 
 			# Shelf
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
@@ -5800,12 +5800,12 @@ def showQtGUI():
 			o6.Width = depth
 			pl = FreeCAD.Vector(sx + self.gThick, sy, sz + (self.gFSZ / 2) - (self.gThick / 2))
 			o6.Placement = FreeCAD.Placement(pl, self.gR)
-			o6.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o6, 0, self.gColor, "color")
 
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','FurnitureModule')
-			container.setLink([o1, o2, o3, o4, o5, o6])
-			container.Label = "Furniture, Module"
-
+			objects = [o1, o2, o3, o4, o5, o6]
+			label = "Furniture, Module"
+			container = MagicPanels.createContainer(objects, label, False)
+			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
 		
@@ -5837,7 +5837,7 @@ def showQtGUI():
 				o1.Width = depth
 				pl = FreeCAD.Vector(sx, sy + self.gThick, sz + posZ)
 				o1.Placement = FreeCAD.Placement(pl, self.gR)
-				o1.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o1, 0, self.gColor, "color")
 				
 				# Left Side
 				o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
@@ -5847,7 +5847,7 @@ def showQtGUI():
 				o2.Width = depth
 				pl = FreeCAD.Vector(sx, sy + self.gThick, sz + posZ + self.gThick)
 				o2.Placement = FreeCAD.Placement(pl, self.gR)
-				o2.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o2, 0, self.gColor, "color")
 				
 				# Right Side
 				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
@@ -5857,7 +5857,7 @@ def showQtGUI():
 				o3.Width = depth
 				pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy + self.gThick, sz + posZ + self.gThick)
 				o3.Placement = FreeCAD.Placement(pl, self.gR)
-				o3.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o3, 0, self.gColor, "color")
 				
 				# Back
 				o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
@@ -5867,7 +5867,7 @@ def showQtGUI():
 				o4.Width = self.gThick
 				pl = FreeCAD.Vector(sx + self.gThick, sy + depth, sz + posZ + self.gThick)
 				o4.Placement = FreeCAD.Placement(pl, self.gR)
-				o4.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o4, 0, self.gColor, "color")
 				
 				# Front
 				o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
@@ -5877,7 +5877,7 @@ def showQtGUI():
 				o5.Width = self.gThick
 				pl = FreeCAD.Vector(sx + (self.gThick / 2), sy, sz + posZ + (self.gThick / 2) + 2)
 				o5.Placement = FreeCAD.Placement(pl, self.gR)
-				o5.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o5, 0, self.gColor, "color")
 				
 				# Shelf
 				o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
@@ -5888,7 +5888,7 @@ def showQtGUI():
 				pZ = ((2 * i) + 1) * ((self.gThick + sideZ) / 2)
 				pl = FreeCAD.Vector(sx + self.gThick, sy + (3 * self.gThick), sz + pZ)
 				o6.Placement = FreeCAD.Placement(pl, self.gR)
-				o6.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o6, 0, self.gColor, "color")
 				
 				# create folder
 				group = FreeCAD.ActiveDocument.addObject('App::DocumentObjectGroup','Group')
@@ -5936,7 +5936,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(0, frontOF, -height)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRight")
@@ -5946,11 +5946,11 @@ def showQtGUI():
 			o2.Width = depth
 			pl = FreeCAD.Vector(FSX - thick, frontOF, -height)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFoot')
-			container.setLink([o1, o2])
-			container.Label = "Container, Foot"
+			objects = [o1, o2]
+			label = "Container, Foot"
+			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -5973,7 +5973,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(0, frontOF, -height)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRight")
@@ -5983,7 +5983,7 @@ def showQtGUI():
 			o2.Width = depth
 			pl = FreeCAD.Vector(FSX - thick, frontOF, -height)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootBack")
@@ -5993,7 +5993,7 @@ def showQtGUI():
 			o3.Width = thick
 			pl = FreeCAD.Vector(thick, frontOF + depth - thick, -height)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Front
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootFront")
@@ -6003,11 +6003,11 @@ def showQtGUI():
 			o4.Width = thick
 			pl = FreeCAD.Vector(thick, frontOF, -height)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFoot')
-			container.setLink([o1, o2, o3, o4])
-			container.Label = "Container, Foot"
+			objects = [o1, o2, o3, o4]
+			label = "Container, Foot"
+			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -6030,7 +6030,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(0, frontOF, -height)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRight")
@@ -6040,7 +6040,7 @@ def showQtGUI():
 			o2.Width = depth
 			pl = FreeCAD.Vector(FSX - thick, frontOF, -height)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootBack")
@@ -6050,7 +6050,7 @@ def showQtGUI():
 			o3.Width = thick
 			pl = FreeCAD.Vector(thick, frontOF + depth - thick, -height)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Front
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootFront")
@@ -6060,7 +6060,7 @@ def showQtGUI():
 			o4.Width = thick
 			pl = FreeCAD.Vector(thick, frontOF, -height)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
 			# Center
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootCenter")
@@ -6071,11 +6071,11 @@ def showQtGUI():
 			py = frontOF + (depth / 2) - (thick / 2)
 			pl = FreeCAD.Vector(thick, py, -height)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o5, 0, self.gColor, "color")
 
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFoot')
-			container.setLink([o1, o2, o3, o4, o5])
-			container.Label = "Container, Foot"
+			objects = [o1, o2, o3, o4, o5]
+			label = "Container, Foot"
+			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -6098,7 +6098,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(0, frontOF, -height)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRight")
@@ -6108,7 +6108,7 @@ def showQtGUI():
 			o2.Width = depth
 			pl = FreeCAD.Vector(FSX - thick, frontOF, -height)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootBack")
@@ -6118,7 +6118,7 @@ def showQtGUI():
 			o3.Width = thick
 			pl = FreeCAD.Vector(thick, frontOF + depth - thick, -height)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Front
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootFront")
@@ -6128,11 +6128,11 @@ def showQtGUI():
 			o4.Width = thick
 			pl = FreeCAD.Vector(thick, frontOF + thick, -height)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFoot')
-			container.setLink([o1, o2, o3, o4])
-			container.Label = "Container, Foot"
+			objects = [o1, o2, o3, o4]
+			label = "Container, Foot"
+			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -6155,7 +6155,7 @@ def showQtGUI():
 			o1.Width = thick
 			pl = FreeCAD.Vector(0, frontOF, -height)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Left Back
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootLeftBack")
@@ -6165,7 +6165,7 @@ def showQtGUI():
 			o2.Width = thick
 			pl = FreeCAD.Vector(0, frontOF + depth - thick, -height)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Right Front
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRightFront")
@@ -6175,7 +6175,7 @@ def showQtGUI():
 			o3.Width = thick
 			pl = FreeCAD.Vector(FSX - thick, frontOF, -height)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Right Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRightBack")
@@ -6185,11 +6185,11 @@ def showQtGUI():
 			o4.Width = thick
 			pl = FreeCAD.Vector(FSX - thick, frontOF + depth - thick, -height)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFoot')
-			container.setLink([o1, o2, o3, o4])
-			container.Label = "Container, Foot"
+			objects = [o1, o2, o3, o4]
+			label = "Container, Foot"
+			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -6225,7 +6225,7 @@ def showQtGUI():
 					o1.Width = depth - backOF
 					pl = FreeCAD.Vector(p0X + sideOF, p0Y, p0Z + bottomOF + 3)
 					o1.Placement = FreeCAD.Placement(pl, self.gR)
-					o1.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o1, 0, self.gColor, "color")
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
@@ -6235,7 +6235,7 @@ def showQtGUI():
 					o2.Width = depth - backOF
 					pl = FreeCAD.Vector(p0X + width - thick - sideOF, p0Y, p0Z + bottomOF + 3)
 					o2.Placement = FreeCAD.Placement(pl, self.gR)
-					o2.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o2, 0, self.gColor, "color")
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
@@ -6245,7 +6245,7 @@ def showQtGUI():
 					o3.Width = thick
 					pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + depth - thick - backOF, p0Z + bottomOF + 3)
 					o3.Placement = FreeCAD.Placement(pl, self.gR)
-					o3.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o3, 0, self.gColor, "color")
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
@@ -6255,7 +6255,7 @@ def showQtGUI():
 					o4.Width = thick
 					pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y, p0Z + bottomOF + 3)
 					o4.Placement = FreeCAD.Placement(pl, self.gR)
-					o4.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o4, 0, self.gColor, "color")
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
@@ -6265,7 +6265,7 @@ def showQtGUI():
 					o5.Width = depth - backOF
 					pl = FreeCAD.Vector(p0X + sideOF, p0Y, p0Z  + bottomOF)
 					o5.Placement = FreeCAD.Placement(pl, self.gR)
-					o5.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o5, 0, self.gColor, "color")
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
@@ -6275,12 +6275,12 @@ def showQtGUI():
 					o6.Width = thick
 					pl = FreeCAD.Vector(p0X - (thick / 2), p0Y - thick, p0Z - (thick / 2) + 2)
 					o6.Placement = FreeCAD.Placement(pl, self.gR)
-					o6.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o6, 0, self.gColor, "color")
 
-					container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
-					container.setLink([o1, o2, o3, o4, o5, o6])
-					container.Label = "Container, Drawer"
-				
+					objects = [o1, o2, o3, o4, o5, o6]
+					label = "Container, Drawer"
+					container = MagicPanels.createContainer(objects, label, False)
+					
 					# recompute
 					FreeCAD.ActiveDocument.recompute()
 			
@@ -6294,7 +6294,7 @@ def showQtGUI():
 					o1.Width = depth - backOF
 					pl = FreeCAD.Vector(p0X - sideOF - thick, p0Y - depth + backOF, p0Z + bottomOF + 3)
 					o1.Placement = FreeCAD.Placement(pl, self.gR)
-					o1.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o1, 0, self.gColor, "color")
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
@@ -6304,7 +6304,7 @@ def showQtGUI():
 					o2.Width = depth - backOF
 					pl = FreeCAD.Vector(p0X - width + sideOF, p0Y - depth + backOF, p0Z + bottomOF + 3)
 					o2.Placement = FreeCAD.Placement(pl, self.gR)
-					o2.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o2, 0, self.gColor, "color")
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
@@ -6314,7 +6314,7 @@ def showQtGUI():
 					o3.Width = thick
 					pl = FreeCAD.Vector(p0X - width + sideOF + thick, p0Y - depth + backOF, p0Z + bottomOF + 3)
 					o3.Placement = FreeCAD.Placement(pl, self.gR)
-					o3.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o3, 0, self.gColor, "color")
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
@@ -6324,7 +6324,7 @@ def showQtGUI():
 					o4.Width = thick
 					pl = FreeCAD.Vector(p0X - width + sideOF + thick, p0Y - thick, p0Z + bottomOF + 3)
 					o4.Placement = FreeCAD.Placement(pl, self.gR)
-					o4.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o4, 0, self.gColor, "color")
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
@@ -6334,7 +6334,7 @@ def showQtGUI():
 					o5.Width = depth - backOF
 					pl = FreeCAD.Vector(p0X - width + sideOF, p0Y - depth + backOF, p0Z  + bottomOF)
 					o5.Placement = FreeCAD.Placement(pl, self.gR)
-					o5.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o5, 0, self.gColor, "color")
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
@@ -6344,12 +6344,12 @@ def showQtGUI():
 					o6.Width = thick
 					pl = FreeCAD.Vector(p0X - width - (thick / 2), p0Y, p0Z - (thick / 2) + 2)
 					o6.Placement = FreeCAD.Placement(pl, self.gR)
-					o6.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o6, 0, self.gColor, "color")
 
-					container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
-					container.setLink([o1, o2, o3, o4, o5, o6])
-					container.Label = "Container, Drawer"
-				
+					objects = [o1, o2, o3, o4, o5, o6]
+					label = "Container, Drawer"
+					container = MagicPanels.createContainer(objects, label, False)
+					
 					# recompute
 					FreeCAD.ActiveDocument.recompute()
 
@@ -6365,7 +6365,7 @@ def showQtGUI():
 					o1.Width = thick
 					pl = FreeCAD.Vector(p0X, p0Y - sideOF - thick, p0Z + bottomOF + 3)
 					o1.Placement = FreeCAD.Placement(pl, self.gR)
-					o1.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o1, 0, self.gColor, "color")
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
@@ -6375,7 +6375,7 @@ def showQtGUI():
 					o2.Width = thick
 					pl = FreeCAD.Vector(p0X, p0Y - width + sideOF, p0Z + bottomOF + 3)
 					o2.Placement = FreeCAD.Placement(pl, self.gR)
-					o2.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o2, 0, self.gColor, "color")
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
@@ -6385,7 +6385,7 @@ def showQtGUI():
 					o3.Width = width - (2 * thick) - sidesOF
 					pl = FreeCAD.Vector(p0X + depth - thick - backOF, p0Y - width + sideOF + thick, p0Z + bottomOF + 3)
 					o3.Placement = FreeCAD.Placement(pl, self.gR)
-					o3.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o3, 0, self.gColor, "color")
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
@@ -6395,7 +6395,7 @@ def showQtGUI():
 					o4.Width = width - (2 * thick) - sidesOF
 					pl = FreeCAD.Vector(p0X, p0Y - width + sideOF + thick, p0Z + bottomOF + 3)
 					o4.Placement = FreeCAD.Placement(pl, self.gR)
-					o4.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o4, 0, self.gColor, "color")
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
@@ -6405,7 +6405,7 @@ def showQtGUI():
 					o5.Width = width - sidesOF
 					pl = FreeCAD.Vector(p0X, p0Y - width + sideOF, p0Z  + bottomOF)
 					o5.Placement = FreeCAD.Placement(pl, self.gR)
-					o5.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o5, 0, self.gColor, "color")
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
@@ -6415,12 +6415,12 @@ def showQtGUI():
 					o6.Width = width + thick
 					pl = FreeCAD.Vector(p0X - thick, p0Y - width - (thick / 2), p0Z - (thick / 2) + 2)
 					o6.Placement = FreeCAD.Placement(pl, self.gR)
-					o6.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o6, 0, self.gColor, "color")
 
-					container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
-					container.setLink([o1, o2, o3, o4, o5, o6])
-					container.Label = "Container, Drawer"
-				
+					objects = [o1, o2, o3, o4, o5, o6]
+					label = "Container, Drawer"
+					container = MagicPanels.createContainer(objects, label, False)
+					
 					# recompute
 					FreeCAD.ActiveDocument.recompute()
 		
@@ -6434,7 +6434,7 @@ def showQtGUI():
 					o1.Width = thick
 					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF, p0Z + bottomOF + 3)
 					o1.Placement = FreeCAD.Placement(pl, self.gR)
-					o1.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o1, 0, self.gColor, "color")
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
@@ -6444,7 +6444,7 @@ def showQtGUI():
 					o2.Width = thick
 					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + width - sideOF - thick, p0Z + bottomOF + 3)
 					o2.Placement = FreeCAD.Placement(pl, self.gR)
-					o2.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o2, 0, self.gColor, "color")
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
@@ -6454,7 +6454,7 @@ def showQtGUI():
 					o3.Width = width - (2 * thick) - sidesOF
 					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF + thick, p0Z + bottomOF + 3)
 					o3.Placement = FreeCAD.Placement(pl, self.gR)
-					o3.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o3, 0, self.gColor, "color")
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
@@ -6464,7 +6464,7 @@ def showQtGUI():
 					o4.Width = width - (2 * thick) - sidesOF
 					pl = FreeCAD.Vector(p0X - thick, p0Y + sideOF + thick, p0Z + bottomOF + 3)
 					o4.Placement = FreeCAD.Placement(pl, self.gR)
-					o4.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o4, 0, self.gColor, "color")
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
@@ -6474,7 +6474,7 @@ def showQtGUI():
 					o5.Width = width - sidesOF
 					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF, p0Z  + bottomOF)
 					o5.Placement = FreeCAD.Placement(pl, self.gR)
-					o5.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o5, 0, self.gColor, "color")
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
@@ -6484,12 +6484,12 @@ def showQtGUI():
 					o6.Width = width + thick
 					pl = FreeCAD.Vector(p0X, p0Y - (thick / 2), p0Z - (thick / 2) + 2)
 					o6.Placement = FreeCAD.Placement(pl, self.gR)
-					o6.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o6, 0, self.gColor, "color")
 
-					container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
-					container.setLink([o1, o2, o3, o4, o5, o6])
-					container.Label = "Container, Drawer"
-				
+					objects = [o1, o2, o3, o4, o5, o6]
+					label = "Container, Drawer"
+					container = MagicPanels.createContainer(objects, label, False)
+					
 					# recompute
 					FreeCAD.ActiveDocument.recompute()
 
@@ -6524,7 +6524,7 @@ def showQtGUI():
 					o1.Width = depth - backOF - thick
 					pl = FreeCAD.Vector(p0X + sideOF, p0Y + thick, p0Z + bottomOF + 3)
 					o1.Placement = FreeCAD.Placement(pl, self.gR)
-					o1.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o1, 0, self.gColor, "color")
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
@@ -6534,7 +6534,7 @@ def showQtGUI():
 					o2.Width = depth - backOF - thick
 					pl = FreeCAD.Vector(p0X + width - thick - sideOF, p0Y + thick, p0Z + bottomOF + 3)
 					o2.Placement = FreeCAD.Placement(pl, self.gR)
-					o2.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o2, 0, self.gColor, "color")
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
@@ -6544,7 +6544,7 @@ def showQtGUI():
 					o3.Width = thick
 					pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + depth - thick - backOF, p0Z + bottomOF + 3)
 					o3.Placement = FreeCAD.Placement(pl, self.gR)
-					o3.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o3, 0, self.gColor, "color")
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
@@ -6554,7 +6554,7 @@ def showQtGUI():
 					o4.Width = thick
 					pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + thick, p0Z + bottomOF + 3)
 					o4.Placement = FreeCAD.Placement(pl, self.gR)
-					o4.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o4, 0, self.gColor, "color")
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
@@ -6564,7 +6564,7 @@ def showQtGUI():
 					o5.Width = depth - backOF - thick
 					pl = FreeCAD.Vector(p0X + sideOF, p0Y + thick, p0Z  + bottomOF)
 					o5.Placement = FreeCAD.Placement(pl, self.gR)
-					o5.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o5, 0, self.gColor, "color")
 
 					# Front outside make inside as well
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
@@ -6574,12 +6574,12 @@ def showQtGUI():
 					o6.Width = thick
 					pl = FreeCAD.Vector(p0X + 2, p0Y, p0Z + 2)
 					o6.Placement = FreeCAD.Placement(pl, self.gR)
-					o6.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o6, 0, self.gColor, "color")
 
-					container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
-					container.setLink([o1, o2, o3, o4, o5, o6])
-					container.Label = "Container, Drawer"
-				
+					objects = [o1, o2, o3, o4, o5, o6]
+					label = "Container, Drawer"
+					container = MagicPanels.createContainer(objects, label, False)
+					
 					# recompute
 					FreeCAD.ActiveDocument.recompute()
 			
@@ -6593,7 +6593,7 @@ def showQtGUI():
 					o1.Width = depth - backOF - thick
 					pl = FreeCAD.Vector(p0X - sideOF - thick, p0Y - depth + backOF, p0Z + bottomOF + 3)
 					o1.Placement = FreeCAD.Placement(pl, self.gR)
-					o1.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o1, 0, self.gColor, "color")
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
@@ -6603,7 +6603,7 @@ def showQtGUI():
 					o2.Width = depth - backOF - thick
 					pl = FreeCAD.Vector(p0X - width + sideOF, p0Y - depth + backOF, p0Z + bottomOF + 3)
 					o2.Placement = FreeCAD.Placement(pl, self.gR)
-					o2.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o2, 0, self.gColor, "color")
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
@@ -6613,7 +6613,7 @@ def showQtGUI():
 					o3.Width = thick
 					pl = FreeCAD.Vector(p0X - width + sideOF + thick, p0Y - depth + backOF, p0Z + bottomOF + 3)
 					o3.Placement = FreeCAD.Placement(pl, self.gR)
-					o3.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o3, 0, self.gColor, "color")
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
@@ -6623,7 +6623,7 @@ def showQtGUI():
 					o4.Width = thick
 					pl = FreeCAD.Vector(p0X - width + sideOF + thick, p0Y - (2 * thick), p0Z + bottomOF + 3)
 					o4.Placement = FreeCAD.Placement(pl, self.gR)
-					o4.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o4, 0, self.gColor, "color")
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
@@ -6633,7 +6633,7 @@ def showQtGUI():
 					o5.Width = depth - backOF - thick
 					pl = FreeCAD.Vector(p0X - width + sideOF, p0Y - depth + backOF, p0Z  + bottomOF)
 					o5.Placement = FreeCAD.Placement(pl, self.gR)
-					o5.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o5, 0, self.gColor, "color")
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
@@ -6643,12 +6643,12 @@ def showQtGUI():
 					o6.Width = thick
 					pl = FreeCAD.Vector(p0X - width + 2, p0Y - thick, p0Z + 2)
 					o6.Placement = FreeCAD.Placement(pl, self.gR)
-					o6.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o6, 0, self.gColor, "color")
 
-					container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
-					container.setLink([o1, o2, o3, o4, o5, o6])
-					container.Label = "Container, Drawer"
-				
+					objects = [o1, o2, o3, o4, o5, o6]
+					label = "Container, Drawer"
+					container = MagicPanels.createContainer(objects, label, False)
+					
 					# recompute
 					FreeCAD.ActiveDocument.recompute()
 
@@ -6664,7 +6664,7 @@ def showQtGUI():
 					o1.Width = thick
 					pl = FreeCAD.Vector(p0X + thick, p0Y - sideOF - thick, p0Z + bottomOF + 3)
 					o1.Placement = FreeCAD.Placement(pl, self.gR)
-					o1.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o1, 0, self.gColor, "color")
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
@@ -6674,7 +6674,7 @@ def showQtGUI():
 					o2.Width = thick
 					pl = FreeCAD.Vector(p0X + thick, p0Y - width + sideOF, p0Z + bottomOF + 3)
 					o2.Placement = FreeCAD.Placement(pl, self.gR)
-					o2.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o2, 0, self.gColor, "color")
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
@@ -6684,7 +6684,7 @@ def showQtGUI():
 					o3.Width = width - (2 * thick) - sidesOF
 					pl = FreeCAD.Vector(p0X + depth - backOF - thick, p0Y - width + sideOF + thick, p0Z + bottomOF + 3)
 					o3.Placement = FreeCAD.Placement(pl, self.gR)
-					o3.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o3, 0, self.gColor, "color")
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
@@ -6694,7 +6694,7 @@ def showQtGUI():
 					o4.Width = width - (2 * thick) - sidesOF
 					pl = FreeCAD.Vector(p0X + thick, p0Y - width + sideOF + thick, p0Z + bottomOF + 3)
 					o4.Placement = FreeCAD.Placement(pl, self.gR)
-					o4.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o4, 0, self.gColor, "color")
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
@@ -6704,7 +6704,7 @@ def showQtGUI():
 					o5.Width = width - sidesOF
 					pl = FreeCAD.Vector(p0X + thick, p0Y - width + sideOF, p0Z  + bottomOF)
 					o5.Placement = FreeCAD.Placement(pl, self.gR)
-					o5.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o5, 0, self.gColor, "color")
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
@@ -6714,12 +6714,12 @@ def showQtGUI():
 					o6.Width = width - 4
 					pl = FreeCAD.Vector(p0X, p0Y - width + 2, p0Z + 2)
 					o6.Placement = FreeCAD.Placement(pl, self.gR)
-					o6.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o6, 0, self.gColor, "color")
 
-					container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
-					container.setLink([o1, o2, o3, o4, o5, o6])
-					container.Label = "Container, Drawer"
-				
+					objects = [o1, o2, o3, o4, o5, o6]
+					label = "Container, Drawer"
+					container = MagicPanels.createContainer(objects, label, False)
+					
 					# recompute
 					FreeCAD.ActiveDocument.recompute()
 		
@@ -6733,7 +6733,7 @@ def showQtGUI():
 					o1.Width = thick
 					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF, p0Z + bottomOF + 3)
 					o1.Placement = FreeCAD.Placement(pl, self.gR)
-					o1.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o1, 0, self.gColor, "color")
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
@@ -6743,7 +6743,7 @@ def showQtGUI():
 					o2.Width = thick
 					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + width - sideOF - thick, p0Z + bottomOF + 3)
 					o2.Placement = FreeCAD.Placement(pl, self.gR)
-					o2.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o2, 0, self.gColor, "color")
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
@@ -6753,7 +6753,7 @@ def showQtGUI():
 					o3.Width = width - (2 * thick) - sidesOF
 					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF + thick, p0Z + bottomOF + 3)
 					o3.Placement = FreeCAD.Placement(pl, self.gR)
-					o3.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o3, 0, self.gColor, "color")
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
@@ -6763,7 +6763,7 @@ def showQtGUI():
 					o4.Width = width - (2 * thick) - sidesOF
 					pl = FreeCAD.Vector(p0X - (2 * thick), p0Y + sideOF + thick, p0Z + bottomOF + 3)
 					o4.Placement = FreeCAD.Placement(pl, self.gR)
-					o4.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o4, 0, self.gColor, "color")
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
@@ -6773,7 +6773,7 @@ def showQtGUI():
 					o5.Width = width - sidesOF
 					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF, p0Z  + bottomOF)
 					o5.Placement = FreeCAD.Placement(pl, self.gR)
-					o5.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o5, 0, self.gColor, "color")
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
@@ -6783,12 +6783,12 @@ def showQtGUI():
 					o6.Width = width - 4
 					pl = FreeCAD.Vector(p0X - thick, p0Y + 2, p0Z + 2)
 					o6.Placement = FreeCAD.Placement(pl, self.gR)
-					o6.ViewObject.ShapeColor = self.gColor
+					MagicPanels.setColor(o6, 0, self.gColor, "color")
 
-					container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDrawer')
-					container.setLink([o1, o2, o3, o4, o5, o6])
-					container.Label = "Container, Drawer"
-				
+					objects = [o1, o2, o3, o4, o5, o6]
+					label = "Container, Drawer"
+					container = MagicPanels.createContainer(objects, label, False)
+					
 					# recompute
 					FreeCAD.ActiveDocument.recompute()
 		
@@ -6811,7 +6811,7 @@ def showQtGUI():
 			o1.Width = thick
 			pl = FreeCAD.Vector(p0X, p0Y, p0Z)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -6835,7 +6835,7 @@ def showQtGUI():
 			o1.Width = thick
 			pl = FreeCAD.Vector(p0X, p0Y, p0Z)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -6859,7 +6859,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(p0X, p0Y, p0Z)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -6883,7 +6883,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(p0X, p0Y, p0Z)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -6905,7 +6905,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(sx, sy + self.gThick, sz)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
@@ -6915,7 +6915,7 @@ def showQtGUI():
 			o2.Width = depth
 			pl = FreeCAD.Vector(sx, sy + self.gThick, sz + self.gThick)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
@@ -6925,7 +6925,7 @@ def showQtGUI():
 			o3.Width = depth
 			pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy + self.gThick, sz + self.gThick)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Back HDF
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "BackHDF")
@@ -6935,7 +6935,7 @@ def showQtGUI():
 			o4.Width = 3
 			pl = FreeCAD.Vector(sx, sy + depth + self.gThick, sz)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
@@ -6945,7 +6945,7 @@ def showQtGUI():
 			o5.Width = depth
 			pl = FreeCAD.Vector(sx, sy + self.gThick, sz + self.gFSZ - self.gThick)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o5, 0, self.gColor, "color")
 			
 			# Front
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
@@ -6955,7 +6955,7 @@ def showQtGUI():
 			o6.Width = self.gThick
 			pl = FreeCAD.Vector(sx + (self.gThick / 2), sy, sz + (self.gThick / 2) + 2)
 			o6.Placement = FreeCAD.Placement(pl, self.gR)
-			o6.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o6, 0, self.gColor, "color")
 			
 			# Shelf
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
@@ -6965,12 +6965,12 @@ def showQtGUI():
 			o7.Width = depth
 			pl = FreeCAD.Vector(sx + self.gThick, sy + self.gThick, sz + (self.gFSZ / 2) - (self.gThick / 2))
 			o7.Placement = FreeCAD.Placement(pl, self.gR)
-			o7.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o7, 0, self.gColor, "color")
 
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','FurnitureModule')
-			container.setLink([o1, o2, o3, o4, o5, o6, o7])
-			container.Label = "Furniture, Module"
-		
+			objects = [o1, o2, o3, o4, o5, o6, o7]
+			label = "Furniture, Module"
+			container = MagicPanels.createContainer(objects, label, False)
+			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
 		
@@ -6991,7 +6991,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
@@ -7001,7 +7001,7 @@ def showQtGUI():
 			o2.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz + self.gThick)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
@@ -7011,7 +7011,7 @@ def showQtGUI():
 			o3.Width = depth
 			pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy, sz + self.gThick)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
@@ -7021,7 +7021,7 @@ def showQtGUI():
 			o4.Width = self.gThick
 			pl = FreeCAD.Vector(sx + self.gThick, sy + depth - self.gThick, sz + self.gThick)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
@@ -7031,7 +7031,7 @@ def showQtGUI():
 			o5.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz + self.gFSZ - self.gThick)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o5, 0, self.gColor, "color")
 			
 			# Front
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
@@ -7041,7 +7041,7 @@ def showQtGUI():
 			o6.Width = self.gThick
 			pl = FreeCAD.Vector(sx + self.gThick + 2, sy, sz + self.gThick + 2)
 			o6.Placement = FreeCAD.Placement(pl, self.gR)
-			o6.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o6, 0, self.gColor, "color")
 			
 			# Shelf
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
@@ -7051,12 +7051,12 @@ def showQtGUI():
 			o7.Width = depth - (3 * self.gThick)
 			pl = FreeCAD.Vector(sx + self.gThick, sy + (2 * self.gThick), sz + (self.gFSZ / 2) - (self.gThick / 2))
 			o7.Placement = FreeCAD.Placement(pl, self.gR)
-			o7.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o7, 0, self.gColor, "color")
 
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','FurnitureModule')
-			container.setLink([o1, o2, o3, o4, o5, o6, o7])
-			container.Label = "Furniture, Module"
-
+			objects = [o1, o2, o3, o4, o5, o6, o7]
+			label = "Furniture, Module"
+			container = MagicPanels.createContainer(objects, label, False)
+			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
 		
@@ -7077,7 +7077,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
@@ -7087,7 +7087,7 @@ def showQtGUI():
 			o2.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz + self.gThick)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
@@ -7097,7 +7097,7 @@ def showQtGUI():
 			o3.Width = depth
 			pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy, sz + self.gThick)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Back HDF
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
@@ -7107,7 +7107,7 @@ def showQtGUI():
 			o4.Width = 3
 			pl = FreeCAD.Vector(sx, sy + depth, sz)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
@@ -7117,7 +7117,7 @@ def showQtGUI():
 			o5.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz + self.gFSZ - self.gThick)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o5, 0, self.gColor, "color")
 			
 			# Front
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
@@ -7127,7 +7127,7 @@ def showQtGUI():
 			o6.Width = self.gThick
 			pl = FreeCAD.Vector(sx + self.gThick + 2, sy, sz + self.gThick + 2)
 			o6.Placement = FreeCAD.Placement(pl, self.gR)
-			o6.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o6, 0, self.gColor, "color")
 			
 			# Shelf
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
@@ -7137,12 +7137,12 @@ def showQtGUI():
 			o7.Width = depth - (2 * self.gThick)
 			pl = FreeCAD.Vector(sx + self.gThick, sy + (2 * self.gThick), sz + (self.gFSZ / 2) - (self.gThick / 2))
 			o7.Placement = FreeCAD.Placement(pl, self.gR)
-			o7.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o7, 0, self.gColor, "color")
 
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','FurnitureModule')
-			container.setLink([o1, o2, o3, o4, o5, o6, o7])
-			container.Label = "Furniture, Module"
-
+			objects = [o1, o2, o3, o4, o5, o6, o7]
+			label = "Furniture, Module"
+			container = MagicPanels.createContainer(objects, label, False)
+			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
 
@@ -7179,7 +7179,7 @@ def showQtGUI():
 				o1.Width = gapY - backOF
 				pl = FreeCAD.Vector(p0X + sideOF, p0Y, p0Z + bottomOF + 3)
 				o1.Placement = FreeCAD.Placement(pl, self.gR)
-				o1.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o1, 0, self.gColor, "color")
 				
 				# Right Side
 				o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSRight")
@@ -7189,7 +7189,7 @@ def showQtGUI():
 				o2.Width = gapY - backOF
 				pl = FreeCAD.Vector(p0X + gapX - thick - sideOF, p0Y, p0Z + bottomOF + 3)
 				o2.Placement = FreeCAD.Placement(pl, self.gR)
-				o2.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o2, 0, self.gColor, "color")
 				
 				# Back
 				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSBack")
@@ -7199,7 +7199,7 @@ def showQtGUI():
 				o3.Width = thick
 				pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + gapY - thick - backOF, p0Z + bottomOF + 3)
 				o3.Placement = FreeCAD.Placement(pl, self.gR)
-				o3.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o3, 0, self.gColor, "color")
 				
 				# Front inside
 				o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSFrontInside")
@@ -7209,7 +7209,7 @@ def showQtGUI():
 				o4.Width = thick
 				pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y, p0Z + bottomOF + 3)
 				o4.Placement = FreeCAD.Placement(pl, self.gR)
-				o4.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o4, 0, self.gColor, "color")
 
 				# HDF bottom
 				o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSBottom")
@@ -7219,7 +7219,7 @@ def showQtGUI():
 				o5.Width = gapY - backOF
 				pl = FreeCAD.Vector(p0X + sideOF, p0Y, p0Z  + bottomOF)
 				o5.Placement = FreeCAD.Placement(pl, self.gR)
-				o5.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o5, 0, self.gColor, "color")
 
 				# Front outside
 				o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSFrontOutside")
@@ -7230,12 +7230,12 @@ def showQtGUI():
 				pz = p0Z - offset + (i * offset)
 				pl = FreeCAD.Vector(p0X - (thick / 2), p0Y - thick, pz)
 				o6.Placement = FreeCAD.Placement(pl, self.gR)
-				o6.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o6, 0, self.gColor, "color")
 
-				container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDS')
-				container.setLink([o1, o2, o3, o4, o5, o6])
-				container.Label = "Container, Drawer series " + str(i+1)
-		
+				objects = [o1, o2, o3, o4, o5, o6]
+				label = "Container, Drawer series " + str(i+1)
+				container = MagicPanels.createContainer(objects, label, False)
+				
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
 		
@@ -7272,7 +7272,7 @@ def showQtGUI():
 				o1.Width = gapY - backOF - thick
 				pl = FreeCAD.Vector(p0X + sideOF, p0Y + thick, p0Z + bottomOF + 3)
 				o1.Placement = FreeCAD.Placement(pl, self.gR)
-				o1.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o1, 0, self.gColor, "color")
 				
 				# Right Side
 				o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSRight")
@@ -7282,7 +7282,7 @@ def showQtGUI():
 				o2.Width = gapY - backOF - thick
 				pl = FreeCAD.Vector(p0X + gapX - thick - sideOF, p0Y + thick, p0Z + bottomOF + 3)
 				o2.Placement = FreeCAD.Placement(pl, self.gR)
-				o2.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o2, 0, self.gColor, "color")
 				
 				# Back
 				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSBack")
@@ -7292,7 +7292,7 @@ def showQtGUI():
 				o3.Width = thick
 				pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + gapY - thick - backOF, p0Z + bottomOF + 3)
 				o3.Placement = FreeCAD.Placement(pl, self.gR)
-				o3.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o3, 0, self.gColor, "color")
 				
 				# Front inside
 				o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSFrontInside")
@@ -7302,7 +7302,7 @@ def showQtGUI():
 				o4.Width = thick
 				pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + thick, p0Z + bottomOF + 3)
 				o4.Placement = FreeCAD.Placement(pl, self.gR)
-				o4.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o4, 0, self.gColor, "color")
 
 				# HDF bottom
 				o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSBottom")
@@ -7312,7 +7312,7 @@ def showQtGUI():
 				o5.Width = gapY - backOF - thick
 				pl = FreeCAD.Vector(p0X + sideOF, p0Y + thick, p0Z  + bottomOF)
 				o5.Placement = FreeCAD.Placement(pl, self.gR)
-				o5.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o5, 0, self.gColor, "color")
 
 				# Front outside make inside as well
 				o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSFrontOutside")
@@ -7322,12 +7322,12 @@ def showQtGUI():
 				o6.Width = thick
 				pl = FreeCAD.Vector(p0X + offset, p0Y, p0Z + offset)
 				o6.Placement = FreeCAD.Placement(pl, self.gR)
-				o6.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o6, 0, self.gColor, "color")
 
-				container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDS')
-				container.setLink([o1, o2, o3, o4, o5, o6])
-				container.Label = "Container, Drawer series " + str(i+1)
-
+				objects = [o1, o2, o3, o4, o5, o6]
+				label = "Container, Drawer series " + str(i+1)
+				container = MagicPanels.createContainer(objects, label, False)
+				
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
 		
@@ -7352,7 +7352,7 @@ def showQtGUI():
 			o1.Width = barThick
 			pl = FreeCAD.Vector(FSX, FSY, FSZ + barWidth)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFRight")
@@ -7362,7 +7362,7 @@ def showQtGUI():
 			o2.Width = barThick
 			pl = FreeCAD.Vector(FSX + FFWidth - barWidth, FSY, FSZ + barWidth)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Bottom
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFBottom")
@@ -7372,7 +7372,7 @@ def showQtGUI():
 			o3.Width = barThick
 			pl = FreeCAD.Vector(FSX, FSY, FSZ)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Top
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFTop")
@@ -7382,11 +7382,11 @@ def showQtGUI():
 			o4.Width = barThick
 			pl = FreeCAD.Vector(FSX, FSY, FSZ + FFHeight - barWidth)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFF')
-			container.setLink([o1, o2, o3, o4])
-			container.Label = "Container, Face Frame"
+			objects = [o1, o2, o3, o4]
+			label = "Container, Face Frame"
+			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -7414,7 +7414,7 @@ def showQtGUI():
 			o1.Width = barThick
 			pl = FreeCAD.Vector(FSX, FSY, FSZ + barWidth)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFRight")
@@ -7424,7 +7424,7 @@ def showQtGUI():
 			o2.Width = barThick
 			pl = FreeCAD.Vector(FSX + FFWidth - barWidth, FSY, FSZ + barWidth)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Bottom
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFBottom")
@@ -7434,7 +7434,7 @@ def showQtGUI():
 			o3.Width = barThick
 			pl = FreeCAD.Vector(FSX, FSY, FSZ)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Top
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFTop")
@@ -7444,7 +7444,7 @@ def showQtGUI():
 			o4.Width = barThick
 			pl = FreeCAD.Vector(FSX, FSY, FSZ + FFHeight - barWidth)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
 			# Center Side
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFCenter")
@@ -7454,11 +7454,11 @@ def showQtGUI():
 			o5.Width = barThick
 			pl = FreeCAD.Vector(centerFSX, FSY, FSZ + barWidth)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o5, 0, self.gColor, "color")
 			
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFF')
-			container.setLink([o1, o2, o3, o4, o5])
-			container.Label = "Container, Face Frame"
+			objects = [o1, o2, o3, o4, o5]
+			label = "Container, Face Frame"
+			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -7488,7 +7488,7 @@ def showQtGUI():
 			o1.Width = barThick
 			pl = FreeCAD.Vector(FSX, FSY, FSZ + barWidth)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFRight")
@@ -7498,7 +7498,7 @@ def showQtGUI():
 			o2.Width = barThick
 			pl = FreeCAD.Vector(FSX + FFWidth - barWidth, FSY, FSZ + barWidth)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Bottom
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFBottom")
@@ -7508,7 +7508,7 @@ def showQtGUI():
 			o3.Width = barThick
 			pl = FreeCAD.Vector(FSX, FSY, FSZ)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Top
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFTop")
@@ -7518,7 +7518,7 @@ def showQtGUI():
 			o4.Width = barThick
 			pl = FreeCAD.Vector(FSX, FSY, FSZ + FFHeight - barWidth)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
 			# Center Side
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFCenter")
@@ -7528,7 +7528,7 @@ def showQtGUI():
 			o5.Width = barThick
 			pl = FreeCAD.Vector(centerFSX, FSY, FSZ + barWidth)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o5, 0, self.gColor, "color")
 			
 			# Horizontal bar
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFHorizontal")
@@ -7538,11 +7538,11 @@ def showQtGUI():
 			o6.Width = barThick
 			pl = FreeCAD.Vector(horizontalFSX, FSY, horizontalFSZ)
 			o6.Placement = FreeCAD.Placement(pl, self.gR)
-			o6.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o6, 0, self.gColor, "color")
 
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFF')
-			container.setLink([o1, o2, o3, o4, o5, o6])
-			container.Label = "Container, Face Frame"
+			objects = [o1, o2, o3, o4, o5, o6]
+			label = "Container, Face Frame"
+			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -7586,7 +7586,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(sx + self.gThick, sy, sz + self.gThick)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
@@ -7596,7 +7596,7 @@ def showQtGUI():
 			o2.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
@@ -7606,7 +7606,7 @@ def showQtGUI():
 			o3.Width = depth
 			pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy, sz)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
@@ -7616,7 +7616,7 @@ def showQtGUI():
 			o4.Width = 3
 			pl = FreeCAD.Vector(sx, sy + depth, sz + self.gThick)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
@@ -7626,7 +7626,7 @@ def showQtGUI():
 			o5.Width = depth
 			pl = FreeCAD.Vector(sx + self.gThick, sy, sz + self.gFSZ - self.gThick)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o5, 0, self.gColor, "color")
 
 			# Face Frame - draw
 
@@ -7690,10 +7690,10 @@ def showQtGUI():
 			ff6.Placement = FreeCAD.Placement(pl, self.gR)
 			ff6.ViewObject.ShapeColor = self.gColor
 
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','FurnitureModule')
-			container.setLink([o1, o2, o3, o4, o5, ff1, ff2, ff3, ff4, ff5, ff6])
-			container.Label = "Furniture, Module"
-
+			objects = [o1, o2, o3, o4, o5, ff1, ff2, ff3, ff4, ff5, ff6]
+			label = "Furniture, Module"
+			container = MagicPanels.createContainer(objects, label, False)
+			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
 
@@ -7740,7 +7740,7 @@ def showQtGUI():
 			o1.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
@@ -7750,7 +7750,7 @@ def showQtGUI():
 			o2.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz + self.gThick)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
@@ -7760,7 +7760,7 @@ def showQtGUI():
 			o3.Width = depth
 			pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy, sz + self.gThick)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
@@ -7770,7 +7770,7 @@ def showQtGUI():
 			o4.Width = 3
 			pl = FreeCAD.Vector(sx, sy + depth, sz)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
@@ -7780,7 +7780,7 @@ def showQtGUI():
 			o5.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz + self.gFSZ - self.gThick)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o5, 0, self.gColor, "color")
 
 			# Face Frame - draw
 
@@ -7854,10 +7854,10 @@ def showQtGUI():
 			ff7.Placement = FreeCAD.Placement(pl, self.gR)
 			ff7.ViewObject.ShapeColor = self.gColor
 			
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','FurnitureModule')
-			container.setLink([o1, o2, o3, o4, o5, ff1, ff2, ff3, ff4, ff5, ff6, ff7])
-			container.Label = "Furniture, Module"
-
+			objects = [o1, o2, o3, o4, o5, ff1, ff2, ff3, ff4, ff5, ff6, ff7]
+			label = "Furniture, Module"
+			container = MagicPanels.createContainer(objects, label, False)
+			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
 
@@ -7885,7 +7885,7 @@ def showQtGUI():
 			o1.Width = barThick
 			pl = FreeCAD.Vector(FSX, FSY, FSZ + barWidth)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGRight")
@@ -7895,7 +7895,7 @@ def showQtGUI():
 			o2.Width = barThick
 			pl = FreeCAD.Vector(FSX + FFWidth - barWidth, FSY, FSZ + barWidth)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Bottom
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGBottom")
@@ -7905,7 +7905,7 @@ def showQtGUI():
 			o3.Width = barThick
 			pl = FreeCAD.Vector(FSX, FSY, FSZ)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Top
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGTop")
@@ -7915,7 +7915,7 @@ def showQtGUI():
 			o4.Width = barThick
 			pl = FreeCAD.Vector(FSX, FSY, FSZ + FFHeight - barWidth)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
 			# Glass
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGGlass")
@@ -7931,9 +7931,9 @@ def showQtGUI():
 			o5.ViewObject.ShapeColor = (255, 255, 255)
 			o5.ViewObject.Transparency = 60
 			
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFG')
-			container.setLink([o1, o2, o3, o4, o5])
-			container.Label = "Container, Front with GLass"
+			objects = [o1, o2, o3, o4, o5]
+			label = "Container, Front with GLass"
+			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -7965,7 +7965,7 @@ def showQtGUI():
 			o1.Width = barThick
 			pl = FreeCAD.Vector(FSX, FSY, FSZ + barWidth)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGRight")
@@ -7975,7 +7975,7 @@ def showQtGUI():
 			o2.Width = barThick
 			pl = FreeCAD.Vector(FSX + FFWidth - barWidth, FSY, FSZ + barWidth)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Bottom
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGBottom")
@@ -7985,7 +7985,7 @@ def showQtGUI():
 			o3.Width = barThick
 			pl = FreeCAD.Vector(FSX, FSY, FSZ)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Top
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGTop")
@@ -7995,7 +7995,7 @@ def showQtGUI():
 			o4.Width = barThick
 			pl = FreeCAD.Vector(FSX, FSY, FSZ + FFHeight - barWidth)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
 			# Glass
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGGlass")
@@ -8020,7 +8020,7 @@ def showQtGUI():
 			plx = FSX + (FFWidth / 2) - (decWidth / 2)
 			pl = FreeCAD.Vector(plx, FSY, FSZ + barWidth)
 			o6.Placement = FreeCAD.Placement(pl, self.gR)
-			o6.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o6, 0, self.gColor, "color")
 			
 			h14 = ((FFHeight - (2 * barWidth)) / 4) - (decWidth / 2)
 			h34 = ( 3 * (FFHeight - (2 * barWidth)) / 4) - (decWidth / 2)
@@ -8036,7 +8036,7 @@ def showQtGUI():
 			plz = FSZ + barWidth +  h14
 			pl = FreeCAD.Vector(plx, ply, plz)
 			o7.Placement = FreeCAD.Placement(pl, self.gR)
-			o7.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o7, 0, self.gColor, "color")
 		
 			# Horizontal decoration 2
 			o8 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGHorizontal2")
@@ -8049,7 +8049,7 @@ def showQtGUI():
 			plz = FSZ + barWidth +  h34
 			pl = FreeCAD.Vector(plx, ply, plz)
 			o8.Placement = FreeCAD.Placement(pl, self.gR)
-			o8.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o8, 0, self.gColor, "color")
 		
 			# Horizontal decoration 3
 			o9 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGHorizontal3")
@@ -8062,7 +8062,7 @@ def showQtGUI():
 			plz = FSZ + barWidth +  h14
 			pl = FreeCAD.Vector(plx, ply, plz)
 			o9.Placement = FreeCAD.Placement(pl, self.gR)
-			o9.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o9, 0, self.gColor, "color")
 		
 			# Horizontal decoration 4
 			o10 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGHorizontal4")
@@ -8075,11 +8075,11 @@ def showQtGUI():
 			plz = FSZ + barWidth +  h34
 			pl = FreeCAD.Vector(plx, ply, plz)
 			o10.Placement = FreeCAD.Placement(pl, self.gR)
-			o10.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o10, 0, self.gColor, "color")
 			
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFG')
-			container.setLink([o1, o2, o3, o4, o5, o6, o7, o8, o9, o10])
-			container.Label = "Container, Front with GLass"
+			objects = [o1, o2, o3, o4, o5, o6, o7, o8, o9, o10]
+			label = "Container, Front with GLass"
+			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -8111,13 +8111,12 @@ def showQtGUI():
 				pz = p0Z + ((i + 1) * offset) + (i * thick)
 				pl = FreeCAD.Vector(p0X, p0Y, pz)
 				o1.Placement = FreeCAD.Placement(pl, self.gR)
-				o1.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o1, 0, self.gColor, "color")
 				
 				shelvesArr.append(o1)
 			
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerShelfSeries')
-			container.setLink(shelvesArr)
-			container.Label = "Container, Shelf Series"
+			label = "Container, Shelf Series"
+			container = MagicPanels.createContainer(shelvesArr, label, False)
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -8144,7 +8143,7 @@ def showQtGUI():
 			o1.Width = legThick
 			pl = FreeCAD.Vector(sx + offset, sy + offset, sz)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Leg Left Back
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLB")
@@ -8155,7 +8154,7 @@ def showQtGUI():
 			psy = sy + depth - offset - legThick
 			pl = FreeCAD.Vector(sx + offset, psy, sz)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Leg Right Front
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRF")
@@ -8166,7 +8165,7 @@ def showQtGUI():
 			psx = sx + width - offset - legThick
 			pl = FreeCAD.Vector(psx, sy + offset, sz)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Leg Right Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRB")
@@ -8178,7 +8177,7 @@ def showQtGUI():
 			psy = sy + depth - offset - legThick
 			pl = FreeCAD.Vector(psx, psy, sz)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
 			# Supporter Front
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSF")
@@ -8191,7 +8190,7 @@ def showQtGUI():
 			psz = sz + height - topThick - legThick
 			pl = FreeCAD.Vector(psx, psy, psz)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o5, 0, self.gColor, "color")
 			
 			# Supporter Back
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSB")
@@ -8204,7 +8203,7 @@ def showQtGUI():
 			psz = sz + height - topThick - legThick
 			pl = FreeCAD.Vector(psx, psy, psz)
 			o6.Placement = FreeCAD.Placement(pl, self.gR)
-			o6.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o6, 0, self.gColor, "color")
 			
 			# Supporter Left
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSL")
@@ -8217,7 +8216,7 @@ def showQtGUI():
 			psz = sz + height - topThick - legThick
 			pl = FreeCAD.Vector(psx, psy, psz)
 			o7.Placement = FreeCAD.Placement(pl, self.gR)
-			o7.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o7, 0, self.gColor, "color")
 			
 			# Supporter Right
 			o8 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSR")
@@ -8230,7 +8229,7 @@ def showQtGUI():
 			psz = sz + height - topThick - legThick
 			pl = FreeCAD.Vector(psx, psy, psz)
 			o8.Placement = FreeCAD.Placement(pl, self.gR)
-			o8.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o8, 0, self.gColor, "color")
 			
 			# Table Top
 			o9 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableTop")
@@ -8240,11 +8239,11 @@ def showQtGUI():
 			o9.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz + height - topThick)
 			o9.Placement = FreeCAD.Placement(pl, self.gR)
-			o9.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o9, 0, self.gColor, "color")
 			
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerTable')
-			container.setLink([o1, o2, o3, o4, o5, o6, o7, o8, o9])
-			container.Label = "Container, Table"
+			objects = [o1, o2, o3, o4, o5, o6, o7, o8, o9]
+			label = "Container, Table"
+			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -8271,7 +8270,7 @@ def showQtGUI():
 			o1.Width = legThick
 			pl = FreeCAD.Vector(sx + offset, sy + offset, sz)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Leg Left Front
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLF2")
@@ -8281,7 +8280,7 @@ def showQtGUI():
 			o2.Width = topThick
 			pl = FreeCAD.Vector(sx + offset, sy + offset, sz)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Leg Left Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLB1")
@@ -8292,7 +8291,7 @@ def showQtGUI():
 			psy = sy + depth - offset - legThick
 			pl = FreeCAD.Vector(sx + offset, psy, sz)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Leg Left Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLB2")
@@ -8303,7 +8302,7 @@ def showQtGUI():
 			psy = sy + depth - offset - topThick
 			pl = FreeCAD.Vector(sx + offset, psy, sz)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
 			# Leg Right Front
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRF1")
@@ -8314,7 +8313,7 @@ def showQtGUI():
 			psx = sx + width - offset - legThick
 			pl = FreeCAD.Vector(psx, sy + offset, sz)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o5, 0, self.gColor, "color")
 			
 			# Leg Right Front
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRF2")
@@ -8325,7 +8324,7 @@ def showQtGUI():
 			psx = sx + width - offset - topThick
 			pl = FreeCAD.Vector(psx, sy + offset, sz)
 			o6.Placement = FreeCAD.Placement(pl, self.gR)
-			o6.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o6, 0, self.gColor, "color")
 			
 			# Leg Right Back
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRB1")
@@ -8337,7 +8336,7 @@ def showQtGUI():
 			psy = sy + depth - offset - legThick
 			pl = FreeCAD.Vector(psx, psy, sz)
 			o7.Placement = FreeCAD.Placement(pl, self.gR)
-			o7.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o7, 0, self.gColor, "color")
 			
 			# Leg Right Back
 			o8 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRB2")
@@ -8349,7 +8348,7 @@ def showQtGUI():
 			psy = sy + depth - offset - topThick
 			pl = FreeCAD.Vector(psx, psy, sz)
 			o8.Placement = FreeCAD.Placement(pl, self.gR)
-			o8.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o8, 0, self.gColor, "color")
 			
 			# Supporter Front
 			o9 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSF")
@@ -8362,7 +8361,7 @@ def showQtGUI():
 			psz = sz + height - topThick - legThick
 			pl = FreeCAD.Vector(psx, psy, psz)
 			o9.Placement = FreeCAD.Placement(pl, self.gR)
-			o9.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o9, 0, self.gColor, "color")
 			
 			# Supporter Back
 			o10 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSB")
@@ -8375,7 +8374,7 @@ def showQtGUI():
 			psz = sz + height - topThick - legThick
 			pl = FreeCAD.Vector(psx, psy, psz)
 			o10.Placement = FreeCAD.Placement(pl, self.gR)
-			o10.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o10, 0, self.gColor, "color")
 			
 			# Supporter Left
 			o11 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSL")
@@ -8388,7 +8387,7 @@ def showQtGUI():
 			psz = sz + height - topThick - legThick
 			pl = FreeCAD.Vector(psx, psy, psz)
 			o11.Placement = FreeCAD.Placement(pl, self.gR)
-			o11.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o11, 0, self.gColor, "color")
 			
 			# Supporter Right
 			o12 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSR")
@@ -8401,7 +8400,7 @@ def showQtGUI():
 			psz = sz + height - topThick - legThick
 			pl = FreeCAD.Vector(psx, psy, psz)
 			o12.Placement = FreeCAD.Placement(pl, self.gR)
-			o12.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o12, 0, self.gColor, "color")
 			
 			# Table Top
 			o13 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableTop")
@@ -8411,11 +8410,11 @@ def showQtGUI():
 			o13.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz + height - topThick)
 			o13.Placement = FreeCAD.Placement(pl, self.gR)
-			o13.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o13, 0, self.gColor, "color")
 			
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerTable')
-			container.setLink([o1, o2, o3, o4, o5, o6, o7, o8, o9, o10, o11, o12, o13])
-			container.Label = "Container, Table"
+			objects = [o1, o2, o3, o4, o5, o6, o7, o8, o9, o10, o11, o12, o13]
+			label = "Container, Table"
+			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -8538,11 +8537,11 @@ def showQtGUI():
 			o9.Width = depth
 			pl = FreeCAD.Vector(sx, sy, sz + height - topThick)
 			o9.Placement = FreeCAD.Placement(pl, self.gR)
-			o9.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o9, 0, self.gColor, "color")
 			
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerTable')
-			container.setLink([o1, o2, o3, o4, o5, o6, o7, o8, o9])
-			container.Label = "Container, Table"
+			objects = [o1, o2, o3, o4, o5, o6, o7, o8, o9]
+			label = "Container, Table"
+			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -8568,7 +8567,7 @@ def showQtGUI():
 				o1.Width = thick
 				pl = FreeCAD.Vector(p0X, p0Y, p0Z)
 				o1.Placement = FreeCAD.Placement(pl, self.gR)
-				o1.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o1, 0, self.gColor, "color")
 				
 				# recompute
 				FreeCAD.ActiveDocument.recompute()
@@ -8583,7 +8582,7 @@ def showQtGUI():
 				o1.Width = width
 				pl = FreeCAD.Vector(p0X, p0Y, p0Z)
 				o1.Placement = FreeCAD.Placement(pl, self.gR)
-				o1.ViewObject.ShapeColor = self.gColor
+				MagicPanels.setColor(o1, 0, self.gColor, "color")
 				
 				# recompute
 				FreeCAD.ActiveDocument.recompute()
@@ -8612,7 +8611,7 @@ def showQtGUI():
 			o1.Width = barThick
 			pl = FreeCAD.Vector(FSX, FSY, FSZ)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DFRight")
@@ -8622,7 +8621,7 @@ def showQtGUI():
 			o2.Width = barThick
 			pl = FreeCAD.Vector(FSX + FFWidth - barWidth, FSY, FSZ)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Bottom
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DFBottom")
@@ -8632,7 +8631,7 @@ def showQtGUI():
 			o3.Width = barThick
 			pl = FreeCAD.Vector(FSX + barWidth, FSY, FSZ)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Top
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DFTop")
@@ -8642,7 +8641,7 @@ def showQtGUI():
 			o4.Width = barThick
 			pl = FreeCAD.Vector(FSX + barWidth, FSY, FSZ + FFHeight - barWidth)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
 			# Inner
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DFInner")
@@ -8655,11 +8654,11 @@ def showQtGUI():
 			plz = FSZ + barWidth - innerSink
 			pl = FreeCAD.Vector(plx, ply, plz)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
-			o5.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o5, 0, self.gColor, "color")
 			
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerDF')
-			container.setLink([o1, o2, o3, o4, o5])
-			container.Label = "Container, Decorative front"
+			objects = [o1, o2, o3, o4, o5]
+			label = "Container, Decorative front"
+			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -8686,7 +8685,7 @@ def showQtGUI():
 			o1.Width = barThick
 			pl = FreeCAD.Vector(FSX, FSY, FSZ)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FDRight")
@@ -8696,7 +8695,7 @@ def showQtGUI():
 			o2.Width = barThick
 			pl = FreeCAD.Vector(FSX + FFWidth - barWidth, FSY, FSZ)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Bottom
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FDBottom")
@@ -8706,7 +8705,7 @@ def showQtGUI():
 			o3.Width = barThick
 			pl = FreeCAD.Vector(FSX, FSY, FSZ)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Top
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FDTop")
@@ -8716,11 +8715,11 @@ def showQtGUI():
 			o4.Width = barThick
 			pl = FreeCAD.Vector(FSX, FSY, FSZ + FFHeight - barWidth)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerFD')
-			container.setLink([o1, o2, o3, o4])
-			container.Label = "Container, Front decoration"
+			objects = [o1, o2, o3, o4]
+			label = "Container, Front decoration"
+			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
@@ -8747,7 +8746,7 @@ def showQtGUI():
 			o1.Width = barWidth
 			pl = FreeCAD.Vector(FSX, FSY, FSZ)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
-			o1.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "SDRight")
@@ -8757,7 +8756,7 @@ def showQtGUI():
 			o2.Width = barWidth
 			pl = FreeCAD.Vector(FSX, FSY + FFWidth - barWidth, FSZ)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
-			o2.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Bottom
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "SDBottom")
@@ -8767,7 +8766,7 @@ def showQtGUI():
 			o3.Width = FFWidth
 			pl = FreeCAD.Vector(FSX, FSY, FSZ)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
-			o3.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Top
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "SDTop")
@@ -8777,11 +8776,11 @@ def showQtGUI():
 			o4.Width = FFWidth
 			pl = FreeCAD.Vector(FSX, FSY, FSZ + FFHeight - barWidth)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
-			o4.ViewObject.ShapeColor = self.gColor
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
-			container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','ContainerSD')
-			container.setLink([o1, o2, o3, o4])
-			container.Label = "Container, Side decoration"
+			objects = [o1, o2, o3, o4]
+			label = "Container, Side decoration"
+			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()

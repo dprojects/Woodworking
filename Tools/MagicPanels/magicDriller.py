@@ -504,8 +504,8 @@ def showQtGUI():
 				d.Radius = self.gDBDiameter / 2
 				d.Height = self.gDBSize
 				
-				colors = [ (1.0, 0.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0) ]
-				d.ViewObject.DiffuseColor = colors
+				colors = [ (1.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0) ]
+				MagicPanels.setColor(d, 0, colors, "color")
 
 			if self.gDBType == "Countersinks":
 
@@ -516,8 +516,8 @@ def showQtGUI():
 				d.Radius2 = self.gDBDiameter2 / 2
 				d.Height = self.gDBSize
 				
-				colors = [ (0.0, 1.0, 0.0, 0.0), (0.0, 1.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0) ]
-				d.ViewObject.DiffuseColor = colors
+				colors = [ (0.0, 1.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0) ]
+				MagicPanels.setColor(d, 0, colors, "color")
 			
 
 			if self.gDBType == "Counterbores":
@@ -529,8 +529,8 @@ def showQtGUI():
 				d.Radius2 = self.gDBDiameter2 / 2
 				d.Height = self.gDBSize
 				
-				colors = [ (0.0, 0.0, 1.0, 0.0), (0.0, 1.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0) ]
-				d.ViewObject.DiffuseColor = colors
+				colors = [ (0.0, 0.0, 1.0, 1.0), (0.0, 1.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0) ]
+				MagicPanels.setColor(d, 0, colors, "color")
 				
 			if self.gDBType == "Pocket holes":
 
@@ -541,8 +541,8 @@ def showQtGUI():
 				d.Radius2 = self.gDBDiameter2 / 2
 				d.Height = self.gDBSize
 				
-				colors = [ (0.0, 0.0, 1.0, 0.0), (0.0, 1.0, 0.0, 0.0), (1.0, 0.0, 0.0, 0.0) ]
-				d.ViewObject.DiffuseColor = colors
+				colors = [ (0.0, 0.0, 1.0, 1.0), (0.0, 1.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0) ]
+				MagicPanels.setColor(d, 0, colors, "color")
 
 			d.Placement.Base.x = iX
 			d.Placement.Base.y = iY

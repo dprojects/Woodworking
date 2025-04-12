@@ -270,11 +270,11 @@ dbARQ = dict() # quantity
 dbARN = dict() # names
 dbARV = dict() # values
 
+gColorReference = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0)
 
 # ###################################################################################################################
 # Support for Qt GUI
 # ###################################################################################################################
-
 
 # ###################################################################################################################
 def showQtGUI():
@@ -595,16 +595,34 @@ def showQtGUI():
 			self.pufse.move(430, vLine + vLineNextRow)
 
 			# ############################################################################
-			# edgeband code
-			# here is different you set description to variable
+			# furniture color reference to calculate edgeband
 			# ############################################################################
 
 			# set line separator
 			vLine = vLine + vLineOffset
 
+			# button
+			self.fcrB = QtGui.QPushButton(translate('getDimensions', 'set'), self)
+			self.fcrB.clicked.connect(self.getColorReference)
+			self.fcrB.setFixedWidth(50)
+			self.fcrB.setFixedHeight(20)
+			self.fcrB.setAutoDefault(False)
+			self.fcrB.move(10, vLine + vLineNextRow + 3)
+
+			# text input
+			self.fcrE = QtGui.QLineEdit(self)
+			self.fcrE.setText(translate('getDimensions','Select face to get furniture color reference.'))
+			self.fcrE.setFixedWidth(300)
+			self.fcrE.move(70, vLine + vLineNextRow + 3)
+
+			# ############################################################################
+			# edgeband code
+			# here is different you set description to variable
+			# ############################################################################
+
 			# label
 			self.ecL = QtGui.QLabel(translate("getDimensions", "Edgeband code:"), self)
-			self.ecL.move(10, vLine + 3)
+			self.ecL.move(380, vLine + 3)
 
 			# options
 			self.ecList =tuple(sEColorDsc.keys())
@@ -612,17 +630,17 @@ def showQtGUI():
 			self.ecO.addItems(self.ecList)
 			self.ecO.setCurrentIndex(self.ecList.index(str(sEColorD)))
 			self.ecO.textActivated[str].connect(self.setEColor)
-			self.ecO.move(10, vLine + vLineNextRow + 3)
+			self.ecO.move(380, vLine + vLineNextRow + 3)
 
 			# text input label
 			self.ectiL = QtGui.QLabel(translate("getDimensions", "Custom:"), self)
-			self.ectiL.move(140, vLine + 3)
+			self.ectiL.move(500, vLine + 3)
 
 			# text input
 			self.ecti = QtGui.QLineEdit(self)
 			self.ecti.setText(str(sEColor))
 			self.ecti.setFixedWidth(75)
-			self.ecti.move(140, vLine + vLineNextRow + 3)
+			self.ecti.move(500, vLine + vLineNextRow + 3)
 
 			# edge color hide by default
 			self.ecL.hide()
@@ -634,17 +652,11 @@ def showQtGUI():
 			# buttons
 			# ############################################################################
 
-			# button - cancel
-			#self.cancelButton = QtGui.QPushButton(translate("getDimensions", "Cancel"), self)
-			#self.cancelButton.clicked.connect(self.onCancel)
-			#self.cancelButton.setAutoDefault(True)
-			#self.cancelButton.resize(200, 40)
-			#self.cancelButton.move(50, toolSH-50)
-			
 			# button - ok
 			info = translate("getDimensions", "create spreadsheet toCut with dimensions, cut-list, BOM")
 			self.okButton = QtGui.QPushButton(info, self)
 			self.okButton.clicked.connect(self.onOk)
+			self.okButton.setAutoDefault(True)
 			self.okButton.resize(toolSW-100, 40)
 			self.okButton.move(50, toolSH-50)
 
@@ -805,7 +817,7 @@ def showQtGUI():
 			# set precision
 			sPDE = sPrecisionDE[sUnitsEdge]
 			self.pufse.setText(str(sPDE))
-			
+
 		# here is different you set description to variable
 		def setEColor(self, selectedText):
 			global sEColor
@@ -813,9 +825,46 @@ def showQtGUI():
 			self.ecti.setText(str(tmpColor))
 		
 		# buttons
-		#def onCancel(self):
-		#	self.result = userCancelled
-		#	self.close()
+		def getColorReference(self):
+			
+			try:
+				obj = FreeCADGui.Selection.getSelection()[0]
+				face = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				
+				i = 1
+				for f in obj.Shape.Faces:
+					if str(f.BoundBox) == str(face.BoundBox):
+						index = i
+						break
+
+					i = i + 1
+				
+				try:
+					test = obj.ViewObject.ShapeAppearance
+					colorsSchema = 1
+				except:
+					colorsSchema = 0
+				
+				color = ""
+				if colorsSchema == 1:
+					try:
+						color = obj.ViewObject.ShapeAppearance[index-1].DiffuseColor
+					except:
+						color = obj.ViewObject.ShapeAppearance[0].DiffuseColor
+				else:
+					try:
+						color = obj.ViewObject.DiffuseColor[index-1]
+					except:
+						color = obj.ViewObject.DiffuseColor[0]
+				
+				global gColorReference
+				gColorReference = color
+				self.fcrE.setText(str(color))
+			
+			except:
+				self.fcrE.setText(translate('getDimensions','Select face to get furniture color reference.'))
+			
+
 		def onOk(self):
 			self.result = userOK
 			self.close()
@@ -1276,8 +1325,13 @@ def getEdgeBand(iObj, iW, iH, iL, iCaller="getEdgeBand"):
 	try:
 
 		# get faces colors
-		vFacesColors = iObj.ViewObject.DiffuseColor
-		vObjColor = iObj.ViewObject.ShapeColor
+		vFacesColors = []
+		try:
+			vFacesColors = iObj.ViewObject.ShapeAppearance
+			colorsSchema = 1
+		except:
+			vFacesColors = iObj.ViewObject.DiffuseColor
+			colorsSchema = 0
 
 		# edgeband for given object
 		vEdgeSum = 0
@@ -1290,7 +1344,10 @@ def getEdgeBand(iObj, iW, iH, iL, iCaller="getEdgeBand"):
 		# search for edgeband
 		i = 0
 		for c in vFacesColors:
-
+			
+			if colorsSchema == 1:
+				c = c.DiffuseColor
+		
 			# there can be more faces than 6 (Array Cube)
 			vFaceN.insert(i, "")
 			vFaceD.insert(i, 0)
@@ -1298,7 +1355,7 @@ def getEdgeBand(iObj, iW, iH, iL, iCaller="getEdgeBand"):
 
 			# if the edge face color is different than object color, 
 			# it means this is edgeband added by the user
-			if str(c) != str(vObjColor):
+			if str(c) != str(gColorReference):
 				
 				vFaceEdge = iObj.Shape.Faces[i].Length
 	
@@ -1427,9 +1484,15 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 			# set edge db for total edge size
 			vEdge = getEdge(iObj, iW, iH, iL, iCaller)
 			dbE["total"] = dbE["total"] + vEdge
+			
+			colorsNum = 1
+			try:
+				colorsNum = len(iObj.ViewObject.ShapeAppearance)
+			except:
+				colorsNum = len(iObj.ViewObject.DiffuseColor)
 
 			# if color faces, not whole object color
-			if len(iObj.ViewObject.DiffuseColor) != 1:
+			if colorsNum != 1:
 				
 				# set edge db for edgeband edge size & faces
 				vEdge , dbEFN[vKey], dbEFD[vKey], dbEFV[vKey] = getEdgeBand(iObj, iW, iH, iL, iCaller)
