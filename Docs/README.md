@@ -55,8 +55,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 * [Dimensions, BOM, Cut-list](#dimensions-bom-cut-list)
 	* [getDimensions - cut-list, BOM creation tool](#getdimensions---cut-list-bom-creation-tool)
 	* [sheet2export](#sheet2export)
-	* [showSpaceModel](#showspacemodel)
-	* [showSpaceSelected](#showspaceselected)
+	* [showOccupiedSpace](#showoccupiedspace)
 	* [magicMeasure](#magicmeasure)
 * [Decoration](#decoration)
 	* [magicColors](#magiccolors)
@@ -151,6 +150,9 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 0.23 stable:**
 
+    * support for user units settings (inches, ft, mm, etc...)
+    * replace colorManager with magicColors tool with more color options
+    * support for new FreeCAD 1.0+ color schema
     * improve debugInfo tool
     * support for PySide6
     * add possibility to select edges or faces during center objects (panelMove2Center)
@@ -774,15 +776,9 @@ Tool repository: [github.com/dprojects/sheet2export](https://github.com/dproject
 **Video tutorials:** 
 * [How to create cut-list](https://www.youtube.com/watch?v=_n7SUYSGHls)
 
-## showSpaceModel
+## showOccupiedSpace
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showSpaceModel.png"> This tool allows to calculate occupied space in 3D by the model. This approach might be very useful at furniture designing process. For example you can see how much space in your room will take opened front of the furniture. Normally, all the `Pad` or `Cube` elements, should be created according to the `XYZ` plane, so there will be no difference between the real dimensions and occupied space in 3D. 
-
-<br><br><br>
-
-## showSpaceSelected
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showSpaceSelected.png"> This tool allows to calculate occupied space in 3D by selected elements. This approach might be very useful at furniture designing process. For example you can see how much space take selected parts of the furniture. Normally, all the `Pad` or `Cube` elements, should be created according to the `XYZ` plane, so there will be no difference between the real dimensions and occupied space in 3D.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showOccupiedSpace.png"> This tool allows you to calculate the overall occupied space in 3D by the selected parts or whole model, if nothing is selected. This approach might be very useful at furniture designing process. For example you can see how much space in your room will take opened front of the furniture or how much space take selected parts of the furniture. Normally, all the `Pad` or `Cube` elements, should be created according to the `XYZ` plane, so there will be no difference between the real dimensions and occupied space in 3D.
 
 <br><br><br>
 

@@ -4147,12 +4147,12 @@ FreeCADGui.addCommand("sheet2export", sheet2export())
 
 	
 # ######################################################################################################################
-class showSpaceModel():
+class showOccupiedSpace():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "showSpaceModel.png"),
-				"MenuText": QT_TRANSLATE_NOOP("showSpaceModel", "show, model, space"),
-				"ToolTip" : QT_TRANSLATE_NOOP("showSpaceModel", "This tool allows you to calculate the overall occupied space in 3D by the model."),
+		return {"Pixmap"  : os.path.join(iconPath, "showOccupiedSpace.png"),
+				"MenuText": QT_TRANSLATE_NOOP("showOccupiedSpace", "show, selected, space"),
+				"ToolTip" : QT_TRANSLATE_NOOP("showOccupiedSpace", "This tool allows you to calculate the overall occupied space in 3D by the selected parts or whole model, if nothing is selected."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4162,11 +4162,11 @@ class showSpaceModel():
 
 		modulePath = sys.path
 		
-		module = "showSpaceModel"
+		module = "showOccupiedSpace"
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		
+		path = os.path.join(path, "MagicPanels")
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4182,46 +4182,7 @@ class showSpaceModel():
 		# not needed now, maybe in the future
 		return True
 
-FreeCADGui.addCommand("showSpaceModel", showSpaceModel())
-
-	
-# ######################################################################################################################
-class showSpaceSelected():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "showSpaceSelected.png"),
-				"MenuText": QT_TRANSLATE_NOOP("showSpaceSelected", "show, selected, space"),
-				"ToolTip" : QT_TRANSLATE_NOOP("showSpaceSelected", "This tool allows you to calculate the overall occupied space in 3D by the selected parts."),
-				"Accel"   : "" }
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "showSpaceSelected"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("showSpaceSelected", showSpaceSelected())
+FreeCADGui.addCommand("showOccupiedSpace", showOccupiedSpace())
 
 	
 # ######################################################################################################################

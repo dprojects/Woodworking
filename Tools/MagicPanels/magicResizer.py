@@ -111,7 +111,7 @@ def showQtGUI():
 
 			# text input
 			self.oStepE = QtGui.QLineEdit(self)
-			self.oStepE.setText(str(self.gStep))
+			self.oStepE.setText(MagicPanels.unit2gui(self.gStep))
 			self.oStepE.setFixedWidth((toolSW/2)-15)
 			self.oStepE.move((toolSW/2)+5, row)
 
@@ -191,7 +191,7 @@ def showQtGUI():
 				if self.gResizeObj.Curve.isDerivedFrom("Part::GeomLine"):
 					self.gResizeVal = self.gResizeObj.Length
 					
-			info = str(round(self.gResizeVal, MagicPanels.gRoundPrecision)) + " | " + str(self.gObj.Label)
+			info = MagicPanels.unit2gui(self.gResizeVal) + " | " + str(self.gObj.Label)
 			self.s1S.setText(info)
 
 		# ############################################################################
@@ -335,9 +335,9 @@ def showQtGUI():
 				else:
 					self.gStep = road2
 				
-				self.oStepE.setText(str(round(self.gStep, MagicPanels.gRoundPrecision)))
+				self.oStepE.setText(MagicPanels.unit2gui(self.gStep))
 
-				info = str(round(self.gStep, MagicPanels.gRoundPrecision)) + " | " + self.gNearSubObj.Label
+				info = MagicPanels.unit2gui(self.gStep) + " | " + self.gNearSubObj.Label
 				self.s2S.setText(info)
 				
 				# check if movement is needed
@@ -366,7 +366,7 @@ def showQtGUI():
 				sizes = MagicPanels.getSizesFromVertices(self.gObj)
 				sizes.sort()
 				self.gStep = sizes[0]
-				self.oStepE.setText(str(round(self.gStep, MagicPanels.gRoundPrecision)))
+				self.oStepE.setText(MagicPanels.unit2gui(self.gStep))
 
 				self.setEdgeSize()
 				self.getNearSub()
@@ -384,7 +384,7 @@ def showQtGUI():
 		def setM(self):
 			
 			try:
-				self.gStep = float(self.oStepE.text())
+				self.gStep = MagicPanels.unit2value(self.oStepE.text())
 				self.setSize("-")
 			except:
 				self.resetScreen()
@@ -392,7 +392,7 @@ def showQtGUI():
 		def setP(self):
 			
 			try:
-				self.gStep = float(self.oStepE.text())
+				self.gStep = MagicPanels.unit2value(self.oStepE.text())
 				self.setSize("+")
 			except:
 				self.resetScreen()
@@ -400,7 +400,7 @@ def showQtGUI():
 		def resizeToFace(self):
 			
 			try:
-				self.gStep = float(self.oStepE.text())
+				self.gStep = MagicPanels.unit2value(self.oStepE.text())
 				self.setSize("+")
 			except:
 				self.resetScreen()

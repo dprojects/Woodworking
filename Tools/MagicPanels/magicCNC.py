@@ -47,7 +47,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 220
-			toolSH = 350
+			toolSH = 380
 			
 			# active screen size (FreeCAD main window)
 			gSW = FreeCADGui.getMainWindow().width()
@@ -91,6 +91,7 @@ def showQtGUI():
 			self.s1B1 = QtGui.QPushButton(translate('magicCNC', 'refresh selection'), self)
 			self.s1B1.clicked.connect(self.getSelected)
 			self.s1B1.setFixedWidth(toolSW-20)
+			self.s1B1.setFixedHeight(40)
 			self.s1B1.move(10, row)
 
 			# ############################################################################
@@ -179,13 +180,13 @@ def showQtGUI():
 			# options - additional
 			# ############################################################################
 
-			row += 30
+			row += 50
 			self.gAxisRow1 = row
 			
 			row += 30
 			self.gAxisRow2 = row
 
-			row += 30
+			row += 40
 			
 			# label
 			self.o4L = QtGui.QLabel(translate('magicCNC', 'Move step:'), self)
@@ -193,15 +194,15 @@ def showQtGUI():
 
 			# text input
 			self.o4E = QtGui.QLineEdit(self)
-			self.o4E.setText(str(self.gStep))
-			self.o4E.setFixedWidth(50)
+			self.o4E.setText(MagicPanels.unit2gui(self.gStep))
+			self.o4E.setFixedWidth(105)
 			self.o4E.move(105, row)
 
 			# ############################################################################
 			# options - manually move
 			# ############################################################################
 			
-			row += 30
+			row += 50
 			
 			# label
 			self.o5L = QtGui.QLabel(translate('magicCNC', 'Transform:'), self)
@@ -422,7 +423,7 @@ def showQtGUI():
 				self.s1S2.setText(str(self.gDrillBit.Label))
 				self.s1S.setText("")
 				
-				self.o4E.setText(str(self.gStep))
+				self.o4E.setText(MagicPanels.unit2gui(self.gStep))
 				
 				FreeCADGui.Selection.clearSelection()
 				
@@ -478,7 +479,7 @@ def showQtGUI():
 		def setX1(self):
 			
 			try:
-				self.gStep = float(self.o4E.text())
+				self.gStep = MagicPanels.unit2value(self.o4E.text())
 				self.setMove("Xm")
 			except:
 				self.resetInfoScreen()
@@ -486,7 +487,7 @@ def showQtGUI():
 		def setX2(self):
 			
 			try:
-				self.gStep = float(self.o4E.text())
+				self.gStep = MagicPanels.unit2value(self.o4E.text())
 				self.setMove("Xp")
 			except:
 				self.resetInfoScreen()
@@ -494,7 +495,7 @@ def showQtGUI():
 		def setY1(self):
 			
 			try:
-				self.gStep = float(self.o4E.text())
+				self.gStep = MagicPanels.unit2value(self.o4E.text())
 				self.setMove("Ym")
 			except:
 				self.resetInfoScreen()
@@ -502,7 +503,7 @@ def showQtGUI():
 		def setY2(self):
 			
 			try:
-				self.gStep = float(self.o4E.text())
+				self.gStep = MagicPanels.unit2value(self.o4E.text())
 				self.setMove("Yp")
 			except:
 				self.resetInfoScreen()
@@ -510,7 +511,7 @@ def showQtGUI():
 		def setZ1(self):
 			
 			try:
-				self.gStep = float(self.o4E.text())
+				self.gStep = MagicPanels.unit2value(self.o4E.text())
 				self.setMove("Zm")
 			except:
 				self.resetInfoScreen()
@@ -518,7 +519,7 @@ def showQtGUI():
 		def setZ2(self):
 			
 			try:
-				self.gStep = float(self.o4E.text())
+				self.gStep = MagicPanels.unit2value(self.o4E.text())
 				self.setMove("Zp")
 			except:
 				self.resetInfoScreen()

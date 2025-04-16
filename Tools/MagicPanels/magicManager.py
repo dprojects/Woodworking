@@ -80,7 +80,7 @@ class SelectionObserver:
 				sizes = MagicPanels.getSizesFromVertices(o)
 				sizes.sort()
 				gStep = sizes[0]
-				gGUI.shapeLE1.setText(str(round(gStep, MagicPanels.gRoundPrecision)))
+				gGUI.shapeLE1.setText(MagicPanels.unit2gui(gStep))
 			
 			ves = MagicPanels.touchTypo(o.Shape)
 			ves = MagicPanels.getVerticesPosition(ves, o, "vertex")
@@ -376,8 +376,8 @@ def showQtGUI():
 			# text input
 			self.shapeLE1 = QtGui.QLineEdit(self)
 			self.shapeLE1.setText(str(gStep))
-			self.shapeLE1.setFixedWidth(w1)
-			self.shapeLE1.move(10+w1+5+w1+5+w1, row)
+			self.shapeLE1.setFixedWidth(w1+30)
+			self.shapeLE1.move(toolSW-10-w1-30, row)
 
 			row += 30
 			
@@ -924,7 +924,7 @@ def showQtGUI():
 			pad = body.newObject('PartDesign::Pad', "magicpanel")
 			pad.Label = "magicPanel "
 			pad.Profile = draftSketch
-			t = round(float(gGUI.shapeLE1.text()), MagicPanels.gRoundPrecision)
+			t = MagicPanels.unit2value(gGUI.shapeLE1.text())
 			pad.Length = FreeCAD.Units.Quantity(str(t))
 			draftSketch.Visibility = False
 			doc.recompute()

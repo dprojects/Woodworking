@@ -887,7 +887,7 @@ def showQtGUI():
 
 			# text input
 			self.o4E = QtGui.QLineEdit(self)
-			self.o4E.setText(str(self.gThick))
+			self.o4E.setText(MagicPanels.unit2gui(self.gThick))
 			self.o4E.setFixedWidth(90)
 			self.o4E.move(120, row)
 			
@@ -899,19 +899,19 @@ def showQtGUI():
 			
 			# text input
 			self.ooo1E = QtGui.QLineEdit(self)
-			self.ooo1E.setText("0")
+			self.ooo1E.setText(MagicPanels.unit2gui(0))
 			self.ooo1E.setFixedWidth(90)
 			self.ooo1E.move(120, row)
 			
 			# text input
 			self.ooo2E = QtGui.QLineEdit(self)
-			self.ooo2E.setText("0")
+			self.ooo2E.setText(MagicPanels.unit2gui(0))
 			self.ooo2E.setFixedWidth(90)
 			self.ooo2E.move(220, row)
 			
 			# text input
 			self.ooo3E = QtGui.QLineEdit(self)
-			self.ooo3E.setText("0")
+			self.ooo3E.setText(MagicPanels.unit2gui(0))
 			self.ooo3E.setFixedWidth(90)
 			self.ooo3E.move(320, row)
 			
@@ -932,19 +932,19 @@ def showQtGUI():
 			
 			# text input
 			self.oo11E = QtGui.QLineEdit(self)
-			self.oo11E.setText("0")
+			self.oo11E.setText(MagicPanels.unit2gui(0))
 			self.oo11E.setFixedWidth(90)
 			self.oo11E.move(120, row)
 			
 			# text input
 			self.oo12E = QtGui.QLineEdit(self)
-			self.oo12E.setText("0")
+			self.oo12E.setText(MagicPanels.unit2gui(0))
 			self.oo12E.setFixedWidth(90)
 			self.oo12E.move(220, row)
 			
 			# text input
 			self.oo13E = QtGui.QLineEdit(self)
-			self.oo13E.setText("0")
+			self.oo13E.setText(MagicPanels.unit2gui(0))
 			self.oo13E.setFixedWidth(90)
 			self.oo13E.move(320, row)
 			
@@ -956,7 +956,7 @@ def showQtGUI():
 			
 			# text input
 			self.o1E = QtGui.QLineEdit(self)
-			self.o1E.setText(str(self.gFSX))
+			self.o1E.setText(MagicPanels.unit2gui(self.gFSX))
 			self.o1E.setFixedWidth(90)
 			self.o1E.move(120, row)
 
@@ -968,7 +968,7 @@ def showQtGUI():
 
 			# text input
 			self.o2E = QtGui.QLineEdit(self)
-			self.o2E.setText(str(self.gFSZ))
+			self.o2E.setText(MagicPanels.unit2gui(self.gFSZ))
 			self.o2E.setFixedWidth(90)
 			self.o2E.move(120, row)
 
@@ -980,7 +980,7 @@ def showQtGUI():
 
 			# text input
 			self.o3E = QtGui.QLineEdit(self)
-			self.o3E.setText(str(self.gFSY))
+			self.o3E.setText(MagicPanels.unit2gui(self.gFSY))
 			self.o3E.setFixedWidth(90)
 			self.o3E.move(120, row)
 
@@ -1003,7 +1003,7 @@ def showQtGUI():
 			
 			# text input
 			self.of1E = QtGui.QLineEdit(self)
-			self.of1E.setText(str(self.gFSX))
+			self.of1E.setText(MagicPanels.unit2gui(self.gFSX))
 			self.of1E.setFixedWidth(90)
 			self.of1E.move(150, rowfoot)
 
@@ -1015,7 +1015,7 @@ def showQtGUI():
 
 			# text input
 			self.of2E = QtGui.QLineEdit(self)
-			self.of2E.setText(str(self.gFSY))
+			self.of2E.setText(MagicPanels.unit2gui(self.gFSY))
 			self.of2E.setFixedWidth(90)
 			self.of2E.move(150, rowfoot)
 
@@ -1027,7 +1027,7 @@ def showQtGUI():
 
 			# text input
 			self.of3E = QtGui.QLineEdit(self)
-			self.of3E.setText("100")
+			self.of3E.setText(MagicPanels.unit2gui(100))
 			self.of3E.setFixedWidth(90)
 			self.of3E.move(150, rowfoot)
 
@@ -1039,7 +1039,7 @@ def showQtGUI():
 
 			# text input
 			self.of4E = QtGui.QLineEdit(self)
-			self.of4E.setText(str(self.gThick))
+			self.of4E.setText(MagicPanels.unit2gui(self.gThick))
 			self.of4E.setFixedWidth(90)
 			self.of4E.move(150, rowfoot)
 
@@ -1051,7 +1051,7 @@ def showQtGUI():
 
 			# text input
 			self.of5E = QtGui.QLineEdit(self)
-			self.of5E.setText(str(self.gThick))
+			self.of5E.setText(MagicPanels.unit2gui(self.gThick))
 			self.of5E.setFixedWidth(90)
 			self.of5E.move(150, rowfoot)
 			
@@ -1097,7 +1097,7 @@ def showQtGUI():
 			
 			# text input
 			self.otb1E = QtGui.QLineEdit(self)
-			self.otb1E.setText("990")
+			self.otb1E.setText(MagicPanels.unit2gui(990))
 			self.otb1E.setFixedWidth(90)
 			self.otb1E.move(150, rowtbl)
 
@@ -1109,7 +1109,7 @@ def showQtGUI():
 
 			# text input
 			self.otb2E = QtGui.QLineEdit(self)
-			self.otb2E.setText("525")
+			self.otb2E.setText(MagicPanels.unit2gui(525))
 			self.otb2E.setFixedWidth(90)
 			self.otb2E.move(150, rowtbl)
 
@@ -1121,7 +1121,7 @@ def showQtGUI():
 
 			# text input
 			self.otb3E = QtGui.QLineEdit(self)
-			self.otb3E.setText("430")
+			self.otb3E.setText(MagicPanels.unit2gui(430))
 			self.otb3E.setFixedWidth(90)
 			self.otb3E.move(150, rowtbl)
 
@@ -1133,7 +1133,7 @@ def showQtGUI():
 
 			# text input
 			self.otb4E = QtGui.QLineEdit(self)
-			self.otb4E.setText("18")
+			self.otb4E.setText(MagicPanels.unit2gui(18))
 			self.otb4E.setFixedWidth(90)
 			self.otb4E.move(220, rowtbl)
 
@@ -1145,7 +1145,7 @@ def showQtGUI():
 
 			# text input
 			self.otb5E = QtGui.QLineEdit(self)
-			self.otb5E.setText("80")
+			self.otb5E.setText(MagicPanels.unit2gui(80))
 			self.otb5E.setFixedWidth(90)
 			self.otb5E.move(220, rowtbl)
 			
@@ -1157,7 +1157,7 @@ def showQtGUI():
 
 			# text input
 			self.otb6E = QtGui.QLineEdit(self)
-			self.otb6E.setText("35")
+			self.otb6E.setText(MagicPanels.unit2gui(35))
 			self.otb6E.setFixedWidth(90)
 			self.otb6E.move(220, rowtbl)
 		
@@ -1178,19 +1178,19 @@ def showQtGUI():
 			
 			# text input
 			self.otb81E = QtGui.QLineEdit(self)
-			self.otb81E.setText("0")
+			self.otb81E.setText(MagicPanels.unit2gui(0))
 			self.otb81E.setFixedWidth(90)
 			self.otb81E.move(120, rowtbl)
 			
 			# text input
 			self.otb82E = QtGui.QLineEdit(self)
-			self.otb82E.setText("0")
+			self.otb82E.setText(MagicPanels.unit2gui(0))
 			self.otb82E.setFixedWidth(90)
 			self.otb82E.move(220, rowtbl)
 			
 			# text input
 			self.otb83E = QtGui.QLineEdit(self)
-			self.otb83E.setText("0")
+			self.otb83E.setText(MagicPanels.unit2gui(0))
 			self.otb83E.setFixedWidth(90)
 			self.otb83E.move(320, rowtbl)
 			
@@ -1253,19 +1253,19 @@ def showQtGUI():
 			
 			# text input
 			self.og2E = QtGui.QLineEdit(self)
-			self.og2E.setText("0")
+			self.og2E.setText(MagicPanels.unit2gui(0))
 			self.og2E.setFixedWidth(80)
 			self.og2E.move(120, rowgap)
 			
 			# text input
 			self.og3E = QtGui.QLineEdit(self)
-			self.og3E.setText("0")
+			self.og3E.setText(MagicPanels.unit2gui(0))
 			self.og3E.setFixedWidth(80)
 			self.og3E.move(210, rowgap)
 			
 			# text input
 			self.og4E = QtGui.QLineEdit(self)
-			self.og4E.setText("0")
+			self.og4E.setText(MagicPanels.unit2gui(0))
 			self.og4E.setFixedWidth(80)
 			self.og4E.move(300, rowgap)
 			
@@ -1277,7 +1277,7 @@ def showQtGUI():
 			
 			# text input
 			self.og5E = QtGui.QLineEdit(self)
-			self.og5E.setText("400")
+			self.og5E.setText(MagicPanels.unit2gui(400))
 			self.og5E.setFixedWidth(90)
 			self.og5E.move(120, rowgap)
 			
@@ -1289,7 +1289,7 @@ def showQtGUI():
 
 			# text input
 			self.og6E = QtGui.QLineEdit(self)
-			self.og6E.setText("150")
+			self.og6E.setText(MagicPanels.unit2gui(150))
 			self.og6E.setFixedWidth(90)
 			self.og6E.move(120, rowgap)
 			
@@ -1301,7 +1301,7 @@ def showQtGUI():
 
 			# text input
 			self.og7E = QtGui.QLineEdit(self)
-			self.og7E.setText("350")
+			self.og7E.setText(MagicPanels.unit2gui(350))
 			self.og7E.setFixedWidth(90)
 			self.og7E.move(120, rowgap)
 			
@@ -1313,7 +1313,7 @@ def showQtGUI():
 
 			# text input
 			self.og8E = QtGui.QLineEdit(self)
-			self.og8E.setText(str(self.gThick))
+			self.og8E.setText(MagicPanels.unit2gui(self.gThick))
 			self.og8E.setFixedWidth(90)
 			self.og8E.move(120, rowgap)
 			
@@ -1345,26 +1345,26 @@ def showQtGUI():
 			
 			# text input
 			self.og91E = QtGui.QLineEdit(self)
-			self.og91E.setText("26")
-			self.og91E.setFixedWidth(50)
+			self.og91E.setText(MagicPanels.unit2gui(26))
+			self.og91E.setFixedWidth(80)
 			self.og91E.move(10, rowgap)
 			
 			# text input
 			self.og92E = QtGui.QLineEdit(self)
-			self.og92E.setText("20")
-			self.og92E.setFixedWidth(50)
+			self.og92E.setText(MagicPanels.unit2gui(20))
+			self.og92E.setFixedWidth(80)
 			self.og92E.move(110, rowgap)
 			
 			# text input
 			self.og93E = QtGui.QLineEdit(self)
-			self.og93E.setText("30")
-			self.og93E.setFixedWidth(50)
+			self.og93E.setText(MagicPanels.unit2gui(30))
+			self.og93E.setFixedWidth(80)
 			self.og93E.move(210, rowgap)
 			
 			# text input
 			self.og94E = QtGui.QLineEdit(self)
-			self.og94E.setText("10")
-			self.og94E.setFixedWidth(50)
+			self.og94E.setText(MagicPanels.unit2gui(10))
+			self.og94E.setFixedWidth(80)
 			self.og94E.move(310, rowgap)
 
 			rowgap += 40
@@ -1423,7 +1423,7 @@ def showQtGUI():
 			# text input
 			self.ods2E = QtGui.QLineEdit(self)
 			self.ods2E.setText("4")
-			self.ods2E.setFixedWidth(60)
+			self.ods2E.setFixedWidth(80)
 			self.ods2E.move(180, rowds)
 			
 			rowds += 30
@@ -1434,8 +1434,8 @@ def showQtGUI():
 
 			# text input
 			self.ods3E = QtGui.QLineEdit(self)
-			self.ods3E.setText(str(self.gThick))
-			self.ods3E.setFixedWidth(60)
+			self.ods3E.setText(MagicPanels.unit2gui(self.gThick))
+			self.ods3E.setFixedWidth(80)
 			self.ods3E.move(180, rowds)
 			
 			rowds += 30
@@ -1446,8 +1446,8 @@ def showQtGUI():
 
 			# text input
 			self.ods40E = QtGui.QLineEdit(self)
-			self.ods40E.setText("2")
-			self.ods40E.setFixedWidth(60)
+			self.ods40E.setText(MagicPanels.unit2gui(2))
+			self.ods40E.setFixedWidth(80)
 			self.ods40E.move(180, rowds)
 			
 			rowds += 30
@@ -1478,26 +1478,26 @@ def showQtGUI():
 			
 			# text input
 			self.ods41E = QtGui.QLineEdit(self)
-			self.ods41E.setText("26")
-			self.ods41E.setFixedWidth(50)
+			self.ods41E.setText(MagicPanels.unit2gui(26))
+			self.ods41E.setFixedWidth(80)
 			self.ods41E.move(10, rowds)
 			
 			# text input
 			self.ods42E = QtGui.QLineEdit(self)
-			self.ods42E.setText("20")
-			self.ods42E.setFixedWidth(50)
+			self.ods42E.setText(MagicPanels.unit2gui(20))
+			self.ods42E.setFixedWidth(80)
 			self.ods42E.move(110, rowds)
 			
 			# text input
 			self.ods43E = QtGui.QLineEdit(self)
-			self.ods43E.setText("30")
-			self.ods43E.setFixedWidth(50)
+			self.ods43E.setText(MagicPanels.unit2gui(30))
+			self.ods43E.setFixedWidth(80)
 			self.ods43E.move(210, rowds)
 			
 			# text input
 			self.ods44E = QtGui.QLineEdit(self)
-			self.ods44E.setText("10")
-			self.ods44E.setFixedWidth(50)
+			self.ods44E.setText(MagicPanels.unit2gui(10))
+			self.ods44E.setFixedWidth(80)
 			self.ods44E.move(310, rowds)
 
 			rowds += 30
@@ -1517,19 +1517,19 @@ def showQtGUI():
 			
 			# text input
 			self.ods61E = QtGui.QLineEdit(self)
-			self.ods61E.setText("0")
+			self.ods61E.setText(MagicPanels.unit2gui(0))
 			self.ods61E.setFixedWidth(90)
 			self.ods61E.move(150, rowds)
 			
 			# text input
 			self.ods62E = QtGui.QLineEdit(self)
-			self.ods62E.setText("0")
+			self.ods62E.setText(MagicPanels.unit2gui(0))
 			self.ods62E.setFixedWidth(90)
 			self.ods62E.move(250, rowds)
 			
 			# text input
 			self.ods63E = QtGui.QLineEdit(self)
-			self.ods63E.setText("0")
+			self.ods63E.setText(MagicPanels.unit2gui(0))
 			self.ods63E.setFixedWidth(90)
 			self.ods63E.move(350, rowds)
 			
@@ -1541,7 +1541,7 @@ def showQtGUI():
 			
 			# text input
 			self.ods7E = QtGui.QLineEdit(self)
-			self.ods7E.setText("400")
+			self.ods7E.setText(MagicPanels.unit2gui(400))
 			self.ods7E.setFixedWidth(90)
 			self.ods7E.move(150, rowds)
 			
@@ -1553,7 +1553,7 @@ def showQtGUI():
 
 			# text input
 			self.ods8E = QtGui.QLineEdit(self)
-			self.ods8E.setText("150")
+			self.ods8E.setText(MagicPanels.unit2gui(150))
 			self.ods8E.setFixedWidth(90)
 			self.ods8E.move(150, rowds)
 			
@@ -1565,7 +1565,7 @@ def showQtGUI():
 
 			# text input
 			self.ods9E = QtGui.QLineEdit(self)
-			self.ods9E.setText("350")
+			self.ods9E.setText(MagicPanels.unit2gui(350))
 			self.ods9E.setFixedWidth(90)
 			self.ods9E.move(150, rowds)
 			
@@ -1628,7 +1628,7 @@ def showQtGUI():
 
 			# text input
 			self.ofr7E = QtGui.QLineEdit(self)
-			self.ofr7E.setText("18")
+			self.ofr7E.setText(MagicPanels.unit2gui(18))
 			self.ofr7E.setFixedWidth(90)
 			self.ofr7E.move(120, rowfront)
 		
@@ -1660,26 +1660,26 @@ def showQtGUI():
 			
 			# text input
 			self.ofr81E = QtGui.QLineEdit(self)
-			self.ofr81E.setText("0")
-			self.ofr81E.setFixedWidth(50)
+			self.ofr81E.setText(MagicPanels.unit2gui(0))
+			self.ofr81E.setFixedWidth(80)
 			self.ofr81E.move(10, rowfront)
 			
 			# text input
 			self.ofr82E = QtGui.QLineEdit(self)
-			self.ofr82E.setText("0")
-			self.ofr82E.setFixedWidth(50)
+			self.ofr82E.setText(MagicPanels.unit2gui(0))
+			self.ofr82E.setFixedWidth(80)
 			self.ofr82E.move(110, rowfront)
 			
 			# text input
 			self.ofr83E = QtGui.QLineEdit(self)
-			self.ofr83E.setText("0")
-			self.ofr83E.setFixedWidth(50)
+			self.ofr83E.setText(MagicPanels.unit2gui(0))
+			self.ofr83E.setFixedWidth(80)
 			self.ofr83E.move(210, rowfront)
 			
 			# text input
 			self.ofr84E = QtGui.QLineEdit(self)
-			self.ofr84E.setText("0")
-			self.ofr84E.setFixedWidth(50)
+			self.ofr84E.setText(MagicPanels.unit2gui(0))
+			self.ofr84E.setFixedWidth(80)
 			self.ofr84E.move(310, rowfront)
 
 			rowfront += 40
@@ -1699,19 +1699,19 @@ def showQtGUI():
 			
 			# text input
 			self.ofr2E = QtGui.QLineEdit(self)
-			self.ofr2E.setText("0")
+			self.ofr2E.setText(MagicPanels.unit2gui(0))
 			self.ofr2E.setFixedWidth(90)
 			self.ofr2E.move(120, rowfront)
 			
 			# text input
 			self.ofr3E = QtGui.QLineEdit(self)
-			self.ofr3E.setText("0")
+			self.ofr3E.setText(MagicPanels.unit2gui(0))
 			self.ofr3E.setFixedWidth(90)
 			self.ofr3E.move(220, rowfront)
 			
 			# text input
 			self.ofr4E = QtGui.QLineEdit(self)
-			self.ofr4E.setText("0")
+			self.ofr4E.setText(MagicPanels.unit2gui(0))
 			self.ofr4E.setFixedWidth(90)
 			self.ofr4E.move(320, rowfront)
 			
@@ -1723,7 +1723,7 @@ def showQtGUI():
 			
 			# text input
 			self.ofr5E = QtGui.QLineEdit(self)
-			self.ofr5E.setText("0")
+			self.ofr5E.setText(MagicPanels.unit2gui(0))
 			self.ofr5E.setFixedWidth(90)
 			self.ofr5E.move(120, rowfront)
 			
@@ -1735,7 +1735,7 @@ def showQtGUI():
 
 			# text input
 			self.ofr6E = QtGui.QLineEdit(self)
-			self.ofr6E.setText("0")
+			self.ofr6E.setText(MagicPanels.unit2gui(0))
 			self.ofr6E.setFixedWidth(90)
 			self.ofr6E.move(120, rowfront)
 			
@@ -1792,7 +1792,7 @@ def showQtGUI():
 			
 			# text input
 			self.ofglass2E = QtGui.QLineEdit(self)
-			self.ofglass2E.setText("18")
+			self.ofglass2E.setText(MagicPanels.unit2gui(18))
 			self.ofglass2E.setFixedWidth(90)
 			self.ofglass2E.move(150, rowfglass)
 			
@@ -1805,7 +1805,7 @@ def showQtGUI():
 
 			# text input
 			self.ofglass3E = QtGui.QLineEdit(self)
-			self.ofglass3E.setText("0")
+			self.ofglass3E.setText(MagicPanels.unit2gui(0))
 			self.ofglass3E.setFixedWidth(90)
 			self.ofglass3E.move(150, rowfglass)
 		
@@ -1818,7 +1818,7 @@ def showQtGUI():
 
 			# text input
 			self.ofglass4E = QtGui.QLineEdit(self)
-			self.ofglass4E.setText("0")
+			self.ofglass4E.setText(MagicPanels.unit2gui(0))
 			self.ofglass4E.setFixedWidth(90)
 			self.ofglass4E.move(150, rowfglass)
 			
@@ -1830,7 +1830,7 @@ def showQtGUI():
 
 			# text input
 			self.ofglass5E = QtGui.QLineEdit(self)
-			self.ofglass5E.setText("4")
+			self.ofglass5E.setText(MagicPanels.unit2gui(4))
 			self.ofglass5E.setFixedWidth(90)
 			self.ofglass5E.move(150, rowfglass)
 			
@@ -1851,19 +1851,19 @@ def showQtGUI():
 			
 			# text input
 			self.ofglass71E = QtGui.QLineEdit(self)
-			self.ofglass71E.setText("0")
+			self.ofglass71E.setText(MagicPanels.unit2gui(0))
 			self.ofglass71E.setFixedWidth(90)
 			self.ofglass71E.move(120, rowfglass)
 			
 			# text input
 			self.ofglass72E = QtGui.QLineEdit(self)
-			self.ofglass72E.setText("0")
+			self.ofglass72E.setText(MagicPanels.unit2gui(0))
 			self.ofglass72E.setFixedWidth(90)
 			self.ofglass72E.move(220, rowfglass)
 			
 			# text input
 			self.ofglass73E = QtGui.QLineEdit(self)
-			self.ofglass73E.setText("0")
+			self.ofglass73E.setText(MagicPanels.unit2gui(0))
 			self.ofglass73E.setFixedWidth(90)
 			self.ofglass73E.move(320, rowfglass)
 			
@@ -1875,7 +1875,7 @@ def showQtGUI():
 			
 			# text input
 			self.ofglass8E = QtGui.QLineEdit(self)
-			self.ofglass8E.setText("0")
+			self.ofglass8E.setText(MagicPanels.unit2gui(0))
 			self.ofglass8E.setFixedWidth(90)
 			self.ofglass8E.move(220, rowfglass)
 			
@@ -1887,7 +1887,7 @@ def showQtGUI():
 			
 			# text input
 			self.ofglass9E = QtGui.QLineEdit(self)
-			self.ofglass9E.setText("0")
+			self.ofglass9E.setText(MagicPanels.unit2gui(0))
 			self.ofglass9E.setFixedWidth(90)
 			self.ofglass9E.move(220, rowfglass)
 			
@@ -1899,7 +1899,7 @@ def showQtGUI():
 
 			# text input
 			self.ofglass10E = QtGui.QLineEdit(self)
-			self.ofglass10E.setText("0")
+			self.ofglass10E.setText(MagicPanels.unit2gui(0))
 			self.ofglass10E.setFixedWidth(90)
 			self.ofglass10E.move(220, rowfglass)
 		
@@ -1956,7 +1956,7 @@ def showQtGUI():
 			
 			# text input
 			self.odf2E = QtGui.QLineEdit(self)
-			self.odf2E.setText("18")
+			self.odf2E.setText(MagicPanels.unit2gui(18))
 			self.odf2E.setFixedWidth(90)
 			self.odf2E.move(170, rowodf)
 			
@@ -1969,7 +1969,7 @@ def showQtGUI():
 
 			# text input
 			self.odf3E = QtGui.QLineEdit(self)
-			self.odf3E.setText("0")
+			self.odf3E.setText(MagicPanels.unit2gui(0))
 			self.odf3E.setFixedWidth(90)
 			self.odf3E.move(170, rowodf)
 		
@@ -1982,7 +1982,7 @@ def showQtGUI():
 
 			# text input
 			self.odf4E = QtGui.QLineEdit(self)
-			self.odf4E.setText("0")
+			self.odf4E.setText(MagicPanels.unit2gui(0))
 			self.odf4E.setFixedWidth(90)
 			self.odf4E.move(170, rowodf)
 			
@@ -1995,7 +1995,7 @@ def showQtGUI():
 
 			# text input
 			self.odf5E = QtGui.QLineEdit(self)
-			self.odf5E.setText("6")
+			self.odf5E.setText(MagicPanels.unit2gui(6))
 			self.odf5E.setFixedWidth(90)
 			self.odf5E.move(170, rowodf)
 			
@@ -2016,19 +2016,19 @@ def showQtGUI():
 			
 			# text input
 			self.odf71E = QtGui.QLineEdit(self)
-			self.odf71E.setText("0")
+			self.odf71E.setText(MagicPanels.unit2gui(0))
 			self.odf71E.setFixedWidth(90)
 			self.odf71E.move(120, rowodf)
 			
 			# text input
 			self.odf72E = QtGui.QLineEdit(self)
-			self.odf72E.setText("0")
+			self.odf72E.setText(MagicPanels.unit2gui(0))
 			self.odf72E.setFixedWidth(90)
 			self.odf72E.move(220, rowodf)
 			
 			# text input
 			self.odf73E = QtGui.QLineEdit(self)
-			self.odf73E.setText("0")
+			self.odf73E.setText(MagicPanels.unit2gui(0))
 			self.odf73E.setFixedWidth(90)
 			self.odf73E.move(320, rowodf)
 			
@@ -2040,7 +2040,7 @@ def showQtGUI():
 			
 			# text input
 			self.odf8E = QtGui.QLineEdit(self)
-			self.odf8E.setText("0")
+			self.odf8E.setText(MagicPanels.unit2gui(0))
 			self.odf8E.setFixedWidth(90)
 			self.odf8E.move(220, rowodf)
 			
@@ -2052,7 +2052,7 @@ def showQtGUI():
 			
 			# text input
 			self.odf9E = QtGui.QLineEdit(self)
-			self.odf9E.setText("0")
+			self.odf9E.setText(MagicPanels.unit2gui(0))
 			self.odf9E.setFixedWidth(90)
 			self.odf9E.move(220, rowodf)
 			
@@ -2064,7 +2064,7 @@ def showQtGUI():
 
 			# text input
 			self.odf10E = QtGui.QLineEdit(self)
-			self.odf10E.setText("0")
+			self.odf10E.setText(MagicPanels.unit2gui(0))
 			self.odf10E.setFixedWidth(90)
 			self.odf10E.move(220, rowodf)
 		
@@ -2120,7 +2120,7 @@ def showQtGUI():
 			
 			# text input
 			self.ofdec2E = QtGui.QLineEdit(self)
-			self.ofdec2E.setText("25")
+			self.ofdec2E.setText(MagicPanels.unit2gui(25))
 			self.ofdec2E.setFixedWidth(90)
 			self.ofdec2E.move(150, rowfdec)
 			
@@ -2132,7 +2132,7 @@ def showQtGUI():
 
 			# text input
 			self.ofdec3E = QtGui.QLineEdit(self)
-			self.ofdec3E.setText("20")
+			self.ofdec3E.setText(MagicPanels.unit2gui(20))
 			self.ofdec3E.setFixedWidth(90)
 			self.ofdec3E.move(150, rowfdec)
 		
@@ -2144,7 +2144,7 @@ def showQtGUI():
 
 			# text input
 			self.ofdec4E = QtGui.QLineEdit(self)
-			self.ofdec4E.setText("50")
+			self.ofdec4E.setText(MagicPanels.unit2gui(50))
 			self.ofdec4E.setFixedWidth(90)
 			self.ofdec4E.move(150, rowfdec)
 			
@@ -2165,19 +2165,19 @@ def showQtGUI():
 			
 			# text input
 			self.ofdec61E = QtGui.QLineEdit(self)
-			self.ofdec61E.setText("0")
+			self.ofdec61E.setText(MagicPanels.unit2gui(0))
 			self.ofdec61E.setFixedWidth(90)
 			self.ofdec61E.move(120, rowfdec)
 			
 			# text input
 			self.ofdec62E = QtGui.QLineEdit(self)
-			self.ofdec62E.setText("0")
+			self.ofdec62E.setText(MagicPanels.unit2gui(0))
 			self.ofdec62E.setFixedWidth(90)
 			self.ofdec62E.move(220, rowfdec)
 			
 			# text input
 			self.ofdec63E = QtGui.QLineEdit(self)
-			self.ofdec63E.setText("0")
+			self.ofdec63E.setText(MagicPanels.unit2gui(0))
 			self.ofdec63E.setFixedWidth(90)
 			self.ofdec63E.move(320, rowfdec)
 			
@@ -2189,7 +2189,7 @@ def showQtGUI():
 			
 			# text input
 			self.ofdec7E = QtGui.QLineEdit(self)
-			self.ofdec7E.setText("0")
+			self.ofdec7E.setText(MagicPanels.unit2gui(0))
 			self.ofdec7E.setFixedWidth(90)
 			self.ofdec7E.move(220, rowfdec)
 			
@@ -2201,7 +2201,7 @@ def showQtGUI():
 
 			# text input
 			self.ofdec8E = QtGui.QLineEdit(self)
-			self.ofdec8E.setText("0")
+			self.ofdec8E.setText(MagicPanels.unit2gui(0))
 			self.ofdec8E.setFixedWidth(90)
 			self.ofdec8E.move(220, rowfdec)
 		
@@ -2253,7 +2253,7 @@ def showQtGUI():
 			
 			# text input
 			self.offrame2E = QtGui.QLineEdit(self)
-			self.offrame2E.setText("38")
+			self.offrame2E.setText(MagicPanels.unit2gui(38))
 			self.offrame2E.setFixedWidth(90)
 			self.offrame2E.move(150, rowfframe)
 			
@@ -2265,7 +2265,7 @@ def showQtGUI():
 
 			# text input
 			self.offrame3E = QtGui.QLineEdit(self)
-			self.offrame3E.setText("19")
+			self.offrame3E.setText(MagicPanels.unit2gui(19))
 			self.offrame3E.setFixedWidth(90)
 			self.offrame3E.move(150, rowfframe)
 		
@@ -2277,7 +2277,7 @@ def showQtGUI():
 
 			# text input
 			self.offrame4E = QtGui.QLineEdit(self)
-			self.offrame4E.setText("0")
+			self.offrame4E.setText(MagicPanels.unit2gui(0))
 			self.offrame4E.setFixedWidth(90)
 			self.offrame4E.move(150, rowfframe)
 			
@@ -2289,7 +2289,7 @@ def showQtGUI():
 
 			# text input
 			self.offrame5E = QtGui.QLineEdit(self)
-			self.offrame5E.setText("0")
+			self.offrame5E.setText(MagicPanels.unit2gui(0))
 			self.offrame5E.setFixedWidth(90)
 			self.offrame5E.move(150, rowfframe)
 			
@@ -2310,19 +2310,19 @@ def showQtGUI():
 			
 			# text input
 			self.offrame71E = QtGui.QLineEdit(self)
-			self.offrame71E.setText("0")
+			self.offrame71E.setText(MagicPanels.unit2gui(0))
 			self.offrame71E.setFixedWidth(90)
 			self.offrame71E.move(120, rowfframe)
 			
 			# text input
 			self.offrame72E = QtGui.QLineEdit(self)
-			self.offrame72E.setText("0")
+			self.offrame72E.setText(MagicPanels.unit2gui(0))
 			self.offrame72E.setFixedWidth(90)
 			self.offrame72E.move(220, rowfframe)
 			
 			# text input
 			self.offrame73E = QtGui.QLineEdit(self)
-			self.offrame73E.setText("0")
+			self.offrame73E.setText(MagicPanels.unit2gui(0))
 			self.offrame73E.setFixedWidth(90)
 			self.offrame73E.move(320, rowfframe)
 			
@@ -2334,7 +2334,7 @@ def showQtGUI():
 			
 			# text input
 			self.offrame8E = QtGui.QLineEdit(self)
-			self.offrame8E.setText("0")
+			self.offrame8E.setText(MagicPanels.unit2gui(0))
 			self.offrame8E.setFixedWidth(90)
 			self.offrame8E.move(220, rowfframe)
 			
@@ -2346,7 +2346,7 @@ def showQtGUI():
 
 			# text input
 			self.offrame9E = QtGui.QLineEdit(self)
-			self.offrame9E.setText("0")
+			self.offrame9E.setText(MagicPanels.unit2gui(0))
 			self.offrame9E.setFixedWidth(90)
 			self.offrame9E.move(220, rowfframe)
 		
@@ -2402,7 +2402,7 @@ def showQtGUI():
 
 			# text input
 			self.osh1E = QtGui.QLineEdit(self)
-			self.osh1E.setText("18")
+			self.osh1E.setText(MagicPanels.unit2gui(18))
 			self.osh1E.setFixedWidth(90)
 			self.osh1E.move(120, rowshelf)
 		
@@ -2414,7 +2414,7 @@ def showQtGUI():
 
 			# text input
 			self.osh2E = QtGui.QLineEdit(self)
-			self.osh2E.setText("0")
+			self.osh2E.setText(MagicPanels.unit2gui(0))
 			self.osh2E.setFixedWidth(90)
 			self.osh2E.move(120, rowshelf)
 			
@@ -2446,26 +2446,26 @@ def showQtGUI():
 			
 			# text input
 			self.osh31E = QtGui.QLineEdit(self)
-			self.osh31E.setText("0")
-			self.osh31E.setFixedWidth(50)
+			self.osh31E.setText(MagicPanels.unit2gui(0))
+			self.osh31E.setFixedWidth(80)
 			self.osh31E.move(10, rowshelf)
 			
 			# text input
 			self.osh32E = QtGui.QLineEdit(self)
-			self.osh32E.setText("0")
-			self.osh32E.setFixedWidth(50)
+			self.osh32E.setText(MagicPanels.unit2gui(0))
+			self.osh32E.setFixedWidth(80)
 			self.osh32E.move(110, rowshelf)
 			
 			# text input
 			self.osh33E = QtGui.QLineEdit(self)
-			self.osh33E.setText("0")
-			self.osh33E.setFixedWidth(50)
+			self.osh33E.setText(MagicPanels.unit2gui(0))
+			self.osh33E.setFixedWidth(80)
 			self.osh33E.move(210, rowshelf)
 			
 			# text input
 			self.osh34E = QtGui.QLineEdit(self)
-			self.osh34E.setText("0")
-			self.osh34E.setFixedWidth(50)
+			self.osh34E.setText(MagicPanels.unit2gui(0))
+			self.osh34E.setFixedWidth(80)
 			self.osh34E.move(310, rowshelf)
 
 			rowshelf += 40
@@ -2485,19 +2485,19 @@ def showQtGUI():
 			
 			# text input
 			self.osh51E = QtGui.QLineEdit(self)
-			self.osh51E.setText("0")
+			self.osh51E.setText(MagicPanels.unit2gui(0))
 			self.osh51E.setFixedWidth(90)
 			self.osh51E.move(120, rowshelf)
 			
 			# text input
 			self.osh52E = QtGui.QLineEdit(self)
-			self.osh52E.setText("0")
+			self.osh52E.setText(MagicPanels.unit2gui(0))
 			self.osh52E.setFixedWidth(90)
 			self.osh52E.move(220, rowshelf)
 			
 			# text input
 			self.osh53E = QtGui.QLineEdit(self)
-			self.osh53E.setText("0")
+			self.osh53E.setText(MagicPanels.unit2gui(0))
 			self.osh53E.setFixedWidth(90)
 			self.osh53E.move(320, rowshelf)
 			
@@ -2509,7 +2509,7 @@ def showQtGUI():
 			
 			# text input
 			self.osh6E = QtGui.QLineEdit(self)
-			self.osh6E.setText("0")
+			self.osh6E.setText(MagicPanels.unit2gui(0))
 			self.osh6E.setFixedWidth(90)
 			self.osh6E.move(220, rowshelf)
 			
@@ -2521,7 +2521,7 @@ def showQtGUI():
 
 			# text input
 			self.osh7E = QtGui.QLineEdit(self)
-			self.osh7E.setText("0")
+			self.osh7E.setText(MagicPanels.unit2gui(0))
 			self.osh7E.setFixedWidth(90)
 			self.osh7E.move(220, rowshelf)
 			
@@ -2580,7 +2580,7 @@ def showQtGUI():
 
 			# text input
 			self.oshs1E = QtGui.QLineEdit(self)
-			self.oshs1E.setText("18")
+			self.oshs1E.setText(MagicPanels.unit2gui(18))
 			self.oshs1E.setFixedWidth(90)
 			self.oshs1E.move(150, rowsseries)
 		
@@ -2613,19 +2613,19 @@ def showQtGUI():
 			
 			# text input
 			self.oshs41E = QtGui.QLineEdit(self)
-			self.oshs41E.setText("0")
+			self.oshs41E.setText(MagicPanels.unit2gui(0))
 			self.oshs41E.setFixedWidth(90)
 			self.oshs41E.move(120, rowsseries)
 			
 			# text input
 			self.oshs42E = QtGui.QLineEdit(self)
-			self.oshs42E.setText("0")
+			self.oshs42E.setText(MagicPanels.unit2gui(0))
 			self.oshs42E.setFixedWidth(90)
 			self.oshs42E.move(220, rowsseries)
 			
 			# text input
 			self.oshs43E = QtGui.QLineEdit(self)
-			self.oshs43E.setText("0")
+			self.oshs43E.setText(MagicPanels.unit2gui(0))
 			self.oshs43E.setFixedWidth(90)
 			self.oshs43E.move(320, rowsseries)
 			
@@ -2637,7 +2637,7 @@ def showQtGUI():
 			
 			# text input
 			self.oshs5E = QtGui.QLineEdit(self)
-			self.oshs5E.setText("0")
+			self.oshs5E.setText(MagicPanels.unit2gui(0))
 			self.oshs5E.setFixedWidth(90)
 			self.oshs5E.move(220, rowsseries)
 			
@@ -2649,7 +2649,7 @@ def showQtGUI():
 
 			# text input
 			self.oshs6E = QtGui.QLineEdit(self)
-			self.oshs6E.setText("0")
+			self.oshs6E.setText(MagicPanels.unit2gui(0))
 			self.oshs6E.setFixedWidth(90)
 			self.oshs6E.move(220, rowsseries)
 			
@@ -2661,7 +2661,7 @@ def showQtGUI():
 			
 			# text input
 			self.oshs7E = QtGui.QLineEdit(self)
-			self.oshs7E.setText("0")
+			self.oshs7E.setText(MagicPanels.unit2gui(0))
 			self.oshs7E.setFixedWidth(90)
 			self.oshs7E.move(220, rowsseries)
 			
@@ -2715,7 +2715,7 @@ def showQtGUI():
 
 			# text input
 			self.oside1E = QtGui.QLineEdit(self)
-			self.oside1E.setText("18")
+			self.oside1E.setText(MagicPanels.unit2gui(18))
 			self.oside1E.setFixedWidth(90)
 			self.oside1E.move(120, rowside)
 		
@@ -2727,7 +2727,7 @@ def showQtGUI():
 
 			# text input
 			self.oside2E = QtGui.QLineEdit(self)
-			self.oside2E.setText("0")
+			self.oside2E.setText(MagicPanels.unit2gui(0))
 			self.oside2E.setFixedWidth(90)
 			self.oside2E.move(120, rowside)
 			
@@ -2759,26 +2759,26 @@ def showQtGUI():
 			
 			# text input
 			self.oside31E = QtGui.QLineEdit(self)
-			self.oside31E.setText("0")
-			self.oside31E.setFixedWidth(50)
+			self.oside31E.setText(MagicPanels.unit2gui(0))
+			self.oside31E.setFixedWidth(80)
 			self.oside31E.move(10, rowside)
 			
 			# text input
 			self.oside32E = QtGui.QLineEdit(self)
-			self.oside32E.setText("0")
-			self.oside32E.setFixedWidth(50)
+			self.oside32E.setText(MagicPanels.unit2gui(0))
+			self.oside32E.setFixedWidth(80)
 			self.oside32E.move(110, rowside)
 			
 			# text input
 			self.oside33E = QtGui.QLineEdit(self)
-			self.oside33E.setText("0")
-			self.oside33E.setFixedWidth(50)
+			self.oside33E.setText(MagicPanels.unit2gui(0))
+			self.oside33E.setFixedWidth(80)
 			self.oside33E.move(210, rowside)
 			
 			# text input
 			self.oside34E = QtGui.QLineEdit(self)
-			self.oside34E.setText("0")
-			self.oside34E.setFixedWidth(50)
+			self.oside34E.setText(MagicPanels.unit2gui(0))
+			self.oside34E.setFixedWidth(80)
 			self.oside34E.move(310, rowside)
 
 			rowside += 40
@@ -2798,19 +2798,19 @@ def showQtGUI():
 			
 			# text input
 			self.oside51E = QtGui.QLineEdit(self)
-			self.oside51E.setText("0")
+			self.oside51E.setText(MagicPanels.unit2gui(0))
 			self.oside51E.setFixedWidth(90)
 			self.oside51E.move(120, rowside)
 			
 			# text input
 			self.oside52E = QtGui.QLineEdit(self)
-			self.oside52E.setText("0")
+			self.oside52E.setText(MagicPanels.unit2gui(0))
 			self.oside52E.setFixedWidth(90)
 			self.oside52E.move(220, rowside)
 			
 			# text input
 			self.oside53E = QtGui.QLineEdit(self)
-			self.oside53E.setText("0")
+			self.oside53E.setText(MagicPanels.unit2gui(0))
 			self.oside53E.setFixedWidth(90)
 			self.oside53E.move(320, rowside)
 			
@@ -2822,7 +2822,7 @@ def showQtGUI():
 			
 			# text input
 			self.oside6E = QtGui.QLineEdit(self)
-			self.oside6E.setText("0")
+			self.oside6E.setText(MagicPanels.unit2gui(0))
 			self.oside6E.setFixedWidth(90)
 			self.oside6E.move(220, rowside)
 			
@@ -2834,7 +2834,7 @@ def showQtGUI():
 
 			# text input
 			self.oside7E = QtGui.QLineEdit(self)
-			self.oside7E.setText("0")
+			self.oside7E.setText(MagicPanels.unit2gui(0))
 			self.oside7E.setFixedWidth(90)
 			self.oside7E.move(220, rowside)
 			
@@ -2895,7 +2895,7 @@ def showQtGUI():
 
 			# text input
 			self.ocs1E = QtGui.QLineEdit(self)
-			self.ocs1E.setText("18")
+			self.ocs1E.setText(MagicPanels.unit2gui(18))
 			self.ocs1E.setFixedWidth(90)
 			self.ocs1E.move(120, rowcside)
 		
@@ -2907,7 +2907,7 @@ def showQtGUI():
 
 			# text input
 			self.ocs2E = QtGui.QLineEdit(self)
-			self.ocs2E.setText("0")
+			self.ocs2E.setText(MagicPanels.unit2gui(0))
 			self.ocs2E.setFixedWidth(90)
 			self.ocs2E.move(120, rowcside)
 			
@@ -2939,26 +2939,26 @@ def showQtGUI():
 			
 			# text input
 			self.ocs31E = QtGui.QLineEdit(self)
-			self.ocs31E.setText("0")
-			self.ocs31E.setFixedWidth(50)
+			self.ocs31E.setText(MagicPanels.unit2gui(0))
+			self.ocs31E.setFixedWidth(80)
 			self.ocs31E.move(10, rowcside)
 			
 			# text input
 			self.ocs32E = QtGui.QLineEdit(self)
-			self.ocs32E.setText("0")
-			self.ocs32E.setFixedWidth(50)
+			self.ocs32E.setText(MagicPanels.unit2gui(0))
+			self.ocs32E.setFixedWidth(80)
 			self.ocs32E.move(110, rowcside)
 			
 			# text input
 			self.ocs33E = QtGui.QLineEdit(self)
-			self.ocs33E.setText("0")
-			self.ocs33E.setFixedWidth(50)
+			self.ocs33E.setText(MagicPanels.unit2gui(0))
+			self.ocs33E.setFixedWidth(80)
 			self.ocs33E.move(210, rowcside)
 			
 			# text input
 			self.ocs34E = QtGui.QLineEdit(self)
-			self.ocs34E.setText("0")
-			self.ocs34E.setFixedWidth(50)
+			self.ocs34E.setText(MagicPanels.unit2gui(0))
+			self.ocs34E.setFixedWidth(80)
 			self.ocs34E.move(310, rowcside)
 
 			rowcside += 40
@@ -2978,19 +2978,19 @@ def showQtGUI():
 			
 			# text input
 			self.ocs51E = QtGui.QLineEdit(self)
-			self.ocs51E.setText("0")
+			self.ocs51E.setText(MagicPanels.unit2gui(0))
 			self.ocs51E.setFixedWidth(90)
 			self.ocs51E.move(120, rowcside)
 			
 			# text input
 			self.ocs52E = QtGui.QLineEdit(self)
-			self.ocs52E.setText("0")
+			self.ocs52E.setText(MagicPanels.unit2gui(0))
 			self.ocs52E.setFixedWidth(90)
 			self.ocs52E.move(220, rowcside)
 			
 			# text input
 			self.ocs53E = QtGui.QLineEdit(self)
-			self.ocs53E.setText("0")
+			self.ocs53E.setText(MagicPanels.unit2gui(0))
 			self.ocs53E.setFixedWidth(90)
 			self.ocs53E.move(320, rowcside)
 			
@@ -3002,7 +3002,7 @@ def showQtGUI():
 			
 			# text input
 			self.ocs6E = QtGui.QLineEdit(self)
-			self.ocs6E.setText("0")
+			self.ocs6E.setText(MagicPanels.unit2gui(0))
 			self.ocs6E.setFixedWidth(90)
 			self.ocs6E.move(220, rowcside)
 			
@@ -3014,7 +3014,7 @@ def showQtGUI():
 
 			# text input
 			self.ocs7E = QtGui.QLineEdit(self)
-			self.ocs7E.setText("0")
+			self.ocs7E.setText(MagicPanels.unit2gui(0))
 			self.ocs7E.setFixedWidth(90)
 			self.ocs7E.move(220, rowcside)
 			
@@ -3073,7 +3073,7 @@ def showQtGUI():
 			
 			# text input
 			self.osdec2E = QtGui.QLineEdit(self)
-			self.osdec2E.setText("25")
+			self.osdec2E.setText(MagicPanels.unit2gui(25))
 			self.osdec2E.setFixedWidth(90)
 			self.osdec2E.move(150, rowsdec)
 			
@@ -3085,7 +3085,7 @@ def showQtGUI():
 
 			# text input
 			self.osdec3E = QtGui.QLineEdit(self)
-			self.osdec3E.setText("20")
+			self.osdec3E.setText(MagicPanels.unit2gui(20))
 			self.osdec3E.setFixedWidth(90)
 			self.osdec3E.move(150, rowsdec)
 		
@@ -3097,7 +3097,7 @@ def showQtGUI():
 
 			# text input
 			self.osdec4E = QtGui.QLineEdit(self)
-			self.osdec4E.setText("50")
+			self.osdec4E.setText(MagicPanels.unit2gui(50))
 			self.osdec4E.setFixedWidth(90)
 			self.osdec4E.move(150, rowsdec)
 			
@@ -3118,19 +3118,19 @@ def showQtGUI():
 			
 			# text input
 			self.osdec61E = QtGui.QLineEdit(self)
-			self.osdec61E.setText("0")
+			self.osdec61E.setText(MagicPanels.unit2gui(0))
 			self.osdec61E.setFixedWidth(90)
 			self.osdec61E.move(120, rowsdec)
 			
 			# text input
 			self.osdec62E = QtGui.QLineEdit(self)
-			self.osdec62E.setText("0")
+			self.osdec62E.setText(MagicPanels.unit2gui(0))
 			self.osdec62E.setFixedWidth(90)
 			self.osdec62E.move(220, rowsdec)
 			
 			# text input
 			self.osdec63E = QtGui.QLineEdit(self)
-			self.osdec63E.setText("0")
+			self.osdec63E.setText(MagicPanels.unit2gui(0))
 			self.osdec63E.setFixedWidth(90)
 			self.osdec63E.move(320, rowsdec)
 			
@@ -3142,7 +3142,7 @@ def showQtGUI():
 			
 			# text input
 			self.osdec7E = QtGui.QLineEdit(self)
-			self.osdec7E.setText("0")
+			self.osdec7E.setText(MagicPanels.unit2gui(0))
 			self.osdec7E.setFixedWidth(90)
 			self.osdec7E.move(220, rowsdec)
 			
@@ -3154,7 +3154,7 @@ def showQtGUI():
 
 			# text input
 			self.osdec8E = QtGui.QLineEdit(self)
-			self.osdec8E.setText("0")
+			self.osdec8E.setText(MagicPanels.unit2gui(0))
 			self.osdec8E.setFixedWidth(90)
 			self.osdec8E.move(220, rowsdec)
 		
@@ -4033,114 +4033,114 @@ def showQtGUI():
 			# ####################################################
 			
 			if selectedIndex == 10:
-				self.o2E.setText("2300")
+				self.o2E.setText(MagicPanels.unit2gui(2300))
 			else:
-				self.o2E.setText("760")
+				self.o2E.setText(MagicPanels.unit2gui(760))
 				
 			if selectedIndex == 20:
-				self.of4E.setText("80")
+				self.of4E.setText(MagicPanels.unit2gui(80))
 			else:
-				self.of4E.setText("18")
+				self.of4E.setText(MagicPanels.unit2gui(18))
 			
 			if selectedIndex == 23:
-				self.ofr7E.setText("18")
-				self.ofr81E.setText("9")
-				self.ofr82E.setText("9")
-				self.ofr83E.setText("7")
-				self.ofr84E.setText("7")
+				self.ofr7E.setText(MagicPanels.unit2gui(18))
+				self.ofr81E.setText(MagicPanels.unit2gui(9))
+				self.ofr82E.setText(MagicPanels.unit2gui(9))
+				self.ofr83E.setText(MagicPanels.unit2gui(7))
+				self.ofr84E.setText(MagicPanels.unit2gui(7))
 				
 			if selectedIndex == 24:
-				self.ofr7E.setText("18")
-				self.ofr81E.setText("2")
-				self.ofr82E.setText("2")
-				self.ofr83E.setText("2")
-				self.ofr84E.setText("2")
+				self.ofr7E.setText(MagicPanels.unit2gui(18))
+				self.ofr81E.setText(MagicPanels.unit2gui(2))
+				self.ofr82E.setText(MagicPanels.unit2gui(2))
+				self.ofr83E.setText(MagicPanels.unit2gui(2))
+				self.ofr84E.setText(MagicPanels.unit2gui(2))
 			
 			if selectedIndex == 35 or selectedIndex == 36:
-				self.o1E.setText("900")
+				self.o1E.setText(MagicPanels.unit2gui(900))
 			else:
-				self.o1E.setText("500")
+				self.o1E.setText(MagicPanels.unit2gui(500))
 				
 			if selectedIndex == 37 or selectedIndex == 38:
-				self.ofglass3E.setText("9")
-				self.ofglass4E.setText("7")
+				self.ofglass3E.setText(MagicPanels.unit2gui(9))
+				self.ofglass4E.setText(MagicPanels.unit2gui(7))
 				self.ofglass3L.setText(translate('magicStart', 'Overlap horizontal:'))
 				self.ofglass4L.setText(translate('magicStart', 'Overlap vertical:'))
 
 			if selectedIndex == 39 or selectedIndex == 40:
-				self.ofglass3E.setText("2")
-				self.ofglass4E.setText("2")
+				self.ofglass3E.setText(MagicPanels.unit2gui(2))
+				self.ofglass4E.setText(MagicPanels.unit2gui(2))
 				self.ofglass3L.setText(translate('magicStart', 'Offset horizontal:'))
 				self.ofglass4L.setText(translate('magicStart', 'Offset vertical:'))
 			
 			if selectedIndex == 42:
-				self.otb1E.setText("1050")
-				self.otb2E.setText("600")
-				self.otb3E.setText("780")
-				self.otb4E.setText("18")
-				self.otb5E.setText("60")
-				self.otb6E.setText("35")
+				self.otb1E.setText(MagicPanels.unit2gui(1050))
+				self.otb2E.setText(MagicPanels.unit2gui(600))
+				self.otb3E.setText(MagicPanels.unit2gui(780))
+				self.otb4E.setText(MagicPanels.unit2gui(18))
+				self.otb5E.setText(MagicPanels.unit2gui(60))
+				self.otb6E.setText(MagicPanels.unit2gui(35))
 				
 			if selectedIndex == 43:
-				self.otb1E.setText("990")
-				self.otb2E.setText("525")
-				self.otb3E.setText("430")
-				self.otb4E.setText("18")
-				self.otb5E.setText("80")
-				self.otb6E.setText("35")
+				self.otb1E.setText(MagicPanels.unit2gui(990))
+				self.otb2E.setText(MagicPanels.unit2gui(525))
+				self.otb3E.setText(MagicPanels.unit2gui(430))
+				self.otb4E.setText(MagicPanels.unit2gui(18))
+				self.otb5E.setText(MagicPanels.unit2gui(80))
+				self.otb6E.setText(MagicPanels.unit2gui(35))
 
 			if selectedIndex == 44:
-				self.otb1E.setText("1050")
-				self.otb2E.setText("600")
-				self.otb3E.setText("780")
-				self.otb4E.setText("18")
-				self.otb5E.setText("150")
-				self.otb6E.setText("0")
+				self.otb1E.setText(MagicPanels.unit2gui(1050))
+				self.otb2E.setText(MagicPanels.unit2gui(600))
+				self.otb3E.setText(MagicPanels.unit2gui(780))
+				self.otb4E.setText(MagicPanels.unit2gui(18))
+				self.otb5E.setText(MagicPanels.unit2gui(150))
+				self.otb6E.setText(MagicPanels.unit2gui(0))
 				
 			if selectedIndex == 45:
-				self.otb1E.setText("990")
-				self.otb2E.setText("525")
-				self.otb3E.setText("430")
-				self.otb4E.setText("18")
-				self.otb5E.setText("150")
-				self.otb6E.setText("0")
+				self.otb1E.setText(MagicPanels.unit2gui(990))
+				self.otb2E.setText(MagicPanels.unit2gui(525))
+				self.otb3E.setText(MagicPanels.unit2gui(430))
+				self.otb4E.setText(MagicPanels.unit2gui(18))
+				self.otb5E.setText(MagicPanels.unit2gui(150))
+				self.otb6E.setText(MagicPanels.unit2gui(0))
 			
 			if selectedIndex == 46:
-				self.otb1E.setText("1150")
-				self.otb2E.setText("700")
-				self.otb3E.setText("780")
-				self.otb4E.setText("36")
-				self.otb5E.setText("100")
-				self.otb6E.setText("40")
+				self.otb1E.setText(MagicPanels.unit2gui(1150))
+				self.otb2E.setText(MagicPanels.unit2gui(700))
+				self.otb3E.setText(MagicPanels.unit2gui(780))
+				self.otb4E.setText(MagicPanels.unit2gui(36))
+				self.otb5E.setText(MagicPanels.unit2gui(100))
+				self.otb6E.setText(MagicPanels.unit2gui(40))
 				
 			if selectedIndex == 47:
-				self.otb1E.setText("1150")
-				self.otb2E.setText("700")
-				self.otb3E.setText("450")
-				self.otb4E.setText("36")
-				self.otb5E.setText("80")
-				self.otb6E.setText("0")
+				self.otb1E.setText(MagicPanels.unit2gui(1150))
+				self.otb2E.setText(MagicPanels.unit2gui(700))
+				self.otb3E.setText(MagicPanels.unit2gui(450))
+				self.otb4E.setText(MagicPanels.unit2gui(36))
+				self.otb5E.setText(MagicPanels.unit2gui(80))
+				self.otb6E.setText(MagicPanels.unit2gui(0))
 
 			if selectedIndex == 59:
-				self.odf3E.setText("9")
-				self.odf4E.setText("7")
+				self.odf3E.setText(MagicPanels.unit2gui(9))
+				self.odf4E.setText(MagicPanels.unit2gui(7))
 				self.odf3L.setText(translate('magicStart', 'Front overlap horizontal:'))
 				self.odf4L.setText(translate('magicStart', 'Front overlap vertical:'))
 
 			if selectedIndex == 60:
-				self.odf3E.setText("2")
-				self.odf4E.setText("2")
+				self.odf3E.setText(MagicPanels.unit2gui(2))
+				self.odf4E.setText(MagicPanels.unit2gui(2))
 				self.odf3L.setText(translate('magicStart', 'Front offset horizontal:'))
 				self.odf4L.setText(translate('magicStart', 'Front offset vertical:'))
 			
 		# ############################################################################
 		def createObject(self):
 
-			self.gFSX = float(self.o1E.text())
-			self.gFSZ = float(self.o2E.text())
-			self.gFSY = float(self.o3E.text())
-			self.gThick = float(self.o4E.text())
-
+			self.gFSX = MagicPanels.unit2value(self.o1E.text())
+			self.gFSZ = MagicPanels.unit2value(self.o2E.text())
+			self.gFSY = MagicPanels.unit2value(self.o3E.text())
+			self.gThick = MagicPanels.unit2value(self.o4E.text())
+			
 			if self.gSelectedFurniture == "F0":
 				self.createF0()
 			
@@ -4475,7 +4475,7 @@ def showQtGUI():
 				
 			if sub.ShapeType == "Face":
 				
-				woodt = float(self.o4E.text())
+				woodt = MagicPanels.unit2value(self.o4E.text())
 				width = float(obj.Length.Value)
 				thick = float(obj.Height.Value)
 				
@@ -4517,23 +4517,23 @@ def showQtGUI():
 				startZ = float(sub.Point.z)
 
 			# add offsets
-			startX = startX + float(self.ooo1E.text())
-			startY = startY + float(self.ooo2E.text())
-			startZ = startZ + float(self.ooo3E.text())
+			startX = startX + MagicPanels.unit2value(self.ooo1E.text())
+			startY = startY + MagicPanels.unit2value(self.ooo2E.text())
+			startZ = startZ + MagicPanels.unit2value(self.ooo3E.text())
 
 			# set values to text fields
-			self.oo11E.setText(str(startX))
-			self.oo12E.setText(str(startY))
-			self.oo13E.setText(str(startZ))
+			self.oo11E.setText(MagicPanels.unit2gui(startX))
+			self.oo12E.setText(MagicPanels.unit2gui(startY))
+			self.oo13E.setText(MagicPanels.unit2gui(startZ))
 			
 			if width != 0:
-				self.o1E.setText(str(width))
+				self.o1E.setText(MagicPanels.unit2gui(width))
 			
 			if height != 0:
-				self.o2E.setText(str(height))
+				self.o2E.setText(MagicPanels.unit2gui(height))
 			
 			if depth != 0:
-				self.o3E.setText(str(depth))
+				self.o3E.setText(MagicPanels.unit2gui(depth))
 
 		# ############################################################################
 		def calculateSingleDrawer(self):
@@ -4776,12 +4776,12 @@ def showQtGUI():
 							depth = abs(depth)
 
 			# set values to text fields
-			self.og2E.setText(str(startX))
-			self.og3E.setText(str(startY))
-			self.og4E.setText(str(startZ))
-			self.og5E.setText(str(width))
-			self.og6E.setText(str(height))
-			self.og7E.setText(str(depth))
+			self.og2E.setText(MagicPanels.unit2gui(startX))
+			self.og3E.setText(MagicPanels.unit2gui(startY))
+			self.og4E.setText(MagicPanels.unit2gui(startZ))
+			self.og5E.setText(MagicPanels.unit2gui(width))
+			self.og6E.setText(MagicPanels.unit2gui(height))
+			self.og7E.setText(MagicPanels.unit2gui(depth))
 
 		# ############################################################################
 		def calculateFrontFromGap(self):
@@ -4819,12 +4819,12 @@ def showQtGUI():
 			sy = float(edge3.CenterOfMass.y)
 			sz = float(edge1.CenterOfMass.z)
 			
-			thick = float(self.ofr7E.text())
+			thick = MagicPanels.unit2value(self.ofr7E.text())
 			
-			offL = float(self.ofr81E.text())
-			offR = float(self.ofr82E.text())
-			offT = float(self.ofr83E.text())
-			offB = float(self.ofr84E.text())
+			offL = MagicPanels.unit2value(self.ofr81E.text())
+			offR = MagicPanels.unit2value(self.ofr82E.text())
+			offT = MagicPanels.unit2value(self.ofr83E.text())
+			offB = MagicPanels.unit2value(self.ofr84E.text())
 			
 			# outside
 			if self.gSelectedFurniture == "F23":
@@ -4843,11 +4843,11 @@ def showQtGUI():
 				startZ = sz + offB
 	
 			# set values to text fields
-			self.ofr2E.setText(str(startX))
-			self.ofr3E.setText(str(startY))
-			self.ofr4E.setText(str(startZ))
-			self.ofr5E.setText(str(width))
-			self.ofr6E.setText(str(height))
+			self.ofr2E.setText(MagicPanels.unit2gui(startX))
+			self.ofr3E.setText(MagicPanels.unit2gui(startY))
+			self.ofr4E.setText(MagicPanels.unit2gui(startZ))
+			self.ofr5E.setText(MagicPanels.unit2gui(width))
+			self.ofr6E.setText(MagicPanels.unit2gui(height))
 
 		# ############################################################################
 		def calculateFrontWithGlass(self):
@@ -4885,9 +4885,9 @@ def showQtGUI():
 			gsy = float(edge3.CenterOfMass.y)
 			gsz = float(edge1.CenterOfMass.z)
 			
-			thick = float(self.ofglass2E.text())
-			overlapH = float(self.ofglass3E.text())
-			overlapV = float(self.ofglass4E.text())
+			thick = MagicPanels.unit2value(self.ofglass2E.text())
+			overlapH = MagicPanels.unit2value(self.ofglass3E.text())
+			overlapV = MagicPanels.unit2value(self.ofglass4E.text())
 			
 			# outside
 			if self.gSelectedFurniture == "F37" or self.gSelectedFurniture == "F38":
@@ -4918,12 +4918,12 @@ def showQtGUI():
 				barWidth = int(width / 20)
 				
 			# set values to text fields
-			self.ofglass71E.setText(str(startX))
-			self.ofglass72E.setText(str(startY))
-			self.ofglass73E.setText(str(startZ))
-			self.ofglass8E.setText(str(barWidth))
-			self.ofglass9E.setText(str(width))
-			self.ofglass10E.setText(str(height))
+			self.ofglass71E.setText(MagicPanels.unit2gui(startX))
+			self.ofglass72E.setText(MagicPanels.unit2gui(startY))
+			self.ofglass73E.setText(MagicPanels.unit2gui(startZ))
+			self.ofglass8E.setText(MagicPanels.unit2gui(barWidth))
+			self.ofglass9E.setText(MagicPanels.unit2gui(width))
+			self.ofglass10E.setText(MagicPanels.unit2gui(height))
 
 		# ############################################################################
 		def calculateDecorativeFront(self):
@@ -4961,9 +4961,9 @@ def showQtGUI():
 			gsy = float(edge3.CenterOfMass.y)
 			gsz = float(edge1.CenterOfMass.z)
 			
-			thick = float(self.odf2E.text())
-			overlapH = float(self.odf3E.text())
-			overlapV = float(self.odf4E.text())
+			thick = MagicPanels.unit2value(self.odf2E.text())
+			overlapH = MagicPanels.unit2value(self.odf3E.text())
+			overlapV = MagicPanels.unit2value(self.odf4E.text())
 			
 			# outside
 			if self.gSelectedFurniture == "F59":
@@ -4990,12 +4990,12 @@ def showQtGUI():
 				barWidth = int(width / 10)
 
 			# set values to text fields
-			self.odf71E.setText(str(startX))
-			self.odf72E.setText(str(startY))
-			self.odf73E.setText(str(startZ))
-			self.odf8E.setText(str(barWidth))
-			self.odf9E.setText(str(width))
-			self.odf10E.setText(str(height))
+			self.odf71E.setText(MagicPanels.unit2gui(startX))
+			self.odf72E.setText(MagicPanels.unit2gui(startY))
+			self.odf73E.setText(MagicPanels.unit2gui(startZ))
+			self.odf8E.setText(MagicPanels.unit2gui(barWidth))
+			self.odf9E.setText(MagicPanels.unit2gui(width))
+			self.odf10E.setText(MagicPanels.unit2gui(height))
 
 		# ############################################################################
 		def calculateFrontDecoration(self):
@@ -5045,9 +5045,9 @@ def showQtGUI():
 			gsy = float(edge3.CenterOfMass.y)
 			gsz = float(edge1.CenterOfMass.z)
 			
-			barWidth = float(self.ofdec2E.text())
-			barThick = float(self.ofdec3E.text())
-			offset = float(self.ofdec4E.text())
+			barWidth = MagicPanels.unit2value(self.ofdec2E.text())
+			barThick = MagicPanels.unit2value(self.ofdec3E.text())
+			offset = MagicPanels.unit2value(self.ofdec4E.text())
 			
 			width = gw - (2 * offset)
 			height = gh - (2 * offset)
@@ -5056,11 +5056,11 @@ def showQtGUI():
 			startZ = gsz + offset
 
 			# set values to text fields
-			self.ofdec61E.setText(str(startX))
-			self.ofdec62E.setText(str(startY))
-			self.ofdec63E.setText(str(startZ))
-			self.ofdec7E.setText(str(width))
-			self.ofdec8E.setText(str(height))
+			self.ofdec61E.setText(MagicPanels.unit2gui(startX))
+			self.ofdec62E.setText(MagicPanels.unit2gui(startY))
+			self.ofdec63E.setText(MagicPanels.unit2gui(startZ))
+			self.ofdec7E.setText(MagicPanels.unit2gui(width))
+			self.ofdec8E.setText(MagicPanels.unit2gui(height))
 
 		# ############################################################################
 		def calculateFaceframeFromGap(self):
@@ -5098,9 +5098,9 @@ def showQtGUI():
 			gsy = float(edge3.CenterOfMass.y)
 			gsz = float(edge1.CenterOfMass.z)
 			
-			barThick = float(self.offrame3E.text())
-			offX = float(self.offrame4E.text())
-			offY = float(self.offrame5E.text())
+			barThick = MagicPanels.unit2value(self.offrame3E.text())
+			offX = MagicPanels.unit2value(self.offrame4E.text())
+			offY = MagicPanels.unit2value(self.offrame5E.text())
 			
 			# get furniture thickness from left side
 			sizes = []
@@ -5115,11 +5115,11 @@ def showQtGUI():
 			startZ = gsz - sideThick - offX
 
 			# set values to text fields
-			self.offrame71E.setText(str(startX))
-			self.offrame72E.setText(str(startY))
-			self.offrame73E.setText(str(startZ))
-			self.offrame8E.setText(str(width))
-			self.offrame9E.setText(str(height))
+			self.offrame71E.setText(MagicPanels.unit2gui(startX))
+			self.offrame72E.setText(MagicPanels.unit2gui(startY))
+			self.offrame73E.setText(MagicPanels.unit2gui(startZ))
+			self.offrame8E.setText(MagicPanels.unit2gui(width))
+			self.offrame9E.setText(MagicPanels.unit2gui(height))
 
 		# ############################################################################
 		def calculateShelfFromGap(self):
@@ -5152,13 +5152,13 @@ def showQtGUI():
 			sy = float(edge1.CenterOfMass.y)
 			sz = float(edge1.CenterOfMass.z)
 			
-			thick = float(self.osh1E.text())
-			udepth = float(self.osh2E.text())
+			thick = MagicPanels.unit2value(self.osh1E.text())
+			udepth = MagicPanels.unit2value(self.osh2E.text())
 			
-			offL = float(self.osh31E.text())
-			offR = float(self.osh32E.text())
-			offF = float(self.osh33E.text())
-			offB = float(self.osh34E.text())
+			offL = MagicPanels.unit2value(self.osh31E.text())
+			offR = MagicPanels.unit2value(self.osh32E.text())
+			offF = MagicPanels.unit2value(self.osh33E.text())
+			offB = MagicPanels.unit2value(self.osh34E.text())
 			
 			width = gwidth - offL - offR
 			
@@ -5174,18 +5174,18 @@ def showQtGUI():
 			startZ = sz
 
 			# set values to text fields
-			self.osh2E.setText(str(depth))
-			self.osh31E.setText(str(offL))
-			self.osh32E.setText(str(offR))
-			self.osh33E.setText(str(offF))
-			self.osh34E.setText(str(offB))
+			self.osh2E.setText(MagicPanels.unit2gui(depth))
+			self.osh31E.setText(MagicPanels.unit2gui(offL))
+			self.osh32E.setText(MagicPanels.unit2gui(offR))
+			self.osh33E.setText(MagicPanels.unit2gui(offF))
+			self.osh34E.setText(MagicPanels.unit2gui(offB))
 			
-			self.osh51E.setText(str(startX))
-			self.osh52E.setText(str(startY))
-			self.osh53E.setText(str(startZ))
+			self.osh51E.setText(MagicPanels.unit2gui(startX))
+			self.osh52E.setText(MagicPanels.unit2gui(startY))
+			self.osh53E.setText(MagicPanels.unit2gui(startZ))
 			
-			self.osh6E.setText(str(width))
-			self.osh7E.setText(str(depth))
+			self.osh6E.setText(MagicPanels.unit2gui(width))
+			self.osh7E.setText(MagicPanels.unit2gui(depth))
 
 		# ############################################################################
 		def calculateShelfSeries(self):
@@ -5229,7 +5229,7 @@ def showQtGUI():
 			sy = float(edge3.CenterOfMass.y)
 			sz = float(edge1.CenterOfMass.z)
 			
-			thick = float(self.oshs1E.text())
+			thick = MagicPanels.unit2value(self.oshs1E.text())
 			num = int(self.oshs2E.text())
 			
 			startX = sx
@@ -5242,13 +5242,13 @@ def showQtGUI():
 			offset = (gh - (num * thick)) / (num + 1)
 			
 			# set values to text fields
-			self.oshs41E.setText(str(startX))
-			self.oshs42E.setText(str(startY))
-			self.oshs43E.setText(str(startZ))
+			self.oshs41E.setText(MagicPanels.unit2gui(startX))
+			self.oshs42E.setText(MagicPanels.unit2gui(startY))
+			self.oshs43E.setText(MagicPanels.unit2gui(startZ))
 
-			self.oshs5E.setText(str(width))
-			self.oshs6E.setText(str(depth))
-			self.oshs7E.setText(str(offset))
+			self.oshs5E.setText(MagicPanels.unit2gui(width))
+			self.oshs6E.setText(MagicPanels.unit2gui(depth))
+			self.oshs7E.setText(MagicPanels.unit2gui(offset))
 
 		# ############################################################################
 		def calculateSideFromGap(self):
@@ -5279,12 +5279,12 @@ def showQtGUI():
 			except:
 				return
 			
-			thick = float(self.oside1E.text())
-			uwidth = float(self.oside2E.text())
-			offL = float(self.oside31E.text())
-			offR = float(self.oside32E.text())
-			offT = float(self.oside33E.text())
-			offB = float(self.oside34E.text())
+			thick = MagicPanels.unit2value(self.oside1E.text())
+			uwidth = MagicPanels.unit2value(self.oside2E.text())
+			offL = MagicPanels.unit2value(self.oside31E.text())
+			offR = MagicPanels.unit2value(self.oside32E.text())
+			offT = MagicPanels.unit2value(self.oside33E.text())
+			offB = MagicPanels.unit2value(self.oside34E.text())
 			
 			self.gSideEdgePlane = MagicPanels.getEdgePlane(obj1, edge1, "clean")
 			
@@ -5357,18 +5357,18 @@ def showQtGUI():
 					startZ = float(edge1.CenterOfMass.z) + offB
 
 			# set values to text fields
-			self.oside2E.setText(str(width))
-			self.oside31E.setText(str(offL))
-			self.oside32E.setText(str(offR))
-			self.oside33E.setText(str(offT))
-			self.oside34E.setText(str(offB))
+			self.oside2E.setText(MagicPanels.unit2gui(width))
+			self.oside31E.setText(MagicPanels.unit2gui(offL))
+			self.oside32E.setText(MagicPanels.unit2gui(offR))
+			self.oside33E.setText(MagicPanels.unit2gui(offT))
+			self.oside34E.setText(MagicPanels.unit2gui(offB))
 			
-			self.oside51E.setText(str(startX))
-			self.oside52E.setText(str(startY))
-			self.oside53E.setText(str(startZ))
+			self.oside51E.setText(MagicPanels.unit2gui(startX))
+			self.oside52E.setText(MagicPanels.unit2gui(startY))
+			self.oside53E.setText(MagicPanels.unit2gui(startZ))
 			
-			self.oside6E.setText(str(width))
-			self.oside7E.setText(str(height))
+			self.oside6E.setText(MagicPanels.unit2gui(width))
+			self.oside7E.setText(MagicPanels.unit2gui(height))
 
 		# ############################################################################
 		def calculateCenterSideFromGap(self):
@@ -5428,13 +5428,13 @@ def showQtGUI():
 				sy = float(MagicPanels.touchTypo(edge1)[1].Y)
 				
 			
-			thick = float(self.ocs1E.text())
-			udepth = float(self.ocs2E.text())
+			thick = MagicPanels.unit2value(self.ocs1E.text())
+			udepth = MagicPanels.unit2value(self.ocs2E.text())
 			
-			offTo = float(self.ocs31E.text())
-			offBo = float(self.ocs32E.text())
-			offFr = float(self.ocs33E.text())
-			offBa = float(self.ocs34E.text())
+			offTo = MagicPanels.unit2value(self.ocs31E.text())
+			offBo = MagicPanels.unit2value(self.ocs32E.text())
+			offFr = MagicPanels.unit2value(self.ocs33E.text())
+			offBa = MagicPanels.unit2value(self.ocs34E.text())
 			
 			height = gheight - offBo - offTo
 			
@@ -5451,18 +5451,18 @@ def showQtGUI():
 			startZ = sz + offBo
 
 			# set values to text fields
-			self.ocs2E.setText(str(depth))
-			self.ocs31E.setText(str(offTo))
-			self.ocs32E.setText(str(offBo))
-			self.ocs33E.setText(str(offFr))
-			self.ocs34E.setText(str(offBa))
+			self.ocs2E.setText(MagicPanels.unit2gui(depth))
+			self.ocs31E.setText(MagicPanels.unit2gui(offTo))
+			self.ocs32E.setText(MagicPanels.unit2gui(offBo))
+			self.ocs33E.setText(MagicPanels.unit2gui(offFr))
+			self.ocs34E.setText(MagicPanels.unit2gui(offBa))
 			
-			self.ocs51E.setText(str(startX))
-			self.ocs52E.setText(str(startY))
-			self.ocs53E.setText(str(startZ))
+			self.ocs51E.setText(MagicPanels.unit2gui(startX))
+			self.ocs52E.setText(MagicPanels.unit2gui(startY))
+			self.ocs53E.setText(MagicPanels.unit2gui(startZ))
 			
-			self.ocs6E.setText(str(height))
-			self.ocs7E.setText(str(depth))
+			self.ocs6E.setText(MagicPanels.unit2gui(height))
+			self.ocs7E.setText(MagicPanels.unit2gui(depth))
 
 		# ############################################################################
 		def calculateSideDecoration(self):
@@ -5520,9 +5520,9 @@ def showQtGUI():
 						edge3 = face.Edges[1]
 						edge4 = face.Edges[3]
 			
-			barWidth = float(self.osdec2E.text())
-			barThick = float(self.osdec3E.text())
-			offset = float(self.osdec4E.text())
+			barWidth = MagicPanels.unit2value(self.osdec2E.text())
+			barThick = MagicPanels.unit2value(self.osdec3E.text())
+			offset = MagicPanels.unit2value(self.osdec4E.text())
 			
 			self.gSideEdgePlane = MagicPanels.getEdgePlane(obj1, edge1, "clean")
 			
@@ -5555,11 +5555,11 @@ def showQtGUI():
 				return
 
 			# set values to text fields
-			self.osdec61E.setText(str(startX))
-			self.osdec62E.setText(str(startY))
-			self.osdec63E.setText(str(startZ))
-			self.osdec7E.setText(str(width))
-			self.osdec8E.setText(str(height))
+			self.osdec61E.setText(MagicPanels.unit2gui(startX))
+			self.osdec62E.setText(MagicPanels.unit2gui(startY))
+			self.osdec63E.setText(MagicPanels.unit2gui(startZ))
+			self.osdec7E.setText(MagicPanels.unit2gui(width))
+			self.osdec8E.setText(MagicPanels.unit2gui(height))
 
 		# ############################################################################
 		def calculateDrawerSeries(self):
@@ -5605,19 +5605,19 @@ def showQtGUI():
 			gd = abs(float(face1.CenterOfMass.y) - float(edge3.CenterOfMass.y))
 			
 			num = int(self.ods2E.text())
-			offset = float(self.ods40E.text())
+			offset = MagicPanels.unit2value(self.ods40E.text())
 			
 			width = gw
 			height = ( gh - ((num + 1) * offset) ) / num
 			depth = gd
 			
 			# set values to text fields
-			self.ods61E.setText(str(startX))
-			self.ods62E.setText(str(startY))
-			self.ods63E.setText(str(startZ))
-			self.ods7E.setText(str(width))
-			self.ods8E.setText(str(height))
-			self.ods9E.setText(str(depth))
+			self.ods61E.setText(MagicPanels.unit2gui(startX))
+			self.ods62E.setText(MagicPanels.unit2gui(startY))
+			self.ods63E.setText(MagicPanels.unit2gui(startZ))
+			self.ods7E.setText(MagicPanels.unit2gui(width))
+			self.ods8E.setText(MagicPanels.unit2gui(height))
+			self.ods9E.setText(MagicPanels.unit2gui(depth))
 
 		# ############################################################################
 		def calculateTable(self):
@@ -5639,9 +5639,9 @@ def showQtGUI():
 				startZ = float(sub.Point.z)
 
 				# set values to text fields
-				self.otb81E.setText(str(startX))
-				self.otb82E.setText(str(startY))
-				self.otb83E.setText(str(startZ))
+				self.otb81E.setText(MagicPanels.unit2gui(startX))
+				self.otb82E.setText(MagicPanels.unit2gui(startY))
+				self.otb83E.setText(MagicPanels.unit2gui(startZ))
 
 		# ############################################################################
 		# actions - draw functions
@@ -5650,9 +5650,9 @@ def showQtGUI():
 		# ############################################################################
 		def createF0(self):
 			
-			sx = float(self.oo11E.text())
-			sy = float(self.oo12E.text())
-			sz = float(self.oo13E.text())
+			sx = MagicPanels.unit2value(self.oo11E.text())
+			sy = MagicPanels.unit2value(self.oo12E.text())
+			sz = MagicPanels.unit2value(self.oo13E.text())
 			
 			depth = self.gFSY - self.gThick
 			
@@ -5736,9 +5736,9 @@ def showQtGUI():
 		# ############################################################################
 		def createF1(self):
 			
-			sx = float(self.oo11E.text())
-			sy = float(self.oo12E.text())
-			sz = float(self.oo13E.text())
+			sx = MagicPanels.unit2value(self.oo11E.text())
+			sy = MagicPanels.unit2value(self.oo12E.text())
+			sz = MagicPanels.unit2value(self.oo13E.text())
 			
 			depth = self.gFSY - 3
 			
@@ -5812,9 +5812,9 @@ def showQtGUI():
 		# ############################################################################
 		def createF10(self):
 			
-			sx = float(self.oo11E.text())
-			sy = float(self.oo12E.text())
-			sz = float(self.oo13E.text())
+			sx = MagicPanels.unit2value(self.oo11E.text())
+			sy = MagicPanels.unit2value(self.oo12E.text())
+			sz = MagicPanels.unit2value(self.oo13E.text())
 			
 			# calculation
 			mNum = 3
@@ -5921,11 +5921,11 @@ def showQtGUI():
 		# ############################################################################
 		def createF16(self):
 			
-			FSX = float(self.of1E.text())
-			FSY = float(self.of2E.text())
-			height = float(self.of3E.text())
-			thick = float(self.of4E.text())
-			frontOF = float(self.of5E.text())
+			FSX = MagicPanels.unit2value(self.of1E.text())
+			FSY = MagicPanels.unit2value(self.of2E.text())
+			height = MagicPanels.unit2value(self.of3E.text())
+			thick = MagicPanels.unit2value(self.of4E.text())
+			frontOF = MagicPanels.unit2value(self.of5E.text())
 			depth = self.gFSY - frontOF
 			
 			# Left Side
@@ -5958,11 +5958,11 @@ def showQtGUI():
 		# ############################################################################
 		def createF17(self):
 			
-			FSX = float(self.of1E.text())
-			FSY = float(self.of2E.text())
-			height = float(self.of3E.text())
-			thick = float(self.of4E.text())
-			frontOF = float(self.of5E.text())
+			FSX = MagicPanels.unit2value(self.of1E.text())
+			FSY = MagicPanels.unit2value(self.of2E.text())
+			height = MagicPanels.unit2value(self.of3E.text())
+			thick = MagicPanels.unit2value(self.of4E.text())
+			frontOF = MagicPanels.unit2value(self.of5E.text())
 			depth = FSY - frontOF
 			
 			# Left Side
@@ -6015,11 +6015,11 @@ def showQtGUI():
 		# ############################################################################
 		def createF18(self):
 			
-			FSX = float(self.of1E.text())
-			FSY = float(self.of2E.text())
-			height = float(self.of3E.text())
-			thick = float(self.of4E.text())
-			frontOF = float(self.of5E.text())
+			FSX = MagicPanels.unit2value(self.of1E.text())
+			FSY = MagicPanels.unit2value(self.of2E.text())
+			height = MagicPanels.unit2value(self.of3E.text())
+			thick = MagicPanels.unit2value(self.of4E.text())
+			frontOF = MagicPanels.unit2value(self.of5E.text())
 			depth = FSY - frontOF
 
 			# Left Side
@@ -6083,11 +6083,11 @@ def showQtGUI():
 		# ############################################################################
 		def createF19(self):
 			
-			FSX = float(self.of1E.text())
-			FSY = float(self.of2E.text())
-			height = float(self.of3E.text())
-			thick = float(self.of4E.text())
-			frontOF = float(self.of5E.text())
+			FSX = MagicPanels.unit2value(self.of1E.text())
+			FSY = MagicPanels.unit2value(self.of2E.text())
+			height = MagicPanels.unit2value(self.of3E.text())
+			thick = MagicPanels.unit2value(self.of4E.text())
+			frontOF = MagicPanels.unit2value(self.of5E.text())
 			depth = FSY - frontOF
 
 			# Left Side
@@ -6140,11 +6140,11 @@ def showQtGUI():
 		# ############################################################################
 		def createF20(self):
 			
-			FSX = float(self.of1E.text())
-			FSY = float(self.of2E.text())
-			height = float(self.of3E.text())
-			thick = float(self.of4E.text())
-			frontOF = float(self.of5E.text())
+			FSX = MagicPanels.unit2value(self.of1E.text())
+			FSY = MagicPanels.unit2value(self.of2E.text())
+			height = MagicPanels.unit2value(self.of3E.text())
+			thick = MagicPanels.unit2value(self.of4E.text())
+			frontOF = MagicPanels.unit2value(self.of5E.text())
 			depth = FSY - frontOF
 			
 			# Left Front
@@ -6197,21 +6197,21 @@ def showQtGUI():
 		# ############################################################################
 		def createF21(self):
 			
-			p0X = float(self.og2E.text())
-			p0Y = float(self.og3E.text())
-			p0Z = float(self.og4E.text())
+			p0X = MagicPanels.unit2value(self.og2E.text())
+			p0Y = MagicPanels.unit2value(self.og3E.text())
+			p0Z = MagicPanels.unit2value(self.og4E.text())
 			
-			width = float(self.og5E.text())
-			height = float(self.og6E.text())
-			depth = float(self.og7E.text())
+			width = MagicPanels.unit2value(self.og5E.text())
+			height = MagicPanels.unit2value(self.og6E.text())
+			depth = MagicPanels.unit2value(self.og7E.text())
 			
-			thick = float(self.og8E.text())
+			thick = MagicPanels.unit2value(self.og8E.text())
 			
-			sidesOF = float(self.og91E.text())
+			sidesOF = MagicPanels.unit2value(self.og91E.text())
 			sideOF = sidesOF / 2
-			backOF = float(self.og92E.text())
-			topOF = float(self.og93E.text())
-			bottomOF = float(self.og94E.text())
+			backOF = MagicPanels.unit2value(self.og92E.text())
+			topOF = MagicPanels.unit2value(self.og93E.text())
+			bottomOF = MagicPanels.unit2value(self.og94E.text())
 			
 			if self.gSingleDrawerPlane == "X":
 			
@@ -6496,21 +6496,21 @@ def showQtGUI():
 		# ############################################################################
 		def createF22(self):
 			
-			p0X = float(self.og2E.text())
-			p0Y = float(self.og3E.text())
-			p0Z = float(self.og4E.text())
+			p0X = MagicPanels.unit2value(self.og2E.text())
+			p0Y = MagicPanels.unit2value(self.og3E.text())
+			p0Z = MagicPanels.unit2value(self.og4E.text())
 			
-			width = float(self.og5E.text())
-			height = float(self.og6E.text())
-			depth = float(self.og7E.text())
+			width = MagicPanels.unit2value(self.og5E.text())
+			height = MagicPanels.unit2value(self.og6E.text())
+			depth = MagicPanels.unit2value(self.og7E.text())
 			
-			thick = float(self.og8E.text())
+			thick = MagicPanels.unit2value(self.og8E.text())
 			
-			sidesOF = float(self.og91E.text())
+			sidesOF = MagicPanels.unit2value(self.og91E.text())
 			sideOF = sidesOF / 2
-			backOF = float(self.og92E.text())
-			topOF = float(self.og93E.text())
-			bottomOF = float(self.og94E.text())
+			backOF = MagicPanels.unit2value(self.og92E.text())
+			topOF = MagicPanels.unit2value(self.og93E.text())
+			bottomOF = MagicPanels.unit2value(self.og94E.text())
 			
 			if self.gSingleDrawerPlane == "X":
 			
@@ -6795,13 +6795,13 @@ def showQtGUI():
 		# ############################################################################
 		def createF23(self):
 			
-			p0X = float(self.ofr2E.text())
-			p0Y = float(self.ofr3E.text())
-			p0Z = float(self.ofr4E.text())
+			p0X = MagicPanels.unit2value(self.ofr2E.text())
+			p0Y = MagicPanels.unit2value(self.ofr3E.text())
+			p0Z = MagicPanels.unit2value(self.ofr4E.text())
 			
-			width = float(self.ofr5E.text())
-			height = float(self.ofr6E.text())
-			thick = float(self.ofr7E.text())
+			width = MagicPanels.unit2value(self.ofr5E.text())
+			height = MagicPanels.unit2value(self.ofr6E.text())
+			thick = MagicPanels.unit2value(self.ofr7E.text())
 			
 			# Front outside
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FrontOutside")
@@ -6819,13 +6819,13 @@ def showQtGUI():
 		# ############################################################################
 		def createF24(self):
 
-			p0X = float(self.ofr2E.text())
-			p0Y = float(self.ofr3E.text())
-			p0Z = float(self.ofr4E.text())
+			p0X = MagicPanels.unit2value(self.ofr2E.text())
+			p0Y = MagicPanels.unit2value(self.ofr3E.text())
+			p0Z = MagicPanels.unit2value(self.ofr4E.text())
 			
-			width = float(self.ofr5E.text())
-			height = float(self.ofr6E.text())
-			thick = float(self.ofr7E.text())
+			width = MagicPanels.unit2value(self.ofr5E.text())
+			height = MagicPanels.unit2value(self.ofr6E.text())
+			thick = MagicPanels.unit2value(self.ofr7E.text())
 			
 			# Front outside
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FrontInside")
@@ -6843,13 +6843,13 @@ def showQtGUI():
 		# ############################################################################
 		def createF25(self):
 	
-			p0X = float(self.osh51E.text())
-			p0Y = float(self.osh52E.text())
-			p0Z = float(self.osh53E.text())
+			p0X = MagicPanels.unit2value(self.osh51E.text())
+			p0Y = MagicPanels.unit2value(self.osh52E.text())
+			p0Z = MagicPanels.unit2value(self.osh53E.text())
 			
-			width = float(self.osh6E.text())
-			depth = float(self.osh7E.text())
-			thick = float(self.osh1E.text())
+			width = MagicPanels.unit2value(self.osh6E.text())
+			depth = MagicPanels.unit2value(self.osh7E.text())
+			thick = MagicPanels.unit2value(self.osh1E.text())
 			
 			# Front outside
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
@@ -6867,13 +6867,13 @@ def showQtGUI():
 		# ############################################################################
 		def createF26(self):
 	
-			p0X = float(self.ocs51E.text())
-			p0Y = float(self.ocs52E.text())
-			p0Z = float(self.ocs53E.text())
+			p0X = MagicPanels.unit2value(self.ocs51E.text())
+			p0Y = MagicPanels.unit2value(self.ocs52E.text())
+			p0Z = MagicPanels.unit2value(self.ocs53E.text())
 			
-			height = float(self.ocs6E.text())
-			depth = float(self.ocs7E.text())
-			thick = float(self.ocs1E.text())
+			height = MagicPanels.unit2value(self.ocs6E.text())
+			depth = MagicPanels.unit2value(self.ocs7E.text())
+			thick = MagicPanels.unit2value(self.ocs1E.text())
 			
 			# Side center
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "SideCenter")
@@ -6891,9 +6891,9 @@ def showQtGUI():
 		# ############################################################################
 		def createF27(self):
 			
-			sx = float(self.oo11E.text())
-			sy = float(self.oo12E.text())
-			sz = float(self.oo13E.text())
+			sx = MagicPanels.unit2value(self.oo11E.text())
+			sy = MagicPanels.unit2value(self.oo12E.text())
+			sz = MagicPanels.unit2value(self.oo13E.text())
 			
 			depth = self.gFSY - self.gThick - 3
 			
@@ -6977,9 +6977,9 @@ def showQtGUI():
 		# ############################################################################
 		def createF28(self):
 			
-			sx = float(self.oo11E.text())
-			sy = float(self.oo12E.text())
-			sz = float(self.oo13E.text())
+			sx = MagicPanels.unit2value(self.oo11E.text())
+			sy = MagicPanels.unit2value(self.oo12E.text())
+			sz = MagicPanels.unit2value(self.oo13E.text())
 			
 			depth = self.gFSY
 			
@@ -7063,9 +7063,9 @@ def showQtGUI():
 		# ############################################################################
 		def createF29(self):
 			
-			sx = float(self.oo11E.text())
-			sy = float(self.oo12E.text())
-			sz = float(self.oo13E.text())
+			sx = MagicPanels.unit2value(self.oo11E.text())
+			sy = MagicPanels.unit2value(self.oo12E.text())
+			sz = MagicPanels.unit2value(self.oo13E.text())
 			
 			depth = self.gFSY - 3
 			
@@ -7149,23 +7149,23 @@ def showQtGUI():
 		# ############################################################################
 		def createF30(self):
 			
-			p0X = float(self.ods61E.text())
-			p0Y = float(self.ods62E.text())
-			startZ = float(self.ods63E.text())
+			p0X = MagicPanels.unit2value(self.ods61E.text())
+			p0Y = MagicPanels.unit2value(self.ods62E.text())
+			startZ = MagicPanels.unit2value(self.ods63E.text())
 			
-			gapX = float(self.ods7E.text())
-			gapZ = float(self.ods8E.text())
-			gapY = float(self.ods9E.text())
+			gapX = MagicPanels.unit2value(self.ods7E.text())
+			gapZ = MagicPanels.unit2value(self.ods8E.text())
+			gapY = MagicPanels.unit2value(self.ods9E.text())
 			
 			num = int(self.ods2E.text())
-			offset = float(self.ods40E.text())
-			thick = float(self.ods3E.text())
+			offset = MagicPanels.unit2value(self.ods40E.text())
+			thick = MagicPanels.unit2value(self.ods3E.text())
 			
-			sidesOF = float(self.ods41E.text())
+			sidesOF = MagicPanels.unit2value(self.ods41E.text())
 			sideOF = sidesOF / 2
-			backOF = float(self.ods42E.text())
-			topOF = float(self.ods43E.text())
-			bottomOF = float(self.ods44E.text())
+			backOF = MagicPanels.unit2value(self.ods42E.text())
+			topOF = MagicPanels.unit2value(self.ods43E.text())
+			bottomOF = MagicPanels.unit2value(self.ods44E.text())
 			
 			for i in range(0, num):
 			
@@ -7242,23 +7242,23 @@ def showQtGUI():
 		# ############################################################################
 		def createF31(self):
 			
-			p0X = float(self.ods61E.text())
-			p0Y = float(self.ods62E.text())
-			startZ = float(self.ods63E.text())
+			p0X = MagicPanels.unit2value(self.ods61E.text())
+			p0Y = MagicPanels.unit2value(self.ods62E.text())
+			startZ = MagicPanels.unit2value(self.ods63E.text())
 			
-			gapX = float(self.ods7E.text())
-			gapZ = float(self.ods8E.text())
-			gapY = float(self.ods9E.text())
+			gapX = MagicPanels.unit2value(self.ods7E.text())
+			gapZ = MagicPanels.unit2value(self.ods8E.text())
+			gapY = MagicPanels.unit2value(self.ods9E.text())
 			
 			num = int(self.ods2E.text())
-			offset = float(self.ods40E.text())
-			thick = float(self.ods3E.text())
+			offset = MagicPanels.unit2value(self.ods40E.text())
+			thick = MagicPanels.unit2value(self.ods3E.text())
 			
-			sidesOF = float(self.ods41E.text())
+			sidesOF = MagicPanels.unit2value(self.ods41E.text())
 			sideOF = sidesOF / 2
-			backOF = float(self.ods42E.text())
-			topOF = float(self.ods43E.text())
-			bottomOF = float(self.ods44E.text())
+			backOF = MagicPanels.unit2value(self.ods42E.text())
+			topOF = MagicPanels.unit2value(self.ods43E.text())
+			bottomOF = MagicPanels.unit2value(self.ods44E.text())
 			
 			for i in range(0, num):
 			
@@ -7334,15 +7334,15 @@ def showQtGUI():
 		# ############################################################################
 		def createF32(self):
 			
-			barWidth = float(self.offrame2E.text())
-			barThick = float(self.offrame3E.text())
+			barWidth = MagicPanels.unit2value(self.offrame2E.text())
+			barThick = MagicPanels.unit2value(self.offrame3E.text())
 			
-			FSX = float(self.offrame71E.text())
-			FSY = float(self.offrame72E.text())
-			FSZ = float(self.offrame73E.text())
+			FSX = MagicPanels.unit2value(self.offrame71E.text())
+			FSY = MagicPanels.unit2value(self.offrame72E.text())
+			FSZ = MagicPanels.unit2value(self.offrame73E.text())
 			
-			FFWidth = float(self.offrame8E.text())
-			FFHeight = float(self.offrame9E.text())
+			FFWidth = MagicPanels.unit2value(self.offrame8E.text())
+			FFHeight = MagicPanels.unit2value(self.offrame9E.text())
 			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFLeft")
@@ -7394,15 +7394,15 @@ def showQtGUI():
 		# ############################################################################
 		def createF33(self):
 			
-			barWidth = float(self.offrame2E.text())
-			barThick = float(self.offrame3E.text())
+			barWidth = MagicPanels.unit2value(self.offrame2E.text())
+			barThick = MagicPanels.unit2value(self.offrame3E.text())
 			
-			FSX = float(self.offrame71E.text())
-			FSY = float(self.offrame72E.text())
-			FSZ = float(self.offrame73E.text())
+			FSX = MagicPanels.unit2value(self.offrame71E.text())
+			FSY = MagicPanels.unit2value(self.offrame72E.text())
+			FSZ = MagicPanels.unit2value(self.offrame73E.text())
 			
-			FFWidth = float(self.offrame8E.text())
-			FFHeight = float(self.offrame9E.text())
+			FFWidth = MagicPanels.unit2value(self.offrame8E.text())
+			FFHeight = MagicPanels.unit2value(self.offrame9E.text())
 			
 			centerFSX = FSX + (FFWidth / 2) - barWidth
 
@@ -7466,15 +7466,15 @@ def showQtGUI():
 		# ############################################################################
 		def createF34(self):
 			
-			barWidth = float(self.offrame2E.text())
-			barThick = float(self.offrame3E.text())
+			barWidth = MagicPanels.unit2value(self.offrame2E.text())
+			barThick = MagicPanels.unit2value(self.offrame3E.text())
 			
-			FSX = float(self.offrame71E.text())
-			FSY = float(self.offrame72E.text())
-			FSZ = float(self.offrame73E.text())
+			FSX = MagicPanels.unit2value(self.offrame71E.text())
+			FSY = MagicPanels.unit2value(self.offrame72E.text())
+			FSZ = MagicPanels.unit2value(self.offrame73E.text())
 			
-			FFWidth = float(self.offrame8E.text())
-			FFHeight = float(self.offrame9E.text())
+			FFWidth = MagicPanels.unit2value(self.offrame8E.text())
+			FFHeight = MagicPanels.unit2value(self.offrame9E.text())
 			
 			centerFSX = FSX + (FFWidth / 2) - barWidth
 			horizontalFSX = FSX + (FFWidth / 2) + barWidth
@@ -7557,9 +7557,9 @@ def showQtGUI():
 			
 			# Furniture - settings
 			
-			sx = float(self.oo11E.text())
-			sy = float(self.oo12E.text()) + barThick
-			sz = float(self.oo13E.text())
+			sx = MagicPanels.unit2value(self.oo11E.text())
+			sy = MagicPanels.unit2value(self.oo12E.text()) + barThick
+			sz = MagicPanels.unit2value(self.oo13E.text())
 			
 			depth = self.gFSY - 3 - barThick
 			
@@ -7707,9 +7707,9 @@ def showQtGUI():
 			
 			# Furniture - settings
 			
-			sx = float(self.oo11E.text())
-			sy = float(self.oo12E.text()) + barThick
-			sz = float(self.oo13E.text())
+			sx = MagicPanels.unit2value(self.oo11E.text())
+			sy = MagicPanels.unit2value(self.oo12E.text()) + barThick
+			sz = MagicPanels.unit2value(self.oo13E.text())
 			
 			depth = self.gFSY - 3 - barThick
 			
@@ -7864,18 +7864,18 @@ def showQtGUI():
 		# ############################################################################
 		def createF37(self):
 			
-			barThick = float(self.ofglass2E.text())
-			barWidth = float(self.ofglass8E.text())
+			barThick = MagicPanels.unit2value(self.ofglass2E.text())
+			barWidth = MagicPanels.unit2value(self.ofglass8E.text())
 			
-			glassThick = float(self.ofglass5E.text())
+			glassThick = MagicPanels.unit2value(self.ofglass5E.text())
 			glassSink = 6
 			
-			FSX = float(self.ofglass71E.text())
-			FSY = float(self.ofglass72E.text())
-			FSZ = float(self.ofglass73E.text())
+			FSX = MagicPanels.unit2value(self.ofglass71E.text())
+			FSY = MagicPanels.unit2value(self.ofglass72E.text())
+			FSZ = MagicPanels.unit2value(self.ofglass73E.text())
 			
-			FFWidth = float(self.ofglass9E.text())
-			FFHeight = float(self.ofglass10E.text())
+			FFWidth = MagicPanels.unit2value(self.ofglass9E.text())
+			FFHeight = MagicPanels.unit2value(self.ofglass10E.text())
 			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGLeft")
@@ -7941,21 +7941,21 @@ def showQtGUI():
 		# ############################################################################
 		def createF38(self):
 			
-			barThick = float(self.ofglass2E.text())
-			barWidth = float(self.ofglass8E.text())
+			barThick = MagicPanels.unit2value(self.ofglass2E.text())
+			barWidth = MagicPanels.unit2value(self.ofglass8E.text())
 			
-			glassThick = float(self.ofglass5E.text())
+			glassThick = MagicPanels.unit2value(self.ofglass5E.text())
 			glassSink = 6
 			
 			decWidth = int(barWidth/4)
 			decThick = int( (barThick - glassThick) / 2 )
 			
-			FSX = float(self.ofglass71E.text())
-			FSY = float(self.ofglass72E.text())
-			FSZ = float(self.ofglass73E.text())
+			FSX = MagicPanels.unit2value(self.ofglass71E.text())
+			FSY = MagicPanels.unit2value(self.ofglass72E.text())
+			FSZ = MagicPanels.unit2value(self.ofglass73E.text())
 			
-			FFWidth = float(self.ofglass9E.text())
-			FFHeight = float(self.ofglass10E.text())
+			FFWidth = MagicPanels.unit2value(self.ofglass9E.text())
+			FFHeight = MagicPanels.unit2value(self.ofglass10E.text())
 			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGLeft")
@@ -8087,16 +8087,16 @@ def showQtGUI():
 		# ############################################################################
 		def createF41(self):
 	
-			thick = float(self.oshs1E.text())
+			thick = MagicPanels.unit2value(self.oshs1E.text())
 			num = int(self.oshs2E.text())
 			
-			p0X = float(self.oshs41E.text())
-			p0Y = float(self.oshs42E.text())
-			p0Z = float(self.oshs43E.text())
+			p0X = MagicPanels.unit2value(self.oshs41E.text())
+			p0Y = MagicPanels.unit2value(self.oshs42E.text())
+			p0Z = MagicPanels.unit2value(self.oshs43E.text())
 			
-			width = float(self.oshs5E.text())
-			depth = float(self.oshs6E.text())
-			offset = float(self.oshs7E.text())
+			width = MagicPanels.unit2value(self.oshs5E.text())
+			depth = MagicPanels.unit2value(self.oshs6E.text())
+			offset = MagicPanels.unit2value(self.oshs7E.text())
 			
 			shelvesArr = []
 			
@@ -8124,16 +8124,16 @@ def showQtGUI():
 		# ############################################################################
 		def createF42(self):
 			
-			width = float(self.otb1E.text())
-			depth = float(self.otb2E.text())
-			height = float(self.otb3E.text())
-			topThick = float(self.otb4E.text())
-			legThick = float(self.otb5E.text())
-			offset = float(self.otb6E.text())
+			width = MagicPanels.unit2value(self.otb1E.text())
+			depth = MagicPanels.unit2value(self.otb2E.text())
+			height = MagicPanels.unit2value(self.otb3E.text())
+			topThick = MagicPanels.unit2value(self.otb4E.text())
+			legThick = MagicPanels.unit2value(self.otb5E.text())
+			offset = MagicPanels.unit2value(self.otb6E.text())
 			
-			sx = float(self.otb81E.text())
-			sy = float(self.otb82E.text())
-			sz = float(self.otb83E.text())
+			sx = MagicPanels.unit2value(self.otb81E.text())
+			sy = MagicPanels.unit2value(self.otb82E.text())
+			sz = MagicPanels.unit2value(self.otb83E.text())
 			
 			# Leg Left Front
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLF")
@@ -8251,16 +8251,16 @@ def showQtGUI():
 		# ############################################################################
 		def createF44(self):
 			
-			width = float(self.otb1E.text())
-			depth = float(self.otb2E.text())
-			height = float(self.otb3E.text())
-			topThick = float(self.otb4E.text())
-			legThick = float(self.otb5E.text())
-			offset = float(self.otb6E.text())
+			width = MagicPanels.unit2value(self.otb1E.text())
+			depth = MagicPanels.unit2value(self.otb2E.text())
+			height = MagicPanels.unit2value(self.otb3E.text())
+			topThick = MagicPanels.unit2value(self.otb4E.text())
+			legThick = MagicPanels.unit2value(self.otb5E.text())
+			offset = MagicPanels.unit2value(self.otb6E.text())
 			
-			sx = float(self.otb81E.text())
-			sy = float(self.otb82E.text())
-			sz = float(self.otb83E.text())
+			sx = MagicPanels.unit2value(self.otb81E.text())
+			sy = MagicPanels.unit2value(self.otb82E.text())
+			sz = MagicPanels.unit2value(self.otb83E.text())
 			
 			# Leg Left Front
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLF1")
@@ -8422,16 +8422,16 @@ def showQtGUI():
 		# ############################################################################
 		def createF46(self):
 			
-			width = float(self.otb1E.text())
-			depth = float(self.otb2E.text())
-			height = float(self.otb3E.text())
-			topThick = float(self.otb4E.text())
-			legThick = float(self.otb5E.text())
-			offset = float(self.otb6E.text())
+			width = MagicPanels.unit2value(self.otb1E.text())
+			depth = MagicPanels.unit2value(self.otb2E.text())
+			height = MagicPanels.unit2value(self.otb3E.text())
+			topThick = MagicPanels.unit2value(self.otb4E.text())
+			legThick = MagicPanels.unit2value(self.otb5E.text())
+			offset = MagicPanels.unit2value(self.otb6E.text())
 			
-			sx = float(self.otb81E.text())
-			sy = float(self.otb82E.text())
-			sz = float(self.otb83E.text())
+			sx = MagicPanels.unit2value(self.otb81E.text())
+			sy = MagicPanels.unit2value(self.otb82E.text())
+			sz = MagicPanels.unit2value(self.otb83E.text())
 			
 			# Leg Left Front
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLF")
@@ -8549,13 +8549,13 @@ def showQtGUI():
 		# ############################################################################
 		def createF48(self):
 	
-			p0X = float(self.oside51E.text())
-			p0Y = float(self.oside52E.text())
-			p0Z = float(self.oside53E.text())
+			p0X = MagicPanels.unit2value(self.oside51E.text())
+			p0Y = MagicPanels.unit2value(self.oside52E.text())
+			p0Z = MagicPanels.unit2value(self.oside53E.text())
 			
-			width = float(self.oside6E.text())
-			height = float(self.oside7E.text())
-			thick = float(self.oside1E.text())
+			width = MagicPanels.unit2value(self.oside6E.text())
+			height = MagicPanels.unit2value(self.oside7E.text())
+			thick = MagicPanels.unit2value(self.oside1E.text())
 			
 			if self.gSideEdgePlane == "X":
 				
@@ -8590,18 +8590,18 @@ def showQtGUI():
 		# ############################################################################
 		def createF59(self):
 			
-			barThick = float(self.odf2E.text())
-			barWidth = float(self.odf8E.text())
+			barThick = MagicPanels.unit2value(self.odf2E.text())
+			barWidth = MagicPanels.unit2value(self.odf8E.text())
 			
-			innerThick = float(self.odf5E.text())
+			innerThick = MagicPanels.unit2value(self.odf5E.text())
 			innerSink = 6
 			
-			FSX = float(self.odf71E.text())
-			FSY = float(self.odf72E.text())
-			FSZ = float(self.odf73E.text())
+			FSX = MagicPanels.unit2value(self.odf71E.text())
+			FSY = MagicPanels.unit2value(self.odf72E.text())
+			FSZ = MagicPanels.unit2value(self.odf73E.text())
 			
-			FFWidth = float(self.odf9E.text())
-			FFHeight = float(self.odf10E.text())
+			FFWidth = MagicPanels.unit2value(self.odf9E.text())
+			FFHeight = MagicPanels.unit2value(self.odf10E.text())
 			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DFLeft")
@@ -8666,16 +8666,16 @@ def showQtGUI():
 		# ############################################################################
 		def createF61(self):
 			
-			barWidth = float(self.ofdec2E.text())
-			barThick = float(self.ofdec3E.text())
-			offset = float(self.ofdec4E.text())
+			barWidth = MagicPanels.unit2value(self.ofdec2E.text())
+			barThick = MagicPanels.unit2value(self.ofdec3E.text())
+			offset = MagicPanels.unit2value(self.ofdec4E.text())
 			
-			FSX = float(self.ofdec61E.text())
-			FSY = float(self.ofdec62E.text())
-			FSZ = float(self.ofdec63E.text())
+			FSX = MagicPanels.unit2value(self.ofdec61E.text())
+			FSY = MagicPanels.unit2value(self.ofdec62E.text())
+			FSZ = MagicPanels.unit2value(self.ofdec63E.text())
 			
-			FFWidth = float(self.ofdec7E.text())
-			FFHeight = float(self.ofdec8E.text())
+			FFWidth = MagicPanels.unit2value(self.ofdec7E.text())
+			FFHeight = MagicPanels.unit2value(self.ofdec8E.text())
 			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FDLeft")
@@ -8727,16 +8727,16 @@ def showQtGUI():
 			# ############################################################################
 		def createF62(self):
 			
-			barWidth = float(self.osdec2E.text())
-			barThick = float(self.osdec3E.text())
-			offset = float(self.osdec4E.text())
+			barWidth = MagicPanels.unit2value(self.osdec2E.text())
+			barThick = MagicPanels.unit2value(self.osdec3E.text())
+			offset = MagicPanels.unit2value(self.osdec4E.text())
 			
-			FSX = float(self.osdec61E.text())
-			FSY = float(self.osdec62E.text())
-			FSZ = float(self.osdec63E.text())
+			FSX = MagicPanels.unit2value(self.osdec61E.text())
+			FSY = MagicPanels.unit2value(self.osdec62E.text())
+			FSZ = MagicPanels.unit2value(self.osdec63E.text())
 			
-			FFWidth = float(self.osdec7E.text())
-			FFHeight = float(self.osdec8E.text())
+			FFWidth = MagicPanels.unit2value(self.osdec7E.text())
+			FFHeight = MagicPanels.unit2value(self.osdec8E.text())
 			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "SDLeft")

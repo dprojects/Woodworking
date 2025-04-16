@@ -18,7 +18,11 @@ def showQtGUI():
 		# ############################################################################
 		# globals
 		# ############################################################################
-
+		
+		# tool screen size
+		toolSW = 270
+		toolSH = 660
+		
 		gObj = ""
 		gObjBase = ""
 		gThick = 0
@@ -81,32 +85,42 @@ def showQtGUI():
 			# set screen
 			# ############################################################################
 			
-			# tool screen size
-			toolSW = 220
-			toolSH = 660
-			
 			# active screen size (FreeCAD main window)
 			gSW = FreeCADGui.getMainWindow().width()
 			gSH = FreeCADGui.getMainWindow().height()
 
 			# tool screen position
-			gPW = int( gSW - toolSW )
-			gPH = int( gSH - toolSH )
+			gPW = int( gSW - self.toolSW )
+			gPH = int( gSH - self.toolSH )
 
 			# ############################################################################
 			# main window
 			# ############################################################################
 			
 			self.result = userCancelled
-			self.setGeometry(gPW, gPH, toolSW, toolSH)
+			self.setGeometry(gPW, gPH, self.toolSW, self.toolSH)
 			self.setWindowTitle(translate('magicDriller', 'magicDriller'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
-			# options - selection mode
+			# options - settings
 			# ############################################################################
 			
-			row = 10
+			row = 10                             # row
+			area = self.toolSW - 20              # gui area
+			rside = self.toolSW - 10             # right side of the gui area
+			
+			btsize = 50                          # button size
+			btcol1 = rside - btsize - 105        # button column 1 (left)
+			btcol2 = rside - btsize - 45         # button column 2 (counter screen)
+			btcol3 = rside - btsize              # button column 3 (right)
+			
+			tfsize = 100                         # text field size
+			tfcol = rside - tfsize               # text field column
+
+			# ############################################################################
+			# options - selection mode
+			# ############################################################################
 			
 			# screen
 			info = ""
@@ -121,7 +135,7 @@ def showQtGUI():
 			# button
 			self.s1B1 = QtGui.QPushButton(translate('magicDriller', 'refresh face selection'), self)
 			self.s1B1.clicked.connect(self.getSelected)
-			self.s1B1.setFixedWidth(200)
+			self.s1B1.setFixedWidth(area)
 			self.s1B1.setFixedHeight(40)
 			self.s1B1.move(10, row)
 
@@ -138,15 +152,19 @@ def showQtGUI():
 			# button
 			self.s2B1 = QtGui.QPushButton("<", self)
 			self.s2B1.clicked.connect(self.setEdgeP)
-			self.s2B1.setFixedWidth(50)
-			self.s2B1.move(105, row)
+			self.s2B1.setFixedWidth(btsize)
+			self.s2B1.move(btcol1, row)
 			self.s2B1.setAutoRepeat(True)
+			
+			# label
+			self.s2IS = QtGui.QLabel("                  ", self)
+			self.s2IS.move(btcol2, row+3)
 			
 			# button
 			self.s2B2 = QtGui.QPushButton(">", self)
 			self.s2B2.clicked.connect(self.setEdgeN)
-			self.s2B2.setFixedWidth(50)
-			self.s2B2.move(160, row)
+			self.s2B2.setFixedWidth(btsize)
+			self.s2B2.move(btcol3, row)
 			self.s2B2.setAutoRepeat(True)
 
 			# ############################################################################
@@ -162,15 +180,19 @@ def showQtGUI():
 			# button
 			self.s3B1 = QtGui.QPushButton("<", self)
 			self.s3B1.clicked.connect(self.setPosition)
-			self.s3B1.setFixedWidth(50)
-			self.s3B1.move(105, row)
+			self.s3B1.setFixedWidth(btsize)
+			self.s3B1.move(btcol1, row)
 			self.s3B1.setAutoRepeat(True)
 			
+			# label
+			self.s3IS = QtGui.QLabel("                  ", self)
+			self.s3IS.move(btcol2, row+3)
+
 			# button
 			self.s3B2 = QtGui.QPushButton(">", self)
 			self.s3B2.clicked.connect(self.setPosition)
-			self.s3B2.setFixedWidth(50)
-			self.s3B2.move(160, row)
+			self.s3B2.setFixedWidth(btsize)
+			self.s3B2.move(btcol3, row)
 			self.s3B2.setAutoRepeat(True)
 
 			# ############################################################################
@@ -186,15 +208,19 @@ def showQtGUI():
 			# button
 			self.s4B1 = QtGui.QPushButton("<", self)
 			self.s4B1.clicked.connect(self.setRotationP)
-			self.s4B1.setFixedWidth(50)
-			self.s4B1.move(105, row)
+			self.s4B1.setFixedWidth(btsize)
+			self.s4B1.move(btcol1, row)
 			self.s4B1.setAutoRepeat(True)
 			
+			# label
+			self.s4IS = QtGui.QLabel("                  ", self)
+			self.s4IS.move(btcol2, row+3)
+
 			# button
 			self.s4B2 = QtGui.QPushButton(">", self)
 			self.s4B2.clicked.connect(self.setRotationN)
-			self.s4B2.setFixedWidth(50)
-			self.s4B2.move(160, row)
+			self.s4B2.setFixedWidth(btsize)
+			self.s4B2.move(btcol3, row)
 			self.s4B2.setAutoRepeat(True)
 
 			# ############################################################################
@@ -210,15 +236,19 @@ def showQtGUI():
 			# button
 			self.s5B1 = QtGui.QPushButton("<", self)
 			self.s5B1.clicked.connect(self.setSidesP)
-			self.s5B1.setFixedWidth(50)
-			self.s5B1.move(105, row)
+			self.s5B1.setFixedWidth(btsize)
+			self.s5B1.move(btcol1, row)
 			self.s5B1.setAutoRepeat(True)
 			
+			# label
+			self.s5IS = QtGui.QLabel("                  ", self)
+			self.s5IS.move(btcol2, row+3)
+
 			# button
 			self.s5B2 = QtGui.QPushButton(">", self)
 			self.s5B2.clicked.connect(self.setSidesN)
-			self.s5B2.setFixedWidth(50)
-			self.s5B2.move(160, row)
+			self.s5B2.setFixedWidth(btsize)
+			self.s5B2.move(btcol3, row)
 			self.s5B2.setAutoRepeat(True)
 
 			# ############################################################################
@@ -239,7 +269,7 @@ def showQtGUI():
 			self.s6S.addItems(self.s6Slist)
 			self.s6S.setCurrentIndex(self.s6Slist.index("Holes"))
 			self.s6S.textActivated[str].connect(self.setDrillBitType)
-			self.s6S.setFixedWidth(200)
+			self.s6S.setFixedWidth(area)
 			self.s6S.move(10, row)
 
 			# ############################################################################
@@ -268,7 +298,7 @@ def showQtGUI():
 			self.s7S.addItems(self.s7Slist)
 			self.s7S.setCurrentIndex(self.s7Slist.index(self.gDBLabel))
 			self.s7S.textActivated[str].connect(self.setCustomDrillbits)
-			self.s7S.setFixedWidth(200)
+			self.s7S.setFixedWidth(area)
 			self.s7S.move(10, row)
 			self.gDBType = "Holes"
 			
@@ -285,8 +315,8 @@ def showQtGUI():
 			# text input
 			self.oDBNumE = QtGui.QLineEdit(self)
 			self.oDBNumE.setText(str(self.gDBNum))
-			self.oDBNumE.setFixedWidth(50)
-			self.oDBNumE.move(160, row)
+			self.oDBNumE.setFixedWidth(tfsize)
+			self.oDBNumE.move(tfcol, row)
 
 			# ############################################################################
 			# options - hole diameter
@@ -300,9 +330,9 @@ def showQtGUI():
 
 			# text input
 			self.oDBDiameterE = QtGui.QLineEdit(self)
-			self.oDBDiameterE.setText(str(self.gDBDiameter))
-			self.oDBDiameterE.setFixedWidth(50)
-			self.oDBDiameterE.move(160, row)
+			self.oDBDiameterE.setText(MagicPanels.unit2gui(self.gDBDiameter))
+			self.oDBDiameterE.setFixedWidth(tfsize)
+			self.oDBDiameterE.move(tfcol, row)
 
 			# ############################################################################
 			# options - hole diameter for countersinks or counterbores
@@ -316,9 +346,9 @@ def showQtGUI():
 
 			# text input
 			self.oDBDiameter2E = QtGui.QLineEdit(self)
-			self.oDBDiameter2E.setText(str(self.gDBDiameter2))
-			self.oDBDiameter2E.setFixedWidth(50)
-			self.oDBDiameter2E.move(160, row)
+			self.oDBDiameter2E.setText(MagicPanels.unit2gui(self.gDBDiameter2))
+			self.oDBDiameter2E.setFixedWidth(tfsize)
+			self.oDBDiameter2E.move(tfcol, row)
 
 			self.oDBDiameter2L.hide()
 			self.oDBDiameter2E.hide()
@@ -335,9 +365,9 @@ def showQtGUI():
 
 			# text input
 			self.oDBSizeE = QtGui.QLineEdit(self)
-			self.oDBSizeE.setText(str(self.gDBSize))
-			self.oDBSizeE.setFixedWidth(50)
-			self.oDBSizeE.move(160, row)
+			self.oDBSizeE.setText(MagicPanels.unit2gui(self.gDBSize))
+			self.oDBSizeE.setFixedWidth(tfsize)
+			self.oDBSizeE.move(tfcol, row)
 
 			# ############################################################################
 			# options - offset from corner
@@ -351,9 +381,9 @@ def showQtGUI():
 
 			# text input
 			self.oDBOCornerE = QtGui.QLineEdit(self)
-			self.oDBOCornerE.setText(str(self.gDBOCorner))
-			self.oDBOCornerE.setFixedWidth(50)
-			self.oDBOCornerE.move(160, row)
+			self.oDBOCornerE.setText(MagicPanels.unit2gui(self.gDBOCorner))
+			self.oDBOCornerE.setFixedWidth(tfsize)
+			self.oDBOCornerE.move(tfcol, row)
 
 			# ############################################################################
 			# options - offset between dowels
@@ -367,9 +397,9 @@ def showQtGUI():
 
 			# text input
 			self.oDONextE = QtGui.QLineEdit(self)
-			self.oDONextE.setText(str(self.gDBONext))
-			self.oDONextE.setFixedWidth(50)
-			self.oDONextE.move(160, row)
+			self.oDONextE.setText(MagicPanels.unit2gui(self.gDBONext))
+			self.oDONextE.setFixedWidth(tfsize)
+			self.oDONextE.move(tfcol, row)
 
 			# ############################################################################
 			# options - offset from edge
@@ -383,9 +413,9 @@ def showQtGUI():
 
 			# text input
 			self.oDBOEdgeE = QtGui.QLineEdit(self)
-			self.oDBOEdgeE.setText(str(self.gDBOEdge))
-			self.oDBOEdgeE.setFixedWidth(50)
-			self.oDBOEdgeE.move(160, row)
+			self.oDBOEdgeE.setText(MagicPanels.unit2gui(self.gDBOEdge))
+			self.oDBOEdgeE.setFixedWidth(tfsize)
+			self.oDBOEdgeE.move(tfcol, row)
 
 			# ############################################################################
 			# options - pocket rotation
@@ -400,8 +430,8 @@ def showQtGUI():
 			# text input
 			self.oDBPocketRE = QtGui.QLineEdit(self)
 			self.oDBPocketRE.setText(str(self.gDBPocketR))
-			self.oDBPocketRE.setFixedWidth(50)
-			self.oDBPocketRE.move(160, row)
+			self.oDBPocketRE.setFixedWidth(tfsize)
+			self.oDBPocketRE.move(tfcol, row)
 
 			self.oDBPocketRL.hide()
 			self.oDBPocketRE.hide()
@@ -418,9 +448,9 @@ def showQtGUI():
 
 			# text input
 			self.oDBPocketSE = QtGui.QLineEdit(self)
-			self.oDBPocketSE.setText(str(self.gDBPocketS))
-			self.oDBPocketSE.setFixedWidth(50)
-			self.oDBPocketSE.move(160, row)
+			self.oDBPocketSE.setText(MagicPanels.unit2gui(self.gDBPocketS))
+			self.oDBPocketSE.setFixedWidth(tfsize)
+			self.oDBPocketSE.move(tfcol, row)
 
 			self.oDBPocketSL.hide()
 			self.oDBPocketSE.hide()
@@ -434,7 +464,7 @@ def showQtGUI():
 			# button
 			self.e1B1 = QtGui.QPushButton(translate('magicDriller', 'show custom settings'), self)
 			self.e1B1.clicked.connect(self.refreshSettings)
-			self.e1B1.setFixedWidth(200)
+			self.e1B1.setFixedWidth(area)
 			self.e1B1.setFixedHeight(40)
 			self.e1B1.move(10, row)
 
@@ -443,7 +473,7 @@ def showQtGUI():
 			# button
 			self.e2B1 = QtGui.QPushButton(translate('magicDriller', 'create'), self)
 			self.e2B1.clicked.connect(self.drillHoles)
-			self.e2B1.setFixedWidth(200)
+			self.e2B1.setFixedWidth(area)
 			self.e2B1.setFixedHeight(40)
 			self.e2B1.move(10, row)
 
@@ -911,45 +941,20 @@ def showQtGUI():
 					if self.gFPlane == "YZ":
 						self.gRIndex = 0
 				
-				self.oDBOEdgeE.setText(str(self.gDBOEdge))
-
+				self.oDBOEdgeE.setText(MagicPanels.unit2gui(self.gDBOEdge))
 				self.showDrillBits()
-				
 				self.gInit = 0
-			
+				
+				self.s2IS.setText(str(self.gEIndex+1) + " / " + str(len(self.gEArr)))
+				self.s3IS.setText(str(self.gPosition+1) + " / 2")
+				self.s4IS.setText(str(self.gRIndex+1) + " / " + str(len(self.gRAngles)))
+				self.s5IS.setText(str(self.gDBSides+1) + " / 3")
+				
 			except:
 
 				self.s1S.setText(self.gNoSelection)
 				return -1
 			
-			
-		# ############################################################################
-		def setSidesP(self):
-			
-			try:
-				if self.gDBSides - 1 < 0:
-					self.gDBSides = 2
-				else:
-					self.gDBSides = self.gDBSides - 1
-					
-				self.showDrillBits()
-		
-			except:
-				self.s1S.setText(self.gNoSelection)
-				
-		def setSidesN(self):
-			
-			try:
-				if self.gDBSides + 1 > 2:
-					self.gDBSides = 0
-				else:
-					self.gDBSides = self.gDBSides + 1
-					
-				self.showDrillBits()
-			
-			except:
-				self.s1S.setText(self.gNoSelection)
-
 		# ############################################################################
 		def setEdgeP(self):
 			
@@ -962,7 +967,8 @@ def showQtGUI():
 				self.gEdge = self.gEArr[self.gEIndex]
 				
 				self.showDrillBits()
-			
+				self.s2IS.setText(str(self.gEIndex+1) + " / " + str(len(self.gEArr)))
+				
 			except:
 				self.s1S.setText(self.gNoSelection)
 			
@@ -977,6 +983,7 @@ def showQtGUI():
 				self.gEdge = self.gEArr[self.gEIndex]
 				
 				self.showDrillBits()
+				self.s2IS.setText(str(self.gEIndex+1) + " / " + str(len(self.gEArr)))
 			
 			except:
 				self.s1S.setText(self.gNoSelection)
@@ -991,9 +998,10 @@ def showQtGUI():
 					self.gPosition = 0
 				
 				self.gDBOEdge = - self.gDBOEdge
-				self.oDBOEdgeE.setText(str(self.gDBOEdge))
+				self.oDBOEdgeE.setText(MagicPanels.unit2gui(self.gDBOEdge))
 				
 				self.showDrillBits()
+				self.s3IS.setText(str(self.gPosition+1) + " / 2")
 				
 			except:
 				self.s1S.setText(self.gNoSelection)
@@ -1008,7 +1016,8 @@ def showQtGUI():
 					self.gRIndex = self.gRIndex - 1
 					
 				self.showDrillBits()
-			
+				self.s4IS.setText(str(self.gRIndex+1) + " / " + str(len(self.gRAngles)))
+				
 			except:
 				self.s1S.setText(self.gNoSelection)
 				
@@ -1021,10 +1030,40 @@ def showQtGUI():
 					self.gRIndex = self.gRIndex + 1
 					
 				self.showDrillBits()
-			
+				self.s4IS.setText(str(self.gRIndex+1) + " / " + str(len(self.gRAngles)))
+				
 			except:
 				self.s1S.setText(self.gNoSelection)
 		
+		# ############################################################################
+		def setSidesP(self):
+			
+			try:
+				if self.gDBSides - 1 < 0:
+					self.gDBSides = 2
+				else:
+					self.gDBSides = self.gDBSides - 1
+					
+				self.showDrillBits()
+				self.s5IS.setText(str(self.gDBSides+1) + " / 3")
+		
+			except:
+				self.s1S.setText(self.gNoSelection)
+				
+		def setSidesN(self):
+			
+			try:
+				if self.gDBSides + 1 > 2:
+					self.gDBSides = 0
+				else:
+					self.gDBSides = self.gDBSides + 1
+					
+				self.showDrillBits()
+				self.s5IS.setText(str(self.gDBSides+1) + " / 3")
+			
+			except:
+				self.s1S.setText(self.gNoSelection)
+
 		# ############################################################################
 		def setCustomDrillbits(self, selectedText):
 			
@@ -1082,7 +1121,7 @@ def showQtGUI():
 						self.gDBDiameter = 3
 						self.gDBDiameter2 = 10
 						self.gDBSize = 40 - self.gThick
-						self.gDBNum = 1
+						self.gDBNum = 2
 						self.gDBOCorner = 50
 						self.gDBONext = 32
 
@@ -1116,7 +1155,7 @@ def showQtGUI():
 						self.gDBDiameter = 3
 						self.gDBDiameter2 = 10
 						self.gDBSize = 40
-						self.gDBNum = 1
+						self.gDBNum = 2
 						self.gDBOCorner = 50
 						self.gDBONext = 32
 
@@ -1196,15 +1235,15 @@ def showQtGUI():
 					
 					self.gDBSink = self.gDBPocketS
 					
-				self.oDBDiameterE.setText(str(self.gDBDiameter))
-				self.oDBDiameter2E.setText(str(self.gDBDiameter2))
-				self.oDBSizeE.setText(str(self.gDBSize))
+				self.oDBDiameterE.setText(MagicPanels.unit2gui(self.gDBDiameter))
+				self.oDBDiameter2E.setText(MagicPanels.unit2gui(self.gDBDiameter2))
+				self.oDBSizeE.setText(MagicPanels.unit2gui(self.gDBSize))
 				self.oDBNumE.setText(str(self.gDBNum))
-				self.oDBOCornerE.setText(str(self.gDBOCorner))
-				self.oDONextE.setText(str(self.gDBONext))
-				self.oDBOEdgeE.setText(str(self.gDBOEdge))
+				self.oDBOCornerE.setText(MagicPanels.unit2gui(self.gDBOCorner))
+				self.oDONextE.setText(MagicPanels.unit2gui(self.gDBONext))
+				self.oDBOEdgeE.setText(MagicPanels.unit2gui(self.gDBOEdge))
 				self.oDBPocketRE.setText(str(self.gDBPocketR))
-				self.oDBPocketSE.setText(str(self.gDBPocketS))
+				self.oDBPocketSE.setText(MagicPanels.unit2gui(self.gDBPocketS))
 
 				self.showDrillBits()
 		
@@ -1216,21 +1255,21 @@ def showQtGUI():
 			
 			try:
 			
-				self.gDBDiameter = float(self.oDBDiameterE.text())
-				self.gDBDiameter2 = float(self.oDBDiameter2E.text())
-				self.gDBSize = float(self.oDBSizeE.text())
+				self.gDBDiameter = MagicPanels.unit2value(self.oDBDiameterE.text())
+				self.gDBDiameter2 = MagicPanels.unit2value(self.oDBDiameter2E.text())
+				self.gDBSize = MagicPanels.unit2value(self.oDBSizeE.text())
 				self.gDBNum = int(self.oDBNumE.text())
-				self.gDBOCorner = float(self.oDBOCornerE.text())
-				self.gDBONext = float(self.oDONextE.text())
-				self.gDBOEdge = float(self.oDBOEdgeE.text())
+				self.gDBOCorner = MagicPanels.unit2value(self.oDBOCornerE.text())
+				self.gDBONext = MagicPanels.unit2value(self.oDONextE.text())
+				self.gDBOEdge = MagicPanels.unit2value(self.oDBOEdgeE.text())
 				self.gDBPocketR = float(self.oDBPocketRE.text())
-				self.gDBPocketS = float(self.oDBPocketSE.text())
+				self.gDBPocketS = MagicPanels.unit2value(self.oDBPocketSE.text())
 				
 				if self.gDBType == "Pocket holes":
 					self.gDBSink = self.gDBPocketS
 
 				self.showDrillBits()
-			
+
 			except:
 				self.s1S.setText(self.gNoSelection)
 

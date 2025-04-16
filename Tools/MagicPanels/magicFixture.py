@@ -63,7 +63,7 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 270
+			toolSW = 300
 			toolSH = 500
 			
 			# active screen size (FreeCAD main window)
@@ -88,10 +88,10 @@ def showQtGUI():
 			# ############################################################################
 			
 			# set grid
-			row = 10
+			row = 0
 			col1 = 100
 			col2 = 155
-			col3 = 210
+			col3 = 240
 			
 			# screen
 			info = ""
@@ -201,8 +201,8 @@ def showQtGUI():
 
 			# text input
 			self.oFxOEdgeE = QtGui.QLineEdit(self)
-			self.oFxOEdgeE.setText(str(self.gFxOEdge))
-			self.oFxOEdgeE.setFixedWidth(50)
+			self.oFxOEdgeE.setText(MagicPanels.unit2gui(self.gFxOEdge))
+			self.oFxOEdgeE.setFixedWidth(80)
 			self.oFxOEdgeE.move(col2, row)
 
 			# button
@@ -231,8 +231,8 @@ def showQtGUI():
 
 			# text input
 			self.oFxOCornerE = QtGui.QLineEdit(self)
-			self.oFxOCornerE.setText(str(self.gFxOCorner))
-			self.oFxOCornerE.setFixedWidth(50)
+			self.oFxOCornerE.setText(MagicPanels.unit2gui(self.gFxOCorner))
+			self.oFxOCornerE.setFixedWidth(80)
 			self.oFxOCornerE.move(col2, row)
 
 			# button
@@ -261,8 +261,8 @@ def showQtGUI():
 			
 			# text input
 			self.oFxSinkE = QtGui.QLineEdit(self)
-			self.oFxSinkE.setText(str(self.gFxSink))
-			self.oFxSinkE.setFixedWidth(50)
+			self.oFxSinkE.setText(MagicPanels.unit2gui(self.gFxSink))
+			self.oFxSinkE.setFixedWidth(80)
 			self.oFxSinkE.move(col2, row)
 			
 			# button
@@ -284,8 +284,8 @@ def showQtGUI():
 
 			# text input
 			self.oFxStepE = QtGui.QLineEdit(self)
-			self.oFxStepE.setText(str(self.gStep))
-			self.oFxStepE.setFixedWidth(50)
+			self.oFxStepE.setText(MagicPanels.unit2gui(self.gStep))
+			self.oFxStepE.setFixedWidth(80)
 			self.oFxStepE.move(col2, row)
 			
 			# ############################################################################
@@ -696,10 +696,10 @@ def showQtGUI():
 		def setSinkOffsetP(self):
 			
 			try:
-				self.gStep = float(self.oFxStepE.text())
+				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
 			
 				self.gFxSink -= self.gStep
-				self.oFxSinkE.setText(str(self.gFxSink))
+				self.oFxSinkE.setText(MagicPanels.unit2gui(self.gFxSink))
 				
 				self.showFixture()
 			
@@ -709,10 +709,10 @@ def showQtGUI():
 		def setSinkOffsetN(self):
 			
 			try:
-				self.gStep = float(self.oFxStepE.text())
+				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
 				
 				self.gFxSink += self.gStep
-				self.oFxSinkE.setText(str(self.gFxSink))
+				self.oFxSinkE.setText(MagicPanels.unit2gui(self.gFxSink))
 				
 				self.showFixture()
 			
@@ -723,10 +723,10 @@ def showQtGUI():
 		def setCornerOffsetP(self):
 			
 			try:
-				self.gStep = float(self.oFxStepE.text())
+				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
 				
 				self.gFxOCorner -= self.gStep
-				self.oFxOCornerE.setText(str(self.gFxOCorner))
+				self.oFxOCornerE.setText(MagicPanels.unit2gui(self.gFxOCorner))
 				
 				self.showFixture()
 			
@@ -736,10 +736,10 @@ def showQtGUI():
 		def setCornerOffsetN(self):
 			
 			try:
-				self.gStep = float(self.oFxStepE.text())
+				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
 				
 				self.gFxOCorner += self.gStep
-				self.oFxOCornerE.setText(str(self.gFxOCorner))
+				self.oFxOCornerE.setText(MagicPanels.unit2gui(self.gFxOCorner))
 				
 				self.showFixture()
 			
@@ -750,10 +750,10 @@ def showQtGUI():
 		def setEdgeOffsetP(self):
 			
 			try:
-				self.gStep = float(self.oFxStepE.text())
+				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
 				
 				self.gFxOEdge -= self.gStep
-				self.oFxOEdgeE.setText(str(self.gFxOEdge))
+				self.oFxOEdgeE.setText(MagicPanels.unit2gui(self.gFxOEdge))
 				
 				self.showFixture()
 			
@@ -763,10 +763,10 @@ def showQtGUI():
 		def setEdgeOffsetN(self):
 			
 			try:
-				self.gStep = float(self.oFxStepE.text())
+				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
 				
 				self.gFxOEdge += self.gStep
-				self.oFxOEdgeE.setText(str(self.gFxOEdge))
+				self.oFxOEdgeE.setText(MagicPanels.unit2gui(self.gFxOEdge))
 				
 				self.showFixture()
 			
@@ -811,10 +811,10 @@ def showQtGUI():
 			
 			try:
 			
-				self.gFxSink = float(self.oFxSinkE.text())
-				self.gFxOCorner = float(self.oFxOCornerE.text())
-				self.gFxOEdge = float(self.oFxOEdgeE.text())
-				self.gStep = float(self.oFxStepE.text())
+				self.gFxSink = MagicPanels.unit2value(self.oFxSinkE.text())
+				self.gFxOCorner = MagicPanels.unit2value(self.oFxOCornerE.text())
+				self.gFxOEdge = MagicPanels.unit2value(self.oFxOEdgeE.text())
+				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
 
 				self.showFixture()
 			

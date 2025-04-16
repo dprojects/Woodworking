@@ -58,9 +58,12 @@ def showQtGUI():
 		gAxisY = 0
 		gAxisZ = 0
 		
-		gCrossCorner = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
-		gCrossCenter = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
-
+		try:
+			gCrossCorner = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
+			gCrossCenter = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
+		except:
+			skip = 1
+		
 		gNoSelection1 = translate('magicJoints', '1. select Sketch pattern')
 		gNoSelection2 = translate('magicJoints', '2. select face to map Sketch')
 		gNoSelection3 = translate('magicJoints', '3. select face for Mortise')
@@ -80,7 +83,7 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 270
+			toolSW = 300
 			toolSH = 500
 			
 			# active screen size (FreeCAD main window)
@@ -108,7 +111,7 @@ def showQtGUI():
 			row = 0
 			col1 = 100
 			col2 = 155
-			col3 = 210
+			col3 = 240
 			
 			# screen
 			info = ""
@@ -255,8 +258,8 @@ def showQtGUI():
 
 			# text input
 			self.oAxisXE = QtGui.QLineEdit(self)
-			self.oAxisXE.setText(str(self.gAxisX))
-			self.oAxisXE.setFixedWidth(50)
+			self.oAxisXE.setText(MagicPanels.unit2gui(self.gAxisX))
+			self.oAxisXE.setFixedWidth(80)
 			self.oAxisXE.move(col2, row)
 
 			# button
@@ -285,8 +288,8 @@ def showQtGUI():
 
 			# text input
 			self.oAxisYE = QtGui.QLineEdit(self)
-			self.oAxisYE.setText(str(self.gAxisY))
-			self.oAxisYE.setFixedWidth(50)
+			self.oAxisYE.setText(MagicPanels.unit2gui(self.gAxisY))
+			self.oAxisYE.setFixedWidth(80)
 			self.oAxisYE.move(col2, row)
 
 			# button
@@ -315,8 +318,8 @@ def showQtGUI():
 
 			# text input
 			self.oAxisZE = QtGui.QLineEdit(self)
-			self.oAxisZE.setText(str(self.gAxisZ))
-			self.oAxisZE.setFixedWidth(50)
+			self.oAxisZE.setText(MagicPanels.unit2gui(self.gAxisZ))
+			self.oAxisZE.setFixedWidth(80)
 			self.oAxisZE.move(col2, row)
 
 			# button
@@ -338,8 +341,8 @@ def showQtGUI():
 
 			# text input
 			self.oFxStepE = QtGui.QLineEdit(self)
-			self.oFxStepE.setText(str(self.gStep))
-			self.oFxStepE.setFixedWidth(50)
+			self.oFxStepE.setText(MagicPanels.unit2gui(self.gStep))
+			self.oFxStepE.setFixedWidth(80)
 			self.oFxStepE.move(col2, row)
 			
 			# ############################################################################
@@ -386,9 +389,9 @@ def showQtGUI():
 
 			# text input
 			self.oFxDepthE = QtGui.QLineEdit(self)
-			self.oFxDepthE.setText(str(self.gDepth))
-			self.oFxDepthE.setFixedWidth(50)
-			self.oFxDepthE.move(col3, row)
+			self.oFxDepthE.setText(MagicPanels.unit2gui(self.gDepth))
+			self.oFxDepthE.setFixedWidth(80)
+			self.oFxDepthE.move(col3-30, row)
 
 			# ############################################################################
 			# options - final save
@@ -431,8 +434,11 @@ def showQtGUI():
 			self.show()
 
 			# init
-			FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
-			FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(50)
+			try:
+				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
+				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(50)
+			except:
+				skip = 1
 			self.getSelected()
 
 		# ############################################################################
@@ -505,9 +511,9 @@ def showQtGUI():
 			self.gAxisY = 0
 			self.gAxisZ = 0
 			
-			self.oAxisXE.setText(str(self.gAxisX))
-			self.oAxisYE.setText(str(self.gAxisY))
-			self.oAxisZE.setText(str(self.gAxisZ))
+			self.oAxisXE.setText(MagicPanels.unit2gui(self.gAxisX))
+			self.oAxisYE.setText(MagicPanels.unit2gui(self.gAxisY))
+			self.oAxisZE.setText(MagicPanels.unit2gui(self.gAxisZ))
 			
 		# ############################################################################
 		def setRotation(self):
@@ -845,10 +851,10 @@ def showQtGUI():
 		def setXm(self):
 			
 			try:
-				self.gStep = float(self.oFxStepE.text())
+				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
 				
 				self.gAxisX -= self.gStep
-				self.oAxisXE.setText(str(self.gAxisX))
+				self.oAxisXE.setText(MagicPanels.unit2gui(self.gAxisX))
 				
 				self.showJoints()
 			
@@ -858,10 +864,10 @@ def showQtGUI():
 		def setXp(self):
 			
 			try:
-				self.gStep = float(self.oFxStepE.text())
+				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
 				
 				self.gAxisX += self.gStep
-				self.oAxisXE.setText(str(self.gAxisX))
+				self.oAxisXE.setText(MagicPanels.unit2gui(self.gAxisX))
 				
 				self.showJoints()
 			
@@ -872,10 +878,10 @@ def showQtGUI():
 		def setYm(self):
 			
 			try:
-				self.gStep = float(self.oFxStepE.text())
+				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
 				
 				self.gAxisY -= self.gStep
-				self.oAxisYE.setText(str(self.gAxisY))
+				self.oAxisYE.setText(MagicPanels.unit2gui(self.gAxisY))
 				
 				self.showJoints()
 			
@@ -885,10 +891,10 @@ def showQtGUI():
 		def setYp(self):
 			
 			try:
-				self.gStep = float(self.oFxStepE.text())
+				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
 				
 				self.gAxisY += self.gStep
-				self.oAxisYE.setText(str(self.gAxisY))
+				self.oAxisYE.setText(MagicPanels.unit2gui(self.gAxisY))
 				
 				self.showJoints()
 			
@@ -899,10 +905,10 @@ def showQtGUI():
 		def setZm(self):
 			
 			try:
-				self.gStep = float(self.oFxStepE.text())
+				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
 				
 				self.gAxisZ -= self.gStep
-				self.oAxisZE.setText(str(self.gAxisZ))
+				self.oAxisZE.setText(MagicPanels.unit2gui(self.gAxisZ))
 				
 				self.showJoints()
 			
@@ -912,10 +918,10 @@ def showQtGUI():
 		def setZp(self):
 			
 			try:
-				self.gStep = float(self.oFxStepE.text())
+				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
 				
 				self.gAxisZ += self.gStep
-				self.oAxisZE.setText(str(self.gAxisZ))
+				self.oAxisZE.setText(MagicPanels.unit2gui(self.gAxisZ))
 				
 				self.showJoints()
 			
@@ -959,10 +965,10 @@ def showQtGUI():
 		def refreshSettings(self):
 			
 			try:
-				self.gAxisX = float(self.oAxisXE.text())
-				self.gAxisY = float(self.oAxisYE.text())
-				self.gAxisZ = float(self.oAxisZE.text())
-				self.gStep = float(self.oFxStepE.text())
+				self.gAxisX = MagicPanels.unit2value(self.oAxisXE.text())
+				self.gAxisY = MagicPanels.unit2value(self.oAxisYE.text())
+				self.gAxisZ = MagicPanels.unit2value(self.oAxisZE.text())
+				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
 
 				self.showJoints()
 			
@@ -992,7 +998,7 @@ def showQtGUI():
 		def setMortise(self):
 			
 			try:
-				self.gDepth = float(self.oFxDepthE.text())
+				self.gDepth = MagicPanels.unit2value(self.oFxDepthE.text())
 				t2 = self.gObj2.ViewObject.Transparency
 				
 				[ self.gObj2, self.gObj2Face ] = MagicPanels.makeMortise(self.gLink, self.gDepth, self.gObj2, self.gObj2Face)
@@ -1013,7 +1019,7 @@ def showQtGUI():
 		def setTenon(self):
 			
 			try:
-				self.gDepth = float(self.oFxDepthE.text())
+				self.gDepth = MagicPanels.unit2value(self.oFxDepthE.text())
 				t2 = self.gObj2.ViewObject.Transparency
 				
 				[ self.gObj2, self.gObj2Face ] = MagicPanels.makeTenon(self.gLink, self.gDepth, self.gObj2, self.gObj2Face)
@@ -1035,7 +1041,7 @@ def showQtGUI():
 			
 			try:
 
-				self.gDepth = float(self.oFxDepthE.text())
+				self.gDepth = MagicPanels.unit2value(self.oFxDepthE.text())
 				
 				t2 = self.gObj2.ViewObject.Transparency
 				t3 = self.gObj3.ViewObject.Transparency
@@ -1066,8 +1072,11 @@ def showQtGUI():
 	
 	if form.result == userCancelled:
 		
-		FreeCADGui.ActiveDocument.ActiveView.setAxisCross(form.gCrossCenter)
-		FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(form.gCrossCorner)
+		try:
+			FreeCADGui.ActiveDocument.ActiveView.setAxisCross(form.gCrossCenter)
+			FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(form.gCrossCorner)
+		except:
+			skip = 1
 
 		try:
 			FreeCAD.ActiveDocument.removeObject(str(form.gLink.Name))

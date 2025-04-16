@@ -204,8 +204,7 @@ Tools = [
 
 	"", "getDimensions", "png", "getDimensions, BOM, cutlist", "Creates spreadsheet with dimensions to cut.",
 	"", "sheet2export", "png", "sheet2export", "Exports spreadsheet to chosen file format.",
-	"", "showSpaceModel", "png", "show, model, space", "This tool allows you to calculate the overall occupied space in 3D by the model.",
-	"", "showSpaceSelected", "png", "show, selected, space", "This tool allows you to calculate the overall occupied space in 3D by the selected parts.",
+	"MagicPanels", "showOccupiedSpace", "png", "show, selected, space", "This tool allows you to calculate the overall occupied space in 3D by the selected parts or whole model, if nothing is selected.",
 	"MagicPanels", "magicMeasure", "png", "magicMeasure", "Quick measurement preview on hover or by selection.",
 
 	# #################################################################################################################################

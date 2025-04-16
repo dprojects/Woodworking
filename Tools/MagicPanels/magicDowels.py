@@ -27,6 +27,30 @@ gDS = {
 	"gCurrentSelection": 1     # currently selected menu index
 }
 
+# add new items only at the end and change self.dtslist
+getMenuIndex = {
+	translate('magicDowels', 'Dowel 6 x 35 mm '): 0, 
+	translate('magicDowels', 'Dowel 8 x 35 mm '): 1, 
+	translate('magicDowels', 'Dowel 10 x 35 mm '): 2, 
+	translate('magicDowels', 'Biscuits 16 x 48 mm '): 3, 
+	translate('magicDowels', 'Biscuits 21 x 54 mm '): 4, 
+	translate('magicDowels', 'Biscuits 24 x 57 mm '): 5, 
+	translate('magicDowels', 'Screw 3 x 20 mm '): 6, 
+	translate('magicDowels', 'Screw 4.5 x 40 mm '): 7, 
+	translate('magicDowels', 'Screw 4 x 40 mm '): 8, 
+	translate('magicDowels', 'Screw 5 x 50 mm '): 9, 
+	translate('magicDowels', 'Screw 6 x 60 mm '): 10, 
+	translate('magicDowels', 'Confirmation 7 x 40 mm '): 11, 
+	translate('magicDowels', 'Confirmation 7 x 50 mm '): 12, 
+	translate('magicDowels', 'Confirmation 7 x 70 mm '): 13, 
+	translate('magicDowels', 'Shelf Pin 5 x 16 mm '): 14, 
+	translate('magicDowels', 'Profile Pin 5 x 30 mm '): 15, 
+	translate('magicDowels', 'Profile Pin 8 x 40 mm '): 16, 
+	translate('magicDowels', 'Tenon joint '): 17, 
+	translate('magicDowels', 'Custom mount point '): 18, 
+	translate('magicDowels', 'Minifix 15 x 45 mm '): 19 # no comma
+}
+
 # ############################################################################
 # Qt Main
 # ############################################################################
@@ -152,10 +176,23 @@ def showQtGUI():
 			if schema == "init":
 
 				# ############################################################################
-				# options - selection mode
+				# options - settings
 				# ############################################################################
 				
-				row = 10
+				row = 10                             # row
+				area = self.toolSW - 20              # gui area
+				rside = self.toolSW - 10             # right side of the gui area
+				
+				btsize = 50                          # button size
+				btcol1 = rside - btsize - 105        # button column 1 (left)
+				btcol2 = rside - btsize - 45         # button column 2 (counter screen)
+				btcol3 = rside - btsize              # button column 3 (right)
+				
+				tfsize = 100                         # text field size
+				
+				# ############################################################################
+				# options - selection mode
+				# ############################################################################
 				
 				# screen
 				info = ""
@@ -170,7 +207,7 @@ def showQtGUI():
 				# button
 				self.faceinfoB1 = QtGui.QPushButton(translate('magicDowels', 'refresh face selection'), self)
 				self.faceinfoB1.clicked.connect(self.setFaceSettins)
-				self.faceinfoB1.setFixedWidth(self.toolSW - 20)
+				self.faceinfoB1.setFixedWidth(area)
 				self.faceinfoB1.setFixedHeight(40)
 				self.faceinfoB1.move(10, row)
 
@@ -187,19 +224,19 @@ def showQtGUI():
 				# button
 				self.seB1 = QtGui.QPushButton("<", self)
 				self.seB1.clicked.connect(self.selectEdgeP)
-				self.seB1.setFixedWidth(50)
-				self.seB1.move(self.toolSW - 165, row)
+				self.seB1.setFixedWidth(btsize)
+				self.seB1.move(btcol1, row)
 				self.seB1.setAutoRepeat(True)
 				
 				# label
 				self.seIS = QtGui.QLabel("                  ", self)
-				self.seIS.move(self.toolSW - 105, row+3)
+				self.seIS.move(btcol2, row+3)
 				
 				# button
 				self.seB2 = QtGui.QPushButton(">", self)
 				self.seB2.clicked.connect(self.selectEdgeN)
-				self.seB2.setFixedWidth(50)
-				self.seB2.move(self.toolSW - 60, row)
+				self.seB2.setFixedWidth(btsize)
+				self.seB2.move(btcol3, row)
 				self.seB2.setAutoRepeat(True)
 
 				# ############################################################################
@@ -218,7 +255,7 @@ def showQtGUI():
 
 				row += 30
 				
-				# dowel type selection
+				# not write here, copy text from getMenuIndex to avoid typo
 				self.dtslist = (
 							translate('magicDowels', 'Dowel 6 x 35 mm '), 
 							translate('magicDowels', 'Dowel 8 x 35 mm '), 
@@ -234,19 +271,19 @@ def showQtGUI():
 							translate('magicDowels', 'Confirmation 7 x 40 mm '), 
 							translate('magicDowels', 'Confirmation 7 x 50 mm '), 
 							translate('magicDowels', 'Confirmation 7 x 70 mm '), 
+							translate('magicDowels', 'Minifix 15 x 45 mm '), 
 							translate('magicDowels', 'Shelf Pin 5 x 16 mm '), 
 							translate('magicDowels', 'Profile Pin 5 x 30 mm '), 
 							translate('magicDowels', 'Profile Pin 8 x 40 mm '), 
 							translate('magicDowels', 'Tenon joint '), 
-							translate('magicDowels', 'Custom mount point '), 
-							translate('magicDowels', 'Minifix 15 x 45 mm ') # no comma
+							translate('magicDowels', 'Custom mount point ') # no comma 
 							)
 				
 				self.dts = QtGui.QComboBox(self)
 				self.dts.addItems(self.dtslist)
-				self.dts.setCurrentIndex(self.dtslist.index(self.gDowelLabel))
-				self.dts.activated[int].connect(self.setMenuItem)
-				self.dts.setFixedWidth(self.toolSW - 20)
+				self.dts.setCurrentIndex(1)
+				self.dts.textActivated[str].connect(self.setMenuItem)
+				self.dts.setFixedWidth(area)
 				self.dts.move(10, row)
 				
 				# ############################################################################
@@ -262,19 +299,19 @@ def showQtGUI():
 				# button
 				self.aeB1 = QtGui.QPushButton("<", self)
 				self.aeB1.clicked.connect(self.adjustEdgeP)
-				self.aeB1.setFixedWidth(50)
-				self.aeB1.move(self.toolSW - 165, row)
+				self.aeB1.setFixedWidth(btsize)
+				self.aeB1.move(btcol1, row)
 				self.aeB1.setAutoRepeat(True)
 				
 				# label
 				self.aeIS = QtGui.QLabel("                  ", self)
-				self.aeIS.move(self.toolSW - 105, row+3)
+				self.aeIS.move(btcol2, row+3)
 				
 				# button
 				self.aeB2 = QtGui.QPushButton(">", self)
 				self.aeB2.clicked.connect(self.adjustEdgeN)
-				self.aeB2.setFixedWidth(50)
-				self.aeB2.move(self.toolSW - 60, row)
+				self.aeB2.setFixedWidth(btsize)
+				self.aeB2.move(btcol3, row)
 				self.aeB2.setAutoRepeat(True)
 
 				# ############################################################################
@@ -290,19 +327,19 @@ def showQtGUI():
 				# button
 				self.asB1 = QtGui.QPushButton("<", self)
 				self.asB1.clicked.connect(self.adjustSinkP)
-				self.asB1.setFixedWidth(50)
-				self.asB1.move(self.toolSW - 165, row)
+				self.asB1.setFixedWidth(btsize)
+				self.asB1.move(btcol1, row)
 				self.asB1.setAutoRepeat(True)
 				
 				# label
 				self.asIS = QtGui.QLabel("                  ", self)
-				self.asIS.move(self.toolSW - 105, row+3)
+				self.asIS.move(btcol2, row+3)
 				
 				# button
 				self.asB2 = QtGui.QPushButton(">", self)
 				self.asB2.clicked.connect(self.adjustSinkN)
-				self.asB2.setFixedWidth(50)
-				self.asB2.move(self.toolSW - 60, row)
+				self.asB2.setFixedWidth(btsize)
+				self.asB2.move(btcol3, row)
 				self.asB2.setAutoRepeat(True)
 
 				# ############################################################################
@@ -318,19 +355,19 @@ def showQtGUI():
 				# button
 				self.arB1 = QtGui.QPushButton("<", self)
 				self.arB1.clicked.connect(self.setRotationP)
-				self.arB1.setFixedWidth(50)
-				self.arB1.move(self.toolSW - 165, row)
+				self.arB1.setFixedWidth(btsize)
+				self.arB1.move(btcol1, row)
 				self.arB1.setAutoRepeat(True)
 				
 				# label
 				self.arIS = QtGui.QLabel("                  ", self)
-				self.arIS.move(self.toolSW - 105, row+3)
+				self.arIS.move(btcol2, row+3)
 				
 				# button
 				self.arB2 = QtGui.QPushButton(">", self)
 				self.arB2.clicked.connect(self.setRotationN)
-				self.arB2.setFixedWidth(50)
-				self.arB2.move(self.toolSW - 60, row)
+				self.arB2.setFixedWidth(btsize)
+				self.arB2.move(btcol3, row)
 				self.arB2.setAutoRepeat(True)
 
 				# ############################################################################
@@ -346,19 +383,19 @@ def showQtGUI():
 				# button
 				self.ssB1 = QtGui.QPushButton("<", self)
 				self.ssB1.clicked.connect(self.selectSidesP)
-				self.ssB1.setFixedWidth(50)
-				self.ssB1.move(self.toolSW - 165, row)
+				self.ssB1.setFixedWidth(btsize)
+				self.ssB1.move(btcol1, row)
 				self.ssB1.setAutoRepeat(True)
 				
 				# label
 				self.ssIS = QtGui.QLabel("                  ", self)
-				self.ssIS.move(self.toolSW - 105, row+3)
+				self.ssIS.move(btcol2, row+3)
 								
 				# button
 				self.ssB2 = QtGui.QPushButton(">", self)
 				self.ssB2.clicked.connect(self.selectSidesN)
-				self.ssB2.setFixedWidth(50)
-				self.ssB2.move(self.toolSW - 60, row)
+				self.ssB2.setFixedWidth(btsize)
+				self.ssB2.move(btcol3, row)
 				self.ssB2.setAutoRepeat(True)
 
 				
@@ -393,8 +430,8 @@ def showQtGUI():
 				# text input
 				self.oDNumE = QtGui.QLineEdit(self)
 				self.oDNumE.setText(str(self.gDNum))
-				self.oDNumE.setFixedWidth(50)
-				self.oDNumE.move(self.toolSW - 60, row)
+				self.oDNumE.setFixedWidth(tfsize)
+				self.oDNumE.move(rside-tfsize, row)
 
 				# ############################################################################
 				# options - tenon long
@@ -408,9 +445,9 @@ def showQtGUI():
 
 				# text input
 				self.oTenonLE = QtGui.QLineEdit(self)
-				self.oTenonLE.setText(str(self.gTenonL))
-				self.oTenonLE.setFixedWidth(50)
-				self.oTenonLE.move(self.toolSW - 60, row)
+				self.oTenonLE.setText(MagicPanels.unit2gui(self.gTenonL))
+				self.oTenonLE.setFixedWidth(tfsize)
+				self.oTenonLE.move(rside-tfsize, row)
 
 				# ############################################################################
 				# options - dowels diameter & tenon thick
@@ -424,9 +461,9 @@ def showQtGUI():
 
 				# text input
 				self.oDDiameterE = QtGui.QLineEdit(self)
-				self.oDDiameterE.setText(str(self.gDDiameter))
-				self.oDDiameterE.setFixedWidth(50)
-				self.oDDiameterE.move(self.toolSW - 60, row)
+				self.oDDiameterE.setText(MagicPanels.unit2gui(self.gDDiameter))
+				self.oDDiameterE.setFixedWidth(tfsize)
+				self.oDDiameterE.move(rside-tfsize, row)
 
 				# label
 				self.oTenonTL = QtGui.QLabel(translate('magicDowels', 'Tenon thick:'), self)
@@ -434,9 +471,9 @@ def showQtGUI():
 
 				# text input
 				self.oTenonTE = QtGui.QLineEdit(self)
-				self.oTenonTE.setText(str(self.gTenonT))
-				self.oTenonTE.setFixedWidth(50)
-				self.oTenonTE.move(self.toolSW - 60, row)
+				self.oTenonTE.setText(MagicPanels.unit2gui(self.gTenonT))
+				self.oTenonTE.setFixedWidth(tfsize)
+				self.oTenonTE.move(rside-tfsize, row)
 
 				# ############################################################################
 				# options - dowels size & tenon depth
@@ -450,9 +487,9 @@ def showQtGUI():
 
 				# text input
 				self.oDSizeE = QtGui.QLineEdit(self)
-				self.oDSizeE.setText(str(self.gDSize))
-				self.oDSizeE.setFixedWidth(50)
-				self.oDSizeE.move(self.toolSW - 60, row)
+				self.oDSizeE.setText(MagicPanels.unit2gui(self.gDSize))
+				self.oDSizeE.setFixedWidth(tfsize)
+				self.oDSizeE.move(rside-tfsize, row)
 
 				# label
 				self.oTenonHL = QtGui.QLabel(translate('magicDowels', 'Tenon depth:'), self)
@@ -460,9 +497,9 @@ def showQtGUI():
 
 				# text input
 				self.oTenonHE = QtGui.QLineEdit(self)
-				self.oTenonHE.setText(str(self.gTenonH))
-				self.oTenonHE.setFixedWidth(50)
-				self.oTenonHE.move(self.toolSW - 60, row)
+				self.oTenonHE.setText(MagicPanels.unit2gui(self.gTenonH))
+				self.oTenonHE.setFixedWidth(tfsize)
+				self.oTenonHE.move(rside-tfsize, row)
 
 				# ############################################################################
 				# options - dowels sink
@@ -478,9 +515,9 @@ def showQtGUI():
 				
 				# text input
 				self.oDSinkE = QtGui.QLineEdit(self)
-				self.oDSinkE.setText(str(self.gDOFSSet))
-				self.oDSinkE.setFixedWidth(50)
-				self.oDSinkE.move(self.toolSW - 60, row)
+				self.oDSinkE.setText(MagicPanels.unit2gui(self.gDOFSSet))
+				self.oDSinkE.setFixedWidth(tfsize)
+				self.oDSinkE.move(rside-tfsize, row)
 
 				# ############################################################################
 				# options - offset from corner
@@ -494,9 +531,9 @@ def showQtGUI():
 
 				# text input
 				self.oDOCornerE = QtGui.QLineEdit(self)
-				self.oDOCornerE.setText(str(self.gDOCorner))
-				self.oDOCornerE.setFixedWidth(50)
-				self.oDOCornerE.move(self.toolSW - 60, row)
+				self.oDOCornerE.setText(MagicPanels.unit2gui(self.gDOCorner))
+				self.oDOCornerE.setFixedWidth(tfsize)
+				self.oDOCornerE.move(rside-tfsize, row)
 
 				# ############################################################################
 				# options - offset between dowels
@@ -512,9 +549,9 @@ def showQtGUI():
 				
 				# text input
 				self.oDONextE = QtGui.QLineEdit(self)
-				self.oDONextE.setText(str(self.gDONext))
-				self.oDONextE.setFixedWidth(50)
-				self.oDONextE.move(self.toolSW - 60, row)
+				self.oDONextE.setText(MagicPanels.unit2gui(self.gDONext))
+				self.oDONextE.setFixedWidth(tfsize)
+				self.oDONextE.move(rside-tfsize, row)
 
 				# ############################################################################
 				# options - offset from edge
@@ -528,9 +565,9 @@ def showQtGUI():
 
 				# text input
 				self.oDOEdgeE = QtGui.QLineEdit(self)
-				self.oDOEdgeE.setText(str(self.gDOFESet))
-				self.oDOEdgeE.setFixedWidth(50)
-				self.oDOEdgeE.move(self.toolSW - 60, row)
+				self.oDOEdgeE.setText(MagicPanels.unit2gui(self.gDOFESet))
+				self.oDOEdgeE.setFixedWidth(tfsize)
+				self.oDOEdgeE.move(rside-tfsize, row)
 
 				# ############################################################################
 				# options - keep custom settings checkbox
@@ -551,7 +588,7 @@ def showQtGUI():
 				# button
 				self.e1B1 = QtGui.QPushButton(translate('magicDowels', 'show custom settings'), self)
 				self.e1B1.clicked.connect(self.setCustomValues)
-				self.e1B1.setFixedWidth(self.toolSW - 20)
+				self.e1B1.setFixedWidth(area)
 				self.e1B1.setFixedHeight(40)
 				self.e1B1.move(10, row)
 				
@@ -564,7 +601,7 @@ def showQtGUI():
 				# button
 				self.e2B1 = QtGui.QPushButton(translate('magicDowels', 'create'), self)
 				self.e2B1.clicked.connect(self.setDowels)
-				self.e2B1.setFixedWidth(self.toolSW - 20)
+				self.e2B1.setFixedWidth(area)
 				self.e2B1.setFixedHeight(40)
 				self.e2B1.move(10, row)
 
@@ -1025,8 +1062,8 @@ def showQtGUI():
 				self.gSides = self.gSidesArr[self.gSidesIndex]
 				
 				# refresh text fields
-				self.oDOEdgeE.setText(str(self.gDOFESet))
-				self.oDSinkE.setText(str(self.gDOFSSet))
+				self.oDOEdgeE.setText(MagicPanels.unit2gui(self.gDOFESet))
+				self.oDSinkE.setText(MagicPanels.unit2gui(self.gDOFSSet))
 				
 				# refresh info screens
 				self.asIS.setText(str(self.gDOFSIndex+1) + " / " + str(len(self.gDOFSArr)))
@@ -1096,7 +1133,7 @@ def showQtGUI():
 					self.gDOFEArr.append(-self.gDOFESet)
 					self.gDOFEIndex = 0
 					self.gDOFESet = self.gDOFEArr[self.gDOFEIndex]
-					self.oDOEdgeE.setText(str(self.gDOFESet))
+					self.oDOEdgeE.setText(MagicPanels.unit2gui(self.gDOFESet))
 					self.aeIS.setText(str(self.gDOFEIndex+1) + " / " + str(len(self.gDOFEArr)))
 
 					self.gDNum = int((float(self.gEdge.Length) / 64) - 1)
@@ -1192,9 +1229,9 @@ def showQtGUI():
 					self.gTenonH = float(self.gThick)
 					self.gDSize = self.gTenonH
 					
-					self.oTenonLE.setText(str(self.gTenonL))
-					self.oTenonTE.setText(str(self.gTenonT))
-					self.oTenonHE.setText(str(self.gTenonH))
+					self.oTenonLE.setText(MagicPanels.unit2gui(self.gTenonL))
+					self.oTenonTE.setText(MagicPanels.unit2gui(self.gTenonT))
+					self.oTenonHE.setText(MagicPanels.unit2gui(self.gTenonH))
 					
 					# adjust edge
 					self.gDOFEArr = []
@@ -1229,7 +1266,7 @@ def showQtGUI():
 					self.gDOFEArr.append(-self.gDOFESet)
 					self.gDOFEIndex = 0
 					self.gDOFESet = self.gDOFEArr[self.gDOFEIndex]
-					self.oDOEdgeE.setText(str(self.gDOFESet))
+					self.oDOEdgeE.setText(MagicPanels.unit2gui(self.gDOFESet))
 					self.aeIS.setText(str(self.gDOFEIndex+1) + " / " + str(len(self.gDOFEArr)))
 
 				# ########################################################
@@ -1253,13 +1290,13 @@ def showQtGUI():
 
 				# set custom settings to GUI fields
 				self.oDowelLabelE.setText(str(self.gDowelLabel))
-				self.oDDiameterE.setText(str(self.gDDiameter))
-				self.oDSizeE.setText(str(self.gDSize))
-				self.oDSinkE.setText(str(self.gDOFSSet))
+				self.oDDiameterE.setText(MagicPanels.unit2gui(self.gDDiameter))
+				self.oDSizeE.setText(MagicPanels.unit2gui(self.gDSize))
+				self.oDSinkE.setText(MagicPanels.unit2gui(self.gDOFSSet))
 				self.oDNumE.setText(str(self.gDNum))
-				self.oDOCornerE.setText(str(self.gDOCorner))
-				self.oDONextE.setText(str(self.gDONext))
-				self.oDOEdgeE.setText(str(self.gDOFESet))
+				self.oDOCornerE.setText(MagicPanels.unit2gui(self.gDOCorner))
+				self.oDONextE.setText(MagicPanels.unit2gui(self.gDONext))
+				self.oDOEdgeE.setText(MagicPanels.unit2gui(self.gDOFESet))
 				
 				# show dowels with default settings after menu change
 				self.showDowels()
@@ -1272,8 +1309,9 @@ def showQtGUI():
 				self.faceinfo.setText(self.gNoSelection)
 		
 		# ############################################################################
-		def setMenuItem(self, selectedIndex):
+		def setMenuItem(self, selectedText):
 		
+			selectedIndex = getMenuIndex[selectedText]
 			self.setDowelsSettings(selectedIndex)
 
 		# ############################################################################
@@ -1283,16 +1321,16 @@ def showQtGUI():
 			
 				# set custom settings to GUI fields
 				self.gDowelLabel = str(self.oDowelLabelE.text())
-				self.gDDiameter = float(self.oDDiameterE.text())
-				self.gDSize = float(self.oDSizeE.text())
-				self.gDOFSSet = float(self.oDSinkE.text())
+				self.gDDiameter = MagicPanels.unit2value(self.oDDiameterE.text())
+				self.gDSize = MagicPanels.unit2value(self.oDSizeE.text())
+				self.gDOFSSet = MagicPanels.unit2value(self.oDSinkE.text())
 				self.gDNum = int(self.oDNumE.text())
-				self.gDOCorner = float(self.oDOCornerE.text())
-				self.gDONext = float(self.oDONextE.text())
-				self.gDOFESet = float(self.oDOEdgeE.text())
-				self.gTenonL = float(self.oTenonLE.text())
-				self.gTenonT = float(self.oTenonTE.text())
-				self.gTenonH = float(self.oTenonHE.text())
+				self.gDOCorner = MagicPanels.unit2value(self.oDOCornerE.text())
+				self.gDONext = MagicPanels.unit2value(self.oDONextE.text())
+				self.gDOFESet = MagicPanels.unit2value(self.oDOEdgeE.text())
+				self.gTenonL = MagicPanels.unit2value(self.oTenonLE.text())
+				self.gTenonT = MagicPanels.unit2value(self.oTenonTE.text())
+				self.gTenonH = MagicPanels.unit2value(self.oTenonHE.text())
 				
 				# show dowels with custom settings
 				self.showDowels()
@@ -1394,7 +1432,7 @@ def showQtGUI():
 					
 				self.gDOFESet = self.gDOFEArr[self.gDOFEIndex]
 				self.aeIS.setText(str(self.gDOFEIndex+1) + " / " + str(len(self.gDOFEArr)))
-				self.oDOEdgeE.setText(str(self.gDOFESet))
+				self.oDOEdgeE.setText(MagicPanels.unit2gui(self.gDOFESet))
 				
 				self.showDowels()
 			
@@ -1411,7 +1449,7 @@ def showQtGUI():
 					
 				self.gDOFESet = self.gDOFEArr[self.gDOFEIndex]
 				self.aeIS.setText(str(self.gDOFEIndex+1) + " / " + str(len(self.gDOFEArr)))
-				self.oDOEdgeE.setText(str(self.gDOFESet))
+				self.oDOEdgeE.setText(MagicPanels.unit2gui(self.gDOFESet))
 				
 				self.showDowels()
 			
@@ -1429,7 +1467,7 @@ def showQtGUI():
 					
 				self.gDOFSSet = self.gDOFSArr[self.gDOFSIndex]
 				self.asIS.setText(str(self.gDOFSIndex+1) + " / " + str(len(self.gDOFSArr)))
-				self.oDSinkE.setText(str(self.gDOFSSet))
+				self.oDSinkE.setText(MagicPanels.unit2gui(self.gDOFSSet))
 				
 				self.showDowels()
 			
@@ -1446,7 +1484,7 @@ def showQtGUI():
 					
 				self.gDOFSSet = self.gDOFSArr[self.gDOFSIndex]
 				self.asIS.setText(str(self.gDOFSIndex+1) + " / " + str(len(self.gDOFSArr)))
-				self.oDSinkE.setText(str(self.gDOFSSet))
+				self.oDSinkE.setText(MagicPanels.unit2gui(self.gDOFSSet))
 				
 				self.showDowels()
 			

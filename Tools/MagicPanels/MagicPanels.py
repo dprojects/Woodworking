@@ -32,6 +32,7 @@ __author__ = "Darek L (github.com/dprojects)"
 import FreeCAD, FreeCADGui
 from PySide import QtGui
 from PySide import QtCore
+from FreeCAD import Units
 
 translate = FreeCAD.Qt.translate
 
@@ -305,6 +306,8 @@ def showVertex(iVertices, iRadius=5, iColor="red"):
 		
 		if hasattr(v, "X"):
 			fv = FreeCAD.Vector(v.X, v.Y, v.Z)
+		elif hasattr(v, "x"):
+			fv = v
 		else:
 			fv = FreeCAD.Vector(v[0], v[1], v[2])
 		
@@ -5541,6 +5544,72 @@ def makeTenon(iSketch, iLength, iPad, iFace):
 
 # ###################################################################################################################
 '''
+# Units
+'''
+# ###################################################################################################################
+
+
+# ###################################################################################################################
+def unit2gui(iValue):
+	'''
+	Description:
+	
+		Allows to convert unit from value (mm float FreeCAD format) into gui user settings.
+
+	Args:
+
+		iValue: float from FreeCAD or from calculations
+		
+	Usage:
+
+		unitForUser = MagicPanels.unit2gui(300.55)
+		
+		# Note: if user has set inches units the unitForUser should contains recalculation to inches 
+		
+	Result:
+
+		string
+
+	'''
+
+	value = Units.Quantity( str(iValue) + " mm" )
+	userSettings = Units.getSchema()
+	forUser = Units.schemaTranslate(value, userSettings)[0]
+
+	return str(forUser)
+
+
+# ###################################################################################################################
+def unit2value(iString):
+	'''
+	Description:
+	
+		Allows to convert unit from user defines setting for example iches, ft into system calculation units.
+
+	Args:
+
+		iString: units string in user settings notation
+		
+	Usage:
+
+		forCalculation = MagicPanels.unit2value("0.06 ft")
+		
+		# Note: forCalculation will be 18.288
+		
+	Result:
+
+		float for calculation
+
+	'''
+
+
+	forCalculation = Units.Quantity(str(iString)).getValueAs("mm")
+
+	return float(forCalculation)
+
+
+# ###################################################################################################################
+'''
 # Colors
 '''
 # ###################################################################################################################
@@ -5708,7 +5777,7 @@ def setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
 
 	Result:
 
-		no return, setting color to the FreeCAD.Material structure
+		return empty string if everything is fine or string with error info
 
 	'''
 
@@ -5745,6 +5814,8 @@ def setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
 				if hasattr(m, attribute):
 					setattr(m, attribute, iColor[i])
 					initSA.append(m)
+				else:
+					return "wrong iAttribute attribute"
 
 			iObj.ViewObject.ShapeAppearance = tuple(initSA)
 			
@@ -5757,6 +5828,10 @@ def setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
 			if hasattr(m, attribute):
 				setattr(m, attribute, iColor)
 				iObj.ViewObject.ShapeAppearance = ( m )
+			else:
+				return "wrong iAttribute attribute"
+
+			return ""
 
 		# set color for face, if all faces has the same material structure
 		if iFaceIndex != 0 and num == 1:
@@ -5781,6 +5856,8 @@ def setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
 			setattr(m, attribute, iColor)
 			iObj.ViewObject.ShapeAppearance = sa
 
+			return ""
+
 		# set color for face, if all faces has its own material structure
 		if iFaceIndex != 0 and num != 1:
 			sa = iObj.ViewObject.ShapeAppearance
@@ -5788,9 +5865,13 @@ def setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
 			if hasattr(m, attribute):
 				setattr(m, attribute, iColor)
 				iObj.ViewObject.ShapeAppearance = sa
-
-		return ""
+			else:
+				return "wrong iAttribute attribute"
+			
+			return ""
 		
+		return "not settings found"
+
 	# support for FreeCAD 0.21.2 and below
 	else:
 		
@@ -5807,13 +5888,6 @@ def setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
 		if attribute == "Transparency":
 			iObj.ViewObject.Transparency = iColor
 			return ""
-		
-		# for example LinkGroup
-		if not hasattr(iObj.ViewObject, "DiffuseColor"):
-			if hasattr(iObj.ViewObject, "ShapeMaterial"):
-				if hasattr(iObj.ViewObject.ShapeMaterial, attribute):
-					setattr(iObj.ViewObject.ShapeMaterial, attribute, iColor)
-					return ""
 		
 		# set color for all faces
 		if type(iColor) is list:
@@ -5835,7 +5909,7 @@ def setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
 
 			iObj.ViewObject.DiffuseColor = initSA
 			return ""
-		
+
 		# fix for wrong alpha meaning in FreeCAD 0.21.2
 		# to keep backward compatibilty
 		[ r, g, b, a ] = iColor
@@ -5845,15 +5919,25 @@ def setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
 			colorToSet = tuple([ r, g, b, 1.0 ])
 		else:
 			colorToSet = tuple([ r, g, b, a ])
+
+		# for example LinkGroup
+		if not hasattr(iObj.ViewObject, "DiffuseColor"):
+			if hasattr(iObj.ViewObject, "ShapeMaterial"):
+				if hasattr(iObj.ViewObject.ShapeMaterial, attribute):
+					setattr(iObj.ViewObject.ShapeMaterial, attribute, colorToSet)
+					return ""
 		
 		# set color for object
 		if iFaceIndex == 0:
 			iObj.ViewObject.ShapeColor = colorToSet
+			iObj.ViewObject.DiffuseColor = colorToSet
+			return ""
 		
 		# set color for single face
 		num = len(iObj.ViewObject.DiffuseColor)
 		
-		if num == 1:
+		# all faces has the same color but want to set single face only
+		if iFaceIndex != 0 and num == 1:
 			
 			color = iObj.ViewObject.DiffuseColor[0]
 			init = []
@@ -5865,13 +5949,17 @@ def setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
 			colors = iObj.ViewObject.DiffuseColor
 			colors[iFaceIndex-1] = colorToSet
 			iObj.ViewObject.DiffuseColor = colors
+			return ""
 
-		else: 
+		# multi color faces but want to set single face only
+		if iFaceIndex != 0 and num != 1:
+			
 			colors = iObj.ViewObject.DiffuseColor
 			colors[iFaceIndex-1] = colorToSet
 			iObj.ViewObject.DiffuseColor = colors
+			return ""
 
-		return ""
+		return "not settings found"
 
 
 # ###################################################################################################################

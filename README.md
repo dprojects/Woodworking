@@ -1,5 +1,13 @@
 The Woodworking workbench started as a simple cut-list, as a macro for FreeCAD. However, Woodworking workbench now has so many additional tools, features and simplifications that it can be considered as a new CAD program based only on the FreeCAD kernel. The Woodworking workbench is mainly intended to make cabinet creation more simple, although it has many solutions to speed up and make more simple typical carpentry work and other CAD projects. I hope you will find something for yourself here.
 
+**Key features:**
+* Fast process of creating the main structure of the furniture with automatic recognition of the thickness of the elements, via [magicStart](https://github.com/dprojects/Woodworking/tree/master/Docs#how-to-start---magicstart) and other tools.
+* Quick process of adding dowels and other mounting elements, screws, minifix via [magicDowels](https://github.com/dprojects/Woodworking/tree/master/Docs#magicdowels).
+* Quick process of drilling holes according to the defined 32 mm furniture system via [magicDriller](https://github.com/dprojects/Woodworking/tree/master/Docs#magicdriller).
+* Automatic parameterization on demend via [magicGlue](https://github.com/dprojects/Woodworking/tree/master/Docs#magicglue) tool, no spreadsheet, no VarSet, no inventing mathematical formulas, no Assembly workbench.
+* Automatic cut-list after design via [getDimensions](https://github.com/dprojects/Woodworking/tree/master/Docs#getdimensions---cut-list-bom-creation-tool) tool and export to format csv, json, html, markdown via [sheet2export](https://github.com/dprojects/Woodworking/tree/master/Docs#sheet2export).
+* Full support for any metric system settings (inches, ft, mm) in all tools.
+
 ![intro](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/intro.gif)
 
 # Quick start

@@ -724,7 +724,9 @@ def showQtGUI():
 		def getSelected(self):
 
 			try:
-
+				
+				self.sColors.setCurrentIndex(0)
+			
 				self.gObjArr = []
 				self.gFaceArr = dict()
 				
@@ -1090,6 +1092,9 @@ def showQtGUI():
 			# get current index
 			selectedIndex = getMenuIndex1[selectedText]
 			
+			# set predefined schema to default state
+			self.sColors.setCurrentIndex(0)
+			
 			# set color target, do not get it from translation
 			if selectedIndex == 0:
 				self.gColorTarget = "DiffuseColor"
@@ -1154,15 +1159,16 @@ def showQtGUI():
 				self.oStepSingleE.show()
 				
 				self.oCustomB.show()
-		
-			# set predefined schema to default state
-			self.sColors.setCurrentIndex(0)
 			
 		# ############################################################################
 		def setPredefinedColors(self, selectedText):
 			
 			# get selection index and set screen size
 			selectedIndex = getMenuIndex2[selectedText]
+			
+			# skip if reset selection
+			if selectedIndex == 0:
+				return ""
 			
 			# set default color structure, [ RGB int, alpha float ]
 			Material = { 

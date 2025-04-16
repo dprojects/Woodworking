@@ -185,8 +185,7 @@ def getItems(iType):
 			"getDimensions",
 			"Std_Print",
 			"sheet2export",
-			"showSpaceModel",
-			"showSpaceSelected",
+			"showOccupiedSpace",
 			"magicMeasure"
 		]
 
