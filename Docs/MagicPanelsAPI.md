@@ -1780,6 +1780,47 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 
 		Make Tenon and return new object and face reference for GUI info screen update and further processing
 
+# Units
+### unit2gui(iValue):
+
+	Description:
+	
+		Allows to convert unit from value (mm float FreeCAD format) into gui user settings.
+
+##### Description:
+
+		iValue: float from FreeCAD or from calculations
+		
+##### Usage:
+
+		unitForUser = MagicPanels.unit2gui(300.55)
+		
+		# Note: if user has set inches units the unitForUser should contains recalculation to inches 
+		
+##### Result:
+
+		string
+
+### unit2value(iString):
+
+	Description:
+	
+		Allows to convert unit from user defines setting for example iches, ft into system calculation units.
+
+##### Description:
+
+		iString: units string in user settings notation
+		
+##### Usage:
+
+		forCalculation = MagicPanels.unit2value("0.06 ft")
+		
+		# Note: forCalculation will be 18.288
+		
+##### Result:
+
+		float for calculation
+
 # Colors
 ### getColor(iObj, iFaceIndex, iAttribute="color"):
 
@@ -1856,7 +1897,7 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 
 ##### Result:
 
-		no return, setting color to the FreeCAD.Material structure
+		return empty string if everything is fine or string with error info
 
 ### copyColors(iSource, iTarget):
 

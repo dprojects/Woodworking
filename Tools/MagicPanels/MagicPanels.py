@@ -5572,6 +5572,7 @@ def unit2gui(iValue):
 
 	'''
 
+
 	value = Units.Quantity( str(iValue) + " mm" )
 	userSettings = Units.getSchema()
 	forUser = Units.schemaTranslate(value, userSettings)[0]
@@ -5603,7 +5604,16 @@ def unit2value(iString):
 	'''
 
 
-	forCalculation = Units.Quantity(str(iString)).getValueAs("mm")
+	unitString = iString
+	if Units.getSchema() == 0:
+		try:
+			float(unitString)
+			int(unitString)
+			unitString = str(unitString) + " mm"
+		except:
+			skip = 1
+
+	forCalculation = Units.Quantity(str(unitString)).getValueAs("mm")
 
 	return float(forCalculation)
 
