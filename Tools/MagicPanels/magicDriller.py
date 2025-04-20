@@ -55,7 +55,7 @@ def showQtGUI():
 		gDBSize = 35
 		gDBNum = 2
 		gDBOCorner = 50
-		gDBONext = 32
+		gDBONext = 64
 		gDBOEdge = 0
 		gDBSink = 0 # used for pocket holes only
 		
@@ -1115,7 +1115,7 @@ def showQtGUI():
 						self.gDBSize = 40 - self.gThick
 						self.gDBNum = 2
 						self.gDBOCorner = 50
-						self.gDBONext = 32
+						self.gDBONext = 64
 
 					if selectedText == "Screw 4 x 40 mm ":
 						self.gDBDiameter = 3
@@ -1123,23 +1123,23 @@ def showQtGUI():
 						self.gDBSize = 40 - self.gThick
 						self.gDBNum = 2
 						self.gDBOCorner = 50
-						self.gDBONext = 32
+						self.gDBONext = 64
 
 					if selectedText == "Screw 5 x 50 mm ":
 						self.gDBDiameter = 4
 						self.gDBDiameter2 = 10
 						self.gDBSize = 50 - self.gThick
-						self.gDBNum = 1
+						self.gDBNum = 2
 						self.gDBOCorner = 50
-						self.gDBONext = 32
+						self.gDBONext = 64
 
 					if selectedText == "Screw 6 x 60 mm ":
 						self.gDBDiameter = 5
 						self.gDBDiameter2 = 10
 						self.gDBSize = 60 - self.gThick
-						self.gDBNum = 1
+						self.gDBNum = 2
 						self.gDBOCorner = 50
-						self.gDBONext = 32
+						self.gDBONext = 64
 
 				else:
 				
@@ -1149,7 +1149,7 @@ def showQtGUI():
 						self.gDBSize = 40
 						self.gDBNum = 2
 						self.gDBOCorner = 50
-						self.gDBONext = 32
+						self.gDBONext = 64
 
 					if selectedText == "Screw 4 x 40 mm ":
 						self.gDBDiameter = 3
@@ -1157,23 +1157,23 @@ def showQtGUI():
 						self.gDBSize = 40
 						self.gDBNum = 2
 						self.gDBOCorner = 50
-						self.gDBONext = 32
+						self.gDBONext = 64
 
 					if selectedText == "Screw 5 x 50 mm ":
 						self.gDBDiameter = 4
 						self.gDBDiameter2 = 10
 						self.gDBSize = 50
-						self.gDBNum = 1
+						self.gDBNum = 2
 						self.gDBOCorner = 50
-						self.gDBONext = 32
+						self.gDBONext = 64
 
 					if selectedText == "Screw 6 x 60 mm ":
 						self.gDBDiameter = 5
 						self.gDBDiameter2 = 10
 						self.gDBSize = 60
-						self.gDBNum = 1
+						self.gDBNum = 2
 						self.gDBOCorner = 50
-						self.gDBONext = 32
+						self.gDBONext = 64
 					
 				if selectedText == "Shelf Pin 5 x 16 mm ":
 					self.gDBDiameter = 5

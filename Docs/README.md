@@ -128,6 +128,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 	* [panel2pad](#panel2pad)
 * [Code and Debug](#code-and-debug)
 	* [scanObjects](#scanobjects)
+	* [showPlacement](#showplacement)
 	* [debugInfo](#debuginfo)
 * [API for developers](#api-for-developers)
 
@@ -150,6 +151,9 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 0.23 stable:**
 
+    * improve copy PartDesign object (magicMove, MagicPanels)
+    * kitchen cabinet US style with vertical face frame (magicStart)
+    * vertical face frame (magicStart)
     * support for user units settings (inches, ft, mm, etc...)
     * replace colorManager with magicColors tool with more color options
     * support for new FreeCAD 1.0+ color schema
@@ -249,10 +253,12 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * Simple storage ( face frame, no front, back HDF )
 * Simple bookcase ( no front, back HDF )
 * Simple bookcase ( face frame, no front, back HDF )
+* Kitchen cabinet ( US style )
 * Modular storage ( front outside, 3 modules )
 * Bookcase ( import parametric )
 
 **Video tutorials:** 
+* [How to create "kick toe" in kitchen cabinet](https://www.youtube.com/watch?v=aLZh3mH-OH8)
 * [Furniture creation tool](https://www.youtube.com/watch?v=lHQ1J9Nahcs)
 * [How to build complex furniture from modules](https://www.youtube.com/watch?v=SUm_N2rjXbs)
 
@@ -272,9 +278,10 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 
 ## Face Frame for cabinets
 
-* Face Frame outside ( frame around )
-* Face Frame outside ( frame with center )
-* Face Frame outside ( frame for custom changes )
+* Face Frame ( horizontal, around )
+* Face Frame ( horizontal, with center )
+* Face Frame ( horizontal, for custom changes )
+* Face Frame ( vertical, for custom changes )
 
 **Video tutorials:** 
 * [How to add Face Frame to the furniture](https://www.youtube.com/watch?v=CtWfvxd4UmI)
@@ -488,7 +495,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
   * `move` set equal space between all selected objects along X, Y or Z coordinate axis. 
   
 * **Copy:** In this mode you can copy any object with custom offset. For example you can quickly create shelves with equal space or garden floor from small panels.
-  * `auto` by default, if the object is `Cube` the `copyObject` will be used, otherwise `Clone` will be created.
+  * `auto` by default, if the object is `Cube` the `copyObject` will be used, otherwise `Clone` will be created. In this mode if you select PartDesign object, the Clone will be created from Body object in order to avoid PartDesign object destroy.
   * `copyObject` good for simple objects like `Cube`.
   * `Clone` is useful if you want to make copy of `Body` or `Part` with many Bodies.
   * `Link` if you want to copy `LinkGroup` and generate cut-list, it is better to set this copy option, not `copyObject`. 
@@ -497,7 +504,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
   * buttons: `X-`, `X+`, `Y-`, `Y+`, `Z-`, `Z+` copy object into the chosen axis direction, there is auto-repeat so you can hold the button to copy objects more quickly.
 
 * **Copy by Edge:** In this mode you can copy any object but using selected edge as position reference. This feature allows you, for example, to copy part of the furniture without further positioning each element one by one.
-  * `auto` by default, if the object is `Cube` the `copyObject` will be used, otherwise `Clone` will be created.
+  * `auto` by default, if the object is `Cube` the `copyObject` will be used, otherwise `Clone` will be created. In this mode if you select PartDesign object, the Clone will be created from Body object in order to avoid PartDesign object destroy.
   * `copyObject` good for simple objects like `Cube`.
   * `Clone` is useful if you want to make copy of `Body` or `Part` with many Bodies.
   * `Link` if you want to copy `LinkGroup` and generate cut-list, it is better to set this copy option, not `copyObject`. 
@@ -1717,6 +1724,13 @@ Tool repository: [github.com/dprojects/scanObjects](https://github.com/dprojects
 **Video tutorials:** 
 * [Debugger, Live API](https://www.youtube.com/watch?v=nFK_o95y6xk)
 * [Debugger, Search filter](https://www.youtube.com/watch?v=5h_feMn_lsQ)
+
+
+## showPlacement
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showPlacement.png"> This tool allows to see objects anchor placement for selected objects or for all objects, if nothing was selected. To select more objects hold left CTRL key during selection. This tool creates a ball in the default anchor for an object, which corresponds to the X, Y, Z coordinates for the Placement attribute. This allows you to quickly see where the object is anchored and to which vertex it is positioned by default. Additionally, it allows you to quickly check for possible problems with the function of calculating the global position of the object and to further improve it for more complex objects. Unfortunately, FreeCAD has not solved the basic problem with object position for so many years, which means that more complex objects do not know their position and cannot be managed.
+
+<br><br><br>
 
 ## debugInfo
 

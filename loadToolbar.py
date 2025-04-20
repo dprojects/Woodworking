@@ -206,6 +206,7 @@ def getItems(iType):
 		
 		parts = [
 			"scanObjects",
+			"showPlacement",
 			"debugInfo",
 			"Std_DependencyGraph",
 			"Std_DlgMacroRecord",

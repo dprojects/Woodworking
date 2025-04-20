@@ -94,7 +94,7 @@ class SelectionObserver:
 			
 			gGUI.moi.setText(str(label) + ", " + str(sub))
 			gGUI.moi.setText(str(obj) + ", " + str(sub))
-			gGUI.mos.setPlainText("Size:" + " " + str(size))
+			gGUI.mos.setPlainText("Size:" + " " + MagicPanels.unit2gui(size))
 			
 			if gPSMMode == True:
 				m = MagicPanels.showMeasure(p1, p2, str(o.Label) + ", " + str(sub))
@@ -112,7 +112,7 @@ class SelectionObserver:
 			
 			gGUI.moi.setText(str(label) + ", " + str(sub))
 			gGUI.moi.setText(str(obj) + ", " + str(sub))
-			gGUI.mos.setPlainText("Size:" + " " + str(size))
+			gGUI.mos.setPlainText("Size:" + " " + MagicPanels.unit2gui(size))
 			
 			if gPSMMode == True:
 				m = MagicPanels.showMeasure(p1, p2, str(o.Label) + ", " + str(sub))
@@ -151,7 +151,7 @@ class SelectionObserver:
 				
 			# screen update
 			
-			size = str(s1) + ", " + str(s2)
+			size = MagicPanels.unit2gui(s1) + ", " + MagicPanels.unit2gui(s2)
 	
 			gGUI.moi.setText(str(label) + ", " + str(sub))
 			gGUI.moi.setText(str(obj) + ", " + str(sub))
@@ -197,7 +197,7 @@ class SelectionObserver:
 			if i != 1:
 				size += " x "
 			
-			size += s
+			size += MagicPanels.unit2gui(s)
 			
 			if gPSMMode == True:
 				if not s in preselection.keys():
@@ -280,7 +280,7 @@ class SelectionObserver:
 		
 		gGUI.moi.setText(str(label) + ", " + str(sub))
 		gGUI.moi.setText(str(obj) + ", " + str(sub))
-		gGUI.mos.setPlainText("Size:" + " " + str(size))
+		gGUI.mos.setPlainText("Size:" + " " + MagicPanels.unit2gui(size))
 		
 		m = MagicPanels.showMeasure(gP1, gP2, str(o.Label) + ", " + str(sub))
 		resetGlobals()
@@ -331,7 +331,7 @@ class SelectionObserver:
 		
 		gGUI.moi.setText(str(label) + ", " + str(sub))
 		gGUI.moi.setText(str(obj) + ", " + str(sub))
-		gGUI.mos.setPlainText("Size:" + " " + str(size))
+		gGUI.mos.setPlainText("Size:" + " " + MagicPanels.unit2gui(size))
 		
 		m = MagicPanels.showMeasure(gP1, gP2, str(o.Label) + ", " + str(sub))
 		resetGlobals()
@@ -629,14 +629,14 @@ def showQtGUI():
 			try:
 				resetGlobals()
 				
-				# support for FreeCAD 0.21.2
-				try:
+				# support for FreeCAD 1.0+
+				if MagicPanels.gKernelVersion >= 1.0:
+					import Draft
 					Viewer = FreeCADGui.ActiveDocument.ActiveView.getViewer()
 					UserState = Viewer.getSceneGraph().highlightMode.getValue()
-					
-				# support for FreeCAD 1.0+
-				except:
-					import Draft
+				
+				# support for FreeCAD 0.21.2
+				else:
 					Viewer = FreeCADGui.ActiveDocument.ActiveView.getViewer()
 					UserState = Viewer.getSceneGraph().highlightMode.getValue()
 				

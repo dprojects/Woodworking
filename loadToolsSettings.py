@@ -221,6 +221,7 @@ Tools = [
 	# #################################################################################################################################
 
 	"", "scanObjects", "png", "scanObjects", "Inspection tool for FreeCAD macro development & project debug (live API).",
+	"MagicPanels", "showPlacement", "png", "showPlacement", "Allows to see objects anchor placement for selected objects or for all objects, if nothing was selected. Also allows for quick global placement function debugging and further improvements.",
 	"", "debugInfo", "png", "debugInfo", "This tool shows installation information and allows to update if there is new version available.",
 
 	# #################################################################################################################################

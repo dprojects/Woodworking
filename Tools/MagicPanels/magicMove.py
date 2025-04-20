@@ -805,14 +805,7 @@ def showQtGUI():
 				if iType == "Zm":
 					z = - self.gStep
 				
-				# move PartDesign objects via Body container by default 
-				# to avoid Sketch and decoration movement
-				toMove = o
-				try:
-					toMove = o._Body
-				except:
-					skip = 1
-				
+				toMove = MagicPanels.getObjectToMove(o)
 				[ px, py, pz, r ] = MagicPanels.getContainerPlacement(toMove, "clean")
 				MagicPanels.setContainerPlacement(toMove, px+x, py+y, pz+z, 0, "clean")
 
@@ -920,24 +913,26 @@ def showQtGUI():
 				
 				[ sizeX, sizeY, sizeZ ] = MagicPanels.getSizesFromVertices(o)
 				
-				oRef = MagicPanels.getReference(o)
-				toMove = MagicPanels.getObjectToMove(oRef)
+				toMove = MagicPanels.getObjectToMove(o)
 				[ X, Y, Z, R ] = MagicPanels.getContainerPlacement(toMove, "clean")
+				
+				[ oX, oY, oZ ] = [ 0, 0, 0 ]
+				if not toMove.isDerivedFrom("Part::Box"):
+					[ oX, oY, oZ ] = MagicPanels.adjustClonePosition(toMove, X, Y, Z)
 
 				if iType == "X":
-					X = start + ((i + 1) * offset) + (i * sizeX)
+					X = oX + start + ((i + 1) * offset) + (i * sizeX)
 				
 				if iType == "Y":
-					Y = start + ((i + 1) * offset) + (i * sizeY)
+					Y = oY + start + ((i + 1) * offset) + (i * sizeY)
 				
 				if iType == "Z":
-					Z = start + ((i + 1) * offset) + (i * sizeZ)
+					Z = oZ + start + ((i + 1) * offset) + (i * sizeZ)
 				
 				MagicPanels.setContainerPlacement(toMove, X, Y, Z, 0, "clean")
 				i = i + 1
 
 			FreeCAD.ActiveDocument.recompute()
-				
 		
 		# ############################################################################
 		def createCopy(self, iType):
@@ -949,14 +944,20 @@ def showQtGUI():
 
 				self.gStep = MagicPanels.unit2value(self.o4E.text())
 				
-				if self.gCopyType == 0:
-					copy = MagicPanels.copyPanel([ o ], "copyObject")[0]
-				if self.gCopyType == 1:
-					copy = MagicPanels.copyPanel([ o ], "Clone")[0]
-				if self.gCopyType == 2:
-					copy = MagicPanels.copyPanel([ o ], "Link")[0]
+				# get object to copy to avoid PartDesign object destruction (only in auto mode)
 				if self.gCopyType == 3:
-					copy = MagicPanels.copyPanel([ o ], "auto")[0]
+					toCopy = MagicPanels.getObjectToCopy(o)
+				else:
+					toCopy = o
+				
+				if self.gCopyType == 0:
+					copy = MagicPanels.copyPanel([ toCopy ], "copyObject")[0]
+				if self.gCopyType == 1:
+					copy = MagicPanels.copyPanel([ toCopy ], "Clone")[0]
+				if self.gCopyType == 2:
+					copy = MagicPanels.copyPanel([ toCopy ], "Link")[0]
+				if self.gCopyType == 3:
+					copy = MagicPanels.copyPanel([ toCopy ], "auto")[0]
 				
 				# create new container with copy inside
 				if self.gNewContainerON == True:
@@ -964,7 +965,7 @@ def showQtGUI():
 					self.gContainerRef = container
 					self.gNewContainerON = False
 					self.gNewContainerB1.setDisabled(False)
-					MagicPanels.moveToParent([ container ], o)
+					MagicPanels.moveToParent([ container ], toCopy)
 				
 				# move copy to container if there is current container
 				else:
@@ -992,10 +993,7 @@ def showQtGUI():
 				MagicPanels.setContainerPlacement(copy, x, y, z, 0, "clean")
 				FreeCAD.ActiveDocument.recompute()
 				
-				try:
-					MagicPanels.copyColors(o, copy)
-				except:
-					skip = 1
+				MagicPanels.copyColors(toCopy, copy)
 
 				[ 	self.gLCPX[key], 
 					self.gLCPY[key], 
@@ -1003,7 +1001,7 @@ def showQtGUI():
 					self.gLCPR[key] ] = MagicPanels.getContainerPlacement(copy, "clean")
 				
 				if self.gContainerRef == "root":
-					MagicPanels.moveToParent([ copy ], o)
+					MagicPanels.moveToParent([ copy ], toCopy)
 
 		# ############################################################################
 		def setCopyByEdge(self):
@@ -1028,85 +1026,91 @@ def showQtGUI():
 			
 			for o in self.gObjects:
 				
-				[ sizex, sizey, sizez ] = MagicPanels.getSizesFromVertices(o)
-				[ x, y, z, r ] = MagicPanels.getGlobalPlacement(o, "BoundBox")
+				# get object to copy to avoid PartDesign object destruction (only in auto mode)
+				if self.gCopyType == 3:
+					toCopy = MagicPanels.getObjectToCopy(o)
+				else:
+					toCopy = o
+				
+				# first create copy in the same place as base object
+				if self.gCopyType == 0:
+					copy = MagicPanels.copyPanel([ toCopy ], "copyObject")[0]
+				if self.gCopyType == 1:
+					copy = MagicPanels.copyPanel([ toCopy ], "Clone")[0]
+				if self.gCopyType == 2:
+					copy = MagicPanels.copyPanel([ toCopy ], "Link")[0]
+				if self.gCopyType == 3:
+					copy = MagicPanels.copyPanel([ toCopy ], "auto")[0]
+
+				copy.recompute()
+				
+				# get global placement from the copy to be sure it is supported object type
+				[ X, Y, Z ] = MagicPanels.getPosition(copy, "global")
+				[ sizeX, sizeY, sizeZ ] = MagicPanels.getSizes(copy)
+				
+				# calculate offset but from the already created copy not from 
+				# base object to avoid global placement FreeCAD unsolved problem
+				[ ox, oy, oz ] = [ 0, 0, 0 ]
 				
 				if iType == "X":
 					
 					ex = float(self.gCBEEdge.CenterOfMass.x)
-					diff = abs(ex - x)
+					diff = abs(ex - X)
+					mirror = 2 * diff
 				
 					# copy from left side to right
-					if x < ex:
-						x = ex + diff - sizex
-						x = x + offset
-					
+					if X < ex:
+						ox = mirror - sizeX + offset
+
 					# copy from right side to left
 					else:
-						x = ex - diff - sizex
-						x = x - offset
+						ox = - mirror - sizeX - offset
 					
 				if iType == "Y":
 					
 					ey = float(self.gCBEEdge.CenterOfMass.y)
-					diff = abs(ey - y)
+					diff = abs(ey - Y)
+					mirror = 2 * diff
 					
 					# copy from left side to right
-					if y < ey:
-						y = ey + diff - sizey
-						y = y + offset
+					if Y < ey:
+						oy = mirror - sizeY + offset
 					
 					# copy from right side to left
 					else:
-						y = ey - diff - sizey
-						y = y - offset
+						oy = - mirror - sizeY - offset
 					
 				if iType == "Z":
 					
 					ez = float(self.gCBEEdge.CenterOfMass.z)
-					diff = abs(ez - z)
+					diff = abs(ez - Z)
+					mirror = 2 * diff
 
 					# copy from left side to right
-					if z < ez:
-						z = ez + diff - sizez
-						z = z + offset
+					if Z < ez:
+						oz = mirror - sizeZ + offset
 					
 					# copy from right side to left
 					else:
-						z = ez - diff - sizez
-						z = z - offset
-					
-				if self.gCopyType == 0:
-					copy = MagicPanels.copyPanel([ o ], "copyObject")[0]
-				if self.gCopyType == 1:
-					copy = MagicPanels.copyPanel([ o ], "Clone")[0]
-				if self.gCopyType == 2:
-					copy = MagicPanels.copyPanel([ o ], "Link")[0]
-				if self.gCopyType == 3:
-					copy = MagicPanels.copyPanel([ o ], "auto")[0]
+						oz = - mirror - sizeZ - offset
 				
-				if not o.isDerivedFrom("Part::Box"):
-					if self.gCopyType == 1 or self.gCopyType == 3:
-						[ x, y, z ] = MagicPanels.adjustClonePosition(o, x, y, z)
-
-				MagicPanels.setContainerPlacement(copy, x, y, z, 0, "clean")
+				# set only offset to the copy
+				MagicPanels.setPosition(copy, ox, oy, oz, "offset")
 				FreeCAD.ActiveDocument.recompute()
 				
-				try:
-					MagicPanels.copyColors(o, copy)
-				except:
-					skip = 1
-
-				MagicPanels.moveToParent([ copy ], o)
+				MagicPanels.copyColors(toCopy, copy)
+				MagicPanels.moveToParent([ copy ], toCopy)
 
 			FreeCAD.ActiveDocument.recompute()
 		
 		# ############################################################################
 		def setLastPathPosition(self):
 			for o in self.gObjects:
-				key = str(o.Name)
 				
-				[ x, y, z, r ] = MagicPanels.getContainerPlacement(o, "clean")
+				key = str(o.Name)
+				toCopy = MagicPanels.getObjectToMove(o)
+				
+				[ x, y, z, r ] = MagicPanels.getContainerPlacement(toCopy, "clean")
 				v = FreeCAD.Vector(x, y, z)
 				inside = self.gCopyPathObj.Shape.isInside(v, 0, True)
 				
@@ -1178,14 +1182,16 @@ def showQtGUI():
 				y = self.gCopyPathPoints[index].y
 				z = self.gCopyPathPoints[index].z
 				
+				toCopy = MagicPanels.getObjectToMove(o)
+					
 				if self.gCopyType == 0:
-					copy = MagicPanels.copyPanel([ o ], "copyObject")[0]
+					copy = MagicPanels.copyPanel([ toCopy ], "copyObject")[0]
 				if self.gCopyType == 1:
-					copy = MagicPanels.copyPanel([ o ], "Clone")[0]
+					copy = MagicPanels.copyPanel([ toCopy ], "Clone")[0]
 				if self.gCopyType == 2:
-					copy = MagicPanels.copyPanel([ o ], "Link")[0]
+					copy = MagicPanels.copyPanel([ toCopy ], "Link")[0]
 				if self.gCopyType == 3:
-					copy = MagicPanels.copyPanel([ o ], "auto")[0]
+					copy = MagicPanels.copyPanel([ toCopy ], "auto")[0]
 
 				# create new container with copy inside
 				if self.gNewContainerON == True:
@@ -1193,16 +1199,16 @@ def showQtGUI():
 					self.gContainerRef = container
 					self.gNewContainerON = False
 					self.gNewContainerB1.setDisabled(False)
-					MagicPanels.moveToParent([ container ], o)
+					MagicPanels.moveToParent([ container ], toCopy)
 				
 				# move copy to container if there is current container
 				else:
 					if self.gContainerRef != "root":
 						MagicPanels.moveToContainer([ copy ], self.gContainerRef)
 
-				if not o.isDerivedFrom("Part::Box"):
+				if not toCopy.isDerivedFrom("Part::Box"):
 					if self.gCopyType == 1 or self.gCopyType == 3:
-						[ x, y, z ] = MagicPanels.adjustClonePosition(o, x, y, z)
+						[ x, y, z ] = MagicPanels.adjustClonePosition(toCopy, x, y, z)
 
 				MagicPanels.setContainerPlacement(copy, x, y, z, 0, "clean")
 				FreeCAD.ActiveDocument.recompute()
@@ -1218,11 +1224,7 @@ def showQtGUI():
 				copy.Placement.Rotation = self.gCopyPathRotation[key] * rotX * rotY * rotZ
 				self.gCopyPathRotation[key] = copy.Placement.Rotation
 				
-				try:
-					MagicPanels.copyColors(o, copy)
-				except:
-					skip = 1
-
+				MagicPanels.copyColors(toCopy, copy)
 				FreeCAD.ActiveDocument.recompute()
 				
 				# set next position
@@ -1231,7 +1233,7 @@ def showQtGUI():
 				self.gCopyPathInit[key] = True
 
 				if self.gContainerRef == "root":
-					MagicPanels.moveToParent([ copy ], o)
+					MagicPanels.moveToParent([ copy ], toCopy)
 
 		# ############################################################################
 		def setMirrorPoint(self):

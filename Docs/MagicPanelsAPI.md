@@ -17,10 +17,10 @@ Functions at this library:
 # Globals
 
 
-gRoundPrecision = 2      # should be set according to the user FreeCAD GUI settings
-gSearchDepth = 200       # recursive search depth
-gKernelVersion = 0       # FreeCAD version to add support for new kernel changes
-gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0) # default color
+gRoundPrecision = 2      # should be set according to the user FreeCAD GUI settings <br>
+gSearchDepth = 200       # recursive search depth <br>
+gKernelVersion = 0       # FreeCAD version to add support for new kernel changes <br>
+gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0) # default color <br>
 
 # Functions for general purpose
 ### isType(iObj, iType):
@@ -111,6 +111,89 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 	
 		return normalized version for comparison if b1 == b2: you can set your own precision here
 
+# References
+### getReference(iObj="none"):
+
+	Description:
+	
+		Gets reference to the selected or given object.
+	
+##### Description:
+	
+		iObj (optional): object to get reference (to return base object)
+	
+##### Usage:
+	
+		gObj = MagicPanels.getReference()
+		gObj = MagicPanels.getReference(obj)
+		
+##### Result:
+	
+		gObj - reference to the base object
+
+# Sizes
+### getSizes(iObj):
+
+	Description:
+	
+		Allows to get sizes for object (iObj), according to the object type. 
+		The values are not sorted.
+	
+##### Description:
+	
+		iObj: object to get sizes
+
+##### Usage:
+	
+		[ size1, size2, size3 ] = MagicPanels.getSizes(obj)
+
+##### Result:
+	
+		Returns [ Length, Width, Height ] for Cube.
+
+### getSizesFromVertices(iObj):
+
+	Description:
+	
+		Gets occupied space by the object from vertices.
+	
+##### Description:
+	
+		iObj: object
+	
+##### Usage:
+	
+		[ sx, sy, sz ] = MagicPanels.getSizesFromVertices(obj)
+
+##### Result:
+	
+		Returns array with [ mX, mY, mZ ] where: 
+		mX - occupied space along X axis
+		mY - occupied space along Y axis
+		mZ - occupied space along Z axis
+
+### getSizesFromBoundBox(iObj):
+
+	Description:
+	
+		Gets occupied space by the object from BoundBox. This can be useful for round shapes, 
+		where is no vertices at object edges, e.g. cylinders, circle at Sketch.
+	
+##### Description:
+	
+		iObj: object
+	
+##### Usage:
+	
+		[ sx, sy, sz ] = MagicPanels.getSizesFromVertices(obj)
+
+##### Result:
+	
+		Returns array with [ mX, mY, mZ ] where: 
+		mX - occupied space along X axis
+		mY - occupied space along Y axis
+		mZ - occupied space along Z axis
+
 # Copy
 ### copyPanel(iObjects, iType="auto"):
 
@@ -140,153 +223,43 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 ##### Result:
 	
 		return array with copies
-# Vertices
-### showVertex(iVertices, iRadius=5, iColor="red"):
+### getObjectToCopy(iObj):
 
 	Description:
 	
-		Create sphere at given vertices, to show where are the points for debug purposes.
+		This function returns object to copy.
 	
 ##### Description:
 	
-		iVertices: array with Vertex or floats objects
-		iRadius (optional): ball Radius
-		iColor: string "red", "green", "blue", or color tuple like (1.0, 0.0, 0.0, 0.0)
+		iObj: object to get reference to copy
 
 ##### Usage:
 	
-		MagicPanels.showVertex([ obj.Shape.CenterOfMass ], 20)
+		toCopy = MagicPanels.getObjectToCopy(o)
 
 ##### Result:
 	
-		remove old vertices and show new ones, return array of objects, spheres
-### getVertex(iFace, iEdge, iVertex):
+		For example: 
 
-	Description:
-	
-		Get vertex values for face, edge and vertex index.
-	
-##### Description:
-	
-		iFace: face object
-		iEdge: edge array index
-		iVertex: vertex array index (0 or 1)
+		for Cube: always returns Cube
+		for Pad: always returns Body
+		for PartDesign objects: try to return Body
+		for LinkGroup: returns LinkGroup
+		for Cut: returns Cut
+		for Clones: returns Clone
+		for Links: returns Link
+		for any other object: returns object
 
-##### Usage:
-	
-		[ x, y, z ] = MagicPanels.getVertex(gFace, 0, 1)
-
-##### Result:
-
-		Return vertex position.
-
-### getVertexIndex(iObj, iVertex):
-
-	Description:
-	
-		Returns vertex index for given object and vertex object.
-	
-##### Description:
-	
-		iObj: object of the vertex
-		iVertex: vertex object
-
-##### Usage:
-	
-		vertexIndex = MagicPanels.getVertexIndex(o, v)
-
-##### Result:
-	
-		return int value for vertex name, so you can create string Vertex + vertexIndex, 
-		or get vertex from vertices array
-
-### getVertexAxisCross(iA, iB):
-
-	Description:
-	
-		Return difference between iB and iA values with respect of coordinate axes.
-	
-##### Description:
-	
-		iA: vertex float value
-		iB: vertex float value
-	
-##### Usage:
-	
-		edgeSize = MagicPanels.getVertexAxisCross(v0[0], v1[0])
+		oRef = getReference(iObj)
 		
-##### Result:
-	
-		Return diff for vertices values.
-
-### getVerticesPlane(iV1, iV2):
-
-	Description:
-	
-		Gets axes with the same values.
-	
-##### Description:
-	
-		iV1: vertex object
-		iV2: vertex object
-	
-##### Usage:
-	
-		plane = MagicPanels.getVerticesPlane(v1, v2)
-		
-##### Result:
-	
-		Return plane as "XY", "XZ", "YZ".
-
-### setVertexPadding(iObj, iVertex, iPadding, iAxis):
-
-	Description:
-	
-		Sets padding offset from given vertex to inside the object.
-		Do not use it at getPlacement for Pads. Use 0 vertex instead.
-		
-		Note: This need to be improved.
-	
-##### Description:
-	
-		iObj: object
-		iVertex: vertex object FreeCAD.Vector(x, y, z)
-		iPadding: value > 0 for making offset
-		iAxis: string: "X" or "Y" or "Z"
-		
-##### Usage:
-	
-		v = getattr(obj.Shape, "Vertex"+"es")[0]
-		offsetX = MagicPanels.setVertexPadding(obj, v, 15, "X")
-		
-##### Result:
-	
-		Return return new position value for given axis.
-
-### getOnCurve(iPoint, iCurve):
-
-	Description:
-	
-		This function has been created to replace python .index() function. 
-		FreeCAD has not rounded float values at Vectors, so if you call 
-		iCurve.Shape.getPoints(1)[0].index(vector_of_iPoint) this may not find the index 
-		of vector_of_iPoint at the iCurve not because it is not there, but because there is 
-		small not rounded difference, for example 0.0000006. So, this function scan the iCurve vectors 
-		and compare rounded values to return the index.
-	
-##### Description:
-	
-		iPoint: Part.Vertex object or FreeCAD.Vector or array of floats like [ x, y, z ]
-		iCurve: object that has .getPoints() function, for example Wire, Sketch, Helix, Edge
-
-##### Usage:
-	
-		index = MagicPanels.getOnCurve(v, Sketch)
-		
-##### Result:
-	
-		Return int value index for iPoint on iCurve.
-
+		if oRef.isDerivedFrom("Part::Box"):
+			return oRef
+		else:
+			try:
+				toCopy = iObj._Body
+				return toCopy
+			except:
+				skip = 1
 # Edges
 ### getEdgeVertices(iEdge):
 
@@ -404,99 +377,6 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 ##### Result:
 	
 		For Cube (Part::Box) object returns string "Length", "Width" or "Height".
-
-# Router
-### getSubByKey(iObj, iKey, iType, iSubType):
-
-	Description:
-	
-		This is extended version of getEdgeIndexByKey function. 
-		This function has been created to solve resized edge problem. If you cut the edge the next 
-		edge will change the Length. So, also the BoundBox will be changed. With this function you 
-		can customize reference key to solve the Topology Naming Problem.
-	
-##### Description:
-	
-		iObj: object for the sub-object
-		iKey: array with keys
-		iType: type of comparison
-		iSubType: type of sub-object to return, "edge" or "face"
-
-##### Usage:
-	
-		key = [ e.CenterOfMass, plane ]
-		[ edge, edgeName, edgeIndex ] = MagicPanels.getSubByKey(o, key, "CenterOfMass", "edge")
-
-##### Result:
-	
-		return edge object, name like Edge1 and also index starting from 0 (for iObj.Shape.Edges[index])
-
-### getSketchPatternRotation(iObj, iSub):
-
-	Description:
-	
-		Returns Rotation object which can be passed directly to setSketchPlacement 
-		functions. The Sketch will be perpendicular to the iSub object, so it can be used as 
-		router bit to cut the edge or face.
-	
-##### Description:
-	
-		iObj: object for sub-object
-		iSub: selected sub-object, edge or face
-
-##### Usage:
-	
-		r = MagicPanels.getSketchPatternRotation(o, edge)
-		r = MagicPanels.getSketchPatternRotation(o, face)
-
-##### Result:
-	
-		return FreeCAD.Rotation object.
-
-### edgeRouter(iPad, iSub, iSketch, iLength, iLabel, iType):
-
-	Description:
-	
-		This function is router for the edge. It cut the 
-		iSub with iSketch pattern. The new object will get iLabel label.
-	
-##### Description:
-	
-		iPad: Pad object of the sub-object, for routing
-		iSub: sub-object, edge or face
-		iSketch: sketch object will be used as pattern to cut, the sketch should be around XYZ center cross.
-		iLength: length to cut, float or int value, 0 means ThroughAll
-		iLabel: label for new object
-		iType: type of routing
-
-##### Usage:
-	
-		router = MagicPanels.edgeRouter(pad, edge, sketch, 0, "routerCove", "simple")
-
-##### Result:
-	
-		return router object, the result of cut
-
-### makePockets(iObjects, iLength):
-
-	Description:
-	
-		This function is multi Pocket. First object from iObjects will be base
-		object to Pocket, all others should be Sketches. The Length is depth for Pocket. 
-		If the Length is 0 the Pocket will be ThroughAll.
-	
-##### Description:
-	
-		iObjects: First base objects, next sketches
-		iLength: length to cut, float or int value, 0 means ThroughAll
-		
-##### Usage:
-	
-		pocket = MagicPanels.makePockets(selectedObjects, 0)
-
-##### Result:
-	
-		return last pocket object, the result of cut
 
 # Faces
 ### getFaceIndex(iObj, iFace):
@@ -685,132 +565,231 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 		Note: The first argument can be "XY", "YX", "XZ", "ZX", "YZ", "ZY". 
 		This is related to face not to object. The object direction will be different.
 		
-# References
-### getReference(iObj="none"):
+# Vertices
+### showVertex(iVertices, iRadius=5, iColor="red"):
 
 	Description:
 	
-		Gets reference to the selected or given object.
+		Create sphere at given vertices, to show where are the points for debug purposes.
 	
 ##### Description:
 	
-		iObj (optional): object to get reference (to return base object)
+		iVertices: array with Vertex or floats objects
+		iRadius (optional): ball Radius
+		iColor: string "red", "green", "blue", or color tuple like (1.0, 0.0, 0.0, 0.0)
+
+##### Usage:
+	
+		MagicPanels.showVertex([ obj.Shape.CenterOfMass ], 20)
+
+##### Result:
+	
+		remove old vertices and show new ones, return array of objects, spheres
+### getVertex(iFace, iEdge, iVertex):
+
+	Description:
+	
+		Get vertex values for face, edge and vertex index.
+	
+##### Description:
+	
+		iFace: face object
+		iEdge: edge array index
+		iVertex: vertex array index (0 or 1)
+
+##### Usage:
+	
+		[ x, y, z ] = MagicPanels.getVertex(gFace, 0, 1)
+
+##### Result:
+
+		Return vertex position.
+
+### getVertexIndex(iObj, iVertex):
+
+	Description:
+	
+		Returns vertex index for given object and vertex object.
+	
+##### Description:
+	
+		iObj: object of the vertex
+		iVertex: vertex object
+
+##### Usage:
+	
+		vertexIndex = MagicPanels.getVertexIndex(o, v)
+
+##### Result:
+	
+		return int value for vertex name, so you can create string Vertex + vertexIndex, 
+		or get vertex from vertices array
+
+### getVertexAxisCross(iA, iB):
+
+	Description:
+	
+		Return difference between iB and iA values with respect of coordinate axes.
+	
+##### Description:
+	
+		iA: vertex float value
+		iB: vertex float value
 	
 ##### Usage:
 	
-		gObj = MagicPanels.getReference()
-		gObj = MagicPanels.getReference(obj)
+		edgeSize = MagicPanels.getVertexAxisCross(v0[0], v1[0])
 		
 ##### Result:
 	
-		gObj - reference to the base object
+		Return diff for vertices values.
 
-# Sizes
-### getSizes(iObj):
+### getVerticesPlane(iV1, iV2):
 
 	Description:
 	
-		Allows to get sizes for object (iObj), according to the object type. 
-		The values are not sorted.
+		Gets axes with the same values.
 	
 ##### Description:
 	
-		iObj: object to get sizes
-
-##### Usage:
-	
-		[ size1, size2, size3 ] = MagicPanels.getSizes(obj)
-
-##### Result:
-	
-		Returns [ Length, Width, Height ] for Cube.
-
-### getSizesFromVertices(iObj):
-
-	Description:
-	
-		Gets occupied space by the object from vertices.
-	
-##### Description:
-	
-		iObj: object
+		iV1: vertex object
+		iV2: vertex object
 	
 ##### Usage:
 	
-		[ sx, sy, sz ] = MagicPanels.getSizesFromVertices(obj)
-
+		plane = MagicPanels.getVerticesPlane(v1, v2)
+		
 ##### Result:
 	
-		Returns array with [ mX, mY, mZ ] where: 
-		mX - occupied space along X axis
-		mY - occupied space along Y axis
-		mZ - occupied space along Z axis
+		Return plane as "XY", "XZ", "YZ".
 
-### getSizesFromBoundBox(iObj):
+### setVertexPadding(iObj, iVertex, iPadding, iAxis):
 
 	Description:
 	
-		Gets occupied space by the object from BoundBox. This can be useful for round shapes, 
-		where is no vertices at object edges, e.g. cylinders, circle at Sketch.
+		Sets padding offset from given vertex to inside the object.
+		Do not use it at getPlacement for Pads. Use 0 vertex instead.
+		
+		Note: This need to be improved.
 	
 ##### Description:
 	
 		iObj: object
-	
+		iVertex: vertex object FreeCAD.Vector(x, y, z)
+		iPadding: value > 0 for making offset
+		iAxis: string: "X" or "Y" or "Z"
+		
 ##### Usage:
 	
-		[ sx, sy, sz ] = MagicPanels.getSizesFromVertices(obj)
-
+		v = getattr(obj.Shape, "Vertex"+"es")[0]
+		offsetX = MagicPanels.setVertexPadding(obj, v, 15, "X")
+		
 ##### Result:
 	
-		Returns array with [ mX, mY, mZ ] where: 
-		mX - occupied space along X axis
-		mY - occupied space along Y axis
-		mZ - occupied space along Z axis
+		Return return new position value for given axis.
 
-# Measurements
-### showMeasure(iP1, iP2, iRef=""):
+### getOnCurve(iPoint, iCurve):
 
 	Description:
 	
-		Creates measurements object, I mean draw it. Now it use FreeCAD function 
-		to create and draw object. But in the future this can be changed to 
-		more beautiful drawing without changing tools. 
+		This function has been created to replace python .index() function. 
+		FreeCAD has not rounded float values at Vectors, so if you call 
+		iCurve.Shape.getPoints(1)[0].index(vector_of_iPoint) this may not find the index 
+		of vector_of_iPoint at the iCurve not because it is not there, but because there is 
+		small not rounded difference, for example 0.0000006. So, this function scan the iCurve vectors 
+		and compare rounded values to return the index.
 	
 ##### Description:
 	
-		iP1: starting point vertex object
-		iP2: ending point vertex object
-		iRef (optional): string for future TechDraw import or any other use, other tools
+		iPoint: Part.Vertex object or FreeCAD.Vector or array of floats like [ x, y, z ]
+		iCurve: object that has .getPoints() function, for example Wire, Sketch, Helix, Edge
 
 ##### Usage:
 	
-		m = MagicPanels.showMeasure(gP1, gP2, "Pad")
+		index = MagicPanels.getOnCurve(v, Sketch)
+		
+##### Result:
+	
+		Return int value index for iPoint on iCurve.
+
+### getVerticesOffset(iVertices, iObj, iType="array"):
+
+	Gets iObj offset of all supported containers for vertices iVertices.
+	
+##### Description:
+	
+		iObj: object to get containers offset
+		iVertices: vertices array
+		iType:
+			"array" - array with floats [ 1, 2, 3 ]
+			"vector" - array with FreeCAD.Vector types
+		
+##### Usage:
+	
+		vertices = MagicPanels.getVerticesOffset(vertices, o, "array")
 
 ##### Result:
 	
-		Create measure object, draw it and return measure object for further processing. 
+		return vertices array with correct container offset
 
-### getDistanceBetweenFaces(iObj1, iObj2, iFace1, iFace2):
+### getVerticesPosition(iVertices, iObj, iType="auto"):
 
 	Description:
 	
-		Gets distance between iFace1 and iFace2.
+		Gets iVertices 3D position. This function should be used to show or select iVertices with rotation. 
+		It calculates all offsets with rotation. But this function should not be used for calculation. 
+		Because the vertices at FreeCAD are raw, without containers offset. The vertices at FreeCAD have only 
+		AttachmentOffset applied. If you start calculation with rotation, you need to calculate plane correctly.
 	
 ##### Description:
 	
-		iObj1: object of iFace1
-		iObj2: object of iFace2
-		iFace1: face object
-		iFace2: face object
+		iVertices: vertices array
+		iObj: object to get containers offset
+		iType:
+			"auto" - recognize the iVertices elements type
+			"array" - each element of iVertices is array with floats [ 1, 2, 3 ]
+			"vector" - each element of iVertices is array with FreeCAD.Vector
+			"vertex" - each element of iVertices is array with Part.Vertex
 
 ##### Usage:
 	
-		size = MagicPanels.getDistanceBetweenFaces(o1, o2, face1, face2)
+		[[ x, y, z ]] = MagicPanels.getVerticesPosition([[ x, y, z ]], o, "array")
+		vertices = MagicPanels.getVerticesPosition(vertices, o, "vector")
+		vertices = MagicPanels.getVerticesPosition(vertices, o)
+		
+		MagicPanels.showVertex(vertices, 10)
 
 ##### Result:
+	
+		return vertices array with correct container offset, with the same type
 
-		return distance between face1 object and face2 object
+### removeVerticesPosition(iVertices, iObj, iType="auto"):
+
+	Description:
+	
+		Remove iVertices 3D position. This function removes offset calculated with getVerticesPosition.
+	
+##### Description:
+	
+		iVertices: vertices array
+		iObj: object to remove containers offset
+		iType:
+			"auto" - recognize the iVertices elements type
+			"array" - each element of iVertices is array with floats [ 1, 2, 3 ]
+			"vector" - each element of iVertices is array with FreeCAD.Vector
+			"vertex" - each element of iVertices is array with Part.Vertex
+
+##### Usage:
+	
+		[[ x, y, z ]] = MagicPanels.removeVerticesPosition([[ x, y, z ]], o, "array")
+		vertices = MagicPanels.removeVerticesPosition(vertices, o, "vector")
+		vertices = MagicPanels.removeVerticesPosition(vertices, o)
+		
+		MagicPanels.showVertex(vertices, 10)
+
+##### Result:
+	
+		return vertices array without container offset, with the same type
 
 # Direction, Plane, Orientation, Axis
 ### isRotated(iObj):
@@ -889,6 +868,131 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 		Returns iType: "XY", "YX", "XZ", "ZX", "YZ", "ZY"
 
 # Position, Placement, Move
+### getPosition(iObj, iType="global"):
+
+	Description:
+	
+		This function returns placement for the object to move or copy without rotation.
+	
+##### Description:
+	
+		iObj: object to get placement
+		iType (optional): 
+			"global": trying to calculate global position of the object
+			"local": return iObj.Placement
+
+##### Usage:
+	
+		[ x, y, z ] = MagicPanels.getPosition(o, "global")
+		[ x, y, z ] = MagicPanels.getPosition(o, "local")
+
+##### Result:
+	
+		return [ x, y, z ] array with placement info, where:
+		
+		x: X Axis object position
+		y: Y Axis object position
+		z: Z Axis object position
+
+### setPosition(iObj, iX, iY, iZ, iType="offset"):
+
+	Description:
+	
+		This function set object position to move or copy without rotation.
+		
+##### Description:
+
+		iObj: object to add position offset, for example already created Clone or Link
+		iX: X axis offset to add or position to set
+		iY: Y axis offset to add or position to set
+		iZ: Z axis offset to add or position to set
+		iType (optional):
+			* "offset": copy like Clone or Link is created in the same place as base object so you can add only 
+							offset to the current copy placement instead of searching for base object global position. 
+			* "local": set directly to object Placement attribute
+		
+##### Usage:
+	
+		MagicPanels.setPosition(copy, 100, 0, 0, "offset")
+		MagicPanels.setPosition(copy, 100, 0, 0, "local")
+
+##### Result:
+	
+		return empty string if everything was fine or string with error info
+
+### getObjectToMove(iObj):
+
+	Description:
+	
+		This function returns object to move.
+	
+##### Description:
+	
+		iObj: object to get reference to move
+
+##### Usage:
+	
+		toMove = MagicPanels.getObjectToMove(o)
+
+##### Result:
+	
+		For example: 
+
+		for Cube: always returns Cube
+		for Pad: always returns Body
+		for PartDesign objects: try to return Body
+		for LinkGroup: returns LinkGroup
+		for Cut: returns Cut
+		for any other object: returns object
+
+### getObjectCenter(iObj):
+
+	Description:
+	
+		Returns center of the object.
+	
+		Note: This function will be updated later with more reliable 
+		way of getting center of the object, also for LinkGroup and other containers. 
+		Now it returns Shape.CenterOfMass for the object and it is not the same 
+		as center of the object.
+	
+##### Description:
+	
+		iObj: object
+
+##### Usage:
+	
+		[ cx, cy, cz ] = MagicPanels.getObjectCenter(obj)
+
+##### Result:
+	
+		Returns array with [ cx, cy, cz ] values for center point.
+
+### adjustClonePosition(iPad, iX, iY, iZ):
+
+	Description:
+	
+		This function has been created for magicMove tool to adjust Clone position.
+		If you make Clone from Pad and the Pad has not zero Sketch.AttachmentOffset, 
+		the Clone has Placement set to XYZ (0,0,0) but is not in the zero position. 
+		So you have to remove Sketch offset from the Clone position. 
+		I guess the BoundBox is the correct solution here.
+	
+##### Description:
+	
+		iPad: Pad object with not zero Sketch.AttachmentOffset used to create new Clone
+		iX: X Axis object position
+		iY: Y Axis object position
+		iZ: Z Axis object position
+
+##### Usage:
+	
+		[ x, y, z ] = MagicPanels.adjustClonePosition(o, x, y, z)
+
+##### Result:
+	
+		Returns array with new correct [ x, y, z ] values.
+
 ### resetPlacement(iObj):
 
 	Description:
@@ -1043,73 +1147,89 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 	
 		Object Sketch should be moved.
 
-### getObjectCenter(iObj):
+### getContainerPlacement(iObj, iType="clean"):
 
 	Description:
 	
-		Returns center of the object.
-	
-		Note: This function will be updated later with more reliable 
-		way of getting center of the object, also for LinkGroup and other containers. 
-		Now it returns Shape.CenterOfMass for the object and it is not the same 
-		as center of the object.
+		This function returns placement for the object with all 
+		containers offsets or clean. The given object might be container or 
+		selected object, the base Cube or Pad.
 	
 ##### Description:
 	
-		iObj: object
+		iObj: object to get placement
+		iType (optional): 
+			"clean" - to get iObj.Placement, 
+			"offset" to get iObj.Placement with containers offset.
 
 ##### Usage:
 	
-		[ cx, cy, cz ] = MagicPanels.getObjectCenter(obj)
+		[ x, y, z, r ] = MagicPanels.getContainerPlacement(o, "clean")
+		[ x, y, z, r ] = MagicPanels.getContainerPlacement(o, "offset")
 
 ##### Result:
 	
-		Returns array with [ cx, cy, cz ] values for center point.
+		return [ x, y, z, r ] array with placement info, where:
+		
+		x: X Axis object position
+		y: Y Axis object position
+		z: Z Axis object position
+		r: Rotation object - not supported yet
 
-### adjustClonePosition(iPad, iX, iY, iZ):
+### setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="normal"):
 
 	Description:
 	
-		This function has been created for magicMove tool to adjust Clone position.
-		If you make Clone from Pad and the Pad has not zero Sketch.AttachmentOffset, 
-		the Clone has Placement set to XYZ (0,0,0) but is not in the zero position. 
-		So you have to remove Sketch offset from the Clone position. 
-		I guess the BoundBox is the correct solution here.
+		Set placement function, especially used with containers.
 	
 ##### Description:
-	
-		iPad: Pad object with not zero Sketch.AttachmentOffset used to create new Clone
+
+		iObj: object or container to set placement, for example Body, LinkGroup, Cut, Pad, Cube, Sketch, Cylinder
 		iX: X Axis object position
 		iY: Y Axis object position
 		iZ: Z Axis object position
+		iR: 
+			0 - means rotation value set to iObj.Placement.Rotation
+			R - custom FreeCAD.Placement.Rotation object
+		iAnchor (optional):
+			"clean" - set directly to iObj.Placement, if object is Pad set to Sketch directly
+			"normal" - default object anchor with global vertices calculation
+			"center" - anchor will be center of the object (CenterOfMass)
+			[ iAX, iAY, iAZ ] - custom anchor, this should be global position
 
 ##### Usage:
-	
-		[ x, y, z ] = MagicPanels.adjustClonePosition(o, x, y, z)
+		
+		MagicPanels.setContainerPlacement(cube, 100, 100, 200, 0, "clean")
+		MagicPanels.setContainerPlacement(pad, 100, 100, 200, 0, "normal")
+		MagicPanels.setContainerPlacement(body, 100, 100, 200, 0, "center")
 
 ##### Result:
 	
-		Returns array with new correct [ x, y, z ] values.
+		Object should be moved into 100, 100, 200 position with exact anchor.
 
 # Containers
-### getContainers(iObj):
+### createContainer(iObjects, iLabel="Container", iNesting=True):
 
 	Description:
 	
-		This function get list of containers for give iObj.
-		
+		This function creates container for given iObjects. The label for new container will be get from 
+		first element of iObjects (iObjects[0]).
 	
 ##### Description:
 	
-		iObj: object to get list of containers
+		iObjects: array of object to create container for them
+		iLabel: string, container label
+		iNesting: boolean, add nesting label prefix (True) or set given label (False)
 
 ##### Usage:
 	
-		containers = MagicPanels.getContainers(o)
+		container = MagicPanels.createContainer([c1, c2])
+		container = MagicPanels.createContainer([c1, c2], "LinkGroup")
+		container = MagicPanels.createContainer([o1, o2, o3, o4, o5, o6, o7], "Furniture, Module", False)
 
 ##### Result:
 	
-		return array with objects
+		Created container and objects inside the container, return container object.
 
 ### getNestingLabel(iObj, iPrefix):
 
@@ -1130,6 +1250,25 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 ##### Result:
 	
 		return string for the new label
+
+### getContainers(iObj):
+
+	Description:
+	
+		This function get list of containers for give iObj.
+		
+	
+##### Description:
+	
+		iObj: object to get list of containers
+
+##### Usage:
+	
+		containers = MagicPanels.getContainers(o)
+
+##### Result:
+	
+		return array with objects
 
 ### getContainersOffset(iObj):
 
@@ -1156,85 +1295,6 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 		coY: Y Axis object position
 		coZ: Z Axis object position
 		coR: Rotation object
-
-### getVerticesOffset(iVertices, iObj, iType="array"):
-
-	Gets iObj offset of all supported containers for vertices iVertices.
-	
-##### Description:
-	
-		iObj: object to get containers offset
-		iVertices: vertices array
-		iType:
-			"array" - array with floats [ 1, 2, 3 ]
-			"vector" - array with FreeCAD.Vector types
-		
-##### Usage:
-	
-		vertices = MagicPanels.getVerticesOffset(vertices, o, "array")
-
-##### Result:
-	
-		return vertices array with correct container offset
-
-### getVerticesPosition(iVertices, iObj, iType="auto"):
-
-	Description:
-	
-		Gets iVertices 3D position. This function should be used to show or select iVertices with rotation. 
-		It calculates all offsets with rotation. But this function should not be used for calculation. 
-		Because the vertices at FreeCAD are raw, without containers offset. The vertices at FreeCAD have only 
-		AttachmentOffset applied. If you start calculation with rotation, you need to calculate plane correctly.
-	
-##### Description:
-	
-		iVertices: vertices array
-		iObj: object to get containers offset
-		iType:
-			"auto" - recognize the iVertices elements type
-			"array" - each element of iVertices is array with floats [ 1, 2, 3 ]
-			"vector" - each element of iVertices is array with FreeCAD.Vector
-			"vertex" - each element of iVertices is array with Part.Vertex
-
-##### Usage:
-	
-		[[ x, y, z ]] = MagicPanels.getVerticesPosition([[ x, y, z ]], o, "array")
-		vertices = MagicPanels.getVerticesPosition(vertices, o, "vector")
-		vertices = MagicPanels.getVerticesPosition(vertices, o)
-		
-		MagicPanels.showVertex(vertices, 10)
-
-##### Result:
-	
-		return vertices array with correct container offset, with the same type
-
-### removeVerticesPosition(iVertices, iObj, iType="auto"):
-
-	Description:
-	
-		Remove iVertices 3D position. This function removes offset calculated with getVerticesPosition.
-	
-##### Description:
-	
-		iVertices: vertices array
-		iObj: object to remove containers offset
-		iType:
-			"auto" - recognize the iVertices elements type
-			"array" - each element of iVertices is array with floats [ 1, 2, 3 ]
-			"vector" - each element of iVertices is array with FreeCAD.Vector
-			"vertex" - each element of iVertices is array with Part.Vertex
-
-##### Usage:
-	
-		[[ x, y, z ]] = MagicPanels.removeVerticesPosition([[ x, y, z ]], o, "array")
-		vertices = MagicPanels.removeVerticesPosition(vertices, o, "vector")
-		vertices = MagicPanels.removeVerticesPosition(vertices, o)
-		
-		MagicPanels.showVertex(vertices, 10)
-
-##### Result:
-	
-		return vertices array without container offset, with the same type
 
 ### moveToClean(iObjects, iSelection):
 
@@ -1360,83 +1420,6 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 	
 		No return, move object.
 
-### getObjectToMove(iObj):
-
-	Description:
-	
-		This function returns object to move.
-	
-##### Description:
-	
-		iObj: object to get placement, selected container or base reference object
-
-##### Usage:
-	
-		toMove = MagicPanels.getObjectToMove(o)
-
-##### Result:
-	
-		For example: 
-
-		for Cube: always returns Cube
-		for Pad: always returns Body
-		for LinkGroup: returns LinkGroup
-		for Cut: returns Cut
-		for other PartDesign objects: try to return Body
-		for any other object: returns object
-
-### createContainer(iObjects, iLabel="Container", iNesting=True):
-
-	Description:
-	
-		This function creates container for given iObjects. The label for new container will be get from 
-		first element of iObjects (iObjects[0]).
-	
-##### Description:
-	
-		iObjects: array of object to create container for them
-		iLabel: string, container label
-		iNesting: boolean, add nesting label prefix (True) or set given label (False)
-
-##### Usage:
-	
-		container = MagicPanels.createContainer([c1, c2])
-		container = MagicPanels.createContainer([c1, c2], "LinkGroup")
-		container = MagicPanels.createContainer([o1, o2, o3, o4, o5, o6, o7], "Furniture, Module", False)
-
-##### Result:
-	
-		Created container and objects inside the container, return container object.
-
-### getContainerPlacement(iObj, iType="clean"):
-
-	Description:
-	
-		This function returns placement for the object with all 
-		containers offsets or clean. The given object might be container or 
-		selected object, the base Cube or Pad.
-	
-##### Description:
-	
-		iObj: object to get placement
-		iType (optional): 
-			"clean" - to get iObj.Placement, 
-			"offset" to get iObj.Placement with containers offset.
-
-##### Usage:
-	
-		[ x, y, z, r ] = MagicPanels.getContainerPlacement(o, "clean")
-		[ x, y, z, r ] = MagicPanels.getContainerPlacement(o, "offset")
-
-##### Result:
-	
-		return [ x, y, z, r ] array with placement info, where:
-		
-		x: X Axis object position
-		y: Y Axis object position
-		z: Z Axis object position
-		r: Rotation object - not supported yet
-
 ### getPlacementDiff(iStart, iDestination):
 
 	Description:
@@ -1456,37 +1439,6 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 ##### Result:
 	
 		Return [ moveX, moveY, moveZ ] array with X, Y, Z floats to move object.
-
-### setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="normal"):
-
-	Description:
-	
-		Set placement function, especially used with containers.
-	
-##### Description:
-
-		iObj: object or container to set placement, for example Body, LinkGroup, Cut, Pad, Cube, Sketch, Cylinder
-		iX: X Axis object position
-		iY: Y Axis object position
-		iZ: Z Axis object position
-		iR: 
-			0 - means rotation value set to iObj.Placement.Rotation
-			R - custom FreeCAD.Placement.Rotation object
-		iAnchor (optional):
-			"clean" - set directly to iObj.Placement, if object is Pad set to Sketch directly
-			"normal" - default object anchor with global vertices calculation
-			"center" - anchor will be center of the object (CenterOfMass)
-			[ iAX, iAY, iAZ ] - custom anchor, this should be global position
-
-##### Usage:
-		
-		MagicPanels.setContainerPlacement(cube, 100, 100, 200, 0, "clean")
-		MagicPanels.setContainerPlacement(pad, 100, 100, 200, 0, "normal")
-		MagicPanels.setContainerPlacement(body, 100, 100, 200, 0, "center")
-
-##### Result:
-	
-		Object should be moved into 100, 100, 200 position with exact anchor.
 
 # Conversion
 ### convertPosition(iObj, iX, iY, iZ):
@@ -1551,6 +1503,188 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 ##### Result:
 	
 		Created Pad with correct placement, rotation and return [ part, body, sketch, pad ].
+
+# Measurements
+### showMeasure(iP1, iP2, iRef=""):
+
+	Description:
+	
+		Creates measurements object, I mean draw it. Now it use FreeCAD function 
+		to create and draw object. But in the future this can be changed to 
+		more beautiful drawing without changing tools. 
+	
+##### Description:
+	
+		iP1: starting point vertex object
+		iP2: ending point vertex object
+		iRef (optional): string for future TechDraw import or any other use, other tools
+
+##### Usage:
+	
+		m = MagicPanels.showMeasure(gP1, gP2, "Pad")
+
+##### Result:
+	
+		Create measure object, draw it and return measure object for further processing. 
+
+### getDistanceBetweenFaces(iObj1, iObj2, iFace1, iFace2):
+
+	Description:
+	
+		Gets distance between iFace1 and iFace2.
+	
+##### Description:
+	
+		iObj1: object of iFace1
+		iObj2: object of iFace2
+		iFace1: face object
+		iFace2: face object
+
+##### Usage:
+	
+		size = MagicPanels.getDistanceBetweenFaces(o1, o2, face1, face2)
+
+##### Result:
+
+		return distance between face1 object and face2 object
+
+# Units
+### unit2gui(iValue):
+
+	Description:
+	
+		Allows to convert unit from value (mm float FreeCAD format) into gui user settings.
+
+##### Description:
+
+		iValue: float from FreeCAD or from calculations
+		
+##### Usage:
+
+		unitForUser = MagicPanels.unit2gui(300.55)
+		
+		# Note: if user has set inches units the unitForUser should contains recalculation to inches 
+		
+##### Result:
+
+		string
+
+### unit2value(iString):
+
+	Description:
+	
+		Allows to convert unit from user defines setting for example iches, ft into system calculation units.
+
+##### Description:
+
+		iString: units string in user settings notation
+		
+##### Usage:
+
+		forCalculation = MagicPanels.unit2value("0.06 ft")
+		
+		# Note: forCalculation will be 18.288
+		
+##### Result:
+
+		float for calculation
+
+# Colors
+### getColor(iObj, iFaceIndex, iAttribute="color"):
+
+	Description:
+	
+		Allows to get color for object or face.
+
+##### Description:
+
+		iObj: object
+		iFaceIndex: index to get color for face or 0 to get color for object
+		iAttribute: string, attribute name from FreeCAD.Material structure, e.g.:
+			* "color" - to get color from DiffuseColor attribute
+			* "trans" - to get color from Transparency attribute
+			* "AmbientColor" - to get color from AmbientColor attribute
+			* "DiffuseColor" - to get color from DiffuseColor attribute
+			* "EmissiveColor" - to get color from EmissiveColor attribute
+			* "Shininess" - to get color from Shininess attribute
+			* "SpecularColor" - to get color from SpecularColor attribute
+			* "Transparency" - to get color from Transparency attribute
+
+##### Usage:
+
+		color = MagicPanels.getColor(o, 0, "color") # to get object color
+		color = MagicPanels.getColor(o, 5, "color") # to get face5 color
+
+##### Result:
+
+		For FreeCAD 0.21.2 returns color for object from .ViewObject.ShapeColor or 
+		color for face from .ViewObject.DiffuseColor.
+		
+		Since FreeCAD 1.0+ there is no .ViewObject.ShapeColor for object. Color for object 
+		and faces are stored only at .ViewObject.ShapeAppearance behind FreeCAD.Material 
+		structure. If all the faces have the same color there is only one Material object. 
+		But for example if only single face have different color, there are Material objects 
+		for all faces, but there is no color for object. So in this case the color for 
+		object cannot be determined, so will be returned as empty string "".
+
+### setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
+
+	Description:
+	
+		Allows to set color for object or face.
+
+##### Description:
+
+		iObj: object
+		iFaceIndex: index to set color for face or 0 to set color for object
+		iColor: color according to the FreeCAD.Material structure, e.g.:
+			* "AmbientColor" - (0.33333298563957214, 0.33333298563957214, 0.33333298563957214, 1.0)
+			* "DiffuseColor" - (0.800000011920929, 0.800000011920929, 0.800000011920929, 1.0)
+			* "EmissiveColor" - (0.0, 0.0, 0.0, 1.0)
+			* "Shininess" - 0.8999999761581421
+			* "SpecularColor" - (0.5333330035209656, 0.5333330035209656, 0.5333330035209656, 1.0)
+			* "Transparency" - 0.0
+		iAttribute: string, attribute name from FreeCAD.Material structure, e.g.:
+			* "color" - to set color for DiffuseColor attribute
+			* "trans" - to set color for Transparency attribute
+			* "AmbientColor" - to set color for AmbientColor attribute
+			* "DiffuseColor" - to set color for DiffuseColor attribute
+			* "EmissiveColor" - to set color for EmissiveColor attribute
+			* "Shininess" - to set color for Shininess attribute
+			* "SpecularColor" - to set color for SpecularColor attribute
+			* "Transparency" - to set color for Transparency attribute
+
+##### Usage:
+
+		MagicPanels.setColor(o, 0, (1.0, 1.0, 0.0, 1.0), "color") # to set object color
+		MagicPanels.setColor(o, 5, (1.0, 1.0, 0.0, 1.0), "color") # to set face5 color
+		
+		# to set colors for all faces, e.g. for dowel with 3 faces
+		colors = [ (1.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0) ]
+		MagicPanels.setColor(o, 0, colors, "color")
+
+##### Result:
+
+		return empty string if everything is fine or string with error info
+
+### copyColors(iSource, iTarget):
+
+	Description:
+	
+		Allows to copy colors from iSource object to iTarget object.
+
+##### Description:
+
+		iSource: source object
+		iTarget: target object
+
+##### Usage:
+
+		MagicPanels.copyColors(panel, copy)
+
+##### Result:
+
+		All colors structure should be copied from source to target.
 
 # Holes
 ### makeHoles(iObj, iFace, iCylinders):
@@ -1780,146 +1914,98 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 
 		Make Tenon and return new object and face reference for GUI info screen update and further processing
 
-# Units
-### unit2gui(iValue):
+# Router
+### getSubByKey(iObj, iKey, iType, iSubType):
 
 	Description:
 	
-		Allows to convert unit from value (mm float FreeCAD format) into gui user settings.
-
+		This is extended version of getEdgeIndexByKey function. 
+		This function has been created to solve resized edge problem. If you cut the edge the next 
+		edge will change the Length. So, also the BoundBox will be changed. With this function you 
+		can customize reference key to solve the Topology Naming Problem.
+	
 ##### Description:
+	
+		iObj: object for the sub-object
+		iKey: array with keys
+		iType: type of comparison
+		iSubType: type of sub-object to return, "edge" or "face"
 
-		iValue: float from FreeCAD or from calculations
-		
 ##### Usage:
+	
+		key = [ e.CenterOfMass, plane ]
+		[ edge, edgeName, edgeIndex ] = MagicPanels.getSubByKey(o, key, "CenterOfMass", "edge")
 
-		unitForUser = MagicPanels.unit2gui(300.55)
-		
-		# Note: if user has set inches units the unitForUser should contains recalculation to inches 
-		
 ##### Result:
+	
+		return edge object, name like Edge1 and also index starting from 0 (for iObj.Shape.Edges[index])
 
-		string
-
-### unit2value(iString):
+### getSketchPatternRotation(iObj, iSub):
 
 	Description:
 	
-		Allows to convert unit from user defines setting for example iches, ft into system calculation units.
-
+		Returns Rotation object which can be passed directly to setSketchPlacement 
+		functions. The Sketch will be perpendicular to the iSub object, so it can be used as 
+		router bit to cut the edge or face.
+	
 ##### Description:
+	
+		iObj: object for sub-object
+		iSub: selected sub-object, edge or face
 
-		iString: units string in user settings notation
-		
 ##### Usage:
+	
+		r = MagicPanels.getSketchPatternRotation(o, edge)
+		r = MagicPanels.getSketchPatternRotation(o, face)
 
-		forCalculation = MagicPanels.unit2value("0.06 ft")
-		
-		# Note: forCalculation will be 18.288
-		
 ##### Result:
+	
+		return FreeCAD.Rotation object.
 
-		float for calculation
-
-# Colors
-### getColor(iObj, iFaceIndex, iAttribute="color"):
+### edgeRouter(iPad, iSub, iSketch, iLength, iLabel, iType):
 
 	Description:
 	
-		Allows to get color for object or face.
-
+		This function is router for the edge. It cut the 
+		iSub with iSketch pattern. The new object will get iLabel label.
+	
 ##### Description:
-
-		iObj: object
-		iFaceIndex: index to get color for face or 0 to get color for object
-		iAttribute: string, attribute name from FreeCAD.Material structure, e.g.:
-			* "color" - to get color from DiffuseColor attribute
-			* "trans" - to get color from Transparency attribute
-			* "AmbientColor" - to get color from AmbientColor attribute
-			* "DiffuseColor" - to get color from DiffuseColor attribute
-			* "EmissiveColor" - to get color from EmissiveColor attribute
-			* "Shininess" - to get color from Shininess attribute
-			* "SpecularColor" - to get color from SpecularColor attribute
-			* "Transparency" - to get color from Transparency attribute
+	
+		iPad: Pad object of the sub-object, for routing
+		iSub: sub-object, edge or face
+		iSketch: sketch object will be used as pattern to cut, the sketch should be around XYZ center cross.
+		iLength: length to cut, float or int value, 0 means ThroughAll
+		iLabel: label for new object
+		iType: type of routing
 
 ##### Usage:
-
-		color = MagicPanels.getColor(o, 0, "color") # to get object color
-		color = MagicPanels.getColor(o, 5, "color") # to get face5 color
+	
+		router = MagicPanels.edgeRouter(pad, edge, sketch, 0, "routerCove", "simple")
 
 ##### Result:
+	
+		return router object, the result of cut
 
-		For FreeCAD 0.21.2 returns color for object from .ViewObject.ShapeColor or 
-		color for face from .ViewObject.DiffuseColor.
-		
-		Since FreeCAD 1.0+ there is no .ViewObject.ShapeColor for object. Color for object 
-		and faces are stored only at .ViewObject.ShapeAppearance behind FreeCAD.Material 
-		structure. If all the faces have the same color there is only one Material object. 
-		But for example if only single face have different color, there are Material objects 
-		for all faces, but there is no color for object. So in this case the color for 
-		object cannot be determined, so will be returned as empty string "".
-
-### setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
+### makePockets(iObjects, iLength):
 
 	Description:
 	
-		Allows to set color for object or face.
-
-##### Description:
-
-		iObj: object
-		iFaceIndex: index to set color for face or 0 to set color for object
-		iColor: color according to the FreeCAD.Material structure, e.g.:
-			* "AmbientColor" - (0.33333298563957214, 0.33333298563957214, 0.33333298563957214, 1.0)
-			* "DiffuseColor" - (0.800000011920929, 0.800000011920929, 0.800000011920929, 1.0)
-			* "EmissiveColor" - (0.0, 0.0, 0.0, 1.0)
-			* "Shininess" - 0.8999999761581421
-			* "SpecularColor" - (0.5333330035209656, 0.5333330035209656, 0.5333330035209656, 1.0)
-			* "Transparency" - 0.0
-		iAttribute: string, attribute name from FreeCAD.Material structure, e.g.:
-			* "color" - to set color for DiffuseColor attribute
-			* "trans" - to set color for Transparency attribute
-			* "AmbientColor" - to set color for AmbientColor attribute
-			* "DiffuseColor" - to set color for DiffuseColor attribute
-			* "EmissiveColor" - to set color for EmissiveColor attribute
-			* "Shininess" - to set color for Shininess attribute
-			* "SpecularColor" - to set color for SpecularColor attribute
-			* "Transparency" - to set color for Transparency attribute
-
-##### Usage:
-
-		MagicPanels.setColor(o, 0, (1.0, 1.0, 0.0, 1.0), "color") # to set object color
-		MagicPanels.setColor(o, 5, (1.0, 1.0, 0.0, 1.0), "color") # to set face5 color
-		
-		# to set colors for all faces, e.g. for dowel with 3 faces
-		colors = [ (1.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0) ]
-		MagicPanels.setColor(o, 0, colors, "color")
-
-##### Result:
-
-		return empty string if everything is fine or string with error info
-
-### copyColors(iSource, iTarget):
-
-	Description:
+		This function is multi Pocket. First object from iObjects will be base
+		object to Pocket, all others should be Sketches. The Length is depth for Pocket. 
+		If the Length is 0 the Pocket will be ThroughAll.
 	
-		Allows to copy colors from iSource object to iTarget object.
-
 ##### Description:
-
-		iSource: source object
-		iTarget: target object
-
+	
+		iObjects: First base objects, next sketches
+		iLength: length to cut, float or int value, 0 means ThroughAll
+		
 ##### Usage:
-
-		try:
-			MagicPanels.copyColors(panel, copy)
-		except:
-			skip = 1
+	
+		pocket = MagicPanels.makePockets(selectedObjects, 0)
 
 ##### Result:
-
-		All colors structure should be copied from source to target.
+	
+		return last pocket object, the result of cut
 
 # Spreadsheet
 ### sheetGetKey(iC, iR):

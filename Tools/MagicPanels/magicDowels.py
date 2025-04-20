@@ -18,8 +18,8 @@ gDS = {
 	"gDDiameter": 8,           # dowel diameter
 	"gDSize": 35,              # dowel long size
 	"gDNum": 2,                # dowel numbers per side
-	"gDOCorner": 50,           # dowel offset from corner
-	"gDONext": 32,             # space to next dowel (32 mm woodworking system)
+	"gDOCorner": 50,           # dowel offset from corner (measured at at Wolfcraf jig)
+	"gDONext": 64,             # space to next dowel (32 mm woodworking system, I use 64 at Wolfcraf jig)
 	"gDShape": 0,              # dowel shape (cylinder 0 or box 1)
 	"gTenonT": 6,              # tenon thickness size
 	"gTenonL": 50,             # tenon long size
@@ -1087,14 +1087,16 @@ def showQtGUI():
 				# Dowel 6 x 35 mm
 				if self.gCurrentSelection == 0: 
 					self.gDDiameter = 6
+					self.gDONext = 32
 				
 				# Dowel 8 x 35 mm
 				if self.gCurrentSelection == 1:
-					skip = 1
+					self.gDONext = 32
 
 				# Dowel 10 x 35 mm
 				if self.gCurrentSelection == 2:
 					self.gDDiameter = 10
+					self.gDONext = 32
 				
 				# Biscuits 16 x 48 mm
 				if self.gCurrentSelection == 3:
@@ -1143,6 +1145,8 @@ def showQtGUI():
 					self.gDDiameter = 4.5
 					self.gDSize = 40
 					self.gDOFSSet = 23
+					self.gDNum = 2
+					self.gDONext = 64
 
 				# Screw 4 x 40 mm
 				if self.gCurrentSelection == 8:
@@ -1150,20 +1154,23 @@ def showQtGUI():
 					self.gDSize = 40
 					self.gDOFSSet = 23
 					self.gDNum = 2
+					self.gDONext = 64
 
 				# Screw 5 x 50 mm
 				if self.gCurrentSelection == 9:
 					self.gDDiameter = 5
 					self.gDSize = 50
 					self.gDOFSSet = 33
-					self.gDNum = 1
+					self.gDNum = 2
+					self.gDONext = 64
 				
 				# Screw 6 x 60 mm
 				if self.gCurrentSelection == 10:
 					self.gDDiameter = 6
 					self.gDSize = 60
 					self.gDOFSSet = 45
-					self.gDNum = 1
+					self.gDNum = 2
+					self.gDONext = 64
 				
 				# Confirmation 7 x 40 mm
 				if self.gCurrentSelection == 11:

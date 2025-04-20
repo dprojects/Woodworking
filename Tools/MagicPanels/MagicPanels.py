@@ -47,10 +47,10 @@ def QT_TRANSLATE_NOOP(context, text): #
 # ###################################################################################################################
 
 
-gRoundPrecision = 2      # should be set according to the user FreeCAD GUI settings
-gSearchDepth = 200       # recursive search depth
-gKernelVersion = 0       # FreeCAD version to add support for new kernel changes
-gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0) # default color
+gRoundPrecision = 2      # should be set according to the user FreeCAD GUI settings <br>
+gSearchDepth = 200       # recursive search depth <br>
+gKernelVersion = 0       # FreeCAD version to add support for new kernel changes <br>
+gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0) # default color <br>
 
 # end globals (for API generator)
 
@@ -193,6 +193,317 @@ def normalizeBoundBox(iBoundBox):
 
 # ###################################################################################################################
 '''
+# References
+'''
+# ###################################################################################################################
+
+
+# ###################################################################################################################
+def getReference(iObj="none"):
+	'''
+	Description:
+	
+		Gets reference to the selected or given object.
+	
+	Args:
+	
+		iObj (optional): object to get reference (to return base object)
+	
+	Usage:
+	
+		gObj = MagicPanels.getReference()
+		gObj = MagicPanels.getReference(obj)
+		
+	Result:
+	
+		gObj - reference to the base object
+
+	'''
+
+	obj = ""
+	
+	# #####################################
+	# selection
+	# #####################################
+	
+	if iObj == "none":
+		obj = FreeCADGui.Selection.getSelection()[0]
+	else:
+		obj = iObj
+
+	# #####################################
+	# object types 
+	# #####################################
+	
+	# Cube
+	if obj.isDerivedFrom("Part::Box"):
+		return obj
+	
+	# normal Pad
+	if obj.isDerivedFrom("PartDesign::Pad") and obj.BaseFeature == None:
+		return obj
+	
+	# not search for Sketch reference
+	if obj.isDerivedFrom("Sketcher::SketchObject"):
+		return obj
+
+	# try to unpack base object for other objects
+	try:
+		depth = len(obj.OutListRecursive)
+		
+		if  depth == 0:
+			return obj
+		
+		else:
+			i = 0
+			while i < depth and i < gSearchDepth:
+				
+				if obj.isDerivedFrom("Part::Cut"):
+					index = i
+				else:
+					index = depth - 1 - i
+
+				base = obj.OutListRecursive[index]
+				
+				if (
+					base.isDerivedFrom("Part::Box") or 
+					(base.isDerivedFrom("PartDesign::Pad") and str(base.Name).find("Tenon") == -1)
+					):
+					return base
+				else:
+					i = i + 1
+	except:
+		skip = 1
+
+	# not recognized
+	if obj != "":
+		return obj
+	
+	return -1
+
+
+# ###################################################################################################################
+'''
+# Sizes
+'''
+# ###################################################################################################################
+
+
+# ###################################################################################################################
+def getSizes(iObj):
+	'''
+	Description:
+	
+		Allows to get sizes for object (iObj), according to the object type. 
+		The values are not sorted.
+	
+	Args:
+	
+		iObj: object to get sizes
+
+	Usage:
+	
+		[ size1, size2, size3 ] = MagicPanels.getSizes(obj)
+
+	Result:
+	
+		Returns [ Length, Width, Height ] for Cube.
+
+	'''
+
+	# for Cube panels
+	if iObj.isDerivedFrom("Part::Box"):
+
+		return [ iObj.Length.Value, iObj.Width.Value, iObj.Height.Value ]
+
+	# for Pad panels
+	if iObj.isDerivedFrom("PartDesign::Pad"):
+		
+		sizeX = ""
+		sizeY = ""
+		
+		for c in iObj.Profile[0].Constraints:
+			if c.Name == "SizeX":
+				sizeX = c.Value
+			if c.Name == "SizeY":
+				sizeY = c.Value
+		
+		if sizeX == "" or sizeY == "":
+			sizes = getSizesFromVertices(iObj.Profile[0])
+			sizes.sort()
+			sizes.pop(0)
+			sizes.insert(0, iObj.Length.Value)
+			return sizes
+			
+		else:
+			return [ sizeX, sizeY, iObj.Length.Value ]
+
+	# to move drill bits more precisely
+	if iObj.isDerivedFrom("Part::Cylinder"):
+		return [ 1, 1, 1 ]
+
+	if iObj.isDerivedFrom("Part::Cone"):
+		return [ 1, 1, 1 ]
+	
+	if iObj.isDerivedFrom("PartDesign::Thickness"):
+		
+		sizeX = ""
+		sizeY = ""
+
+		for c in iObj.Base[0].Profile[0].Constraints:
+			if c.Name == "SizeX":
+				sizeX = c.Value
+			if c.Name == "SizeY":
+				sizeY = c.Value
+			
+		if sizeX == "" or sizeY == "":
+			sizes = getSizesFromVertices(iObj.Base[0].Profile[0])
+			sizes.sort()
+			sizes.pop(0)
+			sizes.insert(0, iObj.Base[0].Length.Value)
+			return sizes
+			
+		else:
+			return [ sizeX, sizeY, iObj.Base[0].Length.Value ]
+	
+	# set sketch biggest size
+	if iObj.isDerivedFrom("Sketcher::SketchObject"):
+		try:
+			sizes = getSizesFromVertices(iObj)
+			sizes.sort()
+			return [ sizes[2], sizes[2], sizes[2] ]
+			
+		except:
+			return [ 100, 100, 100 ]
+	
+	# for custom objects
+	try:
+		return [ iObj.Base_Width.Value, iObj.Base_Height.Value, iObj.Base_Length.Value ]
+		
+	except:
+		skip = 1
+	
+	# try to get sizes from vertices
+	try:
+		[ sx, sy, sz ] = getSizesFromVertices(iObj)
+		return [ sx, sy, sz ]
+
+	except:
+		skip = 1
+	
+	# if nothing was successful, return 100 to move all furniture quickly
+	return [ 100, 100, 100 ]
+
+
+# ###################################################################################################################
+def getSizesFromVertices(iObj):
+	'''
+	Description:
+	
+		Gets occupied space by the object from vertices.
+	
+	Args:
+	
+		iObj: object
+	
+	Usage:
+	
+		[ sx, sy, sz ] = MagicPanels.getSizesFromVertices(obj)
+
+	Result:
+	
+		Returns array with [ mX, mY, mZ ] where: 
+		mX - occupied space along X axis
+		mY - occupied space along Y axis
+		mZ - occupied space along Z axis
+
+	'''
+
+	init = 0
+	
+	minX = 0
+	minY = 0
+	minZ = 0
+
+	maxX = 0
+	maxY = 0
+	maxZ = 0
+
+	vs = getattr(iObj.Shape, "Vertex"+"es")
+
+	for v in vs:
+		
+		[ x, y, z ] = [ v.X, v.Y, v.Z ]
+		
+		if init == 0:
+			[ minX, minY, minZ ] = [ x, y, z ]
+			[ maxX, maxY, maxZ ] = [ x, y, z ]
+			init = 1
+		
+		if x > maxX:
+			maxX = x
+		
+		if y > maxY:
+			maxY = y
+
+		if z > maxZ:
+			maxZ = z
+
+		if x < minX:
+			minX = x
+
+		if y < minY:
+			minY = y
+
+		if z < minZ:
+			minZ = z
+		
+	s1 = getVertexAxisCross(minX, maxX)
+	s2 = getVertexAxisCross(minY, maxY)
+	s3 = getVertexAxisCross(minZ, maxZ)
+
+	mX = round(s1, gRoundPrecision)
+	mY = round(s2, gRoundPrecision)
+	mZ = round(s3, gRoundPrecision)
+	
+	return [ mX, mY, mZ ]
+
+
+# ###################################################################################################################
+def getSizesFromBoundBox(iObj):
+	'''
+	Description:
+	
+		Gets occupied space by the object from BoundBox. This can be useful for round shapes, 
+		where is no vertices at object edges, e.g. cylinders, circle at Sketch.
+	
+	Args:
+	
+		iObj: object
+	
+	Usage:
+	
+		[ sx, sy, sz ] = MagicPanels.getSizesFromVertices(obj)
+
+	Result:
+	
+		Returns array with [ mX, mY, mZ ] where: 
+		mX - occupied space along X axis
+		mY - occupied space along Y axis
+		mZ - occupied space along Z axis
+
+	'''
+
+
+	mX = round(iObj.Shape.BoundBox.XLength, gRoundPrecision)
+	mY = round(iObj.Shape.BoundBox.YLength, gRoundPrecision)
+	mZ = round(iObj.Shape.BoundBox.ZLength, gRoundPrecision)
+	
+	return [ mX, mY, mZ ]
+
+
+# ###################################################################################################################
+'''
 # Copy
 '''
 # ###################################################################################################################
@@ -265,341 +576,74 @@ def copyPanel(iObjects, iType="auto"):
 
 
 # ###################################################################################################################
-'''
-# Vertices
-'''
-# ###################################################################################################################
-
-
-# ###################################################################################################################
-def showVertex(iVertices, iRadius=5, iColor="red"):
+def getObjectToCopy(iObj):
 	'''
 	Description:
 	
-		Create sphere at given vertices, to show where are the points for debug purposes.
+		This function returns object to copy.
 	
 	Args:
 	
-		iVertices: array with Vertex or floats objects
-		iRadius (optional): ball Radius
-		iColor: string "red", "green", "blue", or color tuple like (1.0, 0.0, 0.0, 0.0)
+		iObj: object to get reference to copy
 
 	Usage:
 	
-		MagicPanels.showVertex([ obj.Shape.CenterOfMass ], 20)
+		toCopy = MagicPanels.getObjectToCopy(o)
 
 	Result:
 	
-		remove old vertices and show new ones, return array of objects, spheres
+		For example: 
+
+		for Cube: always returns Cube
+		for Pad: always returns Body
+		for PartDesign objects: try to return Body
+		for LinkGroup: returns LinkGroup
+		for Cut: returns Cut
+		for Clones: returns Clone
+		for Links: returns Link
+		for any other object: returns object
+
 	'''
-	
-	try:
-		for o in FreeCAD.ActiveDocument.Objects:
-			if str(o.Label).startswith("showVertex"):
-				FreeCAD.ActiveDocument.removeObject(o.Name)
-	except:
-		skip = 1
-	
-	vertices = []
-	
-	for v in iVertices:
+
+
+	if (
+		iObj.isDerivedFrom("Part::Box") or 
+		iObj.isDerivedFrom("App::LinkGroup") or 
+		iObj.isDerivedFrom("PartDesign::Body") or 
+		iObj.isDerivedFrom("Part::Cut") 
+		):
+		return iObj
+
+	elif iObj.isDerivedFrom("PartDesign::Pad"):
+		return iObj._Body
+
+	elif isType(iObj, "Clone") or iObj.isDerivedFrom("App::Link"):
+		return iObj
 		
-		if hasattr(v, "X"):
-			fv = FreeCAD.Vector(v.X, v.Y, v.Z)
-		elif hasattr(v, "x"):
-			fv = v
+		# currently will be the same Clone or Link
+		# to avoid global position problem and 
+		# multi loop reference
+		'''
+		oRef = getReference(iObj)
+		
+		if oRef.isDerivedFrom("Part::Box"):
+			return oRef
 		else:
-			fv = FreeCAD.Vector(v[0], v[1], v[2])
+			try:
+				toCopy = iObj._Body
+				return toCopy
+			except:
+				skip = 1
+		'''
 		
-		FreeCAD.Console.PrintMessage("\n")
-		FreeCAD.Console.PrintMessage(fv)
+	else:
 		
-		s1 = FreeCAD.ActiveDocument.addObject("Part::Sphere","showVertex")
-		s1.Placement = FreeCAD.Placement(FreeCAD.Vector(fv), FreeCAD.Rotation(0, 0, 0))
-		s1.Radius = iRadius
-		
-		if iColor == "red":
-			color = (1.0, 0.0, 0.0, 1.0)
-		elif iColor == "green":
-			color = (0.0, 1.0, 0.0, 1.0)
-		elif iColor == "blue":
-			color = (0.0, 0.0, 1.0, 1.0)
-		else:
-			color = iColor
-		
-		setColor(s1, 0, color, "color")
-		
-		vertices.append(s1)
-		
-	FreeCAD.ActiveDocument.recompute()
-
-	return vertices
-
-
-# ###################################################################################################################
-def getVertex(iFace, iEdge, iVertex):
-	'''
-	Description:
-	
-		Get vertex values for face, edge and vertex index.
-	
-	Args:
-	
-		iFace: face object
-		iEdge: edge array index
-		iVertex: vertex array index (0 or 1)
-
-	Usage:
-	
-		[ x, y, z ] = MagicPanels.getVertex(gFace, 0, 1)
-
-	Result:
-
-		Return vertex position.
-
-	'''
-	
-	vertexArr = touchTypo(iFace.Edges[iEdge])
-
-	return [ vertexArr[iVertex].X, vertexArr[iVertex].Y, vertexArr[iVertex].Z ]
-
-
-# ###################################################################################################################
-def getVertexIndex(iObj, iVertex):
-	'''
-	Description:
-	
-		Returns vertex index for given object and vertex object.
-	
-	Args:
-	
-		iObj: object of the vertex
-		iVertex: vertex object
-
-	Usage:
-	
-		vertexIndex = MagicPanels.getVertexIndex(o, v)
-
-	Result:
-	
-		return int value for vertex name, so you can create string Vertex + vertexIndex, 
-		or get vertex from vertices array
-
-	'''
-
-	index = 1
-	ves = touchTypo(iObj.Shape)
-	for v in ves:
-		if (
-			equal(v.X, iVertex.X) and 
-			equal(v.Y, iVertex.Y) and 
-			equal(v.Z, iVertex.Z) 
-			):
-			return index
-
-		index = index + 1
-	
-	return -1
-
-
-# ###################################################################################################################
-def getVertexAxisCross(iA, iB):
-	'''
-	Description:
-	
-		Return difference between iB and iA values with respect of coordinate axes.
-	
-	Args:
-	
-		iA: vertex float value
-		iB: vertex float value
-	
-	Usage:
-	
-		edgeSize = MagicPanels.getVertexAxisCross(v0[0], v1[0])
-		
-	Result:
-	
-		Return diff for vertices values.
-
-	'''
-	
-	if iA >= 0 and iB >= 0 and iB > iA:
-		return iB - iA
-	if iB >= 0 and iA >= 0 and iA > iB:
-		return iA - iB
-		
-	if iA < 0 and iB >= 0 and iB > iA:
-		return abs(iA) + iB
-	if iB < 0 and iA >= 0 and iA > iB:
-		return abs(iB) + iA
-
-	if iA < 0 and iB <= 0 and iB > iA:
-		return abs(iA) - abs(iB)
-	if iB < 0 and iA <= 0 and iA > iB:
-		return abs(iB) - abs(iA)
-
-	return 0
-
-
-# ###################################################################################################################
-def getVerticesPlane(iV1, iV2):
-	'''
-	Description:
-	
-		Gets axes with the same values.
-	
-	Args:
-	
-		iV1: vertex object
-		iV2: vertex object
-	
-	Usage:
-	
-		plane = MagicPanels.getVerticesPlane(v1, v2)
-		
-	Result:
-	
-		Return plane as "XY", "XZ", "YZ".
-
-	'''
-
-	if equal(iV1[0], iV2[0]) and equal(iV1[1], iV2[1]):
-		return "XY"
-
-	if equal(iV1[0], iV2[0]) and equal(iV1[2], iV2[2]):
-		return "XZ"
-		
-	if equal(iV1[1], iV2[1]) and equal(iV1[2], iV2[2]):
-		return "YZ"
-
-	return ""
-
-
-# ###################################################################################################################
-def setVertexPadding(iObj, iVertex, iPadding, iAxis):
-	'''
-	Description:
-	
-		Sets padding offset from given vertex to inside the object.
-		Do not use it at getPlacement for Pads. Use 0 vertex instead.
-		
-		Note: This need to be improved.
-	
-	Args:
-	
-		iObj: object
-		iVertex: vertex object FreeCAD.Vector(x, y, z)
-		iPadding: value > 0 for making offset
-		iAxis: string: "X" or "Y" or "Z"
-		
-	Usage:
-	
-		v = getattr(obj.Shape, "Vertex"+"es")[0]
-		offsetX = MagicPanels.setVertexPadding(obj, v, 15, "X")
-		
-	Result:
-	
-		Return return new position value for given axis.
-
-	'''
-	
-	if iAxis == "X":
-		
-		v = FreeCAD.Vector(iVertex.X + iPadding, iVertex.Y, iVertex.Z)
-		inside = iObj.Shape.BoundBox.isInside(v)
-		
-		if inside:
-			return iVertex.X + iPadding
-		else: 
-			return iVertex.X - iPadding
-			
-	if iAxis == "Y":
-		
-		v = FreeCAD.Vector(iVertex.X, iVertex.Y + iPadding, iVertex.Z)
-		inside = iObj.Shape.BoundBox.isInside(v)
-		
-		if inside:
-			return iVertex.Y + iPadding
-		else: 
-			return iVertex.Y - iPadding
-			
-	if iAxis == "Z":
-		
-		v = FreeCAD.Vector(iVertex.X, iVertex.Y, iVertex.Z + iPadding)
-		inside = iObj.Shape.BoundBox.isInside(v)
-		
-		if inside:
-			return iVertex.Z + iPadding
-		else: 
-			return iVertex.Z - iPadding
-
-	return ""
-
-
-# ###################################################################################################################
-def getOnCurve(iPoint, iCurve):
-	'''
-	Description:
-	
-		This function has been created to replace python .index() function. 
-		FreeCAD has not rounded float values at Vectors, so if you call 
-		iCurve.Shape.getPoints(1)[0].index(vector_of_iPoint) this may not find the index 
-		of vector_of_iPoint at the iCurve not because it is not there, but because there is 
-		small not rounded difference, for example 0.0000006. So, this function scan the iCurve vectors 
-		and compare rounded values to return the index.
-	
-	Args:
-	
-		iPoint: Part.Vertex object or FreeCAD.Vector or array of floats like [ x, y, z ]
-		iCurve: object that has .getPoints() function, for example Wire, Sketch, Helix, Edge
-
-	Usage:
-	
-		index = MagicPanels.getOnCurve(v, Sketch)
-		
-	Result:
-	
-		Return int value index for iPoint on iCurve.
-
-	'''
-
-	curvePoints = iCurve.Shape.getPoints(1)[0]
-	
-	skip = 0
-	if skip == 0:
 		try:
-			targetVector = FreeCAD.Vector(iPoint.X, iPoint.Y, iPoint.Z)
-			skip = 1
+			iObj = iObj._Body
 		except:
-			skip = 0
+			skip = 1
 
-	if skip == 0:
-		try:
-			targetVector = FreeCAD.Vector(iPoint.x, iPoint.x, iPoint.x)
-			skip = 1
-		except:
-			skip = 0
-	
-	if skip == 0:
-		try:
-			targetVector = FreeCAD.Vector(iPoint[0], iPoint[1], iPoint[2])
-			skip = 1
-		except:
-			skip = 0
-
-	index = 0
-	for v in curvePoints:
-		if (
-			equal(v.x, targetVector.x) and 
-			equal(v.y, targetVector.y) and 
-			equal(v.z, targetVector.z) 
-			):
-			return index
-		
-		index = index + 1
-	
-	return -1
+	return iObj
 
 
 # ###################################################################################################################
@@ -871,310 +915,6 @@ def getSizeByEdge(iObj, iEdge):
 	
 	if eplane == "Z":
 		return "Height"
-
-
-# ###################################################################################################################
-'''
-# Router
-'''
-# ###################################################################################################################
-
-
-# ###################################################################################################################
-def getSubByKey(iObj, iKey, iType, iSubType):
-	'''
-	Description:
-	
-		This is extended version of getEdgeIndexByKey function. 
-		This function has been created to solve resized edge problem. If you cut the edge the next 
-		edge will change the Length. So, also the BoundBox will be changed. With this function you 
-		can customize reference key to solve the Topology Naming Problem.
-	
-	Args:
-	
-		iObj: object for the sub-object
-		iKey: array with keys
-		iType: type of comparison
-		iSubType: type of sub-object to return, "edge" or "face"
-
-	Usage:
-	
-		key = [ e.CenterOfMass, plane ]
-		[ edge, edgeName, edgeIndex ] = MagicPanels.getSubByKey(o, key, "CenterOfMass", "edge")
-
-	Result:
-	
-		return edge object, name like Edge1 and also index starting from 0 (for iObj.Shape.Edges[index])
-
-	'''
-	
-	if iType == "CenterOfMass":
-		
-		key = iKey[0]
-		plane = iKey[1]
-		
-		edge = ""
-		index = 1
-		name = "Edge"
-		
-		if iSubType == "edge":
-			
-			for e in iObj.Shape.Edges:
-				
-				p = getEdgePlane(iObj, e)
-				
-				if p == plane:
-					if plane == "X":
-						if equal(e.CenterOfMass.y, key.y) and equal(e.CenterOfMass.z, key.z):
-							name += str(index)
-							return [ e, name, index ]
-
-					if plane == "Y":
-						if equal(e.CenterOfMass.x, key.x) and equal(e.CenterOfMass.z, key.z):
-							name += str(index)
-							return [ e, name, index ]
-							
-					if plane == "Z":
-						if equal(e.CenterOfMass.x, key.x) and equal(e.CenterOfMass.y, key.y):
-							name += str(index)
-							return [ e, name, index ]
-				
-				index = index + 1
-
-		# not needed now
-		if iSubType == "face":
-			
-			search = iObj.Shape.Faces
-			return [ "not supported", "not supported", "not supported" ]
-		
-	if iType == "BoundBox":
-		
-		key = iKey[0]
-		index = 1
-		
-		if iSubType == "edge":
-			
-			for e in iObj.Shape.Edges:
-			
-				if normalizeBoundBox(e.BoundBox) == normalizeBoundBox(key):
-					edgeName = "Edge"+str(index)
-					idx = index - 1
-					return [ e, edgeName, idx ]
-
-				index = index + 1
-
-		if iSubType == "face":
-			
-			for f in iObj.Shape.Faces:
-			
-				if normalizeBoundBox(f.BoundBox) == normalizeBoundBox(key):
-					faceName = "Face"+str(index)
-					idx = index - 1
-					return [ f, faceName, idx ]
-
-				index = index + 1
-
-	return [ "", "", "" ]
-
-
-# ###################################################################################################################
-def getSketchPatternRotation(iObj, iSub):
-	'''
-	Description:
-	
-		Returns Rotation object which can be passed directly to setSketchPlacement 
-		functions. The Sketch will be perpendicular to the iSub object, so it can be used as 
-		router bit to cut the edge or face.
-	
-	Args:
-	
-		iObj: object for sub-object
-		iSub: selected sub-object, edge or face
-
-	Usage:
-	
-		r = MagicPanels.getSketchPatternRotation(o, edge)
-		r = MagicPanels.getSketchPatternRotation(o, face)
-
-	Result:
-	
-		return FreeCAD.Rotation object.
-
-	'''
-
-	r = ""
-	
-	if iSub.ShapeType == "Edge":
-	
-		plane = getEdgePlane(iObj, iSub)
-
-		if plane == "X":
-			r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 1.00, 0.00), 90.00)
-
-		if plane == "Y":
-			r = FreeCAD.Rotation(FreeCAD.Vector(1.00, 0.00, 0.00), 90.00)
-
-		if plane == "Z":
-			r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 00.00)
-	
-	if iSub.ShapeType == "Face":
-		
-		plane = getFacePlane(iSub)
-		[ faceType, arrAll, arrThick, arrShort, arrLong ] = getFaceEdges(iObj, iSub)
-		
-		if len(arrLong) > 0:
-			subPlane = getEdgePlane(iObj, arrLong[0])
-		elif len(arrShort) > 0:
-			subPlane = getEdgePlane(iObj, arrShort[0])
-		elif len(arrAll) > 0:
-			subPlane = getEdgePlane(iObj, arrAll[0])
-		
-		if subPlane == "X":
-			r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 1.00, 0.00), 90.00)
-
-		if subPlane == "Y":
-			r = FreeCAD.Rotation(FreeCAD.Vector(1.00, 0.00, 0.00), 90.00)
-
-		if subPlane == "Z":
-			r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 00.00)
-	
-	# This can be updated later for rotated edges with additional rotation angle (offset from axis)
-	return r
-
-
-# ###################################################################################################################
-def edgeRouter(iPad, iSub, iSketch, iLength, iLabel, iType):
-	'''
-	Description:
-	
-		This function is router for the edge. It cut the 
-		iSub with iSketch pattern. The new object will get iLabel label.
-	
-	Args:
-	
-		iPad: Pad object of the sub-object, for routing
-		iSub: sub-object, edge or face
-		iSketch: sketch object will be used as pattern to cut, the sketch should be around XYZ center cross.
-		iLength: length to cut, float or int value, 0 means ThroughAll
-		iLabel: label for new object
-		iType: type of routing
-
-	Usage:
-	
-		router = MagicPanels.edgeRouter(pad, edge, sketch, 0, "routerCove", "simple")
-
-	Result:
-	
-		return router object, the result of cut
-
-	'''
-
-	if iType == "simple":
-		
-		anchor = iSub.CenterOfMass
-		r = getSketchPatternRotation(iPad, iSub)
-		setSketchPlacement(iSketch, anchor.x, anchor.y, anchor.z, r, "global")
-		
-		router = iPad._Body.newObject('PartDesign::Pocket','router')
-		router.Profile = iSketch
-		router.Midplane = 1
-		router.Label = iLabel + " "
-		
-		if iLength == 0:
-			router.Type = 1
-		else:
-			router.Length = iLength
-
-		iSketch.Visibility = False
-		iPad.Visibility = False
-		FreeCAD.ActiveDocument.recompute()
-		
-		try:
-			copyColors(iPad, router)
-		except:
-			skip = 1
-		
-		FreeCAD.ActiveDocument.recompute()
-	
-		return router
-
-	return ""
-
-
-# ###################################################################################################################
-def makePockets(iObjects, iLength):
-	'''
-	Description:
-	
-		This function is multi Pocket. First object from iObjects will be base
-		object to Pocket, all others should be Sketches. The Length is depth for Pocket. 
-		If the Length is 0 the Pocket will be ThroughAll.
-	
-	Args:
-	
-		iObjects: First base objects, next sketches
-		iLength: length to cut, float or int value, 0 means ThroughAll
-		
-	Usage:
-	
-		pocket = MagicPanels.makePockets(selectedObjects, 0)
-
-	Result:
-	
-		return last pocket object, the result of cut
-
-	'''
-
-	base = iObjects[0]
-	sketches = iObjects[1:]
-
-	if base.isDerivedFrom("Part::Box"):
-
-		[ part, body, sketch, pad ] = makePad(base, "panel2pad")
-		FreeCAD.ActiveDocument.removeObject(base.Name)
-		FreeCAD.ActiveDocument.recompute()
-		base = pad
-
-	for s in sketches:
-		
-		body = base._Body
-
-		# FreeCAD know what is going on here and not blow up, I am surprised ;-)
-		try:
-			[ x, y, z, r ] = getSketchPlacement(s, "global")
-			[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(base)
-			x = x - coX
-			y = y - coY
-			z = z - coZ
-			s.adjustRelativeLinks(body)
-			body.ViewObject.dropObject(s, None, '', [])
-			setSketchPlacement(s, x, y, z, r, "global")
-		except:
-			skip = 1
-
-		pocket = body.newObject('PartDesign::Pocket','multiPocket')
-		pocket.Profile = s
-		pocket.Midplane = 1
-		pocket.Label = "multiPocket "
-		pocket.Midplane = 1
-
-		if iLength == 0:
-			pocket.Type = 1
-		else:
-			pocket.Length = 2 * iLength
-
-		s.Visibility = False
-		base.Visibility = False
-		FreeCAD.ActiveDocument.recompute()
-		
-		try:
-			copyColors(base, pocket)
-		except:
-			skip = 1
-			
-		FreeCAD.ActiveDocument.recompute()
-		
-		base = pocket
 
 
 # ###################################################################################################################
@@ -1630,443 +1370,623 @@ def getFaceDetails(iObj, iFace):
 
 # ###################################################################################################################
 '''
-# References
+# Vertices
 '''
 # ###################################################################################################################
 
 
 # ###################################################################################################################
-def getReference(iObj="none"):
+def showVertex(iVertices, iRadius=5, iColor="red"):
 	'''
 	Description:
 	
-		Gets reference to the selected or given object.
+		Create sphere at given vertices, to show where are the points for debug purposes.
 	
 	Args:
 	
-		iObj (optional): object to get reference (to return base object)
-	
+		iVertices: array with Vertex or floats objects
+		iRadius (optional): ball Radius
+		iColor: string "red", "green", "blue", or color tuple like (1.0, 0.0, 0.0, 0.0)
+
 	Usage:
 	
-		gObj = MagicPanels.getReference()
-		gObj = MagicPanels.getReference(obj)
-		
+		MagicPanels.showVertex([ obj.Shape.CenterOfMass ], 20)
+
 	Result:
 	
-		gObj - reference to the base object
+		remove old vertices and show new ones, return array of objects, spheres
+	'''
+	
+	try:
+		for o in FreeCAD.ActiveDocument.Objects:
+			if str(o.Label).startswith("showVertex"):
+				FreeCAD.ActiveDocument.removeObject(o.Name)
+	except:
+		skip = 1
+	
+	vertices = []
+	
+	for v in iVertices:
+		
+		if hasattr(v, "X"):
+			fv = FreeCAD.Vector(v.X, v.Y, v.Z)
+		elif hasattr(v, "x"):
+			fv = v
+		else:
+			fv = FreeCAD.Vector(v[0], v[1], v[2])
+		
+		FreeCAD.Console.PrintMessage("\n")
+		FreeCAD.Console.PrintMessage(fv)
+		
+		s1 = FreeCAD.ActiveDocument.addObject("Part::Sphere","showVertex")
+		s1.Placement = FreeCAD.Placement(FreeCAD.Vector(fv), FreeCAD.Rotation(0, 0, 0))
+		s1.Radius = iRadius
+		
+		if iColor == "red":
+			color = (1.0, 0.0, 0.0, 1.0)
+		elif iColor == "green":
+			color = (0.0, 1.0, 0.0, 1.0)
+		elif iColor == "blue":
+			color = (0.0, 0.0, 1.0, 1.0)
+		else:
+			color = iColor
+		
+		setColor(s1, 0, color, "color")
+		
+		vertices.append(s1)
+		
+	FreeCAD.ActiveDocument.recompute()
+
+	return vertices
+
+
+# ###################################################################################################################
+def getVertex(iFace, iEdge, iVertex):
+	'''
+	Description:
+	
+		Get vertex values for face, edge and vertex index.
+	
+	Args:
+	
+		iFace: face object
+		iEdge: edge array index
+		iVertex: vertex array index (0 or 1)
+
+	Usage:
+	
+		[ x, y, z ] = MagicPanels.getVertex(gFace, 0, 1)
+
+	Result:
+
+		Return vertex position.
+
+	'''
+	
+	vertexArr = touchTypo(iFace.Edges[iEdge])
+
+	return [ vertexArr[iVertex].X, vertexArr[iVertex].Y, vertexArr[iVertex].Z ]
+
+
+# ###################################################################################################################
+def getVertexIndex(iObj, iVertex):
+	'''
+	Description:
+	
+		Returns vertex index for given object and vertex object.
+	
+	Args:
+	
+		iObj: object of the vertex
+		iVertex: vertex object
+
+	Usage:
+	
+		vertexIndex = MagicPanels.getVertexIndex(o, v)
+
+	Result:
+	
+		return int value for vertex name, so you can create string Vertex + vertexIndex, 
+		or get vertex from vertices array
 
 	'''
 
-	obj = ""
-	
-	# #####################################
-	# selection
-	# #####################################
-	
-	if iObj == "none":
-		obj = FreeCADGui.Selection.getSelection()[0]
-	else:
-		obj = iObj
+	index = 1
+	ves = touchTypo(iObj.Shape)
+	for v in ves:
+		if (
+			equal(v.X, iVertex.X) and 
+			equal(v.Y, iVertex.Y) and 
+			equal(v.Z, iVertex.Z) 
+			):
+			return index
 
-	# #####################################
-	# object types 
-	# #####################################
-	
-	# Cube
-	if obj.isDerivedFrom("Part::Box"):
-		return obj
-	
-	# normal Pad
-	if obj.isDerivedFrom("PartDesign::Pad") and obj.BaseFeature == None:
-		return obj
-	
-	# not search for Sketch reference
-	if obj.isDerivedFrom("Sketcher::SketchObject"):
-		return obj
-
-	# try to unpack base object for other objects
-	try:
-		depth = len(obj.OutListRecursive)
-		
-		if  depth == 0:
-			return obj
-		
-		else:
-			i = 0
-			while i < depth and i < gSearchDepth:
-				
-				if obj.isDerivedFrom("Part::Cut"):
-					index = i
-				else:
-					index = depth - 1 - i
-
-				base = obj.OutListRecursive[index]
-				
-				if (
-					base.isDerivedFrom("Part::Box") or 
-					(base.isDerivedFrom("PartDesign::Pad") and str(base.Name).find("Tenon") == -1)
-					):
-					return base
-				else:
-					i = i + 1
-	except:
-		skip = 1
-
-	# not recognized
-	if obj != "":
-		return obj
+		index = index + 1
 	
 	return -1
 
 
 # ###################################################################################################################
-'''
-# Sizes
-'''
-# ###################################################################################################################
-
-
-# ###################################################################################################################
-def getSizes(iObj):
+def getVertexAxisCross(iA, iB):
 	'''
 	Description:
 	
-		Allows to get sizes for object (iObj), according to the object type. 
-		The values are not sorted.
+		Return difference between iB and iA values with respect of coordinate axes.
 	
 	Args:
 	
-		iObj: object to get sizes
-
+		iA: vertex float value
+		iB: vertex float value
+	
 	Usage:
 	
-		[ size1, size2, size3 ] = MagicPanels.getSizes(obj)
-
+		edgeSize = MagicPanels.getVertexAxisCross(v0[0], v1[0])
+		
 	Result:
 	
-		Returns [ Length, Width, Height ] for Cube.
+		Return diff for vertices values.
 
 	'''
-
-	# for Cube panels
-	if iObj.isDerivedFrom("Part::Box"):
-
-		return [ iObj.Length.Value, iObj.Width.Value, iObj.Height.Value ]
-
-	# for Pad panels
-	if iObj.isDerivedFrom("PartDesign::Pad"):
-		
-		sizeX = ""
-		sizeY = ""
-		
-		for c in iObj.Profile[0].Constraints:
-			if c.Name == "SizeX":
-				sizeX = c.Value
-			if c.Name == "SizeY":
-				sizeY = c.Value
-		
-		if sizeX == "" or sizeY == "":
-			sizes = getSizesFromVertices(iObj.Profile[0])
-			sizes.sort()
-			sizes.pop(0)
-			sizes.insert(0, iObj.Length.Value)
-			return sizes
-			
-		else:
-			return [ sizeX, sizeY, iObj.Length.Value ]
-
-	# to move drill bits more precisely
-	if iObj.isDerivedFrom("Part::Cylinder"):
-		return [ 1, 1, 1 ]
-
-	if iObj.isDerivedFrom("Part::Cone"):
-		return [ 1, 1, 1 ]
 	
-	if iObj.isDerivedFrom("PartDesign::Thickness"):
+	if iA >= 0 and iB >= 0 and iB > iA:
+		return iB - iA
+	if iB >= 0 and iA >= 0 and iA > iB:
+		return iA - iB
 		
-		sizeX = ""
-		sizeY = ""
+	if iA < 0 and iB >= 0 and iB > iA:
+		return abs(iA) + iB
+	if iB < 0 and iA >= 0 and iA > iB:
+		return abs(iB) + iA
 
-		for c in iObj.Base[0].Profile[0].Constraints:
-			if c.Name == "SizeX":
-				sizeX = c.Value
-			if c.Name == "SizeY":
-				sizeY = c.Value
-			
-		if sizeX == "" or sizeY == "":
-			sizes = getSizesFromVertices(iObj.Base[0].Profile[0])
-			sizes.sort()
-			sizes.pop(0)
-			sizes.insert(0, iObj.Base[0].Length.Value)
-			return sizes
-			
-		else:
-			return [ sizeX, sizeY, iObj.Base[0].Length.Value ]
-	
-	# set sketch biggest size
-	if iObj.isDerivedFrom("Sketcher::SketchObject"):
-		try:
-			sizes = getSizesFromVertices(iObj)
-			sizes.sort()
-			return [ sizes[2], sizes[2], sizes[2] ]
-			
-		except:
-			return [ 100, 100, 100 ]
-	
-	# for custom objects
-	try:
-		return [ iObj.Base_Width.Value, iObj.Base_Height.Value, iObj.Base_Length.Value ]
-		
-	except:
-		skip = 1
-	
-	# try to get sizes from vertices
-	try:
-		[ sx, sy, sz ] = getSizesFromVertices(iObj)
-		return [ sx, sy, sz ]
+	if iA < 0 and iB <= 0 and iB > iA:
+		return abs(iA) - abs(iB)
+	if iB < 0 and iA <= 0 and iA > iB:
+		return abs(iB) - abs(iA)
 
-	except:
-		skip = 1
-	
-	# if nothing was successful, return 100 to move all furniture quickly
-	return [ 100, 100, 100 ]
+	return 0
 
 
 # ###################################################################################################################
-def getSizesFromVertices(iObj):
+def getVerticesPlane(iV1, iV2):
 	'''
 	Description:
 	
-		Gets occupied space by the object from vertices.
+		Gets axes with the same values.
 	
 	Args:
 	
-		iObj: object
+		iV1: vertex object
+		iV2: vertex object
 	
 	Usage:
 	
-		[ sx, sy, sz ] = MagicPanels.getSizesFromVertices(obj)
-
+		plane = MagicPanels.getVerticesPlane(v1, v2)
+		
 	Result:
 	
-		Returns array with [ mX, mY, mZ ] where: 
-		mX - occupied space along X axis
-		mY - occupied space along Y axis
-		mZ - occupied space along Z axis
+		Return plane as "XY", "XZ", "YZ".
 
 	'''
 
-	init = 0
-	
-	minX = 0
-	minY = 0
-	minZ = 0
+	if equal(iV1[0], iV2[0]) and equal(iV1[1], iV2[1]):
+		return "XY"
 
-	maxX = 0
-	maxY = 0
-	maxZ = 0
-
-	vs = getattr(iObj.Shape, "Vertex"+"es")
-
-	for v in vs:
+	if equal(iV1[0], iV2[0]) and equal(iV1[2], iV2[2]):
+		return "XZ"
 		
-		[ x, y, z ] = [ v.X, v.Y, v.Z ]
-		
-		if init == 0:
-			[ minX, minY, minZ ] = [ x, y, z ]
-			[ maxX, maxY, maxZ ] = [ x, y, z ]
-			init = 1
-		
-		if x > maxX:
-			maxX = x
-		
-		if y > maxY:
-			maxY = y
-
-		if z > maxZ:
-			maxZ = z
-
-		if x < minX:
-			minX = x
-
-		if y < minY:
-			minY = y
-
-		if z < minZ:
-			minZ = z
-		
-	s1 = getVertexAxisCross(minX, maxX)
-	s2 = getVertexAxisCross(minY, maxY)
-	s3 = getVertexAxisCross(minZ, maxZ)
-
-	mX = round(s1, gRoundPrecision)
-	mY = round(s2, gRoundPrecision)
-	mZ = round(s3, gRoundPrecision)
-	
-	return [ mX, mY, mZ ]
-
-
-# ###################################################################################################################
-def getSizesFromBoundBox(iObj):
-	'''
-	Description:
-	
-		Gets occupied space by the object from BoundBox. This can be useful for round shapes, 
-		where is no vertices at object edges, e.g. cylinders, circle at Sketch.
-	
-	Args:
-	
-		iObj: object
-	
-	Usage:
-	
-		[ sx, sy, sz ] = MagicPanels.getSizesFromVertices(obj)
-
-	Result:
-	
-		Returns array with [ mX, mY, mZ ] where: 
-		mX - occupied space along X axis
-		mY - occupied space along Y axis
-		mZ - occupied space along Z axis
-
-	'''
-
-
-	mX = round(iObj.Shape.BoundBox.XLength, gRoundPrecision)
-	mY = round(iObj.Shape.BoundBox.YLength, gRoundPrecision)
-	mZ = round(iObj.Shape.BoundBox.ZLength, gRoundPrecision)
-	
-	return [ mX, mY, mZ ]
-
-
-# ###################################################################################################################
-'''
-# Measurements
-'''
-# ###################################################################################################################
-
-
-# ###################################################################################################################
-def showMeasure(iP1, iP2, iRef=""):
-	'''
-	Description:
-	
-		Creates measurements object, I mean draw it. Now it use FreeCAD function 
-		to create and draw object. But in the future this can be changed to 
-		more beautiful drawing without changing tools. 
-	
-	Args:
-	
-		iP1: starting point vertex object
-		iP2: ending point vertex object
-		iRef (optional): string for future TechDraw import or any other use, other tools
-
-	Usage:
-	
-		m = MagicPanels.showMeasure(gP1, gP2, "Pad")
-
-	Result:
-	
-		Create measure object, draw it and return measure object for further processing. 
-
-	'''
-
-
-	# support for FreeCAD 1.0+
-	if gKernelVersion >= 1.0:
-		
-		try:
-			m = FreeCAD.ActiveDocument.addObject('Measure::MeasureDistanceDetached', "measure")
-			
-			m.Position1 = iP1
-			m.Position2 = iP2
-			
-			m.ViewObject.LineColor = (1.0, 0.0, 0.0, 0.0)
-			m.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
-			m.ViewObject.FontSize = 24
-
-			# avoid FreeCAD automatic labeling bug and crash
-			label = str(m.Name)
-			if str(m.Name) == "measure":
-				label = translate("showMeasure", "Measure")
-			else:
-				label = translate("showMeasure", "Measure") + " " + str(m.Name)[7:]
-				
-			m.Label = label
-	
-		except:
-			skip = 1
-
-	# support for FreeCAD 0.21.2
-	else:
-		
-		try:
-			m = FreeCAD.ActiveDocument.addObject('App::MeasureDistance', "measure")
-			
-			m.P1 = iP1
-			m.P2 = iP2
-			
-			m.ViewObject.LineColor = (1.0, 0.0, 0.0, 0.0)
-			m.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
-			m.ViewObject.FontSize = 24
-			m.ViewObject.DistFactor = 0.25
-
-			m.Label = translate("showMeasure", "Measure") + " "
-
-		except:
-			skip = 1
-	
-	if iRef != "":
-		m.Label2 = str(iRef)
-	
-	FreeCAD.ActiveDocument.recompute()
-	
-	return m
-
-
-# ###################################################################################################################
-def getDistanceBetweenFaces(iObj1, iObj2, iFace1, iFace2):
-	'''
-	Description:
-	
-		Gets distance between iFace1 and iFace2.
-	
-	Args:
-	
-		iObj1: object of iFace1
-		iObj2: object of iFace2
-		iFace1: face object
-		iFace2: face object
-
-	Usage:
-	
-		size = MagicPanels.getDistanceBetweenFaces(o1, o2, face1, face2)
-
-	Result:
-
-		return distance between face1 object and face2 object
-
-	'''
-
-	plane1 = getFacePlane(iFace1)
-	plane2 = getFacePlane(iFace2)
-	[ x1, y1, z1 ] = getVertex(iFace1, 0, 0)
-	[ x2, y2, z2 ] = getVertex(iFace2, 0, 0)
-
-	# if you switch to global be sure the planes are not rotated
-	[[ x1, y1, z1 ]] = getVerticesPosition([[ x1, y1, z1 ]], iObj1)
-	[[ x2, y2, z2 ]] = getVerticesPosition([[ x2, y2, z2 ]], iObj2)
-	
-	if plane1 == "XY" and plane2 == "XY":
-		return round(abs(z1-z2), gRoundPrecision)
-
-	if plane1 == "XZ" and plane2 == "XZ":
-		return round(abs(y1-y2), gRoundPrecision)
-		
-	if plane1 == "YZ" and plane2 == "YZ":
-		return round(abs(x1-x2), gRoundPrecision)
+	if equal(iV1[1], iV2[1]) and equal(iV1[2], iV2[2]):
+		return "YZ"
 
 	return ""
+
+
+# ###################################################################################################################
+def setVertexPadding(iObj, iVertex, iPadding, iAxis):
+	'''
+	Description:
+	
+		Sets padding offset from given vertex to inside the object.
+		Do not use it at getPlacement for Pads. Use 0 vertex instead.
+		
+		Note: This need to be improved.
+	
+	Args:
+	
+		iObj: object
+		iVertex: vertex object FreeCAD.Vector(x, y, z)
+		iPadding: value > 0 for making offset
+		iAxis: string: "X" or "Y" or "Z"
+		
+	Usage:
+	
+		v = getattr(obj.Shape, "Vertex"+"es")[0]
+		offsetX = MagicPanels.setVertexPadding(obj, v, 15, "X")
+		
+	Result:
+	
+		Return return new position value for given axis.
+
+	'''
+	
+	if iAxis == "X":
+		
+		v = FreeCAD.Vector(iVertex.X + iPadding, iVertex.Y, iVertex.Z)
+		inside = iObj.Shape.BoundBox.isInside(v)
+		
+		if inside:
+			return iVertex.X + iPadding
+		else: 
+			return iVertex.X - iPadding
+			
+	if iAxis == "Y":
+		
+		v = FreeCAD.Vector(iVertex.X, iVertex.Y + iPadding, iVertex.Z)
+		inside = iObj.Shape.BoundBox.isInside(v)
+		
+		if inside:
+			return iVertex.Y + iPadding
+		else: 
+			return iVertex.Y - iPadding
+			
+	if iAxis == "Z":
+		
+		v = FreeCAD.Vector(iVertex.X, iVertex.Y, iVertex.Z + iPadding)
+		inside = iObj.Shape.BoundBox.isInside(v)
+		
+		if inside:
+			return iVertex.Z + iPadding
+		else: 
+			return iVertex.Z - iPadding
+
+	return ""
+
+
+# ###################################################################################################################
+def getOnCurve(iPoint, iCurve):
+	'''
+	Description:
+	
+		This function has been created to replace python .index() function. 
+		FreeCAD has not rounded float values at Vectors, so if you call 
+		iCurve.Shape.getPoints(1)[0].index(vector_of_iPoint) this may not find the index 
+		of vector_of_iPoint at the iCurve not because it is not there, but because there is 
+		small not rounded difference, for example 0.0000006. So, this function scan the iCurve vectors 
+		and compare rounded values to return the index.
+	
+	Args:
+	
+		iPoint: Part.Vertex object or FreeCAD.Vector or array of floats like [ x, y, z ]
+		iCurve: object that has .getPoints() function, for example Wire, Sketch, Helix, Edge
+
+	Usage:
+	
+		index = MagicPanels.getOnCurve(v, Sketch)
+		
+	Result:
+	
+		Return int value index for iPoint on iCurve.
+
+	'''
+
+	curvePoints = iCurve.Shape.getPoints(1)[0]
+	
+	skip = 0
+	if skip == 0:
+		try:
+			targetVector = FreeCAD.Vector(iPoint.X, iPoint.Y, iPoint.Z)
+			skip = 1
+		except:
+			skip = 0
+
+	if skip == 0:
+		try:
+			targetVector = FreeCAD.Vector(iPoint.x, iPoint.x, iPoint.x)
+			skip = 1
+		except:
+			skip = 0
+	
+	if skip == 0:
+		try:
+			targetVector = FreeCAD.Vector(iPoint[0], iPoint[1], iPoint[2])
+			skip = 1
+		except:
+			skip = 0
+
+	index = 0
+	for v in curvePoints:
+		if (
+			equal(v.x, targetVector.x) and 
+			equal(v.y, targetVector.y) and 
+			equal(v.z, targetVector.z) 
+			):
+			return index
+		
+		index = index + 1
+	
+	return -1
+
+
+# ###################################################################################################################
+def getVerticesOffset(iVertices, iObj, iType="array"):
+	'''
+	Gets iObj offset of all supported containers for vertices iVertices.
+	
+	Args:
+	
+		iObj: object to get containers offset
+		iVertices: vertices array
+		iType:
+			"array" - array with floats [ 1, 2, 3 ]
+			"vector" - array with FreeCAD.Vector types
+		
+	Usage:
+	
+		vertices = MagicPanels.getVerticesOffset(vertices, o, "array")
+
+	Result:
+	
+		return vertices array with correct container offset
+
+	'''
+
+	vertices = []
+	
+	[ coX, coY, coZ, coR ] = getContainersOffset(iObj)
+	
+	for v in iVertices:
+		if iType == "array":
+			n = [ v[0] + coX, v[1] + coY, v[2] + coZ ]
+		else:
+			n = FreeCAD.Vector(v.x + coX, v.y + coY, v.z + coZ)
+		
+		vertices.append(n)
+	
+	return vertices
+
+
+# ###################################################################################################################
+def getVerticesPosition(iVertices, iObj, iType="auto"):
+	'''
+	Description:
+	
+		Gets iVertices 3D position. This function should be used to show or select iVertices with rotation. 
+		It calculates all offsets with rotation. But this function should not be used for calculation. 
+		Because the vertices at FreeCAD are raw, without containers offset. The vertices at FreeCAD have only 
+		AttachmentOffset applied. If you start calculation with rotation, you need to calculate plane correctly.
+	
+	Args:
+	
+		iVertices: vertices array
+		iObj: object to get containers offset
+		iType:
+			"auto" - recognize the iVertices elements type
+			"array" - each element of iVertices is array with floats [ 1, 2, 3 ]
+			"vector" - each element of iVertices is array with FreeCAD.Vector
+			"vertex" - each element of iVertices is array with Part.Vertex
+
+	Usage:
+	
+		[[ x, y, z ]] = MagicPanels.getVerticesPosition([[ x, y, z ]], o, "array")
+		vertices = MagicPanels.getVerticesPosition(vertices, o, "vector")
+		vertices = MagicPanels.getVerticesPosition(vertices, o)
+		
+		MagicPanels.showVertex(vertices, 10)
+
+	Result:
+	
+		return vertices array with correct container offset, with the same type
+
+	'''
+
+	# not unpack mirroring
+	if iObj.isDerivedFrom("Part::Mirroring"):
+		return iVertices
+
+	# recognize iVertices type
+	if iType == "auto":
+		
+		skip = 0
+		
+		if skip == 0:
+			try:
+				test = iVertices[0].X
+				iType = "vertex"
+				skip = 1
+			except:
+				skip = 0
+
+		if skip == 0:
+			try:
+				test = iVertices[0].x
+				iType = "vector"
+				skip = 1
+			except:
+				skip = 0
+		
+		if skip == 0:
+			try:
+				test = iVertices[0][0]
+				iType = "array"
+				skip = 1
+			except:
+				skip = 0
+
+	# convert iVertices to Vector for calculation
+	vertices = []
+	for v in iVertices:
+		
+		if iType == "array":
+			n = FreeCAD.Vector(v[0], v[1], v[2])
+		
+		elif iType == "vertex":
+			import Part
+			n = FreeCAD.Vector(v.X, v.Y, v.Z)
+
+		else:
+			n = v
+			
+		vertices.append(n)
+	
+	# calculate position
+	containers = getContainers(iObj)
+	for o in containers:
+		
+		if (
+			o.isDerivedFrom("App::Part") or 
+			o.isDerivedFrom("PartDesign::Body") or 
+			o.isDerivedFrom("App::LinkGroup") or 
+			o.isDerivedFrom("Part::Cut") 
+			):
+			
+			try:
+				p = o.Placement
+			except:
+				continue
+			
+			i = 0
+			for v in vertices:
+
+				n = p.multVec(v)
+				vertices[i] = n
+				
+				i = i + 1
+
+	# convert to the same type as iVertices
+	i = 0
+	for v in vertices:
+		if iType == "array":
+			vertices[i] = [ v.x, v.y, v.z ]
+				
+		elif iType == "vertex":
+			vertices[i] = Part.Vertex(v.x, v.y, v.z)
+				
+		else:
+			vertices[i] = v
+		
+		i = i + 1
+
+	return vertices
+
+
+# ###################################################################################################################
+def removeVerticesPosition(iVertices, iObj, iType="auto"):
+	'''
+	Description:
+	
+		Remove iVertices 3D position. This function removes offset calculated with getVerticesPosition.
+	
+	Args:
+	
+		iVertices: vertices array
+		iObj: object to remove containers offset
+		iType:
+			"auto" - recognize the iVertices elements type
+			"array" - each element of iVertices is array with floats [ 1, 2, 3 ]
+			"vector" - each element of iVertices is array with FreeCAD.Vector
+			"vertex" - each element of iVertices is array with Part.Vertex
+
+	Usage:
+	
+		[[ x, y, z ]] = MagicPanels.removeVerticesPosition([[ x, y, z ]], o, "array")
+		vertices = MagicPanels.removeVerticesPosition(vertices, o, "vector")
+		vertices = MagicPanels.removeVerticesPosition(vertices, o)
+		
+		MagicPanels.showVertex(vertices, 10)
+
+	Result:
+	
+		return vertices array without container offset, with the same type
+
+	'''
+
+	# not unpack mirroring
+	if iObj.isDerivedFrom("Part::Mirroring"):
+		return iVertices
+
+	# recognize iVertices type
+	if iType == "auto":
+		
+		skip = 0
+		
+		if skip == 0:
+			try:
+				test = iVertices[0].X
+				iType = "vertex"
+				skip = 1
+			except:
+				skip = 0
+
+		if skip == 0:
+			try:
+				test = iVertices[0].x
+				iType = "vector"
+				skip = 1
+			except:
+				skip = 0
+		
+		if skip == 0:
+			try:
+				test = iVertices[0][0]
+				iType = "array"
+				skip = 1
+			except:
+				skip = 0
+
+	# convert iVertices to Vector for calculation
+	vertices = []
+	for v in iVertices:
+		
+		if iType == "array":
+			n = FreeCAD.Vector(v[0], v[1], v[2])
+		
+		elif iType == "vertex":
+			import Part
+			n = FreeCAD.Vector(v.X, v.Y, v.Z)
+
+		else:
+			n = v
+			
+		vertices.append(n)
+	
+	# calculate position
+	containers = getContainers(iObj)
+	for o in containers:
+		
+		if (
+			o.isDerivedFrom("App::Part") or 
+			o.isDerivedFrom("PartDesign::Body") or 
+			o.isDerivedFrom("App::LinkGroup") or 
+			o.isDerivedFrom("Part::Cut") 
+			):
+			
+			try:
+				p = o.Placement.inverse()
+			except:
+				continue
+			
+			i = 0
+			for v in vertices:
+
+				n = p.multVec(v)
+				vertices[i] = n
+				
+				i = i + 1
+
+	# convert to the same type as iVertices
+	i = 0
+	for v in vertices:
+		if iType == "array":
+			vertices[i] = [ v.x, v.y, v.z ]
+				
+		elif iType == "vertex":
+			vertices[i] = Part.Vertex(v.x, v.y, v.z)
+				
+		else:
+			vertices[i] = v
+		
+		i = i + 1
+
+	return vertices
 
 
 # ###################################################################################################################
@@ -2485,6 +2405,288 @@ def getDirection(iObj):
 
 
 # ###################################################################################################################
+def getPosition(iObj, iType="global"):
+	'''
+	Description:
+	
+		This function returns placement for the object to move or copy without rotation.
+	
+	Args:
+	
+		iObj: object to get placement
+		iType (optional): 
+			"global": trying to calculate global position of the object
+			"local": return iObj.Placement
+
+	Usage:
+	
+		[ x, y, z ] = MagicPanels.getPosition(o, "global")
+		[ x, y, z ] = MagicPanels.getPosition(o, "local")
+
+	Result:
+	
+		return [ x, y, z ] array with placement info, where:
+		
+		x: X Axis object position
+		y: Y Axis object position
+		z: Z Axis object position
+
+	'''
+
+	# direct placement only for object
+	if iType == "local":
+		
+		try:
+			x = iObj.Placement.Base.x
+			y = iObj.Placement.Base.y
+			z = iObj.Placement.Base.z
+		
+			return [ x, y, z ]
+		
+		except:
+			return "object has no placement to get"
+			
+	elif iType == "global":
+		
+		try:
+			x = iObj.Placement.Base.x
+			y = iObj.Placement.Base.y
+			z = iObj.Placement.Base.z
+
+		except:
+			return "object has no placement to get"
+
+		try:
+			test = iObj._Body
+			x = iObj.Shape.BoundBox.XMin
+			y = iObj.Shape.BoundBox.YMin
+			z = iObj.Shape.BoundBox.ZMin
+
+		except:
+			skip = 1
+
+		if isType(iObj, "Clone"):
+			x = iObj.Shape.BoundBox.XMin
+			y = iObj.Shape.BoundBox.YMin
+			z = iObj.Shape.BoundBox.ZMin
+
+		baseV = FreeCAD.Vector(x, y, z)
+		containers = getContainers(iObj)
+		globalV = baseV
+		
+		for o in containers:
+		
+			if (
+				o.isDerivedFrom("App::Part") or 
+				o.isDerivedFrom("PartDesign::Body") or 
+				o.isDerivedFrom("App::LinkGroup") or 
+				o.isDerivedFrom("Part::Cut") 
+				):
+				
+				try:
+					p = o.Placement
+				except:
+					continue
+				
+				n = p.multVec(globalV)
+				globalV = n
+				
+		return [ globalV.x, globalV.y, globalV.z ]
+		
+	else:
+		return "not supported iType"
+
+
+# ###################################################################################################################
+def setPosition(iObj, iX, iY, iZ, iType="offset"):
+	'''
+	Description:
+	
+		This function set object position to move or copy without rotation.
+		
+	Args:
+
+		iObj: object to add position offset, for example already created Clone or Link
+		iX: X axis offset to add or position to set
+		iY: Y axis offset to add or position to set
+		iZ: Z axis offset to add or position to set
+		iType (optional):
+			* "offset": copy like Clone or Link is created in the same place as base object so you can add only 
+							offset to the current copy placement instead of searching for base object global position. 
+			* "local": set directly to object Placement attribute
+		
+	Usage:
+	
+		MagicPanels.setPosition(copy, 100, 0, 0, "offset")
+		MagicPanels.setPosition(copy, 100, 0, 0, "local")
+
+	Result:
+	
+		return empty string if everything was fine or string with error info
+
+	'''
+
+	
+	FreeCAD.ActiveDocument.openTransaction("setPositionOffset "+str(iObj.Label))
+	
+	if iType == "offset":
+		
+		x = iObj.Placement.Base.x
+		y = iObj.Placement.Base.y
+		z = iObj.Placement.Base.z
+		iObj.Placement.Base = FreeCAD.Vector(x+iX, y+iY, z+iZ)
+		
+		return ""
+	
+	if iType == "local":
+		
+		iObj.Placement.Base = FreeCAD.Vector(iX, iY, iZ)
+		
+		return ""
+		
+	else:
+		
+		return "wrong iType"
+
+	FreeCAD.ActiveDocument.commitTransaction()
+
+
+# ###################################################################################################################
+def getObjectToMove(iObj):
+	'''
+	Description:
+	
+		This function returns object to move.
+	
+	Args:
+	
+		iObj: object to get reference to move
+
+	Usage:
+	
+		toMove = MagicPanels.getObjectToMove(o)
+
+	Result:
+	
+		For example: 
+
+		for Cube: always returns Cube
+		for Pad: always returns Body
+		for PartDesign objects: try to return Body
+		for LinkGroup: returns LinkGroup
+		for Cut: returns Cut
+		for any other object: returns object
+
+	'''
+
+	if (
+		iObj.isDerivedFrom("Part::Box") or 
+		iObj.isDerivedFrom("Part::Cut") or 
+		iObj.isDerivedFrom("PartDesign::Body") or 
+		iObj.isDerivedFrom("App::LinkGroup") 
+		):
+		return iObj
+
+	elif iObj.isDerivedFrom("PartDesign::Pad"):
+		return iObj._Body
+
+	else:
+		
+		try:
+			iObj = iObj._Body
+		except:
+			skip = 1
+
+	return iObj
+
+
+# ###################################################################################################################
+def getObjectCenter(iObj):
+	'''
+	Description:
+	
+		Returns center of the object.
+	
+		Note: This function will be updated later with more reliable 
+		way of getting center of the object, also for LinkGroup and other containers. 
+		Now it returns Shape.CenterOfMass for the object and it is not the same 
+		as center of the object.
+	
+	Args:
+	
+		iObj: object
+
+	Usage:
+	
+		[ cx, cy, cz ] = MagicPanels.getObjectCenter(obj)
+
+	Result:
+	
+		Returns array with [ cx, cy, cz ] values for center point.
+
+	'''
+
+	try:
+		
+		v = iObj.Shape.CenterOfMass
+		return [ v[0], v[1], v[2] ]
+		
+	except:
+		
+		noCenterOfMass = True
+	
+	if noCenterOfMass:
+		
+		[ sx, sy, sz ] = getSizesFromVertices(iObj)
+		
+		v = getattr(iObj.Shape, "Vertex"+"es")[0]
+		x, y, z = v.X, v.Y, v.Z
+		
+		cx = setVertexPadding(iObj, v, sx / 2, "X")
+		cy = setVertexPadding(iObj, v, sy / 2, "Y")
+		cz = setVertexPadding(iObj, v, sy / 2, "Z")
+
+		return [ cx, cy, cz ]
+		
+	return ""
+
+
+# ###################################################################################################################
+def adjustClonePosition(iPad, iX, iY, iZ):
+	'''
+	Description:
+	
+		This function has been created for magicMove tool to adjust Clone position.
+		If you make Clone from Pad and the Pad has not zero Sketch.AttachmentOffset, 
+		the Clone has Placement set to XYZ (0,0,0) but is not in the zero position. 
+		So you have to remove Sketch offset from the Clone position. 
+		I guess the BoundBox is the correct solution here.
+	
+	Args:
+	
+		iPad: Pad object with not zero Sketch.AttachmentOffset used to create new Clone
+		iX: X Axis object position
+		iY: Y Axis object position
+		iZ: Z Axis object position
+
+	Usage:
+	
+		[ x, y, z ] = MagicPanels.adjustClonePosition(o, x, y, z)
+
+	Result:
+	
+		Returns array with new correct [ x, y, z ] values.
+
+	'''
+
+	x = iX - float(iPad.Shape.BoundBox.XMin)
+	y = iY - float(iPad.Shape.BoundBox.YMin)
+	z = iZ - float(iPad.Shape.BoundBox.ZMin)
+
+	return [ x, y, z ]
+
+
+# ###################################################################################################################
 def resetPlacement(iObj):
 	'''
 	Description:
@@ -2878,89 +3080,197 @@ def setSketchPlacement(iSketch, iX, iY, iZ, iR, iType):
 
 
 # ###################################################################################################################
-def getObjectCenter(iObj):
+def getContainerPlacement(iObj, iType="clean"):
 	'''
 	Description:
 	
-		Returns center of the object.
-	
-		Note: This function will be updated later with more reliable 
-		way of getting center of the object, also for LinkGroup and other containers. 
-		Now it returns Shape.CenterOfMass for the object and it is not the same 
-		as center of the object.
+		This function returns placement for the object with all 
+		containers offsets or clean. The given object might be container or 
+		selected object, the base Cube or Pad.
 	
 	Args:
 	
-		iObj: object
+		iObj: object to get placement
+		iType (optional): 
+			"clean" - to get iObj.Placement, 
+			"offset" to get iObj.Placement with containers offset.
 
 	Usage:
 	
-		[ cx, cy, cz ] = MagicPanels.getObjectCenter(obj)
+		[ x, y, z, r ] = MagicPanels.getContainerPlacement(o, "clean")
+		[ x, y, z, r ] = MagicPanels.getContainerPlacement(o, "offset")
 
 	Result:
 	
-		Returns array with [ cx, cy, cz ] values for center point.
+		return [ x, y, z, r ] array with placement info, where:
+		
+		x: X Axis object position
+		y: Y Axis object position
+		z: Z Axis object position
+		r: Rotation object - not supported yet
 
 	'''
 
-	try:
+	# direct placement only for object
+	if iType == "clean":
 		
-		v = iObj.Shape.CenterOfMass
-		return [ v[0], v[1], v[2] ]
-		
-	except:
-		
-		noCenterOfMass = True
-	
-	if noCenterOfMass:
-		
-		[ sx, sy, sz ] = getSizesFromVertices(iObj)
-		
-		v = getattr(iObj.Shape, "Vertex"+"es")[0]
-		x, y, z = v.X, v.Y, v.Z
-		
-		cx = setVertexPadding(iObj, v, sx / 2, "X")
-		cy = setVertexPadding(iObj, v, sy / 2, "Y")
-		cz = setVertexPadding(iObj, v, sy / 2, "Z")
+		if iObj.isDerivedFrom("PartDesign::Pad"):
 
-		return [ cx, cy, cz ]
+			[ x, y, z, r ] = getSketchPlacement(iObj.Profile[0], "clean")
+			return [ x, y, z, r ]
+
+		else:
+
+			x = iObj.Placement.Base.x
+			y = iObj.Placement.Base.y
+			z = iObj.Placement.Base.z
+			r = iObj.Placement.Rotation
+
+			return [ x, y, z, r ]
+	
+	# placement with all needed offsets
+	if iType == "offset":
 		
-	return ""
+		if iObj.isDerivedFrom("Sketcher::SketchObject"):
+			[ x, y, z, r ] = getSketchPlacement(iObj, "global")
+			return [ x, y, z, r ]
+			
+		# get base object
+		objRef = getReference(iObj)
+		
+		if objRef.isDerivedFrom("PartDesign::Pad"):
+			
+			# FreeCAD getGlobalPlacement for Sketch not returns LinkGroup offset
+			# so you have to get clean placement and add all offsets on your own
+			[ x, y, z, r ] = getSketchPlacement(objRef.Profile[0], "clean")
+			
+			[ coX, coY, coZ, coR ] = getContainersOffset(objRef)
+			x = x + coX
+			y = y + coY
+			z = z + coZ
+			
+			return [ x, y, z, r ]
+
+		else:
+
+			# get base object placement, the starting point
+			x = objRef.Placement.Base.x
+			y = objRef.Placement.Base.y
+			z = objRef.Placement.Base.z
+			r = objRef.Placement.Rotation
+			
+			# get offsets of all containers
+			[ coX, coY, coZ, coR ] = getContainersOffset(objRef)
+			x = x + coX
+			y = y + coY
+			z = z + coZ
+
+			return [ x, y, z, r ]
+
+	return [ "", "", "", "" ]
 
 
 # ###################################################################################################################
-def adjustClonePosition(iPad, iX, iY, iZ):
+def setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="normal"):
 	'''
 	Description:
 	
-		This function has been created for magicMove tool to adjust Clone position.
-		If you make Clone from Pad and the Pad has not zero Sketch.AttachmentOffset, 
-		the Clone has Placement set to XYZ (0,0,0) but is not in the zero position. 
-		So you have to remove Sketch offset from the Clone position. 
-		I guess the BoundBox is the correct solution here.
+		Set placement function, especially used with containers.
 	
 	Args:
-	
-		iPad: Pad object with not zero Sketch.AttachmentOffset used to create new Clone
+
+		iObj: object or container to set placement, for example Body, LinkGroup, Cut, Pad, Cube, Sketch, Cylinder
 		iX: X Axis object position
 		iY: Y Axis object position
 		iZ: Z Axis object position
+		iR: 
+			0 - means rotation value set to iObj.Placement.Rotation
+			R - custom FreeCAD.Placement.Rotation object
+		iAnchor (optional):
+			"clean" - set directly to iObj.Placement, if object is Pad set to Sketch directly
+			"normal" - default object anchor with global vertices calculation
+			"center" - anchor will be center of the object (CenterOfMass)
+			[ iAX, iAY, iAZ ] - custom anchor, this should be global position
 
 	Usage:
-	
-		[ x, y, z ] = MagicPanels.adjustClonePosition(o, x, y, z)
+		
+		MagicPanels.setContainerPlacement(cube, 100, 100, 200, 0, "clean")
+		MagicPanels.setContainerPlacement(pad, 100, 100, 200, 0, "normal")
+		MagicPanels.setContainerPlacement(body, 100, 100, 200, 0, "center")
 
 	Result:
 	
-		Returns array with new correct [ x, y, z ] values.
+		Object should be moved into 100, 100, 200 position with exact anchor.
 
 	'''
+	
+	X, Y, Z, R = iX, iY, iZ, iR
 
-	x = iX - float(iPad.Shape.BoundBox.XMin)
-	y = iY - float(iPad.Shape.BoundBox.YMin)
-	z = iZ - float(iPad.Shape.BoundBox.ZMin)
+	if iR == 0:
+		R = iObj.Placement.Rotation
 
-	return [ x, y, z ]
+	# ###############################################################################
+	# direct set
+	# ###############################################################################
+
+	if iAnchor == "clean":
+		
+		FreeCAD.ActiveDocument.openTransaction("setContainerPlacement "+str(iAnchor))
+		
+		if iObj.isDerivedFrom("PartDesign::Pad"):
+			setSketchPlacement(iObj.Profile[0], X, Y, Z, R, "global")
+		else:
+			iObj.Placement.Base = FreeCAD.Vector(X, Y, Z)
+			iObj.Placement.Rotation = R
+
+		FreeCAD.ActiveDocument.commitTransaction()
+		return
+
+	# ###############################################################################
+	# custom set
+	# ###############################################################################
+
+	# set starting point
+	[ oX, oY, oZ, oR ] = getContainerPlacement(iObj, "clean")
+	
+	# switch from local to global vertices
+	[[ goX, goY, goZ ]] = getVerticesPosition([[ oX, oY, oZ ]], iObj)
+
+	# save object placement for later use
+	X, Y, Z = goX, goY, goZ
+
+	# custom anchor = object anchor
+	if iAnchor == "normal":
+		aX, aY, aZ = goX, goY, goZ
+
+	elif iAnchor == "center":
+		[ aX, aY, aZ ] = getObjectCenter(iObj)
+		[[ aX, aY, aZ ]] = getVerticesPosition([[ aX, aY, aZ ]], iObj)
+
+	else:
+		aX, aY, aZ = iAnchor[0], iAnchor[1], iAnchor[2]
+
+	# calculate diff between object anchor and custom anchor
+	if iAnchor != "normal":
+		[ moveX, moveY, moveZ ] = getPlacementDiff([goX, goY, goZ], [ aX, aY, aZ])
+		X = X - moveX
+		Y = Y - moveY
+		Z = Z - moveZ
+
+	# calculate diff between object anchor and new given position iX, iY, iZ
+	[ moveX, moveY, moveZ ] = getPlacementDiff([goX, goY, goZ], [ iX, iY, iZ])
+	X = X + moveX
+	Y = Y + moveY
+	Z = Z + moveZ
+
+	# switch from global to local vertices
+	[[ X, Y, Z ]] = removeVerticesPosition([[ X, Y, Z ]], iObj)
+
+	FreeCAD.ActiveDocument.openTransaction("setContainerPlacement "+str(iAnchor))
+	# set placement
+	iObj.Placement.Base = FreeCAD.Vector(X, Y, Z)
+	iObj.Placement.Rotation = R
+	FreeCAD.ActiveDocument.commitTransaction()
 
 
 # ###################################################################################################################
@@ -2971,36 +3281,48 @@ def adjustClonePosition(iPad, iX, iY, iZ):
 
 
 # ###################################################################################################################
-def getContainers(iObj):
+def createContainer(iObjects, iLabel="Container", iNesting=True):
 	'''
 	Description:
 	
-		This function get list of containers for give iObj.
-		
+		This function creates container for given iObjects. The label for new container will be get from 
+		first element of iObjects (iObjects[0]).
 	
 	Args:
 	
-		iObj: object to get list of containers
+		iObjects: array of object to create container for them
+		iLabel: string, container label
+		iNesting: boolean, add nesting label prefix (True) or set given label (False)
 
 	Usage:
 	
-		containers = MagicPanels.getContainers(o)
+		container = MagicPanels.createContainer([c1, c2])
+		container = MagicPanels.createContainer([c1, c2], "LinkGroup")
+		container = MagicPanels.createContainer([o1, o2, o3, o4, o5, o6, o7], "Furniture, Module", False)
 
 	Result:
 	
-		return array with objects
+		Created container and objects inside the container, return container object.
 
 	'''
 
-	containers = []
+	base = iObjects[0]
+	container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','LinkGroup')
+	container.setLink(iObjects)
 	
-	for c in iObj.InListRecursive:
-		containers.append(c)
-
-		if len(c.Parents) < 1:
-			break
-
-	return containers
+	if iNesting == True:
+		container.Label = getNestingLabel(base, iLabel)
+	else:
+		container.Label = iLabel + " "
+	
+	try:
+		copyColors(base, container)
+	except:
+		skip = 1
+		
+	FreeCAD.ActiveDocument.recompute()
+	
+	return container
 
 
 # ###################################################################################################################
@@ -3036,6 +3358,39 @@ def getNestingLabel(iObj, iPrefix):
 		newLabel = label.replace(prefix, iPrefix)
 
 	return newLabel
+
+
+# ###################################################################################################################
+def getContainers(iObj):
+	'''
+	Description:
+	
+		This function get list of containers for give iObj.
+		
+	
+	Args:
+	
+		iObj: object to get list of containers
+
+	Usage:
+	
+		containers = MagicPanels.getContainers(o)
+
+	Result:
+	
+		return array with objects
+
+	'''
+
+	containers = []
+	
+	for c in iObj.InListRecursive:
+		containers.append(c)
+
+		if len(c.Parents) < 1:
+			break
+
+	return containers
 
 
 # ###################################################################################################################
@@ -3098,289 +3453,6 @@ def getContainersOffset(iObj):
 			coR = coR * r
 
 	return [ coX, coY, coZ, coR ]
-
-
-# ###################################################################################################################
-def getVerticesOffset(iVertices, iObj, iType="array"):
-	'''
-	Gets iObj offset of all supported containers for vertices iVertices.
-	
-	Args:
-	
-		iObj: object to get containers offset
-		iVertices: vertices array
-		iType:
-			"array" - array with floats [ 1, 2, 3 ]
-			"vector" - array with FreeCAD.Vector types
-		
-	Usage:
-	
-		vertices = MagicPanels.getVerticesOffset(vertices, o, "array")
-
-	Result:
-	
-		return vertices array with correct container offset
-
-	'''
-
-	vertices = []
-	
-	[ coX, coY, coZ, coR ] = getContainersOffset(iObj)
-	
-	for v in iVertices:
-		if iType == "array":
-			n = [ v[0] + coX, v[1] + coY, v[2] + coZ ]
-		else:
-			n = FreeCAD.Vector(v.x + coX, v.y + coY, v.z + coZ)
-		
-		vertices.append(n)
-	
-	return vertices
-
-
-# ###################################################################################################################
-def getVerticesPosition(iVertices, iObj, iType="auto"):
-	'''
-	Description:
-	
-		Gets iVertices 3D position. This function should be used to show or select iVertices with rotation. 
-		It calculates all offsets with rotation. But this function should not be used for calculation. 
-		Because the vertices at FreeCAD are raw, without containers offset. The vertices at FreeCAD have only 
-		AttachmentOffset applied. If you start calculation with rotation, you need to calculate plane correctly.
-	
-	Args:
-	
-		iVertices: vertices array
-		iObj: object to get containers offset
-		iType:
-			"auto" - recognize the iVertices elements type
-			"array" - each element of iVertices is array with floats [ 1, 2, 3 ]
-			"vector" - each element of iVertices is array with FreeCAD.Vector
-			"vertex" - each element of iVertices is array with Part.Vertex
-
-	Usage:
-	
-		[[ x, y, z ]] = MagicPanels.getVerticesPosition([[ x, y, z ]], o, "array")
-		vertices = MagicPanels.getVerticesPosition(vertices, o, "vector")
-		vertices = MagicPanels.getVerticesPosition(vertices, o)
-		
-		MagicPanels.showVertex(vertices, 10)
-
-	Result:
-	
-		return vertices array with correct container offset, with the same type
-
-	'''
-
-	# not unpack mirroring
-	if iObj.isDerivedFrom("Part::Mirroring"):
-		return iVertices
-
-	# recognize iVertices type
-	if iType == "auto":
-		
-		skip = 0
-		
-		if skip == 0:
-			try:
-				test = iVertices[0].X
-				iType = "vertex"
-				skip = 1
-			except:
-				skip = 0
-
-		if skip == 0:
-			try:
-				test = iVertices[0].x
-				iType = "vector"
-				skip = 1
-			except:
-				skip = 0
-		
-		if skip == 0:
-			try:
-				test = iVertices[0][0]
-				iType = "array"
-				skip = 1
-			except:
-				skip = 0
-
-	# convert iVertices to Vector for calculation
-	vertices = []
-	for v in iVertices:
-		
-		if iType == "array":
-			n = FreeCAD.Vector(v[0], v[1], v[2])
-		
-		elif iType == "vertex":
-			import Part
-			n = FreeCAD.Vector(v.X, v.Y, v.Z)
-
-		else:
-			n = v
-			
-		vertices.append(n)
-	
-	# calculate position
-	containers = getContainers(iObj)
-	for o in containers:
-		
-		if (
-			o.isDerivedFrom("App::Part") or 
-			o.isDerivedFrom("PartDesign::Body") or 
-			o.isDerivedFrom("App::LinkGroup") or 
-			o.isDerivedFrom("Part::Cut") 
-			):
-			
-			try:
-				p = o.Placement
-			except:
-				continue
-			
-			i = 0
-			for v in vertices:
-
-				n = p.multVec(v)
-				vertices[i] = n
-				
-				i = i + 1
-
-	# convert to the same type as iVertices
-	i = 0
-	for v in vertices:
-		if iType == "array":
-			vertices[i] = [ v.x, v.y, v.z ]
-				
-		elif iType == "vertex":
-			vertices[i] = Part.Vertex(v.x, v.y, v.z)
-				
-		else:
-			vertices[i] = v
-		
-		i = i + 1
-
-	return vertices
-
-
-# ###################################################################################################################
-def removeVerticesPosition(iVertices, iObj, iType="auto"):
-	'''
-	Description:
-	
-		Remove iVertices 3D position. This function removes offset calculated with getVerticesPosition.
-	
-	Args:
-	
-		iVertices: vertices array
-		iObj: object to remove containers offset
-		iType:
-			"auto" - recognize the iVertices elements type
-			"array" - each element of iVertices is array with floats [ 1, 2, 3 ]
-			"vector" - each element of iVertices is array with FreeCAD.Vector
-			"vertex" - each element of iVertices is array with Part.Vertex
-
-	Usage:
-	
-		[[ x, y, z ]] = MagicPanels.removeVerticesPosition([[ x, y, z ]], o, "array")
-		vertices = MagicPanels.removeVerticesPosition(vertices, o, "vector")
-		vertices = MagicPanels.removeVerticesPosition(vertices, o)
-		
-		MagicPanels.showVertex(vertices, 10)
-
-	Result:
-	
-		return vertices array without container offset, with the same type
-
-	'''
-
-	# not unpack mirroring
-	if iObj.isDerivedFrom("Part::Mirroring"):
-		return iVertices
-
-	# recognize iVertices type
-	if iType == "auto":
-		
-		skip = 0
-		
-		if skip == 0:
-			try:
-				test = iVertices[0].X
-				iType = "vertex"
-				skip = 1
-			except:
-				skip = 0
-
-		if skip == 0:
-			try:
-				test = iVertices[0].x
-				iType = "vector"
-				skip = 1
-			except:
-				skip = 0
-		
-		if skip == 0:
-			try:
-				test = iVertices[0][0]
-				iType = "array"
-				skip = 1
-			except:
-				skip = 0
-
-	# convert iVertices to Vector for calculation
-	vertices = []
-	for v in iVertices:
-		
-		if iType == "array":
-			n = FreeCAD.Vector(v[0], v[1], v[2])
-		
-		elif iType == "vertex":
-			import Part
-			n = FreeCAD.Vector(v.X, v.Y, v.Z)
-
-		else:
-			n = v
-			
-		vertices.append(n)
-	
-	# calculate position
-	containers = getContainers(iObj)
-	for o in containers:
-		
-		if (
-			o.isDerivedFrom("App::Part") or 
-			o.isDerivedFrom("PartDesign::Body") or 
-			o.isDerivedFrom("App::LinkGroup") or 
-			o.isDerivedFrom("Part::Cut") 
-			):
-			
-			try:
-				p = o.Placement.inverse()
-			except:
-				continue
-			
-			i = 0
-			for v in vertices:
-
-				n = p.multVec(v)
-				vertices[i] = n
-				
-				i = i + 1
-
-	# convert to the same type as iVertices
-	i = 0
-	for v in vertices:
-		if iType == "array":
-			vertices[i] = [ v.x, v.y, v.z ]
-				
-		elif iType == "vertex":
-			vertices[i] = Part.Vertex(v.x, v.y, v.z)
-				
-		else:
-			vertices[i] = v
-		
-		i = i + 1
-
-	return vertices
 
 
 # ###################################################################################################################
@@ -3711,212 +3783,37 @@ def moveToParent(iObjects, iSelection):
 
 	'''
 
-	# if Cube and Part are in the root, and Part was created before Cube
-	# the InList will return Part as parent, do you believe it?
-	if len(iSelection.InList) < 1 or len(iSelection.Parents) < 1:
-		return
-
-	parent = iSelection.InList[0]
-	
-	for o in iObjects:
-
-		# skip move Link of LinkGroup to the same LinkGroup
-		if iSelection.isDerivedFrom("App::LinkGroup") or iSelection.isDerivedFrom("App::Link"):
-			if o.isDerivedFrom("App::Link"):
-				continue
-
-		# move object
-		FreeCADGui.Selection.addSelection(o)
-		o.adjustRelativeLinks(parent)
-		parent.ViewObject.dropObject(o, None, '', [])
-		FreeCADGui.Selection.clearSelection()
-
-	FreeCAD.ActiveDocument.recompute()
-
-
-# ###################################################################################################################
-def getObjectToMove(iObj):
-	'''
-	Description:
-	
-		This function returns object to move.
-	
-	Args:
-	
-		iObj: object to get placement, selected container or base reference object
-
-	Usage:
-	
-		toMove = MagicPanels.getObjectToMove(o)
-
-	Result:
-	
-		For example: 
-
-		for Cube: always returns Cube
-		for Pad: always returns Body
-		for LinkGroup: returns LinkGroup
-		for Cut: returns Cut
-		for other PartDesign objects: try to return Body
-		for any other object: returns object
-
-	'''
-
-	if (
-		iObj.isDerivedFrom("Part::Box") or 
-		iObj.isDerivedFrom("Part::Cut") or 
-		iObj.isDerivedFrom("PartDesign::Body") or 
-		iObj.isDerivedFrom("App::LinkGroup") 
-		):
-		return iObj
-
-	elif iObj.isDerivedFrom("PartDesign::Pad"):
-		return iObj._Body
-
-	else:
-		
-		try:
-			iObj = iObj._Body
-		except:
-			skip = 1
-
-	return iObj
-
-
-# ###################################################################################################################
-def createContainer(iObjects, iLabel="Container", iNesting=True):
-	'''
-	Description:
-	
-		This function creates container for given iObjects. The label for new container will be get from 
-		first element of iObjects (iObjects[0]).
-	
-	Args:
-	
-		iObjects: array of object to create container for them
-		iLabel: string, container label
-		iNesting: boolean, add nesting label prefix (True) or set given label (False)
-
-	Usage:
-	
-		container = MagicPanels.createContainer([c1, c2])
-		container = MagicPanels.createContainer([c1, c2], "LinkGroup")
-		container = MagicPanels.createContainer([o1, o2, o3, o4, o5, o6, o7], "Furniture, Module", False)
-
-	Result:
-	
-		Created container and objects inside the container, return container object.
-
-	'''
-
-	base = iObjects[0]
-	container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','LinkGroup')
-	container.setLink(iObjects)
-	
-	if iNesting == True:
-		container.Label = getNestingLabel(base, iLabel)
-	else:
-		container.Label = iLabel + " "
-	
+	# in try to avoid dependency loop
 	try:
-		copyColors(base, container)
+		
+		# skip move to Body container
+		if iSelection.isDerivedFrom("PartDesign::Body"):
+			return
+
+		# if Cube and Part are in the root, and Part was created before Cube
+		# the InList will return Part as parent, do you believe it?
+		if len(iSelection.InList) < 1 or len(iSelection.Parents) < 1:
+			return
+
+		parent = iSelection.InList[0]
+
+		for o in iObjects:
+
+			# skip move Link of LinkGroup to the same LinkGroup
+			if iSelection.isDerivedFrom("App::LinkGroup") or iSelection.isDerivedFrom("App::Link"):
+				if o.isDerivedFrom("App::Link"):
+					continue
+
+			# move object
+			FreeCADGui.Selection.addSelection(o)
+			o.adjustRelativeLinks(parent)
+			parent.ViewObject.dropObject(o, None, '', [])
+			FreeCADGui.Selection.clearSelection()
+
+		FreeCAD.ActiveDocument.recompute()
+
 	except:
 		skip = 1
-		
-	FreeCAD.ActiveDocument.recompute()
-	
-	return container
-
-
-# ###################################################################################################################
-def getContainerPlacement(iObj, iType="clean"):
-	'''
-	Description:
-	
-		This function returns placement for the object with all 
-		containers offsets or clean. The given object might be container or 
-		selected object, the base Cube or Pad.
-	
-	Args:
-	
-		iObj: object to get placement
-		iType (optional): 
-			"clean" - to get iObj.Placement, 
-			"offset" to get iObj.Placement with containers offset.
-
-	Usage:
-	
-		[ x, y, z, r ] = MagicPanels.getContainerPlacement(o, "clean")
-		[ x, y, z, r ] = MagicPanels.getContainerPlacement(o, "offset")
-
-	Result:
-	
-		return [ x, y, z, r ] array with placement info, where:
-		
-		x: X Axis object position
-		y: Y Axis object position
-		z: Z Axis object position
-		r: Rotation object - not supported yet
-
-	'''
-
-	# direct placement only for object
-	if iType == "clean":
-		
-		if iObj.isDerivedFrom("PartDesign::Pad"):
-
-			[ x, y, z, r ] = getSketchPlacement(iObj.Profile[0], "clean")
-			return [ x, y, z, r ]
-
-		else:
-
-			x = iObj.Placement.Base.x
-			y = iObj.Placement.Base.y
-			z = iObj.Placement.Base.z
-			r = iObj.Placement.Rotation
-
-			return [ x, y, z, r ]
-	
-	# placement with all needed offsets
-	if iType == "offset":
-		
-		if iObj.isDerivedFrom("Sketcher::SketchObject"):
-			[ x, y, z, r ] = getSketchPlacement(iObj, "global")
-			return [ x, y, z, r ]
-			
-		# get base object
-		objRef = getReference(iObj)
-		
-		if objRef.isDerivedFrom("PartDesign::Pad"):
-			
-			# FreeCAD getGlobalPlacement for Sketch not returns LinkGroup offset
-			# so you have to get clean placement and add all offsets on your own
-			[ x, y, z, r ] = getSketchPlacement(objRef.Profile[0], "clean")
-			
-			[ coX, coY, coZ, coR ] = getContainersOffset(objRef)
-			x = x + coX
-			y = y + coY
-			z = z + coZ
-			
-			return [ x, y, z, r ]
-
-		else:
-
-			# get base object placement, the starting point
-			x = objRef.Placement.Base.x
-			y = objRef.Placement.Base.y
-			z = objRef.Placement.Base.z
-			r = objRef.Placement.Rotation
-			
-			# get offsets of all containers
-			[ coX, coY, coZ, coR ] = getContainersOffset(objRef)
-			x = x + coX
-			y = y + coY
-			z = z + coZ
-
-			return [ x, y, z, r ]
-
-	return [ "", "", "", "" ]
 
 
 # ###################################################################################################################
@@ -3961,109 +3858,6 @@ def getPlacementDiff(iStart, iDestination):
 		moveZ = - diffZ
 
 	return [ moveX, moveY, moveZ ]
-
-
-# ###################################################################################################################
-def setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="normal"):
-	'''
-	Description:
-	
-		Set placement function, especially used with containers.
-	
-	Args:
-
-		iObj: object or container to set placement, for example Body, LinkGroup, Cut, Pad, Cube, Sketch, Cylinder
-		iX: X Axis object position
-		iY: Y Axis object position
-		iZ: Z Axis object position
-		iR: 
-			0 - means rotation value set to iObj.Placement.Rotation
-			R - custom FreeCAD.Placement.Rotation object
-		iAnchor (optional):
-			"clean" - set directly to iObj.Placement, if object is Pad set to Sketch directly
-			"normal" - default object anchor with global vertices calculation
-			"center" - anchor will be center of the object (CenterOfMass)
-			[ iAX, iAY, iAZ ] - custom anchor, this should be global position
-
-	Usage:
-		
-		MagicPanels.setContainerPlacement(cube, 100, 100, 200, 0, "clean")
-		MagicPanels.setContainerPlacement(pad, 100, 100, 200, 0, "normal")
-		MagicPanels.setContainerPlacement(body, 100, 100, 200, 0, "center")
-
-	Result:
-	
-		Object should be moved into 100, 100, 200 position with exact anchor.
-
-	'''
-	
-	X, Y, Z, R = iX, iY, iZ, iR
-
-	if iR == 0:
-		R = iObj.Placement.Rotation
-
-	# ###############################################################################
-	# direct set
-	# ###############################################################################
-
-	if iAnchor == "clean":
-		
-		FreeCAD.ActiveDocument.openTransaction("setContainerPlacement "+str(iAnchor))
-		
-		if iObj.isDerivedFrom("PartDesign::Pad"):
-			setSketchPlacement(iObj.Profile[0], X, Y, Z, R, "global")
-		else:
-			iObj.Placement.Base = FreeCAD.Vector(X, Y, Z)
-			iObj.Placement.Rotation = R
-
-		FreeCAD.ActiveDocument.commitTransaction()
-		return
-
-	# ###############################################################################
-	# custom set
-	# ###############################################################################
-
-	# set starting point
-	[ oX, oY, oZ, oR ] = getContainerPlacement(iObj, "clean")
-	
-	# switch from local to global vertices
-	[[ goX, goY, goZ ]] = getVerticesPosition([[ oX, oY, oZ ]], iObj)
-
-	# save object placement for later use
-	X, Y, Z = goX, goY, goZ
-
-	# custom anchor = object anchor
-	if iAnchor == "normal":
-		aX, aY, aZ = goX, goY, goZ
-
-	elif iAnchor == "center":
-		[ aX, aY, aZ ] = getObjectCenter(iObj)
-		[[ aX, aY, aZ ]] = getVerticesPosition([[ aX, aY, aZ ]], iObj)
-
-	else:
-		aX, aY, aZ = iAnchor[0], iAnchor[1], iAnchor[2]
-
-	# calculate diff between object anchor and custom anchor
-	if iAnchor != "normal":
-		[ moveX, moveY, moveZ ] = getPlacementDiff([goX, goY, goZ], [ aX, aY, aZ])
-		X = X - moveX
-		Y = Y - moveY
-		Z = Z - moveZ
-
-	# calculate diff between object anchor and new given position iX, iY, iZ
-	[ moveX, moveY, moveZ ] = getPlacementDiff([goX, goY, goZ], [ iX, iY, iZ])
-	X = X + moveX
-	Y = Y + moveY
-	Z = Z + moveZ
-
-	# switch from global to local vertices
-	[[ X, Y, Z ]] = removeVerticesPosition([[ X, Y, Z ]], iObj)
-
-	FreeCAD.ActiveDocument.openTransaction("setContainerPlacement "+str(iAnchor))
-	# set placement
-	iObj.Placement.Base = FreeCAD.Vector(X, Y, Z)
-	iObj.Placement.Rotation = R
-	FreeCAD.ActiveDocument.commitTransaction()
 
 
 # ###################################################################################################################
@@ -4382,6 +4176,11 @@ def makePad(iObj, iPadLabel="Pad"):
 				skip = 1
 
 	try:
+		copyColors(iObj, body)
+	except:
+		skip = 1
+
+	try:
 		copyColors(iObj, pad)
 	except:
 		skip = 1
@@ -4401,6 +4200,607 @@ def makePad(iObj, iPadLabel="Pad"):
 	doc.recompute()
 
 	return [ part, body, sketch, pad ]
+
+
+# ###################################################################################################################
+'''
+# Measurements
+'''
+# ###################################################################################################################
+
+
+# ###################################################################################################################
+def showMeasure(iP1, iP2, iRef=""):
+	'''
+	Description:
+	
+		Creates measurements object, I mean draw it. Now it use FreeCAD function 
+		to create and draw object. But in the future this can be changed to 
+		more beautiful drawing without changing tools. 
+	
+	Args:
+	
+		iP1: starting point vertex object
+		iP2: ending point vertex object
+		iRef (optional): string for future TechDraw import or any other use, other tools
+
+	Usage:
+	
+		m = MagicPanels.showMeasure(gP1, gP2, "Pad")
+
+	Result:
+	
+		Create measure object, draw it and return measure object for further processing. 
+
+	'''
+
+
+	# support for FreeCAD 1.0+
+	if gKernelVersion >= 1.0:
+		
+		try:
+			m = FreeCAD.ActiveDocument.addObject('Measure::MeasureDistanceDetached', "measure")
+			
+			m.Position1 = iP1
+			m.Position2 = iP2
+			
+			m.ViewObject.LineColor = (1.0, 0.0, 0.0, 0.0)
+			m.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
+			m.ViewObject.FontSize = 24
+
+			# avoid FreeCAD automatic labeling bug and crash
+			label = str(m.Name)
+			if str(m.Name) == "measure":
+				label = translate("showMeasure", "Measure")
+			else:
+				label = translate("showMeasure", "Measure") + " " + str(m.Name)[7:]
+				
+			m.Label = label
+	
+		except:
+			skip = 1
+
+	# support for FreeCAD 0.21.2
+	else:
+		
+		try:
+			m = FreeCAD.ActiveDocument.addObject('App::MeasureDistance', "measure")
+			
+			m.P1 = iP1
+			m.P2 = iP2
+			
+			m.ViewObject.LineColor = (1.0, 0.0, 0.0, 0.0)
+			m.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
+			m.ViewObject.FontSize = 24
+			m.ViewObject.DistFactor = 0.25
+
+			m.Label = translate("showMeasure", "Measure") + " "
+
+		except:
+			skip = 1
+	
+	if iRef != "":
+		m.Label2 = str(iRef)
+	
+	FreeCAD.ActiveDocument.recompute()
+	
+	return m
+
+
+# ###################################################################################################################
+def getDistanceBetweenFaces(iObj1, iObj2, iFace1, iFace2):
+	'''
+	Description:
+	
+		Gets distance between iFace1 and iFace2.
+	
+	Args:
+	
+		iObj1: object of iFace1
+		iObj2: object of iFace2
+		iFace1: face object
+		iFace2: face object
+
+	Usage:
+	
+		size = MagicPanels.getDistanceBetweenFaces(o1, o2, face1, face2)
+
+	Result:
+
+		return distance between face1 object and face2 object
+
+	'''
+
+	plane1 = getFacePlane(iFace1)
+	plane2 = getFacePlane(iFace2)
+	[ x1, y1, z1 ] = getVertex(iFace1, 0, 0)
+	[ x2, y2, z2 ] = getVertex(iFace2, 0, 0)
+
+	# if you switch to global be sure the planes are not rotated
+	[[ x1, y1, z1 ]] = getVerticesPosition([[ x1, y1, z1 ]], iObj1)
+	[[ x2, y2, z2 ]] = getVerticesPosition([[ x2, y2, z2 ]], iObj2)
+	
+	if plane1 == "XY" and plane2 == "XY":
+		return round(abs(z1-z2), gRoundPrecision)
+
+	if plane1 == "XZ" and plane2 == "XZ":
+		return round(abs(y1-y2), gRoundPrecision)
+		
+	if plane1 == "YZ" and plane2 == "YZ":
+		return round(abs(x1-x2), gRoundPrecision)
+
+	return ""
+
+
+# ###################################################################################################################
+'''
+# Units
+'''
+# ###################################################################################################################
+
+
+# ###################################################################################################################
+def unit2gui(iValue):
+	'''
+	Description:
+	
+		Allows to convert unit from value (mm float FreeCAD format) into gui user settings.
+
+	Args:
+
+		iValue: float from FreeCAD or from calculations
+		
+	Usage:
+
+		unitForUser = MagicPanels.unit2gui(300.55)
+		
+		# Note: if user has set inches units the unitForUser should contains recalculation to inches 
+		
+	Result:
+
+		string
+
+	'''
+
+
+	value = Units.Quantity( str(iValue) + " mm" )
+	userSettings = Units.getSchema()
+	forUser = Units.schemaTranslate(value, userSettings)[0]
+
+	return str(forUser)
+
+
+# ###################################################################################################################
+def unit2value(iString):
+	'''
+	Description:
+	
+		Allows to convert unit from user defines setting for example iches, ft into system calculation units.
+
+	Args:
+
+		iString: units string in user settings notation
+		
+	Usage:
+
+		forCalculation = MagicPanels.unit2value("0.06 ft")
+		
+		# Note: forCalculation will be 18.288
+		
+	Result:
+
+		float for calculation
+
+	'''
+
+
+	unitString = iString
+	
+	try:
+		float(unitString)
+		int(unitString)
+		
+		if Units.getSchema() == 0:
+			unitString = str(unitString) + " mm"
+		elif Units.getSchema() == 2:
+			unitString = str(unitString) + ' "'
+		else:
+			skip = 1
+	except:
+		skip = 1
+
+	forCalculation = Units.Quantity(str(unitString)).getValueAs("mm")
+
+	return float(forCalculation)
+
+
+# ###################################################################################################################
+'''
+# Colors
+'''
+# ###################################################################################################################
+
+
+# ###################################################################################################################
+def getColor(iObj, iFaceIndex, iAttribute="color"):
+	'''
+	Description:
+	
+		Allows to get color for object or face.
+
+	Args:
+
+		iObj: object
+		iFaceIndex: index to get color for face or 0 to get color for object
+		iAttribute: string, attribute name from FreeCAD.Material structure, e.g.:
+			* "color" - to get color from DiffuseColor attribute
+			* "trans" - to get color from Transparency attribute
+			* "AmbientColor" - to get color from AmbientColor attribute
+			* "DiffuseColor" - to get color from DiffuseColor attribute
+			* "EmissiveColor" - to get color from EmissiveColor attribute
+			* "Shininess" - to get color from Shininess attribute
+			* "SpecularColor" - to get color from SpecularColor attribute
+			* "Transparency" - to get color from Transparency attribute
+
+	Usage:
+
+		color = MagicPanels.getColor(o, 0, "color") # to get object color
+		color = MagicPanels.getColor(o, 5, "color") # to get face5 color
+
+	Result:
+
+		For FreeCAD 0.21.2 returns color for object from .ViewObject.ShapeColor or 
+		color for face from .ViewObject.DiffuseColor.
+		
+		Since FreeCAD 1.0+ there is no .ViewObject.ShapeColor for object. Color for object 
+		and faces are stored only at .ViewObject.ShapeAppearance behind FreeCAD.Material 
+		structure. If all the faces have the same color there is only one Material object. 
+		But for example if only single face have different color, there are Material objects 
+		for all faces, but there is no color for object. So in this case the color for 
+		object cannot be determined, so will be returned as empty string "".
+
+	'''
+
+
+	# support for FreeCAD 1.0+
+	if gKernelVersion >= 1.0:
+	
+		# set target attribute
+		if iAttribute == "color":
+			attribute = "DiffuseColor"
+		
+		elif iAttribute == "trans":
+			attribute = "Transparency"
+		
+		else:
+			attribute = iAttribute
+		
+		# for example LinkGroup
+		if not hasattr(iObj.ViewObject, "ShapeAppearance"):
+			if hasattr(iObj.ViewObject, "ShapeMaterial"):
+				if hasattr(iObj.ViewObject.ShapeMaterial, attribute):
+					return getattr(iObj.ViewObject.ShapeMaterial, attribute)
+		
+		# continue for normal objects
+		num = len(iObj.ViewObject.ShapeAppearance)
+		
+		# get color for object, no color faces
+		if iFaceIndex == 0 and num == 1:
+			m = iObj.ViewObject.ShapeAppearance[0]
+			if hasattr(m, attribute):
+				return getattr(m, attribute)
+		
+		# get color for object, already multi color faces
+		if iFaceIndex == 0 and num != 1:
+			return ""
+		
+		# get color for face, all color faces the same
+		if iFaceIndex != 0 and num == 1:
+			m = iObj.ViewObject.ShapeAppearance[0]
+			if hasattr(m, attribute):
+				return getattr(m, attribute)
+		
+		# get color for face, already multi color faces
+		if iFaceIndex != 0 and num != 1:
+			m = iObj.ViewObject.ShapeAppearance[iFaceIndex-1]
+			if hasattr(m, attribute):
+				return getattr(m, attribute)
+		
+		return ""
+		
+	# support for FreeCAD 0.21.2 and below
+	else:
+		
+		# set target attribute
+		if iAttribute == "color" or iAttribute == "DiffuseColor":
+			attribute = "DiffuseColor"
+		
+		elif iAttribute == "trans" or iAttribute == "Transparency":
+			attribute = "Transparency"
+		
+		else:
+			return "not supported attribute in this version"
+		
+		# for example LinkGroup
+		if not hasattr(iObj.ViewObject, "DiffuseColor"):
+			if hasattr(iObj.ViewObject, "ShapeMaterial"):
+				if hasattr(iObj.ViewObject.ShapeMaterial, attribute):
+					return getattr(iObj.ViewObject.ShapeMaterial, attribute)
+		
+		# continue for normal objects
+		if attribute == "Transparency":
+			return iObj.ViewObject.Transparency
+		
+		if iFaceIndex == 0:
+			return iObj.ViewObject.ShapeColor
+		
+		num = len(iObj.ViewObject.DiffuseColor)
+		
+		if num == 1:
+			return iObj.ViewObject.DiffuseColor[0]
+		else:
+			return iObj.ViewObject.DiffuseColor[iFaceIndex-1]
+
+		return ""
+
+
+# ###################################################################################################################
+def setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
+	'''
+	Description:
+	
+		Allows to set color for object or face.
+
+	Args:
+
+		iObj: object
+		iFaceIndex: index to set color for face or 0 to set color for object
+		iColor: color according to the FreeCAD.Material structure, e.g.:
+			* "AmbientColor" - (0.33333298563957214, 0.33333298563957214, 0.33333298563957214, 1.0)
+			* "DiffuseColor" - (0.800000011920929, 0.800000011920929, 0.800000011920929, 1.0)
+			* "EmissiveColor" - (0.0, 0.0, 0.0, 1.0)
+			* "Shininess" - 0.8999999761581421
+			* "SpecularColor" - (0.5333330035209656, 0.5333330035209656, 0.5333330035209656, 1.0)
+			* "Transparency" - 0.0
+		iAttribute: string, attribute name from FreeCAD.Material structure, e.g.:
+			* "color" - to set color for DiffuseColor attribute
+			* "trans" - to set color for Transparency attribute
+			* "AmbientColor" - to set color for AmbientColor attribute
+			* "DiffuseColor" - to set color for DiffuseColor attribute
+			* "EmissiveColor" - to set color for EmissiveColor attribute
+			* "Shininess" - to set color for Shininess attribute
+			* "SpecularColor" - to set color for SpecularColor attribute
+			* "Transparency" - to set color for Transparency attribute
+
+	Usage:
+
+		MagicPanels.setColor(o, 0, (1.0, 1.0, 0.0, 1.0), "color") # to set object color
+		MagicPanels.setColor(o, 5, (1.0, 1.0, 0.0, 1.0), "color") # to set face5 color
+		
+		# to set colors for all faces, e.g. for dowel with 3 faces
+		colors = [ (1.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0) ]
+		MagicPanels.setColor(o, 0, colors, "color")
+
+	Result:
+
+		return empty string if everything is fine or string with error info
+
+	'''
+
+
+	# support for FreeCAD 1.0+
+	if gKernelVersion >= 1.0:
+	
+		# set target attribute
+		if iAttribute == "color":
+			attribute = "DiffuseColor"
+		
+		elif iAttribute == "trans":
+			attribute = "Transparency"
+		
+		else:
+			attribute = iAttribute
+
+		# for example LinkGroup
+		if not hasattr(iObj.ViewObject, "ShapeAppearance"):
+			if hasattr(iObj.ViewObject, "ShapeMaterial"):
+				if hasattr(iObj.ViewObject.ShapeMaterial, attribute):
+					setattr(iObj.ViewObject.ShapeMaterial, attribute, iColor)
+					return ""
+		
+		# continue for normal objects
+		num = len(iObj.ViewObject.ShapeAppearance)
+		
+		# set color for all faces
+		if type(iColor) is list:
+			
+			initSA = []
+			for i in range(0, len(iObj.Shape.Faces)):
+				m = iObj.ViewObject.ShapeAppearance[0]
+				if hasattr(m, attribute):
+					setattr(m, attribute, iColor[i])
+					initSA.append(m)
+				else:
+					return "wrong iAttribute attribute"
+
+			iObj.ViewObject.ShapeAppearance = tuple(initSA)
+			
+			return ""
+		
+		# set the same color for object
+		if iFaceIndex == 0:
+			sa = iObj.ViewObject.ShapeAppearance
+			m = sa[0]
+			if hasattr(m, attribute):
+				setattr(m, attribute, iColor)
+				iObj.ViewObject.ShapeAppearance = ( m )
+			else:
+				return "wrong iAttribute attribute"
+
+			return ""
+
+		# set color for face, if all faces has the same material structure
+		if iFaceIndex != 0 and num == 1:
+			
+			sa = iObj.ViewObject.ShapeAppearance
+			m = sa[0]
+			
+			# skip if there is no attribute to set (for example wrong object type)
+			if not hasattr(m, attribute):
+				return "wrong iAttribute attribute"
+			
+			# init new color structure with Material object from first face (object)
+			initSA = []
+			for f in iObj.Shape.Faces:
+				initSA.append(m)
+			
+			iObj.ViewObject.ShapeAppearance = tuple(initSA)
+			
+			# replace attribute in Material structure for exact face
+			sa = iObj.ViewObject.ShapeAppearance
+			m = sa[iFaceIndex-1]
+			setattr(m, attribute, iColor)
+			iObj.ViewObject.ShapeAppearance = sa
+
+			return ""
+
+		# set color for face, if all faces has its own material structure
+		if iFaceIndex != 0 and num != 1:
+			sa = iObj.ViewObject.ShapeAppearance
+			m = sa[iFaceIndex-1]
+			if hasattr(m, attribute):
+				setattr(m, attribute, iColor)
+				iObj.ViewObject.ShapeAppearance = sa
+			else:
+				return "wrong iAttribute attribute"
+			
+			return ""
+		
+		return "not settings found"
+
+	# support for FreeCAD 0.21.2 and below
+	else:
+		
+		# set target attribute
+		if iAttribute == "color" or iAttribute == "DiffuseColor":
+			attribute = "DiffuseColor"
+		
+		elif iAttribute == "trans" or iAttribute == "Transparency":
+			attribute = "Transparency"
+		
+		else:
+			return "not supported attribute in this version"
+		
+		if attribute == "Transparency":
+			iObj.ViewObject.Transparency = iColor
+			return ""
+		
+		# set color for all faces
+		if type(iColor) is list:
+			
+			initSA = []
+			for i in range(0, len(iObj.Shape.Faces)):
+				
+				# fix for wrong alpha meaning in FreeCAD 0.21.2
+				# to keep backward compatibilty
+				[ r, g, b, a ] = iColor[i]
+				if a == 1.0:
+					m = tuple([ r, g, b, 0.0 ])
+				elif a == 0.0:
+					m = tuple([ r, g, b, 1.0 ])
+				else:
+					m = tuple([ r, g, b, a ])
+
+				initSA.append(m)
+
+			iObj.ViewObject.DiffuseColor = initSA
+			return ""
+
+		# fix for wrong alpha meaning in FreeCAD 0.21.2
+		# to keep backward compatibilty
+		[ r, g, b, a ] = iColor
+		if a == 1.0:
+			colorToSet = tuple([ r, g, b, 0.0 ])
+		elif a == 0.0:
+			colorToSet = tuple([ r, g, b, 1.0 ])
+		else:
+			colorToSet = tuple([ r, g, b, a ])
+
+		# for example LinkGroup
+		if not hasattr(iObj.ViewObject, "DiffuseColor"):
+			if hasattr(iObj.ViewObject, "ShapeMaterial"):
+				if hasattr(iObj.ViewObject.ShapeMaterial, attribute):
+					setattr(iObj.ViewObject.ShapeMaterial, attribute, colorToSet)
+					return ""
+		
+		# set color for object
+		if iFaceIndex == 0:
+			iObj.ViewObject.ShapeColor = colorToSet
+			iObj.ViewObject.DiffuseColor = colorToSet
+			return ""
+		
+		# set color for single face
+		num = len(iObj.ViewObject.DiffuseColor)
+		
+		# all faces has the same color but want to set single face only
+		if iFaceIndex != 0 and num == 1:
+			
+			color = iObj.ViewObject.DiffuseColor[0]
+			init = []
+			for f in iObj.Shape.Faces:
+				init.append(color)
+			
+			iObj.ViewObject.DiffuseColor = tuple(init)
+			
+			colors = iObj.ViewObject.DiffuseColor
+			colors[iFaceIndex-1] = colorToSet
+			iObj.ViewObject.DiffuseColor = colors
+			return ""
+
+		# multi color faces but want to set single face only
+		if iFaceIndex != 0 and num != 1:
+			
+			colors = iObj.ViewObject.DiffuseColor
+			colors[iFaceIndex-1] = colorToSet
+			iObj.ViewObject.DiffuseColor = colors
+			return ""
+
+		return "not settings found"
+
+
+# ###################################################################################################################
+def copyColors(iSource, iTarget):
+	'''
+	Description:
+	
+		Allows to copy colors from iSource object to iTarget object.
+
+	Args:
+
+		iSource: source object
+		iTarget: target object
+
+	Usage:
+
+		MagicPanels.copyColors(panel, copy)
+
+	Result:
+
+		All colors structure should be copied from source to target.
+
+	'''
+
+
+	try:
+		color = getColor(iSource, 0, "color")
+		if color == "":
+			color = getColor(iSource, 1, "color")
+		
+		setColor(iTarget, 0, color, "color")
+
+		return 0
+	except:
+		return -1
 
 
 # ###################################################################################################################
@@ -5544,538 +5944,306 @@ def makeTenon(iSketch, iLength, iPad, iFace):
 
 # ###################################################################################################################
 '''
-# Units
+# Router
 '''
 # ###################################################################################################################
 
 
 # ###################################################################################################################
-def unit2gui(iValue):
+def getSubByKey(iObj, iKey, iType, iSubType):
 	'''
 	Description:
 	
-		Allows to convert unit from value (mm float FreeCAD format) into gui user settings.
-
-	Args:
-
-		iValue: float from FreeCAD or from calculations
-		
-	Usage:
-
-		unitForUser = MagicPanels.unit2gui(300.55)
-		
-		# Note: if user has set inches units the unitForUser should contains recalculation to inches 
-		
-	Result:
-
-		string
-
-	'''
-
-
-	value = Units.Quantity( str(iValue) + " mm" )
-	userSettings = Units.getSchema()
-	forUser = Units.schemaTranslate(value, userSettings)[0]
-
-	return str(forUser)
-
-
-# ###################################################################################################################
-def unit2value(iString):
-	'''
-	Description:
+		This is extended version of getEdgeIndexByKey function. 
+		This function has been created to solve resized edge problem. If you cut the edge the next 
+		edge will change the Length. So, also the BoundBox will be changed. With this function you 
+		can customize reference key to solve the Topology Naming Problem.
 	
-		Allows to convert unit from user defines setting for example iches, ft into system calculation units.
-
 	Args:
-
-		iString: units string in user settings notation
-		
-	Usage:
-
-		forCalculation = MagicPanels.unit2value("0.06 ft")
-		
-		# Note: forCalculation will be 18.288
-		
-	Result:
-
-		float for calculation
-
-	'''
-
-
-	unitString = iString
-	if Units.getSchema() == 0:
-		try:
-			float(unitString)
-			int(unitString)
-			unitString = str(unitString) + " mm"
-		except:
-			skip = 1
-
-	forCalculation = Units.Quantity(str(unitString)).getValueAs("mm")
-
-	return float(forCalculation)
-
-
-# ###################################################################################################################
-'''
-# Colors
-'''
-# ###################################################################################################################
-
-
-# ###################################################################################################################
-def getColor(iObj, iFaceIndex, iAttribute="color"):
-	'''
-	Description:
 	
-		Allows to get color for object or face.
-
-	Args:
-
-		iObj: object
-		iFaceIndex: index to get color for face or 0 to get color for object
-		iAttribute: string, attribute name from FreeCAD.Material structure, e.g.:
-			* "color" - to get color from DiffuseColor attribute
-			* "trans" - to get color from Transparency attribute
-			* "AmbientColor" - to get color from AmbientColor attribute
-			* "DiffuseColor" - to get color from DiffuseColor attribute
-			* "EmissiveColor" - to get color from EmissiveColor attribute
-			* "Shininess" - to get color from Shininess attribute
-			* "SpecularColor" - to get color from SpecularColor attribute
-			* "Transparency" - to get color from Transparency attribute
+		iObj: object for the sub-object
+		iKey: array with keys
+		iType: type of comparison
+		iSubType: type of sub-object to return, "edge" or "face"
 
 	Usage:
-
-		color = MagicPanels.getColor(o, 0, "color") # to get object color
-		color = MagicPanels.getColor(o, 5, "color") # to get face5 color
+	
+		key = [ e.CenterOfMass, plane ]
+		[ edge, edgeName, edgeIndex ] = MagicPanels.getSubByKey(o, key, "CenterOfMass", "edge")
 
 	Result:
-
-		For FreeCAD 0.21.2 returns color for object from .ViewObject.ShapeColor or 
-		color for face from .ViewObject.DiffuseColor.
-		
-		Since FreeCAD 1.0+ there is no .ViewObject.ShapeColor for object. Color for object 
-		and faces are stored only at .ViewObject.ShapeAppearance behind FreeCAD.Material 
-		structure. If all the faces have the same color there is only one Material object. 
-		But for example if only single face have different color, there are Material objects 
-		for all faces, but there is no color for object. So in this case the color for 
-		object cannot be determined, so will be returned as empty string "".
+	
+		return edge object, name like Edge1 and also index starting from 0 (for iObj.Shape.Edges[index])
 
 	'''
-
-
-	# support for FreeCAD 1.0+
-	if gKernelVersion >= 1.0:
 	
-		# set target attribute
-		if iAttribute == "color":
-			attribute = "DiffuseColor"
+	if iType == "CenterOfMass":
 		
-		elif iAttribute == "trans":
-			attribute = "Transparency"
+		key = iKey[0]
+		plane = iKey[1]
 		
-		else:
-			attribute = iAttribute
+		edge = ""
+		index = 1
+		name = "Edge"
 		
-		# for example LinkGroup
-		if not hasattr(iObj.ViewObject, "ShapeAppearance"):
-			if hasattr(iObj.ViewObject, "ShapeMaterial"):
-				if hasattr(iObj.ViewObject.ShapeMaterial, attribute):
-					return getattr(iObj.ViewObject.ShapeMaterial, attribute)
-		
-		# continue for normal objects
-		num = len(iObj.ViewObject.ShapeAppearance)
-		
-		# get color for object, no color faces
-		if iFaceIndex == 0 and num == 1:
-			m = iObj.ViewObject.ShapeAppearance[0]
-			if hasattr(m, attribute):
-				return getattr(m, attribute)
-		
-		# get color for object, already multi color faces
-		if iFaceIndex == 0 and num != 1:
-			return ""
-		
-		# get color for face, all color faces the same
-		if iFaceIndex != 0 and num == 1:
-			m = iObj.ViewObject.ShapeAppearance[0]
-			if hasattr(m, attribute):
-				return getattr(m, attribute)
-		
-		# get color for face, already multi color faces
-		if iFaceIndex != 0 and num != 1:
-			m = iObj.ViewObject.ShapeAppearance[iFaceIndex-1]
-			if hasattr(m, attribute):
-				return getattr(m, attribute)
-		
-		return ""
-		
-	# support for FreeCAD 0.21.2 and below
-	else:
-		
-		# set target attribute
-		if iAttribute == "color" or iAttribute == "DiffuseColor":
-			attribute = "DiffuseColor"
-		
-		elif iAttribute == "trans" or iAttribute == "Transparency":
-			attribute = "Transparency"
-		
-		else:
-			return "not supported attribute in this version"
-		
-		# for example LinkGroup
-		if not hasattr(iObj.ViewObject, "DiffuseColor"):
-			if hasattr(iObj.ViewObject, "ShapeMaterial"):
-				if hasattr(iObj.ViewObject.ShapeMaterial, attribute):
-					return getattr(iObj.ViewObject.ShapeMaterial, attribute)
-		
-		# continue for normal objects
-		if attribute == "Transparency":
-			return iObj.ViewObject.Transparency
-		
-		if iFaceIndex == 0:
-			return iObj.ViewObject.ShapeColor
-		
-		num = len(iObj.ViewObject.DiffuseColor)
-		
-		if num == 1:
-			return iObj.ViewObject.DiffuseColor[0]
-		else:
-			return iObj.ViewObject.DiffuseColor[iFaceIndex-1]
-
-		return ""
-
-
-# ###################################################################################################################
-def setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
-	'''
-	Description:
-	
-		Allows to set color for object or face.
-
-	Args:
-
-		iObj: object
-		iFaceIndex: index to set color for face or 0 to set color for object
-		iColor: color according to the FreeCAD.Material structure, e.g.:
-			* "AmbientColor" - (0.33333298563957214, 0.33333298563957214, 0.33333298563957214, 1.0)
-			* "DiffuseColor" - (0.800000011920929, 0.800000011920929, 0.800000011920929, 1.0)
-			* "EmissiveColor" - (0.0, 0.0, 0.0, 1.0)
-			* "Shininess" - 0.8999999761581421
-			* "SpecularColor" - (0.5333330035209656, 0.5333330035209656, 0.5333330035209656, 1.0)
-			* "Transparency" - 0.0
-		iAttribute: string, attribute name from FreeCAD.Material structure, e.g.:
-			* "color" - to set color for DiffuseColor attribute
-			* "trans" - to set color for Transparency attribute
-			* "AmbientColor" - to set color for AmbientColor attribute
-			* "DiffuseColor" - to set color for DiffuseColor attribute
-			* "EmissiveColor" - to set color for EmissiveColor attribute
-			* "Shininess" - to set color for Shininess attribute
-			* "SpecularColor" - to set color for SpecularColor attribute
-			* "Transparency" - to set color for Transparency attribute
-
-	Usage:
-
-		MagicPanels.setColor(o, 0, (1.0, 1.0, 0.0, 1.0), "color") # to set object color
-		MagicPanels.setColor(o, 5, (1.0, 1.0, 0.0, 1.0), "color") # to set face5 color
-		
-		# to set colors for all faces, e.g. for dowel with 3 faces
-		colors = [ (1.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0) ]
-		MagicPanels.setColor(o, 0, colors, "color")
-
-	Result:
-
-		return empty string if everything is fine or string with error info
-
-	'''
-
-
-	# support for FreeCAD 1.0+
-	if gKernelVersion >= 1.0:
-	
-		# set target attribute
-		if iAttribute == "color":
-			attribute = "DiffuseColor"
-		
-		elif iAttribute == "trans":
-			attribute = "Transparency"
-		
-		else:
-			attribute = iAttribute
-
-		# for example LinkGroup
-		if not hasattr(iObj.ViewObject, "ShapeAppearance"):
-			if hasattr(iObj.ViewObject, "ShapeMaterial"):
-				if hasattr(iObj.ViewObject.ShapeMaterial, attribute):
-					setattr(iObj.ViewObject.ShapeMaterial, attribute, iColor)
-					return ""
-		
-		# continue for normal objects
-		num = len(iObj.ViewObject.ShapeAppearance)
-		
-		# set color for all faces
-		if type(iColor) is list:
+		if iSubType == "edge":
 			
-			initSA = []
-			for i in range(0, len(iObj.Shape.Faces)):
-				m = iObj.ViewObject.ShapeAppearance[0]
-				if hasattr(m, attribute):
-					setattr(m, attribute, iColor[i])
-					initSA.append(m)
-				else:
-					return "wrong iAttribute attribute"
-
-			iObj.ViewObject.ShapeAppearance = tuple(initSA)
-			
-			return ""
-		
-		# set the same color for object
-		if iFaceIndex == 0:
-			sa = iObj.ViewObject.ShapeAppearance
-			m = sa[0]
-			if hasattr(m, attribute):
-				setattr(m, attribute, iColor)
-				iObj.ViewObject.ShapeAppearance = ( m )
-			else:
-				return "wrong iAttribute attribute"
-
-			return ""
-
-		# set color for face, if all faces has the same material structure
-		if iFaceIndex != 0 and num == 1:
-			
-			sa = iObj.ViewObject.ShapeAppearance
-			m = sa[0]
-			
-			# skip if there is no attribute to set (for example wrong object type)
-			if not hasattr(m, attribute):
-				return "wrong iAttribute attribute"
-			
-			# init new color structure with Material object from first face (object)
-			initSA = []
-			for f in iObj.Shape.Faces:
-				initSA.append(m)
-			
-			iObj.ViewObject.ShapeAppearance = tuple(initSA)
-			
-			# replace attribute in Material structure for exact face
-			sa = iObj.ViewObject.ShapeAppearance
-			m = sa[iFaceIndex-1]
-			setattr(m, attribute, iColor)
-			iObj.ViewObject.ShapeAppearance = sa
-
-			return ""
-
-		# set color for face, if all faces has its own material structure
-		if iFaceIndex != 0 and num != 1:
-			sa = iObj.ViewObject.ShapeAppearance
-			m = sa[iFaceIndex-1]
-			if hasattr(m, attribute):
-				setattr(m, attribute, iColor)
-				iObj.ViewObject.ShapeAppearance = sa
-			else:
-				return "wrong iAttribute attribute"
-			
-			return ""
-		
-		return "not settings found"
-
-	# support for FreeCAD 0.21.2 and below
-	else:
-		
-		# set target attribute
-		if iAttribute == "color" or iAttribute == "DiffuseColor":
-			attribute = "DiffuseColor"
-		
-		elif iAttribute == "trans" or iAttribute == "Transparency":
-			attribute = "Transparency"
-		
-		else:
-			return "not supported attribute in this version"
-		
-		if attribute == "Transparency":
-			iObj.ViewObject.Transparency = iColor
-			return ""
-		
-		# set color for all faces
-		if type(iColor) is list:
-			
-			initSA = []
-			for i in range(0, len(iObj.Shape.Faces)):
+			for e in iObj.Shape.Edges:
 				
-				# fix for wrong alpha meaning in FreeCAD 0.21.2
-				# to keep backward compatibilty
-				[ r, g, b, a ] = iColor[i]
-				if a == 1.0:
-					m = tuple([ r, g, b, 0.0 ])
-				elif a == 0.0:
-					m = tuple([ r, g, b, 1.0 ])
-				else:
-					m = tuple([ r, g, b, a ])
+				p = getEdgePlane(iObj, e)
+				
+				if p == plane:
+					if plane == "X":
+						if equal(e.CenterOfMass.y, key.y) and equal(e.CenterOfMass.z, key.z):
+							name += str(index)
+							return [ e, name, index ]
 
-				initSA.append(m)
+					if plane == "Y":
+						if equal(e.CenterOfMass.x, key.x) and equal(e.CenterOfMass.z, key.z):
+							name += str(index)
+							return [ e, name, index ]
+							
+					if plane == "Z":
+						if equal(e.CenterOfMass.x, key.x) and equal(e.CenterOfMass.y, key.y):
+							name += str(index)
+							return [ e, name, index ]
+				
+				index = index + 1
 
-			iObj.ViewObject.DiffuseColor = initSA
-			return ""
-
-		# fix for wrong alpha meaning in FreeCAD 0.21.2
-		# to keep backward compatibilty
-		[ r, g, b, a ] = iColor
-		if a == 1.0:
-			colorToSet = tuple([ r, g, b, 0.0 ])
-		elif a == 0.0:
-			colorToSet = tuple([ r, g, b, 1.0 ])
-		else:
-			colorToSet = tuple([ r, g, b, a ])
-
-		# for example LinkGroup
-		if not hasattr(iObj.ViewObject, "DiffuseColor"):
-			if hasattr(iObj.ViewObject, "ShapeMaterial"):
-				if hasattr(iObj.ViewObject.ShapeMaterial, attribute):
-					setattr(iObj.ViewObject.ShapeMaterial, attribute, colorToSet)
-					return ""
-		
-		# set color for object
-		if iFaceIndex == 0:
-			iObj.ViewObject.ShapeColor = colorToSet
-			iObj.ViewObject.DiffuseColor = colorToSet
-			return ""
-		
-		# set color for single face
-		num = len(iObj.ViewObject.DiffuseColor)
-		
-		# all faces has the same color but want to set single face only
-		if iFaceIndex != 0 and num == 1:
+		# not needed now
+		if iSubType == "face":
 			
-			color = iObj.ViewObject.DiffuseColor[0]
-			init = []
+			search = iObj.Shape.Faces
+			return [ "not supported", "not supported", "not supported" ]
+		
+	if iType == "BoundBox":
+		
+		key = iKey[0]
+		index = 1
+		
+		if iSubType == "edge":
+			
+			for e in iObj.Shape.Edges:
+			
+				if normalizeBoundBox(e.BoundBox) == normalizeBoundBox(key):
+					edgeName = "Edge"+str(index)
+					idx = index - 1
+					return [ e, edgeName, idx ]
+
+				index = index + 1
+
+		if iSubType == "face":
+			
 			for f in iObj.Shape.Faces:
-				init.append(color)
 			
-			iObj.ViewObject.DiffuseColor = tuple(init)
-			
-			colors = iObj.ViewObject.DiffuseColor
-			colors[iFaceIndex-1] = colorToSet
-			iObj.ViewObject.DiffuseColor = colors
-			return ""
+				if normalizeBoundBox(f.BoundBox) == normalizeBoundBox(key):
+					faceName = "Face"+str(index)
+					idx = index - 1
+					return [ f, faceName, idx ]
 
-		# multi color faces but want to set single face only
-		if iFaceIndex != 0 and num != 1:
-			
-			colors = iObj.ViewObject.DiffuseColor
-			colors[iFaceIndex-1] = colorToSet
-			iObj.ViewObject.DiffuseColor = colors
-			return ""
+				index = index + 1
 
-		return "not settings found"
+	return [ "", "", "" ]
 
 
 # ###################################################################################################################
-def copyColors(iSource, iTarget):
+def getSketchPatternRotation(iObj, iSub):
 	'''
 	Description:
 	
-		Allows to copy colors from iSource object to iTarget object.
-
+		Returns Rotation object which can be passed directly to setSketchPlacement 
+		functions. The Sketch will be perpendicular to the iSub object, so it can be used as 
+		router bit to cut the edge or face.
+	
 	Args:
-
-		iSource: source object
-		iTarget: target object
+	
+		iObj: object for sub-object
+		iSub: selected sub-object, edge or face
 
 	Usage:
-
-		try:
-			MagicPanels.copyColors(panel, copy)
-		except:
-			skip = 1
+	
+		r = MagicPanels.getSketchPatternRotation(o, edge)
+		r = MagicPanels.getSketchPatternRotation(o, face)
 
 	Result:
-
-		All colors structure should be copied from source to target.
+	
+		return FreeCAD.Rotation object.
 
 	'''
 
-
-	skip = 0
-
-	# support for FreeCAD 1.0+
-	if gKernelVersion >= 1.0:
+	r = ""
 	
-		try:
-			color = getColor(iSource, 0, "color")
-			if color == "":
-				color = getColor(iSource, 1, "color")
-			
-			setColor(iTarget, 0, color, "color")
+	if iSub.ShapeType == "Edge":
+	
+		plane = getEdgePlane(iObj, iSub)
 
-		except:
-			skip = 1
+		if plane == "X":
+			r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 1.00, 0.00), 90.00)
+
+		if plane == "Y":
+			r = FreeCAD.Rotation(FreeCAD.Vector(1.00, 0.00, 0.00), 90.00)
+
+		if plane == "Z":
+			r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 00.00)
 	
-	# support for FreeCAD 0.21.2 and below
-	else:
+	if iSub.ShapeType == "Face":
+		
+		plane = getFacePlane(iSub)
+		[ faceType, arrAll, arrThick, arrShort, arrLong ] = getFaceEdges(iObj, iSub)
+		
+		if len(arrLong) > 0:
+			subPlane = getEdgePlane(iObj, arrLong[0])
+		elif len(arrShort) > 0:
+			subPlane = getEdgePlane(iObj, arrShort[0])
+		elif len(arrAll) > 0:
+			subPlane = getEdgePlane(iObj, arrAll[0])
+		
+		if subPlane == "X":
+			r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 1.00, 0.00), 90.00)
+
+		if subPlane == "Y":
+			r = FreeCAD.Rotation(FreeCAD.Vector(1.00, 0.00, 0.00), 90.00)
+
+		if subPlane == "Z":
+			r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 00.00)
 	
+	# This can be updated later for rotated edges with additional rotation angle (offset from axis)
+	return r
+
+
+# ###################################################################################################################
+def edgeRouter(iPad, iSub, iSketch, iLength, iLabel, iType):
+	'''
+	Description:
+	
+		This function is router for the edge. It cut the 
+		iSub with iSketch pattern. The new object will get iLabel label.
+	
+	Args:
+	
+		iPad: Pad object of the sub-object, for routing
+		iSub: sub-object, edge or face
+		iSketch: sketch object will be used as pattern to cut, the sketch should be around XYZ center cross.
+		iLength: length to cut, float or int value, 0 means ThroughAll
+		iLabel: label for new object
+		iType: type of routing
+
+	Usage:
+	
+		router = MagicPanels.edgeRouter(pad, edge, sketch, 0, "routerCove", "simple")
+
+	Result:
+	
+		return router object, the result of cut
+
+	'''
+
+	if iType == "simple":
+		
+		anchor = iSub.CenterOfMass
+		r = getSketchPatternRotation(iPad, iSub)
+		setSketchPlacement(iSketch, anchor.x, anchor.y, anchor.z, r, "global")
+		
+		router = iPad._Body.newObject('PartDesign::Pocket','router')
+		router.Profile = iSketch
+		router.Midplane = 1
+		router.Label = iLabel + " "
+		
+		if iLength == 0:
+			router.Type = 1
+		else:
+			router.Length = iLength
+
+		iSketch.Visibility = False
+		iPad.Visibility = False
+		FreeCAD.ActiveDocument.recompute()
+		
 		try:
-			iTarget.ViewObject.ShapeColor = iSource.ViewObject.ShapeColor
-		except:
-			skip = 1
-			
-		try:
-			# copy edge and only for cubes because other objects have different face order
-			if len(iTarget.ViewObject.DiffuseColor) == len(iSource.ViewObject.DiffuseColor):
-				iTarget.ViewObject.DiffuseColor = iSource.ViewObject.DiffuseColor
-			
-			if len(iSource.ViewObject.DiffuseColor) > 0 and len(iTarget.ViewObject.DiffuseColor) == 1:
-				iTarget.ViewObject.DiffuseColor = iSource.ViewObject.DiffuseColor[0]
+			copyColors(iPad, router)
 		except:
 			skip = 1
 		
+		FreeCAD.ActiveDocument.recompute()
+	
+		return router
+
+	return ""
+
+
+# ###################################################################################################################
+def makePockets(iObjects, iLength):
+	'''
+	Description:
+	
+		This function is multi Pocket. First object from iObjects will be base
+		object to Pocket, all others should be Sketches. The Length is depth for Pocket. 
+		If the Length is 0 the Pocket will be ThroughAll.
+	
+	Args:
+	
+		iObjects: First base objects, next sketches
+		iLength: length to cut, float or int value, 0 means ThroughAll
+		
+	Usage:
+	
+		pocket = MagicPanels.makePockets(selectedObjects, 0)
+
+	Result:
+	
+		return last pocket object, the result of cut
+
+	'''
+
+	base = iObjects[0]
+	sketches = iObjects[1:]
+
+	if base.isDerivedFrom("Part::Box"):
+
+		[ part, body, sketch, pad ] = makePad(base, "panel2pad")
+		FreeCAD.ActiveDocument.removeObject(base.Name)
+		FreeCAD.ActiveDocument.recompute()
+		base = pad
+
+	for s in sketches:
+		
+		body = base._Body
+
+		# FreeCAD know what is going on here and not blow up, I am surprised ;-)
 		try:
-			iTarget.ViewObject.LineColor = iSource.ViewObject.LineColor
+			[ x, y, z, r ] = getSketchPlacement(s, "global")
+			[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(base)
+			x = x - coX
+			y = y - coY
+			z = z - coZ
+			s.adjustRelativeLinks(body)
+			body.ViewObject.dropObject(s, None, '', [])
+			setSketchPlacement(s, x, y, z, r, "global")
 		except:
 			skip = 1
-		
-		# handling links
-		if (
-			iSource.isDerivedFrom("App::LinkGroup") or 
-			iTarget.isDerivedFrom("App::LinkGroup") or
-			iSource.isDerivedFrom("App::Link") or 
-			iTarget.isDerivedFrom("App::Link") 
-			):
-		
-			# normal -> link
-			try:
-				iTarget.ViewObject.ShapeMaterial.DiffuseColor = iSource.ViewObject.ShapeColor
-			except:
-				skip = 1
-			
-			try:
-				iTarget.ViewObject.ShapeMaterial.DiffuseColor = iSource.ViewObject.DiffuseColor
-			except:
-				skip = 1
 
-			# link -> normal
-			try:
-				iTarget.ViewObject.ShapeColor = iSource.ViewObject.ShapeMaterial.DiffuseColor
-			except:
-				skip = 1
-			
-			try:
-				iTarget.ViewObject.DiffuseColor = iSource.ViewObject.ShapeMaterial.DiffuseColor
-			except:
-				skip = 1
-			
-			# link -> link
-			try:
-				iTarget.ViewObject.ShapeMaterial.DiffuseColor = iSource.ViewObject.ShapeMaterial.DiffuseColor
-			except:
-				skip = 1
+		pocket = body.newObject('PartDesign::Pocket','multiPocket')
+		pocket.Profile = s
+		pocket.Midplane = 1
+		pocket.Label = "multiPocket "
+		pocket.Midplane = 1
 
-	if skip == 0:
-		return 0
-	else:
-		return -1
+		if iLength == 0:
+			pocket.Type = 1
+		else:
+			pocket.Length = 2 * iLength
+
+		s.Visibility = False
+		base.Visibility = False
+		FreeCAD.ActiveDocument.recompute()
+		
+		try:
+			copyColors(base, pocket)
+		except:
+			skip = 1
+			
+		FreeCAD.ActiveDocument.recompute()
+		
+		base = pocket
 
 
 # ###################################################################################################################
