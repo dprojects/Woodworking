@@ -18,8 +18,8 @@ gDS = {
 	"gDDiameter": 8,           # dowel diameter
 	"gDSize": 35,              # dowel long size
 	"gDNum": 2,                # dowel numbers per side
-	"gDOCorner": 50,           # dowel offset from corner (measured at at Wolfcraf jig)
-	"gDONext": 64,             # space to next dowel (32 mm woodworking system, I use 64 at Wolfcraf jig)
+	"gDOCorner": 50,           # dowel offset from corner
+	"gDONext": 64,             # space to next dowel (32 mm woodworking system)
 	"gDShape": 0,              # dowel shape (cylinder 0 or box 1)
 	"gTenonT": 6,              # tenon thickness size
 	"gTenonL": 50,             # tenon long size

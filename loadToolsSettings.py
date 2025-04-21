@@ -28,7 +28,7 @@ Tools = [
 	# Woodworking - default
 	# #################################################################################################################################
 	
-	"MagicPanels", "magicStart", "png", "tool to create furniture", "Click to see info.",
+	"MagicPanels", "magicStart", "png", "magicStart, tool for easier start", "This tool was created to make it easier to start designing furniture. It contains some structures that I often use personally, as well as other carpentry solutions suggested by users. However, this tool does not contain a complete list of solutions, because there are too many of them in the world of carpentry, practically every carpenter and manufacturer of furniture or accessories has their own standards. I try to adjust the contents of this tool in such a way that it gives the greatest possible possibilities for later processing and adapting the initial structure to your own needs.",
 	"MagicPanels", "panelDefaultXY", "png", "panel, XY, 600x300, 18 thickness", "Click to see info.",
 	"MagicPanels", "panelDefaultYX", "png", "panel, YX, 300x600, 18 thickness", "Click to see info.",
 	"MagicPanels", "panelDefaultXZ", "png", "panel, XZ, 600x300, 18 thickness", "Click to see info.",

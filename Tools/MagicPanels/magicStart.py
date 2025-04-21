@@ -77,7 +77,9 @@ getMenuIndex = {
 	translate('magicStart', 'Side decoration ( simple frame )'): 62, 
 	translate('magicStart', 'Minifix 15x45 mm ( import parametric )'): 63,
 	translate('magicStart', 'Face Frame ( vertical, for custom changes )'): 64, 
-	translate('magicStart', 'Kitchen cabinet ( US style )'): 65 # no comma 
+	translate('magicStart', 'Kitchen cabinet ( US style )'): 65, 
+	translate('magicStart', 'Kitchen wall cabinet ( front outside, back HDF )'): 66, 
+	translate('magicStart', 'Kitchen wall cabinet ( US style )'): 67 # no comma 
 }
 
 # ############################################################################
@@ -701,6 +703,8 @@ def showQtGUI():
 				translate('magicStart', 'Simple bookcase ( no front, back HDF )'), 
 				translate('magicStart', 'Simple bookcase ( face frame, no front, back HDF )'), 
 				translate('magicStart', 'Kitchen cabinet ( US style )'), 
+				translate('magicStart', 'Kitchen wall cabinet ( front outside, back HDF )'), 
+				translate('magicStart', 'Kitchen wall cabinet ( US style )'), 
 				translate('magicStart', 'Modular storage ( front outside, 3 modules )'), 
 				translate('magicStart', 'Drawer with front outside'), 
 				translate('magicStart', 'Drawer with front inside'), 
@@ -886,14 +890,14 @@ def showQtGUI():
 			row += 200
 			
 			# label
-			self.o4L = QtGui.QLabel(translate('magicStart', 'Wood thickness:'), self)
-			self.o4L.move(10, row+3)
+			self.oThickL = QtGui.QLabel(translate('magicStart', 'Wood thickness:'), self)
+			self.oThickL.move(10, row+3)
 
 			# text input
-			self.o4E = QtGui.QLineEdit(self)
-			self.o4E.setText(MagicPanels.unit2gui(self.gThick))
-			self.o4E.setFixedWidth(90)
-			self.o4E.move(120, row)
+			self.oThickE = QtGui.QLineEdit(self)
+			self.oThickE.setText(MagicPanels.unit2gui(self.gThick))
+			self.oThickE.setFixedWidth(90)
+			self.oThickE.move(120, row)
 			
 			row += 30
 			
@@ -955,38 +959,38 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.o1L = QtGui.QLabel(translate('magicStart', 'Furniture width:'), self)
-			self.o1L.move(10, row+3)
+			self.oWidthL = QtGui.QLabel(translate('magicStart', 'Furniture width:'), self)
+			self.oWidthL.move(10, row+3)
 			
 			# text input
-			self.o1E = QtGui.QLineEdit(self)
-			self.o1E.setText(MagicPanels.unit2gui(self.gFSX))
-			self.o1E.setFixedWidth(90)
-			self.o1E.move(120, row)
+			self.oWidthE = QtGui.QLineEdit(self)
+			self.oWidthE.setText(MagicPanels.unit2gui(self.gFSX))
+			self.oWidthE.setFixedWidth(90)
+			self.oWidthE.move(120, row)
 
 			row += 30
 
 			# label
-			self.o2L = QtGui.QLabel(translate('magicStart', 'Furniture height:'), self)
-			self.o2L.move(10, row+3)
+			self.oHeightL = QtGui.QLabel(translate('magicStart', 'Furniture height:'), self)
+			self.oHeightL.move(10, row+3)
 
 			# text input
-			self.o2E = QtGui.QLineEdit(self)
-			self.o2E.setText(MagicPanels.unit2gui(self.gFSZ))
-			self.o2E.setFixedWidth(90)
-			self.o2E.move(120, row)
+			self.oHeightE = QtGui.QLineEdit(self)
+			self.oHeightE.setText(MagicPanels.unit2gui(self.gFSZ))
+			self.oHeightE.setFixedWidth(90)
+			self.oHeightE.move(120, row)
 
 			row += 30
 			
 			# label
-			self.o3L = QtGui.QLabel(translate('magicStart', 'Furniture depth:'), self)
-			self.o3L.move(10, row+3)
+			self.oDepthL = QtGui.QLabel(translate('magicStart', 'Furniture depth:'), self)
+			self.oDepthL.move(10, row+3)
 
 			# text input
-			self.o3E = QtGui.QLineEdit(self)
-			self.o3E.setText(MagicPanels.unit2gui(self.gFSY))
-			self.o3E.setFixedWidth(90)
-			self.o3E.move(120, row)
+			self.oDepthE = QtGui.QLineEdit(self)
+			self.oDepthE.setText(MagicPanels.unit2gui(self.gFSY))
+			self.oDepthE.setFixedWidth(90)
+			self.oDepthE.move(120, row)
 
 			row += 40
 
@@ -3539,14 +3543,14 @@ def showQtGUI():
 			self.ooo2E.hide()
 			self.ooo3E.hide()
 			self.oo1B1.hide()
-			self.o1L.hide()
-			self.o1E.hide()
-			self.o2L.hide()
-			self.o2E.hide()
-			self.o3L.hide()
-			self.o3E.hide()
-			self.o4L.hide()
-			self.o4E.hide()
+			self.oWidthL.hide()
+			self.oWidthE.hide()
+			self.oHeightL.hide()
+			self.oHeightE.hide()
+			self.oDepthL.hide()
+			self.oDepthE.hide()
+			self.oThickL.hide()
+			self.oThickE.hide()
 			self.s1B1.hide()
 			
 			# ##############################################
@@ -3564,14 +3568,14 @@ def showQtGUI():
 				self.oo12E.show()
 				self.oo13E.show()
 				self.oo1B1.show()
-				self.o1L.show()
-				self.o1E.show()
-				self.o2L.show()
-				self.o2E.show()
-				self.o3L.show()
-				self.o3E.show()
-				self.o4L.show()
-				self.o4E.show()
+				self.oWidthL.show()
+				self.oWidthE.show()
+				self.oHeightL.show()
+				self.oHeightE.show()
+				self.oDepthL.show()
+				self.oDepthE.show()
+				self.oThickL.show()
+				self.oThickE.show()
 				self.s1B1.show()
 			
 			if iType == "side":
@@ -3954,7 +3958,9 @@ def showQtGUI():
 				selectedIndex == 29 or 
 				selectedIndex == 35 or 
 				selectedIndex == 36 or 
-				selectedIndex == 65 
+				selectedIndex == 65 or 
+				selectedIndex == 66 or 
+				selectedIndex == 67 
 				):
 				self.setGUIInfo()
 				self.helpInfo.setText(self.gHelpInfoF0)
@@ -4047,19 +4053,21 @@ def showQtGUI():
 				selectedIndex == 29 or 
 				selectedIndex == 35 or 
 				selectedIndex == 36 or 
-				selectedIndex == 65 
+				selectedIndex == 65 or 
+				selectedIndex == 66 or 
+				selectedIndex == 67 
 				):
-				self.o1E.setText(MagicPanels.unit2gui(self.gFSX))     # width
-				self.o2E.setText(MagicPanels.unit2gui(self.gFSZ))     # height
-				self.o3E.setText(MagicPanels.unit2gui(self.gFSY))     # depth
-				self.o4E.setText(MagicPanels.unit2gui(self.gThick))   # wood thickness
+				self.oWidthE.setText(MagicPanels.unit2gui(self.gFSX))     # width
+				self.oHeightE.setText(MagicPanels.unit2gui(self.gFSZ))    # height
+				self.oDepthE.setText(MagicPanels.unit2gui(self.gFSY))     # depth
+				self.oThickE.setText(MagicPanels.unit2gui(self.gThick))   # wood thickness
 				
 			# overwrite some of them
 			
 			if selectedIndex == 10:
-				self.o2E.setText(MagicPanels.unit2gui(2300))
+				self.oHeightE.setText(MagicPanels.unit2gui(2300))
 			else:
-				self.o2E.setText(MagicPanels.unit2gui(760))
+				self.oHeightE.setText(MagicPanels.unit2gui(760))
 				
 			if selectedIndex == 20:
 				self.of4E.setText(MagicPanels.unit2gui(80))
@@ -4081,9 +4089,9 @@ def showQtGUI():
 				self.ofr84E.setText(MagicPanels.unit2gui(2))
 			
 			if selectedIndex == 35 or selectedIndex == 36:
-				self.o1E.setText(MagicPanels.unit2gui(900))
+				self.oWidthE.setText(MagicPanels.unit2gui(900))
 			else:
-				self.o1E.setText(MagicPanels.unit2gui(500))
+				self.oWidthE.setText(MagicPanels.unit2gui(500))
 				
 			if selectedIndex == 37 or selectedIndex == 38:
 				self.ofglass3E.setText(MagicPanels.unit2gui(9))
@@ -4158,18 +4166,30 @@ def showQtGUI():
 				self.odf4L.setText(translate('magicStart', 'Front offset vertical:'))
 			
 			if selectedIndex == 65:
-				self.o1E.setText(MagicPanels.unit2gui(914.4))
-				self.o2E.setText(MagicPanels.unit2gui(876.3))
-				self.o3E.setText(MagicPanels.unit2gui(609.6))
-				self.o4E.setText(MagicPanels.unit2gui(19.05)) 
+				self.oWidthE.setText(MagicPanels.unit2gui(914.4))
+				self.oHeightE.setText(MagicPanels.unit2gui(876.3))
+				self.oDepthE.setText(MagicPanels.unit2gui(609.6))
+				self.oThickE.setText(MagicPanels.unit2gui(19.05))
+			
+			if selectedIndex == 66:
+				self.oWidthE.setText(MagicPanels.unit2gui(400))
+				self.oHeightE.setText(MagicPanels.unit2gui(600))
+				self.oDepthE.setText(MagicPanels.unit2gui(321))
+				self.oThickE.setText(MagicPanels.unit2gui(18)) 
+			
+			if selectedIndex == 67:
+				self.oWidthE.setText(MagicPanels.unit2gui(457.2))
+				self.oHeightE.setText(MagicPanels.unit2gui(762))
+				self.oDepthE.setText(MagicPanels.unit2gui(330.2 - 19.05)) # 13 inch without front
+				self.oThickE.setText(MagicPanels.unit2gui(19.05)) 
 			
 		# ############################################################################
 		def createObject(self):
 
-			self.gFSX = MagicPanels.unit2value(self.o1E.text())
-			self.gFSZ = MagicPanels.unit2value(self.o2E.text())
-			self.gFSY = MagicPanels.unit2value(self.o3E.text())
-			self.gThick = MagicPanels.unit2value(self.o4E.text())
+			self.gFSX = MagicPanels.unit2value(self.oWidthE.text())
+			self.gFSZ = MagicPanels.unit2value(self.oHeightE.text())
+			self.gFSY = MagicPanels.unit2value(self.oDepthE.text())
+			self.gThick = MagicPanels.unit2value(self.oThickE.text())
 			
 			if self.gSelectedFurniture == "F0":
 				self.createF0()
@@ -4353,7 +4373,13 @@ def showQtGUI():
 			
 			if self.gSelectedFurniture == "F65":
 				self.createF65()
-				
+			
+			if self.gSelectedFurniture == "F66":
+				self.createF66()
+			
+			if self.gSelectedFurniture == "F67":
+				self.createF67()
+
 			# here to allow recalculation with selection
 			FreeCADGui.Selection.clearSelection()
 
@@ -4511,7 +4537,7 @@ def showQtGUI():
 				
 			if sub.ShapeType == "Face":
 				
-				woodt = MagicPanels.unit2value(self.o4E.text())
+				woodt = MagicPanels.unit2value(self.oThickE.text())
 				width = float(obj.Length.Value)
 				thick = float(obj.Height.Value)
 				
@@ -4563,13 +4589,13 @@ def showQtGUI():
 			self.oo13E.setText(MagicPanels.unit2gui(startZ))
 			
 			if width != 0:
-				self.o1E.setText(MagicPanels.unit2gui(width))
+				self.oWidthE.setText(MagicPanels.unit2gui(width))
 			
 			if height != 0:
-				self.o2E.setText(MagicPanels.unit2gui(height))
+				self.oHeightE.setText(MagicPanels.unit2gui(height))
 			
 			if depth != 0:
-				self.o3E.setText(MagicPanels.unit2gui(depth))
+				self.oDepthE.setText(MagicPanels.unit2gui(depth))
 
 		# ############################################################################
 		def calculateSingleDrawer(self):
@@ -5817,6 +5843,7 @@ def showQtGUI():
 			pl = FreeCAD.Vector(sx, sy + depth, sz + (self.gFSZ / 10))
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o4, 0, self.gColor, "color")
+			MagicPanels.setColor(o4, 3, (1.0, 1.0, 1.0, 1.0), "color")
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
@@ -6972,6 +6999,7 @@ def showQtGUI():
 			pl = FreeCAD.Vector(sx, sy + depth + self.gThick, sz)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o4, 0, self.gColor, "color")
+			MagicPanels.setColor(o4, 3, (1.0, 1.0, 1.0, 1.0), "color")
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
@@ -7144,6 +7172,7 @@ def showQtGUI():
 			pl = FreeCAD.Vector(sx, sy + depth, sz)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o4, 0, self.gColor, "color")
+			MagicPanels.setColor(o4, 3, (1.0, 1.0, 1.0, 1.0), "color")
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
@@ -7644,7 +7673,7 @@ def showQtGUI():
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
-			# Back
+			# Back HDF
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
 			o4.Label = translate('magicStart', 'Back')
 			o4.Length = self.gFSX
@@ -7653,6 +7682,7 @@ def showQtGUI():
 			pl = FreeCAD.Vector(sx, sy + depth, sz + self.gThick)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o4, 0, self.gColor, "color")
+			MagicPanels.setColor(o4, 3, (1.0, 1.0, 1.0, 1.0), "color")
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
@@ -7798,7 +7828,7 @@ def showQtGUI():
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
-			# Back
+			# Back HDF
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
 			o4.Label = translate('magicStart', 'Back')
 			o4.Length = self.gFSX
@@ -7807,6 +7837,7 @@ def showQtGUI():
 			pl = FreeCAD.Vector(sx, sy + depth, sz)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o4, 0, self.gColor, "color")
+			MagicPanels.setColor(o4, 3, (1.0, 1.0, 1.0, 1.0), "color")
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
@@ -9083,6 +9114,276 @@ def showQtGUI():
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
 
+		# ############################################################################
+		def createF66(self):
+			
+			sx = MagicPanels.unit2value(self.oo11E.text())
+			sy = MagicPanels.unit2value(self.oo12E.text())
+			sz = MagicPanels.unit2value(self.oo13E.text())
+			
+			depth = self.gFSY - self.gThick - 3
+			
+			# Floor
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
+			o1.Label = translate('magicStart', 'Floor')
+			o1.Length = self.gFSX - (2 * self.gThick)
+			o1.Height = self.gThick
+			o1.Width = depth
+			pl = FreeCAD.Vector(sx + self.gThick, sy + self.gThick, sz)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			colors = [ (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0), 
+			 (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0) ]
+			MagicPanels.setColor(o1, 0, colors, "color")
+			
+			# Left Side
+			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
+			o2.Label = translate('magicStart', 'Left')
+			o2.Length = self.gThick
+			o2.Height = self.gFSZ
+			o2.Width = depth
+			pl = FreeCAD.Vector(sx, sy + self.gThick, sz)
+			o2.Placement = FreeCAD.Placement(pl, self.gR)
+			colors = [ (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), 
+			 (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0) ]
+			MagicPanels.setColor(o2, 0, colors, "color")
+			
+			# Right Side
+			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
+			o3.Label = translate('magicStart', 'Right')
+			o3.Length = self.gThick
+			o3.Height = self.gFSZ
+			o3.Width = depth
+			pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy + self.gThick, sz)
+			o3.Placement = FreeCAD.Placement(pl, self.gR)
+			colors = [ (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), 
+			 (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0) ]
+			MagicPanels.setColor(o3, 0, colors, "color")
+			
+			# Back HDF
+			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "BackHDF")
+			o4.Label = translate('magicStart', 'Back HDF')
+			o4.Length = self.gFSX
+			o4.Height = self.gFSZ
+			o4.Width = 3
+			pl = FreeCAD.Vector(sx, sy + depth + self.gThick, sz)
+			o4.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
+			MagicPanels.setColor(o4, 3, (1.0, 1.0, 1.0, 1.0), "color")
+			
+			# Top
+			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
+			o5.Label = translate('magicStart', 'Top')
+			o5.Length = self.gFSX - (2 * self.gThick)
+			o5.Height = self.gThick
+			o5.Width = depth
+			pl = FreeCAD.Vector(sx + self.gThick, sy + self.gThick, sz + self.gFSZ - self.gThick)
+			o5.Placement = FreeCAD.Placement(pl, self.gR)
+			colors = [ (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0), 
+			 (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0) ]
+			MagicPanels.setColor(o5, 0, colors, "color")
+			
+			# Front
+			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
+			o6.Label = translate('magicStart', 'Front')
+			o6.Length = self.gFSX - self.gThick
+			o6.Height = self.gFSZ - self.gThick - 4
+			o6.Width = self.gThick
+			pl = FreeCAD.Vector(sx + (self.gThick / 2), sy, sz + (self.gThick / 2) + 2)
+			r = FreeCAD.Rotation(0.0, 0.0, 0.5, -0.8660254037844386)
+			o6.Placement = FreeCAD.Placement(pl, r)
+			colors = [ (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0), 
+			 (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), 
+			 (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0) ]
+			MagicPanels.setColor(o6, 0, colors, "color")
+			
+			# Shelf
+			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
+			o7.Label = translate('magicStart', 'Shelf')
+			o7.Length = self.gFSX - (2 * self.gThick)
+			o7.Height = 6
+			o7.Width = depth - self.gThick
+			pl = FreeCAD.Vector(sx + self.gThick, sy + (2 * self.gThick), sz + (self.gFSZ / 2) - (self.gThick / 2))
+			o7.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o7, 0, self.gColor, "color")
+			MagicPanels.setColor(o7, 3, (1.0, 1.0, 1.0, 1.0), "color")
+
+			objects = [o1, o2, o3, o4, o5, o6, o7]
+			label = "Kitchen wall cabinet"
+			container = MagicPanels.createContainer(objects, label, False)
+			
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+		
+		# ############################################################################
+		def createF67(self):
+			
+			# #################################################################
+			# settings
+			# #################################################################
+			
+			bcthick = 6.35                          # back cabinet thickness
+			barWidthH = 76.2                        # face frame bar width horizontal
+			barWidthV = 50.8                        # face frame bar width vertical
+			barThick = 25.4                         # face frame bar thickness
+			bfco = 38.1                             # bottom floor offset
+			bfflip = bfco                           # bottom face frame lip
+			sfflip = 0                              # side face frame lip
+			sbsizet = 88.9                          # supporters bar size top
+			sbsizeb = bfco                          # supporters bar size bottom
+			
+			depth = self.gFSY - bcthick - barThick  # cabinet depth
+			FFWidth = self.gFSX + (2 * sfflip)      # face freame width
+			FFHeight = self.gFSZ - bfco + bfflip    # face frame height
+			
+			# start position calculation
+			
+			sx = MagicPanels.unit2value(self.oo11E.text())
+			sy = MagicPanels.unit2value(self.oo12E.text()) + barThick
+			sz = MagicPanels.unit2value(self.oo13E.text())
+			
+			# face frame position calculaion
+
+			FSX = sx - sfflip
+			FSY = sy - barThick
+			FSZ = sz + bfco - bfflip
+			
+			centerFSX = FSX + (FFWidth / 2) - barWidthV
+			horizontalFSX = FSX + (FFWidth / 2) + barWidthV
+			horizontalFSZ = FSZ + (FFHeight / 2) - barWidthH
+			
+			# #####################################################
+			# Furniture - draw
+			# #####################################################
+			
+			# Floor
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
+			o1.Label = translate('magicStart', 'Floor')
+			o1.Length = self.gFSX - (2 * self.gThick)
+			o1.Height = self.gThick
+			o1.Width = depth
+			pl = FreeCAD.Vector(sx + self.gThick, sy, sz + bfco)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
+			
+			# Left Side
+			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
+			o2.Label = translate('magicStart', 'Left')
+			o2.Length = self.gThick
+			o2.Height = self.gFSZ
+			o2.Width = depth
+			pl = FreeCAD.Vector(sx, sy, sz)
+			o2.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
+			
+			# Right Side
+			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
+			o3.Label = translate('magicStart', 'Right')
+			o3.Length = self.gThick
+			o3.Height = self.gFSZ
+			o3.Width = depth
+			pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy, sz)
+			o3.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
+			
+			# Back
+			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
+			o4.Label = translate('magicStart', 'Back')
+			o4.Length = self.gFSX
+			o4.Height = self.gFSZ
+			o4.Width = bcthick
+			pl = FreeCAD.Vector(sx, sy + depth, sz)
+			o4.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
+			
+			# Top
+			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
+			o5.Label = translate('magicStart', 'Top')
+			o5.Length = self.gFSX - (2 * self.gThick)
+			o5.Height = self.gThick
+			o5.Width = depth
+			pl = FreeCAD.Vector(sx + self.gThick, sy, sz + self.gFSZ - self.gThick)
+			o5.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o5, 0, self.gColor, "color")
+			
+			# Support top
+			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "supporter1")
+			o6.Label = translate('magicStart', 'ST')
+			o6.Length = self.gFSX - (2 * self.gThick)
+			o6.Height = sbsizet
+			o6.Width = self.gThick
+			pl = FreeCAD.Vector(sx + self.gThick, sy + depth - self.gThick, sz + self.gFSZ - sbsizet - self.gThick)
+			o6.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o6, 0, self.gColor, "color")
+
+			# Support bottom
+			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "supporter2")
+			o7.Label = translate('magicStart', 'SB')
+			o7.Length = self.gFSX - (2 * self.gThick)
+			o7.Height = sbsizeb
+			o7.Width = self.gThick
+			pl = FreeCAD.Vector(sx + self.gThick, sy + depth - self.gThick, sz)
+			o7.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o7, 0, self.gColor, "color")
+
+			# Shelf
+			o8 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
+			o8.Label = translate('magicStart', 'Top')
+			o8.Length = self.gFSX - (2 * self.gThick)
+			o8.Height = self.gThick
+			o8.Width = depth - self.gThick
+			pl = FreeCAD.Vector(sx + self.gThick, sy + self.gThick, sz + (self.gFSZ  / 2) - self.gThick)
+			o8.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o8, 0, self.gColor, "color")
+
+			# Face Frame - draw
+
+			# Left Side
+			ff1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFLeft")
+			ff1.Label = translate('magicStart', 'FF Left')
+			ff1.Length = barWidthV
+			ff1.Height = FFHeight
+			ff1.Width = barThick
+			pl = FreeCAD.Vector(FSX, FSY, FSZ)
+			ff1.Placement = FreeCAD.Placement(pl, self.gR)
+			ff1.ViewObject.ShapeColor = self.gColor
+			
+			# Right Side
+			ff2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFRight")
+			ff2.Label = translate('magicStart', 'FF Right')
+			ff2.Length = barWidthV
+			ff2.Height = FFHeight
+			ff2.Width = barThick
+			pl = FreeCAD.Vector(FSX + FFWidth - barWidthV, FSY, FSZ)
+			ff2.Placement = FreeCAD.Placement(pl, self.gR)
+			ff2.ViewObject.ShapeColor = self.gColor
+			
+			# Bottom
+			ff3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFBottom")
+			ff3.Label = translate('magicStart', 'FF Bottom')
+			ff3.Length = FFWidth - (2 * barWidthV)
+			ff3.Height = barWidthH
+			ff3.Width = barThick
+			pl = FreeCAD.Vector(FSX + barWidthV, FSY, FSZ)
+			ff3.Placement = FreeCAD.Placement(pl, self.gR)
+			ff3.ViewObject.ShapeColor = self.gColor
+			
+			# Top
+			ff4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFTop")
+			ff4.Label = translate('magicStart', 'FF Top')
+			ff4.Length = FFWidth - (2 * barWidthV)
+			ff4.Height = barWidthH
+			ff4.Width = barThick
+			pl = FreeCAD.Vector(FSX + barWidthV, FSY, FSZ + FFHeight - barWidthH)
+			ff4.Placement = FreeCAD.Placement(pl, self.gR)
+			ff4.ViewObject.ShapeColor = self.gColor
+			
+			objects = [o1, o2, o3, o4, o5, o6, o7, o8, ff1, ff2, ff3, ff4]
+			label = "Kitchen wall cabinet"
+			container = MagicPanels.createContainer(objects, label, False)
+			
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+		
 	# ############################################################################
 	# final settings
 	# ############################################################################

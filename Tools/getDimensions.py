@@ -18,6 +18,13 @@ from PySide import QtGui, QtCore
 translate = FreeCAD.Qt.translate
 
 
+gKernelVersion = 0
+try:
+	gKernelVersion = float( str(FreeCAD.Version()[0]) + "." + str(FreeCAD.Version()[1]) + str(FreeCAD.Version()[2]) )
+except:
+	skip = 1
+
+
 # ###################################################################################################################
 #
 # 				Default Settings
@@ -4554,6 +4561,9 @@ def setTechDraw(iCaller="setTechDraw"):
 	# set in the center of the template
 	gPrintSheet.X = int(templateWidth / 2)
 	gPrintSheet.Y = int(templateHeight / 2)
+
+	if gKernelVersion >= 1.1:
+		gPrintSheet.Scale = 2.5
 
 	# try to set fonts
 	try:

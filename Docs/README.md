@@ -151,7 +151,9 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 0.23 stable:**
 
+    * kitchen wall cabinets, 2 versions (magicStart)
     * improve copy PartDesign object (magicMove, MagicPanels)
+    * tool to see and debug the default object anchor (showPlacement)
     * kitchen cabinet US style with vertical face frame (magicStart)
     * vertical face frame (magicStart)
     * support for user units settings (inches, ft, mm, etc...)
@@ -253,7 +255,9 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * Simple storage ( face frame, no front, back HDF )
 * Simple bookcase ( no front, back HDF )
 * Simple bookcase ( face frame, no front, back HDF )
-* Kitchen cabinet ( US style )
+* Kitchen cabinet ( US style ) inspired by Shara Woodshop Diaries at [woodshopdiaries.com](https://www.woodshopdiaries.com/)
+* Kitchen wall cabinet ( front outside, back HDF )
+* Kitchen wall cabinet ( US style ) inspired by Shara Woodshop Diaries at [woodshopdiaries.com](https://www.woodshopdiaries.com/)
 * Modular storage ( front outside, 3 modules )
 * Bookcase ( import parametric )
 
@@ -972,6 +976,9 @@ For manual adjust you can use:
 * **show custom settings:** Allows you to preview the custom settings but you need to click `create` button to store dowels.
 * **create:** This button will store the dowels permanently.
 
+> [!NOTE]
+> I personally use a [Wolfcraft dowelling jig](https://www.wolfcraft.com/products/wolfcraft/en/EUR/Products/Attachments-for-Machines/Drill-Guides/Dowelling-jig/p/P_4650) to drill 3 mm pilot holes for 4 x 40 mm screws. On this dowelling jig I have two sleeves I made myself from 16 mm screws (a small improvement). The sleeves are in positions 10 and the stopper in positions 8, so I can drill two holes at once very quickly from each side with high precision with a distance of 50 mm from each edge and with a distance between the holes of 64 mm. That is why the default distance for all screws is set this way.
+
 **Video tutorials:** 
 * [Adding dowels improved](https://www.youtube.com/watch?v=6qixKpVKA-0)
 * [Adding dowels](https://www.youtube.com/watch?v=q7tJffBBUGY)
@@ -1085,6 +1092,9 @@ However, if you make your own detailed part or order somewhere, you need to fulf
 * **Text inputs:** You can set your custom values here and click `show custom settings` to see if the drill bits fits your needs. 
 * **show custom settings:** Allows you to preview the custom settings but you need to click `create` button to drill holes.
 * **create:** This button will create holes below the red face of the drill bits. If the object is simple panel (Part::Box) it will be converted to Pad (PartDesign::Pad) object.
+
+> [!NOTE]
+> I personally use a [Wolfcraft dowelling jig](https://www.wolfcraft.com/products/wolfcraft/en/EUR/Products/Attachments-for-Machines/Drill-Guides/Dowelling-jig/p/P_4650) to drill 3 mm pilot holes for 4 x 40 mm screws. On this dowelling jig I have two sleeves I made myself from 16 mm screws (a small improvement). The sleeves are in positions 10 and the stopper in positions 8, so I can drill two holes at once very quickly from each side with high precision with a distance of 50 mm from each edge and with a distance between the holes of 64 mm. That is why the default distance for all screws is set this way.
 
 **Video tutorials:** 
 * [Countersinks & realistic screws](https://www.youtube.com/watch?v=N5SpUCtNMY0)

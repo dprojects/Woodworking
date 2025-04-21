@@ -27,7 +27,7 @@ try:
 		else:
 			continue
 
-	MagicPanels.showVertex(vertices, 30)
+	MagicPanels.showVertex(vertices, 10)
 
 
 except:
