@@ -683,6 +683,35 @@ def getEdgeVertices(iEdge):
 
 
 # ###################################################################################################################
+def getEdgeVectors(iEdge):
+	'''
+	Description:
+	
+		Gets all vertices values for edge as FreeCAD.Vector array.
+	
+	Args:
+	
+		iEdge: edge object
+
+	Usage:
+	
+		[ v1, v2 ] = MagicPanels.getEdgeVectors(edge)
+
+	Result:
+	
+		Return vertices array like [ FreeCAD.Vector, FreeCAD.Vector ].
+
+	'''
+	
+	vertexArr = touchTypo(iEdge)
+
+	v1 = FreeCAD.Vector( vertexArr[0].X, vertexArr[0].Y, vertexArr[0].Z )
+	v2 = FreeCAD.Vector( vertexArr[1].X, vertexArr[1].Y, vertexArr[1].Z )
+
+	return [ v1, v2 ]
+
+
+# ###################################################################################################################
 def getEdgeNormalized(iV1, iV2):
 	'''
 	Description:
@@ -1002,11 +1031,13 @@ def getFaceVertices(iFace, iType="4"):
 		iType (optional): 
 			* "4" - 4 vertices for normal Cube
 			* "all" - get all vertices, for example for Cut object
+			* "vector" - get all vertices as FreeCAD.Vector objects
 
 	Usage:
 	
 		[ v1, v2, v3, v4 ] = MagicPanels.getFaceVertices(gFace)
 		vertices = MagicPanels.getFaceVertices(gFace, "all")
+		vectors = MagicPanels.getFaceVertices(face, "vector")
 
 	Result:
 	
@@ -1030,6 +1061,14 @@ def getFaceVertices(iFace, iType="4"):
 		vertices = []
 		for v in vertexArr:
 			vertices.append([ v.X, v.Y, v.Z ])
+		
+		return vertices
+	
+	if iType == "vector":
+		
+		vertices = []
+		for v in vertexArr:
+			vertices.append(FreeCAD.Vector(v.X, v.Y, v.Z))
 		
 		return vertices
 	
@@ -3306,6 +3345,13 @@ def createContainer(iObjects, iLabel="Container", iNesting=True):
 
 	'''
 
+	try:
+		for o in iObjects:
+			oldcontainer = o.InList[0]
+			oldcontainer.ViewObject.dragObject(o)
+	except:
+		skip = 1
+
 	base = iObjects[0]
 	container = FreeCAD.ActiveDocument.addObject('App::LinkGroup','LinkGroup')
 	container.setLink(iObjects)
@@ -3319,7 +3365,14 @@ def createContainer(iObjects, iLabel="Container", iNesting=True):
 		copyColors(base, container)
 	except:
 		skip = 1
-		
+	
+	try:
+		objects = oldcontainer.ElementList
+		objects.append(container)
+		oldcontainer.setLink(objects)
+	except:
+		skip = 1
+	
 	FreeCAD.ActiveDocument.recompute()
 	
 	return container
@@ -4811,7 +4864,7 @@ def copyColors(iSource, iTarget):
 
 
 # ###################################################################################################################
-def makeHoles(iObj, iFace, iCylinders):
+def makeHoles(iObj, iFace, iCylinders, iDrillPoint="Angled"):
 	'''
 	Description:
 	
@@ -4822,10 +4875,13 @@ def makeHoles(iObj, iFace, iCylinders):
 		iObj: base object to make hole
 		iFace: face of base object to make hole
 		iCylinders: list of cylinders to make holes below each one
-
+		iDrillPoint (optional): "Angled" for normal conical hole or "Flat" for flat hole
+		
 	Usage:
 
 		holes = MagicPanels.makeHoles(obj, face, cylinders)
+		holes = MagicPanels.makeHoles(obj, face, cylinders, "Angled")
+		holes = MagicPanels.makeHoles(obj, face, cylinders, "Flat")
 		
 	Result:
 
@@ -4894,9 +4950,9 @@ def makeHoles(iObj, iFace, iCylinders):
 		hole.ThreadType = 0
 		hole.HoleCutType = 0
 		hole.DepthType = 0
-		hole.DrillPoint = 1
 		hole.DrillForDepth = 1
 		hole.Tapered = 0
+		hole.DrillPoint = iDrillPoint
 		
 		try:
 			copyColors(hole.BaseFeature, hole)

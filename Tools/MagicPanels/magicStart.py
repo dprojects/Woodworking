@@ -79,7 +79,9 @@ getMenuIndex = {
 	translate('magicStart', 'Face Frame ( vertical, for custom changes )'): 64, 
 	translate('magicStart', 'Kitchen cabinet ( US style )'): 65, 
 	translate('magicStart', 'Kitchen wall cabinet ( front outside, back HDF )'): 66, 
-	translate('magicStart', 'Kitchen wall cabinet ( US style )'): 67 # no comma 
+	translate('magicStart', 'Kitchen wall cabinet ( US style )'): 67, 
+	translate('magicStart', 'Cabinet handle ( single hole )'): 68, 
+	translate('magicStart', 'Cabinet handle ( double hole )'): 69 # no comma 
 }
 
 # ############################################################################
@@ -750,6 +752,8 @@ def showQtGUI():
 				translate('magicStart', 'Minifix 15x45 mm ( import parametric )'), 
 				translate('magicStart', 'Counterbore 2x 5x60 mm ( import parametric )'), 
 				translate('magicStart', 'Shelf Pin 5x16 mm ( import parametric )'), 
+				translate('magicStart', 'Cabinet handle ( single hole )'), 
+				translate('magicStart', 'Cabinet handle ( double hole )'), 
 				translate('magicStart', 'Angle 30x30x25 mm ( import parametric )'), 
 				translate('magicStart', 'Angle 80x80x20 mm ( import parametric )'), 
 				translate('magicStart', 'Angle 40x40x100 mm ( import parametric )'), 
@@ -3944,7 +3948,9 @@ def showQtGUI():
 				selectedIndex == 56 or 
 				selectedIndex == 57 or 
 				selectedIndex == 58 or 
-				selectedIndex == 63
+				selectedIndex == 63 or 
+				selectedIndex == 68 or 
+				selectedIndex == 69
 				):
 				self.setGUIInfo("merge")
 				self.helpInfo.setText("")
@@ -4380,6 +4386,12 @@ def showQtGUI():
 			if self.gSelectedFurniture == "F67":
 				self.createF67()
 
+			if self.gSelectedFurniture == "F68":
+				self.mergeF("Cabinet_handle_01.FCStd", "other")
+			
+			if self.gSelectedFurniture == "F69":
+				self.mergeF("Cabinet_handle_02.FCStd", "other")
+
 			# here to allow recalculation with selection
 			FreeCADGui.Selection.clearSelection()
 
@@ -4431,6 +4443,13 @@ def showQtGUI():
 				path = str(os.path.join(path, "Examples"))
 				path = str(os.path.join(path, "Fixture"))
 				path = str(os.path.join(path, "Angles"))
+				path = str(os.path.join(path, iName))
+			
+			if iType == "other":
+				path = FreeCADGui.activeWorkbench().path
+				path = str(os.path.join(path, "Examples"))
+				path = str(os.path.join(path, "Fixture"))
+				path = str(os.path.join(path, "Other"))
 				path = str(os.path.join(path, iName))
 				
 			return path
@@ -9189,8 +9208,7 @@ def showQtGUI():
 			o6.Height = self.gFSZ - self.gThick - 4
 			o6.Width = self.gThick
 			pl = FreeCAD.Vector(sx + (self.gThick / 2), sy, sz + (self.gThick / 2) + 2)
-			r = FreeCAD.Rotation(0.0, 0.0, 0.5, -0.8660254037844386)
-			o6.Placement = FreeCAD.Placement(pl, r)
+			o6.Placement = FreeCAD.Placement(pl, self.gR)
 			colors = [ (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0), 
 			 (1.0, 1.0, 1.0, 1.0), (1.0, 1.0, 1.0, 1.0), 
 			 (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0) ]

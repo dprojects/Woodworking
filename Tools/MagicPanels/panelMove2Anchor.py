@@ -51,7 +51,7 @@ try:
 				skip = 1
 
 		except:
-			anchor = "auto"
+			anchor = "normal"
 
 		toMove = MagicPanels.getObjectToMove(o)
 		MagicPanels.setContainerPlacement(toMove, X, Y, Z, 0, anchor)
@@ -80,4 +80,3 @@ except:
 	info += translate('panelMove2Anchor', 'This tool allows you to align panels more precisely, to connect selected anchors. Hold left CTRL key to select anchors.')
 	
 	MagicPanels.showInfo("panelMove2Anchor", info)
-

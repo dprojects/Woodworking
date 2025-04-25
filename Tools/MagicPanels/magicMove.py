@@ -1,5 +1,6 @@
 import FreeCAD, FreeCADGui 
 from PySide import QtGui, QtCore
+import time
 
 import MagicPanels
 
@@ -144,8 +145,8 @@ def showQtGUI():
 			gSH = FreeCADGui.getMainWindow().height()
 
 			# tool screen position
-			gPW = 0 + 50
-			gPH = int( gSH - toolSH ) - 10
+			gPW = 0 + 200
+			gPH = int( gSH - toolSH ) - 40
 
 			# ############################################################################
 			# main window
@@ -322,6 +323,16 @@ def showQtGUI():
 			self.o4E.setText(MagicPanels.unit2gui(self.gStep))
 			self.o4E.setFixedWidth(tfsizeLong)
 			self.o4E.move(rside-tfsizeLong, row)
+
+			# ############################################################################
+			# animation checkbox
+			# ############################################################################
+
+			row += 30
+				
+			self.animcb = QtGui.QCheckBox(translate('magicMove', ' - animate move'), self)
+			self.animcb.setCheckState(QtCore.Qt.Unchecked)
+			self.animcb.move(10, row+3)
 
 			# ############################################################################
 			# GUI for Move to Equal (hidden by default)
@@ -722,7 +733,7 @@ def showQtGUI():
 				
 				row += 25
 				
-				self.kccscb = QtGui.QCheckBox(translate('magicDowels', ' - keep custom cross settings'), self)
+				self.kccscb = QtGui.QCheckBox(translate('magicMove', ' - keep custom cross settings'), self)
 				self.kccscb.setCheckState(QtCore.Qt.Unchecked)
 				self.kccscb.move(10, row+3)
 			
@@ -783,9 +794,7 @@ def showQtGUI():
 
 				self.gStep = MagicPanels.unit2value(self.o4E.text())
 				
-				x = 0
-				y = 0
-				z = 0
+				[ x, y, z ] = [ 0, 0, 0 ]
 				
 				if iType == "Xp":
 					x = self.gStep
@@ -807,7 +816,37 @@ def showQtGUI():
 				
 				toMove = MagicPanels.getObjectToMove(o)
 				[ px, py, pz, r ] = MagicPanels.getContainerPlacement(toMove, "clean")
-				MagicPanels.setContainerPlacement(toMove, px+x, py+y, pz+z, 0, "clean")
+				
+				if self.animcb.isChecked():
+					
+					[ stepX, stepY, stepZ ] = [ 0, 0, 0 ]
+					
+					if x != 0:
+						stepX = x/100
+					if y != 0:
+						stepY = y/100
+					if z != 0:
+						stepZ = z/100
+					
+					for i in range(1, 100):
+						
+						if i < 50:
+							anim = 0.001
+						elif i < 80:
+							anim = 0.05
+						else:
+							anim = 0.08
+						
+						[ ax, ay, az, ar ] = MagicPanels.getContainerPlacement(toMove, "clean")
+						MagicPanels.setContainerPlacement(toMove, ax+stepX, ay+stepY, az+stepZ, 0, "clean")
+						time.sleep(anim)
+						FreeCADGui.updateGui()
+					
+					MagicPanels.setContainerPlacement(toMove, px+x, py+y, pz+z, 0, "clean")
+					
+				else:
+				
+					MagicPanels.setContainerPlacement(toMove, px+x, py+y, pz+z, 0, "clean")
 
 			FreeCAD.ActiveDocument.recompute()
 		
@@ -1397,6 +1436,8 @@ def showQtGUI():
 			self.o4L.hide()
 			self.o4E.hide()
 			
+			self.animcb.hide()
+			
 			self.mc1B.hide()
 			self.mc1L.hide()
 			self.mc2L.hide()
@@ -1435,6 +1476,8 @@ def showQtGUI():
 				
 				self.o4L.show()
 				self.o4E.show()
+				
+				self.animcb.show()
 				
 				self.o1L.setText(self.gInfoMoveX)
 				self.o2L.setText(self.gInfoMoveY)

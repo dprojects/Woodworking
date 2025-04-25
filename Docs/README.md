@@ -20,7 +20,8 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 	* [Foot for cabinets](#foot-for-cabinets)
 	* [Table](#table)
 	* [Connections](#connections)
-	* [Accessories & Other](#accessories-&-other)
+	* [Accessories](#accessories)
+	* [Other](#other)
 * [Making panels](#making-panels)
 	* [Default panels](#default-panels)
 	* [Copy panels](#copy-panels)
@@ -151,6 +152,14 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 0.23 stable:**
 
+    * redesign magixFixture (change into vector anchors and XYZ positioning)
+    * improve general subcontainer creation (MagicPanels)
+    * add animation for move (magicMove)
+    * add animation for rotation and rotation points (magicAngle)
+    * predefined settings for cabinet handle (magicDowels, magicDriller)
+    * predefined settings for minifix (magicDowels, magicDriller)
+    * cabinet handle double (magicStart)
+    * cabinet handle single (magicStart)
     * kitchen wall cabinets, 2 versions (magicStart)
     * improve copy PartDesign object (magicMove, MagicPanels)
     * tool to see and debug the default object anchor (showPlacement)
@@ -376,18 +385,24 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * [How to add screws to HDF back](https://www.youtube.com/watch?v=MvIRFPDGKYQ)
 * [Biscuits joints](https://www.youtube.com/watch?v=NCf07IwuRJI)
 
-## Accessories & Other
+## Accessories
 
 * Shelf Pin 5x16 mm ( import parametric )
 * Angle 30x30x25 mm ( import parametric )
 * Angle 80x80x20 mm ( import parametric )
 * Angle 40x40x100 mm ( import parametric )
+* Cabinet handle ( single hole )
+* Cabinet handle ( double hole )
+
+**Video tutorials:** 
+* [How to add handle and see soft-close animation](https://www.youtube.com/watch?v=iOseEBGmwAU)
+* [How to add feet](https://www.youtube.com/watch?v=E4yfRFIqops)
+
+## Other
+
 * Simple chair ( import parametric )
 * Picture frame ( import parametric )
 * Storage box ( import parametric )
-
-**Video tutorials:** 
-* [How to add feet](https://www.youtube.com/watch?v=E4yfRFIqops)
 
 # Making panels
 
@@ -492,7 +507,8 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 * **Move:** In this mode you can move any object with custom step. You can also move containers, for example panel with dowels inside `LinkGroup`.
   * buttons: `X-`, `X+`, `Y-`, `Y+`, `Z-`, `Z+` move object into the chosen axis direction, there is auto-repeat so you can hold the button to move objects more quickly.
   * `Move step` if the object is recognized the `Move step` will be set by default with selected object thickness. The offset is calculated from objects anchors, usually left bottom corner (vertex).
-
+  * `animate move` if it is checked it will add animation to the move, so you can see a soft-close animation of the cabinet drawer.
+  
 * **Move to Equal:** In this mode you can set equal space between objects. This feature works in the same way as [shelvesEqual](#shelvesequal) but here you can choose the coordinate axis.
   * `set` allows to set edge as start or end reference point. Sometimes if the access to edge require hide object it can be more useful to set one by one or if you want to update only single edge.
   * `set both edges` allows to set both edge at once as start and end reference point. This is much quicker way.
@@ -543,19 +559,28 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 * [How to set equal space between objects](https://www.youtube.com/watch?v=4EfNV-ur6Rw)
 * [How to copy part of the furniture](https://www.youtube.com/watch?v=oxNiwtZV-Uc)
 * [How to handle dimension changes](https://www.youtube.com/watch?v=HED1-BH66BU)
+* [How to add handle and see soft-close animation](https://www.youtube.com/watch?v=iOseEBGmwAU)
 
 ## magicAngle
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicAngle.png"> This tool allows to rotate panels and even other more complicated objects, like construction profiles or containers. It allows for multi-selection, so you can rotate many elements with the same rotation point at once.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicAngle.png"> This tool allows to rotate panels and even other more complicated objects, like construction profiles or containers. It allows for multi-selection, so you can rotate many elements with the same rotation point at once. You can use this tool to open or close cabinet door with soft close animation.
 
 **Options:**
 
+* **refresh selection** this button loads objects for which rotation is to be performed.
 * **Sphere radius** Allows you to resize rotation indicator sphere. This tool checks reference for the object, content of containers and get size to set the default size of the sphere. by default the sphere radius is set to object thickness. You can increase or decrease the value or set your custom one.
-* **Rotation point** Allows you to switch between several predefined rotation points. If the predefined points not allows you to rotate the object as you wish, you can add your custom point. You can select vertex, face or edge and click `add selected vertex`. If the selected sub-object is face the vertex will be set to its CenterOfMass. If the sub-object is edge the first vertex for the edge will be set. There is also ration, that show you how many rotation points you have to choose and which one is currently chosen.
-
-* **X, Y, Z** Allows to rotate object according to the axis. There is also screen with current rotation status so you can quickly rotate back the object. You can also choose your custom `Angle step` for rotation. 
+* **Rotation point** Allows you to switch between several predefined rotation points. If the predefined points not allows you to rotate the object as you wish, you can add your custom point. You can select:
+  * `vertex` in this case this vertex will be added to the end of the `Rotation point` list.
+  * `edge` in this case first and end point of the edge will be added to the end of the `Rotation point` list and also CenterOfMass of the edge.
+  * `face` in this case CenterOfMass of the face will be added to the end of the `Rotation point` list.
+* **add selected vertex** this button loads selected rotation points at the end of the `Rotation point` list.
+* **X-**, **X+**, **Y-**, **Y+**, **Z-**, **Z+** allows to rotate loaded objects according to the XYZ coordinate axes. 
+* **value between** shows current rotation status so you can quickly rotate back the object, if you still have opened the tool interface. If you close it you have to use CTRL-Z to undo rotation. 
+* **Angle step** is step for rotation.
+* **animate rotation** if it is checked it will add animation to the rotation, so you can see a soft-close animation of the cabinet door.
 
 **Video tutorials:** 
+* [How to add handle and see soft-close animation](https://www.youtube.com/watch?v=iOseEBGmwAU)
 * [Quick parametric fence](https://www.youtube.com/watch?v=egmC-uR4aa4)
 
 ## mapPosition
@@ -1019,27 +1044,37 @@ For manual adjust you can use:
 
 ## magicFixture
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicFixture.png"> This tool allows you to apply any type of fixture, for example hinges, angles. First you have to select fixture, usually LinkGroup container with for example angle inside, and next select face to apply the fixture (angle) and click `refresh selections`. After adjust position of the fixture at the surface, you have to click `create` button to store the fixture. For more details please see: [Fixture examples](https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture).
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicFixture.png"> This tool allows you to apply any type of fixture, for example cabinet door handle, hinges or angles. First you have to select fixture, usually LinkGroup container with for example angle inside, and next select face, edge, hole or vertex as reference anchor. Next click `refresh selections` to load objects. After adjust position of the fixture at the surface, you have to click `create` button to store the fixture. For more details please see: [Fixture examples](https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture).
 
 **Options:**
 
-* **refresh selections:** You have to select fixture and next face and click `refresh selections` to start using this tool. However, you can also first select fixture and face and next open this tool, so this tool will open GUI with the fixture and face loaded.
+* **refresh selections:** allows you to load the fixture that should be applied and face, edge, hole or vertex as anchor reference point.
 
-* **Edge:** You can choose the reference edge point to position the fixture. Normally, for surface there are 4 edges but if the object is for example `boolean Cut` there might be much more edges or only 2 edges if this is edge of the board.
-* **Rotation:** You can rotate the fixture to fits your needs. There are some predefined rotations according to the current face plane to speed up this process.
+* **Anchor:** allows you to select a saved anchor as a reference point (vector).
+* **Rotation:** allows you to select the most commonly used rotations to fit an object to a plane.
+* **add selected anchor** allows you to add additional anchors as reference points to the end of the list. Before pressing this button, you must select a face, edge, hole edge or vertex. If you select a face and an edge, all vertices for the selected face or edge and the center of the face or edge will be added to the end of the list. If you select a vertex, only the selected vertex will be added to the end of the list.
 
-* **Edge offset:** The `+` and `-` buttons allow you to move the object on the selected surface relative to the selected edge. The text field allows you to enter the value manually, but in this case you must then press the `show custom settings` button to refresh the object position.
-* **Corner offset:** The `+` and `-` buttons allow you to move the object on the selected surface relative to the corner of selected edge. The text field allows you to enter the value manually, but in this case you must then press the `show custom settings` button to refresh the object position.
-* **Sink offset:** The `+` and `-` buttons allow you to move the object outside or inside direction relative to the selected surface. The text field allows you to enter the value manually, but in this case you must then press the `show custom settings` button to refresh the object position.
-
+* **X offset:** The `+` and `-` buttons allows you to move an object along the X coordinate axis.
+* **Y offset:** The `+` and `-` buttons allows you to move an object along the Y coordinate axis.
+* **Z offset:** The `+` and `-` buttons allows you to move an object along the Z coordinate axis.
 * **Step:** Allows you to set the offset step for the `+` and `-` buttons.
-* **show custom settings:** Allows you to preview the custom settings but you need to click `create` button to store fixture.
+* **show custom settings:** allows you to preview the custom settings but you need to click `create` button to store fixture. If you use the `-` and `+` buttons, the object will change its position automatically, but if you enter your own values ​​into the text fields, you must confirm them with thi button.
+
 * **set manually:** open manual edit mode.
 * **finish manually:** finish manual edit mode.
 
 * **Link:** creates Link object.
-* **Clone for drilling:** creates Clone object. For example if you want to drill pilot holes for screws that are to be screwed into the angle holes, it is better to choose this option because Clones have its own position, the Links refers to the base element. For more details see: [Pilot holes for angles, hinges](#pilot-holes-for-angles-hinges)
+* **Clone for drilling:** creates Clone object. For example if you want to measure offsets or drill pilot holes for screws that are to be screwed into the angle holes, it is better to choose this option because Clones have its own position, the Links refers to the base element. For more details see: [Pilot holes for angles, hinges](#pilot-holes-for-angles-hinges)
+
 * **create:** This button will store the fixture permanently.
+
+* **Cross:**
+  * `Corner cross:` buttons `-`, `+` resize the cross in the right bottom of the screen, it has auto-repeat.
+  * `Center cross:` buttons `on`, `off` turn on and off the center cross at the screen.
+  * `keep custom cross settings` allows to store the custom cross setting after this tool exit.
+
+**Video tutorials:** 
+* [How to add handle and see soft-close animation](https://www.youtube.com/watch?v=iOseEBGmwAU)
 
 ## edge2drillbit
 

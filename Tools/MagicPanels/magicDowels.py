@@ -48,7 +48,9 @@ getMenuIndex = {
 	translate('magicDowels', 'Profile Pin 8 x 40 mm '): 16, 
 	translate('magicDowels', 'Tenon joint '): 17, 
 	translate('magicDowels', 'Custom mount point '): 18, 
-	translate('magicDowels', 'Minifix 15 x 45 mm '): 19 # no comma
+	translate('magicDowels', 'Minifix 15 x 45 mm '): 19, 
+	translate('magicDowels', 'Cabinet handle - single hole '): 20,
+	translate('magicDowels', 'Cabinet handle - double hole '): 21 # no comma
 }
 
 # ############################################################################
@@ -273,6 +275,8 @@ def showQtGUI():
 							translate('magicDowels', 'Confirmation 7 x 70 mm '), 
 							translate('magicDowels', 'Minifix 15 x 45 mm '), 
 							translate('magicDowels', 'Shelf Pin 5 x 16 mm '), 
+							translate('magicDowels', 'Cabinet handle - single hole '), 
+							translate('magicDowels', 'Cabinet handle - double hole '), 
 							translate('magicDowels', 'Profile Pin 5 x 30 mm '), 
 							translate('magicDowels', 'Profile Pin 8 x 40 mm '), 
 							translate('magicDowels', 'Tenon joint '), 
@@ -1268,6 +1272,44 @@ def showQtGUI():
 					
 					# reset offsets from edge
 					self.gDOFESet = float(self.gThick) - 6 # because the thickness of minifix is 13, and not in the center
+					self.gDOFEArr = []
+					self.gDOFEArr.append(self.gDOFESet)
+					self.gDOFEArr.append(-self.gDOFESet)
+					self.gDOFEIndex = 0
+					self.gDOFESet = self.gDOFEArr[self.gDOFEIndex]
+					self.oDOEdgeE.setText(MagicPanels.unit2gui(self.gDOFESet))
+					self.aeIS.setText(str(self.gDOFEIndex+1) + " / " + str(len(self.gDOFEArr)))
+
+				# Cabinet handle - single hole
+				if self.gCurrentSelection == 20:
+					self.gDDiameter = 38
+					self.gDSize = 25
+					self.gDOFSSet = 0
+					self.gDNum = 1
+					self.gSides = 1
+					self.gDOCorner = 65
+					
+					# reset offsets from edge
+					self.gDOFESet = 85
+					self.gDOFEArr = []
+					self.gDOFEArr.append(self.gDOFESet)
+					self.gDOFEArr.append(-self.gDOFESet)
+					self.gDOFEIndex = 0
+					self.gDOFESet = self.gDOFEArr[self.gDOFEIndex]
+					self.oDOEdgeE.setText(MagicPanels.unit2gui(self.gDOFESet))
+					self.aeIS.setText(str(self.gDOFEIndex+1) + " / " + str(len(self.gDOFEArr)))
+
+				# Cabinet handle - double hole
+				if self.gCurrentSelection == 21:
+					self.gDDiameter = 5
+					self.gDSize = 36
+					self.gDOFSSet = 0
+					self.gDNum = 1
+					self.gSides = 1
+					self.gDOCorner = 50
+					
+					# reset offsets from edge
+					self.gDOFESet = 130 
 					self.gDOFEArr = []
 					self.gDOFEArr.append(self.gDOFESet)
 					self.gDOFEArr.append(-self.gDOFESet)

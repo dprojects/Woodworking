@@ -67,19 +67,12 @@ try:
 			except:
 				t = "global"
 			
-			if sx != "" and sy != "" and sz != "":
-				MagicPanels.setSketchPlacement(o, sx, sy, sz, oR, t)
-			else:
-				MagicPanels.setSketchPlacement(o, x, y, z, oR, t)
-				
+			MagicPanels.setSketchPlacement(o, sx, sy, sz, oR, t)
+
 		elif o.isDerivedFrom("Part::Cylinder"):
 			
 			[ oX, oY, oZ, oR ] = MagicPanels.getPlacement(o)
-
-			if sx != "" and sy != "" and sz != "":
-				MagicPanels.setPlacement(o, sx, sy, sz, oR)
-			else:
-				MagicPanels.setPlacement(o, x, y, z, oR)
+			MagicPanels.setPlacement(o, sx, sy, sz, oR)
 
 		else:
 			

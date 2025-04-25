@@ -7,6 +7,116 @@ import MagicPanels
 translate = FreeCAD.Qt.translate
 
 # ############################################################################
+# global default settings
+# ############################################################################
+
+# I don't know if there is better solution, probably not... 
+# this is problem from category "to eat cake and have cake"... 
+# to have translation and custom sub-menu list order...
+#
+# for main menu add new items only at the end
+getMainMenuIndex = {
+	
+	translate('magicDriller', 'Holes'): [ 
+		
+		0, # main menu index, not change
+		
+		( 
+			translate('magicDriller', 'Dowel 6 x 35 mm '), 
+			translate('magicDriller', 'Dowel 8 x 35 mm '), 
+			translate('magicDriller', 'Dowel 10 x 35 mm '), 
+			translate('magicDriller', 'Screw 3 x 20 mm '), 
+			translate('magicDriller', 'Screw 4 x 40 mm '), 
+			translate('magicDriller', 'Screw 4.5 x 40 mm '), 
+			translate('magicDriller', 'Screw 5 x 50 mm '), 
+			translate('magicDriller', 'Screw 6 x 60 mm '), 
+			translate('magicDriller', 'Shelf Pin 5 x 16 mm '), 
+			translate('magicDriller', 'Profile Pin 5 x 30 mm '), 
+			translate('magicDriller', 'Profile Pin 8 x 40 mm '),
+			translate('magicDriller', 'Minifix 15 x 45 mm - top '), 
+			translate('magicDriller', 'Minifix 15 x 45 mm - side '), 
+			translate('magicDriller', 'Cabinet handle - single hole '), 
+			translate('magicDriller', 'Cabinet handle - double hole '), 
+			translate('magicDriller', 'Wall cabinet brackets - camar 1 '), 
+			translate('magicDriller', 'Wall cabinet brackets - camar 2 ') # no comma
+		), # for submenu above copy from getSubMenuIndex, order here can be changed 
+		
+		1 # default index for submenu
+	], 
+	
+	translate('magicDriller', 'Countersinks'): [
+		
+		1, # main menu index, not change
+		
+		(
+			translate('magicDriller', 'Screw 4 x 40 mm '), 
+			translate('magicDriller', 'Screw 4.5 x 40 mm '), 
+			translate('magicDriller', 'Screw 5 x 50 mm '), 
+			translate('magicDriller', 'Screw 6 x 60 mm ') # no comma
+		), # for submenu above copy from getSubMenuIndex, order here can be changed
+		
+		0 # no comma, default index for submenu
+	],
+	
+	translate('magicDriller', 'Counterbores'): [
+		
+		2, # main menu index, not change
+		
+		(
+			translate('magicDriller', 'Screw 4 x 40 mm '), 
+			translate('magicDriller', 'Screw 4.5 x 40 mm '), 
+			translate('magicDriller', 'Screw 5 x 50 mm '), 
+			translate('magicDriller', 'Screw 6 x 60 mm ') # no comma
+		), # for submenu above copy from getSubMenuIndex, order here can be changed
+		
+		0 # no comma, default index for submenu
+	],
+	
+	translate('magicDriller', 'Pocket holes'): [
+	
+		3, # main menu index, not change
+		
+		(
+			translate('magicDriller', 'Screw 4 x 25 mm '), 
+			translate('magicDriller', 'Screw 4 x 30 mm '), 
+			translate('magicDriller', 'Screw 4 x 40 mm '), 
+			translate('magicDriller', 'Screw 4 x 60 mm ') # no comma
+		), # for submenu above copy from getSubMenuIndex, order here can be changed
+		
+		1 # no comma, default index for submenu
+	
+	] # no comma
+}
+
+# default for main menu
+gDefaultMainMenuText = translate('magicDriller', 'Holes')
+
+# reference index for submenu, add new items only here at the end, 
+# don't change order here, only above in submenu
+getSubMenuIndex = {
+	translate('magicDriller', 'Dowel 6 x 35 mm '): 0, 
+	translate('magicDriller', 'Dowel 8 x 35 mm '): 1, 
+	translate('magicDriller', 'Dowel 10 x 35 mm '): 2, 
+	translate('magicDriller', 'Screw 3 x 20 mm '): 3, 
+	translate('magicDriller', 'Screw 4.5 x 40 mm '): 4, 
+	translate('magicDriller', 'Screw 4 x 40 mm '): 5, 
+	translate('magicDriller', 'Screw 5 x 50 mm '): 6, 
+	translate('magicDriller', 'Screw 6 x 60 mm '): 7, 
+	translate('magicDriller', 'Shelf Pin 5 x 16 mm '): 8, 
+	translate('magicDriller', 'Profile Pin 5 x 30 mm '): 9, 
+	translate('magicDriller', 'Profile Pin 8 x 40 mm '): 10,
+	translate('magicDriller', 'Screw 4 x 25 mm '): 11,
+	translate('magicDriller', 'Screw 4 x 30 mm '): 12, 
+	translate('magicDriller', 'Screw 4 x 60 mm '): 13, 
+	translate('magicDriller', 'Minifix 15 x 45 mm - top '): 14, 
+	translate('magicDriller', 'Minifix 15 x 45 mm - side '): 15, 
+	translate('magicDriller', 'Cabinet handle - single hole '): 16, 
+	translate('magicDriller', 'Cabinet handle - double hole '): 17, 
+	translate('magicDriller', 'Wall cabinet brackets - camar 1 '): 18,
+	translate('magicDriller', 'Wall cabinet brackets - camar 2 '): 19 # no comma
+}
+
+# ############################################################################
 # Qt Main
 # ############################################################################
 
@@ -21,7 +131,7 @@ def showQtGUI():
 		
 		# tool screen size
 		toolSW = 270
-		toolSH = 660
+		toolSH = 690
 		
 		gObj = ""
 		gObjBase = ""
@@ -58,7 +168,7 @@ def showQtGUI():
 		gDBONext = 64
 		gDBOEdge = 0
 		gDBSink = 0 # used for pocket holes only
-		
+		gDrillPoint = "Angled"
 		
 		# settings for pocket holes
 		gDBPocketR = 75
@@ -257,20 +367,20 @@ def showQtGUI():
 			
 			row += 30
 			
-			# border options
-			self.s6Slist = (
-						"Holes",
-						"Countersinks",
-						"Counterbores",
-						"Pocket holes"
-						)
+			# not write here, copy text from getMainMenuIndex to avoid typo
+			self.sMainMenuList = (
+				translate('magicDriller', 'Holes'), 
+				translate('magicDriller', 'Countersinks'), 
+				translate('magicDriller', 'Counterbores'),
+				translate('magicDriller', 'Pocket holes') # no comma
+			)
 			
-			self.s6S = QtGui.QComboBox(self)
-			self.s6S.addItems(self.s6Slist)
-			self.s6S.setCurrentIndex(self.s6Slist.index("Holes"))
-			self.s6S.textActivated[str].connect(self.setDrillBitType)
-			self.s6S.setFixedWidth(area)
-			self.s6S.move(10, row)
+			self.sMainMenu = QtGui.QComboBox(self)
+			self.sMainMenu.addItems(self.sMainMenuList)
+			self.sMainMenu.setCurrentIndex(getMainMenuIndex[gDefaultMainMenuText][0])
+			self.sMainMenu.textActivated[str].connect(self.setDrillBitType)
+			self.sMainMenu.setFixedWidth(area)
+			self.sMainMenu.move(10, row)
 
 			# ############################################################################
 			# options - mounting samples
@@ -278,29 +388,19 @@ def showQtGUI():
 
 			row += 30
 
-			# border options
-			self.s7Slist = (
-						"Dowel 6 x 35 mm ",
-						"Dowel 8 x 35 mm ",
-						"Dowel 10 x 35 mm ",
-						"Screw 3 x 20 mm ",
-						"Screw 4.5 x 40 mm ",
-						"Screw 4 x 40 mm ",
-						"Screw 5 x 50 mm ",
-						"Screw 6 x 60 mm ",
-						"Shelf Pin 5 x 16 mm ",
-						"Profile Pin 5 x 30 mm ",
-						"Profile Pin 8 x 40 mm "
-						)
+			# submenu list
 			
-			self.gDBLabel = "Dowel 8 x 35 mm "
-			self.s7S = QtGui.QComboBox(self)
-			self.s7S.addItems(self.s7Slist)
-			self.s7S.setCurrentIndex(self.s7Slist.index(self.gDBLabel))
-			self.s7S.textActivated[str].connect(self.setCustomDrillbits)
-			self.s7S.setFixedWidth(area)
-			self.s7S.move(10, row)
-			self.gDBType = "Holes"
+			self.sSubMenuList = getMainMenuIndex[gDefaultMainMenuText][1]
+			
+			defaultSubIndex = getMainMenuIndex[gDefaultMainMenuText][2]
+			self.gDBLabel = getMainMenuIndex[gDefaultMainMenuText][1][defaultSubIndex]
+			self.sSubMenu = QtGui.QComboBox(self)
+			self.sSubMenu.addItems(self.sSubMenuList)
+			self.sSubMenu.setCurrentIndex(defaultSubIndex)
+			self.sSubMenu.textActivated[str].connect(self.setCustomDrillbits)
+			self.sSubMenu.setFixedWidth(area)
+			self.sSubMenu.move(10, row)
+			self.gDBType = getMainMenuIndex[gDefaultMainMenuText][0]
 			
 			# ############################################################################
 			# options - drill bits number per side
@@ -456,6 +556,16 @@ def showQtGUI():
 			self.oDBPocketSE.hide()
 
 			# ############################################################################
+			# options - keep custom settings checkbox
+			# ############################################################################
+
+			row += 30
+
+			self.kcscb = QtGui.QCheckBox(translate('magicDriller', ' - keep custom settings'), self)
+			self.kcscb.setCheckState(QtCore.Qt.Unchecked)
+			self.kcscb.move(10, row+3)
+
+			# ############################################################################
 			# options - end settings
 			# ############################################################################
 
@@ -511,7 +621,8 @@ def showQtGUI():
 			
 				Draft.rotate(d, angle, center, axis, False)
 			
-			if self.gDBType == "Pocket holes":
+			# Pocket holes
+			if self.gDBType == 3:
 				
 				for d in self.gDrillBits:
 				
@@ -525,8 +636,9 @@ def showQtGUI():
 
 		# ############################################################################
 		def createDrillBit(self, iX, iY, iZ):
-
-			if self.gDBType == "Holes":
+			
+			# Holes
+			if self.gDBType == 0:
 
 				d = FreeCAD.ActiveDocument.addObject("Part::Cylinder","DrillBitHole")
 				d.Label = str(self.gDBLabel)
@@ -537,7 +649,8 @@ def showQtGUI():
 				colors = [ (1.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0) ]
 				MagicPanels.setColor(d, 0, colors, "color")
 
-			if self.gDBType == "Countersinks":
+			# Countersinks
+			if self.gDBType == 1:
 
 				d = FreeCAD.ActiveDocument.addObject("Part::Cone","DrillBitCountersink")
 				d.Label = str(self.gDBLabel)
@@ -549,8 +662,8 @@ def showQtGUI():
 				colors = [ (0.0, 1.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0) ]
 				MagicPanels.setColor(d, 0, colors, "color")
 			
-
-			if self.gDBType == "Counterbores":
+			# Counterbores
+			if self.gDBType == 2:
 
 				d = FreeCAD.ActiveDocument.addObject("Part::Cone","DrillBitCounterbore")
 				d.Label = str(self.gDBLabel)
@@ -561,8 +674,9 @@ def showQtGUI():
 				
 				colors = [ (0.0, 0.0, 1.0, 1.0), (0.0, 1.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0) ]
 				MagicPanels.setColor(d, 0, colors, "color")
-				
-			if self.gDBType == "Pocket holes":
+			
+			# Pocket holes
+			if self.gDBType == 3:
 
 				d = FreeCAD.ActiveDocument.addObject("Part::Cone","DrillBitPocket")
 				d.Label = str(self.gDBLabel)
@@ -838,7 +952,8 @@ def showQtGUI():
 				# global config
 				# ############################################################################
 				
-				self.resetGlobals()
+				if not self.kcscb.isChecked():
+					self.resetGlobals()
 
 				self.gObjBase = MagicPanels.getReference()
 				
@@ -903,13 +1018,15 @@ def showQtGUI():
 				# ############################################################################
 				# set default
 				# ############################################################################
-
-				s = MagicPanels.getSizes(self.gObjBase)
-				s.sort()
-				self.gThick = s[0]
 				
-				self.gDBOEdge = self.gThick / 2
-				self.gRIndex = 0
+				if not self.kcscb.isChecked():
+					
+					s = MagicPanels.getSizes(self.gObjBase)
+					s.sort()
+					self.gThick = s[0]
+					
+					self.gDBOEdge = self.gThick / 2
+					self.oDBOEdgeE.setText(MagicPanels.unit2gui(self.gDBOEdge))
 				
 				# ############################################################################
 				# try auto adjust dowel
@@ -917,6 +1034,7 @@ def showQtGUI():
 
 				# adjust sink
 				self.gDrillSink = MagicPanels.getFaceSink(self.gObj, self.gDrillFace)
+				self.gRIndex = 0
 				
 				# adjust rotation
 				if self.gDrillSink == "+":
@@ -941,14 +1059,18 @@ def showQtGUI():
 					if self.gFPlane == "YZ":
 						self.gRIndex = 0
 				
-				self.oDBOEdgeE.setText(MagicPanels.unit2gui(self.gDBOEdge))
-				self.showDrillBits()
-				self.gInit = 0
-				
 				self.s2IS.setText(str(self.gEIndex+1) + " / " + str(len(self.gEArr)))
 				self.s3IS.setText(str(self.gPosition+1) + " / 2")
 				self.s4IS.setText(str(self.gRIndex+1) + " / " + str(len(self.gRAngles)))
 				self.s5IS.setText(str(self.gDBSides+1) + " / 3")
+				
+				if not self.kcscb.isChecked():
+					self.sMainMenu.setCurrentIndex(getMainMenuIndex[gDefaultMainMenuText][0])
+					self.setDrillBitType(gDefaultMainMenuText)
+				else:
+					self.showDrillBits()
+					
+				self.gInit = 0
 				
 			except:
 
@@ -1067,22 +1189,31 @@ def showQtGUI():
 		# ############################################################################
 		def setCustomDrillbits(self, selectedText):
 			
+			selectedIndex = getSubMenuIndex[selectedText]
+			
 			try:
 			
 				self.gDBOEdge = self.gThick / 2
 				self.gDBLabel = selectedText
 				self.gDBSides = 0
 				self.gDBSink = 0
+				self.gDrillPoint = "Angled"
 				
-				if selectedText == "Dowel 6 x 35 mm ":
+				# ######################################
+				# settings for all hole types
+				# ######################################
+				
+				# Dowel 6 x 35 mm
+				if selectedIndex == 0:
 					self.gDBDiameter = 6
 					self.gDBDiameter2 = 6
 					self.gDBSize = 25
 					self.gDBNum = 2
 					self.gDBOCorner = 50
 					self.gDBONext = 32
-					
-				if selectedText == "Dowel 8 x 35 mm ":
+				
+				# Dowel 8 x 35 mm 
+				if selectedIndex == 1:
 					self.gDBDiameter = 8
 					self.gDBDiameter2 = 8
 					self.gDBSize = 25
@@ -1090,7 +1221,8 @@ def showQtGUI():
 					self.gDBOCorner = 50
 					self.gDBONext = 32
 
-				if selectedText == "Dowel 10 x 35 mm ":
+				# Dowel 10 x 35 mm
+				if selectedIndex == 2:
 					self.gDBDiameter = 10
 					self.gDBDiameter2 = 10
 					self.gDBSize = 25
@@ -1098,7 +1230,8 @@ def showQtGUI():
 					self.gDBOCorner = 50
 					self.gDBONext = 32
 				
-				if selectedText == "Screw 3 x 20 mm ":
+				# Screw 3 x 20 mm
+				if selectedIndex == 3:
 					self.gDBDiameter = 2
 					self.gDBDiameter2 = 6
 					self.gDBSize = 20
@@ -1107,9 +1240,14 @@ def showQtGUI():
 					self.gDBONext = 32
 					self.gDBOEdge = 9
 				
-				if self.gDBType == "Holes":
+				# ######################################
+				# Holes type only
+				# ######################################
+		
+				if self.gDBType == 0:
 					
-					if selectedText == "Screw 4.5 x 40 mm ":
+					# Screw 4.5 x 40 mm
+					if selectedIndex == 4:
 						self.gDBDiameter = 3
 						self.gDBDiameter2 = 10
 						self.gDBSize = 40 - self.gThick
@@ -1117,7 +1255,8 @@ def showQtGUI():
 						self.gDBOCorner = 50
 						self.gDBONext = 64
 
-					if selectedText == "Screw 4 x 40 mm ":
+					# Screw 4 x 40 mm
+					if selectedIndex == 5:
 						self.gDBDiameter = 3
 						self.gDBDiameter2 = 10
 						self.gDBSize = 40 - self.gThick
@@ -1125,7 +1264,8 @@ def showQtGUI():
 						self.gDBOCorner = 50
 						self.gDBONext = 64
 
-					if selectedText == "Screw 5 x 50 mm ":
+					# Screw 5 x 50 mm
+					if selectedIndex == 6:
 						self.gDBDiameter = 4
 						self.gDBDiameter2 = 10
 						self.gDBSize = 50 - self.gThick
@@ -1133,7 +1273,8 @@ def showQtGUI():
 						self.gDBOCorner = 50
 						self.gDBONext = 64
 
-					if selectedText == "Screw 6 x 60 mm ":
+					# Screw 6 x 60 mm
+					if selectedIndex == 7:
 						self.gDBDiameter = 5
 						self.gDBDiameter2 = 10
 						self.gDBSize = 60 - self.gThick
@@ -1141,9 +1282,14 @@ def showQtGUI():
 						self.gDBOCorner = 50
 						self.gDBONext = 64
 
+				# ######################################
+				# for other types except Holes
+				# ######################################
+		
 				else:
 				
-					if selectedText == "Screw 4.5 x 40 mm ":
+					# Screw 4.5 x 40 mm
+					if selectedIndex == 4:
 						self.gDBDiameter = 3
 						self.gDBDiameter2 = 10
 						self.gDBSize = 40
@@ -1151,7 +1297,8 @@ def showQtGUI():
 						self.gDBOCorner = 50
 						self.gDBONext = 64
 
-					if selectedText == "Screw 4 x 40 mm ":
+					# Screw 4 x 40 mm
+					if selectedIndex == 5:
 						self.gDBDiameter = 3
 						self.gDBDiameter2 = 10
 						self.gDBSize = 40
@@ -1159,7 +1306,8 @@ def showQtGUI():
 						self.gDBOCorner = 50
 						self.gDBONext = 64
 
-					if selectedText == "Screw 5 x 50 mm ":
+					# Screw 5 x 50 mm
+					if selectedIndex == 6:
 						self.gDBDiameter = 4
 						self.gDBDiameter2 = 10
 						self.gDBSize = 50
@@ -1167,15 +1315,21 @@ def showQtGUI():
 						self.gDBOCorner = 50
 						self.gDBONext = 64
 
-					if selectedText == "Screw 6 x 60 mm ":
+					# Screw 6 x 60 mm
+					if selectedIndex == 7:
 						self.gDBDiameter = 5
 						self.gDBDiameter2 = 10
 						self.gDBSize = 60
 						self.gDBNum = 2
 						self.gDBOCorner = 50
 						self.gDBONext = 64
-					
-				if selectedText == "Shelf Pin 5 x 16 mm ":
+				
+				# ######################################
+				# continue for all hole types
+				# ######################################
+				
+				# Shelf Pin 5 x 16 mm
+				if selectedIndex == 8:
 					self.gDBDiameter = 5
 					self.gDBDiameter2 = 5
 					self.gDBSize = 8
@@ -1185,7 +1339,8 @@ def showQtGUI():
 					self.gDBOEdge = 50
 					self.gDBSides = 1
 
-				if selectedText == "Profile Pin 5 x 30 mm ":
+				# Profile Pin 5 x 30 mm
+				if selectedIndex == 9:
 					self.gDBDiameter = 5
 					self.gDBDiameter2 = 6
 					self.gDBSize = 100
@@ -1193,7 +1348,8 @@ def showQtGUI():
 					self.gDBOCorner = 5
 					self.gDBONext = 32
 
-				if selectedText == "Profile Pin 8 x 40 mm ":
+				# Profile Pin 8 x 40 mm
+				if selectedIndex == 10:
 					self.gDBDiameter = 8
 					self.gDBDiameter2 = 9
 					self.gDBSize = 100
@@ -1201,40 +1357,122 @@ def showQtGUI():
 					self.gDBOCorner = 50
 					self.gDBONext = 32
 
-				if self.gDBType == "Pocket holes":
+				# ######################################
+				# Pocket holes only
+				# ######################################
+				
+				if self.gDBType == 3:
 					
 					self.gDBDiameter = 3
 					self.gDBDiameter2 = 9.5
 					self.gDBNum = 2
 					self.gDBOCorner = 50
 					self.gDBONext = 32
-						
-					if selectedText == "Screw 4 x 25 mm ":
+					
+					# Screw 4 x 25 mm
+					if selectedIndex == 11:
 						self.gDBSize = 75
 						self.gDBOEdge = 50
 						self.gDBPocketR = 75
 						self.gDBPocketS = - 5
-						
-					if selectedText == "Screw 4 x 30 mm ":
+
+					# Screw 4 x 30 mm
+					if selectedIndex == 12:
 						self.gDBSize = 90
 						self.gDBOEdge = 60
 						self.gDBPocketR = 75
 						self.gDBPocketS = - 6
-						
-					if selectedText == "Screw 4 x 40 mm ":
+					
+					# Screw 4 x 40 mm
+					if selectedIndex == 5:
 						self.gDBSize = 120
 						self.gDBOEdge = 80
 						self.gDBPocketR = 75
 						self.gDBPocketS = - 9
 					
-					if selectedText == "Screw 4 x 60 mm ":
+					# Screw 4 x 60 mm
+					if selectedIndex == 13:
 						self.gDBSize = 180
 						self.gDBOEdge = 120
 						self.gDBPocketR = 75
 						self.gDBPocketS = - 12
 					
 					self.gDBSink = self.gDBPocketS
+				
+				# ######################################
+				# continue for all hole types
+				# ######################################
+				
+				# Minifix 15 x 45 mm - top
+				if selectedIndex == 14:
+					self.gDBDiameter = 8
+					self.gDBDiameter2 = 8
+					self.gDBSize = 34
+					self.gDBNum = 1
+					self.gDBOCorner = 50
+					self.gDBONext = 32
+					self.gDBOEdge = - 6
+					self.gDrillPoint = "Flat"
 					
+				# Minifix 15 x 45 mm - side
+				if selectedIndex == 15:
+					self.gDBDiameter = 30
+					self.gDBDiameter2 = 30
+					self.gDBSize = 12.5
+					self.gDBNum = 1
+					self.gDBOCorner = 50
+					self.gDBONext = 32
+					self.gDBOEdge = - 33.28
+					self.gDrillPoint = "Flat"
+				
+				# Cabinet handle - single hole
+				if selectedIndex == 16:
+					self.gDBDiameter = 5
+					self.gDBDiameter2 = 5
+					self.gDBSize = 40
+					self.gDBNum = 1
+					self.gDBOCorner = 85
+					self.gDBONext = 32
+					self.gDBOEdge = 65
+					self.gDBSides = 2
+				
+				# Cabinet handle - double hole
+				if selectedIndex == 17:
+					self.gDBDiameter = 5
+					self.gDBDiameter2 = 5
+					self.gDBSize = 40
+					self.gDBNum = 2
+					self.gDBOCorner = 50
+					self.gDBONext = 160
+					self.gDBOEdge = 50
+					self.gDBSides = 2
+				
+				# Wall cabinet brackets - camar 1
+				if selectedIndex == 18:
+					self.gDBDiameter = 30
+					self.gDBDiameter2 = 30
+					self.gDBSize = 12.5
+					self.gDBNum = 1
+					self.gDBOCorner = 50
+					self.gDBONext = 32
+					self.gDBOEdge = - 33.28
+					self.gDrillPoint = "Flat"
+
+				# Wall cabinet brackets - camar 2
+				if selectedIndex == 19:
+					self.gDBDiameter = 30
+					self.gDBDiameter2 = 30
+					self.gDBSize = 12.5
+					self.gDBNum = 1
+					self.gDBOCorner = 50
+					self.gDBONext = 32
+					self.gDBOEdge = - 33.28
+					self.gDrillPoint = "Flat"
+					
+				# ######################################
+				# update text fields at GUI & show
+				# ######################################
+
 				self.oDBDiameterE.setText(MagicPanels.unit2gui(self.gDBDiameter))
 				self.oDBDiameter2E.setText(MagicPanels.unit2gui(self.gDBDiameter2))
 				self.oDBSizeE.setText(MagicPanels.unit2gui(self.gDBSize))
@@ -1265,7 +1503,7 @@ def showQtGUI():
 				self.gDBPocketR = float(self.oDBPocketRE.text())
 				self.gDBPocketS = MagicPanels.unit2value(self.oDBPocketSE.text())
 				
-				if self.gDBType == "Pocket holes":
+				if self.gDBType == 3:
 					self.gDBSink = self.gDBPocketS
 
 				self.showDrillBits()
@@ -1274,33 +1512,26 @@ def showQtGUI():
 				self.s1S.setText(self.gNoSelection)
 
 		# ############################################################################
-		def setDrillBitType(self, selected):
+		def setDrillBitType(self, selectedText):
+			
+			selectedIndex = getMainMenuIndex[selectedText][0]
 			
 			try:
 				
+				self.gDBType = selectedIndex
+				self.sSubMenuList = getMainMenuIndex[selectedText][1]
+				self.sSubMenu.clear()
+				self.sSubMenu.addItems(self.sSubMenuList)
+				
+				index = getMainMenuIndex[selectedText][2]
+				
+				self.sSubMenu.setCurrentIndex(index)
+				self.gDBLabel = self.sSubMenuList[index]
+
 				self.gDBSink = 0
 				
-				if selected == "Holes":
-					self.gDBType = "Holes"
-					
-					self.s7Slist = (
-						"Dowel 6 x 35 mm ",
-						"Dowel 8 x 35 mm ",
-						"Dowel 10 x 35 mm ",
-						"Screw 3 x 20 mm ",
-						"Screw 4.5 x 40 mm ",
-						"Screw 4 x 40 mm ",
-						"Screw 5 x 50 mm ",
-						"Screw 6 x 60 mm ",
-						"Shelf Pin 5 x 16 mm ",
-						"Profile Pin 5 x 30 mm ",
-						"Profile Pin 8 x 40 mm "
-						)
-			
-					self.gDBLabel = "Dowel 8 x 35 mm "
-					self.s7S.clear()
-					self.s7S.addItems(self.s7Slist)
-					self.s7S.setCurrentIndex(self.s7Slist.index(self.gDBLabel))
+				# Holes
+				if selectedIndex == 0:
 					
 					self.oDBDiameter2L.hide()
 					self.oDBDiameter2E.hide()
@@ -1309,44 +1540,9 @@ def showQtGUI():
 					self.oDBPocketRE.hide()
 					self.oDBPocketSL.hide()
 					self.oDBPocketSE.hide()
-					
-				if selected == "Countersinks":
-					self.gDBType = "Countersinks"
 				
-					self.s7Slist = (
-						"Screw 4.5 x 40 mm ",
-						"Screw 4 x 40 mm ",
-						"Screw 5 x 50 mm ",
-						"Screw 6 x 60 mm "
-						)
-			
-					self.gDBLabel = "Screw 4 x 40 mm "
-					self.s7S.clear()
-					self.s7S.addItems(self.s7Slist)
-					self.s7S.setCurrentIndex(self.s7Slist.index(self.gDBLabel))
-				
-					self.oDBDiameter2L.show()
-					self.oDBDiameter2E.show()
-					
-					self.oDBPocketRL.hide()
-					self.oDBPocketRE.hide()
-					self.oDBPocketSL.hide()
-					self.oDBPocketSE.hide()
-					
-				if selected == "Counterbores":
-					self.gDBType = "Counterbores"
-					
-					self.s7Slist = (
-						"Screw 4.5 x 40 mm ",
-						"Screw 4 x 40 mm ",
-						"Screw 5 x 50 mm ",
-						"Screw 6 x 60 mm "
-						)
-			
-					self.gDBLabel = "Screw 4 x 40 mm "
-					self.s7S.clear()
-					self.s7S.addItems(self.s7Slist)
-					self.s7S.setCurrentIndex(self.s7Slist.index(self.gDBLabel))
+				# Countersinks
+				if selectedIndex == 1:
 					
 					self.oDBDiameter2L.show()
 					self.oDBDiameter2E.show()
@@ -1355,21 +1551,20 @@ def showQtGUI():
 					self.oDBPocketRE.hide()
 					self.oDBPocketSL.hide()
 					self.oDBPocketSE.hide()
+				
+				# Counterbores
+				if selectedIndex == 2:
 					
-				if selected == "Pocket holes":
-					self.gDBType = "Pocket holes"
+					self.oDBDiameter2L.show()
+					self.oDBDiameter2E.show()
 					
-					self.s7Slist = (
-						"Screw 4 x 25 mm ",
-						"Screw 4 x 30 mm ",
-						"Screw 4 x 40 mm ",
-						"Screw 4 x 60 mm "
-						)
-			
-					self.gDBLabel = "Screw 4 x 40 mm "
-					self.s7S.clear()
-					self.s7S.addItems(self.s7Slist)
-					self.s7S.setCurrentIndex(self.s7Slist.index(self.gDBLabel))
+					self.oDBPocketRL.hide()
+					self.oDBPocketRE.hide()
+					self.oDBPocketSL.hide()
+					self.oDBPocketSE.hide()
+				
+				# Pocket holes
+				if selectedIndex == 3:
 					
 					self.oDBDiameter2L.show()
 					self.oDBDiameter2E.show()
@@ -1401,16 +1596,20 @@ def showQtGUI():
 				
 				# drilling selection
 				
-				if self.gDBType == "Holes":
-					holes = MagicPanels.makeHoles(self.gObj, self.gDrillFace, o )
+				# Holes
+				if self.gDBType == 0:
+					holes = MagicPanels.makeHoles(self.gObj, self.gDrillFace, o, self.gDrillPoint )
 
-				if self.gDBType == "Countersinks":
+				# Countersinks
+				if self.gDBType == 1:
 					holes = MagicPanels.makeCountersinks(self.gObj, self.gDrillFace, o )
 
-				if self.gDBType == "Counterbores":
+				# Counterbores
+				if self.gDBType == 2:
 					holes = MagicPanels.makeCounterbores(self.gObj, self.gDrillFace, o )
-
-				if self.gDBType == "Pocket holes":
+				
+				# Pocket holes
+				if self.gDBType == 3:
 					holes = MagicPanels.makePocketHoles(self.gObj, self.gDrillFace, o )
 
 				# get new object from selection

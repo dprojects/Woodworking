@@ -1,5 +1,5 @@
 import FreeCAD, FreeCADGui 
-import Draft
+import Draft, time
 from PySide import QtGui, QtCore
 
 import MagicPanels
@@ -56,7 +56,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 290
-			toolSH = 310
+			toolSH = 350
 			
 			# active screen size (FreeCAD main window)
 			gSW = FreeCADGui.getMainWindow().width()
@@ -165,11 +165,11 @@ def showQtGUI():
 			row += 30
 
 			# button
-			self.rpB3 = QtGui.QPushButton(translate('magicAngle', 'add selected vertex'), self)
+			self.rpB3 = QtGui.QPushButton(translate('magicAngle', 'add selected vertex, edge or face'), self)
 			self.rpB3.clicked.connect(self.addVertex)
-			self.rpB3.setFixedWidth(toolSW-col2-10)
+			self.rpB3.setFixedWidth(toolSW-20)
 			self.rpB3.setFixedHeight(40)
-			self.rpB3.move(col2, row)
+			self.rpB3.move(10, row)
 
 			# ############################################################################
 			# options - X axis
@@ -272,6 +272,16 @@ def showQtGUI():
 			self.asE.move(col3, row)
 			
 			# ############################################################################
+			# animation checkbox
+			# ############################################################################
+
+			row += 30
+				
+			self.animcb = QtGui.QCheckBox(translate('magicAngle', ' - animate rotation'), self)
+			self.animcb.setCheckState(QtCore.Qt.Unchecked)
+			self.animcb.move(10, row+3)
+			
+			# ############################################################################
 			# show & init defaults
 			# ############################################################################
 
@@ -309,14 +319,17 @@ def showQtGUI():
 			self.gStep = 15
 
 		# ############################################################################
-		def touchTypo(self, iFaceIndex, iVertexIndex):
+		def initRotationPoint(self, iFaceIndex, iVertexIndex):
 			
-			f = self.gObj.Shape.Faces[iFaceIndex]
-			
-			# how to touch the typo so that the typo-snake does not notice it ;-) LOL
-			v = getattr(f, "Vertex"+"es")
-			
-			return v[iVertexIndex]
+			try:
+				f = self.gObj.Shape.Faces[iFaceIndex]
+				v = getattr(f, "Vertex"+"es")
+				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
+				self.gCenterObj.append(self.gObj)
+				return v[iVertexIndex]
+				
+			except:
+				return -1
 		
 		def setCenterPoints(self):
 			
@@ -325,109 +338,46 @@ def showQtGUI():
 			# you can add new center points here, if needed
 			
 			if self.gObj.isDerivedFrom("App::LinkGroup"):
-				v = self.touchTypo(1, 0)
-				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-				self.gCenterObj.append(self.gObj)
 				
-				v = self.touchTypo(1, 1)
-				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-				self.gCenterObj.append(self.gObj)
-				
-				v = self.touchTypo(1, 2)
-				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-				self.gCenterObj.append(self.gObj)
-
-				v = self.touchTypo(1, 3)
-				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-				self.gCenterObj.append(self.gObj)
+				self.initRotationPoint(1, 0)
+				self.initRotationPoint(1, 1)
+				self.initRotationPoint(1, 2)
+				self.initRotationPoint(1, 3)
 				
 				maxIdx = len(self.gObj.Shape.Faces) - 1
+				self.initRotationPoint(maxIdx, 0)
+				self.initRotationPoint(maxIdx, 1)
+				self.initRotationPoint(maxIdx, 2)
+				self.initRotationPoint(maxIdx, 3)
 				
-				v = self.touchTypo(maxIdx, 0)
-				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-				self.gCenterObj.append(self.gObj)
-			
-				v = self.touchTypo(maxIdx, 1)
-				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-				self.gCenterObj.append(self.gObj)
-
-				v = self.touchTypo(maxIdx, 2)
-				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-				self.gCenterObj.append(self.gObj)
-
-				v = self.touchTypo(maxIdx, 3)
-				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-				self.gCenterObj.append(self.gObj)
-			
 			if self.gObj.isDerivedFrom("Part::Cylinder"):
 				
-				v = self.touchTypo(1, 0)
-				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-				self.gCenterObj.append(self.gObj)
+				self.initRotationPoint(1, 0)
+				self.initRotationPoint(2, 0)
 				
-				v = self.touchTypo(2, 0)
-				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-				self.gCenterObj.append(self.gObj)
-			
 			if self.gObj.isDerivedFrom("Part::Cone"):
 				
-				v = self.touchTypo(2, 0)
-				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-				self.gCenterObj.append(self.gObj)
+				self.initRotationPoint(2, 0)
+				self.initRotationPoint(1, 0)
 				
-				v = self.touchTypo(1, 0)
-				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-				self.gCenterObj.append(self.gObj)
-
+				self.initRotationPoint(4, 0)
+				self.initRotationPoint(4, 1)
+				self.initRotationPoint(4, 2)
+				self.initRotationPoint(4, 3)
+				self.initRotationPoint(5, 0)
+				self.initRotationPoint(5, 1)
+				self.initRotationPoint(5, 2)
+				self.initRotationPoint(5, 3)
+				
 			try:
-				
-				v = self.touchTypo(4, 0)
-				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-				self.gCenterObj.append(self.gObj)
-			
-				v = self.touchTypo(4, 1)
-				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-				self.gCenterObj.append(self.gObj)
-
-				v = self.touchTypo(4, 2)
-				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-				self.gCenterObj.append(self.gObj)
-
-				v = self.touchTypo(4, 3)
-				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-				self.gCenterObj.append(self.gObj)
-
-				v = self.touchTypo(5, 0)
-				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-				self.gCenterObj.append(self.gObj)
-
-				v = self.touchTypo(5, 1)
-				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-				self.gCenterObj.append(self.gObj)
-
-				v = self.touchTypo(5, 2)
-				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-				self.gCenterObj.append(self.gObj)
-
-				v = self.touchTypo(5, 3)
-				self.gCenterVertex.append(FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)))
-				self.gCenterObj.append(self.gObj)
-		
-			except:
-
-				self.gCenterVertex.append(FreeCAD.Vector(float(0.0), float(0.0), float(0.0)))
-				self.gCenterObj.append(self.gObj)
-
-			try:
-				
 				v = self.gObj.Shape.CenterOfMass
 				self.gCenterVertex.append(FreeCAD.Vector(float(v.x), float(v.y), float(v.z)))
 				self.gCenterObj.append(self.gObj)
 				
 			except:
-			
-				skip = 1
-				
+				self.gCenterVertex.append(FreeCAD.Vector(float(0.0), float(0.0), float(0.0)))
+				self.gCenterObj.append(self.gObj)
+
 		def setCenterSphere(self):
 			
 			info = str(self.gCenterIndex + 1) + " / " + str(len(self.gCenterVertex))
@@ -452,10 +402,41 @@ def showQtGUI():
 			vObj = self.gCenterObj[self.gCenterIndex]
 			[ v ] = MagicPanels.getVerticesPosition([ v ], vObj)
 			
-			for o in self.gObjects:
-				Draft.rotate(o, iAngle, v, iAxis, False)
+			if self.animcb.isChecked():
+				
+				if iAngle > 0:
+					angle = 1
+				else:
+					angle = -1
+
+				for o in self.gObjects:
+					
+					restore = o.Placement
+					
+					scope = abs(iAngle)
+					for i in range(1, scope):
+						
+						if i < scope/2:
+							anim = 0.001
+						elif i < 4*scope/5:
+							anim = 0.05
+						else:
+							anim = 0.08
+						
+						time.sleep(anim)
+						Draft.rotate(o, angle, v, iAxis, False)
+						FreeCADGui.Selection.clearSelection()
+						FreeCADGui.updateGui()
+					
+					o.Placement = restore
+					Draft.rotate(o, iAngle, v, iAxis, False)
+					FreeCADGui.Selection.clearSelection()
+			else:
+				
+				for o in self.gObjects:
+					Draft.rotate(o, iAngle, v, iAxis, False)
+					FreeCADGui.Selection.clearSelection()
 			
-			FreeCADGui.Selection.clearSelection()
 			FreeCAD.ActiveDocument.recompute()
 
 		# ############################################################################
@@ -553,25 +534,26 @@ def showQtGUI():
 			try:
 				skip = 0
 				
-				vObj = FreeCADGui.Selection.getSelection()[0]
-				v = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				obj = FreeCADGui.Selection.getSelection()[0]
+				sub = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 
-				if str(v.ShapeType) == "Vertex":
-					v = FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z))
+				if str(sub.ShapeType) == "Vertex":
+					v = FreeCAD.Vector(float(sub.X), float(sub.Y), float(sub.Z))
 					self.gCenterVertex.append(v)
-					self.gCenterObj.append(vObj)
+					self.gCenterObj.append(obj)
 				
-				elif str(v.ShapeType) == "Edge":
-					[ v, v2 ] = MagicPanels.getEdgeVertices(v)
-					v = FreeCAD.Vector(v[0], v[1], v[2])
-					self.gCenterVertex.append(v)
-					self.gCenterObj.append(vObj)
+				elif str(sub.ShapeType) == "Edge":
+					[ v1, v2 ] = MagicPanels.getEdgeVertices(sub)
+					self.gCenterVertex.append(FreeCAD.Vector(v1[0], v1[1], v1[2]))
+					self.gCenterObj.append(obj)
+					self.gCenterVertex.append(FreeCAD.Vector(v2[0], v2[1], v2[2]))
+					self.gCenterObj.append(obj)
+					self.gCenterVertex.append(sub.CenterOfMass)
+					self.gCenterObj.append(obj)
 				
-				elif str(v.ShapeType) == "Face":
-					v = v.CenterOfMass
-					v = FreeCAD.Vector(float(v.x), float(v.y), float(v.z))
-					self.gCenterVertex.append(v)
-					self.gCenterObj.append(vObj)
+				elif str(sub.ShapeType) == "Face":
+					self.gCenterVertex.append(sub.CenterOfMass)
+					self.gCenterObj.append(obj)
 
 				else:
 					skip = 1
@@ -580,6 +562,8 @@ def showQtGUI():
 					self.gCenterIndex = len(self.gCenterVertex) - 1
 					self.setCenterSphere()
 
+				FreeCADGui.Selection.clearSelection()
+				
 			except:
 				skip = 1
 			

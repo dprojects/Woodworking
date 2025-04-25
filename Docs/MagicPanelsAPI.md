@@ -279,6 +279,24 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 	
 		Return vertices array like [ [ 1, 1, 1 ], [ 1, 1, 1 ] ].
 
+### getEdgeVectors(iEdge):
+
+	Description:
+	
+		Gets all vertices values for edge as FreeCAD.Vector array.
+	
+##### Description:
+	
+		iEdge: edge object
+
+##### Usage:
+	
+		[ v1, v2 ] = MagicPanels.getEdgeVectors(edge)
+
+##### Result:
+	
+		Return vertices array like [ FreeCAD.Vector, FreeCAD.Vector ].
+
 ### getEdgeNormalized(iV1, iV2):
 
 	Description:
@@ -429,11 +447,13 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 		iType (optional): 
 			* "4" - 4 vertices for normal Cube
 			* "all" - get all vertices, for example for Cut object
+			* "vector" - get all vertices as FreeCAD.Vector objects
 
 ##### Usage:
 	
 		[ v1, v2, v3, v4 ] = MagicPanels.getFaceVertices(gFace)
 		vertices = MagicPanels.getFaceVertices(gFace, "all")
+		vectors = MagicPanels.getFaceVertices(face, "vector")
 
 ##### Result:
 	
@@ -1687,7 +1707,7 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 		All colors structure should be copied from source to target.
 
 # Holes
-### makeHoles(iObj, iFace, iCylinders):
+### makeHoles(iObj, iFace, iCylinders, iDrillPoint="Angled"):
 
 	Description:
 	
@@ -1698,10 +1718,13 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 		iObj: base object to make hole
 		iFace: face of base object to make hole
 		iCylinders: list of cylinders to make holes below each one
-
+		iDrillPoint (optional): "Angled" for normal conical hole or "Flat" for flat hole
+		
 ##### Usage:
 
 		holes = MagicPanels.makeHoles(obj, face, cylinders)
+		holes = MagicPanels.makeHoles(obj, face, cylinders, "Angled")
+		holes = MagicPanels.makeHoles(obj, face, cylinders, "Flat")
 		
 ##### Result:
 

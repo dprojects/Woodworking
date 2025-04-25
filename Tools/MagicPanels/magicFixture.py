@@ -19,34 +19,43 @@ def showQtGUI():
 		# globals
 		# ############################################################################
 
-		gBaseRef = ""
-		gObjRef = ""
+		gFixture = ""
 		
-		gFaceRef = ""
-		gFaceIndex = 0
-		gFPlane = ""
-		
-		gEdgeRef = ""
-		gEdgeArr = []
-		gEdgeIndex = 0
+		gVectorCurrent = ""
+		gVectorObj = []
+		gVectorArr = []
+		gVectorIndex = 0
 
 		gRoAxisArr = []
 		gRoAxis = ""
 		
 		gRoAnglesArr = []
 		gRoAngles = ""
-		
 		gRoIndex = 0
 		
 		gStep = 10
-		
 		gLink = ""
 		
-		gFxSink = 0
-		gFxOCorner = 0
-		gFxOEdge = 0
+		gOffsetX = 0
+		gOffsetY = 0
+		gOffsetZ = 0
 		
 		gNoSelection = translate('magicFixture', 'please select fixture object and face')
+		
+		gCornerCrossSupport = True
+		gAxisCrossSupport = True
+		
+		try:
+			gCornerCross = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
+			gCornerCrossOrig = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
+		except:
+			gCornerCrossSupport = False
+			
+		try:
+			gAxisCross = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
+			gAxisCrossOrig = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
+		except:
+			gAxisCrossSupport = False
 		
 		# ############################################################################
 		# init
@@ -64,14 +73,14 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 300
-			toolSH = 500
+			toolSH = 620
 			
 			# active screen size (FreeCAD main window)
 			gSW = FreeCADGui.getMainWindow().width()
 			gSH = FreeCADGui.getMainWindow().height()
 
 			# tool screen position
-			gPW = int( gSW - toolSW )
+			gPW = 0 + 200
 			gPH = int( gSH - toolSH )
 
 			# ############################################################################
@@ -84,41 +93,56 @@ def showQtGUI():
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
-			# options - selection mode
+			# options - settings
 			# ############################################################################
 			
 			# set grid
-			row = 0
+			row = 10
+			
+			area = toolSW - 20
+			btsize = 50                                    # button size
+			btoffset = 5                                   # button offset
+			bc1 = area - (2 * btsize) - btoffset + 5       # button column 1
+			bc2 = area - btsize + btoffset + 5             # button column 2
+			
 			col1 = 100
 			col2 = 155
 			col3 = 240
 			
-			# screen
+			# looks funny but if you resize screen you have the long string
 			info = ""
 			info += "                                             "
 			info += "                                             "
 			info += "                                             "
 			
-			# info about base detailed object to link
+			# ############################################################################
+			# options - selection mode
+			# ############################################################################
+		
+			# label
+			self.oi1L = QtGui.QLabel(translate('magicFixture', 'Fixture:'), self)
+			self.oi1L.move(10, row+3)
+			
+			# label
 			self.ob1S = QtGui.QLabel(info, self)
-			self.ob1S.move(10, row)
+			self.ob1S.move(60, row+3)
 			
 			row += 20
 			
-			# info about selected face to place the link
+			# label
+			self.oi2L = QtGui.QLabel(translate('magicFixture', 'Anchor:'), self)
+			self.oi2L.move(10, row+3)
+
+			# label
 			self.ob2S = QtGui.QLabel(info, self)
-			self.ob2S.move(10, row)
-			
-			# selection status
-			self.ob3S = QtGui.QLabel(info, self)
-			self.ob3S.move(10, row)
+			self.ob2S.move(60, row+3)
 			
 			row += 20
 			
 			# button
 			self.s1B1 = QtGui.QPushButton(translate('magicFixture', 'refresh selections'), self)
 			self.s1B1.clicked.connect(self.getSelected)
-			self.s1B1.setFixedWidth(toolSW-20)
+			self.s1B1.setFixedWidth(area)
 			self.s1B1.setFixedHeight(40)
 			self.s1B1.move(10, row)
 
@@ -129,12 +153,12 @@ def showQtGUI():
 			row += 50
 
 			# label
-			self.s2L = QtGui.QLabel(translate('magicFixture', 'Edge:'), self)
+			self.s2L = QtGui.QLabel(translate('magicFixture', 'Anchor:'), self)
 			self.s2L.move(10, row+3)
 
 			# button
 			self.s2B1 = QtGui.QPushButton("<", self)
-			self.s2B1.clicked.connect(self.setEdgeP)
+			self.s2B1.clicked.connect(self.setReferenceP)
 			self.s2B1.setFixedWidth(50)
 			self.s2B1.move(col1, row)
 			self.s2B1.setAutoRepeat(True)
@@ -142,10 +166,10 @@ def showQtGUI():
 			# info screen
 			self.s2IS = QtGui.QLabel("                                         ", self)
 			self.s2IS.move(col2, row+3)
-						
+
 			# button
 			self.s2B2 = QtGui.QPushButton(">", self)
-			self.s2B2.clicked.connect(self.setEdgeN)
+			self.s2B2.clicked.connect(self.setReferenceN)
 			self.s2B2.setFixedWidth(50)
 			self.s2B2.move(col3, row)
 			self.s2B2.setAutoRepeat(True)
@@ -183,34 +207,47 @@ def showQtGUI():
 			self.s4B2.setAutoRepeat(True)
 
 			# ############################################################################
+			# options - add reference
+			# ############################################################################
+
+			row += 30
+			
+			# button
+			self.oAddRefB = QtGui.QPushButton(translate('magicFixture', 'add selected anchor'), self)
+			self.oAddRefB.clicked.connect(self.addReference)
+			self.oAddRefB.setFixedWidth(area)
+			self.oAddRefB.setFixedHeight(40)
+			self.oAddRefB.move(10, row)
+
+			# ############################################################################
 			# options - offset from edge
 			# ############################################################################
 
 			row += 50
 			
 			# label
-			self.oFxOEdgeL = QtGui.QLabel(translate('magicFixture', 'Edge offset:'), self)
-			self.oFxOEdgeL.move(10, row+3)
+			self.oOffsetXL = QtGui.QLabel(translate('magicFixture', 'X offset:'), self)
+			self.oOffsetXL.move(10, row+3)
 
 			# button
-			self.gFxOEdgeB1 = QtGui.QPushButton("-", self)
-			self.gFxOEdgeB1.clicked.connect(self.setEdgeOffsetP)
-			self.gFxOEdgeB1.setFixedWidth(50)
-			self.gFxOEdgeB1.move(col1, row)
-			self.gFxOEdgeB1.setAutoRepeat(True)
+			self.oOffsetXB1 = QtGui.QPushButton("-", self)
+			self.oOffsetXB1.clicked.connect(self.setOffsetXP)
+			self.oOffsetXB1.setFixedWidth(50)
+			self.oOffsetXB1.move(col1, row)
+			self.oOffsetXB1.setAutoRepeat(True)
 
 			# text input
-			self.oFxOEdgeE = QtGui.QLineEdit(self)
-			self.oFxOEdgeE.setText(MagicPanels.unit2gui(self.gFxOEdge))
-			self.oFxOEdgeE.setFixedWidth(80)
-			self.oFxOEdgeE.move(col2, row)
+			self.oOffsetXE = QtGui.QLineEdit(self)
+			self.oOffsetXE.setText(MagicPanels.unit2gui(self.gOffsetX))
+			self.oOffsetXE.setFixedWidth(80)
+			self.oOffsetXE.move(col2, row)
 
 			# button
-			self.gFxOEdgeB2 = QtGui.QPushButton("+", self)
-			self.gFxOEdgeB2.clicked.connect(self.setEdgeOffsetN)
-			self.gFxOEdgeB2.setFixedWidth(50)
-			self.gFxOEdgeB2.move(col3, row)
-			self.gFxOEdgeB2.setAutoRepeat(True)
+			self.oOffsetXB2 = QtGui.QPushButton("+", self)
+			self.oOffsetXB2.clicked.connect(self.setOffsetXN)
+			self.oOffsetXB2.setFixedWidth(50)
+			self.oOffsetXB2.move(col3, row)
+			self.oOffsetXB2.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - offset from corner
@@ -219,28 +256,28 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oFxOCornerL = QtGui.QLabel(translate('magicFixture', 'Corner offset:'), self)
-			self.oFxOCornerL.move(10, row+3)
+			self.oOffsetYL = QtGui.QLabel(translate('magicFixture', 'Y offset:'), self)
+			self.oOffsetYL.move(10, row+3)
 
 			# button
-			self.oFxOCornerB1 = QtGui.QPushButton("-", self)
-			self.oFxOCornerB1.clicked.connect(self.setCornerOffsetP)
-			self.oFxOCornerB1.setFixedWidth(50)
-			self.oFxOCornerB1.move(col1, row)
-			self.oFxOCornerB1.setAutoRepeat(True)
+			self.oOffsetYB1 = QtGui.QPushButton("-", self)
+			self.oOffsetYB1.clicked.connect(self.setOffsetYP)
+			self.oOffsetYB1.setFixedWidth(50)
+			self.oOffsetYB1.move(col1, row)
+			self.oOffsetYB1.setAutoRepeat(True)
 
 			# text input
-			self.oFxOCornerE = QtGui.QLineEdit(self)
-			self.oFxOCornerE.setText(MagicPanels.unit2gui(self.gFxOCorner))
-			self.oFxOCornerE.setFixedWidth(80)
-			self.oFxOCornerE.move(col2, row)
+			self.oOffsetYE = QtGui.QLineEdit(self)
+			self.oOffsetYE.setText(MagicPanels.unit2gui(self.gOffsetY))
+			self.oOffsetYE.setFixedWidth(80)
+			self.oOffsetYE.move(col2, row)
 
 			# button
-			self.oFxOCornerB2 = QtGui.QPushButton("+", self)
-			self.oFxOCornerB2.clicked.connect(self.setCornerOffsetN)
-			self.oFxOCornerB2.setFixedWidth(50)
-			self.oFxOCornerB2.move(col3, row)
-			self.oFxOCornerB2.setAutoRepeat(True)
+			self.oOffsetYB2 = QtGui.QPushButton("+", self)
+			self.oOffsetYB2.clicked.connect(self.setOffsetYN)
+			self.oOffsetYB2.setFixedWidth(50)
+			self.oOffsetYB2.move(col3, row)
+			self.oOffsetYB2.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - sink
@@ -249,28 +286,28 @@ def showQtGUI():
 			row += 30
 
 			# label
-			self.oFxSinkL = QtGui.QLabel(translate('magicFixture', 'Sink offset:'), self)
-			self.oFxSinkL.move(10, row+3)
+			self.oOffsetZL = QtGui.QLabel(translate('magicFixture', 'Z offset:'), self)
+			self.oOffsetZL.move(10, row+3)
 
 			# button
-			self.oFxSinkB1 = QtGui.QPushButton("-", self)
-			self.oFxSinkB1.clicked.connect(self.setSinkOffsetP)
-			self.oFxSinkB1.setFixedWidth(50)
-			self.oFxSinkB1.move(col1, row)
-			self.oFxSinkB1.setAutoRepeat(True)
+			self.oOffsetZB1 = QtGui.QPushButton("-", self)
+			self.oOffsetZB1.clicked.connect(self.setOffsetZP)
+			self.oOffsetZB1.setFixedWidth(50)
+			self.oOffsetZB1.move(col1, row)
+			self.oOffsetZB1.setAutoRepeat(True)
 			
 			# text input
-			self.oFxSinkE = QtGui.QLineEdit(self)
-			self.oFxSinkE.setText(MagicPanels.unit2gui(self.gFxSink))
-			self.oFxSinkE.setFixedWidth(80)
-			self.oFxSinkE.move(col2, row)
+			self.oOffsetZE = QtGui.QLineEdit(self)
+			self.oOffsetZE.setText(MagicPanels.unit2gui(self.gOffsetZ))
+			self.oOffsetZE.setFixedWidth(80)
+			self.oOffsetZE.move(col2, row)
 			
 			# button
-			self.oFxSinkB2 = QtGui.QPushButton("+", self)
-			self.oFxSinkB2.clicked.connect(self.setSinkOffsetN)
-			self.oFxSinkB2.setFixedWidth(50)
-			self.oFxSinkB2.move(col3, row)
-			self.oFxSinkB2.setAutoRepeat(True)
+			self.oOffsetZB2 = QtGui.QPushButton("+", self)
+			self.oOffsetZB2.clicked.connect(self.setOffsetZN)
+			self.oOffsetZB2.setFixedWidth(50)
+			self.oOffsetZB2.move(col3, row)
+			self.oOffsetZB2.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - step
@@ -297,7 +334,7 @@ def showQtGUI():
 			# button
 			self.e1B1 = QtGui.QPushButton(translate('magicFixture', 'show custom settings'), self)
 			self.e1B1.clicked.connect(self.refreshSettings)
-			self.e1B1.setFixedWidth(toolSW-20)
+			self.e1B1.setFixedWidth(area)
 			self.e1B1.setFixedHeight(40)
 			self.e1B1.move(10, row)
 
@@ -344,9 +381,65 @@ def showQtGUI():
 			# apply button
 			self.e3B1 = QtGui.QPushButton(translate('magicFixture', 'create'), self)
 			self.e3B1.clicked.connect(self.setFixture)
-			self.e3B1.setFixedWidth(toolSW-20)
+			self.e3B1.setFixedWidth(area)
 			self.e3B1.setFixedHeight(40)
 			self.e3B1.move(10, row)
+
+			# ############################################################################
+			# GUI for common foot (visible by default)
+			# ############################################################################
+			
+			row = toolSH - 90
+			
+			if self.gCornerCrossSupport == True:
+			
+				# label
+				self.cocL = QtGui.QLabel(translate('magicFixture', 'Corner cross:'), self)
+				self.cocL.move(10, row+3)
+
+				# button
+				self.cocB1 = QtGui.QPushButton("-", self)
+				self.cocB1.clicked.connect(self.setCornerM)
+				self.cocB1.setFixedWidth(btsize)
+				self.cocB1.move(bc1, row)
+				self.cocB1.setAutoRepeat(True)
+				
+				# button
+				self.cocB2 = QtGui.QPushButton("+", self)
+				self.cocB2.clicked.connect(self.setCornerP)
+				self.cocB2.setFixedWidth(btsize)
+				self.cocB2.move(bc2, row)
+				self.cocB2.setAutoRepeat(True)
+
+			if self.gAxisCrossSupport == True:
+				
+				row += 30
+				
+				# label
+				self.cecL = QtGui.QLabel(translate('magicFixture', 'Center cross:'), self)
+				self.cecL.move(10, row+3)
+
+				# button
+				self.cecB1 = QtGui.QPushButton(translate('magicFixture', 'on'), self)
+				self.cecB1.clicked.connect(self.setCenterOn)
+				self.cecB1.setFixedWidth(btsize)
+				self.cecB1.move(bc1, row)
+				self.cecB1.setAutoRepeat(True)
+				
+				# button
+				self.cecB2 = QtGui.QPushButton(translate('magicFixture', 'off'), self)
+				self.cecB2.clicked.connect(self.setCenterOff)
+				self.cecB2.setFixedWidth(btsize)
+				self.cecB2.move(bc2, row)
+				self.cecB2.setAutoRepeat(True)
+
+			if self.gCornerCrossSupport == True or self.gAxisCrossSupport == True:
+				
+				row += 25
+				
+				self.kccscb = QtGui.QCheckBox(translate('magicFixture', ' - keep custom cross settings'), self)
+				self.kccscb.setCheckState(QtCore.Qt.Unchecked)
+				self.kccscb.move(10, row+3)
 
 			# ############################################################################
 			# show & init defaults
@@ -354,7 +447,14 @@ def showQtGUI():
 
 			# show window
 			self.show()
-
+			
+			# init axis cross
+			if self.gAxisCrossSupport == True:
+				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
+			
+			if self.gCornerCrossSupport == True:
+				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(50)
+			
 			# init
 			self.getSelected()
 
@@ -365,29 +465,18 @@ def showQtGUI():
 		# ############################################################################
 		def setRotation(self):
 			
-			reset = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 0.00)
-			self.gLink.Placement.Rotation = reset
-			
 			angle = self.gRoAnglesArr[self.gRoIndex]
 			axis = FreeCAD.Vector(self.gRoAxis)
 
-			x = self.gLink.Placement.Base.x
-			y = self.gLink.Placement.Base.y
-			z = self.gLink.Placement.Base.z
-			
-			center = FreeCAD.Vector(x, y, z)
-			
-			Draft.rotate(self.gLink, angle, center, axis, False)
-				
-			FreeCADGui.Selection.clearSelection()
+			self.gLink.Placement.Rotation = FreeCAD.Rotation(axis, angle)
 			FreeCAD.activeDocument().recompute()
 
 		# ############################################################################
-		def showFixture(self):
+		def showFixture(self, iType="show"):
 			
 			# set info
 			
-			info = str(self.gEdgeIndex + 1) + " / " + str(len(self.gEdgeArr))
+			info = str(self.gVectorIndex + 1) + " / " + str(len(self.gVectorArr))
 			self.s2IS.setText(info)
 
 			info = str(self.gRoIndex + 1) + " / " + str(len(self.gRoAnglesArr))
@@ -406,14 +495,14 @@ def showQtGUI():
 			self.gLink = ""
 			
 			# get settings
-			[ v1, v2 ] = MagicPanels.getEdgeVertices(self.gEdgeArr[self.gEdgeIndex])
-			[ v1, v2 ] = MagicPanels.getVerticesOffset([ v1, v2 ], self.gObjRef, "array")
+			v = self.gVectorArr[self.gVectorIndex]
+			[ v ] = MagicPanels.getVerticesOffset([ v ], self.gVectorObj[self.gVectorIndex], "vector")
 			
 			# ############################################################################
 			# set link
 			# ############################################################################
 			
-			X, Y, Z = v1[0], v1[1], v1[2]
+			X, Y, Z = v.x, v.y, v.z
 			x, y, z = 0, 0, 0
 
 			# ############################################################################
@@ -421,72 +510,24 @@ def showQtGUI():
 			# ############################################################################
 
 			if self.rb1.isChecked() == True:
-				linkName = "Link_" + str(self.gBaseRef.Name)
+				linkName = "Link_" + str(self.gFixture.Name)
 				link = FreeCAD.activeDocument().addObject('App::Link', linkName)
-				link.setLink(self.gBaseRef)
-				link.Label = "Link, " + self.gBaseRef.Label + " "
+				link.setLink(self.gFixture)
+				link.Label = "Link, " + self.gFixture.Label + " "
 
 			if self.rb2.isChecked() == True:
 				import Draft
-				link = Draft.make_clone(self.gBaseRef)
-				link.Label = "Clone, " + self.gBaseRef.Label + " "
+				link = Draft.make_clone(self.gFixture)
+				link.Label = "Clone, " + self.gFixture.Label + " "
 
 			# ############################################################################
 			# set object into position
 			# ############################################################################
 
-			# edge along X
-			if v1[0] != v2[0]:
-				
-				if self.gFPlane == "XY":
-					x = X - self.gFxOCorner
-					y = Y + self.gFxOEdge
-					z = Z - self.gFxSink
-				
-				if self.gFPlane == "XZ":
-					x = X - self.gFxOCorner
-					y = Y - self.gFxSink
-					z = Z + self.gFxOEdge
-		
-				# this should not exist
-				if self.gFPlane == "YZ":
-					x, y, z = X, Y, Z
-
-			# edge along Y
-			if v1[1] != v2[1]:
-				
-				if self.gFPlane == "XY":
-					x = X + self.gFxOEdge
-					y = Y - self.gFxOCorner
-					z = Z - self.gFxSink
+			x = X + self.gOffsetX
+			y = Y + self.gOffsetY
+			z = Z + self.gOffsetZ	
 			
-				# this should not exist
-				if self.gFPlane == "XZ":
-					[ x, y, z ] = [ X, Y, Z ]
-			
-				if self.gFPlane == "YZ":
-					x = X - self.gFxSink
-					y = Y - self.gFxOCorner
-					z = Z + self.gFxOEdge
-
-			# edge along Z
-			if v1[2] != v2[2]:
-				
-				if self.gFPlane == "XY":
-					x = X + self.gFxOEdge
-					y = Y - self.gFxSink
-					z = Z - self.gFxOCorner
-					
-				if self.gFPlane == "XZ":
-					x = X - self.gFxOEdge
-					y = Y - self.gFxSink
-					z = Z - self.gFxOCorner
-						
-				if self.gFPlane == "YZ":
-					x = X - self.gFxSink
-					y = Y + self.gFxOEdge
-					z = Z - self.gFxOCorner
-					
 			# final set
 			link.Placement.Base.x = x
 			link.Placement.Base.y = y
@@ -506,23 +547,18 @@ def showQtGUI():
 
 		# ############################################################################
 		def resetInfoScreen(self):
-			self.ob1S.setText("")
-			self.ob2S.setText("")
-			self.ob3S.setText(self.gNoSelection)
+			self.ob1S.setText(translate('magicFixture', 'select fixture container to apply'))
+			self.ob2S.setText(translate('magicFixture', 'select face, edge, hole or vertex'))
 			
 		# ############################################################################
 		def resetGlobals(self):
 
-			self.gBaseRef = ""
-			self.gObjRef = ""
+			self.gFixture = ""
 			
-			self.gFaceRef = ""
-			self.gFaceIndex = 0
-			self.gFPlane = ""
-		
-			self.gEdgeRef = ""
-			self.gEdgeArr = []
-			self.gEdgeIndex = 0
+			self.gVectorObj = []
+			self.gVectorArr = []
+			self.gVectorIndex = 0
+			self.gVectorCurrent = ""
 		
 			self.gRoAxisArr = []
 			self.gRoAxis = ""
@@ -536,40 +572,58 @@ def showQtGUI():
 		def getSelected(self):
 
 			try:
-
 				# ############################################################################
-				# global config
+				# init settings
 				# ############################################################################
 				
 				self.resetGlobals()
-
-				self.gBaseRef = FreeCADGui.Selection.getSelection()[0]
 				
-				self.gObjRef = FreeCADGui.Selection.getSelection()[1]
-				self.gFaceRef = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-				self.gFaceIndex = MagicPanels.getFaceIndex(self.gObjRef, self.gFaceRef)
+				# fixture
+				self.gFixture = FreeCADGui.Selection.getSelection()[0]
+				self.ob1S.setText(str(self.gFixture.Label))
+				
+				# anchor
+				obj = FreeCADGui.Selection.getSelection()[1]
+				sub = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+			
+				if sub.ShapeType == "Edge":
+
+					if sub.Curve.isDerivedFrom("Part::GeomLine"):
+						[ v1, v2 ] = MagicPanels.getEdgeVectors(sub)
+						
+						self.gVectorArr.append(v1)
+						self.gVectorObj.append(obj)
+						
+						self.gVectorArr.append(v2)
+						self.gVectorObj.append(obj)
+						
+						self.gVectorArr.append(sub.CenterOfMass)
+						self.gVectorObj.append(obj)
+
+					elif sub.Curve.isDerivedFrom("Part::GeomCircle"):
+						self.gVectorArr.append(sub.Curve.Center)
+						self.gVectorObj.append(obj)
+
+				if sub.ShapeType == "Face":
+					
+					vectors = MagicPanels.getFaceVertices(sub, "vector")
+					self.gVectorArr += vectors
+					for i in range(0, len(vectors)):
+						self.gVectorObj.append(obj)
+					
+					self.gVectorArr.append(sub.CenterOfMass)
+					self.gVectorObj.append(obj)
+
+				if sub.ShapeType == "Vertex":
+					self.gVectorArr.append(FreeCAD.Vector(sub.X, sub.Y, sub.Z))
+					self.gVectorObj.append(obj)
+				
+				self.gVectorIndex = 0
+				self.gVectorCurrent = self.gVectorArr[self.gVectorIndex]
+				self.ob2S.setText(str(self.gVectorCurrent))
 				
 				FreeCADGui.Selection.clearSelection()
 				
-				n = ""
-				n += str(self.gBaseRef.Label)
-				self.ob1S.setText(n)
-				
-				n = ""
-				n += str(self.gObjRef.Label)
-				n += ", "
-				n += "Face"
-				n += str(self.gFaceIndex)
-				self.ob2S.setText(n)
-				
-				self.gFPlane = MagicPanels.getFacePlane(self.gFaceRef)
-				
-				# ############################################################################
-				# set possible edges
-				# ############################################################################
-				
-				[ a1, self.gEdgeArr, a2, a3, a4 ] = MagicPanels.getFaceEdges(self.gObjRef, self.gFaceRef)
-
 				# ############################################################################
 				# set possible rotation 
 				# ############################################################################
@@ -612,7 +666,7 @@ def showQtGUI():
 				
 				self.gRoAnglesArr.append(270)
 				self.gRoAxisArr.append([0, 0, 1])
-				
+
 				# special 1
 				
 				self.gRoAnglesArr.append(0)
@@ -628,6 +682,9 @@ def showQtGUI():
 				self.gRoAxisArr.append([0.71, 0.71, 0])
 				
 				# special 2
+				
+				self.gRoAnglesArr.append(240)
+				self.gRoAxisArr.append([-0.58, 0.58, -0.58])
 				
 				self.gRoAnglesArr.append(120)
 				self.gRoAxisArr.append([-0.58, -0.58, 0.58])
@@ -647,6 +704,45 @@ def showQtGUI():
 				self.gRoAnglesArr.append(180)
 				self.gRoAxisArr.append([0, 0.71, 0.71])
 				
+				# X and Y axis
+				self.gRoAnglesArr.append(0)
+				self.gRoAxisArr.append([1, 1, 0])
+				
+				self.gRoAnglesArr.append(90)
+				self.gRoAxisArr.append([1, 1, 0])
+				
+				self.gRoAnglesArr.append(180)
+				self.gRoAxisArr.append([1, 1, 0])
+				
+				self.gRoAnglesArr.append(270)
+				self.gRoAxisArr.append([1, 1, 0])
+				
+				# X and Z axis
+				self.gRoAnglesArr.append(0)
+				self.gRoAxisArr.append([1, 0, 1])
+				
+				self.gRoAnglesArr.append(90)
+				self.gRoAxisArr.append([1, 0, 1])
+				
+				self.gRoAnglesArr.append(180)
+				self.gRoAxisArr.append([1, 0, 1])
+				
+				self.gRoAnglesArr.append(270)
+				self.gRoAxisArr.append([1, 0, 1])
+				
+				# Y and Z axis
+				self.gRoAnglesArr.append(0)
+				self.gRoAxisArr.append([0, 1, 1])
+				
+				self.gRoAnglesArr.append(90)
+				self.gRoAxisArr.append([0, 1, 1])
+				
+				self.gRoAnglesArr.append(180)
+				self.gRoAxisArr.append([0, 1, 1])
+				
+				self.gRoAnglesArr.append(270)
+				self.gRoAxisArr.append([0, 1, 1])
+			
 				# init
 				self.gRoAngles = self.gRoAnglesArr[0]
 				self.gRoAxis = self.gRoAxisArr[0]
@@ -654,38 +750,85 @@ def showQtGUI():
 				# ############################################################################
 				
 				self.rb1.setChecked(True)
-				self.ob3S.setText("")
-				
+				self.showFixture()
+
 			except:
 
 				self.resetInfoScreen()
 				return -1
-			
+		
 		# ############################################################################
-		def setEdgeP(self):
+		def addReference(self):
 			
 			try:
-				if self.gEdgeIndex - 1 < 0:
-					self.gEdgeIndex = len(self.gEdgeArr) - 1
-				else:
-					self.gEdgeIndex = self.gEdgeIndex - 1
+				obj = FreeCADGui.Selection.getSelection()[0]
+				sub = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+			
+				if sub.ShapeType == "Edge":
+
+					if sub.Curve.isDerivedFrom("Part::GeomLine"):
+						[ v1, v2 ] = MagicPanels.getEdgeVectors(sub)
+						
+						self.gVectorArr.append(v1)
+						self.gVectorObj.append(obj)
+						
+						self.gVectorArr.append(v2)
+						self.gVectorObj.append(obj)
+						
+						self.gVectorArr.append(sub.CenterOfMass)
+						self.gVectorObj.append(obj)
+
+					elif sub.Curve.isDerivedFrom("Part::GeomCircle"):
+						self.gVectorArr.append(sub.Curve.Center)
+						self.gVectorObj.append(obj)
+
+				if sub.ShapeType == "Face":
 					
-				self.gEdgeRef = self.gEdgeArr[self.gEdgeIndex]
+					vectors = MagicPanels.getFaceVertices(sub, "vector")
+					self.gVectorArr += vectors
+					for i in range(0, len(vectors)):
+						self.gVectorObj.append(obj)
+						
+					self.gVectorArr.append(sub.CenterOfMass)
+					self.gVectorObj.append(obj)
+
+				if sub.ShapeType == "Vertex":
+					self.gVectorArr.append(FreeCAD.Vector(sub.X, sub.Y, sub.Z))
+					self.gVectorObj.append(obj)
 				
+				FreeCADGui.Selection.clearSelection()
 				self.showFixture()
-			
+				
 			except:
-				self.resetInfoScreen()
-			
-		def setEdgeN(self):
-			
+				skip = 1
+		
+		# ############################################################################
+		def setReferenceP(self):
+
 			try:
-				if self.gEdgeIndex + 1 > len(self.gEdgeArr) - 1:
-					self.gEdgeIndex = 0
+				if self.gVectorIndex - 1 < 0:
+					self.gVectorIndex = len(self.gVectorArr) - 1
 				else:
-					self.gEdgeIndex = self.gEdgeIndex + 1
+					self.gVectorIndex = self.gVectorIndex - 1
 					
-				self.gEdgeRef = self.gEdgeArr[self.gEdgeIndex]
+				self.gVectorCurrent = self.gVectorArr[self.gVectorIndex]
+				self.ob2S.setText(str(self.gVectorCurrent))
+				
+				self.showFixture()
+			
+			except:
+				self.resetInfoScreen()
+			
+		def setReferenceN(self):
+
+			try:
+				if self.gVectorIndex + 1 > len(self.gVectorArr) - 1:
+					self.gVectorIndex = 0
+				else:
+					self.gVectorIndex = self.gVectorIndex + 1
+					
+				self.gVectorCurrent = self.gVectorArr[self.gVectorIndex]
+				self.ob2S.setText(str(self.gVectorCurrent))
 				
 				self.showFixture()
 			
@@ -693,53 +836,26 @@ def showQtGUI():
 				self.resetInfoScreen()
 
 		# ############################################################################
-		def setSinkOffsetP(self):
+		def setOffsetXP(self):
 			
 			try:
 				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
-			
-				self.gFxSink -= self.gStep
-				self.oFxSinkE.setText(MagicPanels.unit2gui(self.gFxSink))
+				
+				self.gOffsetX -= self.gStep
+				self.oOffsetXE.setText(MagicPanels.unit2gui(self.gOffsetX))
 				
 				self.showFixture()
 			
 			except:
 				self.resetInfoScreen()
 			
-		def setSinkOffsetN(self):
+		def setOffsetXN(self):
 			
 			try:
 				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
 				
-				self.gFxSink += self.gStep
-				self.oFxSinkE.setText(MagicPanels.unit2gui(self.gFxSink))
-				
-				self.showFixture()
-			
-			except:
-				self.resetInfoScreen()
-
-		# ############################################################################
-		def setCornerOffsetP(self):
-			
-			try:
-				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
-				
-				self.gFxOCorner -= self.gStep
-				self.oFxOCornerE.setText(MagicPanels.unit2gui(self.gFxOCorner))
-				
-				self.showFixture()
-			
-			except:
-				self.resetInfoScreen()
-			
-		def setCornerOffsetN(self):
-			
-			try:
-				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
-				
-				self.gFxOCorner += self.gStep
-				self.oFxOCornerE.setText(MagicPanels.unit2gui(self.gFxOCorner))
+				self.gOffsetX += self.gStep
+				self.oOffsetXE.setText(MagicPanels.unit2gui(self.gOffsetX))
 				
 				self.showFixture()
 			
@@ -747,26 +863,53 @@ def showQtGUI():
 				self.resetInfoScreen()
 
 		# ############################################################################
-		def setEdgeOffsetP(self):
+		def setOffsetYP(self):
 			
 			try:
 				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
 				
-				self.gFxOEdge -= self.gStep
-				self.oFxOEdgeE.setText(MagicPanels.unit2gui(self.gFxOEdge))
+				self.gOffsetY -= self.gStep
+				self.oOffsetYE.setText(MagicPanels.unit2gui(self.gOffsetY))
 				
 				self.showFixture()
 			
 			except:
 				self.resetInfoScreen()
 			
-		def setEdgeOffsetN(self):
+		def setOffsetYN(self):
 			
 			try:
 				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
 				
-				self.gFxOEdge += self.gStep
-				self.oFxOEdgeE.setText(MagicPanels.unit2gui(self.gFxOEdge))
+				self.gOffsetY += self.gStep
+				self.oOffsetYE.setText(MagicPanels.unit2gui(self.gOffsetY))
+				
+				self.showFixture()
+			
+			except:
+				self.resetInfoScreen()
+
+		# ############################################################################
+		def setOffsetZP(self):
+			
+			try:
+				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
+			
+				self.gOffsetZ -= self.gStep
+				self.oOffsetZE.setText(MagicPanels.unit2gui(self.gOffsetZ))
+				
+				self.showFixture()
+			
+			except:
+				self.resetInfoScreen()
+			
+		def setOffsetZN(self):
+			
+			try:
+				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
+				
+				self.gOffsetZ += self.gStep
+				self.oOffsetZE.setText(MagicPanels.unit2gui(self.gOffsetZ))
 				
 				self.showFixture()
 			
@@ -807,13 +950,51 @@ def showQtGUI():
 				self.resetInfoScreen()
 
 		# ############################################################################
+		def setCornerM(self):
+
+			try:
+				s = int(FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize())
+				if s - 1 < 0:
+					FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(0)
+				else:
+					FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(s-1)
+					self.gCornerCross = s-1
+			except:
+				self.s1S.setText(self.gNoSelection)
+			
+		def setCornerP(self):
+
+			try:
+				s = int(FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize())
+				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(s+1)
+				self.gCornerCross = s+1
+			except:
+				self.s1S.setText(self.gNoSelection)
+		
+		# ############################################################################
+		def setCenterOn(self):
+			try:
+				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
+				self.gAxisCross = True
+			except:
+				self.s1S.setText(self.gNoSelection)
+			
+		def setCenterOff(self):
+
+			try:
+				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(False)
+				self.gAxisCross = False
+			except:
+				self.s1S.setText(self.gNoSelection)
+		
+		# ############################################################################
 		def refreshSettings(self):
 			
 			try:
 			
-				self.gFxSink = MagicPanels.unit2value(self.oFxSinkE.text())
-				self.gFxOCorner = MagicPanels.unit2value(self.oFxOCornerE.text())
-				self.gFxOEdge = MagicPanels.unit2value(self.oFxOEdgeE.text())
+				self.gOffsetZ = MagicPanels.unit2value(self.oOffsetZE.text())
+				self.gOffsetY = MagicPanels.unit2value(self.oOffsetYE.text())
+				self.gOffsetX = MagicPanels.unit2value(self.oOffsetXE.text())
 				self.gStep = MagicPanels.unit2value(self.oFxStepE.text())
 
 				self.showFixture()
@@ -857,13 +1038,8 @@ def showQtGUI():
 				
 		# ############################################################################
 		def setFixture(self):
-			
-			try:
-				MagicPanels.moveToFirst([ self.gLink ], self.gObjRef)
-				self.gLink = ""
-				
-			except:
-				self.resetInfoScreen()
+
+			self.gLink = ""
 		
 	# ############################################################################
 	# final settings
@@ -876,12 +1052,21 @@ def showQtGUI():
 	form.exec_()
 	
 	if form.result == userCancelled:
+	
 		if form.gLink != "":
 			try:
 				FreeCAD.activeDocument().removeObject(str(form.gLink.Name))
 			except:
 				skip = 1
-			
+				
+		if not form.kccscb.isChecked():
+
+			if form.gAxisCrossSupport == True:
+				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(form.gAxisCrossOrig)
+				
+			if form.gCornerCrossSupport == True:
+				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(form.gCornerCrossOrig)
+		
 		pass
 
 # ###################################################################################################################
