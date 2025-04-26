@@ -1449,24 +1449,26 @@ def showQtGUI():
 				
 				# Wall cabinet brackets - camar 1
 				if selectedIndex == 18:
-					self.gDBDiameter = 30
-					self.gDBDiameter2 = 30
-					self.gDBSize = 12.5
-					self.gDBNum = 1
-					self.gDBOCorner = 50
+					self.gDBDiameter = 11 # because it is better to drill little bigger
+					self.gDBDiameter2 = 11
+					self.gDBSize = 12 # because it is better to drill little bigger
+					self.gDBNum = 2
+					self.gDBOCorner = 20
 					self.gDBONext = 32
-					self.gDBOEdge = - 33.28
+					self.gDBOEdge = self.gThick + 8
+					self.gDBSides = 1
 					self.gDrillPoint = "Flat"
 
 				# Wall cabinet brackets - camar 2
 				if selectedIndex == 19:
-					self.gDBDiameter = 30
-					self.gDBDiameter2 = 30
-					self.gDBSize = 12.5
-					self.gDBNum = 1
-					self.gDBOCorner = 50
+					self.gDBDiameter = 11 # because it is better to drill little bigger
+					self.gDBDiameter2 = 11
+					self.gDBSize = 12 # because it is better to drill little bigger
+					self.gDBNum = 2
+					self.gDBOCorner = 20
 					self.gDBONext = 32
-					self.gDBOEdge = - 33.28
+					self.gDBOEdge = self.gThick + 8 + 64
+					self.gDBSides = 1
 					self.gDrillPoint = "Flat"
 					
 				# ######################################

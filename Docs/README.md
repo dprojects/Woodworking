@@ -12,8 +12,8 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 * [Objects, Workflow, Golden rules](#objects-workflow-golden-rules)
 * [How to start - magicStart](#how-to-start---magicstart)
 	* [Cabinet structure](#cabinet-structure)
+	* [US style](#us-style)
 	* [Drawers for cabinets](#drawers-for-cabinets)
-	* [Face Frame for cabinets](#face-frame-for-cabinets)
 	* [Fronts for cabinets](#fronts-for-cabinets)
 	* [Shelves and top for cabinets](#shelves-and-top-for-cabinets)
 	* [Sides for cabinets](#sides-for-cabinets)
@@ -152,6 +152,8 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 0.23 stable:**
 
+    * organize better the menu to be more readable (magicStart)
+    * brackets for wall kitchen cabinets (magicStart, magicDriller)
     * redesign magixFixture (change into vector anchors and XYZ positioning)
     * improve general subcontainer creation (MagicPanels)
     * add animation for move (magicMove)
@@ -259,21 +261,32 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 
 * Simple storage ( front outside, back full )
 * Simple storage ( front outside, back HDF )
+* Kitchen wall cabinet ( front outside, back HDF )
+* Modular storage ( front outside, 3 modules )
 * Simple storage ( front inside, back full )
 * Simple storage ( front inside, back HDF )
-* Simple storage ( face frame, no front, back HDF )
 * Simple bookcase ( no front, back HDF )
-* Simple bookcase ( face frame, no front, back HDF )
-* Kitchen cabinet ( US style ) inspired by Shara Woodshop Diaries at [woodshopdiaries.com](https://www.woodshopdiaries.com/)
-* Kitchen wall cabinet ( front outside, back HDF )
-* Kitchen wall cabinet ( US style ) inspired by Shara Woodshop Diaries at [woodshopdiaries.com](https://www.woodshopdiaries.com/)
-* Modular storage ( front outside, 3 modules )
 * Bookcase ( import parametric )
 
 **Video tutorials:** 
-* [How to create "kick toe" in kitchen cabinet](https://www.youtube.com/watch?v=aLZh3mH-OH8)
 * [Furniture creation tool](https://www.youtube.com/watch?v=lHQ1J9Nahcs)
 * [How to build complex furniture from modules](https://www.youtube.com/watch?v=SUm_N2rjXbs)
+
+## US style
+
+* Simple storage ( face frame, no front, back HDF )
+* Simple bookcase ( face frame, no front, back HDF )
+* Kitchen cabinet ( US style )
+* Kitchen wall cabinet ( US style )
+* Face Frame ( vertical, for custom changes )
+* Face Frame ( horizontal, around )
+* Face Frame ( horizontal, with center )
+* Face Frame ( horizontal, for custom changes )
+
+**Video tutorials:** 
+* [How to create "kick toe" in kitchen cabinet](https://www.youtube.com/watch?v=aLZh3mH-OH8)
+* [How to add Face Frame to the furniture](https://www.youtube.com/watch?v=CtWfvxd4UmI)
+* [Kitchen cabinet with face frame](https://www.youtube.com/watch?v=WW8du2l_ZuY)
 
 ## Drawers for cabinets
 
@@ -289,27 +302,16 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * [How to make drawer series](https://www.youtube.com/watch?v=tncytX82NSY)
 * [How to connect drawer elements together](https://www.youtube.com/watch?v=FwyzZR5V05c)
 
-## Face Frame for cabinets
-
-* Face Frame ( horizontal, around )
-* Face Frame ( horizontal, with center )
-* Face Frame ( horizontal, for custom changes )
-* Face Frame ( vertical, for custom changes )
-
-**Video tutorials:** 
-* [How to add Face Frame to the furniture](https://www.youtube.com/watch?v=CtWfvxd4UmI)
-* [Kitchen cabinet with face frame](https://www.youtube.com/watch?v=WW8du2l_ZuY)
-
 ## Fronts for cabinets
 
 * Front outside
+* Front outside ( decorative )
 * Front outside with glass ( simple frame )
 * Front outside with glass ( frame with decoration )
-* Front outside ( decorative )
 * Front inside
+* Front inside ( decorative )
 * Front inside with glass ( simple frame )
 * Front inside with glass ( frame with decoration )
-* Front inside ( decorative )
 * Front decoration ( simple frame )
 * Front left (decoration, import parametric )
 * Front right (decoration, import parametric )
@@ -367,14 +369,14 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 ## Connections
 
 * Dowel 8x35 mm ( import parametric )
-* Biscuits 4x16x48 mm ( import parametric )
-* Biscuits 4x21x54 mm ( import parametric )
-* Biscuits 4x24x57 mm ( import parametric )
-* Screw 3x20 mm for HDF ( import parametric )
-* Screw 4x40 mm ( import parametric )
-* Screw 5x50 mm ( import parametric )
-* Minifix 15x45 mm ( import parametric )
-* Pocket screw 4x40 mm ( import parametric )
+* Biscuits 4x16x48 mm ( import parametric ) 
+* Biscuits 4x21x54 mm ( import parametric ) 
+* Biscuits 4x24x57 mm ( import parametric ) 
+* Screw 3x20 mm for HDF ( import parametric ) 
+* Screw 4x40 mm ( import parametric ) 
+* Screw 5x50 mm ( import parametric ) 
+* Pocket screw 4x40 mm ( import parametric ) 
+* Minifix 15x45 mm ( import parametric ) 
 * Counterbore 2x 5x60 mm ( import parametric )
 
 **Video tutorials:** 
@@ -388,13 +390,15 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 ## Accessories
 
 * Shelf Pin 5x16 mm ( import parametric )
+* Handle ( single hole )
+* Handle ( double hole )
+* Brackets for wall cabinets ( [Camar 807](https://www.camar.it/prodotti_scheda.php?cat_id=31&prod_id=807%2002%20Z1%20IN%20__&id=259) ) 
 * Angle 30x30x25 mm ( import parametric )
 * Angle 80x80x20 mm ( import parametric )
 * Angle 40x40x100 mm ( import parametric )
-* Cabinet handle ( single hole )
-* Cabinet handle ( double hole )
 
 **Video tutorials:** 
+* [How to add brackets to the kitchen wall cabinet](https://www.youtube.com/watch?v=idHDN9KJYis)
 * [How to add handle and see soft-close animation](https://www.youtube.com/watch?v=iOseEBGmwAU)
 * [How to add feet](https://www.youtube.com/watch?v=E4yfRFIqops)
 

@@ -12,6 +12,7 @@ translate = FreeCAD.Qt.translate
 
 # add new items only at the end and change self.sModeList
 getMenuIndex = {
+	"---------------------------------------------------------------------------": -1,
 	translate('magicStart', 'Simple storage ( front outside, back full )'): 0, 
 	translate('magicStart', 'Simple bookcase ( no front, back HDF )'): 1, 
 	translate('magicStart', 'Bookcase ( import parametric )'): 2, 
@@ -80,8 +81,9 @@ getMenuIndex = {
 	translate('magicStart', 'Kitchen cabinet ( US style )'): 65, 
 	translate('magicStart', 'Kitchen wall cabinet ( front outside, back HDF )'): 66, 
 	translate('magicStart', 'Kitchen wall cabinet ( US style )'): 67, 
-	translate('magicStart', 'Cabinet handle ( single hole )'): 68, 
-	translate('magicStart', 'Cabinet handle ( double hole )'): 69 # no comma 
+	translate('magicStart', 'Handle ( single hole )'): 68, 
+	translate('magicStart', 'Handle ( double hole )'): 69, 
+	translate('magicStart', 'Brackets for wall cabinets ( Camar 807 )'): 70 # no comma 
 }
 
 # ############################################################################
@@ -699,23 +701,29 @@ def showQtGUI():
 			self.sModeList = (
 				translate('magicStart', 'Simple storage ( front outside, back full )'), 
 				translate('magicStart', 'Simple storage ( front outside, back HDF )'), 
+				translate('magicStart', 'Kitchen wall cabinet ( front outside, back HDF )'), 
+				translate('magicStart', 'Modular storage ( front outside, 3 modules )'), 
 				translate('magicStart', 'Simple storage ( front inside, back full )'), 
-				translate('magicStart', 'Simple storage ( front inside, back HDF )'),
-				translate('magicStart', 'Simple storage ( face frame, no front, back HDF )'), 
+				translate('magicStart', 'Simple storage ( front inside, back HDF )'), 
 				translate('magicStart', 'Simple bookcase ( no front, back HDF )'), 
+				translate('magicStart', 'Bookcase ( import parametric )'), 
+				"---------------------------------------------------------------------------", 
+				translate('magicStart', 'Simple storage ( face frame, no front, back HDF )'), 
 				translate('magicStart', 'Simple bookcase ( face frame, no front, back HDF )'), 
 				translate('magicStart', 'Kitchen cabinet ( US style )'), 
-				translate('magicStart', 'Kitchen wall cabinet ( front outside, back HDF )'), 
 				translate('magicStart', 'Kitchen wall cabinet ( US style )'), 
-				translate('magicStart', 'Modular storage ( front outside, 3 modules )'), 
+				translate('magicStart', 'Face Frame ( vertical, for custom changes )'), 
+				translate('magicStart', 'Face Frame ( horizontal, around )'), 
+				translate('magicStart', 'Face Frame ( horizontal, with center )'), 
+				translate('magicStart', 'Face Frame ( horizontal, for custom changes )'), 
+				"---------------------------------------------------------------------------", 
 				translate('magicStart', 'Drawer with front outside'), 
 				translate('magicStart', 'Drawer with front inside'), 
 				translate('magicStart', 'Drawer series with front outside'), 
 				translate('magicStart', 'Drawer series with front inside'), 
-				translate('magicStart', 'Face Frame ( horizontal, around )'), 
-				translate('magicStart', 'Face Frame ( horizontal, with center )'), 
-				translate('magicStart', 'Face Frame ( horizontal, for custom changes )'), 
-				translate('magicStart', 'Face Frame ( vertical, for custom changes )'), 
+				translate('magicStart', 'Simple drawer ( import parametric )'), 
+				translate('magicStart', 'Drawer (decoration, import parametric )'), 
+				"---------------------------------------------------------------------------", 
 				translate('magicStart', 'Front outside'), 
 				translate('magicStart', 'Front outside ( decorative )'), 
 				translate('magicStart', 'Front outside with glass ( simple frame )'), 
@@ -725,22 +733,31 @@ def showQtGUI():
 				translate('magicStart', 'Front inside with glass ( simple frame )'), 
 				translate('magicStart', 'Front inside with glass ( frame with decoration )'), 
 				translate('magicStart', 'Front decoration ( simple frame )'), 
+				translate('magicStart', 'Front left (decoration, import parametric )'), 
+				translate('magicStart', 'Front right (decoration, import parametric )'), 
+				"---------------------------------------------------------------------------", 
 				translate('magicStart', 'Shelf'), 
 				translate('magicStart', 'Shelf series with equal space'), 
+				translate('magicStart', 'Top (decoration, import parametric )'), 
+				"---------------------------------------------------------------------------", 
 				translate('magicStart', 'Side'), 
 				translate('magicStart', 'Center side'), 
 				translate('magicStart', 'Side decoration ( simple frame )'), 
+				"---------------------------------------------------------------------------", 
 				translate('magicStart', 'Foot ( good for cleaning )'), 
 				translate('magicStart', 'Foot ( standard )'), 
 				translate('magicStart', 'Foot ( more stable )'), 
 				translate('magicStart', 'Foot ( decorated )'), 
 				translate('magicStart', 'Foot ( chair style )'), 
+				"---------------------------------------------------------------------------", 
 				translate('magicStart', 'Table ( kitchen simple style )'), 
 				translate('magicStart', 'Table ( kitchen modern style )'), 
 				translate('magicStart', 'Table ( kitchen decorated style )'), 
 				translate('magicStart', 'Table ( coffee simple style )'), 
 				translate('magicStart', 'Table ( coffee modern style )'), 
 				translate('magicStart', 'Table ( coffee decorated style )'), 
+				translate('magicStart', 'Simple table ( import parametric )'), 
+				"---------------------------------------------------------------------------", 
 				translate('magicStart', 'Dowel 8x35 mm ( import parametric )'),
 				translate('magicStart', 'Biscuits 4x16x48 mm ( import parametric )'), 
 				translate('magicStart', 'Biscuits 4x21x54 mm ( import parametric )'), 
@@ -751,23 +768,19 @@ def showQtGUI():
 				translate('magicStart', 'Pocket screw 4x40 mm ( import parametric )'), 
 				translate('magicStart', 'Minifix 15x45 mm ( import parametric )'), 
 				translate('magicStart', 'Counterbore 2x 5x60 mm ( import parametric )'), 
+				"---------------------------------------------------------------------------", 
 				translate('magicStart', 'Shelf Pin 5x16 mm ( import parametric )'), 
-				translate('magicStart', 'Cabinet handle ( single hole )'), 
-				translate('magicStart', 'Cabinet handle ( double hole )'), 
+				translate('magicStart', 'Handle ( single hole )'), 
+				translate('magicStart', 'Handle ( double hole )'), 
+				translate('magicStart', 'Brackets for wall cabinets ( Camar 807 )'), 
 				translate('magicStart', 'Angle 30x30x25 mm ( import parametric )'), 
 				translate('magicStart', 'Angle 80x80x20 mm ( import parametric )'), 
 				translate('magicStart', 'Angle 40x40x100 mm ( import parametric )'), 
-				translate('magicStart', 'Front left (decoration, import parametric )'), 
-				translate('magicStart', 'Front right (decoration, import parametric )'), 
-				translate('magicStart', 'Top (decoration, import parametric )'), 
-				translate('magicStart', 'Bookcase ( import parametric )'), 
-				translate('magicStart', 'Simple drawer ( import parametric )'), 
-				translate('magicStart', 'Drawer (decoration, import parametric )'), 
+				"---------------------------------------------------------------------------", 
 				translate('magicStart', 'Simple chair ( import parametric )'), 
 				translate('magicStart', 'Picture frame ( import parametric )'), 
-				translate('magicStart', 'Simple table ( import parametric )'), 
 				translate('magicStart', 'Storage box ( import parametric )')   # no comma
-				)
+			)
 			
 			helpButtonSize = 80
 			
@@ -3924,6 +3937,11 @@ def showQtGUI():
 			# set GUI and help info
 			# ####################################################
 			
+			if selectedIndex == -1:
+				self.setGUIInfo("empty")
+				self.helpInfo.setText("")
+				self.setIcon("empty")
+			
 			if (
 				selectedIndex == 2 or 
 				selectedIndex == 3 or 
@@ -3950,7 +3968,8 @@ def showQtGUI():
 				selectedIndex == 58 or 
 				selectedIndex == 63 or 
 				selectedIndex == 68 or 
-				selectedIndex == 69
+				selectedIndex == 69 or 
+				selectedIndex == 70
 				):
 				self.setGUIInfo("merge")
 				self.helpInfo.setText("")
@@ -4392,6 +4411,9 @@ def showQtGUI():
 			if self.gSelectedFurniture == "F69":
 				self.mergeF("Cabinet_handle_02.FCStd", "other")
 
+			if self.gSelectedFurniture == "F70":
+				self.mergeF("Brackets_camar_807.FCStd", "other")
+				
 			# here to allow recalculation with selection
 			FreeCADGui.Selection.clearSelection()
 
