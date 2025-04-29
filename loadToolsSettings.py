@@ -244,6 +244,7 @@ Tools = [
 
 	"MagicPanels", "fitModel", "png", "fitModel", "Click to see info.",
 	"MagicPanels", "makeTransparent", "png", "make objects transparent or normal", "Click to see info.",
+	"MagicPanels", "magicView", "png", "magicView, create views and export to TechDraw", "This tool allows you to create views and export views to TechDraw.",
 	"MagicPanels", "showVertex", "png", "showVertex", "Click to see info.",
 	"MagicPanels", "selectVertex", "png", "selectVertex", "Click to see info.",
 	"MagicPanels", "roundCurve", "png", "render curve precisely", "Click to see info." # no comma at the end

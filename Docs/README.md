@@ -44,6 +44,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 * [Preview](#preview)
 	* [fitModel](#fitmodel)
 	* [makeTransparent](#maketransparent)
+	* [magicView](#magicview)
 	* [showVertex](#showvertex)
 	* [selectVertex](#selectvertex)
 	* [roundCurve](#roundcurve)
@@ -152,6 +153,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 0.23 stable:**
 
+    * new tool to manage views and export model to TechDraw (magicView)
     * organize better the menu to be more readable (magicStart)
     * brackets for wall kitchen cabinets (magicStart, magicDriller)
     * redesign magixFixture (change into vector anchors and XYZ positioning)
@@ -691,6 +693,38 @@ Selection modes:
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/makeTransparent.png"> This tool allows to make all parts transparent and back to normal. You can preview all pilot holes, countersinks or any other joints like that, very simply.
 
 <br><br><br><br><br>
+
+## magicView
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicView.png"> This tool allows you to create views and export view to TechDraw. 
+
+**Options:**
+
+* **menu selection** allows you to browse defined views and your own created ones.
+  * `restore` this view is created the first time you run this tool in an active document. This tool will create a spreadsheet named `magicView - restore view` with the object placement data. This will allow you to return to these settings.
+  * `explode` moves all objects relative to the center of the entire model by the distance of the previous object.
+  * `along X` aligns all objects along the X coordinate axis.
+  * `along Y` aligns all objects along the Y coordinate axis.
+  * `along Z` aligns all objects along the Z coordinate axis.
+  * `along XYZ` aligns all objects along the X and Y and Z coordinate axis.
+  * `Assembly` aligns all objects with the center of all XYZ coordinate axes.
+  * `magicView` these are views saved using the `save to spreadsheet` button. For each such view, a spreadsheet will also be created with the placement data for that view so that you can revert to the user-defined placement values ​​for the objects.
+
+* **read from spreadsheet** this button allows you to load a view directly from the selected spreadsheet.
+* **save to spreadsheet** allows you to save the current view to a spreadsheet, and also to add this view to the end of the list of views.
+
+* **TechDraw options:**
+  * `screenshot` exports the current 3D view of the model as an image to TechDraw.
+  * `objects` exports the current 3D view of the model as objects to TechDraw. In case of this option the visibility of objects is recognized, i.e. objects hidden by the `space` key will not be exported.
+  * `export to TechDraw` creates a TechDraw page with the exported model.
+
+* **Cross:**
+  * `Corner cross:` buttons `-`, `+` resize the cross in the right bottom of the screen, it has auto-repeat.
+  * `Center cross:` buttons `on`, `off` turn on and off the center cross at the screen.
+  * `keep custom cross settings` allows to store the custom cross setting after this tool exit.
+
+**Video tutorials:** 
+* [How to create view and export to TechDraw](https://www.youtube.com/watch?v=yiZfyMRlE-U)
 
 ## showVertex
 

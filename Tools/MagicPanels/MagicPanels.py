@@ -502,6 +502,96 @@ def getSizesFromBoundBox(iObj):
 	return [ mX, mY, mZ ]
 
 
+
+# ###################################################################################################################
+def getOccupiedSpace(iObjects):
+	'''
+	Description:
+	
+		Function to get occupied space by many objects. 
+	
+	Args:
+	
+		iObjects: array with objects
+	
+	Usage:
+	
+		[ minX, minY, minZ, maxX, maxY, maxZ, [ cx, cy, cz ]] = MagicPanels.getOccupiedSpace(objects)
+
+	Result:
+	
+		Returns array: 
+		minX - minimum value of the X-axis coordinates for the occupied space
+		minY - minimum value of the Y-axis coordinates for the occupied space
+		minZ - minimum value of the Z-axis coordinates for the occupied space
+		maxX - maximum value of the X-axis coordinates for the occupied space
+		maxY - maximum value of the Y-axis coordinates for the occupied space
+		maxZ - maximum value of the Z-axis coordinates for the occupied space
+		center - array with:
+			cx - X float of the occupied space by all objects
+			cy - Y float of the occupied space by all objects
+			cz - Z float of the occupied space by all objects
+
+	'''
+
+	
+	init = 0
+
+	minX = 0
+	minY = 0
+	minZ = 0
+
+	maxX = 0
+	maxY = 0
+	maxZ = 0
+
+	mX = 0
+	mY = 0
+	mZ = 0
+
+	for o in iObjects:
+		
+		try:
+			
+			vs = getattr(o.Shape, "Vertex"+"es")
+			
+			for v in vs:
+				
+				[ x, y, z ] = [ v.X, v.Y, v.Z ]
+		
+				if init == 0:
+					[ minX, minY, minZ ] = [ x, y, z ]
+					[ maxX, maxY, maxZ ] = [ x, y, z ]
+					init = 1
+				
+				if x > maxX:
+					maxX = x
+				
+				if y > maxY:
+					maxY = y
+
+				if z > maxZ:
+					maxZ = z
+
+				if x < minX:
+					minX = x
+
+				if y < minY:
+					minY = y
+
+				if z < minZ:
+					minZ = z
+
+		except:
+			skip = 1
+
+	cx = minX + ( abs(maxX - minX) / 2 )
+	cy = minY + ( abs(maxY - minY) / 2 )
+	cz = minZ + ( abs(maxZ - minZ) / 2 )
+	
+	return [ minX, minY, minZ, maxX, maxY, maxZ, [ cx, cy, cz ]]
+
+
 # ###################################################################################################################
 '''
 # Copy
@@ -3911,6 +4001,48 @@ def getPlacementDiff(iStart, iDestination):
 		moveZ = - diffZ
 
 	return [ moveX, moveY, moveZ ]
+
+
+# ###################################################################################################################
+def isVisible(iObject):
+	'''
+	Description:
+	
+		Returns object visibility, even if object is visible but inside the hidden LinkGroup container.
+		
+	Args:
+	
+		iObject: object to search visibility
+
+	Usage:
+		
+		visible = MagicPanels.isVisible(iObject)
+		
+	Result:
+	
+		Return boolean True or False
+	'''
+	
+	current = iObject
+
+	while True:
+	
+		if current.Visibility == False:
+			return False
+	
+		try:
+			visible = current.Parents[0][0].isElementVisible(current.Parents[0][1]+str(current.Name))
+			if visible == 0:
+				return False
+		except:
+			return True
+
+		try:
+			current = current.Parents[0][0]
+		except:
+			return True
+
+	return True
 
 
 # ###################################################################################################################

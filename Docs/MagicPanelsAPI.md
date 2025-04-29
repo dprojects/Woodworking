@@ -194,6 +194,34 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 		mY - occupied space along Y axis
 		mZ - occupied space along Z axis
 
+### getOccupiedSpace(iObjects):
+
+	Description:
+	
+		Function to get occupied space by many objects. 
+	
+##### Description:
+	
+		iObjects: array with objects
+	
+##### Usage:
+	
+		[ minX, minY, minZ, maxX, maxY, maxZ, [ cx, cy, cz ]] = MagicPanels.getOccupiedSpace(objects)
+
+##### Result:
+	
+		Returns array: 
+		minX - minimum value of the X-axis coordinates for the occupied space
+		minY - minimum value of the Y-axis coordinates for the occupied space
+		minZ - minimum value of the Z-axis coordinates for the occupied space
+		maxX - maximum value of the X-axis coordinates for the occupied space
+		maxY - maximum value of the Y-axis coordinates for the occupied space
+		maxZ - maximum value of the Z-axis coordinates for the occupied space
+		center - array with:
+			cx - X float of the occupied space by all objects
+			cy - Y float of the occupied space by all objects
+			cz - Z float of the occupied space by all objects
+
 # Copy
 ### copyPanel(iObjects, iType="auto"):
 
@@ -1460,6 +1488,23 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 	
 		Return [ moveX, moveY, moveZ ] array with X, Y, Z floats to move object.
 
+### isVisible(iObject):
+
+	Description:
+	
+		Returns object visibility, even if object is visible but inside the hidden LinkGroup container.
+		
+##### Description:
+	
+		iObject: object to search visibility
+
+##### Usage:
+		
+		visible = MagicPanels.isVisible(iObject)
+		
+##### Result:
+	
+		Return boolean True or False
 # Conversion
 ### convertPosition(iObj, iX, iY, iZ):
 

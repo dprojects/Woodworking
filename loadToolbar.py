@@ -239,6 +239,7 @@ def getItems(iType):
 		parts = [
 			"fitModel",
 			"makeTransparent",
+			"magicView",
 			"showVertex",
 			"selectVertex",
 			"roundCurve"
