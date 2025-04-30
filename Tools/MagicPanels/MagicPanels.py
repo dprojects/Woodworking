@@ -4552,6 +4552,16 @@ def unit2gui(iValue):
 	userSettings = Units.getSchema()
 	forUser = Units.schemaTranslate(value, userSettings)[0]
 
+	# fix for FreeCAD bug with "Building US", it is translated to value without units
+	if Units.getSchema() == 5:
+		
+		try:
+			float(forUser)
+			int(forUser)
+			forUser = str(forUser) + " in"
+		except:
+			skip = 1
+
 	return str(forUser)
 
 
