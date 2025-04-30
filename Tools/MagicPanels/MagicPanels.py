@@ -4552,7 +4552,9 @@ def unit2gui(iValue):
 	userSettings = Units.getSchema()
 	forUser = Units.schemaTranslate(value, userSettings)[0]
 
-	# fix for FreeCAD bug with "Building US", it is translated to value without units
+	# fix for FreeCAD bug with "Building US", 
+	# only "0 mm" is translated to "0" value without units
+	# see: https://github.com/dprojects/Woodworking/issues/57#issuecomment-2841510545
 	if Units.getSchema() == 5:
 		
 		try:
@@ -4570,18 +4572,20 @@ def unit2value(iString):
 	'''
 	Description:
 	
-		Allows to convert unit from user defines setting for example iches, ft into system calculation units.
+		Allows to convert user unit string into float for calculation. 
 
 	Args:
 
-		iString: units string in user settings notation
+		iString: units string in user settings notation, for example "5 mm", "5 in", "5 ft", 
+		but also accept quick value notation like "500" for all units schemas.
 		
 	Usage:
+		
+		forCalculation = MagicPanels.unit2value("18 mm")
+		forCalculation = MagicPanels.unit2value("0.06 ft") # forCalculation will be 18.288
+		forCalculation = MagicPanels.unit2value("18")
+		forCalculation = MagicPanels.unit2value("0")
 
-		forCalculation = MagicPanels.unit2value("0.06 ft")
-		
-		# Note: forCalculation will be 18.288
-		
 	Result:
 
 		float for calculation
@@ -4595,12 +4599,9 @@ def unit2value(iString):
 		float(unitString)
 		int(unitString)
 		
-		if Units.getSchema() == 0:
-			unitString = str(unitString) + " mm"
-		elif Units.getSchema() == 2:
-			unitString = str(unitString) + ' "'
-		else:
-			skip = 1
+		unit = Units.schemaTranslate( Units.Quantity("1.0 mm"), Units.getSchema() )[2]
+		unitString = str(unitString) + " " + str(unit)
+
 	except:
 		skip = 1
 

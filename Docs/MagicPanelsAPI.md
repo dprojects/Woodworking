@@ -1638,18 +1638,20 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 
 	Description:
 	
-		Allows to convert unit from user defines setting for example iches, ft into system calculation units.
+		Allows to convert user unit string into float for calculation. 
 
 ##### Description:
 
-		iString: units string in user settings notation
+		iString: units string in user settings notation, for example "5 mm", "5 in", "5 ft", 
+		but also accept quick value notation like "500" for all units schemas.
 		
 ##### Usage:
+		
+		forCalculation = MagicPanels.unit2value("18 mm")
+		forCalculation = MagicPanels.unit2value("0.06 ft") # forCalculation will be 18.288
+		forCalculation = MagicPanels.unit2value("18")
+		forCalculation = MagicPanels.unit2value("0")
 
-		forCalculation = MagicPanels.unit2value("0.06 ft")
-		
-		# Note: forCalculation will be 18.288
-		
 ##### Result:
 
 		float for calculation
