@@ -153,6 +153,10 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 0.23 stable:**
 
+    * drawer series with front outside ( Blum, Hafele, GTV, Amix )
+    * drawer series with front inside ( Blum, Hafele, GTV, Amix )
+    * add custom front overlap for drawer (magicStart)
+    * add custom drawer thickness for front, bottom and sides (magicStart)
     * new tool to manage views and export model to TechDraw (magicView)
     * organize better the menu to be more readable (magicStart)
     * brackets for wall kitchen cabinets (magicStart, magicDriller)
@@ -296,10 +300,13 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * Drawer with front inside
 * Drawer series with front outside
 * Drawer series with front inside
+* Drawer series with front outside ( Blum, Hafele, GTV, Amix )
+* Drawer series with front inside ( Blum, Hafele, GTV, Amix )
 * Simple drawer ( import parametric )
 * Drawer (decoration, import parametric )
 
 **Video tutorials:** 
+* [How to set front thickness and overlap](https://www.youtube.com/watch?v=geEolSSB6n0)
 * [How to create drawer at each side](https://www.youtube.com/watch?v=4qEbQQhwmns)
 * [How to make drawer series](https://www.youtube.com/watch?v=tncytX82NSY)
 * [How to connect drawer elements together](https://www.youtube.com/watch?v=FwyzZR5V05c)

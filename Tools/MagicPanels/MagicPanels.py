@@ -4559,7 +4559,6 @@ def unit2gui(iValue):
 		
 		try:
 			float(forUser)
-			int(forUser)
 			forUser = str(forUser) + " in"
 		except:
 			skip = 1
@@ -4593,14 +4592,14 @@ def unit2value(iString):
 	'''
 
 
-	unitString = iString
+	unitString = str(iString)
 	
 	try:
-		float(unitString)
-		int(unitString)
+		value = unitString.replace(",",".")
+		float(value)
 		
 		unit = Units.schemaTranslate( Units.Quantity("1.0 mm"), Units.getSchema() )[2]
-		unitString = str(unitString) + " " + str(unit)
+		unitString = str(value) + " " + str(unit)
 
 	except:
 		skip = 1

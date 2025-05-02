@@ -12,7 +12,7 @@ translate = FreeCAD.Qt.translate
 
 # add new items only at the end and change self.sModeList
 getMenuIndex = {
-	"---------------------------------------------------------------------------": -1,
+	"-----------------------------------------------------------------------------------------------": -1,
 	translate('magicStart', 'Simple storage ( front outside, back full )'): 0, 
 	translate('magicStart', 'Simple bookcase ( no front, back HDF )'): 1, 
 	translate('magicStart', 'Bookcase ( import parametric )'): 2, 
@@ -83,7 +83,9 @@ getMenuIndex = {
 	translate('magicStart', 'Kitchen wall cabinet ( US style )'): 67, 
 	translate('magicStart', 'Handle ( single hole )'): 68, 
 	translate('magicStart', 'Handle ( double hole )'): 69, 
-	translate('magicStart', 'Brackets for wall cabinets ( Camar 807 )'): 70 # no comma 
+	translate('magicStart', 'Brackets for wall cabinets ( Camar 807 )'): 70, 
+	translate('magicStart', 'Drawer series with front outside ( Blum, Hafele, GTV, Amix )'): 71, 
+	translate('magicStart', 'Drawer series with front inside ( Blum, Hafele, GTV, Amix )'): 72 # no comma 
 }
 
 # ############################################################################
@@ -671,16 +673,19 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			self.toolSW = 450
-			self.toolSH = 570
+			self.toolSW = 550           # tool screen width
+			self.toolSH = 680           # tool screen height
+			
+			self.helpSW = 500           # help info screen width
+			self.helpSH = self.toolSH   # help info screen height
 			
 			# active screen size - FreeCAD main window
 			gSW = FreeCADGui.getMainWindow().width()
 			gSH = FreeCADGui.getMainWindow().height()
 
 			# tool screen position
-			self.gPW = 0 + 50
-			self.gPH = int( gSH - self.toolSH ) - 30
+			self.gPW = 0
+			self.gPH = int( gSH - self.toolSH )
 
 			# ############################################################################
 			# main window
@@ -692,10 +697,19 @@ def showQtGUI():
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
-			# options - selection
+			# options - settings
 			# ############################################################################
 			
-			row = 10
+			row = 10                      # main row
+			area = self.toolSW - 20       # full width gui area
+			roffset = 10                  # row offset
+			rsize1x = 90                  # row size 1
+			rsize2x = 190                 # row size 2 x row
+			rsize3x = 290                 # row size 3 x row
+	
+			# ############################################################################
+			# options - selection
+			# ############################################################################
 	
 			# not write here, copy text from getMenuIndex to avoid typo
 			self.sModeList = (
@@ -707,7 +721,7 @@ def showQtGUI():
 				translate('magicStart', 'Simple storage ( front inside, back HDF )'), 
 				translate('magicStart', 'Simple bookcase ( no front, back HDF )'), 
 				translate('magicStart', 'Bookcase ( import parametric )'), 
-				"---------------------------------------------------------------------------", 
+				"-----------------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Simple storage ( face frame, no front, back HDF )'), 
 				translate('magicStart', 'Simple bookcase ( face frame, no front, back HDF )'), 
 				translate('magicStart', 'Kitchen cabinet ( US style )'), 
@@ -716,14 +730,16 @@ def showQtGUI():
 				translate('magicStart', 'Face Frame ( horizontal, around )'), 
 				translate('magicStart', 'Face Frame ( horizontal, with center )'), 
 				translate('magicStart', 'Face Frame ( horizontal, for custom changes )'), 
-				"---------------------------------------------------------------------------", 
+				"-----------------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Drawer with front outside'), 
 				translate('magicStart', 'Drawer with front inside'), 
 				translate('magicStart', 'Drawer series with front outside'), 
 				translate('magicStart', 'Drawer series with front inside'), 
+				translate('magicStart', 'Drawer series with front outside ( Blum, Hafele, GTV, Amix )'), 
+				translate('magicStart', 'Drawer series with front inside ( Blum, Hafele, GTV, Amix )'), 
 				translate('magicStart', 'Simple drawer ( import parametric )'), 
 				translate('magicStart', 'Drawer (decoration, import parametric )'), 
-				"---------------------------------------------------------------------------", 
+				"-----------------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Front outside'), 
 				translate('magicStart', 'Front outside ( decorative )'), 
 				translate('magicStart', 'Front outside with glass ( simple frame )'), 
@@ -735,21 +751,21 @@ def showQtGUI():
 				translate('magicStart', 'Front decoration ( simple frame )'), 
 				translate('magicStart', 'Front left (decoration, import parametric )'), 
 				translate('magicStart', 'Front right (decoration, import parametric )'), 
-				"---------------------------------------------------------------------------", 
+				"-----------------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Shelf'), 
 				translate('magicStart', 'Shelf series with equal space'), 
 				translate('magicStart', 'Top (decoration, import parametric )'), 
-				"---------------------------------------------------------------------------", 
+				"-----------------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Side'), 
 				translate('magicStart', 'Center side'), 
 				translate('magicStart', 'Side decoration ( simple frame )'), 
-				"---------------------------------------------------------------------------", 
+				"-----------------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Foot ( good for cleaning )'), 
 				translate('magicStart', 'Foot ( standard )'), 
 				translate('magicStart', 'Foot ( more stable )'), 
 				translate('magicStart', 'Foot ( decorated )'), 
 				translate('magicStart', 'Foot ( chair style )'), 
-				"---------------------------------------------------------------------------", 
+				"-----------------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Table ( kitchen simple style )'), 
 				translate('magicStart', 'Table ( kitchen modern style )'), 
 				translate('magicStart', 'Table ( kitchen decorated style )'), 
@@ -757,7 +773,7 @@ def showQtGUI():
 				translate('magicStart', 'Table ( coffee modern style )'), 
 				translate('magicStart', 'Table ( coffee decorated style )'), 
 				translate('magicStart', 'Simple table ( import parametric )'), 
-				"---------------------------------------------------------------------------", 
+				"-----------------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Dowel 8x35 mm ( import parametric )'),
 				translate('magicStart', 'Biscuits 4x16x48 mm ( import parametric )'), 
 				translate('magicStart', 'Biscuits 4x21x54 mm ( import parametric )'), 
@@ -768,7 +784,7 @@ def showQtGUI():
 				translate('magicStart', 'Pocket screw 4x40 mm ( import parametric )'), 
 				translate('magicStart', 'Minifix 15x45 mm ( import parametric )'), 
 				translate('magicStart', 'Counterbore 2x 5x60 mm ( import parametric )'), 
-				"---------------------------------------------------------------------------", 
+				"-----------------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Shelf Pin 5x16 mm ( import parametric )'), 
 				translate('magicStart', 'Handle ( single hole )'), 
 				translate('magicStart', 'Handle ( double hole )'), 
@@ -776,7 +792,7 @@ def showQtGUI():
 				translate('magicStart', 'Angle 30x30x25 mm ( import parametric )'), 
 				translate('magicStart', 'Angle 80x80x20 mm ( import parametric )'), 
 				translate('magicStart', 'Angle 40x40x100 mm ( import parametric )'), 
-				"---------------------------------------------------------------------------", 
+				"-----------------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Simple chair ( import parametric )'), 
 				translate('magicStart', 'Picture frame ( import parametric )'), 
 				translate('magicStart', 'Storage box ( import parametric )')   # no comma
@@ -788,7 +804,7 @@ def showQtGUI():
 			self.sMode.addItems(self.sModeList)
 			self.sMode.setCurrentIndex(0)
 			self.sMode.textActivated[str].connect(self.selectedOption)
-			self.sMode.setFixedWidth(self.toolSW - 20 - 10 - helpButtonSize)
+			self.sMode.setFixedWidth(area - 10 - helpButtonSize)
 			self.sMode.setFixedHeight(40)
 			self.sMode.move(10, 10)
 
@@ -814,8 +830,8 @@ def showQtGUI():
 			# label
 			self.helpInfo = QtGui.QLabel(self.gHelpInfoF0, self)
 			self.helpInfo.move(self.toolSW + 10, 10)
-			self.helpInfo.setFixedWidth(self.toolSW - 90)
-			self.helpInfo.setFixedHeight(self.toolSH - 20)
+			self.helpInfo.setFixedWidth(self.helpSW - 20)
+			self.helpInfo.setFixedHeight(self.helpSH - 20)
 			self.helpInfo.setWordWrap(True)
 			self.helpInfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
 			self.helpInfo.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
@@ -885,7 +901,7 @@ def showQtGUI():
 			# button
 			self.mergeB = QtGui.QPushButton(translate('magicStart', 'import from examples'), self)
 			self.mergeB.clicked.connect(self.createObject)
-			self.mergeB.setFixedWidth(self.toolSW - 20)
+			self.mergeB.setFixedWidth(area)
 			self.mergeB.setFixedHeight(createSize)
 			self.mergeB.move(10, createRow)
 			self.mergeB.hide()
@@ -940,12 +956,12 @@ def showQtGUI():
 			self.ooo3E.setFixedWidth(90)
 			self.ooo3E.move(320, row)
 			
-			row += 30
+			row += 50
 			
 			# button
 			self.oo1B1 = QtGui.QPushButton(translate('magicStart', 'calculate furniture'), self)
 			self.oo1B1.clicked.connect(self.calculateFurniture)
-			self.oo1B1.setFixedWidth(200)
+			self.oo1B1.setFixedWidth(area)
 			self.oo1B1.setFixedHeight(40)
 			self.oo1B1.move(10, row)
 			
@@ -982,7 +998,7 @@ def showQtGUI():
 			# text input
 			self.oWidthE = QtGui.QLineEdit(self)
 			self.oWidthE.setText(MagicPanels.unit2gui(self.gFSX))
-			self.oWidthE.setFixedWidth(90)
+			self.oWidthE.setFixedWidth(rsize3x)
 			self.oWidthE.move(120, row)
 
 			row += 30
@@ -994,7 +1010,7 @@ def showQtGUI():
 			# text input
 			self.oHeightE = QtGui.QLineEdit(self)
 			self.oHeightE.setText(MagicPanels.unit2gui(self.gFSZ))
-			self.oHeightE.setFixedWidth(90)
+			self.oHeightE.setFixedWidth(rsize3x)
 			self.oHeightE.move(120, row)
 
 			row += 30
@@ -1006,7 +1022,7 @@ def showQtGUI():
 			# text input
 			self.oDepthE = QtGui.QLineEdit(self)
 			self.oDepthE.setText(MagicPanels.unit2gui(self.gFSY))
-			self.oDepthE.setFixedWidth(90)
+			self.oDepthE.setFixedWidth(rsize3x)
 			self.oDepthE.move(120, row)
 
 			row += 40
@@ -1014,7 +1030,7 @@ def showQtGUI():
 			# button
 			self.s1B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.s1B1.clicked.connect(self.createObject)
-			self.s1B1.setFixedWidth(self.toolSW - 20)
+			self.s1B1.setFixedWidth(area)
 			self.s1B1.setFixedHeight(createSize)
 			self.s1B1.move(10, createRow)
 
@@ -1085,7 +1101,7 @@ def showQtGUI():
 			# button
 			self.of6B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.of6B1.clicked.connect(self.createObject)
-			self.of6B1.setFixedWidth(self.toolSW - 20)
+			self.of6B1.setFixedWidth(area)
 			self.of6B1.setFixedHeight(createSize)
 			self.of6B1.move(10, createRow)
 
@@ -1191,7 +1207,7 @@ def showQtGUI():
 			# button
 			self.otb7B = QtGui.QPushButton(translate('magicStart', 'calculate table position'), self)
 			self.otb7B.clicked.connect(self.calculateTable)
-			self.otb7B.setFixedWidth(200)
+			self.otb7B.setFixedWidth(area)
 			self.otb7B.setFixedHeight(40)
 			self.otb7B.move(10, rowtbl)
 			
@@ -1224,7 +1240,7 @@ def showQtGUI():
 			# button
 			self.otb9B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.otb9B.clicked.connect(self.createObject)
-			self.otb9B.setFixedWidth(self.toolSW - 20)
+			self.otb9B.setFixedWidth(area)
 			self.otb9B.setFixedHeight(createSize)
 			self.otb9B.move(10, createRow)
 			
@@ -1261,86 +1277,76 @@ def showQtGUI():
 			self.og1i.setWordWrap(True)
 			self.og1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
 			
-			rowgap += 170
-
-			# button
-			self.og4B1 = QtGui.QPushButton(translate('magicStart', 'calculate gap for drawer'), self)
-			self.og4B1.clicked.connect(self.calculateSingleDrawer)
-			self.og4B1.setFixedWidth(200)
-			self.og4B1.setFixedHeight(40)
-			self.og4B1.move(10, rowgap)
-			
-			rowgap += 60
-			
-			# label
-			self.og2L = QtGui.QLabel(translate('magicStart', 'Gap start XYZ:'), self)
-			self.og2L.move(10, rowgap+3)
-			
-			# text input
-			self.og2E = QtGui.QLineEdit(self)
-			self.og2E.setText(MagicPanels.unit2gui(0))
-			self.og2E.setFixedWidth(80)
-			self.og2E.move(120, rowgap)
-			
-			# text input
-			self.og3E = QtGui.QLineEdit(self)
-			self.og3E.setText(MagicPanels.unit2gui(0))
-			self.og3E.setFixedWidth(80)
-			self.og3E.move(210, rowgap)
-			
-			# text input
-			self.og4E = QtGui.QLineEdit(self)
-			self.og4E.setText(MagicPanels.unit2gui(0))
-			self.og4E.setFixedWidth(80)
-			self.og4E.move(300, rowgap)
-			
-			rowgap += 30
+			rowgap += 150
 
 			# label
-			self.og5L = QtGui.QLabel(translate('magicStart', 'Gap width:'), self)
-			self.og5L.move(10, rowgap+3)
+			self.og10L = QtGui.QLabel(translate('magicStart', 'Drawer front overlap:'), self)
+			self.og10L.setFixedWidth(150)
+			self.og10L.move(10, rowgap+3)
+
+			rowgap += 20
+
+			# label
+			self.og101L = QtGui.QLabel(translate('magicStart', 'Horizontal:'), self)
+			self.og101L.move(10, rowgap+3)
+			
+			# label
+			self.og102L = QtGui.QLabel(translate('magicStart', 'Vertical:'), self)
+			self.og102L.move(110, rowgap+3)
+			
+			rowgap += 20
 			
 			# text input
-			self.og5E = QtGui.QLineEdit(self)
-			self.og5E.setText(MagicPanels.unit2gui(400))
-			self.og5E.setFixedWidth(90)
-			self.og5E.move(120, rowgap)
+			self.og101E = QtGui.QLineEdit(self)
+			self.og101E.setText(MagicPanels.unit2gui(9))
+			self.og101E.setFixedWidth(80)
+			self.og101E.move(10, rowgap)
 			
+			# text input
+			self.og102E = QtGui.QLineEdit(self)
+			self.og102E.setText(MagicPanels.unit2gui(7))
+			self.og102E.setFixedWidth(80)
+			self.og102E.move(110, rowgap)
+		
 			rowgap += 30
 			
 			# label
-			self.og6L = QtGui.QLabel(translate('magicStart', 'Gap height:'), self)
-			self.og6L.move(10, rowgap+3)
-
-			# text input
-			self.og6E = QtGui.QLineEdit(self)
-			self.og6E.setText(MagicPanels.unit2gui(150))
-			self.og6E.setFixedWidth(90)
-			self.og6E.move(120, rowgap)
-			
-			rowgap += 30
-			
-			# label
-			self.og7L = QtGui.QLabel(translate('magicStart', 'Gap depth:'), self)
-			self.og7L.move(10, rowgap+3)
-
-			# text input
-			self.og7E = QtGui.QLineEdit(self)
-			self.og7E.setText(MagicPanels.unit2gui(350))
-			self.og7E.setFixedWidth(90)
-			self.og7E.move(120, rowgap)
-			
-			rowgap += 30
-			
-			# label
-			self.og8L = QtGui.QLabel(translate('magicStart', 'Wood thickness:'), self)
+			self.og8L = QtGui.QLabel(translate('magicStart', 'Drawer wood thickness:'), self)
 			self.og8L.move(10, rowgap+3)
 
+			rowgap += 20
+
+			# label
+			self.og81L = QtGui.QLabel(translate('magicStart', 'Front:'), self)
+			self.og81L.move(10, rowgap+3)
+			
+			# label
+			self.og82L = QtGui.QLabel(translate('magicStart', 'Sides:'), self)
+			self.og82L.move(110, rowgap+3)
+			
+			# label
+			self.og83L = QtGui.QLabel(translate('magicStart', 'Bottom:'), self)
+			self.og83L.move(210, rowgap+3)
+			
+			rowgap += 20
+			
 			# text input
-			self.og8E = QtGui.QLineEdit(self)
-			self.og8E.setText(MagicPanels.unit2gui(self.gThick))
-			self.og8E.setFixedWidth(90)
-			self.og8E.move(120, rowgap)
+			self.og81E = QtGui.QLineEdit(self)
+			self.og81E.setText(MagicPanels.unit2gui(18))
+			self.og81E.setFixedWidth(80)
+			self.og81E.move(10, rowgap)
+			
+			# text input
+			self.og82E = QtGui.QLineEdit(self)
+			self.og82E.setText(MagicPanels.unit2gui(18))
+			self.og82E.setFixedWidth(80)
+			self.og82E.move(110, rowgap)
+			
+			# text input
+			self.og83E = QtGui.QLineEdit(self)
+			self.og83E.setText(MagicPanels.unit2gui(3))
+			self.og83E.setFixedWidth(80)
+			self.og83E.move(210, rowgap)
 			
 			rowgap += 30
 			
@@ -1392,12 +1398,80 @@ def showQtGUI():
 			self.og94E.setFixedWidth(80)
 			self.og94E.move(310, rowgap)
 
-			rowgap += 40
+			rowgap += 50
 
+			# button
+			self.og4B1 = QtGui.QPushButton(translate('magicStart', 'calculate gap for drawer'), self)
+			self.og4B1.clicked.connect(self.calculateSingleDrawer)
+			self.og4B1.setFixedWidth(area)
+			self.og4B1.setFixedHeight(40)
+			self.og4B1.move(10, rowgap)
+			
+			rowgap += 60
+			
+			# label
+			self.og2L = QtGui.QLabel(translate('magicStart', 'Gap start XYZ:'), self)
+			self.og2L.move(10, rowgap+3)
+			
+			# text input
+			self.og2E = QtGui.QLineEdit(self)
+			self.og2E.setText(MagicPanels.unit2gui(0))
+			self.og2E.setFixedWidth(90)
+			self.og2E.move(120, rowgap)
+			
+			# text input
+			self.og3E = QtGui.QLineEdit(self)
+			self.og3E.setText(MagicPanels.unit2gui(0))
+			self.og3E.setFixedWidth(90)
+			self.og3E.move(220, rowgap)
+			
+			# text input
+			self.og4E = QtGui.QLineEdit(self)
+			self.og4E.setText(MagicPanels.unit2gui(0))
+			self.og4E.setFixedWidth(90)
+			self.og4E.move(320, rowgap)
+			
+			rowgap += 30
+
+			# label
+			self.og5L = QtGui.QLabel(translate('magicStart', 'Gap width:'), self)
+			self.og5L.move(10, rowgap+3)
+			
+			# text input
+			self.og5E = QtGui.QLineEdit(self)
+			self.og5E.setText(MagicPanels.unit2gui(400))
+			self.og5E.setFixedWidth(290)
+			self.og5E.move(120, rowgap)
+			
+			rowgap += 30
+			
+			# label
+			self.og6L = QtGui.QLabel(translate('magicStart', 'Gap height:'), self)
+			self.og6L.move(10, rowgap+3)
+
+			# text input
+			self.og6E = QtGui.QLineEdit(self)
+			self.og6E.setText(MagicPanels.unit2gui(150))
+			self.og6E.setFixedWidth(290)
+			self.og6E.move(120, rowgap)
+			
+			rowgap += 30
+			
+			# label
+			self.og7L = QtGui.QLabel(translate('magicStart', 'Gap depth:'), self)
+			self.og7L.move(10, rowgap+3)
+
+			# text input
+			self.og7E = QtGui.QLineEdit(self)
+			self.og7E.setText(MagicPanels.unit2gui(350))
+			self.og7E.setFixedWidth(290)
+			self.og7E.move(120, rowgap)
+			
+		
 			# button
 			self.og9B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.og9B1.clicked.connect(self.createObject)
-			self.og9B1.setFixedWidth(self.toolSW - 20)
+			self.og9B1.setFixedWidth(area)
 			self.og9B1.setFixedHeight(createSize)
 			self.og9B1.move(10, createRow)
 
@@ -1415,7 +1489,12 @@ def showQtGUI():
 			self.og7L.hide()
 			self.og7E.hide()
 			self.og8L.hide()
-			self.og8E.hide()
+			self.og81L.hide()
+			self.og82L.hide()
+			self.og83L.hide()
+			self.og81E.hide()
+			self.og82E.hide()
+			self.og83E.hide()
 			self.og9L.hide()
 			self.og91L.hide()
 			self.og92L.hide()
@@ -1426,6 +1505,11 @@ def showQtGUI():
 			self.og93E.hide()
 			self.og94E.hide()
 			self.og9B1.hide()
+			self.og10L.hide()
+			self.og101L.hide()
+			self.og102L.hide()
+			self.og101E.hide()
+			self.og102E.hide()
 			
 			# ############################################################################
 			# GUI for drawer series GAP (hidden by default)
@@ -1439,7 +1523,7 @@ def showQtGUI():
 			self.ods1i.setWordWrap(True)
 			self.ods1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
 			
-			rowds += 120
+			rowds += 130
 			
 			# label
 			self.ods2L = QtGui.QLabel(translate('magicStart', 'Number of drawers:'), self)
@@ -1450,30 +1534,87 @@ def showQtGUI():
 			self.ods2E.setText("4")
 			self.ods2E.setFixedWidth(80)
 			self.ods2E.move(180, rowds)
+		
+			rowds += 30
+		
+			# label
+			self.ods11L = QtGui.QLabel(translate('magicStart', 'Drawer front overlap:'), self)
+			self.ods11L.setFixedWidth(150)
+			self.ods11L.move(10, rowds+3)
+
+			rowds += 20
+
+			# label
+			self.ods111L = QtGui.QLabel(translate('magicStart', 'Horizontal:'), self)
+			self.ods111L.move(10, rowds+3)
+			
+			# label
+			self.ods112L = QtGui.QLabel(translate('magicStart', 'Vertical:'), self)
+			self.ods112L.move(110, rowds+3)
+			
+			# label
+			self.ods113L = QtGui.QLabel(translate('magicStart', 'Space between:'), self)
+			self.ods113L.move(210, rowds+3)
+			
+			rowds += 20
+			
+			# text input
+			self.ods111E = QtGui.QLineEdit(self)
+			self.ods111E.setText(MagicPanels.unit2gui(9))
+			self.ods111E.setFixedWidth(90)
+			self.ods111E.move(10, rowds)
+			
+			# text input
+			self.ods112E = QtGui.QLineEdit(self)
+			self.ods112E.setText(MagicPanels.unit2gui(7))
+			self.ods112E.setFixedWidth(90)
+			self.ods112E.move(110, rowds)
+		
+			# text input
+			self.ods113E = QtGui.QLineEdit(self)
+			self.ods113E.setText(MagicPanels.unit2gui(4))
+			self.ods113E.setFixedWidth(90)
+			self.ods113E.move(210, rowds)
 			
 			rowds += 30
 			
 			# label
-			self.ods3L = QtGui.QLabel(translate('magicStart', 'Wood thickness:'), self)
+			self.ods3L = QtGui.QLabel(translate('magicStart', 'Drawer wood thickness:'), self)
 			self.ods3L.move(10, rowds+3)
 
-			# text input
-			self.ods3E = QtGui.QLineEdit(self)
-			self.ods3E.setText(MagicPanels.unit2gui(self.gThick))
-			self.ods3E.setFixedWidth(80)
-			self.ods3E.move(180, rowds)
-			
-			rowds += 30
+			rowds += 20
+
+			# label
+			self.ods31L = QtGui.QLabel(translate('magicStart', 'Front:'), self)
+			self.ods31L.move(10, rowds+3)
 			
 			# label
-			self.ods40L = QtGui.QLabel(translate('magicStart', 'Space between drawers:'), self)
-			self.ods40L.move(10, rowds+3)
-
+			self.ods32L = QtGui.QLabel(translate('magicStart', 'Sides:'), self)
+			self.ods32L.move(110, rowds+3)
+			
+			# label
+			self.ods33L = QtGui.QLabel(translate('magicStart', 'Bottom:'), self)
+			self.ods33L.move(210, rowds+3)
+			
+			rowds += 20
+			
 			# text input
-			self.ods40E = QtGui.QLineEdit(self)
-			self.ods40E.setText(MagicPanels.unit2gui(2))
-			self.ods40E.setFixedWidth(80)
-			self.ods40E.move(180, rowds)
+			self.ods31E = QtGui.QLineEdit(self)
+			self.ods31E.setText(MagicPanels.unit2gui(18))
+			self.ods31E.setFixedWidth(80)
+			self.ods31E.move(10, rowds)
+			
+			# text input
+			self.ods32E = QtGui.QLineEdit(self)
+			self.ods32E.setText(MagicPanels.unit2gui(18))
+			self.ods32E.setFixedWidth(80)
+			self.ods32E.move(110, rowds)
+			
+			# text input
+			self.ods33E = QtGui.QLineEdit(self)
+			self.ods33E.setText(MagicPanels.unit2gui(3))
+			self.ods33E.setFixedWidth(80)
+			self.ods33E.move(210, rowds)
 			
 			rowds += 30
 			
@@ -1498,7 +1639,11 @@ def showQtGUI():
 			# label
 			self.ods44L = QtGui.QLabel(translate('magicStart', 'Bottom:'), self)
 			self.ods44L.move(310, rowds+3)
-
+			
+			# label
+			self.ods45L = QtGui.QLabel(translate('magicStart', 'Back sides:'), self)
+			self.ods45L.move(410, rowds+3)
+			
 			rowds += 20
 			
 			# text input
@@ -1524,17 +1669,23 @@ def showQtGUI():
 			self.ods44E.setText(MagicPanels.unit2gui(10))
 			self.ods44E.setFixedWidth(80)
 			self.ods44E.move(310, rowds)
-
+			
+			# text input
+			self.ods45E = QtGui.QLineEdit(self)
+			self.ods45E.setText(MagicPanels.unit2gui(87))
+			self.ods45E.setFixedWidth(80)
+			self.ods45E.move(410, rowds)
+			
 			rowds += 30
 			
 			# button
 			self.ods5B = QtGui.QPushButton(translate('magicStart', 'calculate gaps'), self)
 			self.ods5B.clicked.connect(self.calculateDrawerSeries)
-			self.ods5B.setFixedWidth(200)
+			self.ods5B.setFixedWidth(area)
 			self.ods5B.setFixedHeight(40)
 			self.ods5B.move(10, rowds)
 			
-			rowds += 40 + 20
+			rowds += 60
 			
 			# label
 			self.ods6L = QtGui.QLabel(translate('magicStart', 'Gap start XYZ:'), self)
@@ -1567,7 +1718,7 @@ def showQtGUI():
 			# text input
 			self.ods7E = QtGui.QLineEdit(self)
 			self.ods7E.setText(MagicPanels.unit2gui(400))
-			self.ods7E.setFixedWidth(90)
+			self.ods7E.setFixedWidth(290)
 			self.ods7E.move(150, rowds)
 			
 			rowds += 30
@@ -1579,7 +1730,7 @@ def showQtGUI():
 			# text input
 			self.ods8E = QtGui.QLineEdit(self)
 			self.ods8E.setText(MagicPanels.unit2gui(150))
-			self.ods8E.setFixedWidth(90)
+			self.ods8E.setFixedWidth(290)
 			self.ods8E.move(150, rowds)
 			
 			rowds += 30
@@ -1591,7 +1742,7 @@ def showQtGUI():
 			# text input
 			self.ods9E = QtGui.QLineEdit(self)
 			self.ods9E.setText(MagicPanels.unit2gui(350))
-			self.ods9E.setFixedWidth(90)
+			self.ods9E.setFixedWidth(290)
 			self.ods9E.move(150, rowds)
 			
 			rowds += 30
@@ -1599,7 +1750,7 @@ def showQtGUI():
 			# button
 			self.ods10B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ods10B.clicked.connect(self.createObject)
-			self.ods10B.setFixedWidth(self.toolSW - 20)
+			self.ods10B.setFixedWidth(area)
 			self.ods10B.setFixedHeight(createSize)
 			self.ods10B.move(10, createRow)
 
@@ -1608,18 +1759,23 @@ def showQtGUI():
 			self.ods2L.hide()
 			self.ods2E.hide()
 			self.ods3L.hide()
-			self.ods3E.hide()
-			self.ods40L.hide()
-			self.ods40E.hide()
+			self.ods31L.hide()
+			self.ods32L.hide()
+			self.ods33L.hide()
+			self.ods31E.hide()
+			self.ods32E.hide()
+			self.ods33E.hide()
 			self.ods4L.hide()
 			self.ods41L.hide()
 			self.ods42L.hide()
 			self.ods43L.hide()
 			self.ods44L.hide()
+			self.ods45L.hide()
 			self.ods41E.hide()
 			self.ods42E.hide()
 			self.ods43E.hide()
 			self.ods44E.hide()
+			self.ods45E.hide()
 			self.ods5B.hide()
 			self.ods6L.hide()
 			self.ods61E.hide()
@@ -1632,6 +1788,13 @@ def showQtGUI():
 			self.ods9L.hide()
 			self.ods9E.hide()
 			self.ods10B.hide()
+			self.ods11L.hide()
+			self.ods111L.hide()
+			self.ods112L.hide()
+			self.ods113L.hide()
+			self.ods111E.hide()
+			self.ods112E.hide()
+			self.ods113E.hide()
 			
 			# ############################################################################
 			# GUI for Front from GAP (hidden by default)
@@ -1712,7 +1875,7 @@ def showQtGUI():
 			# button
 			self.ofr4B1 = QtGui.QPushButton(translate('magicStart', 'calculate front'), self)
 			self.ofr4B1.clicked.connect(self.calculateFrontFromGap)
-			self.ofr4B1.setFixedWidth(200)
+			self.ofr4B1.setFixedWidth(area)
 			self.ofr4B1.setFixedHeight(40)
 			self.ofr4B1.move(10, rowfront)
 			
@@ -1769,7 +1932,7 @@ def showQtGUI():
 			# button
 			self.ofr8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ofr8B1.clicked.connect(self.createObject)
-			self.ofr8B1.setFixedWidth(self.toolSW - 20)
+			self.ofr8B1.setFixedWidth(area)
 			self.ofr8B1.setFixedHeight(createSize)
 			self.ofr8B1.move(10, createRow)
 
@@ -1864,7 +2027,7 @@ def showQtGUI():
 			# button
 			self.ofglass6B = QtGui.QPushButton(translate('magicStart', 'calculate front with glass'), self)
 			self.ofglass6B.clicked.connect(self.calculateFrontWithGlass)
-			self.ofglass6B.setFixedWidth(200)
+			self.ofglass6B.setFixedWidth(area)
 			self.ofglass6B.setFixedHeight(40)
 			self.ofglass6B.move(10, rowfglass)
 			
@@ -1933,7 +2096,7 @@ def showQtGUI():
 			# button
 			self.ofglass11B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ofglass11B.clicked.connect(self.createObject)
-			self.ofglass11B.setFixedWidth(self.toolSW - 20)
+			self.ofglass11B.setFixedWidth(area)
 			self.ofglass11B.setFixedHeight(createSize)
 			self.ofglass11B.move(10, createRow)
 
@@ -2029,7 +2192,7 @@ def showQtGUI():
 			# button
 			self.odf6B = QtGui.QPushButton(translate('magicStart', 'calculate decorative front'), self)
 			self.odf6B.clicked.connect(self.calculateDecorativeFront)
-			self.odf6B.setFixedWidth(200)
+			self.odf6B.setFixedWidth(area)
 			self.odf6B.setFixedHeight(40)
 			self.odf6B.move(10, rowodf)
 			
@@ -2098,7 +2261,7 @@ def showQtGUI():
 			# button
 			self.odf11B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.odf11B.clicked.connect(self.createObject)
-			self.odf11B.setFixedWidth(self.toolSW - 20)
+			self.odf11B.setFixedWidth(area)
 			self.odf11B.setFixedHeight(createSize)
 			self.odf11B.move(10, createRow)
 
@@ -2178,7 +2341,7 @@ def showQtGUI():
 			# button
 			self.ofdec5B = QtGui.QPushButton(translate('magicStart', 'calculate front decoration'), self)
 			self.ofdec5B.clicked.connect(self.calculateFrontDecoration)
-			self.ofdec5B.setFixedWidth(200)
+			self.ofdec5B.setFixedWidth(area)
 			self.ofdec5B.setFixedHeight(40)
 			self.ofdec5B.move(10, rowfdec)
 			
@@ -2235,7 +2398,7 @@ def showQtGUI():
 			# button
 			self.ofdec9B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ofdec9B.clicked.connect(self.createObject)
-			self.ofdec9B.setFixedWidth(self.toolSW - 20)
+			self.ofdec9B.setFixedWidth(area)
 			self.ofdec9B.setFixedHeight(createSize)
 			self.ofdec9B.move(10, createRow)
 
@@ -2323,7 +2486,7 @@ def showQtGUI():
 			# button
 			self.offrame6B = QtGui.QPushButton(translate('magicStart', 'calculate Face Frame'), self)
 			self.offrame6B.clicked.connect(self.calculateFaceframeFromGap)
-			self.offrame6B.setFixedWidth(200)
+			self.offrame6B.setFixedWidth(area)
 			self.offrame6B.setFixedHeight(40)
 			self.offrame6B.move(10, rowfframe)
 			
@@ -2380,7 +2543,7 @@ def showQtGUI():
 			# button
 			self.offrame10B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.offrame10B.clicked.connect(self.createObject)
-			self.offrame10B.setFixedWidth(self.toolSW - 20)
+			self.offrame10B.setFixedWidth(area)
 			self.offrame10B.setFixedHeight(createSize)
 			self.offrame10B.move(10, createRow)
 
@@ -2498,7 +2661,7 @@ def showQtGUI():
 			# button
 			self.osh4B1 = QtGui.QPushButton(translate('magicStart', 'calculate shelf'), self)
 			self.osh4B1.clicked.connect(self.calculateShelfFromGap)
-			self.osh4B1.setFixedWidth(200)
+			self.osh4B1.setFixedWidth(area)
 			self.osh4B1.setFixedHeight(40)
 			self.osh4B1.move(10, rowshelf)
 			
@@ -2555,7 +2718,7 @@ def showQtGUI():
 			# button
 			self.osh8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.osh8B1.clicked.connect(self.createObject)
-			self.osh8B1.setFixedWidth(self.toolSW - 20)
+			self.osh8B1.setFixedWidth(area)
 			self.osh8B1.setFixedHeight(createSize)
 			self.osh8B1.move(10, createRow)
 
@@ -2626,7 +2789,7 @@ def showQtGUI():
 			# button
 			self.oshs3B = QtGui.QPushButton(translate('magicStart', 'calculate shelf series'), self)
 			self.oshs3B.clicked.connect(self.calculateShelfSeries)
-			self.oshs3B.setFixedWidth(200)
+			self.oshs3B.setFixedWidth(area)
 			self.oshs3B.setFixedHeight(40)
 			self.oshs3B.move(10, rowsseries)
 			
@@ -2695,7 +2858,7 @@ def showQtGUI():
 			# button
 			self.oshs8B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.oshs8B.clicked.connect(self.createObject)
-			self.oshs8B.setFixedWidth(self.toolSW - 20)
+			self.oshs8B.setFixedWidth(area)
 			self.oshs8B.setFixedHeight(createSize)
 			self.oshs8B.move(10, createRow)
 
@@ -2811,7 +2974,7 @@ def showQtGUI():
 			# button
 			self.oside4B1 = QtGui.QPushButton(translate('magicStart', 'calculate side'), self)
 			self.oside4B1.clicked.connect(self.calculateSideFromGap)
-			self.oside4B1.setFixedWidth(200)
+			self.oside4B1.setFixedWidth(area)
 			self.oside4B1.setFixedHeight(40)
 			self.oside4B1.move(10, rowside)
 			
@@ -2868,7 +3031,7 @@ def showQtGUI():
 			# button
 			self.oside8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.oside8B1.clicked.connect(self.createObject)
-			self.oside8B1.setFixedWidth(self.toolSW - 20)
+			self.oside8B1.setFixedWidth(area)
 			self.oside8B1.setFixedHeight(createSize)
 			self.oside8B1.move(10, createRow)
 
@@ -2991,7 +3154,7 @@ def showQtGUI():
 			# button
 			self.ocs4B1 = QtGui.QPushButton(translate('magicStart', 'calculate center side'), self)
 			self.ocs4B1.clicked.connect(self.calculateCenterSideFromGap)
-			self.ocs4B1.setFixedWidth(200)
+			self.ocs4B1.setFixedWidth(area)
 			self.ocs4B1.setFixedHeight(40)
 			self.ocs4B1.move(10, rowcside)
 			
@@ -3048,7 +3211,7 @@ def showQtGUI():
 			# button
 			self.ocs8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ocs8B1.clicked.connect(self.createObject)
-			self.ocs8B1.setFixedWidth(self.toolSW - 20)
+			self.ocs8B1.setFixedWidth(area)
 			self.ocs8B1.setFixedHeight(createSize)
 			self.ocs8B1.move(10, createRow)
 
@@ -3131,7 +3294,7 @@ def showQtGUI():
 			# button
 			self.osdec5B = QtGui.QPushButton(translate('magicStart', 'calculate side decoration'), self)
 			self.osdec5B.clicked.connect(self.calculateSideDecoration)
-			self.osdec5B.setFixedWidth(200)
+			self.osdec5B.setFixedWidth(area)
 			self.osdec5B.setFixedHeight(40)
 			self.osdec5B.move(10, rowsdec)
 			
@@ -3188,7 +3351,7 @@ def showQtGUI():
 			# button
 			self.osdec9B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.osdec9B.clicked.connect(self.createObject)
-			self.osdec9B.setFixedWidth(self.toolSW - 20)
+			self.osdec9B.setFixedWidth(area)
 			self.osdec9B.setFixedHeight(createSize)
 			self.osdec9B.move(10, createRow)
 
@@ -3469,7 +3632,12 @@ def showQtGUI():
 			self.og7L.hide()
 			self.og7E.hide()
 			self.og8L.hide()
-			self.og8E.hide()
+			self.og81L.hide()
+			self.og82L.hide()
+			self.og83L.hide()
+			self.og81E.hide()
+			self.og82E.hide()
+			self.og83E.hide()
 			self.og9L.hide()
 			self.og91L.hide()
 			self.og92L.hide()
@@ -3480,24 +3648,34 @@ def showQtGUI():
 			self.og93E.hide()
 			self.og94E.hide()
 			self.og9B1.hide()
+			self.og10L.hide()
+			self.og101L.hide()
+			self.og102L.hide()
+			self.og101E.hide()
+			self.og102E.hide()
 		
 			# drawer series
 			self.ods1i.hide()
 			self.ods2L.hide()
 			self.ods2E.hide()
 			self.ods3L.hide()
-			self.ods3E.hide()
-			self.ods40L.hide()
-			self.ods40E.hide()
+			self.ods31L.hide()
+			self.ods32L.hide()
+			self.ods33L.hide()
+			self.ods31E.hide()
+			self.ods32E.hide()
+			self.ods33E.hide()
 			self.ods4L.hide()
 			self.ods41L.hide()
 			self.ods42L.hide()
 			self.ods43L.hide()
 			self.ods44L.hide()
+			self.ods45L.hide()
 			self.ods41E.hide()
 			self.ods42E.hide()
 			self.ods43E.hide()
 			self.ods44E.hide()
+			self.ods45E.hide()
 			self.ods5B.hide()
 			self.ods6L.hide()
 			self.ods61E.hide()
@@ -3510,6 +3688,13 @@ def showQtGUI():
 			self.ods9L.hide()
 			self.ods9E.hide()
 			self.ods10B.hide()
+			self.ods11L.hide()
+			self.ods111L.hide()
+			self.ods112L.hide()
+			self.ods113L.hide()
+			self.ods111E.hide()
+			self.ods112E.hide()
+			self.ods113E.hide()
 		
 			# foot
 			self.of1L.hide()
@@ -3835,7 +4020,12 @@ def showQtGUI():
 				self.og7L.show()
 				self.og7E.show()
 				self.og8L.show()
-				self.og8E.show()
+				self.og81L.show()
+				self.og82L.show()
+				self.og83L.show()
+				self.og81E.show()
+				self.og82E.show()
+				self.og83E.show()
 				self.og9L.show()
 				self.og91L.show()
 				self.og92L.show()
@@ -3846,15 +4036,65 @@ def showQtGUI():
 				self.og93E.show()
 				self.og94E.show()
 				self.og9B1.show()
+				self.og10L.show()
+				self.og101L.show()
+				self.og102L.show()
+				self.og101E.show()
+				self.og102E.show()
+
+			if iType == "drawer hafele":
+				self.ods1i.show()
+				self.ods2L.show()
+				self.ods2E.show()
+				self.ods3L.show()
+				self.ods31L.show()
+				self.ods32L.show()
+				self.ods33L.show()
+				self.ods31E.show()
+				self.ods32E.show()
+				self.ods33E.show()
+				self.ods4L.show()
+				self.ods41L.show()
+				self.ods42L.show()
+				self.ods43L.show()
+				self.ods44L.show()
+				self.ods45L.show()
+				self.ods41E.show()
+				self.ods42E.show()
+				self.ods43E.show()
+				self.ods44E.show()
+				self.ods45E.show()
+				self.ods5B.show()
+				self.ods6L.show()
+				self.ods61E.show()
+				self.ods62E.show()
+				self.ods63E.show()
+				self.ods7L.show()
+				self.ods7E.show()
+				self.ods8L.show()
+				self.ods8E.show()
+				self.ods9L.show()
+				self.ods9E.show()
+				self.ods10B.show()
+				self.ods11L.show()
+				self.ods111L.show()
+				self.ods112L.show()
+				self.ods113L.show()
+				self.ods111E.show()
+				self.ods112E.show()
+				self.ods113E.show()
 
 			if iType == "drawer series":
 				self.ods1i.show()
 				self.ods2L.show()
 				self.ods2E.show()
 				self.ods3L.show()
-				self.ods3E.show()
-				self.ods40L.show()
-				self.ods40E.show()
+				self.ods31L.show()
+				self.ods32L.show()
+				self.ods33L.show()
+				self.ods31E.show()
+				self.ods32E.show()
+				self.ods33E.show()
 				self.ods4L.show()
 				self.ods41L.show()
 				self.ods42L.show()
@@ -3876,6 +4116,13 @@ def showQtGUI():
 				self.ods9L.show()
 				self.ods9E.show()
 				self.ods10B.show()
+				self.ods11L.show()
+				self.ods111L.show()
+				self.ods112L.show()
+				self.ods113L.show()
+				self.ods111E.show()
+				self.ods112E.show()
+				self.ods113E.show()
 
 			if iType == "foot":
 				self.of1L.show()
@@ -4063,7 +4310,11 @@ def showQtGUI():
 			if selectedIndex == 62:
 				self.setGUIInfo("side decoration")
 				self.helpInfo.setText(self.gHelpInfoF62)
-				
+			
+			if selectedIndex == 71 or selectedIndex == 72:
+				self.setGUIInfo("drawer hafele")
+				self.helpInfo.setText(self.gHelpInfoF30)
+			
 			# ####################################################
 			# custom settings
 			# ####################################################
@@ -4099,6 +4350,16 @@ def showQtGUI():
 			else:
 				self.of4E.setText(MagicPanels.unit2gui(18))
 			
+			if selectedIndex == 21:
+				self.og10L.setText(translate('magicStart', 'Drawer front overlap:'))
+				self.og101E.setText(MagicPanels.unit2gui(9))
+				self.og102E.setText(MagicPanels.unit2gui(7))
+			
+			if selectedIndex == 22:
+				self.og10L.setText(translate('magicStart', 'Drawer front offset:'))
+				self.og101E.setText(MagicPanels.unit2gui(2))
+				self.og102E.setText(MagicPanels.unit2gui(2))
+				
 			if selectedIndex == 23:
 				self.ofr7E.setText(MagicPanels.unit2gui(18))
 				self.ofr81E.setText(MagicPanels.unit2gui(9))
@@ -4112,6 +4373,26 @@ def showQtGUI():
 				self.ofr82E.setText(MagicPanels.unit2gui(2))
 				self.ofr83E.setText(MagicPanels.unit2gui(2))
 				self.ofr84E.setText(MagicPanels.unit2gui(2))
+			
+			if selectedIndex == 30:
+				self.ods11L.setText(translate('magicStart', 'Drawer front overlap:'))
+				self.ods111E.setText(MagicPanels.unit2gui(9))
+				self.ods112E.setText(MagicPanels.unit2gui(7))
+				self.ods113E.setText(MagicPanels.unit2gui(4))
+				self.ods41E.setText(MagicPanels.unit2gui(26))
+				self.ods31E.setText(MagicPanels.unit2gui(18))
+				self.ods32E.setText(MagicPanels.unit2gui(18))
+				self.ods33E.setText(MagicPanels.unit2gui(3))
+			
+			if selectedIndex == 31:
+				self.ods11L.setText(translate('magicStart', 'Drawer front offset:'))
+				self.ods111E.setText(MagicPanels.unit2gui(4))
+				self.ods112E.setText(MagicPanels.unit2gui(4))
+				self.ods113E.setText(MagicPanels.unit2gui(4))
+				self.ods41E.setText(MagicPanels.unit2gui(26))
+				self.ods31E.setText(MagicPanels.unit2gui(18))
+				self.ods32E.setText(MagicPanels.unit2gui(18))
+				self.ods33E.setText(MagicPanels.unit2gui(3))
 			
 			if selectedIndex == 35 or selectedIndex == 36:
 				self.oWidthE.setText(MagicPanels.unit2gui(900))
@@ -4208,6 +4489,26 @@ def showQtGUI():
 				self.oDepthE.setText(MagicPanels.unit2gui(330.2 - 19.05)) # 13 inch without front
 				self.oThickE.setText(MagicPanels.unit2gui(19.05)) 
 			
+			if selectedIndex == 71:
+				self.ods11L.setText(translate('magicStart', 'Drawer front overlap:'))
+				self.ods111E.setText(MagicPanels.unit2gui(18))
+				self.ods112E.setText(MagicPanels.unit2gui(18))
+				self.ods113E.setText(MagicPanels.unit2gui(4))
+				self.ods41E.setText(MagicPanels.unit2gui(75))
+				self.ods31E.setText(MagicPanels.unit2gui(18))
+				self.ods32E.setText(MagicPanels.unit2gui(16))
+				self.ods33E.setText(MagicPanels.unit2gui(16))
+			
+			if selectedIndex == 72:
+				self.ods11L.setText(translate('magicStart', 'Drawer front offset:'))
+				self.ods111E.setText(MagicPanels.unit2gui(4))
+				self.ods112E.setText(MagicPanels.unit2gui(4))
+				self.ods113E.setText(MagicPanels.unit2gui(4))
+				self.ods41E.setText(MagicPanels.unit2gui(75))
+				self.ods31E.setText(MagicPanels.unit2gui(18))
+				self.ods32E.setText(MagicPanels.unit2gui(16))
+				self.ods33E.setText(MagicPanels.unit2gui(16))
+				
 		# ############################################################################
 		def createObject(self):
 
@@ -4413,7 +4714,13 @@ def showQtGUI():
 
 			if self.gSelectedFurniture == "F70":
 				self.mergeF("Brackets_camar_807.FCStd", "other")
-				
+			
+			if self.gSelectedFurniture == "F71":
+				self.createF71()
+
+			if self.gSelectedFurniture == "F72":
+				self.createF72()
+
 			# here to allow recalculation with selection
 			FreeCADGui.Selection.clearSelection()
 
@@ -4433,7 +4740,7 @@ def showQtGUI():
 				icon = '<img src="'+ filename + '" width="200" height="200" align="right">'
 				self.si.hide()
 				self.si = QtGui.QLabel(icon, self)
-				self.si.move(250, 50)
+				self.si.move(self.toolSW - 200 - 10, 50)
 				self.si.show()
 
 		# ############################################################################
@@ -4527,7 +4834,7 @@ def showQtGUI():
 		# ############################################################################
 		def helpSHOW(self):
 			
-			self.resize(self.toolSW + 400, self.toolSH)
+			self.resize(self.toolSW + self.helpSW, self.toolSH)
 			self.helpBSHOW.hide()
 			self.helpBHIDE.show()
 			self.helpInfo.show()
@@ -5708,7 +6015,7 @@ def showQtGUI():
 			gd = abs(float(face1.CenterOfMass.y) - float(edge3.CenterOfMass.y))
 			
 			num = int(self.ods2E.text())
-			offset = MagicPanels.unit2value(self.ods40E.text())
+			offset = 0 # offset between gaps
 			
 			width = gw
 			height = ( gh - ((num + 1) * offset) ) / num
@@ -6309,7 +6616,12 @@ def showQtGUI():
 			height = MagicPanels.unit2value(self.og6E.text())
 			depth = MagicPanels.unit2value(self.og7E.text())
 			
-			thick = MagicPanels.unit2value(self.og8E.text())
+			frontOffsetH = 2 * MagicPanels.unit2value(self.og101E.text())
+			frontOffsetV = 2 * MagicPanels.unit2value(self.og102E.text())
+			
+			thickFront = MagicPanels.unit2value(self.og81E.text())
+			thickSides = MagicPanels.unit2value(self.og82E.text())
+			thickBottom = MagicPanels.unit2value(self.og83E.text())
 			
 			sidesOF = MagicPanels.unit2value(self.og91E.text())
 			sideOF = sidesOF / 2
@@ -6324,60 +6636,61 @@ def showQtGUI():
 					# Left Side
 					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
 					o1.Label = translate('magicStart', 'Drawer Left')
-					o1.Length = thick
-					o1.Height = height - bottomOF - topOF - 3
+					o1.Length = thickSides
+					o1.Height = height - bottomOF - topOF - thickBottom
 					o1.Width = depth - backOF
-					pl = FreeCAD.Vector(p0X + sideOF, p0Y, p0Z + bottomOF + 3)
+					pl = FreeCAD.Vector(p0X + sideOF, p0Y, p0Z + bottomOF + thickBottom)
 					o1.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o1, 0, self.gColor, "color")
+					MagicPanels.setColor(o1, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
 					o2.Label = translate('magicStart', 'Drawer Right')
-					o2.Length = thick
-					o2.Height = height - bottomOF - topOF - 3
+					o2.Length = thickSides
+					o2.Height = height - bottomOF - topOF - thickBottom
 					o2.Width = depth - backOF
-					pl = FreeCAD.Vector(p0X + width - thick - sideOF, p0Y, p0Z + bottomOF + 3)
+					pl = FreeCAD.Vector(p0X + width - thickSides - sideOF, p0Y, p0Z + bottomOF + thickBottom)
 					o2.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o2, 0, self.gColor, "color")
+					MagicPanels.setColor(o2, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
 					o3.Label = translate('magicStart', 'Drawer Back')
-					o3.Length = width - (2 * thick) - sidesOF
-					o3.Height = height - bottomOF - topOF - 3
-					o3.Width = thick
-					pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + depth - thick - backOF, p0Z + bottomOF + 3)
+					o3.Length = width - (2 * thickSides) - sidesOF
+					o3.Height = height - bottomOF - topOF - thickBottom
+					o3.Width = thickSides
+					pl = FreeCAD.Vector(p0X + sideOF + thickSides, p0Y + depth - thickSides - backOF, p0Z + bottomOF + thickBottom)
 					o3.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o3, 0, self.gColor, "color")
+					MagicPanels.setColor(o3, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
 					o4.Label = translate('magicStart', 'Drawer Front Inside')
-					o4.Length = width - (2 * thick) - sidesOF
-					o4.Height = height - bottomOF - topOF - 3
-					o4.Width = thick
-					pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y, p0Z + bottomOF + 3)
+					o4.Length = width - (2 * thickSides) - sidesOF
+					o4.Height = height - bottomOF - topOF - thickBottom
+					o4.Width = thickSides
+					pl = FreeCAD.Vector(p0X + sideOF + thickSides, p0Y, p0Z + bottomOF + thickBottom)
 					o4.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o4, 0, self.gColor, "color")
+					MagicPanels.setColor(o4, 0, (1.0, 1.0, 1.0, 1.0), "color")
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
 					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
 					o5.Length = width - sidesOF
-					o5.Height = 3
+					o5.Height = thickBottom
 					o5.Width = depth - backOF
 					pl = FreeCAD.Vector(p0X + sideOF, p0Y, p0Z  + bottomOF)
 					o5.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o5, 0, self.gColor, "color")
+					colors = [ self.gColor, self.gColor, self.gColor, self.gColor, self.gColor, (1.0, 1.0, 1.0, 1.0) ]
+					MagicPanels.setColor(o5, 0, colors, "color")
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
 					o6.Label = translate('magicStart', 'Drawer Front Outside')
-					o6.Length = width + thick
-					o6.Height = height + thick - 4
-					o6.Width = thick
-					pl = FreeCAD.Vector(p0X - (thick / 2), p0Y - thick, p0Z - (thick / 2) + 2)
+					o6.Length = width + frontOffsetH
+					o6.Height = height + frontOffsetV
+					o6.Width = thickFront
+					pl = FreeCAD.Vector(p0X - (frontOffsetH / 2), p0Y - thickFront, p0Z - (frontOffsetV / 2))
 					o6.Placement = FreeCAD.Placement(pl, self.gR)
 					MagicPanels.setColor(o6, 0, self.gColor, "color")
 
@@ -6393,60 +6706,61 @@ def showQtGUI():
 					# Left Side
 					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
 					o1.Label = translate('magicStart', 'Drawer Left')
-					o1.Length = thick
-					o1.Height = height - bottomOF - topOF - 3
+					o1.Length = thickSides
+					o1.Height = height - bottomOF - topOF - thickBottom
 					o1.Width = depth - backOF
-					pl = FreeCAD.Vector(p0X - sideOF - thick, p0Y - depth + backOF, p0Z + bottomOF + 3)
+					pl = FreeCAD.Vector(p0X - sideOF - thickSides, p0Y - depth + backOF, p0Z + bottomOF + thickBottom)
 					o1.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o1, 0, self.gColor, "color")
+					MagicPanels.setColor(o1, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
 					o2.Label = translate('magicStart', 'Drawer Right')
-					o2.Length = thick
-					o2.Height = height - bottomOF - topOF - 3
+					o2.Length = thickSides
+					o2.Height = height - bottomOF - topOF - thickBottom
 					o2.Width = depth - backOF
-					pl = FreeCAD.Vector(p0X - width + sideOF, p0Y - depth + backOF, p0Z + bottomOF + 3)
+					pl = FreeCAD.Vector(p0X - width + sideOF, p0Y - depth + backOF, p0Z + bottomOF + thickBottom)
 					o2.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o2, 0, self.gColor, "color")
+					MagicPanels.setColor(o2, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
 					o3.Label = translate('magicStart', 'Drawer Back')
-					o3.Length = width - (2 * thick) - sidesOF
-					o3.Height = height - bottomOF - topOF - 3
-					o3.Width = thick
-					pl = FreeCAD.Vector(p0X - width + sideOF + thick, p0Y - depth + backOF, p0Z + bottomOF + 3)
+					o3.Length = width - (2 * thickSides) - sidesOF
+					o3.Height = height - bottomOF - topOF - thickBottom
+					o3.Width = thickSides
+					pl = FreeCAD.Vector(p0X - width + sideOF + thickSides, p0Y - depth + backOF, p0Z + bottomOF + thickBottom)
 					o3.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o3, 0, self.gColor, "color")
+					MagicPanels.setColor(o3, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
 					o4.Label = translate('magicStart', 'Drawer Front Inside')
-					o4.Length = width - (2 * thick) - sidesOF
-					o4.Height = height - bottomOF - topOF - 3
-					o4.Width = thick
-					pl = FreeCAD.Vector(p0X - width + sideOF + thick, p0Y - thick, p0Z + bottomOF + 3)
+					o4.Length = width - (2 * thickSides) - sidesOF
+					o4.Height = height - bottomOF - topOF - thickBottom
+					o4.Width = thickSides
+					pl = FreeCAD.Vector(p0X - width + sideOF + thickSides, p0Y - thickSides, p0Z + bottomOF + thickBottom)
 					o4.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o4, 0, self.gColor, "color")
+					MagicPanels.setColor(o4, 0, (1.0, 1.0, 1.0, 1.0), "color")
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
 					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
 					o5.Length = width - sidesOF
-					o5.Height = 3
+					o5.Height = thickBottom
 					o5.Width = depth - backOF
 					pl = FreeCAD.Vector(p0X - width + sideOF, p0Y - depth + backOF, p0Z  + bottomOF)
 					o5.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o5, 0, self.gColor, "color")
+					colors = [ self.gColor, self.gColor, self.gColor, self.gColor, self.gColor, (1.0, 1.0, 1.0, 1.0) ]
+					MagicPanels.setColor(o5, 0, colors, "color")
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
 					o6.Label = translate('magicStart', 'Drawer Front Outside')
-					o6.Length = width + thick
-					o6.Height = height + thick - 4
-					o6.Width = thick
-					pl = FreeCAD.Vector(p0X - width - (thick / 2), p0Y, p0Z - (thick / 2) + 2)
+					o6.Length = width + frontOffsetH
+					o6.Height = height + frontOffsetV
+					o6.Width = thickFront
+					pl = FreeCAD.Vector(p0X - width - (frontOffsetH / 2), p0Y, p0Z - (frontOffsetV / 2))
 					o6.Placement = FreeCAD.Placement(pl, self.gR)
 					MagicPanels.setColor(o6, 0, self.gColor, "color")
 
@@ -6465,59 +6779,63 @@ def showQtGUI():
 					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
 					o1.Label = translate('magicStart', 'Drawer Left')
 					o1.Length = depth - backOF
-					o1.Height = height - bottomOF - topOF - 3
-					o1.Width = thick
-					pl = FreeCAD.Vector(p0X, p0Y - sideOF - thick, p0Z + bottomOF + 3)
+					o1.Height = height - bottomOF - topOF - thickBottom
+					o1.Width = thickSides
+					pl = FreeCAD.Vector(p0X, p0Y - sideOF - thickSides, p0Z + bottomOF + thickBottom)
 					o1.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o1, 0, self.gColor, "color")
+					MagicPanels.setColor(o1, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
 					o2.Label = translate('magicStart', 'Drawer Right')
 					o2.Length = depth - backOF
-					o2.Height = height - bottomOF - topOF - 3
-					o2.Width = thick
-					pl = FreeCAD.Vector(p0X, p0Y - width + sideOF, p0Z + bottomOF + 3)
+					o2.Height = height - bottomOF - topOF - thickBottom
+					o2.Width = thickSides
+					pl = FreeCAD.Vector(p0X, p0Y - width + sideOF, p0Z + bottomOF + thickBottom)
 					o2.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o2, 0, self.gColor, "color")
+					MagicPanels.setColor(o2, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
 					o3.Label = translate('magicStart', 'Drawer Back')
-					o3.Length = thick
-					o3.Height = height - bottomOF - topOF - 3
-					o3.Width = width - (2 * thick) - sidesOF
-					pl = FreeCAD.Vector(p0X + depth - thick - backOF, p0Y - width + sideOF + thick, p0Z + bottomOF + 3)
+					o3.Length = thickSides
+					o3.Height = height - bottomOF - topOF - thickBottom
+					o3.Width = width - (2 * thickSides) - sidesOF
+					px = p0X + depth - thickSides - backOF
+					py = p0Y - width + sideOF + thickSides
+					pz = p0Z + bottomOF + thickBottom
+					pl = FreeCAD.Vector(px, py, pz)
 					o3.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o3, 0, self.gColor, "color")
+					MagicPanels.setColor(o3, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
 					o4.Label = translate('magicStart', 'Drawer Front Inside')
-					o4.Length = thick
-					o4.Height = height - bottomOF - topOF - 3
-					o4.Width = width - (2 * thick) - sidesOF
-					pl = FreeCAD.Vector(p0X, p0Y - width + sideOF + thick, p0Z + bottomOF + 3)
+					o4.Length = thickSides
+					o4.Height = height - bottomOF - topOF - thickBottom
+					o4.Width = width - (2 * thickSides) - sidesOF
+					pl = FreeCAD.Vector(p0X, p0Y - width + sideOF + thickSides, p0Z + bottomOF + thickBottom)
 					o4.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o4, 0, self.gColor, "color")
+					MagicPanels.setColor(o4, 0, (1.0, 1.0, 1.0, 1.0), "color")
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
 					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
 					o5.Length = depth - backOF
-					o5.Height = 3
+					o5.Height = thickBottom
 					o5.Width = width - sidesOF
 					pl = FreeCAD.Vector(p0X, p0Y - width + sideOF, p0Z  + bottomOF)
 					o5.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o5, 0, self.gColor, "color")
+					colors = [ self.gColor, self.gColor, self.gColor, self.gColor, self.gColor, (1.0, 1.0, 1.0, 1.0) ]
+					MagicPanels.setColor(o5, 0, colors, "color")
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
 					o6.Label = translate('magicStart', 'Drawer Front Outside')
-					o6.Length = thick
-					o6.Height = height + thick - 4
-					o6.Width = width + thick
-					pl = FreeCAD.Vector(p0X - thick, p0Y - width - (thick / 2), p0Z - (thick / 2) + 2)
+					o6.Length = thickFront
+					o6.Height = height + frontOffsetV
+					o6.Width = width + frontOffsetH
+					pl = FreeCAD.Vector(p0X - thickFront, p0Y - width - (frontOffsetH / 2), p0Z - (frontOffsetV / 2))
 					o6.Placement = FreeCAD.Placement(pl, self.gR)
 					MagicPanels.setColor(o6, 0, self.gColor, "color")
 
@@ -6529,64 +6847,65 @@ def showQtGUI():
 					FreeCAD.ActiveDocument.recompute()
 		
 				if self.gSingleDrawerDirection == "-":
-				
+
 					# Left Side
 					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
 					o1.Label = translate('magicStart', 'Drawer Left')
 					o1.Length = depth - backOF
-					o1.Height = height - bottomOF - topOF - 3
-					o1.Width = thick
-					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF, p0Z + bottomOF + 3)
+					o1.Height = height - bottomOF - topOF - thickBottom
+					o1.Width = thickSides
+					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF, p0Z + bottomOF + thickBottom)
 					o1.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o1, 0, self.gColor, "color")
+					MagicPanels.setColor(o1, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
 					o2.Label = translate('magicStart', 'Drawer Right')
 					o2.Length = depth - backOF
-					o2.Height = height - bottomOF - topOF - 3
-					o2.Width = thick
-					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + width - sideOF - thick, p0Z + bottomOF + 3)
+					o2.Height = height - bottomOF - topOF - thickBottom
+					o2.Width = thickSides
+					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + width - sideOF - thickSides, p0Z + bottomOF + thickBottom)
 					o2.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o2, 0, self.gColor, "color")
+					MagicPanels.setColor(o2, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
 					o3.Label = translate('magicStart', 'Drawer Back')
-					o3.Length = thick
-					o3.Height = height - bottomOF - topOF - 3
-					o3.Width = width - (2 * thick) - sidesOF
-					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF + thick, p0Z + bottomOF + 3)
+					o3.Length = thickSides
+					o3.Height = height - bottomOF - topOF - thickBottom
+					o3.Width = width - (2 * thickSides) - sidesOF
+					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF + thickSides, p0Z + bottomOF + thickBottom)
 					o3.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o3, 0, self.gColor, "color")
+					MagicPanels.setColor(o3, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
 					o4.Label = translate('magicStart', 'Drawer Front Inside')
-					o4.Length = thick
-					o4.Height = height - bottomOF - topOF - 3
-					o4.Width = width - (2 * thick) - sidesOF
-					pl = FreeCAD.Vector(p0X - thick, p0Y + sideOF + thick, p0Z + bottomOF + 3)
+					o4.Length = thickSides
+					o4.Height = height - bottomOF - topOF - thickBottom
+					o4.Width = width - (2 * thickSides) - sidesOF
+					pl = FreeCAD.Vector(p0X - thickSides, p0Y + sideOF + thickSides, p0Z + bottomOF + thickBottom)
 					o4.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o4, 0, self.gColor, "color")
+					MagicPanels.setColor(o4, 0, (1.0, 1.0, 1.0, 1.0), "color")
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
 					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
 					o5.Length = depth - backOF
-					o5.Height = 3
+					o5.Height = thickBottom
 					o5.Width = width - sidesOF
 					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF, p0Z  + bottomOF)
 					o5.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o5, 0, self.gColor, "color")
+					colors = [ self.gColor, self.gColor, self.gColor, self.gColor, self.gColor, (1.0, 1.0, 1.0, 1.0) ]
+					MagicPanels.setColor(o5, 0, colors, "color")
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
 					o6.Label = translate('magicStart', 'Drawer Front Outside')
-					o6.Length = thick
-					o6.Height = height + thick - 4
-					o6.Width = width + thick
-					pl = FreeCAD.Vector(p0X, p0Y - (thick / 2), p0Z - (thick / 2) + 2)
+					o6.Length = thickFront
+					o6.Height = height + frontOffsetV
+					o6.Width = width + frontOffsetH
+					pl = FreeCAD.Vector(p0X, p0Y - (frontOffsetH / 2), p0Z - (frontOffsetV / 2))
 					o6.Placement = FreeCAD.Placement(pl, self.gR)
 					MagicPanels.setColor(o6, 0, self.gColor, "color")
 
@@ -6608,7 +6927,12 @@ def showQtGUI():
 			height = MagicPanels.unit2value(self.og6E.text())
 			depth = MagicPanels.unit2value(self.og7E.text())
 			
-			thick = MagicPanels.unit2value(self.og8E.text())
+			frontOffsetH = MagicPanels.unit2value(self.og101E.text())
+			frontOffsetV = MagicPanels.unit2value(self.og102E.text())
+			
+			thickFront = MagicPanels.unit2value(self.og81E.text())
+			thickSides = MagicPanels.unit2value(self.og82E.text())
+			thickBottom = MagicPanels.unit2value(self.og83E.text())
 			
 			sidesOF = MagicPanels.unit2value(self.og91E.text())
 			sideOF = sidesOF / 2
@@ -6623,60 +6947,61 @@ def showQtGUI():
 					# Left Side
 					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
 					o1.Label = translate('magicStart', 'Drawer Left')
-					o1.Length = thick
-					o1.Height = height - bottomOF - topOF - 3
-					o1.Width = depth - backOF - thick
-					pl = FreeCAD.Vector(p0X + sideOF, p0Y + thick, p0Z + bottomOF + 3)
+					o1.Length = thickSides
+					o1.Height = height - bottomOF - topOF - thickBottom
+					o1.Width = depth - backOF - thickFront
+					pl = FreeCAD.Vector(p0X + sideOF, p0Y + thickFront, p0Z + bottomOF + thickBottom)
 					o1.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o1, 0, self.gColor, "color")
+					MagicPanels.setColor(o1, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
 					o2.Label = translate('magicStart', 'Drawer Right')
-					o2.Length = thick
-					o2.Height = height - bottomOF - topOF - 3
-					o2.Width = depth - backOF - thick
-					pl = FreeCAD.Vector(p0X + width - thick - sideOF, p0Y + thick, p0Z + bottomOF + 3)
+					o2.Length = thickSides
+					o2.Height = height - bottomOF - topOF - thickBottom
+					o2.Width = depth - backOF - thickFront
+					pl = FreeCAD.Vector(p0X + width - thickSides - sideOF, p0Y + thickFront, p0Z + bottomOF + thickBottom)
 					o2.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o2, 0, self.gColor, "color")
+					MagicPanels.setColor(o2, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
 					o3.Label = translate('magicStart', 'Drawer Back')
-					o3.Length = width - (2 * thick) - sidesOF
-					o3.Height = height - bottomOF - topOF - 3
-					o3.Width = thick
-					pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + depth - thick - backOF, p0Z + bottomOF + 3)
+					o3.Length = width - (2 * thickSides) - sidesOF
+					o3.Height = height - bottomOF - topOF - thickBottom
+					o3.Width = thickSides
+					pl = FreeCAD.Vector(p0X + sideOF + thickSides, p0Y + depth - thickSides - backOF, p0Z + bottomOF + thickBottom)
 					o3.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o3, 0, self.gColor, "color")
+					MagicPanels.setColor(o3, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
 					o4.Label = translate('magicStart', 'Drawer Front Inside')
-					o4.Length = width - (2 * thick) - sidesOF
-					o4.Height = height - bottomOF - topOF - 3
-					o4.Width = thick
-					pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + thick, p0Z + bottomOF + 3)
+					o4.Length = width - (2 * thickSides) - sidesOF
+					o4.Height = height - bottomOF - topOF - thickBottom
+					o4.Width = thickSides
+					pl = FreeCAD.Vector(p0X + sideOF + thickSides, p0Y + thickFront, p0Z + bottomOF + thickBottom)
 					o4.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o4, 0, self.gColor, "color")
+					MagicPanels.setColor(o4, 0, (1.0, 1.0, 1.0, 1.0), "color")
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
 					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
 					o5.Length = width - sidesOF
-					o5.Height = 3
-					o5.Width = depth - backOF - thick
-					pl = FreeCAD.Vector(p0X + sideOF, p0Y + thick, p0Z  + bottomOF)
+					o5.Height = thickBottom
+					o5.Width = depth - backOF - thickFront
+					pl = FreeCAD.Vector(p0X + sideOF, p0Y + thickFront, p0Z  + bottomOF)
 					o5.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o5, 0, self.gColor, "color")
+					colors = [ self.gColor, self.gColor, self.gColor, self.gColor, self.gColor, (1.0, 1.0, 1.0, 1.0) ]
+					MagicPanels.setColor(o5, 0, colors, "color")
 
 					# Front outside make inside as well
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
 					o6.Label = translate('magicStart', 'Drawer Front Outside')
-					o6.Length = width - 4
-					o6.Height = height - 4
-					o6.Width = thick
-					pl = FreeCAD.Vector(p0X + 2, p0Y, p0Z + 2)
+					o6.Length = width - ( 2 * frontOffsetH )
+					o6.Height = height - ( 2 * frontOffsetV )
+					o6.Width = thickFront
+					pl = FreeCAD.Vector(p0X + frontOffsetH, p0Y, p0Z + frontOffsetV)
 					o6.Placement = FreeCAD.Placement(pl, self.gR)
 					MagicPanels.setColor(o6, 0, self.gColor, "color")
 
@@ -6692,60 +7017,61 @@ def showQtGUI():
 					# Left Side
 					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
 					o1.Label = translate('magicStart', 'Drawer Left')
-					o1.Length = thick
-					o1.Height = height - bottomOF - topOF - 3
-					o1.Width = depth - backOF - thick
-					pl = FreeCAD.Vector(p0X - sideOF - thick, p0Y - depth + backOF, p0Z + bottomOF + 3)
+					o1.Length = thickSides
+					o1.Height = height - bottomOF - topOF - thickBottom
+					o1.Width = depth - backOF - thickFront
+					pl = FreeCAD.Vector(p0X - sideOF - thickSides, p0Y - depth + backOF, p0Z + bottomOF + thickBottom)
 					o1.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o1, 0, self.gColor, "color")
+					MagicPanels.setColor(o1, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
 					o2.Label = translate('magicStart', 'Drawer Right')
-					o2.Length = thick
-					o2.Height = height - bottomOF - topOF - 3
-					o2.Width = depth - backOF - thick
-					pl = FreeCAD.Vector(p0X - width + sideOF, p0Y - depth + backOF, p0Z + bottomOF + 3)
+					o2.Length = thickSides
+					o2.Height = height - bottomOF - topOF - thickBottom
+					o2.Width = depth - backOF - thickFront
+					pl = FreeCAD.Vector(p0X - width + sideOF, p0Y - depth + backOF, p0Z + bottomOF + thickBottom)
 					o2.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o2, 0, self.gColor, "color")
+					MagicPanels.setColor(o2, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
 					o3.Label = translate('magicStart', 'Drawer Back')
-					o3.Length = width - (2 * thick) - sidesOF
-					o3.Height = height - bottomOF - topOF - 3
-					o3.Width = thick
-					pl = FreeCAD.Vector(p0X - width + sideOF + thick, p0Y - depth + backOF, p0Z + bottomOF + 3)
+					o3.Length = width - (2 * thickSides) - sidesOF
+					o3.Height = height - bottomOF - topOF - thickBottom
+					o3.Width = thickSides
+					pl = FreeCAD.Vector(p0X - width + sideOF + thickSides, p0Y - depth + backOF, p0Z + bottomOF + thickBottom)
 					o3.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o3, 0, self.gColor, "color")
+					MagicPanels.setColor(o3, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
 					o4.Label = translate('magicStart', 'Drawer Front Inside')
-					o4.Length = width - (2 * thick) - sidesOF
-					o4.Height = height - bottomOF - topOF - 3
-					o4.Width = thick
-					pl = FreeCAD.Vector(p0X - width + sideOF + thick, p0Y - (2 * thick), p0Z + bottomOF + 3)
+					o4.Length = width - (2 * thickSides) - sidesOF
+					o4.Height = height - bottomOF - topOF - thickBottom
+					o4.Width = thickSides
+					pl = FreeCAD.Vector(p0X - width + sideOF + thickSides, p0Y - thickSides - thickFront, p0Z + bottomOF + thickBottom)
 					o4.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o4, 0, self.gColor, "color")
+					MagicPanels.setColor(o4, 0, (1.0, 1.0, 1.0, 1.0), "color")
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
 					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
 					o5.Length = width - sidesOF
-					o5.Height = 3
-					o5.Width = depth - backOF - thick
+					o5.Height = thickBottom
+					o5.Width = depth - backOF - thickFront
 					pl = FreeCAD.Vector(p0X - width + sideOF, p0Y - depth + backOF, p0Z  + bottomOF)
 					o5.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o5, 0, self.gColor, "color")
+					colors = [ self.gColor, self.gColor, self.gColor, self.gColor, self.gColor, (1.0, 1.0, 1.0, 1.0) ]
+					MagicPanels.setColor(o5, 0, colors, "color")
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
 					o6.Label = translate('magicStart', 'Drawer Front Outside')
-					o6.Length = width - 4
-					o6.Height = height - 4
-					o6.Width = thick
-					pl = FreeCAD.Vector(p0X - width + 2, p0Y - thick, p0Z + 2)
+					o6.Length = width - ( 2 * frontOffsetH )
+					o6.Height = height - ( 2 * frontOffsetV )
+					o6.Width = thickFront
+					pl = FreeCAD.Vector(p0X - width + frontOffsetH, p0Y - thickFront, p0Z + frontOffsetV)
 					o6.Placement = FreeCAD.Placement(pl, self.gR)
 					MagicPanels.setColor(o6, 0, self.gColor, "color")
 
@@ -6759,64 +7085,68 @@ def showQtGUI():
 			if self.gSingleDrawerPlane == "Y":
 			
 				if self.gSingleDrawerDirection == "+":
-				
+
 					# Left Side
 					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
 					o1.Label = translate('magicStart', 'Drawer Left')
-					o1.Length = depth - backOF - thick
-					o1.Height = height - bottomOF - topOF - 3
-					o1.Width = thick
-					pl = FreeCAD.Vector(p0X + thick, p0Y - sideOF - thick, p0Z + bottomOF + 3)
+					o1.Length = depth - backOF - thickFront
+					o1.Height = height - bottomOF - topOF - thickBottom
+					o1.Width = thickSides
+					pl = FreeCAD.Vector(p0X + thickFront, p0Y - sideOF - thickSides, p0Z + bottomOF + thickBottom)
 					o1.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o1, 0, self.gColor, "color")
+					MagicPanels.setColor(o1, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
 					o2.Label = translate('magicStart', 'Drawer Right')
-					o2.Length = depth - backOF - thick
-					o2.Height = height - bottomOF - topOF - 3
-					o2.Width = thick
-					pl = FreeCAD.Vector(p0X + thick, p0Y - width + sideOF, p0Z + bottomOF + 3)
+					o2.Length = depth - backOF - thickFront
+					o2.Height = height - bottomOF - topOF - thickBottom
+					o2.Width = thickSides
+					pl = FreeCAD.Vector(p0X + thickFront, p0Y - width + sideOF, p0Z + bottomOF + thickBottom)
 					o2.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o2, 0, self.gColor, "color")
+					MagicPanels.setColor(o2, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
 					o3.Label = translate('magicStart', 'Drawer Back')
-					o3.Length = thick
-					o3.Height = height - bottomOF - topOF - 3
-					o3.Width = width - (2 * thick) - sidesOF
-					pl = FreeCAD.Vector(p0X + depth - backOF - thick, p0Y - width + sideOF + thick, p0Z + bottomOF + 3)
+					o3.Length = thickSides
+					o3.Height = height - bottomOF - topOF - thickBottom
+					o3.Width = width - (2 * thickSides) - sidesOF
+					px = p0X + depth - backOF - thickSides
+					py = p0Y - width + sideOF + thickSides
+					pz = p0Z + bottomOF + thickBottom
+					pl = FreeCAD.Vector(px, py, pz)
 					o3.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o3, 0, self.gColor, "color")
+					MagicPanels.setColor(o3, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
 					o4.Label = translate('magicStart', 'Drawer Front Inside')
-					o4.Length = thick
-					o4.Height = height - bottomOF - topOF - 3
-					o4.Width = width - (2 * thick) - sidesOF
-					pl = FreeCAD.Vector(p0X + thick, p0Y - width + sideOF + thick, p0Z + bottomOF + 3)
+					o4.Length = thickSides
+					o4.Height = height - bottomOF - topOF - thickBottom
+					o4.Width = width - (2 * thickSides) - sidesOF
+					pl = FreeCAD.Vector(p0X + thickFront, p0Y - width + sideOF + thickSides, p0Z + bottomOF + thickBottom)
 					o4.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o4, 0, self.gColor, "color")
+					MagicPanels.setColor(o4, 0, (1.0, 1.0, 1.0, 1.0), "color")
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
 					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
-					o5.Length = depth - backOF - thick
-					o5.Height = 3
+					o5.Length = depth - backOF - thickFront
+					o5.Height = thickBottom
 					o5.Width = width - sidesOF
-					pl = FreeCAD.Vector(p0X + thick, p0Y - width + sideOF, p0Z  + bottomOF)
+					pl = FreeCAD.Vector(p0X + thickFront, p0Y - width + sideOF, p0Z  + bottomOF)
 					o5.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o5, 0, self.gColor, "color")
+					colors = [ self.gColor, self.gColor, self.gColor, self.gColor, self.gColor, (1.0, 1.0, 1.0, 1.0) ]
+					MagicPanels.setColor(o5, 0, colors, "color")
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
 					o6.Label = translate('magicStart', 'Drawer Front Outside')
-					o6.Length = thick
-					o6.Height = height - 4
-					o6.Width = width - 4
-					pl = FreeCAD.Vector(p0X, p0Y - width + 2, p0Z + 2)
+					o6.Length = thickFront
+					o6.Height = height - ( 2 * frontOffsetV )
+					o6.Width = width - ( 2 * frontOffsetH )
+					pl = FreeCAD.Vector(p0X, p0Y - width + frontOffsetH, p0Z + frontOffsetV)
 					o6.Placement = FreeCAD.Placement(pl, self.gR)
 					MagicPanels.setColor(o6, 0, self.gColor, "color")
 
@@ -6828,64 +7158,65 @@ def showQtGUI():
 					FreeCAD.ActiveDocument.recompute()
 		
 				if self.gSingleDrawerDirection == "-":
-				
+
 					# Left Side
 					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
 					o1.Label = translate('magicStart', 'Drawer Left')
-					o1.Length = depth - backOF - thick
-					o1.Height = height - bottomOF - topOF - 3
-					o1.Width = thick
-					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF, p0Z + bottomOF + 3)
+					o1.Length = depth - backOF - thickFront
+					o1.Height = height - bottomOF - topOF - thickBottom
+					o1.Width = thickSides
+					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF, p0Z + bottomOF + thickBottom)
 					o1.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o1, 0, self.gColor, "color")
+					MagicPanels.setColor(o1, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
 					o2.Label = translate('magicStart', 'Drawer Right')
-					o2.Length = depth - backOF - thick
-					o2.Height = height - bottomOF - topOF - 3
-					o2.Width = thick
-					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + width - sideOF - thick, p0Z + bottomOF + 3)
+					o2.Length = depth - backOF - thickFront
+					o2.Height = height - bottomOF - topOF - thickBottom
+					o2.Width = thickSides
+					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + width - sideOF - thickSides, p0Z + bottomOF + thickBottom)
 					o2.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o2, 0, self.gColor, "color")
+					MagicPanels.setColor(o2, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
 					o3.Label = translate('magicStart', 'Drawer Back')
-					o3.Length = thick
-					o3.Height = height - bottomOF - topOF - 3
-					o3.Width = width - (2 * thick) - sidesOF
-					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF + thick, p0Z + bottomOF + 3)
+					o3.Length = thickSides
+					o3.Height = height - bottomOF - topOF - thickBottom
+					o3.Width = width - (2 * thickSides) - sidesOF
+					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF + thickSides, p0Z + bottomOF + thickBottom)
 					o3.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o3, 0, self.gColor, "color")
+					MagicPanels.setColor(o3, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
 					o4.Label = translate('magicStart', 'Drawer Front Inside')
-					o4.Length = thick
-					o4.Height = height - bottomOF - topOF - 3
-					o4.Width = width - (2 * thick) - sidesOF
-					pl = FreeCAD.Vector(p0X - (2 * thick), p0Y + sideOF + thick, p0Z + bottomOF + 3)
+					o4.Length = thickSides
+					o4.Height = height - bottomOF - topOF - thickBottom
+					o4.Width = width - (2 * thickSides) - sidesOF
+					pl = FreeCAD.Vector(p0X - thickSides - thickFront, p0Y + sideOF + thickSides, p0Z + bottomOF + thickBottom)
 					o4.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o4, 0, self.gColor, "color")
+					MagicPanels.setColor(o4, 0, (1.0, 1.0, 1.0, 1.0), "color")
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
 					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
-					o5.Length = depth - backOF - thick
-					o5.Height = 3
+					o5.Length = depth - backOF - thickFront
+					o5.Height = thickBottom
 					o5.Width = width - sidesOF
 					pl = FreeCAD.Vector(p0X - depth + backOF, p0Y + sideOF, p0Z  + bottomOF)
 					o5.Placement = FreeCAD.Placement(pl, self.gR)
-					MagicPanels.setColor(o5, 0, self.gColor, "color")
+					colors = [ self.gColor, self.gColor, self.gColor, self.gColor, self.gColor, (1.0, 1.0, 1.0, 1.0) ]
+					MagicPanels.setColor(o5, 0, colors, "color")
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
 					o6.Label = translate('magicStart', 'Drawer Front Outside')
-					o6.Length = thick
-					o6.Height = height - 4
-					o6.Width = width - 4
-					pl = FreeCAD.Vector(p0X - thick, p0Y + 2, p0Z + 2)
+					o6.Length = thickFront
+					o6.Height = height - ( 2 * frontOffsetV )
+					o6.Width = width - ( 2 * frontOffsetH )
+					pl = FreeCAD.Vector(p0X - thickFront, p0Y + frontOffsetH, p0Z + frontOffsetV)
 					o6.Placement = FreeCAD.Placement(pl, self.gR)
 					MagicPanels.setColor(o6, 0, self.gColor, "color")
 
@@ -7264,8 +7595,16 @@ def showQtGUI():
 			gapY = MagicPanels.unit2value(self.ods9E.text())
 			
 			num = int(self.ods2E.text())
-			offset = MagicPanels.unit2value(self.ods40E.text())
-			thick = MagicPanels.unit2value(self.ods3E.text())
+			
+			offset = 0 # there will be no offset between drawer gaps
+			
+			frontOffsetH = 2 * MagicPanels.unit2value(self.ods111E.text())
+			frontOffsetV = 2 * MagicPanels.unit2value(self.ods112E.text())
+			frontOffsetB = MagicPanels.unit2value(self.ods113E.text())
+			
+			thickFront = MagicPanels.unit2value(self.ods31E.text())
+			thickSides = MagicPanels.unit2value(self.ods32E.text())
+			thickBottom = MagicPanels.unit2value(self.ods33E.text())
 			
 			sidesOF = MagicPanels.unit2value(self.ods41E.text())
 			sideOF = sidesOF / 2
@@ -7273,68 +7612,73 @@ def showQtGUI():
 			topOF = MagicPanels.unit2value(self.ods43E.text())
 			bottomOF = MagicPanels.unit2value(self.ods44E.text())
 			
+			zoffsets = (num - 1) * frontOffsetB
+			zspace = (num * gapZ) + frontOffsetV
+			frontHeight = (zspace - zoffsets) / num
+			
 			for i in range(0, num):
 			
-				p0Z = startZ + (i * offset) + (i * gapZ)
+				p0Z = startZ + (i * (gapZ + offset))
 			
 				# Left Side
 				o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSLeft")
 				o1.Label = translate('magicStart', 'DS ' + str(i+1) + ' Left')
-				o1.Length = thick
-				o1.Height = gapZ - bottomOF - topOF - 3
+				o1.Length = thickSides
+				o1.Height = gapZ - bottomOF - topOF - thickBottom
 				o1.Width = gapY - backOF
-				pl = FreeCAD.Vector(p0X + sideOF, p0Y, p0Z + bottomOF + 3)
+				pl = FreeCAD.Vector(p0X + sideOF, p0Y, p0Z + bottomOF + thickBottom)
 				o1.Placement = FreeCAD.Placement(pl, self.gR)
-				MagicPanels.setColor(o1, 0, self.gColor, "color")
+				MagicPanels.setColor(o1, 0, (1.0, 1.0, 1.0, 1.0), "color")
 				
 				# Right Side
 				o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSRight")
 				o2.Label = translate('magicStart', 'DS ' + str(i+1) + ' Right')
-				o2.Length = thick
-				o2.Height = gapZ - bottomOF - topOF - 3
+				o2.Length = thickSides
+				o2.Height = gapZ - bottomOF - topOF - thickBottom
 				o2.Width = gapY - backOF
-				pl = FreeCAD.Vector(p0X + gapX - thick - sideOF, p0Y, p0Z + bottomOF + 3)
+				pl = FreeCAD.Vector(p0X + gapX - thickSides - sideOF, p0Y, p0Z + bottomOF + thickBottom)
 				o2.Placement = FreeCAD.Placement(pl, self.gR)
-				MagicPanels.setColor(o2, 0, self.gColor, "color")
+				MagicPanels.setColor(o2, 0, (1.0, 1.0, 1.0, 1.0), "color")
 				
 				# Back
 				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSBack")
 				o3.Label = translate('magicStart', 'DS ' + str(i+1) + ' Back')
-				o3.Length = gapX - (2 * thick) - sidesOF
-				o3.Height = gapZ - bottomOF - topOF - 3
-				o3.Width = thick
-				pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + gapY - thick - backOF, p0Z + bottomOF + 3)
+				o3.Length = gapX - (2 * thickSides) - sidesOF
+				o3.Height = gapZ - bottomOF - topOF - thickBottom
+				o3.Width = thickSides
+				pl = FreeCAD.Vector(p0X + sideOF + thickSides, p0Y + gapY - thickSides - backOF, p0Z + bottomOF + thickBottom)
 				o3.Placement = FreeCAD.Placement(pl, self.gR)
-				MagicPanels.setColor(o3, 0, self.gColor, "color")
+				MagicPanels.setColor(o3, 0, (1.0, 1.0, 1.0, 1.0), "color")
 				
 				# Front inside
 				o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSFrontInside")
 				o4.Label = translate('magicStart', 'DS ' + str(i+1) + ' Front Inside')
-				o4.Length = gapX - (2 * thick) - sidesOF
-				o4.Height = gapZ - bottomOF - topOF - 3
-				o4.Width = thick
-				pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y, p0Z + bottomOF + 3)
+				o4.Length = gapX - (2 * thickSides) - sidesOF
+				o4.Height = gapZ - bottomOF - topOF - thickBottom
+				o4.Width = thickSides
+				pl = FreeCAD.Vector(p0X + sideOF + thickSides, p0Y, p0Z + bottomOF + thickBottom)
 				o4.Placement = FreeCAD.Placement(pl, self.gR)
-				MagicPanels.setColor(o4, 0, self.gColor, "color")
+				MagicPanels.setColor(o4, 0, (1.0, 1.0, 1.0, 1.0), "color")
 
 				# HDF bottom
 				o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSBottom")
 				o5.Label = translate('magicStart', 'DS ' + str(i+1) + ' Bottom HDF')
 				o5.Length = gapX - sidesOF
-				o5.Height = 3
+				o5.Height = thickBottom
 				o5.Width = gapY - backOF
 				pl = FreeCAD.Vector(p0X + sideOF, p0Y, p0Z  + bottomOF)
 				o5.Placement = FreeCAD.Placement(pl, self.gR)
-				MagicPanels.setColor(o5, 0, self.gColor, "color")
+				colors = [ self.gColor, self.gColor, self.gColor, self.gColor, self.gColor, (1.0, 1.0, 1.0, 1.0) ]
+				MagicPanels.setColor(o5, 0, colors, "color")
 
 				# Front outside
 				o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSFrontOutside")
 				o6.Label = translate('magicStart', 'DS ' + str(i+1) + ' Front Outside')
-				o6.Length = gapX + thick
-				o6.Height = gapZ + offset
-				o6.Width = thick
-				pz = p0Z - offset + (i * offset)
-				pl = FreeCAD.Vector(p0X - (thick / 2), p0Y - thick, pz)
+				o6.Length = gapX + frontOffsetH
+				o6.Height = frontHeight
+				o6.Width = thickFront
+				pz = (startZ - (frontOffsetV / 2)) + (i * (frontHeight + frontOffsetB)) 
+				pl = FreeCAD.Vector(p0X - (frontOffsetH / 2), p0Y - thickFront, pz)
 				o6.Placement = FreeCAD.Placement(pl, self.gR)
 				MagicPanels.setColor(o6, 0, self.gColor, "color")
 
@@ -7357,8 +7701,16 @@ def showQtGUI():
 			gapY = MagicPanels.unit2value(self.ods9E.text())
 			
 			num = int(self.ods2E.text())
-			offset = MagicPanels.unit2value(self.ods40E.text())
-			thick = MagicPanels.unit2value(self.ods3E.text())
+			
+			offset = 0 # there will be no offset between drawer gaps
+
+			frontOffsetH = 2 * MagicPanels.unit2value(self.ods111E.text())
+			frontOffsetV = 2 * MagicPanels.unit2value(self.ods112E.text())
+			frontOffsetB = MagicPanels.unit2value(self.ods113E.text())
+
+			thickFront = MagicPanels.unit2value(self.ods31E.text())
+			thickSides = MagicPanels.unit2value(self.ods32E.text())
+			thickBottom = MagicPanels.unit2value(self.ods33E.text())
 			
 			sidesOF = MagicPanels.unit2value(self.ods41E.text())
 			sideOF = sidesOF / 2
@@ -7366,67 +7718,73 @@ def showQtGUI():
 			topOF = MagicPanels.unit2value(self.ods43E.text())
 			bottomOF = MagicPanels.unit2value(self.ods44E.text())
 			
+			zoffsets = (num - 1) * frontOffsetB
+			zspace = (num * gapZ) - frontOffsetV
+			frontHeight = (zspace - zoffsets) / num
+
 			for i in range(0, num):
 			
-				p0Z = startZ + (i * offset) + (i * gapZ)
+				p0Z = startZ + (i * (gapZ + offset))
 				
 				# Left Side
 				o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSLeft")
 				o1.Label = translate('magicStart', 'DS ' + str(i+1) + ' Left')
-				o1.Length = thick
-				o1.Height = gapZ - bottomOF - topOF - 3
-				o1.Width = gapY - backOF - thick
-				pl = FreeCAD.Vector(p0X + sideOF, p0Y + thick, p0Z + bottomOF + 3)
+				o1.Length = thickSides
+				o1.Height = gapZ - bottomOF - topOF - thickBottom
+				o1.Width = gapY - backOF - thickFront
+				pl = FreeCAD.Vector(p0X + sideOF, p0Y + thickFront, p0Z + bottomOF + thickBottom)
 				o1.Placement = FreeCAD.Placement(pl, self.gR)
-				MagicPanels.setColor(o1, 0, self.gColor, "color")
+				MagicPanels.setColor(o1, 0, (1.0, 1.0, 1.0, 1.0), "color")
 				
 				# Right Side
 				o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSRight")
 				o2.Label = translate('magicStart', 'DS ' + str(i+1) + ' Right')
-				o2.Length = thick
-				o2.Height = gapZ - bottomOF - topOF - 3
-				o2.Width = gapY - backOF - thick
-				pl = FreeCAD.Vector(p0X + gapX - thick - sideOF, p0Y + thick, p0Z + bottomOF + 3)
+				o2.Length = thickSides
+				o2.Height = gapZ - bottomOF - topOF - thickBottom
+				o2.Width = gapY - backOF - thickFront
+				pl = FreeCAD.Vector(p0X + gapX - sideOF - thickSides, p0Y + thickFront, p0Z + bottomOF + thickBottom)
 				o2.Placement = FreeCAD.Placement(pl, self.gR)
-				MagicPanels.setColor(o2, 0, self.gColor, "color")
+				MagicPanels.setColor(o2, 0, (1.0, 1.0, 1.0, 1.0), "color")
 				
 				# Back
 				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSBack")
 				o3.Label = translate('magicStart', 'DS ' + str(i+1) + ' Back')
-				o3.Length = gapX - (2 * thick) - sidesOF
-				o3.Height = gapZ - bottomOF - topOF - 3
-				o3.Width = thick
-				pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + gapY - thick - backOF, p0Z + bottomOF + 3)
+				o3.Length = gapX - (2 * thickSides) - sidesOF
+				o3.Height = gapZ - bottomOF - topOF - thickBottom
+				o3.Width = thickSides
+				pl = FreeCAD.Vector(p0X + sideOF + thickSides, p0Y + gapY - backOF - thickSides, p0Z + bottomOF + thickBottom)
 				o3.Placement = FreeCAD.Placement(pl, self.gR)
-				MagicPanels.setColor(o3, 0, self.gColor, "color")
+				MagicPanels.setColor(o3, 0, (1.0, 1.0, 1.0, 1.0), "color")
 				
 				# Front inside
 				o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSFrontInside")
 				o4.Label = translate('magicStart', 'DS ' + str(i+1) + ' Front Inside')
-				o4.Length = gapX - (2 * thick) - sidesOF
-				o4.Height = gapZ - bottomOF - topOF - 3
-				o4.Width = thick
-				pl = FreeCAD.Vector(p0X + sideOF + thick, p0Y + thick, p0Z + bottomOF + 3)
+				o4.Length = gapX - (2 * thickSides) - sidesOF
+				o4.Height = gapZ - bottomOF - topOF - thickBottom
+				o4.Width = thickSides
+				pl = FreeCAD.Vector(p0X + sideOF + thickSides, p0Y + thickFront, p0Z + bottomOF + thickBottom)
 				o4.Placement = FreeCAD.Placement(pl, self.gR)
-				MagicPanels.setColor(o4, 0, self.gColor, "color")
+				MagicPanels.setColor(o4, 0, (1.0, 1.0, 1.0, 1.0), "color")
 
 				# HDF bottom
 				o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSBottom")
 				o5.Label = translate('magicStart', 'DS ' + str(i+1) + ' Bottom HDF')
 				o5.Length = gapX - sidesOF
-				o5.Height = 3
-				o5.Width = gapY - backOF - thick
-				pl = FreeCAD.Vector(p0X + sideOF, p0Y + thick, p0Z  + bottomOF)
+				o5.Height = thickBottom
+				o5.Width = gapY - backOF - thickFront
+				pl = FreeCAD.Vector(p0X + sideOF, p0Y + thickFront, p0Z  + bottomOF)
 				o5.Placement = FreeCAD.Placement(pl, self.gR)
-				MagicPanels.setColor(o5, 0, self.gColor, "color")
+				colors = [ self.gColor, self.gColor, self.gColor, self.gColor, self.gColor, (1.0, 1.0, 1.0, 1.0) ]
+				MagicPanels.setColor(o5, 0, colors, "color")
 
 				# Front outside make inside as well
 				o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSFrontOutside")
 				o6.Label = translate('magicStart', 'DS ' + str(i+1) + ' Front Outside')
-				o6.Length = gapX - (2 * offset)
-				o6.Height = gapZ
-				o6.Width = thick
-				pl = FreeCAD.Vector(p0X + offset, p0Y, p0Z + offset)
+				o6.Length = gapX - frontOffsetH
+				o6.Height = frontHeight
+				o6.Width = thickFront
+				pz = (startZ + (frontOffsetV / 2)) + (i * (frontHeight + frontOffsetB)) 
+				pl = FreeCAD.Vector(p0X + (frontOffsetH/2), p0Y, pz)
 				o6.Placement = FreeCAD.Placement(pl, self.gR)
 				MagicPanels.setColor(o6, 0, self.gColor, "color")
 
@@ -9423,7 +9781,159 @@ def showQtGUI():
 			
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
+
+		# ############################################################################
+		def createF71(self):
+			
+			p0X = MagicPanels.unit2value(self.ods61E.text())
+			p0Y = MagicPanels.unit2value(self.ods62E.text())
+			startZ = MagicPanels.unit2value(self.ods63E.text())
+			
+			gapX = MagicPanels.unit2value(self.ods7E.text())
+			gapZ = MagicPanels.unit2value(self.ods8E.text())
+			gapY = MagicPanels.unit2value(self.ods9E.text())
+			
+			num = int(self.ods2E.text())
+			
+			offset = 0 # there will be no offset between drawer gaps
+			
+			frontOffsetH = 2 * MagicPanels.unit2value(self.ods111E.text())
+			frontOffsetV = 2 * MagicPanels.unit2value(self.ods112E.text())
+			frontOffsetB = MagicPanels.unit2value(self.ods113E.text())
+			
+			thickFront = MagicPanels.unit2value(self.ods31E.text())
+			thickSides = MagicPanels.unit2value(self.ods32E.text())
+			thickBottom = MagicPanels.unit2value(self.ods33E.text())
+			
+			sidesOF = MagicPanels.unit2value(self.ods41E.text())
+			sideOF = sidesOF / 2
+			backOF = MagicPanels.unit2value(self.ods42E.text())
+			topOF = MagicPanels.unit2value(self.ods43E.text())
+			bottomOF = MagicPanels.unit2value(self.ods44E.text())
+			backSidesOF = MagicPanels.unit2value(self.ods45E.text())
+			
+			zoffsets = (num - 1) * frontOffsetB
+			zspace = (num * gapZ) + frontOffsetV
+			frontHeight = (zspace - zoffsets) / num
+			
+			for i in range(0, num):
+			
+				p0Z = startZ + (i * (gapZ + offset))
+			
+				# Back
+				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSBack")
+				o3.Label = translate('magicStart', 'DS ' + str(i+1) + ' Back')
+				o3.Length = gapX - backSidesOF
+				o3.Height = gapZ - bottomOF - topOF - thickBottom
+				o3.Width = thickSides
+				pl = FreeCAD.Vector(p0X + (backSidesOF/2), p0Y + gapY - thickSides - backOF, p0Z + bottomOF + thickBottom)
+				o3.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o3, 0, (1.0, 1.0, 1.0, 1.0), "color")
+				
+				# Bottom
+				o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSBottom")
+				o5.Label = translate('magicStart', 'DS ' + str(i+1) + ' Bottom HDF')
+				o5.Length = gapX - sidesOF
+				o5.Height = thickBottom
+				o5.Width = gapY - backOF
+				pl = FreeCAD.Vector(p0X + sideOF, p0Y, p0Z  + bottomOF)
+				o5.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o5, 0, (1.0, 1.0, 1.0, 1.0), "color")
+
+				# Front outside
+				o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSFrontOutside")
+				o6.Label = translate('magicStart', 'DS ' + str(i+1) + ' Front Outside')
+				o6.Length = gapX + frontOffsetH
+				o6.Height = frontHeight
+				o6.Width = thickFront
+				pz = (startZ - (frontOffsetV / 2)) + (i * (frontHeight + frontOffsetB)) 
+				pl = FreeCAD.Vector(p0X - (frontOffsetH / 2), p0Y - thickFront, pz)
+				o6.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o6, 0, self.gColor, "color")
+
+				objects = [o3, o5, o6]
+				label = "Container, Drawer series " + str(i+1)
+				container = MagicPanels.createContainer(objects, label, False)
+				
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
 		
+		# ############################################################################
+		def createF72(self):
+			
+			p0X = MagicPanels.unit2value(self.ods61E.text())
+			p0Y = MagicPanels.unit2value(self.ods62E.text())
+			startZ = MagicPanels.unit2value(self.ods63E.text())
+			
+			gapX = MagicPanels.unit2value(self.ods7E.text())
+			gapZ = MagicPanels.unit2value(self.ods8E.text())
+			gapY = MagicPanels.unit2value(self.ods9E.text())
+			
+			num = int(self.ods2E.text())
+			
+			offset = 0 # there will be no offset between drawer gaps
+
+			frontOffsetH = 2 * MagicPanels.unit2value(self.ods111E.text())
+			frontOffsetV = 2 * MagicPanels.unit2value(self.ods112E.text())
+			frontOffsetB = MagicPanels.unit2value(self.ods113E.text())
+
+			thickFront = MagicPanels.unit2value(self.ods31E.text())
+			thickSides = MagicPanels.unit2value(self.ods32E.text())
+			thickBottom = MagicPanels.unit2value(self.ods33E.text())
+			
+			sidesOF = MagicPanels.unit2value(self.ods41E.text())
+			sideOF = sidesOF / 2
+			backOF = MagicPanels.unit2value(self.ods42E.text())
+			topOF = MagicPanels.unit2value(self.ods43E.text())
+			bottomOF = MagicPanels.unit2value(self.ods44E.text())
+			backSidesOF = MagicPanels.unit2value(self.ods45E.text())
+			
+			zoffsets = (num - 1) * frontOffsetB
+			zspace = (num * gapZ) - frontOffsetV
+			frontHeight = (zspace - zoffsets) / num
+
+			for i in range(0, num):
+			
+				p0Z = startZ + (i * (gapZ + offset))
+				
+				# Back
+				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSBack")
+				o3.Label = translate('magicStart', 'DS ' + str(i+1) + ' Back')
+				o3.Length = gapX - backSidesOF
+				o3.Height = gapZ - bottomOF - topOF - thickBottom
+				o3.Width = thickSides
+				pl = FreeCAD.Vector(p0X + (backSidesOF/2), p0Y + gapY - thickSides - backOF, p0Z + bottomOF + thickBottom)
+				o3.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o3, 0, (1.0, 1.0, 1.0, 1.0), "color")
+				
+				# Bottom
+				o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSBottom")
+				o5.Label = translate('magicStart', 'DS ' + str(i+1) + ' Bottom HDF')
+				o5.Length = gapX - sidesOF
+				o5.Height = thickBottom
+				o5.Width = gapY - backOF - thickFront
+				pl = FreeCAD.Vector(p0X + sideOF, p0Y + thickFront, p0Z  + bottomOF)
+				o5.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o5, 0, (1.0, 1.0, 1.0, 1.0), "color")
+
+				# Front outside
+				o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSFrontOutside")
+				o6.Label = translate('magicStart', 'DS ' + str(i+1) + ' Front Outside')
+				o6.Length = gapX - frontOffsetH
+				o6.Height = frontHeight
+				o6.Width = thickFront
+				pz = (startZ + (frontOffsetV / 2)) + (i * (frontHeight + frontOffsetB)) 
+				pl = FreeCAD.Vector(p0X + (frontOffsetH/2), p0Y, pz)
+				o6.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o6, 0, self.gColor, "color")
+
+				objects = [o3, o5, o6]
+				label = "Container, Drawer series " + str(i+1)
+				container = MagicPanels.createContainer(objects, label, False)
+				
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+
 	# ############################################################################
 	# final settings
 	# ############################################################################

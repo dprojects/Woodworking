@@ -559,6 +559,7 @@ def showQtGUI():
 			self.vsBM.clicked.connect(self.vertexSizeM)
 			self.vsBM.setFixedWidth(60)
 			self.vsBM.setFixedHeight(40)
+			self.vsBM.setAutoRepeat(True)
 			self.vsBM.move(toolSW - 140, row)
 			
 			# measurement observer active button
@@ -566,6 +567,7 @@ def showQtGUI():
 			self.vsBP.clicked.connect(self.vertexSizeP)
 			self.vsBP.setFixedWidth(60)
 			self.vsBP.setFixedHeight(40)
+			self.vsBP.setAutoRepeat(True)
 			self.vsBP.move(toolSW - 70, row)
 			
 			# ############################################################################
