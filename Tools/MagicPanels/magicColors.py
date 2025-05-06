@@ -4,6 +4,7 @@ import MagicPanels
 
 translate = FreeCAD.Qt.translate
 
+
 # ############################################################################
 # Global definitions
 # ############################################################################
@@ -16,7 +17,8 @@ getMenuIndex1 = {
 	translate('magicColors', 'AmbientColor'): 3, 
 	translate('magicColors', 'EmissiveColor'): 4, 
 	translate('magicColors', 'Shininess'): 5, 
-	translate('magicColors', 'SpecularColor'): 6 # no comma
+	translate('magicColors', 'SpecularColor'): 6, 
+	translate('magicColors', "let's slide all"): 7 # no comma
 }
 
 # add new items only at the end and change self.sColorsList
@@ -63,18 +65,27 @@ def showQtGUI():
 		gFaceArr = dict()
 		gFaceIndex = -1
 		gStep = 5
-		gStepAlpha = 0.10
-		gStepSingle = 0.10
-		gColorTarget = "DiffuseColor"
-		gColorToSet = 0
+		gStepAlpha = 5
+		gStepSingle = 5
+		
 		gKernelVersion = MagicPanels.gKernelVersion
+		
+		gColorToSet = {
+			"DiffuseColor": [ 204, 204, 204, 255 ], 
+			"AmbientColor": [ 85, 85, 85, 255 ], 
+			"SpecularColor": [ 136, 136, 136, 255 ], 
+			"EmissiveColor": [ 0, 0, 0, 255 ], 
+			"Shininess": 90, 
+			"Transparency": 0 # no comma
+		}
+		gColorTarget = "DiffuseColor"
 		
 		# ############################################################################
 		# screen settings
 		# ############################################################################
 
 		# tool GUI size
-		toolSW = 320
+		toolSW = 250
 		toolSH = 430
 		
 		# active screen size - FreeCAD main window
@@ -98,9 +109,11 @@ def showQtGUI():
 			# ############################################################################
 			# settings
 			# ############################################################################
-
-			size = 50
+			
+			area = self.toolSW - 20
 			offset = 10
+			size = 50
+			size2x = size + size + offset
 			
 			col3 = self.toolSW - 10 - size
 			col2 = col3 - offset - size
@@ -123,7 +136,7 @@ def showQtGUI():
 			
 			# screen
 			self.s1S = QtGui.QLabel("", self)
-			self.s1S.setFixedWidth(self.toolSW-20)
+			self.s1S.setFixedWidth(area)
 			self.s1S.move(10, row)
 
 			row += 20
@@ -131,7 +144,7 @@ def showQtGUI():
 			# button
 			self.s1B1 = QtGui.QPushButton(translate('magicColors', 'refresh selection'), self)
 			self.s1B1.clicked.connect(self.getSelected)
-			self.s1B1.setFixedWidth(self.toolSW-20)
+			self.s1B1.setFixedWidth(area)
 			self.s1B1.setFixedHeight(40)
 			self.s1B1.move(10, row)
 
@@ -142,7 +155,7 @@ def showQtGUI():
 			row += 50
 
 			# label
-			self.sTargetsL = QtGui.QLabel(translate('magicColors', 'Color property:'), self)
+			self.sTargetsL = QtGui.QLabel(translate('magicColors', 'Target:'), self)
 			self.sTargetsL.setFixedWidth(col1-offset)
 			self.sTargetsL.move(10, row+13)
 
@@ -156,7 +169,8 @@ def showQtGUI():
 					translate('magicColors', 'EmissiveColor'), 
 					translate('magicColors', 'SpecularColor'), 
 					translate('magicColors', 'Shininess'), 
-					translate('magicColors', 'Transparency') # no comma
+					translate('magicColors', 'Transparency'), 
+					translate('magicColors', "let's slide all") # no comma
 				)
 			
 			else:
@@ -181,7 +195,7 @@ def showQtGUI():
 			row += 50
 
 			# label
-			self.sColorsL = QtGui.QLabel(translate('magicColors', 'Predefined schema:'), self)
+			self.sColorsL = QtGui.QLabel(translate('magicColors', 'Sample:'), self)
 			self.sColorsL.setFixedWidth(col1-offset)
 			self.sColorsL.move(10, row+13)
 
@@ -224,14 +238,14 @@ def showQtGUI():
 			row += 50
 			
 			self.rb1 = QtGui.QRadioButton(self)
-			self.rb1.setText(translate('magicColors', 'simple buttons'))
+			self.rb1.setText(translate('magicColors', 'simple'))
 			self.rb1.toggled.connect(self.selectRadioButton1)
 			self.rb1.move(10, row)
 			
 			self.rb2 = QtGui.QRadioButton(self)
-			self.rb2.setText(translate('magicColors', 'extended live chooser'))
+			self.rb2.setText(translate('magicColors', 'extended'))
 			self.rb2.toggled.connect(self.selectRadioButton2)
-			self.rb2.move(140, row)
+			self.rb2.move(100, row)
 			self.rb1.setChecked(False)
 			
 			# ############################################################################
@@ -239,15 +253,18 @@ def showQtGUI():
 			# ############################################################################
 
 			row += 50
-			rowSingle = row
+			rowShine = row
+			rowTrans = row
+			rowSheet = row
 			rowChooser = row
+			rowAll = row
 		
 			# ############################################################################
 			# options - red color
 			# ############################################################################
 
 			# label
-			self.oRedL = QtGui.QLabel(translate('magicColors', 'Set red color:'), self)
+			self.oRedL = QtGui.QLabel(translate('magicColors', 'Red:'), self)
 			self.oRedL.move(10, row+3)
 
 			# button
@@ -277,7 +294,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oGreenL = QtGui.QLabel(translate('magicColors', 'Set green color:'), self)
+			self.oGreenL = QtGui.QLabel(translate('magicColors', 'Green:'), self)
 			self.oGreenL.move(10, row+3)
 
 			# button
@@ -307,7 +324,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oBlueL = QtGui.QLabel(translate('magicColors', 'Set blue color:'), self)
+			self.oBlueL = QtGui.QLabel(translate('magicColors', 'Blue:'), self)
 			self.oBlueL.move(10, row+3)
 
 			# button
@@ -337,7 +354,7 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oAlphaL = QtGui.QLabel(translate('magicColors', 'Set alpha channel:'), self)
+			self.oAlphaL = QtGui.QLabel(translate('magicColors', 'Alpha:'), self)
 			self.oAlphaL.move(10, row+3)
 
 			# button
@@ -359,33 +376,46 @@ def showQtGUI():
 			self.oAlphaB2.setFixedWidth(size)
 			self.oAlphaB2.move(col3, row)
 			self.oAlphaB2.setAutoRepeat(True)
-			
+
 			# ############################################################################
 			# options - shininess
 			# ############################################################################
 
 			# label
 			self.oShineL = QtGui.QLabel(translate('magicColors', 'Shininess:'), self)
-			self.oShineL.move(10, rowSingle+3)
+			self.oShineL.move(10, rowShine+3)
+
+			rowShine += 30
+
+			self.oShineSlide = QtGui.QSlider(self)
+			self.oShineSlide.setRange(0, 100)
+			self.oShineSlide.setValue(90)
+			self.oShineSlide.setOrientation(QtCore.Qt.Horizontal)
+			self.oShineSlide.setFixedWidth(area)
+			self.oShineSlide.valueChanged[int].connect(self.setShineSlide)
+			self.oShineSlide.move(10, rowShine)
+			self.oShineSlide.hide()
+		
+			rowShine += 50
 
 			# button
 			self.oShineB1 = QtGui.QPushButton("-", self)
 			self.oShineB1.clicked.connect(self.setColorShineB1)
 			self.oShineB1.setFixedWidth(size)
-			self.oShineB1.move(col1, rowSingle)
+			self.oShineB1.move(col1, rowShine)
 			self.oShineB1.setAutoRepeat(True)
 			
 			# text input
 			self.oShineE = QtGui.QLineEdit(self)
-			self.oShineE.setText("")
+			self.oShineE.setText("90")
 			self.oShineE.setFixedWidth(size)
-			self.oShineE.move(col2, rowSingle)
+			self.oShineE.move(col2, rowShine)
 
 			# button
 			self.oShineB2 = QtGui.QPushButton("+", self)
 			self.oShineB2.clicked.connect(self.setColorShineB2)
 			self.oShineB2.setFixedWidth(size)
-			self.oShineB2.move(col3, rowSingle)
+			self.oShineB2.move(col3, rowShine)
 			self.oShineB2.setAutoRepeat(True)
 			
 			# hide by default
@@ -400,26 +430,39 @@ def showQtGUI():
 
 			# label
 			self.oTransL = QtGui.QLabel(translate('magicColors', 'Transparency:'), self)
-			self.oTransL.move(10, rowSingle+3)
+			self.oTransL.move(10, rowTrans+3)
+
+			rowTrans += 30
+
+			self.oTransSlide = QtGui.QSlider(self)
+			self.oTransSlide.setRange(0, 100)
+			self.oTransSlide.setValue(90)
+			self.oTransSlide.setOrientation(QtCore.Qt.Horizontal)
+			self.oTransSlide.setFixedWidth(area)
+			self.oTransSlide.valueChanged[int].connect(self.setTransSlide)
+			self.oTransSlide.move(10, rowTrans)
+			self.oTransSlide.hide()
+			
+			rowTrans += 50
 
 			# button
 			self.oTransB1 = QtGui.QPushButton("-", self)
 			self.oTransB1.clicked.connect(self.setColorTransB1)
 			self.oTransB1.setFixedWidth(size)
-			self.oTransB1.move(col1, rowSingle)
+			self.oTransB1.move(col1, rowTrans)
 			self.oTransB1.setAutoRepeat(True)
 			
 			# text input
 			self.oTransE = QtGui.QLineEdit(self)
-			self.oTransE.setText("")
+			self.oTransE.setText("0")
 			self.oTransE.setFixedWidth(size)
-			self.oTransE.move(col2, rowSingle)
+			self.oTransE.move(col2, rowTrans)
 
 			# button
 			self.oTransB2 = QtGui.QPushButton("+", self)
 			self.oTransB2.clicked.connect(self.setColorTransB2)
 			self.oTransB2.setFixedWidth(size)
-			self.oTransB2.move(col3, rowSingle)
+			self.oTransB2.move(col3, rowTrans)
 			self.oTransB2.setAutoRepeat(True)
 			
 			# hide by default
@@ -435,29 +478,16 @@ def showQtGUI():
 			row += 30
 			
 			# label
-			self.oStepL1 = QtGui.QLabel(translate('magicColors', 'Set step:'), self)
+			self.oStepL1 = QtGui.QLabel(translate('magicColors', 'RGBA step:'), self)
 			self.oStepL1.move(10, row+3)
-			
-			# label
-			self.oStepL2 = QtGui.QLabel(translate('magicColors', 'RGB:'), self)
-			self.oStepL2.move(col1-offset-30, row+3)
 			
 			# text input
 			self.oStepE = QtGui.QLineEdit(self)
 			self.oStepE.setText(str(self.gStep))
 			self.oStepE.setFixedWidth(size)
-			self.oStepE.move(col1, row)
+			self.oStepE.move(col2, row)
 			
-			# label
-			self.oStepAlphaL = QtGui.QLabel(translate('magicColors', 'Alpha:'), self)
-			self.oStepAlphaL.move(col3-offset-40, row+3)
-
-			# text input
-			self.oStepAlphaE = QtGui.QLineEdit(self)
-			self.oStepAlphaE.setText(str(self.gStepAlpha))
-			self.oStepAlphaE.setFixedWidth(size)
-			self.oStepAlphaE.move(col3, row)
-			
+			rowSingle = rowShine
 			rowSingle += 30
 			
 			# label
@@ -468,7 +498,7 @@ def showQtGUI():
 			self.oStepSingleE = QtGui.QLineEdit(self)
 			self.oStepSingleE.setText(str(self.gStepSingle))
 			self.oStepSingleE.setFixedWidth(size)
-			self.oStepSingleE.move(col1, rowSingle)
+			self.oStepSingleE.move(col2, rowSingle)
 			
 			# hide by default
 			self.oStepSingleL.hide()
@@ -483,32 +513,30 @@ def showQtGUI():
 			# update button
 			self.oCustomB = QtGui.QPushButton(translate('magicColors', 'set custom color'), self)
 			self.oCustomB.clicked.connect(self.setColor)
-			self.oCustomB.setFixedWidth(self.toolSW-20)
+			self.oCustomB.setFixedWidth(area)
 			self.oCustomB.setFixedHeight(40)
 			self.oCustomB.move(10, row)
 
 			# ############################################################################
-			# show & init defaults
+			# color from sheet
 			# ############################################################################
 
-			row -= 120
-			
 			info = translate('magicColors', 'This button below will set face colors from spreadsheet for all objects in active document. If the faceColors spreadsheet is not available, it will be created. Make sure you want to overwrite existing colors for all objects. There is no undo option for that. ')
 			
 			self.sheetInfo = QtGui.QLabel(info, self)
-			self.sheetInfo.setFixedWidth(self.toolSW-20)
-			self.sheetInfo.move(10, row+3)
+			self.sheetInfo.setFixedWidth(area)
+			self.sheetInfo.move(10, rowSheet+3)
 			self.sheetInfo.setWordWrap(True)
 			self.sheetInfo.hide()
 
-			row += 110
+			rowSheet += 140
 			
 			# button
 			self.sheetB1 = QtGui.QPushButton(translate('magicColors', 'set face colors from spreadsheet'), self)
 			self.sheetB1.clicked.connect(self.setSheet)
-			self.sheetB1.setFixedWidth(self.toolSW-20)
+			self.sheetB1.setFixedWidth(area)
 			self.sheetB1.setFixedHeight(40)
-			self.sheetB1.move(10, row)
+			self.sheetB1.move(10, rowSheet)
 			self.sheetB1.hide()
 
 			# ############################################################################
@@ -525,10 +553,204 @@ def showQtGUI():
 			self.rtcc.setOption(QtGui.QColorDialog.ColorDialogOption.NoButtons, True)
 			self.rtcc.setOption(QtGui.QColorDialog.ColorDialogOption.ShowAlphaChannel, True)
 			self.rtcc.setWindowFlags(QtCore.Qt.SubWindow)
-			
-			# hide by default
 			self.rtcc.hide()
 
+			# ############################################################################
+			# all-in-one - settings
+			# ############################################################################
+			
+			rowAll -= 40
+			groupWidth = area
+			sliderWidth = area-50
+			
+			# ############################################################################
+			# all-in-one - DiffuseColor
+			# ############################################################################
+			
+			self.groupDiffuseColor = QtGui.QGroupBox('Color:', self)
+			self.groupDiffuseColor.move(10, rowAll)
+			self.groupDiffuseColor.setFixedWidth(groupWidth)
+			self.groupDiffuseColor.hide()
+			
+			self.sliderDCR = QtGui.QSlider(self)
+			self.sliderDCR.setRange(0, 255)
+			self.sliderDCR.setValue(0)
+			self.sliderDCR.setOrientation(QtCore.Qt.Horizontal)
+			self.sliderDCR.setFixedWidth(sliderWidth)
+			self.sliderDCR.valueChanged[int].connect(self.setAllInOne)
+			
+			self.sliderDCG = QtGui.QSlider(self)
+			self.sliderDCG.setRange(0, 255)
+			self.sliderDCG.setValue(0)
+			self.sliderDCG.setOrientation(QtCore.Qt.Horizontal)
+			self.sliderDCG.setFixedWidth(sliderWidth)
+			self.sliderDCG.valueChanged[int].connect(self.setAllInOne)
+			
+			self.sliderDCB = QtGui.QSlider(self)
+			self.sliderDCB.setRange(0, 255)
+			self.sliderDCB.setValue(0)
+			self.sliderDCB.setOrientation(QtCore.Qt.Horizontal)
+			self.sliderDCB.setFixedWidth(sliderWidth)
+			self.sliderDCB.valueChanged[int].connect(self.setAllInOne)
+			
+			self.layoutDiffuseColor = QtGui.QFormLayout(self.groupDiffuseColor)
+			self.layoutDiffuseColor.addRow("R :", self.sliderDCR)
+			self.layoutDiffuseColor.addRow("G :", self.sliderDCG)
+			self.layoutDiffuseColor.addRow("B :", self.sliderDCB)
+			
+			# ############################################################################
+			# all-in-one - AmbientColor
+			# ############################################################################
+			
+			rowAll += 100
+			
+			self.groupAmbientColor = QtGui.QGroupBox('Ambient:', self)
+			self.groupAmbientColor.move(10, rowAll)
+			self.groupAmbientColor.setFixedWidth(groupWidth)
+			self.groupAmbientColor.hide()
+			
+			self.sliderACR = QtGui.QSlider(self)
+			self.sliderACR.setRange(0, 255)
+			self.sliderACR.setValue(0)
+			self.sliderACR.setOrientation(QtCore.Qt.Horizontal)
+			self.sliderACR.setFixedWidth(sliderWidth)
+			self.sliderACR.valueChanged[int].connect(self.setAllInOne)
+			
+			self.sliderACG = QtGui.QSlider(self)
+			self.sliderACG.setRange(0, 255)
+			self.sliderACG.setValue(0)
+			self.sliderACG.setOrientation(QtCore.Qt.Horizontal)
+			self.sliderACG.setFixedWidth(sliderWidth)
+			self.sliderACG.valueChanged[int].connect(self.setAllInOne)
+			
+			self.sliderACB = QtGui.QSlider(self)
+			self.sliderACB.setRange(0, 255)
+			self.sliderACB.setValue(0)
+			self.sliderACB.setOrientation(QtCore.Qt.Horizontal)
+			self.sliderACB.setFixedWidth(sliderWidth)
+			self.sliderACB.valueChanged[int].connect(self.setAllInOne)
+			
+			self.layoutAmbientColor = QtGui.QFormLayout(self.groupAmbientColor)
+			self.layoutAmbientColor.addRow("R :", self.sliderACR)
+			self.layoutAmbientColor.addRow("G :", self.sliderACG)
+			self.layoutAmbientColor.addRow("B :", self.sliderACB)
+			
+			# ############################################################################
+			# all-in-one - EmissiveColor
+			# ############################################################################
+			
+			rowAll += 100
+			
+			self.groupEmissiveColor = QtGui.QGroupBox('Emissive:', self)
+			self.groupEmissiveColor.move(10, rowAll)
+			self.groupEmissiveColor.setFixedWidth(groupWidth)
+			self.groupEmissiveColor.hide()
+			
+			self.sliderECR = QtGui.QSlider(self)
+			self.sliderECR.setRange(0, 255)
+			self.sliderECR.setValue(0)
+			self.sliderECR.setOrientation(QtCore.Qt.Horizontal)
+			self.sliderECR.setFixedWidth(sliderWidth)
+			self.sliderECR.valueChanged[int].connect(self.setAllInOne)
+			
+			self.sliderECG = QtGui.QSlider(self)
+			self.sliderECG.setRange(0, 255)
+			self.sliderECG.setValue(0)
+			self.sliderECG.setOrientation(QtCore.Qt.Horizontal)
+			self.sliderECG.setFixedWidth(sliderWidth)
+			self.sliderECG.valueChanged[int].connect(self.setAllInOne)
+			
+			self.sliderECB = QtGui.QSlider(self)
+			self.sliderECB.setRange(0, 255)
+			self.sliderECB.setValue(0)
+			self.sliderECB.setOrientation(QtCore.Qt.Horizontal)
+			self.sliderECB.setFixedWidth(sliderWidth)
+			self.sliderECB.valueChanged[int].connect(self.setAllInOne)
+			
+			self.layoutEmissiveColor = QtGui.QFormLayout(self.groupEmissiveColor)
+			self.layoutEmissiveColor.addRow("R :", self.sliderECR)
+			self.layoutEmissiveColor.addRow("G :", self.sliderECG)
+			self.layoutEmissiveColor.addRow("B :", self.sliderECB)
+			
+			# ############################################################################
+			# all-in-one - SpecularColor
+			# ############################################################################
+			
+			rowAll += 100
+			
+			self.groupSpecularColor = QtGui.QGroupBox('Specular:', self)
+			self.groupSpecularColor.move(10, rowAll)
+			self.groupSpecularColor.setFixedWidth(groupWidth)
+			self.groupSpecularColor.hide()
+			
+			self.sliderSCR = QtGui.QSlider(self)
+			self.sliderSCR.setRange(0, 255)
+			self.sliderSCR.setValue(0)
+			self.sliderSCR.setOrientation(QtCore.Qt.Horizontal)
+			self.sliderSCR.setFixedWidth(sliderWidth)
+			self.sliderSCR.valueChanged[int].connect(self.setAllInOne)
+			
+			self.sliderSCG = QtGui.QSlider(self)
+			self.sliderSCG.setRange(0, 255)
+			self.sliderSCG.setValue(0)
+			self.sliderSCG.setOrientation(QtCore.Qt.Horizontal)
+			self.sliderSCG.setFixedWidth(sliderWidth)
+			self.sliderSCG.valueChanged[int].connect(self.setAllInOne)
+			
+			self.sliderSCB = QtGui.QSlider(self)
+			self.sliderSCB.setRange(0, 255)
+			self.sliderSCB.setValue(0)
+			self.sliderSCB.setOrientation(QtCore.Qt.Horizontal)
+			self.sliderSCB.setFixedWidth(sliderWidth)
+			self.sliderSCB.valueChanged[int].connect(self.setAllInOne)
+			
+			self.layoutSpecularColor = QtGui.QFormLayout(self.groupSpecularColor)
+			self.layoutSpecularColor.addRow("R :", self.sliderSCR)
+			self.layoutSpecularColor.addRow("G :", self.sliderSCG)
+			self.layoutSpecularColor.addRow("B :", self.sliderSCB)
+			
+			# ############################################################################
+			# all-in-one - Shininess
+			# ############################################################################
+			
+			rowAll += 100
+			
+			self.groupShininess = QtGui.QGroupBox('Shininess:', self)
+			self.groupShininess.move(10, rowAll)
+			self.groupShininess.setFixedWidth(groupWidth)
+			self.groupShininess.hide()
+			
+			self.sliderShCR = QtGui.QSlider(self)
+			self.sliderShCR.setRange(0, 100)
+			self.sliderShCR.setValue(0)
+			self.sliderShCR.setOrientation(QtCore.Qt.Horizontal)
+			self.sliderShCR.setFixedWidth(sliderWidth)
+			self.sliderShCR.valueChanged[int].connect(self.setAllInOne)
+			
+			self.layoutShininess = QtGui.QFormLayout(self.groupShininess)
+			self.layoutShininess.addRow("S :", self.sliderShCR)
+			
+			# ############################################################################
+			# all-in-one - Transparency
+			# ############################################################################
+	
+			rowAll += 60
+	
+			self.groupTransparency = QtGui.QGroupBox('Transparency:', self)
+			self.groupTransparency.move(10, rowAll)
+			self.groupTransparency.setFixedWidth(groupWidth)
+			self.groupTransparency.hide()
+			
+			self.sliderTrCR = QtGui.QSlider(self)
+			self.sliderTrCR.setRange(0, 100)
+			self.sliderTrCR.setValue(0)
+			self.sliderTrCR.setOrientation(QtCore.Qt.Horizontal)
+			self.sliderTrCR.setFixedWidth(sliderWidth)
+			self.sliderTrCR.valueChanged[int].connect(self.setAllInOne)
+			
+			self.layoutTransparency = QtGui.QFormLayout(self.groupTransparency)
+			self.layoutTransparency.addRow("T :", self.sliderTrCR)
+			
 			# ############################################################################
 			# show & init defaults
 			# ############################################################################
@@ -543,26 +765,164 @@ def showQtGUI():
 		# ############################################################################
 		# actions - internal functions
 		# ############################################################################
-
-		def getColorFromChooser(self, color):
-	
-			self.oRedE.setText(str( int(color.red()) ))
-			self.oGreenE.setText(str( int(color.green()) ))
-			self.oBlueE.setText(str( int(color.blue()) ))
-			self.oAlphaE.setText(str( int(color.alphaF()) ))
+		
+		# ############################################################################
+		def setAllSliders(self):
+		
+			try:
+				[ r, g, b, a ] = self.gColorToSet["DiffuseColor"]
+				self.sliderDCR.setValue(r)
+				self.sliderDCG.setValue(g)
+				self.sliderDCB.setValue(b)
+			except:
+				skip = 1
+				
+			try:
+				[ r, g, b, a ] = self.gColorToSet["AmbientColor"]
+				self.sliderACR.setValue(r)
+				self.sliderACG.setValue(g)
+				self.sliderACB.setValue(b)
+			except:
+				skip = 1
+				
+			try:
+				[ r, g, b, a ] = self.gColorToSet["EmissiveColor"]
+				self.sliderECR.setValue(r)
+				self.sliderECG.setValue(g)
+				self.sliderECB.setValue(b)
+			except: 
+				skip = 1
 			
-			self.oShineE.setText(str( round( float( color.valueF() ), 2) ))
-			self.oTransE.setText(str( round( float( color.valueF() ), 2) ))
+			try:
+				[ r, g, b, a ] = self.gColorToSet["SpecularColor"]
+				self.sliderSCR.setValue(r)
+				self.sliderSCG.setValue(g)
+				self.sliderSCB.setValue(b)
+			except:
+				skip = 1
+				
+			try:	
+				self.sliderShCR.setValue( self.gColorToSet["Shininess"] )
+			except:
+				skip = 1
+				
+			try:
+				self.sliderTrCR.setValue( self.gColorToSet["Transparency"] )
+			except:
+				skip = 1
+
+		# ############################################################################
+		def setAllInOne(self):
+			
+			backupColorToSet = self.gColorToSet
+			backupColorTarget = self.gColorTarget
+			
+			backupR = self.oRedE.text()
+			backupG = self.oGreenE.text()
+			backupB = self.oBlueE.text()
+			backupA = self.oAlphaE.text()
+			backupSh = self.oShineE.text()
+			backupTr = self.oTransE.text()
+			
+			# DiffuseColor
+			[ r, g, b, a ] = [ self.sliderDCR.value(), self.sliderDCG.value(), self.sliderDCB.value(), 255 ]
+			self.gColorTarget = "DiffuseColor"
+			self.gColorToSet[self.gColorTarget] = [ r, g, b, a ]
+			self.oRedE.setText(str(r))
+			self.oGreenE.setText(str(g))
+			self.oBlueE.setText(str(b))
+			self.oAlphaE.setText(str(255))
+			self.setColor()
+			
+			# AmbientColor
+			[ r, g, b, a ] = [ self.sliderACR.value(), self.sliderACG.value(), self.sliderACB.value(), 255 ]
+			self.gColorTarget = "AmbientColor"
+			self.gColorToSet[self.gColorTarget] = [ r, g, b, a ]
+			self.oRedE.setText(str(r))
+			self.oGreenE.setText(str(g))
+			self.oBlueE.setText(str(b))
+			self.oAlphaE.setText(str(a))
+			self.setColor()
+			
+			# EmissiveColor
+			[ r, g, b, a ] = [ self.sliderECR.value(), self.sliderECG.value(), self.sliderECB.value(), 255 ]
+			self.gColorTarget = "EmissiveColor"
+			self.gColorToSet[self.gColorTarget] = [ r, g, b, a ]
+			self.oRedE.setText(str(r))
+			self.oGreenE.setText(str(g))
+			self.oBlueE.setText(str(b))
+			self.oAlphaE.setText(str(a))
+			self.setColor()
+			
+			# SpecularColor
+			[ r, g, b, a ] = [ self.sliderSCR.value(), self.sliderSCG.value(), self.sliderSCB.value(), 255 ]
+			self.gColorTarget = "SpecularColor"
+			self.gColorToSet[self.gColorTarget] = [ r, g, b, a ]
+			self.oRedE.setText(str(r))
+			self.oGreenE.setText(str(g))
+			self.oBlueE.setText(str(b))
+			self.oAlphaE.setText(str(a))
+			self.setColor()
+			
+			# Shininess
+			self.gColorTarget = "Shininess"
+			self.gColorToSet[self.gColorTarget] = self.sliderShCR.value()
+			self.oShineE.setText(str( self.gColorToSet[self.gColorTarget] ))
+			self.setColor()
+			
+			# Transparency
+			self.gColorTarget = "Transparency"
+			self.gColorToSet[self.gColorTarget] = self.sliderTrCR.value()
+			self.oTransE.setText(str( self.gColorToSet[self.gColorTarget] ))
+			self.setColor()
+			
+			# restore from backup
+			self.gColorToSet = backupColorToSet
+			self.gColorTarget = backupColorTarget
+			self.oRedE.setText(str( backupR ))
+			self.oGreenE.setText(str( backupG ))
+			self.oBlueE.setText(str( backupB ))
+			self.oAlphaE.setText(str( backupA ))
+			self.oShineE.setText(str( backupSh ))
+			self.oTransE.setText(str( backupTr ))
+			
+		# ############################################################################
+		def setShineSlide(self, value):
+			self.oShineE.setText(str(value))
+			self.setColor()
+		
+		# ############################################################################
+		def setTransSlide(self, value):
+			self.oTransE.setText(str(value))
+			self.setColor()
+		
+		# ############################################################################
+		def setChooserColor(self, iColor):
+
+			try:
+			
+				[ r, g, b, a ] = iColor
+				self.rtcc.setCurrentColor(QtGui.QColor(r, g, b, a))
+			
+			# skip for transparency and shininess
+			except:
+				skip = 1
+		
+		# ############################################################################
+		def getColorFromChooser(self, iColor):
+	
+			self.oRedE.setText(str( int(iColor.red()) ))
+			self.oGreenE.setText(str( int(iColor.green()) ))
+			self.oBlueE.setText(str( int(iColor.blue()) ))
+			self.oAlphaE.setText(str( int(iColor.alpha()) ))
+			
+			self.oShineE.setText(str( int(iColor.valueF() * 100) ))
+			self.oShineSlide.setValue( int(iColor.valueF() * 100) )
+			
+			self.oTransE.setText(str( int(iColor.valueF() * 100) ))
+			self.oTransSlide.setValue( int(iColor.valueF() * 100) )
 			
 			self.setColor()
-
-		# ############################################################################
-		def convertToRGB(self, iColor):
-			return int(255 * iColor)
-
-		# ############################################################################
-		def convertToFreeCADColor(self, iColor):
-			return float(iColor/255)
 
 		# ############################################################################
 		def convertFromName(self, iColor):
@@ -591,58 +951,66 @@ def showQtGUI():
 		def getColor(self):
 
 			try:
+			
+				# ############################################################################
+				# get color
+				# ############################################################################
 				if self.gMode == "Face":
-					self.gColorToSet = MagicPanels.getColor(self.gObj, self.gFaceIndex, self.gColorTarget)
+					self.gColorToSet[self.gColorTarget] = MagicPanels.getColor(self.gObj, self.gFaceIndex, self.gColorTarget, "RGBA")
 
 				if self.gMode == "Object":
-					self.gColorToSet = MagicPanels.getColor(self.gObj, 0, self.gColorTarget)
+					self.gColorToSet[self.gColorTarget] = MagicPanels.getColor(self.gObj, 0, self.gColorTarget, "RGBA")
 
 				if self.gMode == "Multi":
 
 					# first face selected
 					if self.gFace == "":
-						self.gColorToSet = MagicPanels.getColor(self.gObj, self.gFaceIndex, self.gColorTarget)
+						self.gColorToSet[self.gColorTarget] = MagicPanels.getColor(self.gObj, self.gFaceIndex, self.gColorTarget, "RGBA")
 
 					# first object selected, no face
 					else:
-						self.gColorToSet = MagicPanels.getColor(self.gObj, 0, self.gColorTarget)
+						self.gColorToSet[self.gColorTarget] = MagicPanels.getColor(self.gObj, 0, self.gColorTarget, "RGBA")
 				
+				# ############################################################################
+				# set color to GUI
+				# ############################################################################
 				if self.gColorTarget == "Shininess":
 					
-					if self.gColorToSet == "":
-						color = 0.0
-					else:
-						color = round(float(self.gColorToSet), 2)
-						
-					self.oShineE.setText(str(color))
-
+					if self.gColorToSet[self.gColorTarget] == "":
+						self.gColorToSet[self.gColorTarget] = 90
+					
+					self.oShineE.setText(str(self.gColorToSet[self.gColorTarget]))
+					self.oShineSlide.setValue(int(self.gColorToSet[self.gColorTarget]))
+					
 				elif self.gColorTarget == "Transparency":
 					
-					if self.gColorToSet == "":
-						color = 1.0
-					else:
-						color = round(float(self.gColorToSet), 2)
-						
-					self.oTransE.setText(str(color))
-				
+					if self.gColorToSet[self.gColorTarget] == "":
+						self.gColorToSet[self.gColorTarget] = 0
+
+					self.oTransE.setText(str(self.gColorToSet[self.gColorTarget]))
+					self.oTransSlide.setValue(int(self.gColorToSet[self.gColorTarget]))
+					
 				else:
-					color = self.gColorToSet
-					if self.gColorToSet == "":
-						[ r, g, b, a ] = [ 0.0, 0.0, 0.0, 1.0 ]
-					else:
-						[ r, g, b, a ] = [ color[0], color[1], color[2], color[3] ]
+					color = self.gColorToSet[self.gColorTarget]
+					if self.gColorToSet[self.gColorTarget] != "":
+						
+						[ r, g, b, a ] = [ 
+							self.gColorToSet[self.gColorTarget][0], 
+							self.gColorToSet[self.gColorTarget][1], 
+							self.gColorToSet[self.gColorTarget][2], 
+							self.gColorToSet[self.gColorTarget][3] ]
 
-					# set GUI form with RGB color values
-					cR = self.convertToRGB(r)
-					cG = self.convertToRGB(g)
-					cB = self.convertToRGB(b)
-					cA = round(float(a), 2)
-
-					self.oRedE.setText(str(cR))
-					self.oGreenE.setText(str(cG))
-					self.oBlueE.setText(str(cB))
-					self.oAlphaE.setText(str(cA))
-
+						self.oRedE.setText(str(r))
+						self.oGreenE.setText(str(g))
+						self.oBlueE.setText(str(b))
+						self.oAlphaE.setText(str(a))
+						
+						if self.gColorTarget == "all-in-one":
+							self.setAllSliders()
+							
+						if self.rb2.isChecked() == True:
+							self.setChooserColor(self.gColorToSet[self.gColorTarget])
+				
 			except:
 				self.s1S.setText(translate('magicColors', 'please select objects or faces'))
 				return -1
@@ -651,29 +1019,32 @@ def showQtGUI():
 		def setColor(self):
 
 			try:
-				# create color
+			
+				# ############################################################################
+				# get color to set
+				# ############################################################################
 				if self.gColorTarget == "Shininess":
-					self.gColorToSet = round(float( self.oShineE.text() ), 2)
+					self.gColorToSet[self.gColorTarget] = int( self.oShineE.text() )
 				
 				elif self.gColorTarget == "Transparency":
-					if MagicPanels.gKernelVersion >= 1.0:
-						self.gColorToSet = round( float(self.oTransE.text()), 2 )
-					else:
-						self.gColorToSet = int( float(self.oTransE.text()) * 100)
-				else:
-					c1 = self.convertToFreeCADColor( int(self.oRedE.text()) )
-					c2 = self.convertToFreeCADColor( int(self.oGreenE.text()) )
-					c3 = self.convertToFreeCADColor( int(self.oBlueE.text()) )
-					cA = round(float(self.oAlphaE.text()), 2)
-					
-					self.gColorToSet = (c1, c2, c3, cA)
+					self.gColorToSet[self.gColorTarget] = int( self.oTransE.text() )
 
-				# setting color
+				else:
+					r = int( self.oRedE.text() )
+					g = int( self.oGreenE.text() )
+					b = int( self.oBlueE.text() )
+					a = int( self.oAlphaE.text() )
+					
+					self.gColorToSet[self.gColorTarget] = [ r, g, b, a ]
+				
+				# ############################################################################
+				# set color
+				# ############################################################################
 				if self.gMode == "Face":
-					MagicPanels.setColor(self.gObj, self.gFaceIndex, self.gColorToSet, self.gColorTarget)
+					MagicPanels.setColor(self.gObj, self.gFaceIndex, self.gColorToSet[self.gColorTarget], self.gColorTarget, "RGBA")
 
 				if self.gMode == "Object":
-					MagicPanels.setColor(self.gObj, 0, self.gColorToSet, self.gColorTarget)
+					MagicPanels.setColor(self.gObj, 0, self.gColorToSet[self.gColorTarget], self.gColorTarget, "RGBA")
 
 				if self.gMode == "Multi":
 
@@ -689,7 +1060,7 @@ def showQtGUI():
 						
 						# all object, no single faces
 						if len(self.gFaceArr[o]) == 0:
-							MagicPanels.setColor(self.gObj, 0, self.gColorToSet, self.gColorTarget)
+							MagicPanels.setColor(self.gObj, 0, self.gColorToSet[self.gColorTarget], self.gColorTarget, "RGBA")
 
 						# faces selected for object
 						else:
@@ -701,7 +1072,7 @@ def showQtGUI():
 								self.gFace = self.gFaceArr[o][i]
 								self.gFaceIndex = MagicPanels.getFaceIndex(self.gObj, self.gFace)
 							
-								MagicPanels.setColor(self.gObj, self.gFaceIndex, self.gColorToSet, self.gColorTarget)
+								MagicPanels.setColor(self.gObj, self.gFaceIndex, self.gColorToSet[self.gColorTarget], self.gColorTarget, "RGBA")
 
 								i = i + 1
 
@@ -863,75 +1234,79 @@ def showQtGUI():
 			self.setColor()
 		
 		def setColorAlphaB1(self):
-			value = float(self.oAlphaE.text())
-			step = float(self.oStepAlphaE.text())
+			value = int(self.oAlphaE.text())
+			step = int(self.oStepE.text())
 			
 			if value - step <= 0:
-				value = 1
+				value = 255
 			else:
 				value = value - step
 
-			self.oAlphaE.setText(str(round(float(value), 2)))
+			self.oAlphaE.setText(str(value))
 			self.setColor()
 		
 		def setColorAlphaB2(self):
-			value = float(self.oAlphaE.text())
-			step = float(self.oStepAlphaE.text())
+			value = int(self.oAlphaE.text())
+			step = int(self.oStepE.text())
 			
-			if value + step >= 1:
+			if value + step >= 255:
 				value = 0
 			else:
 				value = value + step
 
-			self.oAlphaE.setText(str(round(float(value), 2)))
+			self.oAlphaE.setText(str(value))
 			self.setColor()
 		
 		def setColorShineB1(self):
-			value = float(self.oShineE.text())
-			step = float(self.oStepSingleE.text())
+			value = int(self.oShineE.text())
+			step = int(self.oStepSingleE.text())
 			
 			if value - step <= 0:
-				value = 1
+				value = 100
 			else:
 				value = value - step
 
-			self.oShineE.setText(str(round(float(value), 2))) 
+			self.oShineE.setText(str(value))
+			self.oShineSlide.setValue(int(value))
 			self.setColor()
 		
 		def setColorShineB2(self):
-			value = float(self.oShineE.text())
-			step = float(self.oStepSingleE.text())
+			value = int(self.oShineE.text())
+			step = int(self.oStepSingleE.text())
 			
-			if value + step >= 1:
+			if value + step >= 100:
 				value = 0
 			else:
 				value = value + step
 
-			self.oShineE.setText(str(round(float(value), 2))) 
+			self.oShineE.setText(str(value)) 
+			self.oShineSlide.setValue(int(value))
 			self.setColor()
 
 		def setColorTransB1(self):
-			value = float(self.oTransE.text())
-			step = float(self.oStepSingleE.text())
+			value = int(self.oTransE.text())
+			step = int(self.oStepSingleE.text())
 			
 			if value - step <= 0:
-				value = 1
+				value = 100
 			else:
 				value = value - step
 
-			self.oTransE.setText(str(round(float(value), 2)))
+			self.oTransE.setText(str(value))
+			self.oTransSlide.setValue(int(value))
 			self.setColor()
 		
 		def setColorTransB2(self):
-			value = float(self.oTransE.text())
-			step = float(self.oStepSingleE.text())
+			value = int(self.oTransE.text())
+			step = int(self.oStepSingleE.text())
 			
-			if value + step >= 1:
+			if value + step >= 100:
 				value = 0
 			else:
 				value = value + step
 
-			self.oTransE.setText(str(round(float(value), 2)))
+			self.oTransE.setText(str(value))
+			self.oTransSlide.setValue(int(value))
 			self.setColor()
 			
 		# ############################################################################
@@ -990,55 +1365,6 @@ def showQtGUI():
 				except:
 					skipObject = 1 # spreadsheet, group
 
-			self.s1S.setText(translate('magicColors', 'colors from faceColors'))
-
-		# ############################################################################
-		def showDefaultGUI(self):
-			
-			self.oRedL.show()
-			self.oRedB1.show()
-			self.oRedE.show()
-			self.oRedB2.show()
-			
-			self.oGreenL.show()
-			self.oGreenB1.show()
-			self.oGreenE.show()
-			self.oGreenB2.show()
-			
-			self.oBlueL.show()
-			self.oBlueB1.show()
-			self.oBlueE.show()
-			self.oBlueB2.show()
-			
-			self.oAlphaL.show()
-			self.oAlphaB1.show()
-			self.oAlphaE.show()
-			self.oAlphaB2.show()
-			
-			self.oShineL.hide()
-			self.oShineB1.hide()
-			self.oShineE.hide()
-			self.oShineB2.hide()
-			
-			self.oTransL.hide()
-			self.oTransB1.hide()
-			self.oTransE.hide()
-			self.oTransB2.hide()
-			
-			self.oStepL1.show()
-			self.oStepL2.show()
-			self.oStepE.show()
-			self.oStepAlphaL.show()
-			self.oStepAlphaE.show()
-			
-			self.oStepSingleL.hide()
-			self.oStepSingleE.hide()
-
-			self.oCustomB.show()
-			
-			self.sheetInfo.hide()
-			self.sheetB1.hide()
-		
 		# ############################################################################
 		def hideGUI(self):
 			
@@ -1073,69 +1399,39 @@ def showQtGUI():
 			self.oTransB2.hide()
 			
 			self.oStepL1.hide()
-			self.oStepL2.hide()
 			self.oStepE.hide()
-			self.oStepAlphaL.hide()
-			self.oStepAlphaE.hide()
 			
 			self.oStepSingleL.hide()
 			self.oStepSingleE.hide()
-
+			self.oShineSlide.hide()
+			self.oTransSlide.hide()
+			
 			self.oCustomB.hide()
 			
 			self.sheetInfo.hide()
 			self.sheetB1.hide()
+			
+			self.groupDiffuseColor.hide()
+			self.groupAmbientColor.hide()
+			self.groupEmissiveColor.hide()
+			self.groupSpecularColor.hide()
+			self.groupShininess.hide()
+			self.groupTransparency.hide()
 
 		# ############################################################################
-		def setTargetProperty(self, selectedText):
+		def showGUI(self, iType="color"):
 			
-			# get current index
-			selectedIndex = getMenuIndex1[selectedText]
-			
-			# set predefined schema to default state
-			self.sColors.setCurrentIndex(0)
-			
-			# set color target, do not get it from translation
-			if selectedIndex == 0:
-				self.gColorTarget = "DiffuseColor"
-				self.getColor()
-			
-			if selectedIndex == 1:
-				self.gColorTarget = "DiffuseColor"
-				self.getColor()
-				
-			if selectedIndex == 2:
-				self.gColorTarget = "Transparency"
-				self.getColor()
-				
-			if selectedIndex == 3:
-				self.gColorTarget = "AmbientColor"
-				self.getColor()
-				
-			if selectedIndex == 4:
-				self.gColorTarget = "EmissiveColor"
-				self.getColor()
-				
-			if selectedIndex == 5:
-				self.gColorTarget = "Shininess"
-				self.getColor()
-				
-			if selectedIndex == 6:
-				self.gColorTarget = "SpecularColor"
-				self.getColor()
-		
 			# if real-time chooser is selected not switch GUI
 			if self.rb2.isChecked() == True:
 				return ""
 			
-			# set default GUI
-			self.showDefaultGUI()
+			self.hideGUI()
 			
-			# actions for selected item
-			if selectedIndex == 5:
+			self.rb1.show()
+			self.rb2.show()
+			
+			if iType == "Shininess":
 				
-				self.hideGUI()
-
 				self.oShineL.show()
 				self.oShineB1.show()
 				self.oShineE.show()
@@ -1143,12 +1439,11 @@ def showQtGUI():
 
 				self.oStepSingleL.show()
 				self.oStepSingleE.show()
+				self.oShineSlide.show()
 				
 				self.oCustomB.show()
 
-			if selectedIndex == 2:
-				
-				self.hideGUI()
+			elif iType == "Transparency":
 				
 				self.oTransL.show()
 				self.oTransB1.show()
@@ -1157,70 +1452,11 @@ def showQtGUI():
 				
 				self.oStepSingleL.show()
 				self.oStepSingleE.show()
+				self.oTransSlide.show()
 				
 				self.oCustomB.show()
-			
-		# ############################################################################
-		def setPredefinedColors(self, selectedText):
-			
-			# get selection index and set screen size
-			selectedIndex = getMenuIndex2[selectedText]
-			
-			# skip if reset selection
-			if selectedIndex == 0:
-				return ""
-			
-			# set default color structure, [ RGB int, alpha float ]
-			Material = { 
-				"DiffuseColor": [ 204, 204, 204, 1.0 ], 
-				"AmbientColor": [ 85, 85, 85, 1.0 ], 
-				"SpecularColor": [ 136, 136, 136, 1.0 ], 
-				"EmissiveColor": [ 0, 0, 0, 1.0 ], 
-				"Shininess": 0.9, 
-				"Transparency": 0.0 # no comma
-			}
-
-			if selectedIndex == 2:
-				Material["DiffuseColor"] = [ 255, 255, 255, 1.0 ]
-
-			if selectedIndex == 3:
-				Material["DiffuseColor"] = [ 0, 0, 0, 1.0 ]
-			
-			if selectedIndex == 4:
-				Material["DiffuseColor"] = [ 255, 0, 255, 1.0 ]
-
-			if selectedIndex == 5:
-				Material["DiffuseColor"] = [ 222, 184, 135, 1.0 ]
 		
-			if selectedIndex == 6:
-				Material["DiffuseColor"] = [ 247, 185, 108, 1.0 ]
-
-			if selectedIndex == 7:
-				Material["DiffuseColor"] = [ 174, 138, 105, 1.0 ]
-
-			if selectedIndex == 8:
-				Material["DiffuseColor"] = [ 175, 91, 76, 1.0 ]
-
-			if selectedIndex == 9:
-				Material["DiffuseColor"] = [ 205, 170, 125, 1.0 ]
-		
-			if selectedIndex == 10:
-				Material["DiffuseColor"] = [ 207, 141, 91, 1.0 ]
-		
-			if selectedIndex == 11:
-				Material["DiffuseColor"] = [ 163, 104, 70, 1.0 ]
-
-			if selectedIndex == 12:
-				Material["DiffuseColor"] = [ 125, 83, 62, 1.0 ]
-		
-			if selectedIndex == 13:
-				Material["DiffuseColor"] = [ 68, 48, 40, 1.0 ]
-		
-			if selectedIndex == 14:
-				Material["DiffuseColor"] = [ 63, 25, 17, 1.0 ]
-			
-			# setting colors from spreadsheet
-			if selectedIndex == 15:
+			elif iType == "Sheet":
 				
 				self.oRedL.hide()
 				self.oRedB1.hide()
@@ -1253,10 +1489,8 @@ def showQtGUI():
 				self.oTransB2.hide()
 				
 				self.oStepL1.hide()
-				self.oStepL2.hide()
 				self.oStepE.hide()
-				self.oStepAlphaL.hide()
-				self.oStepAlphaE.hide()
+
 				self.oStepSingleL.hide()
 				self.oStepSingleE.hide()
 
@@ -1264,45 +1498,214 @@ def showQtGUI():
 
 				self.sheetInfo.show()
 				self.sheetB1.show()
+		
+			elif iType == "all-in-one":
+				
+				self.rb1.hide()
+				self.rb2.hide()
 			
+				self.groupDiffuseColor.show()
+				self.groupAmbientColor.show()
+				self.groupEmissiveColor.show()
+				self.groupSpecularColor.show()
+				self.groupShininess.show()
+				self.groupTransparency.show()
+
+			else:
+			
+				self.oRedL.show()
+				self.oRedB1.show()
+				self.oRedE.show()
+				self.oRedB2.show()
+				
+				self.oGreenL.show()
+				self.oGreenB1.show()
+				self.oGreenE.show()
+				self.oGreenB2.show()
+				
+				self.oBlueL.show()
+				self.oBlueB1.show()
+				self.oBlueE.show()
+				self.oBlueB2.show()
+				
+				self.oAlphaL.show()
+				self.oAlphaB1.show()
+				self.oAlphaE.show()
+				self.oAlphaB2.show()
+				
+				self.oShineL.hide()
+				self.oShineB1.hide()
+				self.oShineE.hide()
+				self.oShineB2.hide()
+				
+				self.oTransL.hide()
+				self.oTransB1.hide()
+				self.oTransE.hide()
+				self.oTransB2.hide()
+				
+				self.oStepL1.show()
+				self.oStepE.show()
+				
+				self.oStepSingleL.hide()
+				self.oStepSingleE.hide()
+				
+				self.oShineSlide.hide()
+				self.oTransSlide.hide()
+
+				self.oCustomB.show()
+				
+				self.sheetInfo.hide()
+				self.sheetB1.hide()
+
+		# ############################################################################
+		def setTargetProperty(self, selectedText):
+			
+			# get current index
+			selectedIndex = getMenuIndex1[selectedText]
+			
+			# set predefined schema to default state
+			self.sColors.setCurrentIndex(0)
+			
+			# set color target, do not get it from translation
+			if selectedIndex == 0:
+				self.gColorTarget = "DiffuseColor"
+			
+			if selectedIndex == 1:
+				self.gColorTarget = "DiffuseColor"
+				
+			if selectedIndex == 2:
+				self.gColorTarget = "Transparency"
+				
+			if selectedIndex == 3:
+				self.gColorTarget = "AmbientColor"
+				
+			if selectedIndex == 4:
+				self.gColorTarget = "EmissiveColor"
+				
+			if selectedIndex == 5:
+				self.gColorTarget = "Shininess"
+				
+			if selectedIndex == 6:
+				self.gColorTarget = "SpecularColor"
+
+			if selectedIndex == 7:
+				self.gColorTarget = "all-in-one"
+
+			if self.rb2.isChecked() == False:
+				
+				self.showGUI(self.gColorTarget)
+
+				if selectedIndex == 7:
+					self.setGeometry(self.gPW, self.gPH, self.toolSW, 720)
+					self.setAllSliders()
+				else:
+					self.setGeometry(self.gPW, self.gPH, self.toolSW, self.toolSH)
+					self.getColor()
+
+		# ############################################################################
+		def setPredefinedColors(self, selectedText):
+			
+			# get selection index and set screen size
+			selectedIndex = getMenuIndex2[selectedText]
+			
+			# skip if reset selection
+			if selectedIndex == 0:
+				return ""
+			
+			self.showGUI(self.gColorTarget)
+			
+			# set default color structure, [ RGB int, alpha float ]
+			Material = { 
+				"DiffuseColor": [ 204, 204, 204, 255 ], 
+				"AmbientColor": [ 85, 85, 85, 255 ], 
+				"SpecularColor": [ 136, 136, 136, 255 ], 
+				"EmissiveColor": [ 0, 0, 0, 255 ], 
+				"Shininess": 90, 
+				"Transparency": 0 # no comma
+			}
+
+			if selectedIndex == 2:
+				Material["DiffuseColor"] = [ 255, 255, 255, 255 ]
+
+			if selectedIndex == 3:
+				Material["DiffuseColor"] = [ 0, 0, 0, 255 ]
+			
+			if selectedIndex == 4:
+				Material["DiffuseColor"] = [ 255, 0, 255, 255 ]
+
+			if selectedIndex == 5:
+				Material["DiffuseColor"] = [ 222, 184, 135, 255 ]
+		
+			if selectedIndex == 6:
+				Material["DiffuseColor"] = [ 247, 185, 108, 255 ]
+
+			if selectedIndex == 7:
+				Material["DiffuseColor"] = [ 174, 138, 105, 255 ]
+
+			if selectedIndex == 8:
+				Material["DiffuseColor"] = [ 175, 91, 76, 255 ]
+
+			if selectedIndex == 9:
+				Material["DiffuseColor"] = [ 205, 170, 125, 255 ]
+		
+			if selectedIndex == 10:
+				Material["DiffuseColor"] = [ 207, 141, 91, 255 ]
+		
+			if selectedIndex == 11:
+				Material["DiffuseColor"] = [ 163, 104, 70, 255 ]
+
+			if selectedIndex == 12:
+				Material["DiffuseColor"] = [ 125, 83, 62, 255 ]
+		
+			if selectedIndex == 13:
+				Material["DiffuseColor"] = [ 68, 48, 40, 255 ]
+		
+			if selectedIndex == 14:
+				Material["DiffuseColor"] = [ 63, 25, 17, 255 ]
+			
+			# setting colors from spreadsheet
+			if selectedIndex == 15:
+				self.showGUI("Sheet")
+
 			if selectedIndex == 16:
-				Material["DiffuseColor"] = [ 255, 0, 0, 1.0 ]
+				Material["DiffuseColor"] = [ 255, 0, 0, 255 ]
 			
 			if selectedIndex == 17:
-				Material["DiffuseColor"] = [ 0, 255, 0, 1.0 ]
+				Material["DiffuseColor"] = [ 0, 255, 0, 255 ]
 			
 			if selectedIndex == 18:
-				Material["DiffuseColor"] = [ 0, 0, 255, 1.0 ]
+				Material["DiffuseColor"] = [ 0, 0, 255, 255 ]
 			
 			if selectedIndex == 19:
-				[ r, g, b, a ] = MagicPanels.gDefaultColor
-				cR = self.convertToRGB(r)
-				cG = self.convertToRGB(g)
-				cB = self.convertToRGB(b)
-				Material["DiffuseColor"] = [ cR, cG, cB, a ]
+				Material["DiffuseColor"] = MagicPanels.convertColor(MagicPanels.gDefaultColor, "RGBA")
 				
 			# update color
 			if selectedIndex != 0 and selectedIndex != 15:
 				
 				# update text fields
 				if self.gColorTarget == "Shininess":
-					color = round(float(Material["Shininess"]), 2)
-					self.oShineE.setText(str(color))
+					self.oShineE.setText(str( Material["Shininess"] ))
 
 				elif self.gColorTarget == "Transparency":
-					color = round(float(Material["Transparency"]), 2)
-					self.oTransE.setText(str(color))
+					self.oTransE.setText(str( Material["Transparency"] ))
 				
+				elif self.gColorTarget == "all-in-one":
+						self.gColorToSet = Material
+						self.setAllSliders()
+
 				else:
 					color = Material[self.gColorTarget]
-					[ r, g, b, a ] = [ int(color[0]), int(color[1]), int(color[2]), round(float(color[3]), 2) ]
+					[ r, g, b, a ] = [ int(color[0]), int(color[1]), int(color[2]), int(color[3]) ]
 
 					# set GUI form with RGB color values
 					self.oRedE.setText(str(r))
 					self.oGreenE.setText(str(g))
 					self.oBlueE.setText(str(b))
 					self.oAlphaE.setText(str(a))
-				
+
+					if self.rb2.isChecked() == True:
+						self.setChooserColor(color)
+
 				# update color for selected target
 				self.setColor()
 				self.getColor()
@@ -1311,16 +1714,16 @@ def showQtGUI():
 		def selectRadioButton1(self):
 			self.rtcc.hide()
 			self.setGeometry(self.gPW, self.gPH, self.toolSW, self.toolSH)
-			self.showDefaultGUI()
-			self.sTargets.setCurrentIndex(0)
+			self.showGUI(self.gColorTarget)
 			self.sColors.setCurrentIndex(0)
-		
+			self.getColor()
+			
 		def selectRadioButton2(self):
 			self.hideGUI()
 			self.resize(540, 650)
 			self.rtcc.open()
-			self.sTargets.setCurrentIndex(0)
 			self.sColors.setCurrentIndex(0)
+			self.getColor()
 
 	# ############################################################################
 	# final settings
@@ -1344,3 +1747,4 @@ showQtGUI()
 
 
 # ###################################################################################################################
+

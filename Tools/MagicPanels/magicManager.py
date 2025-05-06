@@ -537,7 +537,7 @@ def showQtGUI():
 			# add settings to panel
 			self.gPanel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
 			MagicPanels.setColor(self.gPanel, 0, (0.0, 0.0, 0.0, 1.0), "color")
-			self.gPanel.ViewObject.Transparency = 83
+			MagicPanels.setColor(self.gPanel, 0, 83, "trans", "RGBA")
 			
 			MagicPanels.addRotation(self.gObj1, [ self.gPanel ])
 			
@@ -640,7 +640,7 @@ def showQtGUI():
 			# add settings to panel
 			self.gPanel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
 			MagicPanels.setColor(self.gPanel, 0, (0.0, 0.0, 0.0, 1.0), "color")
-			self.gPanel.ViewObject.Transparency = 83
+			MagicPanels.setColor(self.gPanel, 0, 83, "trans", "RGBA")
 			FreeCAD.ActiveDocument.recompute()
 
 		# ############################################################################
@@ -883,11 +883,14 @@ def showQtGUI():
 			if self.gPanel != "":
 				
 				try:
-					MagicPanels.copyColors(self.gObj1, self.gPanel)
+					if self.gSelection1.isDerivedFrom("Part::Cut"):
+						MagicPanels.copyColors(self.gSelection1, self.gPanel)
+					else:
+						MagicPanels.copyColors(self.gObj1, self.gPanel)
 				except:
 					skip = 1
 
-				self.gPanel.ViewObject.Transparency = 0
+				MagicPanels.setColor(self.gPanel, 0, 0, "trans", "RGBA")
 				self.gPanel = ""
 		
 		# ############################################################################

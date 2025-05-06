@@ -999,7 +999,7 @@ def showQtGUI():
 			
 			try:
 				self.gDepth = MagicPanels.unit2value(self.oFxDepthE.text())
-				t2 = self.gObj2.ViewObject.Transparency
+				t2 = MagicPanels.getColor(self.gObj2, 0, "trans", "RGBA")
 				
 				[ self.gObj2, self.gObj2Face ] = MagicPanels.makeMortise(self.gLink, self.gDepth, self.gObj2, self.gObj2Face)
 				self.gObj2FaceIndex = MagicPanels.getFaceIndex(self.gObj2, self.gObj2Face)
@@ -1011,7 +1011,7 @@ def showQtGUI():
 				n += str(self.gObj2FaceIndex)
 				self.ob2S.setText(n)
 				
-				self.gObj2.ViewObject.Transparency = t2
+				MagicPanels.setColor(self.gObj2, 0, t2, "trans", "RGBA")
 				
 			except:
 				self.resetInfoScreen()
@@ -1020,7 +1020,7 @@ def showQtGUI():
 			
 			try:
 				self.gDepth = MagicPanels.unit2value(self.oFxDepthE.text())
-				t2 = self.gObj2.ViewObject.Transparency
+				t2 = MagicPanels.getColor(self.gObj2, 0, "trans", "RGBA")
 				
 				[ self.gObj2, self.gObj2Face ] = MagicPanels.makeTenon(self.gLink, self.gDepth, self.gObj2, self.gObj2Face)
 				self.gObj2FaceIndex = MagicPanels.getFaceIndex(self.gObj2, self.gObj2Face)
@@ -1032,8 +1032,8 @@ def showQtGUI():
 				n += str(self.gObj2FaceIndex)
 				self.ob2S.setText(n)
 				
-				self.gObj2.ViewObject.Transparency = t2
-			
+				MagicPanels.setColor(self.gObj2, 0, t2, "trans", "RGBA")
+				
 			except:
 				self.resetInfoScreen()
 		
@@ -1043,8 +1043,8 @@ def showQtGUI():
 
 				self.gDepth = MagicPanels.unit2value(self.oFxDepthE.text())
 				
-				t2 = self.gObj2.ViewObject.Transparency
-				t3 = self.gObj3.ViewObject.Transparency
+				t2 = MagicPanels.getColor(self.gObj2, 0, "trans", "RGBA")
+				t3 = MagicPanels.getColor(self.gObj3, 0, "trans", "RGBA")
 				
 				[ self.gObj2, self.gObj2Face ] = MagicPanels.makeTenon(self.gLink, self.gDepth, self.gObj2, self.gObj2Face)
 				self.gObj2FaceIndex = MagicPanels.getFaceIndex(self.gObj2, self.gObj2Face)
@@ -1054,8 +1054,8 @@ def showQtGUI():
 				
 				self.refreshInfoScreens()
 			
-				self.gObj2.ViewObject.Transparency = t2
-				self.gObj3.ViewObject.Transparency = t3
+				MagicPanels.setColor(self.gObj2, 0, t2, "trans", "RGBA")
+				MagicPanels.setColor(self.gObj3, 0, t3, "trans", "RGBA")
 		
 			except:
 				self.resetInfoScreen()

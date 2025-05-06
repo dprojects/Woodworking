@@ -913,8 +913,15 @@ This tool allows you to quickly measure objects. All measurements are recognized
 **Options:**
 
 * **refresh selection:** Loads the objects for which colors are to be changed.
-* **Color property:** This is the target attribute of the color structure.
-* **Predefined schema:** These are defined color schemes that can be quickly set.
+* **Target:** This is the target attribute of the color structure.
+  * `DiffuseColor` normal color.
+  * `AmbientColor` available since FreeCAD 1.0 new color schema.
+  * `EmissiveColor` available since FreeCAD 1.0 new color schema.
+  * `SpecularColor` available since FreeCAD 1.0 new color schema.
+  * `Shininess` available since FreeCAD 1.0 new color schema.
+  * `Transparency` transparency.
+  * `let's slide all` sliders to set all target attributes at once.
+* **Sample:** These are defined color schemes that can be quickly set.
   * `custom` this is the startup setting mode and does not set any color.
   * `Woodworking - default` this is the default color set in the MagicPanels library for all new objects you create.
   * `reset` this is the FreeCAD default color for objects.
@@ -923,22 +930,19 @@ This tool allows you to quickly measure objects. All measurements are recognized
 
 **Setting modes:**
 
-* **simple buttons** color settings can be made using the `-` and `+` buttons or by manually entering values ​​into the text fields. In the case of manually entering values ​​into the text fields, they must be confirmed with the `set custom color` button. In the case of the `-` and `+` buttons, the color value will be changed in real time for all loaded objects.
-  * `Set red color:` changes the proportions of the red color intensity.
-  * `Set green color:` changes the proportions of the green color intensity.
-  * `Set blue color:` changes the proportions of the blue color intensity.
-  * `Set alpha channel:` changes the proportions of the red, green and blue color intensity. However, in the case of FreeCAD it works by making a face or object transparent.
-  * `Set step:` sets the value that will be reduced or added to the current color value when the `-` or `+` button is pressed.
-    * `RGB` for red, green and blue text fields.
-    * `Alpha` for alpha channel text field.
+* **simple** color settings can be made using the `-` and `+` buttons or by manually entering values ​​into the text fields. In the case of manually entering values ​​into the text fields, they must be confirmed with the `set custom color` button. In the case of the `-` and `+` buttons, the color value will be changed in real time for all loaded objects.
+  * `Red:` changes the proportions of the red color intensity.
+  * `Green:` changes the proportions of the green color intensity.
+  * `Blue:` changes the proportions of the blue color intensity.
+  * `Alpha:` changes the proportions of the red, green and blue color intensity. However, in the case of FreeCAD it works by making a face or object transparent.
+  * `RGBA step:` sets the value that will be reduced or added to the current color value when the `-` or `+` button is pressed for red, green, blue and alpha channel text fields.
   * `set custom color` button sets the color based on manually entered color values ​​into text fields.
   
-* **extended live chooser** allows you to select a color in a way that is typical for graphics programs. When the `Color property` is set to `Shininess` or `Transparency` the vertical slider, or `Val:` field, can be used to change this color attribute. When the `Color property` is of type RGB it works in a standard way affecting the RGB color.
+* **extended** allows you to select a color in a way that is typical for graphics programs. When the `Color property` is set to `Shininess` or `Transparency` the vertical slider, or `Val:` field, can be used to change this color attribute. When the `Color property` is of type RGB it works in a standard way affecting the RGB color.
 
 > [!IMPORTANT]
-> * The "Predefined schema" color will be set only for currently selected target attribute, i.e. "Color property".
+> * The "Sample" color will be set only for currently selected target attribute, i.e. "Target".
 > * In FreeCAD 0.21.2 only DiffuseColor and Transparency attributes are available. Transparency works only for objects but you can use alpha channel to make faces transparent.
-> * In FreeCAD 0.21.2 the alpha channel works in the opposite way for faces and objects than it should. This was designed by FreeCAD so that 0.0 means an object without transparency, and 1.0 means an object with full transparency. 
 > * In FreeCAD 1.1 only DiffuseColor and Transparency attributes works for faces and objects, other attributes works only for objects, looks like it is not implemented by FreeCAD yet but this tool is ready for it and set it correctly.
 > * In FreeCAD 1.1 alpha channel not works for faces and objects, only the Transparency works for faces and objects, looks like it is not implemented by FreeCAD yet but this tool is ready for it and set it correctly.
 

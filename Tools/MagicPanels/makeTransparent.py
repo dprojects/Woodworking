@@ -6,8 +6,7 @@ import MagicPanels
 
 translate = FreeCAD.Qt.translate
 
-gChange = []
-gType = ""
+gChange = dict()
 
 try:
 
@@ -20,26 +19,26 @@ try:
 		
 		try:
 
-			if str(o.ViewObject.Transparency) == "0":
-				gChange.append(o)
-				gType = "set"
+			trans = MagicPanels.getColor(o, 0, "trans", "RGBA")
+			
+			if trans == 0:
+				gChange[str(o.Name)] = "set"
 
-			if str(o.ViewObject.Transparency) == "83":
-				gChange.append(o)
-				gType = "unset"
+			if trans == 83:
+				gChange[str(o.Name)] = "unset"
 
 		except:
 			skip = 1
 
-	for o in gChange:
+	for o in objects:
 
 		try:
 
-			if gType == "set":
-				o.ViewObject.Transparency = 83
+			if gChange[str(o.Name)] == "set":
+				MagicPanels.setColor(o, 0, 83, "trans", "RGBA")
 
-			if gType == "unset":
-				o.ViewObject.Transparency = 0
+			if gChange[str(o.Name)] == "unset":
+				MagicPanels.setColor(o, 0, 0, "trans", "RGBA")
 
 		except:
 			skip = 1

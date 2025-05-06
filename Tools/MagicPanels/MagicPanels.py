@@ -247,6 +247,23 @@ def getReference(iObj="none"):
 	if obj.isDerivedFrom("Sketcher::SketchObject"):
 		return obj
 
+	# try to find the base in Part::Cut
+	if obj.isDerivedFrom("Part::Cut"):
+		
+		try:
+			i = 0
+			while i < gSearchDepth:
+				obj = obj.Base
+				
+				if obj.isDerivedFrom("Part::Box"):
+					return obj
+				
+				i = i + 1
+		except:
+			skip = 1
+		
+		return obj
+
 	# try to unpack base object for other objects
 	try:
 		depth = len(obj.OutListRecursive)
@@ -4617,7 +4634,119 @@ def unit2value(iString):
 
 
 # ###################################################################################################################
-def getColor(iObj, iFaceIndex, iAttribute="color"):
+def convertColor(iColor, iTarget):
+	'''
+	Description:
+	
+		Converts colors.
+
+	Args:
+
+		iColor: 
+		
+			possible formats from FreeCAD to RGBA:
+			* tuple with floats: ( 0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0 )
+			* array with floats: [ 0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0 ]
+			* array with tuples: [ (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0) ]
+			* array with arrays: [ [1.0, 0.0, 0.0, 1.0], [0.0, 1.0, 0.0, 1.0], [0.0, 1.0, 0.0, 1.0] ]
+			
+			possible formats from RGBA to FreeCAD:
+			* array with RGBA ints: [ 255, 0, 0, 255 ]
+			* array with RGBA arrays: [ [255, 0, 0, 255], [0, 255, 0, 255], [0, 0, 255, 255] ]
+			
+		iTarget: string:
+			* "kernel": converts RGBA to FreeCAD tuple with floats (for array as well)
+			* "RGBA": converts FreeCAD floats to RGBA array
+
+	Usage:
+
+		color = MagicPanels.convertColor([ 247, 185, 108, 255 ], "kernel")
+		
+		colorTuple = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0)
+		color = MagicPanels.convertColor(colorTuple, "RGBA")
+		
+		colorArray = [ 0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0 ]
+		color = MagicPanels.convertColor(colorArray, "RGBA")
+		
+		color = MagicPanels.convertColor(obj.ViewObject.DiffuseColor, "RGBA")
+
+	Result:
+
+		returns converted color
+
+	'''
+
+
+	if iTarget == "kernel":
+		
+		# array
+		if type(iColor) is list:
+			
+			# array with arrays
+			if type(iColor[0]) is list:
+
+				colorToSet = []
+				for c in iColor:
+					r = float(c[0] / 255)
+					g = float(c[1] / 255)
+					b = float(c[2] / 255)
+					a = float(c[3] / 255)
+					colorToSet.append( tuple( [ r, g, b, a ] ) )
+			
+			# single array
+			else:
+				r = float(iColor[0] / 255)
+				g = float(iColor[1] / 255)
+				b = float(iColor[2] / 255)
+				a = float(iColor[3] / 255)
+				colorToSet = tuple( [ r, g, b, a ] )
+		
+		return colorToSet
+
+	if iTarget == "RGBA":
+		
+		# single tuple
+		if type(iColor) is tuple:
+			r = int(iColor[0] * 255)
+			g = int(iColor[1] * 255)
+			b = int(iColor[2] * 255)
+			a = int(iColor[3] * 255)
+			colorToSet = [ r, g, b, a ]
+		
+		# array
+		elif type(iColor) is list:
+			
+			# array with arrays or tuples
+			if type(iColor[0]) is list or type(iColor[0]) is tuple:
+				
+				colorToSet = []
+				
+				for c in iColor:
+					r = int(c[0] * 255)
+					g = int(c[1] * 255)
+					b = int(c[2] * 255)
+					a = int(c[3] * 255)
+					colorToSet.append([ r, g, b, a ])
+			
+			# array with floats
+			else:
+				r = int(iColor[0] * 255)
+				g = int(iColor[1] * 255)
+				b = int(iColor[2] * 255)
+				a = int(iColor[3] * 255)
+				colorToSet = [ r, g, b, a ]
+		
+		# only array or tuple is supported
+		else:
+			return ""
+		
+		return colorToSet
+
+	return ""
+
+
+# ###################################################################################################################
+def getColor(iObj, iFaceIndex, iAttribute="color", iType="kernel"):
 	'''
 	Description:
 	
@@ -4628,22 +4757,30 @@ def getColor(iObj, iFaceIndex, iAttribute="color"):
 		iObj: object
 		iFaceIndex: index to get color for face or 0 to get color for object
 		iAttribute: string, attribute name from FreeCAD.Material structure, e.g.:
-			* "color" - to get color from DiffuseColor attribute
-			* "trans" - to get color from Transparency attribute
-			* "AmbientColor" - to get color from AmbientColor attribute
-			* "DiffuseColor" - to get color from DiffuseColor attribute
-			* "EmissiveColor" - to get color from EmissiveColor attribute
-			* "Shininess" - to get color from Shininess attribute
-			* "SpecularColor" - to get color from SpecularColor attribute
-			* "Transparency" - to get color from Transparency attribute
+			* "color": to get color from DiffuseColor attribute
+			* "trans": to get color from Transparency attribute
+			* "DiffuseColor": to get color from DiffuseColor attribute
+			* "AmbientColor": to get color from AmbientColor attribute
+			* "SpecularColor": to get color from SpecularColor attribute
+			* "EmissiveColor": to get color from EmissiveColor attribute
+			* "Shininess": to get color from Shininess attribute
+			* "Transparency": to get color from Transparency attribute
+		iType (optional): string to describe the color type
+			* "kernel" (default): return tuple with floats
+			* "RGBA": return RGBA array with integers [ r, g, b, a ] 
 
 	Usage:
 
-		color = MagicPanels.getColor(o, 0, "color") # to get object color
-		color = MagicPanels.getColor(o, 5, "color") # to get face5 color
+		colorTuple = MagicPanels.getColor(o, 0, "color") # to get object color
+		colorTuple = MagicPanels.getColor(o, 5, "color") # to get face5 color
+		
+		[ r, g, b, a ] = MagicPanels.getColor(o, 0, "color", "RGBA") # to get object color
+		[ r, g, b, a ] = MagicPanels.getColor(o, 5, "color", "RGBA") # to get face5 color
 
 	Result:
 
+		Returns color in desired format or empty string.
+		
 		For FreeCAD 0.21.2 returns color for object from .ViewObject.ShapeColor or 
 		color for face from .ViewObject.DiffuseColor.
 		
@@ -4652,12 +4789,17 @@ def getColor(iObj, iFaceIndex, iAttribute="color"):
 		structure. If all the faces have the same color there is only one Material object. 
 		But for example if only single face have different color, there are Material objects 
 		for all faces, but there is no color for object. So in this case the color for 
-		object cannot be determined, so will be returned as empty string "".
+		object cannot be determined, so will be returned as empty string "". 
 
 	'''
 
 
+	# init return color
+	returnColor = ""
+	
+	# ############################################################################
 	# support for FreeCAD 1.0+
+	# ############################################################################
 	if gKernelVersion >= 1.0:
 	
 		# set target attribute
@@ -4671,39 +4813,43 @@ def getColor(iObj, iFaceIndex, iAttribute="color"):
 			attribute = iAttribute
 		
 		# for example LinkGroup
-		if not hasattr(iObj.ViewObject, "ShapeAppearance"):
-			if hasattr(iObj.ViewObject, "ShapeMaterial"):
-				if hasattr(iObj.ViewObject.ShapeMaterial, attribute):
-					return getattr(iObj.ViewObject.ShapeMaterial, attribute)
+		if returnColor == "":
+			if not hasattr(iObj.ViewObject, "ShapeAppearance"):
+				if hasattr(iObj.ViewObject, "ShapeMaterial"):
+					if hasattr(iObj.ViewObject.ShapeMaterial, attribute):
+						returnColor = getattr(iObj.ViewObject.ShapeMaterial, attribute)
 		
-		# continue for normal objects
-		num = len(iObj.ViewObject.ShapeAppearance)
+		# continue for other objects
+		if returnColor == "":
+			try:
+				num = len(iObj.ViewObject.ShapeAppearance)
+			except:
+				return ""
 		
-		# get color for object, no color faces
-		if iFaceIndex == 0 and num == 1:
-			m = iObj.ViewObject.ShapeAppearance[0]
-			if hasattr(m, attribute):
-				return getattr(m, attribute)
-		
-		# get color for object, already multi color faces
-		if iFaceIndex == 0 and num != 1:
-			return ""
+		# get color for object, all color faces the same
+		if returnColor == "":
+			if iFaceIndex == 0 and num == 1:
+				m = iObj.ViewObject.ShapeAppearance[0]
+				if hasattr(m, attribute):
+					returnColor = getattr(m, attribute)
 		
 		# get color for face, all color faces the same
-		if iFaceIndex != 0 and num == 1:
-			m = iObj.ViewObject.ShapeAppearance[0]
-			if hasattr(m, attribute):
-				return getattr(m, attribute)
+		if returnColor == "":
+			if iFaceIndex != 0 and num == 1:
+				m = iObj.ViewObject.ShapeAppearance[0]
+				if hasattr(m, attribute):
+					returnColor = getattr(m, attribute)
 		
 		# get color for face, already multi color faces
-		if iFaceIndex != 0 and num != 1:
-			m = iObj.ViewObject.ShapeAppearance[iFaceIndex-1]
-			if hasattr(m, attribute):
-				return getattr(m, attribute)
-		
-		return ""
-		
+		if returnColor == "":
+			if iFaceIndex != 0 and num != 1:
+				m = iObj.ViewObject.ShapeAppearance[iFaceIndex-1]
+				if hasattr(m, attribute):
+					returnColor = getattr(m, attribute)
+
+	# ############################################################################
 	# support for FreeCAD 0.21.2 and below
+	# ############################################################################
 	else:
 		
 		# set target attribute
@@ -4717,30 +4863,65 @@ def getColor(iObj, iFaceIndex, iAttribute="color"):
 			return "not supported attribute in this version"
 		
 		# for example LinkGroup
-		if not hasattr(iObj.ViewObject, "DiffuseColor"):
-			if hasattr(iObj.ViewObject, "ShapeMaterial"):
-				if hasattr(iObj.ViewObject.ShapeMaterial, attribute):
-					return getattr(iObj.ViewObject.ShapeMaterial, attribute)
+		if returnColor == "":
+			if not hasattr(iObj.ViewObject, "DiffuseColor"):
+				if hasattr(iObj.ViewObject, "ShapeMaterial"):
+					if hasattr(iObj.ViewObject.ShapeMaterial, attribute):
+						returnColor = getattr(iObj.ViewObject.ShapeMaterial, attribute)
 		
-		# continue for normal objects
-		if attribute == "Transparency":
-			return iObj.ViewObject.Transparency
+		# for transparent will be from 1.0 schema, to get float better precision
+		if returnColor == "":
+			if attribute == "Transparency":
+				returnColor = float( int(iObj.ViewObject.Transparency) / 100 )
 		
-		if iFaceIndex == 0:
-			return iObj.ViewObject.ShapeColor
+		# for object
+		if returnColor == "":
+			if iFaceIndex == 0:
+				returnColor = iObj.ViewObject.ShapeColor
 		
-		num = len(iObj.ViewObject.DiffuseColor)
+		# continue for other objects
+		if returnColor == "":
+			try:
+				num = len(iObj.ViewObject.DiffuseColor)
+			except:
+				return ""
 		
-		if num == 1:
-			return iObj.ViewObject.DiffuseColor[0]
-		else:
-			return iObj.ViewObject.DiffuseColor[iFaceIndex-1]
+		# for face
+		if returnColor == "":
+			
+			# if all faces are the same
+			if num == 1:
+				returnColor = iObj.ViewObject.DiffuseColor[0]
+			
+			# if multi color faces
+			else:
+				returnColor = iObj.ViewObject.DiffuseColor[iFaceIndex-1]
 
+		# fix wrong alpha meaning
+		if returnColor != "" and attribute != "Transparency":
+			[ r, g, b, a ] = returnColor
+			returnColor = tuple([ r, g, b, round( float(1 - a), 2 ) ])
+			
+	# ############################################################################
+	# convert color & return final color
+	# ############################################################################
+	if returnColor != "":
+		
+		if iType == "RGBA":
+			
+			if attribute == "Shininess" or attribute == "Transparency":
+				return int(returnColor * 100)
+			else:
+				return convertColor(returnColor, "RGBA")
+		
+		else:
+			return returnColor
+	else:
 		return ""
 
 
 # ###################################################################################################################
-def setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
+def setColor(iObj, iFaceIndex, iColor, iAttribute="color", iType="kernel"):
 	'''
 	Description:
 	
@@ -4751,30 +4932,42 @@ def setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
 		iObj: object
 		iFaceIndex: index to set color for face or 0 to set color for object
 		iColor: color according to the FreeCAD.Material structure, e.g.:
-			* "AmbientColor" - (0.33333298563957214, 0.33333298563957214, 0.33333298563957214, 1.0)
 			* "DiffuseColor" - (0.800000011920929, 0.800000011920929, 0.800000011920929, 1.0)
-			* "EmissiveColor" - (0.0, 0.0, 0.0, 1.0)
-			* "Shininess" - 0.8999999761581421
+			* "AmbientColor" - (0.33333298563957214, 0.33333298563957214, 0.33333298563957214, 1.0)
 			* "SpecularColor" - (0.5333330035209656, 0.5333330035209656, 0.5333330035209656, 1.0)
-			* "Transparency" - 0.0
+			* "EmissiveColor" - (0.0, 0.0, 0.0, 1.0)
+			* "Shininess" - float in range from 0.0 to 1.0, default is: 0.8999999761581421
+			* "Transparency" - float in range from 0.0 (no transparent) to 1.0 (full transparent), default is: 0.0
 		iAttribute: string, attribute name from FreeCAD.Material structure, e.g.:
 			* "color" - to set color for DiffuseColor attribute
 			* "trans" - to set color for Transparency attribute
-			* "AmbientColor" - to set color for AmbientColor attribute
 			* "DiffuseColor" - to set color for DiffuseColor attribute
+			* "AmbientColor" - to set color for AmbientColor attribute
+			* "SpecularColor" - to set color for SpecularColor attribute
 			* "EmissiveColor" - to set color for EmissiveColor attribute
 			* "Shininess" - to set color for Shininess attribute
-			* "SpecularColor" - to set color for SpecularColor attribute
 			* "Transparency" - to set color for Transparency attribute
+		iType (optional): string to describe the color type
+			* "kernel" (default): iColor will be tuple with floats
+			* "RGBA": iColor will be RGBA array [ r, g, b, a ] 
 
 	Usage:
 
-		MagicPanels.setColor(o, 0, (1.0, 1.0, 0.0, 1.0), "color") # to set object color
-		MagicPanels.setColor(o, 5, (1.0, 1.0, 0.0, 1.0), "color") # to set face5 color
+		MagicPanels.setColor(o, 0, (1.0, 0.0, 0.0, 1.0), "color") # to set object color
+		MagicPanels.setColor(o, 5, (1.0, 0.0, 0.0, 1.0), "color") # to set face5 color
 		
 		# to set colors for all faces, e.g. for dowel with 3 faces
-		colors = [ (1.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0) ]
+		colors = [ (1.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0) ]
 		MagicPanels.setColor(o, 0, colors, "color")
+		
+		or 
+		
+		MagicPanels.setColor(o, 0, [ 255, 0, 0, 255 ], "color", "RGBA") # to set object color
+		MagicPanels.setColor(o, 5, [ 255, 0, 0, 255 ], "color", "RGBA") # to set face5 color
+		
+		# to set colors for all faces, e.g. for dowel with 3 faces
+		colors = [ [ 255, 0, 0, 255 ], [ 0, 0, 0, 255 ], [ 0, 255, 0, 255 ] ]
+		MagicPanels.setColor(o, 0, colors, "color", "RGBA")
 
 	Result:
 
@@ -4783,7 +4976,26 @@ def setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
 	'''
 
 
+	# init color to set
+	colorToSet = iColor
+	
+	# ############################################################################
+	# convert color
+	# ############################################################################
+	if iType == "RGBA":
+		
+		if (
+			iAttribute == "Shininess" or 
+			iAttribute == "Transparency" or 
+			iAttribute == "trans"
+		):
+			colorToSet = float(iColor/100)
+		else:
+			colorToSet = convertColor(iColor, "kernel")
+
+	# ############################################################################
 	# support for FreeCAD 1.0+
+	# ############################################################################
 	if gKernelVersion >= 1.0:
 	
 		# set target attribute
@@ -4800,20 +5012,23 @@ def setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
 		if not hasattr(iObj.ViewObject, "ShapeAppearance"):
 			if hasattr(iObj.ViewObject, "ShapeMaterial"):
 				if hasattr(iObj.ViewObject.ShapeMaterial, attribute):
-					setattr(iObj.ViewObject.ShapeMaterial, attribute, iColor)
+					setattr(iObj.ViewObject.ShapeMaterial, attribute, colorToSet)
 					return ""
 		
-		# continue for normal objects
-		num = len(iObj.ViewObject.ShapeAppearance)
+		# continue for other objects
+		try:
+			num = len(iObj.ViewObject.ShapeAppearance)
+		except:
+			return "wrong .ViewObject.ShapeAppearance structure"
 		
-		# set color for all faces
-		if type(iColor) is list:
+		# for all faces from array
+		if type(colorToSet) is list:
 			
 			initSA = []
 			for i in range(0, len(iObj.Shape.Faces)):
 				m = iObj.ViewObject.ShapeAppearance[0]
 				if hasattr(m, attribute):
-					setattr(m, attribute, iColor[i])
+					setattr(m, attribute, colorToSet[i])
 					initSA.append(m)
 				else:
 					return "wrong iAttribute attribute"
@@ -4822,19 +5037,19 @@ def setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
 			
 			return ""
 		
-		# set the same color for object
+		# for object, set the same color for all faces
 		if iFaceIndex == 0:
 			sa = iObj.ViewObject.ShapeAppearance
 			m = sa[0]
 			if hasattr(m, attribute):
-				setattr(m, attribute, iColor)
-				iObj.ViewObject.ShapeAppearance = ( m )
+				setattr(m, attribute, colorToSet)
+				iObj.ViewObject.ShapeAppearance = ( m, )
 			else:
 				return "wrong iAttribute attribute"
 
 			return ""
 
-		# set color for face, if all faces has the same material structure
+		# for face, if all faces has the same material structure
 		if iFaceIndex != 0 and num == 1:
 			
 			sa = iObj.ViewObject.ShapeAppearance
@@ -4854,17 +5069,17 @@ def setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
 			# replace attribute in Material structure for exact face
 			sa = iObj.ViewObject.ShapeAppearance
 			m = sa[iFaceIndex-1]
-			setattr(m, attribute, iColor)
+			setattr(m, attribute, colorToSet)
 			iObj.ViewObject.ShapeAppearance = sa
 
 			return ""
 
-		# set color for face, if all faces has its own material structure
+		# for face, if all faces has its own material structure
 		if iFaceIndex != 0 and num != 1:
 			sa = iObj.ViewObject.ShapeAppearance
 			m = sa[iFaceIndex-1]
 			if hasattr(m, attribute):
-				setattr(m, attribute, iColor)
+				setattr(m, attribute, colorToSet)
 				iObj.ViewObject.ShapeAppearance = sa
 			else:
 				return "wrong iAttribute attribute"
@@ -4873,7 +5088,9 @@ def setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
 		
 		return "not settings found"
 
+	# ############################################################################
 	# support for FreeCAD 0.21.2 and below
+	# ############################################################################
 	else:
 		
 		# set target attribute
@@ -4886,40 +5103,24 @@ def setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
 		else:
 			return "not supported attribute in this version"
 		
+		# transparent will be from 1.0 schema, to get float better precision
 		if attribute == "Transparency":
-			iObj.ViewObject.Transparency = iColor
+			iObj.ViewObject.Transparency = int(colorToSet * 100)
 			return ""
 		
-		# set color for all faces
-		if type(iColor) is list:
+		# for all faces from array
+		if type(colorToSet) is list:
 			
 			initSA = []
 			for i in range(0, len(iObj.Shape.Faces)):
 				
 				# fix for wrong alpha meaning in FreeCAD 0.21.2
-				# to keep backward compatibilty
-				[ r, g, b, a ] = iColor[i]
-				if a == 1.0:
-					m = tuple([ r, g, b, 0.0 ])
-				elif a == 0.0:
-					m = tuple([ r, g, b, 1.0 ])
-				else:
-					m = tuple([ r, g, b, a ])
-
+				[ r, g, b, a ] = colorToSet[i]
+				m = tuple([ r, g, b, round( float(1 - a), 2 ) ])
 				initSA.append(m)
 
 			iObj.ViewObject.DiffuseColor = initSA
 			return ""
-
-		# fix for wrong alpha meaning in FreeCAD 0.21.2
-		# to keep backward compatibilty
-		[ r, g, b, a ] = iColor
-		if a == 1.0:
-			colorToSet = tuple([ r, g, b, 0.0 ])
-		elif a == 0.0:
-			colorToSet = tuple([ r, g, b, 1.0 ])
-		else:
-			colorToSet = tuple([ r, g, b, a ])
 
 		# for example LinkGroup
 		if not hasattr(iObj.ViewObject, "DiffuseColor"):
@@ -4927,37 +5128,45 @@ def setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
 				if hasattr(iObj.ViewObject.ShapeMaterial, attribute):
 					setattr(iObj.ViewObject.ShapeMaterial, attribute, colorToSet)
 					return ""
-		
-		# set color for object
+
+		# fix for wrong alpha meaning in FreeCAD 0.21.2, 
+		# the ShapeMaterial has good alpha meaning so not move it above
+		[ r, g, b, a ] = colorToSet
+		colorToSet = tuple([ r, g, b, round( float(1 - a), 2 ) ])
+
+		# for object
 		if iFaceIndex == 0:
 			iObj.ViewObject.ShapeColor = colorToSet
 			iObj.ViewObject.DiffuseColor = colorToSet
 			return ""
 		
-		# set color for single face
-		num = len(iObj.ViewObject.DiffuseColor)
+		# continue for other objects
+		try:
+			num = len(iObj.ViewObject.DiffuseColor)
+		except:
+			return "wrong .ViewObject.DiffuseColor structure"
 		
-		# all faces has the same color but want to set single face only
+		# for face, all faces has the same color
 		if iFaceIndex != 0 and num == 1:
 			
-			color = iObj.ViewObject.DiffuseColor[0]
+			c = iObj.ViewObject.DiffuseColor[0]
 			init = []
 			for f in iObj.Shape.Faces:
-				init.append(color)
+				init.append(c)
 			
 			iObj.ViewObject.DiffuseColor = tuple(init)
 			
-			colors = iObj.ViewObject.DiffuseColor
-			colors[iFaceIndex-1] = colorToSet
-			iObj.ViewObject.DiffuseColor = colors
+			c = iObj.ViewObject.DiffuseColor
+			c[iFaceIndex-1] = colorToSet
+			iObj.ViewObject.DiffuseColor = c
 			return ""
 
-		# multi color faces but want to set single face only
+		# for face, multi color faces
 		if iFaceIndex != 0 and num != 1:
 			
-			colors = iObj.ViewObject.DiffuseColor
-			colors[iFaceIndex-1] = colorToSet
-			iObj.ViewObject.DiffuseColor = colors
+			c = iObj.ViewObject.DiffuseColor
+			c[iFaceIndex-1] = colorToSet
+			iObj.ViewObject.DiffuseColor = c
 			return ""
 
 		return "not settings found"

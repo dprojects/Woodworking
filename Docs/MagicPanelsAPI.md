@@ -1657,7 +1657,47 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 		float for calculation
 
 # Colors
-### getColor(iObj, iFaceIndex, iAttribute="color"):
+### convertColor(iColor, iTarget):
+
+	Description:
+	
+		Converts colors.
+
+##### Description:
+
+		iColor: 
+		
+			possible formats from FreeCAD to RGBA:
+			* tuple with floats: ( 0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0 )
+			* array with floats: [ 0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0 ]
+			* array with tuples: [ (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0) ]
+			* array with arrays: [ [1.0, 0.0, 0.0, 1.0], [0.0, 1.0, 0.0, 1.0], [0.0, 1.0, 0.0, 1.0] ]
+			
+			possible formats from RGBA to FreeCAD:
+			* array with RGBA ints: [ 255, 0, 0, 255 ]
+			* array with RGBA arrays: [ [255, 0, 0, 255], [0, 255, 0, 255], [0, 0, 255, 255] ]
+			
+		iTarget: string:
+			* "kernel": converts RGBA to FreeCAD tuple with floats (for array as well)
+			* "RGBA": converts FreeCAD floats to RGBA array
+
+##### Usage:
+
+		color = MagicPanels.convertColor([ 247, 185, 108, 255 ], "kernel")
+		
+		colorTuple = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0)
+		color = MagicPanels.convertColor(colorTuple, "RGBA")
+		
+		colorArray = [ 0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0 ]
+		color = MagicPanels.convertColor(colorArray, "RGBA")
+		
+		color = MagicPanels.convertColor(obj.ViewObject.DiffuseColor, "RGBA")
+
+##### Result:
+
+		returns converted color
+
+### getColor(iObj, iFaceIndex, iAttribute="color", iType="kernel"):
 
 	Description:
 	
@@ -1668,22 +1708,30 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 		iObj: object
 		iFaceIndex: index to get color for face or 0 to get color for object
 		iAttribute: string, attribute name from FreeCAD.Material structure, e.g.:
-			* "color" - to get color from DiffuseColor attribute
-			* "trans" - to get color from Transparency attribute
-			* "AmbientColor" - to get color from AmbientColor attribute
-			* "DiffuseColor" - to get color from DiffuseColor attribute
-			* "EmissiveColor" - to get color from EmissiveColor attribute
-			* "Shininess" - to get color from Shininess attribute
-			* "SpecularColor" - to get color from SpecularColor attribute
-			* "Transparency" - to get color from Transparency attribute
+			* "color": to get color from DiffuseColor attribute
+			* "trans": to get color from Transparency attribute
+			* "DiffuseColor": to get color from DiffuseColor attribute
+			* "AmbientColor": to get color from AmbientColor attribute
+			* "SpecularColor": to get color from SpecularColor attribute
+			* "EmissiveColor": to get color from EmissiveColor attribute
+			* "Shininess": to get color from Shininess attribute
+			* "Transparency": to get color from Transparency attribute
+		iType (optional): string to describe the color type
+			* "kernel" (default): return tuple with floats
+			* "RGBA": return RGBA array with integers [ r, g, b, a ] 
 
 ##### Usage:
 
-		color = MagicPanels.getColor(o, 0, "color") # to get object color
-		color = MagicPanels.getColor(o, 5, "color") # to get face5 color
+		colorTuple = MagicPanels.getColor(o, 0, "color") # to get object color
+		colorTuple = MagicPanels.getColor(o, 5, "color") # to get face5 color
+		
+		[ r, g, b, a ] = MagicPanels.getColor(o, 0, "color", "RGBA") # to get object color
+		[ r, g, b, a ] = MagicPanels.getColor(o, 5, "color", "RGBA") # to get face5 color
 
 ##### Result:
 
+		Returns color in desired format or empty string.
+		
 		For FreeCAD 0.21.2 returns color for object from .ViewObject.ShapeColor or 
 		color for face from .ViewObject.DiffuseColor.
 		
@@ -1692,9 +1740,9 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 		structure. If all the faces have the same color there is only one Material object. 
 		But for example if only single face have different color, there are Material objects 
 		for all faces, but there is no color for object. So in this case the color for 
-		object cannot be determined, so will be returned as empty string "".
+		object cannot be determined, so will be returned as empty string "". 
 
-### setColor(iObj, iFaceIndex, iColor, iAttribute="color"):
+### setColor(iObj, iFaceIndex, iColor, iAttribute="color", iType="kernel"):
 
 	Description:
 	
@@ -1705,30 +1753,42 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 		iObj: object
 		iFaceIndex: index to set color for face or 0 to set color for object
 		iColor: color according to the FreeCAD.Material structure, e.g.:
-			* "AmbientColor" - (0.33333298563957214, 0.33333298563957214, 0.33333298563957214, 1.0)
 			* "DiffuseColor" - (0.800000011920929, 0.800000011920929, 0.800000011920929, 1.0)
-			* "EmissiveColor" - (0.0, 0.0, 0.0, 1.0)
-			* "Shininess" - 0.8999999761581421
+			* "AmbientColor" - (0.33333298563957214, 0.33333298563957214, 0.33333298563957214, 1.0)
 			* "SpecularColor" - (0.5333330035209656, 0.5333330035209656, 0.5333330035209656, 1.0)
-			* "Transparency" - 0.0
+			* "EmissiveColor" - (0.0, 0.0, 0.0, 1.0)
+			* "Shininess" - float in range from 0.0 to 1.0, default is: 0.8999999761581421
+			* "Transparency" - float in range from 0.0 (no transparent) to 1.0 (full transparent), default is: 0.0
 		iAttribute: string, attribute name from FreeCAD.Material structure, e.g.:
 			* "color" - to set color for DiffuseColor attribute
 			* "trans" - to set color for Transparency attribute
-			* "AmbientColor" - to set color for AmbientColor attribute
 			* "DiffuseColor" - to set color for DiffuseColor attribute
+			* "AmbientColor" - to set color for AmbientColor attribute
+			* "SpecularColor" - to set color for SpecularColor attribute
 			* "EmissiveColor" - to set color for EmissiveColor attribute
 			* "Shininess" - to set color for Shininess attribute
-			* "SpecularColor" - to set color for SpecularColor attribute
 			* "Transparency" - to set color for Transparency attribute
+		iType (optional): string to describe the color type
+			* "kernel" (default): iColor will be tuple with floats
+			* "RGBA": iColor will be RGBA array [ r, g, b, a ] 
 
 ##### Usage:
 
-		MagicPanels.setColor(o, 0, (1.0, 1.0, 0.0, 1.0), "color") # to set object color
-		MagicPanels.setColor(o, 5, (1.0, 1.0, 0.0, 1.0), "color") # to set face5 color
+		MagicPanels.setColor(o, 0, (1.0, 0.0, 0.0, 1.0), "color") # to set object color
+		MagicPanels.setColor(o, 5, (1.0, 0.0, 0.0, 1.0), "color") # to set face5 color
 		
 		# to set colors for all faces, e.g. for dowel with 3 faces
-		colors = [ (1.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0) ]
+		colors = [ (1.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0) ]
 		MagicPanels.setColor(o, 0, colors, "color")
+		
+		or 
+		
+		MagicPanels.setColor(o, 0, [ 255, 0, 0, 255 ], "color", "RGBA") # to set object color
+		MagicPanels.setColor(o, 5, [ 255, 0, 0, 255 ], "color", "RGBA") # to set face5 color
+		
+		# to set colors for all faces, e.g. for dowel with 3 faces
+		colors = [ [ 255, 0, 0, 255 ], [ 0, 0, 0, 255 ], [ 0, 255, 0, 255 ] ]
+		MagicPanels.setColor(o, 0, colors, "color", "RGBA")
 
 ##### Result:
 

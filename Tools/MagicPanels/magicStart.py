@@ -8395,7 +8395,7 @@ def showQtGUI():
 			pl = FreeCAD.Vector(plx, ply, plz)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
 			o5.ViewObject.ShapeColor = (255, 255, 255)
-			o5.ViewObject.Transparency = 60
+			MagicPanels.setColor(o5, 0, 60, "trans", "RGBA")
 			
 			objects = [o1, o2, o3, o4, o5]
 			label = "Container, Front with GLass"
@@ -8475,7 +8475,7 @@ def showQtGUI():
 			pl = FreeCAD.Vector(plx, ply, plz)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
 			o5.ViewObject.ShapeColor = (255, 255, 255)
-			o5.ViewObject.Transparency = 60
+			MagicPanels.setColor(o5, 0, 60, "trans", "RGBA")
 			
 			# Vertical decoration
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGVertical")

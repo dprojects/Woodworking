@@ -18,7 +18,8 @@ getMenuIndex1 = {
 	translate('magicView', 'along Y'): 3, 
 	translate('magicView', 'along Z'): 4, 
 	translate('magicView', 'along XYZ'): 5, 
-	translate('magicView', 'Assembly'): 6 # no comma 
+	translate('magicView', 'Assembly'): 6, 
+	translate('magicView', 'custom'): 7 # no comma 
 }
 
 # ############################################################################
@@ -110,6 +111,7 @@ def showQtGUI():
 
 			# not write here, copy text from getMenuIndex1 to avoid typo
 			self.sModeList = (
+				translate('magicView', 'custom'), 
 				translate('magicView', 'restore'), 
 				translate('magicView', 'explode'), 
 				translate('magicView', 'along X'), 
@@ -268,7 +270,8 @@ def showQtGUI():
 						o.isDerivedFrom("Part::Box") or 
 						o.isDerivedFrom("App::Link") or 
 						o.isDerivedFrom("PartDesign::Body") or 
-						o.isDerivedFrom("App::LinkGroup") 
+						o.isDerivedFrom("App::LinkGroup") or 
+						o.isDerivedFrom("Part::Cut") 
 						):
 						self.gObjects.append(o)
 
@@ -309,19 +312,25 @@ def showQtGUI():
 			sheet.set( "H4", str("Rotation Y") )
 			sheet.set( "I4", str("Rotation Z") )
 			
+			# store all objects with Placement maybe
+			# to allow custom move
+			# but auto explode only safe objects
 			row = 5
-			for o in self.gObjects:
+			for o in objects:
 				
-				sheet.set( "A"+str(row), str(o.Name) )
-				sheet.set( "B"+str(row), str(o.Label) )
-				sheet.set( "C"+str(row), str(o.Placement.Base.x) )
-				sheet.set( "D"+str(row), str(o.Placement.Base.y) )
-				sheet.set( "E"+str(row), str(o.Placement.Base.z) )
-				sheet.set( "F"+str(row), str(o.Placement.Rotation.Angle) )
-				sheet.set( "G"+str(row), str(o.Placement.Rotation.Axis.x) )
-				sheet.set( "H"+str(row), str(o.Placement.Rotation.Axis.y) )
-				sheet.set( "I"+str(row), str(o.Placement.Rotation.Axis.z) )
-				
+				try:
+					sheet.set( "A"+str(row), str(o.Name) )
+					sheet.set( "B"+str(row), str(o.Label) )
+					sheet.set( "C"+str(row), str(o.Placement.Base.x) )
+					sheet.set( "D"+str(row), str(o.Placement.Base.y) )
+					sheet.set( "E"+str(row), str(o.Placement.Base.z) )
+					sheet.set( "F"+str(row), str(o.Placement.Rotation.Angle) )
+					sheet.set( "G"+str(row), str(o.Placement.Rotation.Axis.x) )
+					sheet.set( "H"+str(row), str(o.Placement.Rotation.Axis.y) )
+					sheet.set( "I"+str(row), str(o.Placement.Rotation.Axis.z) )
+				except:
+					continue
+
 				row = row + 1
 			
 			FreeCAD.ActiveDocument.recompute()
@@ -749,12 +758,17 @@ def showQtGUI():
 		
 		if not form.kccscb.isChecked():
 
-			if form.gAxisCrossSupport == True:
-				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(form.gAxisCrossOrig)
+			try:
+				if form.gAxisCrossSupport == True:
+					FreeCADGui.ActiveDocument.ActiveView.setAxisCross(form.gAxisCrossOrig)
+			except:
+				skip = 1
 				
-			if form.gCornerCrossSupport == True:
-				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(form.gCornerCrossOrig)
-
+			try:
+				if form.gCornerCrossSupport == True:
+					FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(form.gCornerCrossOrig)
+			except:
+				skip = 1
 		pass
 
 # ###################################################################################################################

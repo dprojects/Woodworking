@@ -72,6 +72,7 @@ def panelCopy(iType):
 		
 		sub = False
 		try:
+			selection = FreeCADGui.Selection.getSelection()[1]
 			obj = FreeCADGui.Selection.getSelection()[1]
 			sub = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
 			
@@ -92,9 +93,14 @@ def panelCopy(iType):
 		
 		panel = FreeCAD.activeDocument().addObject("Part::Box", "panel"+iType)
 		[ panel.Length, panel.Width, panel.Height ] = [ Length, Width, Height ]
-
+		
+		MagicPanels.setColor(panel, 0, MagicPanels.gDefaultColor, "color")
+		
 		try:
-			MagicPanels.copyColors(objRef, panel)
+			if selection.isDerivedFrom("Part::Cut"):
+				MagicPanels.copyColors(selection, panel)
+			else:
+				MagicPanels.copyColors(objRef, panel)
 		except:
 			skip = 1
 
@@ -163,7 +169,10 @@ def panelFace(iType):
 		MagicPanels.addRotation(objRef, [ panel ])
 		
 		try:
-			MagicPanels.copyColors(objRef, panel)
+			if selection.isDerivedFrom("Part::Cut"):
+				MagicPanels.copyColors(selection, panel)
+			else:
+				MagicPanels.copyColors(objRef, panel)
 		except:
 			skip = 1
 			
@@ -183,7 +192,8 @@ def panelFace(iType):
 def panelBetween(iType):
 	
 	try:
-
+		
+		selection = FreeCADGui.Selection.getSelection()[0]
 		obj1Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[0])
 		obj2Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[1])
 
@@ -221,7 +231,10 @@ def panelBetween(iType):
 		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x1, y1, z1), FreeCAD.Rotation(0, 0, 0))
 		
 		try:
-			MagicPanels.copyColors(obj1Ref, panel)
+			if selection.isDerivedFrom("Part::Cut"):
+				MagicPanels.copyColors(selection, panel)
+			else:
+				MagicPanels.copyColors(obj1Ref, panel)
 		except:
 			skip = 1
 
@@ -241,7 +254,7 @@ def panelBetween(iType):
 def panelSide(iType):
 	
 	try:
-
+		selection = MagicPanels.getReference()[0]
 		objRef = MagicPanels.getReference()
 		face = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 
@@ -287,7 +300,10 @@ def panelSide(iType):
 		MagicPanels.addRotation(objRef, [ panel ])
 		
 		try:
-			MagicPanels.copyColors(objRef, panel)
+			if selection.isDerivedFrom("Part::Cut"):
+				MagicPanels.copyColors(selection, panel)
+			else:
+				MagicPanels.copyColors(objRef, panel)
 		except:
 			skip = 1
 
@@ -315,6 +331,7 @@ def panelBackOut():
 	
 	try:
 
+		selection = FreeCADGui.Selection.getSelection()[0]
 		obj1Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[0])
 		obj2Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[1])
 		obj3Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[2])
@@ -348,7 +365,10 @@ def panelBackOut():
 			MagicPanels.addRotation(obj1Ref, [ panel ])
 			
 			try:
-				MagicPanels.copyColors(obj1Ref, panel)
+				if selection.isDerivedFrom("Part::Cut"):
+					MagicPanels.copyColors(selection, panel)
+				else:
+					MagicPanels.copyColors(obj1Ref, panel)
 			except:
 				skip = 1
 
@@ -372,7 +392,7 @@ def panelBackOut():
 def panelCover(iType):
 	
 	try:
-
+		selection = FreeCADGui.Selection.getSelection()[0]
 		obj1Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[0])
 		obj2Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[1])
 		obj3Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[2])
@@ -406,7 +426,10 @@ def panelCover(iType):
 			MagicPanels.addRotation(obj1Ref, [ panel ])
 			
 			try:
-				MagicPanels.copyColors(obj1Ref, panel)
+				if selection.isDerivedFrom("Part::Cut"):
+					MagicPanels.copyColors(selection, panel)
+				else:
+					MagicPanels.copyColors(obj1Ref, panel)
 			except:
 				skip = 1
 
