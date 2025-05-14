@@ -237,6 +237,8 @@ Tools = [
 	# #################################################################################################################################
 
 	"MagicPanels", "panel2pad", "png", "cube to pad", "Click to see info.",
+	"MagicPanels", "addExternal", "png", "add external geometry", "Click to see info.",
+	"MagicPanels", "wires2pad", "png", "create Pad from wires in sketch", "Click to see info.",
 
 	# #################################################################################################################################
 	# Woodworking - preview

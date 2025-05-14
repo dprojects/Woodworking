@@ -20,15 +20,42 @@ try:
 	vertices = []
 	for o in objects:
 
-		if hasattr(o, "Placement"):
+		try:
 			[ x, y, z ] = MagicPanels.getPosition(o, "global")
 			vertices.append(FreeCAD.Vector(x, y, z))
-
-		else:
+		except:
 			continue
 
+		try:
+		
+			FreeCAD.Console.PrintMessage("\n")
+			FreeCAD.Console.PrintMessage("\n"+"-----------------------------------------------------"+"\n")
+			FreeCAD.Console.PrintMessage(str(o.Label))
+			FreeCAD.Console.PrintMessage("\n"+"-----------------------------------------------------"+"\n")
+			
+			containers = MagicPanels.getContainers(o)
+			
+			FreeCAD.Console.PrintMessage("Containers: ")
+				
+			for c in containers:
+				FreeCAD.Console.PrintMessage("\n")
+				FreeCAD.Console.PrintMessage(c.Label)
+				FreeCAD.Console.PrintMessage(" | ")
+				FreeCAD.Console.PrintMessage(c.Placement)
+				
+			[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(o)
+			FreeCAD.Console.PrintMessage("\n\n")
+			FreeCAD.Console.PrintMessage("Offset summary: ")
+			FreeCAD.Console.PrintMessage(" | ")
+			FreeCAD.Console.PrintMessage([ coX, coY, coZ, coR ])
+			
+			FreeCAD.Console.PrintMessage("\n"+"-----------------------------------------------------"+"\n")
+			
+		except:
+			skip = 1
+	
+	FreeCAD.Console.PrintMessage("\n\n")
 	MagicPanels.showVertex(vertices, 10)
-
 
 except:
 	

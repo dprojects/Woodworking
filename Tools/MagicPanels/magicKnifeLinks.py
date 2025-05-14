@@ -36,7 +36,8 @@ try:
 		cut.Base = o
 		cut.Tool = knifeLink
 		cut.Label = MagicPanels.getNestingLabel(o, "Cut")
-
+		o.Visibility = False
+		
 		FreeCAD.ActiveDocument.recompute()
 		
 		try:

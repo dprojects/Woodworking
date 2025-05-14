@@ -209,10 +209,10 @@ def getItems(iType):
 			"showPlacement",
 			"debugInfo",
 			"Std_DependencyGraph",
-			"Std_DlgMacroRecord",
-			"Std_MacroStopRecord",
 			"Std_DlgMacroExecute",
-			"Std_DlgMacroExecuteDirect"
+			"Std_DlgMacroExecuteDirect",
+			"Std_DlgMacroRecord",
+			"Std_MacroStopRecord"
 		]
 	
 	if iType == "Woodworking - parameterization":
@@ -228,6 +228,8 @@ def getItems(iType):
 		
 		parts = [
 			"panel2pad",
+			"addExternal",
+			"wires2pad",
 			"Std_Part",
 			"PartDesign_Body", 
 			"PartDesign_NewSketch",

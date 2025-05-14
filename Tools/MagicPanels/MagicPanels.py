@@ -68,7 +68,7 @@ except:
 
 
 # ###################################################################################################################
-def isType(iObj, iType):
+def isType(iObj, iType="Clone"):
 	'''
 	Description:
 	
@@ -95,9 +95,14 @@ def isType(iObj, iType):
 
 	'''
 	
-	if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Name.startswith("Clone"):
-		return True
+	if iType == "Clone":
+		
+		if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Name.startswith("Clone"):
+			return True
 	
+		if iObj.isDerivedFrom("Part::Part2DObjectPython") and iObj.Name.startswith("Clone"):
+			return True
+
 	return False
 	
 
@@ -677,8 +682,18 @@ def copyPanel(iObjects, iType="auto"):
 			copy.Label = str(o.Label)
 			copy.Label = getNestingLabel(o, "Link")
 		
-		copies.append(copy)
+		# if copy was successful
+		try:
+			copy.recompute()
+		except:
+			skip = 1
 	
+		# if copy was successful
+		try:
+			copies.append(copy)
+		except:
+			skip = 1
+		
 	return copies
 
 
@@ -704,6 +719,7 @@ def getObjectToCopy(iObj):
 		for Cube: always returns Cube
 		for Pad: always returns Body
 		for PartDesign objects: try to return Body
+		for Body returns Body
 		for LinkGroup: returns LinkGroup
 		for Cut: returns Cut
 		for Clones: returns Clone
@@ -1152,6 +1168,7 @@ def getFaceVertices(iFace, iType="4"):
 
 	'''
 	
+	
 	vertexArr = touchTypo(iFace)
 
 	if iType == "4":
@@ -1522,7 +1539,7 @@ def getFaceDetails(iObj, iFace):
 
 
 # ###################################################################################################################
-def showVertex(iVertices, iRadius=5, iColor="red"):
+def showVertex(iVertices, iRadius=20, iColor="red"):
 	'''
 	Description:
 	
@@ -2551,6 +2568,69 @@ def getDirection(iObj):
 
 
 # ###################################################################################################################
+def getOffset(iObj, iDestination, iType="array"):
+	'''
+	Description:
+	
+		This function returns offset for setPosition function.
+	
+	Args:
+	
+		iObj: object to get offset
+		iDestination: global destination point
+		iType (optional): iDestination type
+			* "array": the iDestination will be [ float, float, float ]
+			* "vector": the iDestination will be FreeCAD.Vector type [ .x, .y, .z ]
+			* "vertex": the iDestination will be Vertex type [ .X, .Y, .Z ]
+
+	Usage:
+	
+		[ offetX, offetY, offetZ ] = MagicPanels.getOffset(o, [ 100, 200, 0 ], "array")
+		[ offetX, offetY, offetZ ] = MagicPanels.getOffset(o, edge.CenterOfMass, "vector")
+
+	Result:
+	
+		return array with offsets [ offetX, offetY, offetZ ]
+
+	'''
+
+
+	[ dX, dY, dZ ] = [ 0, 0, 0 ]
+	
+	if iType == "array":
+		[ dX, dY, dZ ] = [ iDestination[0], iDestination[1], iDestination[2] ]
+	
+	if iType == "vector":
+		[ dX, dY, dZ ] = [ iDestination.x, iDestination.y, iDestination.z ]
+		
+	if iType == "vertex":
+		[ dX, dY, dZ ] = [ iDestination.X, iDestination.Y, iDestination.Z ]
+
+	# make sure the object position data has been updated
+	try:
+		iObj.recompute()
+	except:
+		skip = 1
+	
+	[ X, Y, Z ] = getPosition(iObj, "global")
+	
+	diffX = abs(dX - X)
+	diffY = abs(dY - Y)
+	diffZ = abs(dZ - Z)
+
+	if X > dX:
+		diffX = -diffX
+
+	if Y > dY:
+		diffY = -diffY
+
+	if Z > dZ:
+		diffZ = -diffZ
+	
+	return [ diffX, diffY, diffZ ]
+	
+
+# ###################################################################################################################
 def getPosition(iObj, iType="global"):
 	'''
 	Description:
@@ -2561,7 +2641,7 @@ def getPosition(iObj, iType="global"):
 	
 		iObj: object to get placement
 		iType (optional): 
-			"global": trying to calculate global position of the object
+			"global": trying to calculate global position of the object, make sure the object is currently supported
 			"local": return iObj.Placement
 
 	Usage:
@@ -2578,6 +2658,13 @@ def getPosition(iObj, iType="global"):
 		z: Z Axis object position
 
 	'''
+
+
+	# make sure the object position data has been updated
+	try:
+		iObj.recompute()
+	except:
+		skip = 1
 
 	# direct placement only for object
 	if iType == "local":
@@ -2602,6 +2689,33 @@ def getPosition(iObj, iType="global"):
 		except:
 			return "object has no placement to get"
 
+		if iObj.isDerivedFrom("Sketcher::SketchObject"):
+			import Draft
+			copy = Draft.make_clone(iObj)
+			containers = getContainers(iObj)
+			moveToContainer([ copy ], containers[0])
+			copy.recompute()
+			x = copy.Shape.BoundBox.XMin
+			y = copy.Shape.BoundBox.YMin
+			z = copy.Shape.BoundBox.ZMin
+			FreeCAD.ActiveDocument.removeObject(str(copy.Name))
+
+		if iObj.isDerivedFrom("PartDesign::Body"):
+			try:
+				x = iObj.Shape.BoundBox.XMin
+				y = iObj.Shape.BoundBox.YMin
+				z = iObj.Shape.BoundBox.ZMin
+			except:
+				iObj = iObj.VisibleFeature
+				
+		if iObj.isDerivedFrom("Part::Cut"):
+			try:
+				x = iObj.Shape.BoundBox.XMin
+				y = iObj.Shape.BoundBox.YMin
+				z = iObj.Shape.BoundBox.ZMin
+			except:
+				skip = 1
+			
 		try:
 			test = iObj._Body
 			x = iObj.Shape.BoundBox.XMin
@@ -2615,7 +2729,12 @@ def getPosition(iObj, iType="global"):
 			x = iObj.Shape.BoundBox.XMin
 			y = iObj.Shape.BoundBox.YMin
 			z = iObj.Shape.BoundBox.ZMin
-
+		
+		if iObj.isDerivedFrom("PartDesign::SubShapeBinder"):
+			x = iObj.Shape.BoundBox.XMin
+			y = iObj.Shape.BoundBox.YMin
+			z = iObj.Shape.BoundBox.ZMin
+		
 		baseV = FreeCAD.Vector(x, y, z)
 		containers = getContainers(iObj)
 		globalV = baseV
@@ -2628,7 +2747,7 @@ def getPosition(iObj, iType="global"):
 				o.isDerivedFrom("App::LinkGroup") or 
 				o.isDerivedFrom("Part::Cut") 
 				):
-				
+
 				try:
 					p = o.Placement
 				except:
@@ -2658,13 +2777,17 @@ def setPosition(iObj, iX, iY, iZ, iType="offset"):
 		iZ: Z axis offset to add or position to set
 		iType (optional):
 			* "offset": copy like Clone or Link is created in the same place as base object so you can add only 
-							offset to the current copy placement instead of searching for base object global position. 
-			* "local": set directly to object Placement attribute
+							offset to the current copy placement instead of searching for base object global position. So here the iX, iY, iZ is offset for placement.
+			* "local": set directly to object Placement attribute, so here the iX, iY, iZ is local object XYZ. However, if the object 
+							is not in the container or the containers don't have offsets this might be global.
+			* "global": setting object position via global coordinates, here the iX, iY, iZ is global XYZ. The offset to the 
+							global iX, iY, iZ will calculated here automatically.
 		
 	Usage:
 	
 		MagicPanels.setPosition(copy, 100, 0, 0, "offset")
 		MagicPanels.setPosition(copy, 100, 0, 0, "local")
+		MagicPanels.setPosition(copy, 100, 0, 0, "global")
 
 	Result:
 	
@@ -2673,28 +2796,39 @@ def setPosition(iObj, iX, iY, iZ, iType="offset"):
 	'''
 
 	
-	FreeCAD.ActiveDocument.openTransaction("setPositionOffset "+str(iObj.Label))
-	
 	if iType == "offset":
+		FreeCAD.ActiveDocument.openTransaction("setPositionOffset "+str(iObj.Label))
+
+		x = iObj.Placement.Base.x
+		y = iObj.Placement.Base.y
+		z = iObj.Placement.Base.z
+		iObj.Placement.Base = FreeCAD.Vector(x + iX, y + iY, z + iZ)
+
+		FreeCAD.ActiveDocument.commitTransaction()
+		return ""
+	
+	if iType == "local":
+		FreeCAD.ActiveDocument.openTransaction("setPositionLocal "+str(iObj.Label))
+
+		iObj.Placement.Base = FreeCAD.Vector(iX, iY, iZ)
+
+		FreeCAD.ActiveDocument.commitTransaction()
+		return ""
+	
+	if iType == "global":
+		FreeCAD.ActiveDocument.openTransaction("setPositionGlobal "+str(iObj.Label))
+		
+		[ offsetX, offsetY, offsetZ ] = getOffset(iObj, [ iX, iY, iZ ], "array")
 		
 		x = iObj.Placement.Base.x
 		y = iObj.Placement.Base.y
 		z = iObj.Placement.Base.z
-		iObj.Placement.Base = FreeCAD.Vector(x+iX, y+iY, z+iZ)
+		iObj.Placement.Base = FreeCAD.Vector(x + offsetX, y + offsetY, z + offsetZ)
 		
+		FreeCAD.ActiveDocument.commitTransaction()
 		return ""
 	
-	if iType == "local":
-		
-		iObj.Placement.Base = FreeCAD.Vector(iX, iY, iZ)
-		
-		return ""
-		
-	else:
-		
-		return "wrong iType"
-
-	FreeCAD.ActiveDocument.commitTransaction()
+	return "wrong iType"
 
 
 # ###################################################################################################################
@@ -3486,41 +3620,6 @@ def createContainer(iObjects, iLabel="Container", iNesting=True):
 
 
 # ###################################################################################################################
-def getNestingLabel(iObj, iPrefix):
-	'''
-	Description:
-	
-		This function set label for nesting objects, containers, copied, to not repeat 
-		the prefix and not make the label too long. 
-	
-	Args:
-	
-		iObj: object for the label check
-		iPrefix: string, preferred prefix for the label
-
-	Usage:
-	
-		o.Label = MagicPanels.getNestingLabel(o, "Container")
-
-	Result:
-	
-		return string for the new label
-
-	'''
-
-	label = str(iObj.Label)
-
-	if label.find(", ") == -1:
-		newLabel = iPrefix + ", " + label + " "
-
-	else:
-		prefix = label.split(", ")[0]
-		newLabel = label.replace(prefix, iPrefix)
-
-	return newLabel
-
-
-# ###################################################################################################################
 def getContainers(iObj):
 	'''
 	Description:
@@ -3543,173 +3642,34 @@ def getContainers(iObj):
 	'''
 
 	containers = []
+	current = iObj
 	
-	for c in iObj.InListRecursive:
-		containers.append(c)
+	for i in range(0, gSearchDepth):
+	
+		try:
+			parent = current.InList[0]
+	
+			if (
+				parent.isDerivedFrom("App::Part") or 
+				parent.isDerivedFrom("PartDesign::Body") or 
+				parent.isDerivedFrom("App::LinkGroup") or 
+				parent.isDerivedFrom("Part::Cut") 
+			):
+				containers.append(parent)
+			
+		except:
+			return containers
 
-		if len(c.Parents) < 1:
-			break
+		try:
+			current = parent
+		except:
+			return containers
 
 	return containers
 
 
 # ###################################################################################################################
-def getContainersOffset(iObj):
-	'''
-	Description:
-	
-		If the object is in the container like Part, Body, LinkGroup the vertices are 
-		not updated by FreeCAD. From FreeCAD perspective the object is still in the 
-		same place. This function is trying to solve this problem and calculates 
-		all offsets of all containers.
-	
-	Args:
-	
-		iObj: object to get containers offset
-
-	Usage:
-	
-		[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(o)
-
-	Result:
-	
-		return [ coX, coY, coZ, coR ] array with offsets for placement:
-		
-		coX: X Axis object position
-		coY: Y Axis object position
-		coZ: Z Axis object position
-		coR: Rotation object
-
-	'''
-
-	coX, coY, coZ = 0, 0, 0
-	coR = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 0.00)
-
-	# not unpack mirroring
-	if iObj.isDerivedFrom("Part::Mirroring"):
-		return [ coX, coY, coZ, coR ]
-
-	containers = getContainers(iObj)
-	for o in containers:
-		
-		if (
-			o.isDerivedFrom("App::Part") or 
-			o.isDerivedFrom("PartDesign::Body") or 
-			o.isDerivedFrom("App::LinkGroup") or 
-			o.isDerivedFrom("Part::Cut") 
-			):
-			
-			try:
-				x = o.Placement.Base.x
-				y = o.Placement.Base.y
-				z = o.Placement.Base.z
-				r = o.Placement.Rotation
-			except:
-				continue
-
-			coX = coX + x
-			coY = coY + y
-			coZ = coZ + z
-			coR = coR * r
-
-	return [ coX, coY, coZ, coR ]
-
-
-# ###################################################################################################################
-def moveToClean(iObjects, iSelection):
-	'''
-	Description:
-	
-		Move objects iObjects to clean container for iSelection object.
-		Container need to be in the clean path, no other objects except Group or LinkGroup, 
-
-		For example:
-
-		clean path: LinkGroup -> LinkGroup
-		not clean: Mirror -> LinkGroup
-	
-	Args:
-	
-		iObjects: list of objects to move to container, for example new created Cube
-		iSelection: selected object, for example Pad
-
-	Usage:
-	
-		MagicPanels.moveToClean([ o ], pad)
-
-	Result:
-	
-		No return, move object.
-
-	'''
-
-	containers = getContainers(iSelection)
-	rsize = len(containers)
-	
-	# if no container, do nothing
-	if rsize == 0:
-		return
-	
-	# if containers
-	else:
-		
-		coX, coY, coZ, coR = 0, 0, 0, 0
-		search = True
-		toMove = ""
-		
-		# search for first non container item
-		i = 0
-		while i < rsize and i < gSearchDepth:
-			
-			index = rsize - 1 - i
-			c = containers[index]
-			
-			# if there is supported container
-			if (
-				c.isDerivedFrom("App::LinkGroup") or 
-				c.isDerivedFrom("App::DocumentObjectGroup") 
-				):
-			
-				# save last valid container
-				toMove = c
-			
-				# skip group without placement
-				try:
-					coX = coX + c.Placement.Base.x
-					coY = coY + c.Placement.Base.y
-					coZ = coZ + c.Placement.Base.z
-				except:
-					skip = 1
-			else:
-				break
-
-			i = i + 1
-
-		# after search, check if found
-		if toMove == "":
-			return
-
-		# move objects
-		for o in iObjects:
-		
-			# add containers offset
-			[x, y, z, r ] = getContainerPlacement(o, "clean")
-			
-			x = x + coX
-			y = y + coY
-			z = z + coZ
-			
-			setContainerPlacement(o, x, y, z, 0, "clean")
-			
-			# move object to saved container
-			o.adjustRelativeLinks(toMove)
-			toMove.ViewObject.dropObject(o, None, '', [])
-			
-		FreeCAD.ActiveDocument.recompute()
-
-
-# ###################################################################################################################
-def moveToContainer(iObjects, iContainer):
+def moveToContainer(iObjects, iContainer, iType="object"):
 	'''
 	Description:
 
@@ -3718,11 +3678,21 @@ def moveToContainer(iObjects, iContainer):
 	Args:
 	
 		iObjects: list of objects to move to iContainer, for example new created Cube
-		iContainer: container object, for example LinkGroup, this should be object
+		iContainer: container object or string describing destination level, possible:
+			iContainer: object for example LinkGroup or Pad to search
+			"object": move all iObjects directly to given iContainer object
+			"parent": move all iObjects to first container above Body, for example Part for given iContainer
+			"LinkGroup": move all iObjects to first LinkGroup container above given iContainer
 
 	Usage:
 
-		MagicPanels.moveToContainer([ o ], container)
+		For Pad structure: "LinkGroup2 -> LinkGroup1 -> Part -> Body -> Pad"
+		and copy object is in root folder. 
+		
+		MagicPanels.moveToContainer([ copy ], LinkGroup2)            # to move copy object to LinkGroup2
+		MagicPanels.moveToContainer([ copy ], LinkGroup2, "object")  # to move copy object to LinkGroup2
+		MagicPanels.moveToContainer([ copy ], Pad, "parent")         # to move copy object to Part
+		MagicPanels.moveToContainer([ copy ], Pad, "LinkGroup")      # to move copy object to LinkGroup1
 
 	Result:
 
@@ -3730,13 +3700,44 @@ def moveToContainer(iObjects, iContainer):
 
 	'''
 	
-	for o in iObjects:
 	
+	for o in iObjects:
+		
+		destination = iContainer
+		
+		if iType != "object":
+
+			containers = getContainers(iContainer)
+			
+			if len(containers) < 1:
+				return
+			
+			for c in containers:
+				
+				if iType == "parent":
+					if (
+						c.isDerivedFrom("App::LinkGroup") or 
+						c.isDerivedFrom("App::DocumentObjectGroup") or 
+						c.isDerivedFrom("App::Part")
+					):
+						destination = c
+						break
+				
+				if iType == "LinkGroup":
+					if c.isDerivedFrom("App::LinkGroup"):
+						destination = c
+						break
+		
 		# move the object to this container
-		FreeCADGui.Selection.addSelection(o)
-		o.adjustRelativeLinks(iContainer)
-		iContainer.ViewObject.dropObject(o, None, '', [])
-		FreeCADGui.Selection.clearSelection()
+		# in try to avoid dependency loop
+		# casued by incorrect containers list
+		try:
+			FreeCADGui.Selection.addSelection(o)
+			o.adjustRelativeLinks(destination)
+			destination.ViewObject.dropObject(o, None, '', [])
+			FreeCADGui.Selection.clearSelection()
+		except:
+			skip = 1
 
 	FreeCAD.ActiveDocument.recompute()
 
@@ -3746,11 +3747,10 @@ def moveToFirst(iObjects, iSelection):
 	'''
 	Description:
 
-		Move objects iObjects to first container above Body for iSelection object.
-		This can be used to force object at face to be moved into Mirror -> LinkGroup.
-
-		This function removes the offset that should have been added earlier. Why not just copy without offset?
-		If you have 2 objects in separate containers and the second object is only moved via the container Placment, 
+		Move objects iObjects to first LinkGroup container for iSelection object.
+		
+		Note: This function removes the offset that should have been added earlier. Why not just copy without offset?
+		If you have 2 objects in separate containers and the second object is only moved via the container Placement, 
 		then from FreeCAD point the objects are in the same place. So you won't be able to compute space between 
 		objects in these containers. FreeCAD uses local positions. It's good because you can calculate many things 
 		without using advanced formulas. Adding an offset and removing it later is a trick for easier calculations.
@@ -3762,16 +3762,17 @@ def moveToFirst(iObjects, iSelection):
 
 	Args:
 	
-		iObjects: list of objects to move to container, for example new created Cube
-		iSelection: selected object, for example Pad
+		iObjects: list of objects to move to container, for example [ copy1, copy2 ]
+		iSelection: selected object, for example "PartDesign::Pad" with structure "LinkGroup2 -> LinkGroup1 -> Part -> Body -> Pad" or "Part::Box" in structure "LinkGroup2 -> LinkGroup1 -> panelXY", to move the object to LinkGroup1
 
 	Usage:
 
-		MagicPanels.moveToFirst([ o ], pad)
+		MagicPanels.moveToFirst([ copy ], pad)
+		MagicPanels.moveToFirst([ copy ], panel)
 
 	Result:
 
-		No return, move object.
+		No return, move copy object to LinkGroup1 container.
 
 	'''
 	
@@ -3840,140 +3841,100 @@ def moveToFirst(iObjects, iSelection):
 
 
 # ###################################################################################################################
-def moveToFirstWithInverse(iObjects, iSelection):
+def getNestingLabel(iObj, iPrefix):
 	'''
 	Description:
 	
-		This version remove the placement and rotation offset from iObjects and move the iObjects to first 
-		supported container (LinkGroup). 
-		
-		Note: It is dedicated to move panel created from vertices to the first LinkGroup container. 
-		The object created from vertices have applied offset with rotation after creation 
-		but is outside the container. So if you move it manually it will be in the wrong place because 
-		container apply the placement and rotation again. So, you have to remove the offset and move it. 
-		Yea, that's the beauty of FreeCAD ;-)
+		This function set label for nesting objects, containers, copied, to not repeat 
+		the prefix and not make the label too long. 
 	
 	Args:
 	
-		iObjects: list of objects to move to container, for example new created Cube
-		iSelection: selected object, for example Pad
+		iObj: object for the label check
+		iPrefix: string, preferred prefix for the label
 
 	Usage:
 	
-		MagicPanels.moveToFirstWithInverse([ o ], pad)
+		o.Label = MagicPanels.getNestingLabel(o, "Container")
 
 	Result:
 	
-		No return, move object.
+		return string for the new label
 
 	'''
 
-	containers = getContainers(iSelection)
-	rsize = len(containers)
-	
-	# if no container, do nothing
-	if rsize == 0:
-		return
-	
-	# calculate offset to remove
-	toRemove = ""
-	i = 0
-	while i < rsize and i < gSearchDepth:
+	label = str(iObj.Label)
 
-		c = containers[i]
+	if label.find(", ") == -1:
+		newLabel = iPrefix + ", " + label + " "
 
-		if c.isDerivedFrom("App::LinkGroup"):
-			try:
-				p = c.Placement
-				if toRemove == "":
-					toRemove = p.inverse()
-				else:
-					toRemove = toRemove * p.inverse()
-			except:
-				skip = 1
-	
-		i = i + 1
+	else:
+		prefix = label.split(", ")[0]
+		newLabel = label.replace(prefix, iPrefix)
 
-	# remove offset and move to container
-	i = 0
-	while i < rsize and i < gSearchDepth:
-		
-		c = containers[i]
-
-		if c.isDerivedFrom("App::LinkGroup"):
-			for o in iObjects:
-					
-				o.Placement = o.Placement * toRemove
-
-				FreeCADGui.Selection.addSelection(o)
-				o.adjustRelativeLinks(c)
-				c.ViewObject.dropObject(o, None, '', [])
-				FreeCADGui.Selection.clearSelection()
-
-			FreeCAD.ActiveDocument.recompute()
-			
-			return
-			
-		i = i + 1
+	return newLabel
 
 
 # ###################################################################################################################
-def moveToParent(iObjects, iSelection):
+def getContainersOffset(iObj):
 	'''
 	Description:
 	
-		This version move object to parent container without adding or remove offset. This is useful if you copy the 
-		Sketch, because SKetch after copy is located outside Body, in Part. But if the Part is inside LinkGroup 
-		the copied Sketch will be located outside LinkGroup, in main root folder. This is problematic because 
-		the Sketch after copy has offset from containers. The object to move need to be in root folder to avoid 
-		duplicated already copied objects, Cube.
+		If the object is in the container like Part, Body, LinkGroup the vertices are 
+		not updated by FreeCAD. From FreeCAD perspective the object is still in the 
+		same place. This function is trying to solve this problem and calculates 
+		all offsets of all containers.
 	
 	Args:
 	
-		iObjects: list of objects to move to container, for example new created Sketch
-		iSelection: selected object, for example Sketch
+		iObj: object to get containers offset
 
 	Usage:
 	
-		MagicPanels.moveToParent([ copy ], sketch)
+		[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(o)
 
 	Result:
 	
-		No return, move object.
+		return [ coX, coY, coZ, coR ] array with offsets for placement:
+		
+		coX: X Axis object position
+		coY: Y Axis object position
+		coZ: Z Axis object position
+		coR: Rotation object
 
 	'''
 
-	# in try to avoid dependency loop
-	try:
+	coX, coY, coZ = 0, 0, 0
+	coR = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 0.00)
+
+	# not unpack mirroring
+	if iObj.isDerivedFrom("Part::Mirroring"):
+		return [ coX, coY, coZ, coR ]
+
+	containers = getContainers(iObj)
+	for o in containers:
 		
-		# skip move to Body container
-		if iSelection.isDerivedFrom("PartDesign::Body"):
-			return
+		if (
+			o.isDerivedFrom("App::Part") or 
+			o.isDerivedFrom("PartDesign::Body") or 
+			o.isDerivedFrom("App::LinkGroup") or 
+			o.isDerivedFrom("Part::Cut") 
+			):
+			
+			try:
+				x = o.Placement.Base.x
+				y = o.Placement.Base.y
+				z = o.Placement.Base.z
+				r = o.Placement.Rotation
+			except:
+				continue
 
-		# if Cube and Part are in the root, and Part was created before Cube
-		# the InList will return Part as parent, do you believe it?
-		if len(iSelection.InList) < 1 or len(iSelection.Parents) < 1:
-			return
+			coX = coX + x
+			coY = coY + y
+			coZ = coZ + z
+			coR = coR * r
 
-		parent = iSelection.InList[0]
-
-		for o in iObjects:
-
-			# skip move Link of LinkGroup to the same LinkGroup
-			if iSelection.isDerivedFrom("App::LinkGroup") or iSelection.isDerivedFrom("App::Link"):
-				if o.isDerivedFrom("App::Link"):
-					continue
-
-			# move object
-			FreeCADGui.Selection.addSelection(o)
-			o.adjustRelativeLinks(parent)
-			parent.ViewObject.dropObject(o, None, '', [])
-			FreeCADGui.Selection.clearSelection()
-
-		FreeCAD.ActiveDocument.recompute()
-
-	except:
-		skip = 1
+	return [ coX, coY, coZ, coR ]
 
 
 # ###################################################################################################################
@@ -4021,7 +3982,7 @@ def getPlacementDiff(iStart, iDestination):
 
 
 # ###################################################################################################################
-def isVisible(iObject):
+def isVisible(iObj):
 	'''
 	Description:
 	
@@ -4029,18 +3990,18 @@ def isVisible(iObject):
 		
 	Args:
 	
-		iObject: object to search visibility
+		iObj: object to search visibility
 
 	Usage:
 		
-		visible = MagicPanels.isVisible(iObject)
+		visible = MagicPanels.isVisible(iObj)
 		
 	Result:
 	
 		Return boolean True or False
 	'''
 	
-	current = iObject
+	current = iObj
 
 	while True:
 	
@@ -4060,6 +4021,37 @@ def isVisible(iObject):
 			return True
 
 	return True
+
+
+# ###################################################################################################################
+def toggleVisibility(iObj):
+	'''
+	Description:
+	
+		Toggle object visibility.
+		
+	Args:
+	
+		iObj: object to toggle visibility
+
+	Usage:
+		
+		MagicPanels.toggleVisibility(old)
+		
+	Result:
+	
+		no return
+	'''
+
+
+	try:
+		FreeCADGui.Selection.clearSelection()
+		FreeCADGui.Selection.addSelection(iObj)
+		FreeCADGui.runCommand('Std_ToggleVisibility', 0)
+		FreeCADGui.Selection.clearSelection()
+
+	except:
+		skip = 1
 
 
 # ###################################################################################################################
@@ -4565,15 +4557,22 @@ def unit2gui(iValue):
 	'''
 
 
+	# fix FreeCAD 1.1 bug
+	userSettings = 0
+	try:
+		userSettings = Units.getSchema()
+		if userSettings > len(Units.listSchemas()) - 1:
+			userSettings = 0
+	except:
+		skip = 1
+
 	value = Units.Quantity( str(iValue) + " mm" )
-	userSettings = Units.getSchema()
 	forUser = Units.schemaTranslate(value, userSettings)[0]
 
 	# fix for FreeCAD bug with "Building US", 
 	# only "0 mm" is translated to "0" value without units
 	# see: https://github.com/dprojects/Woodworking/issues/57#issuecomment-2841510545
-	if Units.getSchema() == 5:
-		
+	if userSettings == 5:
 		try:
 			float(forUser)
 			forUser = str(forUser) + " in"
@@ -4610,12 +4609,22 @@ def unit2value(iString):
 
 
 	unitString = str(iString)
-	
+
+	# fix FreeCAD 1.1 bug
+	userSettings = 0
+	try:
+		userSettings = Units.getSchema()
+		if userSettings > len(Units.listSchemas()) - 1:
+			userSettings = 0
+	except:
+		skip = 1
+
+	# quick value notation
 	try:
 		value = unitString.replace(",",".")
 		float(value)
 		
-		unit = Units.schemaTranslate( Units.Quantity("1.0 mm"), Units.getSchema() )[2]
+		unit = Units.schemaTranslate( Units.Quantity("1.0 mm"), userSettings )[2]
 		unitString = str(value) + " " + str(unit)
 
 	except:
@@ -5971,7 +5980,8 @@ def makeCutsLinks(iObjects):
 	base = iObjects[0]
 	baseName = str(base.Name)
 	baseLabel = str(base.Label)
-
+	base.Visibility = False
+	
 	objects = iObjects[1:]
 
 	for o in objects:
@@ -5993,20 +6003,15 @@ def makeCutsLinks(iObjects):
 		cut.Base = base
 		cut.Tool = copy
 		cut.Label = getNestingLabel(base, "Cut")
-
+		base.Visibility = False
+		
 		base = cut
 		cuts.append(cut)
 
 	cut.Label = getNestingLabel(base, "Cut")
+	copyColors(iObjects[0], cut)
 	FreeCAD.ActiveDocument.recompute()
 	
-	try:
-		copyColors(iObjects[0], cut)
-	except:
-		skip = 1
-
-	FreeCAD.ActiveDocument.recompute()
-
 	return cuts
 
 
@@ -6829,3 +6834,253 @@ def showInfo(iCaller, iInfo, iNote="yes"):
 	
 
 # ###################################################################################################################
+'''
+# DEPRECATED
+'''
+# ###################################################################################################################
+
+
+# ###################################################################################################################
+def moveToParent(iObjects, iSelection):
+	'''
+	# ########################################################################################
+	# THIS FUNCTION IS DEPRECATED !!!
+	# ########################################################################################
+	
+	Description:
+	
+		This version move object to parent container without adding or remove offset. This is useful if you copy the 
+		Sketch, because Sketch after copy is located outside Body, in Part. But if the Part is inside LinkGroup 
+		the copied Sketch will be located outside LinkGroup, in main root folder. This is problematic because 
+		the Sketch after copy has offset from containers. The object to move need to be in root folder to avoid 
+		duplicated already copied objects, Cube.
+	
+	Args:
+	
+		iObjects: list of objects to move to container, for example new created Sketch
+		iSelection: selected object, for example Sketch
+
+	Usage:
+	
+		MagicPanels.moveToParent([ copy ], sketch)
+
+	Result:
+	
+		No return, move object.
+
+	'''
+
+	# in try to avoid dependency loop
+	try:
+		
+		# skip move to Body container
+		if iSelection.isDerivedFrom("PartDesign::Body"):
+			return
+
+		# if Cube and Part are in the root, and Part was created before Cube
+		# the InList will return Part as parent, do you believe it?
+		if len(iSelection.InList) < 1 or len(iSelection.Parents) < 1:
+			return
+
+		parent = iSelection.InList[0]
+
+		for o in iObjects:
+
+			# skip move Link of LinkGroup to the same LinkGroup
+			if iSelection.isDerivedFrom("App::LinkGroup") or iSelection.isDerivedFrom("App::Link"):
+				if o.isDerivedFrom("App::Link"):
+					continue
+
+			# move object
+			FreeCADGui.Selection.addSelection(o)
+			o.adjustRelativeLinks(parent)
+			parent.ViewObject.dropObject(o, None, '', [])
+			FreeCADGui.Selection.clearSelection()
+
+		FreeCAD.ActiveDocument.recompute()
+
+	except:
+		skip = 1
+
+
+# ###################################################################################################################
+def moveToClean(iObjects, iSelection):
+	'''
+	# ########################################################################################
+	# THIS FUNCTION IS DEPRECATED !!!
+	# ########################################################################################
+	
+	Description:
+	
+		Move objects iObjects to clean container for iSelection object.
+		Container need to be in the clean path, no other objects except Group or LinkGroup, 
+
+		For example:
+
+		clean path: LinkGroup -> LinkGroup
+		not clean: Mirror -> LinkGroup
+	
+	Args:
+	
+		iObjects: list of objects to move to container, for example new created Cube
+		iSelection: selected object, for example Pad
+
+	Usage:
+	
+		MagicPanels.moveToClean([ o ], pad)
+
+	Result:
+	
+		No return, move object.
+
+	'''
+
+	containers = getContainers(iSelection)
+	rsize = len(containers)
+	
+	# if no container, do nothing
+	if rsize == 0:
+		return
+	
+	# if containers
+	else:
+		
+		coX, coY, coZ, coR = 0, 0, 0, 0
+		search = True
+		toMove = ""
+		
+		# search for first non container item
+		i = 0
+		while i < rsize and i < gSearchDepth:
+			
+			index = rsize - 1 - i
+			c = containers[index]
+			
+			# if there is supported container
+			if (
+				c.isDerivedFrom("App::LinkGroup") or 
+				c.isDerivedFrom("App::DocumentObjectGroup") 
+				):
+			
+				# save last valid container
+				toMove = c
+			
+				# skip group without placement
+				try:
+					coX = coX + c.Placement.Base.x
+					coY = coY + c.Placement.Base.y
+					coZ = coZ + c.Placement.Base.z
+				except:
+					skip = 1
+			else:
+				break
+
+			i = i + 1
+
+		# after search, check if found
+		if toMove == "":
+			return
+
+		# move objects
+		for o in iObjects:
+		
+			# add containers offset
+			[x, y, z, r ] = getContainerPlacement(o, "clean")
+			
+			x = x + coX
+			y = y + coY
+			z = z + coZ
+			
+			setContainerPlacement(o, x, y, z, 0, "clean")
+			
+			# move object to saved container
+			o.adjustRelativeLinks(toMove)
+			toMove.ViewObject.dropObject(o, None, '', [])
+			
+		FreeCAD.ActiveDocument.recompute()
+
+
+# ###################################################################################################################
+def moveToFirstWithInverse(iObjects, iSelection):
+	'''
+	# ########################################################################################
+	# THIS FUNCTION IS DEPRECATED !!!
+	# ########################################################################################
+	
+	Description:
+	
+		This version remove the placement and rotation offset from iObjects and move the iObjects to first 
+		supported container (LinkGroup). 
+		
+		Note: It is dedicated to move panel created from vertices to the first LinkGroup container. 
+		The object created from vertices have applied offset with rotation after creation 
+		but is outside the container. So if you move it manually it will be in the wrong place because 
+		container apply the placement and rotation again. So, you have to remove the offset and move it. 
+		Yea, that's the beauty of FreeCAD ;-)
+	
+	Args:
+	
+		iObjects: list of objects to move to container, for example new created Cube
+		iSelection: selected object, for example Pad
+
+	Usage:
+	
+		MagicPanels.moveToFirstWithInverse([ o ], pad)
+
+	Result:
+	
+		No return, move object.
+
+	'''
+
+	containers = getContainers(iSelection)
+	rsize = len(containers)
+	
+	# if no container, do nothing
+	if rsize == 0:
+		return
+	
+	# calculate offset to remove
+	toRemove = ""
+	i = 0
+	while i < rsize and i < gSearchDepth:
+
+		c = containers[i]
+
+		if c.isDerivedFrom("App::LinkGroup"):
+			try:
+				p = c.Placement
+				if toRemove == "":
+					toRemove = p.inverse()
+				else:
+					toRemove = toRemove * p.inverse()
+			except:
+				skip = 1
+	
+		i = i + 1
+
+	# remove offset and move to container
+	i = 0
+	while i < rsize and i < gSearchDepth:
+		
+		c = containers[i]
+
+		if c.isDerivedFrom("App::LinkGroup"):
+			for o in iObjects:
+					
+				o.Placement = o.Placement * toRemove
+
+				FreeCADGui.Selection.addSelection(o)
+				o.adjustRelativeLinks(c)
+				c.ViewObject.dropObject(o, None, '', [])
+				FreeCADGui.Selection.clearSelection()
+
+			FreeCAD.ActiveDocument.recompute()
+			
+			return
+			
+		i = i + 1
+
+
+# ###################################################################################################################
+

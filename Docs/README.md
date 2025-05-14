@@ -128,6 +128,8 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 	* [showAlias](#showalias)
 * [Advanced](#advanced)
 	* [panel2pad](#panel2pad)
+	* [addExternal](#addexternal)
+	* [wires2pad](#wires2pad)
 * [Code and Debug](#code-and-debug)
 	* [scanObjects](#scanobjects)
 	* [showPlacement](#showplacement)
@@ -153,6 +155,10 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 0.23 stable:**
 
+    * new tool to create panels from wires (wires2pad)
+    * new tool to add external geometry in sketch (addExternal)
+    * improve Copy by Edge and Mirror option for more complex objects (magicMove)
+    * add Clone option to Mirror as default (magicMove)
     * drawer series with front outside ( Blum, Hafele, GTV, Amix )
     * drawer series with front inside ( Blum, Hafele, GTV, Amix )
     * add custom front overlap for drawer (magicStart)
@@ -461,7 +467,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 * **Panel at face:** To create panel at face select single face and click `refresh selection`.
 * **Panel between faces:** To create panel between two faces select two faces and click `refresh selection`. To select more faces hold `CTRL` key. The selection order is important. If the panel is created outside change selection order.
-* **Panel from vertices:** To create panel from vertices, you have to activate observer. The `first` means the thickness will be get from first selected object. You can set custom thickness if you want.
+* **Panel from vertices:** To create panel from vertices, you have to activate observer. The `first` means the thickness will be get from first selected object. You can set custom thickness if you want. ou can also use this option to create panle from selected edges in Sketch, see also [wires2pad](#wires2pad) tool. 
 
 **Options:**
   
@@ -471,6 +477,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 * **Offset:** The first selected offset means `no offset` from currently selected `Anchor`. All next are offset with current selected `Size` for `X-`, `X+`, `Y-`, `Y+`, `Z-`, `Z+` coordinate axis. This can be helpful if you want to make frame but the frame is for example `20 mm x 40 mm x 600 mm` and need to be offset with `40 mm`, different size than thickenss `20 mm`.
 
 **Video tutorials:** 
+* [How to create panel from wires in Sketch](https://www.youtube.com/watch?v=wV6nlN2z1Ng)
 * [Panel from vertices](https://www.youtube.com/watch?v=6s0fbagPeZA)
 * [Making panels improvement](https://www.youtube.com/watch?v=sunE2rLThZI)
 
@@ -528,37 +535,40 @@ This tool allows to preview panel before creation. It allows to see panel at sin
   * `move` set equal space between all selected objects along X, Y or Z coordinate axis. 
   
 * **Copy:** In this mode you can copy any object with custom offset. For example you can quickly create shelves with equal space or garden floor from small panels.
-  * `auto` by default, if the object is `Cube` the `copyObject` will be used, otherwise `Clone` will be created. In this mode if you select PartDesign object, the Clone will be created from Body object in order to avoid PartDesign object destroy.
-  * `copyObject` good for simple objects like `Cube`.
-  * `Clone` is useful if you want to make copy of `Body` or `Part` with many Bodies.
-  * `Link` if you want to copy `LinkGroup` and generate cut-list, it is better to set this copy option, not `copyObject`. 
+  * `auto` if the object is simple panel `Part::Box` type the `copyObject` will be used, otherwise `Clone` will be created.
+  * `copyObject` the same as `CTRL-C` and `CTRL-V` copy method, good only for simple objects.
+  * `Clone` if you want to further process such an object, for example you will measure and drill into such an object.
+  * `Link` if you only want to generate a cut-list and do no further processing on this object, it will only be a visual representation of the base object, and you will not measure or drill into such an object.
   * `copy to new container` next element will be copied to new `LinkGroup` container. If you click the button this will turn into disabled and will be waiting for new copy created to avoid double clicks.
-  * `Copy offset` this is offset between objects but calculated from objects sides. If this is set to `0` the next element will be created without space in relation to the last element.
+  * `Copy offset` this is offset between objects but calculated from objects sides. If this is set to 0 the next element will be created without space in relation to the last element.
   * buttons: `X-`, `X+`, `Y-`, `Y+`, `Z-`, `Z+` copy object into the chosen axis direction, there is auto-repeat so you can hold the button to copy objects more quickly.
 
 * **Copy by Edge:** In this mode you can copy any object but using selected edge as position reference. This feature allows you, for example, to copy part of the furniture without further positioning each element one by one.
-  * `auto` by default, if the object is `Cube` the `copyObject` will be used, otherwise `Clone` will be created. In this mode if you select PartDesign object, the Clone will be created from Body object in order to avoid PartDesign object destroy.
-  * `copyObject` good for simple objects like `Cube`.
-  * `Clone` is useful if you want to make copy of `Body` or `Part` with many Bodies.
-  * `Link` if you want to copy `LinkGroup` and generate cut-list, it is better to set this copy option, not `copyObject`. 
+  * `auto` if the object is simple panel `Part::Box` type the `copyObject` will be used, otherwise `Clone` will be created.
+  * `copyObject` the same as `CTRL-C` and `CTRL-V` copy method, good only for simple objects.
+  * `Clone` if you want to further process such an object, for example you will measure and drill into such an object.
+  * `Link` if you only want to generate a cut-list and do no further processing on this object, it will only be a visual representation of the base object, and you will not measure or drill into such an object.
   * `set` allows to set edge as copy reference point.
   * `Additional offset` this offset will be added to the object offset. For example, if the objects distance from the selected edge on the `X` axis is `18`, i.e. the shelves are touching the right side of the furniture inside, but the selected edge is the right outer edge of the furniture, and the additional offset is set to `-18`, then the shelves will be created `18 (distance) - 18 (additional offset) = 0` from the edge, touching the right outer side of the furniture. So for example you can copy shelves from left to right and ignore the thickness of the right side board of the furniture and quickly extend the furniture to the right.
   * `create`creates a panel in the selected axis direction. In the film, the button responsible for the case in which the plane of the object to be copied is the same as the plane of the selected edge is disabled. This was to avoid copying the object "in place". However, this can be used, for example, to copy the top shelf to the bottom. If the shelf is on the top of the furniture and you want to create a copy along the Z edge, i.e. relative to the edge of the right side of the furniture, the copy point will be the center of the edge, which means that the top shelf will be copied as the bottom shelf.
   
 * **Copy by Path:** This mode allows you to create panels along the path. If the panel is already at the path, next panel will be created with the offset from selected panel. With this approach you can remove some panels and fill the gap in a different way, for example with different rotation. If the panel is outside the path, the first panel will be created at the 0 point of the path. This feature allows you, for example, to create irregular shpes like garden sunbed.
-  * `auto` by default, if the object is `Cube` the `copyObject` will be used, otherwise `Clone` will be created.
-  * `copyObject` good for simple objects like `Cube`.
-  * `Clone` is useful if you want to make copy of `Body` or `Part` with many Bodies.
-  * `Link` if you want to copy `LinkGroup` and generate cut-list, it is better to set this copy option, not `copyObject`. 
+  * `auto` if the object is simple panel `Part::Box` type the `copyObject` will be used, otherwise `Clone` will be created.
+  * `copyObject` the same as `CTRL-C` and `CTRL-V` copy method, good only for simple objects.
+  * `Clone` if you want to further process such an object, for example you will measure and drill into such an object.
+  * `Link` if you only want to generate a cut-list and do no further processing on this object, it will only be a visual representation of the base object, and you will not measure or drill into such an object.
   * `copy to new container` next element will be copied to new `LinkGroup` container. If you click the button this will turn into disabled and will be waiting for new copy created to avoid double clicks.
   * `Rotation X, Y, Z` allows to apply rotation angle for the new object before it will be created. The rotation is added to the last panel rotation, so to stop rotate you have to set 0 again. This approach allows to add rotation during panel creation, so you can adjust each panel during creation to fit the curve, see also [align2Curve](#align2curve).
   * `Next point step` is offset for new panel. This is related to the point at the path. By default it is set to second size of the panel.
   * `set` allows to load the path or reset start position. You can refresh only path here without changing objects to copy. The path can be Wire, Sketch, Helix, or any edge, also edge of the hole.
   * `copy along path` creates new panel along the path. This button has auto-repeat mode, if you hold it this will be creating panels without clicking many times.
 
-* **Mirror:** This option create mirror with reference as edge, face or vertex, also you can add additinal offset. You can select single element like `Cube` or container like `LinkGroup` with more elements inside. This option recognize if the selected object is `LinkGroup` container and if not, it will create `LinkGroup` for the object, so you will be able to extend, build on this object later.
+* **Mirror:** This option create mirror with reference as edge, face or vertex, also you can add additinal offset. 
+  * `auto` if the object is simple panel `Part::Box` type the mirror will be created using parametric `LinkGroup` method, otherwise the `Clone` will be used.
+  * `LinkGroup` mirror will be created using `LinkGroup` container. In this case you should select `Part::Box` object (simple panel) or `App::Part` container. If you want to create parametric mirror for `PartDesign` object the structure should be `Part -> Body -> PartDesign object` and you should select the `Part` container, this is to avoid `PartDesign` object destroy.
+  * `Clone` mirror will be created using `Clone` object, this is good if you want to make a mirror of the `PartDesign` object.
   * `set` allows to load the reference point for mirror as edge, face or vertex.
-  * `Mirror XYZ:` is base position for mirror, the object will be in the middle between object and new created mirror if there is no additinal offset.
+  * `Mirror XYZ:` is base position for mirror, the base position will be in the middle between object and new created mirror if there is no additinal offset.
   * `Additional offset` this offset will be added to the mirror position.
   * `create` creates mirror in the chosen axis direction.
 
@@ -708,6 +718,7 @@ Selection modes:
 **Options:**
 
 * **menu selection** allows you to browse defined views and your own created ones.
+  * `custom` this entry is starting point and do nothing, to allows you to create your custom view.
   * `restore` this view is created the first time you run this tool in an active document. This tool will create a spreadsheet named `magicView - restore view` with the object placement data. This will allow you to return to these settings.
   * `explode` moves all objects relative to the center of the entire model by the distance of the previous object.
   * `along X` aligns all objects along the X coordinate axis.
@@ -731,6 +742,7 @@ Selection modes:
   * `keep custom cross settings` allows to store the custom cross setting after this tool exit.
 
 **Video tutorials:** 
+* [Parametric bookcase with Dado joints](https://www.youtube.com/watch?v=kcP1WmKizDg)
 * [How to create view and export to TechDraw](https://www.youtube.com/watch?v=yiZfyMRlE-U)
 
 ## showVertex
@@ -1587,6 +1599,7 @@ Personally, the two side counterbore I use for screwing things to the table. I u
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicCutLinks.png"> This tool make multi boolean cut operation at selected objects. First object should be the base object to cut. All other selected objects will cut the base 1st selected object. To select more objects hold left CTRL key during selection. During this process only the links will be used to cut, so the original objects will not be moved at tree. Also there will be auto labeling to keep the cut tree more informative and cleaner. This tool works with the same way as [magicCut](#magiccut) tool but creates LinkGroup container for cut panels, knives, and uses container links for cut operation. Thanks to this approach you can change Cube to Pad or even add new element to the LinkGroup container and the cut will be updated with new content. So, if you are looking for parametric cut, you should rather use this version.
 
 **Video tutorials:** 
+* [Parametric bookcase with Dado joints](https://www.youtube.com/watch?v=kcP1WmKizDg)
 * [Boolean cut with links](https://www.youtube.com/watch?v=EE-A6CMgb-4)
 
 <br><br><br>
@@ -1604,6 +1617,7 @@ Personally, the two side counterbore I use for screwing things to the table. I u
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicKnifeLinks.png"> This tool allows to use single knife to cut many panels. First selected object should be knife, and all other selected objects will be cut with the knife. The knife can be any object. So, you can create your own shape of the knife and cut many panels at once. Also you can cut all legs of the table using floor or top of the table as knife. To select more objects hold left CTRL key during selection. During this process the links of knife are used, so the original knife objects will not be moved at tree. Also there will be auto labeling to keep the cut tree more informative and cleaner. This tool works with the same way as [magicKnife](#magicknife) tool but creates LinkGroup container for Knife and uses container links for cut operation. Thanks to this approach you can change Knife Cube to Pad or even add new Knife to the LinkGroup container and the cut will be updated with new Knife content. So, if you are looking for parametric cut, you should rather use this version.
 
 **Video tutorials:** 
+* [Parametric bookcase with Dado joints](https://www.youtube.com/watch?v=kcP1WmKizDg)
 * [Boolean cut with links](https://www.youtube.com/watch?v=EE-A6CMgb-4)
 
 ## jointTenon
@@ -1788,6 +1802,27 @@ Working with raw wood is an art of some sort. This is the true form of working w
 
 **Video tutorials:** 
 * [Automatic parametrization](https://www.youtube.com/watch?v=JuZsAjrQr6M)
+
+<br><br><br>
+
+## addExternal
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/addExternal.png"> This tool allows you to quickly create external geometry visible in a sketch from selected edges and faces. Edges or faces can belong to any objects. If you select face all edges will be added as external geometry, if you select edge only single edge will be added. This tool uses the `PartDesign::SubShapeBinder` function but in a slightly more advanced form. To select more objects, hold down CTRL-left while selecting them. 
+
+**Possible selections methods:**
+
+* **Face as Plane + Edges and Faces** - in this case new Sketch with external geometry will be created. The new sketch plane will be taken from first selected face. I recommend this method, because in this case the sketch will be created in the root directory and all drawn wires can be converted to Pads in-place, using for example tool [wires2pad](#wires2pad) or [magicManager](#magicmanager) `Panel from vertices` option.
+* **Sketch + Edges and Faces** - in this case the external geometry will be created inside the selected Sketch. If the Sketch is inside containers with offsets you can adjust position of the converted Pads using for example tool [panelMove2Anchor](#panelmove2anchor) and selecting two edges.
+
+**Video tutorials:** 
+* [How to add external geometry quickly](https://www.youtube.com/watch?v=TMcw2JkUeVM)
+
+## wires2pad
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/wires2pad.png"> You have to select at least one Sketch to create a Pad from wires. This tool allows you to create panels from wires in Sketch. A Pad with the default size of `18 mm` will be created for each wire. If you want to have a different panel size, change the `Pad.Length` option or use the `Panel from vertices` option in the [magicManager](#magicmanager) tool, selecting the appropriate edges. To create separate Pads from one Sketch, wires must not touch each other. If the Sketch is placed in containers, for example `Part` or `LinkGroup` with set offsets, you need to adjust the panel position, for example using the [panelMove2Anchor](#panelmove2anchor) tool, selecting two edges. You can also consider creating panels from the Sketch in the root directory, see the [addExternal](#addexternal) tool.
+
+**Video tutorials:** 
+* [How to create panel from wires in Sketch](https://www.youtube.com/watch?v=wV6nlN2z1Ng)
 
 <br><br><br>
 

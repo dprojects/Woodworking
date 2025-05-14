@@ -54,7 +54,12 @@ try:
 			anchor = "normal"
 
 		toMove = MagicPanels.getObjectToMove(o)
-		MagicPanels.setContainerPlacement(toMove, X, Y, Z, 0, anchor)
+		
+		if toMove.isDerivedFrom("PartDesign::SubShapeBinder"):
+			MagicPanels.setPosition(toMove, X, Y, Z, "global")
+		else:
+			MagicPanels.setContainerPlacement(toMove, X, Y, Z, 0, anchor)
+		
 		i = i + 1
 
 	FreeCAD.ActiveDocument.recompute()

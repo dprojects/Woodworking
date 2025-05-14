@@ -272,6 +272,7 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 		for Cube: always returns Cube
 		for Pad: always returns Body
 		for PartDesign objects: try to return Body
+		for Body returns Body
 		for LinkGroup: returns LinkGroup
 		for Cut: returns Cut
 		for Clones: returns Clone
@@ -614,7 +615,7 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 		This is related to face not to object. The object direction will be different.
 		
 # Vertices
-### showVertex(iVertices, iRadius=5, iColor="red"):
+### showVertex(iVertices, iRadius=20, iColor="red"):
 
 	Description:
 	
@@ -916,6 +917,30 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 		Returns iType: "XY", "YX", "XZ", "ZX", "YZ", "ZY"
 
 # Position, Placement, Move
+### getOffset(iObj, iDestination, iType="array"):
+
+	Description:
+	
+		This function returns offset for setPosition function.
+	
+##### Description:
+	
+		iObj: object to get offset
+		iDestination: global destination point
+		iType (optional): iDestination type
+			* "array": the iDestination will be [ float, float, float ]
+			* "vector": the iDestination will be FreeCAD.Vector type [ .x, .y, .z ]
+			* "vertex": the iDestination will be Vertex type [ .X, .Y, .Z ]
+
+##### Usage:
+	
+		[ offetX, offetY, offetZ ] = MagicPanels.getOffset(o, [ 100, 200, 0 ], "array")
+		[ offetX, offetY, offetZ ] = MagicPanels.getOffset(o, edge.CenterOfMass, "vector")
+
+##### Result:
+	
+		return array with offsets [ offetX, offetY, offetZ ]
+
 ### getPosition(iObj, iType="global"):
 
 	Description:
@@ -926,7 +951,7 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 	
 		iObj: object to get placement
 		iType (optional): 
-			"global": trying to calculate global position of the object
+			"global": trying to calculate global position of the object, make sure the object is currently supported
 			"local": return iObj.Placement
 
 ##### Usage:
@@ -956,13 +981,17 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 		iZ: Z axis offset to add or position to set
 		iType (optional):
 			* "offset": copy like Clone or Link is created in the same place as base object so you can add only 
-							offset to the current copy placement instead of searching for base object global position. 
-			* "local": set directly to object Placement attribute
+							offset to the current copy placement instead of searching for base object global position. So here the iX, iY, iZ is offset for placement.
+			* "local": set directly to object Placement attribute, so here the iX, iY, iZ is local object XYZ. However, if the object 
+							is not in the container or the containers don't have offsets this might be global.
+			* "global": setting object position via global coordinates, here the iX, iY, iZ is global XYZ. The offset to the 
+							global iX, iY, iZ will calculated here automatically.
 		
 ##### Usage:
 	
 		MagicPanels.setPosition(copy, 100, 0, 0, "offset")
 		MagicPanels.setPosition(copy, 100, 0, 0, "local")
+		MagicPanels.setPosition(copy, 100, 0, 0, "global")
 
 ##### Result:
 	
@@ -1279,6 +1308,85 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 	
 		Created container and objects inside the container, return container object.
 
+### getContainers(iObj):
+
+	Description:
+	
+		This function get list of containers for give iObj.
+		
+	
+##### Description:
+	
+		iObj: object to get list of containers
+
+##### Usage:
+	
+		containers = MagicPanels.getContainers(o)
+
+##### Result:
+	
+		return array with objects
+
+### moveToContainer(iObjects, iContainer, iType="object"):
+
+	Description:
+
+		Move objects iObjects to iContainer.
+
+##### Description:
+	
+		iObjects: list of objects to move to iContainer, for example new created Cube
+		iContainer: container object or string describing destination level, possible:
+			iContainer: object for example LinkGroup or Pad to search
+			"object": move all iObjects directly to given iContainer object
+			"parent": move all iObjects to first container above Body, for example Part for given iContainer
+			"LinkGroup": move all iObjects to first LinkGroup container above given iContainer
+
+##### Usage:
+
+		For Pad structure: "LinkGroup2 -> LinkGroup1 -> Part -> Body -> Pad"
+		and copy object is in root folder. 
+		
+		MagicPanels.moveToContainer([ copy ], LinkGroup2)            # to move copy object to LinkGroup2
+		MagicPanels.moveToContainer([ copy ], LinkGroup2, "object")  # to move copy object to LinkGroup2
+		MagicPanels.moveToContainer([ copy ], Pad, "parent")         # to move copy object to Part
+		MagicPanels.moveToContainer([ copy ], Pad, "LinkGroup")      # to move copy object to LinkGroup1
+
+##### Result:
+
+		No return, move object.
+
+### moveToFirst(iObjects, iSelection):
+
+	Description:
+
+		Move objects iObjects to first LinkGroup container for iSelection object.
+		
+		Note: This function removes the offset that should have been added earlier. Why not just copy without offset?
+		If you have 2 objects in separate containers and the second object is only moved via the container Placement, 
+		then from FreeCAD point the objects are in the same place. So you won't be able to compute space between 
+		objects in these containers. FreeCAD uses local positions. It's good because you can calculate many things 
+		without using advanced formulas. Adding an offset and removing it later is a trick for easier calculations.
+
+		You can convert all vertices to global, but in this case you won't be able to determine the plane correctly 
+		in an easy way, for example the vertices on an edge would no longer be along the same coordinate axis, 
+		and thus you'd have to use advanced formulas. It can be done with a trick, but maybe something like 
+		that will come along later if need be.
+
+##### Description:
+	
+		iObjects: list of objects to move to container, for example [ copy1, copy2 ]
+		iSelection: selected object, for example "PartDesign::Pad" with structure "LinkGroup2 -> LinkGroup1 -> Part -> Body -> Pad" or "Part::Box" in structure "LinkGroup2 -> LinkGroup1 -> panelXY", to move the object to LinkGroup1
+
+##### Usage:
+
+		MagicPanels.moveToFirst([ copy ], pad)
+		MagicPanels.moveToFirst([ copy ], panel)
+
+##### Result:
+
+		No return, move copy object to LinkGroup1 container.
+
 ### getNestingLabel(iObj, iPrefix):
 
 	Description:
@@ -1298,25 +1406,6 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 ##### Result:
 	
 		return string for the new label
-
-### getContainers(iObj):
-
-	Description:
-	
-		This function get list of containers for give iObj.
-		
-	
-##### Description:
-	
-		iObj: object to get list of containers
-
-##### Usage:
-	
-		containers = MagicPanels.getContainers(o)
-
-##### Result:
-	
-		return array with objects
 
 ### getContainersOffset(iObj):
 
@@ -1344,130 +1433,6 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 		coZ: Z Axis object position
 		coR: Rotation object
 
-### moveToClean(iObjects, iSelection):
-
-	Description:
-	
-		Move objects iObjects to clean container for iSelection object.
-		Container need to be in the clean path, no other objects except Group or LinkGroup, 
-
-		For example:
-
-		clean path: LinkGroup -> LinkGroup
-		not clean: Mirror -> LinkGroup
-	
-##### Description:
-	
-		iObjects: list of objects to move to container, for example new created Cube
-		iSelection: selected object, for example Pad
-
-##### Usage:
-	
-		MagicPanels.moveToClean([ o ], pad)
-
-##### Result:
-	
-		No return, move object.
-
-### moveToContainer(iObjects, iContainer):
-
-	Description:
-
-		Move objects iObjects to iContainer.
-
-##### Description:
-	
-		iObjects: list of objects to move to iContainer, for example new created Cube
-		iContainer: container object, for example LinkGroup, this should be object
-
-##### Usage:
-
-		MagicPanels.moveToContainer([ o ], container)
-
-##### Result:
-
-		No return, move object.
-
-### moveToFirst(iObjects, iSelection):
-
-	Description:
-
-		Move objects iObjects to first container above Body for iSelection object.
-		This can be used to force object at face to be moved into Mirror -> LinkGroup.
-
-		This function removes the offset that should have been added earlier. Why not just copy without offset?
-		If you have 2 objects in separate containers and the second object is only moved via the container Placment, 
-		then from FreeCAD point the objects are in the same place. So you won't be able to compute space between 
-		objects in these containers. FreeCAD uses local positions. It's good because you can calculate many things 
-		without using advanced formulas. Adding an offset and removing it later is a trick for easier calculations.
-
-		You can convert all vertices to global, but in this case you won't be able to determine the plane correctly 
-		in an easy way, for example the vertices on an edge would no longer be along the same coordinate axis, 
-		and thus you'd have to use advanced formulas. It can be done with a trick, but maybe something like 
-		that will come along later if need be.
-
-##### Description:
-	
-		iObjects: list of objects to move to container, for example new created Cube
-		iSelection: selected object, for example Pad
-
-##### Usage:
-
-		MagicPanels.moveToFirst([ o ], pad)
-
-##### Result:
-
-		No return, move object.
-
-### moveToFirstWithInverse(iObjects, iSelection):
-
-	Description:
-	
-		This version remove the placement and rotation offset from iObjects and move the iObjects to first 
-		supported container (LinkGroup). 
-		
-		Note: It is dedicated to move panel created from vertices to the first LinkGroup container. 
-		The object created from vertices have applied offset with rotation after creation 
-		but is outside the container. So if you move it manually it will be in the wrong place because 
-		container apply the placement and rotation again. So, you have to remove the offset and move it. 
-		Yea, that's the beauty of FreeCAD ;-)
-	
-##### Description:
-	
-		iObjects: list of objects to move to container, for example new created Cube
-		iSelection: selected object, for example Pad
-
-##### Usage:
-	
-		MagicPanels.moveToFirstWithInverse([ o ], pad)
-
-##### Result:
-	
-		No return, move object.
-
-### moveToParent(iObjects, iSelection):
-
-	Description:
-	
-		This version move object to parent container without adding or remove offset. This is useful if you copy the 
-		Sketch, because SKetch after copy is located outside Body, in Part. But if the Part is inside LinkGroup 
-		the copied Sketch will be located outside LinkGroup, in main root folder. This is problematic because 
-		the Sketch after copy has offset from containers. The object to move need to be in root folder to avoid 
-		duplicated already copied objects, Cube.
-	
-##### Description:
-	
-		iObjects: list of objects to move to container, for example new created Sketch
-		iSelection: selected object, for example Sketch
-
-##### Usage:
-	
-		MagicPanels.moveToParent([ copy ], sketch)
-
-##### Result:
-	
-		No return, move object.
-
 ### getPlacementDiff(iStart, iDestination):
 
 	Description:
@@ -1488,7 +1453,7 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 	
 		Return [ moveX, moveY, moveZ ] array with X, Y, Z floats to move object.
 
-### isVisible(iObject):
+### isVisible(iObj):
 
 	Description:
 	
@@ -1496,15 +1461,32 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 		
 ##### Description:
 	
-		iObject: object to search visibility
+		iObj: object to search visibility
 
 ##### Usage:
 		
-		visible = MagicPanels.isVisible(iObject)
+		visible = MagicPanels.isVisible(iObj)
 		
 ##### Result:
 	
 		Return boolean True or False
+### toggleVisibility(iObj):
+
+	Description:
+	
+		Toggle object visibility.
+		
+##### Description:
+	
+		iObj: object to toggle visibility
+
+##### Usage:
+		
+		MagicPanels.toggleVisibility(old)
+		
+##### Result:
+	
+		no return
 # Conversion
 ### convertPosition(iObj, iX, iY, iZ):
 
@@ -2189,3 +2171,90 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 			margin: 15px 25px 15px 0px;
 		}
 	
+# DEPRECATED
+### moveToParent(iObjects, iSelection):
+
+	# ########################################################################################
+	# THIS FUNCTION IS DEPRECATED !!!
+	# ########################################################################################
+	
+	Description:
+	
+		This version move object to parent container without adding or remove offset. This is useful if you copy the 
+		Sketch, because Sketch after copy is located outside Body, in Part. But if the Part is inside LinkGroup 
+		the copied Sketch will be located outside LinkGroup, in main root folder. This is problematic because 
+		the Sketch after copy has offset from containers. The object to move need to be in root folder to avoid 
+		duplicated already copied objects, Cube.
+	
+##### Description:
+	
+		iObjects: list of objects to move to container, for example new created Sketch
+		iSelection: selected object, for example Sketch
+
+##### Usage:
+	
+		MagicPanels.moveToParent([ copy ], sketch)
+
+##### Result:
+	
+		No return, move object.
+
+### moveToClean(iObjects, iSelection):
+
+	# ########################################################################################
+	# THIS FUNCTION IS DEPRECATED !!!
+	# ########################################################################################
+	
+	Description:
+	
+		Move objects iObjects to clean container for iSelection object.
+		Container need to be in the clean path, no other objects except Group or LinkGroup, 
+
+		For example:
+
+		clean path: LinkGroup -> LinkGroup
+		not clean: Mirror -> LinkGroup
+	
+##### Description:
+	
+		iObjects: list of objects to move to container, for example new created Cube
+		iSelection: selected object, for example Pad
+
+##### Usage:
+	
+		MagicPanels.moveToClean([ o ], pad)
+
+##### Result:
+	
+		No return, move object.
+
+### moveToFirstWithInverse(iObjects, iSelection):
+
+	# ########################################################################################
+	# THIS FUNCTION IS DEPRECATED !!!
+	# ########################################################################################
+	
+	Description:
+	
+		This version remove the placement and rotation offset from iObjects and move the iObjects to first 
+		supported container (LinkGroup). 
+		
+		Note: It is dedicated to move panel created from vertices to the first LinkGroup container. 
+		The object created from vertices have applied offset with rotation after creation 
+		but is outside the container. So if you move it manually it will be in the wrong place because 
+		container apply the placement and rotation again. So, you have to remove the offset and move it. 
+		Yea, that's the beauty of FreeCAD ;-)
+	
+##### Description:
+	
+		iObjects: list of objects to move to container, for example new created Cube
+		iSelection: selected object, for example Pad
+
+##### Usage:
+	
+		MagicPanels.moveToFirstWithInverse([ o ], pad)
+
+##### Result:
+	
+		No return, move object.
+

@@ -4654,6 +4654,84 @@ FreeCADGui.addCommand("panel2pad", panel2pad())
 
 	
 # ######################################################################################################################
+class addExternal():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "addExternal.png"),
+				"MenuText": QT_TRANSLATE_NOOP("addExternal", "add external geometry"),
+				"ToolTip" : QT_TRANSLATE_NOOP("addExternal", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "addExternal"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("addExternal", addExternal())
+
+	
+# ######################################################################################################################
+class wires2pad():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "wires2pad.png"),
+				"MenuText": QT_TRANSLATE_NOOP("wires2pad", "create Pad from wires in sketch"),
+				"ToolTip" : QT_TRANSLATE_NOOP("wires2pad", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "wires2pad"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		path = os.path.join(path, "MagicPanels")
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("wires2pad", wires2pad())
+
+	
+# ######################################################################################################################
 class fitModel():
 
 	def GetResources(self):

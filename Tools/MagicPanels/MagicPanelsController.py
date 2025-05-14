@@ -254,7 +254,7 @@ def panelBetween(iType):
 def panelSide(iType):
 	
 	try:
-		selection = MagicPanels.getReference()[0]
+		selection = FreeCADGui.Selection.getSelection()[0]
 		objRef = MagicPanels.getReference()
 		face = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 

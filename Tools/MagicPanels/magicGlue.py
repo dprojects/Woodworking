@@ -107,6 +107,7 @@ def showQtGUI():
 			self.sMode.setCurrentIndex(0) # default
 			self.sMode.textActivated[str].connect(self.setModeType)
 			self.sMode.setFixedWidth(rside)
+			self.sMode.setFixedHeight(40)
 			self.sMode.move(10, row)
 			
 			row += 50
