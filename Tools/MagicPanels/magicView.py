@@ -248,8 +248,19 @@ def showQtGUI():
 			'''
 			
 		# ############################################################################
-		# init functions
+		# functions
 		# ############################################################################
+		
+		# ############################################################################
+		def isSafe(self, iObj):
+		
+			if (
+				iObj.isDerivedFrom("Part::Box") or 
+				iObj.isDerivedFrom("PartDesign::Body")
+			):
+				return True
+			
+			return False
 		
 		# ############################################################################
 		def initGlobals(self):
@@ -266,25 +277,17 @@ def showQtGUI():
 				self.gObjects = []
 				
 				for o in objects:
-					if (
-						o.isDerivedFrom("Part::Box") or 
-						o.isDerivedFrom("App::Link") or 
-						o.isDerivedFrom("PartDesign::Body") or 
-						o.isDerivedFrom("App::LinkGroup") or 
-						o.isDerivedFrom("Part::Cut") 
-						):
+					try:
+						test = o.Placement
 						self.gObjects.append(o)
+					except:
+						skip = 1
 
 		# ############################################################################
 		def initSheet(self):
-
-			# set menu for custom files
-			try:
-				objects = FreeCAD.ActiveDocument.Objects
-			except:
-				return
 			
-			for o in objects:
+			# search all objetcs because Spreadsheet not have Placement
+			for o in FreeCAD.ActiveDocument.Objects:
 				if o.isDerivedFrom("Spreadsheet::Sheet") and str(o.Name).startswith("magicview"):
 					if str(o.Name) != "magicviewrestore":
 						self.sMode.addItems( tuple([ str(o.Label) ]) )
@@ -313,10 +316,9 @@ def showQtGUI():
 			sheet.set( "I4", str("Rotation Z") )
 			
 			# store all objects with Placement maybe
-			# to allow custom move
-			# but auto explode only safe objects
+			# to allow custom move but auto explode only safe objects
 			row = 5
-			for o in objects:
+			for o in self.gObjects:
 				
 				try:
 					sheet.set( "A"+str(row), str(o.Name) )
@@ -385,11 +387,7 @@ def showQtGUI():
 				[ cx, cy, cz ] ] = MagicPanels.getOccupiedSpace(self.gObjects)
 			
 			for o in self.gObjects:
-				
-				if (
-					o.isDerivedFrom("Part::Box") or 
-					o.isDerivedFrom("PartDesign::Body")
-				):
+				if self.isSafe(o):
 				
 					try:
 						test = o.Shape.CenterOfMass
@@ -427,11 +425,7 @@ def showQtGUI():
 
 			vx = 0 
 			for o in self.gObjects:
-				
-				if (
-					o.isDerivedFrom("Part::Box") or 
-					o.isDerivedFrom("PartDesign::Body")
-				):
+				if self.isSafe(o):
 				
 					[ x, y, z ] = MagicPanels.getPosition(o, "local")
 					MagicPanels.setPosition(o, vx, y, z, "local")
@@ -445,11 +439,7 @@ def showQtGUI():
 
 			vy = 0 
 			for o in self.gObjects:
-				
-				if (
-					o.isDerivedFrom("Part::Box") or 
-					o.isDerivedFrom("PartDesign::Body")
-				):
+				if self.isSafe(o):
 				
 					[ x, y, z ] = MagicPanels.getPosition(o, "local")
 					MagicPanels.setPosition(o, x, vy, z, "local")
@@ -463,11 +453,7 @@ def showQtGUI():
 
 			vz = 0 
 			for o in self.gObjects:
-				
-				if (
-					o.isDerivedFrom("Part::Box") or 
-					o.isDerivedFrom("PartDesign::Body")
-				):
+				if self.isSafe(o):
 				
 					[ x, y, z ] = MagicPanels.getPosition(o, "local")
 					MagicPanels.setPosition(o, x, y, vz, "local")
@@ -481,11 +467,7 @@ def showQtGUI():
 
 			[ vx, vy, vz ] = [ 0, 0, 0 ]
 			for o in self.gObjects:
-				
-				if (
-					o.isDerivedFrom("Part::Box") or 
-					o.isDerivedFrom("PartDesign::Body")
-				):
+				if self.isSafe(o):
 				
 					[ x, y, z ] = MagicPanels.getPosition(o, "local")
 					MagicPanels.setPosition(o, vx, vy, vz, "local")
@@ -500,9 +482,10 @@ def showQtGUI():
 		def setView6(self):
 
 			for o in self.gObjects:
-				
-				[ x, y, z ] = MagicPanels.getPosition(o, "local")
-				MagicPanels.setPosition(o, 0, 0, 0, "local")
+				if self.isSafe(o):
+					
+					[ x, y, z ] = MagicPanels.getPosition(o, "local")
+					MagicPanels.setPosition(o, 0, 0, 0, "local")
 				
 			FreeCAD.ActiveDocument.recompute()
 
