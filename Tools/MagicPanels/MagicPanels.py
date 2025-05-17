@@ -305,6 +305,43 @@ def getReference(iObj="none"):
 
 
 # ###################################################################################################################
+def getBody(iObj):
+	'''
+	Description:
+	
+		Return Body for given object.
+	
+	Args:
+	
+		iObj: object to get Body
+
+	Usage:
+	
+		body = MagicPanels.getBody(sketch)
+
+	Result:
+	
+		Return body object or empty string if there is no Body
+
+	'''
+
+
+	try:
+		return iObj._Body
+	except:
+		skip = 1
+	
+	containers = getContainers(iObj)
+	 
+	if len(containers) > 0:
+		o = containers[0]
+		if o.isDerivedFrom("PartDesign::Body"):
+			return o
+
+	return ""
+
+
+# ###################################################################################################################
 '''
 # Sizes
 '''
@@ -3620,11 +3657,48 @@ def createContainer(iObjects, iLabel="Container", iNesting=True):
 
 
 # ###################################################################################################################
+def getContainersPath(iObj):
+	'''
+	Description:
+	
+		This function returns string with path to object in this way: LinkGroup.Part.Body.Pad
+		
+	
+	Args:
+	
+		iObj: object to get path
+
+	Usage:
+	
+		path = MagicPanels.getContainersPath(o)
+
+	Result:
+	
+		return string
+
+	'''
+
+
+	try:
+		parents = iObj.Parents
+	except:
+		return str(iObj.Name)
+	
+	if len(parents) == 0:
+		return str(iObj.Name)
+	
+	root = str(iObj.Parents[0][0].Name)
+	path = str(iObj.Parents[0][1])[:-1]
+	
+	return str(root + "." + path)
+
+
+# ###################################################################################################################
 def getContainers(iObj):
 	'''
 	Description:
 	
-		This function get list of containers for give iObj.
+		This function get list of containers for given iObj.
 		
 	
 	Args:
@@ -3641,29 +3715,26 @@ def getContainers(iObj):
 
 	'''
 
-	containers = []
-	current = iObj
-	
-	for i in range(0, gSearchDepth):
-	
-		try:
-			parent = current.InList[0]
-	
-			if (
-				parent.isDerivedFrom("App::Part") or 
-				parent.isDerivedFrom("PartDesign::Body") or 
-				parent.isDerivedFrom("App::LinkGroup") or 
-				parent.isDerivedFrom("Part::Cut") 
-			):
-				containers.append(parent)
-			
-		except:
-			return containers
 
-		try:
-			current = parent
-		except:
-			return containers
+	containers = []
+	path = getContainersPath(iObj)
+	
+	if path == str(iObj.Name):
+		return containers
+	
+	pathArr = path.split(".")[:-1]
+	
+	for c in reversed(pathArr):
+		
+		o = FreeCAD.ActiveDocument.getObject(c)
+		
+		if (
+			o.isDerivedFrom("App::Part") or 
+			o.isDerivedFrom("PartDesign::Body") or 
+			o.isDerivedFrom("App::LinkGroup") or 
+			o.isDerivedFrom("Part::Cut") 
+		):
+			containers.append(o)
 
 	return containers
 

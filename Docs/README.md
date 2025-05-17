@@ -467,7 +467,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 * **Panel at face:** To create panel at face select single face and click `refresh selection`.
 * **Panel between faces:** To create panel between two faces select two faces and click `refresh selection`. To select more faces hold `CTRL` key. The selection order is important. If the panel is created outside change selection order.
-* **Panel from vertices:** To create panel from vertices, you have to activate observer. The `first` means the thickness will be get from first selected object. You can set custom thickness if you want. ou can also use this option to create panle from selected edges in Sketch, see also [wires2pad](#wires2pad) tool. 
+* **Panel from vertices:** To create panel from vertices, you have to activate observer. The `first` means the thickness will be get from first selected object. You can set custom thickness if you want or you can also use this option to create panel from selected edges in Sketch, see also [wires2pad](#wires2pad) tool. 
 
 **Options:**
   

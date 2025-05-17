@@ -23,7 +23,7 @@ gKernelVersion = 0       # FreeCAD version to add support for new kernel changes
 gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0) # default color <br>
 
 # Functions for general purpose
-### isType(iObj, iType):
+### isType(iObj, iType="Clone"):
 
 	Description:
 	
@@ -130,6 +130,24 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 ##### Result:
 	
 		gObj - reference to the base object
+
+### getBody(iObj):
+
+	Description:
+	
+		Return Body for given object.
+	
+##### Description:
+	
+		iObj: object to get Body
+
+##### Usage:
+	
+		body = MagicPanels.getBody(sketch)
+
+##### Result:
+	
+		Return body object or empty string if there is no Body
 
 # Sizes
 ### getSizes(iObj):
@@ -1308,11 +1326,30 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 	
 		Created container and objects inside the container, return container object.
 
+### getContainersPath(iObj):
+
+	Description:
+	
+		This function returns string with path to object in this way: LinkGroup.Part.Body.Pad
+		
+	
+##### Description:
+	
+		iObj: object to get path
+
+##### Usage:
+	
+		path = MagicPanels.getContainersPath(o)
+
+##### Result:
+	
+		return string
+
 ### getContainers(iObj):
 
 	Description:
 	
-		This function get list of containers for give iObj.
+		This function get list of containers for given iObj.
 		
 	
 ##### Description:

@@ -11,12 +11,14 @@ try:
 		raise
 
 	# init data
-	sketch = selection[0]
-	selection = selection[1:]
+	first = selection[0]
 
-	if sketch.isDerivedFrom("Sketcher::SketchObject"):
-		body = sketch.InList[0]
+	# add to existing sketch
+	if first.isDerivedFrom("Sketcher::SketchObject"):
+		sketch = first
+		body = MagicPanels.getBody(sketch)
 
+	# create new sketch
 	else:
 		part = FreeCAD.ActiveDocument.addObject('App::Part', 'Part')
 		part.Label = translate('addExternal', 'Part, addExternal ')
@@ -53,7 +55,39 @@ try:
 		sketch.MapMode = 'FlatFace'
 		FreeCAD.ActiveDocument.recompute()
 
-	# build sub-objects structure with objects reference
+	# remove first selected sketch or face to not disturb the binder structure
+	FreeCADGui.Selection.removeSelection(first)
+
+	# make body active
+	FreeCADGui.ActiveDocument.ActiveView.setActiveObject('pdbody', body)
+
+	# create binder using GUI command
+	# SubShapeBinder has its own path resolve logic
+	# so it will be better to use this command 
+	# instead of trying to reproduce the binder.Support structure
+	FreeCADGui.runCommand("PartDesign_SubShapeBinder", 0)
+
+	# get last created object, should be the binder
+	oArr = FreeCAD.ActiveDocument.Objects
+	binder = oArr[len(oArr)-1]
+
+	binder.Label = translate('addExternal', 'addExternal')
+
+	# make body inactive
+	FreeCADGui.ActiveDocument.ActiveView.setActiveObject('pdbody', None)
+
+
+	# #####################################################################
+	'''
+	# build binder.Support structure
+	#
+	# if you want to use this method you have to remove 
+	# the root folder common with binder
+	# I think it will be better to use GUI command
+
+	# create selected sub-objects and objects structure
+	selection = selection[1:]
+
 	itemsO = [] # items objects
 	itemsS = [] # items sub-objects
 
@@ -66,11 +100,7 @@ try:
 
 		i = i + 1
 
-	# create binder object
-	binder = body.newObject('PartDesign::SubShapeBinder','Binder')
-	binder.Label = translate('addExternal', 'addExternal')
-
-	# create object with all sub-objects to add to binder
+	# create binder structure
 	toAdd = []
 	i = 0
 
@@ -80,24 +110,43 @@ try:
 		
 		if sub.ShapeType == "Edge":
 			subIndex = MagicPanels.getEdgeIndex(o, sub)
-			item = (o, 'Edge'+str(subIndex))
+			sitem = 'Edge'+str(subIndex)
 		
 		if sub.ShapeType == "Face":
 			subIndex = MagicPanels.getFaceIndex(o, sub)
-			item = (o, 'Face'+str(subIndex))
-
+			sitem = 'Face'+str(subIndex)
+		
+		if len(o.Parents) > 0:
+			oitem = o.Parents[0][0]
+			sitem = ( str(o.Parents[0][1]) + sitem, )
+		else:
+			oitem = o
+			sitem = ( sitem, )
+			
+		item = ( oitem, sitem )
 		toAdd.append(item)
 		i = i + 1
 
-	# add to binder
+	# create binder object
+	binder = body.newObject('PartDesign::SubShapeBinder','Binder')
+	binder.Label = translate('addExternal', 'addExternal')
+
+	# add structure to binder
 	binder.Support = toAdd
+	'''
+	# #####################################################################
 
 	FreeCADGui.Selection.clearSelection()
 	FreeCAD.ActiveDocument.recompute()
 
-	# create external geometry based on binder inside selected sketch
+	# create external geometry from binder
 	for i in range(1, len(binder.Shape.Edges)+1):
-		sketch.addExternal( str(binder.Name), 'Edge'+str(i) )
+		try:
+			sketch.addExternal( str(binder.Name), 'Edge'+str(i) )
+		except:
+			info = translate('addExternal', "Edge"+str(i) + " from " + str(binder.Label) + " not added as external geometry to " + str(sketch.Label) + ".")
+			FreeCAD.Console.PrintMessage("\n\n")
+			FreeCAD.Console.PrintMessage(info)
 
 	FreeCAD.ActiveDocument.recompute()
 

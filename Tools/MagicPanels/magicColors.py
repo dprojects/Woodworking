@@ -1596,7 +1596,7 @@ def showQtGUI():
 				self.showGUI(self.gColorTarget)
 
 				if selectedIndex == 7:
-					self.setGeometry(self.gPW, self.gPH, self.toolSW, 720)
+					self.setGeometry(self.gPW, 0, self.toolSW, 720)
 					self.setAllSliders()
 				else:
 					self.setGeometry(self.gPW, self.gPH, self.toolSW, self.toolSH)
