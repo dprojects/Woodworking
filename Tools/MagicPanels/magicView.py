@@ -335,6 +335,16 @@ def showQtGUI():
 
 				row = row + 1
 			
+			# decoration
+			sheet.setStyle('A1:I1', 'bold')
+			sheet.setBackground('A1:I1', (1.000000,0.000000,0.000000,1.000000))
+			sheet.setStyle('A2:A2', 'bold')
+			sheet.setBackground('A2:A2', (1.000000,0.000000,0.000000,1.000000))
+			sheet.setStyle('A4:I4', 'bold')
+			sheet.setBackground('A4:I4', (1.000000,0.000000,0.000000,1.000000))
+			sheet.setStyle('A5:A'+str(row-1), 'bold')
+			sheet.setBackground('A5:A'+str(row-1), (1.000000,0.000000,0.000000,1.000000))
+			
 			FreeCAD.ActiveDocument.recompute()
 
 		# ############################################################################
@@ -624,6 +634,16 @@ def showQtGUI():
 				
 				row = row + 1
 			
+			# decoration
+			sheet.setStyle('A1:I1', 'bold')
+			sheet.setBackground('A1:I1', (0.666667,0.333333,1.000000,1.000000))
+			sheet.setStyle('A2:A2', 'bold')
+			sheet.setBackground('A2:A2', (0.666667,0.333333,1.000000,1.000000))
+			sheet.setStyle('A4:I4', 'bold')
+			sheet.setBackground('A4:I4', (0.666667,0.333333,1.000000,1.000000))
+			sheet.setStyle('A5:A'+str(row-1), 'bold')
+			sheet.setBackground('A5:A'+str(row-1), (0.666667,0.333333,1.000000,1.000000))
+			
 			FreeCAD.ActiveDocument.recompute()
 			self.sMode.addItems( tuple([ str(sheet.Label) ]) )
 			self.gCustomView[str(sheet.Label)] = str(sheet.Name)
@@ -666,7 +686,17 @@ def showQtGUI():
 				view.XDirection = FreeCAD.Vector(0.775825697655, 0.630867700455, 0.010024182780)
 				
 				objects = []
-				for o in self.gObjects:
+				selection = []
+				
+				try:
+					selection = FreeCADGui.Selection.getSelection()
+				except:
+					skip = 1
+					
+				if len(selection) == 0:
+					selection = self.gObjects
+					
+				for o in selection:
 					if MagicPanels.isVisible(o) == True:
 						objects.append(o)
 

@@ -11,12 +11,14 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 * [Translations](#translations)
 * [Objects, Workflow, Golden rules](#objects-workflow-golden-rules)
 * [How to start - magicStart](#how-to-start---magicstart)
+	* [Construction geometry](#construction-geometry)
 	* [Cabinet structure](#cabinet-structure)
 	* [US style](#us-style)
 	* [Drawers for cabinets](#drawers-for-cabinets)
 	* [Fronts for cabinets](#fronts-for-cabinets)
 	* [Shelves and top for cabinets](#shelves-and-top-for-cabinets)
 	* [Sides for cabinets](#sides-for-cabinets)
+	* [Back](#back)
 	* [Foot for cabinets](#foot-for-cabinets)
 	* [Table](#table)
 	* [Connections](#connections)
@@ -154,7 +156,9 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 		git clone https://github.com/dprojects/Woodworking.git
 
 	**New significant changes since the last release 0.23 stable:**
-
+    
+    * back outside and inside for the cabinets (magicStart)
+    * workspace for custom design copy and move reference (magicStart)
     * new tool to create panels from wires (wires2pad)
     * new tool to add external geometry in sketch (addExternal)
     * improve Copy by Edge and Mirror option for more complex objects (magicMove)
@@ -269,6 +273,10 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 
 **Currently available solutions:**
 
+## Construction geometry
+
+* Workspace platform
+
 ## Cabinet structure
 
 * Simple storage ( front outside, back full )
@@ -302,15 +310,15 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 
 ## Drawers for cabinets
 
-* Drawer with front outside
-* Drawer with front inside
-* Drawer series with front outside
-* Drawer series with front inside
-* Drawer series with front outside ( Blum, Hafele, GTV, Amix )
-* Drawer series with front inside ( Blum, Hafele, GTV, Amix )
-* Simple drawer ( import parametric )
-* Drawer (decoration, import parametric )
-
+* Drawer ( single, X or Y direction, front outside )
+* Drawer ( single, X or Y direction, front inside )
+* Drawer ( series, front outside )
+* Drawer ( series, front inside )
+* Drawer ( series, Blum, Hafele, GTV, Amix, front outside )
+* Drawer ( series, Blum, Hafele, GTV, Amix, front inside )
+* Drawer ( simple, parametric )
+* Drawer ( decoration, parametric )
+			
 **Video tutorials:** 
 * [How to set front thickness and overlap](https://www.youtube.com/watch?v=geEolSSB6n0)
 * [How to create drawer at each side](https://www.youtube.com/watch?v=4qEbQQhwmns)
@@ -355,6 +363,14 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * [How to create side anywhere](https://www.youtube.com/watch?v=IS3MDLzv6Ko)
 * [How to create center side](https://www.youtube.com/watch?v=0rSwB46ssEk)
 * [How to use decoration features](https://www.youtube.com/watch?v=R9u6ikswO_0)
+
+## Back
+
+* Back outside ( HDF )
+* Back inside ( full )
+
+**Video tutorials:** 
+* [Simple office bookcase](https://www.youtube.com/watch?v=U_oi3POJmSw)
 
 ## Foot for cabinets
 
@@ -500,6 +516,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 **Video tutorials:** 
 * [Smart resizer tool](https://www.youtube.com/watch?v=t1G7qnRfAgY)
 * [How to handle dimension changes](https://www.youtube.com/watch?v=HED1-BH66BU)
+* [Simple office bookcase](https://www.youtube.com/watch?v=U_oi3POJmSw)
 
 ## showConstraints
 
@@ -548,7 +565,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
   * `copyObject` the same as `CTRL-C` and `CTRL-V` copy method, good only for simple objects.
   * `Clone` if you want to further process such an object, for example you will measure and drill into such an object.
   * `Link` if you only want to generate a cut-list and do no further processing on this object, it will only be a visual representation of the base object, and you will not measure or drill into such an object.
-  * `set` allows to set edge as copy reference point.
+  * `set` allows to set `edge` or `face` as copy reference point. In case of edge you should add `- wood thickness` offset, for example `-18`, to create mirror copy by edge. In case of face the reference point will be the `CenterOfMass` of the selected face, so the mirror copy can be created without setting any offset, this is more quicker version.
   * `Additional offset` this offset will be added to the object offset. For example, if the objects distance from the selected edge on the `X` axis is `18`, i.e. the shelves are touching the right side of the furniture inside, but the selected edge is the right outer edge of the furniture, and the additional offset is set to `-18`, then the shelves will be created `18 (distance) - 18 (additional offset) = 0` from the edge, touching the right outer side of the furniture. So for example you can copy shelves from left to right and ignore the thickness of the right side board of the furniture and quickly extend the furniture to the right.
   * `create`creates a panel in the selected axis direction. In the film, the button responsible for the case in which the plane of the object to be copied is the same as the plane of the selected edge is disabled. This was to avoid copying the object "in place". However, this can be used, for example, to copy the top shelf to the bottom. If the shelf is on the top of the furniture and you want to create a copy along the Z edge, i.e. relative to the edge of the right side of the furniture, the copy point will be the center of the edge, which means that the top shelf will be copied as the bottom shelf.
   
@@ -583,6 +600,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 * [How to copy part of the furniture](https://www.youtube.com/watch?v=oxNiwtZV-Uc)
 * [How to handle dimension changes](https://www.youtube.com/watch?v=HED1-BH66BU)
 * [How to add handle and see soft-close animation](https://www.youtube.com/watch?v=iOseEBGmwAU)
+* [Simple office bookcase](https://www.youtube.com/watch?v=U_oi3POJmSw)
 
 ## magicAngle
 
@@ -732,8 +750,8 @@ Selection modes:
 * **save to spreadsheet** allows you to save the current view to a spreadsheet, and also to add this view to the end of the list of views.
 
 * **TechDraw options:**
-  * `screenshot` exports the current 3D view of the model as an image to TechDraw.
-  * `objects` exports the current 3D view of the model as objects to TechDraw. In case of this option the visibility of objects is recognized, i.e. objects hidden by the `space` key will not be exported.
+  * `screenshot` exports the current 3D view of the model as an image to TechDraw. Not visible objects will not be exported.
+  * `objects` exports the current 3D view of the model as objects to TechDraw. This option will try to export only selected objects but if there is no selection, all objects will be exported. Also in case of this option the visibility of objects is recognized, i.e. objects hidden by the `space` key will not be exported. 
   * `export to TechDraw` creates a TechDraw page with the exported model.
 
 * **Cross:**
@@ -742,6 +760,7 @@ Selection modes:
   * `keep custom cross settings` allows to store the custom cross setting after this tool exit.
 
 **Video tutorials:** 
+* [Simple office bookcase](https://www.youtube.com/watch?v=U_oi3POJmSw)
 * [Parametric bookcase with Dado joints](https://www.youtube.com/watch?v=kcP1WmKizDg)
 * [How to create view and export to TechDraw](https://www.youtube.com/watch?v=yiZfyMRlE-U)
 

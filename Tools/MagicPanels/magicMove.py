@@ -67,7 +67,7 @@ def showQtGUI():
 
 		gNoSelection = translate('magicMove', 'select panel or container')
 		gNoPathSelection = translate('magicMove', 'select copy path')
-		gNoCopyByEdge = translate('magicMove', 'please select edge')
+		gNoCopyByEdge = translate('magicMove', 'select edge or face')
 		gNoMirrorPoint = translate('magicMove', 'edge, face or vertex')
 		gNoMEEdgeStart = translate('magicMove', 'select start edge')
 		gNoMEEdgeEnd = translate('magicMove', 'select end edge')
@@ -1117,12 +1117,17 @@ def showQtGUI():
 				self.gCBEObj = FreeCADGui.Selection.getSelection()[0]
 				self.gCBEEdge = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 				
-				if self.gCBEEdge.ShapeType != "Edge":
+				if self.gCBEEdge.ShapeType == "Edge":
+					index = MagicPanels.getEdgeIndex(self.gCBEObj, self.gCBEEdge)
+					self.cbe1L.setText(self.gCBEObj.Label + ", Edge" + str(index))
+				
+				elif self.gCBEEdge.ShapeType == "Face":
+					index = MagicPanels.getFaceIndex(self.gCBEObj, self.gCBEEdge)
+					self.cbe1L.setText(self.gCBEObj.Label + ", Face" + str(index))
+				
+				else:
 					raise
 				
-				index = MagicPanels.getEdgeIndex(self.gCBEObj, self.gCBEEdge)
-				self.cbe1L.setText(self.gCBEObj.Label + ", Edge" + str(index))
-
 			except:
 				self.cbe1L.setText(self.gNoCopyByEdge)
 				
