@@ -88,7 +88,9 @@ getMenuIndex = {
 	translate('magicStart', 'Drawer ( series, Blum, Hafele, GTV, Amix, front inside )'): 72, 
 	translate('magicStart', 'Workspace platform'): 73, 
 	translate('magicStart', 'Back outside ( HDF )'): 74, 
-	translate('magicStart', 'Back inside ( full )'): 75 # no comma 
+	translate('magicStart', 'Back inside ( full )'): 75, 
+	translate('magicStart', 'Handle ( single hole, decorated )'): 76, 
+	translate('magicStart', 'Handle ( double hole, decorated )'): 77 # no comma 
 }
 
 # ############################################################################
@@ -866,7 +868,9 @@ def showQtGUI():
 				"-----------------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Shelf Pin 5x16 mm ( import parametric )'), 
 				translate('magicStart', 'Handle ( single hole )'), 
+				translate('magicStart', 'Handle ( single hole, decorated )'), 
 				translate('magicStart', 'Handle ( double hole )'), 
+				translate('magicStart', 'Handle ( double hole, decorated )'), 
 				translate('magicStart', 'Brackets for wall cabinets ( Camar 807 )'), 
 				translate('magicStart', 'Angle 30x30x25 mm ( import parametric )'), 
 				translate('magicStart', 'Angle 80x80x20 mm ( import parametric )'), 
@@ -2663,8 +2667,8 @@ def showQtGUI():
 			# text input
 			self.ofdec2E = QtGui.QLineEdit(self)
 			self.ofdec2E.setText(MagicPanels.unit2gui(25))
-			self.ofdec2E.setFixedWidth(90)
-			self.ofdec2E.move(150, rowfdec)
+			self.ofdec2E.setFixedWidth(rsize1x)
+			self.ofdec2E.move(startcX, rowfdec)
 			
 			rowfdec += 30
 			
@@ -2675,20 +2679,32 @@ def showQtGUI():
 			# text input
 			self.ofdec3E = QtGui.QLineEdit(self)
 			self.ofdec3E.setText(MagicPanels.unit2gui(20))
-			self.ofdec3E.setFixedWidth(90)
-			self.ofdec3E.move(150, rowfdec)
+			self.ofdec3E.setFixedWidth(rsize1x)
+			self.ofdec3E.move(startcX, rowfdec)
 		
 			rowfdec += 30
 
 			# label
-			self.ofdec4L = QtGui.QLabel(translate('magicStart', 'Offset from edge:'), self)
-			self.ofdec4L.move(10, rowfdec+3)
+			self.ofdecOHL = QtGui.QLabel(translate('magicStart', 'Offset from edge horizontal:'), self)
+			self.ofdecOHL.move(10, rowfdec+3)
 
 			# text input
-			self.ofdec4E = QtGui.QLineEdit(self)
-			self.ofdec4E.setText(MagicPanels.unit2gui(50))
-			self.ofdec4E.setFixedWidth(90)
-			self.ofdec4E.move(150, rowfdec)
+			self.ofdecOHE = QtGui.QLineEdit(self)
+			self.ofdecOHE.setText(MagicPanels.unit2gui(50))
+			self.ofdecOHE.setFixedWidth(rsize1x)
+			self.ofdecOHE.move(startcY, rowfdec)
+			
+			rowfdec += 30
+
+			# label
+			self.ofdecOVL = QtGui.QLabel(translate('magicStart', 'Offset from edge vertical:'), self)
+			self.ofdecOVL.move(10, rowfdec+3)
+
+			# text input
+			self.ofdecOVE = QtGui.QLineEdit(self)
+			self.ofdecOVE.setText(MagicPanels.unit2gui(50))
+			self.ofdecOVE.setFixedWidth(rsize1x)
+			self.ofdecOVE.move(startcY, rowfdec)
 			
 			rowfdec += 40
 			
@@ -2762,8 +2778,10 @@ def showQtGUI():
 			self.ofdec2E.hide()
 			self.ofdec3L.hide()
 			self.ofdec3E.hide()
-			self.ofdec4L.hide()
-			self.ofdec4E.hide()
+			self.ofdecOHL.hide()
+			self.ofdecOHE.hide()
+			self.ofdecOVL.hide()
+			self.ofdecOVE.hide()
 			self.ofdec5B.hide()
 			self.ofdec6L.hide()
 			self.ofdec61E.hide()
@@ -3616,8 +3634,8 @@ def showQtGUI():
 			# text input
 			self.osdec2E = QtGui.QLineEdit(self)
 			self.osdec2E.setText(MagicPanels.unit2gui(25))
-			self.osdec2E.setFixedWidth(90)
-			self.osdec2E.move(150, rowsdec)
+			self.osdec2E.setFixedWidth(rsize1x)
+			self.osdec2E.move(startcX, rowsdec)
 			
 			rowsdec += 30
 			
@@ -3628,20 +3646,32 @@ def showQtGUI():
 			# text input
 			self.osdec3E = QtGui.QLineEdit(self)
 			self.osdec3E.setText(MagicPanels.unit2gui(20))
-			self.osdec3E.setFixedWidth(90)
-			self.osdec3E.move(150, rowsdec)
+			self.osdec3E.setFixedWidth(rsize1x)
+			self.osdec3E.move(startcX, rowsdec)
 		
 			rowsdec += 30
 
 			# label
-			self.osdec4L = QtGui.QLabel(translate('magicStart', 'Offset from edge:'), self)
-			self.osdec4L.move(10, rowsdec+3)
+			self.osdecOHL = QtGui.QLabel(translate('magicStart', 'Offset from edge horizontal:'), self)
+			self.osdecOHL.move(10, rowsdec+3)
 
 			# text input
-			self.osdec4E = QtGui.QLineEdit(self)
-			self.osdec4E.setText(MagicPanels.unit2gui(50))
-			self.osdec4E.setFixedWidth(90)
-			self.osdec4E.move(150, rowsdec)
+			self.osdecOHE = QtGui.QLineEdit(self)
+			self.osdecOHE.setText(MagicPanels.unit2gui(50))
+			self.osdecOHE.setFixedWidth(rsize1x)
+			self.osdecOHE.move(startcY, rowsdec)
+			
+			rowsdec += 30
+
+			# label
+			self.osdecOVL = QtGui.QLabel(translate('magicStart', 'Offset from edge vertical:'), self)
+			self.osdecOVL.move(10, rowsdec+3)
+
+			# text input
+			self.osdecOVE = QtGui.QLineEdit(self)
+			self.osdecOVE.setText(MagicPanels.unit2gui(50))
+			self.osdecOVE.setFixedWidth(rsize1x)
+			self.osdecOVE.move(startcY, rowsdec)
 			
 			rowsdec += 40
 			
@@ -3715,8 +3745,10 @@ def showQtGUI():
 			self.osdec2E.hide()
 			self.osdec3L.hide()
 			self.osdec3E.hide()
-			self.osdec4L.hide()
-			self.osdec4E.hide()
+			self.osdecOHL.hide()
+			self.osdecOHE.hide()
+			self.osdecOVL.hide()
+			self.osdecOVE.hide()
 			self.osdec5B.hide()
 			self.osdec6L.hide()
 			self.osdec61E.hide()
@@ -3819,8 +3851,10 @@ def showQtGUI():
 			self.osdec2E.hide()
 			self.osdec3L.hide()
 			self.osdec3E.hide()
-			self.osdec4L.hide()
-			self.osdec4E.hide()
+			self.osdecOHL.hide()
+			self.osdecOHE.hide()
+			self.osdecOVL.hide()
+			self.osdecOVE.hide()
 			self.osdec5B.hide()
 			self.osdec6L.hide()
 			self.osdec61E.hide()
@@ -3977,8 +4011,10 @@ def showQtGUI():
 			self.ofdec2E.hide()
 			self.ofdec3L.hide()
 			self.ofdec3E.hide()
-			self.ofdec4L.hide()
-			self.ofdec4E.hide()
+			self.ofdecOHL.hide()
+			self.ofdecOHE.hide()
+			self.ofdecOVL.hide()
+			self.ofdecOVE.hide()
 			self.ofdec5B.hide()
 			self.ofdec6L.hide()
 			self.ofdec61E.hide()
@@ -4246,8 +4282,10 @@ def showQtGUI():
 				self.osdec2E.show()
 				self.osdec3L.show()
 				self.osdec3E.show()
-				self.osdec4L.show()
-				self.osdec4E.show()
+				self.osdecOHL.show()
+				self.osdecOHE.show()
+				self.osdecOVL.show()
+				self.osdecOVE.show()
 				self.osdec5B.show()
 				self.osdec6L.show()
 				self.osdec61E.show()
@@ -4404,8 +4442,10 @@ def showQtGUI():
 				self.ofdec2E.show()
 				self.ofdec3L.show()
 				self.ofdec3E.show()
-				self.ofdec4L.show()
-				self.ofdec4E.show()
+				self.ofdecOHL.show()
+				self.ofdecOHE.show()
+				self.ofdecOVL.show()
+				self.ofdecOVE.show()
 				self.ofdec5B.show()
 				self.ofdec6L.show()
 				self.ofdec61E.show()
@@ -4648,7 +4688,9 @@ def showQtGUI():
 				selectedIndex == 63 or 
 				selectedIndex == 68 or 
 				selectedIndex == 69 or 
-				selectedIndex == 70
+				selectedIndex == 70 or 
+				selectedIndex == 76 or 
+				selectedIndex == 77
 				):
 				self.setGUIInfo("merge")
 				self.helpInfo.setText("")
@@ -4983,7 +5025,7 @@ def showQtGUI():
 				self.mergeF("Bookcase_002.FCStd")
 
 			if self.gSelectedFurniture == "F3":
-				self.mergeF("Drawer_001.FCStd")
+				self.mergeF("msf003.FCStd", "magicStart")
 			
 			if self.gSelectedFurniture == "F4":
 				self.mergeF("Chair_001.FCStd")
@@ -5133,11 +5175,8 @@ def showQtGUI():
 				self.mergeF("Top_001.FCStd")
 			
 			if self.gSelectedFurniture == "F58":
-				self.mergeF("Drawer_002.FCStd")
-			
-			if self.gSelectedFurniture == "F58":
-				self.mergeF("Drawer_002.FCStd")
-			
+				self.mergeF("msf058.FCStd", "magicStart")
+
 			if self.gSelectedFurniture == "F59" or self.gSelectedFurniture == "F60":
 				self.createF59()
 			
@@ -5163,13 +5202,13 @@ def showQtGUI():
 				self.createF67()
 
 			if self.gSelectedFurniture == "F68":
-				self.mergeF("Cabinet_handle_01.FCStd", "other")
+				self.mergeF("msf068.FCStd", "magicStart")
 			
 			if self.gSelectedFurniture == "F69":
-				self.mergeF("Cabinet_handle_02.FCStd", "other")
+				self.mergeF("msf069.FCStd", "magicStart")
 
 			if self.gSelectedFurniture == "F70":
-				self.mergeF("Brackets_camar_807.FCStd", "other")
+				self.mergeF("msf070.FCStd", "magicStart")
 			
 			if self.gSelectedFurniture == "F71":
 				self.createF71()
@@ -5183,6 +5222,12 @@ def showQtGUI():
 			if self.gSelectedFurniture == "F74" or self.gSelectedFurniture == "F75":
 				self.createF74()
 			
+			if self.gSelectedFurniture == "F76":
+				self.mergeF("msf076.FCStd", "magicStart")
+			
+			if self.gSelectedFurniture == "F77":
+				self.mergeF("msf077.FCStd", "magicStart")
+
 			# here to allow recalculation with selection
 			FreeCADGui.Selection.clearSelection()
 
@@ -5206,7 +5251,13 @@ def showQtGUI():
 				self.si.show()
 
 		# ############################################################################
-		def getPathToMerge(self, iName, iType):
+		def getPathToMerge(self, iName, iType="magicStart"):
+			
+			if iType == "magicStart":
+				path = FreeCADGui.activeWorkbench().path
+				path = str(os.path.join(path, "Examples"))
+				path = str(os.path.join(path, "magicStart"))
+				path = str(os.path.join(path, iName))
 			
 			if iType == "F":
 				path = FreeCADGui.activeWorkbench().path
@@ -5242,7 +5293,7 @@ def showQtGUI():
 				path = str(os.path.join(path, "Fixture"))
 				path = str(os.path.join(path, "Other"))
 				path = str(os.path.join(path, iName))
-				
+
 			return path
 
 		# ############################################################################
@@ -6027,13 +6078,14 @@ def showQtGUI():
 			
 			barWidth = MagicPanels.unit2value(self.ofdec2E.text())
 			barThick = MagicPanels.unit2value(self.ofdec3E.text())
-			offset = MagicPanels.unit2value(self.ofdec4E.text())
+			offsetH = MagicPanels.unit2value(self.ofdecOHE.text())
+			offsetV = MagicPanels.unit2value(self.ofdecOVE.text())
 			
-			width = gw - (2 * offset)
-			height = gh - (2 * offset)
-			startX = gsx + offset
+			width = gw - (2 * offsetH)
+			height = gh - (2 * offsetV)
+			startX = gsx + offsetH
 			startY = gsy - barThick
-			startZ = gsz + offset
+			startZ = gsz + offsetV
 
 			# set values to text fields
 			self.ofdec61E.setText(MagicPanels.unit2gui(startX))
@@ -6502,7 +6554,8 @@ def showQtGUI():
 			
 			barWidth = MagicPanels.unit2value(self.osdec2E.text())
 			barThick = MagicPanels.unit2value(self.osdec3E.text())
-			offset = MagicPanels.unit2value(self.osdec4E.text())
+			offsetH = MagicPanels.unit2value(self.osdecOHE.text())
+			offsetV = MagicPanels.unit2value(self.osdecOVE.text())
 			
 			self.gSideEdgePlane = MagicPanels.getEdgePlane(obj1, edge1, "clean")
 			
@@ -6518,18 +6571,18 @@ def showQtGUI():
 					self.gSideDirection = "-"
 					gwidth = abs(gwidth)
 				
-				width = gwidth - (2 * offset)
-				height = gheight - (2 * offset)
+				width = gwidth - (2 * offsetH)
+				height = gheight - (2 * offsetV)
 			
 				if self.gSideDirection == "+":
 					startX = float(edge3.CenterOfMass.x)
-					startY = float(edge3.CenterOfMass.y) + offset
-					startZ = float(edge1.CenterOfMass.z) + offset
+					startY = float(edge3.CenterOfMass.y) + offsetH
+					startZ = float(edge1.CenterOfMass.z) + offsetV
 
 				if self.gSideDirection == "-":
 					startX = float(edge3.CenterOfMass.x) - barThick
-					startY = float(edge3.CenterOfMass.y) - offset - width
-					startZ = float(edge1.CenterOfMass.z) + offset
+					startY = float(edge3.CenterOfMass.y) - offsetH - width
+					startZ = float(edge1.CenterOfMass.z) + offsetV
 			
 			else:
 				return
@@ -9704,7 +9757,8 @@ def showQtGUI():
 			
 			barWidth = MagicPanels.unit2value(self.ofdec2E.text())
 			barThick = MagicPanels.unit2value(self.ofdec3E.text())
-			offset = MagicPanels.unit2value(self.ofdec4E.text())
+			offsetH = MagicPanels.unit2value(self.ofdecOHE.text())
+			offsetV = MagicPanels.unit2value(self.ofdecOVE.text())
 			
 			FSX = MagicPanels.unit2value(self.ofdec61E.text())
 			FSY = MagicPanels.unit2value(self.ofdec62E.text())
@@ -9765,7 +9819,8 @@ def showQtGUI():
 			
 			barWidth = MagicPanels.unit2value(self.osdec2E.text())
 			barThick = MagicPanels.unit2value(self.osdec3E.text())
-			offset = MagicPanels.unit2value(self.osdec4E.text())
+			offsetH = MagicPanels.unit2value(self.osdecOHE.text())
+			offsetV = MagicPanels.unit2value(self.osdecOVE.text())
 			
 			FSX = MagicPanels.unit2value(self.osdec61E.text())
 			FSY = MagicPanels.unit2value(self.osdec62E.text())

@@ -73,7 +73,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 300
-			toolSH = 620
+			toolSH = 650
 			
 			# active screen size (FreeCAD main window)
 			gSW = FreeCADGui.getMainWindow().width()
@@ -119,25 +119,29 @@ def showQtGUI():
 			# options - selection mode
 			# ############################################################################
 		
+			# button
+			self.oFixtureB = QtGui.QPushButton(translate('magicFixture', 'set'), self)
+			self.oFixtureB.clicked.connect(self.setFixture)
+			self.oFixtureB.setFixedWidth(50)
+			self.oFixtureB.move(10, row)
+		
 			# label
-			self.oi1L = QtGui.QLabel(translate('magicFixture', 'Fixture:'), self)
-			self.oi1L.move(10, row+3)
+			self.oFixtureL = QtGui.QLabel(info, self)
+			self.oFixtureL.move(80, row+3)
 			
+			row += 30
+			
+			# button
+			self.oAnchorB = QtGui.QPushButton(translate('magicFixture', 'set'), self)
+			self.oAnchorB.clicked.connect(self.setAnchor)
+			self.oAnchorB.setFixedWidth(50)
+			self.oAnchorB.move(10, row)
+		
 			# label
-			self.ob1S = QtGui.QLabel(info, self)
-			self.ob1S.move(60, row+3)
+			self.oAnchorL = QtGui.QLabel(info, self)
+			self.oAnchorL.move(80, row+3)
 			
-			row += 20
-			
-			# label
-			self.oi2L = QtGui.QLabel(translate('magicFixture', 'Anchor:'), self)
-			self.oi2L.move(10, row+3)
-
-			# label
-			self.ob2S = QtGui.QLabel(info, self)
-			self.ob2S.move(60, row+3)
-			
-			row += 20
+			row += 30
 			
 			# button
 			self.s1B1 = QtGui.QPushButton(translate('magicFixture', 'refresh selections'), self)
@@ -380,7 +384,7 @@ def showQtGUI():
 
 			# apply button
 			self.e3B1 = QtGui.QPushButton(translate('magicFixture', 'create'), self)
-			self.e3B1.clicked.connect(self.setFixture)
+			self.e3B1.clicked.connect(self.createFixture)
 			self.e3B1.setFixedWidth(area)
 			self.e3B1.setFixedHeight(40)
 			self.e3B1.move(10, row)
@@ -540,15 +544,16 @@ def showQtGUI():
 			# ############################################################################
 
 			self.setRotation()
-
+			FreeCADGui.Selection.clearSelection()
+			
 		# ############################################################################
 		# actions - functions for actions
 		# ############################################################################
 
 		# ############################################################################
 		def resetInfoScreen(self):
-			self.ob1S.setText(translate('magicFixture', 'select fixture container to apply'))
-			self.ob2S.setText(translate('magicFixture', 'select face, edge, hole or vertex'))
+			self.oFixtureL.setText(translate('magicFixture', 'fixture to apply'))
+			self.oAnchorL.setText(translate('magicFixture', 'face, edge, hole or vertex'))
 			
 		# ############################################################################
 		def resetGlobals(self):
@@ -569,60 +574,48 @@ def showQtGUI():
 			self.gRoIndex = 0
 
 		# ############################################################################
+		def createAnchor(self, iObj, iSub):
+
+			if iSub.ShapeType == "Edge":
+
+				if iSub.Curve.isDerivedFrom("Part::GeomLine"):
+					[ v1, v2 ] = MagicPanels.getEdgeVectors(iSub)
+					
+					self.gVectorArr.append(v1)
+					self.gVectorObj.append(iObj)
+					
+					self.gVectorArr.append(v2)
+					self.gVectorObj.append(iObj)
+					
+					self.gVectorArr.append(iSub.CenterOfMass)
+					self.gVectorObj.append(iObj)
+
+				elif iSub.Curve.isDerivedFrom("Part::GeomCircle"):
+					self.gVectorArr.append(iSub.Curve.Center)
+					self.gVectorObj.append(iObj)
+
+			if iSub.ShapeType == "Face":
+				
+				vectors = MagicPanels.getFaceVertices(iSub, "vector")
+				self.gVectorArr += vectors
+				for i in range(0, len(vectors)):
+					self.gVectorObj.append(iObj)
+					
+				self.gVectorArr.append(iSub.CenterOfMass)
+				self.gVectorObj.append(iObj)
+
+			if iSub.ShapeType == "Vertex":
+				self.gVectorArr.append(FreeCAD.Vector(iSub.X, iSub.Y, iSub.Z))
+				self.gVectorObj.append(iObj)
+
+		# ############################################################################
 		def getSelected(self):
 
 			try:
-				# ############################################################################
-				# init settings
-				# ############################################################################
 				
+				# init
 				self.resetGlobals()
-				
-				# fixture
-				self.gFixture = FreeCADGui.Selection.getSelection()[0]
-				self.ob1S.setText(str(self.gFixture.Label))
-				
-				# anchor
-				obj = FreeCADGui.Selection.getSelection()[1]
-				sub = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-			
-				if sub.ShapeType == "Edge":
-
-					if sub.Curve.isDerivedFrom("Part::GeomLine"):
-						[ v1, v2 ] = MagicPanels.getEdgeVectors(sub)
-						
-						self.gVectorArr.append(v1)
-						self.gVectorObj.append(obj)
-						
-						self.gVectorArr.append(v2)
-						self.gVectorObj.append(obj)
-						
-						self.gVectorArr.append(sub.CenterOfMass)
-						self.gVectorObj.append(obj)
-
-					elif sub.Curve.isDerivedFrom("Part::GeomCircle"):
-						self.gVectorArr.append(sub.Curve.Center)
-						self.gVectorObj.append(obj)
-
-				if sub.ShapeType == "Face":
-					
-					vectors = MagicPanels.getFaceVertices(sub, "vector")
-					self.gVectorArr += vectors
-					for i in range(0, len(vectors)):
-						self.gVectorObj.append(obj)
-					
-					self.gVectorArr.append(sub.CenterOfMass)
-					self.gVectorObj.append(obj)
-
-				if sub.ShapeType == "Vertex":
-					self.gVectorArr.append(FreeCAD.Vector(sub.X, sub.Y, sub.Z))
-					self.gVectorObj.append(obj)
-				
-				self.gVectorIndex = 0
-				self.gVectorCurrent = self.gVectorArr[self.gVectorIndex]
-				self.ob2S.setText(str(self.gVectorCurrent))
-				
-				FreeCADGui.Selection.clearSelection()
+				self.rb1.setChecked(True)
 				
 				# ############################################################################
 				# set possible rotation 
@@ -751,8 +744,29 @@ def showQtGUI():
 				self.gRoAxis = self.gRoAxisArr[0]
 				
 				# ############################################################################
+				# read objects
+				# ############################################################################
 				
-				self.rb1.setChecked(True)
+				# fixture
+				self.gFixture = FreeCADGui.Selection.getSelection()[0]
+				self.oFixtureL.setText(str(self.gFixture.Label))
+				
+				# anchor
+				obj = FreeCADGui.Selection.getSelection()[1]
+				sub = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+				
+				self.createAnchor(obj, sub)
+				
+				self.gVectorIndex = 0
+				self.gVectorCurrent = self.gVectorArr[self.gVectorIndex]
+				self.oAnchorL.setText(str(self.gVectorCurrent))
+				
+				FreeCADGui.Selection.clearSelection()
+				
+				# ############################################################################
+				# show fixture if everyhing was fine
+				# ############################################################################
+				
 				self.showFixture()
 
 			except:
@@ -761,43 +775,55 @@ def showQtGUI():
 				return -1
 		
 		# ############################################################################
+		def setFixture(self):
+			
+			try:
+				self.gFixture = FreeCADGui.Selection.getSelection()[0]
+				self.oFixtureL.setText(str(self.gFixture.Label))
+				
+				FreeCADGui.Selection.clearSelection()
+
+				if self.gFixture != "" and self.gVectorCurrent != "":
+					self.showFixture()
+			
+			except:
+			
+				self.oFixtureL.setText(translate('magicFixture', 'fixture to apply'))
+		
+		# ############################################################################
+		def setAnchor(self):
+			
+			try:
+				obj = FreeCADGui.Selection.getSelection()[0]
+				sub = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				
+				self.gVectorObj = []
+				self.gVectorArr = []
+				self.gVectorIndex = 0
+				self.gVectorCurrent = ""
+				
+				self.createAnchor(obj, sub)
+					
+				self.gVectorIndex = 0
+				self.gVectorCurrent = self.gVectorArr[self.gVectorIndex]
+				self.oAnchorL.setText(str(self.gVectorCurrent))
+				
+				FreeCADGui.Selection.clearSelection()
+				
+				if self.gFixture != "" and self.gVectorCurrent != "":
+					self.showFixture()
+				
+			except:
+				self.oAnchorL.setText(translate('magicFixture', 'face, edge, hole or vertex'))
+
+		# ############################################################################
 		def addReference(self):
 			
 			try:
 				obj = FreeCADGui.Selection.getSelection()[0]
 				sub = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 			
-				if sub.ShapeType == "Edge":
-
-					if sub.Curve.isDerivedFrom("Part::GeomLine"):
-						[ v1, v2 ] = MagicPanels.getEdgeVectors(sub)
-						
-						self.gVectorArr.append(v1)
-						self.gVectorObj.append(obj)
-						
-						self.gVectorArr.append(v2)
-						self.gVectorObj.append(obj)
-						
-						self.gVectorArr.append(sub.CenterOfMass)
-						self.gVectorObj.append(obj)
-
-					elif sub.Curve.isDerivedFrom("Part::GeomCircle"):
-						self.gVectorArr.append(sub.Curve.Center)
-						self.gVectorObj.append(obj)
-
-				if sub.ShapeType == "Face":
-					
-					vectors = MagicPanels.getFaceVertices(sub, "vector")
-					self.gVectorArr += vectors
-					for i in range(0, len(vectors)):
-						self.gVectorObj.append(obj)
-						
-					self.gVectorArr.append(sub.CenterOfMass)
-					self.gVectorObj.append(obj)
-
-				if sub.ShapeType == "Vertex":
-					self.gVectorArr.append(FreeCAD.Vector(sub.X, sub.Y, sub.Z))
-					self.gVectorObj.append(obj)
+				self.createAnchor(obj, sub)
 				
 				FreeCADGui.Selection.clearSelection()
 				self.showFixture()
@@ -815,7 +841,7 @@ def showQtGUI():
 					self.gVectorIndex = self.gVectorIndex - 1
 					
 				self.gVectorCurrent = self.gVectorArr[self.gVectorIndex]
-				self.ob2S.setText(str(self.gVectorCurrent))
+				self.oAnchorL.setText(str(self.gVectorCurrent))
 				
 				self.showFixture()
 			
@@ -831,7 +857,7 @@ def showQtGUI():
 					self.gVectorIndex = self.gVectorIndex + 1
 					
 				self.gVectorCurrent = self.gVectorArr[self.gVectorIndex]
-				self.ob2S.setText(str(self.gVectorCurrent))
+				self.oAnchorL.setText(str(self.gVectorCurrent))
 				
 				self.showFixture()
 			
@@ -1040,7 +1066,7 @@ def showQtGUI():
 				self.resetInfoScreen()
 				
 		# ############################################################################
-		def setFixture(self):
+		def createFixture(self):
 
 			self.gLink = ""
 		

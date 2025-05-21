@@ -157,6 +157,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 0.23 stable:**
     
+    * parametric drawers & decorated handles ((magicStart, Examples)
     * back outside and inside for the cabinets (magicStart)
     * workspace for custom design copy and move reference (magicStart)
     * new tool to create panels from wires (wires2pad)
@@ -422,7 +423,9 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 
 * Shelf Pin 5x16 mm ( import parametric )
 * Handle ( single hole )
+* Handle ( single hole, decorated )
 * Handle ( double hole )
+* Handle ( double hole, decorated )
 * Brackets for wall cabinets ( [Camar 807](https://www.camar.it/prodotti_scheda.php?cat_id=31&prod_id=807%2002%20Z1%20IN%20__&id=259) ) 
 * Angle 30x30x25 mm ( import parametric )
 * Angle 80x80x20 mm ( import parametric )
@@ -1128,6 +1131,7 @@ For manual adjust you can use:
 
 **Options:**
 
+* **set** button allows you to set the fixture or anchor individually. This option is useful when you need to hide an object to access a specific face, edge, or vertex.
 * **refresh selections:** allows you to load the fixture that should be applied and face, edge, hole or vertex as anchor reference point.
 
 * **Anchor:** allows you to select a saved anchor as a reference point (vector).
