@@ -20,7 +20,7 @@ try:
 		try:
 
 			trans = MagicPanels.getColor(o, 0, "trans", "RGBA")
-			
+
 			if trans == 0:
 				gChange[str(o.Name)] = "set"
 

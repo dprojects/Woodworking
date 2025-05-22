@@ -4949,7 +4949,7 @@ def getColor(iObj, iFaceIndex, iAttribute="color", iType="kernel"):
 					if hasattr(iObj.ViewObject.ShapeMaterial, attribute):
 						returnColor = getattr(iObj.ViewObject.ShapeMaterial, attribute)
 		
-		# for transparent will be from 1.0 schema, to get float better precision
+		# transparent will be from 1.0 schema in float
 		if returnColor == "":
 			if attribute == "Transparency":
 				returnColor = float( int(iObj.ViewObject.Transparency) / 100 )
@@ -4990,7 +4990,7 @@ def getColor(iObj, iFaceIndex, iAttribute="color", iType="kernel"):
 		if iType == "RGBA":
 			
 			if attribute == "Shininess" or attribute == "Transparency":
-				return int(returnColor * 100)
+				return int( round(returnColor * 100, 0) )
 			else:
 				return convertColor(returnColor, "RGBA")
 		
@@ -5069,7 +5069,8 @@ def setColor(iObj, iFaceIndex, iColor, iAttribute="color", iType="kernel"):
 			iAttribute == "Transparency" or 
 			iAttribute == "trans"
 		):
-			colorToSet = float(iColor/100)
+			colorToSet = float( int(iColor) / 100 )
+
 		else:
 			colorToSet = convertColor(iColor, "kernel")
 
@@ -5185,7 +5186,7 @@ def setColor(iObj, iFaceIndex, iColor, iAttribute="color", iType="kernel"):
 		
 		# transparent will be from 1.0 schema, to get float better precision
 		if attribute == "Transparency":
-			iObj.ViewObject.Transparency = int(colorToSet * 100)
+			iObj.ViewObject.Transparency = int( round(colorToSet * 100, 0) )
 			return ""
 		
 		# for all faces from array
