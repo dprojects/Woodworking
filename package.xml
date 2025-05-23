@@ -3,7 +3,7 @@
   <name>Woodworking</name>
   <description>FreeCAD workbench for woodworking purposes.</description>
   <version>0.21.2.33771.1.0.1</version>
-  <date>2025-05-22</date>
+  <date>2025-05-23</date>
   <author>Darek L (https://github.com/dprojects)</author>
   <maintainer email="you@null.com">FreeCAD updates appear every week. Unfortunately, I do not have the ability to consistently follow the changes and wonder if something has been broken.</maintainer>
   <license file="LICENSE">MIT, keep author tag without change.</license>

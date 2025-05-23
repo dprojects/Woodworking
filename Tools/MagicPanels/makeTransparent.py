@@ -7,6 +7,7 @@ import MagicPanels
 translate = FreeCAD.Qt.translate
 
 gChange = dict()
+gFaces = dict()
 
 try:
 
@@ -18,9 +19,36 @@ try:
 	for o in objects:
 		
 		try:
-
+			
+			# since new color schema if you change Body transparency
+			# the Pad inherits color from Body... 
+			if (
+				o.isDerivedFrom("App::LinkGroup") or 
+				o.isDerivedFrom("App::Link") or 
+				o.isDerivedFrom("App::Part") or 
+				o.isDerivedFrom("PartDesign::Body") or 
+				o.isDerivedFrom("Sketcher::SketchObject")
+			):
+				continue
+			
+			gFaces[str(o.Name)] = []
+			
 			trans = MagicPanels.getColor(o, 0, "trans", "RGBA")
-
+			if trans == "":
+				
+				gChange[str(o.Name)] = "faces"
+				
+				for i in range(0, len(o.Shape.Faces)):
+					
+					face = MagicPanels.getColor(o, i+1, "trans", "RGBA")
+					
+					if face == 0:
+						gFaces[str(o.Name)].append(83)
+					elif face == 83:
+						gFaces[str(o.Name)].append(0)
+					else:
+						gFaces[str(o.Name)].append(face)
+						
 			if trans == 0:
 				gChange[str(o.Name)] = "set"
 
@@ -39,7 +67,11 @@ try:
 
 			if gChange[str(o.Name)] == "unset":
 				MagicPanels.setColor(o, 0, 0, "trans", "RGBA")
-
+			
+			if gChange[str(o.Name)] == "faces":
+				for i in range(0, len(o.Shape.Faces)):
+					face = gFaces[str(o.Name)][i]
+					MagicPanels.setColor(o, i+1, face, "trans", "RGBA")
 		except:
 			skip = 1
 
