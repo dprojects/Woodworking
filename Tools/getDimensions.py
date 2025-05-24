@@ -1828,6 +1828,34 @@ def setExtrusion(iObj, iCaller="setExtrusion"):
 
 
 # ###################################################################################################################
+def setCustomObject(iObj, iCaller="setCustomObject"):
+
+	try:
+
+		if sLTF == "a":
+		
+			setDBApproximation(iObj, iCaller)
+		
+		else:
+		
+			# get correct dimensions as values
+			vW = iObj.Width.Value
+			vH = iObj.Height.Value
+			vL = iObj.Length.Value
+
+			# set db for quantity & area & edge size
+			setDB(iObj, vW, vH, vL, iCaller)
+
+	except:
+
+		# if no access to the values
+		showError(iCaller, iObj, "setCustomObject", "no access to the values")
+		return -1
+
+	return 0
+
+
+# ###################################################################################################################
 def setConstraints(iObj, iCaller="setConstraints"):
 
 	try:
@@ -2343,12 +2371,23 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 			setCube(iObj, iCaller)
     
 		# support for PartDesign::Pad
-		if iObj.isDerivedFrom("PartDesign::Pad"):
+		elif iObj.isDerivedFrom("PartDesign::Pad"):
 			setPad(iObj, iCaller)
 
 		# support for Part::Extrusion
-		if iObj.isDerivedFrom("Part::Extrusion"):
+		elif iObj.isDerivedFrom("Part::Extrusion"):
 			setExtrusion(iObj, iCaller)
+
+		else:
+			# support for custom objects
+			try:
+				test = iObj.Width.Value
+				test = iObj.Height.Value
+				test = iObj.Length.Value
+				setCustomObject(iObj, iCaller)
+				
+			except:
+				skip = 1
 
 	# constraints reports
 	else:

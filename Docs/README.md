@@ -157,6 +157,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 0.23 stable:**
 
+    * support for custom objects with Width, Height and Length attribute (getDimensions)
     * support for Part :: Extrusion objects (getDimensions)
     * parametric drawers & decorated handles ((magicStart, Examples)
     * back outside and inside for the cabinets (magicStart)
@@ -1840,6 +1841,7 @@ Working with raw wood is an art of some sort. This is the true form of working w
 
 **Video tutorials:** 
 * [How to add external geometry quickly](https://www.youtube.com/watch?v=TMcw2JkUeVM)
+* [Irregular Shapes: create and measure Part :: Extrusion](https://www.youtube.com/watch?v=l8W5IDqvGgw)
 
 ## wires2pad
 
