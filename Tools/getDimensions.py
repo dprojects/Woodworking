@@ -1586,6 +1586,9 @@ def setDBConstraints(iObj, iL, iN, iV, iHoleObj, iCaller="setDBConstraints"):
 		if iObj.isDerivedFrom("PartDesign::Pad"):
 			dbCNH[vKey] = gLang9
 
+		if iObj.isDerivedFrom("Part::Extrusion"):
+			dbCNH[vKey] = gLang9
+
 		if iObj.isDerivedFrom("PartDesign::Hole"):
 			dbCNH[vKey] = gLang15
 
@@ -1784,6 +1787,47 @@ def setPad(iObj, iCaller="setPad"):
 
 
 # ###################################################################################################################
+def setExtrusion(iObj, iCaller="setExtrusion"):
+
+	try:
+
+		if sLTF == "a":
+		
+			setDBApproximation(iObj, iCaller)
+		
+		else:
+		
+			# try get values from named constraints
+			try:
+				constraints = iObj.Base.Constraints
+				for c in constraints:
+					if c.Name == "SizeX":
+						vW = c.Value
+					if c.Name == "SizeY":
+						vL = c.Value
+				
+				vH = iObj.LengthFwd.Value
+			
+			# get first dimensions (this may not work for non-rectangle shapes)
+			except:
+				skip = 1
+
+			if vW == "" or vL == "" or vH == "":
+				[ vKey, vW, vH, vL ] = getApproximation(iObj, iCaller)
+		
+			# set db for quantity & area & edge size
+			setDB(iObj, vW, vH, vL, iCaller)
+
+	except:
+
+		# if no access to the values
+		showError(iCaller, iObj, "setExtrusion", "no access to the values")
+		return -1
+
+	return 0
+
+
+# ###################################################################################################################
 def setConstraints(iObj, iCaller="setConstraints"):
 
 	try:
@@ -1795,7 +1839,10 @@ def setConstraints(iObj, iCaller="setConstraints"):
 		vHoleObj = ""	
 
 		# set reference point
-		vCons = iObj.Profile[0].Constraints
+		if iObj.isDerivedFrom("Part::Extrusion"):
+			vCons = iObj.Base.Constraints
+		else:
+			vCons = iObj.Profile[0].Constraints
 
 		for c in vCons:
 			if c.Name != "":
@@ -1819,9 +1866,15 @@ def setConstraints(iObj, iCaller="setConstraints"):
 	
 		if isSet == 1:
 	
+			vLength = ""
+	
 			# support for Pad furniture part
 			if iObj.isDerivedFrom("PartDesign::Pad"):
 				vLength = "d;" + str(iObj.Length.Value)
+
+			# support for Part::Extrusion
+			if iObj.isDerivedFrom("Part::Extrusion"):
+				vLength = "d;" + str(iObj.LengthFwd.Value)
 
 			# support for pilot hole and countersink
 			if iObj.isDerivedFrom("PartDesign::Hole"):
@@ -1870,9 +1923,11 @@ def setAllConstraints(iObj, iCaller="setAllConstraints"):
 		vArrNames = []
 		vArrValues = []
 
-		# set reference point
-		vCons = iObj.Profile[0].Constraints
-
+		if iObj.isDerivedFrom("Part::Extrusion"):
+			vCons = iObj.Base.Constraints
+		else:
+			vCons = iObj.Profile[0].Constraints
+		
 		for c in vCons:
 			
 			name = str(c.Name)
@@ -1901,7 +1956,10 @@ def setAllConstraints(iObj, iCaller="setAllConstraints"):
 				vArrNames.append(n)
 			
 		# convert float to the correct dimension
-		vLength = "d;" + str(iObj.Length.Value)
+		if iObj.isDerivedFrom("Part::Extrusion"):
+			vLength = "d;" + str(iObj.LengthFwd.Value)
+		else:
+			vLength = "d;" + str(iObj.Length.Value)
 
 		# set db for Constraints
 		if len(vArrNames) > 0 and len(vArrValues) > 0:
@@ -2280,13 +2338,17 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 	# normal reports
 	if sLTF != "c" and sLTF != "p":
 
-		# support for Cube furniture part
+		# support for Part::Box
 		if iObj.isDerivedFrom("Part::Box"):
 			setCube(iObj, iCaller)
     
-		# support for Pad furniture part
+		# support for PartDesign::Pad
 		if iObj.isDerivedFrom("PartDesign::Pad"):
 			setPad(iObj, iCaller)
+
+		# support for Part::Extrusion
+		if iObj.isDerivedFrom("Part::Extrusion"):
+			setExtrusion(iObj, iCaller)
 
 	# constraints reports
 	else:
@@ -2295,7 +2357,8 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 		if sLTF == "c":
 			if (
 				iObj.isDerivedFrom("PartDesign::Pad") or
-				iObj.isDerivedFrom("PartDesign::Pocket")
+				iObj.isDerivedFrom("PartDesign::Pocket") or 
+				iObj.isDerivedFrom("Part::Extrusion")
 				):
 				setConstraints(iObj, iCaller)
 
@@ -2303,7 +2366,8 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 		if sLTF == "p":
 			if (
 				iObj.isDerivedFrom("PartDesign::Pad") or
-				iObj.isDerivedFrom("PartDesign::Pocket")
+				iObj.isDerivedFrom("PartDesign::Pocket") or 
+				iObj.isDerivedFrom("Part::Extrusion") 
 				):
 				setAllConstraints(iObj, iCaller)
 

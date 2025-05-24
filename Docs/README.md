@@ -156,7 +156,8 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 		git clone https://github.com/dprojects/Woodworking.git
 
 	**New significant changes since the last release 0.23 stable:**
-    
+
+    * support for Part :: Extrusion objects (getDimensions)
     * parametric drawers & decorated handles ((magicStart, Examples)
     * back outside and inside for the cabinets (magicStart)
     * workspace for custom design copy and move reference (magicStart)
