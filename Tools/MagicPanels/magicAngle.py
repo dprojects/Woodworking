@@ -55,23 +55,14 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 290
-			toolSH = 350
+			toolSW = 280
+			toolSH = 400
 			
-			# active screen size (FreeCAD main window)
-			gSW = FreeCADGui.getMainWindow().width()
-			gSH = FreeCADGui.getMainWindow().height()
-
-			# tool screen position
-			gPW = int( gSW - toolSW )
-			gPH = int( gSH - toolSH )
-
 			# ############################################################################
 			# main window
 			# ############################################################################
 			
 			self.result = userCancelled
-			self.setGeometry(gPW, gPH, toolSW, toolSH)
 			self.setWindowTitle(translate('magicAngle', 'magicAngle'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
@@ -80,6 +71,7 @@ def showQtGUI():
 			# ############################################################################
 			
 			bsize = 50
+			area = toolSW - 20
 			roffset = 10 + bsize
 			row = 10
 			col1 = 10
@@ -88,198 +80,219 @@ def showQtGUI():
 			col2 = col3 - roffset
 			
 			# screen
-			info = ""
-			info += "                                             "
-			info += "                                             "
-			info += "                                             "
-			self.mIS = QtGui.QLabel(info, self)
-			self.mIS.move(col1, row)
-
-			row += 20
-
+			self.mIS = QtGui.QLabel("", self)
+			self.mIS.setFixedWidth(area)
+			
 			# button
 			self.rsB1 = QtGui.QPushButton(translate('magicAngle', 'refresh selection'), self)
 			self.rsB1.clicked.connect(self.getSelected)
-			self.rsB1.setFixedWidth(toolSW-20)
 			self.rsB1.setFixedHeight(40)
-			self.rsB1.move(col1, row)
 
 			# ############################################################################
 			# options - rotation center point size
 			# ############################################################################
 			
-			row += 50
-
 			# label
 			self.ssL = QtGui.QLabel(translate('magicAngle', 'Sphere radius:'), self)
-			self.ssL.move(col1, row)
 
 			# button
 			self.ssB1 = QtGui.QPushButton("- 1", self)
 			self.ssB1.clicked.connect(self.setSphereSizeP)
 			self.ssB1.setFixedWidth(bsize)
-			self.ssB1.move(col2, row)
 			self.ssB1.setAutoRepeat(True)
 			
 			# text input
 			self.ssE = QtGui.QLineEdit(self)
 			self.ssE.setText("")
 			self.ssE.setFixedWidth(bsize)
-			self.ssE.move(col3, row)
 			
 			# button
 			self.ssB2 = QtGui.QPushButton("+ 1", self)
 			self.ssB2.clicked.connect(self.setSphereSizeN)
 			self.ssB2.setFixedWidth(bsize)
-			self.ssB2.move(col4, row)
 			self.ssB2.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - rotation center point selection
 			# ############################################################################
 			
-			row += 30
-
 			# label
 			self.rpL = QtGui.QLabel(translate('magicAngle', 'Rotation point:'), self)
-			self.rpL.move(col1, row)
 
 			# button
 			self.rpB1 = QtGui.QPushButton("<", self)
 			self.rpB1.clicked.connect(self.setCenterP)
 			self.rpB1.setFixedWidth(bsize)
-			self.rpB1.move(col2, row)
 			self.rpB1.setAutoRepeat(True)
 			
 			# label
-			self.rpIS = QtGui.QLabel(info, self)
-			self.rpIS.move(col3, row+3)
+			self.rpIS = QtGui.QLabel("", self)
 
 			# button
 			self.rpB2 = QtGui.QPushButton(">", self)
 			self.rpB2.clicked.connect(self.setCenterN)
 			self.rpB2.setFixedWidth(bsize)
-			self.rpB2.move(col4, row)
 			self.rpB2.setAutoRepeat(True)
-
-			row += 30
 
 			# button
 			self.rpB3 = QtGui.QPushButton(translate('magicAngle', 'add selected vertex, edge or face'), self)
 			self.rpB3.clicked.connect(self.addVertex)
-			self.rpB3.setFixedWidth(toolSW-20)
 			self.rpB3.setFixedHeight(40)
-			self.rpB3.move(10, row)
 
 			# ############################################################################
 			# options - X axis
 			# ############################################################################
 
-			row += 50
-
 			# label
 			self.xaL = QtGui.QLabel(translate('magicAngle', 'X axis (yaw):'), self)
-			self.xaL.move(col1, row)
 
 			# button
 			self.xaB1 = QtGui.QPushButton("X-", self)
 			self.xaB1.clicked.connect(self.setX1)
 			self.xaB1.setFixedWidth(bsize)
-			self.xaB1.move(col2, row)
 			self.xaB1.setAutoRepeat(True)
 			
 			# label
-			self.xaIS = QtGui.QLabel(info, self)
-			self.xaIS.move(col3, row+3)
+			self.xaIS = QtGui.QLabel("", self)
 
 			# button
 			self.xaB2 = QtGui.QPushButton("X+", self)
 			self.xaB2.clicked.connect(self.setX2)
 			self.xaB2.setFixedWidth(bsize)
-			self.xaB2.move(col4, row)
 			self.xaB2.setAutoRepeat(True)
 			
 			# ############################################################################
 			# options - Y axis
 			# ############################################################################
 			
-			row += 30
-			
 			# label
 			self.yaL = QtGui.QLabel(translate('magicAngle', 'Y axis (pitch):'), self)
-			self.yaL.move(col1, row)
 
 			# button
 			self.yaB1 = QtGui.QPushButton("Y-", self)
 			self.yaB1.clicked.connect(self.setY1)
 			self.yaB1.setFixedWidth(bsize)
-			self.yaB1.move(col2, row)
 			self.yaB1.setAutoRepeat(True)
 			
 			# label
-			self.yaIS = QtGui.QLabel(info, self)
-			self.yaIS.move(col3, row+3)
+			self.yaIS = QtGui.QLabel("", self)
 
 			# button
 			self.yaB2 = QtGui.QPushButton("Y+", self)
 			self.yaB2.clicked.connect(self.setY2)
 			self.yaB2.setFixedWidth(bsize)
-			self.yaB2.move(col4, row)
 			self.yaB2.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - Z axis
 			# ############################################################################
 			
-			row += 30
-			
 			# label
 			self.zaL = QtGui.QLabel(translate('magicAngle', 'Z axis (roll):'), self)
-			self.zaL.move(col1, row)
 
 			# button
 			self.zaB1 = QtGui.QPushButton("Z-", self)
 			self.zaB1.clicked.connect(self.setZ1)
 			self.zaB1.setFixedWidth(bsize)
-			self.zaB1.move(col2, row)
 			self.zaB1.setAutoRepeat(True)
 			
 			# label
-			self.zaIS = QtGui.QLabel(info, self)
-			self.zaIS.move(col3, row+3)
+			self.zaIS = QtGui.QLabel("", self)
 
 			# button
 			self.zaB2 = QtGui.QPushButton("Z+", self)
 			self.zaB2.clicked.connect(self.setZ2)
 			self.zaB2.setFixedWidth(bsize)
-			self.zaB2.move(col4, row)
 			self.zaB2.setAutoRepeat(True)
 			
 			# ############################################################################
 			# options - additional
 			# ############################################################################
 
-			row += 30
-
 			# label
 			self.asL = QtGui.QLabel(translate('magicAngle', 'Angle step:'), self)
-			self.asL.move(col1, row)
 
 			# text input
 			self.asE = QtGui.QLineEdit(self)
 			self.asE.setText(str(self.gStep))
 			self.asE.setFixedWidth(bsize)
-			self.asE.move(col3, row)
 			
 			# ############################################################################
 			# animation checkbox
 			# ############################################################################
 
-			row += 30
-				
 			self.animcb = QtGui.QCheckBox(translate('magicAngle', ' - animate rotation'), self)
 			self.animcb.setCheckState(QtCore.Qt.Unchecked)
-			self.animcb.move(10, row+3)
+			
+			# ############################################################################
+			# build GUI layout
+			# ############################################################################
+		
+			# create structure
+			self.row1 = QtGui.QHBoxLayout()
+			self.row1.setAlignment(QtGui.Qt.AlignLeft)
+			self.row1.addWidget(self.mIS)
+			
+			self.row2 = QtGui.QHBoxLayout()
+			self.row2.addWidget(self.rsB1)
+			
+			self.row3 = QtGui.QGridLayout()
+			self.row3.addWidget(self.ssL, 0, 0)
+			self.row3.addWidget(self.ssB1, 0, 1)
+			self.row3.addWidget(self.ssE, 0, 2)
+			self.row3.addWidget(self.ssB2, 0, 3)
+			
+			self.row3.addWidget(self.rpL, 1, 0)
+			self.row3.addWidget(self.rpB1, 1, 1)
+			self.row3.addWidget(self.rpIS, 1, 2)
+			self.row3.addWidget(self.rpB2, 1, 3)
+			
+			self.groupBody1 = QtGui.QGroupBox(None, self)
+			self.groupBody1.setLayout(self.row3)
+			
+			self.row4 = QtGui.QHBoxLayout()
+			self.row4.addWidget(self.rpB3)
+			
+			self.row5 = QtGui.QGridLayout()
+			self.row5.addWidget(self.xaL, 0, 0)
+			self.row5.addWidget(self.xaB1, 0, 1)
+			self.row5.addWidget(self.xaIS, 0, 2)
+			self.row5.addWidget(self.xaB2, 0, 3)
+			
+			self.row5.addWidget(self.yaL, 1, 0)
+			self.row5.addWidget(self.yaB1, 1, 1)
+			self.row5.addWidget(self.yaIS, 1, 2)
+			self.row5.addWidget(self.yaB2, 1, 3)
+			
+			self.row5.addWidget(self.zaL, 2, 0)
+			self.row5.addWidget(self.zaB1, 2, 1)
+			self.row5.addWidget(self.zaIS, 2, 2)
+			self.row5.addWidget(self.zaB2, 2, 3)
+			
+			self.row5.addWidget(self.asL, 3, 0)
+			self.row5.addWidget(self.asE, 3, 2)
+			
+			self.groupBody2 = QtGui.QGroupBox(None, self)
+			self.groupBody2.setLayout(self.row5)
+			
+			self.row6 = QtGui.QHBoxLayout()
+			self.row6.addWidget(self.animcb)
+			
+			# set layout to main window
+			self.layout = QtGui.QVBoxLayout()
+			
+			self.layout.addLayout(self.row1)
+			self.layout.addLayout(self.row2)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBody1)
+			self.layout.addStretch()
+			self.layout.addLayout(self.row4)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBody2)
+			self.layout.addStretch()
+			self.layout.addLayout(self.row6)
+			
+			self.setLayout(self.layout)
 			
 			# ############################################################################
 			# show & init defaults
@@ -287,6 +300,13 @@ def showQtGUI():
 
 			# show window
 			self.show()
+			
+			# set window position
+			sw = self.width()
+			sh = self.height()
+			pw = int( FreeCADGui.getMainWindow().width() - sw ) - 5
+			ph = int( FreeCADGui.getMainWindow().height() - sh ) + 30
+			self.setGeometry(pw, ph, sw, sh)
 
 			# init
 			self.getSelected()

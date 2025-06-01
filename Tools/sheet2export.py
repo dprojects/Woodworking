@@ -144,122 +144,84 @@ def showQtMain():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 500
-			toolSH = 350
+			toolSW = 400
+			toolSH = 400
 			
-			# active screen size - FreeCAD main window
-			gSW = FreeCADGui.getMainWindow().width()
-			gSH = FreeCADGui.getMainWindow().height()
-
-			# tool screen position
-			gPW = int( ( gSW - toolSW ) / 2 )
-			gPH = int( ( gSH - toolSH ) / 2 )
-
 			# ############################################################################
 			# main window
 			# ############################################################################
 			
 			self.result = userCancelled
-			self.setGeometry(gPW, gPH, toolSW, toolSH)
 			self.setWindowTitle(translate('sheet2export', 'sheet2export - default settings'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			self.setMinimumWidth(toolSW)
+			self.setMinimumHeight(toolSH)
 
 			# ############################################################################
 			# export type
 			# ############################################################################
 
-			# label
 			self.eTypeL = QtGui.QLabel(translate('sheet2export', 'Export type:'), self)
-			self.eTypeL.move(10, 13)
 			
-			# options
 			self.eTypeList = ("a", "s")
 			self.eTypeO = QtGui.QComboBox(self)
 			self.eTypeO.addItems(self.eTypeList)
 			self.eTypeO.setCurrentIndex(self.eTypeList.index("a"))
 			self.eTypeO.textActivated[str].connect(self.setEType)
-			self.eTypeO.move(100, 10)
 			
-			# info screen
-			self.eTypeIS = QtGui.QLabel(translate('sheet2export', 'all spreadsheets')+'                  ', self)
-			self.eTypeIS.move(145, 13)
-
+			self.eTypeIS = QtGui.QLabel(translate('sheet2export', 'all spreadsheets'), self)
+			
 			# ############################################################################
 			# file path
 			# ############################################################################
 
-			# label
 			self.fPathL = QtGui.QLabel(translate('sheet2export', 'File path:'), self)
-			self.fPathL.move(10, 43)
-
-			# text input
+			
 			self.fPathTi = QtGui.QLineEdit(self)
 			self.fPathTi.setText(str(sFilePath))
 			self.fPathTi.setFixedWidth(300)
-			self.fPathTi.move(100, 40)
-
-			# button
+			
 			self.fPathB = QtGui.QPushButton("...", self)
 			self.fPathB.clicked.connect(self.loadCustomDir)
-			self.fPathB.move(410, 40)
-
+			
 			# ############################################################################
 			# file type
 			# ############################################################################
 			
-			# label
 			self.fileTypeL = QtGui.QLabel(translate('sheet2export', 'File type:'), self)
-			self.fileTypeL.move(10, 73)
 			
-			# options
 			self.fileTypeOlist = ("csv","html","json","md")
 			self.fileTypeO = QtGui.QComboBox(self)
 			self.fileTypeO.addItems(self.fileTypeOlist)
 			self.fileTypeO.setCurrentIndex(self.fileTypeOlist.index("html"))
 			self.fileTypeO.textActivated[str].connect(self.setFileType)
-			self.fileTypeO.move(100, 70)
-
-			# info screen
-			self.fileTypeOIS = QtGui.QLabel(translate('sheet2export', 'HyperText Markup Language (.html file)')+'          ', self)
-			self.fileTypeOIS.move(165, 73)
-
+			
+			self.fileTypeOIS = QtGui.QLabel(translate('sheet2export', 'HyperText Markup Language (.html file)'), self)
+			
 			# ############################################################################
 			# empty cell
 			# ############################################################################
 
-			# label
 			self.emptyCellL = QtGui.QLabel(translate('sheet2export', 'Empty cell content:'), self)
-			self.emptyCellL.move(10, 143)
-
-			# text input
+			
 			self.emptyCellTi = QtGui.QLineEdit(self)
 			self.emptyCellTi.setText(str(sEmptyCell))
-			self.emptyCellTi.setFixedWidth(100)
-			self.emptyCellTi.move(200, 140)
-
+			
 			# ############################################################################
 			# CSV separator
 			# ############################################################################
 			
-			# label
 			self.csvSL = QtGui.QLabel(translate('sheet2export', 'Set CSV separator:'), self)
-			self.csvSL.move(10, 183)
-			self.csvSL.hide()
-
-			# text input
+			
 			self.csvSTi = QtGui.QLineEdit(self)
 			self.csvSTi.setText(str(sSepCSV))
-			self.csvSTi.setFixedWidth(100)
-			self.csvSTi.move(140, 180)
-			self.csvSTi.hide()
-
+			
 			# ############################################################################
 			# custom CSS rules
 			# ############################################################################
 
 			# border label
 			self.customCSSbl = QtGui.QLabel(translate('sheet2export', 'Step 1. Border decoration:'), self)
-			self.customCSSbl.move(10, 193)
 
 			# border options
 			self.customCSSbol = ("no border","horizontal dotted","vertical solid",
@@ -268,32 +230,91 @@ def showQtMain():
 			self.customCSSbo.addItems(self.customCSSbol)
 			self.customCSSbo.setCurrentIndex(self.customCSSbol.index("horizontal dotted"))
 			self.customCSSbo.textActivated[str].connect(self.setCustomCSSbo)
-			self.customCSSbo.move(180, 190)
 
 			# text input label
 			self.customCSStil = QtGui.QLabel(translate('sheet2export', 'Step 2. Custom CSS rules for each cell (edit or add):'), self)
-			self.customCSStil.move(10, 230)
 
 			# text input
 			self.customCSSti = QtGui.QLineEdit(self)
 			self.customCSSti.setText(str(sCustomCSS))
 			self.customCSSti.setFixedWidth(460)
-			self.customCSSti.move(10, 250)
 
 			# ############################################################################
 			# buttons
 			# ############################################################################
 
 			# button - cancel
-			cancelButton = QtGui.QPushButton(translate('sheet2export', 'Cancel'), self)
-			cancelButton.clicked.connect(self.onCancel)
-			cancelButton.setAutoDefault(True)
-			cancelButton.move(120, 300)
+			self.cancelButton = QtGui.QPushButton(translate('sheet2export', 'Cancel'), self)
+			self.cancelButton.clicked.connect(self.onCancel)
+			self.cancelButton.setAutoDefault(True)
+			self.cancelButton.setFixedHeight(40)
 			
 			# button - ok
-			okButton = QtGui.QPushButton(translate('sheet2export', 'OK'), self)
-			okButton.clicked.connect(self.onOk)
-			okButton.move(300, 300)
+			self.okButton = QtGui.QPushButton(translate('sheet2export', 'OK'), self)
+			self.okButton.clicked.connect(self.onOk)
+			self.okButton.setFixedHeight(40)
+
+			# ############################################################################
+			# build GUI layout
+			# ############################################################################
+			
+			# create structure
+			self.body1 = QtGui.QHBoxLayout()
+			self.body1.addWidget(self.eTypeL)
+			self.body1.addWidget(self.eTypeO)
+			self.body1.addWidget(self.eTypeIS)
+			self.body2 = QtGui.QHBoxLayout()
+			self.body2.addWidget(self.fPathL)
+			self.body2.addWidget(self.fPathTi)
+			self.body2.addWidget(self.fPathB)
+			self.body3 = QtGui.QHBoxLayout()
+			self.body3.addWidget(self.fileTypeL)
+			self.body3.addWidget(self.fileTypeO)
+			self.body3.addWidget(self.fileTypeOIS)
+			self.lay1 = QtGui.QVBoxLayout()
+			self.lay1.addLayout(self.body1)
+			self.lay1.addLayout(self.body2)
+			self.lay1.addLayout(self.body3)
+			self.groupBody1 = QtGui.QGroupBox(None, self)
+			self.groupBody1.setLayout(self.lay1)
+			
+			self.body4 = QtGui.QHBoxLayout()
+			self.body4.addWidget(self.emptyCellL)
+			self.body4.addWidget(self.emptyCellTi)
+			self.body5 = QtGui.QHBoxLayout()
+			self.body5.addWidget(self.csvSL)
+			self.body5.addWidget(self.csvSTi)
+			self.body6 = QtGui.QHBoxLayout()
+			self.body6.addWidget(self.customCSSbl)
+			self.body6.addWidget(self.customCSSbo)
+			self.body7 = QtGui.QVBoxLayout()
+			self.body7.addWidget(self.customCSStil)
+			self.body7.addWidget(self.customCSSti)
+			self.lay2 = QtGui.QVBoxLayout()
+			self.lay2.addLayout(self.body4)
+			self.lay2.addLayout(self.body5)
+			self.lay2.addSpacing(20)
+			self.lay2.addLayout(self.body6)
+			self.lay2.addLayout(self.body7)
+			self.groupBody2 = QtGui.QGroupBox(None, self)
+			self.groupBody2.setLayout(self.lay2)
+			
+			self.body8 = QtGui.QHBoxLayout()
+			self.body8.addWidget(self.cancelButton)
+			self.body8.addWidget(self.okButton)
+			
+			# set layout to main window
+			self.layout = QtGui.QVBoxLayout()
+			self.layout.addWidget(self.groupBody1)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBody2)
+			self.layout.addStretch()
+			self.layout.addLayout(self.body8)
+			self.setLayout(self.layout)
+
+			# hide
+			self.csvSL.hide()
+			self.csvSTi.hide()
 
 			# ############################################################################
 			# show
@@ -301,6 +322,12 @@ def showQtMain():
 
 			self.show()
 
+			# set window position
+			sw = self.width()
+			sh = self.height()
+			pw = int( (FreeCADGui.getMainWindow().width() / 2) - ( sw / 2 ) )
+			ph = int( (FreeCADGui.getMainWindow().height() / 2) - ( sh / 2 ) )
+			self.setGeometry(pw, ph, sw, sh)
 
 		# ############################################################################
 		# actions

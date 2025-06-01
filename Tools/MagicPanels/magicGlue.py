@@ -47,10 +47,20 @@ def showQtGUI():
 		gGSTO = [] # glue size target objects [ edge1, edge2, ... ]
 		gGCO = [] # glue clean objects [ obj1, obj2, ... ]
 		
-		gCrossCorner = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
-		gCrossCenter = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
-		gCrossCornerOrig = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
-		gCrossCenterOrig = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
+		gCornerCrossSupport = True
+		gAxisCrossSupport = True
+		
+		try:
+			gCornerCross = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
+			gCornerCrossOrig = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
+		except:
+			gCornerCrossSupport = False
+			
+		try:
+			gAxisCross = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
+			gAxisCrossOrig = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
+		except:
+			gAxisCrossSupport = False
 		
 		# ############################################################################
 		# init
@@ -67,34 +77,25 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 250
-			toolSH = 400
+			toolSW = 280
+			toolSH = 450
 			
 			rside = toolSW - 20
 			
-			# active screen size (FreeCAD main window)
-			gSW = FreeCADGui.getMainWindow().width()
-			gSH = FreeCADGui.getMainWindow().height()
-
-			# tool screen position
-			gPW = int( gSW - toolSW )
-			gPH = 10
-
 			# ############################################################################
 			# main window
 			# ############################################################################
 			
 			self.result = userCancelled
-			self.setGeometry(gPW, gPH, toolSW, toolSH)
 			self.setWindowTitle(translate('magicGlue', 'magicGlue'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
-
+			self.setFixedWidth(toolSW)
+			self.setFixedHeight(toolSH)
+			
 			# ############################################################################
 			# GUI for common selection part (visible by default)
 			# ############################################################################
 
-			row = 10
-			
 			# not write here, copy text from getMenuIndex1 to avoid typo
 			self.sModeList = (
 				translate('magicGlue', 'Glue position'), 
@@ -106,19 +107,12 @@ def showQtGUI():
 			self.sMode.addItems(self.sModeList)
 			self.sMode.setCurrentIndex(0) # default
 			self.sMode.textActivated[str].connect(self.setModeType)
-			self.sMode.setFixedWidth(rside)
 			self.sMode.setFixedHeight(40)
-			self.sMode.move(10, row)
-			
-			row += 50
 
 			# ############################################################################
 			# settigns for custom GUI
 			# ############################################################################
-			
-			rows = row
-			rowc = row
-			
+
 			btsize = 50
 			btoffset = 5
 			cbt1 = rside - (2 * btsize) - btoffset + 5
@@ -132,69 +126,47 @@ def showQtGUI():
 			self.gp1B.clicked.connect(self.setGPSO)
 			self.gp1B.setFixedWidth(60)
 			self.gp1B.setFixedHeight(20)
-			self.gp1B.move(10, row)
 			
 			self.gp1L = QtGui.QLabel(self.gNoGPSO, self)
 			self.gp1L.setFixedWidth(rside - 80)
-			self.gp1L.move(80, row+3)
-
-			row += 30
 			
 			self.gp2B = QtGui.QPushButton(translate('magicGlue', 'set'), self)
 			self.gp2B.clicked.connect(self.setGPTO)
 			self.gp2B.setFixedWidth(60)
 			self.gp2B.setFixedHeight(20)
-			self.gp2B.move(10, row)
 			
 			self.gp2L = QtGui.QLabel(self.gNoGPTO, self)
 			self.gp2L.setFixedWidth(rside - 80)
-			self.gp2L.move(80, row+3)
-			
-			row += 30
 			
 			self.gp3B = QtGui.QPushButton(translate('magicGlue', 'refresh all selection'), self)
 			self.gp3B.clicked.connect(self.setGPAll)
-			self.gp3B.setFixedWidth(rside)
 			self.gp3B.setFixedHeight(40)
-			self.gp3B.move(10, row)
-			
-			row += 80
 			
 			# label
 			self.gp4L = QtGui.QLabel(self.gInfoPositionX, self)
-			self.gp4L.move(10, row+3)
 
 			# button
 			self.gp4B = QtGui.QPushButton(translate('magicGlue', 'add glue'), self)
 			self.gp4B.clicked.connect(self.gluePositionX)
 			self.gp4B.setFixedWidth(2 * btsize + 10)
-			self.gp4B.move(cbt1, row)
 			self.gp4B.setAutoRepeat(False)
-
-			row += 30
 
 			# label
 			self.gp5L = QtGui.QLabel(self.gInfoPositionY, self)
-			self.gp5L.move(10, row+3)
 
 			# button
 			self.gp5B = QtGui.QPushButton(translate('magicGlue', 'add glue'), self)
 			self.gp5B.clicked.connect(self.gluePositionY)
 			self.gp5B.setFixedWidth(2 * btsize + 10)
-			self.gp5B.move(cbt1, row)
 			self.gp5B.setAutoRepeat(False)
 
-			row += 30
-			
 			# label
 			self.gp6L = QtGui.QLabel(self.gInfoPositionZ, self)
-			self.gp6L.move(10, row+3)
 
 			# button
 			self.gp6B = QtGui.QPushButton(translate('magicGlue', 'add glue'), self)
 			self.gp6B.clicked.connect(self.gluePositionZ)
 			self.gp6B.setFixedWidth(2 * btsize + 10)
-			self.gp6B.move(cbt1, row)
 			self.gp6B.setAutoRepeat(False)
 
 			# ############################################################################
@@ -205,152 +177,229 @@ def showQtGUI():
 			self.gs1B.clicked.connect(self.setGSSO)
 			self.gs1B.setFixedWidth(60)
 			self.gs1B.setFixedHeight(20)
-			self.gs1B.move(10, rows)
 			
 			self.gs1L = QtGui.QLabel(self.gNoGSSO, self)
 			self.gs1L.setFixedWidth(rside - 80)
-			self.gs1L.move(80, rows+3)
-
-			rows += 30
 			
 			self.gs2B = QtGui.QPushButton(translate('magicGlue', 'set'), self)
 			self.gs2B.clicked.connect(self.setGSTO)
 			self.gs2B.setFixedWidth(60)
 			self.gs2B.setFixedHeight(20)
-			self.gs2B.move(10, rows)
 			
 			self.gs2L = QtGui.QLabel(self.gNoGSTO, self)
 			self.gs2L.setFixedWidth(rside - 80)
-			self.gs2L.move(80, rows+3)
-			
-			rows += 30
 			
 			self.gs3B = QtGui.QPushButton(translate('magicGlue', 'refresh all selection'), self)
 			self.gs3B.clicked.connect(self.setGSAll)
-			self.gs3B.setFixedWidth(rside)
 			self.gs3B.setFixedHeight(40)
-			self.gs3B.move(10, rows)
-			
-			rows += 120
 		
 			# button
 			self.gs4B = QtGui.QPushButton(translate('magicGlue', 'add glue size'), self)
 			self.gs4B.clicked.connect(self.glueSize)
-			self.gs4B.setFixedWidth(rside)
 			self.gs4B.setFixedHeight(40)
-			self.gs4B.move(10, rows)
 			self.gs4B.setAutoRepeat(False)
-
-			# hide by default
-			self.gs1L.hide()
-			self.gs1B.hide()
-			self.gs2L.hide()
-			self.gs2B.hide()
-			self.gs3B.hide()
-			self.gs4B.hide()
 
 			# ############################################################################
 			# GUI for glue clean (hidden by default)
 			# ############################################################################
 			
 			self.gc1L = QtGui.QLabel(self.gNoGCO, self)
-			self.gc1L.setFixedWidth(rside)
-			self.gc1L.move(10, rowc+3)
-			
-			rowc += 30
+			self.gc1L.setFixedWidth(rside - 20)
 			
 			self.gc2B = QtGui.QPushButton(translate('magicGlue', 'refresh all selection'), self)
 			self.gc2B.clicked.connect(self.setGCO)
-			self.gc2B.setFixedWidth(rside)
 			self.gc2B.setFixedHeight(40)
-			self.gc2B.move(10, rowc)
-			
-			rowc += 90
 		
 			# button
 			self.gc3B = QtGui.QPushButton(translate('magicGlue', 'clean glue position'), self)
 			self.gc3B.clicked.connect(self.glueCleanPosition)
-			self.gc3B.setFixedWidth(rside)
 			self.gc3B.setFixedHeight(40)
-			self.gc3B.move(10, rowc)
 			self.gc3B.setAutoRepeat(False)
-			
-			rowc += 60
 			
 			# button
 			self.gc4B = QtGui.QPushButton(translate('magicGlue', 'clean glue size'), self)
 			self.gc4B.clicked.connect(self.glueCleanSize)
-			self.gc4B.setFixedWidth(rside)
 			self.gc4B.setFixedHeight(40)
-			self.gc4B.move(10, rowc)
 			self.gc4B.setAutoRepeat(False)
-			
-			# hide by default
-			self.gc1L.hide()
-			self.gc2B.hide()
-			self.gc3B.hide()
-			self.gc4B.hide()
 
 			# ############################################################################
-			# GUI for common foot (visible by default)
+			# GUI for common foot
 			# ############################################################################
 			
-			row = toolSH - 90
+			if self.gCornerCrossSupport == True:
 			
-			# label
-			self.o0L = QtGui.QLabel(translate('magicMove', 'Corner cross:'), self)
-			self.o0L.move(10, row+3)
+				# label
+				self.cocL = QtGui.QLabel(translate('magicGlue', 'Corner cross:'), self)
 
-			# button
-			self.o0B1 = QtGui.QPushButton("-", self)
-			self.o0B1.clicked.connect(self.setCornerM)
-			self.o0B1.setFixedWidth(btsize)
-			self.o0B1.move(cbt1, row)
-			self.o0B1.setAutoRepeat(True)
-			
-			# button
-			self.o0B2 = QtGui.QPushButton("+", self)
-			self.o0B2.clicked.connect(self.setCornerP)
-			self.o0B2.setFixedWidth(btsize)
-			self.o0B2.move(cbt2, row)
-			self.o0B2.setAutoRepeat(True)
+				# button
+				self.cocB1 = QtGui.QPushButton("-", self)
+				self.cocB1.clicked.connect(self.setCornerM)
+				self.cocB1.setFixedWidth(btsize)
+				self.cocB1.setAutoRepeat(True)
+				
+				# button
+				self.cocB2 = QtGui.QPushButton("+", self)
+				self.cocB2.clicked.connect(self.setCornerP)
+				self.cocB2.setFixedWidth(btsize)
+				self.cocB2.setAutoRepeat(True)
 
-			row += 30
-			
-			# label
-			self.o0L = QtGui.QLabel(translate('magicMove', 'Center cross:'), self)
-			self.o0L.move(10, row+3)
+			if self.gAxisCrossSupport == True:
+				
+				# label
+				self.cecL = QtGui.QLabel(translate('magicGlue', 'Center cross:'), self)
 
-			# button
-			self.o0B1 = QtGui.QPushButton(translate('magicMove', 'on'), self)
-			self.o0B1.clicked.connect(self.setCenterOn)
-			self.o0B1.setFixedWidth(btsize)
-			self.o0B1.move(cbt1, row)
-			self.o0B1.setAutoRepeat(True)
-			
-			# button
-			self.o0B2 = QtGui.QPushButton(translate('magicMove', 'off'), self)
-			self.o0B2.clicked.connect(self.setCenterOff)
-			self.o0B2.setFixedWidth(btsize)
-			self.o0B2.move(cbt2, row)
-			self.o0B2.setAutoRepeat(True)
+				# button
+				self.cecB1 = QtGui.QPushButton(translate('magicGlue', 'on'), self)
+				self.cecB1.clicked.connect(self.setCenterOn)
+				self.cecB1.setFixedWidth(btsize)
+				self.cecB1.setAutoRepeat(True)
+				
+				# button
+				self.cecB2 = QtGui.QPushButton(translate('magicGlue', 'off'), self)
+				self.cecB2.clicked.connect(self.setCenterOff)
+				self.cecB2.setFixedWidth(btsize)
+				self.cecB2.setAutoRepeat(True)
 
-			row += 25
+			if self.gCornerCrossSupport == True or self.gAxisCrossSupport == True:
+
+				self.kccscb = QtGui.QCheckBox(translate('magicGlue', ' - keep custom cross settings'), self)
+				self.kccscb.setCheckState(QtCore.Qt.Unchecked)
+		
+			# ############################################################################
+			# build GUI layout
+			# ############################################################################
 			
-			self.kccscb = QtGui.QCheckBox(translate('magicDowels', ' - keep custom cross settings'), self)
-			self.kccscb.setCheckState(QtCore.Qt.Unchecked)
-			self.kccscb.move(10, row+3)
+			# create structure
+			self.rowH = QtGui.QVBoxLayout()
+			self.rowH.addWidget(self.sMode)
+			
+			# create body - position
+			self.rowB1P1 = QtGui.QHBoxLayout()
+			self.rowB1P1.addWidget(self.gp1B)
+			self.rowB1P1.addWidget(self.gp1L)
+			self.rowB1P2 = QtGui.QHBoxLayout()
+			self.rowB1P2.addWidget(self.gp2B)
+			self.rowB1P2.addWidget(self.gp2L)
+			self.rowB1P3 = QtGui.QHBoxLayout()
+			self.rowB1P3.addWidget(self.gp3B)
+			self.rowBP1 = QtGui.QVBoxLayout()
+			self.rowBP1.addLayout(self.rowB1P1)
+			self.rowBP1.addLayout(self.rowB1P2)
+			self.rowBP1.addLayout(self.rowB1P3)
+			self.groupBodyPosition1 = QtGui.QGroupBox(None, self)
+			self.groupBodyPosition1.setLayout(self.rowBP1)
+
+			self.rowB2P1 = QtGui.QHBoxLayout()
+			self.rowB2P1.addWidget(self.gp4L)
+			self.rowB2P1.addWidget(self.gp4B)
+			self.rowB2P2 = QtGui.QHBoxLayout()
+			self.rowB2P2.addWidget(self.gp5L)
+			self.rowB2P2.addWidget(self.gp5B)
+			self.rowB2P3 = QtGui.QHBoxLayout()
+			self.rowB2P3.addWidget(self.gp6L)
+			self.rowB2P3.addWidget(self.gp6B)
+			self.rowBP2 = QtGui.QVBoxLayout()
+			self.rowBP2.addLayout(self.rowB2P1)
+			self.rowBP2.addLayout(self.rowB2P2)
+			self.rowBP2.addLayout(self.rowB2P3)
+			self.groupBodyPosition2 = QtGui.QGroupBox(None, self)
+			self.groupBodyPosition2.setLayout(self.rowBP2)
+
+			# create body - size
+			self.rowB1S1 = QtGui.QHBoxLayout()
+			self.rowB1S1.addWidget(self.gs1B)
+			self.rowB1S1.addWidget(self.gs1L)
+			self.rowB1S2 = QtGui.QHBoxLayout()
+			self.rowB1S2.addWidget(self.gs2B)
+			self.rowB1S2.addWidget(self.gs2L)
+			self.rowB1S3 = QtGui.QHBoxLayout()
+			self.rowB1S3.addWidget(self.gs3B)
+			self.rowBS1 = QtGui.QVBoxLayout()
+			self.rowBS1.addLayout(self.rowB1S1)
+			self.rowBS1.addLayout(self.rowB1S2)
+			self.rowBS1.addLayout(self.rowB1S3)
+			self.groupBodySize1 = QtGui.QGroupBox(None, self)
+			self.groupBodySize1.setLayout(self.rowBS1)
+
+			self.rowB2S2 = QtGui.QHBoxLayout()
+			self.rowB2S2.addWidget(self.gs4B)
+			self.rowBS2 = QtGui.QVBoxLayout()
+			self.rowBS2.addLayout(self.rowB2S2)
+			self.groupBodySize2 = QtGui.QGroupBox(None, self)
+			self.groupBodySize2.setLayout(self.rowBS2)
+
+			# create body - clean
+			self.rowB1C1 = QtGui.QVBoxLayout()
+			self.rowB1C1.addWidget(self.gc1L)
+			self.rowB1C1.addWidget(self.gc2B)
+			self.groupBodyClean1 = QtGui.QGroupBox(None, self)
+			self.groupBodyClean1.setLayout(self.rowB1C1)
+
+			self.rowB1C2 = QtGui.QVBoxLayout()
+			self.rowB1C2.addWidget(self.gc3B)
+			self.rowB1C2.addWidget(self.gc4B)
+			self.groupBodyClean2 = QtGui.QGroupBox(None, self)
+			self.groupBodyClean2.setLayout(self.rowB1C2)
+
+			# create foot
+			self.layoutFoot = QtGui.QVBoxLayout()
+			
+			self.rowFoot1 = QtGui.QHBoxLayout()
+			self.rowFoot1.addWidget(self.cocL)
+			self.rowFoot1.addWidget(self.cocB1)
+			self.rowFoot1.addWidget(self.cocB2)
+			self.layoutFoot.addLayout(self.rowFoot1)
+
+			self.rowFoot2 = QtGui.QHBoxLayout()
+			self.rowFoot2.addWidget(self.cecL)
+			self.rowFoot2.addWidget(self.cecB1)
+			self.rowFoot2.addWidget(self.cecB2)
+			self.layoutFoot.addLayout(self.rowFoot2)
+			
+			self.rowFoot3 = QtGui.QHBoxLayout()
+			self.rowFoot3.addWidget(self.kccscb)
+			self.layoutFoot.addLayout(self.rowFoot3)
+			
+			# set layout to main window
+			self.layout = QtGui.QVBoxLayout()
+			
+			self.layout.addLayout(self.rowH)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBodyPosition1)
+			self.layout.addWidget(self.groupBodyPosition2)
+			self.layout.addWidget(self.groupBodySize1)
+			self.layout.addWidget(self.groupBodySize2)
+			self.layout.addWidget(self.groupBodyClean1)
+			self.layout.addWidget(self.groupBodyClean2)
+			self.layout.addStretch()
+			self.layout.addLayout(self.layoutFoot)
+			self.setLayout(self.layout)
+		
+			self.groupBodySize1.hide()
+			self.groupBodySize2.hide()
+			self.groupBodyClean1.hide()
+			self.groupBodyClean2.hide()
 		
 			# ############################################################################
 			# show & init defaults
 			# ############################################################################
 
-			# show window
+			# init
 			self.show()
 			
-			# init
-			FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
-			FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(40)
+			if self.gAxisCrossSupport == True:
+				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
+			
+			if self.gCornerCrossSupport == True:
+				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(50)
+			
+			# set window position
+			sw = self.width()
+			sh = self.height()
+			pw = int( FreeCADGui.getMainWindow().width() - sw ) - 5
+			ph = 55
+			self.setGeometry(pw, ph, sw, sh)
+
 			self.setGPAll()
 		
 		# ############################################################################
@@ -364,45 +413,18 @@ def showQtGUI():
 			self.gModeType = selectedIndex
 
 			# first hide all
-			
-			self.gp1L.hide()
-			self.gp1B.hide()
-			self.gp2L.hide()
-			self.gp2B.hide()
-			self.gp3B.hide()
-			self.gp4L.hide()
-			self.gp4B.hide()
-			self.gp5L.hide()
-			self.gp5B.hide()
-			self.gp6L.hide()
-			self.gp6B.hide()
-			
-			self.gs1L.hide()
-			self.gs1B.hide()
-			self.gs2L.hide()
-			self.gs2B.hide()
-			self.gs3B.hide()
-			self.gs4B.hide()
-			
-			self.gc1L.hide()
-			self.gc2B.hide()
-			self.gc3B.hide()
-			self.gc4B.hide()
-
+			self.groupBodyPosition1.hide()
+			self.groupBodyPosition2.hide()
+			self.groupBodySize1.hide()
+			self.groupBodySize2.hide()
+			self.groupBodyClean1.hide()
+			self.groupBodyClean2.hide()
+		
 			# position
 			if selectedIndex == 0:
 				
-				self.gp1L.show()
-				self.gp1B.show()
-				self.gp2L.show()
-				self.gp2B.show()
-				self.gp3B.show()
-				self.gp4L.show()
-				self.gp4B.show()
-				self.gp5L.show()
-				self.gp5B.show()
-				self.gp6L.show()
-				self.gp6B.show()
+				self.groupBodyPosition1.show()
+				self.groupBodyPosition2.show()
 				
 				self.gp4L.setText(self.gInfoPositionX)
 				self.gp5L.setText(self.gInfoPositionY)
@@ -411,20 +433,14 @@ def showQtGUI():
 			# size
 			if selectedIndex == 1:
 				
-				self.gs1L.show()
-				self.gs1B.show()
-				self.gs2L.show()
-				self.gs2B.show()
-				self.gs3B.show()
-				self.gs4B.show()
-				
+				self.groupBodySize1.show()
+				self.groupBodySize2.show()
+
 			# clean
 			if selectedIndex == 2:
 				
-				self.gc1L.show()
-				self.gc2B.show()
-				self.gc3B.show()
-				self.gc4B.show()
+				self.groupBodyClean1.show()
+				self.groupBodyClean2.show()
 
 		# ############################################################################
 		# actions - glue positions
@@ -902,32 +918,40 @@ def showQtGUI():
 		# ############################################################################
 		def setCornerM(self):
 
-			s = int(FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize())
-			if s - 1 < 0:
-				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(0)
-			else:
-				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(s-1)
-				self.gCrossCorner = s-1
-		
-		# ############################################################################
+			try:
+				s = int(FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize())
+				if s - 1 < 0:
+					FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(0)
+				else:
+					FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(s-1)
+					self.gCornerCross = s-1
+			except:
+				skip = 1
+			
 		def setCornerP(self):
-			
-			s = int(FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize())
-			FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(s+1)
-			self.gCrossCorner = s+1
+
+			try:
+				s = int(FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize())
+				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(s+1)
+				self.gCornerCross = s+1
+			except:
+				skip = 1
 		
-		# ############################################################################
 		def setCenterOn(self):
+			try:
+				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
+				self.gAxisCross = True
+			except:
+				skip = 1
 			
-			FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
-			self.gCrossCenter = True
-		
-		# ############################################################################
 		def setCenterOff(self):
-			
-			FreeCADGui.ActiveDocument.ActiveView.setAxisCross(False)
-			self.gCrossCenter = False
-		
+
+			try:
+				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(False)
+				self.gAxisCross = False
+			except:
+				skip = 1
+	
 	# ############################################################################
 	# final settings
 	# ############################################################################
@@ -941,8 +965,12 @@ def showQtGUI():
 	if form.result == userCancelled:
 
 		if not form.kccscb.isChecked():
-			FreeCADGui.ActiveDocument.ActiveView.setAxisCross(form.gCrossCenterOrig)
-			FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(form.gCrossCornerOrig)
+
+			if form.gAxisCrossSupport == True:
+				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(form.gAxisCrossOrig)
+				
+			if form.gCornerCrossSupport == True:
+				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(form.gCornerCrossOrig)
 
 		pass
 

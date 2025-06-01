@@ -74,59 +74,38 @@ def showQtGUI():
 			# options - selection mode
 			# ############################################################################
 			
-			# screen
-			info = ""
-			info += "                                             "
-			info += "                                             "
-			info += "                                             "
+			self.s1S = QtGui.QLabel("", self)
+			self.s1S.setFixedWidth(toolSW-20)
+			self.s2S = QtGui.QLabel("", self)
+			self.s2S.setFixedWidth(toolSW-20)
 			
-			row = 10
-			
-			self.s1S = QtGui.QLabel(info, self)
-			self.s1S.move(10, row)
-			
-			row += 20
-			
-			self.s2S = QtGui.QLabel(info, self)
-			self.s2S.move(10, row)
-			
-			row += 30
-
 			# button
 			self.s1B1 = QtGui.QPushButton(translate('magicResizer', 'refresh selection'), self)
 			self.s1B1.clicked.connect(self.getSelected)
 			self.s1B1.setFixedWidth(toolSW-20)
 			self.s1B1.setFixedHeight(40)
-			self.s1B1.move(10, row)
-
+			
 			# ############################################################################
 			# options - step
 			# ############################################################################
 			
-			row += 60
-			
 			# label
 			self.oStepL = QtGui.QLabel(translate('magicResizer', 'Resize step:'), self)
-			self.oStepL.move(10, row+3)
-
+			
 			# text input
 			self.oStepE = QtGui.QLineEdit(self)
 			self.oStepE.setText(MagicPanels.unit2gui(self.gStep))
 			self.oStepE.setFixedWidth((toolSW/2)-15)
-			self.oStepE.move((toolSW/2)+5, row)
-
+			
 			# ############################################################################
 			# options - resize buttons
 			# ############################################################################
-
-			row += 30
 
 			# button
 			self.o1B1 = QtGui.QPushButton(translate('magicResizer', 'resize -'), self)
 			self.o1B1.clicked.connect(self.setM)
 			self.o1B1.setFixedWidth((toolSW/2)-15)
 			self.o1B1.setFixedHeight(40)
-			self.o1B1.move(10, row)
 			self.o1B1.setAutoRepeat(True)
 			
 			# button
@@ -134,21 +113,60 @@ def showQtGUI():
 			self.o1B2.clicked.connect(self.setP)
 			self.o1B2.setFixedWidth((toolSW/2)-15)
 			self.o1B2.setFixedHeight(40)
-			self.o1B2.move((toolSW/2)+5, row)
 			self.o1B2.setAutoRepeat(True)
 			
 			# ############################################################################
 			# options - resize to face button
 			# ############################################################################
 			
-			row += 50
-
 			# button
 			self.s2B1 = QtGui.QPushButton(translate('magicResizer', 'resize to nearest'), self)
 			self.s2B1.clicked.connect(self.resizeToFace)
 			self.s2B1.setFixedWidth(toolSW-20)
 			self.s2B1.setFixedHeight(40)
-			self.s2B1.move(10, row)
+			
+			# ############################################################################
+			# build GUI layout
+			# ############################################################################
+			
+			# create structure
+			self.row1 = QtGui.QHBoxLayout()
+			self.row1.setAlignment(QtGui.Qt.AlignLeft)
+			self.row1.addWidget(self.s1S)
+			
+			self.row2 = QtGui.QHBoxLayout()
+			self.row2.setAlignment(QtGui.Qt.AlignLeft)
+			self.row2.addWidget(self.s2S)
+			
+			self.row3 = QtGui.QHBoxLayout()
+			self.row3.addWidget(self.s1B1)
+			
+			self.row4 = QtGui.QHBoxLayout()
+			self.row4.addWidget(self.oStepL)
+			self.row4.addStretch()
+			self.row4.addWidget(self.oStepE)
+			
+			self.row5 = QtGui.QHBoxLayout()
+			self.row5.addWidget(self.o1B1)
+			self.row5.addStretch()
+			self.row5.addWidget(self.o1B2)
+			
+			self.row6 = QtGui.QHBoxLayout()
+			self.row6.addWidget(self.s2B1)
+			
+			# set layout to main window
+			self.layout = QtGui.QVBoxLayout()
+			
+			self.layout.addLayout(self.row1)
+			self.layout.addLayout(self.row2)
+			self.layout.addLayout(self.row3)
+			self.layout.addStretch()
+			self.layout.addLayout(self.row4)
+			self.layout.addLayout(self.row5)
+			self.layout.addStretch()
+			self.layout.addLayout(self.row6)
+			
+			self.setLayout(self.layout)
 			
 			# ############################################################################
 			# show & init defaults
@@ -373,7 +391,7 @@ def showQtGUI():
 				
 				if self.gResizeVal == 0:
 					raise
-
+				
 			except:
 
 				self.s1S.setText(self.gNoSelection1)

@@ -72,8 +72,8 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 220
-			toolSH = 380
+			toolSW = 300
+			toolSH = 440
 			
 			area = toolSW - 20          # full gui area
 			rside = toolSW - 10         # right side of the GUI
@@ -125,108 +125,130 @@ def showQtGUI():
 			self.sMode.addItems(self.sModeList)
 			self.sMode.setCurrentIndex(0) # default
 			self.sMode.textActivated[str].connect(self.setViewType)
-			self.sMode.setFixedWidth(area)
 			self.sMode.setFixedHeight(40)
-			self.sMode.move(10, row)
 		
 			# ############################################################################
 			# GUI - normal view
 			# ############################################################################
 
-			row += 50
-			
 			self.oImportB1 = QtGui.QPushButton(translate('magicView', 'read from spreadsheet'), self)
 			self.oImportB1.clicked.connect(self.setReadView)
-			self.oImportB1.setFixedWidth(area)
 			self.oImportB1.setFixedHeight(40)
-			self.oImportB1.move(10, row)
-			
-			row += 50
 			
 			self.oSaveB1 = QtGui.QPushButton(translate('magicView', 'save to spreadsheet'), self)
 			self.oSaveB1.clicked.connect(self.setSaveView)
-			self.oSaveB1.setFixedWidth(area)
 			self.oSaveB1.setFixedHeight(40)
-			self.oSaveB1.move(10, row)
-
-			row += 80
 			
 			# radio buttons
 			
 			self.rb1 = QtGui.QRadioButton(self)
 			self.rb1.setText(translate('magicView', 'screenshoot'))
 			self.rb1.toggled.connect(self.selectRadioButton1)
-			self.rb1.move(10, row)
 			self.rb1.setChecked(True)
 			
 			self.rb2 = QtGui.QRadioButton(self)
 			self.rb2.setText(translate('magicView', 'objects'))
 			self.rb2.toggled.connect(self.selectRadioButton2)
-			self.rb2.move(120, row)
-
-			row += 30
 
 			self.oSetTechDrawB1 = QtGui.QPushButton(translate('magicView', 'export to TechDraw'), self)
 			self.oSetTechDrawB1.clicked.connect(self.setTechDraw)
-			self.oSetTechDrawB1.setFixedWidth(area)
 			self.oSetTechDrawB1.setFixedHeight(40)
-			self.oSetTechDrawB1.move(10, row)
 
 			# ############################################################################
-			# GUI - cross foot
+			# GUI for common foot
 			# ############################################################################
-			
-			row = toolSH - 90
 			
 			if self.gCornerCrossSupport == True:
 			
 				# label
 				self.cocL = QtGui.QLabel(translate('magicView', 'Corner cross:'), self)
-				self.cocL.move(10, row+3)
 
 				# button
 				self.cocB1 = QtGui.QPushButton("-", self)
 				self.cocB1.clicked.connect(self.setCornerM)
 				self.cocB1.setFixedWidth(btsize)
-				self.cocB1.move(bc1, row)
 				self.cocB1.setAutoRepeat(True)
 				
 				# button
 				self.cocB2 = QtGui.QPushButton("+", self)
 				self.cocB2.clicked.connect(self.setCornerP)
 				self.cocB2.setFixedWidth(btsize)
-				self.cocB2.move(bc2, row)
 				self.cocB2.setAutoRepeat(True)
 
 			if self.gAxisCrossSupport == True:
 				
-				row += 30
-				
 				# label
 				self.cecL = QtGui.QLabel(translate('magicView', 'Center cross:'), self)
-				self.cecL.move(10, row+3)
 
 				# button
 				self.cecB1 = QtGui.QPushButton(translate('magicView', 'on'), self)
 				self.cecB1.clicked.connect(self.setCenterOn)
 				self.cecB1.setFixedWidth(btsize)
-				self.cecB1.move(bc1, row)
 				self.cecB1.setAutoRepeat(True)
 				
 				# button
 				self.cecB2 = QtGui.QPushButton(translate('magicView', 'off'), self)
 				self.cecB2.clicked.connect(self.setCenterOff)
 				self.cecB2.setFixedWidth(btsize)
-				self.cecB2.move(bc2, row)
 				self.cecB2.setAutoRepeat(True)
 
 			if self.gCornerCrossSupport == True or self.gAxisCrossSupport == True:
-				
-				row += 25
-				
+
 				self.kccscb = QtGui.QCheckBox(translate('magicView', ' - keep custom cross settings'), self)
 				self.kccscb.setCheckState(QtCore.Qt.Unchecked)
-				self.kccscb.move(10, row+3)
+
+			# ############################################################################
+			# build GUI layout
+			# ############################################################################
+			
+			# create structure
+			self.row1 = QtGui.QVBoxLayout()
+			self.row1.addWidget(self.sMode)
+			self.row1.addSpacing(10)
+			self.row1.addWidget(self.oImportB1)
+			self.row1.addWidget(self.oSaveB1)
+			self.groupBody1 = QtGui.QGroupBox(None, self)
+			self.groupBody1.setLayout(self.row1)
+
+			self.row2 = QtGui.QHBoxLayout()
+			self.row2.addWidget(self.rb1)
+			self.row2.addWidget(self.rb2)
+			
+			self.row3 = QtGui.QVBoxLayout()
+			self.row3.addLayout(self.row2)
+			self.row3.addSpacing(10)
+			self.row3.addWidget(self.oSetTechDrawB1)
+			self.groupBody2 = QtGui.QGroupBox(None, self)
+			self.groupBody2.setLayout(self.row3)
+
+			# create foot
+			self.layoutFoot = QtGui.QVBoxLayout()
+			
+			self.rowFoot1 = QtGui.QHBoxLayout()
+			self.rowFoot1.addWidget(self.cocL)
+			self.rowFoot1.addWidget(self.cocB1)
+			self.rowFoot1.addWidget(self.cocB2)
+			self.layoutFoot.addLayout(self.rowFoot1)
+
+			self.rowFoot2 = QtGui.QHBoxLayout()
+			self.rowFoot2.addWidget(self.cecL)
+			self.rowFoot2.addWidget(self.cecB1)
+			self.rowFoot2.addWidget(self.cecB2)
+			self.layoutFoot.addLayout(self.rowFoot2)
+			
+			self.rowFoot3 = QtGui.QHBoxLayout()
+			self.rowFoot3.addWidget(self.kccscb)
+			self.layoutFoot.addLayout(self.rowFoot3)
+			
+			# set layout to main window
+			self.layout = QtGui.QVBoxLayout()
+			
+			self.layout.addWidget(self.groupBody1)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBody2)
+			self.layout.addStretch()
+			self.layout.addLayout(self.layoutFoot)
+			self.setLayout(self.layout)
 			
 			# ############################################################################
 			# show & init defaults

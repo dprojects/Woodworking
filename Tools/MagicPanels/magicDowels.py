@@ -66,8 +66,8 @@ def showQtGUI():
 		# ############################################################################
 
 		# tool screen size
-		toolSW = 270
-		toolSH = 690
+		toolSW = 310
+		toolSH = 710
 		
 		# object settings
 		gObj = ""
@@ -138,26 +138,15 @@ def showQtGUI():
 		def initUI(self):
 
 			# ############################################################################
-			# set screen
-			# ############################################################################
-			
-			# active screen size (FreeCAD main window)
-			gSW = FreeCADGui.getMainWindow().width()
-			gSH = FreeCADGui.getMainWindow().height()
-
-			# tool screen position
-			gPW = int( gSW - self.toolSW )
-			gPH = int( gSH - self.toolSH )
-
-			# ############################################################################
 			# main window
 			# ############################################################################
 			
 			self.result = userCancelled
-			self.setGeometry(gPW, gPH, self.toolSW, self.toolSH)
 			self.setWindowTitle(translate('magicDowels', 'magicDowels'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
-
+			self.setMaximumSize(self.toolSW, self.toolSH)
+			self.setFixedHeight(self.toolSH)
+			
 			# ############################################################################
 			# show & init defaults
 			# ############################################################################
@@ -165,6 +154,13 @@ def showQtGUI():
 			# show GUI
 			self.setGUI("init")
 			
+			# set window position
+			sw = self.width()
+			sh = self.height()
+			pw = int( FreeCADGui.getMainWindow().width() - sw ) - 45
+			ph = 50
+			self.setGeometry(pw, ph, sw, sh)
+
 			# show window
 			self.show()
 			
@@ -181,9 +177,9 @@ def showQtGUI():
 				# options - settings
 				# ############################################################################
 				
-				row = 10                             # row
 				area = self.toolSW - 20              # gui area
 				rside = self.toolSW - 10             # right side of the gui area
+				cutLabel = area                      # to cut long label strings
 				
 				btsize = 50                          # button size
 				btcol1 = rside - btsize - 105        # button column 1 (left)
@@ -193,69 +189,19 @@ def showQtGUI():
 				tfsize = 100                         # text field size
 				
 				# ############################################################################
-				# options - selection mode
+				# header - selection
 				# ############################################################################
 				
-				# screen
-				info = ""
-				info += "                                             "
-				info += "                                             "
-				info += "                                             "
-				self.faceinfo = QtGui.QLabel(info, self)
-				self.faceinfo.move(10, row)
-
-				row += 20
+				self.faceinfo = QtGui.QLabel("", self)
+				self.faceinfo.setFixedWidth(cutLabel)
 				
-				# button
 				self.faceinfoB1 = QtGui.QPushButton(translate('magicDowels', 'refresh face selection'), self)
 				self.faceinfoB1.clicked.connect(self.setFaceSettins)
-				self.faceinfoB1.setFixedWidth(area)
 				self.faceinfoB1.setFixedHeight(40)
-				self.faceinfoB1.move(10, row)
-
-				# ############################################################################
-				# options - select edge
-				# ############################################################################
-
-				row += 50
-
-				# label
-				self.seL = QtGui.QLabel(translate('magicDowels', 'Select edge:'), self)
-				self.seL.move(10, row+3)
-
-				# button
-				self.seB1 = QtGui.QPushButton("<", self)
-				self.seB1.clicked.connect(self.selectEdgeP)
-				self.seB1.setFixedWidth(btsize)
-				self.seB1.move(btcol1, row)
-				self.seB1.setAutoRepeat(True)
 				
-				# label
-				self.seIS = QtGui.QLabel("                  ", self)
-				self.seIS.move(btcol2, row+3)
-				
-				# button
-				self.seB2 = QtGui.QPushButton(">", self)
-				self.seB2.clicked.connect(self.selectEdgeN)
-				self.seB2.setFixedWidth(btsize)
-				self.seB2.move(btcol3, row)
-				self.seB2.setAutoRepeat(True)
-
 				# ############################################################################
-				# options - autodetect checkbox
+				# body - auto adjust
 				# ############################################################################
-				
-				row += 30
-				
-				self.pacb = QtGui.QCheckBox(translate('magicDowels', ' - position autodetect'), self)
-				self.pacb.setCheckState(QtCore.Qt.Checked)
-				self.pacb.move(10, row+3)
-
-				# ############################################################################
-				# options - connection samples
-				# ############################################################################
-
-				row += 30
 				
 				# not write here, copy text from getMenuIndex to avoid typo
 				self.dtslist = (
@@ -287,328 +233,286 @@ def showQtGUI():
 				self.dts.addItems(self.dtslist)
 				self.dts.setCurrentIndex(1)
 				self.dts.textActivated[str].connect(self.setMenuItem)
-				self.dts.setFixedWidth(area)
-				self.dts.move(10, row)
 				
-				# ############################################################################
-				# options - adjust position
-				# ############################################################################
+				# select edge
+				self.seL = QtGui.QLabel(translate('magicDowels', 'Select edge:'), self)
+				
+				self.seB1 = QtGui.QPushButton("<", self)
+				self.seB1.clicked.connect(self.selectEdgeP)
+				self.seB1.setFixedWidth(btsize)
+				self.seB1.setFixedHeight(20)
+				self.seB1.setAutoRepeat(True)
+				
+				self.seIS = QtGui.QLabel("", self)
+				
+				self.seB2 = QtGui.QPushButton(">", self)
+				self.seB2.clicked.connect(self.selectEdgeN)
+				self.seB2.setFixedWidth(btsize)
+				self.seB2.setFixedHeight(20)
+				self.seB2.setAutoRepeat(True)
 
-				row += 30
+				# autodetect checkbox
+				self.pacb = QtGui.QCheckBox(translate('magicDowels', ' - position autodetect'), self)
+				self.pacb.setCheckState(QtCore.Qt.Checked)
 				
-				# label
+				# ############################################################################
+				# body - manual adjust
+				# ############################################################################
+				
+				# adjust edge
 				self.aeL = QtGui.QLabel(translate('magicDowels', 'Adjust edge:'), self)
-				self.aeL.move(10, row+3)
-
-				# button
+			
 				self.aeB1 = QtGui.QPushButton("<", self)
 				self.aeB1.clicked.connect(self.adjustEdgeP)
 				self.aeB1.setFixedWidth(btsize)
-				self.aeB1.move(btcol1, row)
+				self.aeB1.setFixedHeight(20)
 				self.aeB1.setAutoRepeat(True)
 				
-				# label
-				self.aeIS = QtGui.QLabel("                  ", self)
-				self.aeIS.move(btcol2, row+3)
-				
-				# button
+				self.aeIS = QtGui.QLabel("", self)
+
 				self.aeB2 = QtGui.QPushButton(">", self)
 				self.aeB2.clicked.connect(self.adjustEdgeN)
 				self.aeB2.setFixedWidth(btsize)
-				self.aeB2.move(btcol3, row)
+				self.aeB2.setFixedHeight(20)
 				self.aeB2.setAutoRepeat(True)
 
-				# ############################################################################
-				# options - adjust sink
-				# ############################################################################
-
-				row += 30
-				
-				# label
+				# adjust sink
 				self.asL = QtGui.QLabel(translate('magicDowels', 'Adjust sink:'), self)
-				self.asL.move(10, row+3)
-
-				# button
+				
 				self.asB1 = QtGui.QPushButton("<", self)
 				self.asB1.clicked.connect(self.adjustSinkP)
 				self.asB1.setFixedWidth(btsize)
-				self.asB1.move(btcol1, row)
+				self.asB1.setFixedHeight(20)
 				self.asB1.setAutoRepeat(True)
 				
-				# label
-				self.asIS = QtGui.QLabel("                  ", self)
-				self.asIS.move(btcol2, row+3)
+				self.asIS = QtGui.QLabel("", self)
 				
-				# button
 				self.asB2 = QtGui.QPushButton(">", self)
 				self.asB2.clicked.connect(self.adjustSinkN)
 				self.asB2.setFixedWidth(btsize)
-				self.asB2.move(btcol3, row)
+				self.asB2.setFixedHeight(20)
 				self.asB2.setAutoRepeat(True)
 
-				# ############################################################################
-				# options - adjust rotation
-				# ############################################################################
-
-				row += 30
-				
-				# label
+				# adjust rotation
 				self.arL = QtGui.QLabel(translate('magicDowels', 'Adjust rotation:'), self)
-				self.arL.move(10, row+3)
-
-				# button
+				
 				self.arB1 = QtGui.QPushButton("<", self)
 				self.arB1.clicked.connect(self.setRotationP)
 				self.arB1.setFixedWidth(btsize)
-				self.arB1.move(btcol1, row)
+				self.arB1.setFixedHeight(20)
 				self.arB1.setAutoRepeat(True)
 				
-				# label
-				self.arIS = QtGui.QLabel("                  ", self)
-				self.arIS.move(btcol2, row+3)
+				self.arIS = QtGui.QLabel("", self)
 				
-				# button
 				self.arB2 = QtGui.QPushButton(">", self)
 				self.arB2.clicked.connect(self.setRotationN)
 				self.arB2.setFixedWidth(btsize)
-				self.arB2.move(btcol3, row)
+				self.arB2.setFixedHeight(20)
 				self.arB2.setAutoRepeat(True)
 
-				# ############################################################################
-				# options - select sides
-				# ############################################################################
-
-				row += 30
-
-				# label
+				# select sides
 				self.ssL = QtGui.QLabel(translate('magicDowels', 'Select sides:'), self)
-				self.ssL.move(10, row+3)
-
-				# button
+				
 				self.ssB1 = QtGui.QPushButton("<", self)
 				self.ssB1.clicked.connect(self.selectSidesP)
 				self.ssB1.setFixedWidth(btsize)
-				self.ssB1.move(btcol1, row)
+				self.ssB1.setFixedHeight(20)
 				self.ssB1.setAutoRepeat(True)
 				
-				# label
-				self.ssIS = QtGui.QLabel("                  ", self)
-				self.ssIS.move(btcol2, row+3)
-								
-				# button
+				self.ssIS = QtGui.QLabel("", self)
+
 				self.ssB2 = QtGui.QPushButton(">", self)
 				self.ssB2.clicked.connect(self.selectSidesN)
 				self.ssB2.setFixedWidth(btsize)
-				self.ssB2.move(btcol3, row)
+				self.ssB2.setFixedHeight(20)
 				self.ssB2.setAutoRepeat(True)
 
-				
 				# ############################################################################
-				# options - mount label
+				# body - custom settings
 				# ############################################################################
 
-				row += 30
-				
 				# label
 				self.oDowelLabelL = QtGui.QLabel(translate('magicDowels', 'Label:'), self)
-				self.oDowelLabelL.move(10, row+3)
-
-				# text input
 				self.oDowelLabelE = QtGui.QLineEdit(self)
 				self.oDowelLabelE.setText(str(self.gDowelLabel))
-				self.oDowelLabelE.setFixedWidth(self.toolSW - 70)
-				self.oDowelLabelE.move(60, row)
-
-				# ############################################################################
-				# options - dowels number per side
-				# ############################################################################
-
-				row += 30
+				self.oDowelLabelE.setFixedWidth(tfsize)
 				
-				# label
+				# dowels number per side
 				self.oDNumL = QtGui.QLabel(translate('magicDowels', 'Dowels per side:'), self)
-				self.oDNumL.move(10, row+3)
 				self.oDNumLT = QtGui.QLabel(translate('magicDowels', 'Tenons per side:'), self)
-				self.oDNumLT.move(10, row+3)
-				
-				# text input
 				self.oDNumE = QtGui.QLineEdit(self)
 				self.oDNumE.setText(str(self.gDNum))
 				self.oDNumE.setFixedWidth(tfsize)
-				self.oDNumE.move(rside-tfsize, row)
-
-				# ############################################################################
-				# options - tenon long
-				# ############################################################################
 				
-				row += 30
-
-				# label
+				# tenon long
 				self.oTenonLL = QtGui.QLabel(translate('magicDowels', 'Tenon long:'), self)
-				self.oTenonLL.move(10, row+3)
-
-				# text input
 				self.oTenonLE = QtGui.QLineEdit(self)
 				self.oTenonLE.setText(MagicPanels.unit2gui(self.gTenonL))
 				self.oTenonLE.setFixedWidth(tfsize)
-				self.oTenonLE.move(rside-tfsize, row)
-
-				# ############################################################################
-				# options - dowels diameter & tenon thick
-				# ############################################################################
 				
-				row += 30
-
-				# label
+				# dowels diameter & tenon thick
 				self.oDDiameterL = QtGui.QLabel(translate('magicDowels', 'Dowels diameter:'), self)
-				self.oDDiameterL.move(10, row+3)
-
-				# text input
 				self.oDDiameterE = QtGui.QLineEdit(self)
 				self.oDDiameterE.setText(MagicPanels.unit2gui(self.gDDiameter))
 				self.oDDiameterE.setFixedWidth(tfsize)
-				self.oDDiameterE.move(rside-tfsize, row)
-
-				# label
+				
+				# tenon thick
 				self.oTenonTL = QtGui.QLabel(translate('magicDowels', 'Tenon thick:'), self)
-				self.oTenonTL.move(10, row+3)
-
-				# text input
 				self.oTenonTE = QtGui.QLineEdit(self)
 				self.oTenonTE.setText(MagicPanels.unit2gui(self.gTenonT))
 				self.oTenonTE.setFixedWidth(tfsize)
-				self.oTenonTE.move(rside-tfsize, row)
-
-				# ############################################################################
-				# options - dowels size & tenon depth
-				# ############################################################################
-
-				row += 30
 				
-				# label
+				# dowels size
 				self.oDSizeL = QtGui.QLabel(translate('magicDowels', 'Dowels size:'), self)
-				self.oDSizeL.move(10, row+3)
-
-				# text input
 				self.oDSizeE = QtGui.QLineEdit(self)
 				self.oDSizeE.setText(MagicPanels.unit2gui(self.gDSize))
 				self.oDSizeE.setFixedWidth(tfsize)
-				self.oDSizeE.move(rside-tfsize, row)
-
-				# label
+				
+				# tenon depth
 				self.oTenonHL = QtGui.QLabel(translate('magicDowels', 'Tenon depth:'), self)
-				self.oTenonHL.move(10, row+3)
-
-				# text input
 				self.oTenonHE = QtGui.QLineEdit(self)
 				self.oTenonHE.setText(MagicPanels.unit2gui(self.gTenonH))
 				self.oTenonHE.setFixedWidth(tfsize)
-				self.oTenonHE.move(rside-tfsize, row)
-
-				# ############################################################################
-				# options - dowels sink
-				# ############################################################################
-
-				row += 30
-
-				# label
-				self.oDSinkL = QtGui.QLabel(translate('magicDowels', 'Dowels sink:'), self)
-				self.oDSinkL.move(10, row+3)
-				self.oDSinkLT = QtGui.QLabel(translate('magicDowels', 'Tenons sink:'), self)
-				self.oDSinkLT.move(10, row+3)
 				
-				# text input
+				# dowels sink
+				self.oDSinkL = QtGui.QLabel(translate('magicDowels', 'Dowels sink:'), self)
+				self.oDSinkLT = QtGui.QLabel(translate('magicDowels', 'Tenons sink:'), self)
 				self.oDSinkE = QtGui.QLineEdit(self)
 				self.oDSinkE.setText(MagicPanels.unit2gui(self.gDOFSSet))
 				self.oDSinkE.setFixedWidth(tfsize)
-				self.oDSinkE.move(rside-tfsize, row)
-
-				# ############################################################################
-				# options - offset from corner
-				# ############################################################################
-
-				row += 30
 				
-				# label
+				# offset from corner
 				self.oDOCornerL = QtGui.QLabel(translate('magicDowels', 'Offset from corner:'), self)
-				self.oDOCornerL.move(10, row+3)
-
-				# text input
 				self.oDOCornerE = QtGui.QLineEdit(self)
 				self.oDOCornerE.setText(MagicPanels.unit2gui(self.gDOCorner))
 				self.oDOCornerE.setFixedWidth(tfsize)
-				self.oDOCornerE.move(rside-tfsize, row)
-
-				# ############################################################################
-				# options - offset between dowels
-				# ############################################################################
-
-				row += 30
 				
-				# label
+				# offset between dowels
 				self.oDONextL = QtGui.QLabel(translate('magicDowels', 'Offset between dowels:'), self)
-				self.oDONextL.move(10, row+3)
 				self.oDONextLT = QtGui.QLabel(translate('magicDowels', 'Offset between tenons:'), self)
-				self.oDONextLT.move(10, row+3)
-				
-				# text input
 				self.oDONextE = QtGui.QLineEdit(self)
 				self.oDONextE.setText(MagicPanels.unit2gui(self.gDONext))
 				self.oDONextE.setFixedWidth(tfsize)
-				self.oDONextE.move(rside-tfsize, row)
-
-				# ############################################################################
-				# options - offset from edge
-				# ############################################################################
-
-				row += 30
 				
-				# label
+				# offset from edge
 				self.oDOEdgeL = QtGui.QLabel(translate('magicDowels', 'Offset from edge:'), self)
-				self.oDOEdgeL.move(10, row+3)
-
-				# text input
 				self.oDOEdgeE = QtGui.QLineEdit(self)
 				self.oDOEdgeE.setText(MagicPanels.unit2gui(self.gDOFESet))
 				self.oDOEdgeE.setFixedWidth(tfsize)
-				self.oDOEdgeE.move(rside-tfsize, row)
-
-				# ############################################################################
-				# options - keep custom settings checkbox
-				# ############################################################################
 				
-				row += 30
-				
+				# keep custom settings checkbox
 				self.kcscb = QtGui.QCheckBox(translate('magicDowels', ' - keep custom settings'), self)
 				self.kcscb.setCheckState(QtCore.Qt.Unchecked)
-				self.kcscb.move(10, row+3)
-
-				# ############################################################################
-				# options - save custom settings button
-				# ############################################################################
-
-				row += 30
-
-				# button
+				
+				# custom settings button
 				self.e1B1 = QtGui.QPushButton(translate('magicDowels', 'show custom settings'), self)
 				self.e1B1.clicked.connect(self.setCustomValues)
-				self.e1B1.setFixedWidth(area)
-				self.e1B1.setFixedHeight(40)
-				self.e1B1.move(10, row)
+				self.e1B1.setFixedHeight(20)
 				
 				# ############################################################################
-				# options - save dowels button
+				# create
 				# ############################################################################
 
-				row += 50
-				
-				# button
 				self.e2B1 = QtGui.QPushButton(translate('magicDowels', 'create'), self)
 				self.e2B1.clicked.connect(self.setDowels)
-				self.e2B1.setFixedWidth(area)
 				self.e2B1.setFixedHeight(40)
-				self.e2B1.move(10, row)
-
+				
+				# ############################################################################
+				# build GUI layout
+				# ############################################################################
+				
+				# create structure
+				self.header = QtGui.QVBoxLayout()
+				self.header.addWidget(self.faceinfo)
+				self.header.addWidget(self.faceinfoB1)
+				
+				self.rowAA1 = QtGui.QVBoxLayout()
+				self.rowAA1.addWidget(self.dts)
+				self.rowAA2 = QtGui.QGridLayout()
+				self.rowAA2.addWidget(self.seL, 0, 0)
+				self.rowAA2.addWidget(self.seB1, 0, 1)
+				self.rowAA2.addWidget(self.seIS, 0, 2)
+				self.rowAA2.addWidget(self.seB2, 0, 3)
+				self.rowAA3 = QtGui.QVBoxLayout()
+				self.rowAA3.addWidget(self.pacb)
+				self.layAA = QtGui.QVBoxLayout()
+				self.layAA.addLayout(self.rowAA1)
+				self.layAA.addLayout(self.rowAA2)
+				self.layAA.addLayout(self.rowAA3)
+				self.groupAA = QtGui.QGroupBox(None, self)
+				self.groupAA.setLayout(self.layAA)
+				
+				self.rowMA = QtGui.QGridLayout()
+				self.rowMA.addWidget(self.aeL, 0, 0)
+				self.rowMA.addWidget(self.aeB1, 0, 1)
+				self.rowMA.addWidget(self.aeIS, 0, 2)
+				self.rowMA.addWidget(self.aeB2, 0, 3)
+				self.rowMA.addWidget(self.asL, 1, 0)
+				self.rowMA.addWidget(self.asB1, 1, 1)
+				self.rowMA.addWidget(self.asIS, 1, 2)
+				self.rowMA.addWidget(self.asB2, 1, 3)
+				self.rowMA.addWidget(self.arL, 2, 0)
+				self.rowMA.addWidget(self.arB1, 2, 1)
+				self.rowMA.addWidget(self.arIS, 2, 2)
+				self.rowMA.addWidget(self.arB2, 2, 3)
+				self.rowMA.addWidget(self.ssL, 3, 0)
+				self.rowMA.addWidget(self.ssB1, 3, 1)
+				self.rowMA.addWidget(self.ssIS, 3, 2)
+				self.rowMA.addWidget(self.ssB2, 3, 3)
+				self.groupMA = QtGui.QGroupBox(None, self)
+				self.groupMA.setLayout(self.rowMA)
+				
+				self.rowCS = QtGui.QGridLayout()
+				self.rowCS.addWidget(self.oDowelLabelL, 0, 0)
+				self.rowCS.addWidget(self.oDowelLabelE, 0, 1)
+				self.rowCS.addWidget(self.oDNumL, 1, 0)
+				self.rowCS.addWidget(self.oDNumLT, 1, 0)
+				self.rowCS.addWidget(self.oDNumE, 1, 1)
+				self.rowCS.addWidget(self.oTenonLL, 2, 0)
+				self.rowCS.addWidget(self.oTenonLE, 2, 1)
+				self.rowCS.addWidget(self.oDDiameterL, 3, 0)
+				self.rowCS.addWidget(self.oDDiameterE, 3, 1)
+				self.rowCS.addWidget(self.oTenonTL, 4, 0)
+				self.rowCS.addWidget(self.oTenonTE, 4, 1)
+				self.rowCS.addWidget(self.oDSizeL, 5, 0)
+				self.rowCS.addWidget(self.oDSizeE, 5, 1)
+				self.rowCS.addWidget(self.oTenonHL, 6, 0)
+				self.rowCS.addWidget(self.oTenonHE, 6, 1)
+				self.rowCS.addWidget(self.oDSinkL, 7, 0)
+				self.rowCS.addWidget(self.oDSinkLT, 7, 0)
+				self.rowCS.addWidget(self.oDSinkE, 7, 1)
+				self.rowCS.addWidget(self.oDOCornerL, 8, 0)
+				self.rowCS.addWidget(self.oDOCornerE, 8, 1)
+				self.rowCS.addWidget(self.oDONextL, 9, 0)
+				self.rowCS.addWidget(self.oDONextLT, 9, 0)
+				self.rowCS.addWidget(self.oDONextE, 9, 1)
+				self.rowCS.addWidget(self.oDOEdgeL, 10, 0)
+				self.rowCS.addWidget(self.oDOEdgeE, 10, 1)
+				self.rowCSB = QtGui.QVBoxLayout()
+				self.rowCSB.addWidget(self.kcscb)
+				self.rowCSB.addWidget(self.e1B1)
+				self.layCS = QtGui.QVBoxLayout()
+				self.layCS.addLayout(self.rowCS)
+				self.layCS.addLayout(self.rowCSB)
+				self.groupCS = QtGui.QGroupBox(None, self)
+				self.groupCS.setLayout(self.layCS)
+				
+				self.rowCR = QtGui.QVBoxLayout()
+				self.rowCR.addWidget(self.e2B1)
+				
+				# set layout to main window
+				self.layout = QtGui.QVBoxLayout()
+				self.layout.addLayout(self.header)
+				#self.layout.addStretch()
+				self.layout.addWidget(self.groupAA)
+				#self.layout.addStretch()
+				self.layout.addWidget(self.groupMA)
+				#self.layout.addStretch()
+				self.layout.addWidget(self.groupCS)
+				self.layout.addStretch()
+				self.layout.addLayout(self.rowCR)
+				self.setLayout(self.layout)
+				
 				# ############################################################################
 				# set if face is selected before GUI open
 				# ############################################################################

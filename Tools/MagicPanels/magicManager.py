@@ -165,20 +165,13 @@ def showQtGUI():
 			toolSW = 260
 			toolSH = 490
 			
-			# active screen size - FreeCAD main window
-			gSW = FreeCADGui.getMainWindow().width()
-			gSH = FreeCADGui.getMainWindow().height()
-
-			# tool screen position
-			gPW = int( gSW - toolSW )
-			gPH = int( gSH - toolSH )
-
+			cutLabel = toolSW - 20
+			
 			# ############################################################################
 			# main window
 			# ############################################################################
 			
 			self.result = userCancelled
-			self.setGeometry(gPW, gPH, toolSW, toolSH)
 			self.setWindowTitle(translate('magicManager', 'magicManager'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
@@ -186,214 +179,193 @@ def showQtGUI():
 			# options
 			# ############################################################################
 			
-			spaceInfoScreen = ""
-			spaceInfoScreen += "                                               "
-			spaceInfoScreen += "                                               "
-			spaceInfoScreen += "                                               "
+			self.oModeL1 = QtGui.QLabel("", self)
+			self.oModeL1.setFixedWidth(cutLabel)
 			
-			col1 = 10
-			col2 = 80
-			col3 = 140
-			col4 = 200
+			self.oModeL2 = QtGui.QLabel("", self)
+			self.oModeL2.setFixedWidth(cutLabel)
 			
-			row = 10
-			
-			# screen - face
-			self.oModeL1 = QtGui.QLabel(spaceInfoScreen, self)
-			self.oModeL1.move(col1, row)
-
-			row += 20
-
-			# screen - between
-			self.oModeL2 = QtGui.QLabel(spaceInfoScreen, self)
-			self.oModeL2.move(col1, row)
-			
-			row += 20
-			
-			# button - refresh
 			self.oModeB1 = QtGui.QPushButton(translate('magicManager', 'refresh selection'), self)
 			self.oModeB1.clicked.connect(self.setMode)
-			self.oModeB1.setFixedWidth(toolSW-20)
 			self.oModeB1.setFixedHeight(40)
-			self.oModeB1.move(col1, row)
 
 			# ############################################################################
 			# options - panel
 			# ############################################################################
 
-			row += 50
-
-			# label
 			self.spL = QtGui.QLabel(translate('magicManager', 'Plane:'), self)
-			self.spL.move(col1, row+3)
 
-			# button - previous
 			self.spBP = QtGui.QPushButton("<", self)
 			self.spBP.clicked.connect(self.setPreviousPanel)
 			self.spBP.setFixedWidth(50)
-			self.spBP.move(col2, row)
 			self.spBP.setAutoRepeat(True)
 
-			# info screen
-			self.spIS = QtGui.QLabel(spaceInfoScreen, self)
-			self.spIS.move(col3, row+3)
+			self.spIS = QtGui.QLabel("", self)
 
-			# button - next
 			self.spBN = QtGui.QPushButton(">", self)
 			self.spBN.clicked.connect(self.setNextPanel)
 			self.spBN.setFixedWidth(50)
-			self.spBN.move(col4, row)
 			self.spBN.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - anchor
 			# ############################################################################
 			
-			row += 30
-
-			# label
 			self.saL = QtGui.QLabel(translate('magicManager', 'Anchor:'), self)
-			self.saL.move(col1, row+3)
 
-			# button - previous
 			self.saBP = QtGui.QPushButton("<", self)
 			self.saBP.clicked.connect(self.setPreviousAnchor)
 			self.saBP.setFixedWidth(50)
-			self.saBP.move(col2, row)
 			self.saBP.setAutoRepeat(True)
 
-			# info screen
-			self.sainfo = QtGui.QLabel(spaceInfoScreen, self)
-			self.sainfo.move(col3, row+3)
+			self.sainfo = QtGui.QLabel("", self)
 
-			# button - next
 			self.saBN = QtGui.QPushButton(">", self)
 			self.saBN.clicked.connect(self.setNextAnchor)
 			self.saBN.setFixedWidth(50)
-			self.saBN.move(col4, row)
 			self.saBN.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - 3rd size for the panel
 			# ############################################################################
 			
-			row += 30
-
-			# label
 			self.ssL = QtGui.QLabel(translate('magicManager', 'Size:'), self)
-			self.ssL.move(col1, row+3)
 
 			# button - previous
 			self.ssBP = QtGui.QPushButton("<", self)
 			self.ssBP.clicked.connect(self.setPreviousSize)
 			self.ssBP.setFixedWidth(50)
-			self.ssBP.move(col2, row)
 			self.ssBP.setAutoRepeat(True)
 
-			# info screen
-			self.ssIS = QtGui.QLabel(spaceInfoScreen, self)
-			self.ssIS.move(col3, row+3)
+			self.ssIS = QtGui.QLabel("", self)
 
-			# button - next
 			self.ssBN = QtGui.QPushButton(">", self)
 			self.ssBN.clicked.connect(self.setNextSize)
 			self.ssBN.setFixedWidth(50)
-			self.ssBN.move(col4, row)
 			self.ssBN.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - offset
 			# ############################################################################
 			
-			row += 30
-
-			# label
 			self.soL = QtGui.QLabel(translate('magicManager', 'Offset:'), self)
-			self.soL.move(col1, row+3)
 
-			# button - previous
 			self.soBP = QtGui.QPushButton("<", self)
 			self.soBP.clicked.connect(self.setPreviousOffset)
 			self.soBP.setFixedWidth(50)
-			self.soBP.move(col2, row)
 			self.soBP.setAutoRepeat(True)
 
-			# info screen
-			self.soIS = QtGui.QLabel(spaceInfoScreen, self)
-			self.soIS.move(col3, row+3)
+			self.soIS = QtGui.QLabel("", self)
 
-			# button - next
 			self.soBN = QtGui.QPushButton(">", self)
 			self.soBN.clicked.connect(self.setNextOffset)
 			self.soBN.setFixedWidth(50)
-			self.soBN.move(col4, row)
 			self.soBN.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - vertices reader
 			# ############################################################################
 
-			row += 50
-			
-			# info screen
 			self.shapeIS = QtGui.QTextEdit(self)
-			self.shapeIS.setMinimumSize(toolSW-20, 120)
-			self.shapeIS.setMaximumSize(toolSW-20, 120)
-			self.shapeIS.move(10, row)
+			self.shapeIS.setFixedHeight(120)
 			self.shapeIS.setPlainText(self.gInfoObserverOFF)
 			
-			row += 120
-			
-			# button
-			w1 = (toolSW-20-5-5) / 4
 			self.shapeB1 = QtGui.QPushButton(translate('magicManager', 'ON'), self)
 			self.shapeB1.clicked.connect(self.observerON)
-			self.shapeB1.setFixedWidth(w1)
 			self.shapeB1.setFixedHeight(40)
-			self.shapeB1.move(10, row)
 
-			# button
 			self.shapeB2 = QtGui.QPushButton(translate('magicManager', 'OFF'), self)
 			self.shapeB2.clicked.connect(self.observerOFF)
-			self.shapeB2.setFixedWidth(w1)
 			self.shapeB2.setFixedHeight(40)
-			self.shapeB2.move(10+w1+5, row)
 			
-			# button
 			self.shapeB3 = QtGui.QPushButton(translate('magicManager', 'remove last'), self)
 			self.shapeB3.clicked.connect(self.removeLastVertex)
-			w2 = 2 * w1
-			self.shapeB3.setFixedWidth(w2)
 			self.shapeB3.setFixedHeight(40)
-			self.shapeB3.move(10+w1+5+w1+5, row)
 
-			row += 50
-			
-			# screen
 			self.shapeLEL1 = QtGui.QLabel(translate('magicManager', 'New object thickness:'), self)
-			self.shapeLEL1.move(10, row+3)
 			
-			# text input
 			self.shapeLE1 = QtGui.QLineEdit(self)
 			self.shapeLE1.setText(str(gStep))
-			self.shapeLE1.setFixedWidth(w1+30)
-			self.shapeLE1.move(toolSW-10-w1-30, row)
 
-			row += 30
-			
-			# button
 			self.shapeB4 = QtGui.QPushButton(translate('magicManager', 'create panel'), self)
 			self.shapeB4.clicked.connect(self.createPanel)
-			self.shapeB4.setFixedWidth(toolSW-20)
 			self.shapeB4.setFixedHeight(40)
-			self.shapeB4.move(10, row)
+
+			# ############################################################################
+			# build GUI layout
+			# ############################################################################
 			
+			# create structure
+			self.head = QtGui.QVBoxLayout()
+			self.head.addWidget(self.oModeL1)
+			self.head.addWidget(self.oModeL2)
+			self.head.addWidget(self.oModeB1)
+			
+			self.body1 = QtGui.QGridLayout()
+			self.body1.addWidget(self.spL, 0, 0)
+			self.body1.addWidget(self.spBP, 0, 1)
+			self.body1.addWidget(self.spIS, 0, 2)
+			self.body1.addWidget(self.spBN, 0, 3)
+			self.body1.addWidget(self.saL, 1, 0)
+			self.body1.addWidget(self.saBP, 1, 1)
+			self.body1.addWidget(self.sainfo, 1, 2)
+			self.body1.addWidget(self.saBN, 1, 3)
+			self.body1.addWidget(self.ssL, 2, 0)
+			self.body1.addWidget(self.ssBP, 2, 1)
+			self.body1.addWidget(self.ssIS, 2, 2)
+			self.body1.addWidget(self.ssBN, 2, 3)
+			self.body1.addWidget(self.soL, 3, 0)
+			self.body1.addWidget(self.soBP, 3, 1)
+			self.body1.addWidget(self.soIS, 3, 2)
+			self.body1.addWidget(self.soBN, 3, 3)
+			self.groupBody1 = QtGui.QGroupBox(None, self)
+			self.groupBody1.setLayout(self.body1)
+			
+			self.body2 = QtGui.QVBoxLayout()
+			self.body2.addWidget(self.shapeIS)
+			self.body3 = QtGui.QHBoxLayout()
+			self.body3.addWidget(self.shapeB1)
+			self.body3.addWidget(self.shapeB2)
+			self.body3.addWidget(self.shapeB3)
+			self.body4 = QtGui.QHBoxLayout()
+			self.body4.addWidget(self.shapeLEL1)
+			self.body4.addWidget(self.shapeLE1)
+			
+			self.layBody2 = QtGui.QVBoxLayout()
+			self.layBody2.addLayout(self.body2)
+			self.layBody2.addLayout(self.body3)
+			self.layBody2.addLayout(self.body4)
+			self.groupBody2 = QtGui.QGroupBox(None, self)
+			self.groupBody2.setLayout(self.layBody2)
+			
+			self.body5 = QtGui.QHBoxLayout()
+			self.body5.addWidget(self.shapeB4)
+			
+			# set layout to main window
+			self.layout = QtGui.QVBoxLayout()
+			
+			self.layout.addLayout(self.head)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBody1)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBody2)
+			self.layout.addStretch()
+			self.layout.addLayout(self.body5)
+			self.setLayout(self.layout)
+
 			# ############################################################################
 			# show & init defaults
 			# ############################################################################
 
 			# show window
 			self.show()
+
+			# set window position
+			sw = self.width()
+			sh = self.height()
+			pw = int( FreeCADGui.getMainWindow().width() - sw ) - 5
+			ph = int( FreeCADGui.getMainWindow().height() - sh ) + 30
+			self.setGeometry(pw, ph, sw, sh)
 
 			# init
 			self.resetGUIGlobals()

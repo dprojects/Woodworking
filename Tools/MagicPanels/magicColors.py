@@ -86,7 +86,8 @@ def showQtGUI():
 
 		# tool GUI size
 		toolSW = 250
-		toolSH = 430
+		toolSH = 500
+		toolSHMax = 710
 		
 		# active screen size - FreeCAD main window
 		gSW = FreeCADGui.getMainWindow().width()
@@ -127,40 +128,27 @@ def showQtGUI():
 			self.setGeometry(self.gPW, self.gPH, self.toolSW, self.toolSH)
 			self.setWindowTitle(translate('magicColors', 'magicColors'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			self.setMaximumHeight(self.toolSHMax)
 
 			# ############################################################################
-			# options - selection mode
+			# header - selection mode
 			# ############################################################################
 			
-			row = 10
-			
-			# screen
 			self.s1S = QtGui.QLabel("", self)
 			self.s1S.setFixedWidth(area)
-			self.s1S.move(10, row)
 
-			row += 20
-			
-			# button
 			self.s1B1 = QtGui.QPushButton(translate('magicColors', 'refresh selection'), self)
 			self.s1B1.clicked.connect(self.getSelected)
-			self.s1B1.setFixedWidth(area)
 			self.s1B1.setFixedHeight(40)
-			self.s1B1.move(10, row)
 
 			# ############################################################################
-			# options - target attribute
+			# body
 			# ############################################################################
 
-			row += 50
-
-			# label
+			# target
 			self.sTargetsL = QtGui.QLabel(translate('magicColors', 'Target:'), self)
-			self.sTargetsL.setFixedWidth(col1-offset)
-			self.sTargetsL.move(10, row+13)
 
 			# not write here, copy text from getMenuIndex1 to avoid typo
-			
 			if self.gKernelVersion >= 1.0:
 				
 				self.sTargetsList = (
@@ -184,21 +172,11 @@ def showQtGUI():
 			self.sTargets.addItems(self.sTargetsList)
 			self.sTargets.setCurrentIndex(0)
 			self.sTargets.textActivated[str].connect(self.setTargetProperty)
-			self.sTargets.setFixedWidth(self.toolSW-col1-10)
-			self.sTargets.setFixedHeight(40)
-			self.sTargets.move(col1, row)
+			self.sTargets.setFixedHeight(20)
 
-			# ############################################################################
-			# options - predefined colors
-			# ############################################################################
-
-			row += 50
-
-			# label
+			# predefined colors
 			self.sColorsL = QtGui.QLabel(translate('magicColors', 'Sample:'), self)
-			self.sColorsL.setFixedWidth(col1-offset)
-			self.sColorsL.move(10, row+13)
-
+			
 			# not write here, copy text from getMenuIndex2 to avoid typo
 			self.sColorsList = (
 				translate('magicColors', 'custom'), 
@@ -227,529 +205,423 @@ def showQtGUI():
 			self.sColors.addItems(self.sColorsList)
 			self.sColors.setCurrentIndex(0)
 			self.sColors.textActivated[str].connect(self.setPredefinedColors)
-			self.sColors.setFixedWidth(self.toolSW-col1-10)
-			self.sColors.setFixedHeight(40)
-			self.sColors.move(col1, row)
-
-			# ############################################################################
+			self.sColors.setFixedHeight(20)
+			
 			# radio buttons
-			# ############################################################################
-			
-			row += 50
-			
 			self.rb1 = QtGui.QRadioButton(self)
 			self.rb1.setText(translate('magicColors', 'simple'))
 			self.rb1.toggled.connect(self.selectRadioButton1)
-			self.rb1.move(10, row)
 			
 			self.rb2 = QtGui.QRadioButton(self)
 			self.rb2.setText(translate('magicColors', 'extended'))
 			self.rb2.toggled.connect(self.selectRadioButton2)
-			self.rb2.move(100, row)
 			self.rb1.setChecked(False)
 			
-			# ############################################################################
-			# options - settings
-			# ############################################################################
-
-			row += 50
-			rowShine = row
-			rowTrans = row
-			rowSheet = row
-			rowChooser = row
-			rowAll = row
-		
-			# ############################################################################
-			# options - red color
-			# ############################################################################
-
-			# label
+			# red color
 			self.oRedL = QtGui.QLabel(translate('magicColors', 'Red:'), self)
-			self.oRedL.move(10, row+3)
-
-			# button
+			
 			self.oRedB1 = QtGui.QPushButton("-", self)
 			self.oRedB1.clicked.connect(self.setColorRedB1)
 			self.oRedB1.setFixedWidth(size)
-			self.oRedB1.move(col1, row)
 			self.oRedB1.setAutoRepeat(True)
 			
-			# text input
 			self.oRedE = QtGui.QLineEdit(self)
 			self.oRedE.setText("")
 			self.oRedE.setFixedWidth(size)
-			self.oRedE.move(col2, row)
-
-			# button
+			
 			self.oRedB2 = QtGui.QPushButton("+", self)
 			self.oRedB2.clicked.connect(self.setColorRedB2)
 			self.oRedB2.setFixedWidth(size)
-			self.oRedB2.move(col3, row)
 			self.oRedB2.setAutoRepeat(True)
 			
-			# ############################################################################
-			# options - green color
-			# ############################################################################
-
-			row += 30
-			
-			# label
+			# green color
 			self.oGreenL = QtGui.QLabel(translate('magicColors', 'Green:'), self)
-			self.oGreenL.move(10, row+3)
-
-			# button
+			
 			self.oGreenB1 = QtGui.QPushButton("-", self)
 			self.oGreenB1.clicked.connect(self.setColorGreenB1)
 			self.oGreenB1.setFixedWidth(size)
-			self.oGreenB1.move(col1, row)
 			self.oGreenB1.setAutoRepeat(True)
 			
-			# text input
 			self.oGreenE = QtGui.QLineEdit(self)
 			self.oGreenE.setText("")
 			self.oGreenE.setFixedWidth(size)
-			self.oGreenE.move(col2, row)
-
-			# button
+			
 			self.oGreenB2 = QtGui.QPushButton("+", self)
 			self.oGreenB2.clicked.connect(self.setColorGreenB2)
 			self.oGreenB2.setFixedWidth(size)
-			self.oGreenB2.move(col3, row)
 			self.oGreenB2.setAutoRepeat(True)
 
-			# ############################################################################
-			# options - blue color
-			# ############################################################################
-
-			row += 30
-			
-			# label
+			# blue color
 			self.oBlueL = QtGui.QLabel(translate('magicColors', 'Blue:'), self)
-			self.oBlueL.move(10, row+3)
-
-			# button
+			
 			self.oBlueB1 = QtGui.QPushButton("-", self)
 			self.oBlueB1.clicked.connect(self.setColorBlueB1)
 			self.oBlueB1.setFixedWidth(size)
-			self.oBlueB1.move(col1, row)
 			self.oBlueB1.setAutoRepeat(True)
 			
-			# text input
 			self.oBlueE = QtGui.QLineEdit(self)
 			self.oBlueE.setText("")
 			self.oBlueE.setFixedWidth(size)
-			self.oBlueE.move(col2, row)
-
-			# button
+			
 			self.oBlueB2 = QtGui.QPushButton("+", self)
 			self.oBlueB2.clicked.connect(self.setColorBlueB2)
 			self.oBlueB2.setFixedWidth(size)
-			self.oBlueB2.move(col3, row)
 			self.oBlueB2.setAutoRepeat(True)
 			
-			# ############################################################################
-			# options - alpha
-			# ############################################################################
-
-			row += 30
-			
-			# label
+			# alpha
 			self.oAlphaL = QtGui.QLabel(translate('magicColors', 'Alpha:'), self)
-			self.oAlphaL.move(10, row+3)
-
-			# button
+			
 			self.oAlphaB1 = QtGui.QPushButton("-", self)
 			self.oAlphaB1.clicked.connect(self.setColorAlphaB1)
 			self.oAlphaB1.setFixedWidth(size)
-			self.oAlphaB1.move(col1, row)
 			self.oAlphaB1.setAutoRepeat(True)
 			
-			# text input
 			self.oAlphaE = QtGui.QLineEdit(self)
 			self.oAlphaE.setText("")
 			self.oAlphaE.setFixedWidth(size)
-			self.oAlphaE.move(col2, row)
-
-			# button
+			
 			self.oAlphaB2 = QtGui.QPushButton("+", self)
 			self.oAlphaB2.clicked.connect(self.setColorAlphaB2)
 			self.oAlphaB2.setFixedWidth(size)
-			self.oAlphaB2.move(col3, row)
 			self.oAlphaB2.setAutoRepeat(True)
 
-			# ############################################################################
-			# options - shininess
-			# ############################################################################
-
-			# label
+			# shininess
 			self.oShineL = QtGui.QLabel(translate('magicColors', 'Shininess:'), self)
-			self.oShineL.move(10, rowShine+3)
-
-			rowShine += 30
-
+			
 			self.oShineSlide = QtGui.QSlider(self)
 			self.oShineSlide.setRange(0, 100)
 			self.oShineSlide.setValue(90)
 			self.oShineSlide.setOrientation(QtCore.Qt.Horizontal)
-			self.oShineSlide.setFixedWidth(area)
 			self.oShineSlide.valueChanged[int].connect(self.setShineSlide)
-			self.oShineSlide.move(10, rowShine)
-			self.oShineSlide.hide()
-		
-			rowShine += 50
-
-			# button
+			
 			self.oShineB1 = QtGui.QPushButton("-", self)
 			self.oShineB1.clicked.connect(self.setColorShineB1)
 			self.oShineB1.setFixedWidth(size)
-			self.oShineB1.move(col1, rowShine)
 			self.oShineB1.setAutoRepeat(True)
 			
-			# text input
 			self.oShineE = QtGui.QLineEdit(self)
 			self.oShineE.setText("90")
 			self.oShineE.setFixedWidth(size)
-			self.oShineE.move(col2, rowShine)
-
-			# button
+			
 			self.oShineB2 = QtGui.QPushButton("+", self)
 			self.oShineB2.clicked.connect(self.setColorShineB2)
 			self.oShineB2.setFixedWidth(size)
-			self.oShineB2.move(col3, rowShine)
 			self.oShineB2.setAutoRepeat(True)
-			
-			# hide by default
-			self.oShineL.hide()
-			self.oShineB1.hide()
-			self.oShineE.hide()
-			self.oShineB2.hide()
 
-			# ############################################################################
-			# options - transparency
-			# ############################################################################
-
-			# label
+			# transparency
 			self.oTransL = QtGui.QLabel(translate('magicColors', 'Transparency:'), self)
-			self.oTransL.move(10, rowTrans+3)
-
-			rowTrans += 30
-
+			
 			self.oTransSlide = QtGui.QSlider(self)
 			self.oTransSlide.setRange(0, 100)
 			self.oTransSlide.setValue(90)
 			self.oTransSlide.setOrientation(QtCore.Qt.Horizontal)
-			self.oTransSlide.setFixedWidth(area)
 			self.oTransSlide.valueChanged[int].connect(self.setTransSlide)
-			self.oTransSlide.move(10, rowTrans)
-			self.oTransSlide.hide()
 			
-			rowTrans += 50
-
-			# button
 			self.oTransB1 = QtGui.QPushButton("-", self)
 			self.oTransB1.clicked.connect(self.setColorTransB1)
 			self.oTransB1.setFixedWidth(size)
-			self.oTransB1.move(col1, rowTrans)
 			self.oTransB1.setAutoRepeat(True)
 			
-			# text input
 			self.oTransE = QtGui.QLineEdit(self)
 			self.oTransE.setText("0")
 			self.oTransE.setFixedWidth(size)
-			self.oTransE.move(col2, rowTrans)
-
-			# button
+			
 			self.oTransB2 = QtGui.QPushButton("+", self)
 			self.oTransB2.clicked.connect(self.setColorTransB2)
 			self.oTransB2.setFixedWidth(size)
-			self.oTransB2.move(col3, rowTrans)
 			self.oTransB2.setAutoRepeat(True)
 			
-			# hide by default
-			self.oTransL.hide()
-			self.oTransB1.hide()
-			self.oTransE.hide()
-			self.oTransB2.hide()
-			
-			# ############################################################################
-			# options - step
-			# ############################################################################
-
-			row += 30
-			
-			# label
+			# step
 			self.oStepL1 = QtGui.QLabel(translate('magicColors', 'RGBA step:'), self)
-			self.oStepL1.move(10, row+3)
 			
-			# text input
 			self.oStepE = QtGui.QLineEdit(self)
 			self.oStepE.setText(str(self.gStep))
 			self.oStepE.setFixedWidth(size)
-			self.oStepE.move(col2, row)
 			
-			rowSingle = rowShine
-			rowSingle += 30
-			
-			# label
 			self.oStepSingleL = QtGui.QLabel(translate('magicColors', 'Step:'), self)
-			self.oStepSingleL.move(10, rowSingle+3)
-
-			# text input
+			
 			self.oStepSingleE = QtGui.QLineEdit(self)
 			self.oStepSingleE.setText(str(self.gStepSingle))
 			self.oStepSingleE.setFixedWidth(size)
-			self.oStepSingleE.move(col2, rowSingle)
-			
-			# hide by default
-			self.oStepSingleL.hide()
-			self.oStepSingleE.hide()
-			
-			# ############################################################################
-			# options - update color
-			# ############################################################################
 
-			row += 30
-			
-			# update button
+			# update color
 			self.oCustomB = QtGui.QPushButton(translate('magicColors', 'set custom color'), self)
 			self.oCustomB.clicked.connect(self.setColor)
-			self.oCustomB.setFixedWidth(area)
 			self.oCustomB.setFixedHeight(40)
-			self.oCustomB.move(10, row)
-
-			# ############################################################################
+			
 			# color from sheet
-			# ############################################################################
-
 			info = translate('magicColors', 'This button below will set face colors from spreadsheet for all objects in active document. If the faceColors spreadsheet is not available, it will be created. Make sure you want to overwrite existing colors for all objects. There is no undo option for that. ')
 			
 			self.sheetInfo = QtGui.QLabel(info, self)
 			self.sheetInfo.setFixedWidth(area)
-			self.sheetInfo.move(10, rowSheet+3)
 			self.sheetInfo.setWordWrap(True)
-			self.sheetInfo.hide()
-
-			rowSheet += 140
 			
-			# button
 			self.sheetB1 = QtGui.QPushButton(translate('magicColors', 'set face colors from spreadsheet'), self)
 			self.sheetB1.clicked.connect(self.setSheet)
-			self.sheetB1.setFixedWidth(area)
 			self.sheetB1.setFixedHeight(40)
-			self.sheetB1.move(10, rowSheet)
-			self.sheetB1.hide()
 
-			# ############################################################################
 			# real-time color chooser
-			# ############################################################################
-			
-			row += 50
-
 			self.rtcc = QtGui.QColorDialog("",self)
 			self.rtcc.blockSignals(True)
 			self.rtcc.currentColorChanged.connect(self.getColorFromChooser)
 			self.rtcc.blockSignals(False)
-			self.rtcc.move(10, rowChooser)
 			self.rtcc.setOption(QtGui.QColorDialog.ColorDialogOption.NoButtons, True)
 			self.rtcc.setOption(QtGui.QColorDialog.ColorDialogOption.ShowAlphaChannel, True)
 			self.rtcc.setWindowFlags(QtCore.Qt.SubWindow)
-			self.rtcc.hide()
 
-			# ############################################################################
-			# all-in-one - settings
-			# ############################################################################
-			
-			rowAll -= 40
-			groupWidth = area
-			sliderWidth = area-50
-			
-			# ############################################################################
 			# all-in-one - DiffuseColor
-			# ############################################################################
-			
-			self.groupDiffuseColor = QtGui.QGroupBox('Color:', self)
-			self.groupDiffuseColor.move(10, rowAll)
-			self.groupDiffuseColor.setFixedWidth(groupWidth)
-			self.groupDiffuseColor.hide()
-			
 			self.sliderDCR = QtGui.QSlider(self)
 			self.sliderDCR.setRange(0, 255)
 			self.sliderDCR.setValue(0)
 			self.sliderDCR.setOrientation(QtCore.Qt.Horizontal)
-			self.sliderDCR.setFixedWidth(sliderWidth)
 			self.sliderDCR.valueChanged[int].connect(self.setAllInOne)
 			
 			self.sliderDCG = QtGui.QSlider(self)
 			self.sliderDCG.setRange(0, 255)
 			self.sliderDCG.setValue(0)
 			self.sliderDCG.setOrientation(QtCore.Qt.Horizontal)
-			self.sliderDCG.setFixedWidth(sliderWidth)
 			self.sliderDCG.valueChanged[int].connect(self.setAllInOne)
 			
 			self.sliderDCB = QtGui.QSlider(self)
 			self.sliderDCB.setRange(0, 255)
 			self.sliderDCB.setValue(0)
 			self.sliderDCB.setOrientation(QtCore.Qt.Horizontal)
-			self.sliderDCB.setFixedWidth(sliderWidth)
 			self.sliderDCB.valueChanged[int].connect(self.setAllInOne)
 			
-			self.layoutDiffuseColor = QtGui.QFormLayout(self.groupDiffuseColor)
-			self.layoutDiffuseColor.addRow("R :", self.sliderDCR)
-			self.layoutDiffuseColor.addRow("G :", self.sliderDCG)
-			self.layoutDiffuseColor.addRow("B :", self.sliderDCB)
-			
-			# ############################################################################
 			# all-in-one - AmbientColor
-			# ############################################################################
-			
-			rowAll += 100
-			
-			self.groupAmbientColor = QtGui.QGroupBox('Ambient:', self)
-			self.groupAmbientColor.move(10, rowAll)
-			self.groupAmbientColor.setFixedWidth(groupWidth)
-			self.groupAmbientColor.hide()
-			
 			self.sliderACR = QtGui.QSlider(self)
 			self.sliderACR.setRange(0, 255)
 			self.sliderACR.setValue(0)
 			self.sliderACR.setOrientation(QtCore.Qt.Horizontal)
-			self.sliderACR.setFixedWidth(sliderWidth)
 			self.sliderACR.valueChanged[int].connect(self.setAllInOne)
 			
 			self.sliderACG = QtGui.QSlider(self)
 			self.sliderACG.setRange(0, 255)
 			self.sliderACG.setValue(0)
 			self.sliderACG.setOrientation(QtCore.Qt.Horizontal)
-			self.sliderACG.setFixedWidth(sliderWidth)
 			self.sliderACG.valueChanged[int].connect(self.setAllInOne)
 			
 			self.sliderACB = QtGui.QSlider(self)
 			self.sliderACB.setRange(0, 255)
 			self.sliderACB.setValue(0)
 			self.sliderACB.setOrientation(QtCore.Qt.Horizontal)
-			self.sliderACB.setFixedWidth(sliderWidth)
 			self.sliderACB.valueChanged[int].connect(self.setAllInOne)
 			
-			self.layoutAmbientColor = QtGui.QFormLayout(self.groupAmbientColor)
-			self.layoutAmbientColor.addRow("R :", self.sliderACR)
-			self.layoutAmbientColor.addRow("G :", self.sliderACG)
-			self.layoutAmbientColor.addRow("B :", self.sliderACB)
-			
-			# ############################################################################
 			# all-in-one - EmissiveColor
-			# ############################################################################
-			
-			rowAll += 100
-			
-			self.groupEmissiveColor = QtGui.QGroupBox('Emissive:', self)
-			self.groupEmissiveColor.move(10, rowAll)
-			self.groupEmissiveColor.setFixedWidth(groupWidth)
-			self.groupEmissiveColor.hide()
-			
 			self.sliderECR = QtGui.QSlider(self)
 			self.sliderECR.setRange(0, 255)
 			self.sliderECR.setValue(0)
 			self.sliderECR.setOrientation(QtCore.Qt.Horizontal)
-			self.sliderECR.setFixedWidth(sliderWidth)
 			self.sliderECR.valueChanged[int].connect(self.setAllInOne)
 			
 			self.sliderECG = QtGui.QSlider(self)
 			self.sliderECG.setRange(0, 255)
 			self.sliderECG.setValue(0)
 			self.sliderECG.setOrientation(QtCore.Qt.Horizontal)
-			self.sliderECG.setFixedWidth(sliderWidth)
 			self.sliderECG.valueChanged[int].connect(self.setAllInOne)
 			
 			self.sliderECB = QtGui.QSlider(self)
 			self.sliderECB.setRange(0, 255)
 			self.sliderECB.setValue(0)
 			self.sliderECB.setOrientation(QtCore.Qt.Horizontal)
-			self.sliderECB.setFixedWidth(sliderWidth)
 			self.sliderECB.valueChanged[int].connect(self.setAllInOne)
 			
-			self.layoutEmissiveColor = QtGui.QFormLayout(self.groupEmissiveColor)
-			self.layoutEmissiveColor.addRow("R :", self.sliderECR)
-			self.layoutEmissiveColor.addRow("G :", self.sliderECG)
-			self.layoutEmissiveColor.addRow("B :", self.sliderECB)
-			
-			# ############################################################################
 			# all-in-one - SpecularColor
-			# ############################################################################
-			
-			rowAll += 100
-			
-			self.groupSpecularColor = QtGui.QGroupBox('Specular:', self)
-			self.groupSpecularColor.move(10, rowAll)
-			self.groupSpecularColor.setFixedWidth(groupWidth)
-			self.groupSpecularColor.hide()
-			
 			self.sliderSCR = QtGui.QSlider(self)
 			self.sliderSCR.setRange(0, 255)
 			self.sliderSCR.setValue(0)
 			self.sliderSCR.setOrientation(QtCore.Qt.Horizontal)
-			self.sliderSCR.setFixedWidth(sliderWidth)
 			self.sliderSCR.valueChanged[int].connect(self.setAllInOne)
 			
 			self.sliderSCG = QtGui.QSlider(self)
 			self.sliderSCG.setRange(0, 255)
 			self.sliderSCG.setValue(0)
 			self.sliderSCG.setOrientation(QtCore.Qt.Horizontal)
-			self.sliderSCG.setFixedWidth(sliderWidth)
 			self.sliderSCG.valueChanged[int].connect(self.setAllInOne)
 			
 			self.sliderSCB = QtGui.QSlider(self)
 			self.sliderSCB.setRange(0, 255)
 			self.sliderSCB.setValue(0)
 			self.sliderSCB.setOrientation(QtCore.Qt.Horizontal)
-			self.sliderSCB.setFixedWidth(sliderWidth)
 			self.sliderSCB.valueChanged[int].connect(self.setAllInOne)
-			
-			self.layoutSpecularColor = QtGui.QFormLayout(self.groupSpecularColor)
-			self.layoutSpecularColor.addRow("R :", self.sliderSCR)
-			self.layoutSpecularColor.addRow("G :", self.sliderSCG)
-			self.layoutSpecularColor.addRow("B :", self.sliderSCB)
-			
-			# ############################################################################
+
 			# all-in-one - Shininess
-			# ############################################################################
-			
-			rowAll += 100
-			
-			self.groupShininess = QtGui.QGroupBox('Shininess:', self)
-			self.groupShininess.move(10, rowAll)
-			self.groupShininess.setFixedWidth(groupWidth)
-			self.groupShininess.hide()
-			
 			self.sliderShCR = QtGui.QSlider(self)
 			self.sliderShCR.setRange(0, 100)
 			self.sliderShCR.setValue(0)
 			self.sliderShCR.setOrientation(QtCore.Qt.Horizontal)
-			self.sliderShCR.setFixedWidth(sliderWidth)
 			self.sliderShCR.valueChanged[int].connect(self.setAllInOne)
 			
-			self.layoutShininess = QtGui.QFormLayout(self.groupShininess)
-			self.layoutShininess.addRow("S :", self.sliderShCR)
-			
-			# ############################################################################
 			# all-in-one - Transparency
-			# ############################################################################
-	
-			rowAll += 60
-	
-			self.groupTransparency = QtGui.QGroupBox('Transparency:', self)
-			self.groupTransparency.move(10, rowAll)
-			self.groupTransparency.setFixedWidth(groupWidth)
-			self.groupTransparency.hide()
-			
 			self.sliderTrCR = QtGui.QSlider(self)
 			self.sliderTrCR.setRange(0, 100)
 			self.sliderTrCR.setValue(0)
 			self.sliderTrCR.setOrientation(QtCore.Qt.Horizontal)
-			self.sliderTrCR.setFixedWidth(sliderWidth)
 			self.sliderTrCR.valueChanged[int].connect(self.setAllInOne)
+
+			# ############################################################################
+			# build GUI layout
+			# ############################################################################
 			
+			# create structure
+			self.head = QtGui.QVBoxLayout()
+			self.head.addWidget(self.s1S)
+			self.head.addWidget(self.s1B1)
+			
+			self.layCHB = QtGui.QHBoxLayout()
+			self.layCHB.addWidget(self.rb1)
+			self.layCHB.addWidget(self.rb2)
+			
+			self.body1 = QtGui.QGridLayout()
+			self.body1.addWidget(self.sTargetsL, 0, 0)
+			self.body1.addWidget(self.sTargets, 0, 1)
+			self.body1.addWidget(self.sColorsL, 1, 0)
+			self.body1.addWidget(self.sColors, 1, 1)
+			
+			self.groupBody1 = QtGui.QGroupBox(None, self)
+			self.groupBody1.setLayout(self.body1)
+			
+			self.body3 = QtGui.QGridLayout()
+			self.body3.addWidget(self.oRedL, 0, 0)
+			self.body3.addWidget(self.oRedB1, 0, 1)
+			self.body3.addWidget(self.oRedE, 0, 2)
+			self.body3.addWidget(self.oRedB2, 0, 3)
+			self.body3.addWidget(self.oGreenL, 1, 0)
+			self.body3.addWidget(self.oGreenB1, 1, 1)
+			self.body3.addWidget(self.oGreenE, 1, 2)
+			self.body3.addWidget(self.oGreenB2, 1, 3)
+			self.body3.addWidget(self.oBlueL, 2, 0)
+			self.body3.addWidget(self.oBlueB1, 2, 1)
+			self.body3.addWidget(self.oBlueE, 2, 2)
+			self.body3.addWidget(self.oBlueB2, 2, 3)
+			self.body3.addWidget(self.oAlphaL, 3, 0)
+			self.body3.addWidget(self.oAlphaB1, 3, 1)
+			self.body3.addWidget(self.oAlphaE, 3, 2)
+			self.body3.addWidget(self.oAlphaB2, 3, 3)
+			
+			self.body311 = QtGui.QVBoxLayout()
+			self.body311.addWidget(self.oShineL)
+			self.body311.addWidget(self.oShineSlide)
+			self.body312 = QtGui.QHBoxLayout()
+			self.body312.addWidget(self.oShineB1)
+			self.body312.addWidget(self.oShineE)
+			self.body312.addWidget(self.oShineB2)
+			
+			self.body321 = QtGui.QVBoxLayout()
+			self.body321.addWidget(self.oTransL)
+			self.body321.addWidget(self.oTransSlide)
+			self.body322 = QtGui.QHBoxLayout()
+			self.body322.addWidget(self.oTransB1)
+			self.body322.addWidget(self.oTransE)
+			self.body322.addWidget(self.oTransB2)
+			
+			self.body41 = QtGui.QGridLayout()
+			self.body41.addWidget(self.oStepL1, 0, 0)
+			self.body41.addWidget(self.oStepE, 0, 2)
+			self.body42 = QtGui.QGridLayout()
+			self.body42.addWidget(self.oStepSingleL, 0, 0)
+			self.body42.addWidget(self.oStepSingleE, 0, 2)
+			
+			self.body5 = QtGui.QVBoxLayout()
+			self.body5.addWidget(self.oCustomB)
+			
+			self.body6 = QtGui.QVBoxLayout()
+			self.body6.addWidget(self.sheetInfo)
+			self.body6.addWidget(self.sheetB1)
+			
+			self.body7 = QtGui.QVBoxLayout()
+			self.body7.addWidget(self.rtcc)
+			self.body7.addWidget(self.sheetB1)
+			
+			self.groupDiffuseColor = QtGui.QGroupBox('Color:', self)
+			self.layoutDiffuseColor = QtGui.QFormLayout(self.groupDiffuseColor)
+			self.layoutDiffuseColor.addRow("R :", self.sliderDCR)
+			self.layoutDiffuseColor.addRow("G :", self.sliderDCG)
+			self.layoutDiffuseColor.addRow("B :", self.sliderDCB)
+			self.groupAmbientColor = QtGui.QGroupBox('Ambient:', self)
+			self.layoutAmbientColor = QtGui.QFormLayout(self.groupAmbientColor)
+			self.layoutAmbientColor.addRow("R :", self.sliderACR)
+			self.layoutAmbientColor.addRow("G :", self.sliderACG)
+			self.layoutAmbientColor.addRow("B :", self.sliderACB)
+			self.groupEmissiveColor = QtGui.QGroupBox('Emissive:', self)
+			self.layoutEmissiveColor = QtGui.QFormLayout(self.groupEmissiveColor)
+			self.layoutEmissiveColor.addRow("R :", self.sliderECR)
+			self.layoutEmissiveColor.addRow("G :", self.sliderECG)
+			self.layoutEmissiveColor.addRow("B :", self.sliderECB)
+			self.groupSpecularColor = QtGui.QGroupBox('Specular:', self)
+			self.layoutSpecularColor = QtGui.QFormLayout(self.groupSpecularColor)
+			self.layoutSpecularColor.addRow("R :", self.sliderSCR)
+			self.layoutSpecularColor.addRow("G :", self.sliderSCG)
+			self.layoutSpecularColor.addRow("B :", self.sliderSCB)
+			self.groupShininess = QtGui.QGroupBox('Shininess:', self)
+			self.layoutShininess = QtGui.QFormLayout(self.groupShininess)
+			self.layoutShininess.addRow("S :", self.sliderShCR)
+			self.groupTransparency = QtGui.QGroupBox('Transparency:', self)
 			self.layoutTransparency = QtGui.QFormLayout(self.groupTransparency)
 			self.layoutTransparency.addRow("T :", self.sliderTrCR)
+			self.bodyAIO = QtGui.QVBoxLayout()
+			self.bodyAIO.addWidget(self.groupDiffuseColor)
+			self.bodyAIO.addWidget(self.groupAmbientColor)
+			self.bodyAIO.addWidget(self.groupEmissiveColor)
+			self.bodyAIO.addWidget(self.groupSpecularColor)
+			self.bodyAIO.addWidget(self.groupShininess)
+			self.bodyAIO.addWidget(self.groupTransparency)
+			
+			self.layBody2 = QtGui.QVBoxLayout()
+			self.layBody2.addLayout(self.body3)
+			self.layBody2.addLayout(self.body311)
+			self.layBody2.addLayout(self.body312)
+			self.layBody2.addLayout(self.body321)
+			self.layBody2.addLayout(self.body322)
+			self.layBody2.addLayout(self.body41)
+			self.layBody2.addLayout(self.body42)
+			self.layBody2.addLayout(self.body6)
+			self.layBody2.addLayout(self.body7)
+			self.groupBody2 = QtGui.QGroupBox(None, self)
+			self.groupBody2.setLayout(self.layBody2)
+			
+			# set layout to main window
+			self.layout = QtGui.QVBoxLayout()
+			
+			self.layout.addLayout(self.head)
+			self.layout.addStretch()
+			self.layout.addLayout(self.layCHB)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBody1)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBody2)
+			self.layout.addLayout(self.bodyAIO)
+			self.layout.addStretch()
+			self.layout.addLayout(self.body5)
+			self.setLayout(self.layout)
+			
+			# hide
+			self.oShineSlide.hide()
+			self.oShineL.hide()
+			self.oShineB1.hide()
+			self.oShineE.hide()
+			self.oShineB2.hide()
+
+			self.oTransSlide.hide()
+			self.oTransL.hide()
+			self.oTransB1.hide()
+			self.oTransE.hide()
+			self.oTransB2.hide()
+			
+			self.oStepSingleL.hide()
+			self.oStepSingleE.hide()
+			
+			self.sheetInfo.hide()
+			self.sheetB1.hide()
+			
+			self.rtcc.hide()
+			
+			self.groupDiffuseColor.hide()
+			self.groupAmbientColor.hide()
+			self.groupEmissiveColor.hide()
+			self.groupSpecularColor.hide()
+			self.groupShininess.hide()
+			self.groupTransparency.hide()
 			
 			# ############################################################################
 			# show & init defaults
@@ -1366,6 +1238,16 @@ def showQtGUI():
 					skipObject = 1 # spreadsheet, group
 
 		# ############################################################################
+		def setNewWindow(self):
+			
+			self.resize(self.toolSW, self.toolSH)
+			sw = self.width()
+			sh = self.height()
+			pw = int( self.gSW - sw ) - 5
+			ph = int( self.gSH - sh ) + 30
+			self.setGeometry(pw, ph, sw, sh)
+			
+		# ############################################################################
 		def hideGUI(self):
 			
 			self.oRedL.hide()
@@ -1429,6 +1311,7 @@ def showQtGUI():
 			
 			self.rb1.show()
 			self.rb2.show()
+			self.groupBody2.show()
 			
 			if iType == "Shininess":
 				
@@ -1503,7 +1386,8 @@ def showQtGUI():
 				
 				self.rb1.hide()
 				self.rb2.hide()
-			
+				self.groupBody2.hide()
+
 				self.groupDiffuseColor.show()
 				self.groupAmbientColor.show()
 				self.groupEmissiveColor.show()
@@ -1556,7 +1440,10 @@ def showQtGUI():
 				
 				self.sheetInfo.hide()
 				self.sheetB1.hide()
-
+			
+			# set new window size & position
+			self.setNewWindow()
+			
 		# ############################################################################
 		def setTargetProperty(self, selectedText):
 			
@@ -1596,10 +1483,8 @@ def showQtGUI():
 				self.showGUI(self.gColorTarget)
 
 				if selectedIndex == 7:
-					self.setGeometry(self.gPW, 0, self.toolSW, 720)
 					self.setAllSliders()
 				else:
-					self.setGeometry(self.gPW, self.gPH, self.toolSW, self.toolSH)
 					self.getColor()
 
 		# ############################################################################
@@ -1720,11 +1605,13 @@ def showQtGUI():
 			
 		def selectRadioButton2(self):
 			self.hideGUI()
-			self.resize(540, 650)
 			self.rtcc.open()
 			self.sColors.setCurrentIndex(0)
 			self.getColor()
 
+			# set new window size & position
+			self.setNewWindow()
+			
 	# ############################################################################
 	# final settings
 	# ############################################################################

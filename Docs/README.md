@@ -157,6 +157,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 0.23 stable:**
 
+    * new GUI layouts to support FreeCAD Dark & Light Themes
     * support for custom objects with Width, Height and Length attribute (getDimensions)
     * support for Part :: Extrusion objects (getDimensions)
     * parametric drawers & decorated handles ((magicStart, Examples)
@@ -989,7 +990,7 @@ This tool allows you to quickly measure objects. All measurements are recognized
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/setTextures.png"> This is FreeCAD macro for woodworking to apply and store textures.
 
-Main features:
+**Main features:**
 
 * Store texture URL or local HDD path, repeat factor, rotation and fit mode in object's property.
 * Download and show textures from stored URL or local HDD path.
@@ -997,7 +998,27 @@ Main features:
 * Auto fit mode to object shape type.
 * Small GUI interface in corner to see 3D model refresh.
 
-Tool repository: [github.com/dprojects/setTextures](https://github.com/dprojects/setTextures)
+**Options:**
+
+* **show stored textures for all objects:** loads textures for all objects that have texture information saved.
+* **Adjust type:** This is the target attribute of the color structure.
+  * `biggest surface` adjust texture to the biggest surface, but not to edges.
+  * `fit to Cube` adjust texture to edges.
+  * `fit to Cylinder` adjust texture to cylinder shapes, like dowels or drill bits.
+  * `fit to Sphere` adjust texture to sphere shapes.
+  * `auto fit` recognize the object type and try to adjust texture.
+  * `glass mirror effect` mirror effect.
+* **Texture URL or local HDD path:** allows you to load a URL link to a texture or from your local disk.
+* **repeat X** allows you to repeat texture along X axis, to create pattern, 1.0 means no repeat.
+* **repeat Y** allows you to repeat texture along Y axis, to create pattern, 1.0 means no repeat.
+* **rotation** allows you to rotate texture, to create pattern, 0.0 means no rotate.
+* **set white color** sets the white color for the object to make the texture look better.
+* **Store texture properties for:**
+  * `selected objects only` this button will save information to the texture only for the currently selected objects.
+  * `all objects` this button will save information to the texture for all objects in the active document.
+* **Refresh texture for:**
+  * `selected objects only` this button will show the texture only for the currently selected objects.
+  * `all objects` this button will show the texture for all objects in the active document.
 
 ## makeBeautiful
 
@@ -1129,21 +1150,21 @@ For manual adjust you can use:
 
 ## magicFixture
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicFixture.png"> This tool allows you to apply any type of fixture, for example cabinet door handle, hinges or angles. First you have to select fixture, usually LinkGroup container with for example angle inside, and next select face, edge, hole or vertex as reference anchor. Next click `refresh selections` to load objects. After adjust position of the fixture at the surface, you have to click `create` button to store the fixture. For more details please see: [Fixture examples](https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture).
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicFixture.png"> This tool allows you to apply any type of fixture, for example cabinet door handle, hinges or angles. First you have to select fixture, usually LinkGroup container with for example angle inside, and next select face, edge, hole or vertex as reference anchor. Next click `refresh selection` to load objects. After adjust position of the fixture at the surface, you have to click `create` button to store the fixture. For more details please see: [Fixture examples](https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture).
 
 **Options:**
 
 * **set** button allows you to set the fixture or anchor individually. This option is useful when you need to hide an object to access a specific face, edge, or vertex.
-* **refresh selections:** allows you to load the fixture that should be applied and face, edge, hole or vertex as anchor reference point.
+* **refresh selection:** allows you to load the fixture that should be applied and face, edge, hole or vertex as anchor reference point.
 
 * **Anchor:** allows you to select a saved anchor as a reference point (vector).
 * **Rotation:** allows you to select the most commonly used rotations to fit an object to a plane.
 * **add selected anchor** allows you to add additional anchors as reference points to the end of the list. Before pressing this button, you must select a face, edge, hole edge or vertex. If you select a face and an edge, all vertices for the selected face or edge and the center of the face or edge will be added to the end of the list. If you select a vertex, only the selected vertex will be added to the end of the list.
 
-* **X offset:** The `+` and `-` buttons allows you to move an object along the X coordinate axis.
-* **Y offset:** The `+` and `-` buttons allows you to move an object along the Y coordinate axis.
-* **Z offset:** The `+` and `-` buttons allows you to move an object along the Z coordinate axis.
-* **Step:** Allows you to set the offset step for the `+` and `-` buttons.
+* **X offset:** The `-` and `+` buttons allows you to move an object along the X coordinate axis.
+* **Y offset:** The `-` and `+` buttons allows you to move an object along the Y coordinate axis.
+* **Z offset:** The `-` and `+` buttons allows you to move an object along the Z coordinate axis.
+* **Step:** Allows you to set the offset step for the `-` and `+` buttons.
 * **show custom settings:** allows you to preview the custom settings but you need to click `create` button to store fixture. If you use the `-` and `+` buttons, the object will change its position automatically, but if you enter your own values ​​into the text fields, you must confirm them with thi button.
 
 * **set manually:** open manual edit mode.
@@ -1247,7 +1268,25 @@ However, if you make your own detailed part or order somewhere, you need to fulf
 
 ## magicCNC
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicCNC.png"> This tool is some kind of CNC drilling machine simulator. It is the same [magicMove](#magicmove) tool but improved for the drilling purposes. The axis which move the drill bit up and down is automatically hidden at this tool. So, you can move the drill bit at the surface and you not move the drill bit up or down by mistake and cause incorrect hole depth. Also this tool has option to drill by button click. It recognize the drill bit type by the label. For the countersink the label need to contains "countersink", and for counterbore need to contains "counterbore". For other label the simple hole will be drilled. This tool also allows for turn on and off the manuall edit mode, transform FreeCAD. So, you can move the drill bit by hand and drill holes by clicking buttons. This option can be useful for artists whom want to make holes in artistic way, not with mathematical precision. For more info see: [Drilling via magicCNC](#drilling-via-magiccnc)
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicCNC.png"> This tool is some kind of CNC drilling machine simulator to drill custom holes. The axis which move the drill bit up and down is automatically hidden at this tool. So, you can move the drill bit at the surface and you not move the drill bit up or down by mistake and cause incorrect hole depth. Also this tool has option to drill by button click. It recognize the drill bit type by the label. For the countersink the label need to contains "countersink", and for counterbore need to contains "counterbore". For other label the simple hole will be drilled. This tool also allows for turn on and off the manuall edit mode. So, you can move the drill bit by hand and drill holes by clicking buttons. For more info see: [Drilling via magicCNC](#drilling-via-magiccnc)
+
+**Options:**
+
+* **set** button allows you to set face or drill bit individually. This option is useful when you need to hide an object to access a specific face or drill bit.
+* **refresh selection:** allows you to load at once the first selected face and next drill bit.
+
+* **Move along X:** The `-` and `+` buttons allows you to move drill bit along the X coordinate axis.
+* **Move along Y:** The `-` and `+` buttons allows you to move drill bit along the Y coordinate axis.
+* **Move along Z:** The `-` and `+` buttons allows you to move drill bit along the Z coordinate axis.
+* **Move step:** Allows you to set the offset step for the `-` and `+` buttons.
+* **set manually:** open manual edit mode.
+* **finish manually:** finish manual edit mode.
+* **create:** This button will create the hole below the drill bit according to the drill bit type.
+
+* **Cross:**
+  * `Corner cross:` buttons `-`, `+` resize the cross in the right bottom of the screen, it has auto-repeat.
+  * `Center cross:` buttons `on`, `off` turn on and off the center cross at the screen.
+  * `keep custom cross settings` allows to store the custom cross setting after this tool exit.
 
 ## cutDowels
 

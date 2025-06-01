@@ -51,7 +51,7 @@ def showQtMain():
 			
 			# tool screen size
 			toolSW = 300
-			toolSH = 450
+			toolSH = 550
 			
 			# active screen size - FreeCAD main window
 			gSW = FreeCADGui.getMainWindow().width()
@@ -71,99 +71,19 @@ def showQtMain():
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
-			# options - init button
+			# header
 			# ############################################################################
 
 			# button
 			self.initBA = QtGui.QPushButton(translate('setTextures', 'show stored textures for all objects'), self)
 			self.initBA.clicked.connect(self.loadAll)
-			self.initBA.resize(280, 40)
-			self.initBA.move(10, 10)
-
+			self.initBA.setFixedHeight(40)
+			
 			# ############################################################################
-			# options - store textures
+			# body - settings
 			# ############################################################################
-
-			# label
-			info = ""
-			info += translate('setTextures', 'Set new textures or change:')
-			self.storeL = QtGui.QLabel(info, self)
-			self.storeL.move(10, 70)
-
-			# color
-			# ############################################################################
-
-			self.checkColor = QtGui.QCheckBox(translate('setTextures', '- set white color'), self)
-			self.checkColor.setCheckState(QtCore.Qt.Checked)
-			self.checkColor.move(10, 100)
-
-			# URL
-			# ############################################################################
-
-			# label
-			info = ""
-			info += translate('setTextures', 'Texture URL or local HDD path:')
-			self.urlL = QtGui.QLabel(info, self)
-			self.urlL.move(10, 130)
-
-			# text input
-			self.urlO = QtGui.QLineEdit(self)
-			self.urlO.setText(str(""))
-			self.urlO.setFixedWidth(235)
-			self.urlO.move(10, 150)
-
-			# button
-			self.urlHDD = QtGui.QPushButton("...", self)
-			self.urlHDD.clicked.connect(self.loadCustomFile)
-			self.urlHDD.setFixedWidth(40)
-			self.urlHDD.move(250, 150)
-
-			# repeat
-			# ############################################################################
-
-			# text input
-			self.repeatXO = QtGui.QLineEdit(self)
-			self.repeatXO.setText(str("1.0"))
-			self.repeatXO.setFixedWidth(50)
-			self.repeatXO.move(10, 180)
-
-			# label
-			info = ""
-			info += translate('setTextures', '- repeat X, set 1 to not repeat')
-			self.repeatXL = QtGui.QLabel(info, self)
-			self.repeatXL.move(70, 183)
-
-			# text input
-			self.repeatYO = QtGui.QLineEdit(self)
-			self.repeatYO.setText(str("1.0"))
-			self.repeatYO.setFixedWidth(50)
-			self.repeatYO.move(10, 200)
-
-			# label
-			info = ""
-			info += translate('setTextures', '- repeat Y, set 1 to not repeat')
-			self.repeatYL = QtGui.QLabel(info, self)
-			self.repeatYL.move(70, 203)
-
-			# rotation
-			# ############################################################################
-
-			# text input
-			self.rotateO = QtGui.QLineEdit(self)
-			self.rotateO.setText(str("0.0"))
-			self.rotateO.setFixedWidth(50)
-			self.rotateO.move(10, 220)
-
-			# label
-			info = ""
-			info += translate('setTextures', '- rotation, set 0 to not rotate')
-			self.rotateL = QtGui.QLabel(info, self)
-			self.rotateL.move(70, 223)
 
 			# fit mode
-			# ############################################################################
-
-			# options
 			self.fitList = (
 				"biggest surface",
 				"fit to Cube",
@@ -178,67 +98,130 @@ def showQtMain():
 			self.fitO.addItems(self.fitList)
 			self.fitO.setCurrentIndex(self.fitList.index(self.gFit))
 			self.fitO.textActivated[str].connect(self.setCoordinate)
-			self.fitO.setFixedWidth(150)
-			self.fitO.move(10, 250)
 			
-			# label
-			self.fitL = QtGui.QLabel(translate('setTextures', '- fit mode'), self)
-			self.fitL.move(170, 253)
+			# color
+			self.checkColor = QtGui.QCheckBox(translate('setTextures', '- set white color'), self)
+			self.checkColor.setCheckState(QtCore.Qt.Checked)
 			
-			# store & load buttons
+			# URL
+			self.urlL = QtGui.QLabel(translate('setTextures', 'Texture URL or local HDD path:'), self)
+			
+			# text input
+			self.urlO = QtGui.QLineEdit(self)
+			self.urlO.setText("")
+			
+			self.urlHDD = QtGui.QPushButton("...", self)
+			self.urlHDD.clicked.connect(self.loadCustomFile)
+			
+			# repeat
+			self.repeatXO = QtGui.QLineEdit(self)
+			self.repeatXO.setText("1.0")
+			self.repeatXO.setFixedWidth(50)
+			
+			self.repeatXL = QtGui.QLabel(translate('setTextures', '- repeat X, set 1 to not repeat'), self)
+			
+			self.repeatYO = QtGui.QLineEdit(self)
+			self.repeatYO.setText("1.0")
+			self.repeatYO.setFixedWidth(50)
+			
+			self.repeatYL = QtGui.QLabel(translate('setTextures', '- repeat Y, set 1 to not repeat'), self)
+			
+			# rotation
+			self.rotateO = QtGui.QLineEdit(self)
+			self.rotateO.setText("0.0")
+			self.rotateO.setFixedWidth(50)
+			
+			self.rotateL = QtGui.QLabel(translate('setTextures', '- rotation, set 0 to not rotate'), self)
+			
+			# ############################################################################
+			# body - store & load buttons
 			# ############################################################################
 
-			# label
-			info = ""
-			info += translate('setTextures', 'Store texture properties for:')
-			self.storeL = QtGui.QLabel(info, self)
-			self.storeL.move(10, 280)
-
-			# button
 			self.storeBS = QtGui.QPushButton(translate('setTextures', 'selected objects only'), self)
 			self.storeBS.clicked.connect(self.storeSelected)
-			self.storeBS.resize(150, 40)
-			self.storeBS.move(10, 300)
-
-			# button
+			self.storeBS.setFixedHeight(40)
+			
 			self.storeBA = QtGui.QPushButton(translate('setTextures', 'all objects'), self)
 			self.storeBA.clicked.connect(self.storeAll)
-			self.storeBA.resize(100, 40)
-			self.storeBA.move(190, 300)
-
-			# label
-			info = ""
-			info += translate('setTextures', 'Refresh texture for:')
-			self.loadL = QtGui.QLabel(info, self)
-			self.loadL.move(10, 350)
-
-			# button
+			self.storeBA.setFixedHeight(40)
+			
 			self.loadBS = QtGui.QPushButton(translate('setTextures', 'selected objects only'), self)
 			self.loadBS.clicked.connect(self.loadSelected)
-			self.loadBS.resize(150, 40)
-			self.loadBS.move(10, 370)
-
-			# button
+			self.loadBS.setFixedHeight(40)
+			
 			self.loadBA = QtGui.QPushButton(translate('setTextures', 'all objects'), self)
 			self.loadBA.clicked.connect(self.loadAll)
-			self.loadBA.resize(100, 40)
-			self.loadBA.move(190, 370)
-
+			self.loadBA.setFixedHeight(40)
+			
 			# ############################################################################
 			# status
 			# ############################################################################
 
-			# label
-			space = ""
-			space += "                                                "
-			space += "                                                "
-			space += "                                                "
-			space += "                                                "
-			space += "                                                "
-			space += "                                                "
-			self.status = QtGui.QLabel(space, self)
-			self.status.move(10, 420)
-
+			self.status = QtGui.QLabel("", self)
+			
+			# ############################################################################
+			# build GUI layout
+			# ############################################################################
+			
+			# create structure
+			self.head = QtGui.QHBoxLayout()
+			self.head.addWidget(self.initBA)
+			
+			self.row1 = QtGui.QVBoxLayout()
+			self.row1.addWidget(self.fitO)
+			self.row1.addSpacing(20)
+			self.row1.addWidget(self.urlL)
+			
+			self.row2 = QtGui.QHBoxLayout()
+			self.row2.addWidget(self.urlO)
+			self.row2.addWidget(self.urlHDD)
+			
+			self.row3 = QtGui.QGridLayout()
+			self.row3.addWidget(self.repeatXO, 0, 0)
+			self.row3.addWidget(self.repeatXL, 0, 1)
+			self.row3.addWidget(self.repeatYO, 1, 0)
+			self.row3.addWidget(self.repeatYL, 1, 1)
+			self.row3.addWidget(self.rotateO, 2, 0)
+			self.row3.addWidget(self.rotateL, 2, 1)
+			
+			self.row4 = QtGui.QVBoxLayout()
+			self.row4.addSpacing(20)
+			self.row4.addWidget(self.checkColor)
+			
+			self.layBody1 = QtGui.QVBoxLayout()
+			self.layBody1.addLayout(self.row1)
+			self.layBody1.addLayout(self.row2)
+			self.layBody1.addLayout(self.row3)
+			self.layBody1.addLayout(self.row4)
+			self.groupBody1 = QtGui.QGroupBox(None, self)
+			self.groupBody1.setLayout(self.layBody1)
+			
+			self.rowB1 = QtGui.QHBoxLayout()
+			self.rowB1.addWidget(self.storeBS)
+			self.rowB1.addWidget(self.storeBA)
+			self.groupBodyB1 = QtGui.QGroupBox(translate('setTextures', 'Store texture properties for:'), self)
+			self.groupBodyB1.setLayout(self.rowB1)
+			
+			self.rowB2 = QtGui.QHBoxLayout()
+			self.rowB2.addWidget(self.loadBS)
+			self.rowB2.addWidget(self.loadBA)
+			self.groupBodyB2 = QtGui.QGroupBox(translate('setTextures', 'Refresh texture for:'), self)
+			self.groupBodyB2.setLayout(self.rowB2)
+			
+			# set layout to main window
+			self.layout = QtGui.QVBoxLayout()
+			
+			self.layout.addLayout(self.head)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBody1)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBodyB1)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBodyB2)
+			self.layout.addStretch()
+			self.layout.addWidget(self.status)
+			self.setLayout(self.layout)
+			
 			# ############################################################################
 			# show all
 			# ############################################################################

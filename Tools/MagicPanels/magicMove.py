@@ -52,20 +52,10 @@ def showQtGUI():
 		gCopyType = getMenuIndex2[translate('magicMove', 'auto')]
 		gMirrorType = getMenuIndex3[translate('magicMove', 'auto')]
 		
-		gInfoMoveX = translate('magicMove', 'Move along X:')
-		gInfoMoveY = translate('magicMove', 'Move along Y:')
-		gInfoMoveZ = translate('magicMove', 'Move along Z:')
-		gInfoMoveStep = translate('magicMove', 'Move step:')
-
-		gInfoCopyX = translate('magicMove', 'Copy along X:')
-		gInfoCopyY = translate('magicMove', 'Copy along Y:')
-		gInfoCopyZ = translate('magicMove', 'Copy along Z:')
-		gInfoCopyStep = translate('magicMove', 'Copy offset:')
-
 		gInfoPath1 = translate('magicMove', 'Rotation X, Y, Z:')
 		gInfoPath2 = translate('magicMove', 'Next point step:')
 
-		gNoSelection = translate('magicMove', 'select panel or container')
+		gNoSelection = translate('magicMove', 'select object to move or copy')
 		gNoPathSelection = translate('magicMove', 'select copy path')
 		gNoCopyByEdge = translate('magicMove', 'select edge or face')
 		gNoMirrorPoint = translate('magicMove', 'edge, face or vertex')
@@ -81,21 +71,6 @@ def showQtGUI():
 		
 		gNewContainerON = False
 		gContainerRef = "root"
-		
-		gCornerCrossSupport = True
-		gAxisCrossSupport = True
-		
-		try:
-			gCornerCross = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
-			gCornerCrossOrig = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
-		except:
-			gCornerCrossSupport = False
-			
-		try:
-			gAxisCross = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
-			gAxisCrossOrig = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
-		except:
-			gAxisCrossSupport = False
 		
 		gPathObj = ""
 		gPathStep = 1
@@ -119,6 +94,22 @@ def showQtGUI():
 		gMObj = ""
 		gMSub = ""
 		
+		# foot
+		gCornerCrossSupport = True
+		gAxisCrossSupport = True
+		
+		try:
+			gCornerCross = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
+			gCornerCrossOrig = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
+		except:
+			gCornerCrossSupport = False
+			
+		try:
+			gAxisCross = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
+			gAxisCrossOrig = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
+		except:
+			gAxisCrossSupport = False
+		
 		# ############################################################################
 		# init
 		# ############################################################################
@@ -135,7 +126,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 280
-			toolSH = 450
+			toolSH = 480
 			
 			area = toolSW - 20          # full gui area
 			rside = toolSW - 10         # right side of the GUI
@@ -145,8 +136,8 @@ def showQtGUI():
 			gSH = FreeCADGui.getMainWindow().height()
 
 			# tool screen position
-			gPW = 0 + 200
-			gPH = int( gSH - toolSH ) - 40
+			gPW = 0 + 50
+			gPH = int( gSH - toolSH ) - 30
 
 			# ############################################################################
 			# main window
@@ -156,29 +147,19 @@ def showQtGUI():
 			self.setGeometry(gPW, gPH, toolSW, toolSH)
 			self.setWindowTitle(translate('magicMove', 'magicMove'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
-
+			
 			# ############################################################################
-			# GUI for common selection part (visible by default)
+			# GUI for header
 			# ############################################################################
-
-			row = 10
 			
 			# screen
-			info = ""
-			self.s1S = QtGui.QLabel(info, self)
-			self.s1S.setFixedWidth(area-10)
-			self.s1S.move(10, row)
-
-			row += 20
-
+			self.s1S = QtGui.QLabel("", self)
+			self.s1S.setMaximumWidth(area)
+			
 			# button
 			self.s1B1 = QtGui.QPushButton(translate('magicMove', 'refresh selection'), self)
 			self.s1B1.clicked.connect(self.getSelected)
-			self.s1B1.setFixedWidth(area)
 			self.s1B1.setFixedHeight(40)
-			self.s1B1.move(10, row)
-
-			row += 50
 			
 			# not write here, copy text from getMenuIndex1 to avoid typo
 			self.sModeList = (
@@ -194,9 +175,8 @@ def showQtGUI():
 			self.sMode.addItems(self.sModeList)
 			self.sMode.setCurrentIndex(0) # default
 			self.sMode.textActivated[str].connect(self.setModeType)
-			self.sMode.setFixedWidth(125)
-			self.sMode.move(10, row)
-
+			self.sMode.setMinimumWidth(150)
+			
 			# not write here, copy text from getMenuIndex2 to avoid typo
 			self.sCopyTypeList = (
 				translate('magicMove', 'auto'), # default
@@ -209,10 +189,9 @@ def showQtGUI():
 			self.sCopyType.addItems(self.sCopyTypeList)
 			self.sCopyType.setCurrentIndex(0) # default
 			self.sCopyType.textActivated[str].connect(self.setCopyType)
-			self.sCopyType.setFixedWidth(95)
-			self.sCopyType.move(area - 85, row)
+			self.sCopyType.setMinimumWidth(110)
 			self.sCopyType.hide()
-
+			
 			# not write here, copy text from getMenuIndex3 to avoid typo
 			self.sMirrorTypeList = (
 				translate('magicMove', 'auto'), 
@@ -224,18 +203,18 @@ def showQtGUI():
 			self.sMirrorType.addItems(self.sMirrorTypeList)
 			self.sMirrorType.setCurrentIndex(0) # default
 			self.sMirrorType.textActivated[str].connect(self.setMirrorType)
-			self.sMirrorType.setFixedWidth(95)
-			self.sMirrorType.move(area - 85, row)
+			self.sMirrorType.setMinimumWidth(110)
 			self.sMirrorType.hide()
+			
+			# button
+			self.gNewContainerB1 = QtGui.QPushButton(translate('magicMove', 'copy to new container'), self)
+			self.gNewContainerB1.clicked.connect(self.setNewContainer)
+			self.gNewContainerB1.setFixedHeight(40)
+			self.gNewContainerB1.hide()
 
 			# ############################################################################
-			# settigns for custom GUI
+			# settigns
 			# ############################################################################
-
-			rowcbe = row                                   # row for copy by edge
-			rowmte = row                                   # row for move to equal
-			rowmc = row                                    # row for mirror copy
-			rowpath = row + 80                             # row to copy along path
 			
 			btsize = 50                                    # button size
 			btsize2x = 2 * btsize + 10                     # button size 2x normal
@@ -253,504 +232,603 @@ def showQtGUI():
 			mfsize = (area - (2 * mfoffset)) / 3           # mirror text field size
 			
 			# ############################################################################
-			# GUI for Move and Copy (visible for Move by default)
+			# GUI for Move
 			# ############################################################################
-			
-			row += 30
-
-			# button
-			self.gNewContainerB1 = QtGui.QPushButton(translate('magicMove', 'copy to new container'), self)
-			self.gNewContainerB1.clicked.connect(self.setNewContainer)
-			self.gNewContainerB1.setFixedWidth(area)
-			self.gNewContainerB1.setFixedHeight(40)
-			self.gNewContainerB1.move(10, row)
-			self.gNewContainerB1.hide()
-
-			row += 50
 
 			# label
-			self.o1L = QtGui.QLabel(self.gInfoMoveX, self)
-			self.o1L.move(10, row+3)
+			self.oMove1L = QtGui.QLabel(translate('magicMove', 'Move along X:'), self)
 
 			# button
-			self.o1B1 = QtGui.QPushButton("X-", self)
-			self.o1B1.clicked.connect(self.setX1)
-			self.o1B1.setFixedWidth(btsize)
-			self.o1B1.move(bc1, row)
-			self.o1B1.setAutoRepeat(True)
+			self.oMove1B1 = QtGui.QPushButton("X-", self)
+			self.oMove1B1.clicked.connect(self.setMoveX1)
+			self.oMove1B1.setFixedWidth(btsize)
+			self.oMove1B1.setAutoRepeat(True)
 			
 			# button
-			self.o1B2 = QtGui.QPushButton("X+", self)
-			self.o1B2.clicked.connect(self.setX2)
-			self.o1B2.setFixedWidth(btsize)
-			self.o1B2.move(bc2, row)
-			self.o1B2.setAutoRepeat(True)
-
-			row += 30
-
-			# label
-			self.o2L = QtGui.QLabel(self.gInfoMoveY, self)
-			self.o2L.move(10, row+3)
-
-			# button
-			self.o2B1 = QtGui.QPushButton("Y-", self)
-			self.o2B1.clicked.connect(self.setY1)
-			self.o2B1.setFixedWidth(btsize)
-			self.o2B1.move(bc1, row)
-			self.o2B1.setAutoRepeat(True)
-			
-			# button
-			self.o2B2 = QtGui.QPushButton("Y+", self)
-			self.o2B2.clicked.connect(self.setY2)
-			self.o2B2.setFixedWidth(btsize)
-			self.o2B2.move(bc2, row)
-			self.o2B2.setAutoRepeat(True)
-
-			row += 30
+			self.oMove1B2 = QtGui.QPushButton("X+", self)
+			self.oMove1B2.clicked.connect(self.setMoveX2)
+			self.oMove1B2.setFixedWidth(btsize)
+			self.oMove1B2.setAutoRepeat(True)
 			
 			# label
-			self.o3L = QtGui.QLabel(self.gInfoMoveZ, self)
-			self.o3L.move(10, row+3)
-
-			# button
-			self.o3B1 = QtGui.QPushButton("Z-", self)
-			self.o3B1.clicked.connect(self.setZ1)
-			self.o3B1.setFixedWidth(btsize)
-			self.o3B1.move(bc1, row)
-			self.o3B1.setAutoRepeat(True)
+			self.oMove2L = QtGui.QLabel(translate('magicMove', 'Move along Y:'), self)
 			
 			# button
-			self.o3B2 = QtGui.QPushButton("Z+", self)
-			self.o3B2.clicked.connect(self.setZ2)
-			self.o3B2.setFixedWidth(btsize)
-			self.o3B2.move(bc2, row)
-			self.o3B2.setAutoRepeat(True)
+			self.oMove2B1 = QtGui.QPushButton("Y-", self)
+			self.oMove2B1.clicked.connect(self.setMoveY1)
+			self.oMove2B1.setFixedWidth(btsize)
+			self.oMove2B1.setAutoRepeat(True)
+			
+			# button
+			self.oMove2B2 = QtGui.QPushButton("Y+", self)
+			self.oMove2B2.clicked.connect(self.setMoveY2)
+			self.oMove2B2.setFixedWidth(btsize)
+			self.oMove2B2.setAutoRepeat(True)
 
-			row += 40
+			# label
+			self.oMove3L = QtGui.QLabel(translate('magicMove', 'Move along Z:'), self)
+			
+			# button
+			self.oMove3B1 = QtGui.QPushButton("Z-", self)
+			self.oMove3B1.clicked.connect(self.setMoveZ1)
+			self.oMove3B1.setFixedWidth(btsize)
+			self.oMove3B1.setAutoRepeat(True)
+			
+			# button
+			self.oMove3B2 = QtGui.QPushButton("Z+", self)
+			self.oMove3B2.clicked.connect(self.setMoveZ2)
+			self.oMove3B2.setFixedWidth(btsize)
+			self.oMove3B2.setAutoRepeat(True)
 			
 			# label
-			self.oStepL = QtGui.QLabel(self.gInfoMoveStep, self)
-			self.oStepL.setFixedWidth(100)
-			self.oStepL.move(10, row+3)
-
+			self.oMoveStepL = QtGui.QLabel(translate('magicMove', 'Move step:'), self)
+			self.oMoveStepL.setFixedWidth(100)
+			
 			# text input
-			self.oStepE = QtGui.QLineEdit(self)
-			self.oStepE.setText(MagicPanels.unit2gui(100))
-			self.oStepE.setFixedWidth(tfsizeLong)
-			self.oStepE.move(rside-tfsizeLong, row)
-
-			# ############################################################################
-			# animation checkbox
-			# ############################################################################
-
-			row += 30
-				
+			self.oMoveStepE = QtGui.QLineEdit(self)
+			self.oMoveStepE.setText(MagicPanels.unit2gui(100))
+			self.oMoveStepE.setFixedWidth(tfsizeLong)
+			
 			self.animcb = QtGui.QCheckBox(translate('magicMove', ' - animate move'), self)
 			self.animcb.setCheckState(QtCore.Qt.Unchecked)
-			self.animcb.move(10, row+3)
-
-			# ############################################################################
-			# GUI for Move to Equal (hidden by default)
-			# ############################################################################
 			
-			rowmte += 40
+			# ############################################################################
+			# GUI for Copy
+			# ############################################################################
+
+			# label
+			self.oCopy1L = QtGui.QLabel(translate('magicMove', 'Copy along X:'), self)
+
+			# button
+			self.oCopy1B1 = QtGui.QPushButton("X-", self)
+			self.oCopy1B1.clicked.connect(self.setCopyX1)
+			self.oCopy1B1.setFixedWidth(btsize)
+			self.oCopy1B1.setAutoRepeat(True)
+			
+			# button
+			self.oCopy1B2 = QtGui.QPushButton("X+", self)
+			self.oCopy1B2.clicked.connect(self.setCopyX2)
+			self.oCopy1B2.setFixedWidth(btsize)
+			self.oCopy1B2.setAutoRepeat(True)
+			
+			# label
+			self.oCopy2L = QtGui.QLabel(translate('magicMove', 'Copy along Y:'), self)
+			
+			# button
+			self.oCopy2B1 = QtGui.QPushButton("Y-", self)
+			self.oCopy2B1.clicked.connect(self.setCopyY1)
+			self.oCopy2B1.setFixedWidth(btsize)
+			self.oCopy2B1.setAutoRepeat(True)
+			
+			# button
+			self.oCopy2B2 = QtGui.QPushButton("Y+", self)
+			self.oCopy2B2.clicked.connect(self.setCopyY2)
+			self.oCopy2B2.setFixedWidth(btsize)
+			self.oCopy2B2.setAutoRepeat(True)
+
+			# label
+			self.oCopy3L = QtGui.QLabel(translate('magicMove', 'Copy along Z:'), self)
+			
+			# button
+			self.oCopy3B1 = QtGui.QPushButton("Z-", self)
+			self.oCopy3B1.clicked.connect(self.setCopyZ1)
+			self.oCopy3B1.setFixedWidth(btsize)
+			self.oCopy3B1.setAutoRepeat(True)
+			
+			# button
+			self.oCopy3B2 = QtGui.QPushButton("Z+", self)
+			self.oCopy3B2.clicked.connect(self.setCopyZ2)
+			self.oCopy3B2.setFixedWidth(btsize)
+			self.oCopy3B2.setAutoRepeat(True)
+			
+			# label
+			self.oCopyStepL = QtGui.QLabel(translate('magicMove', 'Copy offset:'), self)
+			self.oCopyStepL.setFixedWidth(100)
+			
+			# text input
+			self.oCopyStepE = QtGui.QLineEdit(self)
+			self.oCopyStepE.setText(MagicPanels.unit2gui(100))
+			self.oCopyStepE.setFixedWidth(tfsizeLong)
+			
+			# ############################################################################
+			# GUI for Move to Equal
+			# ############################################################################
 			
 			self.mte1B = QtGui.QPushButton(translate('magicMove', 'set'), self)
 			self.mte1B.clicked.connect(self.setMEEdgeStart)
-			self.mte1B.setFixedWidth(60)
+			self.mte1B.setFixedWidth(btsize)
 			self.mte1B.setFixedHeight(20)
-			self.mte1B.move(10, rowmte)
-			self.mte1B.hide()
 			
 			self.mte1L = QtGui.QLabel(self.gNoMEEdgeStart, self)
-			self.mte1L.setFixedWidth(area - 80)
-			self.mte1L.move(80, rowmte+3)
-			self.mte1L.hide()
-
-			rowmte += 30
+			self.mte1L.setMaximumWidth(area-100)
 			
 			self.mte2B = QtGui.QPushButton(translate('magicMove', 'set'), self)
 			self.mte2B.clicked.connect(self.setMEEdgeEnd)
-			self.mte2B.setFixedWidth(60)
+			self.mte2B.setFixedWidth(btsize)
 			self.mte2B.setFixedHeight(20)
-			self.mte2B.move(10, rowmte)
-			self.mte2B.hide()
 			
 			self.mte2L = QtGui.QLabel(self.gNoMEEdgeEnd, self)
-			self.mte2L.setFixedWidth(area - 80)
-			self.mte2L.move(80, rowmte+3)
-			self.mte2L.hide()
-
-			rowmte += 30
+			self.mte2L.setMaximumWidth(area-100)
 			
 			# button
 			self.mte12B = QtGui.QPushButton(translate('magicMove', 'set both edges'), self)
 			self.mte12B.clicked.connect(self.setMEEdge)
-			self.mte12B.setFixedWidth(area)
 			self.mte12B.setFixedHeight(40)
-			self.mte12B.move(10, rowmte)
-
-			rowmte += 50
 			
 			# label
 			self.mte3L = QtGui.QLabel(translate('magicMove', 'Equal space along X:'), self)
-			self.mte3L.move(10, rowmte+3)
 
 			# button
 			self.mte3B = QtGui.QPushButton(translate('magicMove', 'move'), self)
 			self.mte3B.clicked.connect(self.createMoveToEqualX)
 			self.mte3B.setFixedWidth(btsize2x)
-			self.mte3B.move(rside-btsize2x, rowmte)
 			self.mte3B.setAutoRepeat(False)
-			
-			rowmte += 30
 
 			# label
 			self.mte4L = QtGui.QLabel(translate('magicMove', 'Equal space along Y:'), self)
-			self.mte4L.move(10, rowmte+3)
 
 			# button
 			self.mte4B = QtGui.QPushButton(translate('magicMove', 'move'), self)
 			self.mte4B.clicked.connect(self.createMoveToEqualY)
 			self.mte4B.setFixedWidth(btsize2x)
-			self.mte4B.move(rside-btsize2x, rowmte)
 			self.mte4B.setAutoRepeat(False)
-	
-			rowmte += 30
-			
+
 			# label
 			self.mte5L = QtGui.QLabel(translate('magicMove', 'Equal space along Z:'), self)
-			self.mte5L.move(10, rowmte+3)
 
 			# button
 			self.mte5B = QtGui.QPushButton(translate('magicMove', 'move'), self)
 			self.mte5B.clicked.connect(self.createMoveToEqualZ)
 			self.mte5B.setFixedWidth(btsize2x)
-			self.mte5B.move(rside-btsize2x, rowmte)
 			self.mte5B.setAutoRepeat(False)
 			
-			# hide by default
-			self.mte1L.hide()
-			self.mte1B.hide()
-			self.mte2L.hide()
-			self.mte2B.hide()
-			self.mte12B.hide()
-			self.mte3L.hide()
-			self.mte3B.hide()
-			self.mte4L.hide()
-			self.mte4B.hide()
-			self.mte5L.hide()
-			self.mte5B.hide()
-			
 			# ############################################################################
-			# GUI for Copy by Edge (hidden by default)
+			# GUI for Copy by Edge
 			# ############################################################################
-			
-			rowcbe += 40
 			
 			self.cbe1B = QtGui.QPushButton(translate('magicMove', 'set'), self)
 			self.cbe1B.clicked.connect(self.setCopyByEdge)
-			self.cbe1B.setFixedWidth(60)
+			self.cbe1B.setFixedWidth(btsize)
 			self.cbe1B.setFixedHeight(20)
-			self.cbe1B.move(10, rowcbe)
-			self.cbe1B.hide()
 			
 			self.cbe1L = QtGui.QLabel(self.gNoCopyByEdge, self)
-			self.cbe1L.setFixedWidth(area - 80)
-			self.cbe1L.move(80, rowcbe+3)
-			self.cbe1L.hide()
-
-			rowcbe += 30
+			self.cbe1L.setMaximumWidth(area-100)
 			
 			# label
-			self.cbe2L = QtGui.QLabel(self.gInfoCopyX, self)
-			self.cbe2L.move(10, rowcbe+3)
+			self.cbe2L = QtGui.QLabel(translate('magicMove', 'Copy along X:'), self)
 
 			# button
 			self.cbe2B = QtGui.QPushButton(translate('magicMove', 'create'), self)
 			self.cbe2B.clicked.connect(self.createCopyByEdgeX)
 			self.cbe2B.setFixedWidth(btsize2x)
-			self.cbe2B.move(bc1, rowcbe)
 			self.cbe2B.setAutoRepeat(False)
-			
-			rowcbe += 30
 
 			# label
-			self.cbe3L = QtGui.QLabel(self.gInfoCopyY, self)
-			self.cbe3L.move(10, rowcbe+3)
+			self.cbe3L = QtGui.QLabel(translate('magicMove', 'Copy along Y:'), self)
 
 			# button
 			self.cbe3B = QtGui.QPushButton(translate('magicMove', 'create'), self)
 			self.cbe3B.clicked.connect(self.createCopyByEdgeY)
 			self.cbe3B.setFixedWidth(btsize2x)
-			self.cbe3B.move(bc1, rowcbe)
 			self.cbe3B.setAutoRepeat(False)
-	
-			rowcbe += 30
-			
+
 			# label
-			self.cbe4L = QtGui.QLabel(self.gInfoCopyZ, self)
-			self.cbe4L.move(10, rowcbe+3)
+			self.cbe4L = QtGui.QLabel(translate('magicMove', 'Copy along Z:'), self)
 
 			# button
 			self.cbe4B = QtGui.QPushButton(translate('magicMove', 'create'), self)
 			self.cbe4B.clicked.connect(self.createCopyByEdgeZ)
 			self.cbe4B.setFixedWidth(btsize2x)
-			self.cbe4B.move(bc1, rowcbe)
 			self.cbe4B.setAutoRepeat(False)
-			
-			rowcbe += 40
-			
+
 			# label
 			self.cbe5L = QtGui.QLabel(translate('magicMove', 'Additional offset:'), self)
-			self.cbe5L.move(10, rowcbe+3)
 
 			# text input
 			self.cbe5E = QtGui.QLineEdit(self)
 			self.cbe5E.setText(MagicPanels.unit2gui(0))
 			self.cbe5E.setFixedWidth(tfsizeLong)
-			self.cbe5E.move(rside-tfsizeLong, rowcbe)
 
-			# hide by default
-			self.cbe1L.hide()
-			self.cbe1B.hide()
-			self.cbe2L.hide()
-			self.cbe2B.hide()
-			self.cbe3L.hide()
-			self.cbe3B.hide()
-			self.cbe4L.hide()
-			self.cbe4B.hide()
-			self.cbe5L.hide()
-			self.cbe5E.hide()
-			
 			# ############################################################################
-			# GUI for Copy by Path (hidden by default)
+			# GUI for Path
 			# ############################################################################
 			
-			self.pathB1 = QtGui.QPushButton(translate('magicMove', 'set'), self)
-			self.pathB1.clicked.connect(self.setCopyPath)
-			self.pathB1.setFixedWidth(60)
-			self.pathB1.setFixedHeight(20)
-			self.pathB1.move(10, rowpath)
-			self.pathB1.hide()
+			self.oPathBS = QtGui.QPushButton(translate('magicMove', 'set'), self)
+			self.oPathBS.clicked.connect(self.setCopyPath)
+			self.oPathBS.setFixedWidth(btsize)
+			self.oPathBS.setFixedHeight(20)
 			
-			self.oPathRotZL = QtGui.QLabel(self.gNoPathSelection, self)
-			self.oPathRotZL.setFixedWidth(area-80)
-			self.oPathRotZL.move(80, rowpath+3)
-			self.oPathRotZL.hide()
+			self.oPathCurveL = QtGui.QLabel(self.gNoPathSelection, self)
+			self.oPathCurveL.setMaximumWidth(area-100)
 			
-			rowpath += 40
-			
-			self.oPathRotXL = QtGui.QLabel(self.gInfoPath1, self)
-			self.oPathRotXL.move(10, rowpath+3)
-			self.oPathRotXL.hide()
+			self.oPathRotL = QtGui.QLabel(self.gInfoPath1, self)
 			
 			self.oPathRotXE = QtGui.QLineEdit(self)
 			self.oPathRotXE.setText("0")
 			self.oPathRotXE.setFixedWidth(rfs)
-			self.oPathRotXE.move(rside - (3 * rfs) - (2 * rfo), rowpath)
-			self.oPathRotXE.hide()
 			
 			self.oPathRotYE = QtGui.QLineEdit(self)
 			self.oPathRotYE.setText("0")
 			self.oPathRotYE.setFixedWidth(rfs)
-			self.oPathRotYE.move(rside - (2 * rfs) - (1 * rfo), rowpath)
-			self.oPathRotYE.hide()
 	
 			self.oPathRotZE = QtGui.QLineEdit(self)
 			self.oPathRotZE.setText("0")
 			self.oPathRotZE.setFixedWidth(rfs)
-			self.oPathRotZE.move(rside-rfs, rowpath)
-			self.oPathRotZE.hide()
 
-			rowpath += 30
-			
-			self.oPathRotYL = QtGui.QLabel(self.gInfoPath2, self)
-			self.oPathRotYL.move(10, rowpath+3)
-			self.oPathRotYL.hide()
+			self.oPathStepL = QtGui.QLabel(self.gInfoPath2, self)
 			
 			self.oPathStepE = QtGui.QLineEdit(self)
 			self.oPathStepE.setText("1")
 			self.oPathStepE.setFixedWidth(65)
-			self.oPathStepE.move(area - 55, rowpath)
-			self.oPathStepE.hide()
-
-			rowpath += 50
 			
-			self.pathB2 = QtGui.QPushButton(translate('magicMove', 'copy along path'), self)
-			self.pathB2.clicked.connect(self.createPathPanel)
-			self.pathB2.setFixedWidth(area)
-			self.pathB2.setFixedHeight(40)
-			self.pathB2.move(10, rowpath)
-			self.pathB2.setAutoRepeat(True)
-			self.pathB2.hide()
+			self.oPathBC = QtGui.QPushButton(translate('magicMove', 'copy along path'), self)
+			self.oPathBC.clicked.connect(self.createPathPanel)
+			self.oPathBC.setFixedHeight(40)
+			self.oPathBC.setAutoRepeat(True)
 
 			# ############################################################################
-			# GUI for Mirror copy (hidden by default)
+			# GUI for Mirror
 			# ############################################################################
-			
-			rowmc += 30
 			
 			self.mc1B = QtGui.QPushButton(translate('magicMove', 'set'), self)
 			self.mc1B.clicked.connect(self.setMirrorPoint)
-			self.mc1B.setFixedWidth(60)
+			self.mc1B.setFixedWidth(btsize)
 			self.mc1B.setFixedHeight(20)
-			self.mc1B.move(10, rowmc)
-			self.mc1B.hide()
 			
 			self.mc1L = QtGui.QLabel(self.gNoMirrorPoint, self)
-			self.mc1L.setFixedWidth(area - 80)
-			self.mc1L.move(80, rowmc+3)
-			self.mc1L.hide()
-
-			rowmc += 30
-
-			self.mc3L = QtGui.QLabel(translate('magicMove', 'Mirror XYZ:'), self)
-			self.mc3L.move(10, rowmc+3)
-			self.mc3L.hide()
+			self.mc1L.setMaximumWidth(area-100)
 			
-			rowmc += 20
+			self.mc3L = QtGui.QLabel(translate('magicMove', 'Mirror XYZ:'), self)
 			
 			self.mc31E = QtGui.QLineEdit(self)
 			self.mc31E.setText(MagicPanels.unit2gui(0))
 			self.mc31E.setFixedWidth(mfsize)
-			self.mc31E.move(rside-mfsize, rowmc)
-			self.mc31E.hide()
 			
 			self.mc32E = QtGui.QLineEdit(self)
 			self.mc32E.setText(MagicPanels.unit2gui(0))
 			self.mc32E.setFixedWidth(mfsize)
-			self.mc32E.move(rside - (2 * mfsize) - (1 * mfoffset), rowmc)
-			self.mc32E.hide()
-	
+			
 			self.mc33E = QtGui.QLineEdit(self)
 			self.mc33E.setText(MagicPanels.unit2gui(0))
 			self.mc33E.setFixedWidth(tfsize)
-			self.mc33E.move(rside - (3 * mfsize) - (2 * mfoffset), rowmc)
-			self.mc33E.hide()
-			
-			rowmc += 30
-			
+
 			# label
 			self.mc2L = QtGui.QLabel(translate('magicMove', 'Additional offset:'), self)
-			self.mc2L.move(10, rowmc+3)
 
 			# text input
 			self.mc2E = QtGui.QLineEdit(self)
 			self.mc2E.setText(MagicPanels.unit2gui(0))
 			self.mc2E.setFixedWidth(mfsize)
-			self.mc2E.move(rside-mfsize, rowmc)
-
-			rowmc += 50
 			
 			# label
 			self.mc4L = QtGui.QLabel(translate('magicMove', 'Mirror along X:'), self)
-			self.mc4L.move(10, rowmc+3)
 
 			# button
 			self.mc4B1 = QtGui.QPushButton(translate('magicMove', 'create'), self)
 			self.mc4B1.clicked.connect(self.createMirrorX)
 			self.mc4B1.setFixedWidth(btsize2x)
-			self.mc4B1.move(bc1, rowmc)
 			self.mc4B1.setAutoRepeat(False)
-	
-			rowmc += 30
 
 			# label
 			self.mc5L = QtGui.QLabel(translate('magicMove', 'Mirror along Y:'), self)
-			self.mc5L.move(10, rowmc+3)
 
 			# button
 			self.mc5B1 = QtGui.QPushButton(translate('magicMove', 'create'), self)
 			self.mc5B1.clicked.connect(self.createMirrorY)
 			self.mc5B1.setFixedWidth(btsize2x)
-			self.mc5B1.move(bc1, rowmc)
 			self.mc5B1.setAutoRepeat(False)
-
-			rowmc += 30
 			
 			# label
 			self.mc6L = QtGui.QLabel(translate('magicMove', 'Mirror along Z:'), self)
-			self.mc6L.move(10, rowmc+3)
 
 			# button
 			self.mc6B1 = QtGui.QPushButton(translate('magicMove', 'create'), self)
 			self.mc6B1.clicked.connect(self.createMirrorZ)
 			self.mc6B1.setFixedWidth(btsize2x)
-			self.mc6B1.move(bc1, rowmc)
 			self.mc6B1.setAutoRepeat(False)
 			
-			# hide by default
-			self.mc1B.hide()
-			self.mc1L.hide()
-			self.mc2L.hide()
-			self.mc2E.hide()
-			self.mc3L.hide()
-			self.mc31E.hide()
-			self.mc32E.hide()
-			self.mc33E.hide()
-			self.mc4L.hide()
-			self.mc4B1.hide()
-			self.mc5L.hide()
-			self.mc5B1.hide()
-			self.mc6L.hide()
-			self.mc6B1.hide()
-		
 			# ############################################################################
-			# GUI for common foot (visible by default)
+			# GUI for common foot
 			# ############################################################################
-			
-			row = toolSH - 90
 			
 			if self.gCornerCrossSupport == True:
 			
 				# label
 				self.cocL = QtGui.QLabel(translate('magicMove', 'Corner cross:'), self)
-				self.cocL.move(10, row+3)
 
 				# button
 				self.cocB1 = QtGui.QPushButton("-", self)
 				self.cocB1.clicked.connect(self.setCornerM)
 				self.cocB1.setFixedWidth(btsize)
-				self.cocB1.move(bc1, row)
 				self.cocB1.setAutoRepeat(True)
 				
 				# button
 				self.cocB2 = QtGui.QPushButton("+", self)
 				self.cocB2.clicked.connect(self.setCornerP)
 				self.cocB2.setFixedWidth(btsize)
-				self.cocB2.move(bc2, row)
 				self.cocB2.setAutoRepeat(True)
 
 			if self.gAxisCrossSupport == True:
 				
-				row += 30
-				
 				# label
 				self.cecL = QtGui.QLabel(translate('magicMove', 'Center cross:'), self)
-				self.cecL.move(10, row+3)
 
 				# button
 				self.cecB1 = QtGui.QPushButton(translate('magicMove', 'on'), self)
 				self.cecB1.clicked.connect(self.setCenterOn)
 				self.cecB1.setFixedWidth(btsize)
-				self.cecB1.move(bc1, row)
 				self.cecB1.setAutoRepeat(True)
 				
 				# button
 				self.cecB2 = QtGui.QPushButton(translate('magicMove', 'off'), self)
 				self.cecB2.clicked.connect(self.setCenterOff)
 				self.cecB2.setFixedWidth(btsize)
-				self.cecB2.move(bc2, row)
 				self.cecB2.setAutoRepeat(True)
 
 			if self.gCornerCrossSupport == True or self.gAxisCrossSupport == True:
-				
-				row += 25
-				
+
 				self.kccscb = QtGui.QCheckBox(translate('magicMove', ' - keep custom cross settings'), self)
 				self.kccscb.setCheckState(QtCore.Qt.Unchecked)
-				self.kccscb.move(10, row+3)
+			
+			# ############################################################################
+			# build GUI layout
+			# ############################################################################
+			
+			# create header
+			self.layoutHeader = QtGui.QVBoxLayout()
+			self.row1 = QtGui.QHBoxLayout()
+			self.row1.setAlignment(QtGui.Qt.AlignLeft)
+			self.row1.addWidget(self.s1S)
+			self.layoutHeader.addLayout(self.row1)
+			self.row2 = QtGui.QHBoxLayout()
+			self.row2.addWidget(self.s1B1)
+			self.layoutHeader.addLayout(self.row2)
+			self.row3 = QtGui.QHBoxLayout()
+			self.row3.addWidget(self.sMode)
+			self.row3.addStretch()
+			self.row3.addWidget(self.sCopyType)
+			self.row3.addWidget(self.sMirrorType)
+			self.layoutHeader.addLayout(self.row3)
+			self.row4 = QtGui.QHBoxLayout()
+			self.row4.addWidget(self.gNewContainerB1)
+			self.layoutHeader.addLayout(self.row4)
+			
+			# body - move
+			self.layoutBodyMove = QtGui.QVBoxLayout()
+			self.row5 = QtGui.QHBoxLayout()
+			self.row5.addWidget(self.oMove1L)
+			self.row5.addWidget(self.oMove1B1)
+			self.row5.addWidget(self.oMove1B2)
+			self.layoutBodyMove.addLayout(self.row5)
+			self.row6 = QtGui.QHBoxLayout()
+			self.row6.addWidget(self.oMove2L)
+			self.row6.addWidget(self.oMove2B1)
+			self.row6.addWidget(self.oMove2B2)
+			self.layoutBodyMove.addLayout(self.row6)
+			self.row7 = QtGui.QHBoxLayout()
+			self.row7.addWidget(self.oMove3L)
+			self.row7.addWidget(self.oMove3B1)
+			self.row7.addWidget(self.oMove3B2)
+			self.layoutBodyMove.addLayout(self.row7)
+			self.layoutBodyMove.addSpacing(5)
+			self.row8 = QtGui.QHBoxLayout()
+			self.row8.addWidget(self.oMoveStepL)
+			self.row8.addStretch()
+			self.row8.addWidget(self.oMoveStepE)
+			self.layoutBodyMove.addLayout(self.row8)
+			self.layoutBodyMove.addSpacing(20)
+			self.row9 = QtGui.QHBoxLayout()
+			self.row9.addWidget(self.animcb)
+			self.layoutBodyMove.addLayout(self.row9)
+			self.groupBodyMove = QtGui.QGroupBox(None, self)
+			self.groupBodyMove.setLayout(self.layoutBodyMove)
+			
+			# body - copy
+			self.layoutBodyCopy = QtGui.QVBoxLayout()
+			self.rowc5 = QtGui.QHBoxLayout()
+			self.rowc5.addWidget(self.oCopy1L)
+			self.rowc5.addWidget(self.oCopy1B1)
+			self.rowc5.addWidget(self.oCopy1B2)
+			self.layoutBodyCopy.addLayout(self.rowc5)
+			self.rowc6 = QtGui.QHBoxLayout()
+			self.rowc6.addWidget(self.oCopy2L)
+			self.rowc6.addWidget(self.oCopy2B1)
+			self.rowc6.addWidget(self.oCopy2B2)
+			self.layoutBodyCopy.addLayout(self.rowc6)
+			self.rowc7 = QtGui.QHBoxLayout()
+			self.rowc7.addWidget(self.oCopy3L)
+			self.rowc7.addWidget(self.oCopy3B1)
+			self.rowc7.addWidget(self.oCopy3B2)
+			self.layoutBodyCopy.addLayout(self.rowc7)
+			self.layoutBodyCopy.addSpacing(5)
+			self.rowc8 = QtGui.QHBoxLayout()
+			self.rowc8.addWidget(self.oCopyStepL)
+			self.rowc8.addStretch()
+			self.rowc8.addWidget(self.oCopyStepE)
+			self.layoutBodyCopy.addLayout(self.rowc8)
+			self.groupBodyCopy = QtGui.QGroupBox(None, self)
+			self.groupBodyCopy.setLayout(self.layoutBodyCopy)
+			self.groupBodyCopy.hide()
+			
+			# body - move to equal
+			self.layoutBodyMTE = QtGui.QVBoxLayout()
+			self.row10 = QtGui.QHBoxLayout()
+			self.row10.setAlignment(QtGui.Qt.AlignLeft)
+			self.row10.addWidget(self.mte1B)
+			self.row10.addWidget(self.mte1L)
+			self.layoutBodyMTE.addLayout(self.row10)
+			self.row11 = QtGui.QHBoxLayout()
+			self.row11.setAlignment(QtGui.Qt.AlignLeft)
+			self.row11.addWidget(self.mte2B)
+			self.row11.addWidget(self.mte2L)
+			self.layoutBodyMTE.addLayout(self.row11)
+			self.row12 = QtGui.QHBoxLayout()
+			self.row12.addWidget(self.mte12B)
+			self.layoutBodyMTE.addLayout(self.row12)
+			self.layoutBodyMTE.addSpacing(20)
+			self.row13 = QtGui.QHBoxLayout()
+			self.row13.addWidget(self.mte3L)
+			self.row13.addWidget(self.mte3B)
+			self.layoutBodyMTE.addLayout(self.row13)
+			self.row14 = QtGui.QHBoxLayout()
+			self.row14.addWidget(self.mte4L)
+			self.row14.addWidget(self.mte4B)
+			self.layoutBodyMTE.addLayout(self.row14)
+			self.row15 = QtGui.QHBoxLayout()
+			self.row15.addWidget(self.mte5L)
+			self.row15.addWidget(self.mte5B)
+			self.layoutBodyMTE.addLayout(self.row15)
+			self.groupBodyMTE = QtGui.QGroupBox(None, self)
+			self.groupBodyMTE.setLayout(self.layoutBodyMTE)
+			self.groupBodyMTE.hide()
+			
+			# body - copy by edge
+			self.layoutBodyCBE = QtGui.QVBoxLayout()
+			self.row16 = QtGui.QHBoxLayout()
+			self.row16.setAlignment(QtGui.Qt.AlignLeft)
+			self.row16.addWidget(self.cbe1B)
+			self.row16.addWidget(self.cbe1L)
+			self.layoutBodyCBE.addLayout(self.row16)
+			self.layoutBodyCBE.addSpacing(20)
+			self.row17 = QtGui.QHBoxLayout()
+			self.row17.addWidget(self.cbe2L)
+			self.row17.addWidget(self.cbe2B)
+			self.layoutBodyCBE.addLayout(self.row17)
+			self.row18 = QtGui.QHBoxLayout()
+			self.row18.addWidget(self.cbe3L)
+			self.row18.addWidget(self.cbe3B)
+			self.layoutBodyCBE.addLayout(self.row18)
+			self.row19 = QtGui.QHBoxLayout()
+			self.row19.addWidget(self.cbe4L)
+			self.row19.addWidget(self.cbe4B)
+			self.layoutBodyCBE.addLayout(self.row19)
+			self.layoutBodyCBE.addSpacing(5)
+			self.row20 = QtGui.QHBoxLayout()
+			self.row20.addWidget(self.cbe5L)
+			self.row20.addWidget(self.cbe5E)
+			self.layoutBodyCBE.addLayout(self.row20)
+			self.groupBodyCBE = QtGui.QGroupBox(None, self)
+			self.groupBodyCBE.setLayout(self.layoutBodyCBE)
+			self.groupBodyCBE.hide()
+			
+			# body - path
+			self.layoutBodyPath = QtGui.QVBoxLayout()
+			self.row21 = QtGui.QHBoxLayout()
+			self.row21.setAlignment(QtGui.Qt.AlignLeft)
+			self.row21.addWidget(self.oPathBS)
+			self.row21.addWidget(self.oPathCurveL)
+			self.layoutBodyPath.addLayout(self.row21)
+			self.layoutBodyPath.addSpacing(10)
+			self.row22 = QtGui.QHBoxLayout()
+			self.row22.setAlignment(QtGui.Qt.AlignRight)
+			self.row22.addWidget(self.oPathRotL)
+			self.row22.addWidget(self.oPathRotXE)
+			self.row22.addWidget(self.oPathRotYE)
+			self.row22.addWidget(self.oPathRotZE)
+			self.layoutBodyPath.addLayout(self.row22)
+			self.row23 = QtGui.QHBoxLayout()
+			self.row23.addWidget(self.oPathStepL)
+			self.row23.addWidget(self.oPathStepE)
+			self.layoutBodyPath.addLayout(self.row23)
+			self.layoutBodyPath.addSpacing(10)
+			self.row24 = QtGui.QHBoxLayout()
+			self.row24.addWidget(self.oPathBC)
+			self.layoutBodyPath.addLayout(self.row24)
+			self.groupBodyPath = QtGui.QGroupBox(None, self)
+			self.groupBodyPath.setLayout(self.layoutBodyPath)
+			self.groupBodyPath.hide()
+			
+			# body - mirror copy
+			self.layoutBodyMirror = QtGui.QVBoxLayout()
+			self.row25 = QtGui.QHBoxLayout()
+			self.row25.setAlignment(QtGui.Qt.AlignLeft)
+			self.row25.addWidget(self.mc1B)
+			self.row25.addWidget(self.mc1L)
+			self.layoutBodyMirror.addLayout(self.row25)
+			self.layoutBodyMirror.addSpacing(10)
+			self.row26 = QtGui.QHBoxLayout()
+			self.row26.addWidget(self.mc3L)
+			self.layoutBodyMirror.addLayout(self.row26)
+			self.row27 = QtGui.QHBoxLayout()
+			self.row27.addWidget(self.mc31E)
+			self.row27.addStretch()
+			self.row27.addWidget(self.mc32E)
+			self.row27.addStretch()
+			self.row27.addWidget(self.mc33E)
+			self.layoutBodyMirror.addLayout(self.row27)
+			self.row28 = QtGui.QHBoxLayout()
+			self.row28.addWidget(self.mc2L)
+			self.row28.addWidget(self.mc2E)
+			self.layoutBodyMirror.addLayout(self.row28)
+			self.layoutBodyMirror.addSpacing(10)
+			self.row29 = QtGui.QHBoxLayout()
+			self.row29.addWidget(self.mc4L)
+			self.row29.addWidget(self.mc4B1)
+			self.layoutBodyMirror.addLayout(self.row29)
+			self.row30 = QtGui.QHBoxLayout()
+			self.row30.addWidget(self.mc5L)
+			self.row30.addWidget(self.mc5B1)
+			self.layoutBodyMirror.addLayout(self.row30)
+			self.row31 = QtGui.QHBoxLayout()
+			self.row31.addWidget(self.mc6L)
+			self.row31.addWidget(self.mc6B1)
+			self.layoutBodyMirror.addLayout(self.row31)
+			self.groupBodyMirror = QtGui.QGroupBox(None, self)
+			self.groupBodyMirror.setLayout(self.layoutBodyMirror)
+			self.groupBodyMirror.hide()
+			
+			# create foot
+			self.layoutFoot = QtGui.QVBoxLayout()
+			
+			self.rowFoot1 = QtGui.QHBoxLayout()
+			self.rowFoot1.addWidget(self.cocL)
+			self.rowFoot1.addWidget(self.cocB1)
+			self.rowFoot1.addWidget(self.cocB2)
+			self.layoutFoot.addLayout(self.rowFoot1)
+
+			self.rowFoot2 = QtGui.QHBoxLayout()
+			self.rowFoot2.addWidget(self.cecL)
+			self.rowFoot2.addWidget(self.cecB1)
+			self.rowFoot2.addWidget(self.cecB2)
+			self.layoutFoot.addLayout(self.rowFoot2)
+			
+			self.rowFoot3 = QtGui.QHBoxLayout()
+			self.rowFoot3.addWidget(self.kccscb)
+			self.layoutFoot.addLayout(self.rowFoot3)
+			
+			# add layout to main window
+			self.layout = QtGui.QVBoxLayout()
+			self.layout.addLayout(self.layoutHeader)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBodyMove)
+			self.layout.addWidget(self.groupBodyCopy)
+			self.layout.addWidget(self.groupBodyMTE)
+			self.layout.addWidget(self.groupBodyCBE)
+			self.layout.addWidget(self.groupBodyPath)
+			self.layout.addWidget(self.groupBodyMirror)
+			self.layout.addStretch()
+			self.layout.addLayout(self.layoutFoot)
+			self.setLayout(self.layout)
 			
 			# ############################################################################
 			# show & init defaults
@@ -769,7 +847,7 @@ def showQtGUI():
 			self.getSelected()
 
 		# ############################################################################
-		# actions - functions for actions
+		# functions for actions
 		# ############################################################################
 
 		# ############################################################################
@@ -821,7 +899,7 @@ def showQtGUI():
 			for o in self.gObjects:
 
 				# calculate step
-				step = MagicPanels.unit2value(self.oStepE.text())
+				step = MagicPanels.unit2value(self.oMoveStepE.text())
 				
 				[ x, y, z ] = [ 0, 0, 0 ]
 				
@@ -1076,7 +1154,7 @@ def showQtGUI():
 				[ sizeX, sizeY, sizeZ ] = MagicPanels.getSizesFromVertices(o)
 				
 				# calculate offset
-				step = MagicPanels.unit2value(self.oStepE.text())
+				step = MagicPanels.unit2value(self.oCopyStepE.text())
 				key = str(o.Name)
 		
 				try:
@@ -1127,6 +1205,8 @@ def showQtGUI():
 				
 				else:
 					raise
+				
+				FreeCADGui.Selection.clearSelection()
 				
 			except:
 				self.cbe1L.setText(self.gNoCopyByEdge)
@@ -1236,27 +1316,26 @@ def showQtGUI():
 			for o in self.gObjects:
 				
 				key = str(o.Name)
-				toCopy = MagicPanels.getObjectToMove(o)
+				toCopy = MagicPanels.getObjectToCopy(o)
 				
-				[ x, y, z, r ] = MagicPanels.getContainerPlacement(toCopy, "clean")
-				v = FreeCAD.Vector(x, y, z)
-				inside = self.gPathObj.Shape.isInside(v, 0, True)
-				
-				if inside:
+				[ toCopyX, toCopyY, toCopyZ ] = MagicPanels.getPosition(toCopy, "global")
+				v = FreeCAD.Vector(toCopyX, toCopyY, toCopyZ)
+
+				try:
 					self.gPathLast[key] = self.gPathPoints.index(v)
 					self.gPathInit[key] = False
-				else:
+				except:
 					self.gPathLast[key] = 0
 					self.gPathInit[key] = True
 
-				self.gPathRotation[key] = r
+				self.gPathRotation[key] = toCopy.Placement.Rotation
 		
 		# ############################################################################
 		def setCopyPath(self):
 			
 			try:
 				self.gPathObj = FreeCADGui.Selection.getSelection()[0]
-				
+					
 				# support wire, sketch, helix
 				test1 = self.gPathObj.isDerivedFrom("Sketcher::SketchObject")
 				test2 = self.gPathObj.isDerivedFrom("Part::Part2DObjectPython")
@@ -1265,7 +1344,7 @@ def showQtGUI():
 				if test1 or test2 or test3:
 					
 					self.gPathPoints = self.gPathObj.Shape.getPoints(1)[0]
-					self.oPathRotZL.setText(self.gPathObj.Label)
+					self.oPathCurveL.setText(self.gPathObj.Label)
 					self.setLastPathPosition()
 				
 				# support edges
@@ -1278,11 +1357,13 @@ def showQtGUI():
 					
 					self.gPathPoints = sub.getPoints(1)[0]
 					index = MagicPanels.getEdgeIndex(self.gPathObj, sub)
-					self.oPathRotZL.setText(self.gPathObj.Label + ", Edge" + str(index))
+					self.oPathCurveL.setText(self.gPathObj.Label + ", Edge" + str(index))
 					self.setLastPathPosition()
-			
+				
+				FreeCADGui.Selection.clearSelection()
+				
 			except:
-				self.oPathRotZL.setText(self.gNoPathSelection)
+				self.oPathCurveL.setText(self.gNoPathSelection)
 
 		# ############################################################################
 		def createPathPanel(self):
@@ -1393,7 +1474,9 @@ def showQtGUI():
 				self.mc31E.setText(MagicPanels.unit2gui(x))
 				self.mc32E.setText(MagicPanels.unit2gui(y))
 				self.mc33E.setText(MagicPanels.unit2gui(z))
-
+				
+				FreeCADGui.Selection.clearSelection()
+				
 			except:
 				self.mc1L.setText(self.gNoMirrorPoint)
 		
@@ -1575,200 +1658,47 @@ def showQtGUI():
 			self.gModeType = selectedIndex
 
 			# first hide all
-			
-			self.mte1L.hide()
-			self.mte1B.hide()
-			self.mte2L.hide()
-			self.mte2B.hide()
-			self.mte12B.hide()
-			self.mte3L.hide()
-			self.mte3B.hide()
-			self.mte4L.hide()
-			self.mte4B.hide()
-			self.mte5L.hide()
-			self.mte5B.hide()
-			
-			self.cbe1L.hide()
-			self.cbe1B.hide()
-			self.cbe2L.hide()
-			self.cbe2B.hide()
-			self.cbe3L.hide()
-			self.cbe3B.hide()
-			self.cbe4L.hide()
-			self.cbe4B.hide()
-			self.cbe5L.hide()
-			self.cbe5E.hide()
-			
-			self.oPathStepE.hide()
-			self.pathB1.hide()
-			self.pathB2.hide()
-			self.oPathRotXL.hide()
-			self.oPathRotYL.hide()
-			self.oPathRotZL.hide()
-			self.oPathRotXE.hide()
-			self.oPathRotYE.hide()
-			self.oPathRotZE.hide()
-			
-			self.o1L.hide()
-			self.o1B1.hide()
-			self.o1B2.hide()
-			
-			self.o2L.hide()
-			self.o2B1.hide()
-			self.o2B2.hide()
-			
-			self.o3L.hide()
-			self.o3B1.hide()
-			self.o3B2.hide()
-			
-			self.oStepL.hide()
-			self.oStepE.hide()
-			
-			self.animcb.hide()
-			
-			self.mc1B.hide()
-			self.mc1L.hide()
-			self.mc2L.hide()
-			self.mc2E.hide()
-			self.mc3L.hide()
-			self.mc31E.hide()
-			self.mc32E.hide()
-			self.mc33E.hide()
-			self.mc4L.hide()
-			self.mc4B1.hide()
-			self.mc5L.hide()
-			self.mc5B1.hide()
-			self.mc6L.hide()
-			self.mc6B1.hide()
+			self.groupBodyMove.hide()
+			self.groupBodyCopy.hide()
+			self.groupBodyMTE.hide()
+			self.groupBodyCBE.hide()
+			self.groupBodyPath.hide()
+			self.groupBodyMirror.hide()
 			
 			self.sCopyType.hide()
 			self.sMirrorType.hide()
 			self.gNewContainerB1.hide()
 			
+			
 			# Move
 			if selectedIndex == 0:
-				
-				self.o1L.show()
-				self.o1B1.show()
-				self.o1B2.show()
-				
-				self.o2L.show()
-				self.o2B1.show()
-				self.o2B2.show()
-				
-				self.o3L.show()
-				self.o3B1.show()
-				self.o3B2.show()
-				
-				self.oStepL.show()
-				self.oStepE.show()
-				
-				self.animcb.show()
-				
-				self.o1L.setText(self.gInfoMoveX)
-				self.o2L.setText(self.gInfoMoveY)
-				self.o3L.setText(self.gInfoMoveZ)
-				self.oStepL.setText(self.gInfoMoveStep)
-
+				self.groupBodyMove.show()
+			
 			# Copy
 			if selectedIndex == 1:
-				
-				self.o1L.show()
-				self.o1B1.show()
-				self.o1B2.show()
-				
-				self.o2L.show()
-				self.o2B1.show()
-				self.o2B2.show()
-				
-				self.o3L.show()
-				self.o3B1.show()
-				self.o3B2.show()
-				
-				self.oStepL.show()
-				self.oStepE.show()
-				
-				self.o1L.setText(self.gInfoCopyX)
-				self.o2L.setText(self.gInfoCopyY)
-				self.o3L.setText(self.gInfoCopyZ)
-				self.oStepL.setText(self.gInfoCopyStep)
-				
 				self.sCopyType.show()
 				self.gNewContainerB1.show()
-
+				self.groupBodyCopy.show()
+			
 			# Copy by Path
 			if selectedIndex == 2:
-				
-				self.oPathRotXL.show()
-				self.oPathRotXE.show()
-				
-				self.oPathRotYL.show()
-				self.oPathRotYE.show()
-				
-				self.oPathRotZL.show()
-				self.oPathRotZE.show()
-				
-				self.oPathStepE.show()
-				self.pathB1.show()
-				self.pathB2.show()
-				
 				self.sCopyType.show()
 				self.gNewContainerB1.show()
+				self.groupBodyPath.show()
 
 			# Mirror
 			if selectedIndex == 3:
-				
-				self.mc1B.show()
-				self.mc1L.show()
-				self.mc2L.show()
-				self.mc2E.show()
-				self.mc3L.show()
-				self.mc31E.show()
-				self.mc32E.show()
-				self.mc33E.show()
-				self.mc4L.show()
-				self.mc4B1.show()
-				self.mc5L.show()
-				self.mc5B1.show()
-				self.mc6L.show()
-				self.mc6B1.show()
-				
 				self.sMirrorType.show()
+				self.groupBodyMirror.show()
 	
 			# Copy by Edge
 			if selectedIndex == 4:
-
-				self.cbe1L.show()
-				self.cbe1B.show()
-
-				self.cbe2L.show()
-				self.cbe2B.show()
-
-				self.cbe3L.show()
-				self.cbe3B.show()
-
-				self.cbe4L.show()
-				self.cbe4B.show()
-				
-				self.cbe5L.show()
-				self.cbe5E.show()
-				
 				self.sCopyType.show()
+				self.groupBodyCBE.show()
 			
 			# Move to Equal
 			if selectedIndex == 5:
-
-				self.mte1L.show()
-				self.mte1B.show()
-				self.mte2L.show()
-				self.mte2B.show()
-				self.mte12B.show()
-				self.mte3L.show()
-				self.mte3B.show()
-				self.mte4L.show()
-				self.mte4B.show()
-				self.mte5L.show()
-				self.mte5B.show()
+				self.groupBodyMTE.show()
 			
 		# ############################################################################
 		def setCopyType(self, selectedText):
@@ -1779,77 +1709,76 @@ def showQtGUI():
 			self.gMirrorType = getMenuIndex3[selectedText]
 		
 		# ############################################################################
-		def setX1(self):
-			
+		def setMoveX1(self):
 			try:
-				if self.gModeType == 0:
-					self.setMove("Xm")
-					
-				if self.gModeType == 1:
-					self.createCopy("Xm")
-
+				self.setMove("Xm")
 			except:
 				self.s1S.setText(self.gNoSelection)
 			
-		def setX2(self):
-			
+		def setMoveX2(self):
 			try:
-				if self.gModeType == 0:
-					self.setMove("Xp")
-					
-				if self.gModeType == 1:
-					self.createCopy("Xp")
-
+				self.setMove("Xp")
 			except:
 				self.s1S.setText(self.gNoSelection)
 		
-		# ############################################################################
-		def setY1(self):
-			
+		def setMoveY1(self):
 			try:
-				if self.gModeType == 0:
-					self.setMove("Ym")
-					
-				if self.gModeType == 1:
-					self.createCopy("Ym")
-			
+				self.setMove("Ym")
 			except:
 				self.s1S.setText(self.gNoSelection)
 		
-		def setY2(self):
-			
+		def setMoveY2(self):
 			try:
-				if self.gModeType == 0:
-					self.setMove("Yp")
-					
-				if self.gModeType == 1:
-					self.createCopy("Yp")
+				self.setMove("Yp")
+			except:
+				self.s1S.setText(self.gNoSelection)
 
+		def setMoveZ1(self):
+			try:
+				self.setMove("Zm")
+			except:
+				self.s1S.setText(self.gNoSelection)
+		
+		def setMoveZ2(self):
+			try:
+				self.setMove("Zp")
 			except:
 				self.s1S.setText(self.gNoSelection)
 
 		# ############################################################################
-		def setZ1(self):
-			
+		def setCopyX1(self):
 			try:
-				if self.gModeType == 0:
-					self.setMove("Zm")
-					
-				if self.gModeType == 1:
-					self.createCopy("Zm")
-				
+				self.createCopy("Xm")
+			except:
+				self.s1S.setText(self.gNoSelection)
+			
+		def setCopyX2(self):
+			try:
+				self.createCopy("Xp")
+			except:
+				self.s1S.setText(self.gNoSelection)
+
+		def setCopyY1(self):
+			try:
+				self.createCopy("Ym")
 			except:
 				self.s1S.setText(self.gNoSelection)
 		
-		def setZ2(self):
-			
+		def setCopyY2(self):
 			try:
-				if self.gModeType == 0:
-					self.setMove("Zp")
-					
-				if self.gModeType == 1:
-					self.createCopy("Zp")
+				self.createCopy("Yp")
+			except:
+				self.s1S.setText(self.gNoSelection)
 
+		def setCopyZ1(self):
+			try:
+				self.createCopy("Zm")
+			except:
+				self.s1S.setText(self.gNoSelection)
+		
+		def setCopyZ2(self):
+			try:
+				self.createCopy("Zp")
 			except:
 				self.s1S.setText(self.gNoSelection)
 
@@ -1894,7 +1823,7 @@ def showQtGUI():
 					FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(s-1)
 					self.gCornerCross = s-1
 			except:
-				self.s1S.setText(self.gNoSelection)
+				skip = 1
 			
 		def setCornerP(self):
 
@@ -1903,15 +1832,14 @@ def showQtGUI():
 				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(s+1)
 				self.gCornerCross = s+1
 			except:
-				self.s1S.setText(self.gNoSelection)
+				skip = 1
 		
-		# ############################################################################
 		def setCenterOn(self):
 			try:
 				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
 				self.gAxisCross = True
 			except:
-				self.s1S.setText(self.gNoSelection)
+				skip = 1
 			
 		def setCenterOff(self):
 
@@ -1919,7 +1847,7 @@ def showQtGUI():
 				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(False)
 				self.gAxisCross = False
 			except:
-				self.s1S.setText(self.gNoSelection)
+				skip = 1
 		
 		# ############################################################################
 		def getSelected(self):
@@ -1933,7 +1861,8 @@ def showQtGUI():
 				sizes = MagicPanels.getSizes(self.gObjects[0])
 				sizes.sort()
 					
-				self.oStepE.setText(MagicPanels.unit2gui( sizes[0] ))
+				self.oMoveStepE.setText(MagicPanels.unit2gui( sizes[0] ))
+				self.oCopyStepE.setText(MagicPanels.unit2gui( sizes[0] ))
 				
 				if len(self.gObjects) > 1:
 					self.s1S.setText("Multi, "+str(self.gObjects[0].Label))

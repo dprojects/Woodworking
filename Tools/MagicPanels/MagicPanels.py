@@ -5335,7 +5335,8 @@ def makeHoles(iObj, iFace, iCylinders, iDrillPoint="Angled"):
 		[ part, body, sketch, pad ] = makePad(base, base.Label)
 		FreeCAD.ActiveDocument.removeObject(base.Name)
 		FreeCAD.ActiveDocument.recompute()
-	
+		base = pad
+		
 	else:
 		
 		body = base._Body
@@ -5436,7 +5437,8 @@ def makeCountersinks(iObj, iFace, iCones):
 		[ part, body, sketch, pad ] = makePad(base, base.Label)
 		FreeCAD.ActiveDocument.removeObject(base.Name)
 		FreeCAD.ActiveDocument.recompute()
-	
+		base = pad
+		
 	else:
 		
 		body = base._Body
@@ -5548,7 +5550,8 @@ def makeCounterbores(iObj, iFace, iCones):
 		[ part, body, sketch, pad ] = makePad(base, base.Label)
 		FreeCAD.ActiveDocument.removeObject(base.Name)
 		FreeCAD.ActiveDocument.recompute()
-	
+		base = pad
+		
 	else:
 		
 		body = base._Body
@@ -5658,7 +5661,8 @@ def makePocketHoles(iObj, iFace, iCones):
 		[ part, body, sketch, pad ] = makePad(base, base.Label)
 		FreeCAD.ActiveDocument.removeObject(base.Name)
 		FreeCAD.ActiveDocument.recompute()
-	
+		base = pad
+		
 	else:
 		
 		body = base._Body
@@ -5776,7 +5780,8 @@ def makeCounterbores2x(iObj, iFace, iCones):
 		[ part, body, sketch, pad ] = makePad(base, base.Label)
 		FreeCAD.ActiveDocument.removeObject(base.Name)
 		FreeCAD.ActiveDocument.recompute()
-	
+		base = pad
+		
 	else:
 		
 		body = base._Body
@@ -6887,14 +6892,12 @@ def showInfo(iCaller, iInfo, iNote="yes"):
 	
 	offset = 8
 	borderColor = "rgb(" + str(colorR-offset) + ", " + str(colorG-offset) + ", " + str(colorB-offset) + ")"
-	txtBgColor = "rgb(" + str(colorR+offset) + ", " + str(colorG+offset) + ", " + str(colorB+offset) + ")"
 	
 	css = '''
 	
 		QLabel { 
 			min-width: 700px; 
 			border: 15px inset ''' + borderColor + ''';
-			background-color: ''' + txtBgColor + ''';
 			padding: 15px;
 			margin: 15px 25px 15px 0px;
 		}

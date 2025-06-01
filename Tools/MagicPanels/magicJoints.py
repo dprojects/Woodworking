@@ -58,15 +58,25 @@ def showQtGUI():
 		gAxisY = 0
 		gAxisZ = 0
 		
-		try:
-			gCrossCorner = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
-			gCrossCenter = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
-		except:
-			skip = 1
-		
 		gNoSelection1 = translate('magicJoints', '1. select Sketch pattern')
 		gNoSelection2 = translate('magicJoints', '2. select face to map Sketch')
 		gNoSelection3 = translate('magicJoints', '3. select face for Mortise')
+		
+		# foot
+		gCornerCrossSupport = True
+		gAxisCrossSupport = True
+		
+		try:
+			gCornerCross = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
+			gCornerCrossOrig = FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize()
+		except:
+			gCornerCrossSupport = False
+			
+		try:
+			gAxisCross = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
+			gAxisCrossOrig = FreeCADGui.ActiveDocument.ActiveView.hasAxisCross()
+		except:
+			gAxisCrossSupport = False
 		
 		# ############################################################################
 		# init
@@ -84,14 +94,16 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 300
-			toolSH = 500
+			toolSH = 700
+			
+			area = toolSW - 50
 			
 			# active screen size (FreeCAD main window)
 			gSW = FreeCADGui.getMainWindow().width()
 			gSH = FreeCADGui.getMainWindow().height()
 
 			# tool screen position
-			gPW = 0 + 300
+			gPW = 0 + 250
 			gPH = int( gSH - toolSH ) - 30
 
 			# ############################################################################
@@ -104,24 +116,6 @@ def showQtGUI():
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
-			# options - selection mode
-			# ############################################################################
-			
-			# set grid
-			row = 0
-			col1 = 100
-			col2 = 155
-			col3 = 240
-			
-			# screen
-			info = ""
-			info += "                                             "
-			info += "                                             "
-			info += "                                             "
-			
-			row += 10
-			
-			# ############################################################################
 			# options - 1st object
 			# ############################################################################
 
@@ -130,315 +124,397 @@ def showQtGUI():
 			self.ob1B1.clicked.connect(self.setObj1)
 			self.ob1B1.setFixedWidth(30)
 			self.ob1B1.setFixedHeight(20)
-			self.ob1B1.move(10, row)
-
+			
 			# screen
-			self.ob1S = QtGui.QLabel(info, self)
-			self.ob1S.move(50, row+3)
+			self.ob1S = QtGui.QLabel("", self)
+			self.ob1S.setFixedWidth(area)
 			
 			# ############################################################################
 			# options - 2nd object
 			# ############################################################################
 			
-			row += 20
-
 			# button
 			self.ob2B1 = QtGui.QPushButton(translate('magicJoints', 'set'), self)
 			self.ob2B1.clicked.connect(self.setObj2)
 			self.ob2B1.setFixedWidth(30)
 			self.ob2B1.setFixedHeight(20)
-			self.ob2B1.move(10, row)
 			
 			# screen
-			self.ob2S = QtGui.QLabel(info, self)
-			self.ob2S.move(50, row+3)
-
+			self.ob2S = QtGui.QLabel("", self)
+			self.ob2S.setFixedWidth(area)
+			
 			# ############################################################################
 			# options - 3rd object
 			# ############################################################################
-			
-			row += 20
 			
 			# button
 			self.ob3B1 = QtGui.QPushButton(translate('magicJoints', 'set'), self)
 			self.ob3B1.clicked.connect(self.setObj3)
 			self.ob3B1.setFixedWidth(30)
 			self.ob3B1.setFixedHeight(20)
-			self.ob3B1.move(10, row)
 			
 			# screen
-			self.ob3S = QtGui.QLabel(info, self)
-			self.ob3S.move(50, row+3)
+			self.ob3S = QtGui.QLabel("", self)
+			self.ob3S.setFixedWidth(area)
 			
 			# ############################################################################
 			# options - refresh all
 			# ############################################################################
 
-			row += 20
-			
 			# button
 			self.s1B1 = QtGui.QPushButton(translate('magicJoints', 'refresh all selections'), self)
 			self.s1B1.clicked.connect(self.getSelected)
-			self.s1B1.setFixedWidth(toolSW-20)
 			self.s1B1.setFixedHeight(40)
-			self.s1B1.move(10, row)
-
+			
 			# ############################################################################
 			# options - select edge
 			# ############################################################################
 
-			row += 50
-
 			# label
 			self.s2L = QtGui.QLabel(translate('magicJoints', 'Anchor:'), self)
-			self.s2L.move(10, row+3)
-
+			
 			# button
 			self.s2B1 = QtGui.QPushButton("<", self)
 			self.s2B1.clicked.connect(self.setAnchorP)
 			self.s2B1.setFixedWidth(50)
-			self.s2B1.move(col1, row)
 			self.s2B1.setAutoRepeat(True)
 			
 			# info screen
-			self.s2IS = QtGui.QLabel(info, self)
-			self.s2IS.move(col2, row+3)
-
+			self.s2IS = QtGui.QLabel("", self)
+			
 			# button
 			self.s2B2 = QtGui.QPushButton(">", self)
 			self.s2B2.clicked.connect(self.setAnchorN)
 			self.s2B2.setFixedWidth(50)
-			self.s2B2.move(col3, row)
 			self.s2B2.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - adjust rotation
 			# ############################################################################
 
-			row += 30
-			
 			# label
 			self.s4L = QtGui.QLabel(translate('magicJoints', 'Rotation:'), self)
-			self.s4L.move(10, row+3)
-
+			
 			# button
 			self.s4B1 = QtGui.QPushButton("<", self)
 			self.s4B1.clicked.connect(self.setRoAnglesP)
 			self.s4B1.setFixedWidth(50)
-			self.s4B1.move(col1, row)
 			self.s4B1.setAutoRepeat(True)
 			
 			# info screen
-			self.s4IS = QtGui.QLabel(info, self)
-			self.s4IS.move(col2, row+3)
+			self.s4IS = QtGui.QLabel("", self)
 			
 			# button
 			self.s4B2 = QtGui.QPushButton(">", self)
 			self.s4B2.clicked.connect(self.setRoAnglesN)
 			self.s4B2.setFixedWidth(50)
-			self.s4B2.move(col3, row)
 			self.s4B2.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - X axis
 			# ############################################################################
 
-			row += 40
-			
 			# label
 			self.oAxisXL = QtGui.QLabel(translate('magicJoints', 'X axis:'), self)
-			self.oAxisXL.move(10, row+3)
-
+			
 			# button
 			self.oAxisXB1 = QtGui.QPushButton("-", self)
 			self.oAxisXB1.clicked.connect(self.setXm)
 			self.oAxisXB1.setFixedWidth(50)
-			self.oAxisXB1.move(col1, row)
 			self.oAxisXB1.setAutoRepeat(True)
 
 			# text input
 			self.oAxisXE = QtGui.QLineEdit(self)
 			self.oAxisXE.setText(MagicPanels.unit2gui(self.gAxisX))
 			self.oAxisXE.setFixedWidth(80)
-			self.oAxisXE.move(col2, row)
-
+			
 			# button
 			self.oAxisXB2 = QtGui.QPushButton("+", self)
 			self.oAxisXB2.clicked.connect(self.setXp)
 			self.oAxisXB2.setFixedWidth(50)
-			self.oAxisXB2.move(col3, row)
 			self.oAxisXB2.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - Y axis
 			# ############################################################################
 
-			row += 30
-			
 			# label
 			self.oAxisYL = QtGui.QLabel(translate('magicJoints', 'Y axis:'), self)
-			self.oAxisYL.move(10, row+3)
-
+			
 			# button
 			self.gAxisYB1 = QtGui.QPushButton("-", self)
 			self.gAxisYB1.clicked.connect(self.setYm)
 			self.gAxisYB1.setFixedWidth(50)
-			self.gAxisYB1.move(col1, row)
 			self.gAxisYB1.setAutoRepeat(True)
 
 			# text input
 			self.oAxisYE = QtGui.QLineEdit(self)
 			self.oAxisYE.setText(MagicPanels.unit2gui(self.gAxisY))
 			self.oAxisYE.setFixedWidth(80)
-			self.oAxisYE.move(col2, row)
-
+			
 			# button
 			self.gAxisYB2 = QtGui.QPushButton("+", self)
 			self.gAxisYB2.clicked.connect(self.setYp)
 			self.gAxisYB2.setFixedWidth(50)
-			self.gAxisYB2.move(col3, row)
 			self.gAxisYB2.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - Z axis
 			# ############################################################################
 
-			row += 30
-			
 			# label
 			self.oAxisZL = QtGui.QLabel(translate('magicJoints', 'Z axis:'), self)
-			self.oAxisZL.move(10, row+3)
-
+			
 			# button
 			self.gAxisZB1 = QtGui.QPushButton("-", self)
 			self.gAxisZB1.clicked.connect(self.setZm)
 			self.gAxisZB1.setFixedWidth(50)
-			self.gAxisZB1.move(col1, row)
 			self.gAxisZB1.setAutoRepeat(True)
 
 			# text input
 			self.oAxisZE = QtGui.QLineEdit(self)
 			self.oAxisZE.setText(MagicPanels.unit2gui(self.gAxisZ))
 			self.oAxisZE.setFixedWidth(80)
-			self.oAxisZE.move(col2, row)
-
+			
 			# button
 			self.gAxisZB2 = QtGui.QPushButton("+", self)
 			self.gAxisZB2.clicked.connect(self.setZp)
 			self.gAxisZB2.setFixedWidth(50)
-			self.gAxisZB2.move(col3, row)
 			self.gAxisZB2.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - step
 			# ############################################################################
 
-			row += 30
-
 			# label
 			self.oFxStepL = QtGui.QLabel(translate('magicJoints', 'Step:'), self)
-			self.oFxStepL.move(10, row+3)
-
+			
 			# text input
 			self.oFxStepE = QtGui.QLineEdit(self)
 			self.oFxStepE.setText(MagicPanels.unit2gui(self.gStep))
 			self.oFxStepE.setFixedWidth(80)
-			self.oFxStepE.move(col2, row)
 			
 			# ############################################################################
 			# options - set custom button
 			# ############################################################################
 
-			row += 30
-
 			# button
 			self.e1B1 = QtGui.QPushButton(translate('magicJoints', 'set custom values'), self)
 			self.e1B1.clicked.connect(self.refreshSettings)
-			self.e1B1.setFixedWidth(toolSW-20)
-			self.e1B1.move(10, row)
-
+			
 			# ############################################################################
 			# options - transform command
 			# ############################################################################
 
-			row += 30
-
 			# button
 			self.e2B1 = QtGui.QPushButton(translate('magicJoints', 'set manually'), self)
 			self.e2B1.clicked.connect(self.setEditModeON)
-			self.e2B1.setFixedWidth((toolSW/2)-20)
-			self.e2B1.setFixedHeight(20)
-			self.e2B1.move(10, row)
-
+			self.e2B1.setFixedHeight(30)
+			
 			# button
 			self.e2B2 = QtGui.QPushButton(translate('magicJoints', 'finish manually'), self)
 			self.e2B2.clicked.connect(self.setEditModeOFF)
-			self.e2B2.setFixedWidth((toolSW/2)-20)
-			self.e2B2.setFixedHeight(20)
-			self.e2B2.move((toolSW/2)+10, row)
-
+			self.e2B2.setFixedHeight(30)
+			
 			# ############################################################################
 			# options - depth
 			# ############################################################################
 
-			row += 40
-
 			# label
 			self.oFxDepthL = QtGui.QLabel(translate('magicJoints', 'Mortise depth and Tenon height:'), self)
-			self.oFxDepthL.move(10, row+3)
-
+			
 			# text input
 			self.oFxDepthE = QtGui.QLineEdit(self)
 			self.oFxDepthE.setText(MagicPanels.unit2gui(self.gDepth))
-			self.oFxDepthE.setFixedWidth(80)
-			self.oFxDepthE.move(col3-30, row)
-
+			
 			# ############################################################################
 			# options - final save
 			# ############################################################################
 
-			row += 30
-
 			# apply button
 			self.e3B1 = QtGui.QPushButton(translate('magicJoints', 'create Mortise'), self)
 			self.e3B1.clicked.connect(self.setMortise)
-			self.e3B1.setFixedWidth((toolSW/2)-20)
-			self.e3B1.setFixedHeight(20)
-			self.e3B1.move(10, row)
-
+			self.e3B1.setFixedHeight(30)
+			
 			# apply button
 			self.e3B2 = QtGui.QPushButton(translate('magicJoints', 'create Tenon'), self)
 			self.e3B2.clicked.connect(self.setTenon)
-			self.e3B2.setFixedWidth((toolSW/2)-20)
-			self.e3B2.setFixedHeight(20)
-			self.e3B2.move((toolSW/2)+10, row)
-
+			self.e3B2.setFixedHeight(30)
+			
 			# ############################################################################
 			# options - final save both
 			# ############################################################################
 
-			row += 30
-
 			# apply button
 			self.e3B3 = QtGui.QPushButton(translate('magicJoints', 'create Tenon and Mortise'), self)
 			self.e3B3.clicked.connect(self.setJoints)
-			self.e3B3.setFixedWidth(toolSW-20)
 			self.e3B3.setFixedHeight(40)
-			self.e3B3.move(10, row)
+			
+			# ############################################################################
+			# GUI for common foot
+			# ############################################################################
+			
+			if self.gCornerCrossSupport == True:
+			
+				# label
+				self.cocL = QtGui.QLabel(translate('magicJoints', 'Corner cross:'), self)
 
+				# button
+				self.cocB1 = QtGui.QPushButton("-", self)
+				self.cocB1.clicked.connect(self.setCornerM)
+				self.cocB1.setFixedWidth(50)
+				self.cocB1.setAutoRepeat(True)
+				
+				# button
+				self.cocB2 = QtGui.QPushButton("+", self)
+				self.cocB2.clicked.connect(self.setCornerP)
+				self.cocB2.setFixedWidth(50)
+				self.cocB2.setAutoRepeat(True)
+
+			if self.gAxisCrossSupport == True:
+				
+				# label
+				self.cecL = QtGui.QLabel(translate('magicJoints', 'Center cross:'), self)
+
+				# button
+				self.cecB1 = QtGui.QPushButton(translate('magicJoints', 'on'), self)
+				self.cecB1.clicked.connect(self.setCenterOn)
+				self.cecB1.setFixedWidth(50)
+				self.cecB1.setAutoRepeat(True)
+				
+				# button
+				self.cecB2 = QtGui.QPushButton(translate('magicJoints', 'off'), self)
+				self.cecB2.clicked.connect(self.setCenterOff)
+				self.cecB2.setFixedWidth(50)
+				self.cecB2.setAutoRepeat(True)
+
+			if self.gCornerCrossSupport == True or self.gAxisCrossSupport == True:
+
+				self.kccscb = QtGui.QCheckBox(translate('magicJoints', ' - keep custom cross settings'), self)
+				self.kccscb.setCheckState(QtCore.Qt.Unchecked)
+	
+			# ############################################################################
+			# build GUI layout
+			# ############################################################################
+			
+			# create structure
+			self.row1 = QtGui.QHBoxLayout()
+			self.row1.addWidget(self.ob1B1)
+			self.row1.addWidget(self.ob1S)
+			
+			self.row2 = QtGui.QHBoxLayout()
+			self.row2.addWidget(self.ob2B1)
+			self.row2.addWidget(self.ob2S)
+			
+			self.row3 = QtGui.QHBoxLayout()
+			self.row3.addWidget(self.ob3B1)
+			self.row3.addWidget(self.ob3S)
+			
+			self.row4 = QtGui.QHBoxLayout()
+			self.row4.addWidget(self.s1B1)
+			
+			self.row5 = QtGui.QGridLayout()
+			self.row5.addWidget(self.s2L, 0, 0)
+			self.row5.addWidget(self.s2B1, 0, 1)
+			self.row5.addWidget(self.s2IS, 0, 2)
+			self.row5.addWidget(self.s2B2, 0, 3)
+			self.row5.addWidget(self.s4L, 1, 0)
+			self.row5.addWidget(self.s4B1, 1, 1)
+			self.row5.addWidget(self.s4IS, 1, 2)
+			self.row5.addWidget(self.s4B2, 1, 3)
+			self.groupBody1 = QtGui.QGroupBox(None, self)
+			self.groupBody1.setLayout(self.row5)
+			
+			self.row6 = QtGui.QGridLayout()
+			self.row6.addWidget(self.oAxisXL, 0, 0)
+			self.row6.addWidget(self.oAxisXB1, 0, 1)
+			self.row6.addWidget(self.oAxisXE, 0, 2)
+			self.row6.addWidget(self.oAxisXB2, 0, 3)
+			self.row6.addWidget(self.oAxisYL, 1, 0)
+			self.row6.addWidget(self.gAxisYB1, 1, 1)
+			self.row6.addWidget(self.oAxisYE, 1, 2)
+			self.row6.addWidget(self.gAxisYB2, 1, 3)
+			self.row6.addWidget(self.oAxisZL, 2, 0)
+			self.row6.addWidget(self.gAxisZB1, 2, 1)
+			self.row6.addWidget(self.oAxisZE, 2, 2)
+			self.row6.addWidget(self.gAxisZB2, 2, 3)
+			self.row6.addWidget(self.oFxStepL, 3, 0)
+			self.row6.addWidget(self.oFxStepE, 3, 2)
+			self.row7 = QtGui.QHBoxLayout()
+			self.row7.addWidget(self.e1B1)
+			self.row8 = QtGui.QHBoxLayout()
+			self.row8.addWidget(self.e2B1)
+			self.row8.addWidget(self.e2B2)
+			self.rowBody2 = QtGui.QVBoxLayout()
+			self.rowBody2.addLayout(self.row6)
+			self.rowBody2.addLayout(self.row7)
+			self.rowBody2.addLayout(self.row8)
+			self.groupBody2 = QtGui.QGroupBox(None, self)
+			self.groupBody2.setLayout(self.rowBody2)
+			
+			
+			self.row9 = QtGui.QGridLayout()
+			self.row9.addWidget(self.oFxDepthL, 0, 0)
+			self.row9.addWidget(self.oFxDepthE, 0, 1)
+			self.row9.addWidget(self.e3B1, 1, 0)
+			self.row9.addWidget(self.e3B2, 1, 1)
+			self.row10 = QtGui.QHBoxLayout()
+			self.row10.addWidget(self.e3B3)
+			self.rowBody3 = QtGui.QVBoxLayout()
+			self.rowBody3.addLayout(self.row9)
+			self.rowBody3.addLayout(self.row10)
+			self.groupBody3 = QtGui.QGroupBox(None, self)
+			self.groupBody3.setLayout(self.rowBody3)
+			
+			# create foot
+			self.layoutFoot = QtGui.QVBoxLayout()
+			
+			self.rowFoot1 = QtGui.QHBoxLayout()
+			self.rowFoot1.addWidget(self.cocL)
+			self.rowFoot1.addWidget(self.cocB1)
+			self.rowFoot1.addWidget(self.cocB2)
+			self.layoutFoot.addLayout(self.rowFoot1)
+
+			self.rowFoot2 = QtGui.QHBoxLayout()
+			self.rowFoot2.addWidget(self.cecL)
+			self.rowFoot2.addWidget(self.cecB1)
+			self.rowFoot2.addWidget(self.cecB2)
+			self.layoutFoot.addLayout(self.rowFoot2)
+			
+			self.rowFoot3 = QtGui.QHBoxLayout()
+			self.rowFoot3.addWidget(self.kccscb)
+			self.layoutFoot.addLayout(self.rowFoot3)
+			
+			# set layout to main window
+			self.layout = QtGui.QVBoxLayout()
+			
+			self.layout.addLayout(self.row1)
+			self.layout.addLayout(self.row2)
+			self.layout.addLayout(self.row3)
+			self.layout.addLayout(self.row4)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBody1)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBody2)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBody3)
+			self.layout.addStretch()
+			self.layout.addLayout(self.layoutFoot)
+			self.setLayout(self.layout)
+			
 			# ############################################################################
 			# show & init defaults
 			# ############################################################################
 
-			# show window
-			self.show()
-
 			# init
-			try:
+			self.show()
+			
+			if self.gAxisCrossSupport == True:
 				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
+			
+			if self.gCornerCrossSupport == True:
 				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(50)
-			except:
-				skip = 1
+			
 			self.getSelected()
 
 		# ############################################################################
@@ -1059,7 +1135,44 @@ def showQtGUI():
 		
 			except:
 				self.resetInfoScreen()
+		
+		# ############################################################################
+		def setCornerM(self):
+
+			try:
+				s = int(FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize())
+				if s - 1 < 0:
+					FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(0)
+				else:
+					FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(s-1)
+					self.gCornerCross = s-1
+			except:
+				skip = 1
 			
+		def setCornerP(self):
+
+			try:
+				s = int(FreeCADGui.ActiveDocument.ActiveView.getCornerCrossSize())
+				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(s+1)
+				self.gCornerCross = s+1
+			except:
+				skip = 1
+		
+		def setCenterOn(self):
+			try:
+				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
+				self.gAxisCross = True
+			except:
+				skip = 1
+			
+		def setCenterOff(self):
+
+			try:
+				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(False)
+				self.gAxisCross = False
+			except:
+				skip = 1
+		
 	# ############################################################################
 	# final settings
 	# ############################################################################
@@ -1072,11 +1185,13 @@ def showQtGUI():
 	
 	if form.result == userCancelled:
 		
-		try:
-			FreeCADGui.ActiveDocument.ActiveView.setAxisCross(form.gCrossCenter)
-			FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(form.gCrossCorner)
-		except:
-			skip = 1
+		if not form.kccscb.isChecked():
+
+			if form.gAxisCrossSupport == True:
+				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(form.gAxisCrossOrig)
+				
+			if form.gCornerCrossSupport == True:
+				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(form.gCornerCrossOrig)
 
 		try:
 			FreeCAD.ActiveDocument.removeObject(str(form.gLink.Name))

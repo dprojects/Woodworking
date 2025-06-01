@@ -77,7 +77,7 @@ try:
 
 	info = ""
 	
-	info += '<table cellpadding=15 border=5 style="background-color:#F4F4F4;border-style:inset;border-color:#C4C4C4;"><tr><td><table cellpadding=5 border=0>'
+	info += '<table cellpadding=15 border=5 style="border-style:inset;border-color:#C4C4C4;"><tr><td><table cellpadding=5 border=0>'
 	
 	info += '<tr><td><b>' + translate('showOccupiedSpace', 'Occupied space along X axis') + ': ' + '</b></td>'
 	info += '<td style="text-align:right">' + MagicPanels.unit2gui(mX) + '</td></tr>'

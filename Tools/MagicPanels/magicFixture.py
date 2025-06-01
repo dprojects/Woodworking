@@ -42,6 +42,7 @@ def showQtGUI():
 		
 		gNoSelection = translate('magicFixture', 'please select fixture object and face')
 		
+		# foot
 		gCornerCrossSupport = True
 		gAxisCrossSupport = True
 		
@@ -96,10 +97,8 @@ def showQtGUI():
 			# options - settings
 			# ############################################################################
 			
-			# set grid
-			row = 10
-			
 			area = toolSW - 20
+			cutLabel = toolSW - 80
 			btsize = 50                                    # button size
 			btoffset = 5                                   # button offset
 			bc1 = area - (2 * btsize) - btoffset + 5       # button column 1
@@ -109,12 +108,6 @@ def showQtGUI():
 			col2 = 155
 			col3 = 240
 			
-			# looks funny but if you resize screen you have the long string
-			info = ""
-			info += "                                             "
-			info += "                                             "
-			info += "                                             "
-			
 			# ############################################################################
 			# options - selection mode
 			# ############################################################################
@@ -123,327 +116,350 @@ def showQtGUI():
 			self.oFixtureB = QtGui.QPushButton(translate('magicFixture', 'set'), self)
 			self.oFixtureB.clicked.connect(self.setFixture)
 			self.oFixtureB.setFixedWidth(50)
-			self.oFixtureB.move(10, row)
-		
-			# label
-			self.oFixtureL = QtGui.QLabel(info, self)
-			self.oFixtureL.move(80, row+3)
 			
-			row += 30
+			# label
+			self.oFixtureL = QtGui.QLabel("", self)
+			self.oFixtureL.setFixedWidth(cutLabel)
 			
 			# button
 			self.oAnchorB = QtGui.QPushButton(translate('magicFixture', 'set'), self)
 			self.oAnchorB.clicked.connect(self.setAnchor)
 			self.oAnchorB.setFixedWidth(50)
-			self.oAnchorB.move(10, row)
 		
 			# label
-			self.oAnchorL = QtGui.QLabel(info, self)
-			self.oAnchorL.move(80, row+3)
-			
-			row += 30
+			self.oAnchorL = QtGui.QLabel("", self)
+			self.oAnchorL.setFixedWidth(cutLabel)
 			
 			# button
-			self.s1B1 = QtGui.QPushButton(translate('magicFixture', 'refresh selections'), self)
+			self.s1B1 = QtGui.QPushButton(translate('magicFixture', 'refresh selection'), self)
 			self.s1B1.clicked.connect(self.getSelected)
-			self.s1B1.setFixedWidth(area)
 			self.s1B1.setFixedHeight(40)
-			self.s1B1.move(10, row)
 
 			# ############################################################################
 			# options - select edge
 			# ############################################################################
 
-			row += 50
-
 			# label
 			self.s2L = QtGui.QLabel(translate('magicFixture', 'Anchor:'), self)
-			self.s2L.move(10, row+3)
 
 			# button
 			self.s2B1 = QtGui.QPushButton("<", self)
 			self.s2B1.clicked.connect(self.setReferenceP)
 			self.s2B1.setFixedWidth(50)
-			self.s2B1.move(col1, row)
 			self.s2B1.setAutoRepeat(True)
 			
 			# info screen
-			self.s2IS = QtGui.QLabel("                                         ", self)
-			self.s2IS.move(col2, row+3)
+			self.s2IS = QtGui.QLabel("", self)
 
 			# button
 			self.s2B2 = QtGui.QPushButton(">", self)
 			self.s2B2.clicked.connect(self.setReferenceN)
 			self.s2B2.setFixedWidth(50)
-			self.s2B2.move(col3, row)
 			self.s2B2.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - adjust rotation
 			# ############################################################################
 
-			row += 30
-			
 			# label
 			self.s4L = QtGui.QLabel(translate('magicFixture', 'Rotation:'), self)
-			self.s4L.move(10, row+3)
 
 			# button
 			self.s4B1 = QtGui.QPushButton("<", self)
 			self.s4B1.clicked.connect(self.setRoAnglesP)
 			self.s4B1.setFixedWidth(50)
-			self.s4B1.move(col1, row)
 			self.s4B1.setAutoRepeat(True)
 			
-			# info screen
-			info = ""
-			info += "                                                           "
-			info += "                                                           "
-			info += "                                                           "
-			self.s4IS = QtGui.QLabel(info, self)
-			self.s4IS.move(col2, row+3)
+			self.s4IS = QtGui.QLabel("", self)
 			
 			# button
 			self.s4B2 = QtGui.QPushButton(">", self)
 			self.s4B2.clicked.connect(self.setRoAnglesN)
 			self.s4B2.setFixedWidth(50)
-			self.s4B2.move(col3, row)
 			self.s4B2.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - add reference
 			# ############################################################################
 
-			row += 30
-			
 			# button
 			self.oAddRefB = QtGui.QPushButton(translate('magicFixture', 'add selected anchor'), self)
 			self.oAddRefB.clicked.connect(self.addReference)
-			self.oAddRefB.setFixedWidth(area)
-			self.oAddRefB.setFixedHeight(40)
-			self.oAddRefB.move(10, row)
 
 			# ############################################################################
 			# options - offset from edge
 			# ############################################################################
 
-			row += 50
-			
 			# label
 			self.oOffsetXL = QtGui.QLabel(translate('magicFixture', 'X offset:'), self)
-			self.oOffsetXL.move(10, row+3)
 
 			# button
 			self.oOffsetXB1 = QtGui.QPushButton("-", self)
 			self.oOffsetXB1.clicked.connect(self.setOffsetXP)
 			self.oOffsetXB1.setFixedWidth(50)
-			self.oOffsetXB1.move(col1, row)
 			self.oOffsetXB1.setAutoRepeat(True)
 
 			# text input
 			self.oOffsetXE = QtGui.QLineEdit(self)
 			self.oOffsetXE.setText(MagicPanels.unit2gui(self.gOffsetX))
 			self.oOffsetXE.setFixedWidth(80)
-			self.oOffsetXE.move(col2, row)
 
 			# button
 			self.oOffsetXB2 = QtGui.QPushButton("+", self)
 			self.oOffsetXB2.clicked.connect(self.setOffsetXN)
 			self.oOffsetXB2.setFixedWidth(50)
-			self.oOffsetXB2.move(col3, row)
 			self.oOffsetXB2.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - offset from corner
 			# ############################################################################
 
-			row += 30
-			
 			# label
 			self.oOffsetYL = QtGui.QLabel(translate('magicFixture', 'Y offset:'), self)
-			self.oOffsetYL.move(10, row+3)
 
 			# button
 			self.oOffsetYB1 = QtGui.QPushButton("-", self)
 			self.oOffsetYB1.clicked.connect(self.setOffsetYP)
 			self.oOffsetYB1.setFixedWidth(50)
-			self.oOffsetYB1.move(col1, row)
 			self.oOffsetYB1.setAutoRepeat(True)
 
 			# text input
 			self.oOffsetYE = QtGui.QLineEdit(self)
 			self.oOffsetYE.setText(MagicPanels.unit2gui(self.gOffsetY))
 			self.oOffsetYE.setFixedWidth(80)
-			self.oOffsetYE.move(col2, row)
 
 			# button
 			self.oOffsetYB2 = QtGui.QPushButton("+", self)
 			self.oOffsetYB2.clicked.connect(self.setOffsetYN)
 			self.oOffsetYB2.setFixedWidth(50)
-			self.oOffsetYB2.move(col3, row)
 			self.oOffsetYB2.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - sink
 			# ############################################################################
 
-			row += 30
-
 			# label
 			self.oOffsetZL = QtGui.QLabel(translate('magicFixture', 'Z offset:'), self)
-			self.oOffsetZL.move(10, row+3)
 
 			# button
 			self.oOffsetZB1 = QtGui.QPushButton("-", self)
 			self.oOffsetZB1.clicked.connect(self.setOffsetZP)
 			self.oOffsetZB1.setFixedWidth(50)
-			self.oOffsetZB1.move(col1, row)
 			self.oOffsetZB1.setAutoRepeat(True)
 			
 			# text input
 			self.oOffsetZE = QtGui.QLineEdit(self)
 			self.oOffsetZE.setText(MagicPanels.unit2gui(self.gOffsetZ))
 			self.oOffsetZE.setFixedWidth(80)
-			self.oOffsetZE.move(col2, row)
 			
 			# button
 			self.oOffsetZB2 = QtGui.QPushButton("+", self)
 			self.oOffsetZB2.clicked.connect(self.setOffsetZN)
 			self.oOffsetZB2.setFixedWidth(50)
-			self.oOffsetZB2.move(col3, row)
 			self.oOffsetZB2.setAutoRepeat(True)
 
 			# ############################################################################
 			# options - step
 			# ############################################################################
 
-			row += 30
-
 			# label
 			self.oFxStepL = QtGui.QLabel(translate('magicFixture', 'Step:'), self)
-			self.oFxStepL.move(10, row+3)
 
 			# text input
 			self.oFxStepE = QtGui.QLineEdit(self)
 			self.oFxStepE.setText(MagicPanels.unit2gui(self.gStep))
 			self.oFxStepE.setFixedWidth(80)
-			self.oFxStepE.move(col2, row)
 			
 			# ############################################################################
 			# options - set custom button
 			# ############################################################################
 
-			row += 30
-
 			# button
 			self.e1B1 = QtGui.QPushButton(translate('magicFixture', 'show custom settings'), self)
 			self.e1B1.clicked.connect(self.refreshSettings)
-			self.e1B1.setFixedWidth(area)
-			self.e1B1.setFixedHeight(40)
-			self.e1B1.move(10, row)
 
 			# ############################################################################
 			# options - transform command
 			# ############################################################################
 
-			row += 50
-
 			# button
 			self.e2B1 = QtGui.QPushButton(translate('magicFixture', 'set manually'), self)
 			self.e2B1.clicked.connect(self.setEditModeON)
-			self.e2B1.setFixedWidth((toolSW/2)-20)
-			self.e2B1.setFixedHeight(40)
-			self.e2B1.move(10, row)
 
 			# button
 			self.e2B2 = QtGui.QPushButton(translate('magicFixture', 'finish manually'), self)
 			self.e2B2.clicked.connect(self.setEditModeOFF)
-			self.e2B2.setFixedWidth((toolSW/2)-20)
-			self.e2B2.setFixedHeight(40)
-			self.e2B2.move((toolSW/2)+10, row)
 
 			# ############################################################################
 			# options - final save
 			# ############################################################################
-
-			row += 70
 
 			# radio buttons
 			
 			self.rb1 = QtGui.QRadioButton(self)
 			self.rb1.setText(translate('magicFixture', 'Link'))
 			self.rb1.toggled.connect(self.selectRadioButton1)
-			self.rb1.move(10, row)
 
 			self.rb2 = QtGui.QRadioButton(self)
 			self.rb2.setText(translate('magicFixture', 'Clone for drilling'))
 			self.rb2.toggled.connect(self.selectRadioButton2)
-			self.rb2.move(80, row)
-
-			row += 30
 
 			# apply button
 			self.e3B1 = QtGui.QPushButton(translate('magicFixture', 'create'), self)
 			self.e3B1.clicked.connect(self.createFixture)
-			self.e3B1.setFixedWidth(area)
 			self.e3B1.setFixedHeight(40)
-			self.e3B1.move(10, row)
 
 			# ############################################################################
-			# GUI for common foot (visible by default)
+			# GUI for common foot
 			# ############################################################################
-			
-			row = toolSH - 90
 			
 			if self.gCornerCrossSupport == True:
 			
 				# label
-				self.cocL = QtGui.QLabel(translate('magicFixture', 'Corner cross:'), self)
-				self.cocL.move(10, row+3)
+				self.cocL = QtGui.QLabel(translate('magicJoints', 'Corner cross:'), self)
 
 				# button
 				self.cocB1 = QtGui.QPushButton("-", self)
 				self.cocB1.clicked.connect(self.setCornerM)
-				self.cocB1.setFixedWidth(btsize)
-				self.cocB1.move(bc1, row)
+				self.cocB1.setFixedWidth(50)
 				self.cocB1.setAutoRepeat(True)
 				
 				# button
 				self.cocB2 = QtGui.QPushButton("+", self)
 				self.cocB2.clicked.connect(self.setCornerP)
-				self.cocB2.setFixedWidth(btsize)
-				self.cocB2.move(bc2, row)
+				self.cocB2.setFixedWidth(50)
 				self.cocB2.setAutoRepeat(True)
 
 			if self.gAxisCrossSupport == True:
 				
-				row += 30
-				
 				# label
-				self.cecL = QtGui.QLabel(translate('magicFixture', 'Center cross:'), self)
-				self.cecL.move(10, row+3)
+				self.cecL = QtGui.QLabel(translate('magicJoints', 'Center cross:'), self)
 
 				# button
-				self.cecB1 = QtGui.QPushButton(translate('magicFixture', 'on'), self)
+				self.cecB1 = QtGui.QPushButton(translate('magicJoints', 'on'), self)
 				self.cecB1.clicked.connect(self.setCenterOn)
-				self.cecB1.setFixedWidth(btsize)
-				self.cecB1.move(bc1, row)
+				self.cecB1.setFixedWidth(50)
 				self.cecB1.setAutoRepeat(True)
 				
 				# button
-				self.cecB2 = QtGui.QPushButton(translate('magicFixture', 'off'), self)
+				self.cecB2 = QtGui.QPushButton(translate('magicJoints', 'off'), self)
 				self.cecB2.clicked.connect(self.setCenterOff)
-				self.cecB2.setFixedWidth(btsize)
-				self.cecB2.move(bc2, row)
+				self.cecB2.setFixedWidth(50)
 				self.cecB2.setAutoRepeat(True)
 
 			if self.gCornerCrossSupport == True or self.gAxisCrossSupport == True:
-				
-				row += 25
-				
-				self.kccscb = QtGui.QCheckBox(translate('magicFixture', ' - keep custom cross settings'), self)
+
+				self.kccscb = QtGui.QCheckBox(translate('magicJoints', ' - keep custom cross settings'), self)
 				self.kccscb.setCheckState(QtCore.Qt.Unchecked)
-				self.kccscb.move(10, row+3)
+	
+			# ############################################################################
+			# build GUI layout
+			# ############################################################################
+			
+			# create structure
+			self.row1 = QtGui.QHBoxLayout()
+			self.row1.setAlignment(QtGui.Qt.AlignLeft)
+			self.row1.addWidget(self.oFixtureB)
+			self.row1.addWidget(self.oFixtureL)
+			
+			self.row2 = QtGui.QHBoxLayout()
+			self.row2.setAlignment(QtGui.Qt.AlignLeft)
+			self.row2.addWidget(self.oAnchorB)
+			self.row2.addWidget(self.oAnchorL)
+			
+			self.row3 = QtGui.QHBoxLayout()
+			self.row3.addWidget(self.s1B1)
+
+			self.row4 = QtGui.QGridLayout()
+			self.row4.addWidget(self.s2L, 0, 0)
+			self.row4.addWidget(self.s2B1, 0, 1)
+			self.row4.addWidget(self.s2IS, 0, 2)
+			self.row4.addWidget(self.s2B2, 0, 3)
+			self.row4.addWidget(self.s4L, 1, 0)
+			self.row4.addWidget(self.s4B1, 1, 1)
+			self.row4.addWidget(self.s4IS, 1, 2)
+			self.row4.addWidget(self.s4B2, 1, 3)
+			self.row5 = QtGui.QHBoxLayout()
+			self.row5.addWidget(self.oAddRefB)
+			self.rowBody1 = QtGui.QVBoxLayout()
+			self.rowBody1.addLayout(self.row4)
+			self.rowBody1.addLayout(self.row5)
+			self.groupBody1 = QtGui.QGroupBox(None, self)
+			self.groupBody1.setLayout(self.rowBody1)
+
+			self.row6 = QtGui.QGridLayout()
+			self.row6.addWidget(self.oOffsetXL, 0, 0)
+			self.row6.addWidget(self.oOffsetXB1, 0, 1)
+			self.row6.addWidget(self.oOffsetXE, 0, 2)
+			self.row6.addWidget(self.oOffsetXB2, 0, 3)
+			self.row6.addWidget(self.oOffsetYL, 1, 0)
+			self.row6.addWidget(self.oOffsetYB1, 1, 1)
+			self.row6.addWidget(self.oOffsetYE, 1, 2)
+			self.row6.addWidget(self.oOffsetYB2, 1, 3)
+			self.row6.addWidget(self.oOffsetZL, 2, 0)
+			self.row6.addWidget(self.oOffsetZB1, 2, 1)
+			self.row6.addWidget(self.oOffsetZE, 2, 2)
+			self.row6.addWidget(self.oOffsetZB2, 2, 3)
+			self.row6.addWidget(self.oFxStepL, 3, 0)
+			self.row6.addWidget(self.oFxStepE, 3, 2)
+			self.row7 = QtGui.QHBoxLayout()
+			self.row7.addWidget(self.e1B1)
+			self.row8 = QtGui.QHBoxLayout()
+			self.row8.addWidget(self.e2B1)
+			self.row8.addWidget(self.e2B2)
+			self.rowBody2 = QtGui.QVBoxLayout()
+			self.rowBody2.addLayout(self.row6)
+			self.rowBody2.addLayout(self.row7)
+			self.rowBody2.addLayout(self.row8)
+			self.groupBody2 = QtGui.QGroupBox(None, self)
+			self.groupBody2.setLayout(self.rowBody2)
+			
+			self.row9 = QtGui.QHBoxLayout()
+			self.row9.addWidget(self.rb1)
+			self.row9.addWidget(self.rb2)
+			self.row10 = QtGui.QHBoxLayout()
+			self.row10.addWidget(self.e3B1)
+			self.rowBody3 = QtGui.QVBoxLayout()
+			self.rowBody3.addLayout(self.row9)
+			self.rowBody3.addSpacing(10)
+			self.rowBody3.addLayout(self.row10)
+			self.groupBody3 = QtGui.QGroupBox(None, self)
+			self.groupBody3.setLayout(self.rowBody3)
+			
+			# create foot
+			self.layoutFoot = QtGui.QVBoxLayout()
+			
+			self.rowFoot1 = QtGui.QHBoxLayout()
+			self.rowFoot1.addWidget(self.cocL)
+			self.rowFoot1.addWidget(self.cocB1)
+			self.rowFoot1.addWidget(self.cocB2)
+			self.layoutFoot.addLayout(self.rowFoot1)
+
+			self.rowFoot2 = QtGui.QHBoxLayout()
+			self.rowFoot2.addWidget(self.cecL)
+			self.rowFoot2.addWidget(self.cecB1)
+			self.rowFoot2.addWidget(self.cecB2)
+			self.layoutFoot.addLayout(self.rowFoot2)
+			
+			self.rowFoot3 = QtGui.QHBoxLayout()
+			self.rowFoot3.addWidget(self.kccscb)
+			self.layoutFoot.addLayout(self.rowFoot3)
+			
+			# set layout to main window
+			self.layout = QtGui.QVBoxLayout()
+			
+			self.layout.addLayout(self.row1)
+			self.layout.addLayout(self.row2)
+			self.layout.addLayout(self.row3)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBody1)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBody2)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBody3)
+			self.layout.addStretch()
+			self.layout.addLayout(self.layoutFoot)
+			self.setLayout(self.layout)
 
 			# ############################################################################
 			# show & init defaults
@@ -452,7 +468,6 @@ def showQtGUI():
 			# show window
 			self.show()
 			
-			# init axis cross
 			if self.gAxisCrossSupport == True:
 				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
 			
@@ -989,7 +1004,7 @@ def showQtGUI():
 					FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(s-1)
 					self.gCornerCross = s-1
 			except:
-				self.s1S.setText(self.gNoSelection)
+				skip = 1
 			
 		def setCornerP(self):
 
@@ -998,15 +1013,14 @@ def showQtGUI():
 				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(s+1)
 				self.gCornerCross = s+1
 			except:
-				self.s1S.setText(self.gNoSelection)
+				skip = 1
 		
-		# ############################################################################
 		def setCenterOn(self):
 			try:
 				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
 				self.gAxisCross = True
 			except:
-				self.s1S.setText(self.gNoSelection)
+				skip = 1
 			
 		def setCenterOff(self):
 
@@ -1014,7 +1028,7 @@ def showQtGUI():
 				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(False)
 				self.gAxisCross = False
 			except:
-				self.s1S.setText(self.gNoSelection)
+				skip = 1
 		
 		# ############################################################################
 		def refreshSettings(self):
@@ -1095,7 +1109,7 @@ def showQtGUI():
 				
 			if form.gCornerCrossSupport == True:
 				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(form.gCornerCrossOrig)
-		
+
 		pass
 
 # ###################################################################################################################

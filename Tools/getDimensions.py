@@ -84,7 +84,7 @@ sLTFDsc = {
 	"d" : translate("getDimensions", "detailed, edgeband, drill holes, countersinks"),
 	"c" : translate("getDimensions", "constraints names, totally custom report"),
 	"p" : translate("getDimensions", "pads, show list of all constraints"),
-	"a" : translate("getDimensions", "approximation of needed material") # no comma
+	"a" : translate("getDimensions", "approximation for cutlistoptimizer.com") # no comma
 }
 
 # Units for dimensions:
@@ -618,9 +618,9 @@ def showQtGUI():
 
 			# text input
 			self.fcrE = QtGui.QLineEdit(self)
-			self.fcrE.setText(translate('getDimensions','Select face to get furniture color reference.'))
-			self.fcrE.setFixedWidth(300)
-			self.fcrE.move(70, vLine + vLineNextRow + 3)
+			self.fcrE.setText(translate('getDimensions','select face to get color reference'))
+			self.fcrE.setFixedWidth(250)
+			self.fcrE.move(120, vLine + vLineNextRow + 3)
 
 			# ############################################################################
 			# edgeband code
@@ -757,6 +757,8 @@ def showQtGUI():
 				self.ufsIS.hide()
 				
 				self.ardL.hide()
+				self.atsCB.hide()
+				self.aeiCB.hide()
 				self.armeCB.hide()
 				self.ardCB.hide()
 				self.armCB.hide()
@@ -784,6 +786,8 @@ def showQtGUI():
 				self.ufsIS.show()
 				
 				self.ardL.show()
+				self.atsCB.show()
+				self.aeiCB.show()
 				self.armeCB.show()
 				self.ardCB.show()
 				self.armCB.show()

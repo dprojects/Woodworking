@@ -476,27 +476,18 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 260
-			toolSH = 510
+			toolSW = 300
+			toolSH = 580
 			
-			# active screen size - FreeCAD main window
-			gSW = FreeCADGui.getMainWindow().width()
-			gSH = FreeCADGui.getMainWindow().height()
-
-			# tool screen position
-			gPW = int( gSW - toolSW )
-			gPH = int( gSH - toolSH )
-
 			# ############################################################################
 			# main window
 			# ############################################################################
 			
 			self.result = userCancelled
-			self.setGeometry(gPW, gPH, toolSW, toolSH)
 			self.setWindowTitle(translate('magicMeasure', 'magicMeasure'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
-
-			row = 10
+			self.setFixedWidth(toolSW)
+			self.setFixedHeight(toolSH)
 			
 			# ############################################################################
 			# measure observer
@@ -504,23 +495,18 @@ def showQtGUI():
 			
 			# measurement observer active status
 			self.moas = QtGui.QLabel(translate('magicMeasure', 'Measurement observer:'), self)
-			self.moas.move(10, row+10)
 			
 			# measurement observer active button
 			self.moaBON = QtGui.QPushButton(translate('magicMeasure', 'START'), self)
 			self.moaBON.clicked.connect(self.measureStart)
 			self.moaBON.setFixedWidth(80)
 			self.moaBON.setFixedHeight(40)
-			self.moaBON.move(toolSW - 90, row)
 			
 			# measurement observer active button
 			self.moaBPAUSE = QtGui.QPushButton(translate('magicMeasure', 'PAUSE'), self)
 			self.moaBPAUSE.clicked.connect(self.measureFinish)
 			self.moaBPAUSE.setFixedWidth(80)
 			self.moaBPAUSE.setFixedHeight(40)
-			self.moaBPAUSE.move(toolSW - 90, row)
-		
-			row += 50
 			
 			# ############################################################################
 			# preselection
@@ -528,31 +514,25 @@ def showQtGUI():
 			
 			# preselection mode label
 			self.psmL = QtGui.QLabel(translate('magicMeasure', 'Preselection mode:'), self)
-			self.psmL.move(10, row+10)
 			
 			# preselection mode button
 			self.psmB1 = QtGui.QPushButton(translate('magicMeasure', 'ON'), self)
 			self.psmB1.clicked.connect(self.setPSMOn)
 			self.psmB1.setFixedWidth(80)
 			self.psmB1.setFixedHeight(40)
-			self.psmB1.move(toolSW - 90, row)
 			
 			# preselection mode button
 			self.psmB2 = QtGui.QPushButton(translate('magicMeasure', 'OFF'), self)
 			self.psmB2.clicked.connect(self.setPSMOff)
 			self.psmB2.setFixedWidth(80)
 			self.psmB2.setFixedHeight(40)
-			self.psmB2.move(toolSW - 90, row)
 			
 			# ############################################################################
 			# resize vertex
 			# ############################################################################
 			
-			row += 50
-			
 			# measurement observer active status
 			self.vsL = QtGui.QLabel(translate('magicMeasure', 'Vertices size:'), self)
-			self.vsL.move(10, row+10)
 			
 			# measurement observer active button
 			self.vsBM = QtGui.QPushButton('- 5', self)
@@ -560,7 +540,6 @@ def showQtGUI():
 			self.vsBM.setFixedWidth(60)
 			self.vsBM.setFixedHeight(40)
 			self.vsBM.setAutoRepeat(True)
-			self.vsBM.move(toolSW - 140, row)
 			
 			# measurement observer active button
 			self.vsBP = QtGui.QPushButton('+ 5', self)
@@ -568,30 +547,19 @@ def showQtGUI():
 			self.vsBP.setFixedWidth(60)
 			self.vsBP.setFixedHeight(40)
 			self.vsBP.setAutoRepeat(True)
-			self.vsBP.move(toolSW - 70, row)
 			
 			# ############################################################################
 			# selection description info
 			# ############################################################################
 			
-			row += 50
-			
 			# preselection mode active status
 			self.psmas = QtGui.QLabel("", self)
-			self.psmas.setFixedWidth(toolSW - 20)
-			self.psmas.move(10, row+3)
-			
-			row -= 20
 			
 			# mode description
 			self.sdi = QtGui.QLabel(self.gObserverOff, self)
-			self.sdi.setFixedWidth(toolSW - 20)
-			self.sdi.setFixedHeight(300)
+			self.sdi.setFixedHeight(200)
 			self.sdi.setWordWrap(True)
 			self.sdi.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.sdi.move(10, row)
-			
-			row += 265
 			
 			# ############################################################################
 			# # measure data
@@ -599,17 +567,55 @@ def showQtGUI():
 
 			# measure object info
 			self.moi = QtGui.QLabel("", self)
-			self.moi.setFixedWidth(toolSW - 20)
-			self.moi.move(10, row+3)
-
-			row += 30
+			self.moi.setWordWrap(True)
 
 			# measure object size
 			self.mos = QtGui.QTextEdit(self)
-			self.mos.setMinimumSize(toolSW-20, 60)
-			self.mos.setMaximumSize(toolSW-20, 60)
-			self.mos.move(10, row)
+			self.mos.setFixedHeight(60)
 			self.mos.setPlainText("")
+
+			# ############################################################################
+			# build GUI layout
+			# ############################################################################
+			
+			# create structure
+			self.body1 = QtGui.QGridLayout()
+			self.body1.addWidget(self.moas, 0, 0)
+			self.body1.addWidget(self.moaBON, 0, 1)
+			self.body1.addWidget(self.moaBPAUSE, 0, 1)
+			self.body1.addWidget(self.psmL, 1, 0)
+			self.body1.addWidget(self.psmB1, 1, 1)
+			self.body1.addWidget(self.psmB2, 1, 1)
+			self.body12 = QtGui.QHBoxLayout()
+			self.body12.addWidget(self.vsL)
+			self.body12.addWidget(self.vsBM)
+			self.body12.addWidget(self.vsBP)
+			self.lay1 = QtGui.QVBoxLayout()
+			self.lay1.addLayout(self.body1)
+			self.lay1.addLayout(self.body12)
+			self.groupBody1 = QtGui.QGroupBox(None, self)
+			self.groupBody1.setLayout(self.lay1)
+			
+			self.body2 = QtGui.QVBoxLayout()
+			self.body2.addWidget(self.psmas)
+			self.body2.addWidget(self.sdi)
+			self.groupBody2 = QtGui.QGroupBox(None, self)
+			self.groupBody2.setLayout(self.body2)
+			
+			self.body3 = QtGui.QVBoxLayout()
+			self.body3.addWidget(self.moi)
+			self.body3.addWidget(self.mos)
+			self.groupBody3 = QtGui.QGroupBox(None, self)
+			self.groupBody3.setLayout(self.body3)
+			
+			# set layout to main window
+			self.layout = QtGui.QVBoxLayout()
+			self.layout.addWidget(self.groupBody1)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBody2)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBody3)
+			self.setLayout(self.layout)
 
 			# ############################################################################
 			# show & init defaults
@@ -617,6 +623,13 @@ def showQtGUI():
 
 			# show window
 			self.show()
+
+			# set window position
+			sw = self.width()
+			sh = self.height()
+			pw = int( FreeCADGui.getMainWindow().width() - sw ) - 5
+			ph = int( FreeCADGui.getMainWindow().height() - sh ) + 30
+			self.setGeometry(pw, ph, sw, sh)
 
 			# init
 			self.setInit()
