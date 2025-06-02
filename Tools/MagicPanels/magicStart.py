@@ -887,8 +887,7 @@ def showQtGUI():
 			self.sMode.addItems(self.sModeList)
 			self.sMode.setCurrentIndex(0)
 			self.sMode.textActivated[str].connect(self.selectedOption)
-			self.sMode.setFixedWidth(area - 10 - helpButtonSize)
-			self.sMode.setFixedHeight(40)
+			self.sMode.resize(area - 30 - helpButtonSize, 40)
 			self.sMode.move(10, 10)
 
 			# ############################################################################
@@ -898,16 +897,14 @@ def showQtGUI():
 			# button
 			self.helpBSHOW = QtGui.QPushButton(translate('magicStart', 'HELP >'), self)
 			self.helpBSHOW.clicked.connect(self.helpSHOW)
-			self.helpBSHOW.setFixedWidth(helpButtonSize)
-			self.helpBSHOW.setFixedHeight(40)
-			self.helpBSHOW.move(self.toolSW - helpButtonSize - 10, 10)
+			self.helpBSHOW.resize(helpButtonSize, 40)
+			self.helpBSHOW.move(self.toolSW - helpButtonSize - 30, 10)
 
 			# button
 			self.helpBHIDE = QtGui.QPushButton(translate('magicStart', '< HELP'), self)
 			self.helpBHIDE.clicked.connect(self.helpHIDE)
-			self.helpBHIDE.setFixedWidth(80)
-			self.helpBHIDE.setFixedHeight(40)
-			self.helpBHIDE.move(self.toolSW - helpButtonSize - 10, 10)
+			self.helpBHIDE.resize(helpButtonSize, 40)
+			self.helpBHIDE.move(self.toolSW - helpButtonSize - 30, 10)
 			self.helpBHIDE.hide()
 			
 			# label
@@ -983,8 +980,7 @@ def showQtGUI():
 			# button
 			self.mergeB = QtGui.QPushButton(translate('magicStart', 'import from examples'), self)
 			self.mergeB.clicked.connect(self.createObject)
-			self.mergeB.setFixedWidth(area)
-			self.mergeB.setFixedHeight(createSize)
+			self.mergeB.resize(area, createSize)
 			self.mergeB.move(10, createRow)
 			self.mergeB.hide()
 			
@@ -1041,8 +1037,7 @@ def showQtGUI():
 			# button
 			self.oworkspaceBCL = QtGui.QPushButton(translate('magicStart', 'calculate workspace position'), self)
 			self.oworkspaceBCL.clicked.connect(self.calculateWorkspace)
-			self.oworkspaceBCL.setFixedWidth(area)
-			self.oworkspaceBCL.setFixedHeight(40)
+			self.oworkspaceBCL.resize(area, createSize)
 			self.oworkspaceBCL.move(10, rowwsp)
 			
 			rowwsp += 80
@@ -1074,8 +1069,7 @@ def showQtGUI():
 			# button
 			self.oworkspaceBCR = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.oworkspaceBCR.clicked.connect(self.createObject)
-			self.oworkspaceBCR.setFixedWidth(area)
-			self.oworkspaceBCR.setFixedHeight(createSize)
+			self.oworkspaceBCR.resize(area, createSize)
 			self.oworkspaceBCR.move(10, createRow)
 
 			# ############################################################################
@@ -1133,8 +1127,7 @@ def showQtGUI():
 			# button
 			self.oo1B1 = QtGui.QPushButton(translate('magicStart', 'calculate furniture'), self)
 			self.oo1B1.clicked.connect(self.calculateFurniture)
-			self.oo1B1.setFixedWidth(area)
-			self.oo1B1.setFixedHeight(40)
+			self.oo1B1.resize(area, createSize)
 			self.oo1B1.move(10, row)
 			
 			row += 70
@@ -1202,8 +1195,7 @@ def showQtGUI():
 			# button
 			self.s1B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.s1B1.clicked.connect(self.createObject)
-			self.s1B1.setFixedWidth(area)
-			self.s1B1.setFixedHeight(createSize)
+			self.s1B1.resize(area, createSize)
 			self.s1B1.move(10, createRow)
 
 			# hide by default
@@ -1294,8 +1286,7 @@ def showQtGUI():
 			# button
 			self.of6B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.of6B1.clicked.connect(self.createObject)
-			self.of6B1.setFixedWidth(area)
-			self.of6B1.setFixedHeight(createSize)
+			self.of6B1.resize(area, createSize)
 			self.of6B1.move(10, createRow)
 
 			# hide by default
@@ -1400,8 +1391,7 @@ def showQtGUI():
 			# button
 			self.otb7B = QtGui.QPushButton(translate('magicStart', 'calculate table position'), self)
 			self.otb7B.clicked.connect(self.calculateTable)
-			self.otb7B.setFixedWidth(area)
-			self.otb7B.setFixedHeight(40)
+			self.otb7B.resize(area, createSize)
 			self.otb7B.move(10, rowtbl)
 			
 			rowtbl += 70
@@ -1433,8 +1423,7 @@ def showQtGUI():
 			# button
 			self.otb9B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.otb9B.clicked.connect(self.createObject)
-			self.otb9B.setFixedWidth(area)
-			self.otb9B.setFixedHeight(createSize)
+			self.otb9B.resize(area, createSize)
 			self.otb9B.move(10, createRow)
 			
 			# hide by default
@@ -1596,8 +1585,7 @@ def showQtGUI():
 			# button
 			self.og4B1 = QtGui.QPushButton(translate('magicStart', 'calculate gap for drawer'), self)
 			self.og4B1.clicked.connect(self.calculateSingleDrawer)
-			self.og4B1.setFixedWidth(area)
-			self.og4B1.setFixedHeight(40)
+			self.og4B1.resize(area, createSize)
 			self.og4B1.move(10, rowgap)
 			
 			rowgap += 60
@@ -1664,8 +1652,7 @@ def showQtGUI():
 			# button
 			self.og9B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.og9B1.clicked.connect(self.createObject)
-			self.og9B1.setFixedWidth(area)
-			self.og9B1.setFixedHeight(createSize)
+			self.og9B1.resize(area, createSize)
 			self.og9B1.move(10, createRow)
 
 			# hide by default
@@ -1874,8 +1861,7 @@ def showQtGUI():
 			# button
 			self.ods5B = QtGui.QPushButton(translate('magicStart', 'calculate gaps'), self)
 			self.ods5B.clicked.connect(self.calculateDrawerSeries)
-			self.ods5B.setFixedWidth(area)
-			self.ods5B.setFixedHeight(40)
+			self.ods5B.resize(area, createSize)
 			self.ods5B.move(10, rowds)
 			
 			rowds += 60
@@ -1943,8 +1929,7 @@ def showQtGUI():
 			# button
 			self.ods10B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ods10B.clicked.connect(self.createObject)
-			self.ods10B.setFixedWidth(area)
-			self.ods10B.setFixedHeight(createSize)
+			self.ods10B.resize(area, createSize)
 			self.ods10B.move(10, createRow)
 
 			# hide by default
@@ -2068,8 +2053,7 @@ def showQtGUI():
 			# button
 			self.ofr4B1 = QtGui.QPushButton(translate('magicStart', 'calculate front'), self)
 			self.ofr4B1.clicked.connect(self.calculateFrontFromGap)
-			self.ofr4B1.setFixedWidth(area)
-			self.ofr4B1.setFixedHeight(40)
+			self.ofr4B1.resize(area, createSize)
 			self.ofr4B1.move(10, rowfront)
 			
 			rowfront += 80
@@ -2125,8 +2109,7 @@ def showQtGUI():
 			# button
 			self.ofr8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ofr8B1.clicked.connect(self.createObject)
-			self.ofr8B1.setFixedWidth(area)
-			self.ofr8B1.setFixedHeight(createSize)
+			self.ofr8B1.resize(area, createSize)
 			self.ofr8B1.move(10, createRow)
 
 			# hide by default
@@ -2233,8 +2216,7 @@ def showQtGUI():
 			# button
 			self.oBackBCL = QtGui.QPushButton(translate('magicStart', 'calculate back'), self)
 			self.oBackBCL.clicked.connect(self.calculateBack)
-			self.oBackBCL.setFixedWidth(area)
-			self.oBackBCL.setFixedHeight(40)
+			self.oBackBCL.resize(area, createSize)
 			self.oBackBCL.move(10, rowback)
 			
 			rowback += 80
@@ -2290,8 +2272,7 @@ def showQtGUI():
 			# button
 			self.oBackBCR = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.oBackBCR.clicked.connect(self.createObject)
-			self.oBackBCR.setFixedWidth(area)
-			self.oBackBCR.setFixedHeight(createSize)
+			self.oBackBCR.resize(area, createSize)
 			self.oBackBCR.move(10, createRow)
 
 			# hide by default
@@ -2385,8 +2366,7 @@ def showQtGUI():
 			# button
 			self.ofglass6B = QtGui.QPushButton(translate('magicStart', 'calculate front with glass'), self)
 			self.ofglass6B.clicked.connect(self.calculateFrontWithGlass)
-			self.ofglass6B.setFixedWidth(area)
-			self.ofglass6B.setFixedHeight(40)
+			self.ofglass6B.resize(area, createSize)
 			self.ofglass6B.move(10, rowfglass)
 			
 			rowfglass += 80
@@ -2454,8 +2434,7 @@ def showQtGUI():
 			# button
 			self.ofglass11B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ofglass11B.clicked.connect(self.createObject)
-			self.ofglass11B.setFixedWidth(area)
-			self.ofglass11B.setFixedHeight(createSize)
+			self.ofglass11B.resize(area, createSize)
 			self.ofglass11B.move(10, createRow)
 
 			# hide by default
@@ -2550,8 +2529,7 @@ def showQtGUI():
 			# button
 			self.odf6B = QtGui.QPushButton(translate('magicStart', 'calculate decorative front'), self)
 			self.odf6B.clicked.connect(self.calculateDecorativeFront)
-			self.odf6B.setFixedWidth(area)
-			self.odf6B.setFixedHeight(40)
+			self.odf6B.resize(area, createSize)
 			self.odf6B.move(10, rowodf)
 			
 			rowodf += 80
@@ -2619,8 +2597,7 @@ def showQtGUI():
 			# button
 			self.odf11B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.odf11B.clicked.connect(self.createObject)
-			self.odf11B.setFixedWidth(area)
-			self.odf11B.setFixedHeight(createSize)
+			self.odf11B.resize(area, createSize)
 			self.odf11B.move(10, createRow)
 
 			# hide by default
@@ -2711,8 +2688,7 @@ def showQtGUI():
 			# button
 			self.ofdec5B = QtGui.QPushButton(translate('magicStart', 'calculate front decoration'), self)
 			self.ofdec5B.clicked.connect(self.calculateFrontDecoration)
-			self.ofdec5B.setFixedWidth(area)
-			self.ofdec5B.setFixedHeight(40)
+			self.ofdec5B.resize(area, createSize)
 			self.ofdec5B.move(10, rowfdec)
 			
 			rowfdec += 80
@@ -2768,8 +2744,7 @@ def showQtGUI():
 			# button
 			self.ofdec9B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ofdec9B.clicked.connect(self.createObject)
-			self.ofdec9B.setFixedWidth(area)
-			self.ofdec9B.setFixedHeight(createSize)
+			self.ofdec9B.resize(area, createSize)
 			self.ofdec9B.move(10, createRow)
 
 			# hide by default
@@ -2858,8 +2833,7 @@ def showQtGUI():
 			# button
 			self.offrame6B = QtGui.QPushButton(translate('magicStart', 'calculate Face Frame'), self)
 			self.offrame6B.clicked.connect(self.calculateFaceframeFromGap)
-			self.offrame6B.setFixedWidth(area)
-			self.offrame6B.setFixedHeight(40)
+			self.offrame6B.resize(area, createSize)
 			self.offrame6B.move(10, rowfframe)
 			
 			rowfframe += 80
@@ -2915,8 +2889,7 @@ def showQtGUI():
 			# button
 			self.offrame10B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.offrame10B.clicked.connect(self.createObject)
-			self.offrame10B.setFixedWidth(area)
-			self.offrame10B.setFixedHeight(createSize)
+			self.offrame10B.resize(area, createSize)
 			self.offrame10B.move(10, createRow)
 
 			# hide by default
@@ -3033,8 +3006,7 @@ def showQtGUI():
 			# button
 			self.osh4B1 = QtGui.QPushButton(translate('magicStart', 'calculate shelf'), self)
 			self.osh4B1.clicked.connect(self.calculateShelfFromGap)
-			self.osh4B1.setFixedWidth(area)
-			self.osh4B1.setFixedHeight(40)
+			self.osh4B1.resize(area, createSize)
 			self.osh4B1.move(10, rowshelf)
 			
 			rowshelf += 70
@@ -3090,8 +3062,7 @@ def showQtGUI():
 			# button
 			self.osh8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.osh8B1.clicked.connect(self.createObject)
-			self.osh8B1.setFixedWidth(area)
-			self.osh8B1.setFixedHeight(createSize)
+			self.osh8B1.resize(area, createSize)
 			self.osh8B1.move(10, createRow)
 
 			# hide by default
@@ -3161,8 +3132,7 @@ def showQtGUI():
 			# button
 			self.oshs3B = QtGui.QPushButton(translate('magicStart', 'calculate shelf series'), self)
 			self.oshs3B.clicked.connect(self.calculateShelfSeries)
-			self.oshs3B.setFixedWidth(area)
-			self.oshs3B.setFixedHeight(40)
+			self.oshs3B.resize(area, createSize)
 			self.oshs3B.move(10, rowsseries)
 			
 			rowsseries += 70
@@ -3230,8 +3200,7 @@ def showQtGUI():
 			# button
 			self.oshs8B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.oshs8B.clicked.connect(self.createObject)
-			self.oshs8B.setFixedWidth(area)
-			self.oshs8B.setFixedHeight(createSize)
+			self.oshs8B.resize(area, createSize)
 			self.oshs8B.move(10, createRow)
 
 			# hide by default
@@ -3346,8 +3315,7 @@ def showQtGUI():
 			# button
 			self.oside4B1 = QtGui.QPushButton(translate('magicStart', 'calculate side'), self)
 			self.oside4B1.clicked.connect(self.calculateSideFromGap)
-			self.oside4B1.setFixedWidth(area)
-			self.oside4B1.setFixedHeight(40)
+			self.oside4B1.resize(area, createSize)
 			self.oside4B1.move(10, rowside)
 			
 			rowside += 70
@@ -3403,8 +3371,7 @@ def showQtGUI():
 			# button
 			self.oside8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.oside8B1.clicked.connect(self.createObject)
-			self.oside8B1.setFixedWidth(area)
-			self.oside8B1.setFixedHeight(createSize)
+			self.oside8B1.resize(area, createSize)
 			self.oside8B1.move(10, createRow)
 
 			# hide by default
@@ -3526,8 +3493,7 @@ def showQtGUI():
 			# button
 			self.ocs4B1 = QtGui.QPushButton(translate('magicStart', 'calculate center side'), self)
 			self.ocs4B1.clicked.connect(self.calculateCenterSideFromGap)
-			self.ocs4B1.setFixedWidth(area)
-			self.ocs4B1.setFixedHeight(40)
+			self.ocs4B1.resize(area, createSize)
 			self.ocs4B1.move(10, rowcside)
 			
 			rowcside += 70
@@ -3583,8 +3549,7 @@ def showQtGUI():
 			# button
 			self.ocs8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ocs8B1.clicked.connect(self.createObject)
-			self.ocs8B1.setFixedWidth(area)
-			self.ocs8B1.setFixedHeight(createSize)
+			self.ocs8B1.resize(area, createSize)
 			self.ocs8B1.move(10, createRow)
 
 			# hide by default
@@ -3678,8 +3643,7 @@ def showQtGUI():
 			# button
 			self.osdec5B = QtGui.QPushButton(translate('magicStart', 'calculate side decoration'), self)
 			self.osdec5B.clicked.connect(self.calculateSideDecoration)
-			self.osdec5B.setFixedWidth(area)
-			self.osdec5B.setFixedHeight(40)
+			self.osdec5B.resize(area, createSize)
 			self.osdec5B.move(10, rowsdec)
 			
 			rowsdec += 80
@@ -3735,8 +3699,7 @@ def showQtGUI():
 			# button
 			self.osdec9B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.osdec9B.clicked.connect(self.createObject)
-			self.osdec9B.setFixedWidth(area)
-			self.osdec9B.setFixedHeight(createSize)
+			self.osdec9B.resize(area, createSize)
 			self.osdec9B.move(10, createRow)
 
 			# hide by default

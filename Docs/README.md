@@ -873,23 +873,26 @@ Tool repository: [github.com/dprojects/getDimensions](https://github.com/dprojec
 
 ## sheet2export
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/sheet2export.png"> This tool allows to export cut-list, BOM to more flexible file formats. Useful if you want to print multi-page report. 
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/sheet2export.png"> This tool allows to export spreadsheets to more flexible file formats. Useful if you want to print multi-page report. 
 
-Main features:
+**Options:**
 
-* Supported file types:
-    * .csv - Comma-separated values,
-    * .html - HyperText Markup Language,
-    * .json - JavaScript Object Notation,
-    * .md - MarkDown.
+* **Export type:** 
+  * `a` exports all spreadsheets from active document to the selected file type.
+  * `s` exports only selected spreadsheets to the selected file type.
 
-* Additional features:
-    * export selected spreadsheet or all spreadsheets,
-    * custom CSV separator,
-    * custom empty cell content,
-    * custom CSS decoration for each cell.
+* **Export file path:** allows you to set the directory to which the exported file will be saved. By default, in Linux, this is the `./` directory, i.e. the directory from which the FreeCAD AppImage file was launched.
 
-Tool repository: [github.com/dprojects/sheet2export](https://github.com/dprojects/sheet2export)
+* **Export file type:** 
+  * `csv` - Comma-separated values ( .csv file )
+  * `html` - HyperText Markup Language ( .html file )
+  * `json` - JavaScript Object Notation ( .json file )
+  * `md` - MarkDown ( .md file )
+
+* **Additional options:**
+  * `Empty cell content:` allows you to set any value for empty cells in a spreadsheet.
+  * `Set CSV separator:` allows you to set any separator for cells in a CSV file.
+  * `CSS rules` allows you to set your own HTML file decoration styles.
 
 **Video tutorials:** 
 * [How to create cut-list](https://www.youtube.com/watch?v=_n7SUYSGHls)
@@ -1019,6 +1022,11 @@ This tool allows you to quickly measure objects. All measurements are recognized
 * **Refresh texture for:**
   * `selected objects only` this button will show the texture only for the currently selected objects.
   * `all objects` this button will show the texture for all objects in the active document.
+
+> [!IMPORTANT]
+> Make sure you have the following option disabled:
+> `Edit -> Preferences -> Display -> 3D View -> Use OpenGL VBO (Vertex Buffer Object)`
+> Especially if you are using the `FreeCAD Dark` or `FreeCAD Light` theme, because they turn on this option and then you may not see the textures.
 
 ## makeBeautiful
 

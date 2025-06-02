@@ -152,7 +152,7 @@ def showQtMain():
 			# ############################################################################
 			
 			self.result = userCancelled
-			self.setWindowTitle(translate('sheet2export', 'sheet2export - default settings'))
+			self.setWindowTitle(translate('sheet2export', 'sheet2export'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 			self.setMinimumWidth(toolSW)
 			self.setMinimumHeight(toolSH)
@@ -168,6 +168,7 @@ def showQtMain():
 			self.eTypeO.addItems(self.eTypeList)
 			self.eTypeO.setCurrentIndex(self.eTypeList.index("a"))
 			self.eTypeO.textActivated[str].connect(self.setEType)
+			self.eTypeO.setFixedSize(80, 20)
 			
 			self.eTypeIS = QtGui.QLabel(translate('sheet2export', 'all spreadsheets'), self)
 			
@@ -175,11 +176,11 @@ def showQtMain():
 			# file path
 			# ############################################################################
 
-			self.fPathL = QtGui.QLabel(translate('sheet2export', 'File path:'), self)
+			self.fPathL = QtGui.QLabel(translate('sheet2export', 'Export file path:'), self)
 			
 			self.fPathTi = QtGui.QLineEdit(self)
 			self.fPathTi.setText(str(sFilePath))
-			self.fPathTi.setFixedWidth(300)
+			self.fPathTi.setFixedWidth(250)
 			
 			self.fPathB = QtGui.QPushButton("...", self)
 			self.fPathB.clicked.connect(self.loadCustomDir)
@@ -188,13 +189,14 @@ def showQtMain():
 			# file type
 			# ############################################################################
 			
-			self.fileTypeL = QtGui.QLabel(translate('sheet2export', 'File type:'), self)
+			self.fileTypeL = QtGui.QLabel(translate('sheet2export', 'Export file type:'), self)
 			
 			self.fileTypeOlist = ("csv","html","json","md")
 			self.fileTypeO = QtGui.QComboBox(self)
 			self.fileTypeO.addItems(self.fileTypeOlist)
 			self.fileTypeO.setCurrentIndex(self.fileTypeOlist.index("html"))
 			self.fileTypeO.textActivated[str].connect(self.setFileType)
+			self.fileTypeO.setFixedSize(80, 20)
 			
 			self.fileTypeOIS = QtGui.QLabel(translate('sheet2export', 'HyperText Markup Language (.html file)'), self)
 			
@@ -242,15 +244,9 @@ def showQtMain():
 			# ############################################################################
 			# buttons
 			# ############################################################################
-
-			# button - cancel
-			self.cancelButton = QtGui.QPushButton(translate('sheet2export', 'Cancel'), self)
-			self.cancelButton.clicked.connect(self.onCancel)
-			self.cancelButton.setAutoDefault(True)
-			self.cancelButton.setFixedHeight(40)
 			
 			# button - ok
-			self.okButton = QtGui.QPushButton(translate('sheet2export', 'OK'), self)
+			self.okButton = QtGui.QPushButton(translate('sheet2export', 'create'), self)
 			self.okButton.clicked.connect(self.onOk)
 			self.okButton.setFixedHeight(40)
 
@@ -260,14 +256,17 @@ def showQtMain():
 			
 			# create structure
 			self.body1 = QtGui.QHBoxLayout()
+			self.body1.setAlignment(QtGui.Qt.AlignLeft)
 			self.body1.addWidget(self.eTypeL)
 			self.body1.addWidget(self.eTypeO)
 			self.body1.addWidget(self.eTypeIS)
 			self.body2 = QtGui.QHBoxLayout()
+			self.body2.setAlignment(QtGui.Qt.AlignLeft)
 			self.body2.addWidget(self.fPathL)
 			self.body2.addWidget(self.fPathTi)
 			self.body2.addWidget(self.fPathB)
 			self.body3 = QtGui.QHBoxLayout()
+			self.body3.setAlignment(QtGui.Qt.AlignLeft)
 			self.body3.addWidget(self.fileTypeL)
 			self.body3.addWidget(self.fileTypeO)
 			self.body3.addWidget(self.fileTypeOIS)
@@ -300,7 +299,6 @@ def showQtMain():
 			self.groupBody2.setLayout(self.lay2)
 			
 			self.body8 = QtGui.QHBoxLayout()
-			self.body8.addWidget(self.cancelButton)
 			self.body8.addWidget(self.okButton)
 			
 			# set layout to main window
@@ -416,9 +414,6 @@ def showQtMain():
 				sCustomCSS += "padding:5px 10px;"
 				self.customCSSti.setText(str(sCustomCSS))
 
-		def onCancel(self):
-			self.result = userCancelled
-			self.close()
 		def onOk(self):
 			self.result = userOK
 			self.close()
