@@ -142,8 +142,8 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 **Step 0. Install correct FreeCAD version:**
 
-* Recommended version for Xubuntu: [FreeCAD-0.21.2-Linux-x86_64.AppImage](https://github.com/FreeCAD/FreeCAD/releases/download/0.21.2/FreeCAD-0.21.2-Linux-x86_64.AppImage)
-* For other operating systems download and install: [FreeCAD 0.21.2](https://github.com/FreeCAD/FreeCAD/releases/tag/0.21.2)
+* Recommended version for Linux: [FreeCAD_1.0.1-conda-Linux-x86_64-py311.AppImage](https://github.com/FreeCAD/FreeCAD/releases/download/1.0.1/FreeCAD_1.0.1-conda-Linux-x86_64-py311.AppImage)
+* For other operating systems download and install: [FreeCAD 1.0.1](https://github.com/FreeCAD/FreeCAD/releases/tag/1.0.1)
 
 > [!NOTE]
 > I don't have `Windows` or `macOS`, so I am not able to test and certify this workbench for those systems. However, if you use `FreeCAD AppImage` there is a good chance this will be working correctly.
