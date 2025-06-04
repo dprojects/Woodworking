@@ -2,9 +2,26 @@
 <package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
   <name>Woodworking</name>
   <description>FreeCAD workbench for woodworking purposes.</description>
-  <version>1.0.1.39285.1.0.1</version>
+  
+  <!-- 
+  Syntax: 1.0.1.39285.1.0.1.2025.06.04
+  1.0.1.39285 - dedicated FreeCAD kernel version
+  1.0 - Woodworking workebench version
+  1 or 0 - current state, development 1 or stable release 0
+  2025.06.04 - last commit date
+  -->
+  <version>1.0.1.39285.1.0.1.2025.06.04</version>
+  
+  <!--
+  This date tag is not used by Woodworking workbench but it is good to keep it up-to-date
+  -->
   <date>2025-06-04</date>
+  
+  <!--
+  Keep it for author rights purposes 
+  -->
   <author>Darek L (https://github.com/dprojects)</author>
+  
   <maintainer email="you@null.com">FreeCAD updates appear every week. Unfortunately, I do not have the ability to consistently follow the changes and wonder if something has been broken.</maintainer>
   <license file="LICENSE">MIT, keep author tag without change.</license>
   <url type="repository" branch="master">https://github.com/dprojects/Woodworking</url>

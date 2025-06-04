@@ -619,7 +619,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 * **Rotation point** Allows you to switch between several predefined rotation points. If the predefined points not allows you to rotate the object as you wish, you can add your custom point. You can select:
   * `vertex` in this case this vertex will be added to the end of the `Rotation point` list.
   * `edge` in this case first and end point of the edge will be added to the end of the `Rotation point` list and also CenterOfMass of the edge.
-  * `face` in this case CenterOfMass of the face will be added to the end of the `Rotation point` list.
+  * `face` in this case all face vertices and CenterOfMass of the face will be added to the end of the `Rotation point` list.
 * **add selected vertex** this button loads selected rotation points at the end of the `Rotation point` list.
 * **X-**, **X+**, **Y-**, **Y+**, **Z-**, **Z+** allows to rotate loaded objects according to the XYZ coordinate axes. 
 * **value between** shows current rotation status so you can quickly rotate back the object, if you still have opened the tool interface. If you close it you have to use CTRL-Z to undo rotation. 
