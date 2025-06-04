@@ -633,6 +633,24 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 		This is related to face not to object. The object direction will be different.
 		
 # Vertices
+### vertices2vectors(iVertices):
+
+	Description:
+	
+		Converts vertices into vector objects.
+	
+##### Description:
+	
+		iVertices: array with vertices
+
+##### Usage:
+	
+		vertices = MagicPanels.touchTypo(obj.Shape)
+		vectors = MagicPanels.vertices2vectors(vertices)
+
+##### Result:
+	
+		return array with vectors
 ### showVertex(iVertices, iRadius=20, iColor="red"):
 
 	Description:
@@ -2204,94 +2222,167 @@ gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.
 	
 		QLabel { 
 			min-width: 700px; 
-			padding: 15px;
-			margin: 15px 25px 15px 0px;
-		}
 	
-# DEPRECATED
+	msg.setStyleSheet(css)
+	msg.exec_()
+	
+
+
+
 ### moveToParent(iObjects, iSelection):
 
-	# ########################################################################################
-	# THIS FUNCTION IS DEPRECATED !!!
-	# ########################################################################################
-	
-	Description:
-	
-		This version move object to parent container without adding or remove offset. This is useful if you copy the 
-		Sketch, because Sketch after copy is located outside Body, in Part. But if the Part is inside LinkGroup 
-		the copied Sketch will be located outside LinkGroup, in main root folder. This is problematic because 
-		the Sketch after copy has offset from containers. The object to move need to be in root folder to avoid 
-		duplicated already copied objects, Cube.
-	
-##### Description:
-	
-		iObjects: list of objects to move to container, for example new created Sketch
-		iSelection: selected object, for example Sketch
 
-##### Usage:
-	
-		MagicPanels.moveToParent([ copy ], sketch)
+	# in try to avoid dependency loop
+	try:
+		
+		# skip move to Body container
+		if iSelection.isDerivedFrom("PartDesign::Body"):
+			return
 
-##### Result:
-	
-		No return, move object.
+		# if Cube and Part are in the root, and Part was created before Cube
+		# the InList will return Part as parent, do you believe it?
+		if len(iSelection.InList) < 1 or len(iSelection.Parents) < 1:
+			return
+
+		parent = iSelection.InList[0]
+
+		for o in iObjects:
+
+			# skip move Link of LinkGroup to the same LinkGroup
+			if iSelection.isDerivedFrom("App::LinkGroup") or iSelection.isDerivedFrom("App::Link"):
+				if o.isDerivedFrom("App::Link"):
+					continue
+
+			# move object
+			FreeCADGui.Selection.addSelection(o)
+			o.adjustRelativeLinks(parent)
+			parent.ViewObject.dropObject(o, None, '', [])
+			FreeCADGui.Selection.clearSelection()
+
+		FreeCAD.ActiveDocument.recompute()
+
+	except:
+		skip = 1
+
 
 ### moveToClean(iObjects, iSelection):
 
-	# ########################################################################################
-	# THIS FUNCTION IS DEPRECATED !!!
-	# ########################################################################################
-	
-	Description:
-	
-		Move objects iObjects to clean container for iSelection object.
-		Container need to be in the clean path, no other objects except Group or LinkGroup, 
 
-		For example:
+	containers = getContainers(iSelection)
+	rsize = len(containers)
+	
+	# if no container, do nothing
+	if rsize == 0:
+		return
+	
+	# if containers
+	else:
+		
+		coX, coY, coZ, coR = 0, 0, 0, 0
+		search = True
+		toMove = ""
+		
+		# search for first non container item
+		i = 0
+		while i < rsize and i < gSearchDepth:
+			
+			index = rsize - 1 - i
+			c = containers[index]
+			
+			# if there is supported container
+			if (
+				c.isDerivedFrom("App::LinkGroup") or 
+				c.isDerivedFrom("App::DocumentObjectGroup") 
+				):
+			
+				# save last valid container
+				toMove = c
+			
+				# skip group without placement
+				try:
+					coX = coX + c.Placement.Base.x
+					coY = coY + c.Placement.Base.y
+					coZ = coZ + c.Placement.Base.z
+				except:
+					skip = 1
+			else:
+				break
 
-		clean path: LinkGroup -> LinkGroup
-		not clean: Mirror -> LinkGroup
-	
-##### Description:
-	
-		iObjects: list of objects to move to container, for example new created Cube
-		iSelection: selected object, for example Pad
+			i = i + 1
 
-##### Usage:
-	
-		MagicPanels.moveToClean([ o ], pad)
+		# after search, check if found
+		if toMove == "":
+			return
 
-##### Result:
-	
-		No return, move object.
+		# move objects
+		for o in iObjects:
+		
+			# add containers offset
+			[x, y, z, r ] = getContainerPlacement(o, "clean")
+			
+			x = x + coX
+			y = y + coY
+			z = z + coZ
+			
+			setContainerPlacement(o, x, y, z, 0, "clean")
+			
+			# move object to saved container
+			o.adjustRelativeLinks(toMove)
+			toMove.ViewObject.dropObject(o, None, '', [])
+			
+		FreeCAD.ActiveDocument.recompute()
+
 
 ### moveToFirstWithInverse(iObjects, iSelection):
 
-	# ########################################################################################
-	# THIS FUNCTION IS DEPRECATED !!!
-	# ########################################################################################
+
+	containers = getContainers(iSelection)
+	rsize = len(containers)
 	
-	Description:
+	# if no container, do nothing
+	if rsize == 0:
+		return
 	
-		This version remove the placement and rotation offset from iObjects and move the iObjects to first 
-		supported container (LinkGroup). 
+	# calculate offset to remove
+	toRemove = ""
+	i = 0
+	while i < rsize and i < gSearchDepth:
+
+		c = containers[i]
+
+		if c.isDerivedFrom("App::LinkGroup"):
+			try:
+				p = c.Placement
+				if toRemove == "":
+					toRemove = p.inverse()
+				else:
+					toRemove = toRemove * p.inverse()
+			except:
+				skip = 1
+	
+		i = i + 1
+
+	# remove offset and move to container
+	i = 0
+	while i < rsize and i < gSearchDepth:
 		
-		Note: It is dedicated to move panel created from vertices to the first LinkGroup container. 
-		The object created from vertices have applied offset with rotation after creation 
-		but is outside the container. So if you move it manually it will be in the wrong place because 
-		container apply the placement and rotation again. So, you have to remove the offset and move it. 
-		Yea, that's the beauty of FreeCAD ;-)
-	
-##### Description:
-	
-		iObjects: list of objects to move to container, for example new created Cube
-		iSelection: selected object, for example Pad
+		c = containers[i]
 
-##### Usage:
-	
-		MagicPanels.moveToFirstWithInverse([ o ], pad)
+		if c.isDerivedFrom("App::LinkGroup"):
+			for o in iObjects:
+					
+				o.Placement = o.Placement * toRemove
 
-##### Result:
-	
-		No return, move object.
+				FreeCADGui.Selection.addSelection(o)
+				o.adjustRelativeLinks(c)
+				c.ViewObject.dropObject(o, None, '', [])
+				FreeCADGui.Selection.clearSelection()
+
+			FreeCAD.ActiveDocument.recompute()
+			
+			return
+			
+		i = i + 1
+
+
 

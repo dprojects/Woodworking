@@ -211,8 +211,7 @@ def getItems(iType):
 			"Std_DependencyGraph",
 			"Std_DlgMacroExecute",
 			"Std_DlgMacroExecuteDirect",
-			"Std_DlgMacroRecord",
-			"Std_MacroStopRecord"
+			"Std_DlgMacroRecord"
 		]
 	
 	if iType == "Woodworking - parameterization":

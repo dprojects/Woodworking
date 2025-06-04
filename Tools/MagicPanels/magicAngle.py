@@ -390,6 +390,13 @@ def showQtGUI():
 				self.initRotationPoint(5, 3)
 				
 			try:
+				# init with all vertices
+				vertices = MagicPanels.touchTypo(self.gObj.Shape)
+				self.gCenterVertex = MagicPanels.vertices2vectors(vertices)
+				for v in vertices:
+					self.gCenterObj.append(self.gObj)
+
+				# try to add CenterOfMass
 				v = self.gObj.Shape.CenterOfMass
 				self.gCenterVertex.append(FreeCAD.Vector(float(v.x), float(v.y), float(v.z)))
 				self.gCenterObj.append(self.gObj)
@@ -532,7 +539,7 @@ def showQtGUI():
 					self.gCenterIndex = len(self.gCenterVertex) - 1
 				else:
 					self.gCenterIndex = self.gCenterIndex - 1
-					
+				
 				self.setCenterSphere()
 			except:
 				self.mIS.setText(self.gNoSelection)
@@ -572,6 +579,11 @@ def showQtGUI():
 					self.gCenterObj.append(obj)
 				
 				elif str(sub.ShapeType) == "Face":
+					vertices = MagicPanels.touchTypo(sub)
+					self.gCenterVertex += MagicPanels.vertices2vectors(vertices)
+					for v in vertices:
+						self.gCenterObj.append(obj)
+						
 					self.gCenterVertex.append(sub.CenterOfMass)
 					self.gCenterObj.append(obj)
 

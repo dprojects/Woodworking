@@ -1576,6 +1576,35 @@ def getFaceDetails(iObj, iFace):
 
 
 # ###################################################################################################################
+def vertices2vectors(iVertices):
+	'''
+	Description:
+	
+		Converts vertices into vector objects.
+	
+	Args:
+	
+		iVertices: array with vertices
+
+	Usage:
+	
+		vertices = MagicPanels.touchTypo(obj.Shape)
+		vectors = MagicPanels.vertices2vectors(vertices)
+
+	Result:
+	
+		return array with vectors
+	'''
+	
+	
+	vectors = []
+	for v in iVertices:
+		vectors.append( FreeCAD.Vector(float(v.X), float(v.Y), float(v.Z)) )
+	
+	return vectors
+
+
+# ###################################################################################################################
 def showVertex(iVertices, iRadius=20, iColor="red"):
 	'''
 	Description:
