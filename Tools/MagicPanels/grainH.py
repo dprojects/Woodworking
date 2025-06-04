@@ -107,7 +107,11 @@ try:
 			txt.ViewObject.FontSize = math.sqrt(face.Area)/6
 			txt.ViewObject.Justification = "Center"
 			txt.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
-			
+			try:
+				txt.ViewObject.FontName = "FreeSans"
+			except:
+				skip = 1
+
 			targetX = o.Name + ".Shape.Face" + str(faceIndex) + ".CenterOfMass.x"
 			targetY = o.Name + ".Shape.Face" + str(faceIndex) + ".CenterOfMass.y"
 			targetZ = o.Name + ".Shape.Face" + str(faceIndex) + ".CenterOfMass.z"

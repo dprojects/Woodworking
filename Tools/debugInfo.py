@@ -184,13 +184,15 @@ def setTests():
 	# ######################################
 	# test: MagicPanels
 	# ######################################
+	'''
 	try:
 		import MagicPanels
 		gTests["MagicPanels"] = True
 	except:
 		gTests["MagicPanels"] = False
 		gTests["status"] += "MagicPanels, "
-
+	'''
+	
 	# ######################################
 	# end cut
 	# ######################################
@@ -351,20 +353,29 @@ def setUpToDate():
 				gWBCurrent["update"] = "update"
 				gWBCurrent["info"] = "2"
 			
-			# release not the same
-			if gWBCurrent["Release"] != gWBLatest["Release"]:
-				
-				# stable version, change version branch, upgrade to the latest master branch
-				if gWBCurrent["ReleaseState"] == "0":
-					gWBCurrent["up-to-date"] = "yes"
-					gWBCurrent["update"] = "upgrade"
-					gWBCurrent["info"] = "3"
-				
-			# change version branch, upgrade to the latest master branch
+			# same date
 			else:
-				gWBCurrent["up-to-date"] = "no"
-				gWBCurrent["update"] = "upgrade"
-				gWBCurrent["info"] = "4"
+			
+				# release not the same
+				if gWBCurrent["Release"] != gWBLatest["Release"]:
+					
+					# stable version, consider upgrade to the latest master branch
+					if gWBCurrent["ReleaseState"] == "0":
+						gWBCurrent["up-to-date"] = "yes"
+						gWBCurrent["update"] = "upgrade"
+						gWBCurrent["info"] = "3"
+						
+					# development version, change version branch, upgrade to the latest master branch
+					else:
+						gWBCurrent["up-to-date"] = "no"
+						gWBCurrent["update"] = "upgrade"
+						gWBCurrent["info"] = "4"
+					
+				# change version branch, upgrade to the latest master branch
+				else:
+					gWBCurrent["up-to-date"] = "no"
+					gWBCurrent["update"] = "upgrade"
+					gWBCurrent["info"] = "4"
 
 	except:
 		skip = 1
