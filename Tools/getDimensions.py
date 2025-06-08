@@ -305,349 +305,333 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 600
-			toolSH = 650
+			toolSW = 820
+			toolSH = 680
 			
-			# active screen size - FreeCAD main window
-			gSW = FreeCADGui.getMainWindow().width()
-			gSH = FreeCADGui.getMainWindow().height()
-
-			# tool screen position
-			gPW = int( ( gSW - toolSW ) / 2 )
-			gPH = int( ( gSH - toolSH ) / 2 )
-
+			selWidth = 150 # selection width
+			
 			# ############################################################################
 			# main window
 			# ############################################################################
 			
 			self.result = userCancelled
-			self.setGeometry(gPW, gPH, toolSW, toolSH)
-			self.setWindowTitle(translate("getDimensions", "getDimensions - default settings"))
+			self.setWindowTitle(translate("getDimensions", "getDimensions"))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
-
-			# set line start point
-			vLine = 10
-			vLineNextRow = 20
-			vLineOffset = 60
-
-			# ############################################################################
-			# report customization (Label Type Feature)
-			# ############################################################################
-
-			# label
-			self.rcL = QtGui.QLabel(translate("getDimensions", "Report type:"), self)
-			self.rcL.move(10, vLine + 3)
+			self.setMinimumWidth(toolSW)
+			self.setMinimumHeight(toolSH)
 			
-			# options
+			# ############################################################################
+			# report types
+			# ############################################################################
+			
+			# report customization
 			self.ppmList = tuple(sPPMDsc.keys())
 			self.ppmO = QtGui.QComboBox(self)
 			self.ppmO.addItems(self.ppmList)
 			self.ppmO.setCurrentIndex(self.ppmList.index(str(sPPM)))
 			self.ppmO.textActivated[str].connect(self.setPPM)
-			self.ppmO.move(10, vLine + vLineNextRow)
+			self.ppmO.setFixedWidth(selWidth)
 			
-			# options
 			self.rcList = tuple(sLTFDsc.keys())
 			self.rcO = QtGui.QComboBox(self)
 			self.rcO.addItems(self.rcList)
 			self.rcO.setCurrentIndex(self.rcList.index(str(sLTF)))
 			self.rcO.textActivated[str].connect(self.setRC)
-			self.rcO.move(100, vLine + vLineNextRow)
-
-			# info screen
+			self.rcO.setFixedWidth(selWidth)
+			
 			self.rcIS = QtGui.QLabel(str(sLTFDsc[sLTF]) + sEmptyDsc, self)
-			self.rcIS.move(150, vLine + vLineNextRow + 3)
-
-			# ############################################################################
+			
 			# additional reports
-			# ############################################################################
-
-			# set line separator
-			vLine = vLine + vLineOffset
-
-			# label
-			self.ardL = QtGui.QLabel(translate("getDimensions", "Additional reports:"), self)
-			self.ardL.move(10, vLine + 3)
+			self.artsCB = QtGui.QCheckBox(translate('getDimensions', '- thickness summary'), self)
+			self.artsCB.setCheckState(QtCore.Qt.Checked)
 			
-			self.atsCB = QtGui.QCheckBox(translate('getDimensions', '- thickness summary'), self)
-			self.atsCB.setCheckState(QtCore.Qt.Checked)
-			self.atsCB.move(10, vLine + vLineNextRow)
-			
-			self.aeiCB = QtGui.QCheckBox(translate('getDimensions', '- edgeband info'), self)
-			self.aeiCB.setCheckState(QtCore.Qt.Checked)
-			self.aeiCB.move(200, vLine + vLineNextRow)
+			self.areiCB = QtGui.QCheckBox(translate('getDimensions', '- edgeband info'), self)
+			self.areiCB.setCheckState(QtCore.Qt.Checked)
 			
 			self.armeCB = QtGui.QCheckBox(translate('getDimensions', '- custom measurements'), self)
 			self.armeCB.setCheckState(QtCore.Qt.Checked)
-			self.armeCB.move(400, vLine + vLineNextRow)
-
-			vLine = vLine + vLineNextRow
-
+			
 			self.armCB = QtGui.QCheckBox(translate('getDimensions', '- dowels and screws'), self)
 			self.armCB.setCheckState(QtCore.Qt.Checked)
-			self.armCB.move(10, vLine + vLineNextRow)
 			
 			self.arpCB = QtGui.QCheckBox(translate('getDimensions', '- construction profiles'), self)
 			self.arpCB.setCheckState(QtCore.Qt.Checked)
-			self.arpCB.move(200, vLine + vLineNextRow)
 			
 			self.argdCB = QtGui.QCheckBox(translate('getDimensions', '- grain direction'), self)
 			self.argdCB.setCheckState(QtCore.Qt.Checked)
-			self.argdCB.move(400, vLine + vLineNextRow)
-			
-			vLine = vLine + vLineNextRow
 			
 			self.ardCB = QtGui.QCheckBox(translate('getDimensions', '- decorations'), self)
 			self.ardCB.setCheckState(QtCore.Qt.Unchecked)
-			self.ardCB.move(10, vLine + vLineNextRow)
 			
 			# ############################################################################
-			# languages
+			# units
 			# ############################################################################
 
-			# set line separator
-			vLine = vLine + vLineOffset
-
-			# label
-			self.LangL = QtGui.QLabel(translate("getDimensions", "Report language:"), self)
-			self.LangL.move(10, vLine + 3)
-			
-			# options
-			self.LangList = tuple(sLangDsc.keys())
-			self.LangO = QtGui.QComboBox(self)
-			self.LangO.addItems(self.LangList)
-			self.LangO.setCurrentIndex(self.LangList.index(str(sLang)))
-			self.LangO.textActivated[str].connect(self.setLang)
-			self.LangO.move(10, vLine + vLineNextRow)
-
-			# info screen
-			self.LangIS = QtGui.QLabel(str(sLangDsc[sLang]) + sEmptyDsc, self)
-			self.LangIS.move(70, vLine + vLineNextRow + 3)
-
-			# ############################################################################
-			# report print quality
-			# ############################################################################
-
-			# set line separator
-			vLine = vLine + vLineOffset
-
-			# label
-			self.rpqL = QtGui.QLabel(translate("getDimensions", "Report quality:"), self)
-			self.rpqL.move(10, vLine + 3)
-			
-			# options
-			self.rpqList = tuple(sRPQDsc.keys())
-			self.rpqO = QtGui.QComboBox(self)
-			self.rpqO.addItems(self.rpqList)
-			self.rpqO.setCurrentIndex(self.rpqList.index(str(sRPQ)))
-			self.rpqO.textActivated[str].connect(self.setQuality)
-			self.rpqO.move(10, vLine + vLineNextRow)
-
-			# info screen
-			self.rpqIS = QtGui.QLabel(str(sRPQDsc[sRPQ]) + sEmptyDsc, self)
-			self.rpqIS.move(70, vLine + vLineNextRow + 3)
-
-			# ############################################################################
-			# visibility (Toggle Visibility Feature)
-			# ############################################################################
-
-			# set line separator
-			vLine = vLine + vLineOffset
-
-			# label
-			self.visibilityL = QtGui.QLabel(translate("getDimensions", "Visibility:"), self)
-			self.visibilityL.move(10, vLine + 3)
-			
-			# options
-			self.visibilityList = tuple(sTVFDsc.keys())
-			self.visibilityO = QtGui.QComboBox(self)
-			self.visibilityO.addItems(self.visibilityList)
-			self.visibilityO.setCurrentIndex(self.visibilityList.index(str(sTVF)))
-			self.visibilityO.textActivated[str].connect(self.setVisibility)
-			self.visibilityO.move(10, vLine + vLineNextRow)
-
-			# info screen
-			self.visibilityIS = QtGui.QLabel(str(sTVFDsc[sTVF]) + sEmptyDsc, self)
-			self.visibilityIS.move(120, vLine + vLineNextRow + 3)
-
-			# ############################################################################
-			# part cut visibility
-			# ############################################################################
-
-			# set line separator
-			vLine = vLine + vLineOffset
-
-			# label
-			self.pcvisibilityL = QtGui.QLabel(translate("getDimensions", "Part :: Cut content visibility:"), self)
-			self.pcvisibilityL.move(10, vLine + 3)
-			
-			# options
-			self.pcvisibilityList = tuple(sPartCutDsc.keys())
-			self.pcvisibilityO = QtGui.QComboBox(self)
-			self.pcvisibilityO.addItems(self.pcvisibilityList)
-			self.pcvisibilityO.setCurrentIndex(self.pcvisibilityList.index(str(sPartCut)))
-			self.pcvisibilityO.textActivated[str].connect(self.setPartCutVisibility)
-			self.pcvisibilityO.move(10, vLine + vLineNextRow)
-
-			# info screen
-			self.pcvisibilityIS = QtGui.QLabel(str(sPartCutDsc[sPartCut]) + sEmptyDsc, self)
-			self.pcvisibilityIS.move(90, vLine + vLineNextRow + 3)
-			
-			# ############################################################################
 			# units for dimensions
-			# ############################################################################
-
-			# set line separator
-			vLine = vLine + vLineOffset
-
-			# label
 			self.ufdL = QtGui.QLabel(translate("getDimensions", "Units for dimensions:"), self)
-			self.ufdL.move(10, vLine + 3)
 			
-			# options
 			self.ufdList = tuple(sUnitsMetricDsc.keys())
 			self.ufdO = QtGui.QComboBox(self)
 			self.ufdO.addItems(self.ufdList)
 			self.ufdO.setCurrentIndex(self.ufdList.index(str(sUnitsMetric)))
 			self.ufdO.textActivated[str].connect(self.setDFO)
-			self.ufdO.move(10, vLine + vLineNextRow)
-
-			# info screen
-			self.ufdIS = QtGui.QLabel(str(sUnitsMetricDsc[sUnitsMetric]) + sEmptyDsc, self)
-			self.ufdIS.move(70, vLine + vLineNextRow + 3)
-
-			# ############################################################################
-			# units for area
-			# ############################################################################
-
-			# label
-			self.ufaL = QtGui.QLabel(translate("getDimensions", "Units for area:"), self)
-			self.ufaL.move(190, vLine + 3)
+			self.ufdO.setFixedWidth(selWidth)
 			
-			# options
+			self.ufdIS = QtGui.QLabel(str(sUnitsMetricDsc[sUnitsMetric]) + sEmptyDsc, self)
+			
+			# precision for dimensions
+			self.pufdL = QtGui.QLabel(translate("getDimensions", "Precision for dimensions:"), self)
+			
+			self.pufde = QtGui.QLineEdit(self)
+			self.pufde.setText(str(sPDD))
+			self.pufde.setFixedWidth(selWidth)
+			
+			# units for area
+			self.ufaL = QtGui.QLabel(translate("getDimensions", "Units for area:"), self)
+			
 			self.ufaList = tuple(sUnitsAreaDsc.keys())
 			self.ufaO = QtGui.QComboBox(self)
 			self.ufaO.addItems(self.ufaList)
 			self.ufaO.setCurrentIndex(self.ufaList.index(str(sUnitsArea)))
 			self.ufaO.textActivated[str].connect(self.setUFA)
-			self.ufaO.move(190, vLine + vLineNextRow)
-
-			# info screen
-			self.ufaIS = QtGui.QLabel(str(sUnitsAreaDsc[sUnitsArea]) + sEmptyDsc, self)
-			self.ufaIS.move(250, vLine + vLineNextRow + 3)
-
-			# ############################################################################
-			# units for edge size
-			# ############################################################################
-
-			# label
-			self.ufsL = QtGui.QLabel(translate("getDimensions", "Units for edge size:"), self)
-			self.ufsL.move(430, vLine + 3)
+			self.ufaO.setFixedWidth(selWidth)
 			
-			# options
+			self.ufaIS = QtGui.QLabel(str(sUnitsAreaDsc[sUnitsArea]) + sEmptyDsc, self)
+			
+			# precision for area
+			self.pufaL = QtGui.QLabel(translate("getDimensions", "Precision for area:"), self)
+			
+			self.pufae = QtGui.QLineEdit(self)
+			self.pufae.setText(str(sPDA))
+			self.pufae.setFixedWidth(selWidth)
+			
+			# units for edge size
+			self.ufsL = QtGui.QLabel(translate("getDimensions", "Units for edge size:"), self)
+			
 			self.ufsList = tuple(sUnitsEdgeDsc.keys())
 			self.ufsO = QtGui.QComboBox(self)
 			self.ufsO.addItems(self.ufsList)
 			self.ufsO.setCurrentIndex(self.ufsList.index(str(sUnitsEdge)))
 			self.ufsO.textActivated[str].connect(self.setUFS)
-			self.ufsO.move(430, vLine + vLineNextRow)
-
-			# info screen
-			self.ufsIS = QtGui.QLabel(str(sUnitsEdgeDsc[sUnitsEdge]) + sEmptyDsc, self)
-			self.ufsIS.move(500, vLine + vLineNextRow + 3)
-
-			# ############################################################################
-			# precision for dimensions
-			# ############################################################################
-
-			# set line separator
-			vLine = vLine + vLineOffset
-
-			# label
-			self.pufdL = QtGui.QLabel(translate("getDimensions", "Precision for dimensions:"), self)
-			self.pufdL.move(10, vLine + 3)
-
-			# text input
-			self.pufde = QtGui.QLineEdit(self)
-			self.pufde.setText(str(sPDD))
-			self.pufde.setFixedWidth(75)
-			self.pufde.move(10, vLine + vLineNextRow)
-
-			# ############################################################################
-			# precision for area
-			# ############################################################################
-
-			# label
-			self.pufaL = QtGui.QLabel(translate("getDimensions", "Precision for area:"), self)
-			self.pufaL.move(190, vLine + 3)
-	
-			# text input
-			self.pufae = QtGui.QLineEdit(self)
-			self.pufae.setText(str(sPDA))
-			self.pufae.setFixedWidth(75)
-			self.pufae.move(190, vLine + vLineNextRow)
-
-			# ############################################################################
-			# precision for edge size
-			# ############################################################################
-
-			# label
-			self.pufsL = QtGui.QLabel(translate("getDimensions", "Precision for edge size:"), self)
-			self.pufsL.move(430, vLine + 3)
+			self.ufsO.setFixedWidth(selWidth)
 			
-			# text input
+			self.ufsIS = QtGui.QLabel(str(sUnitsEdgeDsc[sUnitsEdge]) + sEmptyDsc, self)
+			
+			# precision for edge size
+			self.pufsL = QtGui.QLabel(translate("getDimensions", "Precision for edge size:"), self)
+			
 			self.pufse = QtGui.QLineEdit(self)
 			self.pufse.setText(str(sPDE))
-			self.pufse.setFixedWidth(75)
-			self.pufse.move(430, vLine + vLineNextRow)
-
+			self.pufse.setFixedWidth(selWidth)
+		
 			# ############################################################################
+			# visibility
+			# ############################################################################
+			
+			# Toggle Visibility Feature
+			self.visibilityL = QtGui.QLabel(translate("getDimensions", "All objects:"), self)
+			
+			self.visibilityList = tuple(sTVFDsc.keys())
+			self.visibilityO = QtGui.QComboBox(self)
+			self.visibilityO.addItems(self.visibilityList)
+			self.visibilityO.setCurrentIndex(self.visibilityList.index(str(sTVF)))
+			self.visibilityO.textActivated[str].connect(self.setVisibility)
+			self.visibilityO.setFixedWidth(selWidth)
+			
+			self.visibilityIS = QtGui.QLabel(str(sTVFDsc[sTVF]) + sEmptyDsc, self)
+			
+			# part cut visibility
+			self.pcvisibilityL = QtGui.QLabel(translate("getDimensions", "Part :: Cut content:"), self)
+			
+			self.pcvisibilityList = tuple(sPartCutDsc.keys())
+			self.pcvisibilityO = QtGui.QComboBox(self)
+			self.pcvisibilityO.addItems(self.pcvisibilityList)
+			self.pcvisibilityO.setCurrentIndex(self.pcvisibilityList.index(str(sPartCut)))
+			self.pcvisibilityO.textActivated[str].connect(self.setPartCutVisibility)
+			self.pcvisibilityO.setFixedWidth(selWidth)
+			
+			self.pcvisibilityIS = QtGui.QLabel(str(sPartCutDsc[sPartCut]) + sEmptyDsc, self)
+		
+			# ############################################################################
+			# additional settings
+			# ############################################################################
+
+			# languages
+			self.LangL = QtGui.QLabel(translate("getDimensions", "Report language:"), self)
+			
+			self.LangList = tuple(sLangDsc.keys())
+			self.LangO = QtGui.QComboBox(self)
+			self.LangO.addItems(self.LangList)
+			self.LangO.setCurrentIndex(self.LangList.index(str(sLang)))
+			self.LangO.textActivated[str].connect(self.setLang)
+			self.LangO.setFixedWidth(selWidth)
+			
+			self.LangIS = QtGui.QLabel(str(sLangDsc[sLang]) + sEmptyDsc, self)
+			
+			# report print quality
+			self.rpqL = QtGui.QLabel(translate("getDimensions", "Report quality:"), self)
+			
+			self.rpqList = tuple(sRPQDsc.keys())
+			self.rpqO = QtGui.QComboBox(self)
+			self.rpqO.addItems(self.rpqList)
+			self.rpqO.setCurrentIndex(self.rpqList.index(str(sRPQ)))
+			self.rpqO.textActivated[str].connect(self.setQuality)
+			self.rpqO.setFixedWidth(selWidth)
+			
+			self.rpqIS = QtGui.QLabel(str(sRPQDsc[sRPQ]) + sEmptyDsc, self)
+			
+			# ############################################################################
+			# edgeband
+			# ############################################################################
+			
 			# furniture color reference to calculate edgeband
-			# ############################################################################
-
-			# set line separator
-			vLine = vLine + vLineOffset
-
-			# button
 			self.fcrB = QtGui.QPushButton(translate('getDimensions', 'set'), self)
 			self.fcrB.clicked.connect(self.getColorReference)
 			self.fcrB.setFixedWidth(50)
-			self.fcrB.setFixedHeight(20)
 			self.fcrB.setAutoDefault(False)
-			self.fcrB.move(10, vLine + vLineNextRow + 3)
-
-			# text input
+			
 			self.fcrE = QtGui.QLineEdit(self)
-			self.fcrE.setText(translate('getDimensions','select face to get color reference'))
-			self.fcrE.setFixedWidth(250)
-			self.fcrE.move(120, vLine + vLineNextRow + 3)
-
-			# ############################################################################
-			# edgeband code
-			# here is different you set description to variable
-			# ############################################################################
-
-			# label
+			self.fcrE.setText(translate('getDimensions','Please select face to get furniture color reference.'))
+			self.fcrE.setFixedWidth(3*selWidth)
+			
+			# edgeband code, here is different you set description to variable
 			self.ecL = QtGui.QLabel(translate("getDimensions", "Edgeband code:"), self)
-			self.ecL.move(380, vLine + 3)
-
-			# options
-			self.ecList =tuple(sEColorDsc.keys())
+			
+			self.ecList = tuple(sEColorDsc.keys())
 			self.ecO = QtGui.QComboBox(self)
 			self.ecO.addItems(self.ecList)
 			self.ecO.setCurrentIndex(self.ecList.index(str(sEColorD)))
 			self.ecO.textActivated[str].connect(self.setEColor)
-			self.ecO.move(380, vLine + vLineNextRow + 3)
-
-			# text input label
+			self.ecO.setFixedWidth(selWidth)
+			
 			self.ectiL = QtGui.QLabel(translate("getDimensions", "Custom:"), self)
-			self.ectiL.move(500, vLine + 3)
-
-			# text input
+			
 			self.ecti = QtGui.QLineEdit(self)
 			self.ecti.setText(str(sEColor))
-			self.ecti.setFixedWidth(75)
-			self.ecti.move(500, vLine + vLineNextRow + 3)
+			self.ecti.setFixedWidth(selWidth)
+
+			# ############################################################################
+			# create
+			# ############################################################################
+
+			info = translate("getDimensions", "create spreadsheet toCut with dimensions, cut-list, BOM")
+			self.okButton = QtGui.QPushButton(info, self)
+			self.okButton.clicked.connect(self.onOk)
+			self.okButton.setAutoDefault(True)
+			self.okButton.setFixedHeight(40)
+
+			# ############################################################################
+			# build GUI layout
+			# ############################################################################
+			
+			# create structure
+			self.layRC = QtGui.QHBoxLayout()
+			self.layRC.setAlignment(QtGui.Qt.AlignLeft)
+			self.layRC.addWidget(self.ppmO)
+			self.layRC.addWidget(self.rcO)
+			self.layRC.addWidget(self.rcIS)
+			
+			self.layAR = QtGui.QGridLayout()
+			self.layAR.addWidget(self.artsCB, 0, 0)
+			self.layAR.addWidget(self.areiCB, 0, 1)
+			self.layAR.addWidget(self.armeCB, 0, 2)
+			self.layAR.addWidget(self.armCB, 1, 0)
+			self.layAR.addWidget(self.arpCB, 1, 1)
+			self.layAR.addWidget(self.argdCB, 1, 2)
+			self.layAR.addWidget(self.ardCB, 2, 0)
+			
+			self.layRT = QtGui.QVBoxLayout()
+			self.layRT.addLayout(self.layRC)
+			self.layRT.addLayout(self.layAR)
+			
+			self.groupRT = QtGui.QGroupBox(translate('getDimensions', 'Report type:'), self)
+			self.groupRT.setLayout(self.layRT)
+			
+			self.layU = QtGui.QGridLayout()
+			self.layU.addWidget(self.ufdL, 0, 0)
+			self.layU.addWidget(self.ufdO, 0, 1)
+			self.layU.addWidget(self.ufdIS, 0, 2)
+			self.layU.addWidget(self.pufdL, 0, 3)
+			self.layU.addWidget(self.pufde, 0, 4)
+			self.layU.addWidget(self.ufaL, 1, 0)
+			self.layU.addWidget(self.ufaO, 1, 1)
+			self.layU.addWidget(self.ufaIS, 1, 2)
+			self.layU.addWidget(self.pufaL, 1, 3)
+			self.layU.addWidget(self.pufae, 1, 4)
+			self.layU.addWidget(self.ufsL, 2, 0)
+			self.layU.addWidget(self.ufsO, 2, 1)
+			self.layU.addWidget(self.ufsIS, 2, 2)
+			self.layU.addWidget(self.pufsL, 2, 3)
+			self.layU.addWidget(self.pufse, 2, 4)
+			self.groupU = QtGui.QGroupBox(translate('getDimensions', 'Units:'), self)
+			self.groupU.setLayout(self.layU)
+			
+			self.layV1 = QtGui.QHBoxLayout()
+			self.layV1.setAlignment(QtGui.Qt.AlignLeft)
+			self.layV1.addWidget(self.visibilityL)
+			self.layV1.addWidget(self.visibilityO)
+			self.layV1.addWidget(self.visibilityIS)
+			self.layV2 = QtGui.QHBoxLayout()
+			self.layV2.setAlignment(QtGui.Qt.AlignLeft)
+			self.layV2.addWidget(self.pcvisibilityL)
+			self.layV2.addWidget(self.pcvisibilityO)
+			self.layV2.addWidget(self.pcvisibilityIS)
+			self.layV = QtGui.QVBoxLayout()
+			self.layV.addLayout(self.layV1)
+			self.layV.addLayout(self.layV2)
+			self.groupV = QtGui.QGroupBox(translate('getDimensions', 'Visibility:'), self)
+			self.groupV.setLayout(self.layV)
+			
+			self.layAS1 = QtGui.QHBoxLayout()
+			self.layAS1.setAlignment(QtGui.Qt.AlignLeft)
+			self.layAS1.addWidget(self.LangL)
+			self.layAS1.addWidget(self.LangO)
+			self.layAS1.addWidget(self.LangIS)
+			self.layAS2 = QtGui.QHBoxLayout()
+			self.layAS2.setAlignment(QtGui.Qt.AlignLeft)
+			self.layAS2.addWidget(self.rpqL)
+			self.layAS2.addWidget(self.rpqO)
+			self.layAS2.addWidget(self.rpqIS)
+			self.layAS = QtGui.QVBoxLayout()
+			self.layAS.addLayout(self.layAS1)
+			self.layAS.addLayout(self.layAS2)
+			self.groupAS = QtGui.QGroupBox(translate('getDimensions', 'Additional settings:'), self)
+			self.groupAS.setLayout(self.layAS)
+			
+			self.layED1 = QtGui.QHBoxLayout()
+			self.layED1.setAlignment(QtGui.Qt.AlignLeft)
+			self.layED1.addWidget(self.fcrB)
+			self.layED1.addWidget(self.fcrE)
+			self.layED2 = QtGui.QHBoxLayout()
+			self.layED2.setAlignment(QtGui.Qt.AlignLeft)
+			self.layED2.addWidget(self.ecL)
+			self.layED2.addWidget(self.ecO)
+			self.layED2.addWidget(self.ectiL)
+			self.layED2.addWidget(self.ecti)
+			self.layED2.addStretch()
+			self.layED = QtGui.QVBoxLayout()
+			self.layED.addLayout(self.layED1)
+			self.layED.addLayout(self.layED2)
+			self.groupED = QtGui.QGroupBox(translate('getDimensions', 'Edgeband:'), self)
+			self.groupED.setLayout(self.layED)
+			
+			self.layCR = QtGui.QVBoxLayout()
+			self.layCR.addWidget(self.okButton)
+			
+			# set layout to main window
+			self.layout = QtGui.QVBoxLayout()
+			self.layout.addWidget(self.groupRT)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupU)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupV)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupAS)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupED)
+			self.layout.addStretch()
+			self.layout.addLayout(self.layCR)
+			self.setLayout(self.layout)
 
 			# edge color hide by default
 			self.ecL.hide()
@@ -656,23 +640,26 @@ def showQtGUI():
 			self.ecti.hide()
 
 			# ############################################################################
-			# buttons
-			# ############################################################################
-
-			# button - ok
-			info = translate("getDimensions", "create spreadsheet toCut with dimensions, cut-list, BOM")
-			self.okButton = QtGui.QPushButton(info, self)
-			self.okButton.clicked.connect(self.onOk)
-			self.okButton.setAutoDefault(True)
-			self.okButton.resize(toolSW-100, 40)
-			self.okButton.move(50, toolSH-50)
-
-			# ############################################################################
 			# show
 			# ############################################################################
 
 			self.show()
-
+			
+			# set window position
+			sw = self.width()
+			sh = self.height()
+			pw = int( (FreeCADGui.getMainWindow().width() / 2) - ( sw / 2 ) )
+			ph = int( (FreeCADGui.getMainWindow().height() / 2) - ( sh / 2 ) )
+			self.setGeometry(pw, ph, sw, sh)
+			
+			# set theme
+			try:
+				import MagicPanels as MP
+				QtCSS = MP.getTheme(MP.gTheme)
+				self.setStyleSheet(QtCSS)
+			except:
+				skip = 1
+			
 		# ############################################################################
 		# actions auto define
 		# ############################################################################
@@ -756,9 +743,8 @@ def showQtGUI():
 				self.ufsO.hide()
 				self.ufsIS.hide()
 				
-				self.ardL.hide()
-				self.atsCB.hide()
-				self.aeiCB.hide()
+				self.artsCB.hide()
+				self.areiCB.hide()
 				self.armeCB.hide()
 				self.ardCB.hide()
 				self.armCB.hide()
@@ -785,9 +771,8 @@ def showQtGUI():
 				self.ufsO.show()
 				self.ufsIS.show()
 				
-				self.ardL.show()
-				self.atsCB.show()
-				self.aeiCB.show()
+				self.artsCB.show()
+				self.areiCB.show()
 				self.armeCB.show()
 				self.ardCB.show()
 				self.armCB.show()
@@ -939,13 +924,13 @@ def showQtGUI():
 			sARGD = False
 
 		# thickness summary
-		if form.atsCB.isChecked():
+		if form.artsCB.isChecked():
 			sATS = True
 		else:
 			sATS = False
 			
 		# edgeband info
-		if form.aeiCB.isChecked():
+		if form.areiCB.isChecked():
 			sAEI = True
 		else:
 			sAEI = False

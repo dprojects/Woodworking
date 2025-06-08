@@ -25,35 +25,34 @@ def panelDefault(iType):
 		if iType == "XY":
 			panel.Length = 600
 			panel.Width = 300
-			panel.Height = 18
+			panel.Height = MagicPanels.gWoodThickness
 
 		if iType == "YX":
 			panel.Length = 300
 			panel.Width = 600
-			panel.Height = 18
+			panel.Height = MagicPanels.gWoodThickness
 
 		if iType == "XZ":
 			panel.Length = 600
-			panel.Width = 18
+			panel.Width = MagicPanels.gWoodThickness
 			panel.Height = 300
 
 		if iType == "ZX":
 			panel.Length = 300
-			panel.Width = 18
+			panel.Width = MagicPanels.gWoodThickness
 			panel.Height = 600
 
 		if iType == "YZ":
-			panel.Length = 18
+			panel.Length = MagicPanels.gWoodThickness
 			panel.Width = 600
 			panel.Height = 300
 
 		if iType == "ZY":
-			panel.Length = 18
+			panel.Length = MagicPanels.gWoodThickness
 			panel.Width = 300
 			panel.Height = 600
 
 		MagicPanels.setColor(panel, 0, MagicPanels.gDefaultColor, "color")
-
 		FreeCAD.ActiveDocument.recompute()
 	
 	except:
@@ -96,14 +95,6 @@ def panelCopy(iType):
 		
 		MagicPanels.setColor(panel, 0, MagicPanels.gDefaultColor, "color")
 		
-		try:
-			if selection.isDerivedFrom("Part::Cut"):
-				MagicPanels.copyColors(selection, panel)
-			else:
-				MagicPanels.copyColors(objRef, panel)
-		except:
-			skip = 1
-
 		if sub != False:
 			MagicPanels.setContainerPlacement(panel, X, Y, Z, 0, "clean")
 

@@ -32,7 +32,7 @@ class magicStart():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -71,7 +71,7 @@ class panelDefaultXY():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -110,7 +110,7 @@ class panelDefaultYX():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -149,7 +149,7 @@ class panelDefaultXZ():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -188,7 +188,7 @@ class panelDefaultZX():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -227,7 +227,7 @@ class panelDefaultYZ():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -266,7 +266,7 @@ class panelDefaultZY():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -305,7 +305,7 @@ class panelCopyXY():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -344,7 +344,7 @@ class panelCopyYX():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -383,7 +383,7 @@ class panelCopyXZ():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -422,7 +422,7 @@ class panelCopyZX():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -461,7 +461,7 @@ class panelCopyYZ():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -500,7 +500,7 @@ class panelCopyZY():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -539,7 +539,7 @@ class magicMove():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -578,7 +578,7 @@ class magicAngle():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -617,7 +617,7 @@ class mapPosition():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -656,7 +656,7 @@ class panelMove2Face():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -695,7 +695,7 @@ class panelMove2Anchor():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -734,7 +734,7 @@ class panelMove2Center():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -773,7 +773,7 @@ class shelvesEqual():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -812,7 +812,7 @@ class align2Curve():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -851,7 +851,7 @@ class panelMoveXp():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -890,7 +890,7 @@ class panelMoveXm():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -929,7 +929,7 @@ class panelMoveYp():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -968,7 +968,7 @@ class panelMoveYm():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1007,7 +1007,7 @@ class panelMoveZp():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1046,7 +1046,7 @@ class panelMoveZm():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1085,7 +1085,7 @@ class magicResizer():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1124,7 +1124,7 @@ class showConstraints():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1163,7 +1163,7 @@ class panelResize1():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1202,7 +1202,7 @@ class panelResize2():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1241,7 +1241,7 @@ class panelResize3():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1280,7 +1280,7 @@ class panelResize4():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1319,7 +1319,7 @@ class panelResize5():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1358,7 +1358,7 @@ class panelResize6():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1397,7 +1397,7 @@ class panelFaceXY():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1436,7 +1436,7 @@ class panelFaceYX():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1475,7 +1475,7 @@ class panelFaceXZ():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1514,7 +1514,7 @@ class panelFaceZX():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1553,7 +1553,7 @@ class panelFaceYZ():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1592,7 +1592,7 @@ class panelFaceZY():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1631,7 +1631,7 @@ class panelBetweenXY():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1670,7 +1670,7 @@ class panelBetweenYX():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1709,7 +1709,7 @@ class panelBetweenXZ():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1748,7 +1748,7 @@ class panelBetweenZX():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1787,7 +1787,7 @@ class panelBetweenYZ():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1826,7 +1826,7 @@ class panelBetweenZY():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1865,7 +1865,7 @@ class magicManager():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1904,7 +1904,7 @@ class panelSideLeft():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1943,7 +1943,7 @@ class panelSideLeftUP():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -1982,7 +1982,7 @@ class panelSideRight():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2021,7 +2021,7 @@ class panelSideRightUP():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2060,7 +2060,7 @@ class panelBackOut():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2099,7 +2099,7 @@ class panelCoverXY():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2138,7 +2138,7 @@ class panel2profile():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2177,7 +2177,7 @@ class panel2angle():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2216,7 +2216,7 @@ class panel2angle45cut():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2255,7 +2255,7 @@ class cornerBlock():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2294,7 +2294,7 @@ class cornerBrace():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2333,7 +2333,7 @@ class magicDowels():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2372,7 +2372,7 @@ class panel2link():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2411,7 +2411,7 @@ class panel2clone():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2450,7 +2450,7 @@ class sketch2dowel():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2489,7 +2489,7 @@ class edge2dowel():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2528,7 +2528,7 @@ class magicFixture():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2567,7 +2567,7 @@ class edge2drillbit():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2606,7 +2606,7 @@ class magicJoints():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2645,7 +2645,7 @@ class magicCut():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2684,7 +2684,7 @@ class magicCutLinks():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2723,7 +2723,7 @@ class magicKnife():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2762,7 +2762,7 @@ class magicKnifeLinks():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2801,7 +2801,7 @@ class jointTenon():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2840,7 +2840,7 @@ class cutTenons():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2879,7 +2879,7 @@ class jointCustom():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2918,7 +2918,7 @@ class panel2frame():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2957,7 +2957,7 @@ class grainH():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -2996,7 +2996,7 @@ class grainV():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3035,7 +3035,7 @@ class grainX():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3074,7 +3074,7 @@ class magicCorner():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3113,7 +3113,7 @@ class magicDriller():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3152,7 +3152,7 @@ class drillHoles():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3191,7 +3191,7 @@ class drillCountersinks():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3230,7 +3230,7 @@ class drillCounterbores():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3269,7 +3269,7 @@ class drillCounterbores2x():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3308,7 +3308,7 @@ class magicCNC():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3347,7 +3347,7 @@ class cutDowels():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3386,7 +3386,7 @@ class routerCove():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3425,7 +3425,7 @@ class routerCove2():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3464,7 +3464,7 @@ class routerCove4():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3503,7 +3503,7 @@ class routerRoundOver():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3542,7 +3542,7 @@ class routerRoundOver2():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3581,7 +3581,7 @@ class routerRoundOver4():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3620,7 +3620,7 @@ class routerStraight2():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3659,7 +3659,7 @@ class routerStraight3():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3698,7 +3698,7 @@ class routerStraight4():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3737,7 +3737,7 @@ class routerChamfer():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3776,7 +3776,7 @@ class routerChamfer2():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3815,7 +3815,7 @@ class routerChamfer4():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3854,7 +3854,7 @@ class multiPocket():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3893,7 +3893,7 @@ class multiPocket2():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3932,7 +3932,7 @@ class multiPocket4():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -3971,7 +3971,7 @@ class magicColors():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4049,7 +4049,7 @@ class makeBeautiful():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4166,7 +4166,7 @@ class showOccupiedSpace():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4205,7 +4205,7 @@ class magicMeasure():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4222,6 +4222,45 @@ class magicMeasure():
 		return True
 
 FreeCADGui.addCommand("magicMeasure", magicMeasure())
+
+	
+# ######################################################################################################################
+class magicSettings():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "magicSettings.png"),
+				"MenuText": QT_TRANSLATE_NOOP("magicSettings", "magicSettings, tool for Woodworking workbench settings"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicSettings", "This tool allows you to set default settings for Woodworking workbench."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "magicSettings"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("magicSettings", magicSettings())
 
 	
 # ######################################################################################################################
@@ -4244,7 +4283,7 @@ class selected2Group():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4283,7 +4322,7 @@ class selected2LinkGroup():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4322,7 +4361,7 @@ class selected2Link():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4361,7 +4400,7 @@ class selected2Outside():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4439,7 +4478,7 @@ class showPlacement():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4517,7 +4556,7 @@ class magicGlue():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4556,7 +4595,7 @@ class sketch2clone():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4595,7 +4634,7 @@ class showAlias():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4634,7 +4673,7 @@ class panel2pad():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4673,7 +4712,7 @@ class addExternal():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4712,7 +4751,7 @@ class wires2pad():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4751,7 +4790,7 @@ class fitModel():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4790,7 +4829,7 @@ class makeTransparent():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4829,7 +4868,7 @@ class magicView():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4868,7 +4907,7 @@ class showVertex():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4907,7 +4946,7 @@ class selectVertex():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:
@@ -4946,7 +4985,7 @@ class roundCurve():
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
-		path = os.path.join(path, "MagicPanels")
+		
 		sys.path.append(path)
 
 		if module in sys.modules:

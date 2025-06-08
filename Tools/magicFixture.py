@@ -82,7 +82,7 @@ def showQtGUI():
 
 			# tool screen position
 			gPW = 0 + 200
-			gPH = int( gSH - toolSH )
+			gPH = 50
 
 			# ############################################################################
 			# main window
@@ -468,6 +468,10 @@ def showQtGUI():
 			# show window
 			self.show()
 			
+			# set theme
+			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
+			self.setStyleSheet(QtCSS)
+
 			if self.gAxisCrossSupport == True:
 				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
 			

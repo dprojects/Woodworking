@@ -77,7 +77,7 @@ try:
 
 	info = ""
 	
-	info += '<table cellpadding=15 border=5 style="border-style:inset;border-color:#C4C4C4;"><tr><td><table cellpadding=5 border=0>'
+	info += '<table cellpadding=8>'
 	
 	info += '<tr><td><b>' + translate('showOccupiedSpace', 'Occupied space along X axis') + ': ' + '</b></td>'
 	info += '<td style="text-align:right">' + MagicPanels.unit2gui(mX) + '</td></tr>'
@@ -88,7 +88,7 @@ try:
 	info += '<tr><td><b>' + translate('showOccupiedSpace', 'Occupied space along Z axis') + ': ' + '</b></td>'
 	info += '<td style="text-align:right">' + MagicPanels.unit2gui(mZ) + '</td></tr>'
 	
-	info += '</table></td></tr></table>'
+	info += '</table>'
 
 	info += '<br><br>' + '<b>' + translate('showOccupiedSpace', 'Note') + ':' + '</b>' + ' '
 	
@@ -101,8 +101,39 @@ try:
 	msg.setWindowTitle(translate('showOccupiedSpace', 'showOccupiedSpace'))
 	msg.setTextFormat(QtCore.Qt.TextFormat.RichText)
 	msg.setText(info)
+	
+	# set theme
+	QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
+	if QtCSS == "":
+		css = '''
+			QLabel {
+				padding: 15px;
+				margin: 15px 25px 15px 0px;
+				color: #000000;
+				border-left: 2px solid #C4C4C4;
+				border-top: 2px solid #C4C4C4;
+				border-right: 2px solid #FFFFFF;
+				border-bottom: 2px solid #FFFFFF;
+				background-color: qlineargradient( 
+					x1: 0, y1: 0, 
+					x2: 1, y2: 1,
+					stop: 0 #FFFFFF, stop: 1 #C4C4C4
+				);
+			}
+			
+		'''
+	else:
+		css = '''
+			QLabel { 
+				padding: 15px;
+				margin: 15px 25px 15px 0px;
+				color: #000000;
+			}
+		'''
+	
+	msg.setStyleSheet(QtCSS + css)
 	msg.exec_()
-
+	
 except:
 	
 	info = ""

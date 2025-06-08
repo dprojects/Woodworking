@@ -108,7 +108,7 @@ def showQtGUI():
 		gFSX = 500   # furniture size X (width)
 		gFSY = 400   # furniture size Y (depth)
 		gFSZ = 760   # furniture size Z (height)
-		gThick = 18  # wood thickness
+		gThick = MagicPanels.gWoodThickness  # wood thickness
 		
 		gSelectedFurniture = "F73"
 		gColor = MagicPanels.gDefaultColor
@@ -1358,7 +1358,7 @@ def showQtGUI():
 
 			# text input
 			self.otb4E = QtGui.QLineEdit(self)
-			self.otb4E.setText(MagicPanels.unit2gui(18))
+			self.otb4E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.otb4E.setFixedWidth(90)
 			self.otb4E.move(220, rowtbl)
 
@@ -1514,13 +1514,13 @@ def showQtGUI():
 			
 			# text input
 			self.og81E = QtGui.QLineEdit(self)
-			self.og81E.setText(MagicPanels.unit2gui(18))
+			self.og81E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.og81E.setFixedWidth(80)
 			self.og81E.move(10, rowgap)
 			
 			# text input
 			self.og82E = QtGui.QLineEdit(self)
-			self.og82E.setText(MagicPanels.unit2gui(18))
+			self.og82E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.og82E.setFixedWidth(80)
 			self.og82E.move(110, rowgap)
 			
@@ -1780,13 +1780,13 @@ def showQtGUI():
 			
 			# text input
 			self.ods31E = QtGui.QLineEdit(self)
-			self.ods31E.setText(MagicPanels.unit2gui(18))
+			self.ods31E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.ods31E.setFixedWidth(80)
 			self.ods31E.move(10, rowds)
 			
 			# text input
 			self.ods32E = QtGui.QLineEdit(self)
-			self.ods32E.setText(MagicPanels.unit2gui(18))
+			self.ods32E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.ods32E.setFixedWidth(80)
 			self.ods32E.move(110, rowds)
 			
@@ -1994,7 +1994,7 @@ def showQtGUI():
 
 			# text input
 			self.ofr7E = QtGui.QLineEdit(self)
-			self.ofr7E.setText(MagicPanels.unit2gui(18))
+			self.ofr7E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.ofr7E.setFixedWidth(90)
 			self.ofr7E.move(120, rowfront)
 		
@@ -2319,7 +2319,7 @@ def showQtGUI():
 			
 			# text input
 			self.ofglass2E = QtGui.QLineEdit(self)
-			self.ofglass2E.setText(MagicPanels.unit2gui(18))
+			self.ofglass2E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.ofglass2E.setFixedWidth(90)
 			self.ofglass2E.move(150, rowfglass)
 			
@@ -2481,7 +2481,7 @@ def showQtGUI():
 			
 			# text input
 			self.odf2E = QtGui.QLineEdit(self)
-			self.odf2E.setText(MagicPanels.unit2gui(18))
+			self.odf2E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.odf2E.setFixedWidth(90)
 			self.odf2E.move(170, rowodf)
 			
@@ -2935,7 +2935,7 @@ def showQtGUI():
 
 			# text input
 			self.osh1E = QtGui.QLineEdit(self)
-			self.osh1E.setText(MagicPanels.unit2gui(18))
+			self.osh1E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.osh1E.setFixedWidth(90)
 			self.osh1E.move(120, rowshelf)
 		
@@ -3111,7 +3111,7 @@ def showQtGUI():
 
 			# text input
 			self.oshs1E = QtGui.QLineEdit(self)
-			self.oshs1E.setText(MagicPanels.unit2gui(18))
+			self.oshs1E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.oshs1E.setFixedWidth(90)
 			self.oshs1E.move(150, rowsseries)
 		
@@ -3244,7 +3244,7 @@ def showQtGUI():
 
 			# text input
 			self.oside1E = QtGui.QLineEdit(self)
-			self.oside1E.setText(MagicPanels.unit2gui(18))
+			self.oside1E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.oside1E.setFixedWidth(90)
 			self.oside1E.move(120, rowside)
 		
@@ -3422,7 +3422,7 @@ def showQtGUI():
 
 			# text input
 			self.ocs1E = QtGui.QLineEdit(self)
-			self.ocs1E.setText(MagicPanels.unit2gui(18))
+			self.ocs1E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.ocs1E.setFixedWidth(90)
 			self.ocs1E.move(120, rowcside)
 		
@@ -3729,6 +3729,10 @@ def showQtGUI():
 
 			# show window
 			self.show()
+
+			# set theme
+			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
+			self.setStyleSheet(QtCSS)
 
 		# ############################################################################
 		# actions - GUI
@@ -4793,7 +4797,7 @@ def showQtGUI():
 			if selectedIndex == 20:
 				self.of4E.setText(MagicPanels.unit2gui(80))
 			else:
-				self.of4E.setText(MagicPanels.unit2gui(18))
+				self.of4E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			
 			if selectedIndex == 21:
 				self.og10L.setText(translate('magicStart', 'Drawer front overlap:'))
@@ -4806,14 +4810,14 @@ def showQtGUI():
 				self.og102E.setText(MagicPanels.unit2gui(2))
 				
 			if selectedIndex == 23:
-				self.ofr7E.setText(MagicPanels.unit2gui(18))
+				self.ofr7E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.ofr81E.setText(MagicPanels.unit2gui(9))
 				self.ofr82E.setText(MagicPanels.unit2gui(9))
 				self.ofr83E.setText(MagicPanels.unit2gui(7))
 				self.ofr84E.setText(MagicPanels.unit2gui(7))
 				
 			if selectedIndex == 24:
-				self.ofr7E.setText(MagicPanels.unit2gui(18))
+				self.ofr7E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.ofr81E.setText(MagicPanels.unit2gui(2))
 				self.ofr82E.setText(MagicPanels.unit2gui(2))
 				self.ofr83E.setText(MagicPanels.unit2gui(2))
@@ -4825,8 +4829,8 @@ def showQtGUI():
 				self.ods112E.setText(MagicPanels.unit2gui(7))
 				self.ods113E.setText(MagicPanels.unit2gui(4))
 				self.ods41E.setText(MagicPanels.unit2gui(26))
-				self.ods31E.setText(MagicPanels.unit2gui(18))
-				self.ods32E.setText(MagicPanels.unit2gui(18))
+				self.ods31E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
+				self.ods32E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.ods33E.setText(MagicPanels.unit2gui(3))
 			
 			if selectedIndex == 31:
@@ -4835,8 +4839,8 @@ def showQtGUI():
 				self.ods112E.setText(MagicPanels.unit2gui(4))
 				self.ods113E.setText(MagicPanels.unit2gui(4))
 				self.ods41E.setText(MagicPanels.unit2gui(26))
-				self.ods31E.setText(MagicPanels.unit2gui(18))
-				self.ods32E.setText(MagicPanels.unit2gui(18))
+				self.ods31E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
+				self.ods32E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.ods33E.setText(MagicPanels.unit2gui(3))
 			
 			if selectedIndex == 35 or selectedIndex == 36:
@@ -4860,7 +4864,7 @@ def showQtGUI():
 				self.otb1E.setText(MagicPanels.unit2gui(1050))
 				self.otb2E.setText(MagicPanels.unit2gui(600))
 				self.otb3E.setText(MagicPanels.unit2gui(780))
-				self.otb4E.setText(MagicPanels.unit2gui(18))
+				self.otb4E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.otb5E.setText(MagicPanels.unit2gui(60))
 				self.otb6E.setText(MagicPanels.unit2gui(35))
 				
@@ -4868,7 +4872,7 @@ def showQtGUI():
 				self.otb1E.setText(MagicPanels.unit2gui(990))
 				self.otb2E.setText(MagicPanels.unit2gui(525))
 				self.otb3E.setText(MagicPanels.unit2gui(430))
-				self.otb4E.setText(MagicPanels.unit2gui(18))
+				self.otb4E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.otb5E.setText(MagicPanels.unit2gui(80))
 				self.otb6E.setText(MagicPanels.unit2gui(35))
 
@@ -4876,7 +4880,7 @@ def showQtGUI():
 				self.otb1E.setText(MagicPanels.unit2gui(1050))
 				self.otb2E.setText(MagicPanels.unit2gui(600))
 				self.otb3E.setText(MagicPanels.unit2gui(780))
-				self.otb4E.setText(MagicPanels.unit2gui(18))
+				self.otb4E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.otb5E.setText(MagicPanels.unit2gui(150))
 				self.otb6E.setText(MagicPanels.unit2gui(0))
 				
@@ -4884,7 +4888,7 @@ def showQtGUI():
 				self.otb1E.setText(MagicPanels.unit2gui(990))
 				self.otb2E.setText(MagicPanels.unit2gui(525))
 				self.otb3E.setText(MagicPanels.unit2gui(430))
-				self.otb4E.setText(MagicPanels.unit2gui(18))
+				self.otb4E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.otb5E.setText(MagicPanels.unit2gui(150))
 				self.otb6E.setText(MagicPanels.unit2gui(0))
 			
@@ -4926,7 +4930,7 @@ def showQtGUI():
 				self.oWidthE.setText(MagicPanels.unit2gui(400))
 				self.oHeightE.setText(MagicPanels.unit2gui(600))
 				self.oDepthE.setText(MagicPanels.unit2gui(321))
-				self.oThickE.setText(MagicPanels.unit2gui(18)) 
+				self.oThickE.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness)) 
 			
 			if selectedIndex == 67:
 				self.oWidthE.setText(MagicPanels.unit2gui(457.2))
@@ -4936,11 +4940,11 @@ def showQtGUI():
 			
 			if selectedIndex == 71:
 				self.ods11L.setText(translate('magicStart', 'Drawer front overlap:'))
-				self.ods111E.setText(MagicPanels.unit2gui(18))
-				self.ods112E.setText(MagicPanels.unit2gui(18))
+				self.ods111E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
+				self.ods112E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.ods113E.setText(MagicPanels.unit2gui(4))
 				self.ods41E.setText(MagicPanels.unit2gui(75))
-				self.ods31E.setText(MagicPanels.unit2gui(18))
+				self.ods31E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.ods32E.setText(MagicPanels.unit2gui(16))
 				self.ods33E.setText(MagicPanels.unit2gui(16))
 			
@@ -4950,21 +4954,21 @@ def showQtGUI():
 				self.ods112E.setText(MagicPanels.unit2gui(4))
 				self.ods113E.setText(MagicPanels.unit2gui(4))
 				self.ods41E.setText(MagicPanels.unit2gui(75))
-				self.ods31E.setText(MagicPanels.unit2gui(18))
+				self.ods31E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.ods32E.setText(MagicPanels.unit2gui(16))
 				self.ods33E.setText(MagicPanels.unit2gui(16))
 			
 			if selectedIndex == 74:
 				self.oBackOffsetsL.setText(translate('magicStart', 'Back overlaps:'))
 				self.oBackThickE.setText(MagicPanels.unit2gui(3))
-				self.oBackOffsets1E.setText(MagicPanels.unit2gui(18))
-				self.oBackOffsets2E.setText(MagicPanels.unit2gui(18))
-				self.oBackOffsets3E.setText(MagicPanels.unit2gui(18))
-				self.oBackOffsets4E.setText(MagicPanels.unit2gui(18))
+				self.oBackOffsets1E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
+				self.oBackOffsets2E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
+				self.oBackOffsets3E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
+				self.oBackOffsets4E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				
 			if selectedIndex == 75:
 				self.oBackOffsetsL.setText(translate('magicStart', 'Back offsets:'))
-				self.oBackThickE.setText(MagicPanels.unit2gui(18))
+				self.oBackThickE.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.oBackOffsets1E.setText(MagicPanels.unit2gui(0))
 				self.oBackOffsets2E.setText(MagicPanels.unit2gui(0))
 				self.oBackOffsets3E.setText(MagicPanels.unit2gui(0))

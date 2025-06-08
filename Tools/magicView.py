@@ -125,7 +125,6 @@ def showQtGUI():
 			self.sMode.addItems(self.sModeList)
 			self.sMode.setCurrentIndex(0) # default
 			self.sMode.textActivated[str].connect(self.setViewType)
-			self.sMode.setFixedHeight(40)
 		
 			# ############################################################################
 			# GUI - normal view
@@ -257,6 +256,10 @@ def showQtGUI():
 			# show window
 			self.show()
 			
+			# set theme
+			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
+			self.setStyleSheet(QtCSS)
+
 			# init
 			self.initSettings()
 			

@@ -476,8 +476,8 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 300
-			toolSH = 580
+			toolSW = 320
+			toolSH = 610
 			
 			# ############################################################################
 			# main window
@@ -537,14 +537,12 @@ def showQtGUI():
 			# measurement observer active button
 			self.vsBM = QtGui.QPushButton('- 5', self)
 			self.vsBM.clicked.connect(self.vertexSizeM)
-			self.vsBM.setFixedWidth(60)
 			self.vsBM.setFixedHeight(40)
 			self.vsBM.setAutoRepeat(True)
 			
 			# measurement observer active button
 			self.vsBP = QtGui.QPushButton('+ 5', self)
 			self.vsBP.clicked.connect(self.vertexSizeP)
-			self.vsBP.setFixedWidth(60)
 			self.vsBP.setFixedHeight(40)
 			self.vsBP.setAutoRepeat(True)
 			
@@ -557,7 +555,7 @@ def showQtGUI():
 			
 			# mode description
 			self.sdi = QtGui.QLabel(self.gObserverOff, self)
-			self.sdi.setFixedHeight(200)
+			self.sdi.setFixedHeight(230)
 			self.sdi.setWordWrap(True)
 			self.sdi.setTextFormat(QtCore.Qt.TextFormat.RichText)
 			
@@ -623,6 +621,10 @@ def showQtGUI():
 
 			# show window
 			self.show()
+
+			# set theme
+			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
+			self.setStyleSheet(QtCSS)
 
 			# set window position
 			sw = self.width()

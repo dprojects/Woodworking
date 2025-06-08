@@ -1,4 +1,4 @@
-# usage: python3 ./makeAPI.py ../Tools/MagicPanels/MagicPanels.py > ./MagicPanelsAPI.md
+# usage: python3 ./makeAPI.py ../Tools/MagicPanels.py > ./MagicPanelsAPI.md
 
 
 import sys

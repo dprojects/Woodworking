@@ -227,7 +227,15 @@ def showQtMain():
 			# ############################################################################
 
 			self.show()
-
+			
+			# set theme
+			try:
+				import MagicPanels as MP
+				QtCSS = MP.getTheme(MP.gTheme)
+				self.setStyleSheet(QtCSS)
+			except:
+				skip = 1
+			
 		# ############################################################################
 		# actions - status
 		# ############################################################################

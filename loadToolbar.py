@@ -192,6 +192,7 @@ def getItems(iType):
 	if iType == "Woodworking - project manage":
 		
 		parts = [
+			"magicSettings",
 			"Std_New",
 			"Std_Save",
 			"Std_Open",
@@ -220,7 +221,8 @@ def getItems(iType):
 			"magicGlue", 
 			"sketch2clone",
 			"Spreadsheet_CreateSheet",
-			"showAlias"
+			"showAlias",
+			"Std_VarSet"
 		]
 		
 	if iType == "Woodworking - advanced":

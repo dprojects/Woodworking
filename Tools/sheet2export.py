@@ -326,7 +326,15 @@ def showQtMain():
 			pw = int( (FreeCADGui.getMainWindow().width() / 2) - ( sw / 2 ) )
 			ph = int( (FreeCADGui.getMainWindow().height() / 2) - ( sh / 2 ) )
 			self.setGeometry(pw, ph, sw, sh)
-
+			
+			# set theme
+			try:
+				import MagicPanels as MP
+				QtCSS = MP.getTheme(MP.gTheme)
+				self.setStyleSheet(QtCSS)
+			except:
+				skip = 1
+				
 		# ############################################################################
 		# actions
 		# ############################################################################

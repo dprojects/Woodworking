@@ -30,12 +30,12 @@ while i < len(arr):
 
 	output += '''
 # ######################################################################################################################
-class '''+arr[i+1]+'''():
+class '''+arr[i]+'''():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "'''+arr[i+1]+'''.'''+arr[i+2]+'''"),
-				"MenuText": QT_TRANSLATE_NOOP("'''+arr[i+1]+'''", "'''+arr[i+3]+'''"),
-				"ToolTip" : QT_TRANSLATE_NOOP("'''+arr[i+1]+'''", "'''+arr[i+4]+'''"),
+		return {"Pixmap"  : os.path.join(iconPath, "'''+arr[i]+'''.'''+arr[i+1]+'''"),
+				"MenuText": QT_TRANSLATE_NOOP("'''+arr[i]+'''", "'''+arr[i+2]+'''"),
+				"ToolTip" : QT_TRANSLATE_NOOP("'''+arr[i]+'''", "'''+arr[i+3]+'''"),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -45,14 +45,11 @@ class '''+arr[i+1]+'''():
 
 		modulePath = sys.path
 		
-		module = "'''+arr[i+1]+'''"
+		module = "'''+arr[i]+'''"
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
 		'''
-
-	if arr[i] != "":
-		output += '''path = os.path.join(path, "'''+arr[i]+'''")'''
 
 	output += '''
 		sys.path.append(path)
@@ -70,11 +67,11 @@ class '''+arr[i+1]+'''():
 		# not needed now, maybe in the future
 		return True
 
-FreeCADGui.addCommand("'''+arr[i+1]+'''", '''+arr[i+1]+'''())
+FreeCADGui.addCommand("'''+arr[i]+'''", '''+arr[i]+'''())
 
 	'''
 	
-	i += 5
+	i += 4
 
 
 # ######################################################################################################################

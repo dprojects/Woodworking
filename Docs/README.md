@@ -51,6 +51,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 	* [selectVertex](#selectvertex)
 	* [roundCurve](#roundcurve)
 * [Project manage](#project-manage)
+	* [magicSettings](#magicsettings)
 	* [selected2LinkGroup](#selected2linkgroup)
 	* [selected2Link](#selected2link)
 	* [selected2Group](#selected2group)
@@ -157,6 +158,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 0.23 stable:**
 
+    * add tool for default settings like theme, wood thickness, wood color (magicSettings)
     * new GUI layouts to support FreeCAD Dark & Light Themes
     * support for custom objects with Width, Height and Length attribute (getDimensions)
     * support for Part :: Extrusion objects (getDimensions)
@@ -445,6 +447,9 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * Picture frame ( import parametric )
 * Storage box ( import parametric )
 
+> [!TIP]
+> To set default wood thickenss or wood color you can use [magicSettings](#magicsettings) tool.
+
 # Making panels
 
 ## Default panels
@@ -452,7 +457,8 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelDefaultZY.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelDefaultYZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelDefaultZX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelDefaultXZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelDefaultYX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelDefaultXY.png"> There are many types of wood. So there is no chance to cover all possible wood sizes provided by the market. This starting panels allow you for quick start. You do not have to start each time from `10 x 10 x 10` box `Cube` object and think where should be the thickenss. This tool creates default panel that can be easily resized. You can clearly see where should be the thickness to keep exact panel `XYZ` axis orientation. 
 
 > [!TIP]
-> All furniture elements should be created according to the `XYZ` axis plane, if possible. Avoid building whole furniture with rotated elements. If you want to rotate panel with dowels, better create panel with dowels without rotation, pack panel with dowels into container like `LinkGroup`, and use [magicAngle](#magicangle) to rotate whole `LinkGroup`. You can rotate whole furniture like this with single click and the dowels will be in the correct place after rotation. If you would like to apply dowels at rotated element it would be pointless complication, almost impossible at FreeCAD.
+> All furniture elements should be created according to the `XYZ` axis plane, if possible. Avoid building whole furniture with rotated elements. If you want to rotate panel with dowels, better create panel with dowels without rotation, pack panel with dowels into container like `LinkGroup`, and use [magicAngle](#magicangle) to rotate whole `LinkGroup`. You can rotate whole furniture like this with single click and the dowels will be in the correct place after rotation. If you would like to apply dowels at rotated element it would be pointless complication, almost impossible at FreeCAD. 
+> To set default wood thickenss or wood color you can use [magicSettings](#magicsettings) tool.
 
 ## Copy panels
 
@@ -796,6 +802,20 @@ Selection modes:
 <br><br><br>
 
 # Project manage
+
+## magicSettings
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicSettings.png"> This tool allows you to save default settings for Woodworking workbench. 
+
+**Options:**
+
+* **Theme:** allows you to choose a color theme for all Woodworking workbench tools. Switching the theme causes an immediate preview on the tool interface. To save a given theme, press the `save settings` button. The `default` means no theme.
+* **Wood thickness:** allows you to set the default thickness of the wood you create. This setting is used by tools such as [magicStart](#magicstart), [wires2pad](#wires2pad), [Default panels](#default-panels) and all others.
+* **Wood color:** allows you to set the default color of the wood you create in RGBA color schema. This setting is used by tools like [magicStart](#magicstart), [wires2pad](#wires2pad), [Default panels](#default-panels) and all others. If you want to revert to the default wood color which is `RGBA = [ 247, 185, 108, 255 ]` leave all fields empty and press the `save settings` button.
+* **save settings:** button saves the current settings in FreeCAD configuration files, i.e. `User parameter:BaseApp/Preferences/Woodworking`. This data can be checked, fixed or removed using the parameter editor in FreeCAD, i.e. `Tools -> Edit parameters... -> Preferences -> Woodworking`.
+
+**Video tutorials:** 
+* [How to use magicSettings tool](https://www.youtube.com/watch?v=kwcO2bRcCrY)
 
 ## selected2LinkGroup
 
@@ -1892,7 +1912,7 @@ Working with raw wood is an art of some sort. This is the true form of working w
 
 ## wires2pad
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/wires2pad.png"> You have to select at least one Sketch to create a Pad from wires. This tool allows you to create panels from wires in Sketch. A Pad with the default size of `18 mm` will be created for each wire. If you want to have a different panel size, change the `Pad.Length` option or use the `Panel from vertices` option in the [magicManager](#magicmanager) tool, selecting the appropriate edges. To create separate Pads from one Sketch, wires must not touch each other. If the Sketch is placed in containers, for example `Part` or `LinkGroup` with set offsets, you need to adjust the panel position, for example using the [panelMove2Anchor](#panelmove2anchor) tool, selecting two edges. You can also consider creating panels from the Sketch in the root directory, see the [addExternal](#addexternal) tool.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/wires2pad.png"> You have to select at least one Sketch to create a Pad from wires. This tool allows you to create panels from wires in Sketch. A Pad with the default size of `MagicPanels.gWoodThickness` will be created for each wire. To change the default wood size use [magicSettings](#magicsettings) tool or change the `Pad.Length` option. Also you can use the `Panel from vertices` option in the [magicManager](#magicmanager) tool, selecting the appropriate edges. To create separate Pads from one Sketch, wires must not touch each other. If the Sketch is placed in containers, for example `Part` or `LinkGroup` with set offsets, you need to adjust the panel position, for example using the [panelMove2Anchor](#panelmove2anchor) tool, selecting two edges. You can also consider creating panels from the Sketch in the root directory, see the [addExternal](#addexternal) tool.
 
 **Video tutorials:** 
 * [How to create panel from wires in Sketch](https://www.youtube.com/watch?v=wV6nlN2z1Ng)
@@ -1954,8 +1974,8 @@ Main features:
 The Woodworking workbench also has an API for developers. This library contains functions that [solve the Topology Naming Problem](https://wiki.freecad.org/Macro_TNP_Solution). You can also leaglly create your own tools and extend the workbench in your private repository in accordance with the MIT license:
 	
 * **View library API documentation:** [MagicPanelsAPI.md](https://github.com/dprojects/Woodworking/blob/master/Docs/MagicPanelsAPI.md)
-* **View library code:** [MagicPanels.py](https://github.com/dprojects/Woodworking/blob/master/Tools/MagicPanels/MagicPanels.py)
-* **Download & install library:** [raw version](https://raw.githubusercontent.com/dprojects/Woodworking/master/Tools/MagicPanels/MagicPanels.py)
+* **View library code:** [MagicPanels.py](https://github.com/dprojects/Woodworking/blob/master/Tools/MagicPanels.py)
+* **Download & install library:** [raw version](https://raw.githubusercontent.com/dprojects/Woodworking/master/Tools/MagicPanels.py)
 
 > [!TIP]
 > If you have Woodworking workbench installed you don't have to install the `MagicPanels` library manaually. Also you can view the library directly from Woodworking workbench via: [scanObjects](https://github.com/dprojects/Woodworking/tree/master/Docs#scanobjects) tool. <br>

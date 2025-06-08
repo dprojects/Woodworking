@@ -77,7 +77,7 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 280
+			toolSW = 310
 			toolSH = 450
 			
 			rside = toolSW - 20
@@ -89,8 +89,8 @@ def showQtGUI():
 			self.result = userCancelled
 			self.setWindowTitle(translate('magicGlue', 'magicGlue'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
-			self.setFixedWidth(toolSW)
-			self.setFixedHeight(toolSH)
+			self.setMinimumWidth(toolSW)
+			self.setMinimumHeight(toolSH)
 			
 			# ############################################################################
 			# GUI for common selection part (visible by default)
@@ -107,7 +107,6 @@ def showQtGUI():
 			self.sMode.addItems(self.sModeList)
 			self.sMode.setCurrentIndex(0) # default
 			self.sMode.textActivated[str].connect(self.setModeType)
-			self.sMode.setFixedHeight(40)
 
 			# ############################################################################
 			# settigns for custom GUI
@@ -125,7 +124,6 @@ def showQtGUI():
 			self.gp1B = QtGui.QPushButton(translate('magicGlue', 'set'), self)
 			self.gp1B.clicked.connect(self.setGPSO)
 			self.gp1B.setFixedWidth(60)
-			self.gp1B.setFixedHeight(20)
 			
 			self.gp1L = QtGui.QLabel(self.gNoGPSO, self)
 			self.gp1L.setFixedWidth(rside - 80)
@@ -133,7 +131,6 @@ def showQtGUI():
 			self.gp2B = QtGui.QPushButton(translate('magicGlue', 'set'), self)
 			self.gp2B.clicked.connect(self.setGPTO)
 			self.gp2B.setFixedWidth(60)
-			self.gp2B.setFixedHeight(20)
 			
 			self.gp2L = QtGui.QLabel(self.gNoGPTO, self)
 			self.gp2L.setFixedWidth(rside - 80)
@@ -176,7 +173,6 @@ def showQtGUI():
 			self.gs1B = QtGui.QPushButton(translate('magicGlue', 'set'), self)
 			self.gs1B.clicked.connect(self.setGSSO)
 			self.gs1B.setFixedWidth(60)
-			self.gs1B.setFixedHeight(20)
 			
 			self.gs1L = QtGui.QLabel(self.gNoGSSO, self)
 			self.gs1L.setFixedWidth(rside - 80)
@@ -184,7 +180,6 @@ def showQtGUI():
 			self.gs2B = QtGui.QPushButton(translate('magicGlue', 'set'), self)
 			self.gs2B.clicked.connect(self.setGSTO)
 			self.gs2B.setFixedWidth(60)
-			self.gs2B.setFixedHeight(20)
 			
 			self.gs2L = QtGui.QLabel(self.gNoGSTO, self)
 			self.gs2L.setFixedWidth(rside - 80)
@@ -387,6 +382,10 @@ def showQtGUI():
 			# init
 			self.show()
 			
+			# set theme
+			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
+			self.setStyleSheet(QtCSS)
+
 			if self.gAxisCrossSupport == True:
 				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
 			

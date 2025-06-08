@@ -360,6 +360,10 @@ def showQtGUI():
 			# show window
 			self.show()
 
+			# set theme
+			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
+			self.setStyleSheet(QtCSS)
+
 			# set window position
 			sw = self.width()
 			sh = self.height()

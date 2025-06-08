@@ -104,7 +104,7 @@ def showQtGUI():
 
 			# tool screen position
 			gPW = 0 + 250
-			gPH = int( gSH - toolSH ) - 30
+			gPH = 50
 
 			# ############################################################################
 			# main window
@@ -123,7 +123,6 @@ def showQtGUI():
 			self.ob1B1 = QtGui.QPushButton(translate('magicJoints', 'set'), self)
 			self.ob1B1.clicked.connect(self.setObj1)
 			self.ob1B1.setFixedWidth(30)
-			self.ob1B1.setFixedHeight(20)
 			
 			# screen
 			self.ob1S = QtGui.QLabel("", self)
@@ -137,7 +136,6 @@ def showQtGUI():
 			self.ob2B1 = QtGui.QPushButton(translate('magicJoints', 'set'), self)
 			self.ob2B1.clicked.connect(self.setObj2)
 			self.ob2B1.setFixedWidth(30)
-			self.ob2B1.setFixedHeight(20)
 			
 			# screen
 			self.ob2S = QtGui.QLabel("", self)
@@ -151,7 +149,6 @@ def showQtGUI():
 			self.ob3B1 = QtGui.QPushButton(translate('magicJoints', 'set'), self)
 			self.ob3B1.clicked.connect(self.setObj3)
 			self.ob3B1.setFixedWidth(30)
-			self.ob3B1.setFixedHeight(20)
 			
 			# screen
 			self.ob3S = QtGui.QLabel("", self)
@@ -509,6 +506,10 @@ def showQtGUI():
 			# init
 			self.show()
 			
+			# set theme
+			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
+			self.setStyleSheet(QtCSS)
+
 			if self.gAxisCrossSupport == True:
 				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)
 			

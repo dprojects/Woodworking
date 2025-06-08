@@ -184,14 +184,12 @@ def setTests():
 	# ######################################
 	# test: MagicPanels
 	# ######################################
-	'''
 	try:
 		import MagicPanels
 		gTests["MagicPanels"] = True
 	except:
 		gTests["MagicPanels"] = False
 		gTests["status"] += "MagicPanels, "
-	'''
 	
 	# ######################################
 	# end cut
@@ -468,7 +466,7 @@ def showQtGUI():
 			# ############################################################################
 			
 			toolSW = 550                    # tool GUI width
-			toolSH = 680                    # tool GUI height
+			toolSH = 690                    # tool GUI height
 			
 			area = toolSW - 20              # GUI text area
 			
@@ -692,7 +690,7 @@ def showQtGUI():
 			# ############################################################################
 
 			self.odie = QtGui.QTextEdit(self)
-			self.odie.setFixedHeight(220)
+			self.odie.setFixedHeight(230)
 			self.odie.paste()
 
 			# ############################################################################
@@ -782,7 +780,15 @@ def showQtGUI():
 			pw = int( (FreeCADGui.getMainWindow().width() / 2) - ( sw / 2 ) )
 			ph = int( FreeCADGui.getMainWindow().height() - sh )
 			self.setGeometry(pw, ph, sw, sh)
-
+			
+			# set theme
+			try:
+				import MagicPanels
+				QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
+				self.setStyleSheet(QtCSS)
+			except:
+				skip = 1
+			
 		# ############################################################################
 		# actions - internal functions
 		# ############################################################################
