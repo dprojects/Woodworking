@@ -55,7 +55,7 @@ def showQtGUI():
 			# theme
 			self.oThemeL = QtGui.QLabel(translate('magicSettings', 'Theme:'), self)
 
-			self.oThemeList = MagicPanels.getTheme()
+			self.oThemeList = MagicPanels.getTheme("config")
 			self.oTheme = QtGui.QComboBox(self)
 			self.oTheme.addItems(self.oThemeList)
 			self.oTheme.setCurrentIndex(0) # default
@@ -171,8 +171,9 @@ def showQtGUI():
 				
 			try:
 				thick = FreeCAD.ParamGet(pref).GetString('wWoodThickness')
-				thick = MagicPanels.unit2gui(thick)
-				self.oWoodThickE.setText(thick)
+				if thick != "":
+					thick = MagicPanels.unit2gui(thick)
+					self.oWoodThickE.setText(thick)
 				
 			except:
 				skip = 1

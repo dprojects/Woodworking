@@ -156,9 +156,55 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 	
 		git clone https://github.com/dprojects/Woodworking.git
 
-	**New significant changes since the last release 1.0 stable:**
+	**New significant changes since the last release 0.23 stable:**
 
-    * nothing yet...
+    * VarSet option for position and size in magicGlue
+    * add tool for default settings like theme, wood thickness, wood color (magicSettings)
+    * new GUI layouts to support FreeCAD Dark & Light Themes
+    * support for custom objects with Width, Height and Length attribute (getDimensions)
+    * support for Part :: Extrusion objects (getDimensions)
+    * parametric drawers & decorated handles ((magicStart, Examples)
+    * back outside and inside for the cabinets (magicStart)
+    * workspace for custom design copy and move reference (magicStart)
+    * new tool to create panels from wires (wires2pad)
+    * new tool to add external geometry in sketch (addExternal)
+    * improve Copy by Edge and Mirror option for more complex objects (magicMove)
+    * add Clone option to Mirror as default (magicMove)
+    * drawer series with front outside ( Blum, Hafele, GTV, Amix )
+    * drawer series with front inside ( Blum, Hafele, GTV, Amix )
+    * add custom front overlap for drawer (magicStart)
+    * add custom drawer thickness for front, bottom and sides (magicStart)
+    * new tool to manage views and export model to TechDraw (magicView)
+    * organize better the menu to be more readable (magicStart)
+    * brackets for wall kitchen cabinets (magicStart, magicDriller)
+    * redesign magixFixture (change into vector anchors and XYZ positioning)
+    * improve general subcontainer creation (MagicPanels)
+    * add animation for move (magicMove)
+    * add animation for rotation and rotation points (magicAngle)
+    * predefined settings for cabinet handle (magicDowels, magicDriller)
+    * predefined settings for minifix (magicDowels, magicDriller)
+    * cabinet handle double (magicStart)
+    * cabinet handle single (magicStart)
+    * kitchen wall cabinets, 2 versions (magicStart)
+    * improve copy PartDesign object (magicMove, MagicPanels)
+    * tool to see and debug the default object anchor (showPlacement)
+    * kitchen cabinet US style with vertical face frame (magicStart)
+    * vertical face frame (magicStart)
+    * support for user units settings (inches, ft, mm, etc...)
+    * replace colorManager with magicColors tool with more color options
+    * support for new FreeCAD 1.0+ color schema
+    * improve debugInfo tool
+    * support for PySide6
+    * add possibility to select edges or faces during center objects (panelMove2Center)
+    * FreeCAD crash tester (scanObjects)
+    * fix to avoid FreeCAD 1.0 automatic labeling bug and crash 
+    * improve drilling holes with offsets at LinkGroup, Part, Body containers
+    * move PartDesign objects via Body container (magicMove)
+    * move PartDesign objects via Body container (arrows)
+    * better thickness recognition (MagicPanels library)
+    * scanObjects improve (colors at FreeCAD 1.0 behind Material, tuples & fixes)
+    * support for Assembly objects (tested at Assembly4 workbench + FreeCAD 1.0)
+    * support for minifix, sample and dowels points
 
 
 **Step 2. Get FreeCAD Mod folder localization:**

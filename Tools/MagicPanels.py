@@ -64,24 +64,28 @@ except:
 	skip = 1
 
 try:
-	gTheme = FreeCAD.ParamGet(gSettingsPref).GetString('wTheme')
+	test = FreeCAD.ParamGet(gSettingsPref).GetString('wTheme')
+	if test != "":
+		gTheme = test
 except:
 	skip = 1
 
 try:
-	cR = FreeCAD.ParamGet(gSettingsPref).GetString('wWoodColorR')
-	cG = FreeCAD.ParamGet(gSettingsPref).GetString('wWoodColorG')
-	cB = FreeCAD.ParamGet(gSettingsPref).GetString('wWoodColorB')
-	cA = FreeCAD.ParamGet(gSettingsPref).GetString('wWoodColorA')
-	colorArr = [ int(cR), int(cG), int(cB), int(cA) ]
-	gDefaultColor = convertColor(colorArr, "kernel")
+	test = FreeCAD.ParamGet(gSettingsPref).GetString('wWoodColorR')
+	if test != "":
+		cR = FreeCAD.ParamGet(gSettingsPref).GetString('wWoodColorR')
+		cG = FreeCAD.ParamGet(gSettingsPref).GetString('wWoodColorG')
+		cB = FreeCAD.ParamGet(gSettingsPref).GetString('wWoodColorB')
+		cA = FreeCAD.ParamGet(gSettingsPref).GetString('wWoodColorA')
+		colorArr = [ int(cR), int(cG), int(cB), int(cA) ]
+		gDefaultColor = convertColor(colorArr, "kernel")
 except:
 	skip = 1
 
 try:
-	FreeCAD.ParamGet(gSettingsPref).SetString('wWoodThickness', str(thick))
-	thick = FreeCAD.ParamGet(gSettingsPref).GetString('wWoodThickness')
-	gWoodThickness = unit2value(thick)
+	test = FreeCAD.ParamGet(gSettingsPref).GetString('wWoodThickness')
+	if test != "":
+		gWoodThickness = unit2value(test)
 except:
 	skip = 1
 
@@ -6242,7 +6246,7 @@ def getTheme(iType=""):
 		self.setStyleSheet(QtCSS)
 		
 		# to return list of available themes
-		self.sModeList = MagicPanels.getTheme()
+		self.sModeList = MagicPanels.getTheme("config")
 		self.sMode = QtGui.QComboBox(self)
 		self.sMode.addItems(self.sModeList)
 
@@ -6277,14 +6281,14 @@ def getTheme(iType=""):
 		"winter 3D" # no comma
 	)
 	
-	if iType == "":
+	if iType == "config":
 		return themes
 	
 	# ##############################################################
 	# setting color for themes
 	# ##############################################################
 	
-	if iType == "default":
+	if iType == "default" or iType == "":
 		return ""
 	
 	if iType == "classic":

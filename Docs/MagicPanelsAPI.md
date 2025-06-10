@@ -1978,7 +1978,7 @@ gWoodThickness = 18                                                             
 		self.setStyleSheet(QtCSS)
 		
 		# to return list of available themes
-		self.sModeList = MagicPanels.getTheme()
+		self.sModeList = MagicPanels.getTheme("config")
 		self.sMode = QtGui.QComboBox(self)
 		self.sMode.addItems(self.sModeList)
 
