@@ -783,7 +783,7 @@ def showQtGUI():
 				FreeCADGui.Selection.clearSelection()
 				
 				# ############################################################################
-				# show fixture if everyhing was fine
+				# show fixture if everything was fine
 				# ############################################################################
 				
 				self.showFixture()

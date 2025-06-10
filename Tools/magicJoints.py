@@ -94,7 +94,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 300
-			toolSH = 700
+			toolSH = 720
 			
 			area = toolSW - 50
 			
@@ -114,6 +114,7 @@ def showQtGUI():
 			self.setGeometry(gPW, gPH, toolSW, toolSH)
 			self.setWindowTitle(translate('magicJoints', 'magicJoints'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			self.setFixedHeight(toolSH)
 
 			# ############################################################################
 			# options - 1st object

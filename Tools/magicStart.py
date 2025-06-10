@@ -769,7 +769,7 @@ def showQtGUI():
 			area = self.toolSW - 20                            # full width gui area
 			infoarea = area - 220                              # area for first info
 			
-			createSize = 40                                    # create buton size
+			createSize = 40                                    # create button size
 			createRow = self.toolSH - createSize - 10          # row for create button
 			
 			ioffset = 10                                       # items offset
@@ -1079,7 +1079,7 @@ def showQtGUI():
 			row -= 20
 			
 			# label
-			info = translate('magicStart', 'Possible selections, choose one method and make selection before calculate or create buton press: <br><br> 1. X edge - to set XYZ position and width <br><br> 2. XY face - to put next module on top <br><br> 3. Vertex - to set XYZ position <br><br> 4. no selection - to create with custom settings')
+			info = translate('magicStart', 'Possible selections, choose one method and make selection before calculate or create button press: <br><br> 1. X edge - to set XYZ position and width <br><br> 2. XY face - to put next module on top <br><br> 3. Vertex - to set XYZ position <br><br> 4. no selection - to create with custom settings')
 			self.oo1i = QtGui.QLabel(info, self)
 			self.oo1i.move(10, row+3)
 			self.oo1i.setFixedWidth(infoarea)
@@ -9952,7 +9952,7 @@ def showQtGUI():
 			sy = MagicPanels.unit2value(self.oo12E.text()) + barThick
 			sz = MagicPanels.unit2value(self.oo13E.text())
 			
-			# face frame position calculaion
+			# face frame position calculation
 
 			FSX = sx - sfflip
 			FSY = sy - barThick
@@ -10231,7 +10231,7 @@ def showQtGUI():
 			sy = MagicPanels.unit2value(self.oo12E.text()) + barThick
 			sz = MagicPanels.unit2value(self.oo13E.text())
 			
-			# face frame position calculaion
+			# face frame position calculation
 
 			FSX = sx - sfflip
 			FSY = sy - barThick

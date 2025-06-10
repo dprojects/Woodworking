@@ -411,7 +411,6 @@ def showQtGUI():
 				# custom settings button
 				self.e1B1 = QtGui.QPushButton(translate('magicDowels', 'show custom settings'), self)
 				self.e1B1.clicked.connect(self.setCustomValues)
-				self.e1B1.setFixedHeight(20)
 				
 				# ############################################################################
 				# create

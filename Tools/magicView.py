@@ -311,7 +311,7 @@ def showQtGUI():
 		# ############################################################################
 		def initSheet(self):
 			
-			# search all objetcs because Spreadsheet not have Placement
+			# search all objects because Spreadsheet not have Placement
 			for o in FreeCAD.ActiveDocument.Objects:
 				if o.isDerivedFrom("Spreadsheet::Sheet") and str(o.Name).startswith("magicview"):
 					if str(o.Name) != "magicviewrestore":

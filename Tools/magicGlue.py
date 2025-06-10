@@ -78,7 +78,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 310
-			toolSH = 450
+			toolSH = 520
 			
 			rside = toolSW - 20
 			
@@ -217,6 +217,9 @@ def showQtGUI():
 			self.gc4B.setFixedHeight(40)
 			self.gc4B.setAutoRepeat(False)
 
+			self.oVarSetCB = QtGui.QCheckBox(translate('magicGlue', ' - use VarSet'), self)
+			self.oVarSetCB.setCheckState(QtCore.Qt.Unchecked)
+			
 			# ############################################################################
 			# GUI for common foot
 			# ############################################################################
@@ -335,7 +338,10 @@ def showQtGUI():
 			self.rowB1C2.addWidget(self.gc4B)
 			self.groupBodyClean2 = QtGui.QGroupBox(None, self)
 			self.groupBodyClean2.setLayout(self.rowB1C2)
-
+			
+			self.layVarSet = QtGui.QVBoxLayout()
+			self.layVarSet.addWidget(self.oVarSetCB)
+			
 			# create foot
 			self.layoutFoot = QtGui.QVBoxLayout()
 			
@@ -367,6 +373,8 @@ def showQtGUI():
 			self.layout.addWidget(self.groupBodyClean1)
 			self.layout.addWidget(self.groupBodyClean2)
 			self.layout.addStretch()
+			self.layout.addLayout(self.layVarSet)
+			self.layout.addStretch()
 			self.layout.addLayout(self.layoutFoot)
 			self.setLayout(self.layout)
 		
@@ -374,7 +382,10 @@ def showQtGUI():
 			self.groupBodySize2.hide()
 			self.groupBodyClean1.hide()
 			self.groupBodyClean2.hide()
-		
+
+			if MagicPanels.gKernelVersion < 1.0:
+				self.oVarSetCB.hide()
+
 			# ############################################################################
 			# show & init defaults
 			# ############################################################################
@@ -424,6 +435,7 @@ def showQtGUI():
 				
 				self.groupBodyPosition1.show()
 				self.groupBodyPosition2.show()
+				self.oVarSetCB.show()
 				
 				self.gp4L.setText(self.gInfoPositionX)
 				self.gp5L.setText(self.gInfoPositionY)
@@ -434,12 +446,17 @@ def showQtGUI():
 				
 				self.groupBodySize1.show()
 				self.groupBodySize2.show()
+				self.oVarSetCB.show()
 
 			# clean
 			if selectedIndex == 2:
 				
 				self.groupBodyClean1.show()
 				self.groupBodyClean2.show()
+				self.oVarSetCB.hide()
+
+			if MagicPanels.gKernelVersion < 1.0:
+				self.oVarSetCB.hide()
 
 		# ############################################################################
 		# actions - glue positions
@@ -629,14 +646,135 @@ def showQtGUI():
 			FreeCAD.ActiveDocument.recompute()
 		
 		# ############################################################################
+		def gluePositionVarSet(self, iType):
+			
+			sub = self.gGPSO[1]
+			pgroup = translate('magicGlue', 'Glue position')
+
+			if sub.ShapeType == "Face":
+				
+				sX = float(sub.CenterOfMass.x)
+				sY = float(sub.CenterOfMass.y)
+				sZ = float(sub.CenterOfMass.z)
+				
+				subIndex = MagicPanels.getFaceIndex(self.gGPSO[0], self.gGPSO[1])
+				
+				if iType == "X":
+					pname = str(self.gGPSO[0].Name) + "_" + "Face"+str(subIndex) + "_x"
+					pvalue = sX
+				if iType == "Y":
+					pvalue = sY
+					pname = str(self.gGPSO[0].Name) + "_" + "Face"+str(subIndex) + "_y"
+				if iType == "Z":
+					pvalue = sZ
+					pname = str(self.gGPSO[0].Name) + "_" + "Face"+str(subIndex) + "_z"
+					
+			if sub.ShapeType == "Vertex":
+				
+				pname =  str(self.gGPSO[0].Name) + "_" + "Vertex"+str(subIndex)
+				
+				sX = float(sub.X)
+				sY = float(sub.Y)
+				sZ = float(sub.Z)
+				
+				subIndex = MagicPanels.getVertexIndex(self.gGPSO[0], self.gGPSO[1])
+
+				if iType == "X":
+					pname =  str(self.gGPSO[0].Name) + "_" + "Vertex"+str(subIndex) + "_X"
+					pvalue = sX
+				if iType == "Y":
+					pvalue = sY
+					pname =  str(self.gGPSO[0].Name) + "_" + "Vertex"+str(subIndex) + "_Y"
+				if iType == "Z":
+					pvalue = sZ
+					pname =  str(self.gGPSO[0].Name) + "_" + "Vertex"+str(subIndex) + "_Z"
+			
+			# create VarSet by Label to allow rename file and keep multi files
+			try:
+				varset = FreeCAD.ActiveDocument.getObjectsByLabel('magicGlueVarSet')[0]
+			except:
+				varset = FreeCAD.ActiveDocument.addObject('App::VarSet','magicGlueVarSet')
+			
+			# create property in VarSet
+			if not hasattr(varset, pname):
+				varset.addProperty("App::PropertyFloat", pname, pgroup, "", 0)
+			
+			# set property value in VarSet
+			setattr(varset, pname, pvalue)
+			
+			# set target objects to Varset
+			# self.gGPTO is array with targes objects only
+			# the self.gGPSO is [ obj, sub ]
+			obs = self.gGPTO
+			obs.append(self.gGPSO[0])
+			
+			for o in obs:
+			
+				if iType == "X":
+					
+					opx = float(o.Placement.Base.x)
+					offset = abs(opx - sX)
+					
+					expr = "<<" + varset.Name + ">>" + "." + pname
+					
+					if opx > sX:
+						expr += " + " + str(offset)
+					else:
+						expr += " - " + str(offset)
+					
+					o.setExpression('.Placement.Base.x', expr)
+				
+				if iType == "Y":
+					
+					opy = float(o.Placement.Base.y)
+					offset = abs(opy - sY)
+					
+					expr = "<<" + varset.Name + ">>" + "." + pname
+					
+					if opy > sY:
+						expr += " + " + str(offset)
+					else:
+						expr += " - " + str(offset)
+					
+					o.setExpression('.Placement.Base.y', expr)
+					
+				if iType == "Z":
+					
+					opz = float(o.Placement.Base.z)
+					offset = abs(opz - sZ)
+					
+					expr = "<<" + varset.Name + ">>" + "." + pname
+					
+					if opz > sZ:
+						expr += " + " + str(offset)
+					else:
+						expr += " - " + str(offset)
+					
+					o.setExpression('.Placement.Base.z', expr)
+				
+				o.recompute()
+				
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+		
+		# ############################################################################
 		def gluePositionX(self):
-			self.gluePosition("X")
+			if self.oVarSetCB.isChecked():
+				self.gluePositionVarSet("X")
+			else:
+				self.gluePosition("X")
 
 		def gluePositionY(self):
-			self.gluePosition("Y")
+			if self.oVarSetCB.isChecked():
+				self.gluePositionVarSet("Y")
+			else:
+				self.gluePosition("Y")
 
 		def gluePositionZ(self):
-			self.gluePosition("Z")
+			if self.oVarSetCB.isChecked():
+				self.gluePositionVarSet("Z")
+			else:
+				self.gluePosition("Z")
 
 		# ############################################################################
 		# actions - glue sizes
@@ -730,6 +868,14 @@ def showQtGUI():
 		# ############################################################################
 		def glueSize(self):
 			
+			if self.oVarSetCB.isChecked():
+				self.glueSizeVarSet()
+			else:
+				self.glueSizeDirect()
+				
+		# ############################################################################
+		def glueSizeDirect(self):
+			
 			eS = self.gGSSO[1]
 			eSSize = float(eS.Length)
 			
@@ -797,6 +943,97 @@ def showQtGUI():
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
 		
+		# ############################################################################
+		def glueSizeVarSet(self):
+			
+			eS = self.gGSSO[1]
+			eSSize = float(eS.Length)
+			
+			eSObjName = str(self.gGSSO[0].Name)
+			eSIndex = MagicPanels.getEdgeIndex(self.gGSSO[0], self.gGSSO[1])
+			
+			# create VarSet property to be added
+			pgroup = translate('magicGlue', 'Glue size')
+			pname = str(self.gGSSO[0].Name) + "_" + "Edge" + str(eSIndex)
+			pvalue = eSSize
+			
+			# create VarSet by Label to allow rename file and keep multi files
+			try:
+				varset = FreeCAD.ActiveDocument.getObjectsByLabel('magicGlueVarSet')[0]
+			except:
+				varset = FreeCAD.ActiveDocument.addObject('App::VarSet','magicGlueVarSet')
+			
+			# create property in VarSet
+			if not hasattr(varset, pname):
+				varset.addProperty("App::PropertyFloat", pname, pgroup, "", 0)
+				
+			# set property value in VarSet
+			setattr(varset, pname, pvalue)
+			
+			# for size both the source self.gGSSO and target self.gGSTO is [ obj, edge ]
+			obs = self.gGSTO
+			obs.append(self.gGSSO)
+
+			for arr in obs:
+				
+				o = arr[0]
+				eT = arr[1]
+				eTSize = float(eT.Length)
+				name = MagicPanels.getSizeByEdge(o, eT)
+				offset = abs(eTSize - eSSize)
+				
+				exprValue = "<<" + varset.Name + ">>" + "." + pname
+				if eSSize < eTSize:
+					exprValue += " + " + str(offset)
+				else:
+					exprValue += " - " + str(offset)
+				
+				if o.isDerivedFrom("Part::Box"):
+					o.setExpression(str(name), exprValue)
+				
+				elif (
+					o.isDerivedFrom("PartDesign::Pad") or 
+					o.isDerivedFrom("PartDesign::Thickness") or 
+					o.isDerivedFrom("PartDesign::Chamfer")
+					):
+					
+					# search in objects properties
+					if o.isDerivedFrom("PartDesign::Pad"):
+						if MagicPanels.equal(eTSize, float(o.Length.Value)):
+							o.setExpression("Length", str(exprValue))
+							continue
+
+					if o.isDerivedFrom("PartDesign::Thickness"):
+						if MagicPanels.equal(eTSize, float(o.Value.Value)):
+							o.setExpression("Value", str(exprValue))
+							continue
+						
+					if o.isDerivedFrom("PartDesign::Chamfer"):
+						if MagicPanels.equal(eTSize, float(o.Size.Value)):
+							o.setExpression("Size", str(exprValue))
+							continue
+						
+					# if not found search in Constraints
+					for sketch in o.OutListRecursive:
+						if sketch.isDerivedFrom("Sketcher::SketchObject"):
+							for i in range(0, len(sketch.Constraints)):
+								
+								c = sketch.Constraints[i]
+								if MagicPanels.equal(eTSize, c.Value):
+									
+									exprName = ".Constraints[" + str(i) + "]"
+									sketch.setExpression(str(exprName), str(exprValue))
+
+				else:
+				
+					FreeCAD.Console.PrintMessage("\n")
+					FreeCAD.Console.PrintMessage("Object "+str(o.Label)+" skipped. Not supported type.")
+				
+				o.recompute()
+				
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+			
 		# ############################################################################
 		# actions - clean glue
 		# ############################################################################

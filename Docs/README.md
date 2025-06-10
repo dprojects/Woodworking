@@ -158,6 +158,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 0.23 stable:**
 
+    * VarSet option for position and size in magicGlue
     * add tool for default settings like theme, wood thickness, wood color (magicSettings)
     * new GUI layouts to support FreeCAD Dark & Light Themes
     * support for custom objects with Width, Height and Length attribute (getDimensions)
@@ -1193,7 +1194,7 @@ For manual adjust you can use:
 * **Y offset:** The `-` and `+` buttons allows you to move an object along the Y coordinate axis.
 * **Z offset:** The `-` and `+` buttons allows you to move an object along the Z coordinate axis.
 * **Step:** Allows you to set the offset step for the `-` and `+` buttons.
-* **show custom settings:** allows you to preview the custom settings but you need to click `create` button to store fixture. If you use the `-` and `+` buttons, the object will change its position automatically, but if you enter your own values ​​into the text fields, you must confirm them with thi button.
+* **show custom settings:** allows you to preview the custom settings but you need to click `create` button to store fixture. If you use the `-` and `+` buttons, the object will change its position automatically, but if you enter your own values ​​into the text fields, you must confirm them with this button.
 
 * **set manually:** open manual edit mode.
 * **finish manually:** finish manual edit mode.
@@ -1836,6 +1837,7 @@ Working with raw wood is an art of some sort. This is the true form of working w
   * `add glue` for `X` direction allows you to add expression for moving objects along `X` axis.
   * `add glue` for `Y` direction allows you to add expression for moving objects along `Y` axis.
   * `add glue` for `Z` direction allows you to add expression for moving objects along `Z` axis.
+  * `use VarSet` checkbox if this option is checked then a file named `magicGlueVarSet` will be created and the position values ​​will be saved there. However, in this case it is not possible to link the source object to the values ​​in the `magicGlueVarSet` file, due to the limitation of the FreeCAD VarSet object, which throws `cyclic reference` errors. The `magicGlueVarSet` file is recognized by the `.Label` attribute, so you only need to change the file name to use more VarSet files. This option is available only since FreeCAD 1.0 version.
 
 * **Glue size:** 
   * `set` **for source** allows you to add source object position. The source can be edge. The selected `edge.Length` will be the reference point.
@@ -1846,6 +1848,7 @@ Working with raw wood is an art of some sort. This is the true form of working w
     * If the object is for example cornerBlock `PartDesign::Chamfer` the expression will be set at `Size` property or `Sketch` constraints.
   * `refresh all selection` allows you to add quickly source and targets. First selected edge will be the source and all other edges will be considered as targets to set expressions.
   * `add glue size` allows you to add expression for size changes of source edge.
+  * `use VarSet` checkbox if this option is checked then a file named `magicGlueVarSet` will be created and the size values ​​will be saved there. However, in this case it is not possible to link the source object to the values ​​in the `magicGlueVarSet` file, due to the limitation of the FreeCAD VarSet object, which throws `cyclic reference` errors. The `magicGlueVarSet` file is recognized by the `.Label` attribute, so you only need to change the file name to use more VarSet files. This option is available only since FreeCAD 1.0 version.
   
 * **Clean glue:** 
   * `refresh all selection` allows you to add target objects to clean expressions.

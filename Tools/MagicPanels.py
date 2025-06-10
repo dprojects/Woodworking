@@ -3234,7 +3234,7 @@ def moveToContainer(iObjects, iContainer, iType="object"):
 		
 		# move the object to this container
 		# in try to avoid dependency loop
-		# casued by incorrect containers list
+		# caused by incorrect containers list
 		try:
 			FreeCADGui.Selection.addSelection(o)
 			o.adjustRelativeLinks(destination)
