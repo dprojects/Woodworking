@@ -42,7 +42,11 @@ For more details see: [Installation section at Woodworking workbench documentati
 
 # License
 
-[MIT](https://github.com/dprojects/Woodworking/blob/master/LICENSE) for all Woodworking workbench content, so it is more free than FreeCAD.
+Personally, I like programming and coming up with new functionalities, improving things, coming up with procedures and seeing that something works.
+
+On the other hand, giving something away for free, i.e. open source, is a very controversial approach, because the bills won't pay themselves and sooner or later free projects without support usually get trashed, and brilliant inventors end up homeless. That's why it would be great to be able to combine the ingenuity of creative inventors with earning money.
+
+However, there are currently no plans to introduce a fee for using these additional tools and all content is made available under the **[MIT](https://github.com/dprojects/Woodworking/blob/master/LICENSE) license, only with the copyright preserved**.
 
 # Contact
 

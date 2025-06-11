@@ -211,10 +211,11 @@ Tools = [
 	# #################################################################################################################################
 
 	"magicSettings", "png", "magicSettings, tool for Woodworking workbench settings", "This tool allows you to set default settings for Woodworking workbench.",
-	"selected2Group", "png", "selected to Group", "Click to see info.",
-	"selected2LinkGroup", "png", "selected to LinkGroup", "Click to see info.",
-	"selected2Link", "png", "selected to Link", "Click to see info.",
-	"selected2Outside", "png", "move outside the container", "Click to see info.",
+	"selected2LinkGroup", "png", "selected2LinkGroup", "This tool allows you to move selected objects to LinkGroup container.",
+	"selected2Link", "png", "selected2Link", "This tool allows you to create link to selected objects.",
+	"selected2Group", "png", "selected2Group", "This tool allows you to move selected objects to simple folder.",
+	"selected2Assembly", "png", "selected2Assembly", "This tool allows you to convert selected objects to Assembly.",
+	"selected2Outside", "png", "selected2Outside", "This tool allows you to move selected objects outside the container and keep global position.",
 
 	# #################################################################################################################################
 	# Woodworking - code and debug
@@ -236,9 +237,9 @@ Tools = [
 	# Woodworking - advanced
 	# #################################################################################################################################
 
-	"panel2pad", "png", "cube to pad", "Click to see info.",
-	"addExternal", "png", "add external geometry", "Click to see info.",
-	"wires2pad", "png", "create Pad from wires in sketch", "Click to see info.",
+	"panel2pad", "png", "panel2pad", "This tool allows you to convert in-place simple panels Part::Box to PartDesign::Pad objects.",
+	"addExternal", "png", "addExternal", "This tool allows you to create sketch with external geometry from selected faces or edges.",
+	"wires2pad", "png", "wires2pad", "This tool allows you to create Pad from each wire in selected Sketches.",
 
 	# #################################################################################################################################
 	# Woodworking - preview

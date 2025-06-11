@@ -237,7 +237,7 @@ def showQtGUI():
 				colorArr = [ int(cR), int(cG), int(cB), int(cA) ]
 				MagicPanels.gDefaultColor = MagicPanels.convertColor(colorArr, "kernel")
 				
-				self.oStatusL.setText(translate('magicSettings', 'Settings has been updated.'))
+				self.oStatusL.setText(translate('magicSettings', 'Settings have been updated.'))
 				
 			except:
 				self.oStatusL.setText(translate('magicSettings', 'Error during save settings.'))

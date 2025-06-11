@@ -4264,51 +4264,12 @@ FreeCADGui.addCommand("magicSettings", magicSettings())
 
 	
 # ######################################################################################################################
-class selected2Group():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "selected2Group.png"),
-				"MenuText": QT_TRANSLATE_NOOP("selected2Group", "selected to Group"),
-				"ToolTip" : QT_TRANSLATE_NOOP("selected2Group", "Click to see info."),
-				"Accel"   : "" }
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "selected2Group"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("selected2Group", selected2Group())
-
-	
-# ######################################################################################################################
 class selected2LinkGroup():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "selected2LinkGroup.png"),
-				"MenuText": QT_TRANSLATE_NOOP("selected2LinkGroup", "selected to LinkGroup"),
-				"ToolTip" : QT_TRANSLATE_NOOP("selected2LinkGroup", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("selected2LinkGroup", "selected2LinkGroup"),
+				"ToolTip" : QT_TRANSLATE_NOOP("selected2LinkGroup", "This tool allows you to move selected objects to LinkGroup container."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4346,8 +4307,8 @@ class selected2Link():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "selected2Link.png"),
-				"MenuText": QT_TRANSLATE_NOOP("selected2Link", "selected to Link"),
-				"ToolTip" : QT_TRANSLATE_NOOP("selected2Link", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("selected2Link", "selected2Link"),
+				"ToolTip" : QT_TRANSLATE_NOOP("selected2Link", "This tool allows you to create link to selected objects."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4381,12 +4342,90 @@ FreeCADGui.addCommand("selected2Link", selected2Link())
 
 	
 # ######################################################################################################################
+class selected2Group():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "selected2Group.png"),
+				"MenuText": QT_TRANSLATE_NOOP("selected2Group", "selected2Group"),
+				"ToolTip" : QT_TRANSLATE_NOOP("selected2Group", "This tool allows you to move selected objects to simple folder."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "selected2Group"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("selected2Group", selected2Group())
+
+	
+# ######################################################################################################################
+class selected2Assembly():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "selected2Assembly.png"),
+				"MenuText": QT_TRANSLATE_NOOP("selected2Assembly", "selected2Assembly"),
+				"ToolTip" : QT_TRANSLATE_NOOP("selected2Assembly", "This tool allows you to convert selected objects to Assembly."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "selected2Assembly"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("selected2Assembly", selected2Assembly())
+
+	
+# ######################################################################################################################
 class selected2Outside():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "selected2Outside.png"),
-				"MenuText": QT_TRANSLATE_NOOP("selected2Outside", "move outside the container"),
-				"ToolTip" : QT_TRANSLATE_NOOP("selected2Outside", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("selected2Outside", "selected2Outside"),
+				"ToolTip" : QT_TRANSLATE_NOOP("selected2Outside", "This tool allows you to move selected objects outside the container and keep global position."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4658,8 +4697,8 @@ class panel2pad():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panel2pad.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panel2pad", "cube to pad"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panel2pad", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("panel2pad", "panel2pad"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panel2pad", "This tool allows you to convert in-place simple panels Part::Box to PartDesign::Pad objects."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4697,8 +4736,8 @@ class addExternal():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "addExternal.png"),
-				"MenuText": QT_TRANSLATE_NOOP("addExternal", "add external geometry"),
-				"ToolTip" : QT_TRANSLATE_NOOP("addExternal", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("addExternal", "addExternal"),
+				"ToolTip" : QT_TRANSLATE_NOOP("addExternal", "This tool allows you to create sketch with external geometry from selected faces or edges."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4736,8 +4775,8 @@ class wires2pad():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "wires2pad.png"),
-				"MenuText": QT_TRANSLATE_NOOP("wires2pad", "create Pad from wires in sketch"),
-				"ToolTip" : QT_TRANSLATE_NOOP("wires2pad", "Click to see info."),
+				"MenuText": QT_TRANSLATE_NOOP("wires2pad", "wires2pad"),
+				"ToolTip" : QT_TRANSLATE_NOOP("wires2pad", "This tool allows you to create Pad from each wire in selected Sketches."),
 				"Accel"   : "" }
 
 	def Activated(self):

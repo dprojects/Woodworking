@@ -55,6 +55,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 	* [selected2LinkGroup](#selected2linkgroup)
 	* [selected2Link](#selected2link)
 	* [selected2Group](#selected2group)
+	* [selected2Assembly](#selected2assembly)
 	* [selected2Outside](#selected2outside)
 * [How to use containers - short tutorial](#how-to-use-containers---short-tutorial)
 * [Dimensions, BOM, Cut-list](#dimensions-bom-cut-list)
@@ -158,7 +159,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 1.0 stable:**
 
-    * nothing yet...
+    * tool to convert model to Assembly (selected2Assembly)
 
 
 **Step 2. Get FreeCAD Mod folder localization:**
@@ -790,11 +791,22 @@ Selection modes:
 
 <br><br><br><br><br>
 
+## selected2Assembly
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/selected2Assembly.png">To convert a model to an Assembly object, you must first select `FreeCAD Part::Box` objects to convert. This tool allows you to convert a simple model based on simple panels, i.e. `FreeCAD Part::Box` objects, to an Assembly model. Manually, such conversion could be done by converting `Part::Box` objects to `PartDesign::Pad` objects using the [panel2pad](#panel2pad) tool and then extracting `PartDesign::Body` objects using [selected2Outside](#selected2outside) to keep global position and moving them to the `Assembly::AssemblyObject` object. In this tool, these two tools are combined for ease and speed of conversion. However, if you have a problem with converting the model, you can still do such conversion manually.
+
+**Video tutorials:** 
+* [FreeCAD 1.1 direct assembly](https://www.youtube.com/watch?v=u3Yh2WvdUIk)
+
+<br><br><br>
+
 ## selected2Outside
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/selected2Outside.png"> This tool allows you to get out the selected objects from containers. Normally, if you get out object from the container manually, the object will change place and rotation. This tool allows you to move the objects and keep the same position and rotation. This feature might be very useful if automatic movement to container is not what you want. For example you want single element to no longer be mirrored or further processed with other objects inside the container. To select more objects hold left CTRL key during selection.
 
+**Video tutorials:** 
 * [Boolean cut with containers](https://www.youtube.com/watch?v=OVwazL8MQwI)
+* [FreeCAD 1.1 direct assembly](https://www.youtube.com/watch?v=u3Yh2WvdUIk)
 
 <br><br>
 
@@ -1847,10 +1859,9 @@ Working with raw wood is an art of some sort. This is the true form of working w
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2pad.png"> This tool allows to replace `Cube` panel with `Pad` panel. The new created `Pad` panel will get the same dimensions, placement and rotation as the selected `Cube` panel. You can transform many `Cube` panels into `Pad` at once. To select more `Cubes` hold `left CTRL key` during selection. This tool is mostly dedicated to add decoration that is not supported for `Cube` objects by FreeCAD PartDesign workbench. You can also change shape by changing the `Sketch`. This is mostly used for decoration that can be applied only to `Pad`, like `Fillet`.
 
-<br><br><br>
-
 **Video tutorials:** 
 * [Automatic parametrization](https://www.youtube.com/watch?v=JuZsAjrQr6M)
+* [FreeCAD 1.1 direct assembly](https://www.youtube.com/watch?v=u3Yh2WvdUIk)
 
 <br><br><br>
 

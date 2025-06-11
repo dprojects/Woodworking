@@ -16,9 +16,10 @@ try:
 		[[ X, Y, Z ]] = MagicPanels.getVerticesPosition([[ X, Y, Z ]], o)
 		MagicPanels.setContainerPlacement(o, X, Y, Z, 0, "clean")
 
-		# seriously? the highest container should be first? very intuitive... LOL
-		# for more details see: https://forum.freecadweb.org/viewtopic.php?f=22&t=75343
+		# the highest container is last
 		containers = MagicPanels.getContainers(o)
+		
+		# for calculation the highest container is first
 		for c in reversed(containers):
 			try:
 				coR = c.Placement.Rotation
