@@ -13,7 +13,8 @@ translate = FreeCAD.Qt.translate
 getMenuIndex1 = {
 	translate('magicGlue', 'Glue position'): 0, 
 	translate('magicGlue', 'Glue size'): 1, 
-	translate('magicGlue', 'Clean glue'): 2
+	translate('magicGlue', 'Clean glue'): 2, 
+	translate('magicGlue', 'Super glue everywhere'): 3 # no comma
 }
 
 # ############################################################################
@@ -40,12 +41,14 @@ def showQtGUI():
 		gNoGSSO = translate('magicGlue', 'edge as source')
 		gNoGSTO = translate('magicGlue', 'edges as target')
 		gNoGCO = translate('magicGlue', 'select objects to clean glue')
+		gNoSGEO = translate('magicGlue', 'Objects order: automatic')
 		
 		gGPSO = [] # glue position source object [ obj, face ]
 		gGPTO = [] # glue position target objects [ obj1, obj2, ... ]
 		gGSSO = [] # glue size source object [ obj, edge ]
 		gGSTO = [] # glue size target objects [ edge1, edge2, ... ]
 		gGCO = [] # glue clean objects [ obj1, obj2, ... ]
+		gSGEO = [] # super glue everywhere objects
 		
 		gCornerCrossSupport = True
 		gAxisCrossSupport = True
@@ -97,11 +100,19 @@ def showQtGUI():
 			# ############################################################################
 
 			# not write here, copy text from getMenuIndex1 to avoid typo
-			self.sModeList = (
-				translate('magicGlue', 'Glue position'), 
-				translate('magicGlue', 'Glue size'), 
-				translate('magicGlue', 'Clean glue')
-				)
+			if MagicPanels.gKernelVersion < 1.0:
+				self.sModeList = (
+					translate('magicGlue', 'Glue position'), 
+					translate('magicGlue', 'Glue size'), 
+					translate('magicGlue', 'Clean glue')  # no comma
+					)
+			else:
+				self.sModeList = (
+					translate('magicGlue', 'Glue position'), 
+					translate('magicGlue', 'Glue size'), 
+					translate('magicGlue', 'Clean glue'), 
+					translate('magicGlue', 'Super glue everywhere') # no comma
+					)
 			
 			self.sMode = QtGui.QComboBox(self)
 			self.sMode.addItems(self.sModeList)
@@ -221,6 +232,47 @@ def showQtGUI():
 			self.oVarSetCB.setCheckState(QtCore.Qt.Unchecked)
 			
 			# ############################################################################
+			# GUI for super glue everywhere (hidden by default)
+			# ############################################################################
+			
+			self.sgeBAdd = QtGui.QPushButton(translate('magicGlue', 'add super glue everywhere'), self)
+			self.sgeBAdd.clicked.connect(self.superGlueAdd)
+			self.sgeBAdd.setFixedHeight(40)
+			self.sgeBAdd.setAutoRepeat(False)
+			
+			self.sgeBClean = QtGui.QPushButton(translate('magicGlue', 'clean super glue everywhere'), self)
+			self.sgeBClean.clicked.connect(self.superGlueClean)
+			self.sgeBClean.setFixedHeight(40)
+			self.sgeBClean.setAutoRepeat(False)
+		
+			self.sgeOL = QtGui.QLabel(self.gNoSGEO, self)
+			self.sgeOL.setFixedWidth(rside - 20)
+			
+			self.sgeOB = QtGui.QPushButton(translate('magicGlue', 'set order from selected'), self)
+			self.sgeOB.clicked.connect(self.setSGEO)
+			self.sgeOB.setFixedHeight(40)
+		
+			self.sgeBGP = QtGui.QPushButton(translate('magicGlue', 'glue position'), self)
+			self.sgeBGP.clicked.connect(self.glueModelSetPosition)
+			self.sgeBGP.setFixedHeight(40)
+			self.sgeBGP.setAutoRepeat(False)
+			
+			self.sgeBCP = QtGui.QPushButton(translate('magicGlue', 'clean position'), self)
+			self.sgeBCP.clicked.connect(self.glueModelCleanPosition)
+			self.sgeBCP.setFixedHeight(40)
+			self.sgeBCP.setAutoRepeat(False)
+			
+			self.sgeBGS = QtGui.QPushButton(translate('magicGlue', 'glue size'), self)
+			self.sgeBGS.clicked.connect(self.glueModelSetSize)
+			self.sgeBGS.setFixedHeight(40)
+			self.sgeBGS.setAutoRepeat(False)
+			
+			self.sgeBCS = QtGui.QPushButton(translate('magicGlue', 'clean size'), self)
+			self.sgeBCS.clicked.connect(self.glueModelCleanSize)
+			self.sgeBCS.setFixedHeight(40)
+			self.sgeBCS.setAutoRepeat(False)
+		
+			# ############################################################################
 			# GUI for common foot
 			# ############################################################################
 			
@@ -326,6 +378,29 @@ def showQtGUI():
 			self.groupBodySize2 = QtGui.QGroupBox(None, self)
 			self.groupBodySize2.setLayout(self.rowBS2)
 
+			# create body - super glue everywhere
+			self.laySGE1 = QtGui.QVBoxLayout()
+			self.laySGE1.addWidget(self.sgeBAdd)
+			self.laySGE1.addWidget(self.sgeBClean)
+			self.groupBodySGE1 = QtGui.QGroupBox(None, self)
+			self.groupBodySGE1.setLayout(self.laySGE1)
+		
+			self.laySGEO = QtGui.QVBoxLayout()
+			self.laySGEO.addWidget(self.sgeOL)
+			self.laySGEO.addWidget(self.sgeOB)
+			self.laySGEP = QtGui.QHBoxLayout()
+			self.laySGEP.addWidget(self.sgeBGP)
+			self.laySGEP.addWidget(self.sgeBGS)
+			self.laySGES = QtGui.QHBoxLayout()
+			self.laySGES.addWidget(self.sgeBCP)
+			self.laySGES.addWidget(self.sgeBCS)
+			self.laySGE2 = QtGui.QVBoxLayout()
+			self.laySGE2.addLayout(self.laySGEO)
+			self.laySGE2.addLayout(self.laySGEP)
+			self.laySGE2.addLayout(self.laySGES)
+			self.groupBodySGE2 = QtGui.QGroupBox(None, self)
+			self.groupBodySGE2.setLayout(self.laySGE2)
+
 			# create body - clean
 			self.rowB1C1 = QtGui.QVBoxLayout()
 			self.rowB1C1.addWidget(self.gc1L)
@@ -372,6 +447,9 @@ def showQtGUI():
 			self.layout.addWidget(self.groupBodySize2)
 			self.layout.addWidget(self.groupBodyClean1)
 			self.layout.addWidget(self.groupBodyClean2)
+			self.layout.addWidget(self.groupBodySGE1)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBodySGE2)
 			self.layout.addStretch()
 			self.layout.addLayout(self.layVarSet)
 			self.layout.addStretch()
@@ -382,6 +460,8 @@ def showQtGUI():
 			self.groupBodySize2.hide()
 			self.groupBodyClean1.hide()
 			self.groupBodyClean2.hide()
+			self.groupBodySGE1.hide()
+			self.groupBodySGE2.hide()
 
 			if MagicPanels.gKernelVersion < 1.0:
 				self.oVarSetCB.hide()
@@ -429,7 +509,9 @@ def showQtGUI():
 			self.groupBodySize2.hide()
 			self.groupBodyClean1.hide()
 			self.groupBodyClean2.hide()
-		
+			self.groupBodySGE1.hide()
+			self.groupBodySGE2.hide()
+			
 			# position
 			if selectedIndex == 0:
 				
@@ -454,7 +536,13 @@ def showQtGUI():
 				self.groupBodyClean1.show()
 				self.groupBodyClean2.show()
 				self.oVarSetCB.hide()
-
+	
+			# glue model
+			if selectedIndex == 3:
+				self.groupBodySGE1.show()
+				self.groupBodySGE2.show()
+				self.oVarSetCB.hide()
+				
 			if MagicPanels.gKernelVersion < 1.0:
 				self.oVarSetCB.hide()
 
@@ -1034,6 +1122,200 @@ def showQtGUI():
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
 			
+		# ############################################################################
+		# actions - super glue everywhere
+		# ############################################################################
+
+		# ############################################################################
+		def setSGEO(self):
+			
+			try:
+			
+				self.gSGEO = FreeCADGui.Selection.getSelection()
+				self.sgeOL.setText(translate('magicGlue','Objects order: selected'))
+				FreeCADGui.Selection.clearSelection()
+			
+			except:
+				self.gp1L.setText(self.gNoSGEO)
+
+		# ############################################################################
+		def glueModelSetPosition(self):
+
+			if len(self.gSGEO) != 0:
+				objects = self.gSGEO
+			else:
+				objects = FreeCAD.ActiveDocument.Objects
+			
+			expr = {}
+
+			for o in objects:
+				
+				if not o.isDerivedFrom("Part::Box"):
+					continue
+				
+				for i in range(0, len(o.Shape.Faces)):
+
+					v = o.Shape.Faces[i]
+					vx = round( v.CenterOfMass.x, MagicPanels.gRoundPrecision)
+					vy = round( v.CenterOfMass.y, MagicPanels.gRoundPrecision)
+					vz = round( v.CenterOfMass.z, MagicPanels.gRoundPrecision)
+					
+					toMove = MagicPanels.getObjectToMove(o)
+				
+					px = round( toMove.Placement.Base.x, MagicPanels.gRoundPrecision)
+					py = round( toMove.Placement.Base.y, MagicPanels.gRoundPrecision)
+					pz = round( toMove.Placement.Base.z, MagicPanels.gRoundPrecision)
+				
+					if (
+						MagicPanels.equal(vx, px) or 
+						MagicPanels.equal(vy, py) or 
+						MagicPanels.equal(vz, pz)
+					):
+						continue
+					
+					key = "X"+str(vx)
+					expr[key] = "<<" + str(o.Name) + ">>" + ".Shape.Faces[" + str(i) + "].CenterOfMass.x"
+					
+					key = "Y"+str(vy)
+					expr[key] = "<<" + str(o.Name) + ">>" + ".Shape.Faces[" + str(i) + "].CenterOfMass.y"
+					
+					key = "Z"+str(vz)
+					expr[key] = "<<" + str(o.Name) + ">>" + ".Shape.Faces[" + str(i) + "].CenterOfMass.z"
+					
+			for o in objects:
+				
+				if not o.isDerivedFrom("Part::Box"):
+					continue
+				
+				toMove = MagicPanels.getObjectToMove(o)
+				
+				vx = toMove.Placement.Base.x
+				vy = toMove.Placement.Base.y
+				vz = toMove.Placement.Base.z
+				
+				try:
+					key = "X"+str(vx)
+					if expr.get(key) != None:
+						toMove.setExpression('.Placement.Base.x', expr[key])
+				except:
+					skip = 1
+				
+				try:
+					key = "Y"+str(vy)
+					if expr.get(key) != None:
+						toMove.setExpression('.Placement.Base.y', expr[key])
+				except:
+					skip = 1
+					
+				try:
+					key = "Z"+str(vz)
+					if expr.get(key) != None:
+						toMove.setExpression('.Placement.Base.z', expr[key])
+				except:
+					skip = 1
+
+		# ############################################################################
+		def glueModelCleanPosition(self):
+			
+			if len(self.gSGEO) != 0:
+				objects = self.gSGEO
+			else:
+				objects = FreeCAD.ActiveDocument.Objects
+			
+			for o in objects:
+				if o.isDerivedFrom("Part::Box"):
+				
+					toMove = MagicPanels.getObjectToMove(o)
+					
+					toMove.setExpression('.Placement.Base.x', None)
+					toMove.setExpression('.Placement.Base.y', None)
+					toMove.setExpression('.Placement.Base.z', None)
+			
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+
+		# ############################################################################
+		def glueModelSetSize(self):
+
+			if len(self.gSGEO) != 0:
+				objects = self.gSGEO
+			else:
+				objects = FreeCAD.ActiveDocument.Objects
+			
+			# create VarSet by Label to allow rename file and keep multi files
+			try:
+				varset = FreeCAD.ActiveDocument.getObjectsByLabel('magicGlueVarSet')[0]
+			except:
+				varset = FreeCAD.ActiveDocument.addObject('App::VarSet','magicGlueVarSet')
+			
+			for o in objects:
+				
+				if not o.isDerivedFrom("Part::Box"):
+					continue
+				
+				for i in range(0, len(o.Shape.Edges)):
+
+					edge = o.Shape.Edges[i]
+					size = round( edge.Length, MagicPanels.gRoundPrecision)
+					
+					# create VarSet property to be added
+					pgroup = translate('magicGlue', 'Glue size')
+					pname = "Size" + "_" + str(int(size))
+					pvalue = size
+			
+					# create property in VarSet
+					if not hasattr(varset, pname):
+						varset.addProperty("App::PropertyFloat", pname, pgroup, "", 0)
+				
+					# set property value in VarSet
+					setattr(varset, pname, pvalue)
+			
+					# set expresion in object to VarSet
+					name = MagicPanels.getSizeByEdge(o, edge)
+					exprValue = "<<" + varset.Name + ">>" + "." + pname
+				
+					if o.isDerivedFrom("Part::Box"):
+						o.setExpression(str(name), exprValue)
+		
+		# ############################################################################
+		def glueModelCleanSize(self):
+			
+			if len(self.gSGEO) != 0:
+				objects = self.gSGEO
+			else:
+				objects = FreeCAD.ActiveDocument.Objects
+		
+			for o in objects:
+				
+				if o.isDerivedFrom("Part::Box"):
+					try:
+						o.setExpression('Length', None)
+						o.setExpression('Width', None)
+						o.setExpression('Height', None)
+					
+						o.setExpression('.Length', None)
+						o.setExpression('.Width', None)
+						o.setExpression('.Height', None)
+					
+					except:
+						skip = 1
+		
+		# ############################################################################
+		def superGlueAdd(self):
+			
+			self.gSGEO = FreeCAD.ActiveDocument.Objects
+			self.glueModelSetPosition()
+			self.glueModelSetSize()
+		
+		# ############################################################################
+		def superGlueClean(self):
+			
+			self.gSGEO = FreeCAD.ActiveDocument.Objects
+			self.glueModelCleanPosition()
+			self.glueModelCleanSize()
+			varset = FreeCAD.ActiveDocument.getObjectsByLabel('magicGlueVarSet')[0]
+			FreeCAD.ActiveDocument.removeObject(varset.Name)
+
 		# ############################################################################
 		# actions - clean glue
 		# ############################################################################

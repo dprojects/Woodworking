@@ -159,6 +159,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * automatic parameterization (magicGlue)
     * tool to convert model to Assembly (selected2Assembly)
 
 
@@ -1821,16 +1822,26 @@ Working with raw wood is an art of some sort. This is the true form of working w
   * `clean glue position` clean all position expressions. Make sure you do not have your private expressions.
   * `clean glue size` clean all size expressions. Make sure you do not have your private expressions.
 
+* **Super glue everywhere:** this option is an attempt to quickly automatically parameterize a simple model so that the thickness of the wood used or the dimensions can be changed. The position parameterization is saved directly in the objects, while the VarSet object is used to parameterize the sizes, so that you can conveniently change the sizes in one place.
+  * `add super glue everywhere` this option set parameterization for position and sizes at once for all objects.
+  * `clean super glue everywhere` this option remove parameterization for position and sizes at once from all objects.
+  * `set order from selected` sets the objects to be parameterized in the appropriate order selected by the user. This option is useful in more complex, multi-level structures, where with automatic ordering, the elements from the top level may not be parameterized correctly due to the same position as the lower elements.
+  * `glue position` this option sets the parameterization for a position, for all objects, or only for user-selected objects.
+  * `glue size` this option creates VarSet object and set the parameterization for a size, for all objects, or only for user-selected objects.
+  * `clean position` this option removes the parameterization for a position, for all objects, or only for user-selected objects.
+  * `clean size` this option removes the parameterization for a size, for all objects, or only for user-selected objects. But this option not removes the VarSet object.
+
 * **Cross:**
   * `Corner cross:` buttons `-`, `+` resize the cross in the right bottom of the screen, it has auto-repeat.
   * `Center cross:` buttons `on`, `off` turn on and off the center cross at the screen.
   * `keep custom cross settings` allows to store the custom cross setting after this tool exit.
 
-**Known issues:** Sometimes after adding glue it doesn't work, FreeCAD shows a corrupted file in the tree. However, the expressions set by magicGlue tool are correct, this is because FreeCAD expression parser works when opening the file and has a very basic parsing solution, magicGlue skills are too advanced for this parser.
-**Workaround:** To make it work you can reopen the file and move the source element, the errors should disappear.
+> [!IMPORTANT]
+> Sometimes after adding glue it doesn't work, FreeCAD shows a corrupted file in the objects window Tree. However, the expressions set by magicGlue tool are correct but magicGlue skills are too advanced for FreeCAD parser. This is because FreeCAD expression parser works when opening the file and has a very basic parsing solution, the are no reference for Faces and Edges, key thing im my opinion. **So to to make it work you have to reopen the file and move or resize the source element, the errors should disappear.**
 
 **Video tutorials:** 
 * [How to make parametric furniture quickly](https://www.youtube.com/watch?v=z2rpVoLgqWI)
+* [FreeCAD 1.1 automatic parameterization](https://www.youtube.com/watch?v=ZAKGnY_0sj8)
 * [Table with adjustable height](https://www.youtube.com/watch?v=JhbRkCsrQWg)
 
 ## sketch2clone
