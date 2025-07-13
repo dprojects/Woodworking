@@ -1837,7 +1837,7 @@ Working with raw wood is an art of some sort. This is the true form of working w
   * `keep custom cross settings` allows to store the custom cross setting after this tool exit.
 
 > [!IMPORTANT]
-> Sometimes after adding glue it doesn't work, FreeCAD shows a corrupted file in the objects window Tree. However, the expressions set by magicGlue tool are correct but magicGlue skills are too advanced for FreeCAD parser. This is because FreeCAD expression parser works when opening the file and has a very basic parsing solution, the are no reference for Faces and Edges, key thing im my opinion. **So to to make it work you have to reopen the file and move or resize the source element, the errors should disappear.**
+> Sometimes after adding glue it doesn't work, FreeCAD shows a corrupted file in the objects window Tree. However, the expressions set by magicGlue tool are correct but magicGlue skills are too advanced for FreeCAD parser. This is because FreeCAD expression parser works when opening the file and has a very basic parsing solution, the are no reference for Faces and Edges, key thing im my opinion. **To make it work you have to reopen the file and move or resize the source element, the errors should disappear.**
 
 **Video tutorials:** 
 * [How to make parametric furniture quickly](https://www.youtube.com/watch?v=z2rpVoLgqWI)

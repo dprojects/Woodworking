@@ -136,7 +136,7 @@ def showQtGUI():
 			gSH = FreeCADGui.getMainWindow().height()
 
 			# tool screen position
-			gPW = 0 + 50
+			gPW = 0 + 250
 			gPH = int( gSH - toolSH ) - 30
 
 			# ############################################################################
@@ -1396,7 +1396,7 @@ def showQtGUI():
 				# first add object, than change step and click create
 				# so the create function must recalculate the step
 				if self.gPathInit[key] == False:
-					step = int(self.oPathStepE.text())
+					step = int(float(self.oPathStepE.text()))
 					self.gPathLast[key] = int(self.gPathLast[key] + step)
 					index = index + step
 
