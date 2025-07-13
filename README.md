@@ -8,7 +8,7 @@ The Woodworking workbench started as a simple cut-list, as a macro for FreeCAD. 
 * Automatic cut-list after design via [getDimensions](https://github.com/dprojects/Woodworking/tree/master/Docs#getdimensions---cut-list-bom-creation-tool) tool and export to format csv, json, html, markdown via [sheet2export](https://github.com/dprojects/Woodworking/tree/master/Docs#sheet2export).
 * Full support for any metric system settings (inches, ft, mm) in all tools.
 
-![intro](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/intro.gif)
+![intro](https://raw.githubusercontent.com/dprojects/media/master/intro.gif)
 
 # Quick start
 
