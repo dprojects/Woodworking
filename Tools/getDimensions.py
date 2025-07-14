@@ -1795,7 +1795,7 @@ def setExtrusion(iObj, iCaller="setExtrusion"):
 					if c.Name == "SizeY":
 						vL = c.Value
 				
-				vH = iObj.LengthFwd.Value
+				vH = abs(iObj.LengthFwd.Value)
 			
 			# get first dimensions (this may not work for non-rectangle shapes)
 			except:
@@ -4655,7 +4655,7 @@ def setTechDraw(iCaller="setTechDraw"):
 	gPrintSheet.Y = int(templateHeight / 2)
 
 	if gKernelVersion >= 1.1:
-		gPrintSheet.Scale = 2.5
+		gPrintSheet.Scale = 1
 
 	# try to set fonts
 	try:
