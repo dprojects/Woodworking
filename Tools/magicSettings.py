@@ -212,10 +212,9 @@ def showQtGUI():
 				# thickness
 				thick = self.oWoodThickE.text()
 				thick = MagicPanels.unit2value(thick)
+				MagicPanels.gWoodThickness = thick
 				FreeCAD.ParamGet(pref).SetString('wWoodThickness', str(thick))
-				thick = FreeCAD.ParamGet(pref).GetString('wWoodThickness')
-				MagicPanels.gWoodThickness = MagicPanels.unit2value(thick)
-				
+
 				# color
 				cR = self.oWoodColorRE.text()
 				cG = self.oWoodColorGE.text()

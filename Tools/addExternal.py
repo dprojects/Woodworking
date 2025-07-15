@@ -17,6 +17,7 @@ try:
 	if first.isDerivedFrom("Sketcher::SketchObject"):
 		sketch = first
 		body = MagicPanels.getBody(sketch)
+		FreeCADGui.Selection.removeSelection(first)
 
 	# create new sketch
 	else:
@@ -54,9 +55,6 @@ try:
 		
 		sketch.MapMode = 'FlatFace'
 		FreeCAD.ActiveDocument.recompute()
-
-	# remove first selected sketch or face to not disturb the binder structure
-	FreeCADGui.Selection.removeSelection(first)
 
 	# make body active
 	FreeCADGui.ActiveDocument.ActiveView.setActiveObject('pdbody', body)
