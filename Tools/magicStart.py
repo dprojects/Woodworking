@@ -4977,11 +4977,6 @@ def showQtGUI():
 		# ############################################################################
 		def createObject(self):
 
-			self.gFSX = MagicPanels.unit2value(self.oWidthE.text())
-			self.gFSZ = MagicPanels.unit2value(self.oHeightE.text())
-			self.gFSY = MagicPanels.unit2value(self.oDepthE.text())
-			self.gThick = MagicPanels.unit2value(self.oThickE.text())
-			
 			if self.gSelectedFurniture == "F0":
 				self.createF0()
 			
@@ -6650,6 +6645,11 @@ def showQtGUI():
 		# ############################################################################
 		def createF0(self):
 			
+			self.gFSX = MagicPanels.unit2value(self.oWidthE.text())
+			self.gFSZ = MagicPanels.unit2value(self.oHeightE.text())
+			self.gFSY = MagicPanels.unit2value(self.oDepthE.text())
+			self.gThick = MagicPanels.unit2value(self.oThickE.text())
+
 			sx = MagicPanels.unit2value(self.oo11E.text())
 			sy = MagicPanels.unit2value(self.oo12E.text())
 			sz = MagicPanels.unit2value(self.oo13E.text())
@@ -6736,6 +6736,11 @@ def showQtGUI():
 		# ############################################################################
 		def createF1(self):
 			
+			self.gFSX = MagicPanels.unit2value(self.oWidthE.text())
+			self.gFSZ = MagicPanels.unit2value(self.oHeightE.text())
+			self.gFSY = MagicPanels.unit2value(self.oDepthE.text())
+			self.gThick = MagicPanels.unit2value(self.oThickE.text())
+
 			sx = MagicPanels.unit2value(self.oo11E.text())
 			sy = MagicPanels.unit2value(self.oo12E.text())
 			sz = MagicPanels.unit2value(self.oo13E.text())
@@ -6813,6 +6818,11 @@ def showQtGUI():
 		# ############################################################################
 		def createF10(self):
 			
+			self.gFSX = MagicPanels.unit2value(self.oWidthE.text())
+			self.gFSZ = MagicPanels.unit2value(self.oHeightE.text())
+			self.gFSY = MagicPanels.unit2value(self.oDepthE.text())
+			self.gThick = MagicPanels.unit2value(self.oThickE.text())
+
 			sx = MagicPanels.unit2value(self.oo11E.text())
 			sy = MagicPanels.unit2value(self.oo12E.text())
 			sz = MagicPanels.unit2value(self.oo13E.text())
@@ -7916,6 +7926,11 @@ def showQtGUI():
 		# ############################################################################
 		def createF27(self):
 			
+			self.gFSX = MagicPanels.unit2value(self.oWidthE.text())
+			self.gFSZ = MagicPanels.unit2value(self.oHeightE.text())
+			self.gFSY = MagicPanels.unit2value(self.oDepthE.text())
+			self.gThick = MagicPanels.unit2value(self.oThickE.text())
+
 			sx = MagicPanels.unit2value(self.oo11E.text())
 			sy = MagicPanels.unit2value(self.oo12E.text())
 			sz = MagicPanels.unit2value(self.oo13E.text())
@@ -8003,6 +8018,11 @@ def showQtGUI():
 		# ############################################################################
 		def createF28(self):
 			
+			self.gFSX = MagicPanels.unit2value(self.oWidthE.text())
+			self.gFSZ = MagicPanels.unit2value(self.oHeightE.text())
+			self.gFSY = MagicPanels.unit2value(self.oDepthE.text())
+			self.gThick = MagicPanels.unit2value(self.oThickE.text())
+
 			sx = MagicPanels.unit2value(self.oo11E.text())
 			sy = MagicPanels.unit2value(self.oo12E.text())
 			sz = MagicPanels.unit2value(self.oo13E.text())
@@ -8089,6 +8109,11 @@ def showQtGUI():
 		# ############################################################################
 		def createF29(self):
 			
+			self.gFSX = MagicPanels.unit2value(self.oWidthE.text())
+			self.gFSZ = MagicPanels.unit2value(self.oHeightE.text())
+			self.gFSY = MagicPanels.unit2value(self.oDepthE.text())
+			self.gThick = MagicPanels.unit2value(self.oThickE.text())
+
 			sx = MagicPanels.unit2value(self.oo11E.text())
 			sy = MagicPanels.unit2value(self.oo12E.text())
 			sz = MagicPanels.unit2value(self.oo13E.text())
@@ -8604,6 +8629,11 @@ def showQtGUI():
 		# ############################################################################
 		def createF35(self):
 			
+			self.gFSX = MagicPanels.unit2value(self.oWidthE.text())
+			self.gFSZ = MagicPanels.unit2value(self.oHeightE.text())
+			self.gFSY = MagicPanels.unit2value(self.oDepthE.text())
+			self.gThick = MagicPanels.unit2value(self.oThickE.text())
+
 			# Face Frame predefined
 			
 			barWidth = 38
@@ -8755,6 +8785,11 @@ def showQtGUI():
 		# ############################################################################
 		def createF36(self):
 			
+			self.gFSX = MagicPanels.unit2value(self.oWidthE.text())
+			self.gFSZ = MagicPanels.unit2value(self.oHeightE.text())
+			self.gFSY = MagicPanels.unit2value(self.oDepthE.text())
+			self.gThick = MagicPanels.unit2value(self.oThickE.text())
+
 			# Face Frame predefined
 			
 			barWidth = 38
@@ -9930,6 +9965,11 @@ def showQtGUI():
 		# ############################################################################
 		def createF65(self):
 			
+			self.gFSX = MagicPanels.unit2value(self.oWidthE.text())
+			self.gFSZ = MagicPanels.unit2value(self.oHeightE.text())
+			self.gFSY = MagicPanels.unit2value(self.oDepthE.text())
+			self.gThick = MagicPanels.unit2value(self.oThickE.text())
+
 			# #################################################################
 			# settings
 			# #################################################################
@@ -10108,6 +10148,11 @@ def showQtGUI():
 		# ############################################################################
 		def createF66(self):
 			
+			self.gFSX = MagicPanels.unit2value(self.oWidthE.text())
+			self.gFSZ = MagicPanels.unit2value(self.oHeightE.text())
+			self.gFSY = MagicPanels.unit2value(self.oDepthE.text())
+			self.gThick = MagicPanels.unit2value(self.oThickE.text())
+
 			sx = MagicPanels.unit2value(self.oo11E.text())
 			sy = MagicPanels.unit2value(self.oo12E.text())
 			sz = MagicPanels.unit2value(self.oo13E.text())
@@ -10207,6 +10252,11 @@ def showQtGUI():
 		# ############################################################################
 		def createF67(self):
 			
+			self.gFSX = MagicPanels.unit2value(self.oWidthE.text())
+			self.gFSZ = MagicPanels.unit2value(self.oHeightE.text())
+			self.gFSY = MagicPanels.unit2value(self.oDepthE.text())
+			self.gThick = MagicPanels.unit2value(self.oThickE.text())
+
 			# #################################################################
 			# settings
 			# #################################################################
