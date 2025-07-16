@@ -4127,6 +4127,15 @@ def unit2value(iString):
 	except:
 		skip = 1
 
+	# fix FreeCAD Building US units schema conversion syntax bug 
+	# https://github.com/dprojects/Woodworking/issues/63
+	try:
+		if userSettings == 5:
+			unitString = unitString.replace("+","--")
+
+	except:
+		skip = 1
+	
 	# quick value notation
 	try:
 		value = unitString.replace(",",".")
