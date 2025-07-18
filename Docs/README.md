@@ -523,7 +523,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
   * `move` set equal space between all selected objects along X, Y or Z coordinate axis. 
 
 > [!TIP]
-> If you want to set qual space for Array object, you have to select and load Array object from Tree window.
+> If you want to set equal space for Array object, you have to select and load Array object from Tree window.
 
 * **Copy:** In this mode you can copy any object with custom offset. For example you can quickly create shelves with equal space or garden floor from small panels.
   * `auto` if the object is simple panel `Part::Box` type the `copyObject` will be used, otherwise `Clone` will be created.
