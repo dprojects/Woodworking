@@ -10,12 +10,12 @@
   1 or 0 - current state, development 1 or stable release 0
   2025.06.04 - last commit date
   -->
-  <version>1.0.1.39285.1.1.1.2025.07.16</version>
+  <version>1.0.1.39285.1.1.1.2025.07.18</version>
   
   <!--
   This date tag is not used by Woodworking workbench but it is good to keep it up-to-date
   -->
-  <date>2025-07-16</date>
+  <date>2025-07-18</date>
   
   <!--
   Keep it for author rights purposes 

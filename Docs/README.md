@@ -159,6 +159,8 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * move to equal for Array objects (magicMove)
+    * units fixes
     * automatic parameterization (magicGlue)
     * tool to convert model to Assembly (selected2Assembly)
 
@@ -519,7 +521,10 @@ This tool allows to preview panel before creation. It allows to see panel at sin
   * `set` allows to set edge as start or end reference point. Sometimes if the access to edge require hide object it can be more useful to set one by one or if you want to update only single edge.
   * `set both edges` allows to set both edge at once as start and end reference point. This is much quicker way.
   * `move` set equal space between all selected objects along X, Y or Z coordinate axis. 
-  
+
+> [!TIP]
+> If you want to set qual space for Array object, you have to select and load Array object from Tree window.
+
 * **Copy:** In this mode you can copy any object with custom offset. For example you can quickly create shelves with equal space or garden floor from small panels.
   * `auto` if the object is simple panel `Part::Box` type the `copyObject` will be used, otherwise `Clone` will be created.
   * `copyObject` the same as `CTRL-C` and `CTRL-V` copy method, good only for simple objects.
@@ -565,6 +570,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 **Video tutorials:** 
 * [How to use magicMove](https://www.youtube.com/watch?v=DpU2zlckv88)
+* [Draft & BIM Array improved](https://www.youtube.com/watch?v=mpjZCGqLbPU)
 * [How to set equal space between objects](https://www.youtube.com/watch?v=4EfNV-ur6Rw)
 * [How to copy part of the furniture](https://www.youtube.com/watch?v=oxNiwtZV-Uc)
 * [How to handle dimension changes](https://www.youtube.com/watch?v=HED1-BH66BU)

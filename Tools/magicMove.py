@@ -1003,11 +1003,20 @@ def showQtGUI():
 			
 			try:
 			
-				self.gMTESObj = FreeCADGui.Selection.getSelection()[0]
-				self.gMTESEdge = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-				self.gMTEEObj = FreeCADGui.Selection.getSelection()[1]
-				self.gMTEEEdge = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
-				
+				selection = FreeCADGui.Selection.getSelection()
+				if len(selection) > 1:
+					self.gMTESObj = FreeCADGui.Selection.getSelection()[0]
+					self.gMTESEdge = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+					self.gMTEEObj = FreeCADGui.Selection.getSelection()[1]
+					self.gMTEEEdge = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+				elif len(selection) == 1:
+					self.gMTESObj = FreeCADGui.Selection.getSelection()[0]
+					self.gMTESEdge = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+					self.gMTEEObj = FreeCADGui.Selection.getSelection()[0]
+					self.gMTEEEdge = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[1]
+				else:
+					raise
+
 				if self.gMTESEdge.ShapeType != "Edge":
 					raise
 				
@@ -1057,56 +1066,93 @@ def showQtGUI():
 			
 			for o in self.gObjects:
 				
-				[ sizeX, sizeY, sizeZ ] = MagicPanels.getSizesFromVertices(o)
+				if o.isDerivedFrom("Part::FeaturePython") and o.Name.startswith("Array"):
+					[ sizeX, sizeY, sizeZ ] = MagicPanels.getSizesFromVertices(o.Base)
+					if iType == "X":
+						thick = thick + sizeX
+						num = o.NumberX
+					
+					if iType == "Y":
+						thick = thick + sizeY
+						num = o.NumberY
+					
+					if iType == "Z":
+						thick = thick + sizeZ
+						num = o.NumberZ
+				else:
+					[ sizeX, sizeY, sizeZ ] = MagicPanels.getSizesFromVertices(o)
 				
-				if iType == "X":
-					thick = thick + sizeX
-				
-				if iType == "Y":
-					thick = thick + sizeY
-				
-				if iType == "Z":
-					thick = thick + sizeZ
+					if iType == "X":
+						thick = thick + sizeX
+					
+					if iType == "Y":
+						thick = thick + sizeY
+					
+					if iType == "Z":
+						thick = thick + sizeZ
 
 			offset = (gap - thick) / (num + 1)
 			
+			if o.isDerivedFrom("Part::FeaturePython") and o.Name.startswith("Array"):
+				
+				if iType == "X":
+					offset = (gap - sizeX) / (num - 1)
+				
+				if iType == "Y":
+					offset = (gap - sizeY) / (num - 1)
+				
+				if iType == "Z":
+					offset = (gap - sizeZ) / (num - 1)
+				
 			# set equal space to objects
 			i = 0
 			for o in self.gObjects:
 				
-				# get object data
-				[ sizeX, sizeY, sizeZ ] = MagicPanels.getSizesFromVertices(o)
-				toMove = MagicPanels.getObjectToMove(o)
+				if o.isDerivedFrom("Part::FeaturePython") and o.Name.startswith("Array"):
+					
+					if iType == "X":
+						o.IntervalX.Length = offset
 				
-				# calculate start point for axis
-				[ startX, startY, startZ ] = MagicPanels.getPosition(o, "global")
-			
-				if iType == "X":
-					startX = sx
-			
-				if iType == "Y":
-					startY = sy
+					if iType == "Y":
+						o.IntervalY.Length = offset
+					
+					if iType == "Z":
+						o.IntervalZ.Length = offset
+
+				else:
+					# get object data
+					[ sizeX, sizeY, sizeZ ] = MagicPanels.getSizesFromVertices(o)
+					toMove = MagicPanels.getObjectToMove(o)
+					
+					# calculate start point for axis
+					[ startX, startY, startZ ] = MagicPanels.getPosition(o, "global")
 				
-				if iType == "Z":
-					startZ = sz
-	
-				# move to start point
-				MagicPanels.setPosition(toMove, startX, startY, startZ, "global")
+					if iType == "X":
+						startX = sx
 				
-				# calculate offset for axis and move object
-				[ offsetX, offsetY, offsetZ ] = [ 0, 0, 0 ]
-				
-				if iType == "X":
-					offsetX = ((i + 1) * offset) + (i * sizeX)
-				
-				if iType == "Y":
-					offsetY = ((i + 1) * offset) + (i * sizeY)
-				
-				if iType == "Z":
-					offsetZ = ((i + 1) * offset) + (i * sizeZ)
-				
-				MagicPanels.setPosition(toMove, offsetX, offsetY, offsetZ, "offset")
-				i = i + 1
+					if iType == "Y":
+						startY = sy
+					
+					if iType == "Z":
+						startZ = sz
+		
+					# move to start point
+					MagicPanels.setPosition(toMove, startX, startY, startZ, "global")
+					
+					# calculate offset for axis and move object
+					[ offsetX, offsetY, offsetZ ] = [ 0, 0, 0 ]
+					
+					if iType == "X":
+						offsetX = ((i + 1) * offset) + (i * sizeX)
+					
+					if iType == "Y":
+						offsetY = ((i + 1) * offset) + (i * sizeY)
+					
+					if iType == "Z":
+						offsetZ = ((i + 1) * offset) + (i * sizeZ)
+					
+					MagicPanels.setPosition(toMove, offsetX, offsetY, offsetZ, "offset")
+					i = i + 1
 
 			FreeCAD.ActiveDocument.recompute()
 		
