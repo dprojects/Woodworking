@@ -718,6 +718,7 @@ def copyPanel(iObjects, iType="auto"):
 	
 		return array with copies
 	'''
+
 	
 	copies = []
 	copy = ""
@@ -748,6 +749,16 @@ def copyPanel(iObjects, iType="auto"):
 			copy.setLink(o)
 			copy.Label = str(o.Label)
 			copy.Label = getNestingLabel(o, "Link")
+		
+		if iType == "Array":
+			import Draft
+			vx = FreeCAD.Vector(800.0, 0.0, 0.0)
+			vy = FreeCAD.Vector(0.0, 100.0, 0.0)
+			vz = FreeCAD.Vector(0.0, 0.0, 100.0)
+			copy = Draft.make_ortho_array(o, vx, vy, vz, 5, 1, 1, True)
+			copy.Fuse = False
+			Draft.autogroup(copy)
+			copy.Label = getNestingLabel(o, "Array")
 		
 		# if copy was successful
 		try:

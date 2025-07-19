@@ -25,7 +25,8 @@ getMenuIndex2 = {
 	translate('magicMove', 'copyObject'): 0, 
 	translate('magicMove', 'Clone'): 1, 
 	translate('magicMove', 'Link'): 2, 
-	translate('magicMove', 'auto'): 3 # no comma 
+	translate('magicMove', 'auto'): 3, 
+	translate('magicMove', 'Array'): 4 # no comma 
 }
 
 # add new items only at the end and change self.sMirrorTypeList
@@ -182,7 +183,8 @@ def showQtGUI():
 				translate('magicMove', 'auto'), # default
 				translate('magicMove', 'copyObject'), 
 				translate('magicMove', 'Clone'), 
-				translate('magicMove', 'Link')
+				translate('magicMove', 'Link'), 
+				translate('magicMove', 'Array')
 			)
 			
 			self.sCopyType = QtGui.QComboBox(self)
@@ -1173,6 +1175,8 @@ def showQtGUI():
 					copy = MagicPanels.copyPanel([ toCopy ], "Link")[0]
 				if self.gCopyType == 3:
 					copy = MagicPanels.copyPanel([ toCopy ], "auto")[0]
+				if self.gCopyType == 4:
+					copy = MagicPanels.copyPanel([ toCopy ], "Array")[0]
 
 				# move copy to container to update its global position
 				if (
@@ -1278,6 +1282,8 @@ def showQtGUI():
 					copy = MagicPanels.copyPanel([ toCopy ], "Link")[0]
 				if self.gCopyType == 3:
 					copy = MagicPanels.copyPanel([ toCopy ], "auto")[0]
+				if self.gCopyType == 4:
+					copy = MagicPanels.copyPanel([ toCopy ], "Array")[0]
 
 				# move copy to container to update its global position
 				if (
@@ -1426,6 +1432,8 @@ def showQtGUI():
 					copy = MagicPanels.copyPanel([ toCopy ], "Link")[0]
 				if self.gCopyType == 3:
 					copy = MagicPanels.copyPanel([ toCopy ], "auto")[0]
+				if self.gCopyType == 4:
+					copy = MagicPanels.copyPanel([ toCopy ], "Array")[0]
 
 				# move copy to container to update its global position
 				self.toContainer(copy, o)
@@ -1469,7 +1477,7 @@ def showQtGUI():
 				copy.Placement.Rotation = self.gPathRotation[key] * rotX * rotY * rotZ
 				
 				# save rotation and position
-				step = int(self.oPathStepE.text())
+				step = int(float(self.oPathStepE.text()))
 				self.gPathRotation[key] = copy.Placement.Rotation
 				self.gPathLast[key] = int(self.gPathLast[key] + step)
 				self.gPathInit[key] = True
