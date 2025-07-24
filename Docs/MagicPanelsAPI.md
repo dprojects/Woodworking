@@ -42,6 +42,7 @@ gWoodThickness = 18                                                             
 		iObj: object
 		iType: string for type:
 			"Clone" - for clones
+			"Array" - for BIM or Draft Array
 
 ##### Usage:
 	

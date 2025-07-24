@@ -1068,7 +1068,7 @@ def showQtGUI():
 			
 			for o in self.gObjects:
 				
-				if o.isDerivedFrom("Part::FeaturePython") and o.Name.startswith("Array"):
+				if MagicPanels.isType(o, "Array"):
 					[ sizeX, sizeY, sizeZ ] = MagicPanels.getSizesFromVertices(o.Base)
 					if iType == "X":
 						thick = thick + sizeX
@@ -1095,7 +1095,7 @@ def showQtGUI():
 
 			offset = (gap - thick) / (num + 1)
 			
-			if o.isDerivedFrom("Part::FeaturePython") and o.Name.startswith("Array"):
+			if MagicPanels.isType(o, "Array"):
 				
 				if iType == "X":
 					offset = (gap - sizeX) / (num - 1)
@@ -1110,7 +1110,7 @@ def showQtGUI():
 			i = 0
 			for o in self.gObjects:
 				
-				if o.isDerivedFrom("Part::FeaturePython") and o.Name.startswith("Array"):
+				if MagicPanels.isType(o, "Array"):
 					
 					if iType == "X":
 						o.IntervalX.Length = offset

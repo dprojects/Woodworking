@@ -113,6 +113,7 @@ def isType(iObj, iType="Clone"):
 		iObj: object
 		iType: string for type:
 			"Clone" - for clones
+			"Array" - for BIM or Draft Array
 
 	Usage:
 	
@@ -133,6 +134,11 @@ def isType(iObj, iType="Clone"):
 		if iObj.isDerivedFrom("Part::Part2DObjectPython") and iObj.Name.startswith("Clone"):
 			return True
 
+	if iType == "Array":
+		
+		if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Name.startswith("Array"):
+			return True
+		
 	return False
 	
 

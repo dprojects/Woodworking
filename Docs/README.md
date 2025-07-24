@@ -58,8 +58,8 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 	* [selected2Assembly](#selected2assembly)
 	* [selected2Outside](#selected2outside)
 * [How to use containers - short tutorial](#how-to-use-containers---short-tutorial)
-* [Dimensions, BOM, Cut-list](#dimensions-bom-cut-list)
-	* [getDimensions - cut-list, BOM creation tool](#getdimensions---cut-list-bom-creation-tool)
+* [Cut list, Measure, Dimensions, Bill Of Materials](#cut-list-measure-dimensions-bill-of-materials)
+	* [getDimensions](#getdimensions)
 	* [sheet2export](#sheet2export)
 	* [showOccupiedSpace](#showoccupiedspace)
 	* [magicMeasure](#magicmeasure)
@@ -159,6 +159,7 @@ Later it has been transformed into whole Woodworking workbench, I added many too
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * create copy as Array (magicMove)
     * move to equal for Array objects (magicMove)
     * units fixes
     * automatic parameterization (magicGlue)
@@ -831,42 +832,76 @@ Selection modes:
 > [!IMPORTANT]
 > If you want to use `Part :: Boolean :: Cut` inside `LinkGroup` container, first you have to get out of the container all the elements using [selected2Outside](#selected2outside). See video: [Boolean cut with containers](https://www.youtube.com/watch?v=OVwazL8MQwI)
 
-# Dimensions, BOM, Cut-list
+# Cut list, Measure, Dimensions, Bill Of Materials
 
-## getDimensions - cut-list, BOM creation tool
+## getDimensions
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/getDimensions.png"> This tool allows to create spreadsheet with dimensions to cut, cut-list, BOM.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/getDimensions.png"> This tool allows you to create spreadsheet with dimensions to cut (cut list), Bill Of Materials (BOM).
 
-Main features:
+> [!IMPORTANT]
+> The report works automatically mainly for `Part::Box` objects. 
+> If you are using Sketch-based objects, you must have constraints with names: `SizeX` and `SizeY` in the Sketch. 
+> The 3rd dimension will be get from `Pad.Length` attribute. 
+> If you can't add a `SizeX` or `SizeY` constraint name in the Sketch, select the `Reference` checkbox during constraint creation and add exact name.
 
-* Languages: Polish, English.
-* Units: millimeters, meters, inches.
-* Report types:
-    * quick, quantity first (q - report type),
-    * names, objects listing (n - report type),
-    * group, grandparent or parent folder name first (g - report type),
-    * edgeband, extended edge (e - report type),
-    * detailed, edgeband, drill holes, countersinks (d - report type),
-    * constraints names, totally custom report (c - report type),
-    * pads, all constraints (p - report type),
-    * approximation of needed material (a - report type), it can be imported at [cutlistoptimizer.com](https://www.cutlistoptimizer.com/).
-* Additional reports:
-    * custom measurements,
-    * dowels and screws,
-    * construction profiles,
-* Other:
-    * wood properties - grain direction, type of wood, color of wood,
-    * edgeband (quick way, described, detailed by selection),
+**Report type:**
 
-Tool repository: [github.com/dprojects/getDimensions](https://github.com/dprojects/getDimensions)
+* **default:** default object search path. This path should also be used for the built-in Assembly workbench.
+* **assembly:** object search path dedicated only to [Assembly4](https://codeberg.org/Zolko/Assembly4) workbench by [Zolko](https://forum.freecad.org/viewtopic.php?t=86110).
+
+* **q - report type:** the default report type allows you to quickly create a cutting list needed to order boards from a DIY store in Poland. Objects are grouped by the same dimensions, making cutting easier.
+* **n - report type:** this is a list of all items, grouped by item name. This report type is necessary to verify that all boards were received from cutting service with correct dimensions.
+* **g - report type:** this type of report groups all items based on their location in folders. This allows you to place all items of a given color, type, or material in a single folder, and this will be reflected in the report. This makes it easier to order boards of different types or thicknesses but with the same dimensions. This type of report can also be used to create groups with edge veneer, left, right, or without veneer.
+* **e - report type:** this type of report allows you to precisely describe each face of the object, based on the edge length. Thanks to this you can describe which edge lengths should be covered with veneer. To determine the edge color with veneer, you must set the color of the entire furniture as a color reference. Also you must set the edge symbol, which will appear on the report.
+* **d - report type:** this report type is an extended version of the `e - report` type, but also displays named constraints from the `PartDesign::Hole` object sketch. Additionally, the header comes from the Body object. This allows you to describe all edge distances, diameters, and depths for holes.
+* **c - report type:** this report type shows the dimensions for all named constraints inside Sketch objects and the `Length` size from `PartDesign` objects.
+* **p - report type:** this report type shows the dimensions for all constraints on Sketch objects, whether named or unnamed, and the `Length` size from `PartDesign` objects.
+* **a - report type:** this report is some kind of approximation of needed material. It uses different approach to dimensions, because the dimensions are not get here from objects, they are calculated from raw vertices. You have to be careful because the dimensions are occupied space in 3D by the object and you can see the difference for all rotated elements. This type of report can be directly imported at [cutlistoptimizer.com](https://www.cutlistoptimizer.com/) website tool.
+
+> [!TIP]
+> Personally, I create two cutting lists. First is `q - report type` for the person in the cutting service. 
+> The second one is `n - report type` so I can verify that all the elements I received from the store and all 
+> elements had the correct dimensions, so I can write on it. I usually create furniture for myself from `18 mm white chipboard`, 
+> but if, for example, I need to order plywood shelves or boards in a different color, I create `g - report type` 
+> for the person in the cutting service, where the appropriate board types and colors are grouped.
+
+**Additional reports:**
+
+* **thickness summary:** turns off or on the thickenss summary.
+* **dowels and screws:** shows dowels created via [magicDowels](#magicdowels] tool and also Woodworking workbench screw replaced via [panel2link](#panel2link) or [panel2clone](#panel2clone) tools. If you want to have custom dowels or screws visible at the report you need to have `Part::Cylinder` object inside with measurements.
+* **decorations:** shows dimensions for objects considered as decoration, i.e. `PartDesign::Fillet`, `PartDesign::Chamfer`, `Part::Sphere`, `Part::Cone`, `Part::Torus` object types.
+* **edgeband info:** turns off or on information about edge size and needed veneer.
+* **construction profiles:** shows construction profiles created via [panel2profile](#panel2profile) or [panel2angle](#panel2angle) tools. If you want to have custom profiles you need to have `PartDesign::Thickness` object type. This report type supports also [Dodo workbench construction profiles](https://github.com/oddtopus/dodo).
+* **custom measurements:** shows custom measurements created via [magicMeasure](#magicmeasure) tool. If you want to create custom measurements you need to have `App::MeasureDistance` or `Measure::MeasureDistanceDetached` object type.
+* **grain direction:** shows grain direction for object created via [grainH](#grainh), [grainV](#grainv) or [grainX](#grainx) tools.
+
+**Units:** you can create report with recalculated units in `millimeter`, `meter` or `inch`.
+**Precision:** By default the values at report are rounded to have more clear listing. Rounding values also allows to avoid values at report like e.g. `499.9999999999` instead of `500 mm`. Generally during working with wood material it is rather hard to achieve precision better than `+/-1 mm`. Even professional cutting services are not able to keep always precision `+/-0 mm`, so precision like `+/- 0.1 mm` is rather not possible in real life. So by default precision for `mm` units is `0`, it means the value `500.65 mm` will be rounded to `501 mm` at the report.
+
+**Visibility:**
+* **All objects:**
+  * `off` allows hidden content to be calculated and listed at the report. FreeCAD has many complicated objects with hidden content. For PartDesign objects usually, only the objects of last operation is visible but the first Pad with dimensions is hidden. Similar thing is for Cut objects where the content with dimensions is hidden but the Cut object has no information about dimensions of its parts.
+  * `on` hidden objects will not be listed at the report.
+  * `edge` hidden objects will be listed but not added to the edge size.
+  * `parent` not list object with hidden parent object.
+  * `inherit` dedicated mostly to hide the base realistic looking screw.
+  * `special BOM attribute` if object has `BOM` attribute set to `False` (`App::PropertyBool`) it will be skipped during parsing and not listed at the report. This special attribute is used by [magicCut](#magiccut) and [magicKnife](#magicknife) tools to skip copies at the report. For more details see video tutorial: [Skip copies in cut-list](https://www.youtube.com/watch?v=rFEDLaD8lxM).
+**Part :: Cut content:**
+  * `all` shows Base and Tool
+  * `base` shows Base only
+  * `tool` shows Tool only
+
+* **Additional settings:**
+  * `Report Language` currently supported languages are `English` and my native `Polish`.
+  * `Report quality` in `eco` the colors are removed to keep low ink mode, by default is `hq` with colors. 
+
+* **Edgeband:**
+  * `set` first, select any furniture face that will be the reference color for the entire furniture, then press the "set" button to select load the color. If any edge of the board will be in a different color than the loaded furniture reference color, it will be calculated as the edge that should be covered with veneer.
+  * `Edgeband code` is only text that will be displayed at the report. It can represent any veneer tape color at shop, even reference code.
   
-**Video tutorials:** 
-* [How to create cut-list](https://www.youtube.com/watch?v=_n7SUYSGHls)
-* [How to create cut-list for Assembly objects](https://www.youtube.com/watch?v=9pk5tUGvgFM)
-* [How to measure minifix and add to cut-list](https://www.youtube.com/watch?v=l7y0HETobIw)
-* [Cut-list, BOM](https://www.youtube.com/watch?v=lYssiliONVo)
-* [Custom measurements & BOM](https://www.youtube.com/watch?v=-Mmwvw_Bue4)
-* [Preview furniture & cut-list](https://www.youtube.com/watch?v=xEMQUH665Vw)
+**Video tutorials & Documentation:** 
+* [Cut-list, BOM, dimensions](https://www.youtube.com/playlist?list=PLSKOS_LK45BCnwvCGt4klfF6uVAxfQQTy)
+* [Old documentation for getDimensions macro](https://github.com/dprojects/getDimensions/tree/master/Docs)
 
 ## sheet2export
 
