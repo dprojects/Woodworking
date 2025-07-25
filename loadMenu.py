@@ -359,6 +359,15 @@ def getItems():
 		"EXAMPLES",
 		"FIXTURE",
 		"TEXTURES",
+		"TRANSLATION"
+	]
+
+	'''
+	parts = [ 
+		"DOCS",
+		"EXAMPLES",
+		"FIXTURE",
+		"TEXTURES",
 		"DOCSgetDimensions",
 		"DOCSsheet2export",
 		"DOCSsetTextures",
@@ -366,5 +375,6 @@ def getItems():
 		"AUTOUPDATE",
 		"TRANSLATION"
 	]
-
+	'''
+	
 	return parts

@@ -4,7 +4,9 @@
 
 Woodworking workbench has been created because of my woodworking and coding hobby. Everything started from [getDimensions](https://github.com/dprojects/getDimensions/commits/master) project long time ago. I wanted to have [simple cut-list for chipboards order](https://github.com/dprojects/getDimensions/commit/a6f0a2221e90f717be95bd0dc1cc9f1ede95a329) and I found FreeCAD with low hardware requirements and possibility to implement the cut-list. 
 
-Later it has been transformed into whole Woodworking workbench, I added many tools, and now Woodworking workbench has so many features and simplifications that it can be considered as a new CAD program based only on the FreeCAD kernel. It is mainly intended to make cabinet creation more simple, although it has many solutions to speed up and make more simple typical carpentry work and other CAD projects. I hope you will find something for yourself here.
+In 2014, FreeCAD [did not have any tools to help create even simple cabinets](https://forum.freecad.org/viewtopic.php?t=8247). The work around Woodworking workbench [did not seem advanced even in 2022](https://forum.freecad.org/viewtopic.php?p=572287#p572287), so [I decided](https://forum.freecad.org/viewtopic.php?p=573458#p573458) to create my own workbench for creating simple cabinets. First, [I added my own macros](https://github.com/dprojects/Woodworking/commit/412bb997e338fa66e2dc1c38f68b175ffdfa37a8) that I had written earlier. Then I started creating new features useful for creating simple cabinets.
+
+I added many tools, and now Woodworking workbench has so many features and simplifications that it can be considered as a new CAD program based only on the FreeCAD kernel. It is mainly intended to make cabinet creation more simple, although it has many solutions to speed up and make more simple typical carpentry work and other CAD projects. I hope you will find something for yourself here.
 
 * [Installation](#installation)
 * [Extras](#extras)
@@ -836,7 +838,7 @@ Selection modes:
 
 ## getDimensions
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/getDimensions.png"> This tool allows you to create spreadsheet with dimensions to cut (cut list), Bill Of Materials (BOM).
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/getDimensions.png"> This tool allows you to create spreadsheet with dimensions to cut (cut list), Bill Of Materials (BOM). It has been designed for my private woodworking projects (hobby), especially for chipboards `18 mm` of thickness (they are the most common in Poland). This macro creates a spreadsheet named `toCut` and also a TechDraw page `toPrint` with all needed furniture parts to cut for woodworking project. Also you can export long reports via [sheet2export](#sheet2export).
 
 > [!IMPORTANT]
 > The report works automatically mainly for `Part::Box` objects. 
@@ -845,10 +847,8 @@ Selection modes:
 > If you can't add a `SizeX` or `SizeY` constraint name in the Sketch, select the `Reference` checkbox during constraint creation and add exact name.
 
 **Report type:**
-
 * **default:** default object search path. This path should also be used for the built-in Assembly workbench.
 * **assembly:** object search path dedicated only to [Assembly4](https://codeberg.org/Zolko/Assembly4) workbench by [Zolko](https://forum.freecad.org/viewtopic.php?t=86110).
-
 * **q - report type:** the default report type allows you to quickly create a cutting list needed to order boards from a DIY store in Poland. Objects are grouped by the same dimensions, making cutting easier.
 * **n - report type:** this is a list of all items, grouped by item name. This report type is necessary to verify that all boards were received from cutting service with correct dimensions.
 * **g - report type:** this type of report groups all items based on their location in folders. This allows you to place all items of a given color, type, or material in a single folder, and this will be reflected in the report. This makes it easier to order boards of different types or thicknesses but with the same dimensions. This type of report can also be used to create groups with edge veneer, left, right, or without veneer.
@@ -857,16 +857,6 @@ Selection modes:
 * **c - report type:** this report type shows the dimensions for all named constraints inside Sketch objects and the `Length` size from `PartDesign` objects.
 * **p - report type:** this report type shows the dimensions for all constraints on Sketch objects, whether named or unnamed, and the `Length` size from `PartDesign` objects.
 * **a - report type:** this report is some kind of approximation of needed material. It uses different approach to dimensions, because the dimensions are not get here from objects, they are calculated from raw vertices. You have to be careful because the dimensions are occupied space in 3D by the object and you can see the difference for all rotated elements. This type of report can be directly imported at [cutlistoptimizer.com](https://www.cutlistoptimizer.com/) website tool.
-
-> [!TIP]
-> Personally, I create two cutting lists. First is `q - report type` for the person in the cutting service. 
-> The second one is `n - report type` so I can verify that all the elements I received from the store and all 
-> elements had the correct dimensions, so I can write on it. I usually create furniture for myself from `18 mm white chipboard`, 
-> but if, for example, I need to order plywood shelves or boards in a different color, I create `g - report type` 
-> for the person in the cutting service, where the appropriate board types and colors are grouped.
-
-**Additional reports:**
-
 * **thickness summary:** turns off or on the thickenss summary.
 * **dowels and screws:** shows dowels created via [magicDowels](#magicdowels] tool and also Woodworking workbench screw replaced via [panel2link](#panel2link) or [panel2clone](#panel2clone) tools. If you want to have custom dowels or screws visible at the report you need to have `Part::Cylinder` object inside with measurements.
 * **decorations:** shows dimensions for objects considered as decoration, i.e. `PartDesign::Fillet`, `PartDesign::Chamfer`, `Part::Sphere`, `Part::Cone`, `Part::Torus` object types.
@@ -875,7 +865,15 @@ Selection modes:
 * **custom measurements:** shows custom measurements created via [magicMeasure](#magicmeasure) tool. If you want to create custom measurements you need to have `App::MeasureDistance` or `Measure::MeasureDistanceDetached` object type.
 * **grain direction:** shows grain direction for object created via [grainH](#grainh), [grainV](#grainv) or [grainX](#grainx) tools.
 
+> [!TIP]
+> Personally, I create two cutting lists. First is `q - report type` for the person in the cutting service. 
+> The second one is `n - report type` so I can verify that all the elements I received from the store and all 
+> elements had the correct dimensions, so I can write on it. I usually create furniture for myself from `18 mm white chipboard`, 
+> but if, for example, I need to order plywood shelves or boards in a different color, I create `g - report type` 
+> for the person in the cutting service, where the appropriate board types and colors are grouped.
+
 **Units:** you can create report with recalculated units in `millimeter`, `meter` or `inch`.
+
 **Precision:** By default the values at report are rounded to have more clear listing. Rounding values also allows to avoid values at report like e.g. `499.9999999999` instead of `500 mm`. Generally during working with wood material it is rather hard to achieve precision better than `+/-1 mm`. Even professional cutting services are not able to keep always precision `+/-0 mm`, so precision like `+/- 0.1 mm` is rather not possible in real life. So by default precision for `mm` units is `0`, it means the value `500.65 mm` will be rounded to `501 mm` at the report.
 
 **Visibility:**
@@ -886,22 +884,47 @@ Selection modes:
   * `parent` not list object with hidden parent object.
   * `inherit` dedicated mostly to hide the base realistic looking screw.
   * `special BOM attribute` if object has `BOM` attribute set to `False` (`App::PropertyBool`) it will be skipped during parsing and not listed at the report. This special attribute is used by [magicCut](#magiccut) and [magicKnife](#magicknife) tools to skip copies at the report. For more details see video tutorial: [Skip copies in cut-list](https://www.youtube.com/watch?v=rFEDLaD8lxM).
-**Part :: Cut content:**
+* **Part :: Cut content:**
   * `all` shows Base and Tool
   * `base` shows Base only
   * `tool` shows Tool only
 
-* **Additional settings:**
-  * `Report Language` currently supported languages are `English` and my native `Polish`.
-  * `Report quality` in `eco` the colors are removed to keep low ink mode, by default is `hq` with colors. 
+**Additional settings:**
+* `Report Language` currently supported languages are `English` and my native `Polish`.
+* `Report quality` in `eco` the colors are removed to keep low ink mode, by default is `hq` with colors. 
 
-* **Edgeband:**
-  * `set` first, select any furniture face that will be the reference color for the entire furniture, then press the "set" button to select load the color. If any edge of the board will be in a different color than the loaded furniture reference color, it will be calculated as the edge that should be covered with veneer.
-  * `Edgeband code` is only text that will be displayed at the report. It can represent any veneer tape color at shop, even reference code.
-  
-**Video tutorials & Documentation:** 
-* [Cut-list, BOM, dimensions](https://www.youtube.com/playlist?list=PLSKOS_LK45BCnwvCGt4klfF6uVAxfQQTy)
-* [Old documentation for getDimensions macro](https://github.com/dprojects/getDimensions/tree/master/Docs)
+**Edgeband:**
+* `set` first, select any furniture face that will be the reference color for the entire furniture, then press the "set" button to select load the color. If any edge of the board will be in a different color than the loaded furniture reference color, it will be calculated as the edge that should be covered with veneer.
+* `Edgeband code` is only text that will be displayed at the report. It can represent any veneer tape color at shop, even reference code.
+
+**Supported objects:**
+* `Part :: Cube`
+* `PartDesign :: Pad`
+* `Part :: Extrusion`
+* `Assembly :: AssemblyObject`
+* `Assembly :: AssemblyLink` - tested with Assembly4 and FreeCAD 1.0
+* custom objects with `Width`, `Height` and `Length` attribute, for example [Stick Frame Workbench objects](https://gitlab.com/mathcodeprint/stickframe).
+
+**Supported transformations:**
+* `Part :: Mirroring`,
+* `Draft :: Array`,
+* `Draft :: Array Polar`,
+* `Draft :: Clone`,
+* `PartDesign :: Pocket`,
+* `PartDesign :: Hole`,
+* `PartDesign :: LinearPattern`,
+* `PartDesign :: Mirrored`,
+* `PartDesign :: MultiTransform`,
+* `App :: Link`,
+* `App :: LinkGroup`,
+* `Part :: Compound`,
+* `Part :: Cut`,
+* and probably many more...
+
+**Video tutorials & Documentation:**
+
+* **YouTube playlist:** [Cut-list, BOM, dimensions](https://www.youtube.com/playlist?list=PLSKOS_LK45BCnwvCGt4klfF6uVAxfQQTy)
+* **Old documentation:** [getDimensions macro](https://github.com/dprojects/getDimensions/tree/master/Docs)
 
 ## sheet2export
 
@@ -1823,7 +1846,7 @@ Working with raw wood is an art of some sort. This is the true form of working w
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RawWoodGlued006.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RawWoodGlued007.png)
   
-* <img align="left" width="50" height="50" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showSpaceSelected.png"> <img align="left" width="50" height="50" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/getDimensions.png"> You can use [showSpaceSelected](#showspaceselected) to see oaccupied space by any selected panel after cut or even by all the parts. Not use [showSpaceModel](#showspacemodel) because it also calculates the hidden elements, "knives". However you can also create report via [getDimensions](#getdimensions---cut-list-bom-creation-tool) with the base elements used before cut.
+* <img align="left" width="50" height="50" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showSpaceSelected.png"> <img align="left" width="50" height="50" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/getDimensions.png"> You can use [showSpaceSelected](#showspaceselected) to see oaccupied space by any selected panel after cut or even by all the parts. Not use [showSpaceModel](#showspacemodel) because it also calculates the hidden elements, "knives". However you can also create report via [getDimensions](#getdimensions) with the base elements used before cut.
   
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RawWoodGlued008.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/RawWoodGlued009.png)
