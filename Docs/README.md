@@ -858,7 +858,7 @@ Selection modes:
 * **p - report type:** this report type shows the dimensions for all constraints on Sketch objects, whether named or unnamed, and the `Length` size from `PartDesign` objects.
 * **a - report type:** this report is some kind of approximation of needed material. It uses different approach to dimensions, because the dimensions are not get here from objects, they are calculated from raw vertices. You have to be careful because the dimensions are occupied space in 3D by the object and you can see the difference for all rotated elements. This type of report can be directly imported at [cutlistoptimizer.com](https://www.cutlistoptimizer.com/) website tool.
 * **thickness summary:** turns off or on the thickenss summary.
-* **dowels and screws:** shows dowels created via [magicDowels](#magicdowels] tool and also Woodworking workbench screw replaced via [panel2link](#panel2link) or [panel2clone](#panel2clone) tools. If you want to have custom dowels or screws visible at the report you need to have `Part::Cylinder` object inside with measurements.
+* **dowels and screws:** shows dowels created via [magicDowels](#magicdowels) tool and also Woodworking workbench screw replaced via [panel2link](#panel2link) or [panel2clone](#panel2clone) tools. If you want to have custom dowels or screws visible at the report you need to have `Part::Cylinder` object inside with measurements.
 * **decorations:** shows dimensions for objects considered as decoration, i.e. `PartDesign::Fillet`, `PartDesign::Chamfer`, `Part::Sphere`, `Part::Cone`, `Part::Torus` object types.
 * **edgeband info:** turns off or on information about edge size and needed veneer.
 * **construction profiles:** shows construction profiles created via [panel2profile](#panel2profile) or [panel2angle](#panel2angle) tools. If you want to have custom profiles you need to have `PartDesign::Thickness` object type. This report type supports also [Dodo workbench construction profiles](https://github.com/oddtopus/dodo).
@@ -901,8 +901,7 @@ Selection modes:
 * `Part :: Cube`
 * `PartDesign :: Pad`
 * `Part :: Extrusion`
-* `Assembly :: AssemblyObject`
-* `Assembly :: AssemblyLink` - tested with Assembly4 and FreeCAD 1.0
+* `Assembly :: AssemblyObject`, `Assembly :: AssemblyLink` - tested with Assembly4 and FreeCAD 1.0
 * custom objects with `Width`, `Height` and `Length` attribute, for example [Stick Frame Workbench objects](https://gitlab.com/mathcodeprint/stickframe).
 
 **Supported transformations:**

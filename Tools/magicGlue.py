@@ -1270,7 +1270,7 @@ def showQtGUI():
 					# set property value in VarSet
 					setattr(varset, pname, pvalue)
 			
-					# set expresion in object to VarSet
+					# set expression in object to VarSet
 					name = MagicPanels.getSizeByEdge(o, edge)
 					exprValue = "<<" + varset.Name + ">>" + "." + pname
 				

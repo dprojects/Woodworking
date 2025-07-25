@@ -598,22 +598,22 @@ def showQtGUI():
 			self.groupAS = QtGui.QGroupBox(translate('getDimensions', 'Additional settings:'), self)
 			self.groupAS.setLayout(self.layAS)
 			
-			self.layED1 = QtGui.QHBoxLayout()
-			self.layED1.setAlignment(QtGui.Qt.AlignLeft)
-			self.layED1.addWidget(self.fcrB)
-			self.layED1.addWidget(self.fcrE)
-			self.layED2 = QtGui.QHBoxLayout()
-			self.layED2.setAlignment(QtGui.Qt.AlignLeft)
-			self.layED2.addWidget(self.ecL)
-			self.layED2.addWidget(self.ecO)
-			self.layED2.addWidget(self.ectiL)
-			self.layED2.addWidget(self.ecti)
-			self.layED2.addStretch()
-			self.layED = QtGui.QVBoxLayout()
-			self.layED.addLayout(self.layED1)
-			self.layED.addLayout(self.layED2)
+			self.layoutED1 = QtGui.QHBoxLayout()
+			self.layoutED1.setAlignment(QtGui.Qt.AlignLeft)
+			self.layoutED1.addWidget(self.fcrB)
+			self.layoutED1.addWidget(self.fcrE)
+			self.layoutED2 = QtGui.QHBoxLayout()
+			self.layoutED2.setAlignment(QtGui.Qt.AlignLeft)
+			self.layoutED2.addWidget(self.ecL)
+			self.layoutED2.addWidget(self.ecO)
+			self.layoutED2.addWidget(self.ectiL)
+			self.layoutED2.addWidget(self.ecti)
+			self.layoutED2.addStretch()
+			self.layoutED = QtGui.QVBoxLayout()
+			self.layoutED.addLayout(self.layoutED1)
+			self.layoutED.addLayout(self.layoutED2)
 			self.groupED = QtGui.QGroupBox(translate('getDimensions', 'Edgeband:'), self)
-			self.groupED.setLayout(self.layED)
+			self.groupED.setLayout(self.layoutED)
 			
 			self.layCR = QtGui.QVBoxLayout()
 			self.layCR.addWidget(self.okButton)
@@ -3000,7 +3000,7 @@ def scanObjects(iOBs, iCaller="main"):
 
 		if sPPM == "assembly":
 			
-			# start assebly parse way only for assembly objects
+			# start assembly parse way only for assembly objects
 			if getAssemblyObject(obj, iCaller) == True:
 				setAssembly(obj)
 			
