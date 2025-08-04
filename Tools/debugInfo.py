@@ -868,7 +868,7 @@ def showQtGUI():
 				skip = 1
 
 			# #########################
-			# prevent loading old workbench
+			# disable old workbench
 			# #########################
 			
 			info = self.odie.toPlainText() + "\n"
@@ -876,10 +876,13 @@ def showQtGUI():
 			self.odie.setPlainText(info)
 			self.odie.repaint()
 			
-			disableFile = os.path.join(pathWB, "ADDON_DISABLED")
-			disable = open(str(disableFile), "w")
-			disable.write("disabled")
-			disable.close()
+			try:
+				disableFile = os.path.join(pathWB, "ADDON_DISABLED")
+				disable = open(str(disableFile), "w")
+				disable.write("disabled")
+				disable.close()
+			except:
+				skip = 1
 			
 			# #########################
 			# remove zip file

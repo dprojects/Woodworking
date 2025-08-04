@@ -108,6 +108,22 @@ class WoodworkingWorkbench (Workbench):
 		
 		self.appendMenu(QT_TRANSLATE_NOOP("Workbench", "Woodworking"), loadMenu.getItems())
 	
+		# ################################################################################################
+		# set Woodworking by default for init
+		# ################################################################################################
+		
+		try:
+			pref = 'User parameter:BaseApp/Preferences/Woodworking'
+			test = FreeCAD.ParamGet(pref).GetString('wInit')
+			if test == "" or test == "True":
+				pref = 'User parameter:BaseApp/Preferences/General'
+				FreeCAD.ParamGet(pref).SetString('AutoloadModule', 'WoodworkingWorkbench')
+			
+			pref = 'User parameter:BaseApp/Preferences/Woodworking'
+			FreeCAD.ParamGet(pref).SetString('wInit', "False")
+		except:
+			skip = 1
+
 	# ################################################################################################
 	def Activated(self):
 		# not needed now, maybe in the future
