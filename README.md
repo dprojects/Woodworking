@@ -42,13 +42,13 @@ For more details see: [Installation section at Woodworking workbench documentati
 
 # License
 
-FreeCAD is licensed under LGPL license but Woodworking workbench is licensed under **[MIT](https://github.com/dprojects/Woodworking/blob/master/LICENSE) license, only with the copyright preserved**. I can relese Woodworking workbench with any license because I use FreeCAD only as library, only as kernel. 
+FreeCAD is licensed under LGPL license but **Woodworking workbench is licensed under [MIT](https://github.com/dprojects/Woodworking/blob/master/LICENSE) license, only with the copyright preserved**. I can relese Woodworking workbench with any license because I use FreeCAD only as library, only as kernel. 
 
-In my opinion, LGPL not allows you to earn from your additional work. Anything you change or add to LGPL code need to be licesend under LGPL license as well, so you can't sell it. MIT license supports talented developers and allows them to earn, sell their work based on the MIT project. 
+In my opinion, LGPL not allows you to earn from your additional work. Anything you change or add to LGPL code need to be licesend under LGPL license as well, so you cannot sell it. MIT license supports talented developers and allows them to earn, sell their work based on the MIT project. 
 
-But you always need to keep the note about real author. You should never claim you invented Woodworking workbench or any MIT or LGPL projects, that's the author's rights.
+But **you always need to keep the note about real author**. You should never claim you invented Woodworking workbench or any MIT or LGPL projects, that's the author's rights.
 
-### What you can do
+### What you can
 
 **For example:**
 
@@ -56,7 +56,7 @@ But you always need to keep the note about real author. You should never claim y
 * You can create your own YouTube or real life tutorials, voice over to existing ones, and earn, it is your hard work so you don't have to ask, but during tutorials you cannot say you invented Woodworking workbench or its features.
 * You can translate Woodworking Workbench to any language and even sell such translation to anyone, it is your work, but you cannot say the Woodworking workbench is created by you. 
 
-### What you cannot 
+### What you cannot
 
 **For example:**
 
