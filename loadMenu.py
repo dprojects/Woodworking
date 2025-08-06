@@ -313,7 +313,9 @@ class TRANSLATION():
 			wb = FreeCADGui.activeWorkbench()
 			package = os.path.join(wb.path, "package.xml")
 			md = FreeCAD.Metadata(package)
-			wbrelease = ".".join(str(md.Version).split(".")[-3:-1])
+			versionWB = str(md.Version).split(".")[-6:]
+			wbrelease = str(versionWB[0]) + "." + str(versionWB[1])
+
 		except:
 			info += translate('manuAutoupdate', 'Error during getting workbench release from file: '+str(package))
 			info += "\n\n"

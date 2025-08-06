@@ -12,18 +12,27 @@ The Woodworking workbench started as a simple cut-list, as a macro for FreeCAD. 
 
 # Quick start
 
+### Automatic for Linux
+
+**Download and run installation package:** [magicCAD_1.0.AppImage](https://github.com/dprojects/Woodworking-package/releases/download/1.0/magicCAD_1.0.AppImage). 
+
+> [!NOTE]
+> This is experimental installation package with FreeCAD kernel and Woodworking workbench. 
+> This `AppImage` will copy the Woodworking workbench into `~/.local/share/FreeCAD/Mod` folder, 
+> will run the FreeCAD, and set the Woodworking workbench as default. 
+> So you will be able to update later the Woodworking workbench via [debugInfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool.
+
+### Manual steps
+
 * **Step 0:** Download FreeCAD 1.0.1 [for Linux](https://github.com/FreeCAD/FreeCAD/releases/download/1.0.1/FreeCAD_1.0.1-conda-Linux-x86_64-py311.AppImage) or [for other OS](https://github.com/FreeCAD/FreeCAD/releases/tag/1.0.1)
 * **Step 1:** Download [the latest Woodworking workbench version](https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip)
 * **Step 2:** Unpack Woodworking workbench to `Mod` folder.
 * **Step 3:** Start FreeCAD.
 
-> [!TIP]
-> The `README.md` file should be: `~/.local/share/FreeCAD/Mod/Woodworking/README.md`
-
 > [!IMPORTANT]
-> Read more about: [FreeCAD 1.0+ Support](https://github.com/dprojects/Woodworking/issues/49)
-
-For more details see: [Installation section at Woodworking workbench documentation](https://github.com/dprojects/Woodworking/tree/master/Docs#installation)
+> * The `README.md` file should be: `~/.local/share/FreeCAD/Mod/Woodworking/README.md` <br>
+> * Read more about: [FreeCAD 1.0+ Support](https://github.com/dprojects/Woodworking/issues/49) <br>
+> * For more details see: [Installation section at Woodworking workbench documentation](https://github.com/dprojects/Woodworking/tree/master/Docs#installation)
 
 # Documentation
 
