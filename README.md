@@ -42,11 +42,32 @@ For more details see: [Installation section at Woodworking workbench documentati
 
 # License
 
-Personally, I like programming and coming up with new functionalities, improving things, coming up with procedures and seeing that something works.
+FreeCAD is licensed under LGPL license but Woodworking workbench is licensed under **[MIT](https://github.com/dprojects/Woodworking/blob/master/LICENSE) license, only with the copyright preserved**. I can relese Woodworking workbench with any license because I use FreeCAD only as library, only as kernel. 
 
-On the other hand, giving something away for free, i.e. open source, is a very controversial approach, because the bills won't pay themselves and sooner or later free projects without support usually get trashed, and brilliant inventors end up homeless. That's why it would be great to be able to combine the ingenuity of creative inventors with earning money.
+In my opinion, LGPL not allows you to earn from your additional work. Anything you change or add to LGPL code need to be licesend under LGPL license as well, so you can't sell it. MIT license supports talented developers and allows them to earn, sell their work based on the MIT project. 
 
-However, there are currently no plans to introduce a fee for using these additional tools and all content is made available under the **[MIT](https://github.com/dprojects/Woodworking/blob/master/LICENSE) license, only with the copyright preserved**.
+But you always need to keep the note about real author. You should never claim you invented Woodworking workbench or any MIT or LGPL projects, that's the author's rights.
+
+### What you can do
+
+**For example:**
+
+* You can change the Woodworking workbench code and sell it but you have to add info what is invented by you and what is not, just keep the license, or add info about your changes to the license, so will be fine.
+* You can create your own YouTube or real life tutorials, voice over to existing ones, and earn, it is your hard work so you don't have to ask, but during tutorials you cannot say you invented Woodworking workbench or its features.
+* You can translate Woodworking Workbench to any language and even sell such translation to anyone, it is your work, but you cannot say the Woodworking workbench is created by you. 
+
+### What you cannot 
+
+**For example:**
+
+* You cannot copy Woodworking workbench, or its features, to FreeCAD main branch without note about real author, and even get FPA grants for it. It is illegal, you can be sued, but also it is very bad behaviour, typical rats and thief strategy. 
+* You cannot claim anywhere you invented Woodworking workbench or its features. If you add or change any code, you can say it only about your work.
+
+> [!NOTE]
+> Currently there are no plans to introduce a fee for using these additional tools. 
+> I guess I will keep this repository with MIT forever. 
+> If there will be paid version this will be new repository, new project.
+> If you have still doubts, you can always open issue and ask.
 
 # Contact
 
