@@ -161,6 +161,9 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * cerification and versioning for package and backward compatibility
+    * toolbar icons positioning
+    * changes for installation package
     * create copy as Array (magicMove)
     * move to equal for Array objects (magicMove)
     * units fixes

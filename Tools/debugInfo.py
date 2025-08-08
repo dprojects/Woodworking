@@ -336,17 +336,6 @@ def setCertified():
 	except:
 		skip = 1
 	
-	# overwrite only, certify any kernel inside package
-	try:
-		pth = FreeCADGui.activeWorkbench().path
-		pth = str(os.path.join(pth, ".."))
-
-		f = os.path.join(pth, "certified.txt")
-		if os.path.exists(f):
-			gWBCurrent["Certified"] = "yes"
-	except:
-		skip = 1
-	
 # ###################################################################################################################
 def setUpToDate():
 	
@@ -542,7 +531,7 @@ def showQtGUI():
 				info += "(development)"
 			info += "</div>"
 			info += "<div>"
-			info += translate('debugInfo', 'dedicated for FreeCAD version ')
+			info += translate('debugInfo', 'is currently developed for FreeCAD version ')
 			info += gWBCurrent["DedicatedFreeCAD"]
 			info += "</div>"
 			
@@ -685,7 +674,7 @@ def showQtGUI():
 					infoD += translate('debugInfo', 'You are using certified version. Thanks.')
 				else:
 					infoI += self.getIcon("no", iconSize, iconAlign)
-					infoD += translate('debugInfo', 'Your FreeCAD version not match the Woodworking workbench version. ')
+					infoD += translate('debugInfo', 'Your FreeCAD version is not certified.')
 			except:
 				skip = 1
 				
