@@ -321,14 +321,32 @@ def setFreeCADVersion():
 # ###################################################################################################################
 def setCertified():
 
+	# certify supported kernels for backward compatibility
 	try:
-		if gWBCurrent["DedicatedFreeCAD"] == gWBCurrent["FreeCADVersion"]:
+		certifiedKernels = [ 
+			"0.21.2.33771", 
+			"1.0.1.39285", 
+			"1.0.2.39319"
+		]
+	
+		if gWBCurrent["FreeCADVersion"] in certifiedKernels:
 			gWBCurrent["Certified"] = "yes"
 		else:
 			gWBCurrent["Certified"] = "no"
 	except:
 		skip = 1
+	
+	# overwrite only, certify any kernel inside package
+	try:
+		pth = FreeCADGui.activeWorkbench().path
+		pth = str(os.path.join(pth, ".."))
 
+		f = os.path.join(pth, "certified.txt")
+		if os.path.exists(f):
+			gWBCurrent["Certified"] = "yes"
+	except:
+		skip = 1
+	
 # ###################################################################################################################
 def setUpToDate():
 	
