@@ -109,21 +109,73 @@ class WoodworkingWorkbench (Workbench):
 		self.appendMenu(QT_TRANSLATE_NOOP("Workbench", "Woodworking"), loadMenu.getItems())
 	
 		# ################################################################################################
-		# set Woodworking by default for init
+		# configure Woodworking at first run
 		# ################################################################################################
 		
+		FreeCAD.Console.PrintMessage("\n")
 		try:
 			pref = 'User parameter:BaseApp/Preferences/Woodworking'
 			test = FreeCAD.ParamGet(pref).GetString('wInit')
 			if test == "" or test == "True":
-				pref = 'User parameter:BaseApp/Preferences/General'
-				FreeCAD.ParamGet(pref).SetString('AutoloadModule', 'WoodworkingWorkbench')
-			
+				
+				# set default workbench
+				FreeCAD.Console.PrintMessage("\n")
+				try:
+					msg = QT_TRANSLATE_NOOP("Workbench", "Setting Woodworking wokbench as default ...")
+					pref = 'User parameter:BaseApp/Preferences/General'
+					FreeCAD.ParamGet(pref).SetString('AutoloadModule', 'WoodworkingWorkbench')
+					msg += "ok."
+				except:
+					msg += "fail."
+				FreeCAD.Console.PrintMessage(msg)
+
+				# set order of groups with icons
+				FreeCAD.Console.PrintMessage("\n")
+				try:
+					msg = QT_TRANSLATE_NOOP("Workbench", "Setting icons position ...")
+					pref = 'User parameter:Tux/PersistentToolbars/User/WoodworkingWorkbench'
+					
+					pos = 'Workbench,Woodworking - project manage,Woodworking - dimensions,Woodworking - parameterization,Woodworking - router,Break,Woodworking - copy,Woodworking - face,Woodworking - between,Woodworking - special,Woodworking - joinery,Woodworking - construction,Break,Woodworking - default,Woodworking - resize,Woodworking - move,Woodworking - preview'
+					FreeCAD.ParamGet(pref).SetString('Top', pos)
+					
+					pos = 'Woodworking - decorations,Woodworking - advanced,Woodworking - code and debug'
+					FreeCAD.ParamGet(pref).SetString('Left', pos)
+					
+					pos = 'Woodworking - dowels and screws,Woodworking - drilling holes,Woodworking - fixture'
+					FreeCAD.ParamGet(pref).SetString('Right', pos)
+					
+					FreeCAD.ParamGet(pref).SetString('Bottom', '')
+					FreeCAD.ParamGet(pref).SetBool('Saved', True)
+					msg += "ok."
+				except:
+					msg += "fail."
+				FreeCAD.Console.PrintMessage(msg)
+
+				# turn off duplicated groups of icons
+				# not works because FreeCAD overwrite
+				FreeCAD.Console.PrintMessage("\n")
+				try:
+					msg = QT_TRANSLATE_NOOP("Workbench", "Turn off duplicated groups of icons ...")
+					pref = 'User parameter:BaseApp/MainWindow/Toolbars'
+					FreeCAD.ParamGet(pref).SetBool('Clipboard', False)
+					FreeCAD.ParamGet(pref).SetBool('Edit', False)
+					FreeCAD.ParamGet(pref).SetBool('File', False)
+					FreeCAD.ParamGet(pref).SetBool('Help', False)
+					FreeCAD.ParamGet(pref).SetBool('Individual views', False)
+					FreeCAD.ParamGet(pref).SetBool('Macro', False)
+					FreeCAD.ParamGet(pref).SetBool('Structure', False)
+					FreeCAD.ParamGet(pref).SetBool('View', False)
+					msg += "ok."
+				except:
+					msg += "fail."
+				FreeCAD.Console.PrintMessage(msg)
+				
 			pref = 'User parameter:BaseApp/Preferences/Woodworking'
 			FreeCAD.ParamGet(pref).SetString('wInit', "False")
 		except:
 			skip = 1
-
+		FreeCAD.Console.PrintMessage("\n\n")
+		
 	# ################################################################################################
 	def Activated(self):
 		# not needed now, maybe in the future
