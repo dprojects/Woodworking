@@ -91,7 +91,8 @@ def showQtGUI():
 			self.result = userCancelled
 			self.setGeometry(gPW, gPH, toolSW, toolSH)
 			self.setWindowTitle(translate('magicFixture', 'magicFixture'))
-			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			if MagicPanels.gWindowStaysOnTop == True:
+				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
 			# options - settings

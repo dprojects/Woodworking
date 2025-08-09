@@ -64,7 +64,8 @@ def showQtGUI():
 			
 			self.result = userCancelled
 			self.setWindowTitle(translate('magicAngle', 'magicAngle'))
-			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			if MagicPanels.gWindowStaysOnTop == True:
+				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
 			# options - selection mode

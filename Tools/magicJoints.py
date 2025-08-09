@@ -113,7 +113,9 @@ def showQtGUI():
 			self.result = userCancelled
 			self.setGeometry(gPW, gPH, toolSW, toolSH)
 			self.setWindowTitle(translate('magicJoints', 'magicJoints'))
-			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			if MagicPanels.gWindowStaysOnTop == True:
+				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			
 			self.setFixedHeight(toolSH)
 
 			# ############################################################################

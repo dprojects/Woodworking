@@ -15,6 +15,8 @@ https://github.com/dprojects/Woodworking
 import FreeCAD, FreeCADGui, Draft, Spreadsheet
 from PySide import QtGui, QtCore
 
+import MagicPanels
+
 translate = FreeCAD.Qt.translate
 
 
@@ -153,7 +155,9 @@ def showQtMain():
 			
 			self.result = userCancelled
 			self.setWindowTitle(translate('sheet2export', 'sheet2export'))
-			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			if MagicPanels.gWindowStaysOnTop == True:
+				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			
 			self.setMinimumWidth(toolSW)
 			self.setMinimumHeight(toolSH)
 
@@ -328,12 +332,8 @@ def showQtMain():
 			self.setGeometry(pw, ph, sw, sh)
 			
 			# set theme
-			try:
-				import MagicPanels as MP
-				QtCSS = MP.getTheme(MP.gTheme)
-				self.setStyleSheet(QtCSS)
-			except:
-				skip = 1
+			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
+			self.setStyleSheet(QtCSS)
 				
 		# ############################################################################
 		# actions

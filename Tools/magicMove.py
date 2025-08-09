@@ -147,7 +147,8 @@ def showQtGUI():
 			self.result = userCancelled
 			self.setGeometry(gPW, gPH, toolSW, toolSH)
 			self.setWindowTitle(translate('magicMove', 'magicMove'))
-			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			if MagicPanels.gWindowStaysOnTop == True:
+				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 			
 			# ############################################################################
 			# GUI for header
@@ -897,6 +898,8 @@ def showQtGUI():
 		# ############################################################################
 		def setMove(self, iType):
 			
+			self.beforeAction()
+			
 			for o in self.gObjects:
 
 				# calculate step
@@ -1063,6 +1066,7 @@ def showQtGUI():
 				gap = abs(ez - sz)
 		
 			# calculate the equal space between objects for axis
+			self.beforeAction()
 			num = len(self.gObjects)
 			thick = 0
 			
@@ -1160,6 +1164,8 @@ def showQtGUI():
 		
 		# ############################################################################
 		def createCopy(self, iType):
+			
+			self.beforeAction()
 			
 			for o in self.gObjects:
 				
@@ -1264,6 +1270,7 @@ def showQtGUI():
 		def createCopyByEdge(self, iType):
 			
 			offset = MagicPanels.unit2value(self.cbe5E.text())
+			self.beforeAction()
 			
 			for o in self.gObjects:
 				
@@ -1364,6 +1371,7 @@ def showQtGUI():
 		
 		# ############################################################################
 		def setLastPathPosition(self):
+			
 			for o in self.gObjects:
 				
 				key = str(o.Name)
@@ -1418,6 +1426,8 @@ def showQtGUI():
 
 		# ############################################################################
 		def createPathPanel(self):
+			
+			self.beforeAction()
 			
 			for o in self.gObjects:
 				
@@ -1535,6 +1545,8 @@ def showQtGUI():
 		
 		# ############################################################################
 		def createMirror(self, iType):
+			
+			self.beforeAction()
 			
 			for o in self.gObjects:
 				
@@ -1903,9 +1915,28 @@ def showQtGUI():
 				skip = 1
 		
 		# ############################################################################
+		def beforeAction(self):
+
+			try:
+				if MagicPanels.gCurrentSelection == True:
+					if FreeCADGui.Selection.getSelection() == []:
+						raise
+					else:
+						self.gObjects = FreeCADGui.Selection.getSelection()
+						self.s1B1.setDisabled(True)
+				else:
+					self.s1B1.setDisabled(False)
+			except:
+				self.s1S.setText(self.gNoSelection)
+		
+		# ############################################################################
 		def getSelected(self):
 
 			try:
+				if MagicPanels.gCurrentSelection == True:
+					self.s1B1.setDisabled(True)
+				else:
+					self.s1B1.setDisabled(False)
 
 				self.resetGlobals()
 				self.gObjects = FreeCADGui.Selection.getSelection()

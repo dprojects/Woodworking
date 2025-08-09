@@ -55,39 +55,100 @@ gSettingsPref = 'User parameter:BaseApp/Preferences/Woodworking'                
 gTheme = "default"                                                                   # no theme by default <br>
 gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0)   # default color [247, 185, 108, 255] <br>
 gWoodThickness = 18                                                                  # wood thickness <br>
+gWindowStaysOnTop = True                                                             # to keep window on top <br> 
+gCurrentSelection = False                                                            # to skip refresh selection button <br>
 
 # end globals (for API generator)
 
-try:
-	gKernelVersion = float( str(FreeCAD.Version()[0]) + "." + str(FreeCAD.Version()[1]) + str(FreeCAD.Version()[2]) )
-except:
-	skip = 1
 
-try:
-	test = FreeCAD.ParamGet(gSettingsPref).GetString('wTheme')
-	if test != "":
-		gTheme = test
-except:
-	skip = 1
+# ###################################################################################################################
+'''
+# Functions for library
+'''
+# ###################################################################################################################
 
-try:
-	test = FreeCAD.ParamGet(gSettingsPref).GetString('wWoodColorR')
-	if test != "":
-		cR = FreeCAD.ParamGet(gSettingsPref).GetString('wWoodColorR')
-		cG = FreeCAD.ParamGet(gSettingsPref).GetString('wWoodColorG')
-		cB = FreeCAD.ParamGet(gSettingsPref).GetString('wWoodColorB')
-		cA = FreeCAD.ParamGet(gSettingsPref).GetString('wWoodColorA')
-		colorArr = [ int(cR), int(cG), int(cB), int(cA) ]
-		gDefaultColor = convertColor(colorArr, "kernel")
-except:
-	skip = 1
 
-try:
-	test = FreeCAD.ParamGet(gSettingsPref).GetString('wWoodThickness')
-	if test != "":
-		gWoodThickness = unit2value(test)
-except:
-	skip = 1
+def updateGlobals():
+	'''
+	Description:
+	
+		This function update MagicPanels library globals from User settings.
+	
+	Args:
+	
+		none.
+
+	Usage:
+	
+		MagicPanels.updateGlobals()
+
+	Result:
+	
+		none.
+
+	'''
+
+
+	# Woodworking User Settings
+	wus = FreeCAD.ParamGet(gSettingsPref)
+	wusStrings = wus.GetStrings()
+	wusBools = wus.GetBools()
+	
+	# set FreeCAD kernel version
+	try:
+		global gKernelVersion
+		gKernelVersion = float( str(FreeCAD.Version()[0]) + "." + str(FreeCAD.Version()[1]) + str(FreeCAD.Version()[2]) )
+	except:
+		skip = 1
+
+	# set theme
+	try:
+		if "wTheme" in wusStrings:
+			global gTheme
+			gTheme = wus.GetString('wTheme')
+	except:
+		skip = 1
+
+	# set wood color
+	try:
+		if "wWoodColorR" in wusStrings:
+			cR = wus.GetString('wWoodColorR')
+			cG = wus.GetString('wWoodColorG')
+			cB = wus.GetString('wWoodColorB')
+			cA = wus.GetString('wWoodColorA')
+			colorArr = [ int(cR), int(cG), int(cB), int(cA) ]
+			global gDefaultColor
+			gDefaultColor = convertColor(colorArr, "kernel")
+	except:
+		skip = 1
+
+	# set wood thickness
+	try:
+		if "wWoodThickness" in wusStrings:
+			global gWoodThickness
+			gWoodThickness = unit2value( wus.GetString('wWoodThickness') )
+	except:
+		skip = 1
+
+	# set window stays on top
+	try:
+		if "wWindowStaysOnTop" in wusBools:
+			global gWindowStaysOnTop
+			gWindowStaysOnTop = wus.GetBool('wWindowStaysOnTop')
+	except:
+		skip = 1
+
+	# set current selection
+	try:
+		if "wCurrentSelection" in wusBools:
+			global gCurrentSelection
+			gCurrentSelection = wus.GetBool('wCurrentSelection')
+	except:
+		skip = 1
+
+
+# execute by default
+updateGlobals()
 
 
 # ###################################################################################################################

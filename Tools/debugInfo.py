@@ -11,6 +11,8 @@ gWBLatest = dict()
 gJokeDates = [ "22-03", "01-04", "19-12", "24-12", "25-12", "26-12", "31-12", "01-01" ]
 gCurrentDate = ""
 
+import MagicPanels
+
 # ###################################################################################################################
 # tests
 # ###################################################################################################################
@@ -490,7 +492,9 @@ def showQtGUI():
 			
 			self.result = userCancelled
 			self.setWindowTitle(translate('debugInfo', 'debugInfo'))
-			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			if MagicPanels.gWindowStaysOnTop == True:
+				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			
 			self.setMinimumWidth(toolSW)
 			self.setMinimumHeight(toolSH)
 				
@@ -789,12 +793,8 @@ def showQtGUI():
 			self.setGeometry(pw, ph, sw, sh)
 			
 			# set theme
-			try:
-				import MagicPanels
-				QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
-				self.setStyleSheet(QtCSS)
-			except:
-				skip = 1
+			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
+			self.setStyleSheet(QtCSS)
 			
 		# ############################################################################
 		# actions - internal functions

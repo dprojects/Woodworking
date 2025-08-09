@@ -759,7 +759,8 @@ def showQtGUI():
 			self.result = userCancelled
 			self.setGeometry(self.gPW, self.gPH, self.toolSW, self.toolSH)
 			self.setWindowTitle(translate('magicStart', 'magicStart'))
-			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			if MagicPanels.gWindowStaysOnTop == True:
+				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
 			# options - settings

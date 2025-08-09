@@ -91,7 +91,9 @@ def showQtGUI():
 			
 			self.result = userCancelled
 			self.setWindowTitle(translate('magicGlue', 'magicGlue'))
-			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			if MagicPanels.gWindowStaysOnTop == True:
+				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			
 			self.setMinimumWidth(toolSW)
 			self.setMinimumHeight(toolSH)
 			

@@ -1,5 +1,6 @@
 import FreeCAD, FreeCADGui
 from PySide import QtGui, QtCore
+
 import MagicPanels
 
 translate = FreeCAD.Qt.translate
@@ -127,7 +128,9 @@ def showQtGUI():
 			self.result = userCancelled
 			self.setGeometry(self.gPW, self.gPH, self.toolSW, self.toolSH)
 			self.setWindowTitle(translate('magicColors', 'magicColors'))
-			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			if MagicPanels.gWindowStaysOnTop == True:
+				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			
 			self.setMaximumHeight(self.toolSHMax)
 
 			# ############################################################################

@@ -197,7 +197,9 @@ def showQtGUI():
 			
 			self.result = userCancelled
 			self.setWindowTitle(translate('magicDriller', 'magicDriller'))
-			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			if MagicPanels.gWindowStaysOnTop == True:
+				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			
 			self.setMaximumSize(self.toolSW, self.toolSH)
 			self.setFixedHeight(self.toolSH)
 

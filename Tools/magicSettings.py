@@ -44,7 +44,9 @@ def showQtGUI():
 			
 			self.result = userCancelled
 			self.setWindowTitle(translate('magicSettings', 'magicSettings'))
-			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			if MagicPanels.gWindowStaysOnTop == True:
+				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			
 			self.setMinimumWidth(toolSW)
 			self.setMinimumHeight(toolSH)
 
@@ -83,6 +85,36 @@ def showQtGUI():
 			self.oWoodThickE = QtGui.QLineEdit(self)
 			self.oWoodThickE.setText(MagicPanels.unit2gui(18))
 			
+			# window stays on top
+			self.oWindowL = QtGui.QLabel(translate('magicSettings', 'Window stays on top:'), self)
+			
+			self.oWindowRB1 = QtGui.QRadioButton(self)
+			self.oWindowRB1.setText(translate('magicSettings', 'yes'))
+			self.oWindowRB1.toggled.connect(self.doNothing)
+
+			self.oWindowRB2 = QtGui.QRadioButton(self)
+			self.oWindowRB2.setText(translate('magicSettings', 'no'))
+			self.oWindowRB2.toggled.connect(self.doNothing)
+
+			self.oWindowGRP = QtGui.QButtonGroup(self)
+			self.oWindowGRP.addButton(self.oWindowRB1)
+			self.oWindowGRP.addButton(self.oWindowRB2)
+			
+			# current selection
+			self.oCurrentSelectionL = QtGui.QLabel(translate('magicSettings', 'Current selection:'), self)
+			
+			self.oCurrentSelectionRB1 = QtGui.QRadioButton(self)
+			self.oCurrentSelectionRB1.setText(translate('magicSettings', 'yes'))
+			self.oCurrentSelectionRB1.toggled.connect(self.doNothing)
+
+			self.oCurrentSelectionRB2 = QtGui.QRadioButton(self)
+			self.oCurrentSelectionRB2.setText(translate('magicSettings', 'no'))
+			self.oCurrentSelectionRB2.toggled.connect(self.doNothing)
+			
+			self.oCurrentSelectionGRP = QtGui.QButtonGroup(self)
+			self.oCurrentSelectionGRP.addButton(self.oCurrentSelectionRB1)
+			self.oCurrentSelectionGRP.addButton(self.oCurrentSelectionRB2)
+			
 			# ############################################################################
 			# save settings
 			# ############################################################################
@@ -120,6 +152,16 @@ def showQtGUI():
 			self.groupBody2 = QtGui.QGroupBox(translate('magicSettings', 'Wood color'), self)
 			self.groupBody2.setLayout(self.Body2)
 
+			self.Body3 = QtGui.QGridLayout()
+			self.Body3.addWidget(self.oWindowL, 0, 0)
+			self.Body3.addWidget(self.oWindowRB1, 0, 1)
+			self.Body3.addWidget(self.oWindowRB2, 0, 2)
+			self.Body3.addWidget(self.oCurrentSelectionL, 1, 0)
+			self.Body3.addWidget(self.oCurrentSelectionRB1, 1, 1)
+			self.Body3.addWidget(self.oCurrentSelectionRB2, 1, 2)
+			self.groupBody3 = QtGui.QGroupBox(translate('magicSettings', ''), self)
+			self.groupBody3.setLayout(self.Body3)
+			
 			self.Save = QtGui.QVBoxLayout()
 			self.Save.addWidget(self.oStatusL)
 			self.Save.addWidget(self.oSaveB)
@@ -129,6 +171,8 @@ def showQtGUI():
 			self.layout.addWidget(self.groupBody1)
 			self.layout.addStretch()
 			self.layout.addWidget(self.groupBody2)
+			self.layout.addStretch()
+			self.layout.addWidget(self.groupBody3)
 			self.layout.addStretch()
 			self.layout.addLayout(self.Save)
 			self.setLayout(self.layout)
@@ -159,37 +203,54 @@ def showQtGUI():
 		# ############################################################################
 		
 		# ############################################################################
+		def doNothing(self):
+			skip = 1
+
+		# ############################################################################
 		def getSettings(self):
 			
-			pref = MagicPanels.gSettingsPref
-			
 			try:
-				theme = FreeCAD.ParamGet(pref).GetString('wTheme')
-				self.oTheme.setCurrentText(theme)
+				self.oTheme.setCurrentText(MagicPanels.gTheme)
 			except:
 				skip = 1
 				
 			try:
-				thick = FreeCAD.ParamGet(pref).GetString('wWoodThickness')
-				if thick != "":
-					thick = MagicPanels.unit2gui(thick)
-					self.oWoodThickE.setText(thick)
-				
+				thick = MagicPanels.gWoodThickness
+				thick = MagicPanels.unit2gui(thick)
+				self.oWoodThickE.setText(thick)
 			except:
 				skip = 1
 				
 			try:
-				cR = FreeCAD.ParamGet(pref).GetString('wWoodColorR')
-				cG = FreeCAD.ParamGet(pref).GetString('wWoodColorG')
-				cB = FreeCAD.ParamGet(pref).GetString('wWoodColorB')
-				cA = FreeCAD.ParamGet(pref).GetString('wWoodColorA')
-				self.oWoodColorRE.setText(cR)
-				self.oWoodColorGE.setText(cG)
-				self.oWoodColorBE.setText(cB)
-				self.oWoodColorAE.setText(cA)
+				color = MagicPanels.gDefaultColor
+				color = MagicPanels.convertColor(color, "RGBA")
+				[ r, g, b, a ] = [ str(color[0]), str(color[1]), str(color[2]), str(color[3]) ]
+				
+				self.oWoodColorRE.setText(r)
+				self.oWoodColorGE.setText(g)
+				self.oWoodColorBE.setText(b)
+				self.oWoodColorAE.setText(a)
 			except:
 				skip = 1
 			
+			try:
+				val = MagicPanels.gWindowStaysOnTop
+				if val == True:
+					self.oWindowRB1.setChecked(True)
+				else:
+					self.oWindowRB2.setChecked(True)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gCurrentSelection
+				if val == True:
+					self.oCurrentSelectionRB1.setChecked(True)
+				else:
+					self.oCurrentSelectionRB2.setChecked(True)
+			except:
+				skip = 1
+
 		# ############################################################################
 		def setThemeType(self, selectedText):
 			
@@ -203,17 +264,16 @@ def showQtGUI():
 		def saveSettings(self):
 			
 			try:
-				pref = MagicPanels.gSettingsPref
+				wus = FreeCAD.ParamGet(MagicPanels.gSettingsPref)
 				
 				# theme
-				FreeCAD.ParamGet(pref).SetString('wTheme', str(self.gTheme))
-				MagicPanels.gTheme = str(FreeCAD.ParamGet(pref).GetString('wTheme'))
+				wus.SetString('wTheme', str(self.gTheme))
+				
 				
 				# thickness
 				thick = self.oWoodThickE.text()
 				thick = MagicPanels.unit2value(thick)
-				MagicPanels.gWoodThickness = thick
-				FreeCAD.ParamGet(pref).SetString('wWoodThickness', str(thick))
+				wus.SetString('wWoodThickness', str(thick))
 
 				# color
 				cR = self.oWoodColorRE.text()
@@ -224,18 +284,21 @@ def showQtGUI():
 				if cR == "" and cG == "" and cB == "" and cA == "":
 					[ cR, cG, cB, cA ] = [ "247", "185", "108", "255" ]
 
-				FreeCAD.ParamGet(pref).SetString('wWoodColorR', cR)
-				FreeCAD.ParamGet(pref).SetString('wWoodColorG', cG)
-				FreeCAD.ParamGet(pref).SetString('wWoodColorB', cB)
-				FreeCAD.ParamGet(pref).SetString('wWoodColorA', cA)
+				wus.SetString('wWoodColorR', cR)
+				wus.SetString('wWoodColorG', cG)
+				wus.SetString('wWoodColorB', cB)
+				wus.SetString('wWoodColorA', cA)
 				
-				cR = FreeCAD.ParamGet(pref).GetString('wWoodColorR')
-				cG = FreeCAD.ParamGet(pref).GetString('wWoodColorG')
-				cB = FreeCAD.ParamGet(pref).GetString('wWoodColorB')
-				cA = FreeCAD.ParamGet(pref).GetString('wWoodColorA')
-				colorArr = [ int(cR), int(cG), int(cB), int(cA) ]
-				MagicPanels.gDefaultColor = MagicPanels.convertColor(colorArr, "kernel")
+				# window stays on top
+				wus.SetBool('wWindowStaysOnTop', self.oWindowRB1.isChecked())
 				
+				# current selection
+				wus.SetBool('wCurrentSelection', self.oCurrentSelectionRB1.isChecked())
+				
+				# update globals
+				MagicPanels.updateGlobals()
+				
+				# status
 				self.oStatusL.setText(translate('magicSettings', 'Settings have been updated.'))
 				
 			except:

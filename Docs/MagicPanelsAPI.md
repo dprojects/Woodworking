@@ -25,6 +25,27 @@ gSettingsPref = 'User parameter:BaseApp/Preferences/Woodworking'                
 gTheme = "default"                                                                   # no theme by default <br>
 gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0)   # default color [247, 185, 108, 255] <br>
 gWoodThickness = 18                                                                  # wood thickness <br>
+gWindowStaysOnTop = True                                                             # to keep window on top <br> 
+gCurrentSelection = False                                                            # to skip refresh selection button <br>
+
+# Functions for library
+### updateGlobals():
+
+	Description:
+	
+		This function update MagicPanels library globals from User settings.
+	
+##### Description:
+	
+		none.
+
+##### Usage:
+	
+		MagicPanels.updateGlobals()
+
+##### Result:
+	
+		none.
 
 # Functions for general purpose
 ### isType(iObj, iType="Clone"):

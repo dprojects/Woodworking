@@ -161,6 +161,9 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * current selection feature to skip refresh selection button (magicSettings, magicMove)
+    * window stays on top feature (magicSettings, all tools with GUI)
+    * improve user settings (magicSettings)
     * cerification and versioning for package and backward compatibility
     * toolbar icons positioning
     * changes for installation package
@@ -516,7 +519,7 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 **Options:**
 
-* **refresh selection:** loads new objects.
+* **refresh selection:** loads new objects. To skip this button, please see `Current selection: yes` options at [magicSettings](#magicsettings) tool.
 
 * **Move:** In this mode you can move any object with custom step. You can also move containers, for example panel with dowels inside `LinkGroup`.
   * buttons: `X-`, `X+`, `Y-`, `Y+`, `Z-`, `Z+` move object into the chosen axis direction, there is auto-repeat so you can hold the button to move objects more quickly.
@@ -784,6 +787,12 @@ Selection modes:
 * **Theme:** allows you to choose a color theme for all Woodworking workbench tools. Switching the theme causes an immediate preview on the tool interface. To save a given theme, press the `save settings` button. The `default` means no theme.
 * **Wood thickness:** allows you to set the default thickness of the wood you create. This setting is used by tools such as [magicStart](#magicstart), [wires2pad](#wires2pad), [Default panels](#default-panels) and all others.
 * **Wood color:** allows you to set the default color of the wood you create in RGBA color schema. This setting is used by tools like [magicStart](#magicstart), [wires2pad](#wires2pad), [Default panels](#default-panels) and all others. If you want to revert to the default wood color which is `RGBA = [ 247, 185, 108, 255 ]` leave all fields empty and press the `save settings` button.
+* **Window stays on top:**
+  * `yes` - Tool windows always stay on top of all other applications. I personally use this feature when creating documentation. I have Krusader (Kwrite Edit) and the new tool window open simultaneously, so I can describe all the options without constantly clicking on the new tool window.
+  * `no` - Enables the default window behavior, i.e. when you switch to another application, the window disappears.
+* **Current selection:** 
+  * `yes` - Allows you to bypass the `refresh selection` button. When enabled, you do not have to constantly press the `refresh selection` button to load objects into memory, you can simply select them. However, this is an experimental option and only works for the [magicMove](#magicmove) tool.
+  * `no` - The default behavior of the tools is that moving objects requires loading the objects into memory by pressing the `refresh selection` button.
 * **save settings:** button saves the current settings in FreeCAD configuration files, i.e. `User parameter:BaseApp/Preferences/Woodworking`. This data can be checked, fixed or removed using the parameter editor in FreeCAD, i.e. `Tools -> Edit parameters... -> Preferences -> Woodworking`.
 
 **Video tutorials:** 

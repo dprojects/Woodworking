@@ -16,6 +16,8 @@ import FreeCAD, FreeCADGui
 from PySide import QtGui, QtCore
 from pivy import coin
 
+import MagicPanels
+
 translate = FreeCAD.Qt.translate
 
 
@@ -68,7 +70,8 @@ def showQtMain():
 			self.result = userCancelled
 			self.setGeometry(gPW, gPH, toolSW, toolSH)
 			self.setWindowTitle(translate('setTextures', 'setTextures'))
-			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			if MagicPanels.gWindowStaysOnTop == True:
+				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
 			# header
@@ -229,12 +232,8 @@ def showQtMain():
 			self.show()
 			
 			# set theme
-			try:
-				import MagicPanels as MP
-				QtCSS = MP.getTheme(MP.gTheme)
-				self.setStyleSheet(QtCSS)
-			except:
-				skip = 1
+			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
+			self.setStyleSheet(QtCSS)
 			
 		# ############################################################################
 		# actions - status

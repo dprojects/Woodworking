@@ -14,6 +14,7 @@ https://github.com/dprojects/Woodworking
 import FreeCAD, FreeCADGui
 from PySide import QtGui, QtCore
 
+import MagicPanels
 
 # ############################################################################
 # Qt Main
@@ -183,7 +184,8 @@ def showQtGUI():
 			self.result = userCancelled
 			self.setGeometry(0, 0, self.gW, self.gH)
 			self.setWindowTitle("scanObjects - inspection tool for macro development")
-			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+			if MagicPanels.gWindowStaysOnTop == True:
+				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
 			# options - scan root
