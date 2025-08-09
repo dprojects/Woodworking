@@ -28,24 +28,34 @@ gWoodThickness = 18                                                             
 gWindowStaysOnTop = True                                                             # to keep window on top <br> 
 gCurrentSelection = False                                                            # to skip refresh selection button <br>
 
+# INFO: Globals are updated from user settings via updateGlobals function at the end of the library.
+
 # Functions for library
-### updateGlobals():
+### updateGlobals(iGlobal="all"):
 
 	Description:
 	
 		This function update MagicPanels library globals from User settings.
 	
 ##### Description:
-	
-		none.
-
+		"all" - update all globals
+		"gKernelVersion"
+		"gTheme"
+		"gWoodThickness"
+		"gDefaultColor"
+		"gWindowStaysOnTop"
+		"gCurrentSelection"
+		
 ##### Usage:
 	
 		MagicPanels.updateGlobals()
+		MagicPanels.updateGlobals("all")
+		MagicPanels.updateGlobals("gWoodThickness")
 
 ##### Result:
 	
-		none.
+		if the iGlobal == "all" there is no return, just set all MagicPanels global variables
+		if the iGlobal == "variable name" for example "gWoodThickness" there is value returned to assign
 
 # Functions for general purpose
 ### isType(iObj, iType="Clone"):

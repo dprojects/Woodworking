@@ -58,6 +58,8 @@ gWoodThickness = 18                                                             
 gWindowStaysOnTop = True                                                             # to keep window on top <br> 
 gCurrentSelection = False                                                            # to skip refresh selection button <br>
 
+# INFO: Globals are updated from user settings via updateGlobals function at the end of the library.
+
 # end globals (for API generator)
 
 
@@ -68,23 +70,31 @@ gCurrentSelection = False                                                       
 # ###################################################################################################################
 
 
-def updateGlobals():
+def updateGlobals(iGlobal="all"):
 	'''
 	Description:
 	
 		This function update MagicPanels library globals from User settings.
 	
 	Args:
-	
-		none.
-
+		"all" - update all globals
+		"gKernelVersion"
+		"gTheme"
+		"gWoodThickness"
+		"gDefaultColor"
+		"gWindowStaysOnTop"
+		"gCurrentSelection"
+		
 	Usage:
 	
 		MagicPanels.updateGlobals()
+		MagicPanels.updateGlobals("all")
+		MagicPanels.updateGlobals("gWoodThickness")
 
 	Result:
 	
-		none.
+		if the iGlobal == "all" there is no return, just set all MagicPanels global variables
+		if the iGlobal == "variable name" for example "gWoodThickness" there is value returned to assign
 
 	'''
 
@@ -95,60 +105,68 @@ def updateGlobals():
 	wusBools = wus.GetBools()
 	
 	# set FreeCAD kernel version
-	try:
-		global gKernelVersion
-		gKernelVersion = float( str(FreeCAD.Version()[0]) + "." + str(FreeCAD.Version()[1]) + str(FreeCAD.Version()[2]) )
-	except:
-		skip = 1
+	if iGlobal == "all" or iGlobal == "gKernelVersion":
+		value = float( str(FreeCAD.Version()[0]) + "." + str(FreeCAD.Version()[1]) + str(FreeCAD.Version()[2]) )
+		if iGlobal == "gKernelVersion":
+			return value
+		else:
+			global gKernelVersion
+			gKernelVersion = value
 
 	# set theme
-	try:
+	if iGlobal == "all" or iGlobal == "gTheme":
 		if "wTheme" in wusStrings:
-			global gTheme
-			gTheme = wus.GetString('wTheme')
-	except:
-		skip = 1
-
+			value = wus.GetString('wTheme')
+			if iGlobal == "gTheme":
+				return value
+			else:
+				global gTheme
+				gTheme = value
+			
+	# set wood thickness
+	if iGlobal == "all" or iGlobal == "gWoodThickness":
+		if "wWoodThickness" in wusStrings:
+			value = unit2value( wus.GetString('wWoodThickness') )
+			if iGlobal == "gWoodThickness":
+				return value
+			else:
+				global gWoodThickness
+				gWoodThickness = value
+		
 	# set wood color
-	try:
+	if iGlobal == "all" or iGlobal == "gDefaultColor":
 		if "wWoodColorR" in wusStrings:
 			cR = wus.GetString('wWoodColorR')
 			cG = wus.GetString('wWoodColorG')
 			cB = wus.GetString('wWoodColorB')
 			cA = wus.GetString('wWoodColorA')
-			colorArr = [ int(cR), int(cG), int(cB), int(cA) ]
-			global gDefaultColor
-			gDefaultColor = convertColor(colorArr, "kernel")
-	except:
-		skip = 1
-
-	# set wood thickness
-	try:
-		if "wWoodThickness" in wusStrings:
-			global gWoodThickness
-			gWoodThickness = unit2value( wus.GetString('wWoodThickness') )
-	except:
-		skip = 1
+			colorArr = [ int(float(cR)), int(float(cG)), int(float(cB)), int(float(cA)) ]
+			value = convertColor(colorArr, "kernel")
+			if iGlobal == "gDefaultColor":
+				return value
+			else:
+				global gDefaultColor
+				gDefaultColor = value
 
 	# set window stays on top
-	try:
+	if iGlobal == "all" or iGlobal == "gWindowStaysOnTop":
 		if "wWindowStaysOnTop" in wusBools:
-			global gWindowStaysOnTop
-			gWindowStaysOnTop = wus.GetBool('wWindowStaysOnTop')
-	except:
-		skip = 1
+			value = wus.GetBool('wWindowStaysOnTop')
+			if iGlobal == "gWindowStaysOnTop":
+				return value
+			else:
+				global gWindowStaysOnTop
+				gWindowStaysOnTop = value
 
 	# set current selection
-	try:
+	if iGlobal == "all" or iGlobal == "gCurrentSelection":
 		if "wCurrentSelection" in wusBools:
-			global gCurrentSelection
-			gCurrentSelection = wus.GetBool('wCurrentSelection')
-	except:
-		skip = 1
-
-
-# execute by default
-updateGlobals()
+			value = wus.GetBool('wCurrentSelection')
+			if iGlobal == "gCurrentSelection":
+				return value
+			else:
+				global gCurrentSelection
+				gCurrentSelection = value
 
 
 # ###################################################################################################################
@@ -7729,4 +7747,14 @@ def setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="normal"):
 
 
 # ###################################################################################################################
+# UPDATE GLOBALS HERE AFTER FUNCTIONS LOADED
+# ###################################################################################################################
 
+gKernelVersion = updateGlobals("gKernelVersion")
+gTheme = updateGlobals("gTheme")
+gWoodThickness = updateGlobals("gWoodThickness")
+gDefaultColor = updateGlobals("gDefaultColor")
+gWindowStaysOnTop = updateGlobals("gWindowStaysOnTop")
+gCurrentSelection = updateGlobals("gCurrentSelection")
+
+# ###################################################################################################################
