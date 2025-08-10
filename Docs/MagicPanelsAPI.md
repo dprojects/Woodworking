@@ -30,33 +30,6 @@ gCurrentSelection = False                                                       
 
 # INFO: Globals are updated from user settings via updateGlobals function at the end of the library.
 
-# Functions for library
-### updateGlobals(iGlobal="all"):
-
-	Description:
-	
-		This function update MagicPanels library globals from User settings.
-	
-##### Description:
-		"all" - update all globals
-		"gKernelVersion"
-		"gTheme"
-		"gWoodThickness"
-		"gDefaultColor"
-		"gWindowStaysOnTop"
-		"gCurrentSelection"
-		
-##### Usage:
-	
-		MagicPanels.updateGlobals()
-		MagicPanels.updateGlobals("all")
-		MagicPanels.updateGlobals("gWoodThickness")
-
-##### Result:
-	
-		if the iGlobal == "all" there is no return, just set all MagicPanels global variables
-		if the iGlobal == "variable name" for example "gWoodThickness" there is value returned to assign
-
 # Functions for general purpose
 ### isType(iObj, iType="Clone"):
 
@@ -2552,3 +2525,45 @@ gCurrentSelection = False                                                       
 	
 		Object should be moved into 100, 100, 200 position with exact anchor.
 
+# Functions for MagicPanels library config
+### updateGlobals():
+
+	Description:
+	
+		This function update MagicPanels library globals from user settings.
+	
+##### Description:
+		none, user config may not exist, so should not be direct assign
+		
+##### Usage:
+	
+		MagicPanels.updateGlobals()
+
+##### Result:
+	
+		there is no return, just overwrite all MagicPanels globals from user config
+
+FreeCAD.Console.PrintMessage("\n\n")
+FreeCAD.Console.PrintMessage(gKernelVersion)
+FreeCAD.Console.PrintMessage("\n")
+FreeCAD.Console.PrintMessage(gTheme)
+FreeCAD.Console.PrintMessage("\n")
+FreeCAD.Console.PrintMessage(gWoodThickness)
+FreeCAD.Console.PrintMessage("\n")
+FreeCAD.Console.PrintMessage(gDefaultColor)
+FreeCAD.Console.PrintMessage("\n")
+FreeCAD.Console.PrintMessage(gWindowStaysOnTop)
+FreeCAD.Console.PrintMessage("\n")
+FreeCAD.Console.PrintMessage(gCurrentSelection)
+FreeCAD.Console.PrintMessage("\n\n")
+FreeCAD.Console.PrintMessage(gKernelVersion)
+FreeCAD.Console.PrintMessage("\n")
+FreeCAD.Console.PrintMessage(gTheme)
+FreeCAD.Console.PrintMessage("\n")
+FreeCAD.Console.PrintMessage(gWoodThickness)
+FreeCAD.Console.PrintMessage("\n")
+FreeCAD.Console.PrintMessage(gDefaultColor)
+FreeCAD.Console.PrintMessage("\n")
+FreeCAD.Console.PrintMessage(gWindowStaysOnTop)
+FreeCAD.Console.PrintMessage("\n")
+FreeCAD.Console.PrintMessage(gCurrentSelection)
