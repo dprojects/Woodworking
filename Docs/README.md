@@ -161,10 +161,11 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * fix globals (MagicPanels)
     * current selection feature to skip refresh selection button (magicSettings, magicMove)
     * window stays on top feature (magicSettings, all tools with GUI)
     * improve user settings (magicSettings)
-    * cerification and versioning for package and backward compatibility
+    * certification and versioning for package and backward compatibility
     * toolbar icons positioning
     * changes for installation package
     * create copy as Array (magicMove)

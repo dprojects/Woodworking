@@ -1,39 +1,45 @@
 
+
 # MagicPanels
 
 	This is MagicPanels library for Woodworking workbench.
 	Darek L (github.com/dprojects)
 
-Usage:
+### Usage:
 
 	import MagicPanels
 	returned_value = MagicPanels.function(args)
 
-Functions at this library:
+### Functions at this library:
 
 * Should not have error handling and pop-ups, so you can call it from GUI tools in loops.
 * Should return value, if further processing needed.
 
+
+
+
+
+
 # Globals
 
+* `gRoundPrecision = 2 `: should be set according to the user FreeCAD GUI settings <br>
+* `gSearchDepth = 200 `: recursive search depth <br>
+* `gKernelVersion = 0 `: FreeCAD version to add support for new kernel changes <br>
+* `gSettingsPref = 'User parameter:BaseApp/Preferences/Woodworking'`: settings path <br>
+* `gTheme = "default" `: no theme by default <br>
+* `gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0)`: default color [247, 185, 108, 255] <br>
+* `gWoodThickness = 18`: wood thickness <br>
+* `gWindowStaysOnTop = True `: to keep window on top <br> 
+* `gCurrentSelection = False`: to skip refresh selection button <br>
 
-gRoundPrecision = 2      # should be set according to the user FreeCAD GUI settings <br>
-gSearchDepth = 200       # recursive search depth <br>
-gKernelVersion = 0       # FreeCAD version to add support for new kernel changes <br>
-
-gSettingsPref = 'User parameter:BaseApp/Preferences/Woodworking'                     # settings path <br>
-gTheme = "default"                                                                   # no theme by default <br>
-gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0)   # default color [247, 185, 108, 255] <br>
-gWoodThickness = 18                                                                  # wood thickness <br>
-gWindowStaysOnTop = True                                                             # to keep window on top <br> 
-gCurrentSelection = False                                                            # to skip refresh selection button <br>
-
-# INFO: Globals are updated from user settings via updateGlobals function at the end of the library.
+> [!CAUTION]
+> Globals are updated from user settings via updateGlobals function at the end of the library.
 
 # Functions for general purpose
-### isType(iObj, iType="Clone"):
 
-	Description:
+### isType(iObj, iType="Clone"):
+	
+##### Description:
 	
 		This function checks if the given object iObj is iType. 
 		It has been created mostly for Clones. The Clones are "Part::FeaturePython" type. 
@@ -41,7 +47,7 @@ gCurrentSelection = False                                                       
 		for example Array. So, you can't recognize the Clones only with .isDerivedFrom() function or 
 		even .TypeId. To simplify the code look you can hide the ckecks behind the function.
 	
-##### Description:
+##### Args:
 	
 		iObj: object
 		iType: string for type:
@@ -58,14 +64,14 @@ gCurrentSelection = False                                                       
 		return True or False, so you can use it directly in if statement
 
 ### equal(iA, iB):
-
-	Description:
+	
+##### Description:
 	
 		At FreeCAD there are many values like 1.000006, especially for PartDesign objects. 
 		So if you want to compare such values this sometimes might be True and sometimes False. 
 		So, finally I decided to write my own function for comparison.
 	
-##### Description:
+##### Args:
 	
 		iA: float value
 		iB: float value
@@ -80,12 +86,12 @@ gCurrentSelection = False                                                       
 		return True if equal or False if not
 
 ### touchTypo(iObj):
-
-	Description:
+	
+##### Description:
 	
 		Touch the typo so that the typo-snake does not notice it ;-) LOL
 	
-##### Description:
+##### Args:
 	
 		iObj: object to touch
 
@@ -98,13 +104,13 @@ gCurrentSelection = False                                                       
 		return Vertex + es for object o
 
 ### normalizeBoundBox(iBoundBox):
-
-	Description:
+	
+##### Description:
 	
 		Return normalized version of BoundBox. All values 0.01 will be rounded 
 		allowing comparison, and searches for the same face or edge.
 	
-##### Description:
+##### Args:
 	
 		iBoundBox: directly pass BoundBox object
 
@@ -120,14 +126,16 @@ gCurrentSelection = False                                                       
 	
 		return normalized version for comparison if b1 == b2: you can set your own precision here
 
-# References
-### getReference(iObj="none"):
 
-	Description:
+# References
+
+### getReference(iObj="none"):
+	
+##### Description:
 	
 		Gets reference to the selected or given object.
 	
-##### Description:
+##### Args:
 	
 		iObj (optional): object to get reference (to return base object)
 	
@@ -141,12 +149,12 @@ gCurrentSelection = False                                                       
 		gObj - reference to the base object
 
 ### getBody(iObj):
-
-	Description:
+	
+##### Description:
 	
 		Return Body for given object.
 	
-##### Description:
+##### Args:
 	
 		iObj: object to get Body
 
@@ -158,15 +166,17 @@ gCurrentSelection = False                                                       
 	
 		Return body object or empty string if there is no Body
 
-# Sizes
-### getSizes(iObj):
 
-	Description:
+# Sizes
+
+### getSizes(iObj):
+	
+##### Description:
 	
 		Allows to get sizes for object (iObj), according to the object type. 
 		The values are not sorted.
 	
-##### Description:
+##### Args:
 	
 		iObj: object to get sizes
 
@@ -179,12 +189,12 @@ gCurrentSelection = False                                                       
 		Returns [ Length, Width, Height ] for Cube.
 
 ### getSizesFromVertices(iObj):
-
-	Description:
+	
+##### Description:
 	
 		Gets occupied space by the object from vertices.
 	
-##### Description:
+##### Args:
 	
 		iObj: object
 	
@@ -200,13 +210,13 @@ gCurrentSelection = False                                                       
 		mZ - occupied space along Z axis
 
 ### getSizesFromBoundBox(iObj):
-
-	Description:
+	
+##### Description:
 	
 		Gets occupied space by the object from BoundBox. This can be useful for round shapes, 
 		where is no vertices at object edges, e.g. cylinders, circle at Sketch.
 	
-##### Description:
+##### Args:
 	
 		iObj: object
 	
@@ -222,12 +232,12 @@ gCurrentSelection = False                                                       
 		mZ - occupied space along Z axis
 
 ### getOccupiedSpace(iObjects):
-
-	Description:
+	
+##### Description:
 	
 		Function to get occupied space by many objects. 
 	
-##### Description:
+##### Args:
 	
 		iObjects: array with objects
 	
@@ -249,14 +259,16 @@ gCurrentSelection = False                                                       
 			cy - Y float of the occupied space by all objects
 			cz - Z float of the occupied space by all objects
 
-# Copy
-### copyPanel(iObjects, iType="auto"):
 
-	Description:
+# Copy
+
+### copyPanel(iObjects, iType="auto"):
+	
+##### Description:
 	
 		This function has been created for magicMove tool to copy any object type.
 
-##### Description:
+##### Args:
 	
 		iObjects: array with objects to copy
 		iType (optional): copy type:
@@ -279,12 +291,12 @@ gCurrentSelection = False                                                       
 	
 		return array with copies
 ### getObjectToCopy(iObj):
-
-	Description:
+	
+##### Description:
 	
 		This function returns object to copy.
 	
-##### Description:
+##### Args:
 	
 		iObj: object to get reference to copy
 
@@ -306,24 +318,16 @@ gCurrentSelection = False                                                       
 		for Links: returns Link
 		for any other object: returns object
 
-		oRef = getReference(iObj)
-		
-		if oRef.isDerivedFrom("Part::Box"):
-			return oRef
-		else:
-			try:
-				toCopy = iObj._Body
-				return toCopy
-			except:
-				skip = 1
-# Edges
-### getEdgeVertices(iEdge):
 
-	Description:
+# Edges
+
+### getEdgeVertices(iEdge):
+	
+##### Description:
 	
 		Gets all vertices values for edge.
 	
-##### Description:
+##### Args:
 	
 		iEdge: edge object
 
@@ -336,12 +340,12 @@ gCurrentSelection = False                                                       
 		Return vertices array like [ [ 1, 1, 1 ], [ 1, 1, 1 ] ].
 
 ### getEdgeVectors(iEdge):
-
-	Description:
+	
+##### Description:
 	
 		Gets all vertices values for edge as FreeCAD.Vector array.
 	
-##### Description:
+##### Args:
 	
 		iEdge: edge object
 
@@ -354,13 +358,13 @@ gCurrentSelection = False                                                       
 		Return vertices array like [ FreeCAD.Vector, FreeCAD.Vector ].
 
 ### getEdgeNormalized(iV1, iV2):
-
-	Description:
+	
+##### Description:
 	
 		Returns vertices with exact sorted order V1 > V2, mostly used 
 		to normalize Pad vertices.
 	
-##### Description:
+##### Args:
 	
 		iV1: array with vertices e.g. [ 1, 1, 1 ]
 		iV2: array with vertices e.g. [ 2, 2, 2 ]
@@ -374,12 +378,12 @@ gCurrentSelection = False                                                       
 		for vertices [ 2, 2, 2 ], [ 1, 1, 1 ] return [ 1, 1, 1 ], [ 2, 2, 2 ]
 
 ### getEdgeIndex(iObj, iEdge):
-
-	Description:
+	
+##### Description:
 	
 		Returns edge index for given object and edge.
 	
-##### Description:
+##### Args:
 	
 		iObj: object of the edge
 		iEdge: edge object
@@ -393,12 +397,12 @@ gCurrentSelection = False                                                       
 		return int value for edge
 
 ### getEdgeIndexByKey(iObj, iBoundBox):
-
-	Description:
+	
+##### Description:
 	
 		Returns edge index for given edge BoundBox.
 	
-##### Description:
+##### Args:
 	
 		iObj: object of the edge
 		iBoundBox: edge BoundBox as key
@@ -412,12 +416,12 @@ gCurrentSelection = False                                                       
 		return int value for edge
 
 ### getEdgePlane(iObj, iEdge, iType="auto"):
-
-	Description:
+	
+##### Description:
 	
 		Returns orientation for the edge, changed axis, as "X", "Y" or "Z".
 	
-##### Description:
+##### Args:
 	
 		iObj: object with the edge
 		iEdge: edge object
@@ -434,12 +438,12 @@ gCurrentSelection = False                                                       
 		return string "X", "Y" or "Z".
 
 ### getSizeByEdge(iObj, iEdge):
-
-	Description:
+	
+##### Description:
 	
 		Returns iObj property (objects field name) to change for iEdge. 
 	
-##### Description:
+##### Args:
 	
 		iObj: object with the edge
 		iEdge: edge object
@@ -452,14 +456,16 @@ gCurrentSelection = False                                                       
 	
 		For Cube (Part::Box) object returns string "Length", "Width" or "Height".
 
-# Faces
-### getFaceIndex(iObj, iFace):
 
-	Description:
+# Faces
+
+### getFaceIndex(iObj, iFace):
+	
+##### Description:
 	
 		Returns face index for given object and face.
 	
-##### Description:
+##### Args:
 	
 		iObj: object of the face
 		iFace: face object
@@ -473,12 +479,12 @@ gCurrentSelection = False                                                       
 		return int value for face
 
 ### getFaceIndexByKey(iObj, iBoundBox):
-
-	Description:
+	
+##### Description:
 	
 		Returns face index for given face BoundBox.
 	
-##### Description:
+##### Args:
 	
 		iObj: object of the face
 		iBoundBox: face BoundBox as key
@@ -492,12 +498,12 @@ gCurrentSelection = False                                                       
 		return int value for face
 
 ### getFaceVertices(iFace, iType="4"):
-
-	Description:
+	
+##### Description:
 	
 		Gets all vertices values for face.
 	
-##### Description:
+##### Args:
 	
 		iFace: face object
 		iType (optional): 
@@ -516,12 +522,12 @@ gCurrentSelection = False                                                       
 		Return vertices array like [ [ 1, 1, 1 ], [ 2, 2, 2 ], [ 3, 3, 3 ], [ 4, 4, 4 ] ]
 
 ### getFaceType(iObj, iFace):
-
-	Description:
+	
+##### Description:
 	
 		Gets face type, if this is "edge" or "surface".
 	
-##### Description:
+##### Args:
 	
 		iObj: object where is the face
 		iFace: face object
@@ -535,12 +541,12 @@ gCurrentSelection = False                                                       
 		Return string "surface" or "edge".
 
 ### getFaceEdges(iObj, iFace):
-
-	Description:
+	
+##### Description:
 	
 		Gets all edges for given face grouped by sizes.
 	
-##### Description:
+##### Args:
 	
 		iObj: object where is the face
 		iFace: face object
@@ -560,12 +566,12 @@ gCurrentSelection = False                                                       
 		arrLong - array with the long edges
 
 ### getFacePlane(iFace):
-
-	Description:
+	
+##### Description:
 	
 		Gets face plane in notation "XY", "XZ", "YZ". 
 
-##### Description:
+##### Args:
 	
 		iFace: face object
 
@@ -578,12 +584,12 @@ gCurrentSelection = False                                                       
 		string "XY", "XZ", or "YZ".
 		
 ### getFaceSink(iObj, iFace):
-
-	Description:
+	
+##### Description:
 	
 		Gets face sink axis direction in notation "+", or "-".
 
-##### Description:
+##### Args:
 	
 		iObj: object with the face
 		iFace: face object
@@ -598,13 +604,13 @@ gCurrentSelection = False                                                       
 		or "-" if the object at face should go along axis backward
 
 ### getFaceObjectRotation(iObj, iFace):
-
-	Description:
+	
+##### Description:
 	
 		Gets face object rotation to apply to the new created object at face. 
 		Object created at face with this rotation should be up from the face.
 
-##### Description:
+##### Args:
 	
 		iObj: object with the face
 		iFace: face object
@@ -618,12 +624,12 @@ gCurrentSelection = False                                                       
 		FreeCAD.Rotation object that can be directly pass to the setPlacement or object.Placement
 
 ### getFaceDetails(iObj, iFace):
-
-	Description:
+	
+##### Description:
 	
 		Allows to get detailed information for face direction.
 	
-##### Description:
+##### Args:
 	
 		iObj: selected object
 		iFace: selected face object
@@ -641,14 +647,16 @@ gCurrentSelection = False                                                       
 		Note: The first argument can be "XY", "YX", "XZ", "ZX", "YZ", "ZY". 
 		This is related to face not to object. The object direction will be different.
 		
-# Vertices
-### vertices2vectors(iVertices):
 
-	Description:
+# Vertices
+
+### vertices2vectors(iVertices):
+	
+##### Description:
 	
 		Converts vertices into vector objects.
 	
-##### Description:
+##### Args:
 	
 		iVertices: array with vertices
 
@@ -661,12 +669,12 @@ gCurrentSelection = False                                                       
 	
 		return array with vectors
 ### showVertex(iVertices, iRadius=20, iColor="red"):
-
-	Description:
+	
+##### Description:
 	
 		Create sphere at given vertices, to show where are the points for debug purposes.
 	
-##### Description:
+##### Args:
 	
 		iVertices: array with Vertex or floats objects
 		iRadius (optional): ball Radius
@@ -680,12 +688,12 @@ gCurrentSelection = False                                                       
 	
 		remove old vertices and show new ones, return array of objects, spheres
 ### getVertex(iFace, iEdge, iVertex):
-
-	Description:
+	
+##### Description:
 	
 		Get vertex values for face, edge and vertex index.
 	
-##### Description:
+##### Args:
 	
 		iFace: face object
 		iEdge: edge array index
@@ -700,12 +708,12 @@ gCurrentSelection = False                                                       
 		Return vertex position.
 
 ### getVertexIndex(iObj, iVertex):
-
-	Description:
+	
+##### Description:
 	
 		Returns vertex index for given object and vertex object.
 	
-##### Description:
+##### Args:
 	
 		iObj: object of the vertex
 		iVertex: vertex object
@@ -720,12 +728,12 @@ gCurrentSelection = False                                                       
 		or get vertex from vertices array
 
 ### getVertexAxisCross(iA, iB):
-
-	Description:
+	
+##### Description:
 	
 		Return difference between iB and iA values with respect of coordinate axes.
 	
-##### Description:
+##### Args:
 	
 		iA: vertex float value
 		iB: vertex float value
@@ -739,12 +747,12 @@ gCurrentSelection = False                                                       
 		Return diff for vertices values.
 
 ### getVerticesPlane(iV1, iV2):
-
-	Description:
+	
+##### Description:
 	
 		Gets axes with the same values.
 	
-##### Description:
+##### Args:
 	
 		iV1: vertex object
 		iV2: vertex object
@@ -758,15 +766,15 @@ gCurrentSelection = False                                                       
 		Return plane as "XY", "XZ", "YZ".
 
 ### setVertexPadding(iObj, iVertex, iPadding, iAxis):
-
-	Description:
+	
+##### Description:
 	
 		Sets padding offset from given vertex to inside the object.
 		Do not use it at getPlacement for Pads. Use 0 vertex instead.
 		
 		Note: This need to be improved.
 	
-##### Description:
+##### Args:
 	
 		iObj: object
 		iVertex: vertex object FreeCAD.Vector(x, y, z)
@@ -783,8 +791,8 @@ gCurrentSelection = False                                                       
 		Return return new position value for given axis.
 
 ### getOnCurve(iPoint, iCurve):
-
-	Description:
+	
+##### Description:
 	
 		This function has been created to replace python .index() function. 
 		FreeCAD has not rounded float values at Vectors, so if you call 
@@ -793,7 +801,7 @@ gCurrentSelection = False                                                       
 		small not rounded difference, for example 0.0000006. So, this function scan the iCurve vectors 
 		and compare rounded values to return the index.
 	
-##### Description:
+##### Args:
 	
 		iPoint: Part.Vertex object or FreeCAD.Vector or array of floats like [ x, y, z ]
 		iCurve: object that has .getPoints() function, for example Wire, Sketch, Helix, Edge
@@ -807,10 +815,10 @@ gCurrentSelection = False                                                       
 		Return int value index for iPoint on iCurve.
 
 ### getVerticesOffset(iVertices, iObj, iType="array"):
-
+	
 	Gets iObj offset of all supported containers for vertices iVertices.
 	
-##### Description:
+##### Args:
 	
 		iObj: object to get containers offset
 		iVertices: vertices array
@@ -827,15 +835,15 @@ gCurrentSelection = False                                                       
 		return vertices array with correct container offset
 
 ### getVerticesPosition(iVertices, iObj, iType="auto"):
-
-	Description:
+	
+##### Description:
 	
 		Gets iVertices 3D position. This function should be used to show or select iVertices with rotation. 
 		It calculates all offsets with rotation. But this function should not be used for calculation. 
 		Because the vertices at FreeCAD are raw, without containers offset. The vertices at FreeCAD have only 
 		AttachmentOffset applied. If you start calculation with rotation, you need to calculate plane correctly.
 	
-##### Description:
+##### Args:
 	
 		iVertices: vertices array
 		iObj: object to get containers offset
@@ -858,12 +866,12 @@ gCurrentSelection = False                                                       
 		return vertices array with correct container offset, with the same type
 
 ### removeVerticesPosition(iVertices, iObj, iType="auto"):
-
-	Description:
+	
+##### Description:
 	
 		Remove iVertices 3D position. This function removes offset calculated with getVerticesPosition.
 	
-##### Description:
+##### Args:
 	
 		iVertices: vertices array
 		iObj: object to remove containers offset
@@ -885,14 +893,16 @@ gCurrentSelection = False                                                       
 	
 		return vertices array without container offset, with the same type
 
-# Direction, Plane, Orientation, Axis
-### isRotated(iObj):
 
-	Description:
+# Direction, Plane, Orientation, Axis
+
+### isRotated(iObj):
+	
+##### Description:
 	
 		Function to check if object iObj is rotated or not.
 
-##### Description:
+##### Args:
 	
 		iObj: object to check rotation
 
@@ -905,12 +915,12 @@ gCurrentSelection = False                                                       
 		Return True if the object is rotated or False otherwise.
 
 ### addRotation(iObj, iTarget):
-
-	Description:
+	
+##### Description:
 	
 		This function checks if the iObj is rotated and add the rotation to the iTarget objects.
 
-##### Description:
+##### Args:
 	
 		iObj: object to check rotation
 		iTarget: array with objects to set rotation
@@ -924,12 +934,12 @@ gCurrentSelection = False                                                       
 		If the iObj is rotated, set the same rotation to iTarget
 
 ### getModelRotation(iX, iY, iZ):
-
-	Description:
+	
+##### Description:
 	
 		Transform given iX, iY, iZ values to the correct vector, if the user rotated 3D model.
 
-##### Description:
+##### Args:
 	
 		iX: X value to transform
 		iY: Y value to transform
@@ -944,12 +954,12 @@ gCurrentSelection = False                                                       
 		[ X, Y, Z ] - transformed vector of given values
 
 ### getDirection(iObj):
-
-	Description:
+	
+##### Description:
 	
 		Allows to get Cube object direction (iType).
 	
-##### Description:
+##### Args:
 	
 		iObj: selected object
 
@@ -961,14 +971,16 @@ gCurrentSelection = False                                                       
 	
 		Returns iType: "XY", "YX", "XZ", "ZX", "YZ", "ZY"
 
-# Position, Placement, Move
-### getOffset(iObj, iDestination, iType="array"):
 
-	Description:
+# Position, Placement, Move
+
+### getOffset(iObj, iDestination, iType="array"):
+	
+##### Description:
 	
 		This function returns offset for setPosition function.
 	
-##### Description:
+##### Args:
 	
 		iObj: object to get offset
 		iDestination: global destination point
@@ -987,12 +999,12 @@ gCurrentSelection = False                                                       
 		return array with offsets [ offetX, offetY, offetZ ]
 
 ### getPosition(iObj, iType="global"):
-
-	Description:
+	
+##### Description:
 	
 		This function returns placement for the object to move or copy without rotation.
 	
-##### Description:
+##### Args:
 	
 		iObj: object to get placement
 		iType (optional): 
@@ -1013,12 +1025,12 @@ gCurrentSelection = False                                                       
 		z: Z Axis object position
 
 ### setPosition(iObj, iX, iY, iZ, iType="offset"):
-
-	Description:
+	
+##### Description:
 	
 		This function set object position to move or copy without rotation.
 		
-##### Description:
+##### Args:
 
 		iObj: object to add position offset, for example already created Clone or Link
 		iX: X axis offset to add or position to set
@@ -1043,12 +1055,12 @@ gCurrentSelection = False                                                       
 		return empty string if everything was fine or string with error info
 
 ### getObjectToMove(iObj):
-
-	Description:
+	
+##### Description:
 	
 		This function returns object to move.
 	
-##### Description:
+##### Args:
 	
 		iObj: object to get reference to move
 
@@ -1068,8 +1080,8 @@ gCurrentSelection = False                                                       
 		for any other object: returns object
 
 ### getObjectCenter(iObj):
-
-	Description:
+	
+##### Description:
 	
 		Returns center of the object.
 	
@@ -1078,7 +1090,7 @@ gCurrentSelection = False                                                       
 		Now it returns Shape.CenterOfMass for the object and it is not the same 
 		as center of the object.
 	
-##### Description:
+##### Args:
 	
 		iObj: object
 
@@ -1090,15 +1102,17 @@ gCurrentSelection = False                                                       
 	
 		Returns array with [ cx, cy, cz ] values for center point.
 
-# Containers
-### createContainer(iObjects, iLabel="Container", iNesting=True):
 
-	Description:
+# Containers
+
+### createContainer(iObjects, iLabel="Container", iNesting=True):
+	
+##### Description:
 	
 		This function creates container for given iObjects. The label for new container will be get from 
 		first element of iObjects (iObjects[0]).
 	
-##### Description:
+##### Args:
 	
 		iObjects: array of object to create container for them
 		iLabel: string, container label
@@ -1115,13 +1129,13 @@ gCurrentSelection = False                                                       
 		Created container and objects inside the container, return container object.
 
 ### getContainersPath(iObj):
-
-	Description:
+	
+##### Description:
 	
 		This function returns string with path to object in this way: LinkGroup.Part.Body.Pad
 		
 	
-##### Description:
+##### Args:
 	
 		iObj: object to get path
 
@@ -1134,13 +1148,13 @@ gCurrentSelection = False                                                       
 		return string
 
 ### getContainers(iObj):
-
-	Description:
+	
+##### Description:
 	
 		This function get list of containers for given iObj.
 		
 	
-##### Description:
+##### Args:
 	
 		iObj: object to get list of containers
 
@@ -1153,12 +1167,12 @@ gCurrentSelection = False                                                       
 		return array with objects
 
 ### moveToContainer(iObjects, iContainer, iType="object"):
-
-	Description:
+	
+##### Description:
 
 		Move objects iObjects to iContainer.
 
-##### Description:
+##### Args:
 	
 		iObjects: list of objects to move to iContainer, for example new created Cube
 		iContainer: container object or string describing destination level, possible:
@@ -1182,8 +1196,8 @@ gCurrentSelection = False                                                       
 		No return, move object.
 
 ### moveToFirst(iObjects, iSelection):
-
-	Description:
+	
+##### Description:
 
 		Move objects iObjects to first LinkGroup container for iSelection object.
 		
@@ -1198,7 +1212,7 @@ gCurrentSelection = False                                                       
 		and thus you'd have to use advanced formulas. It can be done with a trick, but maybe something like 
 		that will come along later if need be.
 
-##### Description:
+##### Args:
 	
 		iObjects: list of objects to move to container, for example [ copy1, copy2 ]
 		iSelection: selected object, for example "PartDesign::Pad" with structure "LinkGroup2 -> LinkGroup1 -> Part -> Body -> Pad" or "Part::Box" in structure "LinkGroup2 -> LinkGroup1 -> panelXY", to move the object to LinkGroup1
@@ -1213,13 +1227,13 @@ gCurrentSelection = False                                                       
 		No return, move copy object to LinkGroup1 container.
 
 ### getNestingLabel(iObj, iPrefix):
-
-	Description:
+	
+##### Description:
 	
 		This function set label for nesting objects, containers, copied, to not repeat 
 		the prefix and not make the label too long. 
 	
-##### Description:
+##### Args:
 	
 		iObj: object for the label check
 		iPrefix: string, preferred prefix for the label
@@ -1233,15 +1247,15 @@ gCurrentSelection = False                                                       
 		return string for the new label
 
 ### getContainersOffset(iObj):
-
-	Description:
+	
+##### Description:
 	
 		If the object is in the container like Part, Body, LinkGroup the vertices are 
 		not updated by FreeCAD. From FreeCAD perspective the object is still in the 
 		same place. This function is trying to solve this problem and calculates 
 		all offsets of all containers.
 	
-##### Description:
+##### Args:
 	
 		iObj: object to get containers offset
 
@@ -1259,13 +1273,13 @@ gCurrentSelection = False                                                       
 		coR: Rotation object
 
 ### getPlacementDiff(iStart, iDestination):
-
-	Description:
+	
+##### Description:
 	
 		Return diff that should be added to iStart to move object from iStart to iDestination position. 
 		If you want to move back you can minus the diff from iDestination.
 		
-##### Description:
+##### Args:
 	
 		iStart: start vertex float value
 		iDestination: destination vertex float value
@@ -1279,12 +1293,12 @@ gCurrentSelection = False                                                       
 		Return [ moveX, moveY, moveZ ] array with X, Y, Z floats to move object.
 
 ### isVisible(iObj):
-
-	Description:
+	
+##### Description:
 	
 		Returns object visibility, even if object is visible but inside the hidden LinkGroup container.
 		
-##### Description:
+##### Args:
 	
 		iObj: object to search visibility
 
@@ -1296,12 +1310,12 @@ gCurrentSelection = False                                                       
 	
 		Return boolean True or False
 ### toggleVisibility(iObj):
-
-	Description:
+	
+##### Description:
 	
 		Toggle object visibility.
 		
-##### Description:
+##### Args:
 	
 		iObj: object to toggle visibility
 
@@ -1312,15 +1326,17 @@ gCurrentSelection = False                                                       
 ##### Result:
 	
 		no return
-# Conversion
-### convertPosition(iObj, iX, iY, iZ):
 
-	Description:
+# Conversion
+
+### convertPosition(iObj, iX, iY, iZ):
+	
+##### Description:
 	
 		Convert given position vector to correct position values according 
 		to the object direction.
 	
-##### Description:
+##### Args:
 	
 		iObj: object
 		iX: x position
@@ -1336,14 +1352,14 @@ gCurrentSelection = False                                                       
 		For Pad object in XZ direction return the AttachmentOffset order [ 0, 0, -400 ]
 
 ### sizesToCubePanel(iObj, iType):
-
-	Description:
+	
+##### Description:
 	
 		Converts selected object (iObj) sizes to Cube panel sizes into given direction (iType). 
 		So, the returned values can be directly assigned to Cube object in order to create 
 		panel in exact direction.
 
-##### Description:
+##### Args:
 
 		iObj: selected object
 		iType direction: "XY", "YX", "XZ", "ZX", "YZ", "ZY"
@@ -1356,14 +1372,16 @@ gCurrentSelection = False                                                       
 
 		Returns [ Length, Width, Height ] for YZ object placement.
 
-# Replace
-### makePad(iObj, iPadLabel="Pad"):
 
-	Description:
+# Replace
+
+### makePad(iObj, iPadLabel="Pad"):
+	
+##### Description:
 	
 		Allows to create Part, Plane, Body, Pad, Sketch objects.
 	
-##### Description:
+##### Args:
 	
 		iObj: object Cube to change into Pad
 		iPadLabel: Label for the new created Pad, the Name will be Pad
@@ -1376,16 +1394,18 @@ gCurrentSelection = False                                                       
 	
 		Created Pad with correct placement, rotation and return [ part, body, sketch, pad ].
 
-# Measurements
-### showMeasure(iP1, iP2, iRef=""):
 
-	Description:
+# Measurements
+
+### showMeasure(iP1, iP2, iRef=""):
+	
+##### Description:
 	
 		Creates measurements object, I mean draw it. Now it use FreeCAD function 
 		to create and draw object. But in the future this can be changed to 
 		more beautiful drawing without changing tools. 
 	
-##### Description:
+##### Args:
 	
 		iP1: starting point vertex object
 		iP2: ending point vertex object
@@ -1400,12 +1420,12 @@ gCurrentSelection = False                                                       
 		Create measure object, draw it and return measure object for further processing. 
 
 ### getDistanceBetweenFaces(iObj1, iObj2, iFace1, iFace2):
-
-	Description:
+	
+##### Description:
 	
 		Gets distance between iFace1 and iFace2.
 	
-##### Description:
+##### Args:
 	
 		iObj1: object of iFace1
 		iObj2: object of iFace2
@@ -1420,14 +1440,16 @@ gCurrentSelection = False                                                       
 
 		return distance between face1 object and face2 object
 
-# Units
-### unit2gui(iValue):
 
-	Description:
+# Units
+
+### unit2gui(iValue):
+	
+##### Description:
 	
 		Allows to convert unit from value (mm float FreeCAD format) into gui user settings.
 
-##### Description:
+##### Args:
 
 		iValue: float from FreeCAD or from calculations
 		
@@ -1442,12 +1464,12 @@ gCurrentSelection = False                                                       
 		string
 
 ### unit2value(iString):
-
-	Description:
+	
+##### Description:
 	
 		Allows to convert user unit string into float for calculation. 
 
-##### Description:
+##### Args:
 
 		iString: units string in user settings notation, for example "5 mm", "5 in", "5 ft", 
 		but also accept quick value notation like "500" for all units schemas.
@@ -1463,14 +1485,16 @@ gCurrentSelection = False                                                       
 
 		float for calculation
 
-# Colors
-### convertColor(iColor, iTarget):
 
-	Description:
+# Colors
+
+### convertColor(iColor, iTarget):
+	
+##### Description:
 	
 		Converts colors.
 
-##### Description:
+##### Args:
 
 		iColor: 
 		
@@ -1505,12 +1529,12 @@ gCurrentSelection = False                                                       
 		returns converted color
 
 ### getColor(iObj, iFaceIndex, iAttribute="color", iType="kernel"):
-
-	Description:
+	
+##### Description:
 	
 		Allows to get color for object or face.
 
-##### Description:
+##### Args:
 
 		iObj: object
 		iFaceIndex: index to get color for face or 0 to get color for object
@@ -1550,12 +1574,12 @@ gCurrentSelection = False                                                       
 		object cannot be determined, so will be returned as empty string "". 
 
 ### setColor(iObj, iFaceIndex, iColor, iAttribute="color", iType="kernel"):
-
-	Description:
+	
+##### Description:
 	
 		Allows to set color for object or face.
 
-##### Description:
+##### Args:
 
 		iObj: object
 		iFaceIndex: index to set color for face or 0 to set color for object
@@ -1602,12 +1626,12 @@ gCurrentSelection = False                                                       
 		return empty string if everything is fine or string with error info
 
 ### copyColors(iSource, iTarget):
-
-	Description:
+	
+##### Description:
 	
 		Allows to copy colors from iSource object to iTarget object.
 
-##### Description:
+##### Args:
 
 		iSource: source object
 		iTarget: target object
@@ -1620,14 +1644,16 @@ gCurrentSelection = False                                                       
 
 		All colors structure should be copied from source to target.
 
-# Holes
-### makeHoles(iObj, iFace, iCylinders, iDrillPoint="Angled"):
 
-	Description:
+# Holes
+
+### makeHoles(iObj, iFace, iCylinders, iDrillPoint="Angled"):
+	
+##### Description:
 	
 		Making holes.
 
-##### Description:
+##### Args:
 
 		iObj: base object to make hole
 		iFace: face of base object to make hole
@@ -1645,12 +1671,12 @@ gCurrentSelection = False                                                       
 		Make holes and return list of holes.
 
 ### makeCountersinks(iObj, iFace, iCones):
-
-	Description:
+	
+##### Description:
 	
 		Making countersinks.
 
-##### Description:
+##### Args:
 
 		iObj: base object to drill
 		iFace: face of base object to drill
@@ -1665,12 +1691,12 @@ gCurrentSelection = False                                                       
 		Make holes and return list of holes. 
 
 ### makeCounterbores(iObj, iFace, iCones):
-
-	Description:
+	
+##### Description:
 	
 		Making counterbores.
 
-##### Description:
+##### Args:
 
 		iObj: base object to drill
 		iFace: face of base object to drill
@@ -1685,12 +1711,12 @@ gCurrentSelection = False                                                       
 		Make holes and return list of holes.
 
 ### makePocketHoles(iObj, iFace, iCones):
-
-	Description:
+	
+##### Description:
 	
 		Making pocket holes for invisible connections.
 
-##### Description:
+##### Args:
 
 		iObj: base object to drill
 		iFace: face of base object to drill
@@ -1705,12 +1731,12 @@ gCurrentSelection = False                                                       
 		Make holes and return list of holes.
 
 ### makeCounterbores2x(iObj, iFace, iCones):
-
-	Description:
+	
+##### Description:
 	
 		Making counterbores from both sides.
 
-##### Description:
+##### Args:
 
 		iObj: base object to drill
 		iFace: face of base object to drill
@@ -1724,16 +1750,18 @@ gCurrentSelection = False                                                       
 
 		Make holes and return list of holes.
 
-# Joinery
-### makeCuts(iObjects):
 
-	Description:
+# Joinery
+
+### makeCuts(iObjects):
+	
+##### Description:
 	
 		Allows to create multi bool cut operation at given objects. First objects 
 		from iObjects is the base element and all other will cut the base. 
 		The copies will be created for cut. 
 	
-##### Description:
+##### Args:
 	
 		iObjects: objects to parse by multi bool cut
 
@@ -1746,14 +1774,14 @@ gCurrentSelection = False                                                       
 		Array of cut objects will be returned.
 
 ### makeCutsLinks(iObjects):
-
-	Description:
+	
+##### Description:
 	
 		Allows to create multi bool cut operation at given objects. First objects 
 		from iObjects is the base element and all other will cut the base. 
 		At this function version App::Link is used to create copy.
 	
-##### Description:
+##### Args:
 	
 		iObjects: objects to parse by multi bool cut
 
@@ -1766,12 +1794,12 @@ gCurrentSelection = False                                                       
 		Array of cut objects will be returned.
 
 ### makeFrame45cut(iObjects, iFaces):
-
-	Description:
+	
+##### Description:
 	
 		Makes 45 frame cut with PartDesing Chamfer. For each face the ends will be cut.
 	
-##### Description:
+##### Args:
 	
 		iObjects: array of objects to cut
 		iFaces: dict() of faces for Chamfer cut direction, the key is iObjects value (object), 
@@ -1786,15 +1814,15 @@ gCurrentSelection = False                                                       
 		Created Frames with correct placement, rotation and return array with Chamfer frame objects.
 
 ### makeChamferCut(iObjects, iEdges, iSizes, iLabels):
-
-	Description:
+	
+##### Description:
 	
 		Makes PartDesing Chamfer cut for edges array. But you can set different size for each edge. 
 		Yes, you give edge objects, and you make chamfer for each edge, one by one, with different 
 		size, but the most funny part is that the selected edge not exists because the Cube 
 		object not exists ;-)
 
-##### Description:
+##### Args:
 	
 		iObjects: array of objects to cut
 		iEdges: dict() of arrays [ edgeObj1, edgeObj2 ], edgeArr = iEdges[iObjects[0]]
@@ -1810,12 +1838,12 @@ gCurrentSelection = False                                                       
 		return array with chamfer objects
 
 ### makeMortise(iSketch, iDepth, iPad, iFace):
-
-	Description:
+	
+##### Description:
 	
 		Make Mortise pocket for given iSketch pattern.
 
-##### Description:
+##### Args:
 
 		iSketch: Sketch object as pattern for Mortise
 		iDepth: depth of the pocket
@@ -1831,12 +1859,12 @@ gCurrentSelection = False                                                       
 		Make Mortise and return new object and face reference for GUI info screen update and further processing
 
 ### makeTenon(iSketch, iLength, iPad, iFace):
-
-	Description:
+	
+##### Description:
 	
 		Make Tenon pad for given iSketch pattern.
 
-##### Description:
+##### Args:
 
 		iSketch: Sketch object as pattern for Mortise
 		iLength: Length for the Tenon pad
@@ -1851,17 +1879,19 @@ gCurrentSelection = False                                                       
 
 		Make Tenon and return new object and face reference for GUI info screen update and further processing
 
-# Router
-### getSubByKey(iObj, iKey, iType, iSubType):
 
-	Description:
+# Router
+
+### getSubByKey(iObj, iKey, iType, iSubType):
+	
+##### Description:
 	
 		This is extended version of getEdgeIndexByKey function. 
 		This function has been created to solve resized edge problem. If you cut the edge the next 
 		edge will change the Length. So, also the BoundBox will be changed. With this function you 
 		can customize reference key to solve the Topology Naming Problem.
 	
-##### Description:
+##### Args:
 	
 		iObj: object for the sub-object
 		iKey: array with keys
@@ -1878,14 +1908,14 @@ gCurrentSelection = False                                                       
 		return edge object, name like Edge1 and also index starting from 0 (for iObj.Shape.Edges[index])
 
 ### getSketchPatternRotation(iObj, iSub):
-
-	Description:
+	
+##### Description:
 	
 		Returns Rotation object which can be passed directly to setSketchPlacement 
 		functions. The Sketch will be perpendicular to the iSub object, so it can be used as 
 		router bit to cut the edge or face.
 	
-##### Description:
+##### Args:
 	
 		iObj: object for sub-object
 		iSub: selected sub-object, edge or face
@@ -1900,13 +1930,13 @@ gCurrentSelection = False                                                       
 		return FreeCAD.Rotation object.
 
 ### edgeRouter(iPad, iSub, iSketch, iLength, iLabel, iType):
-
-	Description:
+	
+##### Description:
 	
 		This function is router for the edge. It cut the 
 		iSub with iSketch pattern. The new object will get iLabel label.
 	
-##### Description:
+##### Args:
 	
 		iPad: Pad object of the sub-object, for routing
 		iSub: sub-object, edge or face
@@ -1924,14 +1954,14 @@ gCurrentSelection = False                                                       
 		return router object, the result of cut
 
 ### makePockets(iObjects, iLength):
-
-	Description:
+	
+##### Description:
 	
 		This function is multi Pocket. First object from iObjects will be base
 		object to Pocket, all others should be Sketches. The Length is depth for Pocket. 
 		If the Length is 0 the Pocket will be ThroughAll.
 	
-##### Description:
+##### Args:
 	
 		iObjects: First base objects, next sketches
 		iLength: length to cut, float or int value, 0 means ThroughAll
@@ -1944,14 +1974,16 @@ gCurrentSelection = False                                                       
 	
 		return last pocket object, the result of cut
 
-# Spreadsheet
-### sheetGetKey(iC, iR):
 
-	Description:
+# Spreadsheet
+
+### sheetGetKey(iC, iR):
+	
+##### Description:
 	
 		Allows to get key as letters for spreadsheet from given column and row index.
 
-##### Description:
+##### Args:
 	
 		iC: column index
 		iR: row index
@@ -1964,14 +1996,16 @@ gCurrentSelection = False                                                       
 	
 		return key string
 
-# Themes
-### getTheme(iType=""):
 
-	Description:
+# Themes
+
+### getTheme(iType=""):
+	
+##### Description:
 	
 		Allows to set GUI color theme. 
 
-##### Description:
+##### Args:
 	
 		iType: color theme reference name
 		
@@ -1991,177 +2025,20 @@ gCurrentSelection = False                                                       
 	
 		return Qt CSS string to set via self.setStyleSheet(QtCSS)
 
-	
-		QDialog {
-			);
-		}
-		
-		QPushButton, QPushButton:enabled {
-		}
-		
-		QLineEdit, QTextEdit {
-			background-color: qlineargradient( 
-				x1: 0, y1: 0, 
-				x2: 1, y2: 1,
-			);
-		}
-		
-		QScrollBar {
-			background-color: qlineargradient( 
-				x1: 0, y1: 0, 
-				x2: 2, y2: 2,
-			);
-		}
-		QGroupBox:title {
-			background-color: transparent;
-		}
-		
-		QLabel#qt_msgbox_label {
-			);
-		}
-		QDialogButtonBox#qt_msgbox_buttonbox > QPushButton {
-			width: 100%;
-		}
 
-			
-		QDialog {
-			);
-		}
-		
-		QPushButton, QPushButton:enabled {
-			background-color: qlineargradient( 
-				x1: 0, y1: 0, 
-				x2: 0, y2: 1,
-			);
-		}
-		QPushButton:disabled {
-		}
-		
-		QLineEdit, QTextEdit {
-			background-color: qlineargradient( 
-				x1: 0, y1: 0, 
-				x2: 1, y2: 1,
-			);
-		}
-		
-		QScrollBar {
-			background-color: qlineargradient( 
-				x1: 0, y1: 0, 
-				x2: 2, y2: 2,
-			background-color: transparent;
-		}
-		
-		QLabel {
-
-	if iType[-3:] == " 3D":
-		return QtCSS3D
-	else:
-		return QtCSS
-
-
-
+# Info screen
 
 ### showInfo(iCaller, iInfo, iNote="yes"):
 
-
-	info = ""
-	
-	import os, sys
-	import fakemodule
-	path = os.path.dirname(fakemodule.__file__)
-	iconPath = str(os.path.join(path, "Icons"))
-	
-	fpng = os.path.join(iconPath, iCaller+".png")
-	fsvg = os.path.join(iconPath, iCaller+".svg")
-	fxpm = os.path.join(iconPath, iCaller+".xpm")
-	
-	if os.path.exists(fpng):
-		info += '<img src="'+ fpng + '" width="200" height="200" align="right">'
-
-	elif os.path.exists(fsvg):
-		info += '<svg>'
-		info += '<img src="'+ fsvg + '" width="200" height="200" align="right"/>'
-		info += '</svg>'
-	
-	elif os.path.exists(fxpm):
-		info += '<img src="'+ fxpm + '" width="200" height="200" align="right"/>'
-	
-	else:
-		skip = 1
-	
-	info += iInfo
-	
-	info += "<br><br>"
-	info += "<b>" + translate('showInfoAll','Golden rules:') + "</b>"
-	info += "<ul>"
-	
-	info += "<li>"
-	info += translate('showInfoAll','Not rotate objects directly, rotate them via LinkGroup container.')
-	info += "</li>"
-	info += "<li>"
-	info += translate('showInfoAll','Not copy Pad directly. Copy, Clone or Link the Part container.')
-	info += "</li>"
-	info += "<li>"
-	info += translate('showInfoAll','Not mix Cut with PartDesign too much. Keep clear and simple design line based on simple panels.')
-	info += "</li>"
-	info += "<li>"
-	info += translate('showInfoAll','If you want generate cut-list, BOM, dimensions, rather avoid packing objects extremely, for example Array on Array or MultiTransform on MultiTransform.')
-	info += "</li>"
-	info += "<li>"
-	info += translate('showInfoAll','Not move objects via AttachmentOffset, move them via Body or LinkGroup container.')
-	info += "</li>"
-	info += "<li>"
-	info += translate('showInfoAll','Design furniture from simple panels (Part::Box objects). If you want more detailed model convert desired simple panel into Pad and edit the Sketch. Also for irregular or not rectangle shapes.')
-	info + "</li>"
-	info += "<li>"
-	info += translate('showInfoAll','Always make backup of your project. Read documentation, watch videos, learn more or open issue.')
-	info += "</li>"
-	info += "<li>"
-	info += translate('showInfoAll','Break all rules, if you know what you are doing.')
-	info += "</li>"
-	info += "<ul>"
-	
-	if iNote == "yes":
-		
-		info += '<br><br>'
-		info += translate('showInfoAll', 'For more details see:') + ' '
-		info += '<a href="https://github.com/dprojects/Woodworking/tree/master/Docs">'
-		info += translate('showInfoAll', 'Woodworking workbench documentation')
-		info += '</a>'
-	
-	msg = QtGui.QMessageBox()
-	msg.setWindowTitle(iCaller)
-	msg.setTextFormat(QtCore.Qt.TextFormat.RichText)
-	msg.setText(info)
-	
-	colorR = msg.palette().window().color().red()
-	colorG = msg.palette().window().color().green()
-	colorB = msg.palette().window().color().blue()
-	
-	offset = 8
-	borderColor = "rgb(" + str(colorR-offset) + ", " + str(colorG-offset) + ", " + str(colorB-offset) + ")"
-	
-	# set theme
-	QtCSS = getTheme(gTheme)
-	
-	if QtCSS == "":
-			}
-		
-	
-			QLabel { 
-				min-width: 700px;
-				padding: 15px;
-				margin: 15px 25px 15px 0px;
-			}
-		
 # DEPRECATED
-### moveToParent(iObjects, iSelection):
 
+### moveToParent(iObjects, iSelection):
+	
 	# ########################################################################################
 	# THIS FUNCTION IS DEPRECATED !!!
 	# ########################################################################################
 	
-	Description:
+##### Description:
 	
 		This version move object to parent container without adding or remove offset. This is useful if you copy the 
 		Sketch, because Sketch after copy is located outside Body, in Part. But if the Part is inside LinkGroup 
@@ -2169,7 +2046,7 @@ gCurrentSelection = False                                                       
 		the Sketch after copy has offset from containers. The object to move need to be in root folder to avoid 
 		duplicated already copied objects, Cube.
 	
-##### Description:
+##### Args:
 	
 		iObjects: list of objects to move to container, for example new created Sketch
 		iSelection: selected object, for example Sketch
@@ -2183,12 +2060,12 @@ gCurrentSelection = False                                                       
 		No return, move object.
 
 ### moveToClean(iObjects, iSelection):
-
+	
 	# ########################################################################################
 	# THIS FUNCTION IS DEPRECATED !!!
 	# ########################################################################################
 	
-	Description:
+##### Description:
 	
 		Move objects iObjects to clean container for iSelection object.
 		Container need to be in the clean path, no other objects except Group or LinkGroup, 
@@ -2198,7 +2075,7 @@ gCurrentSelection = False                                                       
 		clean path: LinkGroup -> LinkGroup
 		not clean: Mirror -> LinkGroup
 	
-##### Description:
+##### Args:
 	
 		iObjects: list of objects to move to container, for example new created Cube
 		iSelection: selected object, for example Pad
@@ -2212,12 +2089,12 @@ gCurrentSelection = False                                                       
 		No return, move object.
 
 ### moveToFirstWithInverse(iObjects, iSelection):
-
+	
 	# ########################################################################################
 	# THIS FUNCTION IS DEPRECATED !!!
 	# ########################################################################################
 	
-	Description:
+##### Description:
 	
 		This version remove the placement and rotation offset from iObjects and move the iObjects to first 
 		supported container (LinkGroup). 
@@ -2228,7 +2105,7 @@ gCurrentSelection = False                                                       
 		container apply the placement and rotation again. So, you have to remove the offset and move it. 
 		Yea, that's the beauty of FreeCAD ;-)
 	
-##### Description:
+##### Args:
 	
 		iObjects: list of objects to move to container, for example new created Cube
 		iSelection: selected object, for example Pad
@@ -2242,13 +2119,13 @@ gCurrentSelection = False                                                       
 		No return, move object.
 
 ### adjustClonePosition(iPad, iX, iY, iZ):
-
+	
 	
 	# ########################################################################################
 	# THIS FUNCTION IS DEPRECATED !!!
 	# ########################################################################################
 	
-	Description:
+##### Description:
 	
 		This function has been created for magicMove tool to adjust Clone position.
 		If you make Clone from Pad and the Pad has not zero Sketch.AttachmentOffset, 
@@ -2256,7 +2133,7 @@ gCurrentSelection = False                                                       
 		So you have to remove Sketch offset from the Clone position. 
 		I guess the BoundBox is the correct solution here.
 	
-##### Description:
+##### Args:
 	
 		iPad: Pad object with not zero Sketch.AttachmentOffset used to create new Clone
 		iX: X Axis object position
@@ -2272,17 +2149,17 @@ gCurrentSelection = False                                                       
 		Returns array with new correct [ x, y, z ] values.
 
 ### resetPlacement(iObj):
-
+	
 	
 	# ########################################################################################
 	# THIS FUNCTION IS DEPRECATED !!!
 	# ########################################################################################
 	
-	Description:
+##### Description:
 	
 		Reset placement for given object. Needed to set rotation for object at face.
 	
-##### Description:
+##### Args:
 	
 		iObj: object to reset placement
 
@@ -2295,18 +2172,18 @@ gCurrentSelection = False                                                       
 		Object obj return to base position.
 
 ### getPlacement(iObj, iType="clean"):
-
+	
 	
 	# ########################################################################################
 	# THIS FUNCTION IS DEPRECATED !!!
 	# ########################################################################################
 	
-	Description:
+##### Description:
 	
 		Gets placement with rotation info for given object.
 		Note: This is useful if you not use containers. 
 	
-##### Description:
+##### Args:
 	
 		iObj: object to get placement
 		iType: 
@@ -2329,17 +2206,17 @@ gCurrentSelection = False                                                       
 		r: Rotation object
 
 ### getGlobalPlacement(iObj, iType="FreeCAD"):
-
+	
 	
 	# ########################################################################################
 	# THIS FUNCTION IS DEPRECATED !!!
 	# ########################################################################################
 	
-	Description:
+##### Description:
 	
 		Calls FreeCAD getGlobalPlacement at base object, and return useful form of placement.
 	
-##### Description:
+##### Args:
 	
 		iObj: object to get placement
 		iType:
@@ -2360,17 +2237,17 @@ gCurrentSelection = False                                                       
 		r: Rotation object
 
 ### setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
-
+	
 	
 	# ########################################################################################
 	# THIS FUNCTION IS DEPRECATED !!!
 	# ########################################################################################
 	
-	Description:
+##### Description:
 	
 		Sets placement with rotation for given object.
 	
-##### Description:
+##### Args:
 
 		iObj: object to set custom placement and rotation
 		iX: X Axis object position
@@ -2388,17 +2265,17 @@ gCurrentSelection = False                                                       
 		Object gObj should be moved into 100, 100, 200 position without rotation.
 
 ### getSketchPlacement(iSketch, iType):
-
+	
 	
 	# ########################################################################################
 	# THIS FUNCTION IS DEPRECATED !!!
 	# ########################################################################################
 	
-	Description:
+##### Description:
 	
 		Gets placement dedicated to move and copy Sketch directly.
 	
-##### Description:
+##### Args:
 	
 		iSketch: Sketch object
 		iType: 
@@ -2420,17 +2297,17 @@ gCurrentSelection = False                                                       
 		r: Rotation object
 
 ### setSketchPlacement(iSketch, iX, iY, iZ, iR, iType):
-
+	
 	
 	# ########################################################################################
 	# THIS FUNCTION IS DEPRECATED !!!
 	# ########################################################################################
 	
-	Description:
+##### Description:
 	
 		Set placement with rotation dedicated to move and copy Sketch directly.
 	
-##### Description:
+##### Args:
 
 		iSketch: Sketch object to set custom placement and rotation
 		iX: X Axis object position
@@ -2456,19 +2333,19 @@ gCurrentSelection = False                                                       
 		Object Sketch should be moved.
 
 ### getContainerPlacement(iObj, iType="clean"):
-
+	
 	
 	# ########################################################################################
 	# THIS FUNCTION IS DEPRECATED !!!
 	# ########################################################################################
 	
-	Description:
+##### Description:
 	
 		This function returns placement for the object with all 
 		containers offsets or clean. The given object might be container or 
 		selected object, the base Cube or Pad.
 	
-##### Description:
+##### Args:
 	
 		iObj: object to get placement
 		iType (optional): 
@@ -2490,17 +2367,17 @@ gCurrentSelection = False                                                       
 		r: Rotation object - not supported yet
 
 ### setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="normal"):
-
+	
 	
 	# ########################################################################################
 	# THIS FUNCTION IS DEPRECATED !!!
 	# ########################################################################################
 	
-	Description:
+##### Description:
 	
 		Set placement function, especially used with containers.
 	
-##### Description:
+##### Args:
 
 		iObj: object or container to set placement, for example Body, LinkGroup, Cut, Pad, Cube, Sketch, Cylinder
 		iX: X Axis object position
@@ -2525,14 +2402,16 @@ gCurrentSelection = False                                                       
 	
 		Object should be moved into 100, 100, 200 position with exact anchor.
 
-# Functions for MagicPanels library config
-### updateGlobals():
 
-	Description:
+# Functions for MagicPanels library config
+
+### updateGlobals():
+	
+##### Description:
 	
 		This function update MagicPanels library globals from user settings.
 	
-##### Description:
+##### Args:
 		none, user config may not exist, so should not be direct assign
 		
 ##### Usage:
@@ -2543,27 +2422,4 @@ gCurrentSelection = False                                                       
 	
 		there is no return, just overwrite all MagicPanels globals from user config
 
-FreeCAD.Console.PrintMessage("\n\n")
-FreeCAD.Console.PrintMessage(gKernelVersion)
-FreeCAD.Console.PrintMessage("\n")
-FreeCAD.Console.PrintMessage(gTheme)
-FreeCAD.Console.PrintMessage("\n")
-FreeCAD.Console.PrintMessage(gWoodThickness)
-FreeCAD.Console.PrintMessage("\n")
-FreeCAD.Console.PrintMessage(gDefaultColor)
-FreeCAD.Console.PrintMessage("\n")
-FreeCAD.Console.PrintMessage(gWindowStaysOnTop)
-FreeCAD.Console.PrintMessage("\n")
-FreeCAD.Console.PrintMessage(gCurrentSelection)
-FreeCAD.Console.PrintMessage("\n\n")
-FreeCAD.Console.PrintMessage(gKernelVersion)
-FreeCAD.Console.PrintMessage("\n")
-FreeCAD.Console.PrintMessage(gTheme)
-FreeCAD.Console.PrintMessage("\n")
-FreeCAD.Console.PrintMessage(gWoodThickness)
-FreeCAD.Console.PrintMessage("\n")
-FreeCAD.Console.PrintMessage(gDefaultColor)
-FreeCAD.Console.PrintMessage("\n")
-FreeCAD.Console.PrintMessage(gWindowStaysOnTop)
-FreeCAD.Console.PrintMessage("\n")
-FreeCAD.Console.PrintMessage(gCurrentSelection)
+# UPDATE GLOBALS HERE AFTER FUNCTIONS LOADED

@@ -1,3 +1,4 @@
+# this is my API MarkDown doc generator
 # usage: python3 ./makeAPI.py ../Tools/MagicPanels.py > ./MagicPanelsAPI.md
 
 
@@ -9,47 +10,87 @@ api = []
 file =  open(sys.argv[1], 'r')
 data = file.readlines()
 
-commentOpen = False
-globalsOpen = False
+openHeader = False
+openFunction = False
+openComment = False
+openGlobals = False
+openGitHub = False
 out = ""
 
 for line in data:
 	
-	if line.startswith("# #") == True:
-		continue
+	# open and close section
 	
-	if line.startswith("def ") == True and line.endswith("#\n") == False:
-		out = line
-		out = out.replace("def ","### ")
-		api.append(out)
-		continue
+	if line.startswith("# Globals") == True:
+		if openGlobals == False:
+			openGlobals = True
+		else:
+			openGlobals = False
+	
+	if line.startswith("# ####") == True:
+		if openHeader == False:
+			openHeader = True
+		else:
+			openHeader = False
 
-	if line.find("'''") != -1 and commentOpen == False:
-		commentOpen = True
-		continue
+	if line.startswith("def ") == True:
+		if line.endswith("#\n") == False:
+			openFunction = True
+		if openHeader == True:
+			openHeader = False
+
+	if line.find("'''") != -1:
+		if openComment == False:
+			openComment = True
+		else:
+			openComment = False
+			if openFunction == True:
+				openFunction = False
 	
-	if line.find("'''") != -1 and commentOpen == True:
-		commentOpen = False
-		continue
+	if openGitHub == True:
+		openGitHub = False
 	
-	if line.find("# Globals") != -1 and globalsOpen == False:
-		globalsOpen = True
+	if line.startswith("# >") == True:
+		openGitHub = True
+
+	# create output section
 	
-	if line.find("# end globals") != -1 and globalsOpen == True:
-		globalsOpen = False
-		continue
+	if openGlobals == True:
+		if line.find(" = ") != -1:
+			out = line
+			out = out.replace("\n","")
+			out = out.replace("   ","")
+			out = out.replace("  ","")
+			out = out.replace("# ","`: ")
+			out = "*" + " `" + out
+			api.append(out)
 	
-	if commentOpen == True or globalsOpen == True:
+	if openHeader == True:
+		if line.find("# #######") == -1:
+			out = line
+			out = out.replace("\n","")
+			out = out.replace("#\n","")
+			out = out.replace("'''","")
+			api.append(out)
+	
+	if openFunction == True:
 		out = line
+		out = out.replace("'''","")
 		out = out.replace("\n","")
-		out = out.replace("\tArgs:","##### Description:")
+		out = out.replace("def ","### ")
+		out = out.replace("\tDescription:","##### Description:")
 		out = out.replace("\tArgs:","##### Args:")
 		out = out.replace("\tUsage:","##### Usage:")
 		out = out.replace("\tResult:","##### Result:")
 		api.append(out)
-		continue
+		
+	if openGitHub == True:
+		out = line
+		out = out.replace("\n","")
+		out = out.replace("# > [!","\n> [!")
+		out = out.replace("# >",">")
+		api.append(out)
 	
 	
-	
-for t in api:
-	print(t)
+for txt in api:
+	print(txt)

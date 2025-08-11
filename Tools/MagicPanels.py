@@ -6,26 +6,28 @@
 	This is MagicPanels library for Woodworking workbench.
 	Darek L (github.com/dprojects)
 
-Usage:
+### Usage:
 
 	import MagicPanels
 	returned_value = MagicPanels.function(args)
 
-Functions at this library:
+### Functions at this library:
 
 * Should not have error handling and pop-ups, so you can call it from GUI tools in loops.
 * Should return value, if further processing needed.
 
 '''
 # ###################################################################################################################
+
+
 __doc__ = "This is MagicPanels library for Woodworking workbench."
 __author__ = "Darek L (github.com/dprojects)"
 
 
 # ###################################################################################################################
-#
-# Imports
-#
+'''
+
+'''
 # ###################################################################################################################
 
 
@@ -47,7 +49,7 @@ def QT_TRANSLATE_NOOP(context, text): #
 # ###################################################################################################################
 
 
-gRoundPrecision = 2      # should be set according to the user FreeCAD GUI settings <br>
+gRoundPrecision = 2       # should be set according to the user FreeCAD GUI settings <br>
 gSearchDepth = 200       # recursive search depth <br>
 gKernelVersion = 0       # FreeCAD version to add support for new kernel changes <br>
 
@@ -58,10 +60,11 @@ gWoodThickness = 18                                                             
 gWindowStaysOnTop = True                                                             # to keep window on top <br> 
 gCurrentSelection = False                                                            # to skip refresh selection button <br>
 
-# INFO: Globals are updated from user settings via updateGlobals function at the end of the library.
 
-# end globals (for API generator)
+# > [!CAUTION]
+# > Globals are updated from user settings via updateGlobals function at the end of the library.
 
+# Globals (end section for API generator)
 
 
 # ###################################################################################################################
