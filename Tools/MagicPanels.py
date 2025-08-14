@@ -6426,19 +6426,7 @@ def getTheme(iType=""):
 				stop: 0 '''+color1+''', stop: 1 '''+color2+'''
 			);
 		}
-		
-		QListView, QComboBox {
-			color: '''+color3+''';
-			border: 1px outset '''+color4+''';
-			selection-color: '''+color3+''';
-			selection-background-color: '''+color1+''';
-			background-color: qlineargradient( 
-				x1: 0, y1: 0, 
-				x2: 1, y2: 1,
-				stop: 0 '''+color1+''', stop: 1 '''+color2+'''
-			);
-		}
-		
+	
 		QScrollBar {
 			background-color: qlineargradient( 
 				x1: 0, y1: 0, 
@@ -6520,18 +6508,6 @@ def getTheme(iType=""):
 		QLineEdit, QTextEdit {
 			color: '''+color3+''';
 			border: 1px inset '''+color4+''';
-			background-color: qlineargradient( 
-				x1: 0, y1: 0, 
-				x2: 1, y2: 1,
-				stop: 0 '''+color1+''', stop: 1 '''+color2+'''
-			);
-		}
-		
-		QListView, QComboBox {
-			color: '''+color3+''';
-			border: 1px outset '''+color4+''';
-			selection-color: '''+color3+''';
-			selection-background-color: '''+color1+''';
 			background-color: qlineargradient( 
 				x1: 0, y1: 0, 
 				x2: 1, y2: 1,

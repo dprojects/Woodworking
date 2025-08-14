@@ -12,7 +12,7 @@ translate = FreeCAD.Qt.translate
 
 # add new items only at the end and change self.sModeList
 getMenuIndex = {
-	"-----------------------------------------------------------------------------------------------": -1,
+	"------------------------------------------------------------------------------------": -1,
 	translate('magicStart', 'Simple storage ( front outside, back full )'): 0, 
 	translate('magicStart', 'Simple bookcase ( no front, back HDF )'): 1, 
 	translate('magicStart', 'Bookcase ( import parametric )'): 2, 
@@ -150,26 +150,31 @@ def showQtGUI():
 		
 		# ############################################################################
 		gHelpInfoF16 = "" 
+
+		gHelpInfoF16 += translate('magicStart', 'To initially calculate the the Foot, make selection, fill in the appropriate fields and click the "calculate foot" button. Possible selections:')
 		gHelpInfoF16 += '<ul>'
 		gHelpInfoF16 += '<li><b>'
-		gHelpInfoF16 += translate('magicStart', 'Furniture width') + '</b>: '
-		gHelpInfoF16 += translate('magicStart', 'means the width of the furniture for which the base is to be created. This means the size of the furniture in the direction of the X coordinate axis.')
+		gHelpInfoF16 += translate('magicStart', 'XY face') + '</b>: '
+		gHelpInfoF16 += translate('magicStart', 'indicates the face of the bottom panel of the furniture. In this case, the position, width, and depth of the foot will be taken from the selected face.')
 		gHelpInfoF16 += '</li>'
 		gHelpInfoF16 += '<li><b>'
-		gHelpInfoF16 += translate('magicStart', 'Furniture depth') + '</b>: '
-		gHelpInfoF16 += translate('magicStart', 'means the depth of the furniture for which the base is to be created. This means the size of the furniture in the direction of the Y coordinate axis.')
+		gHelpInfoF16 += translate('magicStart', 'X edge') + '</b>: '
+		gHelpInfoF16 += translate('magicStart', 'indicates the X edge of the bottom panel of the furniture. In this case, the position and width of the foot will be taken from the selected face. The depth needs to be added by you.')
+		gHelpInfoF16 += '</li>'
+		gHelpInfoF16 += '<li><b>'
+		gHelpInfoF16 += translate('magicStart', 'Vertex') + '</b>: '
+		gHelpInfoF16 += translate('magicStart', 'indicates any vertex at any object to set the XYZ start position for the foot creation. In this case, the width and depth needs to be added by you.')
+		gHelpInfoF16 += '</li>'
+		gHelpInfoF16 += '</ul>'
+		gHelpInfoF16 += translate('magicStart', 'Fields:')
+		gHelpInfoF16 += '<ul>'
+		gHelpInfoF16 += '<li><b>'
+		gHelpInfoF16 += translate('magicStart', 'Wood thickness') + '</b>: '
+		gHelpInfoF16 += translate('magicStart', 'means the thickness of the elements from which the foot will be created, i.e. the thickness of the wood.')
 		gHelpInfoF16 += '</li>'
 		gHelpInfoF16 += '<li><b>'
 		gHelpInfoF16 += translate('magicStart', 'Foot height') + '</b>: '
-		gHelpInfoF16 += translate('magicStart', 'means the height of the base to be created, i.e. the size of the base in the direction of the Z coordinate axis.')
-		gHelpInfoF16 += '</li>'
-		gHelpInfoF16 += '<li><b>'
-		gHelpInfoF16 += translate('magicStart', 'Foot thickness') + '</b>: '
-		gHelpInfoF16 += translate('magicStart', 'means the thickness of the elements from which the base will be created, i.e. the thickness of the wood.')
-		gHelpInfoF16 += '</li>'
-		gHelpInfoF16 += '<li><b>'
-		gHelpInfoF16 += translate('magicStart', 'Front offset') + '</b>: '
-		gHelpInfoF16 += translate('magicStart', 'means the distance from the front, i.e. in the direction of the Y coordinate axis.')
+		gHelpInfoF16 += translate('magicStart', 'means the size of the foot elements, relative to the Z coordinate axis.')
 		gHelpInfoF16 += '</li>'
 		gHelpInfoF16 += '</ul>'
 		gHelpInfoF16 += translate('magicStart', 'The foot will be created at the starting position of the XYZ coordinate axis taking into account the height of the foot.')
@@ -791,7 +796,7 @@ def showQtGUI():
 			# not write here, copy text from getMenuIndex to avoid typo
 			self.sModeList = (
 				translate('magicStart', 'Workspace platform'), 
-				"-----------------------------------------------------------------------------------------------", 
+				"------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Simple storage ( front outside, back full )'), 
 				translate('magicStart', 'Simple storage ( front outside, back HDF )'), 
 				translate('magicStart', 'Kitchen wall cabinet ( front outside, back HDF )'), 
@@ -800,7 +805,7 @@ def showQtGUI():
 				translate('magicStart', 'Simple storage ( front inside, back HDF )'), 
 				translate('magicStart', 'Simple bookcase ( no front, back HDF )'), 
 				translate('magicStart', 'Bookcase ( import parametric )'), 
-				"-----------------------------------------------------------------------------------------------", 
+				"------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Simple storage ( face frame, no front, back HDF )'), 
 				translate('magicStart', 'Simple bookcase ( face frame, no front, back HDF )'), 
 				translate('magicStart', 'Kitchen cabinet ( US style )'), 
@@ -809,7 +814,7 @@ def showQtGUI():
 				translate('magicStart', 'Face Frame ( horizontal, around )'), 
 				translate('magicStart', 'Face Frame ( horizontal, with center )'), 
 				translate('magicStart', 'Face Frame ( horizontal, for custom changes )'), 
-				"-----------------------------------------------------------------------------------------------", 
+				"------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Drawer ( single, X or Y direction, front outside )'), 
 				translate('magicStart', 'Drawer ( single, X or Y direction, front inside )'), 
 				translate('magicStart', 'Drawer ( series, front outside )'), 
@@ -818,7 +823,7 @@ def showQtGUI():
 				translate('magicStart', 'Drawer ( series, Blum, Hafele, GTV, Amix, front inside )'), 
 				translate('magicStart', 'Drawer ( simple, parametric )'), 
 				translate('magicStart', 'Drawer ( decoration, parametric )'), 
-				"-----------------------------------------------------------------------------------------------", 
+				"------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Front outside'), 
 				translate('magicStart', 'Front outside ( decorative )'), 
 				translate('magicStart', 'Front outside with glass ( simple frame )'), 
@@ -830,24 +835,24 @@ def showQtGUI():
 				translate('magicStart', 'Front decoration ( simple frame )'), 
 				translate('magicStart', 'Front left (decoration, import parametric )'), 
 				translate('magicStart', 'Front right (decoration, import parametric )'), 
-				"-----------------------------------------------------------------------------------------------", 
+				"------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Shelf'), 
 				translate('magicStart', 'Shelf series with equal space'), 
 				translate('magicStart', 'Top (decoration, import parametric )'), 
-				"-----------------------------------------------------------------------------------------------", 
+				"------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Side'), 
 				translate('magicStart', 'Center side'), 
 				translate('magicStart', 'Side decoration ( simple frame )'), 
-				"-----------------------------------------------------------------------------------------------", 
+				"------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Back outside ( HDF )'), 
 				translate('magicStart', 'Back inside ( full )'), 
-				"-----------------------------------------------------------------------------------------------", 
+				"------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Foot ( good for cleaning )'), 
 				translate('magicStart', 'Foot ( standard )'), 
 				translate('magicStart', 'Foot ( more stable )'), 
 				translate('magicStart', 'Foot ( decorated )'), 
 				translate('magicStart', 'Foot ( chair style )'), 
-				"-----------------------------------------------------------------------------------------------", 
+				"------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Table ( kitchen simple style )'), 
 				translate('magicStart', 'Table ( kitchen modern style )'), 
 				translate('magicStart', 'Table ( kitchen decorated style )'), 
@@ -855,7 +860,7 @@ def showQtGUI():
 				translate('magicStart', 'Table ( coffee modern style )'), 
 				translate('magicStart', 'Table ( coffee decorated style )'), 
 				translate('magicStart', 'Simple table ( import parametric )'), 
-				"-----------------------------------------------------------------------------------------------", 
+				"------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Dowel 8x35 mm ( import parametric )'),
 				translate('magicStart', 'Biscuits 4x16x48 mm ( import parametric )'), 
 				translate('magicStart', 'Biscuits 4x21x54 mm ( import parametric )'), 
@@ -866,7 +871,7 @@ def showQtGUI():
 				translate('magicStart', 'Pocket screw 4x40 mm ( import parametric )'), 
 				translate('magicStart', 'Minifix 15x45 mm ( import parametric )'), 
 				translate('magicStart', 'Counterbore 2x 5x60 mm ( import parametric )'), 
-				"-----------------------------------------------------------------------------------------------", 
+				"------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Shelf Pin 5x16 mm ( import parametric )'), 
 				translate('magicStart', 'Handle ( single hole )'), 
 				translate('magicStart', 'Handle ( single hole, decorated )'), 
@@ -876,7 +881,7 @@ def showQtGUI():
 				translate('magicStart', 'Angle 30x30x25 mm ( import parametric )'), 
 				translate('magicStart', 'Angle 80x80x20 mm ( import parametric )'), 
 				translate('magicStart', 'Angle 40x40x100 mm ( import parametric )'), 
-				"-----------------------------------------------------------------------------------------------", 
+				"------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Simple chair ( import parametric )'), 
 				translate('magicStart', 'Picture frame ( import parametric )'), 
 				translate('magicStart', 'Storage box ( import parametric )')   # no comma
@@ -1224,84 +1229,120 @@ def showQtGUI():
 			# GUI for foot (hidden by default)
 			# ############################################################################
 			
+			rowfoot -= 20
+			
 			# label
-			self.of1L = QtGui.QLabel(translate('magicStart', 'Furniture width:'), self)
-			self.of1L.move(10, rowfoot+3)
+			info = translate('magicStart', 'Possible selections, choose one method and make selection before calculate or create button press: <br><br> 1. XY face - to set size and position <br><br> 2. X edge - to set X size and position <br><br> 3. Vertex - to set XYZ start position <br><br> 4. no selection - to create with custom settings')
+			self.oFootInfo = QtGui.QLabel(info, self)
+			self.oFootInfo.move(10, rowfoot+3)
+			self.oFootInfo.setFixedWidth(infoarea)
+			self.oFootInfo.setWordWrap(True)
+			self.oFootInfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			
+			rowfoot += 200
+
+			# label
+			self.oFootThickL = QtGui.QLabel(translate('magicStart', 'Wood thickness:'), self)
+			self.oFootThickL.move(10, rowfoot+3)
+
+			# text input
+			self.oFootThickE = QtGui.QLineEdit(self)
+			self.oFootThickE.setText(MagicPanels.unit2gui(self.gThick))
+			self.oFootThickE.setFixedWidth(90)
+			self.oFootThickE.move(190, rowfoot)
+
+			rowfoot += 30
+			
+			# label
+			self.oFootSizeZL = QtGui.QLabel(translate('magicStart', 'Foot height (Z axis):'), self)
+			self.oFootSizeZL.move(10, rowfoot+3)
+
+			# text input
+			self.oFootSizeZE = QtGui.QLineEdit(self)
+			self.oFootSizeZE.setText(MagicPanels.unit2gui(100))
+			self.oFootSizeZE.setFixedWidth(90)
+			self.oFootSizeZE.move(190, rowfoot)
+
+			rowfoot += 30
+			
+			# button
+			self.oFootCalculateB = QtGui.QPushButton(translate('magicStart', 'calculate foot'), self)
+			self.oFootCalculateB.clicked.connect(self.calculateFoot)
+			self.oFootCalculateB.resize(area, createSize)
+			self.oFootCalculateB.move(10, rowfoot)
+			
+			rowfoot += 70
+			
+			# label
+			self.oFootStartL = QtGui.QLabel(translate('magicStart', 'Start XYZ:'), self)
+			self.oFootStartL.move(10, rowfoot+3)
 			
 			# text input
-			self.of1E = QtGui.QLineEdit(self)
-			self.of1E.setText(MagicPanels.unit2gui(self.gFSX))
-			self.of1E.setFixedWidth(90)
-			self.of1E.move(150, rowfoot)
-
-			rowfoot += 30
-
-			# label
-			self.of2L = QtGui.QLabel(translate('magicStart', 'Furniture depth:'), self)
-			self.of2L.move(10, rowfoot+3)
-
-			# text input
-			self.of2E = QtGui.QLineEdit(self)
-			self.of2E.setText(MagicPanels.unit2gui(self.gFSY))
-			self.of2E.setFixedWidth(90)
-			self.of2E.move(150, rowfoot)
-
-			rowfoot += 60
-
-			# label
-			self.of3L = QtGui.QLabel(translate('magicStart', 'Foot height:'), self)
-			self.of3L.move(10, rowfoot+3)
-
-			# text input
-			self.of3E = QtGui.QLineEdit(self)
-			self.of3E.setText(MagicPanels.unit2gui(100))
-			self.of3E.setFixedWidth(90)
-			self.of3E.move(150, rowfoot)
-
-			rowfoot += 30
-
-			# label
-			self.of4L = QtGui.QLabel(translate('magicStart', 'Foot thickness:'), self)
-			self.of4L.move(10, rowfoot+3)
-
-			# text input
-			self.of4E = QtGui.QLineEdit(self)
-			self.of4E.setText(MagicPanels.unit2gui(self.gThick))
-			self.of4E.setFixedWidth(90)
-			self.of4E.move(150, rowfoot)
-
-			rowfoot += 30
-
-			# label
-			self.of5L = QtGui.QLabel(translate('magicStart', 'Front offset:'), self)
-			self.of5L.move(10, rowfoot+3)
-
-			# text input
-			self.of5E = QtGui.QLineEdit(self)
-			self.of5E.setText(MagicPanels.unit2gui(self.gThick))
-			self.of5E.setFixedWidth(90)
-			self.of5E.move(150, rowfoot)
+			self.oFootStartXE = QtGui.QLineEdit(self)
+			self.oFootStartXE.setText(MagicPanels.unit2gui(0))
+			self.oFootStartXE.setFixedWidth(starttfs)
+			self.oFootStartXE.move(startcX, rowfoot)
 			
+			# text input
+			self.oFootStartYE = QtGui.QLineEdit(self)
+			self.oFootStartYE.setText(MagicPanels.unit2gui(0))
+			self.oFootStartYE.setFixedWidth(starttfs)
+			self.oFootStartYE.move(startcY, rowfoot)
+			
+			# text input
+			self.oFootStartZE = QtGui.QLineEdit(self)
+			self.oFootStartZE.setText(MagicPanels.unit2gui(0))
+			self.oFootStartZE.setFixedWidth(starttfs)
+			self.oFootStartZE.move(startcZ, rowfoot)
+
+			rowfoot += 30
+
+			# label
+			self.oFootSizeXL = QtGui.QLabel(translate('magicStart', 'Foot width (X axis):'), self)
+			self.oFootSizeXL.move(10, rowfoot+3)
+			
+			# text input
+			self.oFootSizeXE = QtGui.QLineEdit(self)
+			self.oFootSizeXE.setText(MagicPanels.unit2gui(0))
+			self.oFootSizeXE.setFixedWidth(rsize2x)
+			self.oFootSizeXE.move(startcY, rowfoot)
+
+			rowfoot += 30
+
+			# label
+			self.oFootSizeYL = QtGui.QLabel(translate('magicStart', 'Foot depth (Y axis):'), self)
+			self.oFootSizeYL.move(10, rowfoot+3)
+
+			# text input
+			self.oFootSizeYE = QtGui.QLineEdit(self)
+			self.oFootSizeYE.setText(MagicPanels.unit2gui(0))
+			self.oFootSizeYE.setFixedWidth(rsize2x)
+			self.oFootSizeYE.move(startcY, rowfoot)
+
 			rowfoot += 60
 
 			# button
-			self.of6B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
-			self.of6B1.clicked.connect(self.createObject)
-			self.of6B1.resize(area, createSize)
-			self.of6B1.move(10, createRow)
+			self.oFootCreateB = QtGui.QPushButton(translate('magicStart', 'create'), self)
+			self.oFootCreateB.clicked.connect(self.createObject)
+			self.oFootCreateB.resize(area, createSize)
+			self.oFootCreateB.move(10, createRow)
 
 			# hide by default
-			self.of1L.hide()
-			self.of1E.hide()
-			self.of2L.hide()
-			self.of2E.hide()
-			self.of3L.hide()
-			self.of3E.hide()
-			self.of4L.hide()
-			self.of4E.hide()
-			self.of5L.hide()
-			self.of5E.hide()
-			self.of6B1.hide()
+			self.oFootInfo.hide()
+			self.oFootThickL.hide()
+			self.oFootThickE.hide()
+			self.oFootSizeZL.hide()
+			self.oFootSizeZE.hide()
+			self.oFootCalculateB.hide()
+			self.oFootStartL.hide()
+			self.oFootStartXE.hide()
+			self.oFootStartYE.hide()
+			self.oFootStartZE.hide()
+			self.oFootSizeXL.hide()
+			self.oFootSizeXE.hide()
+			self.oFootSizeYL.hide()
+			self.oFootSizeYE.hide()
+			self.oFootCreateB.hide()
 
 			# ############################################################################
 			# GUI for Table (hidden by default)
@@ -3734,7 +3775,7 @@ def showQtGUI():
 			# set theme
 			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
 			self.setStyleSheet(QtCSS)
-
+		
 		# ############################################################################
 		# actions - GUI
 		# ############################################################################
@@ -4094,17 +4135,21 @@ def showQtGUI():
 			self.ods113E.hide()
 		
 			# foot
-			self.of1L.hide()
-			self.of1E.hide()
-			self.of2L.hide()
-			self.of2E.hide()
-			self.of3L.hide()
-			self.of3E.hide()
-			self.of4L.hide()
-			self.of4E.hide()
-			self.of5L.hide()
-			self.of5E.hide()
-			self.of6B1.hide()
+			self.oFootInfo.hide()
+			self.oFootThickL.hide()
+			self.oFootThickE.hide()
+			self.oFootSizeZL.hide()
+			self.oFootSizeZE.hide()
+			self.oFootCalculateB.hide()
+			self.oFootStartL.hide()
+			self.oFootStartXE.hide()
+			self.oFootStartYE.hide()
+			self.oFootStartZE.hide()
+			self.oFootSizeXL.hide()
+			self.oFootSizeXE.hide()
+			self.oFootSizeYL.hide()
+			self.oFootSizeYE.hide()
+			self.oFootCreateB.hide()
 			
 			# table
 			self.otb1i.hide()
@@ -4565,17 +4610,21 @@ def showQtGUI():
 				self.ods113E.show()
 
 			if iType == "foot":
-				self.of1L.show()
-				self.of1E.show()
-				self.of2L.show()
-				self.of2E.show()
-				self.of3L.show()
-				self.of3E.show()
-				self.of4L.show()
-				self.of4E.show()
-				self.of5L.show()
-				self.of5E.show()
-				self.of6B1.show()
+				self.oFootInfo.show()
+				self.oFootThickL.show()
+				self.oFootThickE.show()
+				self.oFootSizeZL.show()
+				self.oFootSizeZE.show()
+				self.oFootCalculateB.show()
+				self.oFootStartL.show()
+				self.oFootStartXE.show()
+				self.oFootStartYE.show()
+				self.oFootStartZE.show()
+				self.oFootSizeXL.show()
+				self.oFootSizeXE.show()
+				self.oFootSizeYL.show()
+				self.oFootSizeYE.show()
+				self.oFootCreateB.show()
 		
 			if iType == "table":
 				self.otb1i.show()
@@ -4796,9 +4845,9 @@ def showQtGUI():
 				self.oHeightE.setText(MagicPanels.unit2gui(760))
 				
 			if selectedIndex == 20:
-				self.of4E.setText(MagicPanels.unit2gui(80))
+				self.oFootThickE.setText(MagicPanels.unit2gui(80))
 			else:
-				self.of4E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
+				self.oFootThickE.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			
 			if selectedIndex == 21:
 				self.og10L.setText(translate('magicStart', 'Drawer front overlap:'))
@@ -5462,6 +5511,64 @@ def showQtGUI():
 			
 			if depth != 0:
 				self.oDepthE.setText(MagicPanels.unit2gui(depth))
+
+		# ############################################################################
+		def calculateFoot(self):
+			
+			obj = False
+			sub = False
+			
+			try:
+				obj = FreeCADGui.Selection.getSelection()[0]
+				sub = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+
+			except:
+				return
+			
+			thick = MagicPanels.unit2value(self.oFootThickE.text())
+			height = MagicPanels.unit2value(self.oFootSizeZE.text())
+			width = 0
+			depth = 0
+			startX = 0
+			startY = 0
+			startZ = 0
+
+			if sub.ShapeType == "Edge":
+				
+				width = float(sub.Length)
+				
+				if float(MagicPanels.touchTypo(sub)[0].X) < float(MagicPanels.touchTypo(sub)[1].X):
+					startX = float(MagicPanels.touchTypo(sub)[0].X)
+				else:
+					startX = float(MagicPanels.touchTypo(sub)[1].X)
+				
+				startY = float(sub.CenterOfMass.y)
+				startZ = float(sub.CenterOfMass.z) - height
+				
+			if sub.ShapeType == "Face":
+				
+				width = float(obj.Length.Value)
+				depth = float(obj.Width.Value)
+				startX = float(sub.Placement.Base.x)
+				startY = float(sub.Placement.Base.y)
+				startZ = float(sub.Placement.Base.z) - height
+
+			if sub.ShapeType == "Vertex":
+				
+				startX = float(sub.X)
+				startY = float(sub.Y)
+				startZ = float(sub.Z) - height
+
+			# set values to text fields
+			self.oFootStartXE.setText(MagicPanels.unit2gui(startX))
+			self.oFootStartYE.setText(MagicPanels.unit2gui(startY))
+			self.oFootStartZE.setText(MagicPanels.unit2gui(startZ))
+			
+			if width != 0:
+				self.oFootSizeXE.setText(MagicPanels.unit2gui(width))
+			
+			if depth != 0:
+				self.oFootSizeYE.setText(MagicPanels.unit2gui(depth))
 
 		# ############################################################################
 		def calculateSingleDrawer(self):
@@ -6933,12 +7040,16 @@ def showQtGUI():
 		# ############################################################################
 		def createF16(self):
 			
-			FSX = MagicPanels.unit2value(self.of1E.text())
-			FSY = MagicPanels.unit2value(self.of2E.text())
-			height = MagicPanels.unit2value(self.of3E.text())
-			thick = MagicPanels.unit2value(self.of4E.text())
-			frontOF = MagicPanels.unit2value(self.of5E.text())
-			depth = self.gFSY - frontOF
+			frontOF = 0
+			
+			startX = MagicPanels.unit2value(self.oFootStartXE.text())
+			startY = MagicPanels.unit2value(self.oFootStartYE.text())
+			startZ = MagicPanels.unit2value(self.oFootStartZE.text())
+			
+			thick = MagicPanels.unit2value(self.oFootThickE.text())
+			width = MagicPanels.unit2value(self.oFootSizeXE.text())
+			height = MagicPanels.unit2value(self.oFootSizeZE.text())
+			depth = MagicPanels.unit2value(self.oFootSizeYE.text()) - frontOF
 			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootLeft")
@@ -6946,7 +7057,7 @@ def showQtGUI():
 			o1.Length = thick
 			o1.Height = height
 			o1.Width = depth
-			pl = FreeCAD.Vector(0, frontOF, -height)
+			pl = FreeCAD.Vector(startX, startY, startZ)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
@@ -6956,7 +7067,7 @@ def showQtGUI():
 			o2.Length = thick
 			o2.Height = height
 			o2.Width = depth
-			pl = FreeCAD.Vector(FSX - thick, frontOF, -height)
+			pl = FreeCAD.Vector(startX + width - thick, startY, startZ)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
@@ -6970,12 +7081,16 @@ def showQtGUI():
 		# ############################################################################
 		def createF17(self):
 			
-			FSX = MagicPanels.unit2value(self.of1E.text())
-			FSY = MagicPanels.unit2value(self.of2E.text())
-			height = MagicPanels.unit2value(self.of3E.text())
-			thick = MagicPanels.unit2value(self.of4E.text())
-			frontOF = MagicPanels.unit2value(self.of5E.text())
-			depth = FSY - frontOF
+			frontOF = 0
+			
+			startX = MagicPanels.unit2value(self.oFootStartXE.text())
+			startY = MagicPanels.unit2value(self.oFootStartYE.text())
+			startZ = MagicPanels.unit2value(self.oFootStartZE.text())
+			
+			thick = MagicPanels.unit2value(self.oFootThickE.text())
+			width = MagicPanels.unit2value(self.oFootSizeXE.text())
+			height = MagicPanels.unit2value(self.oFootSizeZE.text())
+			depth = MagicPanels.unit2value(self.oFootSizeYE.text()) - frontOF
 			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootLeft")
@@ -6983,7 +7098,7 @@ def showQtGUI():
 			o1.Length = thick
 			o1.Height = height
 			o1.Width = depth
-			pl = FreeCAD.Vector(0, frontOF, -height)
+			pl = FreeCAD.Vector(startX, startY, startZ)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
@@ -6993,27 +7108,27 @@ def showQtGUI():
 			o2.Length = thick
 			o2.Height = height
 			o2.Width = depth
-			pl = FreeCAD.Vector(FSX - thick, frontOF, -height)
+			pl = FreeCAD.Vector(startX + width - thick, startY, startZ)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootBack")
 			o3.Label = translate('magicStart', 'Foot Back')
-			o3.Length = FSX - (2 * thick)
+			o3.Length = width - (2 * thick)
 			o3.Height = height
 			o3.Width = thick
-			pl = FreeCAD.Vector(thick, frontOF + depth - thick, -height)
+			pl = FreeCAD.Vector(startX + thick, startY + depth - thick, startZ)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Front
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootFront")
 			o4.Label = translate('magicStart', 'Foot Front')
-			o4.Length = FSX - (2 * thick)
+			o4.Length = width - (2 * thick)
 			o4.Height = height
 			o4.Width = thick
-			pl = FreeCAD.Vector(thick, frontOF, -height)
+			pl = FreeCAD.Vector(startX + thick, startY, startZ)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o4, 0, self.gColor, "color")
 
@@ -7027,12 +7142,16 @@ def showQtGUI():
 		# ############################################################################
 		def createF18(self):
 			
-			FSX = MagicPanels.unit2value(self.of1E.text())
-			FSY = MagicPanels.unit2value(self.of2E.text())
-			height = MagicPanels.unit2value(self.of3E.text())
-			thick = MagicPanels.unit2value(self.of4E.text())
-			frontOF = MagicPanels.unit2value(self.of5E.text())
-			depth = FSY - frontOF
+			frontOF = 0
+			
+			startX = MagicPanels.unit2value(self.oFootStartXE.text())
+			startY = MagicPanels.unit2value(self.oFootStartYE.text())
+			startZ = MagicPanels.unit2value(self.oFootStartZE.text())
+			
+			thick = MagicPanels.unit2value(self.oFootThickE.text())
+			width = MagicPanels.unit2value(self.oFootSizeXE.text())
+			height = MagicPanels.unit2value(self.oFootSizeZE.text())
+			depth = MagicPanels.unit2value(self.oFootSizeYE.text()) - frontOF
 
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootLeft")
@@ -7040,7 +7159,7 @@ def showQtGUI():
 			o1.Length = thick
 			o1.Height = height
 			o1.Width = depth
-			pl = FreeCAD.Vector(0, frontOF, -height)
+			pl = FreeCAD.Vector(startX, startY, startZ)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
@@ -7050,38 +7169,38 @@ def showQtGUI():
 			o2.Length = thick
 			o2.Height = height
 			o2.Width = depth
-			pl = FreeCAD.Vector(FSX - thick, frontOF, -height)
+			pl = FreeCAD.Vector(startX + width - thick, startY, startZ)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootBack")
 			o3.Label = translate('magicStart', 'Foot Back')
-			o3.Length = FSX - (2 * thick)
+			o3.Length = width - (2 * thick)
 			o3.Height = height
 			o3.Width = thick
-			pl = FreeCAD.Vector(thick, frontOF + depth - thick, -height)
+			pl = FreeCAD.Vector(startX + thick, startY + depth - thick, startZ)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Front
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootFront")
 			o4.Label = translate('magicStart', 'Foot Front')
-			o4.Length = FSX - (2 * thick)
+			o4.Length = width - (2 * thick)
 			o4.Height = height
 			o4.Width = thick
-			pl = FreeCAD.Vector(thick, frontOF, -height)
+			pl = FreeCAD.Vector(startX + thick, startY, startZ)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
 			# Center
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootCenter")
 			o5.Label = translate('magicStart', 'Foot Center')
-			o5.Length = FSX - (2 * thick)
+			o5.Length = width - (2 * thick)
 			o5.Height = height
 			o5.Width = thick
-			py = frontOF + (depth / 2) - (thick / 2)
-			pl = FreeCAD.Vector(thick, py, -height)
+			py = startY + (depth / 2) - (thick / 2)
+			pl = FreeCAD.Vector(startX + thick, py, startZ)
 			o5.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o5, 0, self.gColor, "color")
 
@@ -7095,12 +7214,16 @@ def showQtGUI():
 		# ############################################################################
 		def createF19(self):
 			
-			FSX = MagicPanels.unit2value(self.of1E.text())
-			FSY = MagicPanels.unit2value(self.of2E.text())
-			height = MagicPanels.unit2value(self.of3E.text())
-			thick = MagicPanels.unit2value(self.of4E.text())
-			frontOF = MagicPanels.unit2value(self.of5E.text())
-			depth = FSY - frontOF
+			frontOF = 0
+			
+			startX = MagicPanels.unit2value(self.oFootStartXE.text())
+			startY = MagicPanels.unit2value(self.oFootStartYE.text())
+			startZ = MagicPanels.unit2value(self.oFootStartZE.text())
+			
+			thick = MagicPanels.unit2value(self.oFootThickE.text())
+			width = MagicPanels.unit2value(self.oFootSizeXE.text())
+			height = MagicPanels.unit2value(self.oFootSizeZE.text())
+			depth = MagicPanels.unit2value(self.oFootSizeYE.text()) - frontOF
 
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootLeft")
@@ -7108,7 +7231,7 @@ def showQtGUI():
 			o1.Length = thick
 			o1.Height = height
 			o1.Width = depth
-			pl = FreeCAD.Vector(0, frontOF, -height)
+			pl = FreeCAD.Vector(startX, startY, startZ)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
@@ -7118,27 +7241,27 @@ def showQtGUI():
 			o2.Length = thick
 			o2.Height = height
 			o2.Width = depth
-			pl = FreeCAD.Vector(FSX - thick, frontOF, -height)
+			pl = FreeCAD.Vector(startX + width - thick, startY, startZ)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
 			# Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootBack")
 			o3.Label = translate('magicStart', 'Foot Back')
-			o3.Length = FSX - (2 * thick)
+			o3.Length = width - (2 * thick)
 			o3.Height = height
 			o3.Width = thick
-			pl = FreeCAD.Vector(thick, frontOF + depth - thick, -height)
+			pl = FreeCAD.Vector(startX + thick, startY + depth - thick, startZ)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
 			# Front
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootFront")
 			o4.Label = translate('magicStart', 'Foot Front')
-			o4.Length = FSX - (2 * thick)
+			o4.Length = width - (2 * thick)
 			o4.Height = height
 			o4.Width = thick
-			pl = FreeCAD.Vector(thick, frontOF + thick, -height)
+			pl = FreeCAD.Vector(startX + thick, startY + thick, startZ)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			
@@ -7152,20 +7275,24 @@ def showQtGUI():
 		# ############################################################################
 		def createF20(self):
 			
-			FSX = MagicPanels.unit2value(self.of1E.text())
-			FSY = MagicPanels.unit2value(self.of2E.text())
-			height = MagicPanels.unit2value(self.of3E.text())
-			thick = MagicPanels.unit2value(self.of4E.text())
-			frontOF = MagicPanels.unit2value(self.of5E.text())
-			depth = FSY - frontOF
+			frontOF = 0
 			
+			startX = MagicPanels.unit2value(self.oFootStartXE.text())
+			startY = MagicPanels.unit2value(self.oFootStartYE.text())
+			startZ = MagicPanels.unit2value(self.oFootStartZE.text())
+			
+			thick = MagicPanels.unit2value(self.oFootThickE.text())
+			width = MagicPanels.unit2value(self.oFootSizeXE.text())
+			height = MagicPanels.unit2value(self.oFootSizeZE.text())
+			depth = MagicPanels.unit2value(self.oFootSizeYE.text()) - frontOF
+
 			# Left Front
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootLeftFront")
 			o1.Label = translate('magicStart', 'Foot Left Front')
 			o1.Length = thick
 			o1.Height = height
 			o1.Width = thick
-			pl = FreeCAD.Vector(0, frontOF, -height)
+			pl = FreeCAD.Vector(startX, startY, startZ)
 			o1.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o1, 0, self.gColor, "color")
 			
@@ -7175,7 +7302,7 @@ def showQtGUI():
 			o2.Length = thick
 			o2.Height = height
 			o2.Width = thick
-			pl = FreeCAD.Vector(0, frontOF + depth - thick, -height)
+			pl = FreeCAD.Vector(startX, startY + depth - thick, startZ)
 			o2.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o2, 0, self.gColor, "color")
 			
@@ -7185,7 +7312,7 @@ def showQtGUI():
 			o3.Length = thick
 			o3.Height = height
 			o3.Width = thick
-			pl = FreeCAD.Vector(FSX - thick, frontOF, -height)
+			pl = FreeCAD.Vector(startX + width - thick, startY, startZ)
 			o3.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o3, 0, self.gColor, "color")
 			
@@ -7195,7 +7322,7 @@ def showQtGUI():
 			o4.Length = thick
 			o4.Height = height
 			o4.Width = thick
-			pl = FreeCAD.Vector(FSX - thick, frontOF + depth - thick, -height)
+			pl = FreeCAD.Vector(startX + width - thick, startY + depth - thick, startZ)
 			o4.Placement = FreeCAD.Placement(pl, self.gR)
 			MagicPanels.setColor(o4, 0, self.gColor, "color")
 			

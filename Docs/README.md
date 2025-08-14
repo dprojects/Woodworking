@@ -161,6 +161,8 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * improve Foot feature, via face, edge or vertex (magicStart)
+    * improve API for developers (makeAPI, MagicPanels, MagicPanelsAPI)
     * fix globals (MagicPanels)
     * current selection feature to skip refresh selection button (magicSettings, magicMove)
     * window stays on top feature (magicSettings, all tools with GUI)
@@ -173,7 +175,6 @@ I added many tools, and now Woodworking workbench has so many features and simpl
     * units fixes
     * automatic parameterization (magicGlue)
     * tool to convert model to Assembly (selected2Assembly)
-
 
 **Step 2. Get FreeCAD Mod folder localization:**
 
