@@ -161,6 +161,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * allow to make panel smaller and improve (magicResizer)
     * improve Foot feature, via face, edge or vertex (magicStart)
     * improve API for developers (makeAPI, MagicPanels, MagicPanelsAPI)
     * fix globals (MagicPanels)
@@ -483,22 +484,26 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 ## magicResizer
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicResizer.png"> This tool allows to resize `Cube` or `Pad` panel and also other objects based on `Pad` e.g. construction profiles. Make sure your `Pad` object has defined constraints, you can use [showConstraints](#showConstraints) tool for that. If the object has no constraint at the selected edge the object will not be resized. The constraints do not have to be named but must be defined. 
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicResizer.png"> This tool allows to resize `Part::Box` or `PartDesign::Pad` objects and also other objects based on `PartDesign::Pad` e.g. [construction profiles](#panel2profile). Make sure your `Pad` object has defined constraints, you can use [showConstraints](#showConstraints) tool for that. If the object has no constraint at the selected edge the object will not be resized. The constraints do not have to be named but must be defined. 
 
-**Options:**
+**Possible selection:**
 
-* **Selected edge only:** If you select edge only you can resize the edge with `Resize step` via `resize -` and `resize +` buttons. This is simple resize with current `Resize step` and edge selection. In this mode the tool search for all sizes with selected edge size and resize each one with `Resize step`. Use `resize -` and `resize +` buttons in this mode.
+* **set** first button allows you to load selected edge to resize and second one below allows you to load selected face, edge or vertex as destination to resize. The buttons can be used for individual reload but to select destination you have to have loaded edge to resize first.
+* **refresh selection** allows you to load selected edge to resize and also selected face, edge or vertex as destination to resize. First selected needs to be edge to resize and next destination.
 
-* **Selected edge and face:** This mode allows to resize object to the nearest face of other object. To use this mode, first select edge to resize and next select nearest face of any other object. If the face is at the right side this tool will calculate space needed to resize and will change the exact size. If the face is before the selected edge the object will be resized and moved to the left. So, the result will be resized object from the left side. Use `resize to nearest` button in this mode. If you have selected face the `Resize step` should be automatically calculated. You can also undo this operation via `resize -` button.
+> [!TIP]
+> If you first select edge and next destination and open this tool, the objects will be loaded automatically, 
+> so you do not have to press `refresh selection` button.
 
-* **Selected edge and edge:** This mode allows to resize the object more precisely. If the container is rotated the face may not be good choice. So, you can select edge. In this case the CenterOfMass of the edge will be used as reference point. To use this mode, first select edge to resize and next select nearest edge of any other object. Use `resize to nearest` button in this mode.
+**Resize options:**
 
-* **Selected edge and vertex:** This mode allows to resize the object more precisely. You can select vertex to resize the object exactly to the selected point. To use this mode, first select edge to resize and next select nearest vertex of any other object. Use `resize to nearest` button in this mode.
+* **Resize step:** if you have loaded destination sub-object this resize step will be automatically recalculated.
+* **resize -** button allows you to make smaller loaded edge to resize. The resize size will be `resize step`.
+* **resize +** button allows you to make bigger loaded edge to resize. The resize size will be `resize step`.
+* **resize to nearest** button allows you to resize object to the nearest face, edge or vertex of other object. This option is able to make panel smaller or bigger automatically to the destination.
 
 **Video tutorials:** 
-* [Smart resizer tool](https://www.youtube.com/watch?v=t1G7qnRfAgY)
-* [How to handle dimension changes](https://www.youtube.com/watch?v=HED1-BH66BU)
-* [Simple office bookcase](https://www.youtube.com/watch?v=U_oi3POJmSw)
+* [How to use magicResizer](https://www.youtube.com/watch?v=GzC_XoOzeJ8)
 
 ## showConstraints
 
