@@ -1,30 +1,9 @@
-# ###################################################################################################################
-'''
-
-FreeCAD macro to get chipboards dimensions to cut
-Author: Darek L (github.com/dprojects)
-Latest version: https://github.com/dprojects/getDimensions
-
-Certified platform:
-https://github.com/dprojects/Woodworking
-
-'''
-# ###################################################################################################################
-
-
 import FreeCAD, FreeCADGui, Draft, Spreadsheet
 from PySide import QtGui, QtCore
 
 import MagicPanels
 
 translate = FreeCAD.Qt.translate
-
-
-gKernelVersion = 0
-try:
-	gKernelVersion = float( str(FreeCAD.Version()[0]) + "." + str(FreeCAD.Version()[1]) + str(FreeCAD.Version()[2]) )
-except:
-	skip = 1
 
 
 # ###################################################################################################################
@@ -41,7 +20,8 @@ except:
 sLang = "en"
 sLangDsc = { 
 	"en" : translate("getDimensions", "English language"), 
-	"pl" : translate("getDimensions", "Polish language") # no comma
+	"pl" : translate("getDimensions", "Polish language"),
+	"system" : translate("getDimensions", "user system settings") # no comma
 }
 
 # Report print quality:
@@ -94,7 +74,8 @@ sUnitsMetric = "mm"
 sUnitsMetricDsc = {
 	"mm" : translate("getDimensions", "millimeter"),
 	"m" : translate("getDimensions", "meter"),
-	"in" : translate("getDimensions", "inch") # no comma
+	"in" : translate("getDimensions", "inch"),
+	"system" : translate("getDimensions", "user system settings") # no comma
 }
 
 # Units for area:
@@ -102,7 +83,8 @@ sUnitsArea = "m"
 sUnitsAreaDsc = {
 	"m" : translate("getDimensions", "square meter (m2)"),
 	"mm" : translate("getDimensions", "square millimeter (mm2)"),
-	"in" : translate("getDimensions", "square inch (in2)") # no comma
+	"in" : translate("getDimensions", "square inch (in2)"),
+	"system" : translate("getDimensions", "user system settings") # no comma
 }
 
 # Units for edge size:
@@ -110,14 +92,16 @@ sUnitsEdge = "m"
 sUnitsEdgeDsc = {
 	"mm" : translate("getDimensions", "millimeter"),
 	"m" : translate("getDimensions", "meter"),
-	"in" : translate("getDimensions", "inch") # no comma
+	"in" : translate("getDimensions", "inch"),
+	"system" : translate("getDimensions", "user system settings") # no comma
 }
 
 # Precision Defaults - Dimensions (d)
 sPrecisionDD = {
 	"mm" : 0,
 	"m" : 3,
-	"in" : 3 # no comma
+	"in" : 3,
+	"system" : 2 # no comma
 }
 sPDD = sPrecisionDD[sUnitsMetric]
 
@@ -125,7 +109,8 @@ sPDD = sPrecisionDD[sUnitsMetric]
 sPrecisionDE = {
 	"mm" : 0,
 	"m" : 3,
-	"in" : 3 # no comma
+	"in" : 3,
+	"system" : 2 # no comma
 }
 sPDE = sPrecisionDE[sUnitsEdge]
 
@@ -133,7 +118,8 @@ sPDE = sPrecisionDE[sUnitsEdge]
 sPrecisionDA = {
 	"mm" : 0,
 	"m" : 6,
-	"in" : 6 # no comma
+	"in" : 6,
+	"system" : 2 # no comma
 }
 sPDA = sPrecisionDA[sUnitsArea]
 
@@ -995,6 +981,9 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 		if sUnitsMetric == "in":
 			return str( round(v * float(0.0393700787), sPDD) )
 	
+		if sUnitsMetric == "system":
+			return MagicPanels.unit2gui( round(v, sPDD) )
+			
 	# for edge
 	if iType == "edge":
 		
@@ -1012,6 +1001,9 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 		
 		if sUnitsEdge == "in":
 			return str( round(v * float(0.0393700787), sPDE) )
+		
+		if sUnitsEdge == "system":
+			return MagicPanels.unit2gui( round(v, sPDE) )
 	
 	# for area
 	if iType == "area":
@@ -1030,6 +1022,9 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 		
 		if sUnitsArea == "in":
 			return str( round(v * float(0.0015500031), sPDA) )
+			
+		if sUnitsArea == "system":
+			return MagicPanels.unitArea2gui( round(v, sPDA) )
 	
 	# for to-angle conversion
 	if iType == "to-angle":
@@ -1047,15 +1042,24 @@ def toSheet(iValue, iType, iCaller="toSheet"):
 	
 	# for dimensions
 	if iType == "d":
-		return  "=<<" + getUnit(iValue, iType, iCaller) + " " + sUnitsMetric + ">>"
-
+		if sUnitsMetric == "system":
+			return  "=<<" + getUnit(iValue, iType, iCaller) + " " + ">>"
+		else:
+			return  "=<<" + getUnit(iValue, iType, iCaller) + " " + sUnitsMetric + ">>"
+			
 	# for edge
 	if iType == "edge":
-		return  "=<<" + getUnit(iValue, iType, iCaller) + " " + sUnitsEdge + ">>"
+		if sUnitsEdge == "system":
+			return  "=<<" + getUnit(iValue, iType, iCaller) + " " + ">>"
+		else:
+			return  "=<<" + getUnit(iValue, iType, iCaller) + " " + sUnitsEdge + ">>"
 
 	# for area
 	if iType == "area":
-		return  "=<<" + getUnit(iValue, iType, iCaller) + ">>"
+		if sUnitsArea == "system":
+			return  "=<<" + getUnit(iValue, iType, iCaller) + ">>" # yes the same now
+		else:
+			return  "=<<" + getUnit(iValue, iType, iCaller) + ">>"
 
 	# for raw angle
 	if iType == "to-angle":
@@ -1068,7 +1072,7 @@ def toSheet(iValue, iType, iCaller="toSheet"):
 	# for string
 	if iType == "string":
 		return str(iValue)
-
+		
 	return -1
 
 
@@ -3098,7 +3102,9 @@ def initLang():
 			gLang5 = "m2"
 		if sUnitsArea == "in":
 			gLang5 = "in2"
-
+		if sUnitsArea == "system":
+			gLang5 = "Obszar"
+			
 		gLang6 = "Podsumowanie dla grup"
 		gLang7 = "Podsumowanie dla grubości"
 		gLang8 = "Długość obrzeża"
@@ -3121,6 +3127,45 @@ def initLang():
 		gLang25 = "poziomo"
 		gLang26 = "pionowo"
 
+	# from system translation files
+	elif sLang  == "system":
+		
+		gLang1 = translate("getDimensions", "Name")
+		gLang2 = translate("getDimensions", "Quantity")
+		gLang3 = translate("getDimensions", "Dimensions")
+		gLang4 = translate("getDimensions", "Thickness")
+
+		if sUnitsArea == "mm":
+			gLang5 = "mm2"
+		if sUnitsArea == "m":
+			gLang5 = "m2"
+		if sUnitsArea == "in":
+			gLang5 = "in2"
+		if sUnitsArea == "system":
+			gLang5 = translate("getDimensions", "Area")
+			
+		gLang6 = translate("getDimensions", "Summary by groups")
+		gLang7 = translate("getDimensions", "Summary by thickness")
+		gLang8 = translate("getDimensions", "Edge size")
+		gLang9 = translate("getDimensions", "Length")
+		gLang10 = translate("getDimensions", "Edge without veneer")
+		gLang11 = translate("getDimensions", "Needed veneer for edge")
+		gLang12 = translate("getDimensions", "edge")
+		gLang13 = translate("getDimensions", "surface")
+		gLang14 = translate("getDimensions", "dimensions")
+		gLang15 = translate("getDimensions", "Depth")
+		gLang16 = translate("getDimensions", "Construction profile")
+		gLang17 = translate("getDimensions", "Thickness")
+		gLang18 = translate("getDimensions", "Dimensions")
+		gLang19 = translate("getDimensions", "Mounting points")
+		gLang20 = translate("getDimensions", "Diameter")
+		gLang21 = translate("getDimensions", "Length")
+		gLang22 = translate("getDimensions", "Area")
+		gLang23 = translate("getDimensions", "Custom measurements")
+		gLang24 = translate("getDimensions", "Grain Direction")
+		gLang25 = translate("getDimensions", "horizontal")
+		gLang26 = translate("getDimensions", "vertical")
+
 	# English language
 	else:
 
@@ -3135,7 +3180,9 @@ def initLang():
 			gLang5 = "m2"
 		if sUnitsArea == "in":
 			gLang5 = "in2"
-
+		if sUnitsArea == "system":
+			gLang5 = "Area"
+			
 		gLang6 = "Summary by groups"
 		gLang7 = "Summary by thickness"
 		gLang8 = "Edge size"
@@ -4504,7 +4551,7 @@ def codeLink(iCaller="codeLink"):
 	# add link 
 	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
 	gSheet.mergeCells(vCell)
-	gSheet.set(vCell, "Generated by FreeCAD macro: github.com/dprojects/getDimensions")
+	gSheet.set(vCell, "Generated by: github.com/dprojects/Woodworking")
 	gSheet.setAlignment(vCell, "left", "keep")
 	gSheet.setBackground(vCell, gHeadCW)
 
@@ -4654,7 +4701,7 @@ def setTechDraw(iCaller="setTechDraw"):
 	gPrintSheet.X = int(templateWidth / 2)
 	gPrintSheet.Y = int(templateHeight / 2)
 
-	if gKernelVersion >= 1.1:
+	if MagicPanels.gKernelVersion >= 1.1:
 		gPrintSheet.Scale = 1
 
 	# try to set fonts

@@ -1485,6 +1485,24 @@
 
 		float for calculation
 
+### unitArea2gui(iValue):
+	
+##### Description:
+	
+		Allows to convert area value (mm float FreeCAD format) into gui user settings.
+
+##### Args:
+
+		iValue: float from FreeCAD or from calculations
+		
+##### Usage:
+
+		areaString = MagicPanels.unitArea2gui(180000)
+
+##### Result:
+
+		string, for example "180000 mm^2"
+
 
 # Colors
 

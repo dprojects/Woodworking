@@ -4147,6 +4147,53 @@ def unit2value(iString):
 
 
 # ###################################################################################################################
+def unitArea2gui(iValue):
+	'''
+	Description:
+	
+		Allows to convert area value (mm float FreeCAD format) into gui user settings.
+
+	Args:
+
+		iValue: float from FreeCAD or from calculations
+		
+	Usage:
+
+		areaString = MagicPanels.unitArea2gui(180000)
+
+	Result:
+
+		string, for example "180000 mm^2"
+
+	'''
+
+
+	# fix FreeCAD 1.1 bug
+	userSettings = 0
+	try:
+		userSettings = Units.getSchema()
+		if userSettings > len(Units.listSchemas()) - 1:
+			userSettings = 0
+	except:
+		skip = 1
+
+	value = Units.Quantity( str(iValue) + " mm^2" )
+	forUser = Units.schemaTranslate(value, userSettings)[0]
+
+	# fix for FreeCAD bug with "Building US", 
+	# only "0 mm" is translated to "0" value without units
+	# see: https://github.com/dprojects/Woodworking/issues/57#issuecomment-2841510545
+	if userSettings == 5:
+		try:
+			float(forUser)
+			forUser = str(forUser) + " in^2"
+		except:
+			skip = 1
+
+	return str(forUser)
+
+
+# ###################################################################################################################
 '''
 # Colors
 '''

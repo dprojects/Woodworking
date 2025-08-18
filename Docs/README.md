@@ -161,6 +161,8 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * add system units option for dimensions, area, edge (getDimensions, MagicPanels)
+    * add system option for language (getDimensions)
     * allow to make panel smaller and improve (magicResizer)
     * improve Foot feature, via face, edge or vertex (magicStart)
     * improve API for developers (makeAPI, MagicPanels, MagicPanelsAPI)
@@ -891,7 +893,15 @@ Selection modes:
 > but if, for example, I need to order plywood shelves or boards in a different color, I create `g - report type` 
 > for the person in the cutting service, where the appropriate board types and colors are grouped.
 
-**Units:** you can create report with recalculated units in `millimeter`, `meter` or `inch`.
+**Units:** 
+* `millimeter` all dimensions will be recalculated to millimeters.
+* `meter` all dimensions will be recalculated to meters. 
+* `inch` all dimensions will be recalculated to inches.
+* `system` all dimensions will be presented in the user's unit system preferences.
+
+> [!TIP]
+> In the case of the `system` option, the spreadsheet has its own shortening unit format, which causes `mm2` to be saved as `cm2`. 
+> To force the area to be shown in square meters, set `m` square meter (m2) for `Units for area`.
 
 **Precision:** By default the values at report are rounded to have more clear listing. Rounding values also allows to avoid values at report like e.g. `499.9999999999` instead of `500 mm`. Generally during working with wood material it is rather hard to achieve precision better than `+/-1 mm`. Even professional cutting services are not able to keep always precision `+/-0 mm`, so precision like `+/- 0.1 mm` is rather not possible in real life. So by default precision for `mm` units is `0`, it means the value `500.65 mm` will be rounded to `501 mm` at the report.
 
@@ -909,7 +919,10 @@ Selection modes:
   * `tool` shows Tool only
 
 **Additional settings:**
-* `Report Language` currently supported languages are `English` and my native `Polish`.
+* `Report Language`:
+  * `English` translation to English.
+  * `Polish` translation to Polish.
+  * `system` translation to from system translation files and user language settings.
 * `Report quality` in `eco` the colors are removed to keep low ink mode, by default is `hq` with colors. 
 
 **Edgeband:**
