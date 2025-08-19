@@ -1503,6 +1503,30 @@
 
 		string, for example "180000 mm^2"
 
+### unit2fractions(iValue, iPrecision=0):
+	
+##### Description:
+	
+		Allows to convert unit from value (mm float FreeCAD format) into fractions string X' Y n/d". 
+		X' represents a whole number of feet. Y represents a whole number of inches and n/d" represents 
+		a fraction of an inch, where n is the numerator and d is the denominator.
+		
+		Note: This function not shorten fraction part (keeps the denominator the same as precision).
+
+##### Args:
+
+		iValue: float from FreeCAD or from calculations
+		iPrecision: the precision_denominator
+		
+##### Usage:
+
+		unitForUser = MagicPanels.unit2fractions(397) # to get iPrecision from user settings
+		unitForUser = MagicPanels.unit2fractions(397, 128)
+
+##### Result:
+
+		string, for example the output should be 1' 3 81/128"
+
 
 # Colors
 

@@ -4194,6 +4194,105 @@ def unitArea2gui(iValue):
 
 
 # ###################################################################################################################
+def unit2fractions(iValue, iPrecision=0):
+	'''
+	Description:
+	
+		Allows to convert unit from value (mm float FreeCAD format) into fractions string X' Y n/d". 
+		X' represents a whole number of feet. Y represents a whole number of inches and n/d" represents 
+		a fraction of an inch, where n is the numerator and d is the denominator.
+		
+		Note: This function not shorten fraction part (keeps the denominator the same as precision).
+
+	Args:
+
+		iValue: float from FreeCAD or from calculations
+		iPrecision: the precision_denominator
+		
+	Usage:
+
+		unitForUser = MagicPanels.unit2fractions(397) # to get iPrecision from user settings
+		unitForUser = MagicPanels.unit2fractions(397, 128)
+
+	Result:
+
+		string, for example the output should be 1' 3 81/128"
+
+	'''
+
+
+	import math
+	
+	# defaults
+	inch = float(0.0393700787)    # 1 mm in inches
+	foot = int(12)                # 1 foot in inches
+
+	# set default precision
+	precision = iPrecision
+	if precision == 0:
+		try:
+			us = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/Units')
+			precision = us.GetInt('FracInch') # if not defined return 0
+		except:
+			precision = 0
+
+	# convert float in mm to inches
+	inches = iValue * inch
+	
+	# calculate X (whole feet)
+	X = math.floor(inches / foot)
+	
+	# calculate remaining inches
+	rinches = inches - (X * foot)
+	
+	# calculate Y (whole inches)
+	Y = math.floor(rinches)
+
+	# calculate n / d (fractional part)
+	finches = rinches - Y
+	
+	# makes denominator 127 not 128, Python library bug?
+	'''
+	from fractions import Fraction
+	
+	if precision != 0:
+		fr = Fraction(str(finches)).limit_denominator(precision)
+	else:
+		fr = Fraction.from_float(finches)
+	
+	n = fr.numerator
+	d = fr.denominator
+	'''
+	
+	t = finches * precision
+	tC = math.ceil(t)
+	tF = math.floor(t)
+	
+	diffC = abs(t - tC)
+	diffF = abs(t - tF)
+	
+	if diffC < diffF:
+		n = tC
+	else:
+		n = tF
+	
+	d = precision
+	
+	# create string for user
+	forUser = ""
+	if X != 0:
+		forUser += str(X) + "' "
+
+	if Y != 0:
+		forUser += str(Y) + " "
+
+	if n != 0:
+		forUser += str(n) + "/" + str(d) + '"'
+
+	return forUser
+	
+
+# ###################################################################################################################
 '''
 # Colors
 '''

@@ -161,6 +161,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * add fractions option to units (getDimensions, MagicPanels)
     * add system units option for dimensions, area, edge (getDimensions, MagicPanels)
     * add system option for language (getDimensions)
     * allow to make panel smaller and improve (magicResizer)
@@ -897,6 +898,7 @@ Selection modes:
 * `millimeter` all dimensions will be recalculated to millimeters.
 * `meter` all dimensions will be recalculated to meters. 
 * `inch` all dimensions will be recalculated to inches.
+* `fractions` this is notation `X' Y n/d"`, where the `X'` represents a whole number of feet, the `Y` represents a whole number of inches and the `n/d"` represents a fraction of an inch, where `n` is the numerator and `d` is the denominator. the fractional part is not shorten here and the denominator is taken from the user settings from `Edit->Preferences->General->Building US->Minimal fractional inch`. For this type area will be set to `inch2` (unit square inch).
 * `system` all dimensions will be presented in the user's unit system preferences.
 
 > [!TIP]

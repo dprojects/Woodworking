@@ -75,6 +75,7 @@ sUnitsMetricDsc = {
 	"mm" : translate("getDimensions", "millimeter"),
 	"m" : translate("getDimensions", "meter"),
 	"in" : translate("getDimensions", "inch"),
+	"fractions" : translate("getDimensions", "fractions notation X' Y n/d\""),
 	"system" : translate("getDimensions", "user system settings") # no comma
 }
 
@@ -84,6 +85,7 @@ sUnitsAreaDsc = {
 	"m" : translate("getDimensions", "square meter (m2)"),
 	"mm" : translate("getDimensions", "square millimeter (mm2)"),
 	"in" : translate("getDimensions", "square inch (in2)"),
+	"fractions" : translate("getDimensions", "square inch (in2)"),
 	"system" : translate("getDimensions", "user system settings") # no comma
 }
 
@@ -93,6 +95,7 @@ sUnitsEdgeDsc = {
 	"mm" : translate("getDimensions", "millimeter"),
 	"m" : translate("getDimensions", "meter"),
 	"in" : translate("getDimensions", "inch"),
+	"fractions" : translate("getDimensions", "fractions notation X' Y n/d\""),
 	"system" : translate("getDimensions", "user system settings") # no comma
 }
 
@@ -101,6 +104,7 @@ sPrecisionDD = {
 	"mm" : 0,
 	"m" : 3,
 	"in" : 3,
+	"fractions" : 6,
 	"system" : 2 # no comma
 }
 sPDD = sPrecisionDD[sUnitsMetric]
@@ -110,6 +114,7 @@ sPrecisionDE = {
 	"mm" : 0,
 	"m" : 3,
 	"in" : 3,
+	"fractions" : 6,
 	"system" : 2 # no comma
 }
 sPDE = sPrecisionDE[sUnitsEdge]
@@ -119,6 +124,7 @@ sPrecisionDA = {
 	"mm" : 0,
 	"m" : 6,
 	"in" : 6,
+	"fractions" : 2,
 	"system" : 2 # no comma
 }
 sPDA = sPrecisionDA[sUnitsArea]
@@ -981,6 +987,9 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 		if sUnitsMetric == "in":
 			return str( round(v * float(0.0393700787), sPDD) )
 	
+		if sUnitsMetric == "fractions":
+			return MagicPanels.unit2fractions( round(v, sPDD) )
+			
 		if sUnitsMetric == "system":
 			return MagicPanels.unit2gui( round(v, sPDD) )
 			
@@ -1002,6 +1011,9 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 		if sUnitsEdge == "in":
 			return str( round(v * float(0.0393700787), sPDE) )
 		
+		if sUnitsEdge == "fractions":
+			return MagicPanels.unit2fractions( round(v, sPDE) )
+			
 		if sUnitsEdge == "system":
 			return MagicPanels.unit2gui( round(v, sPDE) )
 	
@@ -1021,6 +1033,9 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 			return str( round(v * float(0.000001), sPDA) )
 		
 		if sUnitsArea == "in":
+			return str( round(v * float(0.0015500031), sPDA) )
+		
+		if sUnitsArea == "fractions":
 			return str( round(v * float(0.0015500031), sPDA) )
 			
 		if sUnitsArea == "system":
@@ -1042,21 +1057,21 @@ def toSheet(iValue, iType, iCaller="toSheet"):
 	
 	# for dimensions
 	if iType == "d":
-		if sUnitsMetric == "system":
+		if sUnitsMetric == "system" or sUnitsMetric == "fractions":
 			return  "=<<" + getUnit(iValue, iType, iCaller) + " " + ">>"
 		else:
 			return  "=<<" + getUnit(iValue, iType, iCaller) + " " + sUnitsMetric + ">>"
 			
 	# for edge
 	if iType == "edge":
-		if sUnitsEdge == "system":
+		if sUnitsEdge == "system" or sUnitsEdge == "fractions":
 			return  "=<<" + getUnit(iValue, iType, iCaller) + " " + ">>"
 		else:
 			return  "=<<" + getUnit(iValue, iType, iCaller) + " " + sUnitsEdge + ">>"
 
 	# for area
 	if iType == "area":
-		if sUnitsArea == "system":
+		if sUnitsArea == "system" or sUnitsArea == "fractions":
 			return  "=<<" + getUnit(iValue, iType, iCaller) + ">>" # yes the same now
 		else:
 			return  "=<<" + getUnit(iValue, iType, iCaller) + ">>"
@@ -3100,7 +3115,7 @@ def initLang():
 			gLang5 = "mm2"
 		if sUnitsArea == "m":
 			gLang5 = "m2"
-		if sUnitsArea == "in":
+		if sUnitsArea == "in" or sUnitsArea == "fractions":
 			gLang5 = "in2"
 		if sUnitsArea == "system":
 			gLang5 = "Obszar"
@@ -3136,11 +3151,11 @@ def initLang():
 		gLang4 = translate("getDimensions", "Thickness")
 
 		if sUnitsArea == "mm":
-			gLang5 = "mm2"
+			gLang5 = translate("getDimensions", "mm2")
 		if sUnitsArea == "m":
-			gLang5 = "m2"
-		if sUnitsArea == "in":
-			gLang5 = "in2"
+			gLang5 = translate("getDimensions", "m2")
+		if sUnitsArea == "in" or sUnitsArea == "fractions":
+			gLang5 = translate("getDimensions", "in2")
 		if sUnitsArea == "system":
 			gLang5 = translate("getDimensions", "Area")
 			
@@ -3178,7 +3193,7 @@ def initLang():
 			gLang5 = "mm2"
 		if sUnitsArea == "m":
 			gLang5 = "m2"
-		if sUnitsArea == "in":
+		if sUnitsArea == "in" or sUnitsArea == "fractions":
 			gLang5 = "in2"
 		if sUnitsArea == "system":
 			gLang5 = "Area"
