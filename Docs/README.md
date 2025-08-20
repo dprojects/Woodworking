@@ -62,6 +62,15 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 * [How to use containers - short tutorial](#how-to-use-containers---short-tutorial)
 * [Cut list, Measure, Dimensions, Bill Of Materials](#cut-list-measure-dimensions-bill-of-materials)
 	* [getDimensions](#getdimensions)
+		* [Report type](#report-type)
+		* [Units](#units)
+		* [Precision](#precision)
+		* [Visibility](#visibility)
+		* [Additional settings](#additional-settings)
+		* [Edgeband](#edgeband)
+		* [Supported objects](#supported-objects)
+		* [Supported transformations](#supported-transformations)
+		* [Video tutorials & Documentation](#video-tutorials-&-documentation)
 	* [sheet2export](#sheet2export)
 	* [showOccupiedSpace](#showoccupiedspace)
 	* [magicMeasure](#magicmeasure)
@@ -870,7 +879,8 @@ Selection modes:
 > The 3rd dimension will be get from `Pad.Length` attribute. 
 > If you can't add a `SizeX` or `SizeY` constraint name in the Sketch, select the `Reference` checkbox during constraint creation and add exact name.
 
-**Report type:**
+### Report type
+
 * **default:** default object search path. This path should also be used for the built-in Assembly workbench.
 * **assembly:** object search path dedicated only to [Assembly4](https://codeberg.org/Zolko/Assembly4) workbench by [Zolko](https://forum.freecad.org/viewtopic.php?t=86110).
 * **q - report type:** the default report type allows you to quickly create a cutting list needed to order boards from a DIY store in Poland. Objects are grouped by the same dimensions, making cutting easier.
@@ -881,6 +891,7 @@ Selection modes:
 * **c - report type:** this report type shows the dimensions for all named constraints inside Sketch objects and the `Length` size from `PartDesign` objects.
 * **p - report type:** this report type shows the dimensions for all constraints on Sketch objects, whether named or unnamed, and the `Length` size from `PartDesign` objects.
 * **a - report type:** this report is some kind of approximation of needed material. It uses different approach to dimensions, because the dimensions are not get here from objects, they are calculated from raw vertices. You have to be careful because the dimensions are occupied space in 3D by the object and you can see the difference for all rotated elements. This type of report can be directly imported at [cutlistoptimizer.com](https://www.cutlistoptimizer.com/) website tool.
+
 * **thickness summary:** turns off or on the thickenss summary.
 * **dowels and screws:** shows dowels created via [magicDowels](#magicdowels) tool and also Woodworking workbench screw replaced via [panel2link](#panel2link) or [panel2clone](#panel2clone) tools. If you want to have custom dowels or screws visible at the report you need to have `Part::Cylinder` object inside with measurements.
 * **decorations:** shows dimensions for objects considered as decoration, i.e. `PartDesign::Fillet`, `PartDesign::Chamfer`, `Part::Sphere`, `Part::Cone`, `Part::Torus` object types.
@@ -896,53 +907,75 @@ Selection modes:
 > but if, for example, I need to order plywood shelves or boards in a different color, I create `g - report type` 
 > for the person in the cutting service, where the appropriate board types and colors are grouped.
 
-**Units:** 
-* `millimeter` all dimensions will be recalculated to millimeters.
-* `meter` all dimensions will be recalculated to meters. 
-* `inch` all dimensions will be recalculated to inches.
-* `fractions` this is notation `X' Y n/d"`, where the `X'` represents a whole number of feet, the `Y` represents a whole number of inches and the `n/d"` represents a fraction of an inch, where `n` is the numerator and `d` is the denominator. The fractional part is reduced by the system so you have to set `Building US` and the denominator is taken from the user settings from `Edit->Preferences->General->Building US->Minimal fractional inch`. The area will be calculated by the system `sqft` (square foot).
-* `fractions minus` this is notation `X' Y-n/d"`, where the `X'` represents a whole number of feet, the `Y` represents a whole number of inches and the `n/d"` represents a fraction of an inch, where `n` is the numerator and `d` is the denominator. The fractional part is reduced by the system so you have to set `Building US` and the denominator is taken from the user settings from `Edit->Preferences->General->Building US->Minimal fractional inch`. The area will be calculated by the system `sqft` (square foot).
-* `fractions equal` this is notation `X' Y n/d"`, where the `X'` represents a whole number of feet, the `Y` represents a whole number of inches and the `n/d"` represents a fraction of an inch, where `n` is the numerator and `d` is the denominator. The fractional part is not reduced and the denominator is taken from the user settings from `Edit->Preferences->General->Building US->Minimal fractional inch` but is independent of units settigns, can be also `Standard (mm,...)`. The area will be set to `inch2` (square inch).
-* `system` all dimensions will be presented in the user's unit system preferences.
+### Units
+
+* **millimeter:** all dimensions will be recalculated to millimeters.
+* **meter:** all dimensions will be recalculated to meters. 
+* **inch:** all dimensions will be recalculated to inches.
+
+> [!NOTE]
+> The recalculations above are independent of user units settings.
+
+* **fractions:** this is notation `X' Y n/d"`, the fractional part is reduced by the system so you have to set `Building US`. The area will be calculated by the system `sqft` (square foot).
+* **fractions minus:** this is notation `X' Y-n/d"`, the fractional part is reduced by the system so you have to set `Building US`. The area will be calculated by the system `sqft` (square foot).
+* **fractions equal:** this is notation `X' Y n/d"`, the fractional part is not reduced and is independent of units settigns, can be also `Standard (mm,...)`. The area will be set to `inch2` (square inch).
+
+> [!NOTE]
+> The `X'` represents a whole number of feet, the `Y` represents a whole number of inches and the `n/d"` 
+> represents a fraction of an inch, where `n` is the numerator and `d` is the denominator. 
+> The denominator is taken from the user settings from `Edit->Preferences->General->Building US->Minimal fractional inch`. 
+
+* **system:** all dimensions will be presented in the user's unit system preferences.
 
 > [!TIP]
 > In the case of the `system` option, the spreadsheet has its own shortening unit format, which causes `mm2` to be saved as `cm2`. 
 > To force the area to be shown in square meters, set `m` square meter (m2) for `Units for area`.
 
-**Precision:** By default the values at report are rounded to have more clear listing. Rounding values also allows to avoid values at report like e.g. `499.9999999999` instead of `500 mm`. Generally during working with wood material it is rather hard to achieve precision better than `+/-1 mm`. Even professional cutting services are not able to keep always precision `+/-0 mm`, so precision like `+/- 0.1 mm` is rather not possible in real life. So by default precision for `mm` units is `0`, it means the value `500.65 mm` will be rounded to `501 mm` at the report.
+### Precision
 
-**Visibility:**
+By default the values at report are rounded to have more clear listing. Rounding values also allows to avoid values at report like e.g. `499.9999999999` instead of `500 mm`. Generally during working with wood material it is rather hard to achieve precision better than `+/-1 mm`. Even professional cutting services are not able to keep always precision `+/-0 mm`, so precision like `+/- 0.1 mm` is rather not possible in real life. So by default precision for `mm` units is `0`, it means the value `500.65 mm` will be rounded to `501 mm` at the report.
+
+### Visibility
+
 * **All objects:**
-  * `off` allows hidden content to be calculated and listed at the report. FreeCAD has many complicated objects with hidden content. For PartDesign objects usually, only the objects of last operation is visible but the first Pad with dimensions is hidden. Similar thing is for Cut objects where the content with dimensions is hidden but the Cut object has no information about dimensions of its parts.
-  * `on` hidden objects will not be listed at the report.
-  * `edge` hidden objects will be listed but not added to the edge size.
-  * `parent` not list object with hidden parent object.
-  * `inherit` dedicated mostly to hide the base realistic looking screw.
-  * `special BOM attribute` if object has `BOM` attribute set to `False` (`App::PropertyBool`) it will be skipped during parsing and not listed at the report. This special attribute is used by [magicCut](#magiccut) and [magicKnife](#magicknife) tools to skip copies at the report. For more details see video tutorial: [Skip copies in cut-list](https://www.youtube.com/watch?v=rFEDLaD8lxM).
+  * **off:** allows hidden content to be calculated and listed at the report. FreeCAD has many complicated objects with hidden content. For PartDesign objects usually, only the objects of last operation is visible but the first Pad with dimensions is hidden. Similar thing is for Cut objects where the content with dimensions is hidden but the Cut object has no information about dimensions of its parts.
+  * **on:** hidden objects will not be listed at the report.
+  * **edge:** hidden objects will be listed but not added to the edge size.
+  * **parent:** not list object with hidden parent object.
+  * **inherit:** dedicated mostly to hide the base realistic looking screw.
+  * **special BOM attribute:** if object has `BOM` attribute set to `False` (`App::PropertyBool`) it will be skipped during parsing and not listed at the report. This special attribute is used by [magicCut](#magiccut) and [magicKnife](#magicknife) tools to skip copies at the report. For more details see video tutorial: [Skip copies in cut-list](https://www.youtube.com/watch?v=rFEDLaD8lxM).
+
 * **Part :: Cut content:**
-  * `all` shows Base and Tool
-  * `base` shows Base only
-  * `tool` shows Tool only
+  * **all:** shows Base and Tool
+  * **base:** shows Base only
+  * **tool:** shows Tool only
 
-**Additional settings:**
-* `Report Language`:
-  * `English` translation to English.
-  * `Polish` translation to Polish.
-  * `system` translation to from system translation files and user language settings.
-* `Report quality` in `eco` the colors are removed to keep low ink mode, by default is `hq` with colors. 
+### Additional settings
 
-**Edgeband:**
-* `set` first, select any furniture face that will be the reference color for the entire furniture, then press the "set" button to select load the color. If any edge of the board will be in a different color than the loaded furniture reference color, it will be calculated as the edge that should be covered with veneer.
-* `Edgeband code` is only text that will be displayed at the report. It can represent any veneer tape color at shop, even reference code.
+* **Report Language:**
+  * **English:** translation to English.
+  * **Polish:** translation to Polish.
+  * **system:** translation to from system translation files and user language settings.
 
-**Supported objects:**
+* **Report quality:** 
+  * **eco:** the colors are removed to keep low ink mode.
+  * **hq:** with colors.
+
+### Edgeband
+
+* **set:** first, select any furniture face that will be the reference color for the entire furniture, then press the "set" button to select load the color. If any edge of the board will be in a different color than the loaded furniture reference color, it will be calculated as the edge that should be covered with veneer.
+* **Edgeband code:** is only text that will be displayed at the report. It can represent any veneer tape color at shop, even reference code.
+
+### Supported objects
+
 * `Part :: Cube`
 * `PartDesign :: Pad`
 * `Part :: Extrusion`
 * `Assembly :: AssemblyObject`, `Assembly :: AssemblyLink` - tested with Assembly4 and FreeCAD 1.0
 * custom objects with `Width`, `Height` and `Length` attribute, for example [Stick Frame Workbench objects](https://gitlab.com/mathcodeprint/stickframe).
 
-**Supported transformations:**
+### Supported transformations
+
 * `Part :: Mirroring`,
 * `Draft :: Array`,
 * `Draft :: Array Polar`,
@@ -958,7 +991,7 @@ Selection modes:
 * `Part :: Cut`,
 * and probably many more...
 
-**Video tutorials & Documentation:**
+### Video tutorials & Documentation
 
 * **YouTube playlist:** [Cut-list, BOM, dimensions](https://www.youtube.com/playlist?list=PLSKOS_LK45BCnwvCGt4klfF6uVAxfQQTy)
 * **Old documentation:** [getDimensions macro](https://github.com/dprojects/getDimensions/tree/master/Docs)
