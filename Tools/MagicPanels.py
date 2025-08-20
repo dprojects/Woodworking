@@ -4194,32 +4194,74 @@ def unitArea2gui(iValue):
 
 
 # ###################################################################################################################
-def unit2fractions(iValue, iPrecision=0):
+def unit2fractions(iValue, iPrecision=0, iReduction="no", iPrefix=""):
 	'''
 	Description:
 	
-		Allows to convert unit from value (mm float FreeCAD format) into fractions string X' Y n/d". 
+		Allows to convert unit from value (mm float FreeCAD format) into fractions string X' Y n/d" or X' Y-n/d". 
 		X' represents a whole number of feet. Y represents a whole number of inches and n/d" represents 
 		a fraction of an inch, where n is the numerator and d is the denominator.
 		
-		Note: This function not shorten fraction part (keeps the denominator the same as precision).
+		Note: This function not reduce fraction part by default (keeps the denominator the same as given iPrecision).
 
 	Args:
 
 		iValue: float from FreeCAD or from calculations
-		iPrecision: the precision_denominator
+		iPrecision: integer value
+			0: read from user settings: "User parameter:BaseApp/Preferences/Units/FracInch"
+			value: denominator in fraction part, for example 128, if there will be bug the default will be set to 32
+		iReduction: string
+			"system": the fraction part will by reduced by system
+			"no" (default): not reduce the fraction part
+			"python": reduce the fraction part via python fractions module, but in this case the denominator might be changed also
+		iPrefix: string
+			"": means single space between Y inches part and n/d fraction part
+			"-": means minus between Y inches part and n/d fraction part, however this notation can be considered by human ad subtraction operation, 11-5/8" might be interpreted by human as 10 3/8"
 		
 	Usage:
 
-		unitForUser = MagicPanels.unit2fractions(397) # to get iPrecision from user settings
-		unitForUser = MagicPanels.unit2fractions(397, 128)
+		unitForUser = MagicPanels.unit2fractions(464, 128, "system", "")
+		result: 1' 6 1/4"
+
+		unitForUser = MagicPanels.unit2fractions(464, 128, "system", "-")
+		result: 1' 6-1/4"
+
+		unitForUser = MagicPanels.unit2fractions(464, 128, "no", "")
+		result: 1' 6 34/128"
+
+		unitForUser = MagicPanels.unit2fractions(464, 128, "no", "-")
+		result: 1' 6-34/128"
+
+		unitForUser = MagicPanels.unit2fractions(464, 128, "python", "")
+		result: 1' 6 34/127"
+
+		unitForUser = MagicPanels.unit2fractions(464, 128, "python", "-")
+		result: 1' 6-34/127"
+
+		unitForUser = MagicPanels.unit2fractions(464, 8, "no", "")
+		result: 1' 6 2/8"
+
+		unitForUser = MagicPanels.unit2fractions(464, 8, "system", "")
+		result: 1' 6 1/4"
 
 	Result:
 
-		string, for example the output should be 1' 3 81/128"
+		string for GUI
 
 	'''
 
+
+	if iReduction == "system":
+
+		if iPrefix == "":
+			forUser = unit2gui(iValue)
+			forUser = forUser.replace("\" + "," ")
+			
+		if iPrefix == "-":
+			forUser = unit2gui(iValue)
+			forUser = forUser.replace("\" + ","-")
+			
+		return forUser
 
 	import math
 	
@@ -4236,6 +4278,10 @@ def unit2fractions(iValue, iPrecision=0):
 		except:
 			precision = 0
 
+	# set default in case of bug
+	if precision == 0:
+		precision = 32
+
 	# convert float in mm to inches
 	inches = iValue * inch
 	
@@ -4251,32 +4297,34 @@ def unit2fractions(iValue, iPrecision=0):
 	# calculate n / d (fractional part)
 	finches = rinches - Y
 	
+	# by default not reduce
+	if iReduction == "no":
+	
+		t = finches * precision
+		tC = math.ceil(t)
+		tF = math.floor(t)
+		
+		diffC = abs(t - tC)
+		diffF = abs(t - tF)
+		
+		if diffC < diffF:
+			n = tC
+		else:
+			n = tF
+		
+		d = precision
+	
 	# makes denominator 127 not 128, Python library bug?
-	'''
-	from fractions import Fraction
-	
-	if precision != 0:
-		fr = Fraction(str(finches)).limit_denominator(precision)
-	else:
-		fr = Fraction.from_float(finches)
-	
-	n = fr.numerator
-	d = fr.denominator
-	'''
-	
-	t = finches * precision
-	tC = math.ceil(t)
-	tF = math.floor(t)
-	
-	diffC = abs(t - tC)
-	diffF = abs(t - tF)
-	
-	if diffC < diffF:
-		n = tC
-	else:
-		n = tF
-	
-	d = precision
+	if iReduction == "python":
+		from fractions import Fraction
+		
+		if precision != 0:
+			fr = Fraction(str(finches)).limit_denominator(precision)
+		else:
+			fr = Fraction.from_float(finches)
+		
+		n = fr.numerator
+		d = fr.denominator
 	
 	# create string for user
 	forUser = ""
@@ -4284,7 +4332,10 @@ def unit2fractions(iValue, iPrecision=0):
 		forUser += str(X) + "' "
 
 	if Y != 0:
-		forUser += str(Y) + " "
+		if iPrefix == "-":
+			forUser += str(Y) + "-"
+		else:
+			forUser += str(Y) + " "
 
 	if n != 0:
 		forUser += str(n) + "/" + str(d) + '"'

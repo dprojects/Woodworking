@@ -4,9 +4,9 @@ The Woodworking workbench started as a simple cut-list, as a macro for FreeCAD. 
 * Fast process of creating the main structure of the furniture with automatic recognition of the thickness of the elements, via [magicStart](https://github.com/dprojects/Woodworking/tree/master/Docs#how-to-start---magicstart) and other tools.
 * Quick process of adding dowels and other mounting elements, screws, minifix via [magicDowels](https://github.com/dprojects/Woodworking/tree/master/Docs#magicdowels).
 * Quick process of drilling holes according to the defined 32 mm furniture system via [magicDriller](https://github.com/dprojects/Woodworking/tree/master/Docs#magicdriller).
-* Automatic parameterization on demend via [magicGlue](https://github.com/dprojects/Woodworking/tree/master/Docs#magicglue) tool, no Spreadsheet, no VarSet, no inventing mathematical formulas, no Assembly workbench needed.
+* Automatic parameterization on demend via [magicGlue](https://github.com/dprojects/Woodworking/tree/master/Docs#magicglue) tool, also using VarSet, without inventing mathematical formulas.
 * Automatic cut-list after design via [getDimensions](https://github.com/dprojects/Woodworking/tree/master/Docs#getdimensions) tool and export to format csv, json, html, markdown via [sheet2export](https://github.com/dprojects/Woodworking/tree/master/Docs#sheet2export).
-* Full support for any metric system settings (inches, ft, mm) in all tools.
+* Full support for units in all tools (mm, inches, ft) and additional special fractions in cut-list.
 
 ![intro](https://raw.githubusercontent.com/dprojects/media/master/intro.gif)
 
