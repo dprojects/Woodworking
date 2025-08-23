@@ -8,7 +8,7 @@ translate = FreeCAD.Qt.translate
 
 # ###################################################################################################################
 #
-# 				Default Settings
+# 				  Default Settings
 #		Qt GUI gets from here to avoid inconsistency
 #
 # 			CHANGE ONLY HERE IF NEEDED
@@ -16,48 +16,21 @@ translate = FreeCAD.Qt.translate
 # ###################################################################################################################
 
 
-# Languages:
-sLang = "en"
-sLangDsc = { 
-	"en" : translate("getDimensions", "English language"), 
-	"pl" : translate("getDimensions", "Polish language"),
-	"system" : translate("getDimensions", "user system settings") # no comma
-}
+# ###################################################################################################################
+# Report types
+# ###################################################################################################################
 
-# Report print quality:
-sRPQ = "hq"
-sRPQDsc = {
-	"eco" : translate("getDimensions", "low ink mode (good for printing)"),
-	"hq" : translate("getDimensions", "high quality mode (good for pdf or html export)") # no comma
-}
-
-# Visibility (Toggle Visibility Feature):
-sTVF = "off"
-sTVFDsc = {
-	"off" : translate("getDimensions", "normal mode, show and calculate all objects and groups"),
-	"on" : translate("getDimensions", "simple mode, not show hidden objects for simple structures"),
-	"edge" : translate("getDimensions", "simple edge mode, show all but not add hidden to the edge size"),
-	"parent" : translate("getDimensions", "simple nesting, inherit visibility from the nearest container"),
-	"inherit" : translate("getDimensions", "advanced nesting, inherit visibility from the highest container") # no comma
-}
-
-# Part Cut Visibility:
-sPartCut = "all"
-sPartCutDsc = {
-	"all" : translate("getDimensions", "Woodworking workbench approach, show Base and Tool"),
-	"base" : translate("getDimensions", "FreeCAD default approach, show Base only"),
-	"tool" : translate("getDimensions", "custom approach, show Tool only") # no comma
-}
 
 # Parse path mode
-sPPM = "default"
+sPPM = "default" # default
 sPPMDsc = {
 	"default" : translate("getDimensions", "normal mode"),
 	"assembly" : translate("getDimensions", "dedicated for Assembly workbench objects") # no comma
 }
 
+
 # Report customization (Label Type Feature):
-sLTF = "q"
+sLTF = "q" # default
 sLTFDsc = {
 	"q" : translate("getDimensions", "quick, quantity first"),
 	"n" : translate("getDimensions", "names, objects listing"),
@@ -69,90 +42,7 @@ sLTFDsc = {
 	"a" : translate("getDimensions", "approximation for cutlistoptimizer.com") # no comma
 }
 
-# Units for dimensions:
-sUnitsMetric = "mm"
-sUnitsMetricDsc = {
-	"mm" : translate("getDimensions", "millimeter"),
-	"m" : translate("getDimensions", "meter"),
-	"in" : translate("getDimensions", "inch"),
-	"fractions" : translate("getDimensions", "notation X' Y n/d\" with reduction"),
-	"fractions minus" : translate("getDimensions", "notation X' Y-n/d\" with reduction"),
-	"fractions equal" : translate("getDimensions", "notation X' Y n/d\" without reduction"),
-	"system" : translate("getDimensions", "user system settings") # no comma
-}
-
-# Units for area:
-sUnitsArea = "m"
-sUnitsAreaDsc = {
-	"m" : translate("getDimensions", "square meter (m2)"),
-	"mm" : translate("getDimensions", "square millimeter (mm2)"),
-	"in" : translate("getDimensions", "square inch (in2)"),
-	"fractions" : translate("getDimensions", "area by system settings"),
-	"fractions minus" : translate("getDimensions", "area by system settings"),
-	"fractions equal" : translate("getDimensions", "square inch (in2)"),
-	"system" : translate("getDimensions", "user system settings") # no comma
-}
-
-# Units for edge size:
-sUnitsEdge = "m"
-sUnitsEdgeDsc = {
-	"mm" : translate("getDimensions", "millimeter"),
-	"m" : translate("getDimensions", "meter"),
-	"in" : translate("getDimensions", "inch"),
-	"fractions" : translate("getDimensions", "notation X' Y n/d\" with reduction"),
-	"fractions minus" : translate("getDimensions", "notation X' Y-n/d\" with reduction"),
-	"fractions equal" : translate("getDimensions", "notation X' Y n/d\" without reduction"),
-	"system" : translate("getDimensions", "user system settings") # no comma
-}
-
-# Precision Defaults - Dimensions (d)
-sPrecisionDD = {
-	"mm" : 0,
-	"m" : 3,
-	"in" : 3,
-	"fractions" : 6,
-	"fractions minus" : 6,
-	"fractions equal" : 6,
-	"system" : 2 # no comma
-}
-sPDD = sPrecisionDD[sUnitsMetric]
-
-# Precision Defaults - Edge
-sPrecisionDE = {
-	"mm" : 0,
-	"m" : 3,
-	"in" : 3,
-	"fractions" : 6,
-	"fractions minus" : 6,
-	"fractions equal" : 6,
-	"system" : 2 # no comma
-}
-sPDE = sPrecisionDE[sUnitsEdge]
-
-# Precision Defaults - Area
-sPrecisionDA = {
-	"mm" : 0,
-	"m" : 6,
-	"in" : 6,
-	"fractions" : 2,
-	"fractions minus" : 2,
-	"fractions equal" : 2,
-	"system" : 2 # no comma
-}
-sPDA = sPrecisionDA[sUnitsArea]
-
-# Edgeband code:
-sEColorD = "PL55 PVC"
-sEColorDsc = {
-	"PL55 PVC" : "PL55 PVC",
-	"white" : "white",
-	"black" : "black",
-	"bronze" : "bronze" # no comma
-}
-sEColor = sEColorDsc[sEColorD]
-
 # checkboxes - additional reports
-
 sARME = True      # measurements
 sARM = True       # mounting
 sARP = True       # profiles
@@ -160,6 +50,162 @@ sARD = False      # decoration
 sARGD = True      # grain direction
 sATS = True       # thickness summary
 sAEI = True       # edgeband info
+
+
+# ###################################################################################################################
+# Dimensions
+# ###################################################################################################################
+
+
+# Dimensions - units
+sUnitsMetric = "mm" # default
+sUnitsMetricDsc = {
+	"mm" : translate("getDimensions", "millimeter"),
+	"cm" : translate("getDimensions", "centimeter"),
+	"m" : translate("getDimensions", "meter"),
+	"in" : translate("getDimensions", "inch"),
+	"fractions" : translate("getDimensions", "notation X' Y n/d\" with reduction"),
+	"fractions minus" : translate("getDimensions", "notation X' Y-n/d\" with reduction"),
+	"fractions equal" : translate("getDimensions", "notation X' Y n/d\" without reduction"),
+	"system" : translate("getDimensions", "user system settings") # no comma
+}
+
+# Dimensions - precision
+sPrecisionDD = {
+	"mm" : 0,
+	"cm" : 1,
+	"m" : 3,
+	"in" : 3,
+	"fractions" : 6,
+	"fractions minus" : 6,
+	"fractions equal" : 6,
+	"system" : 2 # no comma
+}
+sPDD = sPrecisionDD[sUnitsMetric] # default
+
+
+# ###################################################################################################################
+# Edge
+# ###################################################################################################################
+
+
+# Edge - units
+sUnitsEdge = "m" # default
+sUnitsEdgeDsc = {
+	"mm" : translate("getDimensions", "millimeter"),
+	"cm" : translate("getDimensions", "centimeter"),
+	"m" : translate("getDimensions", "meter"),
+	"in" : translate("getDimensions", "inch"),
+	"fractions" : translate("getDimensions", "notation X' Y n/d\" with reduction"),
+	"fractions minus" : translate("getDimensions", "notation X' Y-n/d\" with reduction"),
+	"fractions equal" : translate("getDimensions", "notation X' Y n/d\" without reduction"),
+	"system" : translate("getDimensions", "user system settings") # no comma
+}
+
+# Edge - precision
+sPrecisionDE = {
+	"mm" : 0,
+	"cm" : 1,
+	"m" : 3,
+	"in" : 3,
+	"fractions" : 6,
+	"fractions minus" : 6,
+	"fractions equal" : 6,
+	"system" : 2 # no comma
+}
+sPDE = sPrecisionDE[sUnitsEdge] # default
+
+
+# ###################################################################################################################
+# Area
+# ###################################################################################################################
+
+
+# Area - units
+sUnitsArea = "m" # default
+sUnitsAreaDsc = {
+	"mm" : translate("getDimensions", "square millimeter (mm2)"),
+	"cm" : translate("getDimensions", "square centimeters (cm2)"),
+	"m" : translate("getDimensions", "square meter (m2)"),
+	"in" : translate("getDimensions", "square inch (in2)"),
+	"fractions" : translate("getDimensions", "area by system settings"),
+	"fractions minus" : translate("getDimensions", "area by system settings"),
+	"fractions equal" : translate("getDimensions", "square inch (in2)"),
+	"system" : translate("getDimensions", "user system settings") # no comma
+}
+
+# Area - precision
+sPrecisionDA = {
+	"mm" : 0,
+	"cm" : 1,
+	"m" : 6,
+	"in" : 6,
+	"fractions" : 2,
+	"fractions minus" : 2,
+	"fractions equal" : 2,
+	"system" : 2 # no comma
+}
+sPDA = sPrecisionDA[sUnitsArea] # default
+
+
+# ###################################################################################################################
+# Visibility
+# ###################################################################################################################
+
+
+# Visibility (Toggle Visibility Feature):
+sTVF = "off" # default
+sTVFDsc = {
+	"off" : translate("getDimensions", "normal mode, show and calculate all objects and groups"),
+	"on" : translate("getDimensions", "simple mode, not show hidden objects for simple structures"),
+	"edge" : translate("getDimensions", "simple edge mode, show all but not add hidden to the edge size"),
+	"parent" : translate("getDimensions", "simple nesting, inherit visibility from the nearest container"),
+	"inherit" : translate("getDimensions", "advanced nesting, inherit visibility from the highest container") # no comma
+}
+
+# Part Cut Visibility:
+sPartCut = "all" # default
+sPartCutDsc = {
+	"all" : translate("getDimensions", "Woodworking workbench approach, show Base and Tool"),
+	"base" : translate("getDimensions", "FreeCAD default approach, show Base only"),
+	"tool" : translate("getDimensions", "custom approach, show Tool only") # no comma
+}
+
+
+# ###################################################################################################################
+# General settings
+# ###################################################################################################################
+
+
+# Languages:
+sLang = "en" # default
+sLangDsc = { 
+	"en" : translate("getDimensions", "English language"), 
+	"pl" : translate("getDimensions", "Polish language"),
+	"system" : translate("getDimensions", "user system settings") # no comma
+}
+
+# Report print quality:
+sRPQ = "hq" # default
+sRPQDsc = {
+	"eco" : translate("getDimensions", "low ink mode (good for printing)"),
+	"hq" : translate("getDimensions", "high quality mode (good for pdf or html export)") # no comma
+}
+
+
+# ###################################################################################################################
+# Edgeband, veneer
+# ###################################################################################################################
+
+# Edgeband code:
+sEColorD = "PL55 PVC" # default
+sEColorDsc = {
+	"PL55 PVC" : "PL55 PVC",
+	"white" : "white",
+	"black" : "black",
+	"bronze" : "bronze" # no comma
+}
+sEColor = sEColorDsc[sEColorD] # default
 
 
 # ###################################################################################################################
@@ -993,6 +1039,9 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 			else:
 				return str( float(round(v, sPDD)) )
 
+		if sUnitsMetric == "cm":
+			return str( round(v * float(0.1), sPDD) )
+
 		if sUnitsMetric == "m":
 			return str( round(v * float(0.001), sPDD) )
 		
@@ -1023,6 +1072,9 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 			else:
 				return str( float(round(v, sPDE)) )
 		
+		if sUnitsEdge == "cm":
+			return str( round(v * float(0.1), sPDE) )
+
 		if sUnitsEdge == "m":
 			return str( round(v * float(0.001), sPDE) )
 		
@@ -1052,6 +1104,9 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 				return str( int(round(v, 0)) )
 			else:
 				return str( float(round(v, sPDA)) )
+		
+		if sUnitsArea == "cm":
+			return str( round(v * float(0.01), sPDA) )
 		
 		if sUnitsArea == "m":
 			return str( round(v * float(0.000001), sPDA) )
@@ -3158,6 +3213,8 @@ def initLang():
 		
 		if sUnitsArea == "mm":
 			gLang5 = "mm2"
+		if sUnitsArea == "cm":
+			gLang5 = "cm2"
 		if sUnitsArea == "m":
 			gLang5 = "m2"
 		if sUnitsArea == "in" or sUnitsArea == "fractions equal":
@@ -3197,6 +3254,8 @@ def initLang():
 
 		if sUnitsArea == "mm":
 			gLang5 = translate("getDimensions", "mm2")
+		if sUnitsArea == "cm":
+			gLang5 = translate("getDimensions", "cm2")
 		if sUnitsArea == "m":
 			gLang5 = translate("getDimensions", "m2")
 		if sUnitsArea == "in" or sUnitsArea == "fractions equal":
@@ -3236,6 +3295,8 @@ def initLang():
 
 		if sUnitsArea == "mm":
 			gLang5 = "mm2"
+		if sUnitsArea == "cm":
+			gLang5 = "cm2"
 		if sUnitsArea == "m":
 			gLang5 = "m2"
 		if sUnitsArea == "in" or sUnitsArea == "fractions equal":

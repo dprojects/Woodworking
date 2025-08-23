@@ -170,7 +170,8 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
-  	* school desk, single right side (magicStart)
+    * add centimeters recalculation option for units (getDimensions)
+    * school desk, single right side (magicStart)
 	* school desk, single left side (magicStart)
 	* school desk, both sides (magicStart)
     * modular bookcase with back HDF (magicStart)
@@ -919,25 +920,19 @@ Selection modes:
 
 ### Units
 
-* **millimeter:** all dimensions will be recalculated to millimeters.
-* **meter:** all dimensions will be recalculated to meters. 
-* **inch:** all dimensions will be recalculated to inches.
-
-> [!NOTE]
-> The recalculations above are independent of user units settings.
-
+* **millimeter:** all dimensions will be recalculated to millimeters, independent of user units settings.
+* **centimeter:** all dimensions will be recalculated to centimeters, independent of user units settings.
+* **meter:** all dimensions will be recalculated to meters, independent of user units settings.
+* **inch:** all dimensions will be recalculated to inches, independent of user units settings.
 * **fractions:** this is notation `X' Y n/d"`, the fractional part is reduced by the system so you have to set `Building US`. The area will be calculated by the system `sqft` (square foot).
 * **fractions minus:** this is notation `X' Y-n/d"`, the fractional part is reduced by the system so you have to set `Building US`. The area will be calculated by the system `sqft` (square foot).
 * **fractions equal:** this is notation `X' Y n/d"`, the fractional part is not reduced and is independent of units settigns, can be also `Standard (mm,...)`. The area will be set to `inch2` (square inch).
+* **system:** all dimensions will be presented in the user's unit system preferences.
 
 > [!NOTE]
 > The `X'` represents a whole number of feet, the `Y` represents a whole number of inches and the `n/d"` 
 > represents a fraction of an inch, where `n` is the numerator and `d` is the denominator. 
-> The denominator is taken from the user settings from `Edit->Preferences->General->Building US->Minimal fractional inch`. 
-
-* **system:** all dimensions will be presented in the user's unit system preferences.
-
-> [!TIP]
+> The denominator is taken from the user settings from `Edit->Preferences->General->Building US->Minimal fractional inch`. <br>
 > In the case of the `system` option, the spreadsheet has its own shortening unit format, which causes `mm2` to be saved as `cm2`. 
 > To force the area to be shown in square meters, set `m` square meter (m2) for `Units for area`.
 
