@@ -920,10 +920,10 @@ Selection modes:
 
 ### Units
 
-* **millimeter:** all dimensions will be recalculated to millimeters, independent of user units settings.
-* **centimeter:** all dimensions will be recalculated to centimeters, independent of user units settings.
-* **meter:** all dimensions will be recalculated to meters, independent of user units settings.
-* **inch:** all dimensions will be recalculated to inches, independent of user units settings.
+* **mm:** all dimensions will be recalculated to `millimeters` or `square millimeters` in case of area, independent of user units settings.
+* **cm:** all dimensions will be recalculated to `centimeters` or `square centimeters` in case of area, independent of user units settings.
+* **m:** all dimensions will be recalculated to `meters` or `square meters` in case of area, independent of user units settings.
+* **inch:** all dimensions will be recalculated to `inches` or `square inches` in case of area, independent of user units settings.
 * **fractions:** this is notation `X' Y n/d"`, the fractional part is reduced by the system so you have to set `Building US`. The area will be calculated by the system `sqft` (square foot).
 * **fractions minus:** this is notation `X' Y-n/d"`, the fractional part is reduced by the system so you have to set `Building US`. The area will be calculated by the system `sqft` (square foot).
 * **fractions equal:** this is notation `X' Y n/d"`, the fractional part is not reduced and is independent of units settigns, can be also `Standard (mm,...)`. The area will be set to `inch2` (square inch).
