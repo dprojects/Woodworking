@@ -170,6 +170,11 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+  	* school desk, single right side (magicStart)
+	* school desk, single left side (magicStart)
+	* school desk, both sides (magicStart)
+    * modular bookcase with back HDF (magicStart)
+    * modular bookcase with back full (magicStart)
     * add fractions equal option for units (getDimensions, MagicPanels)
     * add fractions minus option for units (getDimensions, MagicPanels)
     * add fractions option for units (getDimensions, MagicPanels)
@@ -274,6 +279,8 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * Simple storage ( front outside, back HDF )
 * Kitchen wall cabinet ( front outside, back HDF )
 * Modular storage ( front outside, 3 modules )
+* Modular bookcase ( no front, back full, 3 modules )
+* Modular bookcase ( no front, back HDF, 3 modules )
 * Simple storage ( front inside, back full )
 * Simple storage ( front inside, back HDF )
 * Simple bookcase ( no front, back HDF )
@@ -382,7 +389,10 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * Table ( coffee simple style )
 * Table ( coffee modern style )
 * Table ( coffee decorated style )
-* Simple table ( import parametric )
+* Table ( school desk, single right side )
+* Table ( School desk, single left side )
+* Table ( school desk, both sides )
+* Table ( simple, import parametric )
 
 **Video tutorials:** 
 * [How to create table](https://www.youtube.com/watch?v=-_ePqw0f1NU)

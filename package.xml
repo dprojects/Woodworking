@@ -4,18 +4,18 @@
   <description>FreeCAD workbench for woodworking purposes.</description>
   
   <!-- 
-  Syntax: 1.0.1.39285.1.0.1.2025.06.04
-  1.0.1.39285 - dedicated FreeCAD kernel version
-  1.0 - Woodworking workebench version
+  Syntax: 1.1.0.dev.1.1.1.2025.08.23
+  1.1.0.dev - current development FreeCAD kernel version
+  1.1 - Woodworking workebench version
   1 or 0 - current state, development 1 or stable release 0
-  2025.06.04 - last commit date
+  2025.08.23 - last commit date
   -->
-  <version>1.1.0.dev.1.1.1.2025.08.20</version>
+  <version>1.1.0.dev.1.1.1.2025.08.23</version>
   
   <!--
   This date tag is not used by Woodworking workbench but it is good to keep it up-to-date
   -->
-  <date>2025-08-20</date>
+  <date>2025-08-23</date>
   
   <!--
   Keep it for author rights purposes 
