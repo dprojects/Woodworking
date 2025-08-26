@@ -74,7 +74,7 @@ sUnitsMetricDsc = {
 sPrecisionDD = {
 	"mm" : 0,
 	"cm" : 1,
-	"m" : 3,
+	"m" : 2,
 	"in" : 3,
 	"fractions" : 6,
 	"fractions minus" : 6,
@@ -106,7 +106,7 @@ sUnitsEdgeDsc = {
 sPrecisionDE = {
 	"mm" : 0,
 	"cm" : 1,
-	"m" : 3,
+	"m" : 2,
 	"in" : 3,
 	"fractions" : 6,
 	"fractions minus" : 6,
@@ -138,7 +138,7 @@ sUnitsAreaDsc = {
 sPrecisionDA = {
 	"mm" : 0,
 	"cm" : 1,
-	"m" : 6,
+	"m" : 2,
 	"in" : 6,
 	"fractions" : 2,
 	"fractions minus" : 2,
@@ -1040,13 +1040,22 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 				return str( float(round(v, sPDD)) )
 
 		if sUnitsMetric == "cm":
-			return str( round(v * float(0.1), sPDD) )
+			if sPDD == 0:
+				return str( int(round(v * float(0.1), sPDD)) )
+			else:
+				return str( round(v * float(0.1), sPDD) )
 
 		if sUnitsMetric == "m":
-			return str( round(v * float(0.001), sPDD) )
+			if sPDD == 0:
+				return str( int(round(v * float(0.001), sPDD)) )
+			else:
+				return str( round(v * float(0.001), sPDD) )
 		
 		if sUnitsMetric == "in":
-			return str( round(v * float(0.0393700787), sPDD) )
+			if sPDD == 0:
+				return str( int(round(v * float(0.0393700787), sPDD)) )
+			else:
+				return str( round(v * float(0.0393700787), sPDD) )
 	
 		if sUnitsMetric == "fractions":
 			return MagicPanels.unit2fractions( round(v, sPDD), 0, "system", "")
@@ -1073,13 +1082,22 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 				return str( float(round(v, sPDE)) )
 		
 		if sUnitsEdge == "cm":
-			return str( round(v * float(0.1), sPDE) )
+			if sPDE == 0:
+				return str( int(round(v * float(0.1), sPDE)) )
+			else:
+				return str( round(v * float(0.1), sPDE) )
 
 		if sUnitsEdge == "m":
-			return str( round(v * float(0.001), sPDE) )
+			if sPDE == 0:
+				return str( int(round(v * float(0.001), sPDE)) )
+			else:
+				return str( round(v * float(0.001), sPDE) )
 		
 		if sUnitsEdge == "in":
-			return str( round(v * float(0.0393700787), sPDE) )
+			if sPDE == 0:
+				return str( int(round(v * float(0.0393700787), sPDE)) )
+			else:
+				return str( round(v * float(0.0393700787), sPDE) )
 		
 		if sUnitsEdge == "fractions":
 			return MagicPanels.unit2fractions( round(v, sPDE), 0, "system", "")
@@ -1106,13 +1124,22 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 				return str( float(round(v, sPDA)) )
 		
 		if sUnitsArea == "cm":
-			return str( round(v * float(0.01), sPDA) )
+			if sPDA == 0:
+				return str( int(round(v * float(0.01), sPDA)) )
+			else:
+				return str( round(v * float(0.01), sPDA) )
 		
 		if sUnitsArea == "m":
-			return str( round(v * float(0.000001), sPDA) )
+			if sPDA == 0:
+				return str( int(round(v * float(0.000001), sPDA)) )
+			else:
+				return str( round(v * float(0.000001), sPDA) )
 		
 		if sUnitsArea == "in":
-			return str( round(v * float(0.0015500031), sPDA) )
+			if sPDA == 0:
+				return str( int(round(v * float(0.0015500031), sPDA)) )
+			else:
+				return str( round(v * float(0.0015500031), sPDA) )
 		
 		if sUnitsArea == "fractions":
 			return MagicPanels.unitArea2gui( round(v, sPDA) )

@@ -289,6 +289,7 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 
 **Video tutorials:** 
 * [Furniture creation tool](https://www.youtube.com/watch?v=lHQ1J9Nahcs)
+* [New furniture samples in magicStart](https://www.youtube.com/watch?v=o2cw2Z8vQoE)
 * [How to build complex furniture from modules](https://www.youtube.com/watch?v=SUm_N2rjXbs)
 
 ## US style
@@ -381,6 +382,7 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 
 **Video tutorials:** 
 * [How to add feet](https://www.youtube.com/watch?v=E4yfRFIqops)
+* [New furniture samples in magicStart](https://www.youtube.com/watch?v=o2cw2Z8vQoE)
 
 ## Table
 
@@ -398,6 +400,7 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 **Video tutorials:** 
 * [How to create table](https://www.youtube.com/watch?v=-_ePqw0f1NU)
 * [Simple table with drawers quickly](https://www.youtube.com/watch?v=0b5DRSQg52U)
+* [New furniture samples in magicStart](https://www.youtube.com/watch?v=o2cw2Z8vQoE)
 
 ## Connections
 
@@ -926,7 +929,7 @@ Selection modes:
 * **inch:** all dimensions will be recalculated to `inches` or `square inches` in case of area, independent of user units settings.
 * **fractions:** this is notation `X' Y n/d"`, the fractional part is reduced by the system so you have to set `Building US`. The area will be calculated by the system `sqft` (square foot).
 * **fractions minus:** this is notation `X' Y-n/d"`, the fractional part is reduced by the system so you have to set `Building US`. The area will be calculated by the system `sqft` (square foot).
-* **fractions equal:** this is notation `X' Y n/d"`, the fractional part is not reduced and is independent of units settigns, can be also `Standard (mm,...)`. The area will be set to `inch2` (square inch).
+* **fractions equal:** this is notation `X' Y n/d"`, the fractional part is not reduced and is independent of user units settings, can be also `Standard (mm,...)`. The area will be set to `inch2` (square inch).
 * **system:** all dimensions will be presented in the user's unit system preferences.
 
 > [!NOTE]
