@@ -1879,57 +1879,9 @@ def setPad(iObj, iCaller="setPad"):
 	try:
 		
 		if sLTF == "a":
-		
 			setDBApproximation(iObj, iCaller)
-		
 		else:
-		
-			vW = ""
-			vH = ""
-			vL = ""
-			skip = 0
-			
-			try:
-				sketch = iObj.Profile[0]
-			except:
-				raise
-			
-			# try get values from named constraints
-			try:
-				constraints = sketch.Constraints
-				for c in constraints:
-					if c.Name == "SizeX":
-						vW = c.Value
-					if c.Name == "SizeY":
-						vL = c.Value
-
-				vH = iObj.Length.Value
-			
-			# get first dimensions (this may not work for non-rectangle shapes)
-			except:
-				skip = 1
-			
-			# try to get dimensions from sketch rectangle shape
-			if vW == "" or vL == "" or vH == "":
-				try:
-					vW = sketch.Shape.OrderedEdges[0].Length
-					vH = sketch.Shape.OrderedEdges[1].Length
-					vL = iObj.Length.Value
-				except:
-					skip = 1
-
-			# try to get dimensions from sketch BoundBox (vertices not works in case of rounded edges)
-			if vW == "" or vH == "":
-				try:
-					sizes = MagicPanels.getSizesFromBoundBox(sketch)
-					sizes.sort()
-					vW = sizes[1]
-					vH = sizes[2]
-					vL = iObj.Length.Value
-				except:
-					skip = 1
-					
-			# set db for quantity & area & edge size
+			[ vW, vH, vL ] = MagicPanels.getSizes(iObj)
 			setDB(iObj, vW, vH, vL, iCaller)
 
 	except:
@@ -1947,30 +1899,9 @@ def setExtrusion(iObj, iCaller="setExtrusion"):
 	try:
 
 		if sLTF == "a":
-		
 			setDBApproximation(iObj, iCaller)
-		
 		else:
-		
-			# try get values from named constraints
-			try:
-				constraints = iObj.Base.Constraints
-				for c in constraints:
-					if c.Name == "SizeX":
-						vW = c.Value
-					if c.Name == "SizeY":
-						vL = c.Value
-				
-				vH = abs(iObj.LengthFwd.Value)
-			
-			# get first dimensions (this may not work for non-rectangle shapes)
-			except:
-				skip = 1
-
-			if vW == "" or vL == "" or vH == "":
-				[ vKey, vW, vH, vL ] = getApproximation(iObj, iCaller)
-		
-			# set db for quantity & area & edge size
+			[ vW, vH, vL ] = MagicPanels.getSizes(iObj)
 			setDB(iObj, vW, vH, vL, iCaller)
 
 	except:

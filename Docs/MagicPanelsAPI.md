@@ -169,25 +169,6 @@
 
 # Sizes
 
-### getSizes(iObj):
-	
-##### Description:
-	
-		Allows to get sizes for object (iObj), according to the object type. 
-		The values are not sorted.
-	
-##### Args:
-	
-		iObj: object to get sizes
-
-##### Usage:
-	
-		[ size1, size2, size3 ] = MagicPanels.getSizes(obj)
-
-##### Result:
-	
-		Returns [ Length, Width, Height ] for Cube.
-
 ### getSizesFromVertices(iObj):
 	
 ##### Description:
@@ -258,6 +239,45 @@
 			cx - X float of the occupied space by all objects
 			cy - Y float of the occupied space by all objects
 			cz - Z float of the occupied space by all objects
+
+### getSizesFromSketch(iSketch):
+	
+##### Description:
+	
+		Allows to get sizes for Sketch. If the iSketch object has defined SizeX and SizeY constraints the 
+		array with those values will be returned. If there is no SizeX and SizeY constraints this function will try 
+		to get iSketch size in other way.
+	
+##### Args:
+	
+		iSketch: sketch object to get sizes
+
+##### Usage:
+	
+		[ SizeX, SizeY ] = MagicPanels.getSizesFromSketch(sketch)
+
+##### Result:
+	
+		Returns array with floats [ SizeX, SizeY ]
+
+### getSizes(iObj):
+	
+##### Description:
+	
+		Allows to get sizes for object (iObj), according to the object type. 
+		The values are not sorted.
+	
+##### Args:
+	
+		iObj: object to get sizes
+
+##### Usage:
+	
+		[ size1, size2, size3 ] = MagicPanels.getSizes(obj)
+
+##### Result:
+	
+		Returns [ Length, Width, Height ] for Cube.
 
 
 # Copy

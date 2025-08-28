@@ -23,6 +23,7 @@
 |   Array Polar Pad   |   80 mm   |   x   |   700 mm   |   80 mm   |   4   |   0.22   |
 |   Array Polar Cube   |   80 mm   |   x   |   700 mm   |   80 mm   |   4   |   0.22   |
 |   PMirror 2 Cube   |   200 mm   |   x   |   300 mm   |   18 mm   |   2   |   0.12   |
+|   Table Top   |   600 mm   |   x   |   600 mm   |   40 mm   |   1   |   0.36   |
 |   LinkGroup, panelZX   |   300 mm   |   x   |   600 mm   |   18 mm   |   2   |   0.36   |
 |   LinkGroup, panelZX001   |   300 mm   |   x   |   600 mm   |   18 mm   |   2   |   0.36   |
 |   PartCut, Base 1   |   300 mm   |   x   |   600 mm   |   18 mm   |   2   |   0.36   |
@@ -61,13 +62,14 @@
 |   |   |   |   |   3 mm   |   1   |   0.06   |
 |   |   |   |   |   18 mm   |   57   |   5.42   |
 |   |   |   |   |   80 mm   |   14   |   0.78   |
+|   |   |   |   |   40 mm   |   1   |   0.36   |
 |   |   |   |   |   100 mm   |   10   |   1.05   |
 |   |   |   |   |   20 mm   |   13   |   0.6   |
 |   |   |   |   |   9 mm   |   4   |   0.0   |
 |   |   |   |   |   30 mm   |   2   |   0.04   |
 |   |   |   |   |   38 mm   |   1   |   0.22   |
 |   |   |   |   |   |   |   |
-|   Edge size   |   |   |   |   |   |   135.01 m   |
+|   Edge size   |   |   |   |   |   |   137.41 m   |
 |   |   |   |   |   |   |   |
 |   4 x    |   Mounting points, Screw, bit PZ2, 4.0 x 40   |   |   |   |   |   |
 |   |   Diameter   |   |   |   4 mm   |   |   |

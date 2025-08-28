@@ -361,111 +361,6 @@ def getBody(iObj):
 # ###################################################################################################################
 
 
-# ###################################################################################################################
-def getSizes(iObj):
-	'''
-	Description:
-	
-		Allows to get sizes for object (iObj), according to the object type. 
-		The values are not sorted.
-	
-	Args:
-	
-		iObj: object to get sizes
-
-	Usage:
-	
-		[ size1, size2, size3 ] = MagicPanels.getSizes(obj)
-
-	Result:
-	
-		Returns [ Length, Width, Height ] for Cube.
-
-	'''
-
-	# for Cube panels
-	if iObj.isDerivedFrom("Part::Box"):
-
-		return [ iObj.Length.Value, iObj.Width.Value, iObj.Height.Value ]
-
-	# for Pad panels
-	if iObj.isDerivedFrom("PartDesign::Pad"):
-		
-		sizeX = ""
-		sizeY = ""
-		
-		for c in iObj.Profile[0].Constraints:
-			if c.Name == "SizeX":
-				sizeX = c.Value
-			if c.Name == "SizeY":
-				sizeY = c.Value
-		
-		if sizeX == "" or sizeY == "":
-			sizes = getSizesFromVertices(iObj.Profile[0])
-			sizes.sort()
-			sizes.pop(0)
-			sizes.insert(0, iObj.Length.Value)
-			return sizes
-			
-		else:
-			return [ sizeX, sizeY, iObj.Length.Value ]
-
-	# to move drill bits more precisely
-	if iObj.isDerivedFrom("Part::Cylinder"):
-		return [ 1, 1, 1 ]
-
-	if iObj.isDerivedFrom("Part::Cone"):
-		return [ 1, 1, 1 ]
-	
-	if iObj.isDerivedFrom("PartDesign::Thickness"):
-		
-		sizeX = ""
-		sizeY = ""
-
-		for c in iObj.Base[0].Profile[0].Constraints:
-			if c.Name == "SizeX":
-				sizeX = c.Value
-			if c.Name == "SizeY":
-				sizeY = c.Value
-			
-		if sizeX == "" or sizeY == "":
-			sizes = getSizesFromVertices(iObj.Base[0].Profile[0])
-			sizes.sort()
-			sizes.pop(0)
-			sizes.insert(0, iObj.Base[0].Length.Value)
-			return sizes
-			
-		else:
-			return [ sizeX, sizeY, iObj.Base[0].Length.Value ]
-	
-	# set sketch biggest size
-	if iObj.isDerivedFrom("Sketcher::SketchObject"):
-		try:
-			sizes = getSizesFromVertices(iObj)
-			sizes.sort()
-			return [ sizes[2], sizes[2], sizes[2] ]
-			
-		except:
-			return [ 100, 100, 100 ]
-	
-	# for custom objects
-	try:
-		return [ iObj.Base_Width.Value, iObj.Base_Height.Value, iObj.Base_Length.Value ]
-		
-	except:
-		skip = 1
-	
-	# try to get sizes from vertices
-	try:
-		[ sx, sy, sz ] = getSizesFromVertices(iObj)
-		return [ sx, sy, sz ]
-
-	except:
-		skip = 1
-	
-	# if nothing was successful, return 100 to move all furniture quickly
-	return [ 100, 100, 100 ]
-
 
 # ###################################################################################################################
 def getSizesFromVertices(iObj):
@@ -662,6 +557,153 @@ def getOccupiedSpace(iObjects):
 	cz = minZ + ( abs(maxZ - minZ) / 2 )
 	
 	return [ minX, minY, minZ, maxX, maxY, maxZ, [ cx, cy, cz ]]
+
+
+# ###################################################################################################################
+def getSizesFromSketch(iSketch):
+	'''
+	Description:
+	
+		Allows to get sizes for Sketch. If the iSketch object has defined SizeX and SizeY constraints the 
+		array with those values will be returned. If there is no SizeX and SizeY constraints this function will try 
+		to get iSketch size in other way.
+	
+	Args:
+	
+		iSketch: sketch object to get sizes
+
+	Usage:
+	
+		[ SizeX, SizeY ] = MagicPanels.getSizesFromSketch(sketch)
+
+	Result:
+	
+		Returns array with floats [ SizeX, SizeY ]
+
+	'''
+	
+	
+	# define as string first, not as 0
+	SizeX = ""
+	SizeY = ""
+	
+	# try get values from named constraints
+	try:
+		constraints = iSketch.Constraints
+		for c in constraints:
+			if c.Name == "SizeX":
+				SizeX = c.Value
+			if c.Name == "SizeY":
+				SizeY = c.Value
+	except:
+		skip = 1
+	
+	# get first dimensions (this may not work for non-rectangle shapes)
+	if SizeX == "" or SizeY == "":
+		try:
+			if len(iSketch.Shape.OrderedEdges) == 4:
+				SizeX = iSketch.Shape.OrderedEdges[0].Length
+				SizeY = iSketch.Shape.OrderedEdges[1].Length
+		except:
+			skip = 1
+
+	# try to get dimensions from sketch BoundBox
+	# vertices not works in case of rounded edges so prefer this way first
+	if SizeX == "" or SizeY == "":
+		try:
+			sizes = getSizesFromBoundBox(iSketch)
+			sizes.sort()
+			SizeX = sizes[1]
+			SizeY = sizes[2]
+		except:
+			skip = 1
+
+	# try to get shape size from vertices
+	# however in case of rounded edges this will not be fine
+	if SizeX == "" or SizeY == "":
+		try:
+			sizes = getSizesFromVertices(iSketch)
+			sizes.sort()
+			SizeX = sizes[1]
+			SizeY = sizes[2]
+		except:
+			skip = 1
+	
+	# prevent tools error and return 0 if there is no size
+	if SizeX == "" or SizeY == "":
+		return [ 0, 0 ]
+	else:
+		return [ SizeX, SizeY ]
+
+
+# ###################################################################################################################
+def getSizes(iObj):
+	'''
+	Description:
+	
+		Allows to get sizes for object (iObj), according to the object type. 
+		The values are not sorted.
+	
+	Args:
+	
+		iObj: object to get sizes
+
+	Usage:
+	
+		[ size1, size2, size3 ] = MagicPanels.getSizes(obj)
+
+	Result:
+	
+		Returns [ Length, Width, Height ] for Cube.
+
+	'''
+
+
+	if iObj.isDerivedFrom("Part::Box"):
+		return [ iObj.Length.Value, iObj.Width.Value, iObj.Height.Value ]
+
+	if iObj.isDerivedFrom("PartDesign::Pad"):
+		[ sizeX, sizeY ] = getSizesFromSketch(iObj.Profile[0])
+		return [ sizeX, sizeY, iObj.Length.Value ]
+
+	if iObj.isDerivedFrom("Part::Extrusion"):
+		[ sizeX, sizeY ] = getSizesFromSketch(iObj.Base)
+		
+		length = abs(iObj.LengthFwd.Value)
+		if equal(length, 0):
+			length = abs(iObj.LengthRev.Value)
+
+		return [ sizeX, sizeY, length ]
+		
+	if iObj.isDerivedFrom("Part::Cylinder"):
+		return [ 1, 1, 1 ]
+
+	if iObj.isDerivedFrom("Part::Cone"):
+		return [ 1, 1, 1 ]
+	
+	if iObj.isDerivedFrom("PartDesign::Thickness"):
+		[ sizeX, sizeY ] = getSizesFromSketch(iObj.Base[0].Profile[0])
+		return [ sizeX, sizeY, iObj.Base[0].Length.Value ]
+
+	if iObj.isDerivedFrom("Sketcher::SketchObject"):
+		[ sizeX, sizeY ] = getSizesFromSketch(iObj)
+		return [ sizeX, sizeY, 0 ]
+	
+	# for custom objects
+	try:
+		return [ iObj.Base_Width.Value, iObj.Base_Height.Value, iObj.Base_Length.Value ]
+	except:
+		skip = 1
+	
+	# try to get sizes from vertices
+	try:
+		[ sx, sy, sz ] = getSizesFromVertices(iObj)
+		return [ sx, sy, sz ]
+	except:
+		skip = 1
+	
+	# if nothing was successful, return 100 to move all furniture quickly
+	return [ 100, 100, 100 ]
 
 
 # ###################################################################################################################

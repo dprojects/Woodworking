@@ -170,6 +170,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * improve sizes and irregular shapes (getDimensions, MagicPanels)
     * add centimeters recalculation option for units (getDimensions)
     * school desk, single right side (magicStart)
 	* school desk, single left side (magicStart)
