@@ -15,9 +15,11 @@
     * Test edgeband and extended edge report.
     * **Settings:** 
         * `Report type` to `e`, 
+        * Select any white face and press `set` button to get reference color.
         * `Edgeband code` to `black`.
 2. **Test003_holes:** 
     * Test detailed report with edgeband, holes and countersinks and advanced features like Mirrored on Body, Clone, multi object MultiTransform.
     * **Settings:** 
-        * `Report type` to `d`, 
+        * `Report type` to `d`,
+        * Select any face and press `set` button to get reference color.
         * `Edgeband code` to `bronze`.

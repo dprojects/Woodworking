@@ -1888,27 +1888,47 @@ def setPad(iObj, iCaller="setPad"):
 			vH = ""
 			vL = ""
 			skip = 0
-		
+			
+			try:
+				sketch = iObj.Profile[0]
+			except:
+				raise
+			
 			# try get values from named constraints
 			try:
-				constraints = iObj.Profile[0].Constraints
+				constraints = sketch.Constraints
 				for c in constraints:
 					if c.Name == "SizeX":
 						vW = c.Value
 					if c.Name == "SizeY":
 						vL = c.Value
-				
+
 				vH = iObj.Length.Value
 			
 			# get first dimensions (this may not work for non-rectangle shapes)
 			except:
 				skip = 1
-
+			
+			# try to get dimensions from sketch rectangle shape
 			if vW == "" or vL == "" or vH == "":
-				vW = iObj.Profile[0].Shape.OrderedEdges[0].Length
-				vH = iObj.Profile[0].Shape.OrderedEdges[1].Length
-				vL = iObj.Length.Value
-		
+				try:
+					vW = sketch.Shape.OrderedEdges[0].Length
+					vH = sketch.Shape.OrderedEdges[1].Length
+					vL = iObj.Length.Value
+				except:
+					skip = 1
+
+			# try to get dimensions from sketch BoundBox (vertices not works in case of rounded edges)
+			if vW == "" or vH == "":
+				try:
+					sizes = MagicPanels.getSizesFromBoundBox(sketch)
+					sizes.sort()
+					vW = sizes[1]
+					vH = sizes[2]
+					vL = iObj.Length.Value
+				except:
+					skip = 1
+					
 			# set db for quantity & area & edge size
 			setDB(iObj, vW, vH, vL, iCaller)
 

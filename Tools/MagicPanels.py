@@ -555,7 +555,7 @@ def getSizesFromBoundBox(iObj):
 	
 	Usage:
 	
-		[ sx, sy, sz ] = MagicPanels.getSizesFromVertices(obj)
+		[ sx, sy, sz ] = MagicPanels.getSizesFromBoundBox(obj)
 
 	Result:
 	
