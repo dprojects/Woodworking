@@ -154,6 +154,7 @@ Tools = [
 	"magicKnife", "png", "magicKnife, single knife cut many panels with copies", "Click to see info.",
 	"magicKnifeLinks", "png", "magicKnifeLinks, single knife cut many panels with links", "Click to see info.",
 	"jointTenonDowel", "png", "jointTenonDowel, joint tenon as dowel", "Click to see info.",
+	"jointTenonDowelP", "png", "jointTenonDowelP, joint tenon as dowel (parametric version)", "Click to see info.",
 	"cutTenonDowels", "png", "cutTenonDowels, cut all tenon dowels from panel", "Click to see info.",
 	"magicCorner", "png", "magicCorner, create corner connection", "Click to see info.",
 

@@ -3016,6 +3016,45 @@ FreeCADGui.addCommand("jointTenonDowel", jointTenonDowel())
 
 	
 # ######################################################################################################################
+class jointTenonDowelP():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "jointTenonDowelP.png"),
+				"MenuText": QT_TRANSLATE_NOOP("jointTenonDowelP", "jointTenonDowelP, joint tenon as dowel (parametric version)"),
+				"ToolTip" : QT_TRANSLATE_NOOP("jointTenonDowelP", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "jointTenonDowelP"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("jointTenonDowelP", jointTenonDowelP())
+
+	
+# ######################################################################################################################
 class cutTenonDowels():
 
 	def GetResources(self):

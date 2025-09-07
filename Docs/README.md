@@ -133,6 +133,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 	* [magicKnife](#magicknife)
 	* [magicKnifeLinks](#magicknifelinks)
 	* [jointTenonDowel](#jointtenondowel)
+	* [jointTenonDowelP](#jointtenondowelp)
 	* [cutTenonDowels](#cuttenondowels)
 	* [magicCorner](#magiccorner)
 * [Raw wood, Lumber](#raw-wood-lumber)
@@ -170,6 +171,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * add new parametric tenon dowel version and add cut attribute
     * rename cutTenons into cutTenonDowels to keep correct meaning
     * rename jointTenon into jointTenonDowel and create new tool for better positioning
     * rename jointCustom into jointTenonCut and create new tool to use PartDesign cut
@@ -1879,16 +1881,22 @@ Personally, the two side counterbore I use for screwing things to the table. I u
 
 ## jointTenonDowel
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/jointTenonDowel.png"> Please select at least one face to create tenon dowel joint at the selected face. This tool allows to create quick tenon as dowel joint at selected face. This tool support any object type because the tenon dowel is additional `Part :: Box` object only positioned at the face. This tool supports multi face selection. To select more faces hold left control button CTRL during faces selection. The tenon as dowel joint offset is `1/4` of the object thickness. The tenon dowel joint is hidden inside the object equally to the visible part, thickness up and thickness down. So, you can cut the tenon dowel also at the object and create removable joint similar to the dowels using [cutTenonDowels](#cuttenondowels) tool. Created tenon dowels have special attribute, so they are not listed at cut-list report. 
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/jointTenonDowel.png"> Please select at least one face to create tenon dowel joint at the selected face. This tool allows to create quick tenon as dowel joint at selected face. This tool support any object type because the tenon dowel is additional `Part :: Box` object only positioned at the face. This tool supports multi face selection. To select more faces hold left control button CTRL during faces selection. The tenon as dowel joint offset is `1/4` of the object thickness. The tenon dowel joint is hidden inside the object equally to the visible part, thickness up and thickness down. So, you can cut the tenon dowel also at the object and create removable joint similar to the dowels using [cutTenonDowels](#cuttenondowels) tool. Created tenon dowels have special `BOM` attribute. By default the `BOM` attribute is set to `False`, so all tenon dowels are not listed at cut-list report, but if you set it to `True`, those tenon dowels will be listed. Also the parametric tenon dowels have special `Tenon` attribute, set by default to `True` to notify the [cutTenonDowels](#cuttenondowels) tool to cut such tenon dowel. But if you set it to `False` such tenon dowel will be skipped during cut. 
 
 **Video tutorials:** 
 * [Quick Tenon and Mortise](https://www.youtube.com/watch?v=fHUjW8-37Pk)
 
 <br><br>
 
+## jointTenonDowelP
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/jointTenonDowelP.png"> Please select at least one face to create parametric tenon dowel joint at the selected face. This is parametric version of [jointTenonDowel](#jointtenondowel) tool. In this case all the tenon dowels are linked via `Clones` to the simple `LinkGroup` container. Inside the `LinkGroup` container is the simple `Part :: Box` object as tenon dowel pattern. This approach allows you to add new objects to the `LinkGroup` container or change the tenon dowel pattern inside the container and all tenon dowel clones will be updated. This tool works in the same way as [jointTenonDowel](#jointtenondowel) and allows to create quick tenon as dowel joint at selected face. This tool support any object type because the tenon dowel is additional object only positioned at the face. This tool supports multi face selection. To select more faces hold left control button CTRL during faces selection. The tenon as dowel joint offset is `1/4` of the object thickness but you can change the tenon dowel pattern size and offset here because it is parametric. By default the tenon dowel joint is hidden inside the object equally to the visible part, thickness up and thickness down. So, you can cut all the tenon dowels also at the object and create removable joints similar to the dowels using [cutTenonDowels](#cuttenondowels) tool. Created tenon dowels have special `BOM` attribute. By default the `BOM` attribute is set to `False`, so all tenon dowels are not listed at cut-list report, but if you set it to `True`, those tenon dowels will be listed. Also the parametric tenon dowels have special `Tenon` attribute, set by default to `True` to notify the [cutTenonDowels](#cuttenondowels) tool to cut such tenon dowel. But if you set it to `False` such tenon dowel will be skipped during cut. 
+
+<br><br>
+
 ## cutTenonDowels
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/cutTenonDowels.png"> Please select at least one panel to cut all tenon dowels. This tool allows to create mortises using tenon dowels created via [jointTenonDowel](#jointtenondowel) tool. You do not have to select and search exact tenon dowels that belongs to the selected panel, this tool cut all tenon dowels automatically for selected panel. If you select panel, this tool search for all tenon dowels that belongs to the selected panel and apply `Part Boolean Cut` operation on the panel. The selected panel should rather be `Part :: Box` type to not mix `Part :: Box` objects with `PartDesign :: Pad` design line too much. You can select multiply panels at once to cut tenon dowels. To select more panels hold left control key CTRL during objects selection. During this process only the copies will be used to cut, so the original tenon dowels will not be moved at the objects Tree. This feature is sensitive for visibility of tenon dowels. So, you can hide tenon dowels you do not want to be cut out from the panel.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/cutTenonDowels.png"> Please select at least one panel to cut all tenon dowels. This tool allows to create mortises using tenon dowels created via [jointTenonDowel](#jointtenondowel) or [jointTenonDowelP](#jointtenondowelp) tool. You do not have to select and search exact tenon dowels that belongs to the selected panel, this tool cut all tenon dowels automatically for selected panel. If you select panel, this tool search for all tenon dowels that belongs to the selected panel and apply `Part Boolean Cut` operation on the panel. The selected panel should rather be `Part :: Box` type to not mix `Part :: Box` objects with `PartDesign :: Pad` design line too much. You can select multiply panels at once to cut tenon dowels. To select more panels hold left control key CTRL during objects selection. During this process only the copies will be used to cut, so the original tenon dowels will not be moved at the objects Tree. This feature is sensitive for visibility of tenon dowels and also for `Tenon` attribute. If the tenon dowel is hidden or `Tenon` attribute is set to `False`, such tenon dowel will be skipped during cut.
 
 **Video tutorials:** 
 * [Quick Tenon and Mortise](https://www.youtube.com/watch?v=fHUjW8-37Pk)

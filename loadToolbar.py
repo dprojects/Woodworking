@@ -164,6 +164,7 @@ def getItems(iType):
 			"magicKnife",
 			"magicKnifeLinks",
 			"jointTenonDowel",
+			"jointTenonDowelP",
 			"cutTenonDowels",
 			"magicCorner"
 		]

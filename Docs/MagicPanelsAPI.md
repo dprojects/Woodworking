@@ -709,7 +709,7 @@
 	
 		iFace: face object
 		iDepth: size into face direction
-		iOffset: additional offse:
+		iOffset: additional offset:
 			* if > 0: the cube will be bigger with the offset from each side
 			* if < 0: the cube will be smaller with the offset from each side
 			* if == 0: the cube will be same size as face
