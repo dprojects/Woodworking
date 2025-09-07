@@ -37,6 +37,35 @@
 
 # Functions for general purpose
 
+### getSelectedSubs(iConvert="no"):
+	
+##### Description:
+	
+		This function returns object for selected sub-object (face, edge, vertex) and 
+		solves the problem you have sub-object and you do not know what is the object. 
+
+		NOTE: This function not keep the subs selection order in return because it is driven 
+		by objects selection order.
+		
+##### Args:
+	
+		iConvert: if Part::Box should be converted into PartDesign::Pad
+			* "no" (default): not convert, just return selection as it is
+			* "yes": converts and return subs and objects after conversion
+
+##### Usage:
+	
+		[ boxSubs, boxObjects ] = MagicPanels.getSelectedSubs()
+		[ padSubs, padObjects ] = MagicPanels.getSelectedSubs("yes")
+
+##### Result:
+	
+		return array with two arrays or int to raise error:
+			* array with two arrays with objects [ subs, objects ]:
+				* subs - for subs[i] it is selected sub
+				* objects - for objects[i] it is object for subs[i] selected sub
+			* or 0 if there are no selection or other error, so this should raise tool error
+
 ### isType(iObj, iType="Clone"):
 	
 ##### Description:
@@ -667,6 +696,36 @@
 		Note: The first argument can be "XY", "YX", "XZ", "ZX", "YZ", "ZY". 
 		This is related to face not to object. The object direction will be different.
 		
+### getFaceToCube(iFace, iDepth, iOffset=0):
+	
+##### Description:
+	
+		Create dimensions for simple cube Part::Box object which cover the face with offset.
+		
+		NOTE: The dimensions are for XY panel without rotation. So if you want to replace 
+		such object later you need correct rotation in base object.
+		
+##### Args:
+	
+		iFace: face object
+		iDepth: size into face direction
+		iOffset: additional offse:
+			* if > 0: the cube will be bigger with the offset from each side
+			* if < 0: the cube will be smaller with the offset from each side
+			* if == 0: the cube will be same size as face
+
+##### Usage:
+	
+		objThick = 100
+		tenonOffset = - objThick / 4
+		tenonDepth = 2 * objThick
+		[ Length, Width, Height ] = MagicPanels.getFaceToCube(face, tenonDepth, tenonOffset)
+
+##### Result:
+	
+		return array with the dimensions as face with iOffset and iDepth in order:
+		[ Length, Width, Height ] so it can be directly assigned to XY panel
+
 
 # Vertices
 
@@ -994,6 +1053,24 @@
 
 # Position, Placement, Move
 
+### resetPlacement(iObj):
+	
+##### Description:
+	
+		Reset placement for given object. Needed to set rotation for object at face.
+	
+##### Args:
+	
+		iObj: object to reset placement
+
+##### Usage:
+	
+		MagicPanels.resetPlacement(obj)
+
+##### Result:
+	
+		Object obj return to base position.
+
 ### getOffset(iObj, iDestination, iType="array"):
 	
 ##### Description:
@@ -1121,6 +1198,27 @@
 ##### Result:
 	
 		Returns array with [ cx, cy, cz ] values for center point.
+
+### setAnchors(iSourceObj, iSourceAnchor, iTarget):
+	
+##### Description:
+	
+		Set iSourceObj into iTargetObj but using custom anchors.
+	
+##### Args:
+	
+		iSourceObj: object to move
+		iSourceAnchor: array [ X, Y, Z ] as anchor for source object
+		iTarget: array [ X, Y, Z ] as destination to move
+		
+##### Usage:
+	
+		MagicPanels.setAnchors(tenon, tenonCenter, faceCenter)
+
+##### Result:
+	
+		for the sample the tenon will be moved into the center of the face but 
+		the center of the face will be equal the center of the tenon object
 
 
 # Containers
@@ -2239,29 +2337,6 @@
 ##### Result:
 	
 		Returns array with new correct [ x, y, z ] values.
-
-### resetPlacement(iObj):
-	
-	
-	# ########################################################################################
-	# THIS FUNCTION IS DEPRECATED !!!
-	# ########################################################################################
-	
-##### Description:
-	
-		Reset placement for given object. Needed to set rotation for object at face.
-	
-##### Args:
-	
-		iObj: object to reset placement
-
-##### Usage:
-	
-		MagicPanels.resetPlacement(obj)
-
-##### Result:
-	
-		Object obj return to base position.
 
 ### getPlacement(iObj, iType="clean"):
 	

@@ -119,21 +119,21 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 	* [panel2profile](#panel2profile)
 	* [panel2angle](#panel2angle)
 	* [panel2angle45cut](#panel2angle45cut)
+	* [panel2frame](#panel2frame)
 	* [cornerBlock](#cornerblock)
 	* [cornerBrace](#cornerbrace)
 * [Joinery](#joinery)
 	* [magicJoints](#magicjoints)
+	* [jointTenonCut](#jointtenoncut)
+	* [grainH](#grainh)
+	* [grainV](#grainv)
+	* [grainX](#grainx)
 	* [magicCut](#magiccut)
 	* [magicCutLinks](#magiccutlinks)
 	* [magicKnife](#magicknife)
 	* [magicKnifeLinks](#magicknifelinks)
-	* [jointTenon](#jointtenon)
-	* [cutTenons](#cuttenons)
-	* [jointCustom](#jointcustom)
-	* [panel2frame](#panel2frame)
-	* [grainH](#grainh)
-	* [grainV](#grainv)
-	* [grainX](#grainx)
+	* [jointTenonDowel](#jointtenondowel)
+	* [cutTenonDowels](#cuttenondowels)
 	* [magicCorner](#magiccorner)
 * [Raw wood, Lumber](#raw-wood-lumber)
 	* [Glued table top](#glued-table-top)
@@ -170,6 +170,10 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * rename cutTenons into cutTenonDowels to keep correct meaning
+    * rename jointTenon into jointTenonDowel and create new tool for better positioning
+    * rename jointCustom into jointTenonCut and create new tool to use PartDesign cut
+    * describe better all tools in toolbar
     * improve sizes and irregular shapes (getDimensions, MagicPanels)
     * add centimeters recalculation option for units (getDimensions)
     * school desk, single right side (magicStart)
@@ -1742,6 +1746,15 @@ Personally, the two side counterbore I use for screwing things to the table. I u
 **Video tutorials:** 
 * [Construction profiles](https://www.youtube.com/watch?v=5hXMFAxXQag)
 
+## panel2frame
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2frame.png"> This tool allows to replace `Cube` panel with frame 45 cut at both sides. You can replace more than one `Cube` panel at once. To replace Cube objects with frames you have to select exact face at each `Cube` object. For example if you want to make picture frame, select all 4 inner faces. To select more faces hold `left CTRL key` during selection. The new created frame will get the same dimensions, placement and rotation as the selected `Cube` panel but will be cut at the selected face. If you have all construction created with simple `Cube` objects that imitating picture frame or window, you can replace all of them with realistic looking frame with single click. 
+
+**Video tutorials:** 
+* [Quick 45 cut joint](https://www.youtube.com/watch?v=aFe9p4At41c)
+
+<br><br><br>
+
 ## cornerBlock
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/cornerBlock.png"> Please select single edge at each panel you want to change into corner block. 
@@ -1792,6 +1805,42 @@ Personally, the two side counterbore I use for screwing things to the table. I u
 **Video tutorials:** 
 * [Playlist for Joinery](https://www.youtube.com/playlist?list=PLSKOS_LK45BBG8kJ2AZvQKBfOSfzhTrLt)
 
+## jointTenonCut
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/jointTenonCut.png"> Please select at least one face to cut tenon joint at the selected face. This tool cut tenon at the selected face in the parametric way. The pocket is created using Clones to the Sketch pattern. The Sketch pattern for pocket operation will be the same for all selected faces and is based from first selected face. So if the faces have different sizes it is recommended to use this tool twice with different selection to have two Sketch patterns for pockets. This tool supports multi face selection. To select more faces hold left control button CTRL during faces selection. The objects can be type of `PartDesign :: Pad` or `Part :: Box`. If the object is `Part :: Box` it will be automatically converted into `PartDesign :: Pad` object and the cut will be done on such Pad. The dimensions is taken from not-cut Pad objects, `SizeX` and `SizeY` constraints.
+
+<br><br><br>
+
+## grainH
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/grainH.png"> This tool creates horizontal grain direction description at selected face. You can select multiple faces and multiple objects. Hold left CTRL key during selection. The Grain attribute will be added to the object. After adding grain direction description the object can be moved and the grain description will be moved together with the object.
+
+**Video tutorials:** 
+* [Grain Direction Marker](https://www.youtube.com/watch?v=PXXKBrtAtzQ)
+* [Grain Direction Report](https://www.youtube.com/watch?v=4W6Lnkh3DRs)
+
+<br><br><br>
+
+## grainV
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/grainV.png"> This tool creates horizontal grain direction description at selected face. You can select multiple faces and multiple objects. Hold left CTRL key during selection. The Grain attribute will be added to the object. After adding grain direction description the object can be moved and the grain description will be moved together with the object.
+
+**Video tutorials:** 
+* [Grain Direction Marker](https://www.youtube.com/watch?v=PXXKBrtAtzQ)
+* [Grain Direction Report](https://www.youtube.com/watch?v=4W6Lnkh3DRs)
+
+<br><br><br>
+
+## grainX
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/grainX.png"> This tool creates horizontal grain direction description at selected face. You can select multiple faces and multiple objects. Hold left CTRL key during selection. The Grain attribute will be added to the object. After adding grain direction description the object can be moved and the grain description will be moved together with the object.
+
+**Video tutorials:** 
+* [Grain Direction Marker](https://www.youtube.com/watch?v=PXXKBrtAtzQ)
+* [Grain Direction Report](https://www.youtube.com/watch?v=4W6Lnkh3DRs)
+
+<br><br><br>
+
 ## magicCut
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicCut.png"> This tool make multi boolean cut operation at selected objects. First object should be the base object to cut. All other selected objects will cut the base 1st selected object. To select more objects hold left CTRL key during selection. During this process only the copies will be used to cut, so the original objects will not be moved at tree. Also there will be auto labeling to keep the cut tree more informative and cleaner. If you are looking for parametric Boolean Cut operation you may consider [magicCutLinks](#magiccutlinks) instead.
@@ -1828,68 +1877,23 @@ Personally, the two side counterbore I use for screwing things to the table. I u
 * [Parametric bookcase with Dado joints](https://www.youtube.com/watch?v=kcP1WmKizDg)
 * [Boolean cut with links](https://www.youtube.com/watch?v=EE-A6CMgb-4)
 
-## jointTenon
+## jointTenonDowel
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/jointTenon.png"> This tool allows to create quick tenon joint at selected face. You can select multiple faces at single object or multiple faces at multiple objects. The tenon joint offset is 1/4 of the object thickness. The tenon joint is hidden inside the object equally to the visible part. So, you can cut the tenon also at the object and create removable joint similar to the dowels. Tenons have special attribute, so they are not listed at cut-list report. 
-
-**Video tutorials:** 
-* [Quick Tenon and Mortise](https://www.youtube.com/watch?v=fHUjW8-37Pk)
-
-<br><br>
-
-## cutTenons
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/cutTenons.png"> This tool allows to create mortises using tenons. This tool cut all tenons automatically for selected panel. You do not have to select and search exact tenons that belongs to the selected panel. If you select panel, this tool search for all tenons that belongs to the selected panel and apply Boolean Cut on the panel. You can select multiply panels at once to cut tenons. To select more panels hold left CTRL key during selection. During this process only the copies will be used to cut, so the original tenon will not be moved at the objects Tree. This feature is sensitive for visibility of tenons. So, you can hide tenons you do not want to be cut out from the panel. 
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/jointTenonDowel.png"> Please select at least one face to create tenon dowel joint at the selected face. This tool allows to create quick tenon as dowel joint at selected face. This tool support any object type because the tenon dowel is additional `Part :: Box` object only positioned at the face. This tool supports multi face selection. To select more faces hold left control button CTRL during faces selection. The tenon as dowel joint offset is `1/4` of the object thickness. The tenon dowel joint is hidden inside the object equally to the visible part, thickness up and thickness down. So, you can cut the tenon dowel also at the object and create removable joint similar to the dowels using [cutTenonDowels](#cuttenondowels) tool. Created tenon dowels have special attribute, so they are not listed at cut-list report. 
 
 **Video tutorials:** 
 * [Quick Tenon and Mortise](https://www.youtube.com/watch?v=fHUjW8-37Pk)
 
 <br><br>
 
-## jointCustom
+## cutTenonDowels
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/jointCustom.png"> Select face to create Custom joint. The simple Pad will be created in the corner of the selected face (0 vertex), allowing you to move the joint precisely to any place at the face. It has predefined size but you can resize and move the joint to fit to your elements and needs. Also you can edit the Sketch to create your custom joint shape. To make more copies you can use [magicFixture](#magicfixture). If you set all joints at the element, you can quickly cut all Mortises for the joints with [magicCut](#magiccut).
-
-<br><br><br>
-
-## panel2frame
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2frame.png"> This tool allows to replace `Cube` panel with frame 45 cut at both sides. You can replace more than one `Cube` panel at once. To replace Cube objects with frames you have to select exact face at each `Cube` object. For example if you want to make picture frame, select all 4 inner faces. To select more faces hold `left CTRL key` during selection. The new created frame will get the same dimensions, placement and rotation as the selected `Cube` panel but will be cut at the selected face. If you have all construction created with simple `Cube` objects that imitating picture frame or window, you can replace all of them with realistic looking frame with single click. 
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/cutTenonDowels.png"> Please select at least one panel to cut all tenon dowels. This tool allows to create mortises using tenon dowels created via [jointTenonDowel](#jointtenondowel) tool. You do not have to select and search exact tenon dowels that belongs to the selected panel, this tool cut all tenon dowels automatically for selected panel. If you select panel, this tool search for all tenon dowels that belongs to the selected panel and apply `Part Boolean Cut` operation on the panel. The selected panel should rather be `Part :: Box` type to not mix `Part :: Box` objects with `PartDesign :: Pad` design line too much. You can select multiply panels at once to cut tenon dowels. To select more panels hold left control key CTRL during objects selection. During this process only the copies will be used to cut, so the original tenon dowels will not be moved at the objects Tree. This feature is sensitive for visibility of tenon dowels. So, you can hide tenon dowels you do not want to be cut out from the panel.
 
 **Video tutorials:** 
-* [Quick 45 cut joint](https://www.youtube.com/watch?v=aFe9p4At41c)
+* [Quick Tenon and Mortise](https://www.youtube.com/watch?v=fHUjW8-37Pk)
 
-<br><br><br>
-
-## grainH
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/grainH.png"> This tool creates horizontal grain direction description at selected face. You can select multiple faces and multiple objects. Hold left CTRL key during selection. The Grain attribute will be added to the object. After adding grain direction description the object can be moved and the grain description will be moved together with the object.
-
-**Video tutorials:** 
-* [Grain Direction Marker](https://www.youtube.com/watch?v=PXXKBrtAtzQ)
-* [Grain Direction Report](https://www.youtube.com/watch?v=4W6Lnkh3DRs)
-
-<br><br><br>
-
-## grainV
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/grainV.png"> This tool creates horizontal grain direction description at selected face. You can select multiple faces and multiple objects. Hold left CTRL key during selection. The Grain attribute will be added to the object. After adding grain direction description the object can be moved and the grain description will be moved together with the object.
-
-**Video tutorials:** 
-* [Grain Direction Marker](https://www.youtube.com/watch?v=PXXKBrtAtzQ)
-* [Grain Direction Report](https://www.youtube.com/watch?v=4W6Lnkh3DRs)
-
-<br><br><br>
-
-## grainX
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/grainX.png"> This tool creates horizontal grain direction description at selected face. You can select multiple faces and multiple objects. Hold left CTRL key during selection. The Grain attribute will be added to the object. After adding grain direction description the object can be moved and the grain description will be moved together with the object.
-
-**Video tutorials:** 
-* [Grain Direction Marker](https://www.youtube.com/watch?v=PXXKBrtAtzQ)
-* [Grain Direction Report](https://www.youtube.com/watch?v=4W6Lnkh3DRs)
-
-<br><br><br>
+<br><br>
 
 ## magicCorner
 

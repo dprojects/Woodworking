@@ -147,6 +147,7 @@ def getItems(iType):
 			"panel2profile",
 			"panel2angle",
 			"panel2angle45cut",
+			"panel2frame",
 			"cornerBlock",
 			"cornerBrace"
 		]
@@ -154,17 +155,16 @@ def getItems(iType):
 	if iType == "Woodworking - joinery":
 		parts = [
 			"magicJoints",
+			"jointTenonCut",
+			"grainH",
+			"grainV",
+			"grainX",
 			"magicCut",
 			"magicCutLinks",
 			"magicKnife",
 			"magicKnifeLinks",
-			"jointTenon",
-			"cutTenons",
-			"jointCustom",
-			"panel2frame",
-			"grainH",
-			"grainV",
-			"grainX",
+			"jointTenonDowel",
+			"cutTenonDowels",
 			"magicCorner"
 		]
 	

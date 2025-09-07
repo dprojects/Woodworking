@@ -75,6 +75,113 @@ gCurrentSelection = False                                                       
 
 
 # ###################################################################################################################
+def getSelectedSubs(iConvert="no"):
+	'''
+	Description:
+	
+		This function returns object for selected sub-object (face, edge, vertex) and 
+		solves the problem you have sub-object and you do not know what is the object. 
+
+		NOTE: This function not keep the subs selection order in return because it is driven 
+		by objects selection order.
+		
+	Args:
+	
+		iConvert: if Part::Box should be converted into PartDesign::Pad
+			* "no" (default): not convert, just return selection as it is
+			* "yes": converts and return subs and objects after conversion
+
+	Usage:
+	
+		[ boxSubs, boxObjects ] = MagicPanels.getSelectedSubs()
+		[ padSubs, padObjects ] = MagicPanels.getSelectedSubs("yes")
+
+	Result:
+	
+		return array with two arrays or int to raise error:
+			* array with two arrays with objects [ subs, objects ]:
+				* subs - for subs[i] it is selected sub
+				* objects - for objects[i] it is object for subs[i] selected sub
+			* or 0 if there are no selection or other error, so this should raise tool error
+
+	'''
+	
+	selection = FreeCADGui.Selection.getSelection()
+	if len(selection) == 0:
+		return 0
+	
+	index = 0
+	subs = []
+	objects = []
+
+	# create structure with object reference
+	for o in selection:
+		osubs = FreeCADGui.Selection.getSelectionEx()[index].SubObjects
+		for s in osubs:
+			subs.append(s)
+			objects.append(o)
+		
+		index = index + 1
+	
+	# convert each box and create new arrays
+	if iConvert == "yes":
+		
+		[ boxSubs, boxObjects ] = [ subs, objects ]
+		subs = []
+		objects = []
+		converted = {}
+		
+		index = 0
+		for s in boxSubs:
+			if s.ShapeType != "Face" and s.ShapeType != "Edge":
+				continue
+			
+			o = boxObjects[index]
+			if o.isDerivedFrom("Part::Box"):
+				
+				# not convert twice the same object
+				if str(o.Name) in converted:
+					subs.append(s)
+					objects.append(converted[str(o.Name)])
+
+				# convert if is not vonverted yet
+				else:
+					key = s.BoundBox
+					
+					[ part, body, sketch, pad ] = makePad(o, o.Label)
+					
+					if s.ShapeType == "Face":
+						subIndex = getFaceIndexByKey(pad, key)
+						subs.append(pad.Shape.Faces[subIndex-1])
+					
+					if s.ShapeType == "Edge":
+						subIndex = getEdgeIndexByKey(pad, key)
+						subs.append(pad.Shape.Edges[subIndex-1])
+					
+					objects.append(pad)
+					converted[str(o.Name)] = pad # save as object
+			else:
+			
+				subs.append(s)
+				objects.append(o)
+			
+			index = index + 1
+		
+		# remove object but after all subs conversion 
+		# because second sub might be also from the same box panel
+		for o in boxObjects:
+			if o.isDerivedFrom("Part::Box"):
+				try:
+					FreeCAD.ActiveDocument.removeObject(o.Name)
+				except:
+					skip = 1
+		
+		FreeCAD.ActiveDocument.recompute()
+
+	return [ subs, objects ]
+
+
+# ###################################################################################################################
 def isType(iObj, iType="Clone"):
 	'''
 	Description:
@@ -1635,6 +1742,60 @@ def getFaceDetails(iObj, iFace):
 
 
 # ###################################################################################################################
+def getFaceToCube(iFace, iDepth, iOffset=0):
+	'''
+	Description:
+	
+		Create dimensions for simple cube Part::Box object which cover the face with offset.
+		
+		NOTE: The dimensions are for XY panel without rotation. So if you want to replace 
+		such object later you need correct rotation in base object.
+		
+	Args:
+	
+		iFace: face object
+		iDepth: size into face direction
+		iOffset: additional offse:
+			* if > 0: the cube will be bigger with the offset from each side
+			* if < 0: the cube will be smaller with the offset from each side
+			* if == 0: the cube will be same size as face
+
+	Usage:
+	
+		objThick = 100
+		tenonOffset = - objThick / 4
+		tenonDepth = 2 * objThick
+		[ Length, Width, Height ] = MagicPanels.getFaceToCube(face, tenonDepth, tenonOffset)
+
+	Result:
+	
+		return array with the dimensions as face with iOffset and iDepth in order:
+		[ Length, Width, Height ] so it can be directly assigned to XY panel
+
+	'''
+
+
+	plane = getFacePlane(iFace)
+	
+	if plane == "XY":
+		SizeX = iFace.BoundBox.XLength + (2 * iOffset)
+		SizeY = iFace.BoundBox.YLength + (2 * iOffset)
+		SizeZ = iDepth
+	
+	if plane == "XZ":
+		SizeX = iFace.BoundBox.XLength + (2 * iOffset)
+		SizeY = iDepth
+		SizeZ = iFace.BoundBox.ZLength + (2 * iOffset)
+		
+	if plane == "YZ":
+		SizeX = iDepth
+		SizeY = iFace.BoundBox.YLength + (2 * iOffset)
+		SizeZ = iFace.BoundBox.ZLength + (2 * iOffset)
+	
+	return [ SizeX, SizeY, SizeZ ]
+
+
+# ###################################################################################################################
 '''
 # Vertices
 '''
@@ -2700,6 +2861,43 @@ def getDirection(iObj):
 
 
 # ###################################################################################################################
+def resetPlacement(iObj):
+	'''
+	Description:
+	
+		Reset placement for given object. Needed to set rotation for object at face.
+	
+	Args:
+	
+		iObj: object to reset placement
+
+	Usage:
+	
+		MagicPanels.resetPlacement(obj)
+
+	Result:
+	
+		Object obj return to base position.
+
+	'''
+
+	zero = FreeCAD.Vector(0, 0, 0)
+	r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 0.00)
+	
+	if iObj.isDerivedFrom("PartDesign::Pad"):
+		iObj.Profile[0].AttachmentOffset.Base = zero
+		iObj.Profile[0].AttachmentOffset.Rotation = r
+		
+	elif iObj.isDerivedFrom("Sketcher::SketchObject"):
+		iObj.Placement.Base = zero
+		iObj.Placement.Rotation = r
+		
+	else:
+		iObj.Placement.Base = zero
+		iObj.Placement.Rotation = r
+
+
+# ###################################################################################################################
 def getOffset(iObj, iDestination, iType="array"):
 	'''
 	Description:
@@ -3061,6 +3259,40 @@ def getObjectCenter(iObj):
 		return [ cx, cy, cz ]
 		
 	return ""
+
+
+# ###################################################################################################################
+def setAnchors(iSourceObj, iSourceAnchor, iTarget):
+	'''
+	Description:
+	
+		Set iSourceObj into iTargetObj but using custom anchors.
+	
+	Args:
+	
+		iSourceObj: object to move
+		iSourceAnchor: array [ X, Y, Z ] as anchor for source object
+		iTarget: array [ X, Y, Z ] as destination to move
+		
+	Usage:
+	
+		MagicPanels.setAnchors(tenon, tenonCenter, faceCenter)
+
+	Result:
+	
+		for the sample the tenon will be moved into the center of the face but 
+		the center of the face will be equal the center of the tenon object
+
+	'''
+
+
+	FreeCAD.ActiveDocument.openTransaction("setAnchors "+str(iSourceObj.Label))
+	
+	[ offetX, offetY, offetZ ] = getOffset(iSourceObj, iSourceAnchor, "array")
+	setPosition(iSourceObj, iTarget[0], iTarget[1], iTarget[2], "global")
+	setPosition(iSourceObj, -offetX, -offetY, -offetZ, "offset")
+
+	FreeCAD.ActiveDocument.commitTransaction()
 
 
 # ###################################################################################################################
@@ -5703,6 +5935,7 @@ def makeCuts(iObjects):
 		cuts.append(cut)
 		
 	cut.Label = getNestingLabel(base, "Cut")
+	copyColors(iObjects[0], cut)
 	FreeCAD.ActiveDocument.recompute()
 
 	return cuts
@@ -7230,48 +7463,6 @@ def adjustClonePosition(iPad, iX, iY, iZ):
 	z = iZ - float(iPad.Shape.BoundBox.ZMin)
 
 	return [ x, y, z ]
-
-
-# ###################################################################################################################
-def resetPlacement(iObj):
-	'''
-	
-	# ########################################################################################
-	# THIS FUNCTION IS DEPRECATED !!!
-	# ########################################################################################
-	
-	Description:
-	
-		Reset placement for given object. Needed to set rotation for object at face.
-	
-	Args:
-	
-		iObj: object to reset placement
-
-	Usage:
-	
-		MagicPanels.resetPlacement(obj)
-
-	Result:
-	
-		Object obj return to base position.
-
-	'''
-
-	zero = FreeCAD.Vector(0, 0, 0)
-	r = FreeCAD.Rotation(FreeCAD.Vector(0.00, 0.00, 1.00), 0.00)
-	
-	if iObj.isDerivedFrom("PartDesign::Pad"):
-		iObj.Profile[0].AttachmentOffset.Base = zero
-		iObj.Profile[0].AttachmentOffset.Rotation = r
-		
-	elif iObj.isDerivedFrom("Sketcher::SketchObject"):
-		iObj.Placement.Base = zero
-		iObj.Placement.Rotation = r
-		
-	else:
-		iObj.Placement.Base = zero
-		iObj.Placement.Rotation = r
 
 
 # ###################################################################################################################
