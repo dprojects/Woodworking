@@ -129,13 +129,14 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 	* [grainV](#grainv)
 	* [grainX](#grainx)
 	* [magicCut](#magiccut)
-	* [magicCutLinks](#magiccutlinks)
 	* [magicKnife](#magicknife)
-	* [magicKnifeLinks](#magicknifelinks)
 	* [jointTenonDowel](#jointtenondowel)
-	* [jointTenonDowelP](#jointtenondowelp)
 	* [cutTenonDowels](#cuttenondowels)
 	* [magicCorner](#magiccorner)
+	* [magicCutLinks](#magiccutlinks)
+	* [magicKnifeLinks](#magicknifelinks)
+	* [jointTenonDowelP](#jointtenondowelp)
+	* [cutTenonDowelsP](#cuttenondowelsp)
 * [Raw wood, Lumber](#raw-wood-lumber)
 	* [Glued table top](#glued-table-top)
 * [Parameterization](#parameterization)
@@ -171,6 +172,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * add new cutTenonDowelsP tool, parametric version of cutTenonDowels tool
     * add new parametric tenon dowel version and add cut attribute
     * rename cutTenons into cutTenonDowels to keep correct meaning
     * rename jointTenon into jointTenonDowel and create new tool for better positioning
@@ -1851,17 +1853,7 @@ Personally, the two side counterbore I use for screwing things to the table. I u
 * [Skip copies in cut-list](https://www.youtube.com/watch?v=rFEDLaD8lxM)
 * [Boolean cut with containers](https://www.youtube.com/watch?v=OVwazL8MQwI)
 
-<br><br><br>
-
-## magicCutLinks
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicCutLinks.png"> This tool make multi boolean cut operation at selected objects. First object should be the base object to cut. All other selected objects will cut the base 1st selected object. To select more objects hold left CTRL key during selection. During this process only the links will be used to cut, so the original objects will not be moved at tree. Also there will be auto labeling to keep the cut tree more informative and cleaner. This tool works with the same way as [magicCut](#magiccut) tool but creates LinkGroup container for cut panels, knives, and uses container links for cut operation. Thanks to this approach you can change Cube to Pad or even add new element to the LinkGroup container and the cut will be updated with new content. So, if you are looking for parametric cut, you should rather use this version.
-
-**Video tutorials:** 
-* [Parametric bookcase with Dado joints](https://www.youtube.com/watch?v=kcP1WmKizDg)
-* [Boolean cut with links](https://www.youtube.com/watch?v=EE-A6CMgb-4)
-
-<br><br><br>
+<br><br>
 
 ## magicKnife
 
@@ -1871,13 +1863,7 @@ Personally, the two side counterbore I use for screwing things to the table. I u
 * [Skip copies in cut-list](https://www.youtube.com/watch?v=rFEDLaD8lxM)
 * [Boolean cut with containers](https://www.youtube.com/watch?v=OVwazL8MQwI)
 
-## magicKnifeLinks
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicKnifeLinks.png"> This tool allows to use single knife to cut many panels. First selected object should be knife, and all other selected objects will be cut with the knife. The knife can be any object. So, you can create your own shape of the knife and cut many panels at once. Also you can cut all legs of the table using floor or top of the table as knife. To select more objects hold left CTRL key during selection. During this process the links of knife are used, so the original knife objects will not be moved at tree. Also there will be auto labeling to keep the cut tree more informative and cleaner. This tool works with the same way as [magicKnife](#magicknife) tool but creates LinkGroup container for Knife and uses container links for cut operation. Thanks to this approach you can change Knife Cube to Pad or even add new Knife to the LinkGroup container and the cut will be updated with new Knife content. So, if you are looking for parametric cut, you should rather use this version.
-
-**Video tutorials:** 
-* [Parametric bookcase with Dado joints](https://www.youtube.com/watch?v=kcP1WmKizDg)
-* [Boolean cut with links](https://www.youtube.com/watch?v=EE-A6CMgb-4)
+<br><br>
 
 ## jointTenonDowel
 
@@ -1885,12 +1871,6 @@ Personally, the two side counterbore I use for screwing things to the table. I u
 
 **Video tutorials:** 
 * [Quick Tenon and Mortise](https://www.youtube.com/watch?v=fHUjW8-37Pk)
-
-<br><br>
-
-## jointTenonDowelP
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/jointTenonDowelP.png"> Please select at least one face to create parametric tenon dowel joint at the selected face. This is parametric version of [jointTenonDowel](#jointtenondowel) tool. In this case all the tenon dowels are linked via `Clones` to the simple `LinkGroup` container. Inside the `LinkGroup` container is the simple `Part :: Box` object as tenon dowel pattern. This approach allows you to add new objects to the `LinkGroup` container or change the tenon dowel pattern inside the container and all tenon dowel clones will be updated. This tool works in the same way as [jointTenonDowel](#jointtenondowel) and allows to create quick tenon as dowel joint at selected face. This tool support any object type because the tenon dowel is additional object only positioned at the face. This tool supports multi face selection. To select more faces hold left control button CTRL during faces selection. The tenon as dowel joint offset is `1/4` of the object thickness but you can change the tenon dowel pattern size and offset here because it is parametric. By default the tenon dowel joint is hidden inside the object equally to the visible part, thickness up and thickness down. So, you can cut all the tenon dowels also at the object and create removable joints similar to the dowels using [cutTenonDowels](#cuttenondowels) tool. Created tenon dowels have special `BOM` attribute. By default the `BOM` attribute is set to `False`, so all tenon dowels are not listed at cut-list report, but if you set it to `True`, those tenon dowels will be listed. Also the parametric tenon dowels have special `Tenon` attribute, set by default to `True` to notify the [cutTenonDowels](#cuttenondowels) tool to cut such tenon dowel. But if you set it to `False` such tenon dowel will be skipped during cut. 
 
 <br><br>
 
@@ -1909,6 +1889,38 @@ Personally, the two side counterbore I use for screwing things to the table. I u
 
 **Video tutorials:** 
 * [Corner connection](https://www.youtube.com/watch?v=lIZFvDqgWdQ)
+
+<br><br>
+
+## magicCutLinks
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicCutLinks.png"> This tool make multi boolean cut operation at selected objects. First object should be the base object to cut. All other selected objects will cut the base 1st selected object. To select more objects hold left CTRL key during selection. During this process only the links will be used to cut, so the original objects will not be moved at tree. Also there will be auto labeling to keep the cut tree more informative and cleaner. This tool works with the same way as [magicCut](#magiccut) tool but creates LinkGroup container for cut panels, knives, and uses container links for cut operation. Thanks to this approach you can change Cube to Pad or even add new element to the LinkGroup container and the cut will be updated with new content. So, if you are looking for parametric cut, you should rather use this version.
+
+**Video tutorials:** 
+* [Parametric bookcase with Dado joints](https://www.youtube.com/watch?v=kcP1WmKizDg)
+* [Boolean cut with links](https://www.youtube.com/watch?v=EE-A6CMgb-4)
+
+<br><br><br>
+
+## magicKnifeLinks
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicKnifeLinks.png"> This tool allows to use single knife to cut many panels. First selected object should be knife, and all other selected objects will be cut with the knife. The knife can be any object. So, you can create your own shape of the knife and cut many panels at once. Also you can cut all legs of the table using floor or top of the table as knife. To select more objects hold left CTRL key during selection. During this process the links of knife are used, so the original knife objects will not be moved at tree. Also there will be auto labeling to keep the cut tree more informative and cleaner. This tool works with the same way as [magicKnife](#magicknife) tool but creates LinkGroup container for Knife and uses container links for cut operation. Thanks to this approach you can change Knife Cube to Pad or even add new Knife to the LinkGroup container and the cut will be updated with new Knife content. So, if you are looking for parametric cut, you should rather use this version.
+
+**Video tutorials:** 
+* [Parametric bookcase with Dado joints](https://www.youtube.com/watch?v=kcP1WmKizDg)
+* [Boolean cut with links](https://www.youtube.com/watch?v=EE-A6CMgb-4)
+
+## jointTenonDowelP
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/jointTenonDowelP.png"> Please select at least one face to create parametric tenon dowel joint at the selected face. This is parametric version of [jointTenonDowel](#jointtenondowel) tool. In this case all the tenon dowels are linked via `Clones` to the simple `LinkGroup` container. Inside the `LinkGroup` container is the simple `Part :: Box` object as tenon dowel pattern. This approach allows you to add new objects to the `LinkGroup` container or change the tenon dowel pattern inside the container and all tenon dowel clones will be updated. This tool works in the same way as [jointTenonDowel](#jointtenondowel) and allows to create quick tenon as dowel joint at selected face. This tool support any object type because the tenon dowel is additional object only positioned at the face. This tool supports multi face selection. To select more faces hold left control button CTRL during faces selection. The tenon as dowel joint offset is `1/4` of the object thickness but you can change the tenon dowel pattern size and offset here because it is parametric. By default the tenon dowel joint is hidden inside the object equally to the visible part, thickness up and thickness down. So, you can cut all the tenon dowels also at the object and create removable joints similar to the dowels using [cutTenonDowels](#cuttenondowels) tool. Created tenon dowels have special `BOM` attribute. By default the `BOM` attribute is set to `False`, so all tenon dowels are not listed at cut-list report, but if you set it to `True`, those tenon dowels will be listed. Also the parametric tenon dowels have special `Tenon` attribute, set by default to `True` to notify the [cutTenonDowels](#cuttenondowels) tool to cut such tenon dowel. But if you set it to `False` such tenon dowel will be skipped during cut. 
+
+<br><br>
+
+## cutTenonDowelsP
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/cutTenonDowelsP.png"> Please select at least one panel to cut all tenon dowels. This tool is parametric version of [cutTenonDowels](#cuttenondowels) tool. To cut tenon dowels links will be used here, so the cut mortise will follow the tenon pattern changes. You can add new tenon dowel to the container or change dimensions and the cut mortise will be automatically updated. This tool allows to create mortises using tenon dowels created via [jointTenonDowel](#jointtenondowel) or [jointTenonDowelP](#jointtenondowelp) tool but it is recommended to use parametric tenon dowels created via [jointTenonDowelP](#jointtenondowelp) tool to achieve fully parametric model. In this case you do not have to select and search exact tenon dowels that belongs to the selected panel, this tool cut all tenon dowels automatically for selected panel. If you select panel, this tool search for all tenon dowels that belongs to the selected panel and apply `Part Boolean Cut` with links operation on the panel. The selected panel should rather be `Part :: Box` type to not mix `Part :: Box` objects with `PartDesign :: Pad` design line too much. You can select multiply panels at once to cut tenon dowels. To select more panels hold left control key CTRL during objects selection. This feature is sensitive for visibility of tenon dowels and also for `Tenon` attribute. If the tenon dowel is hidden or `Tenon` attribute is set to `False`, such tenon dowel will be skipped during cut.
+
+<br><br><br><br>
 
 # Raw wood, Lumber
 

@@ -1,17 +1,3 @@
-# ###################################################################################################################
-'''
-
-FreeCAD macro for woodworking to apply and store textures
-Author: Darek L (github.com/dprojects)
-Latest version: https://github.com/dprojects/setTextures
-
-Certified platform:
-https://github.com/dprojects/Woodworking
-
-'''
-# ###################################################################################################################
-
-
 import FreeCAD, FreeCADGui
 from PySide import QtGui, QtCore
 from pivy import coin
@@ -140,7 +126,7 @@ def showQtMain():
 			# body - store & load buttons
 			# ############################################################################
 
-			self.storeBS = QtGui.QPushButton(translate('setTextures', 'selected objects only'), self)
+			self.storeBS = QtGui.QPushButton(translate('setTextures', 'selected only'), self)
 			self.storeBS.clicked.connect(self.storeSelected)
 			self.storeBS.setFixedHeight(40)
 			
@@ -148,7 +134,7 @@ def showQtMain():
 			self.storeBA.clicked.connect(self.storeAll)
 			self.storeBA.setFixedHeight(40)
 			
-			self.loadBS = QtGui.QPushButton(translate('setTextures', 'selected objects only'), self)
+			self.loadBS = QtGui.QPushButton(translate('setTextures', 'selected only'), self)
 			self.loadBS.clicked.connect(self.loadSelected)
 			self.loadBS.setFixedHeight(40)
 			
@@ -528,20 +514,20 @@ def showQtMain():
 				
 				# try set color
 				if self.checkColor.isChecked():
-					try:
-						test = obj.ViewObject.ShapeAppearance
-						colorsSchema = 1
-					except:
-						colorsSchema = 0
-					
-					if colorsSchema == 0:
-						obj.ViewObject.ShapeColor = (1.0, 1.0, 1.0, 0.0)
-						obj.ViewObject.DiffuseColor = (1.0, 1.0, 1.0, 0.0)
+					if MagicPanels.gKernelVersion >= 1.0:
+						try:
+							m = obj.ViewObject.ShapeAppearance[0]
+							m.DiffuseColor = (1.0, 1.0, 1.0, 0.0)
+							obj.ViewObject.ShapeAppearance = ( m )
+						except:
+							skip = 1
 					else:
-						m = obj.ViewObject.ShapeAppearance[0]
-						m.DiffuseColor = (1.0, 1.0, 1.0, 0.0)
-						obj.ViewObject.ShapeAppearance = ( m )
-
+						try:
+							obj.ViewObject.ShapeColor = (1.0, 1.0, 1.0, 0.0)
+							obj.ViewObject.DiffuseColor = (1.0, 1.0, 1.0, 0.0)
+						except:
+							skip = 1
+					
 				textureURL = self.getTextureURL(obj)
 
 				# if no texture found for object skip it
@@ -599,29 +585,26 @@ def showQtMain():
 
 		def checkSelected(self, iOperation, iSelection):
 
-			# check selected
-			selected = FreeCADGui.Selection.getSelection()
-			selectedLen = len(selected)
-
-			if iSelection == "selected" and selectedLen == 0:
-				iText = translate('setTextures', 'Please select objects and try again.')
-				self.showStatus(iText)
-			else:
-
-				# set objects to search
-				if iSelection == "selected":
-					searchObjects = selected
+			# set objects to search
+			if iSelection == "selected":
+				selected = FreeCADGui.Selection.getSelection()
+				if len(selected) == 0:
+					iText = translate('setTextures', 'Please select objects and try again.')
+					self.showStatus(iText)
+					return
 				else:
-					searchObjects = FreeCAD.activeDocument().Objects
+					searchObjects = selected
+			else:
+				searchObjects = FreeCAD.ActiveDocument.Objects
 
-				if iOperation == "store":
-					self.storeTextures(searchObjects, iSelection)
+			if iOperation == "store":
+				self.storeTextures(searchObjects, iSelection)
+			
+			if iOperation == "load":
+				if iSelection == "selected":
+					FreeCADGui.Selection.clearSelection()
 				
-				if iOperation == "load":
-					if iSelection == "selected":
-						FreeCADGui.Selection.clearSelection()
-					
-					self.loadTextures(searchObjects)
+				self.loadTextures(searchObjects)
 
 
 		# ############################################################################
@@ -630,32 +613,16 @@ def showQtMain():
 
 
 		def storeSelected(self):
-			try:
-				self.checkSelected("store", "selected")
-			except:
-				iText = translate('setTextures', 'Please select objects and try again.')
-				self.showStatus(iText)
+			self.checkSelected("store", "selected")
 
 		def storeAll(self):
-			try:
-				self.checkSelected("store", "all")
-			except:
-				iText = translate('setTextures', 'Please select objects and try again.')
-				self.showStatus(iText)
+			self.checkSelected("store", "all")
 
 		def loadSelected(self):
-			try:
-				self.checkSelected("load", "selected")
-			except:
-				iText = translate('setTextures', 'Please select objects and try again.')
-				self.showStatus(iText)
+			self.checkSelected("load", "selected")
 
 		def loadAll(self):
-			try:
-				self.checkSelected("load", "all")
-			except:
-				iText = translate('setTextures', 'Please select objects and try again.')
-				self.showStatus(iText)
+			self.checkSelected("load", "all")
 
 
 		# ############################################################################

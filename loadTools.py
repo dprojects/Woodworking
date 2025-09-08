@@ -2860,45 +2860,6 @@ FreeCADGui.addCommand("magicCut", magicCut())
 
 	
 # ######################################################################################################################
-class magicCutLinks():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "magicCutLinks.png"),
-				"MenuText": QT_TRANSLATE_NOOP("magicCutLinks", "magicCutLinks, single panel cut by many knives with links"),
-				"ToolTip" : QT_TRANSLATE_NOOP("magicCutLinks", "Click to see info."),
-				"Accel"   : "" }
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "magicCutLinks"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("magicCutLinks", magicCutLinks())
-
-	
-# ######################################################################################################################
 class magicKnife():
 
 	def GetResources(self):
@@ -2935,45 +2896,6 @@ class magicKnife():
 		return True
 
 FreeCADGui.addCommand("magicKnife", magicKnife())
-
-	
-# ######################################################################################################################
-class magicKnifeLinks():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "magicKnifeLinks.png"),
-				"MenuText": QT_TRANSLATE_NOOP("magicKnifeLinks", "magicKnifeLinks, single knife cut many panels with links"),
-				"ToolTip" : QT_TRANSLATE_NOOP("magicKnifeLinks", "Click to see info."),
-				"Accel"   : "" }
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "magicKnifeLinks"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("magicKnifeLinks", magicKnifeLinks())
 
 	
 # ######################################################################################################################
@@ -3016,50 +2938,11 @@ FreeCADGui.addCommand("jointTenonDowel", jointTenonDowel())
 
 	
 # ######################################################################################################################
-class jointTenonDowelP():
-
-	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "jointTenonDowelP.png"),
-				"MenuText": QT_TRANSLATE_NOOP("jointTenonDowelP", "jointTenonDowelP, joint tenon as dowel (parametric version)"),
-				"ToolTip" : QT_TRANSLATE_NOOP("jointTenonDowelP", "Click to see info."),
-				"Accel"   : "" }
-
-	def Activated(self):
-
-		import os, sys
-		import fakemodule
-
-		modulePath = sys.path
-		
-		module = "jointTenonDowelP"
-		
-		path = os.path.dirname(fakemodule.__file__)
-		path = os.path.join(path, "Tools")
-		
-		sys.path.append(path)
-
-		if module in sys.modules:
-			del sys.modules[module]
-
-		__import__(module, globals(), locals(), [], 0)
-		
-		sys.path = modulePath
-
-		return
-
-	def IsActive(self):
-		# not needed now, maybe in the future
-		return True
-
-FreeCADGui.addCommand("jointTenonDowelP", jointTenonDowelP())
-
-	
-# ######################################################################################################################
 class cutTenonDowels():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "cutTenonDowels.png"),
-				"MenuText": QT_TRANSLATE_NOOP("cutTenonDowels", "cutTenonDowels, cut all tenon dowels from panel"),
+				"MenuText": QT_TRANSLATE_NOOP("cutTenonDowels", "cutTenonDowels, cut all tenon dowels from panel with copies"),
 				"ToolTip" : QT_TRANSLATE_NOOP("cutTenonDowels", "Click to see info."),
 				"Accel"   : "" }
 
@@ -3130,6 +3013,162 @@ class magicCorner():
 		return True
 
 FreeCADGui.addCommand("magicCorner", magicCorner())
+
+	
+# ######################################################################################################################
+class magicCutLinks():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "magicCutLinks.png"),
+				"MenuText": QT_TRANSLATE_NOOP("magicCutLinks", "magicCutLinks, single panel cut by many knives with links (parametric version)"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicCutLinks", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "magicCutLinks"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("magicCutLinks", magicCutLinks())
+
+	
+# ######################################################################################################################
+class magicKnifeLinks():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "magicKnifeLinks.png"),
+				"MenuText": QT_TRANSLATE_NOOP("magicKnifeLinks", "magicKnifeLinks, single knife cut many panels with links (parametric version)"),
+				"ToolTip" : QT_TRANSLATE_NOOP("magicKnifeLinks", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "magicKnifeLinks"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("magicKnifeLinks", magicKnifeLinks())
+
+	
+# ######################################################################################################################
+class jointTenonDowelP():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "jointTenonDowelP.png"),
+				"MenuText": QT_TRANSLATE_NOOP("jointTenonDowelP", "jointTenonDowelP, joint tenon as dowel (parametric version)"),
+				"ToolTip" : QT_TRANSLATE_NOOP("jointTenonDowelP", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "jointTenonDowelP"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("jointTenonDowelP", jointTenonDowelP())
+
+	
+# ######################################################################################################################
+class cutTenonDowelsP():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "cutTenonDowelsP.png"),
+				"MenuText": QT_TRANSLATE_NOOP("cutTenonDowelsP", "cutTenonDowelsP, cut all tenon dowels from panel with links (parametric version)"),
+				"ToolTip" : QT_TRANSLATE_NOOP("cutTenonDowelsP", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "cutTenonDowelsP"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("cutTenonDowelsP", cutTenonDowelsP())
 
 	
 # ######################################################################################################################

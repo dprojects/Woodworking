@@ -146,17 +146,22 @@ Tools = [
 
 	"magicJoints", "png", "magicJoints, custom joints based on Sketch", "Allows to move or copy joints created from Sketch pattern and create Mortise and Tenon.",
 	"jointTenonCut", "png", "jointTenonCut, joint tenon by cut", "Click to see info.",
+
 	"grainH", "png", "grainH, grain direction marker, horizontal", "Click to see info.",
 	"grainV", "png", "grainV, grain direction marker, vertical", "Click to see info.",
 	"grainX", "png", "grainX, grain direction marker, no grain", "Click to see info.",
+
 	"magicCut", "png", "magicCut, single panel cut by many knives with copies", "Click to see info.",
-	"magicCutLinks", "png", "magicCutLinks, single panel cut by many knives with links", "Click to see info.",
 	"magicKnife", "png", "magicKnife, single knife cut many panels with copies", "Click to see info.",
-	"magicKnifeLinks", "png", "magicKnifeLinks, single knife cut many panels with links", "Click to see info.",
 	"jointTenonDowel", "png", "jointTenonDowel, joint tenon as dowel", "Click to see info.",
-	"jointTenonDowelP", "png", "jointTenonDowelP, joint tenon as dowel (parametric version)", "Click to see info.",
-	"cutTenonDowels", "png", "cutTenonDowels, cut all tenon dowels from panel", "Click to see info.",
+	"cutTenonDowels", "png", "cutTenonDowels, cut all tenon dowels from panel with copies", "Click to see info.",
+	
 	"magicCorner", "png", "magicCorner, create corner connection", "Click to see info.",
+	
+	"magicCutLinks", "png", "magicCutLinks, single panel cut by many knives with links (parametric version)", "Click to see info.",
+	"magicKnifeLinks", "png", "magicKnifeLinks, single knife cut many panels with links (parametric version)", "Click to see info.",
+	"jointTenonDowelP", "png", "jointTenonDowelP, joint tenon as dowel (parametric version)", "Click to see info.",
+	"cutTenonDowelsP", "png", "cutTenonDowelsP, cut all tenon dowels from panel with links (parametric version)", "Click to see info.",
 
 	# #################################################################################################################################
 	# Woodworking - drilling holes

@@ -160,13 +160,14 @@ def getItems(iType):
 			"grainV",
 			"grainX",
 			"magicCut",
-			"magicCutLinks",
 			"magicKnife",
-			"magicKnifeLinks",
 			"jointTenonDowel",
-			"jointTenonDowelP",
 			"cutTenonDowels",
-			"magicCorner"
+			"magicCorner",
+			"magicCutLinks",
+			"magicKnifeLinks",
+			"jointTenonDowelP",
+			"cutTenonDowelsP"
 		]
 	
 	if iType == "Woodworking - router":
