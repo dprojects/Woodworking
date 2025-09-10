@@ -172,6 +172,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * add set buttons for countersink drilling for shelves with unknown position (magicDriller)
     * add new cutTenonDowelsP tool, parametric version of cutTenonDowels tool
     * add new parametric tenon dowel version and add cut attribute
     * rename cutTenons into cutTenonDowels to keep correct meaning
@@ -1376,7 +1377,10 @@ However, if you make your own detailed part or order somewhere, you need to fulf
 
 **Options:**
 
-* **refresh face selection:** You have to select face and click `refresh face selection` to start using this tool. Also you can change face with this button. However, you can also first select face and next open this tool, so this tool will open GUI with the face loaded.
+* **set:** Additional set buttons make it easier to drill pilot holes with a countersink for screws. For example, you can set the drill bit's position relative to the shelf edge and the drilling face to the side of the entire piece of furniture separately. This allows you to quickly drill standard pilot holes in the shelf edges first, and then simply change the drilling face and drill bit type to create a countersink hole in side.
+* **refresh all faces selection:** available selections: 
+  * `single face` in this case, if you select only one face, it will be set as the face for drill bit positioning and also as the face for drilling.
+  * `two faces` in this case, if you select more than one face, the first selected face will be set as the face for drill bit positioning and the second selected face will be set as the face for drilling.
 
 * **Select edge:** You can choose the edge for the drill bits. Normally, for surface there are 4 edges but if the object is for example `boolean Cut` there might be much more edges or only 2 edges if this is edge of the board.
 * **Adjust edge:** Allows to adjust offset from the edge. This option is useful if by default the drill bits not touch the surface, so there is problem with correct positioning by default. 
@@ -1451,7 +1455,7 @@ However, if you make your own detailed part or order somewhere, you need to fulf
 
 ## Drilling serially
 
-* <img align="left" width="50" height="50" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicDriller.png"> To drill holes with countersinks you have to drill through two panels. First select the surface for countersinks and click `refresh face selection`, reference for the face should be updated and visible at the tool info screen:
+* <img align="left" width="50" height="50" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicDriller.png"> To drill holes with countersinks you have to drill through two panels. First select the surface for countersinks and click `refresh all faces selection`, reference for the face should be updated and visible at the tool info screen:
 
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillDriller001.png)
 
@@ -1472,7 +1476,7 @@ However, if you make your own detailed part or order somewhere, you need to fulf
 > [!TIP]
 > To drill rest of the hole, you can also use [Drilling via icons](#drilling-via-icons) feature. Just select edge, next all the countersinks drill bits and click the icon. All the holes will be drilled. But do not exit the tool because the countersinks drill bits will be automatically removed. You can do it if the holes will be drilled. But also you can continue with this tool and drill the rest of holes with this tool directly.
 
-* Now click `refresh face selection`, reference for the face should be updated and visible at the tool info screen. Also the drill bits will be moved to the new face, but do not worry, for this tool it is ok, just select `Holes` for hole type and exact screw. For `Hole` type, the depth is adjusted with panel thickness. However, if you have different panel sizes you can adjust it, as well: 
+* Now click `refresh all faces selection`, reference for the face should be updated and visible at the tool info screen. Also the drill bits will be moved to the new face, but do not worry, for this tool it is ok, just select `Holes` for hole type and exact screw. For `Hole` type, the depth is adjusted with panel thickness. However, if you have different panel sizes you can adjust it, as well: 
   
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillDriller005.png)
   
@@ -1480,6 +1484,9 @@ However, if you make your own detailed part or order somewhere, you need to fulf
   
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillDriller006.png)
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillDriller007.png)
+
+> [!TIP]
+> If you need to drill a countersink hole for shelves in the center of a side part of the furniture and you do not know exactly where the shelf is from the edge of the side wall to properly position the drill bit, you can use the dedicated set buttons. This allows you to first drill holes in the shelf edge and then update the drilling face for the side wall. In this case, the drill bit will maintain the shelf position and only change the drilling face. For more details see: [magicDriller](#magicdriller)
 
 **Video tutorials:** 
 * [Countersinks & realistic screws](https://www.youtube.com/watch?v=N5SpUCtNMY0)
@@ -1604,7 +1611,7 @@ Personally I do not use this type of connections because I am not convinced to i
 
 ## Drill pocket holes - with magicDriller
 
-* <img align="left" width="50" height="50" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicDriller.png"> To drill pocket holes you can use [magicDriller](#magicdriller). First select exact face you want to drill and run [magicDriller](#magicdriller). Also you can run [magicDriller](#magicdriller) and then select exact face and click `refresh face selection`. For hole type choose `Pocket holes` and select predefined screw. You can also change the settings for your custom screw. If you want more rounded hole finish play with increase `Pocket sink` option. To tilt the drill bit to the other side just change the sign at `Pocket rotation`. The angle is `75` by default because pocket holes are drilled with `15` degree angle, so `90 - 75 = 15`. However, you can play with the `Pocket rotation` option as well.
+* <img align="left" width="50" height="50" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicDriller.png"> To drill pocket holes you can use [magicDriller](#magicdriller). First select exact face you want to drill and run [magicDriller](#magicdriller). Also you can run [magicDriller](#magicdriller) and then select exact face and click `refresh all faces selection`. For hole type choose `Pocket holes` and select predefined screw. You can also change the settings for your custom screw. If you want more rounded hole finish play with increase `Pocket sink` option. To tilt the drill bit to the other side just change the sign at `Pocket rotation`. The angle is `75` by default because pocket holes are drilled with `15` degree angle, so `90 - 75 = 15`. However, you can play with the `Pocket rotation` option as well.
 
   ![img](https://raw.githubusercontent.com/dprojects/Woodworking/master/Docs/Screenshots/DrillPocketHoles008.png)
 

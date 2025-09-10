@@ -133,17 +133,24 @@ def showQtGUI():
 		toolSW = 310
 		toolSH = 710
 		
-		gObj = ""
-		gObjBase = ""
-		gThick = 0
+		# face for drill bit position
+		gFacePosition = ""  # face as object
+		gFacePositionO = "" # object to which face belongs
+		gFacePositionB = "" # base object of the object to which face belongs (Pad not Hole)
+		gFPIndex = 0
+		gFDPlane = ""
+		gFPType = ""
+		gFPThick = 0
 		
-		gDrillFace = ""
-		gFIndex = 0
-		gFPlane = ""
-		gFType = ""
-		gDrillFaceKey = ""
-		gDrillSink = ""
-		
+		# face for drilling
+		gFaceDrill = ""     # face as object
+		gFaceDrillO = ""    # object to which face belongs
+		gFaceDrillB = ""    # base object of the object to which face belongs (Pad not Hole)
+		gFDIndex = 0
+		gFDKey = ""
+		gFDSink = ""
+		gFDThick = 0
+
 		gEdge = ""
 		gEArr = []
 		gEIndex = 0
@@ -179,7 +186,8 @@ def showQtGUI():
 		
 		gInit = 1
 		
-		gNoSelection = translate('magicDriller', 'please select face')
+		gNoFPSelection = translate('magicDriller', 'select face for drill bit position')
+		gNoFDSelection = translate('magicDriller', 'select face for drilling into')
 		
 		# ############################################################################
 		# init
@@ -223,14 +231,29 @@ def showQtGUI():
 			# header - selection
 			# ############################################################################
 			
-			# screen
-			self.s1S = QtGui.QLabel("", self)
-			self.s1S.setFixedWidth(cutLabel)
 			
 			# button
-			self.s1B1 = QtGui.QPushButton(translate('magicDriller', 'refresh face selection'), self)
-			self.s1B1.clicked.connect(self.getSelected)
-			self.s1B1.setFixedHeight(40)
+			self.sFacePositionB = QtGui.QPushButton(translate('magicDriller', 'set'), self)
+			self.sFacePositionB.clicked.connect(self.setFacePosition)
+			self.sFacePositionB.setFixedWidth(50)
+			
+			# screen
+			self.sFacePositionL = QtGui.QLabel("", self)
+			self.sFacePositionL.setFixedWidth(cutLabel - 60)
+			
+			# button
+			self.sFaceDrillB = QtGui.QPushButton(translate('magicDriller', 'set'), self)
+			self.sFaceDrillB.clicked.connect(self.setFaceDrill)
+			self.sFaceDrillB.setFixedWidth(50)
+			
+			# screen
+			self.sFaceDrillL = QtGui.QLabel("", self)
+			self.sFaceDrillL.setFixedWidth(cutLabel - 60)
+			
+			# button
+			self.sFaceAllB = QtGui.QPushButton(translate('magicDriller', 'refresh all faces selection'), self)
+			self.sFaceAllB.clicked.connect(self.getSelected)
+			self.sFaceAllB.setFixedHeight(40)
 
 			# ############################################################################
 			# header - drill bit types
@@ -407,9 +430,23 @@ def showQtGUI():
 			# ############################################################################
 			
 			# create structure
+			self.rowFP = QtGui.QHBoxLayout()
+			self.rowFP.setAlignment(QtGui.Qt.AlignLeft)
+			self.rowFP.addWidget(self.sFacePositionB)
+			self.rowFP.addWidget(self.sFacePositionL)
+			
+			self.rowFD = QtGui.QHBoxLayout()
+			self.rowFD.setAlignment(QtGui.Qt.AlignLeft)
+			self.rowFD.addWidget(self.sFaceDrillB)
+			self.rowFD.addWidget(self.sFaceDrillL)
+			
+			self.rowFA = QtGui.QHBoxLayout()
+			self.rowFA.addWidget(self.sFaceAllB)
+			
 			self.header = QtGui.QVBoxLayout()
-			self.header.addWidget(self.s1S)
-			self.header.addWidget(self.s1B1)
+			self.header.addLayout(self.rowFP)
+			self.header.addLayout(self.rowFD)
+			self.header.addLayout(self.rowFA)
 			self.header.addWidget(self.sMainMenu)
 			self.header.addWidget(self.sSubMenu)
 			
@@ -612,8 +649,13 @@ def showQtGUI():
 			# get settings
 			[ v1, v2 ] = MagicPanels.getEdgeVertices(self.gEArr[self.gEIndex])
 			
-			if not self.gObj.isDerivedFrom("Part::Box"):
+			if not self.gFacePositionO.isDerivedFrom("Part::Box"):
 				[ v1, v2 ] = MagicPanels.getEdgeNormalized(v1, v2)
+			
+			# set sink
+			cm = self.gFaceDrill.CenterOfMass
+			[ sinkX, sinkY, sinkZ ] = [ cm.x, cm.y, cm.z ]
+			[[ sinkX, sinkY, sinkZ ]] = MagicPanels.getVerticesPosition([[ sinkX, sinkY, sinkZ ]], self.gFaceDrillO, "array")
 			
 			# ############################################################################
 			# dowels at 1st side
@@ -622,6 +664,8 @@ def showQtGUI():
 			if self.gDBSides == 0 or self.gDBSides == 1:
 			
 				[ X, Y, Z ] = [ v1[0], v1[1], v1[2] ]
+				[[ X, Y, Z ]] = MagicPanels.getVerticesPosition([[ X, Y, Z ]], self.gFacePositionO, "array")
+				
 				[ x , y, z ] = [ 0, 0, 0 ]
 				
 				i = 0
@@ -630,22 +674,22 @@ def showQtGUI():
 					# edge along X
 					if not MagicPanels.equal(v1[0], v2[0]):
 						
-						if self.gFPlane == "XY":
+						if self.gFDPlane == "XY":
 							x = X - self.gDBOCorner
 							if i != 0:
 								x = x - ( i * self.gDBONext)
 							y = Y + self.gDBOEdge
-							z = Z - self.gDBSink
+							z = sinkZ - self.gDBSink
 							
-						if self.gFPlane == "XZ":
+						if self.gFDPlane == "XZ":
 							x = X - self.gDBOCorner
 							if i != 0:
 								x = x - ( i * self.gDBONext)
-							y = Y - self.gDBSink
+							y = sinkY - self.gDBSink
 							z = Z + self.gDBOEdge
 				
 						# this should not exist
-						if self.gFPlane == "YZ":
+						if self.gFDPlane == "YZ":
 							[ x, y, z ] = [ X, Y, Z ]
 						
 						# settings for pocket holes
@@ -654,19 +698,19 @@ def showQtGUI():
 					# edge along Y
 					if not MagicPanels.equal(v1[1], v2[1]):
 						
-						if self.gFPlane == "XY":
+						if self.gFDPlane == "XY":
 							x = X + self.gDBOEdge
 							y = Y - self.gDBOCorner
 							if i != 0:
 								y = y - ( i * self.gDBONext)
-							z = Z - self.gDBSink
+							z = sinkZ - self.gDBSink
 					
 						# this should not exist
-						if self.gFPlane == "XZ":
+						if self.gFDPlane == "XZ":
 							[ x, y, z ] = [ X, Y, Z ]
 					
-						if self.gFPlane == "YZ":
-							x = X - self.gDBSink
+						if self.gFDPlane == "YZ":
+							x = sinkX - self.gDBSink
 							y = Y - self.gDBOCorner
 							if i != 0:
 								y = y - ( i * self.gDBONext)
@@ -678,22 +722,22 @@ def showQtGUI():
 					# edge along Z
 					if not MagicPanels.equal(v1[2], v2[2]):
 						
-						if self.gFPlane == "XY":
+						if self.gFDPlane == "XY":
 							x = X + self.gDBOEdge
-							y = Y - self.gDBSink
+							y = sinkY - self.gDBSink
 							z = Z - self.gDBOCorner
 							if i != 0:
 								z = z - ( i * self.gDBONext)
 						
-						if self.gFPlane == "XZ":
+						if self.gFDPlane == "XZ":
 							x = X - self.gDBOEdge
-							y = Y - self.gDBSink
+							y = sinkY - self.gDBSink
 							z = Z - self.gDBOCorner
 							if i != 0:
 								z = z - ( i * self.gDBONext)
 								
-						if self.gFPlane == "YZ":
-							x = X - self.gDBSink
+						if self.gFDPlane == "YZ":
+							x = sinkX - self.gDBSink
 							y = Y + self.gDBOEdge
 							z = Z - self.gDBOCorner
 							if i != 0:
@@ -706,8 +750,6 @@ def showQtGUI():
 					# create dowel
 					# ############################################################################
 					
-					[[ x, y, z ]] = MagicPanels.getVerticesPosition([[ x, y, z ]], self.gObj, "array")
-			
 					d = self.createDrillBit(x, y, z)
 					self.gDrillBits.append(d)
 					
@@ -720,6 +762,8 @@ def showQtGUI():
 			if self.gDBSides == 0 or self.gDBSides == 2:
 			
 				[ X, Y, Z ] = [ v2[0], v2[1], v2[2] ]
+				[[ X, Y, Z ]] = MagicPanels.getVerticesPosition([[ X, Y, Z ]], self.gFacePositionO, "array")
+
 				[ x , y, z ] = [ 0, 0, 0 ]
 
 				i = 0
@@ -728,22 +772,22 @@ def showQtGUI():
 					# edge along X
 					if not MagicPanels.equal(v1[0], v2[0]):
 						
-						if self.gFPlane == "XY":
+						if self.gFDPlane == "XY":
 							x = X + self.gDBOCorner
 							if i != 0:
 								x = x + ( i * self.gDBONext)
 							y = Y + self.gDBOEdge
-							z = Z - self.gDBSink
+							z = sinkZ - self.gDBSink
 					
-						if self.gFPlane == "XZ":
+						if self.gFDPlane == "XZ":
 							x = X + self.gDBOCorner
 							if i != 0:
 								x = x + ( i * self.gDBONext)
-							y = Y - self.gDBSink
+							y = sinkY - self.gDBSink
 							z = Z + self.gDBOEdge
 						
 						# this should not exist
-						if self.gFPlane == "YZ":
+						if self.gFDPlane == "YZ":
 							[ x, y, z ] = [ X, Y, Z ]
 
 						# settings for pocket holes
@@ -752,19 +796,19 @@ def showQtGUI():
 					# edge along Y
 					if not MagicPanels.equal(v1[1], v2[1]):
 						
-						if self.gFPlane == "XY":
+						if self.gFDPlane == "XY":
 							x = X + self.gDBOEdge
 							y = Y + self.gDBOCorner
 							if i != 0:
 								y = y + ( i * self.gDBONext)
-							z = Z - self.gDBSink
+							z = sinkZ - self.gDBSink
 					
 						# this should not exist
-						if self.gFPlane == "XZ":
+						if self.gFDPlane == "XZ":
 							[ x, y, z ] = [ X, Y, Z ]
 					
-						if self.gFPlane == "YZ":
-							x = X - self.gDBSink
+						if self.gFDPlane == "YZ":
+							x = sinkX - self.gDBSink
 							y = Y + self.gDBOCorner
 							if i != 0:
 								y = y + ( i * self.gDBONext)
@@ -776,22 +820,22 @@ def showQtGUI():
 					# edge along Z
 					if not MagicPanels.equal(v1[2], v2[2]):
 						
-						if self.gFPlane == "XY":
+						if self.gFDPlane == "XY":
 							x = X + self.gDBOEdge
-							y = Y - self.gDBSink
+							y = sinkY - self.gDBSink
 							z = Z + self.gDBOCorner
 							if i != 0:
 								z = z + ( i * self.gDBONext)
 					
-						if self.gFPlane == "XZ":
+						if self.gFDPlane == "XZ":
 							x = X - self.gDBOEdge
-							y = Y - self.gDBSink
+							y = sinkY - self.gDBSink
 							z = Z + self.gDBOCorner
 							if i != 0:
 								z = z + ( i * self.gDBONext)
 					
-						if self.gFPlane == "YZ":
-							x = X - self.gDBSink
+						if self.gFDPlane == "YZ":
+							x = sinkX - self.gDBSink
 							y = Y + self.gDBOEdge
 							z = Z + self.gDBOCorner
 							if i != 0:
@@ -803,8 +847,6 @@ def showQtGUI():
 					# ############################################################################
 					# create dowel
 					# ############################################################################
-					
-					[[ x, y, z ]] = MagicPanels.getVerticesPosition([[ x, y, z ]], self.gObj, "array")
 					
 					d = self.createDrillBit(x, y, z)
 					self.gDrillBits.append(d)
@@ -824,14 +866,19 @@ def showQtGUI():
 		# ############################################################################
 		def resetGlobals(self):
 
-			self.gObj = ""
-			self.gThick = 0
+			self.gFacePosition = ""
+			self.gFacePositionO = ""
+			self.gFacePositionB = ""
+			self.gFPIndex = 0
+			self.gFPType = ""
+			self.gFPThick = 0
 			
-			self.gDrillFace = ""
-			self.gFIndex = 0
-			self.gFPlane = ""
-			self.gFType = ""
-		
+			self.gFaceDrill = ""
+			self.gFaceDrillO = ""
+			self.gFaceDrillB = ""
+			self.gFDPlane = ""
+			self.gFDThick = 0
+			
 			self.gEdge = ""
 			self.gEArr = []
 			self.gEIndex = 0
@@ -843,139 +890,227 @@ def showQtGUI():
 			self.gRIndex = 0
 
 		# ############################################################################
+		def setConfig(self):
+
+			# ############################################################################
+			# set possible edges - drill bit position
+			# ############################################################################
+			
+			[ self.gFPType, 
+				arrAll, 
+				arrThick, 
+				arrShort, 
+				arrLong ] = MagicPanels.getFaceEdges(self.gFacePositionO, self.gFacePosition)
+			
+			if self.gFPType == "edge":
+				
+				if len(arrShort) == 0:
+					self.gEArr = arrLong
+				
+				if len(arrLong) == 0:
+					self.gEArr = arrShort
+
+			if self.gFPType == "surface":
+				self.gEArr = arrAll
+				
+			# ############################################################################
+			# set possible rotations - drill bit rotation
+			# ############################################################################
+			
+			self.gFDPlane = MagicPanels.getFacePlane(self.gFaceDrill)
+			
+			if self.gFDPlane == "XY":
+				self.gRAngles.append(0)
+				self.gRAngles.append(180)
+				self.gRAxis = FreeCAD.Vector(1, 0, 0)
+
+			if self.gFDPlane == "XZ":
+				self.gRAngles.append(90)
+				self.gRAngles.append(270)
+				self.gRAxis = FreeCAD.Vector(1, 0, 0)
+				
+			if self.gFDPlane == "YZ":
+				self.gRAngles.append(90)
+				self.gRAngles.append(270)
+				self.gRAxis = FreeCAD.Vector(0, 1, 0)
+			
+			# ############################################################################
+			# set default
+			# ############################################################################
+
+			# set offset from edge
+			if not self.kcscb.isChecked():
+				
+				s = MagicPanels.getSizes(self.gFacePositionB)
+				s.sort()
+				self.gFPThick = s[0]
+				
+				self.gDBOEdge = self.gFPThick / 2
+				self.oDBOEdgeE.setText(MagicPanels.unit2gui(self.gDBOEdge))
+			
+			# ############################################################################
+			# try auto adjust dowel
+			# ############################################################################
+
+			# adjust sink
+			self.gFDSink = MagicPanels.getFaceSink(self.gFaceDrillO, self.gFaceDrill)
+			self.gRIndex = 0
+			
+			# adjust rotation
+			if self.gFDSink == "+":
+				
+				if self.gFDPlane == "XY":
+					self.gRIndex = 1
+					
+				if self.gFDPlane == "XZ":
+					self.gRIndex = 0
+					
+				if self.gFDPlane == "YZ":
+					self.gRIndex = 1
+
+			else:
+			
+				if self.gFDPlane == "XY":
+					self.gRIndex = 0
+					
+				if self.gFDPlane == "XZ":
+					self.gRIndex = 1
+					
+				if self.gFDPlane == "YZ":
+					self.gRIndex = 0
+			
+			self.s2IS.setText(str(self.gEIndex+1) + " / " + str(len(self.gEArr)))
+			self.s3IS.setText(str(self.gPosition+1) + " / 2")
+			self.s4IS.setText(str(self.gRIndex+1) + " / " + str(len(self.gRAngles)))
+			self.s5IS.setText(str(self.gDBSides+1) + " / 3")
+			
+			if not self.kcscb.isChecked():
+				self.sMainMenu.setCurrentIndex(getMainMenuIndex[gDefaultMainMenuText][0])
+				self.setDrillBitType(gDefaultMainMenuText)
+			else:
+				self.showDrillBits()
+				
+			self.gInit = 0
+
+		# ############################################################################
+		def setFacePosition(self):
+			
+			try:
+				[ subs, objects ] = MagicPanels.getSelectedSubs("no")
+
+				if len(subs) == 0:
+					raise
+				
+				self.gFacePosition = subs[0]
+				self.gFacePositionO = objects[0]
+				self.gFacePositionB = MagicPanels.getReference(self.gFacePositionO)
+				self.gFPIndex = MagicPanels.getFaceIndex(self.gFacePositionO, self.gFacePosition)
+				
+				n = ""
+				n += str(self.gFacePositionO.Label)
+				n += ", "
+				n += "Face"
+				n += str(self.gFPIndex)
+				self.sFacePositionL.setText(n)
+				
+				if self.gFacePosition != "" and self.gFaceDrill != "":
+					self.setConfig()
+				
+				FreeCADGui.Selection.clearSelection()
+
+			except:
+				self.sFacePositionL.setText(self.gNoFPSelection)
+
+		# ############################################################################
+		def setFaceDrill(self):
+			
+			try:
+				[ subs, objects ] = MagicPanels.getSelectedSubs("no")
+
+				if len(subs) == 0:
+					raise
+				
+				self.gFaceDrill = subs[0]
+				self.gFaceDrillO = objects[0]
+				self.gFaceDrillB = MagicPanels.getReference(self.gFaceDrillO)
+				self.gFDIndex = MagicPanels.getFaceIndex(self.gFaceDrillO, self.gFaceDrill)
+				
+				n = ""
+				n += str(self.gFaceDrillO.Label)
+				n += ", "
+				n += "Face"
+				n += str(self.gFDIndex)
+				self.sFaceDrillL.setText(n)
+
+				if self.gFacePosition != "" and self.gFaceDrill != "":
+					self.setConfig()
+
+				FreeCADGui.Selection.clearSelection()
+				
+			except:
+				self.sFaceDrillL.setText(self.gNoFDSelection)
+
+		# ############################################################################
 		def getSelected(self):
 
 			try:
-
-				# ############################################################################
-				# global config
-				# ############################################################################
-				
 				if not self.kcscb.isChecked():
 					self.resetGlobals()
 
-				self.gObjBase = MagicPanels.getReference()
+				[ subs, objects ] = MagicPanels.getSelectedSubs("no")
+
+				if len(subs) == 0:
+					raise
+					
+				if len(subs) == 1:
+					self.gFacePosition = subs[0]
+					self.gFacePositionO = objects[0]
+					self.gFacePositionB = MagicPanels.getReference(self.gFacePositionO)
+					self.gFPIndex = MagicPanels.getFaceIndex(self.gFacePositionO, self.gFacePosition)
+					
+					self.gFaceDrill = subs[0]
+					self.gFaceDrillO = objects[0]
+					self.gFaceDrillB = MagicPanels.getReference(self.gFaceDrillO)
+					self.gFDIndex = MagicPanels.getFaceIndex(self.gFaceDrillO, self.gFaceDrill)
 				
-				self.gObj = FreeCADGui.Selection.getSelection()[0]
-				self.gDrillFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-				self.gFIndex = MagicPanels.getFaceIndex(self.gObj, self.gDrillFace)
-				FreeCADGui.Selection.clearSelection()
-				
+				if len(subs) > 1:
+					
+					self.gFacePosition = subs[0]
+					self.gFacePositionO = objects[0]
+					self.gFacePositionB = MagicPanels.getReference(self.gFacePositionO)
+					self.gFPIndex = MagicPanels.getFaceIndex(self.gFacePositionO, self.gFacePosition)
+					
+					self.gFaceDrill = subs[1]
+					self.gFaceDrillO = objects[1]
+					self.gFaceDrillB = MagicPanels.getReference(self.gFaceDrillO)
+					self.gFDIndex = MagicPanels.getFaceIndex(self.gFaceDrillO, self.gFaceDrill)
+			
 				n = ""
-				n += str(self.gObj.Label)
+				n += str(self.gFacePositionO.Label)
 				n += ", "
 				n += "Face"
-				n += str(self.gFIndex)
-				self.s1S.setText(n)
+				n += str(self.gFPIndex)
+				self.sFacePositionL.setText(n)
 				
-				# ############################################################################
-				# get plane and type
-				# ############################################################################
+				n = ""
+				n += str(self.gFaceDrillO.Label)
+				n += ", "
+				n += "Face"
+				n += str(self.gFDIndex)
+				self.sFaceDrillL.setText(n)
 				
-				self.gFPlane = MagicPanels.getFacePlane(self.gDrillFace)
-				
-				[ self.gFType, 
-					arrAll, 
-					arrThick, 
-					arrShort, 
-					arrLong ] = MagicPanels.getFaceEdges(self.gObj, self.gDrillFace)
-				
-				# ############################################################################
-				# set possible edges
-				# ############################################################################
-				
-				if self.gFType == "edge":
-					
-					if len(arrShort) == 0:
-						self.gEArr = arrLong
-					
-					if len(arrLong) == 0:
-						self.gEArr = arrShort
-
-				if self.gFType == "surface":
-					self.gEArr = arrAll
-					
-				# ############################################################################
-				# set possible rotations
-				# ############################################################################
-				
-				if self.gFPlane == "XY":
-					self.gRAngles.append(0)
-					self.gRAngles.append(180)
-					self.gRAxis = FreeCAD.Vector(1, 0, 0)
-
-				if self.gFPlane == "XZ":
-					self.gRAngles.append(90)
-					self.gRAngles.append(270)
-					self.gRAxis = FreeCAD.Vector(1, 0, 0)
-					
-				if self.gFPlane == "YZ":
-					self.gRAngles.append(90)
-					self.gRAngles.append(270)
-					self.gRAxis = FreeCAD.Vector(0, 1, 0)
-				
-				# ############################################################################
-				# set default
-				# ############################################################################
-				
-				if not self.kcscb.isChecked():
-					
-					s = MagicPanels.getSizes(self.gObjBase)
-					s.sort()
-					self.gThick = s[0]
-					
-					self.gDBOEdge = self.gThick / 2
-					self.oDBOEdgeE.setText(MagicPanels.unit2gui(self.gDBOEdge))
-				
-				# ############################################################################
-				# try auto adjust dowel
-				# ############################################################################
-
-				# adjust sink
-				self.gDrillSink = MagicPanels.getFaceSink(self.gObj, self.gDrillFace)
-				self.gRIndex = 0
-				
-				# adjust rotation
-				if self.gDrillSink == "+":
-					
-					if self.gFPlane == "XY":
-						self.gRIndex = 1
-						
-					if self.gFPlane == "XZ":
-						self.gRIndex = 0
-						
-					if self.gFPlane == "YZ":
-						self.gRIndex = 1
-
+				# set configuration
+				if self.gFacePosition != "" and self.gFaceDrill != "":
+					self.setConfig()
 				else:
-				
-					if self.gFPlane == "XY":
-						self.gRIndex = 0
-						
-					if self.gFPlane == "XZ":
-						self.gRIndex = 1
-						
-					if self.gFPlane == "YZ":
-						self.gRIndex = 0
-				
-				self.s2IS.setText(str(self.gEIndex+1) + " / " + str(len(self.gEArr)))
-				self.s3IS.setText(str(self.gPosition+1) + " / 2")
-				self.s4IS.setText(str(self.gRIndex+1) + " / " + str(len(self.gRAngles)))
-				self.s5IS.setText(str(self.gDBSides+1) + " / 3")
-				
-				if not self.kcscb.isChecked():
-					self.sMainMenu.setCurrentIndex(getMainMenuIndex[gDefaultMainMenuText][0])
-					self.setDrillBitType(gDefaultMainMenuText)
-				else:
-					self.showDrillBits()
-					
-				self.gInit = 0
-				
-			except:
+					raise
 
-				self.s1S.setText(self.gNoSelection)
-				return -1
+				FreeCADGui.Selection.clearSelection()
 			
+			except:
+				self.sFacePositionL.setText(self.gNoFPSelection)
+				self.sFaceDrillL.setText(self.gNoFDSelection)
+	
 		# ############################################################################
 		def setEdgeP(self):
 			
@@ -991,7 +1126,7 @@ def showQtGUI():
 				self.s2IS.setText(str(self.gEIndex+1) + " / " + str(len(self.gEArr)))
 				
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.sFacePositionL.setText(self.gNoFPSelection)
 			
 		def setEdgeN(self):
 			
@@ -1007,7 +1142,7 @@ def showQtGUI():
 				self.s2IS.setText(str(self.gEIndex+1) + " / " + str(len(self.gEArr)))
 			
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.sFacePositionL.setText(self.gNoFPSelection)
 		
 		# ############################################################################
 		def setPosition(self):
@@ -1025,7 +1160,7 @@ def showQtGUI():
 				self.s3IS.setText(str(self.gPosition+1) + " / 2")
 				
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.sFacePositionL.setText(self.gNoFPSelection)
 
 		# ############################################################################
 		def setRotationP(self):
@@ -1040,8 +1175,8 @@ def showQtGUI():
 				self.s4IS.setText(str(self.gRIndex+1) + " / " + str(len(self.gRAngles)))
 				
 			except:
-				self.s1S.setText(self.gNoSelection)
-				
+				self.sFaceDrillL.setText(self.gNoFDSelection)
+
 		def setRotationN(self):
 			
 			try:
@@ -1054,8 +1189,8 @@ def showQtGUI():
 				self.s4IS.setText(str(self.gRIndex+1) + " / " + str(len(self.gRAngles)))
 				
 			except:
-				self.s1S.setText(self.gNoSelection)
-		
+				self.sFaceDrillL.setText(self.gNoFDSelection)
+
 		# ############################################################################
 		def setSidesP(self):
 			
@@ -1069,8 +1204,8 @@ def showQtGUI():
 				self.s5IS.setText(str(self.gDBSides+1) + " / 3")
 		
 			except:
-				self.s1S.setText(self.gNoSelection)
-				
+				self.sFacePositionL.setText(self.gNoFPSelection)
+		
 		def setSidesN(self):
 			
 			try:
@@ -1083,7 +1218,7 @@ def showQtGUI():
 				self.s5IS.setText(str(self.gDBSides+1) + " / 3")
 			
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.sFacePositionL.setText(self.gNoFPSelection)
 
 		# ############################################################################
 		def setCustomDrillbits(self, selectedText):
@@ -1092,15 +1227,23 @@ def showQtGUI():
 			
 			try:
 			
-				self.gDBOEdge = self.gThick / 2
+				# ######################################
+				# backup if keep settings
+				# ######################################
+				
+				if self.kcscb.isChecked():
+					BKgDBSides = self.gDBSides
+					BKgDBNum = self.gDBNum
+			
+				# ######################################
+				# settings for all hole types
+				# ######################################
+				
+				self.gDBOEdge = self.gFPThick / 2
 				self.gDBLabel = selectedText
 				self.gDBSides = 0
 				self.gDBSink = 0
 				self.gDrillPoint = "Angled"
-				
-				# ######################################
-				# settings for all hole types
-				# ######################################
 				
 				# Dowel 6 x 35 mm
 				if selectedIndex == 0:
@@ -1149,7 +1292,7 @@ def showQtGUI():
 					if selectedIndex == 4:
 						self.gDBDiameter = 3
 						self.gDBDiameter2 = 10
-						self.gDBSize = 40 - self.gThick
+						self.gDBSize = 40 - self.gFPThick
 						self.gDBNum = 2
 						self.gDBOCorner = 50
 						self.gDBONext = 64
@@ -1158,7 +1301,7 @@ def showQtGUI():
 					if selectedIndex == 5:
 						self.gDBDiameter = 3
 						self.gDBDiameter2 = 10
-						self.gDBSize = 40 - self.gThick
+						self.gDBSize = 40 - self.gFPThick
 						self.gDBNum = 2
 						self.gDBOCorner = 50
 						self.gDBONext = 64
@@ -1167,7 +1310,7 @@ def showQtGUI():
 					if selectedIndex == 6:
 						self.gDBDiameter = 4
 						self.gDBDiameter2 = 10
-						self.gDBSize = 50 - self.gThick
+						self.gDBSize = 50 - self.gFPThick
 						self.gDBNum = 2
 						self.gDBOCorner = 50
 						self.gDBONext = 64
@@ -1176,7 +1319,7 @@ def showQtGUI():
 					if selectedIndex == 7:
 						self.gDBDiameter = 5
 						self.gDBDiameter2 = 10
-						self.gDBSize = 60 - self.gThick
+						self.gDBSize = 60 - self.gFPThick
 						self.gDBNum = 2
 						self.gDBOCorner = 50
 						self.gDBONext = 64
@@ -1354,7 +1497,7 @@ def showQtGUI():
 					self.gDBNum = 2
 					self.gDBOCorner = 20
 					self.gDBONext = 32
-					self.gDBOEdge = self.gThick + 8
+					self.gDBOEdge = self.gFPThick + 8
 					self.gDBSides = 1
 					self.gDrillPoint = "Flat"
 
@@ -1366,10 +1509,18 @@ def showQtGUI():
 					self.gDBNum = 2
 					self.gDBOCorner = 20
 					self.gDBONext = 32
-					self.gDBOEdge = self.gThick + 8 + 64
+					self.gDBOEdge = self.gFPThick + 8 + 64
 					self.gDBSides = 1
 					self.gDrillPoint = "Flat"
-					
+				
+				# ######################################
+				# restore if keep settings
+				# ######################################
+
+				if self.kcscb.isChecked():
+					self.gDBSides = BKgDBSides
+					self.gDBNum = BKgDBNum
+
 				# ######################################
 				# update text fields at GUI & show
 				# ######################################
@@ -1387,7 +1538,8 @@ def showQtGUI():
 				self.showDrillBits()
 		
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.sFacePositionL.setText(self.gNoFPSelection)
+				self.sFaceDrillL.setText(self.gNoFDSelection)
 		
 		# ############################################################################
 		def refreshSettings(self):
@@ -1410,7 +1562,8 @@ def showQtGUI():
 				self.showDrillBits()
 
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.sFacePositionL.setText(self.gNoFPSelection)
+				self.sFaceDrillL.setText(self.gNoFDSelection)
 
 		# ############################################################################
 		def setDrillBitType(self, selectedText):
@@ -1479,7 +1632,8 @@ def showQtGUI():
 				self.setCustomDrillbits(self.gDBLabel)
 
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.sFacePositionL.setText(self.gNoFPSelection)
+				self.sFaceDrillL.setText(self.gNoFDSelection)
 
 		# ############################################################################
 		def drillHoles(self):
@@ -1487,7 +1641,7 @@ def showQtGUI():
 			try:
 		
 				# store face key to find face to drill at new object later
-				self.gDrillFaceKey = self.gDrillFace.BoundBox
+				self.gFDKey = self.gFaceDrill.BoundBox
 				
 				# set args
 				o = []
@@ -1499,37 +1653,37 @@ def showQtGUI():
 				
 				# Holes
 				if self.gDBType == 0:
-					holes = MagicPanels.makeHoles(self.gObj, self.gDrillFace, o, self.gDrillPoint )
+					holes = MagicPanels.makeHoles(self.gFaceDrillO, self.gFaceDrill, o, self.gDrillPoint )
 
 				# Countersinks
 				if self.gDBType == 1:
-					holes = MagicPanels.makeCountersinks(self.gObj, self.gDrillFace, o )
+					holes = MagicPanels.makeCountersinks(self.gFaceDrillO, self.gFaceDrill, o )
 
 				# Counterbores
 				if self.gDBType == 2:
-					holes = MagicPanels.makeCounterbores(self.gObj, self.gDrillFace, o )
+					holes = MagicPanels.makeCounterbores(self.gFaceDrillO, self.gFaceDrill, o )
 				
 				# Pocket holes
 				if self.gDBType == 3:
-					holes = MagicPanels.makePocketHoles(self.gObj, self.gDrillFace, o )
+					holes = MagicPanels.makePocketHoles(self.gFaceDrillO, self.gFaceDrill, o )
 
 				# get new object from selection
 				FreeCADGui.Selection.addSelection(holes[0])
-				self.gObj = FreeCADGui.Selection.getSelection()[0]
+				self.gFaceDrillO = FreeCADGui.Selection.getSelection()[0]
 				
 				# search for selected face to drill
-				index = MagicPanels.getFaceIndexByKey(self.gObj, self.gDrillFaceKey)
-				self.gDrillFace = self.gObj.Shape.Faces[index-1]
+				index = MagicPanels.getFaceIndexByKey(self.gFaceDrillO, self.gFDKey)
+				self.gFaceDrill = self.gFaceDrillO.Shape.Faces[index-1]
 
 				# update status info screen
-				face = "Face"+str(MagicPanels.getFaceIndex(self.gObj, self.gDrillFace))
-				self.s1S.setText(str(self.gObj.Label)+", "+face)
+				face = "Face"+str(MagicPanels.getFaceIndex(self.gFaceDrillO, self.gFaceDrill))
+				self.sFaceDrillL.setText(str(self.gFaceDrillO.Label)+", "+face)
 				
 				# remove selection
 				FreeCADGui.Selection.clearSelection()
 		
 			except:
-				self.s1S.setText(self.gNoSelection)
+				self.sFaceDrillL.setText(self.gNoFDSelection)
 		
 	# ############################################################################
 	# final settings
