@@ -172,6 +172,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * improve sketch pattern positioning (magicJoints, MagicPanels)
     * add set buttons for countersink drilling for shelves with unknown position (magicDriller)
     * add new cutTenonDowelsP tool, parametric version of cutTenonDowels tool
     * add new parametric tenon dowel version and add cut attribute
@@ -1395,6 +1396,7 @@ However, if you make your own detailed part or order somewhere, you need to fulf
 > I personally use a [Wolfcraft dowelling jig](https://www.wolfcraft.com/products/wolfcraft/en/EUR/Products/Attachments-for-Machines/Drill-Guides/Dowelling-jig/p/P_4650) to drill 3 mm pilot holes for 4 x 40 mm screws. On this dowelling jig I have two sleeves I made myself from 16 mm screws (a small improvement). The sleeves are in positions 10 and the stopper in positions 8, so I can drill two holes at once very quickly from each side with high precision with a distance of 50 mm from each edge and with a distance between the holes of 64 mm. That is why the default distance for all screws is set this way.
 
 **Video tutorials:** 
+* [Drilling countersinks for shelves](https://www.youtube.com/watch?v=rd2W-L6OHuo)
 * [Countersinks & realistic screws](https://www.youtube.com/watch?v=N5SpUCtNMY0)
 * [How to drill holes for minifix](https://www.youtube.com/watch?v=4A9lsZveXPc)
 
@@ -1489,6 +1491,7 @@ However, if you make your own detailed part or order somewhere, you need to fulf
 > If you need to drill a countersink hole for shelves in the center of a side part of the furniture and you do not know exactly where the shelf is from the edge of the side wall to properly position the drill bit, you can use the dedicated set buttons. This allows you to first drill holes in the shelf edge and then update the drilling face for the side wall. In this case, the drill bit will maintain the shelf position and only change the drilling face. For more details see: [magicDriller](#magicdriller)
 
 **Video tutorials:** 
+* [Drilling countersinks for shelves](https://www.youtube.com/watch?v=rd2W-L6OHuo)
 * [Countersinks & realistic screws](https://www.youtube.com/watch?v=N5SpUCtNMY0)
 
 ## Drilling via icons
@@ -1794,24 +1797,43 @@ Personally, the two side counterbore I use for screwing things to the table. I u
 
 ## magicJoints
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicJoints.png"> This tool is to create Mortises and Tenons. It allows to create any joint shape using Sketch. First you have to create joint pattern with Sketch. The Sketch do not have to be assigned to the face of object, the `Support` can be empty. The joint pattern should be created in the corner of coordinate axes cross. This will be better for rotation and positioning. However, you can add any offset, if you want. If you have joint pattern created, select the Sketch and Face to create Mortise or Tenon. First `Anchor` position is the Sketch position, all others are the vertices of selected face, so you can move the Sketch to any point at the selected face. If you want to map the Sketch to the another object, you may need use rotation selector. If the selected object is `Cube` it will be automatically converted to `Pad` during Mortise or Tenon creation. The Mortise and Tenons are `PartDesign :: Pocket` and `PartDesign :: Pad` objects, so they can be easily managed by FreeCAD. If you want to select more objects hold left `CTRL` key during selection. You can also refresh only face. It is useful, if you want to map quickly the Sketch to the another object in the same line. To refresh face only, select face and click `refresh all selections` button or use `set` button for exact face.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicJoints.png"> This tool allows you to quickly create connections based on a sketch. The sketch used to create the connection will be a parametric template that can be modified later, updating all previously created connections. This tool allows you to create connections on `Part :: Box` or `PartDesign` objects. If the object is a `Part :: Box`, it will automatically be converted to a `PartDesign` object and the connection will be created on that object.
+
+**Possible selections:**
+
+* **1. set** the first `set` button allows you to add a sketch as a template for creating connections. This sketch can be drawn on a face where connections can be created, but it can also be completely independent in its own `Part` and `Body` container. The selected sketch will be cloned and become the connection template, which, when modified, will modify all connections created using it.
+* **2. set** the second `set` button is used to add a reference face relative to which the pattern's position will be determined. This face is also used to create the pattern's position anchors. Additionally, if no additional face is added, via 3rd `set` button, to create a Mortise, both the Mortise and Tenon will be created on this face using the dedicated `create Mortise` and `create Tenon` buttons.
+* **3. set** the third `set` button is used to specify the face for creating a Mortise using the `create Mortise` and `create Tenon and Mortise` buttons. This option is optional and is primarily used for faster and more advanced joint creation. If a face is not added using this `set` button, then a Mortise using the `create Mortise` button will be created on the face added using the second `set` button.
+
+* **refresh all selections** this button loads all elements at once. Before pressing this button, first select Sketch as the connection pattern, then select the face based on which the anchors for positioning the connection pattern will be created, and finally, optionally, select the face that will be the reference for creating a Mortise using the `create Mortise` and `create Tenon and Mortise` buttons. In this case, the second selected element and the third, both faces, should belong to different objects, so that the Mortise and Tenon can be created simultaneously on different objects using the `create Tenon and Mortise` button.
+
+> [!TIP]
+> You can also make a selection before opening the tool. In this case, select:
+> * **Sketch + Face:** first, select the sketch with the connection pattern, then the face for which you want to define the anchors. 
+> * **Sketch + Face + Face:** first, select the sketch with the connection pattern, then the face for which you want to define the anchors, and finally the face on which the Mortises will be created.
+> Then open the tool, all selected elements should be automatically loaded and recognized correctly.
 
 **Options:**
 
-* **set** The buttons allow to refresh single selection. You can quickly change Sketch or faces.
-* **refresh all selections** read all selections and set objects, if you have only single face selected, the 2nd selection will be updated.
-* **Anchor:** First selection is the actual `Sketch` global position. Next are vertices from selected face. You can switch between the available positions to adjust the position more precisely.
+* **Anchor:** these are loaded anchors used to set position of the connection pattern. These anchors are determined by the second `set` button and the number of these anchors may vary depending on the complexity of the face and the number of edges:
+  * `first position` is the current sketch position loaded via first `set` button.
+  * `second position` is the center of the face loaded via the second `set` button.
+  * `next positions` are the vertices of the face loaded via the second `set` button.
+  * `next positions` are the centers of the edges of the face loaded via the second `set` button.
+
 * **Rotation:** This is `Sketch` pattern rotation. It is useful if you change the face and the face is not at the same line. For example if you want to create Tenon at the other side of the table supporter.
-* **X axis:** Offset for the `X` coordinate axis.
-* **Y axis:** Offset for the `Y` coordinate axis.
-* **Z axis:** Offset for the `Z` coordinate axis.
-* **Step:** Is the step for the `XYZ` offset. The step is automatically get during `- +` changes.
+
+* **X axis:** additional offset for the `X` coordinate axis.
+* **Y axis:** additional offset for the `Y` coordinate axis.
+* **Z axis:** additional offset for the `Z` coordinate axis.
+* **Step:** is the step for the `XYZ` offset. The step is automatically calculated during `-` or `+` changes.
 * **set custom values** This button should be clicked if you write manually values for `X`, `Y` or `Z` axis offset.
-* **set manually** Allows to set `Sketch` pattern into transform mode and move the `Sketch` pattern manually by hand. You can create Mortise and Tenon in this mode.
-* **finish manually** Close transform mode.
-* **create Mortise** Create `PartDesign :: Pocket` object below the current `Sketch` pattern position at the selected face. However, in practise you can create only Tenons and use boolean [magicCut](#magiccut) to create Mortises.
-* **create Tenon** Create `PartDesign :: Pad` above the current `Sketch` pattern position at the selected face.
-* **create Tenon and Mortise** If you have selected 3rd selection, face for Mortise, you can create Tenon and Mortise with single click.
+* **set manually** allows to set pattern into transform mode and move the pattern manually by hand. You can create Mortise and Tenon in this mode as well.
+* **finish manually** close transform mode.
+
+* **create Mortise** this button creates a `PartDesign :: Pocket` object on the face loaded with the third `set` button. If no such face has been loaded, a `PartDesign :: Pocket` object will be created on the face loaded with the second `set` button. This allows you to freely select face to create a Mortise, as well as use a joint pattern from tools like [jointTenonCut](#jointtenoncut) and create a Mortise.
+* **create Tenon** this button creates a `PartDesign :: Pad` object on the face loaded with the second `set` button. 
+* **create Tenon and Mortise** this button creates a `PartDesign :: Pad` object on the face loaded with the second `set` button and also creates a `PartDesign :: Pocket` object on the face loaded with the third `set` button.
 
 **Video tutorials:** 
 * [Playlist for Joinery](https://www.youtube.com/playlist?list=PLSKOS_LK45BBG8kJ2AZvQKBfOSfzhTrLt)

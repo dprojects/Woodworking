@@ -6213,15 +6213,11 @@ def makeMortise(iSketch, iDepth, iPad, iFace):
 	except:
 		sketch.AttachmentSupport = ""
 	
-	[ x, y, z, r ] = getContainerPlacement(sketch, "clean")
-	[ coX, coY, coZ, coR ] = getContainersOffset(pad)
-	x = x - coX
-	y = y - coY
-	z = z - coZ
-	setContainerPlacement(sketch, x, y, z, 0, "clean")
-
 	sketch.adjustRelativeLinks(body)
 	body.ViewObject.dropObject(sketch, None, '', [])
+	
+	[ x, y, z ] = getPosition(iSketch, "global")
+	setPosition(sketch, x, y, z, "global")
 	
 	mortise = body.newObject('PartDesign::Pocket','Mortise')
 	mortise.Profile = sketch
@@ -6310,15 +6306,11 @@ def makeTenon(iSketch, iLength, iPad, iFace):
 	except:
 		sketch.AttachmentSupport = ""
 	
-	[ x, y, z, r ] = getContainerPlacement(sketch, "clean")
-	[ coX, coY, coZ, coR ] = getContainersOffset(pad)
-	x = x - coX
-	y = y - coY
-	z = z - coZ
-	setContainerPlacement(sketch, x, y, z, 0, "clean")
-
 	sketch.adjustRelativeLinks(body)
 	body.ViewObject.dropObject(sketch, None, '', [])
+	
+	[ x, y, z ] = getPosition(iSketch, "global")
+	setPosition(sketch, x, y, z, "global")
 
 	tenon = body.newObject('PartDesign::Pad', "Tenon")
 	tenon.Label = "Tenon "

@@ -58,9 +58,9 @@ def showQtGUI():
 		gAxisY = 0
 		gAxisZ = 0
 		
-		gNoSelection1 = translate('magicJoints', '1. select Sketch pattern')
-		gNoSelection2 = translate('magicJoints', '2. select face to map Sketch')
-		gNoSelection3 = translate('magicJoints', '3. select face for Mortise')
+		gNoSelection1 = translate('magicJoints', '1: select Sketch pattern')
+		gNoSelection2 = translate('magicJoints', '2: select face for pattern position')
+		gNoSelection3 = translate('magicJoints', '3 (optional): select face for Mortise')
 		
 		# foot
 		gCornerCrossSupport = True
@@ -321,7 +321,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.oFxDepthL = QtGui.QLabel(translate('magicJoints', 'Mortise depth and Tenon height:'), self)
+			self.oFxDepthL = QtGui.QLabel(translate('magicJoints', 'Mortise and Tenon size:'), self)
 			
 			# text input
 			self.oFxDepthE = QtGui.QLineEdit(self)
@@ -456,13 +456,15 @@ def showQtGUI():
 			self.row9 = QtGui.QGridLayout()
 			self.row9.addWidget(self.oFxDepthL, 0, 0)
 			self.row9.addWidget(self.oFxDepthE, 0, 1)
-			self.row9.addWidget(self.e3B1, 1, 0)
-			self.row9.addWidget(self.e3B2, 1, 1)
 			self.row10 = QtGui.QHBoxLayout()
-			self.row10.addWidget(self.e3B3)
+			self.row10.addWidget(self.e3B1)
+			self.row10.addWidget(self.e3B2)
+			self.row11 = QtGui.QHBoxLayout()
+			self.row11.addWidget(self.e3B3)
 			self.rowBody3 = QtGui.QVBoxLayout()
 			self.rowBody3.addLayout(self.row9)
 			self.rowBody3.addLayout(self.row10)
+			self.rowBody3.addLayout(self.row11)
 			self.groupBody3 = QtGui.QGroupBox(None, self)
 			self.groupBody3.setLayout(self.rowBody3)
 			
@@ -709,21 +711,39 @@ def showQtGUI():
 		# ############################################################################
 		def setSketchAnchors(self):
 			
-			[ x, y, z, r ] = MagicPanels.getSketchPlacement(self.gObj1, "global")
-			[ v1, v2, v3, v4 ] = MagicPanels.getFaceVertices(self.gObj2Face)
-		
-			v = [ x, y, z ]
-			[ v ] = MagicPanels.getVerticesOffset([ v ], self.gObj1, "array")
-			[ v1, v2, v3, v4 ] = MagicPanels.getVerticesOffset([ v1, v2, v3, v4 ], self.gObj2, "array")
-			x, y, z = v[0], v[1], v[2]
-			
 			self.gAnchorArr = []
+			
+			# add current Sketch position
+			[ x, y, z ] = MagicPanels.getPosition(self.gObj1, "global")
 			self.gAnchorArr.append([x, y, z])
+			
+			# add CenterOfMass of the face
+			try:
+				v = [ self.gObj2Face.CenterOfMass.x, self.gObj2Face.CenterOfMass.y, self.gObj2Face.CenterOfMass.z ]
+				[ v ] = MagicPanels.getVerticesOffset([ v ], self.gObj2, "array")
+				self.gAnchorArr.append(v)
+			except:
+				skip = 1
+			
+			# add face vertices
+			[ v1, v2, v3, v4 ] = MagicPanels.getFaceVertices(self.gObj2Face)
+			[ v1, v2, v3, v4 ] = MagicPanels.getVerticesOffset([ v1, v2, v3, v4 ], self.gObj2, "array")
 			self.gAnchorArr.append(v1)
 			self.gAnchorArr.append(v2)
 			self.gAnchorArr.append(v3)
 			self.gAnchorArr.append(v4)
+
+			# add CenterOfMass for each edge of the face
+			[ faceType, arrAll, arrThick, arrShort, arrLong ] = MagicPanels.getFaceEdges(self.gObj2, self.gObj2Face)
+			for e in arrAll:
+				try:
+					v = [ e.CenterOfMass.x, e.CenterOfMass.y, e.CenterOfMass.z ]
+					[ v ] = MagicPanels.getVerticesOffset([ v ], self.gObj2, "array")
+					self.gAnchorArr.append(v)
+				except:
+					skip = 1
 			
+			# set default
 			self.gAnchorCurrent = self.gAnchorArr[self.gAnchorIndex]
 		
 		# ############################################################################
@@ -748,7 +768,6 @@ def showQtGUI():
 		def showJoints(self):
 			
 			# set info screen
-			
 			info = str(self.gAnchorIndex + 1) + " / " + str(len(self.gAnchorArr))
 			self.s2IS.setText(info)
 
@@ -756,7 +775,6 @@ def showQtGUI():
 			self.s4IS.setText(info)
 			
 			# remove all
-			
 			if self.gLink != "":
 				try:
 					FreeCAD.activeDocument().removeObject(str(self.gLink.Name))
@@ -766,33 +784,25 @@ def showQtGUI():
 			self.gLink = ""
 			
 			# set anchor
-			
 			X, Y, Z = self.gAnchorCurrent[0], self.gAnchorCurrent[1], self.gAnchorCurrent[2]
 			x, y, z = 0, 0, 0
 
 			# copy Sketch
-
-			link = Draft.make_clone(self.gObj1)
-			link.Label = "Pattern from " + str(self.gObj1.Label) + " "
-			
-			link.ViewObject.LineWidth = 6.00
-			link.ViewObject.LineColor = (1.00,0.00,0.00)
+			clone = Draft.make_clone(self.gObj1)
+			clone.Label = "Pattern from " + str(self.gObj1.Label) + " "
+			clone.ViewObject.LineWidth = 6.00
+			clone.ViewObject.LineColor = (1.00,0.00,0.00)
 			self.gObj1.Visibility = False
 
 			# set object into position
-
 			x = X + self.gAxisX
 			y = Y + self.gAxisY
 			z = Z + self.gAxisZ
-
-			link.Placement.Base.x = x
-			link.Placement.Base.y = y
-			link.Placement.Base.z = z
 			
-			self.gLink = link
+			MagicPanels.setPosition(clone, x, y, z, "global")
+			self.gLink = clone
 
 			# set current rotation
-			
 			self.setRotation()
 
 		# ############################################################################
@@ -1079,19 +1089,37 @@ def showQtGUI():
 			
 			try:
 				self.gDepth = MagicPanels.unit2value(self.oFxDepthE.text())
-				t2 = MagicPanels.getColor(self.gObj2, 0, "trans", "RGBA")
 				
-				[ self.gObj2, self.gObj2Face ] = MagicPanels.makeMortise(self.gLink, self.gDepth, self.gObj2, self.gObj2Face)
-				self.gObj2FaceIndex = MagicPanels.getFaceIndex(self.gObj2, self.gObj2Face)
+				if self.gObj3Face != "":
+					
+					t3 = MagicPanels.getColor(self.gObj3, 0, "trans", "RGBA")
+					
+					[ self.gObj3, self.gObj3Face ] = MagicPanels.makeMortise(self.gLink, self.gDepth, self.gObj3, self.gObj3Face)
+					self.gObj3FaceIndex = MagicPanels.getFaceIndex(self.gObj3, self.gObj3Face)
+					
+					n = ""
+					n += str(self.gObj3.Label)
+					n += ", "
+					n += "Face"
+					n += str(self.gObj3FaceIndex)
+					self.ob3S.setText(n)
+					
+					MagicPanels.setColor(self.gObj3, 0, t3, "trans", "RGBA")
+					
+				else:
+					t2 = MagicPanels.getColor(self.gObj2, 0, "trans", "RGBA")
 				
-				n = ""
-				n += str(self.gObj2.Label)
-				n += ", "
-				n += "Face"
-				n += str(self.gObj2FaceIndex)
-				self.ob2S.setText(n)
+					[ self.gObj2, self.gObj2Face ] = MagicPanels.makeMortise(self.gLink, self.gDepth, self.gObj2, self.gObj2Face)
+					self.gObj2FaceIndex = MagicPanels.getFaceIndex(self.gObj2, self.gObj2Face)
 				
-				MagicPanels.setColor(self.gObj2, 0, t2, "trans", "RGBA")
+					n = ""
+					n += str(self.gObj2.Label)
+					n += ", "
+					n += "Face"
+					n += str(self.gObj2FaceIndex)
+					self.ob2S.setText(n)
+					
+					MagicPanels.setColor(self.gObj2, 0, t2, "trans", "RGBA")
 				
 			except:
 				self.resetInfoScreen()
