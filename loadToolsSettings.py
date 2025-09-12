@@ -146,7 +146,8 @@ Tools = [
 
 	"magicJoints", "png", "magicJoints, custom joints based on Sketch", "Allows to move or copy joints created from Sketch pattern and create Mortise and Tenon.",
 	"jointTenonCut", "png", "jointTenonCut, joint tenon by cut", "Click to see info.",
-
+	"jointMortiseCut", "png", "jointMortiseCut, joint mortise for jointTenonCut", "Click to see info.",
+	
 	"grainH", "png", "grainH, grain direction marker, horizontal", "Click to see info.",
 	"grainV", "png", "grainV, grain direction marker, vertical", "Click to see info.",
 	"grainX", "png", "grainX, grain direction marker, no grain", "Click to see info.",

@@ -4,37 +4,52 @@ import MagicPanels
 translate = FreeCAD.Qt.translate
 
 try:
-
 	# get selection
 	[ subs, objects ] = MagicPanels.getSelectedSubs("yes")
 
-	sizes = MagicPanels.getSizes(objects[0])
+	# set size reference for cut tenons from first
+	tenonSub = subs[0]
+	tenonObj = objects[0]
+
+	sizes = MagicPanels.getSizes(tenonObj)
 	sizes.sort()
 
 	sizeOffset = sizes[0] / 4
 	sizePocket = sizes[0]
 
-	baseSub = subs[0]
-	baseObj = objects[0]
+	# test selection type
+	selectionType = 0
+	sketchPattern = FreeCADGui.Selection.getSelection()[0]
 
-	# create Sketch Pattern in separate container
-	doc = FreeCAD.ActiveDocument
+	# use existing sketch pattern
+	if sketchPattern.isDerivedFrom("Sketcher::SketchObject"):
+		selectionType = 1
 
-	partPattern = doc.addObject('App::Part', 'Part')
-	partPattern.Label = translate("jointTenonCut", "Part, jointTenonCut")
+	# create new sketch pattern
+	else:
+		selectionType = 2
 
-	bodyPattern = doc.addObject('PartDesign::Body', 'Body')
-	bodyPattern.Label = translate("jointTenonCut", "Body, jointTenonCut")
-	partPattern.addObject(bodyPattern)
+		baseSub = subs[0]
+		baseObj = objects[0]
 
-	wires = baseSub.Wires
+		# create Sketch Pattern in separate container
+		doc = FreeCAD.ActiveDocument
 
-	for w in baseSub.Wires:
-		ow = w.makeOffset2D(-sizeOffset, join=0, fill=False, openResult=False, intersection=True)
-		wires.append(ow)
+		partPattern = doc.addObject('App::Part', 'Part')
+		partPattern.Label = translate("jointTenonCut", "Part, jointTenonCut")
 
-	sketchPattern = Draft.make_sketch(wires, autoconstraints=True)
-	sketchPattern.Label = translate('jointTenonCut', 'Pattern, jointTenonCut')
+		bodyPattern = doc.addObject('PartDesign::Body', 'Body')
+		bodyPattern.Label = translate("jointTenonCut", "Body, jointTenonCut")
+		partPattern.addObject(bodyPattern)
+
+		wires = baseSub.Wires
+
+		for w in baseSub.Wires:
+			ow = w.makeOffset2D(-sizeOffset, join=0, fill=False, openResult=False, intersection=True)
+			wires.append(ow)
+
+		sketchPattern = Draft.make_sketch(wires, autoconstraints=True)
+		sketchPattern.Label = translate('jointTenonCut', 'Pattern, jointTenonCut')
 
 	# reset pattern to 0 position 
 	sketchPatternPosition = sketchPattern.Placement
@@ -50,12 +65,12 @@ try:
 		o = objects[index]
 		body = o._Body
 		
-		# create clone for object pocket
+		# create pattern clone for cut tenon
 		sketchClone = Draft.make_clone(sketchPattern)
 		sketchClone.Label = "Clone, jointTenonCut"
 		sketchClone.recompute()
 		
-		# move clone to object
+		# move clone to tenon container
 		sketchClone.adjustRelativeLinks(body)
 		body.ViewObject.dropObject(sketchClone, None, '', [])
 
@@ -72,19 +87,20 @@ try:
 
 		sketchClone.Placement.Rotation = rotation
 		
-		# move clone to center of the face
+		# move clone to center of the tenon face
 		centerSub = [ sub.CenterOfMass.x, sub.CenterOfMass.y, sub.CenterOfMass.z ]
 		[ centerSub ] = MagicPanels.getVerticesPosition([ centerSub ], o, "array")
 		MagicPanels.setPosition(sketchClone, centerSub[0], centerSub[1], centerSub[2], "global")
 		sketchClone.recompute()
 		
-		# move clone to center offset
+		# move clone to its center
 		cg = sketchClone.Shape.CenterOfGravity
 		centerClone = [ cg.x, cg.y, cg.z ]
+		[ centerClone ] = MagicPanels.getVerticesPosition([ centerClone ], sketchClone, "array")
 		[ offetX, offetY, offetZ ] = MagicPanels.getOffset(sketchClone, centerClone, "array")
 		MagicPanels.setPosition(sketchClone, -offetX, -offetY, -offetZ, "offset")
 
-		# make pocket via clone
+		# create tenon cut via clone
 		pocket = body.newObject('PartDesign::Pocket','jointTenonCut')
 		pocket.Label = translate('jointTenonCut', 'jointTenonCut ')
 		pocket.Profile = sketchClone
@@ -106,10 +122,11 @@ try:
 	# restore pattern position
 	sketchPattern.Placement = sketchPatternPosition
 
-	# move pattern to object folder
-	sketchPattern.adjustRelativeLinks(bodyPattern)
-	bodyPattern.ViewObject.dropObject(sketchPattern, None, '', [])
-	sketchPattern.Visibility = False
+	# move pattern to object folder if was new created
+	if selectionType == 2:
+		sketchPattern.adjustRelativeLinks(bodyPattern)
+		bodyPattern.ViewObject.dropObject(sketchPattern, None, '', [])
+		sketchPattern.Visibility = False
 
 	FreeCAD.ActiveDocument.recompute()
 
@@ -117,6 +134,6 @@ except:
 	
 	info = ""
 	
-	info += translate('jointTenonCut', '<b>Please select at least one face to cut tenon joint at the selected face. </b><br><br><b>Note:</b> This tool cut tenon at the selected face in the parametric way. The pocket is created using Clones to the Sketch pattern. The Sketch pattern for pocket operation will be the same for all selected faces and is based from first selected face. So if the faces have different sizes it is recommended to use this tool twice with different selection to have two Sketch patterns for pockets. This tool supports multi face selection. To select more faces hold left control button CTRL during faces selection. The objects can be type of PartDesign::Pad or Part::Box. If the object is Part::Box it will be automatically converted into PartDesign::Pad object and the cut will be done on such Pad. The dimensions is taken from not-cut Pad objects, SizeX and SizeY constraints.')
+	info += translate('jointTenonCut', '<b>Possible selections:</b><ul><li><b>Faces</b> - in this case you need to select all faces on which you want to cut tenon, holding down the left CTRL key.</li><li><b>Sketch Tenon pattern + Faces to create Tenons</b> - this version is the same as the previous one, except that you must first select the Sketch of an existing Tenon connection. This allows you to continue creating a Tenons for the existing connection pattern.</li></ul><b>Note:</b> This tool cut tenon at the selected face in the parametric way. The pocket is created using Clones to the Sketch pattern. The Sketch pattern for pocket operation will be the same for all selected faces and is based from first selected face or Sketch pattern. So if the faces have different sizes it is recommended to use this tool twice with different selection to have two Sketch patterns for pockets. This tool supports multi face selection. To select more faces hold left control button CTRL during faces selection. The objects can be type of PartDesign::Pad or Part::Box. If the object is Part::Box it will be automatically converted into PartDesign::Pad object and the cut will be done on such Pad. The dimensions is taken from not-cut Pad objects, SizeX and SizeY constraints.')
 
 	MagicPanels.showInfo("jointTenonCut", info)

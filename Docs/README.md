@@ -125,6 +125,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 * [Joinery](#joinery)
 	* [magicJoints](#magicjoints)
 	* [jointTenonCut](#jointtenoncut)
+	* [jointMortiseCut](#jointmortisecut)
 	* [grainH](#grainh)
 	* [grainV](#grainv)
 	* [grainX](#grainx)
@@ -172,6 +173,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * add mortise tool for tenons created via jointTenonCut tool (jointMortiseCut)
     * improve sketch pattern positioning (magicJoints, MagicPanels)
     * add set buttons for countersink drilling for shelves with unknown position (magicDriller)
     * add new cutTenonDowelsP tool, parametric version of cutTenonDowels tool
@@ -1840,9 +1842,24 @@ Personally, the two side counterbore I use for screwing things to the table. I u
 
 ## jointTenonCut
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/jointTenonCut.png"> Please select at least one face to cut tenon joint at the selected face. This tool cut tenon at the selected face in the parametric way. The pocket is created using Clones to the Sketch pattern. The Sketch pattern for pocket operation will be the same for all selected faces and is based from first selected face. So if the faces have different sizes it is recommended to use this tool twice with different selection to have two Sketch patterns for pockets. This tool supports multi face selection. To select more faces hold left control button CTRL during faces selection. The objects can be type of `PartDesign :: Pad` or `Part :: Box`. If the object is `Part :: Box` it will be automatically converted into `PartDesign :: Pad` object and the cut will be done on such Pad. The dimensions is taken from not-cut Pad objects, `SizeX` and `SizeY` constraints.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/jointTenonCut.png"> This tool cut tenon at the selected face in the parametric way. The pocket is created using Clones to the Sketch pattern. The Sketch pattern for pocket operation will be the same for all selected faces and is based from first selected face or Sketch pattern. So if the faces have different sizes it is recommended to use this tool twice with different selection to have two Sketch patterns for pockets. This tool supports multi face selection. To select more faces hold left control button CTRL during faces selection. The objects can be type of `PartDesign :: Pad` or `Part :: Box`. If the object is `Part :: Box` it will be automatically converted into `PartDesign :: Pad` object and the cut will be done on such Pad. The dimensions is taken from not-cut Pad objects, `SizeX` and `SizeY` constraints.
 
-<br><br><br>
+**Possible selections:**
+
+* `Faces` - in this case you need to select all faces on which you want to cut tenon, holding down the left CTRL key.
+* `Sketch Tenon pattern + Faces to create Tenons` - this version is the same as the previous one, except that you must first select the Sketch of an existing Tenon connection. This allows you to continue creating a Tenons for the existing connection pattern.
+
+<br><br>
+
+## jointMortiseCut
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/jointMortiseCut.png"> This tool cut Mortises at the selected face in the parametric way. The pocket is created using Clones to the Sketch pattern. The Sketch pattern for pocket operation will be the same for all selected tenons faces and is based from first selected face or existing Sketch pattern. So if the faces have different sizes it is recommended to use this tool twice with different selection to have two Sketch patterns for pockets. This tool supports multi face selection. To select more faces hold left control button CTRL during faces selection. The objects can be type of `PartDesign :: Pad` or `Part :: Box`. If the object is `Part :: Box` it will be automatically converted into `PartDesign :: Pad` object and the cut will be done on such Pad. The dimensions is taken from not-cut Pad objects, `SizeX` and `SizeY` constraints.
+
+**Possible selections:**
+* `Face to create Mortise + Tenons faces` - in this case you need to first select the face of the object on which you want to create the Mortise, then press the spacebar to hide the object on which the Mortise will be created, to get access to the tenons faces inside the Mortise object, then while holding down the left CTRL key, select all the tenons faces for which you want to cut the Mortises. The Mortise object will appear if the Mortises will be created correctly. In this case, a new common Mortise pattern will be created for all selected Tenons faces.
+* `Sketch Mortise pattern + Face to create Mortise + Tenons faces` - this version is the same as the previous one, except that you must first select the Sketch of an existing Mortise connection. This allows you to continue creating a Mortise for the existing connection pattern.
+
+<br><br>
 
 ## grainH
 

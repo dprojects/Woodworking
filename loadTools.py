@@ -2704,6 +2704,45 @@ FreeCADGui.addCommand("jointTenonCut", jointTenonCut())
 
 	
 # ######################################################################################################################
+class jointMortiseCut():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "jointMortiseCut.png"),
+				"MenuText": QT_TRANSLATE_NOOP("jointMortiseCut", "jointMortiseCut, joint mortise for jointTenonCut"),
+				"ToolTip" : QT_TRANSLATE_NOOP("jointMortiseCut", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "jointMortiseCut"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("jointMortiseCut", jointMortiseCut())
+
+	
+# ######################################################################################################################
 class grainH():
 
 	def GetResources(self):

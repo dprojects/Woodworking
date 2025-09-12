@@ -156,6 +156,7 @@ def getItems(iType):
 		parts = [
 			"magicJoints",
 			"jointTenonCut",
+			"jointMortiseCut",
 			"grainH",
 			"grainV",
 			"grainX",
