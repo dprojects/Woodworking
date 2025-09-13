@@ -4,16 +4,16 @@ import MagicPanels
 translate = FreeCAD.Qt.translate
 
 try:
+	# test selection type
+	selectionType = 0
+	sketchPattern = FreeCADGui.Selection.getSelection()[0]
+
 	# get selection
 	[ subs, objects ] = MagicPanels.getSelectedSubs("yes")
 
 	# set object for Mortise
 	mortiseSub = subs[0]
 	mortiseObj = objects[0]
-
-	# test selection type
-	selectionType = 0
-	sketchPattern = FreeCADGui.Selection.getSelection()[0]
 
 	# use existing sketch pattern
 	if sketchPattern.isDerivedFrom("Sketcher::SketchObject"):
