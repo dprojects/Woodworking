@@ -77,7 +77,10 @@ try:
 				X = X - sizeX
 
 		MagicPanels.setContainerPlacement(toMove, X, Y, Z, 0, "clean")
-		FreeCAD.ActiveDocument.recompute()
+	
+	# clean selection and recompute
+	FreeCADGui.Selection.clearSelection()
+	FreeCAD.ActiveDocument.recompute()
 
 except:
 	

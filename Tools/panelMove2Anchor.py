@@ -62,6 +62,8 @@ try:
 		
 		i = i + 1
 
+	# clean selection and recompute
+	FreeCADGui.Selection.clearSelection()
 	FreeCAD.ActiveDocument.recompute()
 
 except:

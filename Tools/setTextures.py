@@ -90,7 +90,7 @@ def showQtMain():
 			
 			# color
 			self.checkColor = QtGui.QCheckBox(translate('setTextures', '- set white color'), self)
-			self.checkColor.setCheckState(QtCore.Qt.Checked)
+			self.checkColor.setCheckState(QtCore.Qt.Unchecked)
 			
 			# URL
 			self.urlL = QtGui.QLabel(translate('setTextures', 'Texture URL or local HDD path:'), self)
@@ -514,19 +514,7 @@ def showQtMain():
 				
 				# try set color
 				if self.checkColor.isChecked():
-					if MagicPanels.gKernelVersion >= 1.0:
-						try:
-							m = obj.ViewObject.ShapeAppearance[0]
-							m.DiffuseColor = (1.0, 1.0, 1.0, 0.0)
-							obj.ViewObject.ShapeAppearance = ( m )
-						except:
-							skip = 1
-					else:
-						try:
-							obj.ViewObject.ShapeColor = (1.0, 1.0, 1.0, 0.0)
-							obj.ViewObject.DiffuseColor = (1.0, 1.0, 1.0, 0.0)
-						except:
-							skip = 1
+					MagicPanels.setColor(obj, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 				textureURL = self.getTextureURL(obj)
 

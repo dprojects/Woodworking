@@ -147,8 +147,10 @@ try:
 		
 		if verticesType == "local":
 			MagicPanels.setPlacement(toMove, X, Y, Z, toMove.Placement.Rotation, edgeCenter)
-		
-		FreeCAD.ActiveDocument.recompute()
+	
+	# clean selection and recompute
+	FreeCADGui.Selection.clearSelection()
+	FreeCAD.ActiveDocument.recompute()
 
 except:
 	
