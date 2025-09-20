@@ -652,7 +652,7 @@ def showQtGUI():
 			
 			if sub.ShapeType == "Face":
 				
-				subObjName = str(self.gGPSO[0].Name)
+				subObjLabel = str(self.gGPSO[0].Label)
 				subArrIndex = MagicPanels.getFaceIndex(self.gGPSO[0], self.gGPSO[1]) - 1
 				
 				sX = float(sub.CenterOfMass.x)
@@ -661,7 +661,7 @@ def showQtGUI():
 			
 			if sub.ShapeType == "Vertex":
 				
-				subObjName = str(self.gGPSO[0].Name)
+				subObjLabel = str(self.gGPSO[0].Label)
 				subArrIndex = MagicPanels.getVertexIndex(self.gGPSO[0], self.gGPSO[1]) - 1
 				
 				sX = float(sub.X)
@@ -677,7 +677,7 @@ def showQtGUI():
 					opx = float(o.Placement.Base.x)
 					offset = abs(opx - sX)
 					
-					expr = "<<" + subObjName + ">>"
+					expr = "<<" + subObjLabel + ">>"
 					
 					if sub.ShapeType == "Face":
 						expr += ".Shape.Faces[" + str(subArrIndex) + "].CenterOfMass.x"
@@ -697,7 +697,7 @@ def showQtGUI():
 					opy = float(o.Placement.Base.y)
 					offset = abs(opy - sY)
 					
-					expr = "<<" + subObjName + ">>"
+					expr = "<<" + subObjLabel + ">>"
 					
 					if sub.ShapeType == "Face":
 						expr += ".Shape.Faces[" + str(subArrIndex) + "].CenterOfMass.y"
@@ -717,7 +717,7 @@ def showQtGUI():
 					opz = float(o.Placement.Base.z)
 					offset = abs(opz - sZ)
 					
-					expr = "<<" + subObjName + ">>"
+					expr = "<<" + subObjLabel + ">>"
 					
 					if sub.ShapeType == "Face":
 						expr += ".Shape.Faces[" + str(subArrIndex) + "].CenterOfMass.z"
@@ -805,7 +805,7 @@ def showQtGUI():
 					opx = float(o.Placement.Base.x)
 					offset = abs(opx - sX)
 					
-					expr = "<<" + varset.Name + ">>" + "." + pname
+					expr = "<<" + varset.Label + ">>" + "." + pname
 					
 					if opx > sX:
 						expr += " + " + str(offset)
@@ -819,7 +819,7 @@ def showQtGUI():
 					opy = float(o.Placement.Base.y)
 					offset = abs(opy - sY)
 					
-					expr = "<<" + varset.Name + ">>" + "." + pname
+					expr = "<<" + varset.Label + ">>" + "." + pname
 					
 					if opy > sY:
 						expr += " + " + str(offset)
@@ -833,7 +833,7 @@ def showQtGUI():
 					opz = float(o.Placement.Base.z)
 					offset = abs(opz - sZ)
 					
-					expr = "<<" + varset.Name + ">>" + "." + pname
+					expr = "<<" + varset.Label + ">>" + "." + pname
 					
 					if opz > sZ:
 						expr += " + " + str(offset)
@@ -969,7 +969,7 @@ def showQtGUI():
 			eS = self.gGSSO[1]
 			eSSize = float(eS.Length)
 			
-			eSObjName = str(self.gGSSO[0].Name)
+			eSObjLabel = str(self.gGSSO[0].Label)
 			eSArrIndex = MagicPanels.getEdgeIndex(self.gGSSO[0], self.gGSSO[1]) - 1
 			
 			obs = self.gGSTO
@@ -982,7 +982,7 @@ def showQtGUI():
 				name = MagicPanels.getSizeByEdge(o, eT)
 				offset = abs(eTSize - eSSize)
 				
-				exprValue = "<<" + eSObjName + ">>"
+				exprValue = "<<" + eSObjLabel + ">>"
 				exprValue += ".Shape.Edges[" + str(eSArrIndex) + "].Length"
 				if eSSize < eTSize:
 					exprValue += " + " + str(offset)
@@ -1072,7 +1072,7 @@ def showQtGUI():
 				name = MagicPanels.getSizeByEdge(o, eT)
 				offset = abs(eTSize - eSSize)
 				
-				exprValue = "<<" + varset.Name + ">>" + "." + pname
+				exprValue = "<<" + varset.Label + ">>" + "." + pname
 				if eSSize < eTSize:
 					exprValue += " + " + str(offset)
 				else:
@@ -1176,13 +1176,13 @@ def showQtGUI():
 						continue
 					
 					key = "X"+str(vx)
-					expr[key] = "<<" + str(o.Name) + ">>" + ".Shape.Faces[" + str(i) + "].CenterOfMass.x"
+					expr[key] = "<<" + str(o.Label) + ">>" + ".Shape.Faces[" + str(i) + "].CenterOfMass.x"
 					
 					key = "Y"+str(vy)
-					expr[key] = "<<" + str(o.Name) + ">>" + ".Shape.Faces[" + str(i) + "].CenterOfMass.y"
+					expr[key] = "<<" + str(o.Label) + ">>" + ".Shape.Faces[" + str(i) + "].CenterOfMass.y"
 					
 					key = "Z"+str(vz)
-					expr[key] = "<<" + str(o.Name) + ">>" + ".Shape.Faces[" + str(i) + "].CenterOfMass.z"
+					expr[key] = "<<" + str(o.Label) + ">>" + ".Shape.Faces[" + str(i) + "].CenterOfMass.z"
 					
 			for o in objects:
 				
@@ -1274,7 +1274,7 @@ def showQtGUI():
 			
 					# set expression in object to VarSet
 					name = MagicPanels.getSizeByEdge(o, edge)
-					exprValue = "<<" + varset.Name + ">>" + "." + pname
+					exprValue = "<<" + varset.Label + ">>" + "." + pname
 				
 					if o.isDerivedFrom("Part::Box"):
 						o.setExpression(str(name), exprValue)

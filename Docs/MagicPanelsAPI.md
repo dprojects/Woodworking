@@ -844,6 +844,25 @@
 	
 		Return plane as "XY", "XZ", "YZ".
 
+### getVectorsPlane(iV1, iV2):
+	
+##### Description:
+	
+		Gets axes with the same values. Same as getEdgePlane but for vectors only.
+	
+##### Args:
+	
+		iV1: vector object
+		iV2: vector object
+	
+##### Usage:
+	
+		plane = MagicPanels.getVectorsPlane(v1, v2)
+		
+##### Result:
+	
+		Return plane as "X", "Y", "Z".
+
 ### setVertexPadding(iObj, iVertex, iPadding, iAxis):
 	
 ##### Description:
@@ -1515,23 +1534,38 @@
 
 # Measurements
 
-### showMeasure(iP1, iP2, iRef=""):
+### showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8):
 	
 ##### Description:
 	
-		Creates measurements object, I mean draw it. Now it use FreeCAD function 
-		to create and draw object. But in the future this can be changed to 
-		more beautiful drawing without changing tools. 
+		This function creates measurement object and return it.
 	
 ##### Args:
 	
-		iP1: starting point vertex object
-		iP2: ending point vertex object
-		iRef (optional): string for future TechDraw import or any other use, other tools
+		iP1: array with floats [ .X, .Y, .Z ] for start point
+		iP2: array with floats [ .X, .Y, .Z ] for end point
+		iObject1 (optional): object for iP1
+		iObject2 (optional): object for iP2
+		iSub1 (optional): string with sub-object name for iP1, for example "Vertex1", "Edge1", "Face1"
+		iSub2 (optional): string with sub-object name for iP2, for example "Vertex1", "Edge1", "Face1"
+		iType (optional): integer:
+			* 0: to show measurement as PartDesign object
+			* 1: to show measurement as Draft object (green color)
+			* 2: to show measurement as Draft object (yellow color)
+			* 3: to show measurement as Draft object (black color)
+			* 4: to show measurement as Draft object (red color)
+			* 5: to show measurement as Draft object (art handwrite green color)
+			* 6: to show measurement as Draft object (art handwrite yellow color)
+			* 7: to show measurement as Draft object (art handwrite black color)
+			* 8: to show measurement as Draft object (art handwrite red color)
 
 ##### Usage:
 	
-		m = MagicPanels.showMeasure(gP1, gP2, "Pad")
+		p1 = [0, 0, 0]
+		p2 = [100, 0, 0]
+
+		m = MagicPanels.showMeasure(p1, p2)
+		m = MagicPanels.showMeasure(p1, p2, obj1, obj2, "Vertex1", "Face2", 4)
 
 ##### Result:
 	

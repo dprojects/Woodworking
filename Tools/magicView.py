@@ -466,7 +466,10 @@ def showQtGUI():
 					[ x, y, z ] = MagicPanels.getPosition(o, "local")
 					MagicPanels.setPosition(o, vx, y, z, "local")
 					[ sx, sy, sz ] = MagicPanels.getSizes(o)
-					vx = vx + sx + 50
+					offset = 300
+					if sx > offset:
+						offset = sx
+					vx = vx + sx + offset
 				
 			FreeCAD.ActiveDocument.recompute()
 
@@ -480,7 +483,10 @@ def showQtGUI():
 					[ x, y, z ] = MagicPanels.getPosition(o, "local")
 					MagicPanels.setPosition(o, x, vy, z, "local")
 					[ sx, sy, sz ] = MagicPanels.getSizes(o)
-					vy = vy + sy + 50
+					offset = 300
+					if sy > offset:
+						offset = sy
+					vy = vy + sy + offset
 				
 			FreeCAD.ActiveDocument.recompute()
 			
@@ -494,7 +500,10 @@ def showQtGUI():
 					[ x, y, z ] = MagicPanels.getPosition(o, "local")
 					MagicPanels.setPosition(o, x, y, vz, "local")
 					[ sx, sy, sz ] = MagicPanels.getSizes(o)
-					vz = vz + sz + 50
+					offset = 300
+					if sz > offset:
+						offset = sz
+					vz = vz + sz + offset
 				
 			FreeCAD.ActiveDocument.recompute()
 		
@@ -508,9 +517,21 @@ def showQtGUI():
 					[ x, y, z ] = MagicPanels.getPosition(o, "local")
 					MagicPanels.setPosition(o, vx, vy, vz, "local")
 					[ sx, sy, sz ] = MagicPanels.getSizes(o)
-					vx = vx + sx + 50
-					vy = vy + sy + 50
-					vz = vz + sz + 50
+					
+					offsetX = 300
+					offsetY = 300
+					offsetZ = 300
+					
+					if sx > offsetX:
+						offsetX = sx
+					if sy > offsetY:
+						offsetY = sy
+					if sz > offsetZ:
+						offsetZ = sz
+						
+					vx = vx + sx + offsetX
+					vy = vy + sy + offsetY
+					vz = vz + sz + offsetZ
 				
 			FreeCAD.ActiveDocument.recompute()
 		

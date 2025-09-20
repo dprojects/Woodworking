@@ -2037,6 +2037,42 @@ def getVerticesPlane(iV1, iV2):
 
 
 # ###################################################################################################################
+def getVectorsPlane(iV1, iV2):
+	'''
+	Description:
+	
+		Gets axes with the same values. Same as getEdgePlane but for vectors only.
+	
+	Args:
+	
+		iV1: vector object
+		iV2: vector object
+	
+	Usage:
+	
+		plane = MagicPanels.getVectorsPlane(v1, v2)
+		
+	Result:
+	
+		Return plane as "X", "Y", "Z".
+
+	'''
+
+
+	plane = ""
+	if not equal(iV1.x, iV2.x):
+		plane += "X"
+
+	if not equal(iV1.y, iV2.y):
+		plane += "Y"
+
+	if not equal(iV1.z, iV2.z):
+		plane += "Z"
+
+	return plane
+
+
+# ###################################################################################################################
 def setVertexPadding(iObj, iVertex, iPadding, iAxis):
 	'''
 	Description:
@@ -4180,23 +4216,38 @@ def makePad(iObj, iPadLabel="Pad"):
 
 
 # ###################################################################################################################
-def showMeasure(iP1, iP2, iRef=""):
+def showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8):
 	'''
 	Description:
 	
-		Creates measurements object, I mean draw it. Now it use FreeCAD function 
-		to create and draw object. But in the future this can be changed to 
-		more beautiful drawing without changing tools. 
+		This function creates measurement object and return it.
 	
 	Args:
 	
-		iP1: starting point vertex object
-		iP2: ending point vertex object
-		iRef (optional): string for future TechDraw import or any other use, other tools
+		iP1: array with floats [ .X, .Y, .Z ] for start point
+		iP2: array with floats [ .X, .Y, .Z ] for end point
+		iObject1 (optional): object for iP1
+		iObject2 (optional): object for iP2
+		iSub1 (optional): string with sub-object name for iP1, for example "Vertex1", "Edge1", "Face1"
+		iSub2 (optional): string with sub-object name for iP2, for example "Vertex1", "Edge1", "Face1"
+		iType (optional): integer:
+			* 0: to show measurement as PartDesign object
+			* 1: to show measurement as Draft object (green color)
+			* 2: to show measurement as Draft object (yellow color)
+			* 3: to show measurement as Draft object (black color)
+			* 4: to show measurement as Draft object (red color)
+			* 5: to show measurement as Draft object (art handwrite green color)
+			* 6: to show measurement as Draft object (art handwrite yellow color)
+			* 7: to show measurement as Draft object (art handwrite black color)
+			* 8: to show measurement as Draft object (art handwrite red color)
 
 	Usage:
 	
-		m = MagicPanels.showMeasure(gP1, gP2, "Pad")
+		p1 = [0, 0, 0]
+		p2 = [100, 0, 0]
+
+		m = MagicPanels.showMeasure(p1, p2)
+		m = MagicPanels.showMeasure(p1, p2, obj1, obj2, "Vertex1", "Face2", 4)
 
 	Result:
 	
@@ -4205,58 +4256,237 @@ def showMeasure(iP1, iP2, iRef=""):
 	'''
 
 
-	# support for FreeCAD 1.0+
-	if gKernelVersion >= 1.0:
-		
-		try:
-			m = FreeCAD.ActiveDocument.addObject('Measure::MeasureDistanceDetached', "measure")
-			
-			m.Position1 = iP1
-			m.Position2 = iP2
-			
-			m.ViewObject.LineColor = (1.0, 0.0, 0.0, 0.0)
-			m.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
-			m.ViewObject.FontSize = 24
+	# #############################################################################
+	# to show measurement as PartDesign object
+	# #############################################################################
+	if iType == 0:
 
-			# avoid FreeCAD automatic labeling bug and crash
-			label = str(m.Name)
-			if str(m.Name) == "measure":
-				label = translate("showMeasure", "Measure")
-			else:
-				label = translate("showMeasure", "Measure") + " " + str(m.Name)[7:]
+		# support for FreeCAD 1.0+
+		if gKernelVersion >= 1.0:
+			
+			try:
+				m = FreeCAD.ActiveDocument.addObject('Measure::MeasureDistanceDetached', "measure")
 				
-			m.Label = label
-	
-		except:
-			skip = 1
+				m.Position1 = iP1
+				m.Position2 = iP2
+				
+				m.ViewObject.LineColor = (1.0, 0.0, 0.0, 0.0)
+				m.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
+				m.ViewObject.FontSize = 24
 
-	# support for FreeCAD 0.21.2
-	else:
+				# avoid FreeCAD automatic labeling bug and crash
+				label = str(m.Name)
+				if str(m.Name) == "measure":
+					label = translate("showMeasure", "Measure")
+				else:
+					label = translate("showMeasure", "Measure") + " " + str(m.Name)[7:]
+					
+				m.Label = label
 		
+			except:
+				skip = 1
+
+		# support for FreeCAD 0.21.2
+		else:
+			
+			try:
+				m = FreeCAD.ActiveDocument.addObject('App::MeasureDistance', "measure")
+				
+				m.P1 = iP1
+				m.P2 = iP2
+				
+				m.ViewObject.LineColor = (1.0, 0.0, 0.0, 0.0)
+				m.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
+				m.ViewObject.FontSize = 24
+				m.ViewObject.DistFactor = 0.25
+
+				m.Label = translate("showMeasure", "Measure") + " "
+
+			except:
+				skip = 1
+		
+	# #############################################################################
+	# to show measurement as Draft object (more detailed)
+	# #############################################################################
+	if iType >= 1 and iType <= 8:
+		
+		import Draft
+		
+		# create measurement object
+		v1 = FreeCAD.Vector(iP1[0], iP1[1], iP1[2])
+		v2 = FreeCAD.Vector(iP2[0], iP2[1], iP2[2])
+		distance = round(v1.distanceToPoint(v2), gRoundPrecision)
+		m = Draft.make_linear_dimension(v1, v2)
+		m.recompute()
+		
+		# set offset from object
+		offsetSize = distance / 9
+		o1Center = ""
+		o2Center = ""
 		try:
-			m = FreeCAD.ActiveDocument.addObject('App::MeasureDistance', "measure")
-			
-			m.P1 = iP1
-			m.P2 = iP2
-			
-			m.ViewObject.LineColor = (1.0, 0.0, 0.0, 0.0)
-			m.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
-			m.ViewObject.FontSize = 24
-			m.ViewObject.DistFactor = 0.25
-
-			m.Label = translate("showMeasure", "Measure") + " "
-
+			o1Center = iObject1.Shape.CenterOfGravity
+			o1Center = iObject1.Shape.CenterOfMass
+			o2Center = iObject2.Shape.CenterOfGravity
+			o2Center = iObject2.Shape.CenterOfMass
 		except:
 			skip = 1
+		
+		if o1Center != "" and o2Center != "":
+			
+			plane = getVectorsPlane(v1, v2)
+			
+			if plane == "X":
+				
+				if o1Center.z > iP1[2]:
+					offsetSize = - offsetSize
+					
+				m.Dimline = (iP1[0], iP1[1], iP1[2]+offsetSize)
+				m.Normal = FreeCAD.Vector(1, -1, 0)
+				
+				if iP1[0] < iP2[0]:
+					m.ViewObject.FlipText = False
+				else:
+					m.ViewObject.FlipText = True
+					
+			if plane == "Y":
+				
+				if o1Center.z > iP1[2]:
+					offsetSize = - offsetSize
+					
+				m.Dimline = (iP1[0], iP1[1], iP1[2]+offsetSize)
+				m.Normal = FreeCAD.Vector(1, 0, 0)
+
+			if plane == "Z":
+				
+				if o1Center.x > iP1[0]:
+					offsetSize = - offsetSize
+					
+				m.Dimline = (iP1[0]+offsetSize, iP1[1], iP1[2])
+				m.Normal = FreeCAD.Vector(0, -1, 1)
+				
+				if iP1[2] < iP2[2]:
+					if o1Center.x < iP1[0]+offsetSize:
+						m.ViewObject.FlipText = True
+					else:
+						m.ViewObject.FlipText = False
+				else:
+					if o1Center.x < iP1[0]+offsetSize:
+						m.ViewObject.FlipText = False
+					else:
+						m.ViewObject.FlipText = True
+
+		# set decoration
+		m.ViewObject.FontSize = '3.5 mm'
+		m.ViewObject.ShowLine = True
+		m.ViewObject.LineWidth = 2
+		m.ViewObject.FlipArrows = False
+		m.ViewObject.ExtOvershoot = '2 mm'
+		m.ViewObject.ExtLines = '13.5 mm'
+		m.ViewObject.DimOvershoot = '0 mm'
+		m.ViewObject.TextSpacing = '1 mm'
+		
+		m.ViewObject.ArrowTypeStart = u"Arrow"
+		m.ViewObject.ArrowSizeStart = '2 mm'
+		
+		m.ViewObject.ArrowTypeEnd = u"Arrow"
+		m.ViewObject.ArrowSizeStart = '1 mm'
+		
+		m.ViewObject.ScaleMultiplier = float(distance / 30)
+		
+		m.ViewObject.Visibility = True
+		m.ViewObject.ShowInTree = True
+		
+		# custom drawing style settings
+		if iType == 1:
+			m.ViewObject.LineColor = (0, 255, 0)
+			m.ViewObject.TextColor = (0, 255, 0)
+			m.ViewObject.DisplayMode = u"World"
+		if iType == 2:
+			m.ViewObject.LineColor = (255, 255, 0)
+			m.ViewObject.TextColor = (255, 255, 0)
+			m.ViewObject.DisplayMode = u"World"
+		if iType == 3:
+			m.ViewObject.LineColor = (0, 0, 0)
+			m.ViewObject.TextColor = (0, 0, 0)
+			m.ViewObject.DisplayMode = u"World"
+		if iType == 4:
+			m.ViewObject.LineColor = (255, 0, 0)
+			m.ViewObject.TextColor = (255, 0, 0)
+			m.ViewObject.DisplayMode = u"World"
+		if iType == 5:
+			m.ViewObject.LineColor = (0, 255, 0)
+			m.ViewObject.TextColor = (0, 255, 0)
+			m.ViewObject.DisplayMode = u"World"
+			m.ViewObject.FontName = "Chilanka"
+		if iType == 6:
+			m.ViewObject.LineColor = (255, 255, 0)
+			m.ViewObject.TextColor = (255, 255, 0)
+			m.ViewObject.DisplayMode = u"World"
+			m.ViewObject.FontName = "Chilanka"
+		if iType == 7:
+			m.ViewObject.LineColor = (0, 0, 0)
+			m.ViewObject.TextColor = (0, 0, 0)
+			m.ViewObject.DisplayMode = u"World"
+			m.ViewObject.FontName = "Chilanka"
+		if iType == 8:
+			m.ViewObject.LineColor = (255, 0, 0)
+			m.ViewObject.TextColor = (255, 0, 0)
+			m.ViewObject.DisplayMode = u"World"
+			m.ViewObject.FontName = "Chilanka"
 	
-	if iRef != "":
-		m.Label2 = str(iRef)
+	# #############################################################################
+	# set references and Label2 cut-list description
+	# #############################################################################
 	
+	ref1 = ""
+	ref2 = ""
+	
+	if iObject1 != "" and iSub1 != "":
+		ref1 = str(iObject1.Name) + ", " + str(iSub1)
+	
+	if iObject2 != "" and iSub2 != "":
+		ref2 = str(iObject2.Name) + ", " + str(iSub2)
+		
+	m.Label2 = ref1 + " ---> " + ref2
+		
+	# #############################################################################
+	# set attributes
+	# #############################################################################
+	
+	# set show attribute for cut-list
+	if not hasattr(m, "Woodworking_BOM"):
+		info = translate("MagicPanels", "Allows to skip measurement at BOM, cut-list report.")
+		m.addProperty("App::PropertyBool", "Woodworking_BOM", "Woodworking", info)
+		m.Woodworking_BOM = True
+
+	# set correct object type
+	if not hasattr(m, "Woodworking_Type"):
+		info = translate("MagicPanels", "Measurement object type.")
+		m.addProperty("App::PropertyString", "Woodworking_Type", "Woodworking", info)
+		m.Woodworking_Type = "Measurement"
+
+	# set reference for selection 1
+	if not hasattr(m, "Woodworking_Ref1"):
+		info = translate("MagicPanels", "Reference for selection 1.")
+		m.addProperty("App::PropertyString", "Woodworking_Ref1", "Woodworking", info)
+		m.Woodworking_Ref1 = ref1
+	
+	# set reference for selection 2
+	if not hasattr(m, "Woodworking_Ref2"):
+		info = translate("MagicPanels", "Reference for selection 2.")
+		m.addProperty("App::PropertyString", "Woodworking_Ref2", "Woodworking", info)
+		m.Woodworking_Ref2 = ref2
+
+	# #############################################################################
+	# recompute & return
+	# #############################################################################
+	m.recompute()
 	FreeCAD.ActiveDocument.recompute()
-	
+	FreeCADGui.Selection.clearSelection()
+
 	return m
-
-
+	
+	
 # ###################################################################################################################
 def getDistanceBetweenFaces(iObj1, iObj2, iFace1, iFace2):
 	'''

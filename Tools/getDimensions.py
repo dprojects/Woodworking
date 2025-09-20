@@ -2347,44 +2347,49 @@ def setProfiles(iObj, iCaller="setProfiles"):
 def setMeasurementsList(iObj, iCaller="setMeasurementsList"):
 
 	try:
-
-		# init variables
-		vArrNames = []
-		vArrValues = []
-		vType = ""
+		isMeasurement = False
 
 		if (
 			iObj.isDerivedFrom("App::MeasureDistance") or             # support for FreeCAD 0.21
 			iObj.isDerivedFrom("Measure::MeasureDistanceDetached")    # support for FreeCAD 1.0
 			):
+			isMeasurement = True
 
+		if hasattr(iObj, "Woodworking_Type"):
+			if iObj.Woodworking_Type == "Measurement":
+				isMeasurement = True
+		
+		if isMeasurement == True:
+
+			# init variables
+			vArrNames = []
+			vArrValues = []
+			vType = ""
 			arr = str(iObj.Label2).split(", ")
 			
-			n = str(arr[0])
-			sub = str(arr[len(arr)-1])
+			# set reference key
+			reference = str(arr[0])
+			description = str(iObj.Label2)
 			
 			# set key
-			vType = gLang23 + ", " + n
+			vType = gLang23 + ", " + reference
 			
-			# add existing entries
+			# increase counter if already exists measurement for such object
 			if vType in dbARN.keys():
 				
 				vArrNames.append(dbARN[vType])
 				vArrValues.append(dbARV[vType])
 			
-			# add new entry
+			# set new entry name
+			vArrNames.append(description)
 			
-			# set name for entry
-			v = str(sub)
-			vArrNames.append(v)
-			
-			# set value for entry
+			# set new entry value
 			v = "d;" + str(iObj.Distance.Value)
 			vArrValues.append(v)
 
-		# set db for additional report
-		if vType != "":
-			setDBAdditional(iObj, vType, vArrNames, vArrValues, vType, iCaller)
+			# set db for additional report
+			if vType != "":
+				setDBAdditional(iObj, vType, vArrNames, vArrValues, vType, iCaller)
 
 	except:
 		
@@ -3065,6 +3070,10 @@ def scanObjects(iOBs, iCaller="main"):
 			if obj.BOM == False:
 				continue
 
+		if hasattr(obj, "Woodworking_BOM"):
+			if obj.Woodworking_BOM == False:
+				continue
+				
 		# simple object visibility
 		if sTVF == "on":
 			if obj.Visibility == False:
@@ -4614,13 +4623,13 @@ def setViewAdditional(iCaller="setViewAdditional"):
 			gSheet.setBackground(vCell, (1,1,1))
 
 			# set constraint name
-			vCell = "B" + str(gSheetRow) + ":D" + str(gSheetRow)
+			vCell = "B" + str(gSheetRow) + ":F" + str(gSheetRow)
 			gSheet.set(vCell, toSheet(keyN[k], "string", iCaller))
 			gSheet.mergeCells(vCell)
 			gSheet.setAlignment(vCell, "left", "keep")
 
 			# set dimension
-			vCell = "E" + str(gSheetRow) + ":G" + str(gSheetRow)
+			vCell = "G" + str(gSheetRow) + ":G" + str(gSheetRow)
 			v = keyV[k].split(";")
 			gSheet.set(vCell, toSheet(v[1], v[0], iCaller))
 			gSheet.mergeCells(vCell)

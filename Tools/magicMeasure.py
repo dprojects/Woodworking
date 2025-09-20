@@ -6,40 +6,76 @@ import MagicPanels
 translate = FreeCAD.Qt.translate
 
 # ###################################################################################################################
-#
-# Globals
-#
+# global variables
 # ###################################################################################################################
-
 
 gGUI = "" # do not reset this ;-)
 gP1 = ""
 gP2 = ""
-gRef = ""
-gPSMMode = True
-gPSMMeasure = []
+gObj1 = ""
+gObj2 = ""
+gSub1 = ""
+gSub2 = ""
+gExprSX = ""
+gExprSY = ""
+gExprSZ = ""
+gExprEX = ""
+gExprEY = ""
+gExprEZ = ""
+gPreselectionMode = True
+gMeasures = []
+gMeasureType = 8
 
+# add new items only at the end and change self.sModeList
+getMenuIndex1 = {
+	translate('magicMeasure', 'PartDesign - system'): 0, 
+	translate('magicMeasure', 'Draft - green'): 1,
+	translate('magicMeasure', 'Draft - yellow'): 2,
+	translate('magicMeasure', 'Draft - black'): 3,
+	translate('magicMeasure', 'Draft - red'): 4, 
+	translate('magicMeasure', 'Draft - handwrite green'): 5,
+	translate('magicMeasure', 'Draft - handwrite yellow'): 6,
+	translate('magicMeasure', 'Draft - handwrite black'): 7,
+	translate('magicMeasure', 'Draft - handwrite red'): 8
+}
+
+# ###################################################################################################################
+# global functions
+# ###################################################################################################################
+
+# ###################################################################################################################
 def resetGlobals():
 
-	global gP1, gP2, gRef, gPSMMeasure
+	global gP1, gP2, gObj1, gObj2, gSub1, gSub2, gMeasures
 
 	gP1 = ""
 	gP2 = ""
-	gRef = ""
-	gPSMMeasure = []
+	gObj1 = ""
+	gObj2 = ""
+	gSub1 = ""
+	gSub2 = ""
+	gExprSX = ""
+	gExprSY = ""
+	gExprSZ = ""
+	gExprEX = ""
+	gExprEY = ""
+	gExprEZ = ""
+	gMeasures = []
 
-def removePSMMeasure():
+# ###################################################################################################################
+def removeMeasures():
 	
-	if len(gPSMMeasure) != 0:
-		for h in gPSMMeasure:
+	if len(gMeasures) != 0:
+		for m in gMeasures:
 			try:
-				if str(h.Name) == "":
+				if str(m.Name) == "":
 					raise
 				else:
-					FreeCAD.ActiveDocument.removeObject(str(h.Name))
+					FreeCAD.ActiveDocument.removeObject(str(m.Name))
 			except:
 				skip = 1
 
+# ###################################################################################################################
 def clearInfoScreens():
 	
 	try:
@@ -49,6 +85,36 @@ def clearInfoScreens():
 	except:
 		skip = 1
 
+# ###################################################################################################################
+def setExpr(iMeasure):
+	
+	try:
+		iMeasure.setExpression('.Position1.x', gExprSX)
+		iMeasure.setExpression('.Position1.y', gExprSY)
+		iMeasure.setExpression('.Position1.z', gExprSZ)
+		iMeasure.setExpression('.Position2.x', gExprEX)
+		iMeasure.setExpression('.Position2.y', gExprEY)
+		iMeasure.setExpression('.Position2.z', gExprEZ)
+	except:
+		skip = 1
+		
+	try:
+		iMeasure.setExpression('.Start.x', gExprSX)
+		iMeasure.setExpression('.Start.y', gExprSY)
+		iMeasure.setExpression('.Start.z', gExprSZ)
+		iMeasure.setExpression('.End.x', gExprEX)
+		iMeasure.setExpression('.End.y', gExprEY)
+		iMeasure.setExpression('.End.z', gExprEZ)
+		
+		offsetX = iMeasure.Dimline.x - iMeasure.Start.x
+		offsetY = iMeasure.Dimline.y - iMeasure.Start.y
+		offsetZ = iMeasure.Dimline.z - iMeasure.Start.z
+		iMeasure.setExpression('.Dimline.x', '.Start.x + (' + str(offsetX) + ' mm )')
+		iMeasure.setExpression('.Dimline.y', '.Start.y + (' + str(offsetY) + ' mm )')
+		iMeasure.setExpression('.Dimline.z', '.Start.z + (' + str(offsetZ) + ' mm )')
+		
+	except:
+		skip = 1
 
 # ###################################################################################################################
 #
@@ -66,7 +132,7 @@ class SelectionObserver:
 	# ############################################################################
 	def edgePreselect(self, doc, obj, sub):
 		
-		removePSMMeasure()
+		removeMeasures()
 		clearInfoScreens()
 		
 		o = FreeCAD.ActiveDocument.getObject(obj)
@@ -96,9 +162,9 @@ class SelectionObserver:
 			gGUI.moi.setText(str(obj) + ", " + str(sub))
 			gGUI.mos.setPlainText("Size:" + " " + MagicPanels.unit2gui(size))
 			
-			if gPSMMode == True:
-				m = MagicPanels.showMeasure(p1, p2, str(o.Label) + ", " + str(sub))
-				gPSMMeasure.append(m)
+			if gPreselectionMode == True:
+				m = MagicPanels.showMeasure(p1, p2, o, o, sub, sub, gMeasureType)
+				gMeasures.append(m)
 			
 		# hole edge
 		if edge.Curve.isDerivedFrom("Part::GeomCircle"):
@@ -114,9 +180,9 @@ class SelectionObserver:
 			gGUI.moi.setText(str(obj) + ", " + str(sub))
 			gGUI.mos.setPlainText("Size:" + " " + MagicPanels.unit2gui(size))
 			
-			if gPSMMode == True:
-				m = MagicPanels.showMeasure(p1, p2, str(o.Label) + ", " + str(sub))
-				gPSMMeasure.append(m)
+			if gPreselectionMode == True:
+				m = MagicPanels.showMeasure(p1, p2, o, o, sub, sub, gMeasureType)
+				gMeasures.append(m)
 		
 		# ellipse edge
 		if edge.Curve.isDerivedFrom("Part::GeomEllipse"):
@@ -132,9 +198,9 @@ class SelectionObserver:
 			
 			s1 = round(p1.distanceToPoint(p2), MagicPanels.gRoundPrecision)
 			
-			if gPSMMode == True:
-				m = MagicPanels.showMeasure(p1, p2, str(o.Label) + ", " + str(sub))
-				gPSMMeasure.append(m)
+			if gPreselectionMode == True:
+				m = MagicPanels.showMeasure(p1, p2, o, o, sub, sub, gMeasureType)
+				gMeasures.append(m)
 	
 			# 2nd measure
 			p1 = FreeCAD.Vector(edge.Curve.Location.x, edge.Curve.Location.y, edge.Curve.Location.z)
@@ -145,9 +211,9 @@ class SelectionObserver:
 			
 			s2 = round(p1.distanceToPoint(p2), MagicPanels.gRoundPrecision)
 			
-			if gPSMMode == True:
-				m = MagicPanels.showMeasure(p1, p2, str(o.Label) + ", " + str(sub))
-				gPSMMeasure.append(m)
+			if gPreselectionMode == True:
+				m = MagicPanels.showMeasure(p1, p2, o, o, sub, sub, gMeasureType)
+				gMeasures.append(m)
 				
 			# screen update
 			
@@ -160,7 +226,7 @@ class SelectionObserver:
 	# ############################################################################
 	def facePreselect(self, doc, obj, sub):
 		
-		removePSMMeasure()
+		removeMeasures()
 		clearInfoScreens()
 		
 		o = FreeCAD.ActiveDocument.getObject(obj)
@@ -199,10 +265,10 @@ class SelectionObserver:
 			
 			size += MagicPanels.unit2gui(s)
 			
-			if gPSMMode == True:
+			if gPreselectionMode == True:
 				if not s in preselection.keys():
-					m = MagicPanels.showMeasure(p1, p2, str(o.Label) + ", " + str(sub))
-					gPSMMeasure.append(m)
+					m = MagicPanels.showMeasure(p1, p2, o, o, sub, sub, gMeasureType)
+					gMeasures.append(m)
 					preselection[s] = 1
 		
 		gGUI.moi.setText(str(label) + ", " + str(sub))
@@ -216,9 +282,11 @@ class SelectionObserver:
 	# ############################################################################
 	def edgeSelect(self, doc, obj, sub, pos):
 		
-		global gP1, gP2, gRef
-		
-		removePSMMeasure()
+		global gP1, gP2, gObj1, gObj2, gSub1, gSub2
+		global gExprSX, gExprSY, gExprSZ
+		global gExprEX, gExprEY, gExprEZ
+
+		removeMeasures()
 		clearInfoScreens()
 		
 		o = FreeCAD.ActiveDocument.getObject(obj)
@@ -229,8 +297,8 @@ class SelectionObserver:
 		except:
 			skip = 1
 		
-		index = int(sub.replace("Edge",""))
-		edge = o.Shape.Edges[index-1]
+		index = int(sub.replace("Edge",""))-1
+		edge = o.Shape.Edges[index]
 		
 		skip = 1
 		
@@ -253,13 +321,32 @@ class SelectionObserver:
 				if axis == "Z":
 					gP2 = FreeCAD.Vector(v1[0], v1[1], gP1[2])
 		
+				gObj2 = MagicPanels.getObjectToMove(o)
+				gSub2 = sub
+				gExprEX = "<<" + str(gObj2.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[0].X"
+				gExprEY = "<<" + str(gObj2.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[0].Y"
+				gExprEZ = "<<" + str(gObj2.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[0].Z"
+				
 			# get both vertices from edge, and draw measure for entire edge
 			else:
 				[ v1, v2 ] = MagicPanels.getEdgeVertices(edge)
 				[ v1, v2 ] = MagicPanels.getVerticesPosition([ v1, v2 ], o, "array")
 				gP1 = FreeCAD.Vector(v1)
 				gP2 = FreeCAD.Vector(v2)
-		
+				
+				gObj1 = MagicPanels.getObjectToMove(o)
+				gSub1 = sub
+				gObj2 = MagicPanels.getObjectToMove(o)
+				gSub2 = sub
+				
+				gExprSX = "<<" + str(gObj1.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[0].X"
+				gExprSY = "<<" + str(gObj1.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[0].Y"
+				gExprSZ = "<<" + str(gObj1.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[0].Z"
+				
+				gExprEX = "<<" + str(gObj2.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[1].X"
+				gExprEY = "<<" + str(gObj2.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[1].Y"
+				gExprEZ = "<<" + str(gObj2.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[1].Z"
+
 		# hole ellipse edge
 		if edge.Curve.isDerivedFrom("Part::GeomCircle") or edge.Curve.isDerivedFrom("Part::GeomEllipse"):
 		
@@ -268,9 +355,24 @@ class SelectionObserver:
 			if gP1 == "":
 				gP1 = FreeCAD.Vector(edge.Curve.Location.x, edge.Curve.Location.y, edge.Curve.Location.z)
 				[ gP1 ] = MagicPanels.getVerticesPosition([ gP1 ], o, "vector")
+				
+				gObj1 = MagicPanels.getObjectToMove(o)
+				gSub1 = sub
+				
+				gExprSX = "<<" + str(gObj1.Label) + ">>.Shape.Edges[" + str(index) + "].Curve.Location.x"
+				gExprSY = "<<" + str(gObj1.Label) + ">>.Shape.Edges[" + str(index) + "].Curve.Location.y"
+				gExprSZ = "<<" + str(gObj1.Label) + ">>.Shape.Edges[" + str(index) + "].Curve.Location.z"
+				
 			else:
 				gP2 = FreeCAD.Vector(edge.Curve.Location.x, edge.Curve.Location.y, edge.Curve.Location.z)
 				[ gP2 ] = MagicPanels.getVerticesPosition([ gP2 ], o, "vector")
+				
+				gObj2 = MagicPanels.getObjectToMove(o)
+				gSub2 = sub
+
+				gExprEX = "<<" + str(gObj2.Label) + ">>.Shape.Edges[" + str(index) + "].Curve.Location.x"
+				gExprEY = "<<" + str(gObj2.Label) + ">>.Shape.Edges[" + str(index) + "].Curve.Location.y"
+				gExprEZ = "<<" + str(gObj2.Label) + ">>.Shape.Edges[" + str(index) + "].Curve.Location.z"
 		
 		# skip if there is no data to show measurement
 		if skip == 1 or gP1 == "" or gP2 == "":
@@ -282,15 +384,18 @@ class SelectionObserver:
 		gGUI.moi.setText(str(obj) + ", " + str(sub))
 		gGUI.mos.setPlainText("Size:" + " " + MagicPanels.unit2gui(size))
 		
-		m = MagicPanels.showMeasure(gP1, gP2, str(o.Label) + ", " + str(sub))
+		m = MagicPanels.showMeasure(gP1, gP2, gObj1, gObj2, gSub1, gSub2, gMeasureType)
+		setExpr(m)
 		resetGlobals()
 
 	# ############################################################################
 	def faceSelect(self, doc, obj, sub, pos):
 		
-		global gP1, gP2, gRef
+		global gP1, gP2, gObj1, gObj2, gSub1, gSub2
+		global gExprSX, gExprSY, gExprSZ
+		global gExprEX, gExprEY, gExprEZ
 		
-		removePSMMeasure()
+		removeMeasures()
 		clearInfoScreens()
 		
 		skip = 0
@@ -303,22 +408,33 @@ class SelectionObserver:
 		except:
 			skip = 1
 		
+		index = int(sub.replace("Face",""))-1
 		face = o.getSubObject(sub)
 		
 		# if already selected vertex, get second vertex from face
 		if gP1 != "":
 			
-			[ v1, v2 ] = MagicPanels.getEdgeVertices(face.Edges[0])
-			[ v1, v2 ] = MagicPanels.getVerticesPosition([ v1, v2 ], o, "array")
+			v1 = [ face.CenterOfMass.x, face.CenterOfMass.y, face.CenterOfMass.z ]
+			[ v1 ] = MagicPanels.getVerticesPosition([ v1 ], o, "array")
 			axis = MagicPanels.getFacePlane(face)
+			
+			gObj2 = MagicPanels.getObjectToMove(o)
+			gSub2 = sub
+
+			gExprEX = gExprSX
+			gExprEY = gExprSY
+			gExprEZ = gExprSZ
 			
 			if axis == "YZ":
 				gP2 = FreeCAD.Vector(v1[0], gP1[1], gP1[2])
+				gExprEX = "<<" + str(gObj2.Label) + ">>.Shape.Faces[" + str(index) + "].CenterOfMass.x"
 			if axis == "XZ":
 				gP2 = FreeCAD.Vector(gP1[0], v1[1], gP1[2])
+				gExprEY = "<<" + str(gObj2.Label) + ">>.Shape.Faces[" + str(index) + "].CenterOfMass.y"
 			if axis == "XY":
 				gP2 = FreeCAD.Vector(gP1[0], gP1[1], v1[2])
-	
+				gExprEZ = "<<" + str(gObj2.Label) + ">>.Shape.Faces[" + str(index) + "].CenterOfMass.z"
+			
 		# not supported
 		else:
 			skip = 1
@@ -333,15 +449,18 @@ class SelectionObserver:
 		gGUI.moi.setText(str(obj) + ", " + str(sub))
 		gGUI.mos.setPlainText("Size:" + " " + MagicPanels.unit2gui(size))
 		
-		m = MagicPanels.showMeasure(gP1, gP2, str(o.Label) + ", " + str(sub))
+		m = MagicPanels.showMeasure(gP1, gP2, gObj1, gObj2, gSub1, gSub2, gMeasureType)
+		setExpr(m)
 		resetGlobals()
 		
 	# ############################################################################
 	def vertexSelect(self, doc, obj, sub, pos):
 		
-		global gP1, gP2, gRef
+		global gP1, gP2, gObj1, gObj2, gSub1, gSub2
+		global gExprSX, gExprSY, gExprSZ
+		global gExprEX, gExprEY, gExprEZ
 		
-		removePSMMeasure()
+		removeMeasures()
 		clearInfoScreens()
 	
 		o = FreeCAD.ActiveDocument.getObject(obj)
@@ -351,16 +470,28 @@ class SelectionObserver:
 			label = o.Label
 		except:
 			skip = 1
-	
+		
+		index = int(sub.replace("Vertex",""))-1
+		
 		if gP1 == "":
 			gP1 = FreeCAD.Vector(pos[0], pos[1], pos[2])
+			gObj1 = MagicPanels.getObjectToMove(o)
+			gSub1 = sub
+			gExprSX = "<<" + str(gObj1.Label) + ">>.Shape.Vertex"+"es[" + str(index) + "].X"
+			gExprSY = "<<" + str(gObj1.Label) + ">>.Shape.Vertex"+"es[" + str(index) + "].Y"
+			gExprSZ = "<<" + str(gObj1.Label) + ">>.Shape.Vertex"+"es[" + str(index) + "].Z"
 		else:
 			gP2 = FreeCAD.Vector(pos[0], pos[1], pos[2])
+			gObj2 = MagicPanels.getObjectToMove(o)
+			gSub2 = sub
+			gExprEX = "<<" + str(gObj2.Label) + ">>.Shape.Vertex"+"es[" + str(index) + "].X"
+			gExprEY = "<<" + str(gObj2.Label) + ">>.Shape.Vertex"+"es[" + str(index) + "].Y"
+			gExprEZ = "<<" + str(gObj2.Label) + ">>.Shape.Vertex"+"es[" + str(index) + "].Z"
+		
 		
 		if gP1 != "" and gP2 != "":
-			
-			# you can use gRef to store reference for both vertices
-			MagicPanels.showMeasure(gP1, gP2, str(o.Label) + ", " + str(sub))
+			m = MagicPanels.showMeasure(gP1, gP2, gObj1, gObj2, gSub1, gSub2, gMeasureType)
+			setExpr(m)
 			resetGlobals()
 		
 	# ############################################################################
@@ -373,7 +504,7 @@ class SelectionObserver:
 	
 	def addSelection(self, doc, obj, sub, pos):
 		
-		if gPSMMode == True:
+		if gPreselectionMode == True:
 			resetGlobals()
 			return
 		
@@ -389,6 +520,8 @@ class SelectionObserver:
 	def setPreselection(self, doc, obj, sub):
 		
 		# debug for new types
+		#FreeCAD.Console.PrintMessage("\n\n")
+		#FreeCAD.Console.PrintMessage(obj)
 		#FreeCAD.Console.PrintMessage("\n")
 		#FreeCAD.Console.PrintMessage(sub)
 		
@@ -477,7 +610,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 320
-			toolSH = 610
+			toolSH = 650
 			
 			# ############################################################################
 			# main window
@@ -488,6 +621,32 @@ def showQtGUI():
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 			self.setFixedWidth(toolSW)
 			self.setFixedHeight(toolSH)
+			
+			# ############################################################################
+			# measure type selection
+			# ############################################################################
+			
+			# label
+			self.sModeL = QtGui.QLabel(translate('magicMeasure', 'Drawing type:'), self)
+			
+			# not write here, copy text from getMenuIndex1 to avoid typo
+			self.sModeList = (
+				translate('magicMeasure', 'PartDesign - system'),
+				translate('magicMeasure', 'Draft - green'),
+				translate('magicMeasure', 'Draft - yellow'),
+				translate('magicMeasure', 'Draft - black'),
+				translate('magicMeasure', 'Draft - red'),
+				translate('magicMeasure', 'Draft - handwrite green'),
+				translate('magicMeasure', 'Draft - handwrite yellow'),
+				translate('magicMeasure', 'Draft - handwrite black'),
+				translate('magicMeasure', 'Draft - handwrite red') # no comma
+			)
+			
+			self.sMode = QtGui.QComboBox(self)
+			self.sMode.addItems(self.sModeList)
+			self.sMode.setCurrentIndex(gMeasureType) # default
+			self.sMode.textActivated[str].connect(self.setModeType)
+			self.sMode.setMinimumWidth(100)
 			
 			# ############################################################################
 			# measure observer
@@ -577,6 +736,9 @@ def showQtGUI():
 			# ############################################################################
 			
 			# create structure
+			self.body0 = QtGui.QGridLayout()
+			self.body0.addWidget(self.sModeL, 0, 0)
+			self.body0.addWidget(self.sMode, 0, 1)
 			self.body1 = QtGui.QGridLayout()
 			self.body1.addWidget(self.moas, 0, 0)
 			self.body1.addWidget(self.moaBON, 0, 1)
@@ -589,6 +751,7 @@ def showQtGUI():
 			self.body12.addWidget(self.vsBM)
 			self.body12.addWidget(self.vsBP)
 			self.lay1 = QtGui.QVBoxLayout()
+			self.lay1.addLayout(self.body0)
 			self.lay1.addLayout(self.body1)
 			self.lay1.addLayout(self.body12)
 			self.groupBody1 = QtGui.QGroupBox(None, self)
@@ -688,11 +851,17 @@ def showQtGUI():
 				return -1
 
 		# ############################################################################
+		def setModeType(self, selectedText):
+			global gMeasureType
+			selectedIndex = getMenuIndex1[selectedText]
+			gMeasureType = selectedIndex
+
+		# ############################################################################
 		def setPSMOn(self):
 			
-			global gPSMMode
+			global gPreselectionMode
 			
-			gPSMMode = True
+			gPreselectionMode = True
 			
 			self.psmB1.hide()
 			self.psmB2.show()
@@ -702,10 +871,10 @@ def showQtGUI():
 
 		def setPSMOff(self):
 			
-			global gPSMMode
+			global gPreselectionMode
 			
-			gPSMMode = False
-			removePSMMeasure()
+			gPreselectionMode = False
+			removeMeasures()
 			
 			self.psmB1.show()
 			self.psmB2.hide()
@@ -727,7 +896,7 @@ def showQtGUI():
 					self.moaBON.hide()
 					self.moaBPAUSE.show()
 					
-					if gPSMMode == True:
+					if gPreselectionMode == True:
 						self.setPSMOn()
 					else:
 						self.setPSMOff()
@@ -792,7 +961,7 @@ def showQtGUI():
 		except:
 			skip = 1
 		
-		removePSMMeasure()
+		removeMeasures()
 		
 		pass
 

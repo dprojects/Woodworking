@@ -1073,13 +1073,31 @@ This tool allows you to quickly measure objects. All measurements are recognized
 > [!NOTE]
 > This tool automatically recognizes the FreeCAD `Edit->Preferences->Display->Colors->Enable preselection highlighting` settings and if you set this option, it will start in `Preselection` mode, otherwise in `Selection` mode, so you don't have to switch it at the beginning.
 
+* **Drawing type:** Allows you to choose drawing measurements style:
+  * `PartDesign - system` - the same as PartDesign.
+  * `Draft - green` - Draft style with auto adjust, green color.
+  * `Draft - yellow` - Draft style with auto adjust, yellow color.
+  * `Draft - black` - Draft style with auto adjust, black color.
+  * `Draft - red` - Draft style with auto adjust, red color.
+  * `Draft - handwrite green` - Draft style with auto adjust, handwrite fonts and green color.
+  * `Draft - handwrite yellow` - Draft style with auto adjust, handwrite fonts and yellow color.
+  * `Draft - handwrite black` - Draft style with auto adjust, handwrite fonts and black color.
+  * `Draft - handwrite red` (default) - Draft style with auto adjust, handwrite fonts and red color.
+
+> [!IMPORTANT]
+> All the measurements are parametric a little in selection mode. You can move object and the measurement will follow. 
+> Also you can resize object and the measurement will update dimension.
+> However, if you convert `Part :: Box` into `PartDesign :: Pad` or change objects edges, faces or vertices, 
+> the measurement will no longer follow, so you have to remove such measurement and create new one.
+> Also the measurements **are not** parametric in preselection mode.
+
 * **Measurement observer:**
   * `START` button allows you to start the measurement process,
   * `PAUSE` button allows you to stop the measurement process, without leaving this tool's graphical interface, for example if you want to select or create objects.
 
 * **Preselection mode:**
-  * `ON` button allows you to start preselection mode and also exit selection mode,
-  * `OFF` button allows you to start selection mode and also exit preselection mode.
+  * `ON` button allows you to start preselection mode and also exit selection mode. Here the measurements are not parametric.
+  * `OFF` button allows you to start selection mode and also exit preselection mode. Here the measurements are parametric.
   
 * **Vertices size:**
   * `-5` button allows you to make smaller all vertices of all objects by `-5` points, 
