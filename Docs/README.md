@@ -173,6 +173,10 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * arrange icons to fit to laptop screen 
+    * magicView offset resize for better TechDraw export (magicView)
+    * magicGlue label fix (magicGlue)
+    * new measurements drawing styles (MagicPanels, magicMeasure)
     * fix white color setting and load all objects (setTextures)
     * add mortise tool for tenons created via jointTenonCut tool (jointMortiseCut)
     * improve sketch pattern positioning (magicJoints, MagicPanels)
