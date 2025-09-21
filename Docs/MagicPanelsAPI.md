@@ -1542,8 +1542,8 @@
 	
 ##### Args:
 	
-		iP1: array with floats [ .X, .Y, .Z ] for start point
-		iP2: array with floats [ .X, .Y, .Z ] for end point
+		iP1: FreeCAD.Vector(x, y, z), Vertex object, or array with floats, for start
+		iP2: FreeCAD.Vector(x, y, z), Vertex object, or array with floats, for end
 		iObject1 (optional): object for iP1
 		iObject2 (optional): object for iP2
 		iSub1 (optional): string with sub-object name for iP1, for example "Vertex1", "Edge1", "Face1"

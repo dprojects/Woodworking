@@ -294,15 +294,15 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 
 ## Cabinet structure
 
-* Simple storage ( front outside, back full )
-* Simple storage ( front outside, back HDF )
-* Kitchen wall cabinet ( front outside, back HDF )
+* Storage module ( front outside, back full )
+* Storage module ( front outside, back HDF )
+* Storage module ( front inside, back full )
+* Storage module ( front inside, back HDF )
 * Modular storage ( front outside, 3 modules )
+* Bookcase module ( no front, back HDF )
 * Modular bookcase ( no front, back full, 3 modules )
 * Modular bookcase ( no front, back HDF, 3 modules )
-* Simple storage ( front inside, back full )
-* Simple storage ( front inside, back HDF )
-* Simple bookcase ( no front, back HDF )
+* Kitchen wall cabinet ( front outside, back HDF )
 * Bookcase ( import parametric )
 
 **Video tutorials:** 

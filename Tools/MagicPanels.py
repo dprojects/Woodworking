@@ -4224,8 +4224,8 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8)
 	
 	Args:
 	
-		iP1: array with floats [ .X, .Y, .Z ] for start point
-		iP2: array with floats [ .X, .Y, .Z ] for end point
+		iP1: FreeCAD.Vector(x, y, z), Vertex object, or array with floats, for start
+		iP2: FreeCAD.Vector(x, y, z), Vertex object, or array with floats, for end
 		iObject1 (optional): object for iP1
 		iObject2 (optional): object for iP2
 		iSub1 (optional): string with sub-object name for iP1, for example "Vertex1", "Edge1", "Face1"
@@ -4257,6 +4257,36 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8)
 
 
 	# #############################################################################
+	# convert input to Vectors
+	# #############################################################################
+	
+	vectorStart = ""
+	vectorEnd = ""
+	
+	try:
+		if hasattr(iP1, "X"):
+			vectorStart = FreeCAD.Vector(iP1.X, iP1.Y, iP1.Z)
+		if hasattr(iP2, "X"):
+			vectorEnd = FreeCAD.Vector(iP2.X, iP2.Y, iP2.Z)
+	except:
+		skip = 1
+
+	if vectorStart == "":
+		try:
+			vectorStart = FreeCAD.Vector(iP1[0], iP1[1], iP1[2])
+		except:
+			skip = 1
+	
+	if vectorEnd == "":
+		try:
+			vectorEnd = FreeCAD.Vector(iP2[0], iP2[1], iP2[2])
+		except:
+			skip = 1
+	
+	if vectorStart == "" or vectorEnd == "":
+		return "not supported type"
+		
+	# #############################################################################
 	# to show measurement as PartDesign object
 	# #############################################################################
 	if iType == 0:
@@ -4267,8 +4297,8 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8)
 			try:
 				m = FreeCAD.ActiveDocument.addObject('Measure::MeasureDistanceDetached', "measure")
 				
-				m.Position1 = iP1
-				m.Position2 = iP2
+				m.Position1 = vectorStart
+				m.Position2 = vectorEnd
 				
 				m.ViewObject.LineColor = (1.0, 0.0, 0.0, 0.0)
 				m.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
@@ -4292,8 +4322,8 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8)
 			try:
 				m = FreeCAD.ActiveDocument.addObject('App::MeasureDistance', "measure")
 				
-				m.P1 = iP1
-				m.P2 = iP2
+				m.P1 = vectorStart
+				m.P2 = vectorEnd
 				
 				m.ViewObject.LineColor = (1.0, 0.0, 0.0, 0.0)
 				m.ViewObject.TextColor = (1.0, 0.0, 0.0, 0.0)
@@ -4313,10 +4343,8 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8)
 		import Draft
 		
 		# create measurement object
-		v1 = FreeCAD.Vector(iP1[0], iP1[1], iP1[2])
-		v2 = FreeCAD.Vector(iP2[0], iP2[1], iP2[2])
-		distance = round(v1.distanceToPoint(v2), gRoundPrecision)
-		m = Draft.make_linear_dimension(v1, v2)
+		distance = round(vectorStart.distanceToPoint(vectorEnd), gRoundPrecision)
+		m = Draft.make_linear_dimension(vectorStart, vectorEnd)
 		m.recompute()
 		
 		# set offset from object
@@ -4333,44 +4361,44 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8)
 		
 		if o1Center != "" and o2Center != "":
 			
-			plane = getVectorsPlane(v1, v2)
+			plane = getVectorsPlane(vectorStart, vectorEnd)
 			
 			if plane == "X":
 				
-				if o1Center.z > iP1[2]:
+				if o1Center.z > vectorStart.z:
 					offsetSize = - offsetSize
 					
-				m.Dimline = (iP1[0], iP1[1], iP1[2]+offsetSize)
+				m.Dimline = (vectorStart.x, vectorStart.y, vectorStart.z + offsetSize)
 				m.Normal = FreeCAD.Vector(1, -1, 0)
 				
-				if iP1[0] < iP2[0]:
+				if vectorStart.x < vectorEnd.x:
 					m.ViewObject.FlipText = False
 				else:
 					m.ViewObject.FlipText = True
 					
 			if plane == "Y":
 				
-				if o1Center.z > iP1[2]:
+				if o1Center.z > vectorStart.z:
 					offsetSize = - offsetSize
 					
-				m.Dimline = (iP1[0], iP1[1], iP1[2]+offsetSize)
+				m.Dimline = (vectorStart.x, vectorStart.y, vectorStart.z + offsetSize)
 				m.Normal = FreeCAD.Vector(1, 0, 0)
 
 			if plane == "Z":
 				
-				if o1Center.x > iP1[0]:
+				if o1Center.x > vectorStart.x:
 					offsetSize = - offsetSize
 					
-				m.Dimline = (iP1[0]+offsetSize, iP1[1], iP1[2])
+				m.Dimline = (vectorStart.x + offsetSize, vectorStart.y, vectorStart.z)
 				m.Normal = FreeCAD.Vector(0, -1, 1)
 				
-				if iP1[2] < iP2[2]:
-					if o1Center.x < iP1[0]+offsetSize:
+				if vectorStart.z < vectorEnd.z:
+					if o1Center.x < vectorStart.x + offsetSize:
 						m.ViewObject.FlipText = True
 					else:
 						m.ViewObject.FlipText = False
 				else:
-					if o1Center.x < iP1[0]+offsetSize:
+					if o1Center.x < vectorStart.x + offsetSize:
 						m.ViewObject.FlipText = False
 					else:
 						m.ViewObject.FlipText = True
@@ -4446,8 +4474,9 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8)
 	
 	if iObject2 != "" and iSub2 != "":
 		ref2 = str(iObject2.Name) + ", " + str(iSub2)
-		
-	m.Label2 = ref1 + " ---> " + ref2
+	
+	if ref1 != "" or ref2 != "":
+		m.Label2 = ref1 + " ---> " + ref2
 		
 	# #############################################################################
 	# set attributes
