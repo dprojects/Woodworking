@@ -4168,7 +4168,14 @@ def makePad(iObj, iPadLabel="Pad"):
 		
 		for ex in iObj.ExpressionEngine:
 			
-			ev = iObj.evalExpression(str(ex[1])).Value
+			ev = iObj.evalExpression(str(ex[1]))
+			
+			# this might be integer without units, so there is no .Value for int
+			try:
+				ev = ev.Value
+			except:
+				skip = 1
+			
 			if equal(ev, s[0]):
 				sketch.setExpression('.Constraints.SizeX', str(ex[1]))
 				
