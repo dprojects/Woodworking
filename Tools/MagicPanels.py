@@ -4425,13 +4425,24 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8)
 		m.ViewObject.ExtOvershoot = '2 mm'
 		m.ViewObject.ExtLines = '13.5 mm'
 		m.ViewObject.DimOvershoot = '0 mm'
-		m.ViewObject.TextSpacing = '1 mm'
+		m.ViewObject.TextSpacing = '0.5 mm'
 		
-		m.ViewObject.ArrowTypeStart = u"Arrow"
-		m.ViewObject.ArrowSizeStart = '2 mm'
+		# settings for FreeCAD 1.1
+		if hasattr(m.ViewObject, "ArrowTypeStart"):
+			m.ViewObject.ArrowTypeStart = u"Arrow"
+		if hasattr(m.ViewObject, "ArrowTypeEnd"):
+			m.ViewObject.ArrowTypeEnd = u"Arrow"
 		
-		m.ViewObject.ArrowTypeEnd = u"Arrow"
-		m.ViewObject.ArrowSizeStart = '1 mm'
+		if hasattr(m.ViewObject, "ArrowSizeStart"):
+			m.ViewObject.ArrowSizeStart = '0.5 mm'
+		if hasattr(m.ViewObject, "ArrowSizeEnd"):
+			m.ViewObject.ArrowSizeEnd = '0.5 mm'
+		
+		# backward compatibility
+		if hasattr(m.ViewObject, "ArrowType"):
+			m.ViewObject.ArrowType = u"Arrow"
+		if hasattr(m.ViewObject, "ArrowSize"):
+			m.ViewObject.ArrowSize = '0.5 mm'
 		
 		m.ViewObject.ScaleMultiplier = float(distance / 30)
 		
