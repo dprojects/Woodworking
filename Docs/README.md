@@ -174,6 +174,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * option to copy rotated object with correct offset (magicMove)
     * quick shot to show or hide measurements (showMeasurements)
     * arrange icons to fit to laptop screen 
     * magicView offset resize for better TechDraw export (magicView)
@@ -596,6 +597,9 @@ This tool allows to preview panel before creation. It allows to see panel at sin
   * `Link` if you only want to generate a cut-list and do no further processing on this object, it will only be a visual representation of the base object, and you will not measure or drill into such an object.
   * `Array` creates parametric array object, it can be useful if you want to have single parametric object instead of many independent objects.
   * `copy to new container` next element will be copied to new `LinkGroup` container. If you click the button this will turn into disabled and will be waiting for new copy created to avoid double clicks.
+  * `Object type` allows you to change anchor for rotated objects:
+    * `normal` this should be used for regular objects along coordinate axes X, Y, Z. For rotated object please use `rotated` option, `Copy by Edge` or `Copy by Path`.
+    * `rotated` if the object is rotated the occupied space calculated from vertices along coordinate axis will be different, so the space between edges will be bigger because the rotated object have bigger size. The `rotated` allows you to force size calculation directly from object.
   * `Copy offset` this is offset between objects but calculated from objects sides. If this is set to 0 the next element will be created without space in relation to the last element.
   * buttons: `X-`, `X+`, `Y-`, `Y+`, `Z-`, `Z+` copy object into the chosen axis direction, there is auto-repeat so you can hold the button to copy objects more quickly.
 

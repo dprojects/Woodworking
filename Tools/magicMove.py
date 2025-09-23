@@ -36,6 +36,12 @@ getMenuIndex3 = {
 	translate('magicMove', 'Clone'): 2 # no comma
 }
 
+# add new items only at the end and change self.sCopyAnchorList
+getMenuIndex4 = {
+	translate('magicMove', 'normal'): 0,
+	translate('magicMove', 'rotated'): 1 # no comma
+}
+
 # ############################################################################
 # Qt Main
 # ############################################################################
@@ -52,6 +58,7 @@ def showQtGUI():
 		gModeType = getMenuIndex1[translate('magicMove', 'Move')]
 		gCopyType = getMenuIndex2[translate('magicMove', 'auto')]
 		gMirrorType = getMenuIndex3[translate('magicMove', 'auto')]
+		gCopyAnchor= getMenuIndex4[translate('magicMove', 'normal')]
 		
 		gInfoPath1 = translate('magicMove', 'Rotation X, Y, Z:')
 		gInfoPath2 = translate('magicMove', 'Next point step:')
@@ -220,13 +227,13 @@ def showQtGUI():
 			# ############################################################################
 			
 			btsize = 50                                    # button size
-			btsize2x = 2 * btsize + 10                     # button size 2x normal
+			btsize2x = 2 * btsize + 5                      # button size 2x normal
 			btoffset = 5                                   # button offset
 			bc1 = area - (2 * btsize) - btoffset + 5       # button column 1
 			bc2 = area - btsize + btoffset + 5             # button column 2
 			
 			tfsize = 80                                    # text field size
-			tfsizeLong = 2 * btsize + 10                   # longer text field size for step
+			tfsizeLong = 2 * btsize + 5                    # longer text field size for step
 			
 			rfs = 50                                       # rotation field size
 			rfo = 5                                        # rotation field offset
@@ -298,6 +305,31 @@ def showQtGUI():
 			# ############################################################################
 			# GUI for Copy
 			# ############################################################################
+			
+			# label
+			self.oCopyAnchorL = QtGui.QLabel(translate('magicMove', 'Object type:'), self)
+			self.oCopyAnchorL.setFixedWidth(btsize2x)
+			
+			# not write here, copy text from getMenuIndex4 to avoid typo
+			self.oCopyAnchorList = (
+				translate('magicMove', 'normal'), 
+				translate('magicMove', 'rotated') # no comma
+			)
+			
+			self.oCopyAnchorS = QtGui.QComboBox(self)
+			self.oCopyAnchorS.addItems(self.oCopyAnchorList)
+			self.oCopyAnchorS.setCurrentIndex(0) # default
+			self.oCopyAnchorS.textActivated[str].connect(self.setCopyAnchor)
+			self.oCopyAnchorS.setMinimumWidth(tfsizeLong)
+
+			# label
+			self.oCopyStepL = QtGui.QLabel(translate('magicMove', 'Copy offset:'), self)
+			self.oCopyStepL.setFixedWidth(btsize2x)
+			
+			# text input
+			self.oCopyStepE = QtGui.QLineEdit(self)
+			self.oCopyStepE.setText(MagicPanels.unit2gui(100))
+			self.oCopyStepE.setFixedWidth(tfsizeLong)
 
 			# label
 			self.oCopy1L = QtGui.QLabel(translate('magicMove', 'Copy along X:'), self)
@@ -343,15 +375,6 @@ def showQtGUI():
 			self.oCopy3B2.clicked.connect(self.setCopyZ2)
 			self.oCopy3B2.setFixedWidth(btsize)
 			self.oCopy3B2.setAutoRepeat(True)
-			
-			# label
-			self.oCopyStepL = QtGui.QLabel(translate('magicMove', 'Copy offset:'), self)
-			self.oCopyStepL.setFixedWidth(100)
-			
-			# text input
-			self.oCopyStepE = QtGui.QLineEdit(self)
-			self.oCopyStepE.setText(MagicPanels.unit2gui(100))
-			self.oCopyStepE.setFixedWidth(tfsizeLong)
 			
 			# ############################################################################
 			# GUI for Move to Equal
@@ -415,6 +438,14 @@ def showQtGUI():
 			self.cbe1L.setMaximumWidth(area-100)
 			
 			# label
+			self.cbe5L = QtGui.QLabel(translate('magicMove', 'Additional offset:'), self)
+
+			# text input
+			self.cbe5E = QtGui.QLineEdit(self)
+			self.cbe5E.setText(MagicPanels.unit2gui(0))
+			self.cbe5E.setFixedWidth(tfsizeLong)
+
+			# label
 			self.cbe2L = QtGui.QLabel(translate('magicMove', 'Copy along X:'), self)
 
 			# button
@@ -440,14 +471,6 @@ def showQtGUI():
 			self.cbe4B.clicked.connect(self.createCopyByEdgeZ)
 			self.cbe4B.setFixedWidth(btsize2x)
 			self.cbe4B.setAutoRepeat(False)
-
-			# label
-			self.cbe5L = QtGui.QLabel(translate('magicMove', 'Additional offset:'), self)
-
-			# text input
-			self.cbe5E = QtGui.QLineEdit(self)
-			self.cbe5E.setText(MagicPanels.unit2gui(0))
-			self.cbe5E.setFixedWidth(tfsizeLong)
 
 			# ############################################################################
 			# GUI for Path
@@ -642,28 +665,39 @@ def showQtGUI():
 			self.groupBodyMove.setLayout(self.layoutBodyMove)
 			
 			# body - copy
-			self.layoutBodyCopy = QtGui.QVBoxLayout()
+			self.rowc1 = QtGui.QHBoxLayout()
+			self.rowc1.addWidget(self.oCopyAnchorL)
+			self.rowc1.addStretch()
+			self.rowc1.addWidget(self.oCopyAnchorS)
+			
+			self.rowc2 = QtGui.QHBoxLayout()
+			self.rowc2.addWidget(self.oCopyStepL)
+			self.rowc2.addStretch()
+			self.rowc2.addWidget(self.oCopyStepE)
+			
+			self.rowc3 = QtGui.QHBoxLayout()
+			self.rowc3.addWidget(self.oCopy1L)
+			self.rowc3.addWidget(self.oCopy1B1)
+			self.rowc3.addWidget(self.oCopy1B2)
+			
+			self.rowc4 = QtGui.QHBoxLayout()
+			self.rowc4.addWidget(self.oCopy2L)
+			self.rowc4.addWidget(self.oCopy2B1)
+			self.rowc4.addWidget(self.oCopy2B2)
+			
 			self.rowc5 = QtGui.QHBoxLayout()
-			self.rowc5.addWidget(self.oCopy1L)
-			self.rowc5.addWidget(self.oCopy1B1)
-			self.rowc5.addWidget(self.oCopy1B2)
+			self.rowc5.addWidget(self.oCopy3L)
+			self.rowc5.addWidget(self.oCopy3B1)
+			self.rowc5.addWidget(self.oCopy3B2)
+			
+			self.layoutBodyCopy = QtGui.QVBoxLayout()
+			self.layoutBodyCopy.addLayout(self.rowc1)
+			self.layoutBodyCopy.addLayout(self.rowc2)
+			self.layoutBodyCopy.addSpacing(15)
+			self.layoutBodyCopy.addLayout(self.rowc3)
+			self.layoutBodyCopy.addLayout(self.rowc4)
 			self.layoutBodyCopy.addLayout(self.rowc5)
-			self.rowc6 = QtGui.QHBoxLayout()
-			self.rowc6.addWidget(self.oCopy2L)
-			self.rowc6.addWidget(self.oCopy2B1)
-			self.rowc6.addWidget(self.oCopy2B2)
-			self.layoutBodyCopy.addLayout(self.rowc6)
-			self.rowc7 = QtGui.QHBoxLayout()
-			self.rowc7.addWidget(self.oCopy3L)
-			self.rowc7.addWidget(self.oCopy3B1)
-			self.rowc7.addWidget(self.oCopy3B2)
-			self.layoutBodyCopy.addLayout(self.rowc7)
-			self.layoutBodyCopy.addSpacing(5)
-			self.rowc8 = QtGui.QHBoxLayout()
-			self.rowc8.addWidget(self.oCopyStepL)
-			self.rowc8.addStretch()
-			self.rowc8.addWidget(self.oCopyStepE)
-			self.layoutBodyCopy.addLayout(self.rowc8)
+			
 			self.groupBodyCopy = QtGui.QGroupBox(None, self)
 			self.groupBodyCopy.setLayout(self.layoutBodyCopy)
 			self.groupBodyCopy.hide()
@@ -701,30 +735,35 @@ def showQtGUI():
 			self.groupBodyMTE.hide()
 			
 			# body - copy by edge
+			self.row1CE = QtGui.QHBoxLayout()
+			self.row1CE.setAlignment(QtGui.Qt.AlignLeft)
+			self.row1CE.addWidget(self.cbe1B)
+			self.row1CE.addWidget(self.cbe1L)
+			
+			self.row2CE = QtGui.QHBoxLayout()
+			self.row2CE.addWidget(self.cbe5L)
+			self.row2CE.addWidget(self.cbe5E)
+		
+			self.row3CE = QtGui.QHBoxLayout()
+			self.row3CE.addWidget(self.cbe2L)
+			self.row3CE.addWidget(self.cbe2B)
+			
+			self.row4CE = QtGui.QHBoxLayout()
+			self.row4CE.addWidget(self.cbe3L)
+			self.row4CE.addWidget(self.cbe3B)
+			
+			self.row5CE = QtGui.QHBoxLayout()
+			self.row5CE.addWidget(self.cbe4L)
+			self.row5CE.addWidget(self.cbe4B)
+
 			self.layoutBodyCBE = QtGui.QVBoxLayout()
-			self.row16 = QtGui.QHBoxLayout()
-			self.row16.setAlignment(QtGui.Qt.AlignLeft)
-			self.row16.addWidget(self.cbe1B)
-			self.row16.addWidget(self.cbe1L)
-			self.layoutBodyCBE.addLayout(self.row16)
-			self.layoutBodyCBE.addSpacing(20)
-			self.row17 = QtGui.QHBoxLayout()
-			self.row17.addWidget(self.cbe2L)
-			self.row17.addWidget(self.cbe2B)
-			self.layoutBodyCBE.addLayout(self.row17)
-			self.row18 = QtGui.QHBoxLayout()
-			self.row18.addWidget(self.cbe3L)
-			self.row18.addWidget(self.cbe3B)
-			self.layoutBodyCBE.addLayout(self.row18)
-			self.row19 = QtGui.QHBoxLayout()
-			self.row19.addWidget(self.cbe4L)
-			self.row19.addWidget(self.cbe4B)
-			self.layoutBodyCBE.addLayout(self.row19)
-			self.layoutBodyCBE.addSpacing(5)
-			self.row20 = QtGui.QHBoxLayout()
-			self.row20.addWidget(self.cbe5L)
-			self.row20.addWidget(self.cbe5E)
-			self.layoutBodyCBE.addLayout(self.row20)
+			self.layoutBodyCBE.addLayout(self.row1CE)
+			self.layoutBodyCBE.addLayout(self.row2CE)
+			self.layoutBodyCBE.addSpacing(15)
+			self.layoutBodyCBE.addLayout(self.row3CE)
+			self.layoutBodyCBE.addLayout(self.row4CE)
+			self.layoutBodyCBE.addLayout(self.row5CE)
+			
 			self.groupBodyCBE = QtGui.QGroupBox(None, self)
 			self.groupBodyCBE.setLayout(self.layoutBodyCBE)
 			self.groupBodyCBE.hide()
@@ -1205,9 +1244,13 @@ def showQtGUI():
 				# set colors to copy from selected object
 				MagicPanels.copyColors(o, copy)
 				
-				# not use getSizes because you need occupied space along axis
-				[ sizeX, sizeY, sizeZ ] = MagicPanels.getSizesFromVertices(o)
-				
+				# from vertices for normal because you need occupied space along axis
+				# or getSizes for rotated
+				if self.gCopyAnchor == 0:
+					[ sizeX, sizeY, sizeZ ] = MagicPanels.getSizesFromVertices(o)
+				if self.gCopyAnchor == 1:
+					[ sizeX, sizeY, sizeZ ] = MagicPanels.getSizes(o)
+					
 				# calculate offset
 				step = MagicPanels.unit2value(self.oCopyStepE.text())
 				key = str(o.Name)
@@ -1772,6 +1815,10 @@ def showQtGUI():
 		# ############################################################################
 		def setMirrorType(self, selectedText):
 			self.gMirrorType = getMenuIndex3[selectedText]
+		
+		# ############################################################################
+		def setCopyAnchor(self, selectedText):
+			self.gCopyAnchor = getMenuIndex4[selectedText]
 		
 		# ############################################################################
 		def setMoveX1(self):
