@@ -96,6 +96,7 @@ def getItems(iType):
 			"Std_Print",
 			"sheet2export",
 			"showOccupiedSpace",
+			"showMeasurements",
 			"magicMeasure"
 		]
 

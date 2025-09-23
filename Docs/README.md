@@ -73,6 +73,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 		* [Video tutorials & Documentation](#video-tutorials-&-documentation)
 	* [sheet2export](#sheet2export)
 	* [showOccupiedSpace](#showoccupiedspace)
+	* [showMeasurements](#showmeasurements)
 	* [magicMeasure](#magicmeasure)
 * [Decoration](#decoration)
 	* [magicColors](#magiccolors)
@@ -173,6 +174,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * quick shot to show or hide measurements (showMeasurements)
     * arrange icons to fit to laptop screen 
     * magicView offset resize for better TechDraw export (magicView)
     * magicGlue label fix (magicGlue)
@@ -1050,6 +1052,12 @@ By default the values at report are rounded to have more clear listing. Rounding
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showOccupiedSpace.png"> This tool allows you to calculate the overall occupied space in 3D by the selected parts or whole model, if nothing is selected. This approach might be very useful at furniture designing process. For example you can see how much space in your room will take opened front of the furniture or how much space take selected parts of the furniture. Normally, all the `Pad` or `Cube` elements, should be created according to the `XYZ` plane, so there will be no difference between the real dimensions and occupied space in 3D.
 
 <br><br><br>
+
+## showMeasurements
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showMeasurements.png"> This tool allows you to quickly create or remove measurements for all simple objects. The objects that will be dimensioned are `Part :: Box` and `PartDesign :: Pad`. For each such object, the list of edges will be searched and all linear edges of various dimensions will be described with a measurement. The text size depends on the distance, so small dimensions like `18 mm` thick may not be visible from a distance. This tool is a typical **quick shot** that allows you to quickly enable or disable measurements for objects. Because there are so many dimensions, it should be used primarily with [magicView](#magicview) and primarily for `X`, `Y`, `Z`, or `explode` views. For each such measurement object there is special attribute named `Remove` set by default to `True`. So if you click the icon again such measurement will be removed. If you want to keep such measurement, just set this `Remove` attribute to `False`. Also the measurements created via this tool are parametric. So you can change views in [magicView](#magicview) and the measurements will follow the changes.
+
+<br><br>
 
 ## magicMeasure
 

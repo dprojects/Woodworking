@@ -4352,21 +4352,28 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8)
 		# create measurement object
 		distance = round(vectorStart.distanceToPoint(vectorEnd), gRoundPrecision)
 		m = Draft.make_linear_dimension(vectorStart, vectorEnd)
+		
+		try:
+			prefix = translate("showMeasure", "Measure") + ", "
+			m.Label = prefix + str(distance) + ", " + str(iObject1.Label) + " "
+		except:
+			skip = 1
+		
 		m.recompute()
 		
 		# set offset from object
 		offsetSize = distance / 9
-		o1Center = ""
-		o2Center = ""
-		try:
-			o1Center = iObject1.Shape.CenterOfGravity
-			o1Center = iObject1.Shape.CenterOfMass
-			o2Center = iObject2.Shape.CenterOfGravity
-			o2Center = iObject2.Shape.CenterOfMass
-		except:
-			skip = 1
 		
-		if o1Center != "" and o2Center != "":
+		# try to set iObject1
+		o1Center = ""
+		if hasattr(iObject1.Shape, "CenterOfMass"):
+			o1Center = iObject1.Shape.CenterOfMass
+		else:
+			if hasattr(iObject1.Shape, "CenterOfGravity"):
+				o1Center = iObject1.Shape.CenterOfGravity
+		
+		# try to position text only if there is access to center of the first selected object
+		if o1Center != "":
 			
 			plane = getVectorsPlane(vectorStart, vectorEnd)
 			
@@ -4491,25 +4498,25 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8)
 	
 	# set show attribute for cut-list
 	if not hasattr(m, "Woodworking_BOM"):
-		info = translate("MagicPanels", "Allows to skip measurement at BOM, cut-list report.")
+		info = translate("showMeasure", "Allows to skip measurement at BOM, cut-list report.")
 		m.addProperty("App::PropertyBool", "Woodworking_BOM", "Woodworking", info)
 		m.Woodworking_BOM = True
 
 	# set correct object type
 	if not hasattr(m, "Woodworking_Type"):
-		info = translate("MagicPanels", "Measurement object type.")
+		info = translate("showMeasure", "Measurement object type.")
 		m.addProperty("App::PropertyString", "Woodworking_Type", "Woodworking", info)
 		m.Woodworking_Type = "Measurement"
 
 	# set reference for selection 1
 	if not hasattr(m, "Woodworking_Ref1"):
-		info = translate("MagicPanels", "Reference for selection 1.")
+		info = translate("showMeasure", "Reference for selection 1.")
 		m.addProperty("App::PropertyString", "Woodworking_Ref1", "Woodworking", info)
 		m.Woodworking_Ref1 = ref1
 	
 	# set reference for selection 2
 	if not hasattr(m, "Woodworking_Ref2"):
-		info = translate("MagicPanels", "Reference for selection 2.")
+		info = translate("showMeasure", "Reference for selection 2.")
 		m.addProperty("App::PropertyString", "Woodworking_Ref2", "Woodworking", info)
 		m.Woodworking_Ref2 = ref2
 
