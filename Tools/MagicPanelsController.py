@@ -468,43 +468,31 @@ def panelMove(iType):
 				sizes.sort()
 				thick = sizes[0]
 			
-			x = 0
-			y = 0
-			z = 0
+			offsetX = 0
+			offsetY = 0
+			offsetZ = 0
 			
 			if iType == "Xp":
-				x = thick
+				offsetX = thick
 			
 			if iType == "Xm":
-				x = - thick
+				offsetX = - thick
 
 			if iType == "Yp":
-				y = thick
+				offsetY = thick
 
 			if iType == "Ym":
-				y = - thick
+				offsetY = - thick
 
 			if iType == "Zp":
-				z = thick
+				offsetZ = thick
 
 			if iType == "Zm":
-				z = - thick
+				offsetZ = - thick
 
-			try:
-				[ x, y, z ] = MagicPanels.convertPosition(o, x, y, z)
-			except:
-				skip = 1
-				
-			[ x, y, z ] = MagicPanels.getModelRotation(x, y, z)
-
-			toMove = o
-			try:
-				toMove = o._Body
-			except:
-				skip = 1
-			
-			[ px, py, pz, r ] = MagicPanels.getPlacement(toMove)
-			MagicPanels.setPlacement(toMove, px+x, py+y, pz+z, r)
+			toMove = MagicPanels.getObjectToMove(o)
+			[ offsetX, offsetY, offsetZ ] = MagicPanels.getModelRotation(offsetX, offsetY, offsetZ)
+			MagicPanels.setPosition(toMove, offsetX, offsetY, offsetZ, "offset")
 
 			FreeCAD.ActiveDocument.recompute()
 			FreeCAD.ActiveDocument.commitTransaction()

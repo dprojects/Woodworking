@@ -4,13 +4,12 @@ import MagicPanels
 translate = FreeCAD.Qt.translate
 
 try:
-
 	objects = FreeCAD.ActiveDocument.Objects
 
 	# first remove all old measurements
 	removed = 0
 	for o in objects:
-		if hasattr(o, "Woodworking_Type"):
+		if hasattr(o, "Woodworking_Type") and hasattr(o, "Woodworking_Remove"):
 			if o.Woodworking_Type == "Measurement":
 				if o.Woodworking_Remove == True:
 					FreeCAD.ActiveDocument.removeObject(str(o.Name))
@@ -56,9 +55,10 @@ try:
 				edgeIndex = MagicPanels.getEdgeIndex(o, e)
 				edgeName = "Edge"+str(edgeIndex)
 				index = edgeIndex - 1
+				toMove = MagicPanels.getObjectToMove(o)
 				
 				# show
-				m = MagicPanels.showMeasure(v1, v2, o, o, edgeName, edgeName, 4)
+				m = MagicPanels.showMeasure(v1, v2, toMove, toMove, edgeName, edgeName, 4)
 				
 				# add remove attribute for next click
 				if not hasattr(m, "Woodworking_Remove"):
