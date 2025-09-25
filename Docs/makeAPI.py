@@ -14,7 +14,6 @@ openHeader = False
 openFunction = False
 openComment = False
 openGlobals = False
-openGitHub = False
 out = ""
 
 for line in data:
@@ -47,12 +46,6 @@ for line in data:
 			if openFunction == True:
 				openFunction = False
 	
-	if openGitHub == True:
-		openGitHub = False
-	
-	if line.find("# >") != -1:
-		openGitHub = True
-
 	# create output section
 	
 	if openGlobals == True:
@@ -64,7 +57,16 @@ for line in data:
 			out = out.replace("# ","`: ")
 			out = "*" + " `" + out
 			api.append(out)
-	
+		
+		if line.find("# >") != -1:
+			out = line
+			out = out.replace("\n","")
+			out = out.replace("   ","")
+			out = out.replace("  ","")
+			out = out.replace("# > [!","\n# > [!")
+			out = out.replace("# >",">")
+			api.append(out)
+			
 	if openHeader == True:
 		if line.find("# #######") == -1:
 			out = line
@@ -73,23 +75,25 @@ for line in data:
 			out = out.replace("'''","")
 			api.append(out)
 	
-	if openFunction == True and openGitHub == False:
-		out = line
-		out = out.replace("'''","")
-		out = out.replace("\n","")
-		out = out.replace("def ","### ")
-		out = out.replace("\tDescription:","##### Description:")
-		out = out.replace("\tArgs:","##### Args:")
-		out = out.replace("\tUsage:","##### Usage:")
-		out = out.replace("\tResult:","##### Result:")
-		api.append(out)
-		
-	if openGitHub == True:
-		out = line
-		out = out.replace("\n","")
-		out = out.replace("\s*# >",">")
-		api.append(out)
-	
+	if openFunction == True:
+		if line.find("# >") != -1:
+			out = line
+			out = out.replace("# > [!","\n# > [!")
+			out = out.replace("# >","\n>")
+			out = out.replace("   ","")
+			out = out.replace("  ","")
+			out = out.replace("\n","")
+			api.append(out)
+		else:
+			out = line
+			out = out.replace("'''","")
+			out = out.replace("\n","")
+			out = out.replace("def ","### ")
+			out = out.replace("\tDescription:","##### Description:")
+			out = out.replace("\tArgs:","##### Args:")
+			out = out.replace("\tUsage:","##### Usage:")
+			out = out.replace("\tResult:","##### Result:")
+			api.append(out)
 	
 for txt in api:
 	print(txt)
