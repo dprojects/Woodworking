@@ -82,8 +82,9 @@ def getSelectedSubs(iConvert="no"):
 		This function returns object for selected sub-object (face, edge, vertex) and 
 		solves the problem you have sub-object and you do not know what is the object. 
 
-		NOTE: This function not keep the subs selection order in return because it is driven 
-		by objects selection order.
+		# > [!NOTE]
+		# > This function not keep the subs selection order in return because it is driven 
+		# > by objects selection order.
 		
 	Args:
 	
@@ -1666,8 +1667,9 @@ def getFaceDetails(iObj, iFace):
 		[ "XY", "edge" ] - if the direction is XY and it is edge, there is thickness edge
 		[ "XY", "equal" ] - if the direction is XY and both edges are equal
 		
-		Note: The first argument can be "XY", "YX", "XZ", "ZX", "YZ", "ZY". 
-		This is related to face not to object. The object direction will be different.
+		# > [!NOTE]
+		# > The first argument can be "XY", "YX", "XZ", "ZX", "YZ", "ZY". 
+		# > This is related to face not to object. The object direction will be different.
 		
 	'''
 
@@ -1748,8 +1750,9 @@ def getFaceToCube(iFace, iDepth, iOffset=0):
 	
 		Create dimensions for simple cube Part::Box object which cover the face with offset.
 		
-		NOTE: The dimensions are for XY panel without rotation. So if you want to replace 
-		such object later you need correct rotation in base object.
+		# > [!NOTE]
+		# > The dimensions are for XY panel without rotation. So if you want to replace 
+		# > such object later you need correct rotation in base object.
 		
 	Args:
 	
@@ -2080,7 +2083,8 @@ def setVertexPadding(iObj, iVertex, iPadding, iAxis):
 		Sets padding offset from given vertex to inside the object.
 		Do not use it at getPlacement for Pads. Use 0 vertex instead.
 		
-		Note: This need to be improved.
+		# > [!NOTE]
+		# > This need to be improved.
 	
 	Args:
 	
@@ -3253,10 +3257,11 @@ def getObjectCenter(iObj):
 	
 		Returns center of the object.
 	
-		Note: This function will be updated later with more reliable 
-		way of getting center of the object, also for LinkGroup and other containers. 
-		Now it returns Shape.CenterOfMass for the object and it is not the same 
-		as center of the object.
+		# > [!NOTE]
+		# > This function will be updated later with more reliable 
+		# > way of getting center of the object, also for LinkGroup and other containers. 
+		# > Now it returns Shape.CenterOfMass for the object and it is not the same 
+		# > as center of the object.
 	
 	Args:
 	
@@ -3561,16 +3566,17 @@ def moveToFirst(iObjects, iSelection):
 
 		Move objects iObjects to first LinkGroup container for iSelection object.
 		
-		Note: This function removes the offset that should have been added earlier. Why not just copy without offset?
-		If you have 2 objects in separate containers and the second object is only moved via the container Placement, 
-		then from FreeCAD point the objects are in the same place. So you won't be able to compute space between 
-		objects in these containers. FreeCAD uses local positions. It's good because you can calculate many things 
-		without using advanced formulas. Adding an offset and removing it later is a trick for easier calculations.
-
-		You can convert all vertices to global, but in this case you won't be able to determine the plane correctly 
-		in an easy way, for example the vertices on an edge would no longer be along the same coordinate axis, 
-		and thus you'd have to use advanced formulas. It can be done with a trick, but maybe something like 
-		that will come along later if need be.
+		# > [!NOTE]
+		# > This function removes the offset that should have been added earlier. Why not just copy without offset?
+		# > If you have 2 objects in separate containers and the second object is only moved via the container Placement, 
+		# > then from FreeCAD point the objects are in the same place. So you won't be able to compute space between 
+		# > objects in these containers. FreeCAD uses local positions. It's good because you can calculate many things 
+		# > without using advanced formulas. Adding an offset and removing it later is a trick for easier calculations.
+		# > 
+		# > You can convert all vertices to global, but in this case you won't be able to determine the plane correctly 
+		# > in an easy way, for example the vertices on an edge would no longer be along the same coordinate axis, 
+		# > and thus you'd have to use advanced formulas. It can be done with a trick, but maybe something like 
+		# > that will come along later if need be.
 
 	Args:
 	
@@ -4223,7 +4229,112 @@ def makePad(iObj, iPadLabel="Pad"):
 
 
 # ###################################################################################################################
-def showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8):
+def createMeasureExpression(iObject1, iObject2, iSubName1, iSubName2):
+	'''
+	Description:
+	
+		This function creates measurement expression. It is used by showMeasure function.
+	
+	Args:
+	
+		iObject1: object for start
+		iObject2: object for end
+		iSubName1: string with sub-object name for start, for example "Vertex1", "Edge1", "Face1"
+		iSubName2: string with sub-object name for end, for example "Vertex1", "Edge1", "Face1"
+		
+	Usage:
+	
+		[ exprSX, exprSY, exprSZ, 
+		exprEX, exprEY, exprEZ ] = MagicPanels.createMeasureExpression(obj1, obj2, "Vertex1", "Face2")
+
+	Result:
+	
+		Create measure expressions for iSubName1 and iSubName2. 
+
+	'''
+
+	sub1Type = ""
+	sub1Index = ""
+	sub1Owner = iObject1
+	sub1Object = sub1Owner.getSubObject(iSubName1)
+	[ sub1OffsetX, sub1OffsetY, sub1OffsetZ, r1 ] = getContainersOffset(sub1Owner)
+	
+	sub2Type = ""
+	sub2Index = ""
+	sub2Owner = iObject2
+	sub2Object = sub2Owner.getSubObject(iSubName2)
+	[ sub2OffsetX, sub2OffsetY, sub2OffsetZ, r2 ] = getContainersOffset(sub2Owner)
+	
+	if iSubName1.startswith("Edge"):
+		sub1Type = "Edge"
+		sub1Index = int(iSubName1.replace("Edge",""))-1
+	
+		if hasattr(sub1Object, "Curve"):
+			
+			if sub1Object.Curve.isDerivedFrom("Part::GeomLine"):
+				exprSX = "<<" + str(sub1Owner.Label) + ">>.Shape.Edges[" + str(sub1Index) + "].Vertex"+"es[0].X + " + str(sub1OffsetX)
+				exprSY = "<<" + str(sub1Owner.Label) + ">>.Shape.Edges[" + str(sub1Index) + "].Vertex"+"es[0].Y + " + str(sub1OffsetY)
+				exprSZ = "<<" + str(sub1Owner.Label) + ">>.Shape.Edges[" + str(sub1Index) + "].Vertex"+"es[0].Z + " + str(sub1OffsetZ)
+		
+			if sub1Object.Curve.isDerivedFrom("Part::GeomCircle") or sub1Object.Curve.isDerivedFrom("Part::GeomEllipse"):
+				exprSX = "<<" + str(sub1Owner.Label) + ">>.Shape.Edges[" + str(sub1Index) + "].Curve.Location.x + " + str(sub1OffsetX)
+				exprSY = "<<" + str(sub1Owner.Label) + ">>.Shape.Edges[" + str(sub1Index) + "].Curve.Location.y + " + str(sub1OffsetY)
+				exprSZ = "<<" + str(sub1Owner.Label) + ">>.Shape.Edges[" + str(sub1Index) + "].Curve.Location.z + " + str(sub1OffsetZ)
+
+	if iSubName2.startswith("Edge"):
+		sub2Type = "Edge"
+		sub2Index = int(iSubName2.replace("Edge",""))-1
+		
+		if hasattr(sub2Object, "Curve"):
+			
+			if sub2Object.Curve.isDerivedFrom("Part::GeomLine"):
+				exprEX = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].Vertex"+"es[1].X + " + str(sub2OffsetX)
+				exprEY = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].Vertex"+"es[1].Y + " + str(sub2OffsetY)
+				exprEZ = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].Vertex"+"es[1].Z + " + str(sub2OffsetZ)
+
+			if sub2Object.Curve.isDerivedFrom("Part::GeomCircle") or sub2Object.Curve.isDerivedFrom("Part::GeomEllipse"):
+				exprEX = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].Curve.Location.x + " + str(sub2OffsetX)
+				exprEY = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].Curve.Location.y + " + str(sub2OffsetY)
+				exprEZ = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].Curve.Location.z + " + str(sub2OffsetZ)
+	
+	if iSubName1.startswith("Vertex"):
+		sub1Type = "Vertex"
+		sub1Index = int(iSubName1.replace("Vertex",""))-1
+	
+		exprSX = "<<" + str(sub1Owner.Label) + ">>.Shape.Vertex"+"es[" + str(sub1Index) + "].X + " + str(sub1OffsetX)
+		exprSY = "<<" + str(sub1Owner.Label) + ">>.Shape.Vertex"+"es[" + str(sub1Index) + "].Y + " + str(sub1OffsetY)
+		exprSZ = "<<" + str(sub1Owner.Label) + ">>.Shape.Vertex"+"es[" + str(sub1Index) + "].Z + " + str(sub1OffsetZ)
+	
+	if iSubName2.startswith("Vertex"):
+		sub2Type = "Vertex"
+		sub2Index = int(iSubName2.replace("Vertex",""))-1
+	
+		exprEX = "<<" + str(sub2Owner.Label) + ">>.Shape.Vertex"+"es[" + str(sub2Index) + "].X + " + str(sub2OffsetX)
+		exprEY = "<<" + str(sub2Owner.Label) + ">>.Shape.Vertex"+"es[" + str(sub2Index) + "].Y + " + str(sub2OffsetY)
+		exprEZ = "<<" + str(sub2Owner.Label) + ">>.Shape.Vertex"+"es[" + str(sub2Index) + "].Z + " + str(sub2OffsetZ)
+	
+	if iSubName2.startswith("Face"):
+		sub2Type = "Face"
+		sub2Index = int(iSubName2.replace("Face",""))-1
+	
+		exprEX = exprSX
+		exprEY = exprSY
+		exprEZ = exprSZ
+		
+		plane = getFacePlane(sub2Object)
+		
+		if plane == "YZ":
+			exprEX = "<<" + str(sub2Owner.Label) + ">>.Shape.Faces[" + str(sub2Index) + "].CenterOfMass.x + " + str(sub2OffsetX)
+		if plane == "XZ":
+			exprEY = "<<" + str(sub2Owner.Label) + ">>.Shape.Faces[" + str(sub2Index) + "].CenterOfMass.y + " + str(sub2OffsetY)
+		if plane == "XY":
+			exprEZ = "<<" + str(sub2Owner.Label) + ">>.Shape.Faces[" + str(sub2Index) + "].CenterOfMass.z + " + str(sub2OffsetZ)
+		
+	return [ exprSX, exprSY, exprSZ, exprEX, exprEY, exprEZ ]
+
+
+# ###################################################################################################################
+def showMeasure(iP1, iP2, iObject1="", iObject2="", iSubName1="", iSubName2="", iType=0, iParametric="no"):
 	'''
 	Description:
 	
@@ -4235,8 +4346,8 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8)
 		iP2: FreeCAD.Vector(x, y, z), Vertex object, or array with floats, for end
 		iObject1 (optional): object for iP1
 		iObject2 (optional): object for iP2
-		iSub1 (optional): string with sub-object name for iP1, for example "Vertex1", "Edge1", "Face1"
-		iSub2 (optional): string with sub-object name for iP2, for example "Vertex1", "Edge1", "Face1"
+		iSubName1 (optional): string with sub-object name for iP1, for example "Vertex1", "Edge1", "Face1"
+		iSubName2 (optional): string with sub-object name for iP2, for example "Vertex1", "Edge1", "Face1"
 		iType (optional): integer:
 			* 0: to show measurement as PartDesign object
 			* 1: to show measurement as Draft object (green color)
@@ -4247,14 +4358,23 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8)
 			* 6: to show measurement as Draft object (art handwrite yellow color)
 			* 7: to show measurement as Draft object (art handwrite black color)
 			* 8: to show measurement as Draft object (art handwrite red color)
+		iParametric (optional): string:
+			* "no" (default): you have to add iP1 and iP2 and the measurement will not be parametric
+			* "yes": you have to add iObject1, iObject2, iSubName1, iSubName2, and the measurement will be parametric
 
+		# > [!NOTE]
+		# > The iP1, iP2 should be global and are mandatory, because I do not want to everload this function
+		# > with global position calculation from SubName for any type.
+		# > If you want to have dimline position you have to add iObject1 and iSubName1 as well.
+		# > The iObject2, iSubName2 is needed only for parametric version and reference info.
+		
 	Usage:
 	
 		p1 = [0, 0, 0]
 		p2 = [100, 0, 0]
 
 		m = MagicPanels.showMeasure(p1, p2)
-		m = MagicPanels.showMeasure(p1, p2, obj1, obj2, "Vertex1", "Face2", 4)
+		m = MagicPanels.showMeasure(p1, p2, obj1, obj2, "Vertex1", "Face2", 4, "yes")
 
 	Result:
 	
@@ -4291,7 +4411,7 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8)
 			skip = 1
 	
 	if vectorStart == "" or vectorEnd == "":
-		return "not supported type"
+		return "you have to add correct iP1 and iP2"
 		
 	# #############################################################################
 	# to show measurement as PartDesign object
@@ -4361,8 +4481,11 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8)
 		
 		m.recompute()
 		
-		# set offset from object
-		offsetSize = distance / 9
+		# set dimline offset from object
+		dimlineOffset = distance / 9
+		dimlineOffsetX = 0
+		dimlineOffsetY = 0
+		dimlineOffsetZ = 0
 		
 		# try to set iObject1
 		o1Center = ""
@@ -4375,16 +4498,19 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8)
 		# try to position text only if there is access to center of the first selected object
 		if o1Center != "":
 			
+			[ o1Center ] = getVerticesPosition([ o1Center ], iObject1, "vector")
 			plane = getVectorsPlane(vectorStart, vectorEnd)
 			
 			if plane == "X":
 				
 				if o1Center.z > vectorStart.z:
-					offsetSize = - offsetSize
-					
-				m.Dimline = (vectorStart.x, vectorStart.y, vectorStart.z + offsetSize)
+					dimlineOffsetZ = - dimlineOffset
+				else:
+					dimlineOffsetZ = dimlineOffset
+
+				m.Dimline = (vectorStart.x, vectorStart.y, vectorStart.z + dimlineOffsetZ)
 				m.Normal = FreeCAD.Vector(1, -1, 0)
-				
+			
 				if vectorStart.x < vectorEnd.x:
 					m.ViewObject.FlipText = False
 				else:
@@ -4393,26 +4519,30 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8)
 			if plane == "Y":
 				
 				if o1Center.z > vectorStart.z:
-					offsetSize = - offsetSize
-					
-				m.Dimline = (vectorStart.x, vectorStart.y, vectorStart.z + offsetSize)
+					dimlineOffsetZ = - dimlineOffset
+				else:
+					dimlineOffsetZ = dimlineOffset
+
+				m.Dimline = (vectorStart.x, vectorStart.y, vectorStart.z + dimlineOffsetZ)
 				m.Normal = FreeCAD.Vector(1, 0, 0)
 
 			if plane == "Z":
 				
 				if o1Center.x > vectorStart.x:
-					offsetSize = - offsetSize
-					
-				m.Dimline = (vectorStart.x + offsetSize, vectorStart.y, vectorStart.z)
+					dimlineOffsetX = - dimlineOffset
+				else:
+					dimlineOffsetX = dimlineOffset
+
+				m.Dimline = (vectorStart.x + dimlineOffsetX, vectorStart.y, vectorStart.z)
 				m.Normal = FreeCAD.Vector(0, -1, 1)
 				
 				if vectorStart.z < vectorEnd.z:
-					if o1Center.x < vectorStart.x + offsetSize:
+					if o1Center.x < vectorStart.x + dimlineOffsetX:
 						m.ViewObject.FlipText = True
 					else:
 						m.ViewObject.FlipText = False
 				else:
-					if o1Center.x < vectorStart.x + offsetSize:
+					if o1Center.x < vectorStart.x + dimlineOffsetX:
 						m.ViewObject.FlipText = False
 					else:
 						m.ViewObject.FlipText = True
@@ -4494,11 +4624,11 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8)
 	ref1 = ""
 	ref2 = ""
 	
-	if iObject1 != "" and iSub1 != "":
-		ref1 = str(iObject1.Name) + ", " + str(iSub1)
+	if iObject1 != "" and iSubName1 != "":
+		ref1 = str(iObject1.Name) + ", " + str(iSubName1)
 	
-	if iObject2 != "" and iSub2 != "":
-		ref2 = str(iObject2.Name) + ", " + str(iSub2)
+	if iObject2 != "" and iSubName2 != "":
+		ref2 = str(iObject2.Name) + ", " + str(iSubName2)
 	
 	if ref1 != "" or ref2 != "":
 		m.Label2 = ref1 + " ---> " + ref2
@@ -4530,6 +4660,42 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSub1="", iSub2="", iType=8)
 		info = translate("showMeasure", "Reference for selection 2.")
 		m.addProperty("App::PropertyString", "Woodworking_Ref2", "Woodworking", info)
 		m.Woodworking_Ref2 = ref2
+	
+	# add remove attribute for auto-remove purposes
+	if not hasattr(m, "Woodworking_Remove"):
+		info = translate("showMeasurements", "Allows to remove this measurement via script.")
+		m.addProperty("App::PropertyBool", "Woodworking_Remove", "Woodworking", info)
+		m.Woodworking_Remove = False
+
+	# #############################################################################
+	# set measurements parametric
+	# #############################################################################
+	
+	if iParametric == "yes":
+		
+		[ exprSX, exprSY, exprSZ, exprEX, exprEY, exprEZ ] = createMeasureExpression(iObject1, iObject2, iSubName1, iSubName2)
+		
+		if iType == 0:
+			
+			m.setExpression('.Position1.x', exprSX)
+			m.setExpression('.Position1.y', exprSY)
+			m.setExpression('.Position1.z', exprSZ)
+			m.setExpression('.Position2.x', exprEX)
+			m.setExpression('.Position2.y', exprEY)
+			m.setExpression('.Position2.z', exprEZ)
+		
+		if iType >= 1 and iType <= 8:
+			
+			m.setExpression('.Start.x', exprSX)
+			m.setExpression('.Start.y', exprSY)
+			m.setExpression('.Start.z', exprSZ)
+			m.setExpression('.End.x', exprEX)
+			m.setExpression('.End.y', exprEY)
+			m.setExpression('.End.z', exprEZ)
+			
+			m.setExpression('.Dimline.x', '.Start.x + ' + str(dimlineOffsetX) + ' mm')
+			m.setExpression('.Dimline.y', '.Start.y + ' + str(dimlineOffsetY) + ' mm')
+			m.setExpression('.Dimline.z', '.Start.z + ' + str(dimlineOffsetZ) + ' mm')
 
 	# #############################################################################
 	# recompute & return
@@ -4608,7 +4774,8 @@ def unit2gui(iValue):
 
 		unitForUser = MagicPanels.unit2gui(300.55)
 		
-		# Note: if user has set inches units the unitForUser should contains recalculation to inches 
+		# > [!NOTE]
+		# > if user has set inches units the unitForUser should contains recalculation to inches 
 		
 	Result:
 
@@ -4760,7 +4927,8 @@ def unit2fractions(iValue, iPrecision=0, iReduction="no", iPrefix=""):
 		X' represents a whole number of feet. Y represents a whole number of inches and n/d" represents 
 		a fraction of an inch, where n is the numerator and d is the denominator.
 		
-		Note: This function not reduce fraction part by default (keeps the denominator the same as given iPrecision).
+		# > [!NOTE]
+		# > This function not reduce fraction part by default (keeps the denominator the same as given iPrecision).
 
 	Args:
 
@@ -7462,9 +7630,11 @@ def showInfo(iCaller, iInfo, iNote="yes"):
 # ###################################################################################################################
 def moveToParent(iObjects, iSelection):
 	'''
-	# ########################################################################################
-	# THIS FUNCTION IS DEPRECATED !!!
-	# ########################################################################################
+	
+	# > [!CAUTION]
+	# > ########################################################################################
+	# > THIS FUNCTION IS DEPRECATED !!!
+	# > ########################################################################################
 	
 	Description:
 	
@@ -7525,9 +7695,11 @@ def moveToParent(iObjects, iSelection):
 # ###################################################################################################################
 def moveToClean(iObjects, iSelection):
 	'''
-	# ########################################################################################
-	# THIS FUNCTION IS DEPRECATED !!!
-	# ########################################################################################
+	
+	# > [!CAUTION]
+	# > ########################################################################################
+	# > THIS FUNCTION IS DEPRECATED !!!
+	# > ########################################################################################
 	
 	Description:
 	
@@ -7622,9 +7794,11 @@ def moveToClean(iObjects, iSelection):
 # ###################################################################################################################
 def moveToFirstWithInverse(iObjects, iSelection):
 	'''
-	# ########################################################################################
-	# THIS FUNCTION IS DEPRECATED !!!
-	# ########################################################################################
+	
+	# > [!CAUTION]
+	# > ########################################################################################
+	# > THIS FUNCTION IS DEPRECATED !!!
+	# > ########################################################################################
 	
 	Description:
 	
@@ -7705,9 +7879,10 @@ def moveToFirstWithInverse(iObjects, iSelection):
 def adjustClonePosition(iPad, iX, iY, iZ):
 	'''
 	
-	# ########################################################################################
-	# THIS FUNCTION IS DEPRECATED !!!
-	# ########################################################################################
+	# > [!CAUTION]
+	# > ########################################################################################
+	# > THIS FUNCTION IS DEPRECATED !!!
+	# > ########################################################################################
 	
 	Description:
 	
@@ -7745,9 +7920,10 @@ def adjustClonePosition(iPad, iX, iY, iZ):
 def getPlacement(iObj, iType="clean"):
 	'''
 	
-	# ########################################################################################
-	# THIS FUNCTION IS DEPRECATED !!!
-	# ########################################################################################
+	# > [!CAUTION]
+	# > ########################################################################################
+	# > THIS FUNCTION IS DEPRECATED !!!
+	# > ########################################################################################
 	
 	Description:
 	
@@ -7823,9 +7999,10 @@ def getPlacement(iObj, iType="clean"):
 def getGlobalPlacement(iObj, iType="FreeCAD"):
 	'''
 	
-	# ########################################################################################
-	# THIS FUNCTION IS DEPRECATED !!!
-	# ########################################################################################
+	# > [!CAUTION]
+	# > ########################################################################################
+	# > THIS FUNCTION IS DEPRECATED !!!
+	# > ########################################################################################
 	
 	Description:
 	
@@ -7885,9 +8062,10 @@ def getGlobalPlacement(iObj, iType="FreeCAD"):
 def setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
 	'''
 	
-	# ########################################################################################
-	# THIS FUNCTION IS DEPRECATED !!!
-	# ########################################################################################
+	# > [!CAUTION]
+	# > ########################################################################################
+	# > THIS FUNCTION IS DEPRECATED !!!
+	# > ########################################################################################
 	
 	Description:
 	
@@ -7977,9 +8155,10 @@ def setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
 def getSketchPlacement(iSketch, iType):
 	'''
 	
-	# ########################################################################################
-	# THIS FUNCTION IS DEPRECATED !!!
-	# ########################################################################################
+	# > [!CAUTION]
+	# > ########################################################################################
+	# > THIS FUNCTION IS DEPRECATED !!!
+	# > ########################################################################################
 	
 	Description:
 	
@@ -8034,9 +8213,10 @@ def getSketchPlacement(iSketch, iType):
 def setSketchPlacement(iSketch, iX, iY, iZ, iR, iType):
 	'''
 	
-	# ########################################################################################
-	# THIS FUNCTION IS DEPRECATED !!!
-	# ########################################################################################
+	# > [!CAUTION]
+	# > ########################################################################################
+	# > THIS FUNCTION IS DEPRECATED !!!
+	# > ########################################################################################
 	
 	Description:
 	
@@ -8126,9 +8306,10 @@ def setSketchPlacement(iSketch, iX, iY, iZ, iR, iType):
 def getContainerPlacement(iObj, iType="clean"):
 	'''
 	
-	# ########################################################################################
-	# THIS FUNCTION IS DEPRECATED !!!
-	# ########################################################################################
+	# > [!CAUTION]
+	# > ########################################################################################
+	# > THIS FUNCTION IS DEPRECATED !!!
+	# > ########################################################################################
 	
 	Description:
 	
@@ -8222,9 +8403,10 @@ def getContainerPlacement(iObj, iType="clean"):
 def setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="normal"):
 	'''
 	
-	# ########################################################################################
-	# THIS FUNCTION IS DEPRECATED !!!
-	# ########################################################################################
+	# > [!CAUTION]
+	# > ########################################################################################
+	# > THIS FUNCTION IS DEPRECATED !!!
+	# > ########################################################################################
 	
 	Description:
 	

@@ -50,54 +50,19 @@ try:
 			if not key in notSame.keys():
 				
 				# get data
+				toMove = MagicPanels.getObjectToMove(o)
 				[ v1, v2 ] = MagicPanels.getEdgeVertices(e)
 				[ v1, v2 ] = MagicPanels.getVerticesPosition([ v1, v2 ], o, "array")
 				edgeIndex = MagicPanels.getEdgeIndex(o, e)
 				edgeName = "Edge"+str(edgeIndex)
 				index = edgeIndex - 1
-				toMove = MagicPanels.getObjectToMove(o)
 				
-				# show
-				m = MagicPanels.showMeasure(v1, v2, toMove, toMove, edgeName, edgeName, 4)
-				
-				# add remove attribute for next click
-				if not hasattr(m, "Woodworking_Remove"):
-					info = translate("showMeasurements", "Allows to remove this measurement after next tool icon press.")
-					m.addProperty("App::PropertyBool", "Woodworking_Remove", "Woodworking", info)
-					m.Woodworking_Remove = True
+				# show measurement
+				m = MagicPanels.showMeasure(v1, v2, toMove, toMove, edgeName, edgeName, 4, "yes")
+				m.Woodworking_Remove = True
 
-				# add expressions and make it parametric
-				toMove = MagicPanels.getObjectToMove(o)
-				
-				exprSX = "<<" + str(toMove.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[0].X"
-				exprSY = "<<" + str(toMove.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[0].Y"
-				exprSZ = "<<" + str(toMove.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[0].Z"
-				
-				exprEX = "<<" + str(toMove.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[1].X"
-				exprEY = "<<" + str(toMove.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[1].Y"
-				exprEZ = "<<" + str(toMove.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[1].Z"
-				
-				try:
-					m.setExpression('.Start.x', exprSX)
-					m.setExpression('.Start.y', exprSY)
-					m.setExpression('.Start.z', exprSZ)
-					m.setExpression('.End.x', exprEX)
-					m.setExpression('.End.y', exprEY)
-					m.setExpression('.End.z', exprEZ)
-					
-					offsetX = m.Dimline.x - m.Start.x
-					offsetY = m.Dimline.y - m.Start.y
-					offsetZ = m.Dimline.z - m.Start.z
-					m.setExpression('.Dimline.x', '.Start.x + (' + str(offsetX) + ' mm )')
-					m.setExpression('.Dimline.y', '.Start.y + (' + str(offsetY) + ' mm )')
-					m.setExpression('.Dimline.z', '.Start.z + (' + str(offsetZ) + ' mm )')
-					
-				except:
-					skip = 1
-		
 				# mark already show
 				notSame[key] = 1
-			
 
 	FreeCAD.ActiveDocument.recompute()
 

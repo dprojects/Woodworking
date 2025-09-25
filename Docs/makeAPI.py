@@ -50,7 +50,7 @@ for line in data:
 	if openGitHub == True:
 		openGitHub = False
 	
-	if line.startswith("# >") == True:
+	if line.find("# >") != -1:
 		openGitHub = True
 
 	# create output section
@@ -73,7 +73,7 @@ for line in data:
 			out = out.replace("'''","")
 			api.append(out)
 	
-	if openFunction == True:
+	if openFunction == True and openGitHub == False:
 		out = line
 		out = out.replace("'''","")
 		out = out.replace("\n","")
@@ -87,8 +87,7 @@ for line in data:
 	if openGitHub == True:
 		out = line
 		out = out.replace("\n","")
-		out = out.replace("# > [!","\n> [!")
-		out = out.replace("# >",">")
+		out = out.replace("\s*# >",">")
 		api.append(out)
 	
 	

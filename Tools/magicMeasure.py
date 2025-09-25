@@ -16,12 +16,6 @@ gObj1 = ""
 gObj2 = ""
 gSub1 = ""
 gSub2 = ""
-gExprSX = ""
-gExprSY = ""
-gExprSZ = ""
-gExprEX = ""
-gExprEY = ""
-gExprEZ = ""
 gPreselectionMode = True
 gMeasures = []
 gMeasureType = 8
@@ -54,12 +48,6 @@ def resetGlobals():
 	gObj2 = ""
 	gSub1 = ""
 	gSub2 = ""
-	gExprSX = ""
-	gExprSY = ""
-	gExprSZ = ""
-	gExprEX = ""
-	gExprEY = ""
-	gExprEZ = ""
 	gMeasures = []
 
 # ###################################################################################################################
@@ -82,37 +70,6 @@ def clearInfoScreens():
 		if gGUI != "":
 			gGUI.moi.setPlainText("")
 			gGUI.mos.setPlainText("")
-	except:
-		skip = 1
-
-# ###################################################################################################################
-def setExpr(iMeasure):
-	
-	try:
-		iMeasure.setExpression('.Position1.x', gExprSX)
-		iMeasure.setExpression('.Position1.y', gExprSY)
-		iMeasure.setExpression('.Position1.z', gExprSZ)
-		iMeasure.setExpression('.Position2.x', gExprEX)
-		iMeasure.setExpression('.Position2.y', gExprEY)
-		iMeasure.setExpression('.Position2.z', gExprEZ)
-	except:
-		skip = 1
-		
-	try:
-		iMeasure.setExpression('.Start.x', gExprSX)
-		iMeasure.setExpression('.Start.y', gExprSY)
-		iMeasure.setExpression('.Start.z', gExprSZ)
-		iMeasure.setExpression('.End.x', gExprEX)
-		iMeasure.setExpression('.End.y', gExprEY)
-		iMeasure.setExpression('.End.z', gExprEZ)
-		
-		offsetX = iMeasure.Dimline.x - iMeasure.Start.x
-		offsetY = iMeasure.Dimline.y - iMeasure.Start.y
-		offsetZ = iMeasure.Dimline.z - iMeasure.Start.z
-		iMeasure.setExpression('.Dimline.x', '.Start.x + (' + str(offsetX) + ' mm )')
-		iMeasure.setExpression('.Dimline.y', '.Start.y + (' + str(offsetY) + ' mm )')
-		iMeasure.setExpression('.Dimline.z', '.Start.z + (' + str(offsetZ) + ' mm )')
-		
 	except:
 		skip = 1
 
@@ -163,7 +120,7 @@ class SelectionObserver:
 			gGUI.mos.setPlainText("Size:" + " " + MagicPanels.unit2gui(size))
 			
 			if gPreselectionMode == True:
-				m = MagicPanels.showMeasure(p1, p2, o, o, sub, sub, gMeasureType)
+				m = MagicPanels.showMeasure(p1, p2, o, o, sub, sub, gMeasureType, "no")
 				gMeasures.append(m)
 			
 		# hole edge
@@ -181,7 +138,7 @@ class SelectionObserver:
 			gGUI.mos.setPlainText("Size:" + " " + MagicPanels.unit2gui(size))
 			
 			if gPreselectionMode == True:
-				m = MagicPanels.showMeasure(p1, p2, o, o, sub, sub, gMeasureType)
+				m = MagicPanels.showMeasure(p1, p2, o, o, sub, sub, gMeasureType, "no")
 				gMeasures.append(m)
 		
 		# ellipse edge
@@ -199,7 +156,7 @@ class SelectionObserver:
 			s1 = round(p1.distanceToPoint(p2), MagicPanels.gRoundPrecision)
 			
 			if gPreselectionMode == True:
-				m = MagicPanels.showMeasure(p1, p2, o, o, sub, sub, gMeasureType)
+				m = MagicPanels.showMeasure(p1, p2, o, o, sub, sub, gMeasureType, "no")
 				gMeasures.append(m)
 	
 			# 2nd measure
@@ -212,7 +169,7 @@ class SelectionObserver:
 			s2 = round(p1.distanceToPoint(p2), MagicPanels.gRoundPrecision)
 			
 			if gPreselectionMode == True:
-				m = MagicPanels.showMeasure(p1, p2, o, o, sub, sub, gMeasureType)
+				m = MagicPanels.showMeasure(p1, p2, o, o, sub, sub, gMeasureType, "no")
 				gMeasures.append(m)
 				
 			# screen update
@@ -267,7 +224,7 @@ class SelectionObserver:
 			
 			if gPreselectionMode == True:
 				if not s in preselection.keys():
-					m = MagicPanels.showMeasure(p1, p2, o, o, sub, sub, gMeasureType)
+					m = MagicPanels.showMeasure(p1, p2, o, o, sub, sub, gMeasureType, "no")
 					gMeasures.append(m)
 					preselection[s] = 1
 		
@@ -283,8 +240,6 @@ class SelectionObserver:
 	def edgeSelect(self, doc, obj, sub, pos):
 		
 		global gP1, gP2, gObj1, gObj2, gSub1, gSub2
-		global gExprSX, gExprSY, gExprSZ
-		global gExprEX, gExprEY, gExprEZ
 
 		removeMeasures()
 		clearInfoScreens()
@@ -323,9 +278,6 @@ class SelectionObserver:
 		
 				gObj2 = MagicPanels.getObjectToMove(o)
 				gSub2 = sub
-				gExprEX = "<<" + str(gObj2.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[0].X"
-				gExprEY = "<<" + str(gObj2.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[0].Y"
-				gExprEZ = "<<" + str(gObj2.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[0].Z"
 				
 			# get both vertices from edge, and draw measure for entire edge
 			else:
@@ -338,14 +290,6 @@ class SelectionObserver:
 				gSub1 = sub
 				gObj2 = MagicPanels.getObjectToMove(o)
 				gSub2 = sub
-				
-				gExprSX = "<<" + str(gObj1.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[0].X"
-				gExprSY = "<<" + str(gObj1.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[0].Y"
-				gExprSZ = "<<" + str(gObj1.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[0].Z"
-				
-				gExprEX = "<<" + str(gObj2.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[1].X"
-				gExprEY = "<<" + str(gObj2.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[1].Y"
-				gExprEZ = "<<" + str(gObj2.Label) + ">>.Shape.Edges[" + str(index) + "].Vertex"+"es[1].Z"
 
 		# hole ellipse edge
 		if edge.Curve.isDerivedFrom("Part::GeomCircle") or edge.Curve.isDerivedFrom("Part::GeomEllipse"):
@@ -358,11 +302,6 @@ class SelectionObserver:
 				
 				gObj1 = MagicPanels.getObjectToMove(o)
 				gSub1 = sub
-				
-				gExprSX = "<<" + str(gObj1.Label) + ">>.Shape.Edges[" + str(index) + "].Curve.Location.x"
-				gExprSY = "<<" + str(gObj1.Label) + ">>.Shape.Edges[" + str(index) + "].Curve.Location.y"
-				gExprSZ = "<<" + str(gObj1.Label) + ">>.Shape.Edges[" + str(index) + "].Curve.Location.z"
-				
 			else:
 				gP2 = FreeCAD.Vector(edge.Curve.Location.x, edge.Curve.Location.y, edge.Curve.Location.z)
 				[ gP2 ] = MagicPanels.getVerticesPosition([ gP2 ], o, "vector")
@@ -370,10 +309,6 @@ class SelectionObserver:
 				gObj2 = MagicPanels.getObjectToMove(o)
 				gSub2 = sub
 
-				gExprEX = "<<" + str(gObj2.Label) + ">>.Shape.Edges[" + str(index) + "].Curve.Location.x"
-				gExprEY = "<<" + str(gObj2.Label) + ">>.Shape.Edges[" + str(index) + "].Curve.Location.y"
-				gExprEZ = "<<" + str(gObj2.Label) + ">>.Shape.Edges[" + str(index) + "].Curve.Location.z"
-		
 		# skip if there is no data to show measurement
 		if skip == 1 or gP1 == "" or gP2 == "":
 			return
@@ -384,16 +319,13 @@ class SelectionObserver:
 		gGUI.moi.setText(str(obj) + ", " + str(sub))
 		gGUI.mos.setPlainText("Size:" + " " + MagicPanels.unit2gui(size))
 		
-		m = MagicPanels.showMeasure(gP1, gP2, gObj1, gObj2, gSub1, gSub2, gMeasureType)
-		setExpr(m)
+		m = MagicPanels.showMeasure(gP1, gP2, gObj1, gObj2, gSub1, gSub2, gMeasureType, "yes")
 		resetGlobals()
 
 	# ############################################################################
 	def faceSelect(self, doc, obj, sub, pos):
 		
 		global gP1, gP2, gObj1, gObj2, gSub1, gSub2
-		global gExprSX, gExprSY, gExprSZ
-		global gExprEX, gExprEY, gExprEZ
 		
 		removeMeasures()
 		clearInfoScreens()
@@ -421,19 +353,12 @@ class SelectionObserver:
 			gObj2 = MagicPanels.getObjectToMove(o)
 			gSub2 = sub
 
-			gExprEX = gExprSX
-			gExprEY = gExprSY
-			gExprEZ = gExprSZ
-			
 			if axis == "YZ":
 				gP2 = FreeCAD.Vector(v1[0], gP1[1], gP1[2])
-				gExprEX = "<<" + str(gObj2.Label) + ">>.Shape.Faces[" + str(index) + "].CenterOfMass.x"
 			if axis == "XZ":
 				gP2 = FreeCAD.Vector(gP1[0], v1[1], gP1[2])
-				gExprEY = "<<" + str(gObj2.Label) + ">>.Shape.Faces[" + str(index) + "].CenterOfMass.y"
 			if axis == "XY":
 				gP2 = FreeCAD.Vector(gP1[0], gP1[1], v1[2])
-				gExprEZ = "<<" + str(gObj2.Label) + ">>.Shape.Faces[" + str(index) + "].CenterOfMass.z"
 			
 		# not supported
 		else:
@@ -449,17 +374,14 @@ class SelectionObserver:
 		gGUI.moi.setText(str(obj) + ", " + str(sub))
 		gGUI.mos.setPlainText("Size:" + " " + MagicPanels.unit2gui(size))
 		
-		m = MagicPanels.showMeasure(gP1, gP2, gObj1, gObj2, gSub1, gSub2, gMeasureType)
-		setExpr(m)
+		m = MagicPanels.showMeasure(gP1, gP2, gObj1, gObj2, gSub1, gSub2, gMeasureType, "yes")
 		resetGlobals()
 		
 	# ############################################################################
 	def vertexSelect(self, doc, obj, sub, pos):
 		
 		global gP1, gP2, gObj1, gObj2, gSub1, gSub2
-		global gExprSX, gExprSY, gExprSZ
-		global gExprEX, gExprEY, gExprEZ
-		
+
 		removeMeasures()
 		clearInfoScreens()
 	
@@ -471,27 +393,17 @@ class SelectionObserver:
 		except:
 			skip = 1
 		
-		index = int(sub.replace("Vertex",""))-1
-		
 		if gP1 == "":
 			gP1 = FreeCAD.Vector(pos[0], pos[1], pos[2])
 			gObj1 = MagicPanels.getObjectToMove(o)
 			gSub1 = sub
-			gExprSX = "<<" + str(gObj1.Label) + ">>.Shape.Vertex"+"es[" + str(index) + "].X"
-			gExprSY = "<<" + str(gObj1.Label) + ">>.Shape.Vertex"+"es[" + str(index) + "].Y"
-			gExprSZ = "<<" + str(gObj1.Label) + ">>.Shape.Vertex"+"es[" + str(index) + "].Z"
 		else:
 			gP2 = FreeCAD.Vector(pos[0], pos[1], pos[2])
 			gObj2 = MagicPanels.getObjectToMove(o)
 			gSub2 = sub
-			gExprEX = "<<" + str(gObj2.Label) + ">>.Shape.Vertex"+"es[" + str(index) + "].X"
-			gExprEY = "<<" + str(gObj2.Label) + ">>.Shape.Vertex"+"es[" + str(index) + "].Y"
-			gExprEZ = "<<" + str(gObj2.Label) + ">>.Shape.Vertex"+"es[" + str(index) + "].Z"
-		
 		
 		if gP1 != "" and gP2 != "":
-			m = MagicPanels.showMeasure(gP1, gP2, gObj1, gObj2, gSub1, gSub2, gMeasureType)
-			setExpr(m)
+			m = MagicPanels.showMeasure(gP1, gP2, gObj1, gObj2, gSub1, gSub2, gMeasureType, "yes")
 			resetGlobals()
 		
 	# ############################################################################
@@ -508,13 +420,13 @@ class SelectionObserver:
 			resetGlobals()
 			return
 		
-		if sub.find("Edge") != -1:
+		if sub.startswith("Edge"):
 			self.edgeSelect(doc, obj, sub, pos)
 		
-		if sub.find("Face") != -1:
+		if sub.startswith("Face"):
 			self.faceSelect(doc, obj, sub, pos)
 			
-		if sub.find("Vertex") != -1:
+		if sub.startswith("Vertex"):
 			self.vertexSelect(doc, obj, sub, pos)
 			
 	def setPreselection(self, doc, obj, sub):
@@ -525,10 +437,10 @@ class SelectionObserver:
 		#FreeCAD.Console.PrintMessage("\n")
 		#FreeCAD.Console.PrintMessage(sub)
 		
-		if sub.find("Edge") != -1:
+		if sub.startswith("Edge"):
 			self.edgePreselect(doc, obj, sub)
 		
-		if sub.find("Face") != -1:
+		if sub.startswith("Face"):
 			self.facePreselect(doc, obj, sub)
 
 
