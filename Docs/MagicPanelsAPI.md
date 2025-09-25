@@ -44,9 +44,9 @@
 		This function returns object for selected sub-object (face, edge, vertex) and 
 		solves the problem you have sub-object and you do not know what is the object. 
 
-		> [!NOTE]
-		> This function not keep the subs selection order in return because it is driven 
-		> by objects selection order.
+> [!NOTE]
+> This function not keep the subs selection order in return because it is driven 
+> by objects selection order.
 		
 ##### Args:
 	
@@ -694,9 +694,9 @@
 		[ "XY", "edge" ] - if the direction is XY and it is edge, there is thickness edge
 		[ "XY", "equal" ] - if the direction is XY and both edges are equal
 		
-		> [!NOTE]
-		> The first argument can be "XY", "YX", "XZ", "ZX", "YZ", "ZY". 
-		> This is related to face not to object. The object direction will be different.
+> [!NOTE]
+> The first argument can be "XY", "YX", "XZ", "ZX", "YZ", "ZY". 
+> This is related to face not to object. The object direction will be different.
 		
 ### getFaceToCube(iFace, iDepth, iOffset=0):
 	
@@ -704,9 +704,9 @@
 	
 		Create dimensions for simple cube Part::Box object which cover the face with offset.
 		
-		> [!NOTE]
-		> The dimensions are for XY panel without rotation. So if you want to replace 
-		> such object later you need correct rotation in base object.
+> [!NOTE]
+> The dimensions are for XY panel without rotation. So if you want to replace 
+> such object later you need correct rotation in base object.
 		
 ##### Args:
 	
@@ -873,8 +873,8 @@
 		Sets padding offset from given vertex to inside the object.
 		Do not use it at getPlacement for Pads. Use 0 vertex instead.
 		
-		> [!NOTE]
-		> This need to be improved.
+> [!NOTE]
+> This need to be improved.
 	
 ##### Args:
 	
@@ -1205,11 +1205,11 @@
 	
 		Returns center of the object.
 	
-		> [!NOTE]
-		> This function will be updated later with more reliable 
-		> way of getting center of the object, also for LinkGroup and other containers. 
-		> Now it returns Shape.CenterOfMass for the object and it is not the same 
-		> as center of the object.
+> [!NOTE]
+> This function will be updated later with more reliable 
+> way of getting center of the object, also for LinkGroup and other containers. 
+> Now it returns Shape.CenterOfMass for the object and it is not the same 
+> as center of the object.
 	
 ##### Args:
 	
@@ -1343,17 +1343,17 @@
 
 		Move objects iObjects to first LinkGroup container for iSelection object.
 		
-		> [!NOTE]
-		> This function removes the offset that should have been added earlier. Why not just copy without offset?
-		> If you have 2 objects in separate containers and the second object is only moved via the container Placement, 
-		> then from FreeCAD point the objects are in the same place. So you won't be able to compute space between 
-		> objects in these containers. FreeCAD uses local positions. It's good because you can calculate many things 
-		> without using advanced formulas. Adding an offset and removing it later is a trick for easier calculations.
-		> 
-		> You can convert all vertices to global, but in this case you won't be able to determine the plane correctly 
-		> in an easy way, for example the vertices on an edge would no longer be along the same coordinate axis, 
-		> and thus you'd have to use advanced formulas. It can be done with a trick, but maybe something like 
-		> that will come along later if need be.
+> [!NOTE]
+> This function removes the offset that should have been added earlier. Why not just copy without offset?
+> If you have 2 objects in separate containers and the second object is only moved via the container Placement, 
+> then from FreeCAD point the objects are in the same place. So you won't be able to compute space between 
+> objects in these containers. FreeCAD uses local positions. It's good because you can calculate many things 
+> without using advanced formulas. Adding an offset and removing it later is a trick for easier calculations.
+> 
+> You can convert all vertices to global, but in this case you won't be able to determine the plane correctly 
+> in an easy way, for example the vertices on an edge would no longer be along the same coordinate axis, 
+> and thus you'd have to use advanced formulas. It can be done with a trick, but maybe something like 
+> that will come along later if need be.
 
 ##### Args:
 	
@@ -1590,11 +1590,11 @@
 			* "no" (default): you have to add iP1 and iP2 and the measurement will not be parametric
 			* "yes": you have to add iObject1, iObject2, iSubName1, iSubName2, and the measurement will be parametric
 
-		> [!NOTE]
-		> The iP1, iP2 should be global and are mandatory, because I do not want to everload this function
-		> with global position calculation from SubName for any type.
-		> If you want to have dimline position you have to add iObject1 and iSubName1 as well.
-		> The iObject2, iSubName2 is needed only for parametric version and reference info.
+> [!NOTE]
+> The iP1, iP2 should be global and are mandatory, because I do not want to everload this function
+> with global position calculation from SubName for any type.
+> If you want to have dimline position you have to add iObject1 and iSubName1 as well.
+> The iObject2, iSubName2 is needed only for parametric version and reference info.
 		
 ##### Usage:
 	
@@ -1646,8 +1646,8 @@
 
 		unitForUser = MagicPanels.unit2gui(300.55)
 		
-		> [!NOTE]
-		> if user has set inches units the unitForUser should contains recalculation to inches 
+> [!NOTE]
+> if user has set inches units the unitForUser should contains recalculation to inches 
 		
 ##### Result:
 
@@ -1701,8 +1701,8 @@
 		X' represents a whole number of feet. Y represents a whole number of inches and n/d" represents 
 		a fraction of an inch, where n is the numerator and d is the denominator.
 		
-		> [!NOTE]
-		> This function not reduce fraction part by default (keeps the denominator the same as given iPrecision).
+> [!NOTE]
+> This function not reduce fraction part by default (keeps the denominator the same as given iPrecision).
 
 ##### Args:
 
@@ -2298,10 +2298,10 @@
 ### moveToParent(iObjects, iSelection):
 	
 	
-	> [!CAUTION]
-	> ########################################################################################
-	> THIS FUNCTION IS DEPRECATED !!!
-	> ########################################################################################
+> [!CAUTION]
+> ########################################################################################
+> THIS FUNCTION IS DEPRECATED !!!
+> ########################################################################################
 	
 ##### Description:
 	
@@ -2327,10 +2327,10 @@
 ### moveToClean(iObjects, iSelection):
 	
 	
-	> [!CAUTION]
-	> ########################################################################################
-	> THIS FUNCTION IS DEPRECATED !!!
-	> ########################################################################################
+> [!CAUTION]
+> ########################################################################################
+> THIS FUNCTION IS DEPRECATED !!!
+> ########################################################################################
 	
 ##### Description:
 	
@@ -2358,10 +2358,10 @@
 ### moveToFirstWithInverse(iObjects, iSelection):
 	
 	
-	> [!CAUTION]
-	> ########################################################################################
-	> THIS FUNCTION IS DEPRECATED !!!
-	> ########################################################################################
+> [!CAUTION]
+> ########################################################################################
+> THIS FUNCTION IS DEPRECATED !!!
+> ########################################################################################
 	
 ##### Description:
 	
@@ -2390,10 +2390,10 @@
 ### adjustClonePosition(iPad, iX, iY, iZ):
 	
 	
-	> [!CAUTION]
-	> ########################################################################################
-	> THIS FUNCTION IS DEPRECATED !!!
-	> ########################################################################################
+> [!CAUTION]
+> ########################################################################################
+> THIS FUNCTION IS DEPRECATED !!!
+> ########################################################################################
 	
 ##### Description:
 	
@@ -2421,10 +2421,10 @@
 ### getPlacement(iObj, iType="clean"):
 	
 	
-	> [!CAUTION]
-	> ########################################################################################
-	> THIS FUNCTION IS DEPRECATED !!!
-	> ########################################################################################
+> [!CAUTION]
+> ########################################################################################
+> THIS FUNCTION IS DEPRECATED !!!
+> ########################################################################################
 	
 ##### Description:
 	
@@ -2456,10 +2456,10 @@
 ### getGlobalPlacement(iObj, iType="FreeCAD"):
 	
 	
-	> [!CAUTION]
-	> ########################################################################################
-	> THIS FUNCTION IS DEPRECATED !!!
-	> ########################################################################################
+> [!CAUTION]
+> ########################################################################################
+> THIS FUNCTION IS DEPRECATED !!!
+> ########################################################################################
 	
 ##### Description:
 	
@@ -2488,10 +2488,10 @@
 ### setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
 	
 	
-	> [!CAUTION]
-	> ########################################################################################
-	> THIS FUNCTION IS DEPRECATED !!!
-	> ########################################################################################
+> [!CAUTION]
+> ########################################################################################
+> THIS FUNCTION IS DEPRECATED !!!
+> ########################################################################################
 	
 ##### Description:
 	
@@ -2517,10 +2517,10 @@
 ### getSketchPlacement(iSketch, iType):
 	
 	
-	> [!CAUTION]
-	> ########################################################################################
-	> THIS FUNCTION IS DEPRECATED !!!
-	> ########################################################################################
+> [!CAUTION]
+> ########################################################################################
+> THIS FUNCTION IS DEPRECATED !!!
+> ########################################################################################
 	
 ##### Description:
 	
@@ -2550,10 +2550,10 @@
 ### setSketchPlacement(iSketch, iX, iY, iZ, iR, iType):
 	
 	
-	> [!CAUTION]
-	> ########################################################################################
-	> THIS FUNCTION IS DEPRECATED !!!
-	> ########################################################################################
+> [!CAUTION]
+> ########################################################################################
+> THIS FUNCTION IS DEPRECATED !!!
+> ########################################################################################
 	
 ##### Description:
 	
@@ -2587,10 +2587,10 @@
 ### getContainerPlacement(iObj, iType="clean"):
 	
 	
-	> [!CAUTION]
-	> ########################################################################################
-	> THIS FUNCTION IS DEPRECATED !!!
-	> ########################################################################################
+> [!CAUTION]
+> ########################################################################################
+> THIS FUNCTION IS DEPRECATED !!!
+> ########################################################################################
 	
 ##### Description:
 	
@@ -2622,10 +2622,10 @@
 ### setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="normal"):
 	
 	
-	> [!CAUTION]
-	> ########################################################################################
-	> THIS FUNCTION IS DEPRECATED !!!
-	> ########################################################################################
+> [!CAUTION]
+> ########################################################################################
+> THIS FUNCTION IS DEPRECATED !!!
+> ########################################################################################
 	
 ##### Description:
 	

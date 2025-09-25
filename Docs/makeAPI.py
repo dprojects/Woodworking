@@ -78,10 +78,8 @@ for line in data:
 	if openFunction == True:
 		if line.find("# >") != -1:
 			out = line
-			out = out.replace("# > [!","\n# > [!")
-			out = out.replace("# >","\n>")
-			out = out.replace("   ","")
-			out = out.replace("  ","")
+			out = out.replace("# >",">")
+			out = out.lstrip()
 			out = out.replace("\n","")
 			api.append(out)
 		else:
