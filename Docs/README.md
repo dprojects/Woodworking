@@ -797,7 +797,7 @@ Selection modes:
 
 * **TechDraw options:**
   * `screenshot` exports the current 3D view of the model as an image to TechDraw. Not visible objects will not be exported.
-  * `objects` exports the current 3D view of the model as objects to TechDraw. This option will try to export only selected objects but if there is no selection, all objects will be exported. Also in case of this option the visibility of objects is recognized, i.e. objects hidden by the `space` key will not be exported. 
+  * `objects` exports the current `Front` view of the model as objects to TechDraw. This option will try to export only selected objects but if there is no selection, click on screen before to be sure nothing is selected in Tree, all objects will be exported. Also in case of this option the visibility of objects is recognized, i.e. objects hidden by the `space` key will not be exported. 
   * `export to TechDraw` creates a TechDraw page with the exported model.
 
 * **Cross:**

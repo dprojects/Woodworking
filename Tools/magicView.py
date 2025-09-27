@@ -142,7 +142,7 @@ def showQtGUI():
 			# radio buttons
 			
 			self.rb1 = QtGui.QRadioButton(self)
-			self.rb1.setText(translate('magicView', 'screenshoot'))
+			self.rb1.setText(translate('magicView', 'screenshot'))
 			self.rb1.toggled.connect(self.selectRadioButton1)
 			self.rb1.setChecked(True)
 			
@@ -698,12 +698,13 @@ def showQtGUI():
 		# ############################################################################
 		def setTechDraw(self):
 			
+			# create page and template
 			page = FreeCAD.ActiveDocument.addObject("TechDraw::DrawPage","page")
 			page.Label = 'TechDraw' + " - " + self.gCurrentViewText
-			
+				
 			template = FreeCAD.ActiveDocument.addObject("TechDraw::DrawSVGTemplate","Template")
 			template.Template = FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Portrait_blank.svg"
-			
+				
 			templateWidth = float(template.Width)
 			templateHeight = float(template.Height)
 
@@ -714,8 +715,9 @@ def showQtGUI():
 			page.Template = template
 			FreeCAD.ActiveDocument.recompute()
 			
+			# screenshot
 			if self.rb1.isChecked() == True:
-				
+
 				view = FreeCAD.ActiveDocument.addObject('TechDraw::DrawViewImage','ActiveView')
 				page.addView(view)
 				FreeCADGui.ActiveDocument.ActiveView.saveImage("magicView.png", 500, 500, "Transparent")
@@ -725,12 +727,15 @@ def showQtGUI():
 				view.X = 120
 				view.Y = 150
 			
+			# objects
 			if self.rb2.isChecked() == True:
 			
 				view = FreeCAD.ActiveDocument.addObject('TechDraw::DrawViewPart', 'View')
 				page.addView(view)
-				view.Direction = FreeCAD.Vector(0.552501000000, -0.686953000000, 0.472057000000)
-				view.XDirection = FreeCAD.Vector(0.775825697655, 0.630867700455, 0.010024182780)
+				
+				view.Direction = FreeCAD.Vector(0, -1, 0)
+				view.XDirection = FreeCAD.Vector(1, 0, 0)
+				view.LockPosition = True
 				
 				objects = []
 				selection = []

@@ -4363,17 +4363,20 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSubName1="", iSubName2="", 
 			* "yes": you have to add iObject1, iObject2, iSubName1, iSubName2, and the measurement will be parametric
 
 		# > [!NOTE]
-		# > The iP1, iP2 should be global and are mandatory, because I do not want to everload this function
-		# > with global position calculation from SubName for any type.
+		# > The iP1, iP2 should be global and are mandatory, because I do not want to overload this function
+		# > with global position calculation from SubNames for each sub-type.
 		# > If you want to have dimline position you have to add iObject1 and iSubName1 as well.
-		# > The iObject2, iSubName2 is needed only for parametric version and reference info.
+		# > The iObject2, iSubName2 is needed only for parametric version and reference info. 
 		
 	Usage:
 	
 		p1 = [0, 0, 0]
 		p2 = [100, 0, 0]
 
+		# for non-parametric simple PartDesign style
 		m = MagicPanels.showMeasure(p1, p2)
+		
+		# for parametric Draft auto-position dimline style
 		m = MagicPanels.showMeasure(p1, p2, obj1, obj2, "Vertex1", "Face2", 4, "yes")
 
 	Result:
