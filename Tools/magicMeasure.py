@@ -723,9 +723,12 @@ def showQtGUI():
 				
 				# support for FreeCAD 1.0+
 				if MagicPanels.gKernelVersion >= 1.0:
-					import Draft
-					Viewer = FreeCADGui.ActiveDocument.ActiveView.getViewer()
-					UserState = Viewer.getSceneGraph().highlightMode.getValue()
+					wus = FreeCAD.ParamGet('User parameter:BaseApp/Preferences/View')
+					preselection = wus.GetBool('EnablePreselection')
+					if preselection == False:
+						UserState = 2
+					else:
+						UserState = 0
 				
 				# support for FreeCAD 0.21.2
 				else:
@@ -760,7 +763,6 @@ def showQtGUI():
 
 				self.moaBON.show()
 				self.moaBPAUSE.hide()
-				return -1
 
 		# ############################################################################
 		def setModeType(self, selectedText):
