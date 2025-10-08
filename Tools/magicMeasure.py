@@ -262,23 +262,46 @@ class SelectionObserver:
 			
 			skip = 0
 
-			# if already selected vertex, get from edge only one vertex
+			# if already selected vertex, measure to CenterOfMass
 			if gP1 != "":
 				
-				[ v1, v2 ] = MagicPanels.getEdgeVertices(edge)
-				[ v1, v2 ] = MagicPanels.getVerticesPosition([ v1, v2 ], o, "array")
+				v = [ edge.CenterOfMass.x, edge.CenterOfMass.y, edge.CenterOfMass.z ]
+				[ v ] = MagicPanels.getVerticesPosition([ v ], o, "array")
 				axis = MagicPanels.getEdgePlane(o, edge)
 				
 				if axis == "X":
-					gP2 = FreeCAD.Vector(gP1[0], v1[1], v1[2])
+					p2 = FreeCAD.Vector(gP1[0], v[1], gP1[2])
+					p3 = FreeCAD.Vector(gP1[0], gP1[1], v[2])
 				if axis == "Y":
-					gP2 = FreeCAD.Vector(v1[0], gP1[1], v1[2])
+					p2 = FreeCAD.Vector(v[0], gP1[1], gP1[2])
+					p3 = FreeCAD.Vector(gP1[0], gP1[1], v[2])
 				if axis == "Z":
-					gP2 = FreeCAD.Vector(v1[0], v1[1], gP1[2])
+					p2 = FreeCAD.Vector(v[0], gP1[1], gP1[2])
+					p3 = FreeCAD.Vector(gP1[0], v[1], gP1[2])
 		
 				gObj2 = MagicPanels.getObjectToMove(o)
 				gSub2 = sub
+				gP2 = "" # to skip
 				
+				size1 = round(gP1.distanceToPoint(p2), MagicPanels.gRoundPrecision)
+				size2 = round(gP1.distanceToPoint(p3), MagicPanels.gRoundPrecision)
+				
+				gGUI.moi.setText(str(label) + ", " + str(sub))
+				info = "Size:" + " "
+				info += MagicPanels.unit2gui(size1)
+				info += ", "
+				info += MagicPanels.unit2gui(size2)
+				gGUI.mos.setPlainText(info)
+				
+				# skip 0 distance measurement to avoid paramertic expression problem
+				if not MagicPanels.equal(size1, 0):
+					m = MagicPanels.showMeasure(gP1, p2, gObj1, gObj2, gSub1, gSub2, gMeasureType, "yes")
+				
+				if not MagicPanels.equal(size2, 0):
+					m = MagicPanels.showMeasure(gP1, p3, gObj1, gObj2, gSub1, gSub2, gMeasureType, "yes")
+				
+				resetGlobals()
+		
 			# get both vertices from edge, and draw measure for entire edge
 			else:
 				[ v1, v2 ] = MagicPanels.getEdgeVertices(edge)
@@ -316,7 +339,6 @@ class SelectionObserver:
 		size = round(gP1.distanceToPoint(gP2), MagicPanels.gRoundPrecision)
 		
 		gGUI.moi.setText(str(label) + ", " + str(sub))
-		gGUI.moi.setText(str(obj) + ", " + str(sub))
 		gGUI.mos.setPlainText("Size:" + " " + MagicPanels.unit2gui(size))
 		
 		m = MagicPanels.showMeasure(gP1, gP2, gObj1, gObj2, gSub1, gSub2, gMeasureType, "yes")

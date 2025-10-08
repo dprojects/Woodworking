@@ -836,8 +836,8 @@
 	
 ##### Args:
 	
-		iV1: vertex object
-		iV2: vertex object
+		iV1: array or vector object
+		iV2: array or vector object
 	
 ##### Usage:
 	
@@ -1540,7 +1540,7 @@
 
 # Measurements
 
-### createMeasureExpression(iObject1, iObject2, iSubName1, iSubName2):
+### createMeasureExpression(iP1, iP2, iObject1, iObject2, iSubName1, iSubName2):
 	
 ##### Description:
 	
@@ -1548,6 +1548,8 @@
 	
 ##### Args:
 	
+		iP1: FreeCAD.Vector(x, y, z), Vertex object, or array with floats, for start
+		iP2: FreeCAD.Vector(x, y, z), Vertex object, or array with floats, for end
 		iObject1: object for start
 		iObject2: object for end
 		iSubName1: string with sub-object name for start, for example "Vertex1", "Edge1", "Face1"
@@ -1556,7 +1558,7 @@
 ##### Usage:
 	
 		[ exprSX, exprSY, exprSZ, 
-		exprEX, exprEY, exprEZ ] = MagicPanels.createMeasureExpression(obj1, obj2, "Vertex1", "Face2")
+		exprEX, exprEY, exprEZ ] = MagicPanels.createMeasureExpression(iP1, iP2, obj1, obj2, "Vertex1", "Face2")
 
 ##### Result:
 	

@@ -174,6 +174,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * improve measurement from Vertex to Edge (magicMeasure, MagicPanels)
     * option to copy rotated object with correct offset (magicMove)
     * quick shot to show or hide measurements (showMeasurements)
     * arrange icons to fit to laptop screen 
@@ -1076,14 +1077,14 @@ This tool allows you to quickly measure objects. All measurements are recognized
 * **Preselection mode** - this mode allows you to quickly measure objects by just moving the mouse cursor over the object. In this mode you can measure: edge, surface (all edges), hole diameter and hole depth. If you left-click, the current visible measurements will be saved.
     
 * **Selection mode** - this mode allows you to measure objects by selecting vertices, surfaces or holes. In this mode you have the following choices:
-  * select `Edge`: to measure edge size, 
-  * select `Vertex` and next `Face`: to measure distance between vertex and face, for example shelf space,
-  * select `Vertex` and next `Edge`: to measure distance between vertex and edge, for example space between front and side of the furniture, 
-  * select `Vertex` and next `Hole`: to measure distance between vertex and hole center point, for example drill point, 
-  * select `Vertex` and next `Vertex`: to measure distance between two vertices, for any purposes, 
-  * select `Hole` and next `Hole`: to measure distance between holes center points, for example to verify 32 mm system, 
-  * select `Hole` and next `Edge`: to measure distance between hole and edge, for example to verify pilot hole offset,
-  * select `Hole` and next `Face`: to measure distance between hole and face, for example to measure angle mounting point, 
+  * select `Edge`: to measure edge size.
+  * select `Vertex` and next `Face`: to measure distance between vertex and face, for example shelf space.
+  * select `Vertex` and next `Edge`: to measure distance between vertex and edge, for example space between front and side of the furniture. In this case, two measurements will be created in directions different from the selected edge. For example, if the edge is aligned with the Z coordinate axis, measurements will be created for the X and Y coordinate axes. For example, if the first selected vertex lies on the Y coordinate axis along with the second selected edge, this zero distance will be ignored and only a measurement will be created in the X coordinate axis.
+  * select `Vertex` and next `Hole`: to measure distance between vertex and hole center point, for example drill point.
+  * select `Vertex` and next `Vertex`: to measure distance between two vertices, for any purposes.
+  * select `Hole` and next `Hole`: to measure distance between holes center points, for example to verify 32 mm system.
+  * select `Hole` and next `Edge`: to measure distance between hole and edge, for example to verify pilot hole offset. In this case, two measurements will be created in directions different from the selected edge. For example, if the edge is aligned with the Z coordinate axis, measurements will be created for the X and Y coordinate axes. For example, if the first selected vertex lies on the Y coordinate axis along with the second selected edge, this zero distance will be ignored and only a measurement will be created in the X coordinate axis.
+  * select `Hole` and next `Face`: to measure distance between hole and face, for example to measure angle mounting point.
   * select `Hole` and next `Vertex`: to measure distance between hole and vertex.
 
 > [!NOTE]

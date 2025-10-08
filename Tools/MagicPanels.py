@@ -2014,8 +2014,8 @@ def getVerticesPlane(iV1, iV2):
 	
 	Args:
 	
-		iV1: vertex object
-		iV2: vertex object
+		iV1: array or vector object
+		iV2: array or vector object
 	
 	Usage:
 	
@@ -4229,7 +4229,7 @@ def makePad(iObj, iPadLabel="Pad"):
 
 
 # ###################################################################################################################
-def createMeasureExpression(iObject1, iObject2, iSubName1, iSubName2):
+def createMeasureExpression(iP1, iP2, iObject1, iObject2, iSubName1, iSubName2):
 	'''
 	Description:
 	
@@ -4237,6 +4237,8 @@ def createMeasureExpression(iObject1, iObject2, iSubName1, iSubName2):
 	
 	Args:
 	
+		iP1: FreeCAD.Vector(x, y, z), Vertex object, or array with floats, for start
+		iP2: FreeCAD.Vector(x, y, z), Vertex object, or array with floats, for end
 		iObject1: object for start
 		iObject2: object for end
 		iSubName1: string with sub-object name for start, for example "Vertex1", "Edge1", "Face1"
@@ -4245,7 +4247,7 @@ def createMeasureExpression(iObject1, iObject2, iSubName1, iSubName2):
 	Usage:
 	
 		[ exprSX, exprSY, exprSZ, 
-		exprEX, exprEY, exprEZ ] = MagicPanels.createMeasureExpression(obj1, obj2, "Vertex1", "Face2")
+		exprEX, exprEY, exprEZ ] = MagicPanels.createMeasureExpression(iP1, iP2, obj1, obj2, "Vertex1", "Face2")
 
 	Result:
 	
@@ -4265,6 +4267,10 @@ def createMeasureExpression(iObject1, iObject2, iSubName1, iSubName2):
 	sub2Object = sub2Owner.getSubObject(iSubName2)
 	[ sub2OffsetX, sub2OffsetY, sub2OffsetZ, r2 ] = getContainersOffset(sub2Owner)
 	
+	# ########################################################################################
+	# set iSubName1
+	# ########################################################################################
+	
 	if iSubName1.startswith("Edge"):
 		sub1Type = "Edge"
 		sub1Index = int(iSubName1.replace("Edge",""))-1
@@ -4281,22 +4287,7 @@ def createMeasureExpression(iObject1, iObject2, iSubName1, iSubName2):
 				exprSY = "<<" + str(sub1Owner.Label) + ">>.Shape.Edges[" + str(sub1Index) + "].Curve.Location.y + " + str(sub1OffsetY)
 				exprSZ = "<<" + str(sub1Owner.Label) + ">>.Shape.Edges[" + str(sub1Index) + "].Curve.Location.z + " + str(sub1OffsetZ)
 
-	if iSubName2.startswith("Edge"):
-		sub2Type = "Edge"
-		sub2Index = int(iSubName2.replace("Edge",""))-1
-		
-		if hasattr(sub2Object, "Curve"):
-			
-			if sub2Object.Curve.isDerivedFrom("Part::GeomLine"):
-				exprEX = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].Vertex"+"es[1].X + " + str(sub2OffsetX)
-				exprEY = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].Vertex"+"es[1].Y + " + str(sub2OffsetY)
-				exprEZ = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].Vertex"+"es[1].Z + " + str(sub2OffsetZ)
 
-			if sub2Object.Curve.isDerivedFrom("Part::GeomCircle") or sub2Object.Curve.isDerivedFrom("Part::GeomEllipse"):
-				exprEX = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].Curve.Location.x + " + str(sub2OffsetX)
-				exprEY = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].Curve.Location.y + " + str(sub2OffsetY)
-				exprEZ = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].Curve.Location.z + " + str(sub2OffsetZ)
-	
 	if iSubName1.startswith("Vertex"):
 		sub1Type = "Vertex"
 		sub1Index = int(iSubName1.replace("Vertex",""))-1
@@ -4304,6 +4295,47 @@ def createMeasureExpression(iObject1, iObject2, iSubName1, iSubName2):
 		exprSX = "<<" + str(sub1Owner.Label) + ">>.Shape.Vertex"+"es[" + str(sub1Index) + "].X + " + str(sub1OffsetX)
 		exprSY = "<<" + str(sub1Owner.Label) + ">>.Shape.Vertex"+"es[" + str(sub1Index) + "].Y + " + str(sub1OffsetY)
 		exprSZ = "<<" + str(sub1Owner.Label) + ">>.Shape.Vertex"+"es[" + str(sub1Index) + "].Z + " + str(sub1OffsetZ)
+	
+	# ########################################################################################
+	# set iSubName2
+	# ########################################################################################
+	
+	if iSubName2.startswith("Edge"):
+		sub2Type = "Edge"
+		sub2Index = int(iSubName2.replace("Edge",""))-1
+		
+		if hasattr(sub2Object, "Curve"):
+			
+			if sub2Object.Curve.isDerivedFrom("Part::GeomLine"):
+				
+				# for single line edge
+				if iSubName1.startswith("Edge") and sub1Object.Curve.isDerivedFrom("Part::GeomLine"):
+					exprEX = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].Vertex"+"es[1].X + " + str(sub2OffsetX)
+					exprEY = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].Vertex"+"es[1].Y + " + str(sub2OffsetY)
+					exprEZ = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].Vertex"+"es[1].Z + " + str(sub2OffsetZ)
+				
+				# from vertex or hole to edge
+				else:
+					
+					exprEX = exprSX
+					exprEY = exprSY
+					exprEZ = exprSZ
+					
+					axis = getVectorsPlane(iP1, iP2)
+					
+					if axis == "X":
+						exprEX = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].CenterOfMass.x + " + str(sub2OffsetX)
+
+					if axis == "Y":
+						exprEY = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].CenterOfMass.y + " + str(sub2OffsetY)
+					
+					if axis == "Z":
+						exprEZ = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].CenterOfMass.z + " + str(sub2OffsetZ)
+
+			if sub2Object.Curve.isDerivedFrom("Part::GeomCircle") or sub2Object.Curve.isDerivedFrom("Part::GeomEllipse"):
+				exprEX = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].Curve.Location.x + " + str(sub2OffsetX)
+				exprEY = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].Curve.Location.y + " + str(sub2OffsetY)
+				exprEZ = "<<" + str(sub2Owner.Label) + ">>.Shape.Edges[" + str(sub2Index) + "].Curve.Location.z + " + str(sub2OffsetZ)
 	
 	if iSubName2.startswith("Vertex"):
 		sub2Type = "Vertex"
@@ -4329,7 +4361,11 @@ def createMeasureExpression(iObject1, iObject2, iSubName1, iSubName2):
 			exprEY = "<<" + str(sub2Owner.Label) + ">>.Shape.Faces[" + str(sub2Index) + "].CenterOfMass.y + " + str(sub2OffsetY)
 		if plane == "XY":
 			exprEZ = "<<" + str(sub2Owner.Label) + ">>.Shape.Faces[" + str(sub2Index) + "].CenterOfMass.z + " + str(sub2OffsetZ)
-		
+	
+	# ########################################################################################
+	# return
+	# ########################################################################################
+	
 	return [ exprSX, exprSY, exprSZ, exprEX, exprEY, exprEZ ]
 
 
@@ -4676,7 +4712,8 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSubName1="", iSubName2="", 
 	
 	if iParametric == "yes":
 		
-		[ exprSX, exprSY, exprSZ, exprEX, exprEY, exprEZ ] = createMeasureExpression(iObject1, iObject2, iSubName1, iSubName2)
+		[ exprSX, exprSY, exprSZ, 
+		exprEX, exprEY, exprEZ ] = createMeasureExpression(iP1, iP2, iObject1, iObject2, iSubName1, iSubName2)
 		
 		if iType == 0:
 			
