@@ -698,20 +698,30 @@ def showQtGUI():
 		# ############################################################################
 		def setTechDraw(self):
 			
+			import os
+			
 			# create page and template
 			page = FreeCAD.ActiveDocument.addObject("TechDraw::DrawPage","page")
 			page.Label = 'TechDraw' + " - " + self.gCurrentViewText
-				
+			
 			template = FreeCAD.ActiveDocument.addObject("TechDraw::DrawSVGTemplate","Template")
-			template.Template = FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Portrait_blank.svg"
+			
+			templates = [ 
+				FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Portrait_blank.svg",
+				FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/ISO/A4_Portrait_blank.svg"
+			]
+			for t in templates:
+				if os.path.exists(t):
+			
+					template.Template = t
 				
-			templateWidth = float(template.Width)
-			templateHeight = float(template.Height)
+					templateWidth = float(template.Width)
+					templateHeight = float(template.Height)
 
-			if templateWidth == 0 or templateHeight == 0:
-				templateWidth = float(210)
-				templateHeight = float(297)
-	
+					if templateWidth == 0 or templateHeight == 0:
+						templateWidth = float(210)
+						templateHeight = float(297)
+		
 			page.Template = template
 			FreeCAD.ActiveDocument.recompute()
 			

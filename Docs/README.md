@@ -1062,7 +1062,8 @@ By default the values at report are rounded to have more clear listing. Rounding
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showMeasurements.png"> This tool allows you to quickly create or remove measurements for all simple objects. The objects that will be dimensioned are `Part :: Box` and `PartDesign :: Pad`. For each such object, the list of edges will be searched and all linear edges of various dimensions will be described with a measurement. The text size depends on the distance, so small dimensions like `18 mm` thick may not be visible from a distance. This tool is a typical **quick shot** that allows you to quickly enable or disable measurements for objects. Because there are so many dimensions, it should be used primarily with [magicView](#magicview) and primarily for `X`, `Y`, `Z`, or `explode` views. For each such measurement object there is special attribute named `Remove` set by default to `True`. So if you click the icon again such measurement will be removed. If you want to keep such measurement, just set this `Remove` attribute to `False`. Also the measurements created via this tool are parametric. So you can change views in [magicView](#magicview) and the measurements will follow the changes.
 
-<br><br>
+**Video tutorials:** 
+* [New measurement features](https://www.youtube.com/watch?v=9F_fBQYuxvU)
 
 ## magicMeasure
 
@@ -1083,7 +1084,7 @@ This tool allows you to quickly measure objects. All measurements are recognized
   * select `Vertex` and next `Hole`: to measure distance between vertex and hole center point, for example drill point.
   * select `Vertex` and next `Vertex`: to measure distance between two vertices, for any purposes.
   * select `Hole` and next `Hole`: to measure distance between holes center points, for example to verify 32 mm system.
-  * select `Hole` and next `Edge`: to measure distance between hole and edge, for example to verify pilot hole offset. In this case, two measurements will be created in directions different from the selected edge. For example, if the edge is aligned with the Z coordinate axis, measurements will be created for the X and Y coordinate axes. For example, if the first selected vertex lies on the Y coordinate axis along with the second selected edge, this zero distance will be ignored and only a measurement will be created in the X coordinate axis.
+  * select `Hole` and next `Edge`: to measure distance between hole and edge, for example to verify pilot hole offset. In this case, two measurements will be created in directions different from the selected edge. For example, if the edge is aligned with the Z coordinate axis, measurements will be created for the X and Y coordinate axes. For example, if the first selected hole lies on the Y coordinate axis along with the second selected edge, this zero distance will be ignored and only a measurement will be created in the X coordinate axis.
   * select `Hole` and next `Face`: to measure distance between hole and face, for example to measure angle mounting point.
   * select `Hole` and next `Vertex`: to measure distance between hole and vertex.
 
@@ -1126,6 +1127,7 @@ This tool allows you to quickly measure objects. All measurements are recognized
 **Text field** the text box shows the current measurements, so you can easily copy these dimensions for later use.
 
 **Video tutorials:** 
+* [New measurement features](https://www.youtube.com/watch?v=9F_fBQYuxvU)
 * [How to use magicMeasure](https://www.youtube.com/watch?v=_yGLzNmeK0Q)
 
 # Decoration

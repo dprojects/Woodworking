@@ -4764,6 +4764,8 @@ def selectView(iCaller="selectView"):
 # ###################################################################################################################
 def setTechDraw(iCaller="setTechDraw"):
 
+	import os
+
 	global gAD
 	global gSheet
 	global gSheetRow
@@ -4780,23 +4782,39 @@ def setTechDraw(iCaller="setTechDraw"):
 	gPrintTemplate = gAD.addObject("TechDraw::DrawSVGTemplate","Template")
 	
 	if sLTF == "a":
-		gPrintTemplate.Template = FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Landscape_blank.svg"
+		
+		templates = [ 
+			FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Landscape_blank.svg",
+			FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/ISO/A4_Landscape_blank.svg"
+		]
+		for t in templates:
+			if os.path.exists(t):
+				
+				gPrintTemplate.Template = t
+		
+				templateWidth = float(gPrintTemplate.Width)
+				templateHeight = float(gPrintTemplate.Height)
 
-		templateWidth = float(gPrintTemplate.Width)
-		templateHeight = float(gPrintTemplate.Height)
-
-		if templateWidth == 0 or templateHeight == 0:
-			templateWidth = float(297)
-			templateHeight = float(210)
+				if templateWidth == 0 or templateHeight == 0:
+					templateWidth = float(297)
+					templateHeight = float(210)
 	else:
-		gPrintTemplate.Template = FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Portrait_blank.svg"
+		
+		templates = [ 
+			FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Portrait_blank.svg",
+			FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/ISO/A4_Portrait_blank.svg"
+		]
+		for t in templates:
+			if os.path.exists(t):
+		
+				gPrintTemplate.Template = t
 
-		templateWidth = float(gPrintTemplate.Width)
-		templateHeight = float(gPrintTemplate.Height)
+				templateWidth = float(gPrintTemplate.Width)
+				templateHeight = float(gPrintTemplate.Height)
 
-		if templateWidth == 0 or templateHeight == 0:
-			templateWidth = float(210)
-			templateHeight = float(297)
+				if templateWidth == 0 or templateHeight == 0:
+					templateWidth = float(210)
+					templateHeight = float(297)
 	
 	gPrint.Template = gPrintTemplate
 
