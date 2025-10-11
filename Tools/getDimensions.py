@@ -4764,8 +4764,6 @@ def selectView(iCaller="selectView"):
 # ###################################################################################################################
 def setTechDraw(iCaller="setTechDraw"):
 
-	import os
-
 	global gAD
 	global gSheet
 	global gSheetRow
@@ -4778,45 +4776,10 @@ def setTechDraw(iCaller="setTechDraw"):
 		gAD.removeObject("toPrint")
 
 	# create TechDraw page for print
-	gPrint = gAD.addObject("TechDraw::DrawPage","toPrint")
-	gPrintTemplate = gAD.addObject("TechDraw::DrawSVGTemplate","Template")
-	
 	if sLTF == "a":
-		
-		templates = [ 
-			FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Landscape_blank.svg",
-			FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/ISO/A4_Landscape_blank.svg"
-		]
-		for t in templates:
-			if os.path.exists(t):
-				
-				gPrintTemplate.Template = t
-		
-				templateWidth = float(gPrintTemplate.Width)
-				templateHeight = float(gPrintTemplate.Height)
-
-				if templateWidth == 0 or templateHeight == 0:
-					templateWidth = float(297)
-					templateHeight = float(210)
+		gPrint = MagicPanels.createTechDrawPage("toPrint", "A4", "h")
 	else:
-		
-		templates = [ 
-			FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Portrait_blank.svg",
-			FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/ISO/A4_Portrait_blank.svg"
-		]
-		for t in templates:
-			if os.path.exists(t):
-		
-				gPrintTemplate.Template = t
-
-				templateWidth = float(gPrintTemplate.Width)
-				templateHeight = float(gPrintTemplate.Height)
-
-				if templateWidth == 0 or templateHeight == 0:
-					templateWidth = float(210)
-					templateHeight = float(297)
-	
-	gPrint.Template = gPrintTemplate
+		gPrint = MagicPanels.createTechDrawPage("toPrint", "A4", "v")
 
 	# add spreadsheet to TechDraw page
 	gPrintSheet = gAD.addObject("TechDraw::DrawViewSpreadsheet","Sheet")
@@ -4824,9 +4787,28 @@ def setTechDraw(iCaller="setTechDraw"):
 	gPrint.addView(gPrintSheet)
 
 	# set in the center of the template
-	gPrintSheet.X = int(templateWidth / 2)
-	gPrintSheet.Y = int(templateHeight / 2)
+	try:
+		templateWidth = float(gPrint.Template.Width)
+		templateHeight = float(gPrint.Template.Height)
 
+		# try fix invalid template size
+		if templateWidth == 0 or templateHeight == 0:
+			
+			# horizontal page
+			if sLTF == "a":
+				templateWidth = float(297)
+				templateHeight = float(210)
+			
+			# vertical page
+			else:
+				templateWidth = float(210)
+				templateHeight = float(297)
+
+		gPrintSheet.X = int(templateWidth / 2)
+		gPrintSheet.Y = int(templateHeight / 2)
+	except:
+		skip = 1
+		
 	if MagicPanels.gKernelVersion >= 1.1:
 		gPrintSheet.Scale = 1
 

@@ -2265,6 +2265,32 @@
 		return key string
 
 
+# TechDraw
+
+### createTechDrawPage(iName="page", iSize="A4", iType="vertical"):
+	
+##### Description:
+	
+		Create TechDraw page with exact template.
+
+##### Args:
+	
+		iName (optional): string, object name for created page
+		iSize (optional): string, size of the page e.g. "A4"
+		iType (optional): string, orientation of the page:
+			* "v": vertical means Portrait
+			* "h": horizontal means Landscape
+
+##### Usage:
+	
+		page = MagicPanels.createTechDrawPage()
+		page = MagicPanels.createTechDrawPage("toPrint", "A4", "v")
+
+##### Result:
+	
+		return TechDraw page object
+
+
 # Themes
 
 ### getTheme(iType=""):

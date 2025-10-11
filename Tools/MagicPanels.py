@@ -7179,6 +7179,68 @@ def sheetGetKey(iC, iR):
 	return str(key)
 
 
+# ###################################################################################################################
+'''
+# TechDraw
+'''
+# ###################################################################################################################
+
+def createTechDrawPage(iName="page", iSize="A4", iType="vertical"):
+	'''
+	Description:
+	
+		Create TechDraw page with exact template.
+
+	Args:
+	
+		iName (optional): string, object name for created page
+		iSize (optional): string, size of the page e.g. "A4"
+		iType (optional): string, orientation of the page:
+			* "v": vertical means Portrait
+			* "h": horizontal means Landscape
+
+	Usage:
+	
+		page = MagicPanels.createTechDrawPage()
+		page = MagicPanels.createTechDrawPage("toPrint", "A4", "v")
+
+	Result:
+	
+		return TechDraw page object
+
+	'''
+
+
+	import os
+	
+	page = FreeCAD.ActiveDocument.addObject("TechDraw::DrawPage", iName)
+	template = FreeCAD.ActiveDocument.addObject("TechDraw::DrawSVGTemplate","Template")
+
+	templates = []
+	if iSize == "A4" and iType == "v":
+		
+		# support for backward and forward compatibility 
+		templates = [ 
+			FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Portrait_blank.svg",
+			FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/ISO/A4_Portrait_blank.svg"
+		]
+	
+	if iSize == "A4" and iType == "h":
+		
+		# support for backward and forward compatibility
+		templates = [ 
+			FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/A4_Landscape_blank.svg",
+			FreeCAD.getResourceDir() + "Mod/TechDraw/Templates/ISO/A4_Landscape_blank.svg"
+		]
+		
+	for t in templates:
+		if os.path.exists(t):
+			template.Template = t
+
+	page.Template = template
+	
+	return page
+	
 
 # ###################################################################################################################
 '''
