@@ -7185,7 +7185,7 @@ def sheetGetKey(iC, iR):
 '''
 # ###################################################################################################################
 
-def createTechDrawPage(iName="page", iSize="A4", iType="vertical"):
+def createTechDrawPage(iName="page", iSize="A4", iType="v"):
 	'''
 	Description:
 	

@@ -2267,7 +2267,7 @@
 
 # TechDraw
 
-### createTechDrawPage(iName="page", iSize="A4", iType="vertical"):
+### createTechDrawPage(iName="page", iSize="A4", iType="v"):
 	
 ##### Description:
 	
