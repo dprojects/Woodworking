@@ -174,6 +174,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * float precision for angle (magicAngle)
     * improve measurement from Vertex to Edge (magicMeasure, MagicPanels)
     * option to copy rotated object with correct offset (magicMove)
     * quick shot to show or hide measurements (showMeasurements)
@@ -663,8 +664,8 @@ This tool allows to preview panel before creation. It allows to see panel at sin
   * `face` in this case all face vertices and CenterOfMass of the face will be added to the end of the `Rotation point` list.
 * **add selected vertex** this button loads selected rotation points at the end of the `Rotation point` list.
 * **X-**, **X+**, **Y-**, **Y+**, **Z-**, **Z+** allows to rotate loaded objects according to the XYZ coordinate axes. 
-* **value between** shows current rotation status so you can quickly rotate back the object, if you still have opened the tool interface. If you close it you have to use CTRL-Z to undo rotation. 
-* **Angle step** is step for rotation.
+* **value between** shows current rotation status so you can quickly rotate back the object, if you still have opened the tool interface. If you close it you have to use CTRL-Z to undo rotation. Because of screen size issue, shows only float precision rounded to two digits but the rotation value set to object is without rounding.
+* **Angle step** is step for rotation, float precision is allowed.
 * **animate rotation** if it is checked it will add animation to the rotation, so you can see a soft-close animation of the cabinet door.
 
 **Video tutorials:** 

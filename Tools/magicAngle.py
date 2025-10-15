@@ -341,7 +341,7 @@ def showQtGUI():
 			self.gAngleY = 0
 			self.gAngleZ = 0
 		
-			self.gStep = 15
+			self.gStep = float(15)
 
 		# ############################################################################
 		def initRotationPoint(self, iFaceIndex, iVertexIndex):
@@ -426,9 +426,9 @@ def showQtGUI():
 
 		def setRotation(self, iAxis, iAngle):
 			
-			self.xaIS.setText(str(self.gAngleX))
-			self.yaIS.setText(str(self.gAngleY))
-			self.zaIS.setText(str(self.gAngleZ))
+			self.xaIS.setText(str( round(self.gAngleX, 2) ))
+			self.yaIS.setText(str( round(self.gAngleY, 2) ))
+			self.zaIS.setText(str( round(self.gAngleZ, 2) ))
 			
 			v = self.gCenterVertex[self.gCenterIndex]
 			vObj = self.gCenterObj[self.gCenterIndex]
@@ -506,9 +506,9 @@ def showQtGUI():
 				self.setCenterPoints()
 				self.setCenterSphere()
 		
-				self.xaIS.setText(str(self.gAngleX))
-				self.yaIS.setText(str(self.gAngleY))
-				self.zaIS.setText(str(self.gAngleZ))
+				self.xaIS.setText(str( round(self.gAngleX, 2) ))
+				self.yaIS.setText(str( round(self.gAngleY, 2) ))
+				self.zaIS.setText(str( round(self.gAngleZ, 2) ))
 
 			except:
 				self.mIS.setText(self.gNoSelection)
@@ -610,7 +610,7 @@ def showQtGUI():
 			FreeCAD.ActiveDocument.openTransaction("magicAngleX1")
 			
 			try:
-				self.gStep = int(self.asE.text())
+				self.gStep = float(self.asE.text())
 				self.gAngleX = self.gAngleX - self.gStep
 				self.setRotation(FreeCAD.Vector(1, 0, 0), self.gStep)
 			except:
@@ -623,7 +623,7 @@ def showQtGUI():
 			FreeCAD.ActiveDocument.openTransaction("magicAngleX2")
 			
 			try:
-				self.gStep = int(self.asE.text())
+				self.gStep = float(self.asE.text())
 				self.gAngleX = self.gAngleX + self.gStep
 				self.setRotation(FreeCAD.Vector(1, 0, 0), -self.gStep)
 			except:
@@ -636,7 +636,7 @@ def showQtGUI():
 			FreeCAD.ActiveDocument.openTransaction("magicAngleY1")
 			
 			try:
-				self.gStep = int(self.asE.text())
+				self.gStep = float(self.asE.text())
 				self.gAngleY = self.gAngleY - self.gStep
 				self.setRotation(FreeCAD.Vector(0, 1, 0), self.gStep)
 			except:
@@ -649,7 +649,7 @@ def showQtGUI():
 			FreeCAD.ActiveDocument.openTransaction("magicAngleY2")
 			
 			try:
-				self.gStep = int(self.asE.text())
+				self.gStep = float(self.asE.text())
 				self.gAngleY = self.gAngleY + self.gStep
 				self.setRotation(FreeCAD.Vector(0, 1, 0), -self.gStep)
 			except:
@@ -662,7 +662,7 @@ def showQtGUI():
 			FreeCAD.ActiveDocument.openTransaction("magicAngleZ1")
 			
 			try:
-				self.gStep = int(self.asE.text())
+				self.gStep = float(self.asE.text())
 				self.gAngleZ = self.gAngleZ - self.gStep
 				self.setRotation(FreeCAD.Vector(0, 0, 1), self.gStep)
 			except:
@@ -675,7 +675,7 @@ def showQtGUI():
 			FreeCAD.ActiveDocument.openTransaction("magicAngleZ2")
 			
 			try:
-				self.gStep = int(self.asE.text())
+				self.gStep = float(self.asE.text())
 				self.gAngleZ = self.gAngleZ + self.gStep
 				self.setRotation(FreeCAD.Vector(0, 0, 1), -self.gStep)
 			except:
