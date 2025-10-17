@@ -3001,6 +3001,128 @@ def getOffset(iObj, iDestination, iType="array"):
 	
 
 # ###################################################################################################################
+def searchGlobalPosition(iObj):
+	'''
+	Description:
+	
+		This function search simple objects for global placement. 
+		This can be used in loop for recursive search for more complex objects like LinkGroup or Link.
+	
+	Args:
+	
+		iObj: object to search for global placement
+
+	Usage:
+	
+		[ x, y, z ] = MagicPanels.searchGlobalPosition(o)
+
+	Result:
+	
+		return [ x, y, z ] array with placement info, where:
+		
+		x: X Axis object position
+		y: Y Axis object position
+		z: Z Axis object position
+
+	'''
+
+
+	# #######################################################
+	# init
+	# #######################################################
+	
+	[ x, y, z ] = [ 0, 0, 0 ]
+	
+	try:
+		x = iObj.Placement.Base.x
+		y = iObj.Placement.Base.y
+		z = iObj.Placement.Base.z
+	except:
+		skip = 1
+
+	# #######################################################
+	# just make the magic
+	# #######################################################
+	
+	if iObj.isDerivedFrom("Sketcher::SketchObject"):
+		import Draft
+		copy = Draft.make_clone(iObj)
+		containers = getContainers(iObj)
+		moveToContainer([ copy ], containers[0])
+		copy.recompute()
+		x = copy.Shape.BoundBox.XMin
+		y = copy.Shape.BoundBox.YMin
+		z = copy.Shape.BoundBox.ZMin
+		FreeCAD.ActiveDocument.removeObject(str(copy.Name))
+
+	if iObj.isDerivedFrom("PartDesign::Body"):
+		try:
+			x = iObj.Shape.BoundBox.XMin
+			y = iObj.Shape.BoundBox.YMin
+			z = iObj.Shape.BoundBox.ZMin
+		except:
+			iObj = iObj.VisibleFeature
+			
+	if iObj.isDerivedFrom("Part::Cut"):
+		try:
+			x = iObj.Shape.BoundBox.XMin
+			y = iObj.Shape.BoundBox.YMin
+			z = iObj.Shape.BoundBox.ZMin
+		except:
+			skip = 1
+		
+	try:
+		test = iObj._Body
+		x = iObj.Shape.BoundBox.XMin
+		y = iObj.Shape.BoundBox.YMin
+		z = iObj.Shape.BoundBox.ZMin
+
+	except:
+		skip = 1
+
+	if isType(iObj, "Clone"):
+		x = iObj.Shape.BoundBox.XMin
+		y = iObj.Shape.BoundBox.YMin
+		z = iObj.Shape.BoundBox.ZMin
+	
+	if iObj.isDerivedFrom("PartDesign::SubShapeBinder"):
+		x = iObj.Shape.BoundBox.XMin
+		y = iObj.Shape.BoundBox.YMin
+		z = iObj.Shape.BoundBox.ZMin
+	
+	# #######################################################
+	# recalculate with containers
+	# #######################################################
+	
+	baseV = FreeCAD.Vector(x, y, z)
+	containers = getContainers(iObj)
+	globalV = baseV
+	
+	for o in containers:
+	
+		if (
+			o.isDerivedFrom("App::Part") or 
+			o.isDerivedFrom("PartDesign::Body") or 
+			o.isDerivedFrom("App::LinkGroup") or 
+			o.isDerivedFrom("Part::Cut") 
+			):
+
+			try:
+				p = o.Placement
+			except:
+				continue
+			
+			n = p.multVec(globalV)
+			globalV = n
+
+	# #######################################################
+	# return final result
+	# #######################################################
+	
+	return [ globalV.x, globalV.y, globalV.z ]
+
+
+# ###################################################################################################################
 def getPosition(iObj, iType="global"):
 	'''
 	Description:
@@ -3026,17 +3148,31 @@ def getPosition(iObj, iType="global"):
 		x: X Axis object position
 		y: Y Axis object position
 		z: Z Axis object position
+		
+		if there is error or placement cannot be calculated there 
+		will be returned empty string for easier error handling
 
 	'''
 
-
+	# #######################################################
 	# make sure the object position data has been updated
+	# #######################################################
+	
 	try:
 		iObj.recompute()
 	except:
-		skip = 1
+		return ""
 
-	# direct placement only for object
+	# #######################################################
+	# init
+	# #######################################################
+	
+	[ x, y, z ] = [ 0, 0, 0 ]
+
+	# #######################################################
+	# local
+	# #######################################################
+	
 	if iType == "local":
 		
 		try:
@@ -3047,89 +3183,105 @@ def getPosition(iObj, iType="global"):
 			return [ x, y, z ]
 		
 		except:
-			return "object has no placement to get"
-			
+			return ""
+	
+	# #######################################################
+	# global
+	# #######################################################
+	
 	elif iType == "global":
 		
-		try:
-			x = iObj.Placement.Base.x
-			y = iObj.Placement.Base.y
-			z = iObj.Placement.Base.z
-
-		except:
-			return "object has no placement to get"
-
-		if iObj.isDerivedFrom("Sketcher::SketchObject"):
-			import Draft
-			copy = Draft.make_clone(iObj)
-			containers = getContainers(iObj)
-			moveToContainer([ copy ], containers[0])
-			copy.recompute()
-			x = copy.Shape.BoundBox.XMin
-			y = copy.Shape.BoundBox.YMin
-			z = copy.Shape.BoundBox.ZMin
-			FreeCAD.ActiveDocument.removeObject(str(copy.Name))
-
-		if iObj.isDerivedFrom("PartDesign::Body"):
+		# #######################################################
+		# for: LinkGroup, Link or Part
+		# #######################################################
+		
+		if (
+			iObj.isDerivedFrom("App::LinkGroup") or 
+			iObj.isDerivedFrom("App::Link") or
+			iObj.isDerivedFrom("App::Part")
+			):
+			
+			# you have better idea to solve this recursive 
+			# problem without globals? open issue if so...
+			global gx, gy, gz
+			[ gx, gy, gz ] = [ x, y, z ]
+			
 			try:
-				x = iObj.Shape.BoundBox.XMin
-				y = iObj.Shape.BoundBox.YMin
-				z = iObj.Shape.BoundBox.ZMin
-			except:
-				iObj = iObj.VisibleFeature
-				
-		if iObj.isDerivedFrom("Part::Cut"):
-			try:
-				x = iObj.Shape.BoundBox.XMin
-				y = iObj.Shape.BoundBox.YMin
-				z = iObj.Shape.BoundBox.ZMin
+				gx = iObj.Placement.Base.x
+				gy = iObj.Placement.Base.y
+				gz = iObj.Placement.Base.z
 			except:
 				skip = 1
 			
-		try:
-			test = iObj._Body
-			x = iObj.Shape.BoundBox.XMin
-			y = iObj.Shape.BoundBox.YMin
-			z = iObj.Shape.BoundBox.ZMin
+			# define recursive search
+			def searchElements(io):
+				global gx, gy, gz
+				
+				if io.isDerivedFrom("App::LinkGroup"):
+					target = io.ElementList
+				elif io.isDerivedFrom("App::Link"):
+					target = [ io.LinkedObject ]
+				elif io.isDerivedFrom("App::Part"):
+					target = io.Group
+				else:
+					return
+				
+				# go deeper
+				for o in target:
+		
+					if (
+						o.isDerivedFrom("App::LinkGroup") or 
+						o.isDerivedFrom("App::Link") or
+						o.isDerivedFrom("App::Part")
+						):
+						
+						# call it again
+						searchElements(o)
 
-		except:
-			skip = 1
+					else:
+						[ ox, oy, oz ] = searchGlobalPosition(o)
 
-		if isType(iObj, "Clone"):
-			x = iObj.Shape.BoundBox.XMin
-			y = iObj.Shape.BoundBox.YMin
-			z = iObj.Shape.BoundBox.ZMin
-		
-		if iObj.isDerivedFrom("PartDesign::SubShapeBinder"):
-			x = iObj.Shape.BoundBox.XMin
-			y = iObj.Shape.BoundBox.YMin
-			z = iObj.Shape.BoundBox.ZMin
-		
-		baseV = FreeCAD.Vector(x, y, z)
-		containers = getContainers(iObj)
-		globalV = baseV
-		
-		for o in containers:
-		
-			if (
-				o.isDerivedFrom("App::Part") or 
-				o.isDerivedFrom("PartDesign::Body") or 
-				o.isDerivedFrom("App::LinkGroup") or 
-				o.isDerivedFrom("Part::Cut") 
-				):
-
+						# try to find minimum values
+						# I mean left bottom corner what will be 
+						# the placement anchor in this case
+						if not equal(ox, 0) and ox < gx:
+							gx = ox
+						if not equal(oy, 0) and oy < gy:
+							gy = oy
+						if not equal(oz, 0) and oz < gz:
+							gz = oz
+			
+			# run the recursive search
+			searchElements(iObj)
+			
+			# recalculate Link offset
+			if iObj.isDerivedFrom("App::Link"):
 				try:
-					p = o.Placement
+					[ gx, gy, gz ] = iObj.Placement.multVec( FreeCAD.Vector(gx, gy, gz) )
+					if iObj.LinkedObject.isDerivedFrom("App::LinkGroup") or iObj.LinkedObject.isDerivedFrom("App::Part"):
+						[ gx, gy, gz ] = iObj.LinkedObject.Placement.inverse().multVec( FreeCAD.Vector(gx, gy, gz) )
 				except:
-					continue
-				
-				n = p.multVec(globalV)
-				globalV = n
-				
-		return [ globalV.x, globalV.y, globalV.z ]
+					skip = 1
+			
+			# return the updated minimum via recursive search
+			# little crazy way but currently I do not have better idea
+			[ x, y, z ] = [ gx, gy, gz ]
+
+		# #######################################################
+		# for simple objects
+		# #######################################################
 		
+		else:
+			[ x, y, z ] = searchGlobalPosition(iObj)
+
+		# #######################################################
+		# return final result
+		# #######################################################
+	
+		return [ x, y, z ]
+
 	else:
-		return "not supported iType"
+		return ""
 
 
 # ###################################################################################################################

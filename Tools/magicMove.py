@@ -920,7 +920,7 @@ def showQtGUI():
 				#	MagicPanels.moveToContainer([ container ], self.gContainerRef)
 				
 				# I guess it will be better to keep the same container level
-				MagicPanels.moveToContainer([ container ], iObject, "LinkGroup")
+				MagicPanels.moveToContainer([ container ], iObject, "parent")
 				
 				self.gContainerRef = container
 				self.gNewContainerON = False
@@ -932,7 +932,7 @@ def showQtGUI():
 				if self.gContainerRef != "root":
 					MagicPanels.moveToContainer([ iCopy ], self.gContainerRef)
 				else:
-					MagicPanels.moveToContainer([ iCopy ], iObject, "LinkGroup")
+					MagicPanels.moveToContainer([ iCopy ], iObject, "parent")
 
 		# ############################################################################
 		def setMove(self, iType):

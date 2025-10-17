@@ -174,6 +174,8 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * improve direct copy, clone, link containers like LinkGroup, Part, Body (magicMove, MagicPanels)
+    * add global position calculation for LinkGroup, Link, Part (MagicPanels)
     * float precision for angle (magicAngle)
     * improve measurement from Vertex to Edge (magicMeasure, MagicPanels)
     * option to copy rotated object with correct offset (magicMove)

@@ -1118,6 +1118,29 @@
 	
 		return array with offsets [ offetX, offetY, offetZ ]
 
+### searchGlobalPosition(iObj):
+	
+##### Description:
+	
+		This function search simple objects for global placement. 
+		This can be used in loop for recursive search for more complex objects like LinkGroup or Link.
+	
+##### Args:
+	
+		iObj: object to search for global placement
+
+##### Usage:
+	
+		[ x, y, z ] = MagicPanels.searchGlobalPosition(o)
+
+##### Result:
+	
+		return [ x, y, z ] array with placement info, where:
+		
+		x: X Axis object position
+		y: Y Axis object position
+		z: Z Axis object position
+
 ### getPosition(iObj, iType="global"):
 	
 ##### Description:
@@ -1143,6 +1166,9 @@
 		x: X Axis object position
 		y: Y Axis object position
 		z: Z Axis object position
+		
+		if there is error or placement cannot be calculated there 
+		will be returned empty string for easier error handling
 
 ### setPosition(iObj, iX, iY, iZ, iType="offset"):
 	
