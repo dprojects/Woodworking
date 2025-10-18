@@ -10,7 +10,7 @@
 	* Test all the basic features supported by the macro.
 	* **Settings:** 
         * `Report type` to `n`.
-        * `Visibility` to `inherit`
+        * `Visibility` to `screw`
 2. **Test002_edgeband:** 
     * Test edgeband and extended edge report.
     * **Settings:** 

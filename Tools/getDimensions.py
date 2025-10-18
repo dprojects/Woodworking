@@ -160,6 +160,7 @@ sTVFDsc = {
 	"on" : translate("getDimensions", "simple mode, not show hidden objects for simple structures"),
 	"edge" : translate("getDimensions", "simple edge mode, show all but not add hidden to the edge size"),
 	"parent" : translate("getDimensions", "simple nesting, inherit visibility from the nearest container"),
+	"screw" : translate("getDimensions", "base screw, to hide base screw inside LinkGroup containers"),
 	"inherit" : translate("getDimensions", "advanced nesting, inherit visibility from the highest container") # no comma
 }
 
@@ -2982,6 +2983,33 @@ def getParentVisibility(iObj, iCaller="getParentVisibility"):
 # ###################################################################################################################
 def getInheritedVisibility(iObj, iCaller="getInheritedVisibility"):
 
+	try: 
+		# get containers
+		containers = MagicPanels.getContainers(iObj)
+		num = len(containers)
+		
+		# if single object without containers
+		if num == 0:
+			if iObj.Visibility == False:
+				return False
+			else:
+				return True
+		
+		# if object has containers
+		highest = containers[num-1]
+		if highest.Visibility == False:
+			return False
+		else:
+			return True
+	except:
+		skip = 1
+
+	return True
+
+
+# ###################################################################################################################
+def getScrewVisibility(iObj, iCaller="getScrewVisibility"):
+
 	# set starting point
 	v = True
 	
@@ -3090,6 +3118,11 @@ def scanObjects(iOBs, iCaller="main"):
 			if getInheritedVisibility(obj, iCaller) == False:
 				continue
 
+		# to hide base screw
+		if sTVF == "screw":
+			if getScrewVisibility(obj, iCaller) == False:
+				continue
+				
 		# show only Base objects from Part :: Cut
 		if sPartCut == "base":
 			if getCutContentPath(obj, "Base", iCaller) == False:

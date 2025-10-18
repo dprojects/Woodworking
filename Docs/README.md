@@ -174,6 +174,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * rename inherit visibility to screw and implement inherit for highest container (getDimensions)
     * improve direct copy, clone, link containers like LinkGroup, Part, Body (magicMove, MagicPanels)
     * add global position calculation for LinkGroup, Link, Part (MagicPanels)
     * float precision for angle (magicAngle)
@@ -975,7 +976,8 @@ By default the values at report are rounded to have more clear listing. Rounding
   * **on:** hidden objects will not be listed at the report.
   * **edge:** hidden objects will be listed but not added to the edge size.
   * **parent:** not list object with hidden parent object.
-  * **inherit:** dedicated mostly to hide the base realistic looking screw.
+  * **screw:** dedicated mostly to hide the base realistic looking screw.
+  * **inherit:** not list elements inside highest hidden container. This is useful to hide whole cabinet inside LinkGroup container. For example you have wardrobe with 5 modules, and each cabinet module inside separate LinkGroup container and you want generate cut-list only for single visible cabinet module and to create it one by one in real-life.
   * **special BOM attribute:** if object has `BOM` attribute set to `False` (`App::PropertyBool`) it will be skipped during parsing and not listed at the report. This special attribute is used by [magicCut](#magiccut) and [magicKnife](#magicknife) tools to skip copies at the report. For more details see video tutorial: [Skip copies in cut-list](https://www.youtube.com/watch?v=rFEDLaD8lxM).
 
 * **Part :: Cut content:**
@@ -1111,6 +1113,7 @@ This tool allows you to quickly measure objects. All measurements are recognized
 > However, if you convert `Part :: Box` into `PartDesign :: Pad` or change objects edges, faces or vertices, 
 > the measurement will no longer follow, so you have to remove such measurement and create new one.
 > Also the measurements **are not** parametric in preselection mode.
+> If you use Draft style some measurements for example for edges inside pocket or holes may not be visible. You can use [makeTransparent](#maketransparent) tool to see it.
 
 * **Measurement observer:**
   * `START` button allows you to start the measurement process,
