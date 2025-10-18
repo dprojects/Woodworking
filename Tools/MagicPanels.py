@@ -3203,19 +3203,12 @@ def getPosition(iObj, iType="global"):
 			
 			# you have better idea to solve this recursive 
 			# problem without globals? open issue if so...
-			global gx, gy, gz
-			[ gx, gy, gz ] = [ x, y, z ]
-			
-			try:
-				gx = iObj.Placement.Base.x
-				gy = iObj.Placement.Base.y
-				gz = iObj.Placement.Base.z
-			except:
-				skip = 1
+			global gx, gy, gz, init
+			init = True
 			
 			# define recursive search
 			def searchElements(io):
-				global gx, gy, gz
+				global gx, gy, gz, init
 				
 				if io.isDerivedFrom("App::LinkGroup"):
 					target = io.ElementList
@@ -3240,15 +3233,20 @@ def getPosition(iObj, iType="global"):
 
 					else:
 						[ ox, oy, oz ] = searchGlobalPosition(o)
-
+						
+						# init with first element in container
+						if init == True:
+							[ gx, gy, gz ] = [ ox, oy, oz ]
+							init = False
+							
 						# try to find minimum values
 						# I mean left bottom corner what will be 
 						# the placement anchor in this case
-						if not equal(ox, 0) and ox < gx:
+						if ox < gx:
 							gx = ox
-						if not equal(oy, 0) and oy < gy:
+						if oy < gy:
 							gy = oy
-						if not equal(oz, 0) and oz < gz:
+						if oz < gz:
 							gz = oz
 			
 			# run the recursive search
