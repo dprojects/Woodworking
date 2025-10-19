@@ -760,12 +760,14 @@
 	
 		iVertices: array with Vertex or floats objects
 		iRadius (optional): ball Radius
-		iColor: string "red", "green", "blue", or color tuple like (1.0, 0.0, 0.0, 0.0)
+		iColor: string "red", "green", "blue", or color tuple like (1.0, 1.0, 1.0, 1.0)
 
 ##### Usage:
 	
-		MagicPanels.showVertex([ obj.Shape.CenterOfMass ], 20)
-
+		MagicPanels.showVertex([ obj.Shape.CenterOfMass ])
+		MagicPanels.showVertex([ obj.Shape.CenterOfMass ], 30, "green")
+		MagicPanels.showVertex([ obj.Shape.CenterOfMass ], 30, (1.0, 1.0, 1.0, 1.0))
+		
 ##### Result:
 	
 		remove old vertices and show new ones, return array of objects, spheres

@@ -11,72 +11,59 @@ try:
 	if len(selectedObjects) < 2:
 		raise
 
-	base = selectedObjects[0]
-	baseFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-	basePlane = MagicPanels.getFacePlane(baseFace)
-	[ v1, v2, v3, v4 ] = MagicPanels.getFaceVertices(baseFace)
-	[ v1, v2, v3, v4 ] = MagicPanels.getVerticesPosition([ v1, v2, v3, v4 ], base, "array")
+	targetObj = selectedObjects[0]
+	targetFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+	targetPlane = MagicPanels.getFacePlane(targetFace)
 	
-	bx = v1[0]
-	by = v1[1]
-	bz = v1[2]
-
-	fcx = float(baseFace.CenterOfMass.x)
-	fcy = float(baseFace.CenterOfMass.y)
-	fcz = float(baseFace.CenterOfMass.z)
-	
-	bcx = float(base.Shape.CenterOfMass.x)
-	bcy = float(base.Shape.CenterOfMass.y)
-	bcz = float(base.Shape.CenterOfMass.z)
+	centerFace = targetFace.CenterOfMass
+	centerObj = targetObj.Shape.CenterOfMass
+	[ centerFace, centerObj ] = MagicPanels.getVerticesPosition([ centerFace, centerObj ], targetObj, "vector")
 
 	objects = selectedObjects[1:]
 
 	for o in objects:
 		
-		oRef = MagicPanels.getReference(o)
-		toMove = MagicPanels.getObjectToMove(oRef)
-
-		[ X, Y, Z, R ] = MagicPanels.getContainerPlacement(toMove, "clean")
-		[ refX, refY, refZ, refR ] = MagicPanels.getContainerPlacement(oRef, "offset")
+		toMove = MagicPanels.getObjectToMove(o)
+		[ X, Y, Z ] = MagicPanels.getPosition(toMove, "global")
 		[ sizeX, sizeY, sizeZ ] = MagicPanels.getSizesFromVertices(o)
 		
-		if basePlane == "XY":
+		if targetPlane == "XY":
 			
-			d = MagicPanels.getVertexAxisCross(refZ, bz)
+			d = abs(Z - centerFace.z)
 			
-			if refZ < bz:
+			if Z < centerFace.z:
 				Z = Z + d
 			else:
 				Z = Z - d
 
-			if fcz < bcz:
+			if centerFace.z < centerObj.z:
 				Z = Z - sizeZ
 
-		if basePlane == "XZ":
+		if targetPlane == "XZ":
 
-			d = MagicPanels.getVertexAxisCross(refY, by)
+			d = abs(Y - centerFace.y)
 
-			if refY < by:
+			if Y < centerFace.y:
 				Y = Y + d
 			else:
 				Y = Y - d
 
-			if fcy < bcy:
+			if centerFace.y < centerObj.y:
 				Y = Y - sizeY
 
-		if basePlane == "YZ":
+		if targetPlane == "YZ":
 
-			d = MagicPanels.getVertexAxisCross(refX, bx)
+			d = abs(X - centerFace.x)
 
-			if refX < bx:
+			if X < centerFace.x:
 				X = X + d
 			else:
 				X = X - d
 
-			if fcx < bcx:
+			if centerFace.x < centerObj.x:
 				X = X - sizeX
 
-		MagicPanels.setContainerPlacement(toMove, X, Y, Z, 0, "clean")
+		MagicPanels.setPosition(toMove, X, Y, Z, "global")
 	
 	# clean selection and recompute
 	FreeCADGui.Selection.clearSelection()

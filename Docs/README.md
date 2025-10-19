@@ -174,6 +174,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * move to face whole cabinet module in LinkGroup container (panelMove2Face)
     * rename inherit visibility to screw and implement inherit for highest container (getDimensions)
     * improve direct copy, clone, link containers like LinkGroup, Part, Body (magicMove, MagicPanels)
     * add global position calculation for LinkGroup, Link, Part (MagicPanels)
