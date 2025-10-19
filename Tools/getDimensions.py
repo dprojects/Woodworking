@@ -333,6 +333,43 @@ dbARV = dict() # values
 gColorReference = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0)
 
 # ###################################################################################################################
+# Overwrite defaults here
+# ###################################################################################################################
+
+try:
+	from FreeCAD import Units
+	userUnits = Units.getSchema()
+	
+	# keep metric defaults because in Poland system metrics will be incorrect
+	if userUnits == 0:
+		skip = 1
+	
+	# for Building US set to fractions
+	elif userUnits == 5:
+		
+		sUnitsMetric = "fractions"
+		sUnitsEdge = "fractions"
+		sUnitsArea = "fractions"
+		
+		sPDD = sPrecisionDD[sUnitsMetric]
+		sPDE = sPrecisionDE[sUnitsEdge]
+		sPDA = sPrecisionDA[sUnitsArea]
+		
+	# for all others set system
+	else:
+		
+		sUnitsMetric = "system"
+		sUnitsEdge = "system"
+		sUnitsArea = "system"
+		
+		sPDD = sPrecisionDD[sUnitsMetric]
+		sPDE = sPrecisionDE[sUnitsEdge]
+		sPDA = sPrecisionDA[sUnitsArea]
+except:
+	skip = 1
+
+
+# ###################################################################################################################
 # Support for Qt GUI
 # ###################################################################################################################
 

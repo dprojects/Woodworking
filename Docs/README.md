@@ -174,6 +174,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * "fractions" default units for "Building US", keep metrics, and "system" for others (getDimensions)
     * move to face whole cabinet module in LinkGroup container (panelMove2Face)
     * rename inherit visibility to screw and implement inherit for highest container (getDimensions)
     * improve direct copy, clone, link containers like LinkGroup, Part, Body (magicMove, MagicPanels)
@@ -960,11 +961,12 @@ Selection modes:
 * **system:** all dimensions will be presented in the user's unit system preferences.
 
 > [!NOTE]
-> The `X'` represents a whole number of feet, the `Y` represents a whole number of inches and the `n/d"` 
+> * The `X'` represents a whole number of feet, the `Y` represents a whole number of inches and the `n/d"`
 > represents a fraction of an inch, where `n` is the numerator and `d` is the denominator. 
-> The denominator is taken from the user settings from `Edit->Preferences->General->Building US->Minimal fractional inch`. <br>
-> In the case of the `system` option, the spreadsheet has its own shortening unit format, which causes `mm2` to be saved as `cm2`. 
+> The denominator is taken from the user settings from `Edit->Preferences->General->Building US->Minimal fractional inch`.
+> * In the case of the `system` option, the spreadsheet has its own shortening unit format, which causes `mm2` to be saved as `cm2`. 
 > To force the area to be shown in square meters, set `m` square meter (m2) for `Units for area`.
+> * The default units for "Building US" is "fractions", in Poland keep correct metrics, and "system" for others.
 
 ### Precision
 
