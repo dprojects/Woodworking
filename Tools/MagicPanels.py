@@ -7451,7 +7451,15 @@ def getTheme(iType=""):
 		"sun 3D",
 		"gray 3D",
 		"grass 3D",
-		"winter 3D" # no comma
+		"winter 3D",
+		"classic 3D v2", 
+		"pink 3D v2",
+		"lavender 3D v2",
+		"sky 3D v2",
+		"sun 3D v2",
+		"gray 3D v2",
+		"grass 3D v2",
+		"winter 3D v2" # no comma
 	)
 	
 	if iType == "config":
@@ -7555,6 +7563,54 @@ def getTheme(iType=""):
 		color4 = "#55AA55"   # border around elements
 	
 	if iType == "winter 3D":
+		color1 = "#D1D1D1"   # background gradient start
+		color2 = "#E1E1E1"   # background gradient stop
+		color3 = "#000000"   # text color
+		color4 = "#A1A1A1"   # border around elements
+
+	if iType == "classic 3D v2":
+		color1 = "#FFFFFF"   # background gradient start
+		color2 = "#E4E4E4"   # background gradient stop
+		color3 = "#000000"   # text color
+		color4 = "#A1A1A1"   # border around elements
+
+	if iType == "pink 3D v2":
+		color1 = "#FFFFFF"   # background gradient start
+		color2 = "#FF00EE"   # background gradient stop
+		color3 = "#000000"   # text color
+		color4 = "#BB00AA"   # border around elements
+	
+	if iType == "lavender 3D v2":
+		color1 = "#FFFFFF"   # background gradient start
+		color2 = "#B57EDC"   # background gradient stop
+		color3 = "#000000"   # text color
+		color4 = "#A46DCB"   # border around elements
+
+	if iType == "sky 3D v2":
+		color1 = "#FFFFFF"   # background gradient start
+		color2 = "#AAAAFF"   # background gradient stop
+		color3 = "#000000"   # text color
+		color4 = "#5555AA"   # border around elements
+	
+	if iType == "sun 3D v2":
+		color1 = "#FFFFFF"   # background gradient start
+		color2 = "#FFAA00"   # background gradient stop
+		color3 = "#000000"   # text color
+		color4 = "#AA5500"   # border around elements
+
+	if iType == "gray 3D v2":
+		color1 = "#D1D1D1"   # background gradient start
+		color2 = "#A1A1A1"   # background gradient stop
+		color3 = "#000000"   # text color
+		color4 = "#515151"   # border around elements
+
+	if iType == "grass 3D v2":
+		color1 = "#D1D1D1"   # background gradient start
+		color2 = "#AAFFAA"   # background gradient stop
+		color3 = "#000000"   # text color
+		color4 = "#55AA55"   # border around elements
+	
+	if iType == "winter 3D v2":
 		color1 = "#D1D1D1"   # background gradient start
 		color2 = "#E1E1E1"   # background gradient stop
 		color3 = "#000000"   # text color
@@ -7725,9 +7781,105 @@ def getTheme(iType=""):
 		}
 		
 	'''
+	# ##############################################################
+	# QtCSS - 3D v2
+	# ##############################################################
+
+	QtCSS3Dv2 =  '''
+			
+		QDialog {
+			color: '''+color3+''';
+			background-color: qlineargradient( 
+				x1: 0, y1: 0, 
+				x2: 1, y2: 1,
+				stop: 0 '''+color1+''', stop: 1 '''+color2+'''
+			);
+		}
+		
+		QPushButton, QPushButton:enabled {
+			color: '''+color3+''';
+			border: 1px outset '''+color4+''';
+			background-color: qlineargradient( 
+				x1: 0, y1: 0, 
+				x2: 0, y2: 1,
+				stop: 0 '''+color1+''', stop: 1 '''+color2+'''
+			);
+		}
+		QPushButton:pressed {
+			background-color: qlineargradient( 
+				x1: 0, y1: 0, 
+				x2: 0, y2: 1,
+				stop: 0 '''+color1+''', stop: 1 #FF0000
+			);
+		}
+		QPushButton:disabled {
+			color: '''+color1+''';
+			background-color: '''+color2+''';
+		}
+		
+		QLineEdit, QTextEdit {
+			color: '''+color3+''';
+			border: 1px inset '''+color4+''';
+			background-color: qlineargradient( 
+				x1: 0, y1: 0, 
+				x2: 1, y2: 1,
+				stop: 0 '''+color2+''', stop: 1 '''+color1+'''
+			);
+		}
+		
+		QScrollBar {
+			background-color: qlineargradient( 
+				x1: 0, y1: 0, 
+				x2: 2, y2: 2,
+				stop: 0 '''+color2+''', stop: 1 '''+color1+'''
+			);
+		}
+		
+		QGroupBox {
+			color: '''+color3+''';
+			background-color: qlineargradient( 
+				x1: 0, y1: 0, 
+				x2: 1, y2: 1,
+				stop: 0 '''+color2+''', stop: 1 '''+color1+'''
+			);
+			border-left: 3px solid '''+color1+''';
+			border-top: 3px solid '''+color1+''';
+			border-right: 3px solid '''+color4+''';
+			border-bottom: 3px solid '''+color4+''';
+			margin-top: 2.5ex;
+		}
+		QGroupBox:title {
+			color: '''+color3+''';
+			background-color: transparent;
+		}
+		
+		QLabel {
+			color: '''+color3+''';
+			background-color: transparent;
+		}
+		
+		QLabel#qt_msgbox_label {
+			color: '''+color3+''';
+			background-color: '''+color2+''';
+			border-left: 3px solid '''+color4+''';
+			border-top: 3px solid '''+color4+''';
+			border-right: 3px solid '''+color1+''';
+			border-bottom: 3px solid '''+color1+''';
+		}
+		QDialogButtonBox#qt_msgbox_buttonbox > QPushButton {
+			width: 100%;
+		}
+		
+	'''
+
+	# ##############################################################
+	# set
+	# ##############################################################
 
 	if iType[-3:] == " 3D":
 		return QtCSS3D
+	elif iType[-6:] == " 3D v2":
+		return QtCSS3Dv2
 	else:
 		return QtCSS
 

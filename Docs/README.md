@@ -174,6 +174,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * new 3D v2 themes with outset style (MagicPanels)
     * "fractions" default units for "Building US", keep metrics, and "system" for others (getDimensions)
     * move to face whole cabinet module in LinkGroup container (panelMove2Face)
     * rename inherit visibility to screw and implement inherit for highest container (getDimensions)
