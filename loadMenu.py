@@ -17,7 +17,7 @@ class DOCS():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "Docs.png"),
-				"MenuText": QT_TRANSLATE_NOOP('DOCS', 'Woodworking at FreeCAD - woodworking workbench documentation'),
+				"MenuText": QT_TRANSLATE_NOOP('DOCS', 'Woodworking - workbench documentation'),
 				"ToolTip" : QT_TRANSLATE_NOOP('DOCS', 'Opens web browser with external link.'),
 				"Accel"   : ""}
 
@@ -40,7 +40,7 @@ class EXAMPLES():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "Docs.png"),
-				"MenuText": QT_TRANSLATE_NOOP('EXAMPLES', 'Woodworking at FreeCAD - fully parametric examples'),
+				"MenuText": QT_TRANSLATE_NOOP('EXAMPLES', 'Woodworking - fully parametric examples'),
 				"ToolTip" : QT_TRANSLATE_NOOP('EXAMPLES', 'Opens web browser with external link.'),
 				"Accel"   : ""}
 
@@ -63,7 +63,7 @@ class FIXTURE():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "Docs.png"),
-				"MenuText": QT_TRANSLATE_NOOP('FIXTURE', 'Woodworking at FreeCAD - fixture examples'),
+				"MenuText": QT_TRANSLATE_NOOP('FIXTURE', 'Woodworking - fixture examples'),
 				"ToolTip" : QT_TRANSLATE_NOOP('FIXTURE', 'Opens web browser with external link.'),
 				"Accel"   : ""}
 
@@ -86,7 +86,7 @@ class TEXTURES():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "Docs.png"),
-				"MenuText": QT_TRANSLATE_NOOP('TEXTURES', 'Woodworking at FreeCAD - free woodworking textures'),
+				"MenuText": QT_TRANSLATE_NOOP('TEXTURES', 'Woodworking - free textures'),
 				"ToolTip" : QT_TRANSLATE_NOOP('TEXTURES', 'Opens web browser with external link.'),
 				"Accel"   : ""}
 
@@ -292,7 +292,7 @@ class TRANSLATION():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "autoupdate.png"),
-				"MenuText": QT_TRANSLATE_NOOP('TRANSLATION', 'Download and update all translations'),
+				"MenuText": QT_TRANSLATE_NOOP('TRANSLATION', 'Woodworking - translations'),
 				"ToolTip" : QT_TRANSLATE_NOOP('TRANSLATION', 'Download latest versions for all translations.'),
 				"Accel"   : ""}
 
@@ -352,6 +352,29 @@ FreeCADGui.addCommand("TRANSLATION", TRANSLATION())
 
 
 # ######################################################################################################################
+class ISSUE():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "debugInfo.png"),
+				"MenuText": QT_TRANSLATE_NOOP('DOCS', 'Woodworking - report issue or contact'),
+				"ToolTip" : QT_TRANSLATE_NOOP('DOCS', 'Opens web browser with external link.'),
+				"Accel"   : ""}
+
+	def Activated(self):
+
+		import webbrowser
+		webbrowser.open("https://github.com/dprojects/Woodworking/issues")
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("ISSUE", ISSUE())
+
+
+# ######################################################################################################################
 def getItems():
 
 	parts = []
@@ -361,7 +384,8 @@ def getItems():
 		"EXAMPLES",
 		"FIXTURE",
 		"TEXTURES",
-		"TRANSLATION"
+		"TRANSLATION",
+		"ISSUE"
 	]
 
 	'''

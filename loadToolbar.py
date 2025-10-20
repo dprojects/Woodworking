@@ -109,7 +109,6 @@ def getItems(iType):
 
 	if iType == "Woodworking - advanced":
 		parts = [
-			"panel2pad",
 			"addExternal",
 			"wires2pad",
 			"Std_Part",
@@ -120,6 +119,7 @@ def getItems(iType):
 
 	if iType == "Woodworking - copy":
 		parts = [
+			"panel2pad",
 			"panelCopyXY",
 			"panelCopyYX",
 			"panelCopyXZ",
