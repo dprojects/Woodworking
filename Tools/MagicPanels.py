@@ -8813,7 +8813,7 @@ def updateGlobals():
 	try:
 		if "wWoodThickness" in wusStrings:
 			global gWoodThickness
-			gWoodThickness = unit2value( wus.GetString('wWoodThickness') )
+			gWoodThickness = float( wus.GetString('wWoodThickness') )
 	except:
 		skip = 1
 
