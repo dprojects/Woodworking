@@ -174,6 +174,9 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * edgeband veneer simulation (MagicPanels, magicStart, magicSettings)
+    * more options for furniture (magicStart)
+    * more user options (magicSettings, MagicPanels, magicStart)
     * new 3D v2 themes with outset style (MagicPanels)
     * "fractions" default units for "Building US", keep metrics, and "system" for others (getDimensions)
     * move to face whole cabinet module in LinkGroup container (panelMove2Face)
@@ -486,7 +489,7 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 
 > [!TIP]
 > All furniture elements should be created according to the `XYZ` axis plane, if possible. Avoid building whole furniture with rotated elements. If you want to rotate panel with dowels, better create panel with dowels without rotation, pack panel with dowels into container like `LinkGroup`, and use [magicAngle](#magicangle) to rotate whole `LinkGroup`. You can rotate whole furniture like this with single click and the dowels will be in the correct place after rotation. If you would like to apply dowels at rotated element it would be pointless complication, almost impossible at FreeCAD. 
-> To set default wood thickenss or wood color you can use [magicSettings](#magicsettings) tool.
+> To set default wood sizes or wood color you can use [magicSettings](#magicsettings) tool.
 
 ## Copy panels
 
@@ -849,10 +852,12 @@ Selection modes:
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicSettings.png"> This tool allows you to save default settings for Woodworking workbench. 
 
-**Options:**
+**Settings - page 1:**
 
 * **Theme:** allows you to choose a color theme for all Woodworking workbench tools. Switching the theme causes an immediate preview on the tool interface. To save a given theme, press the `save settings` button. The `default` means no theme.
 * **Wood thickness:** allows you to set the default thickness of the wood you create. This setting is used by tools such as [magicStart](#magicstart), [wires2pad](#wires2pad), [Default panels](#default-panels) and all others.
+* **Wood size X (long):** means the longer size for `XY` default panel, see: [Default panels](#default-panels).
+* **Wood size Y (short):** means the shorter size for `XY` default panel, see: [Default panels](#default-panels).
 * **Wood color:** allows you to set the default color of the wood you create in RGBA color schema. This setting is used by tools like [magicStart](#magicstart), [wires2pad](#wires2pad), [Default panels](#default-panels) and all others. If you want to revert to the default wood color which is `RGBA = [ 247, 185, 108, 255 ]` leave all fields empty and press the `save settings` button.
 * **Window stays on top:**
   * `yes` - Tool windows always stay on top of all other applications. I personally use this feature when creating documentation. I have Krusader (Kwrite Edit) and the new tool window open simultaneously, so I can describe all the options without constantly clicking on the new tool window.
@@ -860,7 +865,32 @@ Selection modes:
 * **Current selection:** 
   * `yes` - Allows you to bypass the `refresh selection` button. When enabled, you do not have to constantly press the `refresh selection` button to load objects into memory, you can simply select them. However, this is an experimental option and only works for the [magicMove](#magicmove) tool.
   * `no` - The default behavior of the tools is that moving objects requires loading the objects into memory by pressing the `refresh selection` button.
-* **save settings:** button saves the current settings in FreeCAD configuration files, i.e. `User parameter:BaseApp/Preferences/Woodworking`. This data can be checked, fixed or removed using the parameter editor in FreeCAD, i.e. `Tools -> Edit parameters... -> Preferences -> Woodworking`.
+
+**Settings - page 2:**
+
+* **Front inside thickness:** allows you to set default thickness for fronts inside.
+* **Front inside offset left:** allows you to set default left gap for fronts inside.
+* **Front inside offset right:** allows you to set default right gap for fronts inside.
+* **Front inside offset bottom:** allows you to set default bottom gap for fronts inside.
+* **Front inside offset top:** allows you to set default top gap for fronts inside.
+* **Front outside thickness:** allows you to set default thickness for fronts outside.
+* **Front outside overlap left:** allows you to set default left overlap for fronts outside.
+* **Front outside overlap right:** allows you to set default right overlap for fronts outside.
+* **Front outside overlap bottom:** allows you to set default bottom overlap for fronts outside.
+* **Front outside overlap top:** allows you to set default top overlap for fronts outside.
+* **Shelf thickness:** allows you to set default thickness for shelves.
+* **Back inside thickness:** allows you to set default thickness for back inside, usually 18 mm chipboard in Poland.
+* **Back outside thickness:** allows you to set default thickness for back outside, usually 3 mm HDF in Poland.
+
+**Settings - page 3:**
+
+* **Veneer thickness:** allows you to simulate veneer thickness. Constructions with `veneer` description in [magicStart](#magicstart) supports this option and add additional gap for edgeband.
+* **Veneer apply:** allows you to simulate veneer and choose method of veneer applying. Constructions with `veneer` description in [magicStart](#magicstart) supports this option and add additional gap for edgeband.
+  * `everywhere` for example you can buy chipboards with `2 mm` PCV veneer. So the veneer will be applied everywhere in this case.
+  * `visible` it is more custom way, related mostly only to visible edges.
+* **Veneer color:** allows you to set the default RGBA color of the veneer. If you want to revert to the default color which is `white: RGBA = [ 255, 255, 255, 255 ]` leave all fields empty and press the `save settings` button.
+
+**save settings:** button saves the current settings in FreeCAD configuration files, i.e. `User parameter:BaseApp/Preferences/Woodworking`. This data can be checked, fixed or removed using the parameter editor in FreeCAD, i.e. `Tools -> Edit parameters... -> Preferences -> Woodworking`.
 
 **Video tutorials:** 
 * [How to use magicSettings tool](https://www.youtube.com/watch?v=kwcO2bRcCrY)

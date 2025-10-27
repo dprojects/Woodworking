@@ -21,36 +21,36 @@ def panelDefault(iType):
 	try:
 
 		panel = FreeCAD.activeDocument().addObject("Part::Box", "panel"+iType)
-
+		
 		if iType == "XY":
-			panel.Length = 600
-			panel.Width = 300
+			panel.Length = MagicPanels.gWoodSizeX
+			panel.Width = MagicPanels.gWoodSizeY
 			panel.Height = MagicPanels.gWoodThickness
 
 		if iType == "YX":
-			panel.Length = 300
-			panel.Width = 600
+			panel.Length = MagicPanels.gWoodSizeY
+			panel.Width = MagicPanels.gWoodSizeX
 			panel.Height = MagicPanels.gWoodThickness
 
 		if iType == "XZ":
-			panel.Length = 600
+			panel.Length = MagicPanels.gWoodSizeX
 			panel.Width = MagicPanels.gWoodThickness
-			panel.Height = 300
+			panel.Height = MagicPanels.gWoodSizeY
 
 		if iType == "ZX":
-			panel.Length = 300
+			panel.Length = MagicPanels.gWoodSizeY
 			panel.Width = MagicPanels.gWoodThickness
-			panel.Height = 600
+			panel.Height = MagicPanels.gWoodSizeX
 
 		if iType == "YZ":
 			panel.Length = MagicPanels.gWoodThickness
-			panel.Width = 600
-			panel.Height = 300
+			panel.Width = MagicPanels.gWoodSizeX
+			panel.Height = MagicPanels.gWoodSizeY
 
 		if iType == "ZY":
 			panel.Length = MagicPanels.gWoodThickness
-			panel.Width = 300
-			panel.Height = 600
+			panel.Width = MagicPanels.gWoodSizeY
+			panel.Height = MagicPanels.gWoodSizeX
 
 		MagicPanels.setColor(panel, 0, MagicPanels.gDefaultColor, "color")
 		FreeCAD.ActiveDocument.recompute()

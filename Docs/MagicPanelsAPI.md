@@ -22,15 +22,33 @@
 
 # Globals
 
-* `gRoundPrecision = 2 `: should be set according to the user FreeCAD GUI settings <br>
+* `gSettingsPref = 'User parameter:BaseApp/Preferences/Woodworking'`: settings path <br>
+* `gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0)`: default color [247, 185, 108, 255] <br>
+* `gRoundPrecision = 2`: should be set according to the user FreeCAD GUI settings <br>
 * `gSearchDepth = 200 `: recursive search depth <br>
 * `gKernelVersion = 0 `: FreeCAD version to add support for new kernel changes <br>
-* `gSettingsPref = 'User parameter:BaseApp/Preferences/Woodworking'`: settings path <br>
 * `gTheme = "default" `: no theme by default <br>
-* `gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0)`: default color [247, 185, 108, 255] <br>
-* `gWoodThickness = 18`: wood thickness <br>
+* `gWoodThickness = 18`: main construction wood thickness <br>
+* `gWoodSizeX = 600`: default panel long size <br>
+* `gWoodSizeY = 300`: default panel short size <br>
 * `gWindowStaysOnTop = True `: to keep window on top <br> 
 * `gCurrentSelection = False`: to skip refresh selection button <br>
+* `gFrontInsideThickness = 18`: front inside wood thickness <br>
+* `gFrontInsideOffsetL = 2`: gap left <br>
+* `gFrontInsideOffsetR = 2`: gap right <br>
+* `gFrontInsideOffsetB = 2`: gap bottom <br>
+* `gFrontInsideOffsetT = 2`: gap top <br>
+* `gFrontOutsideThickness = 18 `: front outside wood thickness <br>
+* `gFrontOutsideOffsetL = 9 `: overlap left <br>
+* `gFrontOutsideOffsetR = 9 `: overlap right <br>
+* `gFrontOutsideOffsetB = 7 `: overlap bottom <br>
+* `gFrontOutsideOffsetT = 7 `: overlap top <br>
+* `gShelfThickness = 18`: shelf wood thickness, usually full wood but can be plywood 6 mm <br>
+* `gBackInsideThickness = 18`: back inside thickness, usually full wood <br>
+* `gBackOutsideThickness = 3`: back outside thickness, usually HDF <br>
+* `gEdgebandThickness = 0`: edgeband thickness <br>
+* `gEdgebandApply = "visible"`: edgeband apply way "everywhere" or "visible"<br>
+* `gEdgebandColor = (1.0, 1.0, 1.0, 1.0)`: white <br>
 
 > [!CAUTION]
 > Globals are updated from user settings via updateGlobals function at the end of the library.

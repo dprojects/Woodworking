@@ -49,16 +49,33 @@ def QT_TRANSLATE_NOOP(context, text): #
 # ###################################################################################################################
 
 
-gRoundPrecision = 2       # should be set according to the user FreeCAD GUI settings <br>
-gSearchDepth = 200       # recursive search depth <br>
-gKernelVersion = 0       # FreeCAD version to add support for new kernel changes <br>
-
 gSettingsPref = 'User parameter:BaseApp/Preferences/Woodworking'                     # settings path <br>
-gTheme = "default"                                                                   # no theme by default <br>
 gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0)   # default color [247, 185, 108, 255] <br>
-gWoodThickness = 18                                                                  # wood thickness <br>
-gWindowStaysOnTop = True                                                             # to keep window on top <br> 
-gCurrentSelection = False                                                            # to skip refresh selection button <br>
+gRoundPrecision = 2                        # should be set according to the user FreeCAD GUI settings <br>
+gSearchDepth = 200                         # recursive search depth <br>
+gKernelVersion = 0                         # FreeCAD version to add support for new kernel changes <br>
+gTheme = "default"                         # no theme by default <br>
+gWoodThickness = 18                        # main construction wood thickness <br>
+gWoodSizeX = 600                           # default panel long size <br>
+gWoodSizeY = 300                           # default panel short size <br>
+gWindowStaysOnTop = True                   # to keep window on top <br> 
+gCurrentSelection = False                  # to skip refresh selection button <br>
+gFrontInsideThickness = 18                 # front inside wood thickness <br>
+gFrontInsideOffsetL = 2                    # gap left <br>
+gFrontInsideOffsetR = 2                    # gap right <br>
+gFrontInsideOffsetB = 2                    # gap bottom <br>
+gFrontInsideOffsetT = 2                    # gap top <br>
+gFrontOutsideThickness = 18                # front outside wood thickness <br>
+gFrontOutsideOffsetL = 9                   # overlap left <br>
+gFrontOutsideOffsetR = 9                   # overlap right <br>
+gFrontOutsideOffsetB = 7                   # overlap bottom <br>
+gFrontOutsideOffsetT = 7                   # overlap top <br>
+gShelfThickness = 18                       # shelf wood thickness, usually full wood but can be plywood 6 mm <br>
+gBackInsideThickness = 18                  # back inside thickness, usually full wood <br>
+gBackOutsideThickness = 3                  # back outside thickness, usually HDF <br>
+gEdgebandThickness = 0                     # edgeband thickness <br>
+gEdgebandApply = "visible"                 # edgeband apply way "everywhere" or "visible"<br>
+gEdgebandColor = (1.0, 1.0, 1.0, 1.0)      # white <br>
 
 
 # > [!CAUTION]
@@ -8940,20 +8957,27 @@ def updateGlobals():
 
 	'''
 
+	# #######################################################
+	# settings
+	# #######################################################
 
 	# Woodworking User Settings
 	wus = FreeCAD.ParamGet(gSettingsPref)
 	wusStrings = wus.GetStrings()
 	wusBools = wus.GetBools()
 	
-	# set FreeCAD kernel version
+	# FreeCAD kernel version
 	try:
 		global gKernelVersion
 		gKernelVersion = float( str(FreeCAD.Version()[0]) + "." + str(FreeCAD.Version()[1]) + str(FreeCAD.Version()[2]) )
 	except:
 		skip = 1
 
-	# set theme
+	# #######################################################
+	# page 1
+	# #######################################################
+
+	# theme
 	try:
 		if "wTheme" in wusStrings:
 			global gTheme
@@ -8961,7 +8985,7 @@ def updateGlobals():
 	except:
 		skip = 1
 
-	# set wood thickness
+	# wood thickness
 	try:
 		if "wWoodThickness" in wusStrings:
 			global gWoodThickness
@@ -8969,7 +8993,21 @@ def updateGlobals():
 	except:
 		skip = 1
 
-	# set wood color
+	try:
+		if "wWoodSizeX" in wusStrings:
+			global gWoodSizeX
+			gWoodSizeX = float( wus.GetString('wWoodSizeX') )
+	except:
+		skip = 1
+	
+	try:
+		if "wWoodSizeY" in wusStrings:
+			global gWoodSizeY
+			gWoodSizeY = float( wus.GetString('wWoodSizeY') )
+	except:
+		skip = 1
+
+	# color
 	try:
 		if "wWoodColorR" in wusStrings:
 			cR = wus.GetString('wWoodColorR')
@@ -8982,7 +9020,7 @@ def updateGlobals():
 	except:
 		skip = 1
 
-	# set window stays on top
+	# window stays on top
 	try:
 		if "wWindowStaysOnTop" in wusBools:
 			global gWindowStaysOnTop
@@ -8990,11 +9028,139 @@ def updateGlobals():
 	except:
 		skip = 1
 
-	# set current selection
+	# current selection
 	try:
 		if "wCurrentSelection" in wusBools:
 			global gCurrentSelection
 			gCurrentSelection = wus.GetBool('wCurrentSelection')
+	except:
+		skip = 1
+
+	# #######################################################
+	# page 2
+	# #######################################################
+
+	try:
+		if "wFrontInsideThickness" in wusStrings:
+			global gFrontInsideThickness
+			gFrontInsideThickness = float( wus.GetString('wFrontInsideThickness') )
+	except:
+		skip = 1
+
+	try:
+		if "wFrontInsideOffsetL" in wusStrings:
+			global gFrontInsideOffsetL
+			gFrontInsideOffsetL = float( wus.GetString('wFrontInsideOffsetL') )
+	except:
+		skip = 1
+
+	try:
+		if "wFrontInsideOffsetR" in wusStrings:
+			global gFrontInsideOffsetR
+			gFrontInsideOffsetR = float( wus.GetString('wFrontInsideOffsetR') )
+	except:
+		skip = 1
+
+	try:
+		if "wFrontInsideOffsetB" in wusStrings:
+			global gFrontInsideOffsetB
+			gFrontInsideOffsetB = float( wus.GetString('wFrontInsideOffsetB') )
+	except:
+		skip = 1
+
+	try:
+		if "wFrontInsideOffsetT" in wusStrings:
+			global gFrontInsideOffsetT
+			gFrontInsideOffsetT = float( wus.GetString('wFrontInsideOffsetT') )
+	except:
+		skip = 1
+
+	try:
+		if "wFrontOutsideThickness" in wusStrings:
+			global gFrontOutsideThickness
+			gFrontOutsideThickness = float( wus.GetString('wFrontOutsideThickness') )
+	except:
+		skip = 1
+
+	try:
+		if "wFrontOutsideOffsetL" in wusStrings:
+			global gFrontOutsideOffsetL
+			gFrontOutsideOffsetL = float( wus.GetString('wFrontOutsideOffsetL') )
+	except:
+		skip = 1
+
+	try:
+		if "wFrontOutsideOffsetR" in wusStrings:
+			global gFrontOutsideOffsetR
+			gFrontOutsideOffsetR = float( wus.GetString('wFrontOutsideOffsetR') )
+	except:
+		skip = 1
+
+	try:
+		if "wFrontOutsideOffsetB" in wusStrings:
+			global gFrontOutsideOffsetB
+			gFrontOutsideOffsetB = float( wus.GetString('wFrontOutsideOffsetB') )
+	except:
+		skip = 1
+
+	try:
+		if "wFrontOutsideOffsetT" in wusStrings:
+			global gFrontOutsideOffsetT
+			gFrontOutsideOffsetT = float( wus.GetString('wFrontOutsideOffsetT') )
+	except:
+		skip = 1
+
+	try:
+		if "wShelfThickness" in wusStrings:
+			global gShelfThickness
+			gShelfThickness = float( wus.GetString('wShelfThickness') )
+	except:
+		skip = 1
+
+	try:
+		if "wBackInsideThickness" in wusStrings:
+			global gBackInsideThickness
+			gBackInsideThickness = float( wus.GetString('wBackInsideThickness') )
+	except:
+		skip = 1
+
+	try:
+		if "wBackOutsideThickness" in wusStrings:
+			global gBackOutsideThickness
+			gBackOutsideThickness = float( wus.GetString('wBackOutsideThickness') )
+	except:
+		skip = 1
+
+	# #######################################################
+	# page 3
+	# #######################################################
+
+	# edgeband thickness
+	try:
+		if "wEdgebandThickness" in wusStrings:
+			global gEdgebandThickness
+			gEdgebandThickness = float( wus.GetString('wEdgebandThickness') )
+	except:
+		skip = 1
+
+	# edgeband apply way
+	try:
+		if "wEdgebandApply" in wusStrings:
+			global gEdgebandApply
+			gEdgebandApply = wus.GetString('wEdgebandApply')
+	except:
+		skip = 1
+
+	# color
+	try:
+		if "wEdgebandColorR" in wusStrings:
+			cR = wus.GetString('wEdgebandColorR')
+			cG = wus.GetString('wEdgebandColorG')
+			cB = wus.GetString('wEdgebandColorB')
+			cA = wus.GetString('wEdgebandColorA')
+			colorArr = [ int(float(cR)), int(float(cG)), int(float(cB)), int(float(cA)) ]
+			global gEdgebandColor
+			gEdgebandColor = convertColor(colorArr, "kernel")
 	except:
 		skip = 1
 
