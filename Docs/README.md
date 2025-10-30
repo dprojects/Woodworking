@@ -175,6 +175,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * fix making non-transparent objects while new object was created (makeTransparent)
     * edgeband veneer simulation tool and cut-list support (addVeneer, getDimensions)
     * edgeband veneer simulation (MagicPanels, magicStart, magicSettings)
     * more options for furniture (magicStart)
@@ -861,10 +862,10 @@ Selection modes:
 **Settings - page 1:**
 
 * **Theme:** allows you to choose a color theme for all Woodworking workbench tools. Switching the theme causes an immediate preview on the tool interface. To save a given theme, press the `save settings` button. The `default` means no theme.
-* **Wood thickness:** allows you to set the default thickness of the wood you create. This setting is used by tools such as [magicStart](#magicstart), [wires2pad](#wires2pad), [Default panels](#default-panels) and all others.
+* **Wood thickness:** allows you to set the default thickness of the wood you create. This setting is used by tools such as [magicStart](#how-to-start---magicstart), [wires2pad](#wires2pad), [Default panels](#default-panels) and all others.
 * **Wood size X (long):** means the longer size for `XY` default panel, see: [Default panels](#default-panels).
 * **Wood size Y (short):** means the shorter size for `XY` default panel, see: [Default panels](#default-panels).
-* **Wood color:** allows you to set the default color of the wood you create in RGBA color schema. This setting is used by tools like [magicStart](#magicstart), [wires2pad](#wires2pad), [Default panels](#default-panels) and all others. If you want to revert to the default wood color which is `RGBA = [ 247, 185, 108, 255 ]` leave all fields empty and press the `save settings` button.
+* **Wood color:** allows you to set the default color of the wood you create in RGBA color schema. This setting is used by tools like [magicStart](#how-to-start---magicstart), [wires2pad](#wires2pad), [Default panels](#default-panels) and all others. If you want to revert to the default wood color which is `RGBA = [ 247, 185, 108, 255 ]` leave all fields empty and press the `save settings` button.
 * **Window stays on top:**
   * `yes` - Tool windows always stay on top of all other applications. I personally use this feature when creating documentation. I have Krusader (Kwrite Edit) and the new tool window open simultaneously, so I can describe all the options without constantly clicking on the new tool window.
   * `no` - Enables the default window behavior, i.e. when you switch to another application, the window disappears.
@@ -890,8 +891,8 @@ Selection modes:
 
 **Settings - page 3:**
 
-* **Veneer thickness:** allows you to simulate veneer thickness. Constructions with `veneer` description in [magicStart](#magicstart) supports this option and add additional gap for edgeband.
-* **Veneer apply:** allows you to simulate veneer and choose method of veneer applying. Constructions with `veneer` description in [magicStart](#magicstart) supports this option and add additional gap for edgeband.
+* **Veneer thickness:** allows you to simulate veneer thickness. Constructions with `veneer` description in [magicStart](#how-to-start---magicstart) supports this option and add additional gap for edgeband.
+* **Veneer apply:** allows you to simulate veneer and choose method of veneer applying. Constructions with `veneer` description in [magicStart](#how-to-start---magicstart) supports this option and add additional gap for edgeband.
   * `everywhere` for example you can buy chipboards with `2 mm` PCV veneer. So the veneer will be applied everywhere in this case.
   * `visible` it is more custom way, related mostly only to visible edges.
 * **Veneer color:** allows you to set the default RGBA color of the veneer. If you want to revert to the default color which is `white: RGBA = [ 255, 255, 255, 255 ]` leave all fields empty and press the `save settings` button.

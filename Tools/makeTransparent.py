@@ -58,14 +58,16 @@ try:
 		except:
 			skip = 1
 
+	nUnset = list(gChange.values()).count("unset")
+	nSet = list(gChange.values()).count("set")
+
 	for o in objects:
 
 		try:
 
-			if gChange[str(o.Name)] == "set":
+			if nSet > nUnset:
 				MagicPanels.setColor(o, 0, 83, "trans", "RGBA")
-
-			if gChange[str(o.Name)] == "unset":
+			else:
 				MagicPanels.setColor(o, 0, 0, "trans", "RGBA")
 			
 			if gChange[str(o.Name)] == "faces":
