@@ -357,6 +357,7 @@ def showQtGUI():
 			
 			self.sheetInfo = QtGui.QLabel(info, self)
 			self.sheetInfo.setFixedWidth(area)
+			self.sheetInfo.setFixedHeight(150)
 			self.sheetInfo.setWordWrap(True)
 			
 			self.sheetB1 = QtGui.QPushButton(translate('magicColors', 'set face colors from spreadsheet'), self)

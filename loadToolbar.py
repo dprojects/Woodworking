@@ -109,6 +109,7 @@ def getItems(iType):
 
 	if iType == "Woodworking - advanced":
 		parts = [
+			"addVeneer",
 			"addExternal",
 			"wires2pad",
 			"Std_Part",

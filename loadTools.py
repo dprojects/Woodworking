@@ -286,6 +286,45 @@ FreeCADGui.addCommand("panelDefaultZY", panelDefaultZY())
 
 	
 # ######################################################################################################################
+class panel2pad():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panel2pad.png"),
+				"MenuText": QT_TRANSLATE_NOOP("panel2pad", "panel2pad, to convert panel to object with Sketch"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panel2pad", "This tool allows you to convert in-place simple panels Part::Box to PartDesign::Pad objects."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panel2pad"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panel2pad", panel2pad())
+
+	
+# ######################################################################################################################
 class panelCopyXY():
 
 	def GetResources(self):
@@ -4849,12 +4888,12 @@ FreeCADGui.addCommand("showAlias", showAlias())
 
 	
 # ######################################################################################################################
-class panel2pad():
+class addVeneer():
 
 	def GetResources(self):
-		return {"Pixmap"  : os.path.join(iconPath, "panel2pad.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panel2pad", "panel2pad, to convert panel to object with Sketch"),
-				"ToolTip" : QT_TRANSLATE_NOOP("panel2pad", "This tool allows you to convert in-place simple panels Part::Box to PartDesign::Pad objects."),
+		return {"Pixmap"  : os.path.join(iconPath, "addVeneer.png"),
+				"MenuText": QT_TRANSLATE_NOOP("addVeneer", "addVeneer, to simulate veneer apply"),
+				"ToolTip" : QT_TRANSLATE_NOOP("addVeneer", "This tool allows you to simulate needed offset for veneer."),
 				"Accel"   : "" }
 
 	def Activated(self):
@@ -4864,7 +4903,7 @@ class panel2pad():
 
 		modulePath = sys.path
 		
-		module = "panel2pad"
+		module = "addVeneer"
 		
 		path = os.path.dirname(fakemodule.__file__)
 		path = os.path.join(path, "Tools")
@@ -4884,7 +4923,7 @@ class panel2pad():
 		# not needed now, maybe in the future
 		return True
 
-FreeCADGui.addCommand("panel2pad", panel2pad())
+FreeCADGui.addCommand("addVeneer", addVeneer())
 
 	
 # ######################################################################################################################

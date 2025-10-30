@@ -25,7 +25,7 @@ translate = FreeCAD.Qt.translate
 sPPM = "default" # default
 sPPMDsc = {
 	"default" : translate("getDimensions", "normal mode"),
-	"assembly" : translate("getDimensions", "dedicated for Assembly workbench objects") # no comma
+	"assembly" : translate("getDimensions", "dedicated for Assembly4 workbench objects") # no comma
 }
 
 
@@ -50,7 +50,7 @@ sARD = False      # decoration
 sARGD = True      # grain direction
 sATS = True       # thickness summary
 sAEI = True       # edgeband info
-
+sARVS = True      # veneer simulation
 
 # ###################################################################################################################
 # Dimensions
@@ -455,6 +455,9 @@ def showQtGUI():
 			self.ardCB = QtGui.QCheckBox(translate('getDimensions', '- decorations'), self)
 			self.ardCB.setCheckState(QtCore.Qt.Unchecked)
 			
+			self.arvsCB = QtGui.QCheckBox(translate('getDimensions', '- veneer simulation'), self)
+			self.arvsCB.setCheckState(QtCore.Qt.Checked)
+			
 			# ############################################################################
 			# units
 			# ############################################################################
@@ -631,6 +634,7 @@ def showQtGUI():
 			self.layAR.addWidget(self.arpCB, 1, 1)
 			self.layAR.addWidget(self.argdCB, 1, 2)
 			self.layAR.addWidget(self.ardCB, 2, 0)
+			self.layAR.addWidget(self.arvsCB, 2, 1)
 			
 			self.layRT = QtGui.QVBoxLayout()
 			self.layRT.addLayout(self.layRC)
@@ -838,6 +842,7 @@ def showQtGUI():
 				self.armCB.hide()
 				self.arpCB.hide()
 				self.argdCB.hide()
+				self.arvsCB.hide()
 				
 				self.pufdL.hide()
 				self.pufde.hide()
@@ -866,6 +871,7 @@ def showQtGUI():
 				self.armCB.show()
 				self.arpCB.show()
 				self.argdCB.show()
+				self.arvsCB.show()
 				
 				self.pufdL.show()
 				self.pufde.show()
@@ -970,7 +976,7 @@ def showQtGUI():
 	if form.result == userOK:
 		global sEColor
 		global sARME, sARM, sARP, sARD, sARGD
-		global sATS, sAEI
+		global sATS, sAEI, sARVS
 		global sPDD, sPDA, sPDE
 		
 		# set edgeband code from text form
@@ -1023,6 +1029,12 @@ def showQtGUI():
 		else:
 			sAEI = False
 
+		# veneer simulation
+		if form.arvsCB.isChecked():
+			sARVS = True
+		else:
+			sARVS = False
+		
 		gExecute = "yes"
 
 
@@ -2439,6 +2451,61 @@ def setMeasurementsList(iObj, iCaller="setMeasurementsList"):
 
 
 # ###################################################################################################################
+def setVeneerSimulation(iObj, iCaller="setVeneerSimulation"):
+
+	try:
+		# parse only veneer objects
+		veneer = False
+		if iObj.isDerivedFrom("Part::Box"):
+			if hasattr(iObj, "Woodworking_Type"):
+				if iObj.Woodworking_Type == "Veneer":
+					veneer = True
+		
+		# skip other objects without error
+		if veneer == False:
+			return
+		
+		# init variables
+		vArrNames = []
+		vArrValues = []
+		vType = "veneer"
+		vKey = str(iObj.Woodworking_ObjectLabel)
+		
+		# increase counter if already exists for such object
+		if vKey in dbARN.keys():
+			vArrNames.append(dbARN[vKey])
+			vArrValues.append(dbARV[vKey])
+
+		# set new entry name
+		n = translate("getDimensions", "Veneer") + ", "
+		n += translate("getDimensions", "Face") + str(iObj.Woodworking_FaceIndex) + ", "
+		n += MagicPanels.unit2gui(iObj.Woodworking_Ref_Length.Value)
+		vArrNames.append(n)
+
+		# set new entry value
+		sizes = MagicPanels.getSizes(iObj)
+		sizes.sort()
+		length = sizes[2]
+		v = "d;" + str(length)
+		vArrValues.append(v)
+		
+		# add to edgeband calculation, make sure you do not have color also
+		dbE["edgeband"] = dbE["edgeband"] + length
+		dbE["empty"] = dbE["total"] - dbE["edgeband"]
+
+		# set db for additional report
+		setDBAdditional(iObj, vType, vArrNames, vArrValues, vKey, iCaller)
+
+	except:
+		
+		# if there is wrong structure
+		showError(iCaller, iObj, "setVeneerSimulation", "wrong structure")
+		return -1
+
+	return 0
+
+
+# ###################################################################################################################
 def setGrainDirection(iObj, iCaller="setGrainDirection"):
 
 	try:
@@ -2497,8 +2564,12 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 
 		# support for Part::Box
 		if iObj.isDerivedFrom("Part::Box"):
-			setCube(iObj, iCaller)
-    
+			if not hasattr(iObj, "Woodworking_Type"):
+				setCube(iObj, iCaller)
+			else:
+				if iObj.Woodworking_Type != "Veneer":
+					setCube(iObj, iCaller)
+				
 		# support for PartDesign::Pad
 		elif iObj.isDerivedFrom("PartDesign::Pad"):
 			setPad(iObj, iCaller)
@@ -2566,6 +2637,10 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 	if sARGD == True:
 		setGrainDirection(iObj, iCaller)
 	
+	# additional report - veneer simulation
+	if sARVS == True:
+		setVeneerSimulation(iObj, iCaller)
+
 	# skip not supported furniture parts with no error
 	# Sheet, Transformations will be handling later
 	return 0

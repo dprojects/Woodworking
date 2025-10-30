@@ -7678,7 +7678,7 @@ def getTheme(iType=""):
 			);
 		}
 		
-		QGroupBox {
+		QGroupBox, QLabel#qt_msgbox_label {
 			color: '''+color3+''';
 			border: 2px solid '''+color4+''';
 			margin-top: 2.5ex;
@@ -7699,12 +7699,9 @@ def getTheme(iType=""):
 		}
 		
 		QLabel#qt_msgbox_label {
-			border: 2px solid '''+color4+''';
-			background-color: qlineargradient( 
-				x1: 0, y1: 0, 
-				x2: 1, y2: 1,
-				stop: 0 '''+color1+''', stop: 1 '''+color2+'''
-			);
+			min-width: 700px;
+			padding: 15px;
+			margin: 15px 25px 15px 0px;
 		}
 		QDialogButtonBox#qt_msgbox_buttonbox > QPushButton {
 			width: 100%;
@@ -7766,7 +7763,7 @@ def getTheme(iType=""):
 			);
 		}
 		
-		QGroupBox {
+		QGroupBox, QLabel#qt_msgbox_label {
 			color: '''+color3+''';
 			background-color: '''+color2+''';
 			border-left: 3px solid '''+color4+''';
@@ -7786,12 +7783,9 @@ def getTheme(iType=""):
 		}
 		
 		QLabel#qt_msgbox_label {
-			color: '''+color3+''';
-			background-color: '''+color2+''';
-			border-left: 3px solid '''+color4+''';
-			border-top: 3px solid '''+color4+''';
-			border-right: 3px solid '''+color1+''';
-			border-bottom: 3px solid '''+color1+''';
+			min-width: 700px;
+			padding: 15px;
+			margin: 15px 25px 15px 0px;
 		}
 		QDialogButtonBox#qt_msgbox_buttonbox > QPushButton {
 			width: 100%;
@@ -7852,7 +7846,7 @@ def getTheme(iType=""):
 			);
 		}
 		
-		QGroupBox {
+		QGroupBox, QLabel#qt_msgbox_label {
 			color: '''+color3+''';
 			background-color: qlineargradient( 
 				x1: 0, y1: 0, 
@@ -7876,12 +7870,9 @@ def getTheme(iType=""):
 		}
 		
 		QLabel#qt_msgbox_label {
-			color: '''+color3+''';
-			background-color: '''+color2+''';
-			border-left: 3px solid '''+color4+''';
-			border-top: 3px solid '''+color4+''';
-			border-right: 3px solid '''+color1+''';
-			border-bottom: 3px solid '''+color1+''';
+			min-width: 700px;
+			padding: 15px;
+			margin: 15px 25px 15px 0px;
 		}
 		QDialogButtonBox#qt_msgbox_buttonbox > QPushButton {
 			width: 100%;
@@ -8004,44 +7995,38 @@ def showInfo(iCaller, iInfo, iNote="yes"):
 	msg.setTextFormat(QtCore.Qt.TextFormat.RichText)
 	msg.setText(info)
 	
-	colorR = msg.palette().window().color().red()
-	colorG = msg.palette().window().color().green()
-	colorB = msg.palette().window().color().blue()
-	
-	offset = 8
-	borderColor = "rgb(" + str(colorR-offset) + ", " + str(colorG-offset) + ", " + str(colorB-offset) + ")"
-	
 	# set theme
 	QtCSS = getTheme(gTheme)
 	
 	if QtCSS == "":
+		
+		colorR = msg.palette().window().color().red()
+		colorG = msg.palette().window().color().green()
+		colorB = msg.palette().window().color().blue()
+	
+		offset1 = 50
+		offset2 = 5
+		borderColor1 = "rgb(" + str(colorR-offset1) + ", " + str(colorG-offset1) + ", " + str(colorB-offset1) + ")"
+		borderColor2 = "rgb(" + str(colorR-offset2) + ", " + str(colorG-offset2) + ", " + str(colorB-offset2) + ")"
+	
 		css = '''
 	
 			QLabel { 
 				min-width: 700px; 
 				padding: 15px;
 				margin: 15px 25px 15px 0px;
-				border: 15px inset ''' + borderColor + ''';
+				border-left: 15px solid ''' + borderColor1 + ''';
+				border-top: 15px solid ''' + borderColor1 + ''';
+				border-right: 15px solid ''' + borderColor2 + ''';
+				border-bottom: 15px solid ''' + borderColor2 + ''';
 			}
 		
 		'''
 		QtCSS = css
-	
-	else:
-		css = '''
-	
-			QLabel { 
-				min-width: 700px;
-				padding: 15px;
-				margin: 15px 25px 15px 0px;
-			}
-		
-		'''
-		QtCSS = QtCSS + css
-		
+
 	msg.setStyleSheet(QtCSS)
 	msg.exec_()
-	
+
 
 # ###################################################################################################################
 '''

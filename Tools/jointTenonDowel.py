@@ -41,7 +41,7 @@ try:
 
 		# set tenon attribute for cut via cutTenonDowels tool
 		if not hasattr(joint, "Tenon"):
-			info = translate("jointTenonDowelP", "Allows to cut tenon dowel via cutTenonDowels tool.")
+			info = translate("jointTenonDowel", "Allows to cut tenon dowel via cutTenonDowels tool.")
 			joint.addProperty("App::PropertyBool", "Tenon", "Woodworking", info)
 			joint.Tenon = True
 

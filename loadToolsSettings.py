@@ -39,6 +39,7 @@ Tools = [
 	# Woodworking - copy
 	# #################################################################################################################################
 	
+	"panel2pad", "png", "panel2pad, to convert panel to object with Sketch", "This tool allows you to convert in-place simple panels Part::Box to PartDesign::Pad objects.",
 	"panelCopyXY", "png", "panelCopyXY, to create panel XY from selected object", "Click to see info.",
 	"panelCopyYX", "png", "panelCopyYX, to create panel YX from selected object", "Click to see info.",
 	"panelCopyXZ", "png", "panelCopyXZ, to create panel XZ from selected object", "Click to see info.",
@@ -245,7 +246,7 @@ Tools = [
 	# Woodworking - advanced
 	# #################################################################################################################################
 
-	"panel2pad", "png", "panel2pad, to convert panel to object with Sketch", "This tool allows you to convert in-place simple panels Part::Box to PartDesign::Pad objects.",
+	"addVeneer", "png", "addVeneer, to simulate veneer apply", "This tool allows you to simulate needed offset for veneer.",
 	"addExternal", "png", "addExternal, to create external geometry", "This tool allows you to create sketch with external geometry from selected faces or edges.",
 	"wires2pad", "png", "wires2pad, to create panels from wires in Sketch", "This tool allows you to create Pad from each wire in selected Sketches.",
 
