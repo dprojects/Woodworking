@@ -284,6 +284,7 @@ gLang23 = ""
 gLang24 = ""
 gLang25 = ""
 gLang26 = ""
+gLang27 = ""
 
 
 # ###################################################################################################################
@@ -330,7 +331,7 @@ dbARQ = dict() # quantity
 dbARN = dict() # names
 dbARV = dict() # values
 
-gColorReference = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0)
+gColorReference = ""
 
 # ###################################################################################################################
 # Overwrite defaults here
@@ -920,32 +921,8 @@ def showQtGUI():
 			try:
 				obj = FreeCADGui.Selection.getSelection()[0]
 				face = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-				
-				i = 1
-				for f in obj.Shape.Faces:
-					if str(f.BoundBox) == str(face.BoundBox):
-						index = i
-						break
-
-					i = i + 1
-				
-				try:
-					test = obj.ViewObject.ShapeAppearance
-					colorsSchema = 1
-				except:
-					colorsSchema = 0
-				
-				color = ""
-				if colorsSchema == 1:
-					try:
-						color = obj.ViewObject.ShapeAppearance[index-1].DiffuseColor
-					except:
-						color = obj.ViewObject.ShapeAppearance[0].DiffuseColor
-				else:
-					try:
-						color = obj.ViewObject.DiffuseColor[index-1]
-					except:
-						color = obj.ViewObject.DiffuseColor[0]
+				faceIndex = MagicPanels.getFaceIndex(obj, face)
+				color = MagicPanels.getColor(obj, faceIndex, "color")
 				
 				global gColorReference
 				gColorReference = color
@@ -953,7 +930,6 @@ def showQtGUI():
 			
 			except:
 				self.fcrE.setText(translate('getDimensions','Select face to get furniture color reference.'))
-			
 
 		def onOk(self):
 			self.result = userOK
@@ -1516,6 +1492,11 @@ def getEdgeBand(iObj, iW, iH, iL, iCaller="getEdgeBand"):
 
 	try:
 
+		# not set edgeband if there is no reference color
+		# this allow calculate only veneer simulation via addVeneer
+		if gColorReference == "":
+			return [ 0, [], [], [] ]
+
 		# get faces colors
 		vFacesColors = []
 		try:
@@ -1578,6 +1559,13 @@ def getEdgeBand(iObj, iW, iH, iL, iCaller="getEdgeBand"):
 
 				# add all faces to edge size
 				vEdgeSum = vEdgeSum + vEdge
+
+				# add to edgeband color calculation
+				vKeyColor = "color:" + str( MagicPanels.convertColor(c, "RGBA") )
+				if vKeyColor in dbE.keys():
+					dbE[vKeyColor] = dbE[vKeyColor] + vEdge
+				else:
+					dbE[vKeyColor] = vEdge
 
 			# next face index
 			i = i + 1
@@ -2470,6 +2458,8 @@ def setVeneerSimulation(iObj, iCaller="setVeneerSimulation"):
 		vArrValues = []
 		vType = "veneer"
 		vKey = str(iObj.Woodworking_ObjectLabel)
+		color = MagicPanels.getColor(iObj, 0, "color", "RGBA")
+		vKeyColor = "color:" + str(color)
 		
 		# increase counter if already exists for such object
 		if vKey in dbARN.keys():
@@ -2479,7 +2469,8 @@ def setVeneerSimulation(iObj, iCaller="setVeneerSimulation"):
 		# set new entry name
 		n = translate("getDimensions", "Veneer") + ", "
 		n += translate("getDimensions", "Face") + str(iObj.Woodworking_FaceIndex) + ", "
-		n += MagicPanels.unit2gui(iObj.Woodworking_Ref_Length.Value)
+		n += MagicPanels.unit2gui(iObj.Woodworking_Ref_Length.Value) + ", "
+		n += translate("getDimensions", "Color RGBA") + " " + str(color)
 		vArrNames.append(n)
 
 		# set new entry value
@@ -2492,6 +2483,11 @@ def setVeneerSimulation(iObj, iCaller="setVeneerSimulation"):
 		# add to edgeband calculation, make sure you do not have color also
 		dbE["edgeband"] = dbE["edgeband"] + length
 		dbE["empty"] = dbE["total"] - dbE["edgeband"]
+		
+		if vKeyColor in dbE.keys():
+			dbE[vKeyColor] = dbE[vKeyColor] + length
+		else:
+			dbE[vKeyColor] = length
 
 		# set db for additional report
 		setDBAdditional(iObj, vType, vArrNames, vArrValues, vKey, iCaller)
@@ -3334,6 +3330,7 @@ def initLang():
 	global gLang24
 	global gLang25
 	global gLang26
+	global gLang27
 
 	# Polish language
 	if sLang  == "pl":
@@ -3356,10 +3353,10 @@ def initLang():
 			
 		gLang6 = "Podsumowanie dla grup"
 		gLang7 = "Podsumowanie dla grubości"
-		gLang8 = "Długość obrzeża"
+		gLang8 = "Całkowita długość wszystkich krawędzi"
 		gLang9 = "Długość"
-		gLang10 = "Obrzeże bez okleiny"
-		gLang11 = "Potrzebna okleina"
+		gLang10 = "Całkowita długość krawędzi bez forniru"
+		gLang11 = "Całkowita długość potrzebnego forniru"
 		gLang12 = "brzeg"
 		gLang13 = "wierzch"
 		gLang14 = "wymiary"
@@ -3375,6 +3372,7 @@ def initLang():
 		gLang24 = "Kierunek słojów"
 		gLang25 = "poziomo"
 		gLang26 = "pionowo"
+		gLang27 = "Rozmiar forniru dla koloru "
 
 	# from system translation files
 	elif sLang  == "system":
@@ -3397,10 +3395,10 @@ def initLang():
 			
 		gLang6 = translate("getDimensions", "Summary by groups")
 		gLang7 = translate("getDimensions", "Summary by thickness")
-		gLang8 = translate("getDimensions", "Edge size")
+		gLang8 = translate("getDimensions", "Total edge size")
 		gLang9 = translate("getDimensions", "Length")
-		gLang10 = translate("getDimensions", "Edge without veneer")
-		gLang11 = translate("getDimensions", "Needed veneer for edge")
+		gLang10 = translate("getDimensions", "Total edge size without veneer")
+		gLang11 = translate("getDimensions", "Total needed veneer")
 		gLang12 = translate("getDimensions", "edge")
 		gLang13 = translate("getDimensions", "surface")
 		gLang14 = translate("getDimensions", "dimensions")
@@ -3416,6 +3414,7 @@ def initLang():
 		gLang24 = translate("getDimensions", "Grain Direction")
 		gLang25 = translate("getDimensions", "horizontal")
 		gLang26 = translate("getDimensions", "vertical")
+		gLang27 = translate("getDimensions", "Needed veneer for color")
 
 	# English language
 	else:
@@ -3438,10 +3437,10 @@ def initLang():
 			
 		gLang6 = "Summary by groups"
 		gLang7 = "Summary by thickness"
-		gLang8 = "Edge size"
+		gLang8 = "Total edge size"
 		gLang9 = "Length"
-		gLang10 = "Edge without veneer"
-		gLang11 = "Needed veneer for edge"
+		gLang10 = "Total edge size without veneer"
+		gLang11 = "Total needed veneer"
 		gLang12 = "edge"
 		gLang13 = "surface"
 		gLang14 = "dimensions"
@@ -3457,6 +3456,7 @@ def initLang():
 		gLang24 = "Grain Direction"
 		gLang25 = "horizontal"
 		gLang26 = "vertical"
+		gLang27 = "Needed veneer for color"
 
 
 # ###################################################################################################################
@@ -4657,48 +4657,39 @@ def setViewEdge(iCaller="setViewEdge"):
 	# merge cells for better look line separation
 	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
 	gSheet.mergeCells(vCell)
-
-	# go to next spreadsheet row
-	gSheetRow = gSheetRow + 1
-
-	# add summary for total edge size
-	vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
-	gSheet.mergeCells(vCell)
-	gSheet.set(vCell, gLang8)
-	gSheet.setStyle(vCell, "bold", "add")
-	gSheet.setAlignment(vCell, "left", "keep")
-
-	vCell = "G" + str(gSheetRow)
-	gSheet.set(vCell, toSheet(dbE["total"], "edge", iCaller))
-	gSheet.setAlignment(vCell, "right", "keep")
-
-	vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
-	gSheet.setBackground(vCell, gHeadCS)
-
-	# skip if edgeband is not set correctly
+	
+	# if there is veneer
 	if dbE["empty"] >= 0 and dbE["edgeband"] > 0:
 
-		# go to next spreadsheet row
+		# #############################################
+		# veneer per color
+		# #############################################
+		
+		for k in dbE.keys():
+			if k.startswith("color"):
+				[ ck, color ] = k.split(":")
+				
+				gSheetRow = gSheetRow + 1
+			
+				vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+				gSheet.mergeCells(vCell)
+				gSheet.set(vCell, gLang27 + " " + color)
+				gSheet.setStyle(vCell, "bold", "add")
+				gSheet.setAlignment(vCell, "left", "keep")
+			
+				vCell = "G" + str(gSheetRow)
+				gSheet.set(vCell, toSheet(dbE[k], "edge", iCaller))
+				gSheet.setAlignment(vCell, "right", "keep")
+			
+				vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+				gSheet.setBackground(vCell, gHeadCS)
+	
+		# #############################################
+		# total needed veneer
+		# #############################################
+	
 		gSheetRow = gSheetRow + 1
-	
-		# add summary for empty edge size
-		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
-		gSheet.mergeCells(vCell)
-		gSheet.set(vCell, gLang10)
-		gSheet.setStyle(vCell, "bold", "add")
-		gSheet.setAlignment(vCell, "left", "keep")
-	
-		vCell = "G" + str(gSheetRow)
-		gSheet.set(vCell, toSheet(dbE["empty"], "edge", iCaller))
-		gSheet.setAlignment(vCell, "right", "keep")
-	
-		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
-		gSheet.setBackground(vCell, gHeadCS)
-	
-		# go to next spreadsheet row
-		gSheetRow = gSheetRow + 1
-	
-		# add summary for edgeband edge size
+		
 		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
 		gSheet.mergeCells(vCell)
 		gSheet.set(vCell, gLang11)
@@ -4711,6 +4702,44 @@ def setViewEdge(iCaller="setViewEdge"):
 	
 		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
 		gSheet.setBackground(vCell, gHeadCS)
+
+		# #############################################
+		# no veneer size
+		# #############################################
+		
+		gSheetRow = gSheetRow + 1
+
+		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+		gSheet.mergeCells(vCell)
+		gSheet.set(vCell, gLang10)
+		gSheet.setStyle(vCell, "bold", "add")
+		gSheet.setAlignment(vCell, "left", "keep")
+
+		vCell = "G" + str(gSheetRow)
+		gSheet.set(vCell, toSheet(dbE["empty"], "edge", iCaller))
+		gSheet.setAlignment(vCell, "right", "keep")
+
+		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+		gSheet.setBackground(vCell, gHeadCS)
+		
+	# #############################################
+	# total edge size
+	# #############################################
+	
+	gSheetRow = gSheetRow + 1
+
+	vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+	gSheet.set(vCell, gLang8)
+	gSheet.setStyle(vCell, "bold", "add")
+	gSheet.setAlignment(vCell, "left", "keep")
+
+	vCell = "G" + str(gSheetRow)
+	gSheet.set(vCell, toSheet(dbE["total"], "edge", iCaller))
+	gSheet.setAlignment(vCell, "right", "keep")
+
+	vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+	gSheet.setBackground(vCell, gHeadCS)
 
 
 # ###################################################################################################################
