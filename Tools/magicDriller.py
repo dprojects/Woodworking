@@ -912,7 +912,9 @@ def showQtGUI():
 
 			if self.gFPType == "surface":
 				self.gEArr = arrAll
-				
+			
+			self.gEdge = self.gEArr[self.gEIndex]
+			
 			# ############################################################################
 			# set possible rotations - drill bit rotation
 			# ############################################################################
@@ -1102,6 +1104,8 @@ def showQtGUI():
 				# set configuration
 				if self.gFacePosition != "" and self.gFaceDrill != "":
 					self.setConfig()
+					if not self.kcscb.isChecked():
+						self.autoAdjustPosition()
 				else:
 					raise
 
@@ -1111,6 +1115,138 @@ def showQtGUI():
 				self.sFacePositionL.setText(self.gNoFPSelection)
 				self.sFaceDrillL.setText(self.gNoFDSelection)
 	
+		# ############################################################################
+		def getDrillBitAxis(self):
+
+			plane = MagicPanels.getFacePlane(self.gFacePosition)
+			[ v1, v2 ] = MagicPanels.getEdgeVertices(self.gEdge)
+			
+			# edge along X
+			if not MagicPanels.equal(v1[0], v2[0]):
+				
+				if plane == "XY":
+					return "Y"
+			
+				if plane == "XZ":
+					return "Z"
+				
+			# edge along Y
+			if not MagicPanels.equal(v1[1], v2[1]):
+				
+				if plane == "XY":
+					return "X"
+
+				if plane == "YZ":
+					return "Z"
+					
+			# edge along Z
+			if not MagicPanels.equal(v1[2], v2[2]):
+				
+				if plane == "XZ":
+					return "X"
+			
+				if plane == "YZ":
+					return "Y"
+	
+		# ############################################################################
+		def autoAdjustPosition(self):
+		
+			if len(self.gDrillBits) > 0:
+				d = self.gDrillBits[0]
+			else:
+				return
+			
+			centerEdge = self.gEdge.CenterOfMass
+			[ centerEdge ] = MagicPanels.getVerticesPosition([ centerEdge ], self.gFacePositionO, "vector")
+			
+			centerDrillBit = d.Shape.CenterOfMass
+			[ centerDrillBit ] = MagicPanels.getVerticesPosition([ centerDrillBit ], d, "vector")
+			
+			centerObject = self.gFacePositionO.Shape.CenterOfMass
+			[ centerObject ] = MagicPanels.getVerticesPosition([ centerObject ], self.gFacePositionO, "vector")
+			
+			axis = self.getDrillBitAxis()
+			
+			if axis == "X":
+				if centerEdge.x < centerObject.x:
+					if centerDrillBit.x < centerEdge.x:
+						self.setPosition()
+				else:
+					if centerDrillBit.x > centerEdge.x:
+						self.setPosition()
+			
+			if axis == "Y":
+				if centerEdge.y < centerObject.y:
+					if centerDrillBit.y < centerEdge.y:
+						self.setPosition()
+				else:
+					if centerDrillBit.y > centerEdge.y:
+						self.setPosition()
+			
+			if axis == "Z":
+				if centerEdge.z < centerObject.z:
+					if centerDrillBit.z < centerEdge.z:
+						self.setPosition()
+				else:
+					if centerDrillBit.z > centerEdge.z:
+						self.setPosition()
+
+			# pocket holes only
+			if self.gDBType == 3:
+				
+				# adjust rotation
+				if len(self.gDrillBits) > 0:
+					d = self.gDrillBits[0]
+				else:
+					return
+				
+				centerDrillBitFace2 = d.Shape.Faces[1].CenterOfMass
+				[ centerDrillBitFace2 ] = MagicPanels.getVerticesPosition([ centerDrillBitFace2 ], d, "vector")
+				
+				if axis == "X":
+					if centerEdge.x < centerObject.x:
+						if centerDrillBitFace2.x < centerEdge.x:
+							self.gDBPocketR = - self.gDBPocketR
+					else:
+						if centerDrillBitFace2.x > centerEdge.x:
+							self.gDBPocketR = - self.gDBPocketR
+				
+				if axis == "Y":
+					if centerEdge.y < centerObject.y:
+						if centerDrillBitFace2.y < centerEdge.y:
+							self.gDBPocketR = - self.gDBPocketR
+					else:
+						if centerDrillBitFace2.y > centerEdge.y:
+							self.gDBPocketR = - self.gDBPocketR
+				
+				if axis == "Z":
+					if centerEdge.z < centerObject.z:
+						if centerDrillBitFace2.z < centerEdge.z:
+							self.gDBPocketR = - self.gDBPocketR
+					else:
+						if centerDrillBitFace2.z > centerEdge.z:
+							self.gDBPocketR = - self.gDBPocketR
+
+				self.oDBPocketRE.setText(str(self.gDBPocketR))
+				self.showDrillBits()
+
+				# adjust sink
+				if len(self.gDrillBits) > 0:
+					d = self.gDrillBits[0]
+				else:
+					return
+				
+				centerDrillBitFace3 = d.Shape.Faces[2].CenterOfMass
+				[ centerDrillBitFace3 ] = MagicPanels.getVerticesPosition([ centerDrillBitFace3 ], d, "vector")
+				
+				inside = self.gFacePositionO.Shape.BoundBox.isInside(centerDrillBitFace3)
+				
+				if inside == True:
+					self.gDBPocketS = - self.gDBPocketS
+					self.oDBPocketSE.setText(MagicPanels.unit2gui(self.gDBPocketS))
+					self.gDBSink = self.gDBPocketS
+					self.showDrillBits()
+
 		# ############################################################################
 		def setEdgeP(self):
 			
@@ -1124,6 +1260,8 @@ def showQtGUI():
 				
 				self.showDrillBits()
 				self.s2IS.setText(str(self.gEIndex+1) + " / " + str(len(self.gEArr)))
+				if not self.kcscb.isChecked():
+					self.autoAdjustPosition()
 				
 			except:
 				self.sFacePositionL.setText(self.gNoFPSelection)
@@ -1140,6 +1278,8 @@ def showQtGUI():
 				
 				self.showDrillBits()
 				self.s2IS.setText(str(self.gEIndex+1) + " / " + str(len(self.gEArr)))
+				if not self.kcscb.isChecked():
+					self.autoAdjustPosition()
 			
 			except:
 				self.sFacePositionL.setText(self.gNoFPSelection)
@@ -1536,6 +1676,8 @@ def showQtGUI():
 				self.oDBPocketSE.setText(MagicPanels.unit2gui(self.gDBPocketS))
 
 				self.showDrillBits()
+				if not self.kcscb.isChecked():
+					self.autoAdjustPosition()
 		
 			except:
 				self.sFacePositionL.setText(self.gNoFPSelection)
@@ -1630,6 +1772,8 @@ def showQtGUI():
 					
 				# set other settings and refresh drill bits
 				self.setCustomDrillbits(self.gDBLabel)
+				if not self.kcscb.isChecked():
+					self.autoAdjustPosition()
 
 			except:
 				self.sFacePositionL.setText(self.gNoFPSelection)

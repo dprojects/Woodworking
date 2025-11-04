@@ -175,6 +175,8 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * auto-adjust drill bits (magicDriller)
+    * multi-color veneer info at cut-list (getDimensions)
     * fix making non-transparent objects while new object was created (makeTransparent)
     * edgeband veneer simulation tool and cut-list support (addVeneer, getDimensions)
     * edgeband veneer simulation (MagicPanels, magicStart, magicSettings)
@@ -2185,6 +2187,9 @@ Working with raw wood is an art of some sort. This is the true form of working w
 ## addVeneer
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/addVeneer.png"> Veneer created from `PVC` material can be up to `2 mm` thick. In such a case, you can use this tool, which allows you to simulate the addition of veneer. A `Part::Box` object will be created on the selected face, simulating the added veneer. This approach allows the added veneer to be easily modified. You can modify the length, width, thickness, and other parameters of the applied veneer, which means you can more accurately calculate how much veneer is needed and what spacing should be maintained when calculating board sizes. The default size and other parameters of the applied veneer are taken from the settings in the [magicSettings](#magicsettings) tool. By default, the thickness of the applied veneer is set to `0 mm` to avoid interfering with the modeling process. However, the object cannot be `0 mm` thick, so the default settings set the veneer thickness to `0.01 mm`. The default veneer color is white because the default board color is brown. Personally, I often use white veneer heat-sealing tape on plywood shelves, which makes the shelf look much better in white furniture. I use black veneer on white chipboard furniture. This approach allows you also to add texture only to veneer and get more realistic look. Added venner is also supported by cut-list created via [getDimensions](#getdimensions) tool, so you can create detailed description of added veneer.
+
+**Video tutorials:** 
+* [Veneer simulation](https://www.youtube.com/watch?v=VONecUTGSwE)
 
 <br><br><br>
 
