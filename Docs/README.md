@@ -905,7 +905,7 @@ Selection modes:
 * **Prefer magicSettings defaults:**
   * `yes` to open [magicDowels](#magicdowels) and [magicDriller](#magicdriller) with defaults from this magicSettings tool.
   * `no` open with tools predefined defaults. This is default option.
-* **Sides:** if the dowels or drill bits should be on both side or only from one side, possible values:
+* **Sides:** if the dowels or drill bits should be from both sides or only from one side, possible values:
   * `0` - use both sides
   * `1` - left or right side only
   * `2` - left or right side only

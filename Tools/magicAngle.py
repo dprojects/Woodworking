@@ -445,7 +445,7 @@ def showQtGUI():
 					
 					restore = o.Placement
 					
-					scope = abs(iAngle)
+					scope = int(abs(iAngle))
 					for i in range(1, scope):
 						
 						if i < scope/2:
