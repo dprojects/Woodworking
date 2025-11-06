@@ -14,7 +14,9 @@ translate = FreeCAD.Qt.translate
 getMenuIndex1 = {
 	translate('magicSettings', 'Settings - page 1'): 0, 
 	translate('magicSettings', 'Settings - page 2'): 1, 
-	translate('magicSettings', 'Settings - page 3'): 2 # no comma 
+	translate('magicSettings', 'Settings - page 3'): 2, 
+	translate('magicSettings', 'Settings - page 4'): 3, 
+	translate('magicSettings', 'Settings - page 5'): 4 # no comma 
 }
 
 # ############################################################################
@@ -71,7 +73,9 @@ def showQtGUI():
 			self.sPageList = (
 				translate('magicSettings', 'Settings - page 1'), 
 				translate('magicSettings', 'Settings - page 2'), 
-				translate('magicSettings', 'Settings - page 3') # no comma 
+				translate('magicSettings', 'Settings - page 3'), 
+				translate('magicSettings', 'Settings - page 4'), 
+				translate('magicSettings', 'Settings - page 5') # no comma 
 			)
 			
 			self.sPage = QtGui.QComboBox(self)
@@ -266,6 +270,119 @@ def showQtGUI():
 			self.oEdgebandColorAE.setText("0")
 			
 			# ############################################################################
+			# page 4
+			# ############################################################################
+
+			# gPreferCustomSettings
+			self.oPreferCustomSettingsL = QtGui.QLabel(translate('magicSettings', 'Prefer magicSettings defaults:'), self)
+			
+			self.oPreferCustomSettingsRB1 = QtGui.QRadioButton(self)
+			self.oPreferCustomSettingsRB1.setText(translate('magicSettings', 'yes'))
+			self.oPreferCustomSettingsRB1.toggled.connect(self.doNothing)
+
+			self.oPreferCustomSettingsRB2 = QtGui.QRadioButton(self)
+			self.oPreferCustomSettingsRB2.setText(translate('magicSettings', 'no'))
+			self.oPreferCustomSettingsRB2.toggled.connect(self.doNothing)
+			
+			self.oPreferCustomSettingsGRP = QtGui.QButtonGroup(self)
+			self.oPreferCustomSettingsGRP.addButton(self.oPreferCustomSettingsRB1)
+			self.oPreferCustomSettingsGRP.addButton(self.oPreferCustomSettingsRB2)
+
+			# gOffsetSides
+			self.oOffsetSidesL = QtGui.QLabel(translate('magicSettings', 'Sides:'), self)
+			self.oOffsetSidesE = QtGui.QLineEdit(self)
+			self.oOffsetSidesE.setText("0")
+			
+			# gOffsetItemsPerSide
+			self.oOffsetItemsPerSideL = QtGui.QLabel(translate('magicSettings', 'Items per side:'), self)
+			self.oOffsetItemsPerSideE = QtGui.QLineEdit(self)
+			self.oOffsetItemsPerSideE.setText("0")
+			
+			# gOffsetFromCorner
+			self.oOffsetFromCornerL = QtGui.QLabel(translate('magicSettings', 'Offset from corner:'), self)
+			self.oOffsetFromCornerE = QtGui.QLineEdit(self)
+			self.oOffsetFromCornerE.setText("0")
+			
+			# gOffsetBetween
+			self.oOffsetBetweenL = QtGui.QLabel(translate('magicSettings', 'Offset between items:'), self)
+			self.oOffsetBetweenE = QtGui.QLineEdit(self)
+			self.oOffsetBetweenE.setText("0")
+			
+			# gOffsetFromEdge
+			self.oOffsetFromEdgeL = QtGui.QLabel(translate('magicSettings', 'Offset from edge:'), self)
+			self.oOffsetFromEdgeE = QtGui.QLineEdit(self)
+			self.oOffsetFromEdgeE.setText("0")
+			
+			# ############################################################################
+			# page 5
+			# ############################################################################
+
+			# gDowelDiameter
+			self.oDowelDiameterL = QtGui.QLabel(translate('magicSettings', 'Dowel diameter:'), self)
+			self.oDowelDiameterE = QtGui.QLineEdit(self)
+			self.oDowelDiameterE.setText("0")
+			
+			# gDowelSize
+			self.oDowelSizeL = QtGui.QLabel(translate('magicSettings', 'Dowel size:'), self)
+			self.oDowelSizeE = QtGui.QLineEdit(self)
+			self.oDowelSizeE.setText("0")
+			
+			# gDowelSink
+			self.oDowelSinkL = QtGui.QLabel(translate('magicSettings', 'Dowel sink:'), self)
+			self.oDowelSinkE = QtGui.QLineEdit(self)
+			self.oDowelSinkE.setText("0")
+			
+			# gHoleDiameter
+			self.oHoleDiameterL = QtGui.QLabel(translate('magicSettings', 'Hole diameter:'), self)
+			self.oHoleDiameterE = QtGui.QLineEdit(self)
+			self.oHoleDiameterE.setText("0")
+			
+			# gHoleCountersinkDiameter
+			self.oHoleCountersinkDiameterL = QtGui.QLabel(translate('magicSettings', 'Hole countersink diameter:'), self)
+			self.oHoleCountersinkDiameterE = QtGui.QLineEdit(self)
+			self.oHoleCountersinkDiameterE.setText("0")
+			
+			# gHoleSize
+			self.oHoleSizeL = QtGui.QLabel(translate('magicSettings', 'Hole size:'), self)
+			self.oHoleSizeE = QtGui.QLineEdit(self)
+			self.oHoleSizeE.setText("0")
+			
+			# gDrillSpike
+			self.oDrillSpikeL = QtGui.QLabel(translate('magicSettings', 'Hole spike:'), self)
+			self.oDrillSpikeE = QtGui.QLineEdit(self)
+			self.oDrillSpikeE.setText("")
+			
+			# gPocketDiameter
+			self.oPocketDiameterL = QtGui.QLabel(translate('magicSettings', 'Pocket diameter:'), self)
+			self.oPocketDiameterE = QtGui.QLineEdit(self)
+			self.oPocketDiameterE.setText("0")
+			
+			# gPocketCountersinkDiameter
+			self.oPocketCountersinkDiameterL = QtGui.QLabel(translate('magicSettings', 'Pocket countersink:'), self)
+			self.oPocketCountersinkDiameterE = QtGui.QLineEdit(self)
+			self.oPocketCountersinkDiameterE.setText("0")
+			
+			# gPocketSize
+			self.oPocketSizeL = QtGui.QLabel(translate('magicSettings', 'Pocket size:'), self)
+			self.oPocketSizeE = QtGui.QLineEdit(self)
+			self.oPocketSizeE.setText("0")
+		
+			# gPocketOffsetFromEdge
+			self.oPocketOffsetFromEdgeL = QtGui.QLabel(translate('magicSettings', 'Pocket offset from edge:'), self)
+			self.oPocketOffsetFromEdgeE = QtGui.QLineEdit(self)
+			self.oPocketOffsetFromEdgeE.setText("0")
+			
+			# gPocketRotation
+			self.oPocketRotationL = QtGui.QLabel(translate('magicSettings', 'Pocket rotation:'), self)
+			self.oPocketRotationE = QtGui.QLineEdit(self)
+			self.oPocketRotationE.setText("0")
+			
+			# gPocketSink
+			self.oPocketSinkL = QtGui.QLabel(translate('magicSettings', 'Pocket sink:'), self)
+			self.oPocketSinkE = QtGui.QLineEdit(self)
+			self.oPocketSinkE.setText("0")
+
+			# ############################################################################
 			# save settings
 			# ############################################################################
 			
@@ -382,6 +499,65 @@ def showQtGUI():
 			self.groupPage32 = QtGui.QGroupBox(None, self)
 			self.groupPage32.setLayout(self.Page32)
 
+			self.Page41 = QtGui.QGridLayout()
+			self.Page41.addWidget(self.oPreferCustomSettingsL, 0, 0)
+			self.Page41.addWidget(self.oPreferCustomSettingsRB1, 0, 1)
+			self.Page41.addWidget(self.oPreferCustomSettingsRB2, 0, 2)
+			self.groupPage41 = QtGui.QGroupBox(None, self)
+			self.groupPage41.setLayout(self.Page41)
+	
+			self.Page42 = QtGui.QGridLayout()
+			self.Page42.addWidget(self.oOffsetSidesL, 0, 0)
+			self.Page42.addWidget(self.oOffsetSidesE, 0, 1)
+			self.Page42.addWidget(self.oOffsetItemsPerSideL, 1, 0)
+			self.Page42.addWidget(self.oOffsetItemsPerSideE, 1, 1)
+			self.Page42.addWidget(self.oOffsetFromCornerL, 2, 0)
+			self.Page42.addWidget(self.oOffsetFromCornerE, 2, 1)
+			self.Page42.addWidget(self.oOffsetBetweenL, 3, 0)
+			self.Page42.addWidget(self.oOffsetBetweenE, 3, 1)
+			self.Page42.addWidget(self.oOffsetFromEdgeL, 4, 0)
+			self.Page42.addWidget(self.oOffsetFromEdgeE, 4, 1)
+			self.groupPage42 = QtGui.QGroupBox(None, self)
+			self.groupPage42.setLayout(self.Page42)
+
+			self.Page51 = QtGui.QGridLayout()
+			self.Page51.addWidget(self.oDowelDiameterL, 0, 0)
+			self.Page51.addWidget(self.oDowelDiameterE, 0, 1)
+			self.Page51.addWidget(self.oDowelSizeL, 1, 0)
+			self.Page51.addWidget(self.oDowelSizeE, 1, 1)
+			self.Page51.addWidget(self.oDowelSinkL, 2, 0)
+			self.Page51.addWidget(self.oDowelSinkE, 2, 1)
+			self.groupPage51 = QtGui.QGroupBox(None, self)
+			self.groupPage51.setLayout(self.Page51)
+
+			self.Page52 = QtGui.QGridLayout()
+			self.Page52.addWidget(self.oHoleDiameterL, 0, 0)
+			self.Page52.addWidget(self.oHoleDiameterE, 0, 1)
+			self.Page52.addWidget(self.oHoleCountersinkDiameterL, 1, 0)
+			self.Page52.addWidget(self.oHoleCountersinkDiameterE, 1, 1)
+			self.Page52.addWidget(self.oHoleSizeL, 2, 0)
+			self.Page52.addWidget(self.oHoleSizeE, 2, 1)
+			self.Page52.addWidget(self.oDrillSpikeL, 3, 0)
+			self.Page52.addWidget(self.oDrillSpikeE, 3, 1)
+			self.groupPage52 = QtGui.QGroupBox(None, self)
+			self.groupPage52.setLayout(self.Page52)
+
+			self.Page53 = QtGui.QGridLayout()
+			self.Page53.addWidget(self.oPocketDiameterL, 0, 0)
+			self.Page53.addWidget(self.oPocketDiameterE, 0, 1)
+			self.Page53.addWidget(self.oPocketCountersinkDiameterL, 1, 0)
+			self.Page53.addWidget(self.oPocketCountersinkDiameterE, 1, 1)
+			self.Page53.addWidget(self.oPocketSizeL, 2, 0)
+			self.Page53.addWidget(self.oPocketSizeE, 2, 1)
+			self.Page53.addWidget(self.oPocketOffsetFromEdgeL, 3, 0)
+			self.Page53.addWidget(self.oPocketOffsetFromEdgeE, 3, 1)
+			self.Page53.addWidget(self.oPocketRotationL, 4, 0)
+			self.Page53.addWidget(self.oPocketRotationE, 4, 1)
+			self.Page53.addWidget(self.oPocketSinkL, 5, 0)
+			self.Page53.addWidget(self.oPocketSinkE, 5, 1)
+			self.groupPage53 = QtGui.QGroupBox(None, self)
+			self.groupPage53.setLayout(self.Page53)
+
 			self.Save = QtGui.QVBoxLayout()
 			self.Save.addWidget(self.oStatusL)
 			self.Save.addWidget(self.oSaveB)
@@ -399,6 +575,11 @@ def showQtGUI():
 			self.layout.addWidget(self.groupPage23)
 			self.layout.addWidget(self.groupPage31)
 			self.layout.addWidget(self.groupPage32)
+			self.layout.addWidget(self.groupPage41)
+			self.layout.addWidget(self.groupPage42)
+			self.layout.addWidget(self.groupPage51)
+			self.layout.addWidget(self.groupPage52)
+			self.layout.addWidget(self.groupPage53)
 			self.layout.addStretch()
 			self.layout.addLayout(self.Save)
 			self.setLayout(self.layout)
@@ -413,6 +594,11 @@ def showQtGUI():
 			self.groupPage23.hide()
 			self.groupPage31.hide()
 			self.groupPage32.hide()
+			self.groupPage41.hide()
+			self.groupPage42.hide()
+			self.groupPage51.hide()
+			self.groupPage52.hide()
+			self.groupPage53.hide()
 			
 			# ############################################################################
 			# show & init defaults
@@ -457,6 +643,11 @@ def showQtGUI():
 				self.groupPage23.hide()
 				self.groupPage31.hide()
 				self.groupPage32.hide()
+				self.groupPage41.hide()
+				self.groupPage42.hide()
+				self.groupPage51.hide()
+				self.groupPage52.hide()
+				self.groupPage53.hide()
 			
 			if self.gPage == 1:
 				self.groupPage11.hide()
@@ -468,6 +659,11 @@ def showQtGUI():
 				self.groupPage23.show()
 				self.groupPage31.hide()
 				self.groupPage32.hide()
+				self.groupPage41.hide()
+				self.groupPage42.hide()
+				self.groupPage51.hide()
+				self.groupPage52.hide()
+				self.groupPage53.hide()
 
 			if self.gPage == 2:
 				self.groupPage11.hide()
@@ -479,11 +675,50 @@ def showQtGUI():
 				self.groupPage23.hide()
 				self.groupPage31.show()
 				self.groupPage32.show()
+				self.groupPage41.hide()
+				self.groupPage42.hide()
+				self.groupPage51.hide()
+				self.groupPage52.hide()
+				self.groupPage53.hide()
 
+			if self.gPage == 3:
+				self.groupPage11.hide()
+				self.groupPage12.hide()
+				self.groupPage13.hide()
+				self.groupPage14.hide()
+				self.groupPage21.hide()
+				self.groupPage22.hide()
+				self.groupPage23.hide()
+				self.groupPage31.hide()
+				self.groupPage32.hide()
+				self.groupPage41.show()
+				self.groupPage42.show()
+				self.groupPage51.hide()
+				self.groupPage52.hide()
+				self.groupPage53.hide()
+			
+			if self.gPage == 4:
+				self.groupPage11.hide()
+				self.groupPage12.hide()
+				self.groupPage13.hide()
+				self.groupPage14.hide()
+				self.groupPage21.hide()
+				self.groupPage22.hide()
+				self.groupPage23.hide()
+				self.groupPage31.hide()
+				self.groupPage32.hide()
+				self.groupPage41.hide()
+				self.groupPage42.hide()
+				self.groupPage51.show()
+				self.groupPage52.show()
+				self.groupPage53.show()
+				
 		# ############################################################################
 		def getSettings(self):
 			
+			# ################################################################
 			# page 1
+			# ################################################################
 			
 			try:
 				self.oTheme.setCurrentText(MagicPanels.gTheme)
@@ -541,7 +776,9 @@ def showQtGUI():
 			except:
 				skip = 1
 
+			# ################################################################
 			# page 2
+			# ################################################################
 			
 			try:
 				val = MagicPanels.gFrontInsideThickness
@@ -634,7 +871,9 @@ def showQtGUI():
 			except:
 				skip = 1
 			
+			# ################################################################
 			# page 3
+			# ################################################################
 			
 			try:
 				edgebandThick = MagicPanels.gEdgebandThickness
@@ -664,6 +903,148 @@ def showQtGUI():
 			except:
 				skip = 1
 			
+			# ################################################################
+			# page 4
+			# ################################################################
+			
+			try:
+				val = MagicPanels.gPreferCustomSettings
+				if val == True:
+					self.oPreferCustomSettingsRB1.setChecked(True)
+				else:
+					self.oPreferCustomSettingsRB2.setChecked(True)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gOffsetSides
+				val = int(val)
+				self.oOffsetSidesE.setText(str(val))
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gOffsetItemsPerSide
+				val = int(val)
+				self.oOffsetItemsPerSideE.setText(str(val))
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gOffsetFromCorner
+				val = MagicPanels.unit2gui(val)
+				self.oOffsetFromCornerE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gOffsetBetween
+				val = MagicPanels.unit2gui(val)
+				self.oOffsetBetweenE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gOffsetFromEdge
+				val = MagicPanels.unit2gui(val)
+				self.oOffsetFromEdgeE.setText(val)
+			except:
+				skip = 1
+				
+			# ################################################################
+			# page 5
+			# ################################################################
+			
+			try:
+				val = MagicPanels.gDowelDiameter
+				val = MagicPanels.unit2gui(val)
+				self.oDowelDiameterE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gDowelSize
+				val = MagicPanels.unit2gui(val)
+				self.oDowelSizeE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gDowelSink
+				val = MagicPanels.unit2gui(val)
+				self.oDowelSinkE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gHoleDiameter
+				val = MagicPanels.unit2gui(val)
+				self.oHoleDiameterE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gHoleCountersinkDiameter
+				val = MagicPanels.unit2gui(val)
+				self.oHoleCountersinkDiameterE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gHoleSize
+				val = MagicPanels.unit2gui(val)
+				self.oHoleSizeE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gDrillSpike
+				self.oDrillSpikeE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gPocketDiameter
+				val = MagicPanels.unit2gui(val)
+				self.oPocketDiameterE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gPocketCountersinkDiameter
+				val = MagicPanels.unit2gui(val)
+				self.oPocketCountersinkDiameterE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gPocketSize
+				val = MagicPanels.unit2gui(val)
+				self.oPocketSizeE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gPocketOffsetFromEdge
+				val = MagicPanels.unit2gui(val)
+				self.oPocketOffsetFromEdgeE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gPocketRotation
+				val = float(val)
+				self.oPocketRotationE.setText(str(val))
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gPocketSink
+				val = MagicPanels.unit2gui(val)
+				self.oPocketSinkE.setText(val)
+			except:
+				skip = 1
+			
 		# ############################################################################
 		def setThemeType(self, selectedText):
 			
@@ -679,9 +1060,9 @@ def showQtGUI():
 			try:
 				wus = FreeCAD.ParamGet(MagicPanels.gSettingsPref)
 				
-				# #######################################################
+				# ################################################################
 				# page 1
-				# #######################################################
+				# ################################################################
 				
 				wus.SetString('wTheme', str(self.gTheme))
 				
@@ -717,9 +1098,9 @@ def showQtGUI():
 				# current selection
 				wus.SetBool('wCurrentSelection', self.oCurrentSelectionRB1.isChecked())
 				
-				# #######################################################
+				# ################################################################
 				# page 2
-				# #######################################################
+				# ################################################################
 				
 				val = self.oFrontInsideThicknessE.text()
 				val = MagicPanels.unit2value(val)
@@ -773,9 +1154,9 @@ def showQtGUI():
 				val = MagicPanels.unit2value(val)
 				wus.SetString('wBackOutsideThickness', str(val))
 				
-				# #######################################################
+				# ################################################################
 				# page 3
-				# #######################################################
+				# ################################################################
 				
 				# edgeband thickness
 				edgebandThick = self.oEdgebandThickE.text()
@@ -803,9 +1184,90 @@ def showQtGUI():
 				wus.SetString('wEdgebandColorB', cB)
 				wus.SetString('wEdgebandColorA', cA)
 				
-				# #######################################################
+				# ################################################################
+				# page 4
+				# ################################################################
+				
+				wus.SetBool('wPreferCustomSettings', self.oPreferCustomSettingsRB1.isChecked())
+				
+				val = self.oOffsetSidesE.text()
+				val = int(val)
+				wus.SetString('wOffsetSides', str(val))
+				
+				val = self.oOffsetItemsPerSideE.text()
+				val = int(val)
+				wus.SetString('wOffsetItemsPerSide', str(val))
+				
+				val = self.oOffsetFromCornerE.text()
+				val = MagicPanels.unit2value(val)
+				wus.SetString('wOffsetFromCorner', str(val))
+			
+				val = self.oOffsetBetweenE.text()
+				val = MagicPanels.unit2value(val)
+				wus.SetString('wOffsetBetween', str(val))
+				
+				val = self.oOffsetFromEdgeE.text()
+				val = MagicPanels.unit2value(val)
+				wus.SetString('wOffsetFromEdge', str(val))
+				
+				# ################################################################
+				# page 5
+				# ################################################################
+				
+				val = self.oDowelDiameterE.text()
+				val = MagicPanels.unit2value(val)
+				wus.SetString('wDowelDiameter', str(val))
+				
+				val = self.oDowelSizeE.text()
+				val = MagicPanels.unit2value(val)
+				wus.SetString('wDowelSize', str(val))
+				
+				val = self.oDowelSinkE.text()
+				val = MagicPanels.unit2value(val)
+				wus.SetString('wDowelSink', str(val))
+				
+				val = self.oHoleDiameterE.text()
+				val = MagicPanels.unit2value(val)
+				wus.SetString('wHoleDiameter', str(val))
+				
+				val = self.oHoleCountersinkDiameterE.text()
+				val = MagicPanels.unit2value(val)
+				wus.SetString('wHoleCountersinkDiameter', str(val))
+				
+				val = self.oHoleSizeE.text()
+				val = MagicPanels.unit2value(val)
+				wus.SetString('wHoleSize', str(val))
+				
+				val = self.oDrillSpikeE.text()
+				wus.SetString('wDrillSpike', str(val))
+				
+				val = self.oPocketDiameterE.text()
+				val = MagicPanels.unit2value(val)
+				wus.SetString('wPocketDiameter', str(val))
+				
+				val = self.oPocketCountersinkDiameterE.text()
+				val = MagicPanels.unit2value(val)
+				wus.SetString('wPocketCountersinkDiameter', str(val))
+				
+				val = self.oPocketSizeE.text()
+				val = MagicPanels.unit2value(val)
+				wus.SetString('wPocketSize', str(val))
+				
+				val = self.oPocketOffsetFromEdgeE.text()
+				val = MagicPanels.unit2value(val)
+				wus.SetString('wPocketOffsetFromEdge', str(val))
+				
+				val = self.oPocketRotationE.text()
+				val = float(val)
+				wus.SetString('wPocketRotation', str(val))
+				
+				val = self.oPocketSinkE.text()
+				val = MagicPanels.unit2value(val)
+				wus.SetString('wPocketSink', str(val))
+		
+				# ################################################################
 				# update settings
-				# #######################################################
+				# ################################################################
 				
 				MagicPanels.updateGlobals()
 				self.oStatusL.setText(translate('magicSettings', 'Settings have been updated.'))

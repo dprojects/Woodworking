@@ -49,6 +49,25 @@
 * `gEdgebandThickness = 0`: edgeband thickness <br>
 * `gEdgebandApply = "visible"`: edgeband apply way "everywhere" or "visible"<br>
 * `gEdgebandColor = (1.0, 1.0, 1.0, 1.0)`: white <br>
+* `gPreferCustomSettings = False`: True - prefer settings from magicSettings, False - no by default <br>
+* `gOffsetSides = 0`: use both sides <br>
+* `gOffsetItemsPerSide = 2`: items per side <br>
+* `gOffsetFromCorner = 50`: space from corner <br>
+* `gOffsetBetween = 64`: space between dowels <br>
+* `gOffsetFromEdge = 9`: offset from edge should be calculated from thickness but can be static <br>
+* `gDowelDiameter = 8 `: dowel diameter <br>
+* `gDowelSize = 35 `: dowel length <br>
+* `gDowelSink = 20 `: dowel inside the surface <br>
+* `gHoleDiameter = 8`: drill bit diameter <br>
+* `gHoleCountersinkDiameter = 10`: face hole for countersinks <br>
+* `gHoleSize = 25`: hole depth <br>
+* `gDrillSpike = "Angled"`: for holes only, "Angled" - spike, "Flat" - no spike <br>
+* `gPocketDiameter = 3`: pocket drill bits diameter <br>
+* `gPocketCountersinkDiameter = 9.5`: pocket face hole <br>
+* `gPocketSize = 90`: pocket drill bit length <br>
+* `gPocketOffsetFromEdge = 60`: pocket offset from edge <br>
+* `gPocketRotation = 75`: pocket drill bit angle <br>
+* `gPocketSink = -6`: pocket drill bit should be above face <br>
 
 > [!CAUTION]
 > Globals are updated from user settings via updateGlobals function at the end of the library.
@@ -2373,384 +2392,18 @@
 # DEPRECATED
 
 ### moveToParent(iObjects, iSelection):
-	
-	
-> [!CAUTION]
-> ########################################################################################
-> THIS FUNCTION IS DEPRECATED !!!
-> ########################################################################################
-	
-##### Description:
-	
-		This version move object to parent container without adding or remove offset. This is useful if you copy the 
-		Sketch, because Sketch after copy is located outside Body, in Part. But if the Part is inside LinkGroup 
-		the copied Sketch will be located outside LinkGroup, in main root folder. This is problematic because 
-		the Sketch after copy has offset from containers. The object to move need to be in root folder to avoid 
-		duplicated already copied objects, Cube.
-	
-##### Args:
-	
-		iObjects: list of objects to move to container, for example new created Sketch
-		iSelection: selected object, for example Sketch
-
-##### Usage:
-	
-		MagicPanels.moveToParent([ copy ], sketch)
-
-##### Result:
-	
-		No return, move object.
-
 ### moveToClean(iObjects, iSelection):
-	
-	
-> [!CAUTION]
-> ########################################################################################
-> THIS FUNCTION IS DEPRECATED !!!
-> ########################################################################################
-	
-##### Description:
-	
-		Move objects iObjects to clean container for iSelection object.
-		Container need to be in the clean path, no other objects except Group or LinkGroup, 
-
-		For example:
-
-		clean path: LinkGroup -> LinkGroup
-		not clean: Mirror -> LinkGroup
-	
-##### Args:
-	
-		iObjects: list of objects to move to container, for example new created Cube
-		iSelection: selected object, for example Pad
-
-##### Usage:
-	
-		MagicPanels.moveToClean([ o ], pad)
-
-##### Result:
-	
-		No return, move object.
-
 ### moveToFirstWithInverse(iObjects, iSelection):
-	
-	
-> [!CAUTION]
-> ########################################################################################
-> THIS FUNCTION IS DEPRECATED !!!
-> ########################################################################################
-	
-##### Description:
-	
-		This version remove the placement and rotation offset from iObjects and move the iObjects to first 
-		supported container (LinkGroup). 
-		
-		Note: It is dedicated to move panel created from vertices to the first LinkGroup container. 
-		The object created from vertices have applied offset with rotation after creation 
-		but is outside the container. So if you move it manually it will be in the wrong place because 
-		container apply the placement and rotation again. So, you have to remove the offset and move it. 
-		Yea, that's the beauty of FreeCAD ;-)
-	
-##### Args:
-	
-		iObjects: list of objects to move to container, for example new created Cube
-		iSelection: selected object, for example Pad
-
-##### Usage:
-	
-		MagicPanels.moveToFirstWithInverse([ o ], pad)
-
-##### Result:
-	
-		No return, move object.
-
 ### adjustClonePosition(iPad, iX, iY, iZ):
-	
-	
-> [!CAUTION]
-> ########################################################################################
-> THIS FUNCTION IS DEPRECATED !!!
-> ########################################################################################
-	
-##### Description:
-	
-		This function has been created for magicMove tool to adjust Clone position.
-		If you make Clone from Pad and the Pad has not zero Sketch.AttachmentOffset, 
-		the Clone has Placement set to XYZ (0,0,0) but is not in the zero position. 
-		So you have to remove Sketch offset from the Clone position. 
-		I guess the BoundBox is the correct solution here.
-	
-##### Args:
-	
-		iPad: Pad object with not zero Sketch.AttachmentOffset used to create new Clone
-		iX: X Axis object position
-		iY: Y Axis object position
-		iZ: Z Axis object position
-
-##### Usage:
-	
-		[ x, y, z ] = MagicPanels.adjustClonePosition(o, x, y, z)
-
-##### Result:
-	
-		Returns array with new correct [ x, y, z ] values.
-
 ### getPlacement(iObj, iType="clean"):
-	
-	
-> [!CAUTION]
-> ########################################################################################
-> THIS FUNCTION IS DEPRECATED !!!
-> ########################################################################################
-	
-##### Description:
-	
-		Gets placement with rotation info for given object.
-		Note: This is useful if you not use containers. 
-	
-##### Args:
-	
-		iObj: object to get placement
-		iType: 
-			* "clean" - old way good for simple objects but it not works if the object has AttachmentOffset set or there are multiple Pads and only the first one has AttachmentOffset set
-			* "BoundBox" - return [ XMin, YMin, ZMin ] from object BoundBox, this way solves the problem with AttachmentOffset but you need to be careful, but if the object has containers offset, for example Placement set at Part, Body or LinkGroups additionally you have to add the containers offset, also there will be problem with additional rotation
-
-##### Usage:
-	
-		[ x, y, z, r ] = MagicPanels.getPlacement(o)
-		[ x, y, z, r ] = MagicPanels.getPlacement(o, "clean")
-		[ x, y, z, r ] = MagicPanels.getPlacement(o, "BoundBox")
-
-##### Result:
-	
-		return [ x, y, z, r ] array with placement info, where:
-		
-		x: X Axis object position
-		y: Y Axis object position
-		z: Z Axis object position
-		r: Rotation object
-
 ### getGlobalPlacement(iObj, iType="FreeCAD"):
-	
-	
-> [!CAUTION]
-> ########################################################################################
-> THIS FUNCTION IS DEPRECATED !!!
-> ########################################################################################
-	
-##### Description:
-	
-		Calls FreeCAD getGlobalPlacement at base object, and return useful form of placement.
-	
-##### Args:
-	
-		iObj: object to get placement
-		iType:
-			* "FreeCAD" - return getGlobalPlacement for object or for Sketch if iObj is Pad 
-			* "BoundBox" - return [ XMin, YMin, ZMin ] from BoundBox
-##### Usage:
-	
-		[ x, y, z, r ] = MagicPanels.getGlobalPlacement(o)
-		[ x, y, z, r ] = MagicPanels.getGlobalPlacement(o, "BoundBox")
-
-##### Result:
-	
-		return [ x, y, z, r ] array with placement info, where:
-		
-		x: X Axis object position
-		y: Y Axis object position
-		z: Z Axis object position
-		r: Rotation object
-
 ### setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
-	
-	
-> [!CAUTION]
-> ########################################################################################
-> THIS FUNCTION IS DEPRECATED !!!
-> ########################################################################################
-	
-##### Description:
-	
-		Sets placement with rotation for given object.
-	
-##### Args:
-
-		iObj: object to set custom placement and rotation
-		iX: X Axis object position
-		iY: Y Axis object position
-		iZ: Z Axis object position
-		iR: Rotation object
-		iAnchor="" (optional): anchor for placement instead of 0 vertex, FreeCAD.Vector(x, y, z)
-
-##### Usage:
-	
-		MagicPanels.setPlacement(gObj, 100, 100, 200, r)
-
-##### Result:
-	
-		Object gObj should be moved into 100, 100, 200 position without rotation.
-
 ### getSketchPlacement(iSketch, iType):
-	
-	
-> [!CAUTION]
-> ########################################################################################
-> THIS FUNCTION IS DEPRECATED !!!
-> ########################################################################################
-	
-##### Description:
-	
-		Gets placement dedicated to move and copy Sketch directly.
-	
-##### Args:
-	
-		iSketch: Sketch object
-		iType: 
-			"attach" - AttachmentOffset position, need to be converted later
-			"clean" - directly from Placement, so the AttachmentOffset don't need to be converted
-			"global" - global Sketch position, can be directly set to object
-
-##### Usage:
-	
-		[ x, y, z, r ] = MagicPanels.getSketchPlacement(sketch, "global")
-
-##### Result:
-	
-		return [ x, y, z, r ] array with placement info, where:
-		
-		x: X Axis object position
-		y: Y Axis object position
-		z: Z Axis object position
-		r: Rotation object
-
 ### setSketchPlacement(iSketch, iX, iY, iZ, iR, iType):
-	
-	
-> [!CAUTION]
-> ########################################################################################
-> THIS FUNCTION IS DEPRECATED !!!
-> ########################################################################################
-	
-##### Description:
-	
-		Set placement with rotation dedicated to move and copy Sketch directly.
-	
-##### Args:
-
-		iSketch: Sketch object to set custom placement and rotation
-		iX: X Axis object position
-		iY: Y Axis object position
-		iZ: Z Axis object position
-		iR: Rotation object
-		iType: 
-			"global" - global Sketch position, good before Pocket or any other operation, Sketch global 
-						position is temporary, FreeCAD bug? after Sketch edit the Sketch position will 
-						be lost, use "attach" to keep it
-			"attach" - AttachmentOffset position, global position will be converted to AttachmentOffset, 
-						make sure the Support is set for Sketch, the Clones may not have Support, 
-						use global instead
-			"auto" - recognize if Sketch has Support, if yes this will be "attach", if no Support this 
-						will be "global", it is useful to move Pads
-
-##### Usage:
-	
-		MagicPanels.setSketchPlacement(sketch, 100, 100, 200, r, "global")
-
-##### Result:
-	
-		Object Sketch should be moved.
-
 ### getContainerPlacement(iObj, iType="clean"):
-	
-	
-> [!CAUTION]
-> ########################################################################################
-> THIS FUNCTION IS DEPRECATED !!!
-> ########################################################################################
-	
-##### Description:
-	
-		This function returns placement for the object with all 
-		containers offsets or clean. The given object might be container or 
-		selected object, the base Cube or Pad.
-	
-##### Args:
-	
-		iObj: object to get placement
-		iType (optional): 
-			"clean" - to get iObj.Placement, 
-			"offset" to get iObj.Placement with containers offset.
-
-##### Usage:
-	
-		[ x, y, z, r ] = MagicPanels.getContainerPlacement(o, "clean")
-		[ x, y, z, r ] = MagicPanels.getContainerPlacement(o, "offset")
-
-##### Result:
-	
-		return [ x, y, z, r ] array with placement info, where:
-		
-		x: X Axis object position
-		y: Y Axis object position
-		z: Z Axis object position
-		r: Rotation object - not supported yet
-
 ### setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="normal"):
-	
-	
-> [!CAUTION]
-> ########################################################################################
-> THIS FUNCTION IS DEPRECATED !!!
-> ########################################################################################
-	
-##### Description:
-	
-		Set placement function, especially used with containers.
-	
-##### Args:
-
-		iObj: object or container to set placement, for example Body, LinkGroup, Cut, Pad, Cube, Sketch, Cylinder
-		iX: X Axis object position
-		iY: Y Axis object position
-		iZ: Z Axis object position
-		iR: 
-			0 - means rotation value set to iObj.Placement.Rotation
-			R - custom FreeCAD.Placement.Rotation object
-		iAnchor (optional):
-			"clean" - set directly to iObj.Placement, if object is Pad set to Sketch directly
-			"normal" - default object anchor with global vertices calculation
-			"center" - anchor will be center of the object (CenterOfMass)
-			[ iAX, iAY, iAZ ] - custom anchor, this should be global position
-
-##### Usage:
-		
-		MagicPanels.setContainerPlacement(cube, 100, 100, 200, 0, "clean")
-		MagicPanels.setContainerPlacement(pad, 100, 100, 200, 0, "normal")
-		MagicPanels.setContainerPlacement(body, 100, 100, 200, 0, "center")
-
-##### Result:
-	
-		Object should be moved into 100, 100, 200 position with exact anchor.
-
 
 # Functions for MagicPanels library config
 
 ### updateGlobals():
-	
-##### Description:
-	
-		This function update MagicPanels library globals from user settings.
-	
-##### Args:
-		none, user config may not exist, so should not be direct assign
-		
-##### Usage:
-	
-		MagicPanels.updateGlobals()
-
-##### Result:
-	
-		there is no return, just overwrite all MagicPanels globals from user config
-
 # UPDATE GLOBALS HERE AFTER FUNCTIONS LOADED

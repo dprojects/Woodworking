@@ -175,6 +175,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * custom drilling standards (magicSettings, magicDowels, magicDriller, MagicPanels)
     * auto-adjust drill bits (magicDriller)
     * multi-color veneer info at cut-list (getDimensions)
     * fix making non-transparent objects while new object was created (makeTransparent)
@@ -899,6 +900,38 @@ Selection modes:
   * `visible` it is more custom way, related mostly only to visible edges.
 * **Veneer color:** allows you to set the default RGBA color of the veneer. If you want to revert to the default color which is `white: RGBA = [ 255, 255, 255, 255 ]` leave all fields empty and press the `save settings` button.
 
+**Settings - page 4:** 
+
+* **Prefer magicSettings defaults:**
+  * `yes` to open [magicDowels](#magicdowels) and [magicDriller](#magicdriller) with defaults from this magicSettings tool.
+  * `no` open with tools predefined defaults. This is default option.
+* **Sides:** if the dowels or drill bits should be on both side or only from one side, possible values:
+  * `0` - use both sides
+  * `1` - left or right side only
+  * `2` - left or right side only
+* **Items per side:** means how many dowels or drill bits per side should be created. This should be integer value.
+* **Offset from corner:** means offsets from sides, left or right.
+* **Offset between items:** space between dowels or drill bits.
+* **Offset from edge:** means space to the front where is the currently selected edge. This value should be calculated from board thickness to get drill bit or dowel in the center but here you can define it permanently for all boards. This might be helpful if you plan to create holes for shelves with custom offset.
+
+**Settings - page 5:**
+
+* **Dowel diameter:** diameter for dowels in [magicDowels](#magicdowels) tool.
+* **Dowel size:** the length for the dowels in [magicDowels](#magicdowels) tool.
+* **Dowel sink:** initial size inside board for the dowels in [magicDowels](#magicdowels) tool.
+* **Hole diameter:** diameter for drill bits in [magicDriller](#magicdriller) tool.
+* **Hole countersink diameter:** face hole diameter for countersinks drill bits in [magicDriller](#magicdriller) tool.
+* **Hole size:** hole depth in [magicDriller](#magicdriller) tool.
+* **Hole spike:** how the spike for hole should be:
+  * `Angled` default spike.
+  * `Flat` there should be no spike inside the hole at the end. But this works only with normal drill bit holes.
+* **Pocket diameter:** diameter for pocket hole drill bits in [magicDriller](#magicdriller) tool.
+* **Pocket countersink:** face hole diameter for pocket hole drill bits in [magicDriller](#magicdriller) tool.
+* **Pocket size:** hole depth for pocket hole drill bits in [magicDriller](#magicdriller) tool.
+* **Pocket offset from edge:** means space to the front where is the currently selected edge. This value should be much bigger in case of pocket hole drill bits in [magicDriller](#magicdriller) tool.
+* **Pocket rotation:** pocket hole drill bit angle to the face in [magicDriller](#magicdriller) tool. You can also try value with minus.
+* **Pocket sink:** this is space above the face for the pocket hole drill bit spike in [magicDriller](#magicdriller) tool. You can also try value with minus.
+
 **save settings:** button saves the current settings in FreeCAD configuration files, i.e. `User parameter:BaseApp/Preferences/Woodworking`. This data can be checked, fixed or removed using the parameter editor in FreeCAD, i.e. `Tools -> Edit parameters... -> Preferences -> Woodworking`.
 
 **Video tutorials:** 
@@ -1343,6 +1376,10 @@ This tool allows you to quickly measure objects. All measurements are recognized
 * **Select edge:** You can choose the edge for the dowels. Normally, for surface there are 4 edges but if the object is for example `boolean Cut` there might be much more edges or only 2 edges if this is edge of the board.
 * **position autodetect:** this checkbox is checked by default and allows for searching correct edge offset, sink and rotation. The edge selection might be slower but no further adjustment will be needed, I hope.
 
+> [!TIP]
+> This tool can read default settings from [magicSettings](#magicsettings) tool. 
+> Select `magicSettings` option from menu to load your custom settings or set `Prefer magicSettings defaults:` option to `yes` in [magicSettings](#magicsettings) tool to open this tool automatically with your custom settings.
+
 For manual adjust you can use:
 
 * **Adjust edge:** Allows to adjust offset from the edge. This option is useful if by default the dowels not sink to the surface, so there is problem with correct positioning by default. 
@@ -1475,6 +1512,10 @@ However, if you make your own detailed part or order somewhere, you need to fulf
 * **refresh all faces selection:** available selections: 
   * `single face` in this case, if you select only one face, it will be set as the face for drill bit positioning and also as the face for drilling.
   * `two faces` in this case, if you select more than one face, the first selected face will be set as the face for drill bit positioning and the second selected face will be set as the face for drilling.
+
+> [!TIP]
+> This tool can read default settings from [magicSettings](#magicsettings) tool. 
+> Select `magicSettings` option from menu to load your custom settings or set `Prefer magicSettings defaults:` option to `yes` in [magicSettings](#magicsettings) tool to open this tool automatically with your custom settings.
 
 * **Select edge:** You can choose the edge for the drill bits. Normally, for surface there are 4 edges but if the object is for example `boolean Cut` there might be much more edges or only 2 edges if this is edge of the board.
 * **Adjust edge:** Allows to adjust offset from the edge. This option is useful if by default the drill bits not touch the surface, so there is problem with correct positioning by default. 

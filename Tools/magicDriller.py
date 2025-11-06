@@ -13,7 +13,20 @@ translate = FreeCAD.Qt.translate
 # I don't know if there is better solution, probably not... 
 # this is problem from category "to eat cake and have cake"... 
 # to have translation and custom sub-menu list order...
-#
+
+# first set defaults if magicSettings :-)
+defaultHoles = 2
+defaultCountersinks = 1
+defaultCounterbores = 1
+defaultPockets = 2
+
+# make sure you have magicSettings as first text
+if MagicPanels.gPreferCustomSettings == True: 
+	defaultHoles = 0
+	defaultCountersinks = 0
+	defaultCounterbores = 0
+	defaultPockets = 0
+
 # for main menu add new items only at the end
 getMainMenuIndex = {
 	
@@ -22,6 +35,7 @@ getMainMenuIndex = {
 		0, # main menu index, not change
 		
 		( 
+			translate('magicDriller', 'magicSettings'), 
 			translate('magicDriller', 'Dowel 6 x 35 mm '), 
 			translate('magicDriller', 'Dowel 8 x 35 mm '), 
 			translate('magicDriller', 'Dowel 10 x 35 mm '), 
@@ -41,7 +55,7 @@ getMainMenuIndex = {
 			translate('magicDriller', 'Wall cabinet brackets - camar 2 ') # no comma
 		), # for submenu above copy from getSubMenuIndex, order here can be changed 
 		
-		1 # default index for submenu
+		defaultHoles # default index for submenu
 	], 
 	
 	translate('magicDriller', 'Countersinks'): [
@@ -49,13 +63,14 @@ getMainMenuIndex = {
 		1, # main menu index, not change
 		
 		(
+			translate('magicDriller', 'magicSettings'), 
 			translate('magicDriller', 'Screw 4 x 40 mm '), 
 			translate('magicDriller', 'Screw 4.5 x 40 mm '), 
 			translate('magicDriller', 'Screw 5 x 50 mm '), 
 			translate('magicDriller', 'Screw 6 x 60 mm ') # no comma
 		), # for submenu above copy from getSubMenuIndex, order here can be changed
 		
-		0 # no comma, default index for submenu
+		defaultCountersinks # no comma, default index for submenu
 	],
 	
 	translate('magicDriller', 'Counterbores'): [
@@ -63,13 +78,14 @@ getMainMenuIndex = {
 		2, # main menu index, not change
 		
 		(
+			translate('magicDriller', 'magicSettings'), 
 			translate('magicDriller', 'Screw 4 x 40 mm '), 
 			translate('magicDriller', 'Screw 4.5 x 40 mm '), 
 			translate('magicDriller', 'Screw 5 x 50 mm '), 
 			translate('magicDriller', 'Screw 6 x 60 mm ') # no comma
 		), # for submenu above copy from getSubMenuIndex, order here can be changed
 		
-		0 # no comma, default index for submenu
+		defaultCounterbores # no comma, default index for submenu
 	],
 	
 	translate('magicDriller', 'Pocket holes'): [
@@ -77,13 +93,14 @@ getMainMenuIndex = {
 		3, # main menu index, not change
 		
 		(
+			translate('magicDriller', 'magicSettings'), 
 			translate('magicDriller', 'Screw 4 x 25 mm '), 
 			translate('magicDriller', 'Screw 4 x 30 mm '), 
 			translate('magicDriller', 'Screw 4 x 40 mm '), 
 			translate('magicDriller', 'Screw 4 x 60 mm ') # no comma
 		), # for submenu above copy from getSubMenuIndex, order here can be changed
 		
-		1 # no comma, default index for submenu
+		defaultPockets # no comma, default index for submenu
 	
 	] # no comma
 }
@@ -113,7 +130,8 @@ getSubMenuIndex = {
 	translate('magicDriller', 'Cabinet handle - single hole '): 16, 
 	translate('magicDriller', 'Cabinet handle - double hole '): 17, 
 	translate('magicDriller', 'Wall cabinet brackets - camar 1 '): 18,
-	translate('magicDriller', 'Wall cabinet brackets - camar 2 '): 19 # no comma
+	translate('magicDriller', 'Wall cabinet brackets - camar 2 '): 19, 
+	translate('magicDriller', 'magicSettings'): 20 # no comma
 }
 
 # ############################################################################
@@ -1653,6 +1671,28 @@ def showQtGUI():
 					self.gDBSides = 1
 					self.gDrillPoint = "Flat"
 				
+				# magicSettings
+				if selectedIndex == 20:
+					self.gDBDiameter = MagicPanels.gHoleDiameter
+					self.gDBDiameter2 = MagicPanels.gHoleCountersinkDiameter
+					self.gDBSize = MagicPanels.gHoleSize
+					self.gDrillPoint = MagicPanels.gDrillSpike
+					
+					self.gDBSides = MagicPanels.gOffsetSides
+					self.gDBNum = MagicPanels.gOffsetItemsPerSide
+					self.gDBOCorner = MagicPanels.gOffsetFromCorner
+					self.gDBONext = MagicPanels.gOffsetBetween
+					self.gDBOEdge = MagicPanels.gOffsetFromEdge
+					
+					if self.gDBType == 3:
+						self.gDBDiameter = MagicPanels.gPocketDiameter
+						self.gDBDiameter2 = MagicPanels.gPocketCountersinkDiameter
+						self.gDBSize = MagicPanels.gPocketSize
+						self.gDBOEdge = MagicPanels.gPocketOffsetFromEdge
+						self.gDBPocketR = MagicPanels.gPocketRotation
+						self.gDBPocketS = MagicPanels.gPocketSink
+						self.gDBSink = self.gDBPocketS
+					
 				# ######################################
 				# restore if keep settings
 				# ######################################

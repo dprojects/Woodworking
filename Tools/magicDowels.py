@@ -23,8 +23,7 @@ gDS = {
 	"gDShape": 0,              # dowel shape (cylinder 0 or box 1)
 	"gTenonT": 6,              # tenon thickness size
 	"gTenonL": 50,             # tenon long size
-	"gTenonH": 20,             # tenon height size (sink)
-	"gCurrentSelection": 1     # currently selected menu index
+	"gTenonH": 20 # no comma   # tenon height size (sink)
 }
 
 # add new items only at the end and change self.dtslist
@@ -50,8 +49,10 @@ getMenuIndex = {
 	translate('magicDowels', 'Custom mount point '): 18, 
 	translate('magicDowels', 'Minifix 15 x 45 mm '): 19, 
 	translate('magicDowels', 'Cabinet handle - single hole '): 20,
-	translate('magicDowels', 'Cabinet handle - double hole '): 21 # no comma
+	translate('magicDowels', 'Cabinet handle - double hole '): 21, 
+	translate('magicDowels', 'magicSettings'): 22 # no comma
 }
+
 
 # ############################################################################
 # Qt Main
@@ -125,7 +126,7 @@ def showQtGUI():
 		gTenonL = gDS["gTenonL"]
 		gTenonH = gDS["gTenonH"]
 		gTenonT = gDS["gTenonT"]
-		gCurrentSelection = gDS["gCurrentSelection"]
+		gCurrentSelection = 2
 
 		# ############################################################################
 		# init
@@ -211,34 +212,38 @@ def showQtGUI():
 				
 				# not write here, copy text from getMenuIndex to avoid typo
 				self.dtslist = (
-							translate('magicDowels', 'Dowel 6 x 35 mm '), 
-							translate('magicDowels', 'Dowel 8 x 35 mm '), 
-							translate('magicDowels', 'Dowel 10 x 35 mm '), 
-							translate('magicDowels', 'Biscuits 16 x 48 mm '), 
-							translate('magicDowels', 'Biscuits 21 x 54 mm '), 
-							translate('magicDowels', 'Biscuits 24 x 57 mm '), 
-							translate('magicDowels', 'Screw 3 x 20 mm '), 
-							translate('magicDowels', 'Screw 4.5 x 40 mm '), 
-							translate('magicDowels', 'Screw 4 x 40 mm '), 
-							translate('magicDowels', 'Screw 5 x 50 mm '), 
-							translate('magicDowels', 'Screw 6 x 60 mm '), 
-							translate('magicDowels', 'Confirmation 7 x 40 mm '), 
-							translate('magicDowels', 'Confirmation 7 x 50 mm '), 
-							translate('magicDowels', 'Confirmation 7 x 70 mm '), 
-							translate('magicDowels', 'Minifix 15 x 45 mm '), 
-							translate('magicDowels', 'Shelf Pin 5 x 16 mm '), 
-							translate('magicDowels', 'Cabinet handle - single hole '), 
-							translate('magicDowels', 'Cabinet handle - double hole '), 
-							translate('magicDowels', 'Profile Pin 5 x 30 mm '), 
-							translate('magicDowels', 'Profile Pin 8 x 40 mm '), 
-							translate('magicDowels', 'Tenon joint '), 
-							translate('magicDowels', 'Custom mount point ') # no comma 
-							)
+					translate('magicDowels', 'magicSettings'), 
+					translate('magicDowels', 'Dowel 6 x 35 mm '), 
+					translate('magicDowels', 'Dowel 8 x 35 mm '), 
+					translate('magicDowels', 'Dowel 10 x 35 mm '), 
+					translate('magicDowels', 'Biscuits 16 x 48 mm '), 
+					translate('magicDowels', 'Biscuits 21 x 54 mm '), 
+					translate('magicDowels', 'Biscuits 24 x 57 mm '), 
+					translate('magicDowels', 'Screw 3 x 20 mm '), 
+					translate('magicDowels', 'Screw 4.5 x 40 mm '), 
+					translate('magicDowels', 'Screw 4 x 40 mm '), 
+					translate('magicDowels', 'Screw 5 x 50 mm '), 
+					translate('magicDowels', 'Screw 6 x 60 mm '), 
+					translate('magicDowels', 'Confirmation 7 x 40 mm '), 
+					translate('magicDowels', 'Confirmation 7 x 50 mm '), 
+					translate('magicDowels', 'Confirmation 7 x 70 mm '), 
+					translate('magicDowels', 'Minifix 15 x 45 mm '), 
+					translate('magicDowels', 'Shelf Pin 5 x 16 mm '), 
+					translate('magicDowels', 'Cabinet handle - single hole '), 
+					translate('magicDowels', 'Cabinet handle - double hole '), 
+					translate('magicDowels', 'Profile Pin 5 x 30 mm '), 
+					translate('magicDowels', 'Profile Pin 8 x 40 mm '), 
+					translate('magicDowels', 'Tenon joint '), 
+					translate('magicDowels', 'Custom mount point ') # no comma 
+				)
 				
 				self.dts = QtGui.QComboBox(self)
 				self.dts.addItems(self.dtslist)
-				self.dts.setCurrentIndex(1)
 				self.dts.textActivated[str].connect(self.setMenuItem)
+				if MagicPanels.gPreferCustomSettings == True:
+					self.setMenuItem(translate('magicDowels', 'magicSettings'))
+				else:
+					self.dts.setCurrentIndex(self.gCurrentSelection)
 				
 				# select edge
 				self.seL = QtGui.QLabel(translate('magicDowels', 'Select edge:'), self)
@@ -508,11 +513,8 @@ def showQtGUI():
 				# set layout to main window
 				self.layout = QtGui.QVBoxLayout()
 				self.layout.addLayout(self.header)
-				#self.layout.addStretch()
 				self.layout.addWidget(self.groupAA)
-				#self.layout.addStretch()
 				self.layout.addWidget(self.groupMA)
-				#self.layout.addStretch()
 				self.layout.addWidget(self.groupCS)
 				self.layout.addStretch()
 				self.layout.addLayout(self.rowCR)
@@ -1227,6 +1229,22 @@ def showQtGUI():
 					self.oDOEdgeE.setText(MagicPanels.unit2gui(self.gDOFESet))
 					self.aeIS.setText(str(self.gDOFEIndex+1) + " / " + str(len(self.gDOFEArr)))
 
+				if self.gCurrentSelection == 22:
+					self.gDowelLabel = translate('magicDowels','Custom dowel ')
+					self.gDDiameter = MagicPanels.gDowelDiameter
+					self.gDSize = MagicPanels.gDowelSize
+					self.gDOFSSet = MagicPanels.gDowelSink
+					self.gSides = MagicPanels.gOffsetSides
+					self.gDNum = MagicPanels.gOffsetItemsPerSide
+					self.gDOCorner = MagicPanels.gOffsetFromCorner
+					self.gDONext = MagicPanels.gOffsetBetween
+					
+					self.gDOFEArr = []
+					self.gDOFEArr.append(MagicPanels.gOffsetFromEdge)
+					self.gDOFEArr.append(-MagicPanels.gOffsetFromEdge)
+					self.gDOFEIndex = 0
+					self.gDOFESet = self.gDOFEArr[self.gDOFEIndex]
+					
 				# ########################################################
 				# set custom value 
 				# ########################################################
@@ -1268,7 +1286,6 @@ def showQtGUI():
 		
 		# ############################################################################
 		def setMenuItem(self, selectedText):
-		
 			selectedIndex = getMenuIndex[selectedText]
 			self.setDowelsSettings(selectedIndex)
 
@@ -1736,7 +1753,7 @@ def showQtGUI():
 
 				# set other settings related to dowels not face
 				if not self.kcscb.isChecked():
-					self.setDowelsSettings(self.dts.currentIndex())
+					self.setDowelsSettings( getMenuIndex[self.dts.currentText()] )
 					
 				# show dowels
 				self.showDowels()

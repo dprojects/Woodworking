@@ -76,7 +76,25 @@ gBackOutsideThickness = 3                  # back outside thickness, usually HDF
 gEdgebandThickness = 0                     # edgeband thickness <br>
 gEdgebandApply = "visible"                 # edgeband apply way "everywhere" or "visible"<br>
 gEdgebandColor = (1.0, 1.0, 1.0, 1.0)      # white <br>
-
+gPreferCustomSettings = False              # True - prefer settings from magicSettings, False - no by default <br>
+gOffsetSides = 0                           # use both sides <br>
+gOffsetItemsPerSide = 2                    # items per side <br>
+gOffsetFromCorner = 50                     # space from corner <br>
+gOffsetBetween = 64                        # space between dowels <br>
+gOffsetFromEdge = 9                        # offset from edge should be calculated from thickness but can be static <br>
+gDowelDiameter = 8                         # dowel diameter <br>
+gDowelSize = 35                            # dowel length <br>
+gDowelSink = 20                            # dowel inside the surface <br>
+gHoleDiameter = 8                          # drill bit diameter <br>
+gHoleCountersinkDiameter = 10              # face hole for countersinks <br>
+gHoleSize = 25                             # hole depth <br>
+gDrillSpike = "Angled"                     # for holes only, "Angled" - spike, "Flat" - no spike <br>
+gPocketDiameter = 3                        # pocket drill bits diameter <br>
+gPocketCountersinkDiameter = 9.5           # pocket face hole <br>
+gPocketSize = 90                           # pocket drill bit length <br>
+gPocketOffsetFromEdge = 60                 # pocket offset from edge <br>
+gPocketRotation = 75                       # pocket drill bit angle <br>
+gPocketSink = -6                           # pocket drill bit should be above face <br>
 
 # > [!CAUTION]
 # > Globals are updated from user settings via updateGlobals function at the end of the library.
@@ -8942,9 +8960,9 @@ def updateGlobals():
 
 	'''
 
-	# #######################################################
+	# ##########################################################################################
 	# settings
-	# #######################################################
+	# ##########################################################################################
 
 	# Woodworking User Settings
 	wus = FreeCAD.ParamGet(gSettingsPref)
@@ -8958,9 +8976,9 @@ def updateGlobals():
 	except:
 		skip = 1
 
-	# #######################################################
+	# ##########################################################################################
 	# page 1
-	# #######################################################
+	# ##########################################################################################
 
 	# theme
 	try:
@@ -9021,9 +9039,9 @@ def updateGlobals():
 	except:
 		skip = 1
 
-	# #######################################################
+	# ##########################################################################################
 	# page 2
-	# #######################################################
+	# ##########################################################################################
 
 	try:
 		if "wFrontInsideThickness" in wusStrings:
@@ -9116,9 +9134,9 @@ def updateGlobals():
 	except:
 		skip = 1
 
-	# #######################################################
+	# ##########################################################################################
 	# page 3
-	# #######################################################
+	# ##########################################################################################
 
 	# edgeband thickness
 	try:
@@ -9146,6 +9164,147 @@ def updateGlobals():
 			colorArr = [ int(float(cR)), int(float(cG)), int(float(cB)), int(float(cA)) ]
 			global gEdgebandColor
 			gEdgebandColor = convertColor(colorArr, "kernel")
+	except:
+		skip = 1
+
+	# ##########################################################################################
+	# page 4
+	# ##########################################################################################
+
+	try:
+		if "wPreferCustomSettings" in wusBools:
+			global gPreferCustomSettings
+			gPreferCustomSettings = wus.GetBool('wPreferCustomSettings')
+	except:
+		skip = 1
+
+	try:
+		if "wOffsetSides" in wusStrings:
+			global gOffsetSides
+			gOffsetSides = int( wus.GetString('wOffsetSides') )
+	except:
+		skip = 1
+
+	try:
+		if "wOffsetItemsPerSide" in wusStrings:
+			global gOffsetItemsPerSide
+			gOffsetItemsPerSide = int( wus.GetString('wOffsetItemsPerSide') )
+	except:
+		skip = 1
+
+	try:
+		if "wOffsetFromCorner" in wusStrings:
+			global gOffsetFromCorner
+			gOffsetFromCorner = float( wus.GetString('wOffsetFromCorner') )
+	except:
+		skip = 1
+
+	try:
+		if "wOffsetBetween" in wusStrings:
+			global gOffsetBetween
+			gOffsetBetween = float( wus.GetString('wOffsetBetween') )
+	except:
+		skip = 1
+
+	try:
+		if "wOffsetFromEdge" in wusStrings:
+			global gOffsetFromEdge
+			gOffsetFromEdge = float( wus.GetString('wOffsetFromEdge') )
+	except:
+		skip = 1
+
+	# ##########################################################################################
+	# page 5
+	# ##########################################################################################
+
+	try:
+		if "wDowelDiameter" in wusStrings:
+			global gDowelDiameter
+			gDowelDiameter = float( wus.GetString('wDowelDiameter') )
+	except:
+		skip = 1
+
+	try:
+		if "wDowelSize" in wusStrings:
+			global gDowelSize
+			gDowelSize = float( wus.GetString('wDowelSize') )
+	except:
+		skip = 1
+
+	try:
+		if "wDowelSink" in wusStrings:
+			global gDowelSink
+			gDowelSink = float( wus.GetString('wDowelSink') )
+	except:
+		skip = 1
+
+	try:
+		if "wHoleDiameter" in wusStrings:
+			global gHoleDiameter
+			gHoleDiameter = float( wus.GetString('wHoleDiameter') )
+	except:
+		skip = 1
+
+	try:
+		if "wHoleCountersinkDiameter" in wusStrings:
+			global gHoleCountersinkDiameter
+			gHoleCountersinkDiameter = float( wus.GetString('wHoleCountersinkDiameter') )
+	except:
+		skip = 1
+
+	try:
+		if "wHoleSize" in wusStrings:
+			global gHoleSize
+			gHoleSize = float( wus.GetString('wHoleSize') )
+	except:
+		skip = 1
+
+	try:
+		if "wDrillSpike" in wusStrings:
+			global gDrillSpike
+			gDrillSpike = str( wus.GetString('wDrillSpike') )
+	except:
+		skip = 1
+
+	try:
+		if "wPocketDiameter" in wusStrings:
+			global gPocketDiameter
+			gPocketDiameter = float( wus.GetString('wPocketDiameter') )
+	except:
+		skip = 1
+
+	try:
+		if "wPocketCountersinkDiameter" in wusStrings:
+			global gPocketCountersinkDiameter
+			gPocketCountersinkDiameter = float( wus.GetString('wPocketCountersinkDiameter') )
+	except:
+		skip = 1
+
+	try:
+		if "wPocketSize" in wusStrings:
+			global gPocketSize
+			gPocketSize = float( wus.GetString('wPocketSize') )
+	except:
+		skip = 1
+
+	try:
+		if "wPocketOffsetFromEdge" in wusStrings:
+			global gPocketOffsetFromEdge
+			gPocketOffsetFromEdge = float( wus.GetString('wPocketOffsetFromEdge') )
+	except:
+		skip = 1
+
+	try:
+		if "wPocketRotation" in wusStrings:
+			global gPocketRotation
+			gPocketRotation = float( wus.GetString('wPocketRotation') )
+	except:
+		skip = 1
+
+	try:
+		if "wPocketSink" in wusStrings:
+			global gPocketSink
+			gPocketSink = float( wus.GetString('wPocketSink') )
 	except:
 		skip = 1
 
