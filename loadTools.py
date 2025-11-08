@@ -5083,6 +5083,45 @@ FreeCADGui.addCommand("makeTransparent", makeTransparent())
 
 	
 # ######################################################################################################################
+class frontsOpenClose():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "frontsOpenClose.png"),
+				"MenuText": QT_TRANSLATE_NOOP("frontsOpenClose", "frontsOpenClose, open or close all fronts"),
+				"ToolTip" : QT_TRANSLATE_NOOP("frontsOpenClose", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "frontsOpenClose"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("frontsOpenClose", frontsOpenClose())
+
+	
+# ######################################################################################################################
 class magicView():
 
 	def GetResources(self):

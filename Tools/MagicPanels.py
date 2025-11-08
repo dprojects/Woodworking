@@ -138,13 +138,13 @@ def getSelectedSubs(iConvert="no"):
 			* array with two arrays with objects [ subs, objects ]:
 				* subs - for subs[i] it is selected sub
 				* objects - for objects[i] it is object for subs[i] selected sub
-			* or 0 if there are no selection or other error, so this should raise tool error
+			* or empty array [] if there are no selection or other error, so this should raise tool error
 
 	'''
 	
 	selection = FreeCADGui.Selection.getSelection()
 	if len(selection) == 0:
-		return 0
+		return []
 	
 	index = 0
 	subs = []
@@ -7810,6 +7810,7 @@ def getTheme(iType=""):
 		}
 		
 	'''
+	
 	# ##############################################################
 	# QtCSS - 3D v2
 	# ##############################################################
@@ -8048,7 +8049,7 @@ def showInfo(iCaller, iInfo, iNote="yes"):
 
 # ###################################################################################################################
 '''
-# DEPRECATED
+# DEPRECATED BEGIN
 '''
 # ###################################################################################################################
 
@@ -8936,6 +8937,13 @@ def setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="normal"):
 
 # ###################################################################################################################
 '''
+# DEPRECATED END
+'''
+# ###################################################################################################################
+
+
+# ###################################################################################################################
+'''
 # Functions for MagicPanels library config
 '''
 # ###################################################################################################################
@@ -9309,9 +9317,9 @@ def updateGlobals():
 		skip = 1
 
 
-# ###################################################################################################################
-# UPDATE GLOBALS HERE AFTER FUNCTIONS LOADED
-# ###################################################################################################################
+
+'''
+'''
 
 
 '''
@@ -9329,8 +9337,12 @@ FreeCAD.Console.PrintMessage("\n")
 FreeCAD.Console.PrintMessage(gCurrentSelection)
 '''
 
-# not assign directly to values because user config values may not exist yet
-# and do not repeat default value inside the update function in return to avoid inconsistency
+'''
+	UPDATE GLOBALS HERE AFTER FUNCTIONS LOADED
+	not assign directly to values because user config values may not exist yet
+	and do not repeat default value inside the update function in return to avoid inconsistency
+'''
+
 updateGlobals()
 
 

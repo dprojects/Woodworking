@@ -48,6 +48,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 * [Preview](#preview)
 	* [fitModel](#fitmodel)
 	* [makeTransparent](#maketransparent)
+	* [frontsOpenClose](#frontsopenclose)
 	* [magicView](#magicview)
 	* [showVertex](#showvertex)
 	* [selectVertex](#selectvertex)
@@ -175,6 +176,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * tool to open and close all fronts (frontsOpenClose)
     * custom drilling standards (magicSettings, magicDowels, magicDriller, MagicPanels)
     * auto-adjust drill bits (magicDriller)
     * multi-color veneer info at cut-list (getDimensions)
@@ -795,6 +797,16 @@ Selection modes:
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/makeTransparent.png"> This tool allows to make all parts transparent and back to normal. You can preview all pilot holes, countersinks or any other joints like that, very simply.
 
 <br><br><br><br><br>
+
+## frontsOpenClose
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/frontsOpenClose.png"> This tool allows you to open and close all cabinet fronts simultaneously. This allows you to quickly view the cabinets internal structure without having to search for each front in the object tree and hide or rotate them individually. The fronts rotate with a default rotation increment of 45 degrees. This allows you to select the front opening angle, from a simple tilt to an open inner front that can open beyond 90 degrees. Rotating the fronts around the Z axis avoids the issue of maximum opening angles for different hinge types. However, the opening of the fronts can be customized by editing the attributes for each front. Opening attributes can also be added to each front using this tool.To select more edges or objects hold left CTRL key during selection.
+
+**Possible selection methods:**
+
+* **no selection** - allows you to open all fronts. If the objects name starts with `front` or `Front` this front will be open by default via Edge1 to the left side.
+* **edges** - you have to select single edge for each front to add open front attributes to each front. This allows you to change default left open to right open.
+* **LinkGroup + edge of simple front inside** - allows you to set rotation attributes to LinkGroup container with handle and simple front inside, to rotate whole LinkGroup container with handle but via edge of simple front inside. In this case you must also set attributes to simple front inside but turn off open of the simple front inside to not duplicate rotation.
 
 ## magicView
 

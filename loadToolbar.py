@@ -50,6 +50,7 @@ def getItems(iType):
 		parts = [
 			"fitModel",
 			"makeTransparent",
+			"frontsOpenClose",
 			"magicView",
 			"showVertex",
 			"selectVertex",

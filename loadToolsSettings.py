@@ -256,6 +256,7 @@ Tools = [
 
 	"fitModel", "png", "fitModel, to view model", "Click to see info.",
 	"makeTransparent", "png", "makeTransparent, make objects transparent or normal", "Click to see info.",
+	"frontsOpenClose", "png", "frontsOpenClose, open or close all fronts", "Click to see info.",
 	"magicView", "png", "magicView, create views and export to TechDraw", "This tool allows you to create views and export views to TechDraw.",
 	"showVertex", "png", "showVertex, makes vertices more visible", "Click to see info.",
 	"selectVertex", "png", "selectVertex, help to select vertices", "Click to see info.",

@@ -2,6 +2,7 @@
 
 # MagicPanels
 
+
 	This is MagicPanels library for Woodworking workbench.
 	Darek L (github.com/dprojects)
 
@@ -14,8 +15,6 @@
 
 * Should not have error handling and pop-ups, so you can call it from GUI tools in loops.
 * Should return value, if further processing needed.
-
-
 
 
 
@@ -75,11 +74,13 @@
 # Functions for general purpose
 
 ### getSelectedSubs(iConvert="no"):
+
 	
 ##### Description:
 	
 		This function returns object for selected sub-object (face, edge, vertex) and 
 		solves the problem you have sub-object and you do not know what is the object. 
+
 
 > [!NOTE]
 > This function not keep the subs selection order in return because it is driven 
@@ -102,9 +103,10 @@
 			* array with two arrays with objects [ subs, objects ]:
 				* subs - for subs[i] it is selected sub
 				* objects - for objects[i] it is object for subs[i] selected sub
-			* or 0 if there are no selection or other error, so this should raise tool error
+			* or empty array [] if there are no selection or other error, so this should raise tool error
 
 ### isType(iObj, iType="Clone"):
+
 	
 ##### Description:
 	
@@ -131,6 +133,7 @@
 		return True or False, so you can use it directly in if statement
 
 ### equal(iA, iB):
+
 	
 ##### Description:
 	
@@ -153,6 +156,7 @@
 		return True if equal or False if not
 
 ### touchTypo(iObj):
+
 	
 ##### Description:
 	
@@ -171,6 +175,7 @@
 		return Vertex + es for object o
 
 ### normalizeBoundBox(iBoundBox):
+
 	
 ##### Description:
 	
@@ -197,6 +202,7 @@
 # References
 
 ### getReference(iObj="none"):
+
 	
 ##### Description:
 	
@@ -216,6 +222,7 @@
 		gObj - reference to the base object
 
 ### getBody(iObj):
+
 	
 ##### Description:
 	
@@ -237,6 +244,7 @@
 # Sizes
 
 ### getSizesFromVertices(iObj):
+
 	
 ##### Description:
 	
@@ -258,6 +266,7 @@
 		mZ - occupied space along Z axis
 
 ### getSizesFromBoundBox(iObj):
+
 	
 ##### Description:
 	
@@ -280,6 +289,7 @@
 		mZ - occupied space along Z axis
 
 ### getOccupiedSpace(iObjects):
+
 	
 ##### Description:
 	
@@ -308,6 +318,7 @@
 			cz - Z float of the occupied space by all objects
 
 ### getSizesFromSketch(iSketch):
+
 	
 ##### Description:
 	
@@ -328,6 +339,7 @@
 		Returns array with floats [ SizeX, SizeY ]
 
 ### getSizes(iObj):
+
 	
 ##### Description:
 	
@@ -350,6 +362,7 @@
 # Copy
 
 ### copyPanel(iObjects, iType="auto"):
+
 	
 ##### Description:
 	
@@ -378,6 +391,7 @@
 	
 		return array with copies
 ### getObjectToCopy(iObj):
+
 	
 ##### Description:
 	
@@ -409,6 +423,7 @@
 # Edges
 
 ### getEdgeVertices(iEdge):
+
 	
 ##### Description:
 	
@@ -427,6 +442,7 @@
 		Return vertices array like [ [ 1, 1, 1 ], [ 1, 1, 1 ] ].
 
 ### getEdgeVectors(iEdge):
+
 	
 ##### Description:
 	
@@ -445,6 +461,7 @@
 		Return vertices array like [ FreeCAD.Vector, FreeCAD.Vector ].
 
 ### getEdgeNormalized(iV1, iV2):
+
 	
 ##### Description:
 	
@@ -465,6 +482,7 @@
 		for vertices [ 2, 2, 2 ], [ 1, 1, 1 ] return [ 1, 1, 1 ], [ 2, 2, 2 ]
 
 ### getEdgeIndex(iObj, iEdge):
+
 	
 ##### Description:
 	
@@ -484,6 +502,7 @@
 		return int value for edge
 
 ### getEdgeIndexByKey(iObj, iBoundBox):
+
 	
 ##### Description:
 	
@@ -503,6 +522,7 @@
 		return int value for edge
 
 ### getEdgePlane(iObj, iEdge, iType="auto"):
+
 	
 ##### Description:
 	
@@ -525,6 +545,7 @@
 		return string "X", "Y" or "Z".
 
 ### getSizeByEdge(iObj, iEdge):
+
 	
 ##### Description:
 	
@@ -547,6 +568,7 @@
 # Faces
 
 ### getFaceIndex(iObj, iFace):
+
 	
 ##### Description:
 	
@@ -566,6 +588,7 @@
 		return int value for face
 
 ### getFaceIndexByKey(iObj, iBoundBox):
+
 	
 ##### Description:
 	
@@ -585,6 +608,7 @@
 		return int value for face
 
 ### getFaceVertices(iFace, iType="4"):
+
 	
 ##### Description:
 	
@@ -609,6 +633,7 @@
 		Return vertices array like [ [ 1, 1, 1 ], [ 2, 2, 2 ], [ 3, 3, 3 ], [ 4, 4, 4 ] ]
 
 ### getFaceType(iObj, iFace):
+
 	
 ##### Description:
 	
@@ -628,6 +653,7 @@
 		Return string "surface" or "edge".
 
 ### getFaceEdges(iObj, iFace):
+
 	
 ##### Description:
 	
@@ -653,6 +679,7 @@
 		arrLong - array with the long edges
 
 ### getFacePlane(iFace):
+
 	
 ##### Description:
 	
@@ -671,6 +698,7 @@
 		string "XY", "XZ", or "YZ".
 		
 ### getFaceSink(iObj, iFace):
+
 	
 ##### Description:
 	
@@ -691,6 +719,7 @@
 		or "-" if the object at face should go along axis backward
 
 ### getFaceObjectRotation(iObj, iFace):
+
 	
 ##### Description:
 	
@@ -711,6 +740,7 @@
 		FreeCAD.Rotation object that can be directly pass to the setPlacement or object.Placement
 
 ### getFaceDetails(iObj, iFace):
+
 	
 ##### Description:
 	
@@ -731,16 +761,19 @@
 		[ "XY", "edge" ] - if the direction is XY and it is edge, there is thickness edge
 		[ "XY", "equal" ] - if the direction is XY and both edges are equal
 		
+
 > [!NOTE]
 > The first argument can be "XY", "YX", "XZ", "ZX", "YZ", "ZY". 
 > This is related to face not to object. The object direction will be different.
 		
 ### getFaceToCube(iFace, iDepth, iOffset=0):
+
 	
 ##### Description:
 	
 		Create dimensions for simple cube Part::Box object which cover the face with offset.
 		
+
 > [!NOTE]
 > The dimensions are for XY panel without rotation. So if you want to replace 
 > such object later you need correct rotation in base object.
@@ -770,6 +803,7 @@
 # Vertices
 
 ### vertices2vectors(iVertices):
+
 	
 ##### Description:
 	
@@ -788,6 +822,7 @@
 	
 		return array with vectors
 ### showVertex(iVertices, iRadius=20, iColor="red"):
+
 	
 ##### Description:
 	
@@ -809,6 +844,7 @@
 	
 		remove old vertices and show new ones, return array of objects, spheres
 ### getVertex(iFace, iEdge, iVertex):
+
 	
 ##### Description:
 	
@@ -829,6 +865,7 @@
 		Return vertex position.
 
 ### getVertexIndex(iObj, iVertex):
+
 	
 ##### Description:
 	
@@ -849,6 +886,7 @@
 		or get vertex from vertices array
 
 ### getVertexAxisCross(iA, iB):
+
 	
 ##### Description:
 	
@@ -868,6 +906,7 @@
 		Return diff for vertices values.
 
 ### getVerticesPlane(iV1, iV2):
+
 	
 ##### Description:
 	
@@ -887,6 +926,7 @@
 		Return plane as "XY", "XZ", "YZ".
 
 ### getVectorsPlane(iV1, iV2):
+
 	
 ##### Description:
 	
@@ -906,12 +946,14 @@
 		Return plane as "X", "Y", "Z".
 
 ### setVertexPadding(iObj, iVertex, iPadding, iAxis):
+
 	
 ##### Description:
 	
 		Sets padding offset from given vertex to inside the object.
 		Do not use it at getPlacement for Pads. Use 0 vertex instead.
 		
+
 > [!NOTE]
 > This need to be improved.
 	
@@ -932,6 +974,7 @@
 		Return return new position value for given axis.
 
 ### getOnCurve(iPoint, iCurve):
+
 	
 ##### Description:
 	
@@ -956,6 +999,7 @@
 		Return int value index for iPoint on iCurve.
 
 ### getVerticesOffset(iVertices, iObj, iType="array"):
+
 	
 	Gets iObj offset of all supported containers for vertices iVertices.
 	
@@ -976,6 +1020,7 @@
 		return vertices array with correct container offset
 
 ### getVerticesPosition(iVertices, iObj, iType="auto"):
+
 	
 ##### Description:
 	
@@ -1007,6 +1052,7 @@
 		return vertices array with correct container offset, with the same type
 
 ### removeVerticesPosition(iVertices, iObj, iType="auto"):
+
 	
 ##### Description:
 	
@@ -1038,6 +1084,7 @@
 # Direction, Plane, Orientation, Axis
 
 ### isRotated(iObj):
+
 	
 ##### Description:
 	
@@ -1056,6 +1103,7 @@
 		Return True if the object is rotated or False otherwise.
 
 ### addRotation(iObj, iTarget):
+
 	
 ##### Description:
 	
@@ -1075,6 +1123,7 @@
 		If the iObj is rotated, set the same rotation to iTarget
 
 ### getModelRotation(iX, iY, iZ):
+
 	
 ##### Description:
 	
@@ -1095,6 +1144,7 @@
 		[ X, Y, Z ] - transformed vector of given values
 
 ### getDirection(iObj):
+
 	
 ##### Description:
 	
@@ -1116,6 +1166,7 @@
 # Position, Placement, Move
 
 ### resetPlacement(iObj):
+
 	
 ##### Description:
 	
@@ -1134,6 +1185,7 @@
 		Object obj return to base position.
 
 ### getOffset(iObj, iDestination, iType="array"):
+
 	
 ##### Description:
 	
@@ -1158,6 +1210,7 @@
 		return array with offsets [ offetX, offetY, offetZ ]
 
 ### searchGlobalPosition(iObj):
+
 	
 ##### Description:
 	
@@ -1181,6 +1234,7 @@
 		z: Z Axis object position
 
 ### getPosition(iObj, iType="global"):
+
 	
 ##### Description:
 	
@@ -1210,6 +1264,7 @@
 		will be returned empty string for easier error handling
 
 ### setPosition(iObj, iX, iY, iZ, iType="offset"):
+
 	
 ##### Description:
 	
@@ -1240,6 +1295,7 @@
 		return empty string if everything was fine or string with error info
 
 ### getObjectToMove(iObj):
+
 	
 ##### Description:
 	
@@ -1265,11 +1321,13 @@
 		for any other object: returns object
 
 ### getObjectCenter(iObj):
+
 	
 ##### Description:
 	
 		Returns center of the object.
 	
+
 > [!NOTE]
 > This function will be updated later with more reliable 
 > way of getting center of the object, also for LinkGroup and other containers. 
@@ -1289,6 +1347,7 @@
 		Returns array with [ cx, cy, cz ] values for center point.
 
 ### setAnchors(iSourceObj, iSourceAnchor, iTarget):
+
 	
 ##### Description:
 	
@@ -1313,6 +1372,7 @@
 # Containers
 
 ### createContainer(iObjects, iLabel="Container", iNesting=True):
+
 	
 ##### Description:
 	
@@ -1336,6 +1396,7 @@
 		Created container and objects inside the container, return container object.
 
 ### getContainersPath(iObj):
+
 	
 ##### Description:
 	
@@ -1355,6 +1416,7 @@
 		return string
 
 ### getContainers(iObj):
+
 	
 ##### Description:
 	
@@ -1374,6 +1436,7 @@
 		return array with objects
 
 ### moveToContainer(iObjects, iContainer, iType="object"):
+
 	
 ##### Description:
 
@@ -1403,11 +1466,13 @@
 		No return, move object.
 
 ### moveToFirst(iObjects, iSelection):
+
 	
 ##### Description:
 
 		Move objects iObjects to first LinkGroup container for iSelection object.
 		
+
 > [!NOTE]
 > This function removes the offset that should have been added earlier. Why not just copy without offset?
 > If you have 2 objects in separate containers and the second object is only moved via the container Placement, 
@@ -1435,6 +1500,7 @@
 		No return, move copy object to LinkGroup1 container.
 
 ### getNestingLabel(iObj, iPrefix):
+
 	
 ##### Description:
 	
@@ -1455,6 +1521,7 @@
 		return string for the new label
 
 ### getContainersOffset(iObj):
+
 	
 ##### Description:
 	
@@ -1481,6 +1548,7 @@
 		coR: Rotation object
 
 ### getPlacementDiff(iStart, iDestination):
+
 	
 ##### Description:
 	
@@ -1501,6 +1569,7 @@
 		Return [ moveX, moveY, moveZ ] array with X, Y, Z floats to move object.
 
 ### isVisible(iObj):
+
 	
 ##### Description:
 	
@@ -1518,6 +1587,7 @@
 	
 		Return boolean True or False
 ### toggleVisibility(iObj):
+
 	
 ##### Description:
 	
@@ -1538,6 +1608,7 @@
 # Conversion
 
 ### convertPosition(iObj, iX, iY, iZ):
+
 	
 ##### Description:
 	
@@ -1560,6 +1631,7 @@
 		For Pad object in XZ direction return the AttachmentOffset order [ 0, 0, -400 ]
 
 ### sizesToCubePanel(iObj, iType):
+
 	
 ##### Description:
 	
@@ -1584,6 +1656,7 @@
 # Replace
 
 ### makePad(iObj, iPadLabel="Pad"):
+
 	
 ##### Description:
 	
@@ -1606,6 +1679,7 @@
 # Measurements
 
 ### createMeasureExpression(iP1, iP2, iObject1, iObject2, iSubName1, iSubName2):
+
 	
 ##### Description:
 	
@@ -1630,6 +1704,7 @@
 		Create measure expressions for iSubName1 and iSubName2. 
 
 ### showMeasure(iP1, iP2, iObject1="", iObject2="", iSubName1="", iSubName2="", iType=0, iParametric="no"):
+
 	
 ##### Description:
 	
@@ -1657,6 +1732,7 @@
 			* "no" (default): you have to add iP1 and iP2 and the measurement will not be parametric
 			* "yes": you have to add iObject1, iObject2, iSubName1, iSubName2, and the measurement will be parametric
 
+
 > [!NOTE]
 > The iP1, iP2 should be global and are mandatory, because I do not want to overload this function
 > with global position calculation from SubNames for each sub-type.
@@ -1679,6 +1755,7 @@
 		Create measure object, draw it and return measure object for further processing. 
 
 ### getDistanceBetweenFaces(iObj1, iObj2, iFace1, iFace2):
+
 	
 ##### Description:
 	
@@ -1703,6 +1780,7 @@
 # Units
 
 ### unit2gui(iValue):
+
 	
 ##### Description:
 	
@@ -1716,6 +1794,7 @@
 
 		unitForUser = MagicPanels.unit2gui(300.55)
 		
+
 > [!NOTE]
 > if user has set inches units the unitForUser should contains recalculation to inches 
 		
@@ -1724,6 +1803,7 @@
 		string
 
 ### unit2value(iString):
+
 	
 ##### Description:
 	
@@ -1746,6 +1826,7 @@
 		float for calculation
 
 ### unitArea2gui(iValue):
+
 	
 ##### Description:
 	
@@ -1764,6 +1845,7 @@
 		string, for example "180000 mm^2"
 
 ### unit2fractions(iValue, iPrecision=0, iReduction="no", iPrefix=""):
+
 	
 ##### Description:
 	
@@ -1771,6 +1853,7 @@
 		X' represents a whole number of feet. Y represents a whole number of inches and n/d" represents 
 		a fraction of an inch, where n is the numerator and d is the denominator.
 		
+
 > [!NOTE]
 > This function not reduce fraction part by default (keeps the denominator the same as given iPrecision).
 
@@ -1822,6 +1905,7 @@
 # Colors
 
 ### convertColor(iColor, iTarget):
+
 	
 ##### Description:
 	
@@ -1862,6 +1946,7 @@
 		returns converted color
 
 ### getColor(iObj, iFaceIndex, iAttribute="color", iType="kernel"):
+
 	
 ##### Description:
 	
@@ -1907,6 +1992,7 @@
 		object cannot be determined, so will be returned as empty string "". 
 
 ### setColor(iObj, iFaceIndex, iColor, iAttribute="color", iType="kernel"):
+
 	
 ##### Description:
 	
@@ -1959,6 +2045,7 @@
 		return empty string if everything is fine or string with error info
 
 ### copyColors(iSource, iTarget):
+
 	
 ##### Description:
 	
@@ -1981,6 +2068,7 @@
 # Holes
 
 ### makeHoles(iObj, iFace, iCylinders, iDrillPoint="Angled"):
+
 	
 ##### Description:
 	
@@ -2004,6 +2092,7 @@
 		Make holes and return list of holes.
 
 ### makeCountersinks(iObj, iFace, iCones):
+
 	
 ##### Description:
 	
@@ -2024,6 +2113,7 @@
 		Make holes and return list of holes. 
 
 ### makeCounterbores(iObj, iFace, iCones):
+
 	
 ##### Description:
 	
@@ -2044,6 +2134,7 @@
 		Make holes and return list of holes.
 
 ### makePocketHoles(iObj, iFace, iCones):
+
 	
 ##### Description:
 	
@@ -2064,6 +2155,7 @@
 		Make holes and return list of holes.
 
 ### makeCounterbores2x(iObj, iFace, iCones):
+
 	
 ##### Description:
 	
@@ -2087,6 +2179,7 @@
 # Joinery
 
 ### makeCuts(iObjects):
+
 	
 ##### Description:
 	
@@ -2107,6 +2200,7 @@
 		Array of cut objects will be returned.
 
 ### makeCutsLinks(iObjects):
+
 	
 ##### Description:
 	
@@ -2127,6 +2221,7 @@
 		Array of cut objects will be returned.
 
 ### makeFrame45cut(iObjects, iFaces):
+
 	
 ##### Description:
 	
@@ -2147,6 +2242,7 @@
 		Created Frames with correct placement, rotation and return array with Chamfer frame objects.
 
 ### makeChamferCut(iObjects, iEdges, iSizes, iLabels):
+
 	
 ##### Description:
 	
@@ -2171,6 +2267,7 @@
 		return array with chamfer objects
 
 ### makeMortise(iSketch, iDepth, iPad, iFace):
+
 	
 ##### Description:
 	
@@ -2192,6 +2289,7 @@
 		Make Mortise and return new object and face reference for GUI info screen update and further processing
 
 ### makeTenon(iSketch, iLength, iPad, iFace):
+
 	
 ##### Description:
 	
@@ -2216,6 +2314,7 @@
 # Router
 
 ### getSubByKey(iObj, iKey, iType, iSubType):
+
 	
 ##### Description:
 	
@@ -2241,6 +2340,7 @@
 		return edge object, name like Edge1 and also index starting from 0 (for iObj.Shape.Edges[index])
 
 ### getSketchPatternRotation(iObj, iSub):
+
 	
 ##### Description:
 	
@@ -2263,6 +2363,7 @@
 		return FreeCAD.Rotation object.
 
 ### edgeRouter(iPad, iSub, iSketch, iLength, iLabel, iType):
+
 	
 ##### Description:
 	
@@ -2287,6 +2388,7 @@
 		return router object, the result of cut
 
 ### makePockets(iObjects, iLength):
+
 	
 ##### Description:
 	
@@ -2311,6 +2413,7 @@
 # Spreadsheet
 
 ### sheetGetKey(iC, iR):
+
 	
 ##### Description:
 	
@@ -2333,6 +2436,7 @@
 # TechDraw
 
 ### createTechDrawPage(iName="page", iSize="A4", iType="v"):
+
 	
 ##### Description:
 	
@@ -2359,6 +2463,7 @@
 # Themes
 
 ### getTheme(iType=""):
+
 	
 ##### Description:
 	
@@ -2389,21 +2494,76 @@
 
 ### showInfo(iCaller, iInfo, iNote="yes"):
 
-# DEPRECATED
+	
+##### Description:
+	
+		Allows to show Gui info box for all available function and multiple calls.
+
+##### Args:
+	
+		iCaller: window title
+		iInfo: HTML text to show
+		iNote: additional tutorial ("yes" or "no"), by default is "yes".
+
+##### Usage:
+
+		info = "text to show"
+		iType = "XY"
+		
+		MagicPanels.showInfo("window title", info)
+		MagicPanels.showInfo("window title", info, "no")
+
+##### Result:
+	
+		Show info Gui.
+
+
+# DEPRECATED BEGIN
 
 ### moveToParent(iObjects, iSelection):
+
 ### moveToClean(iObjects, iSelection):
+
 ### moveToFirstWithInverse(iObjects, iSelection):
+
 ### adjustClonePosition(iPad, iX, iY, iZ):
+
 ### getPlacement(iObj, iType="clean"):
+
 ### getGlobalPlacement(iObj, iType="FreeCAD"):
+
 ### setPlacement(iObj, iX, iY, iZ, iR, iAnchor=""):
+
 ### getSketchPlacement(iSketch, iType):
+
 ### setSketchPlacement(iSketch, iX, iY, iZ, iR, iType):
+
 ### getContainerPlacement(iObj, iType="clean"):
+
 ### setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="normal"):
+
+
+# DEPRECATED END
+
 
 # Functions for MagicPanels library config
 
 ### updateGlobals():
-# UPDATE GLOBALS HERE AFTER FUNCTIONS LOADED
+
+	
+##### Description:
+	
+		This function update MagicPanels library globals from user settings.
+	
+##### Args:
+		none, user config may not exist, so should not be direct assign
+		
+##### Usage:
+	
+		MagicPanels.updateGlobals()
+
+##### Result:
+	
+		there is no return, just overwrite all MagicPanels globals from user config
+
+
