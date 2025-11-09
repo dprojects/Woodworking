@@ -176,6 +176,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * parametric sides with holes (magicStart)
     * tool to open and close all fronts (frontsOpenClose)
     * custom drilling standards (magicSettings, magicDowels, magicDriller, MagicPanels)
     * auto-adjust drill bits (magicDriller)
@@ -402,6 +403,7 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * Side
 * Center side
 * Side decoration ( simple frame )
+* Sides with holes ( import parametric )
 
 **Video tutorials:** 
 * [How to create side anywhere](https://www.youtube.com/watch?v=IS3MDLzv6Ko)

@@ -95,7 +95,8 @@ getMenuIndex = {
 	translate('magicStart', 'Modular bookcase ( no front, back outside, 3 modules )'): 79, 
 	translate('magicStart', 'Table ( school desk, single right side )'): 80, 
 	translate('magicStart', 'Table ( School desk, single left side )'): 81, 
-	translate('magicStart', 'Table ( school desk, both sides )'): 82 # no comma
+	translate('magicStart', 'Table ( school desk, both sides )'): 82, 
+	translate('magicStart', 'Sides with holes ( import parametric )'): 83 # no comma
 }
 
 # ############################################################################
@@ -856,6 +857,7 @@ def showQtGUI():
 				translate('magicStart', 'Side'), 
 				translate('magicStart', 'Center side'), 
 				translate('magicStart', 'Side decoration ( simple frame )'), 
+				translate('magicStart', 'Sides with holes ( import parametric )'), 
 				"------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Back outside ( HDF )'), 
 				translate('magicStart', 'Back inside ( full )'), 
@@ -4834,7 +4836,8 @@ def showQtGUI():
 				selectedIndex == 69 or 
 				selectedIndex == 70 or 
 				selectedIndex == 76 or 
-				selectedIndex == 77
+				selectedIndex == 77 or 
+				selectedIndex == 83
 				):
 				self.setGUIInfo("merge")
 				self.helpInfo.setText("")
@@ -5552,7 +5555,10 @@ def showQtGUI():
 
 			if self.gSelectedFurniture == "F82":
 				self.createF82()
-				
+			
+			if self.gSelectedFurniture == "F83":
+				self.mergeF("msf083.FCStd", "magicStart")
+			
 			# here to allow recalculation with selection
 			FreeCADGui.Selection.clearSelection()
 
@@ -7192,7 +7198,7 @@ def showQtGUI():
 			startZ = MagicPanels.unit2value( self.oStartZE.text() )
 			
 			sizeX = MagicPanels.unit2value( self.oWidthE.text() )
-			sizeY = MagicPanels.unit2value( self.oDepthE.text() )
+			sizeY = MagicPanels.unit2value( self.oDepthE.text() ) - thickBack
 			sizeZ = MagicPanels.unit2value( self.oHeightE.text() )
 			
 			edgeband = MagicPanels.gEdgebandThickness
