@@ -176,6 +176,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * update binaries to fix transparency issue in FreeCAD 1.1
     * parametric sides with holes (magicStart)
     * tool to open and close all fronts (frontsOpenClose)
     * custom drilling standards (magicSettings, magicDowels, magicDriller, MagicPanels)
