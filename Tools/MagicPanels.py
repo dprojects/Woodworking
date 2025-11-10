@@ -7302,7 +7302,11 @@ def makePockets(iObjects, iLength):
 		if iLength == 0:
 			pocket.Type = 1
 		else:
-			pocket.Length = 2 * iLength
+			# fix for FreeCAD 1.1 midplane bug
+			if gKernelVersion >= 1.1:
+				pocket.Length = iLength
+			else:
+				pocket.Length = 2 * iLength
 
 		s.Visibility = False
 		base.Visibility = False
