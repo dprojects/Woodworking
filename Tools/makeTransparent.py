@@ -66,9 +66,13 @@ try:
 		try:
 
 			if nSet > nUnset:
-				MagicPanels.setColor(o, 0, 83, "trans", "RGBA")
+				trans = MagicPanels.getColor(o, 0, "trans", "RGBA")
+				if trans == 0:
+					MagicPanels.setColor(o, 0, 83, "trans", "RGBA")
 			else:
-				MagicPanels.setColor(o, 0, 0, "trans", "RGBA")
+				trans = MagicPanels.getColor(o, 0, "trans", "RGBA")
+				if trans == 83:
+					MagicPanels.setColor(o, 0, 0, "trans", "RGBA")
 			
 			if gChange[str(o.Name)] == "faces":
 				for i in range(0, len(o.Shape.Faces)):

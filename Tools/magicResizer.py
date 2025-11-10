@@ -51,7 +51,7 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 330
+			toolSW = 300
 			toolSH = 300
 			
 			# active screen size (FreeCAD main window)
@@ -108,7 +108,6 @@ def showQtGUI():
 			# text input
 			self.oStepE = QtGui.QLineEdit(self)
 			self.oStepE.setText(MagicPanels.unit2gui(self.gStep))
-			self.oStepE.setFixedWidth((toolSW/2)-15)
 			
 			# ############################################################################
 			# options - resize buttons
@@ -117,14 +116,12 @@ def showQtGUI():
 			# button
 			self.o1B1 = QtGui.QPushButton(translate('magicResizer', 'resize -'), self)
 			self.o1B1.clicked.connect(self.setM)
-			self.o1B1.setFixedWidth((toolSW/2)-15)
 			self.o1B1.setFixedHeight(40)
 			self.o1B1.setAutoRepeat(True)
 			
 			# button
 			self.o1B2 = QtGui.QPushButton(translate('magicResizer', 'resize +'), self)
 			self.o1B2.clicked.connect(self.setP)
-			self.o1B2.setFixedWidth((toolSW/2)-15)
 			self.o1B2.setFixedHeight(40)
 			self.o1B2.setAutoRepeat(True)
 			
@@ -157,12 +154,10 @@ def showQtGUI():
 			
 			self.row4 = QtGui.QHBoxLayout()
 			self.row4.addWidget(self.oStepL)
-			self.row4.addStretch()
 			self.row4.addWidget(self.oStepE)
 			
 			self.row5 = QtGui.QHBoxLayout()
 			self.row5.addWidget(self.o1B1)
-			self.row5.addStretch()
 			self.row5.addWidget(self.o1B2)
 			
 			self.layBody = QtGui.QVBoxLayout()
