@@ -739,11 +739,14 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 
 ## Backward conversion
 
-<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyZY.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyYZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyZX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyXZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyYX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyXY.png"> This tool creates a new Cube (Part::Box) object based on a selected object of any type. The newly created object will be consistent with the selected orientation relative to the XYZ planes visible on the icon. You have the following selections for creating a new object:
-* **object**: in this case the new object will be created at position (0, 0, 0) on the XYZ axis.
-* **object and face**: to start in CenterOfMass of the face.
-* **object and edge**: to start in CenterOfMass of the edge.
-* **object and vertex**: to start in CenterOfMass of the vertex.
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyZY.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyYZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyZX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyXZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyYX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyXY.png"> This tool creates a new simple panel `Part::Box` object based on a selected object of any type, for example `PartDesign` with holes. The newly created object will be consistent with the selected orientation relative to the `XYZ` coordinate axes visible on the icon. 
+
+**Possible selection:**
+
+* **object**: in this case the new object will be created at position `(0, 0, 0)` on the XYZ axis.
+* **object and face**: to start in `CenterOfMass` of the face.
+* **object and edge**: to start in `CenterOfMass` of the edge.
+* **object and vertex**: to start in `CenterOfMass` of the vertex.
 
 > [!TIP]
 > If you want to copy Pad, you need to have Constraints named `SizeX` and `SizeY` at the Sketch. For custom objects types you need to have `Length`, `Width`, `Height` properties at object (Group: `Base`, Type: `App::PropertyLength`).
@@ -852,7 +855,7 @@ Available anchors to select:
 
 ## frontsOpenClose
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/frontsOpenClose.png"> This tool allows you to open and close all cabinet fronts simultaneously. This allows you to quickly view the cabinets internal structure without having to search for each front in the object tree and hide or rotate them individually. The fronts rotate with a default rotation increment of 45 degrees. This allows you to select the front opening angle, from a simple tilt to an open inner front that can open beyond 90 degrees. Rotating the fronts around the Z axis avoids the issue of maximum opening angles for different hinge types. However, the opening of the fronts can be customized by editing the attributes for each front. Opening attributes can also be added to each front using this tool.To select more edges or objects hold left CTRL key during selection.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/frontsOpenClose.png"> This tool allows you to open and close all cabinet fronts simultaneously. This allows you to quickly view the cabinets internal structure without having to search for each front in the object tree and hide or rotate them individually. The fronts rotate with a default rotation increment of 45 degrees. This allows you to select the front opening angle, from a simple tilt to an open inner front that can open beyond 90 degrees. Rotating the fronts around the Z axis avoids the issue of maximum opening angles for different hinge types. However, the opening of the fronts can be customized by editing the attributes for each front. Opening attributes can also be added to each front using this tool. To select more edges or objects hold left CTRL key during selection.
 
 **Possible selection methods:**
 

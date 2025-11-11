@@ -23,7 +23,7 @@ getMenuIndex = {
 	translate('magicStart', 'Storage box ( import parametric )'): 7, 
 	translate('magicStart', 'Dowel 8x35 mm ( import parametric )'): 8, 
 	translate('magicStart', 'Screw 4x40 mm ( import parametric )'): 9, 
-	translate('magicStart', 'Modular storage ( front outside, 3 modules )'): 10, 
+	translate('magicStart', 'Modular storage ( front outside, modules )'): 10, 
 	translate('magicStart', 'Screw 3x20 mm for HDF ( import parametric )'): 11, 
 	translate('magicStart', 'Screw 5x50 mm ( import parametric )'): 12, 
 	translate('magicStart', 'Counterbore 2x 5x60 mm ( import parametric )'): 13, 
@@ -91,8 +91,8 @@ getMenuIndex = {
 	translate('magicStart', 'Back inside ( full )'): 75, 
 	translate('magicStart', 'Handle ( single hole, decorated )'): 76, 
 	translate('magicStart', 'Handle ( double hole, decorated )'): 77, 
-	translate('magicStart', 'Modular bookcase ( no front, back inside, 3 modules )'): 78, 
-	translate('magicStart', 'Modular bookcase ( no front, back outside, 3 modules )'): 79, 
+	translate('magicStart', 'Modular bookcase ( no front, back inside, modules )'): 78, 
+	translate('magicStart', 'Modular bookcase ( no front, back outside, modules )'): 79, 
 	translate('magicStart', 'Table ( school desk, single right side )'): 80, 
 	translate('magicStart', 'Table ( School desk, single left side )'): 81, 
 	translate('magicStart', 'Table ( school desk, both sides )'): 82, 
@@ -815,9 +815,9 @@ def showQtGUI():
 				translate('magicStart', 'Kitchen wall module ( front outside, back outside, veneer )'), 
 				translate('magicStart', 'Bookcase module ( no front, back outside, veneer )'), 
 				"------------------------------------------------------------------------------------", 
-				translate('magicStart', 'Modular storage ( front outside, 3 modules )'), 
-				translate('magicStart', 'Modular bookcase ( no front, back inside, 3 modules )'), 
-				translate('magicStart', 'Modular bookcase ( no front, back outside, 3 modules )'), 
+				translate('magicStart', 'Modular storage ( front outside, modules )'), 
+				translate('magicStart', 'Modular bookcase ( no front, back inside, modules )'), 
+				translate('magicStart', 'Modular bookcase ( no front, back outside, modules )'), 
 				translate('magicStart', 'Bookcase ( import parametric )'), 
 				"------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Simple storage ( face frame, no front, back HDF )'), 
@@ -1197,6 +1197,18 @@ def showQtGUI():
 			row += 30
 			
 			# label
+			self.oModulesNumL = QtGui.QLabel(translate('magicStart', 'Modules number:'), self)
+			self.oModulesNumL.move(column0, row+3)
+
+			# text input
+			self.oModulesNumE = QtGui.QLineEdit(self)
+			self.oModulesNumE.setText("0")
+			self.oModulesNumE.setFixedWidth(fieldSize)
+			self.oModulesNumE.move(column1, row)
+			
+			row += 30
+			
+			# label
 			self.oSelectionOffsetL = QtGui.QLabel(translate('magicStart', 'Offset from selection XYZ:'), self)
 			self.oSelectionOffsetL.move(column0, row+3)
 			
@@ -1311,6 +1323,8 @@ def showQtGUI():
 			self.oOffsetFrontTE.hide()
 			self.oOffsetFrontBL.hide()
 			self.oOffsetFrontBE.hide()
+			self.oModulesNumL.hide()
+			self.oModulesNumE.hide()
 			self.oSelectionOffsetL.hide()
 			self.oSelectionOffset1E.hide()
 			self.oSelectionOffset2E.hide()
@@ -4296,6 +4310,8 @@ def showQtGUI():
 			self.oOffsetFrontTE.hide()
 			self.oOffsetFrontBL.hide()
 			self.oOffsetFrontBE.hide()
+			self.oModulesNumL.hide()
+			self.oModulesNumE.hide()
 			self.oSelectionOffsetL.hide()
 			self.oSelectionOffset1E.hide()
 			self.oSelectionOffset2E.hide()
@@ -4341,14 +4357,16 @@ def showQtGUI():
 				self.oThickShelfE.show()
 				self.oThickFrontL.show()
 				self.oThickFrontE.show()
-				self.oOffsetFrontLL.show()
-				self.oOffsetFrontLE.show()
-				self.oOffsetFrontRL.show()
-				self.oOffsetFrontRE.show()
-				self.oOffsetFrontTL.show()
-				self.oOffsetFrontTE.show()
-				self.oOffsetFrontBL.show()
-				self.oOffsetFrontBE.show()
+				self.oOffsetFrontLL.hide()
+				self.oOffsetFrontLE.hide()
+				self.oOffsetFrontRL.hide()
+				self.oOffsetFrontRE.hide()
+				self.oOffsetFrontTL.hide()
+				self.oOffsetFrontTE.hide()
+				self.oOffsetFrontBL.hide()
+				self.oOffsetFrontBE.hide()
+				self.oModulesNumL.hide()
+				self.oModulesNumE.hide()
 				self.oSelectionOffsetL.show()
 				self.oSelectionOffset1E.show()
 				self.oSelectionOffset2E.show()
@@ -4969,17 +4987,91 @@ def showQtGUI():
 				selectedIndex == 78 or 
 				selectedIndex == 79 
 				):
+				self.oThickL.show()
 				self.oThickE.show()
+				self.oThickBackL.show()
 				self.oThickBackE.show()
+				self.oThickShelfL.show()
 				self.oThickShelfE.show()
+				self.oThickFrontL.show()
 				self.oThickFrontE.show()
+				self.oOffsetFrontLL.show()
 				self.oOffsetFrontLE.show()
+				self.oOffsetFrontRL.show()
 				self.oOffsetFrontRE.show()
+				self.oOffsetFrontTL.show()
 				self.oOffsetFrontTE.show()
+				self.oOffsetFrontBL.show()
 				self.oOffsetFrontBE.show()
+				self.oModulesNumL.hide()
+				self.oModulesNumE.hide()
 				self.oHeightE.show()
 				self.oWidthE.show()
 				self.oDepthE.show()
+			
+			# furniture without fronts
+			if (
+				selectedIndex == 1 or 
+				selectedIndex == 35 or 
+				selectedIndex == 36 or 
+				selectedIndex == 78 or 
+				selectedIndex == 79 
+				):
+				self.oThickFrontL.hide()
+				self.oThickFrontE.hide()
+				self.oOffsetFrontLL.hide()
+				self.oOffsetFrontLE.hide()
+				self.oOffsetFrontRL.hide()
+				self.oOffsetFrontRE.hide()
+				self.oOffsetFrontTL.hide()
+				self.oOffsetFrontTE.hide()
+				self.oOffsetFrontBL.hide()
+				self.oOffsetFrontBE.hide()
+			
+			# furniture with face frame
+			if (
+				selectedIndex == 35 or 
+				selectedIndex == 36
+				):
+				self.oThickBackL.hide()
+				self.oThickBackE.hide()
+				self.oThickShelfL.hide()
+				self.oThickShelfE.hide()
+			
+			if selectedIndex == 65:
+				self.oThickShelfL.hide()
+				self.oThickShelfE.hide()
+				self.oThickFrontL.hide()
+				self.oThickFrontE.hide()
+				self.oOffsetFrontLL.hide()
+				self.oOffsetFrontLE.hide()
+				self.oOffsetFrontRL.hide()
+				self.oOffsetFrontRE.hide()
+				self.oOffsetFrontTL.hide()
+				self.oOffsetFrontTE.hide()
+				self.oOffsetFrontBL.hide()
+				self.oOffsetFrontBE.hide()
+
+			if selectedIndex == 67:
+				self.oThickFrontL.hide()
+				self.oThickFrontE.hide()
+				self.oOffsetFrontLL.hide()
+				self.oOffsetFrontLE.hide()
+				self.oOffsetFrontRL.hide()
+				self.oOffsetFrontRE.hide()
+				self.oOffsetFrontTL.hide()
+				self.oOffsetFrontTE.hide()
+				self.oOffsetFrontBL.hide()
+				self.oOffsetFrontBE.hide()
+			
+			# modular furniture
+			if (
+				selectedIndex == 10 or 
+				selectedIndex == 78 or 
+				selectedIndex == 79 
+				):
+				self.oModulesNumL.show()
+				self.oModulesNumE.show()
 			
 			if selectedIndex == 0:
 				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
@@ -4998,11 +5090,6 @@ def showQtGUI():
 				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
 				self.oThickBackE.setText( MagicPanels.unit2gui(MagicPanels.gBackOutsideThickness) )
 				self.oThickShelfE.setText( MagicPanels.unit2gui(MagicPanels.gShelfThickness) )
-				self.oThickFrontE.hide()
-				self.oOffsetFrontLE.hide()
-				self.oOffsetFrontRE.hide()
-				self.oOffsetFrontTE.hide()
-				self.oOffsetFrontBE.hide()
 				self.oHeightE.setText( MagicPanels.unit2gui(760) )
 				self.oWidthE.setText( MagicPanels.unit2gui(500) )
 				self.oDepthE.setText( MagicPanels.unit2gui(400) )
@@ -5016,6 +5103,7 @@ def showQtGUI():
 				self.oOffsetFrontRE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetR) )
 				self.oOffsetFrontTE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetT) )
 				self.oOffsetFrontBE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetB) )
+				self.oModulesNumE.setText("3")
 				self.oHeightE.setText( MagicPanels.unit2gui(2300) )
 				self.oWidthE.setText( MagicPanels.unit2gui(500) )
 				self.oDepthE.setText( MagicPanels.unit2gui(400) )
@@ -5063,11 +5151,6 @@ def showQtGUI():
 				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
 				self.oThickBackE.hide()
 				self.oThickShelfE.hide()
-				self.oThickFrontE.hide()
-				self.oOffsetFrontLE.hide()
-				self.oOffsetFrontRE.hide()
-				self.oOffsetFrontTE.hide()
-				self.oOffsetFrontBE.hide()
 				self.oHeightE.setText( MagicPanels.unit2gui(760) )
 				self.oWidthE.setText( MagicPanels.unit2gui(900) )
 				self.oDepthE.setText( MagicPanels.unit2gui(400) )
@@ -5076,11 +5159,6 @@ def showQtGUI():
 				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
 				self.oThickBackE.hide()
 				self.oThickShelfE.hide()
-				self.oThickFrontE.hide()
-				self.oOffsetFrontLE.hide()
-				self.oOffsetFrontRE.hide()
-				self.oOffsetFrontTE.hide()
-				self.oOffsetFrontBE.hide()
 				self.oHeightE.setText( MagicPanels.unit2gui(760) )
 				self.oWidthE.setText( MagicPanels.unit2gui(900) )
 				self.oDepthE.setText( MagicPanels.unit2gui(400) )
@@ -5088,12 +5166,6 @@ def showQtGUI():
 			if selectedIndex == 65:
 				self.oThickE.setText(MagicPanels.unit2gui(19.05))
 				self.oThickBackE.setText( MagicPanels.unit2gui(6.35) )
-				self.oThickShelfE.hide()
-				self.oThickFrontE.hide()
-				self.oOffsetFrontLE.hide()
-				self.oOffsetFrontRE.hide()
-				self.oOffsetFrontTE.hide()
-				self.oOffsetFrontBE.hide()
 				self.oHeightE.setText(MagicPanels.unit2gui(876.3))
 				self.oWidthE.setText(MagicPanels.unit2gui(914.4))
 				self.oDepthE.setText(MagicPanels.unit2gui(609.6))
@@ -5115,11 +5187,6 @@ def showQtGUI():
 				self.oThickE.setText(MagicPanels.unit2gui(19.05))
 				self.oThickBackE.setText( MagicPanels.unit2gui(6.35) )
 				self.oThickShelfE.setText( MagicPanels.unit2gui(19.05) )
-				self.oThickFrontE.hide()
-				self.oOffsetFrontLE.hide()
-				self.oOffsetFrontRE.hide()
-				self.oOffsetFrontTE.hide()
-				self.oOffsetFrontBE.hide()
 				self.oHeightE.setText(MagicPanels.unit2gui(762))
 				self.oWidthE.setText(MagicPanels.unit2gui(457.2))
 				self.oDepthE.setText(MagicPanels.unit2gui(330.2 - 19.05)) # 13 inch without front
@@ -5128,11 +5195,7 @@ def showQtGUI():
 				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
 				self.oThickBackE.setText( MagicPanels.unit2gui(MagicPanels.gBackInsideThickness) )
 				self.oThickShelfE.setText( MagicPanels.unit2gui(MagicPanels.gShelfThickness) )
-				self.oThickFrontE.hide()
-				self.oOffsetFrontLE.hide()
-				self.oOffsetFrontRE.hide()
-				self.oOffsetFrontTE.hide()
-				self.oOffsetFrontBE.hide()
+				self.oModulesNumE.setText("3")
 				self.oHeightE.setText( MagicPanels.unit2gui(2300) )
 				self.oWidthE.setText( MagicPanels.unit2gui(500) )
 				self.oDepthE.setText( MagicPanels.unit2gui(400) )
@@ -5141,11 +5204,7 @@ def showQtGUI():
 				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
 				self.oThickBackE.setText( MagicPanels.unit2gui(MagicPanels.gBackOutsideThickness) )
 				self.oThickShelfE.setText( MagicPanels.unit2gui(MagicPanels.gShelfThickness) )
-				self.oThickFrontE.hide()
-				self.oOffsetFrontLE.hide()
-				self.oOffsetFrontRE.hide()
-				self.oOffsetFrontTE.hide()
-				self.oOffsetFrontBE.hide()
+				self.oModulesNumE.setText("3")
 				self.oHeightE.setText( MagicPanels.unit2gui(2300) )
 				self.oWidthE.setText( MagicPanels.unit2gui(500) )
 				self.oDepthE.setText( MagicPanels.unit2gui(400) )
@@ -7303,7 +7362,7 @@ def showQtGUI():
 				edgebandE = 0
 			
 			# calculation
-			mNum = 3
+			mNum = int(self.oModulesNumE.text())
 			sideZ = ((sizeZ - thick - (mNum * thick)) / mNum)
 			
 			# #######################
@@ -11188,7 +11247,7 @@ def showQtGUI():
 			sz = MagicPanels.unit2value(self.oStartZE.text())
 			
 			# calculation
-			mNum = 3
+			mNum = int(self.oModulesNumE.text())
 			sideZ = ((self.gFSZ - self.gThick - (mNum * self.gThick)) / mNum)
 			depth = self.gFSY
 			
@@ -11341,7 +11400,7 @@ def showQtGUI():
 			sz = MagicPanels.unit2value(self.oStartZE.text())
 			
 			# calculation
-			mNum = 3
+			mNum = int(self.oModulesNumE.text())
 			sideZ = ((self.gFSZ - self.gThick - (mNum * self.gThick)) / mNum)
 			depth = self.gFSY - thickBack
 			
