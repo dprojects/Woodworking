@@ -43,7 +43,7 @@ try:
 except:
 
 	info = ""
-	info += translate('wires2pad', "<b>Please select at least one Sketch to create a Pad from wires.</b><br><br><b>Note:</b> This tool allows you to create panels from wires in Sketch. A Pad with the default size of MagicPanels.gWoodThickness will be created for each wire. To change the default wood size use [magicSettings](#magicsettings) tool or change the Pad.Length option. Also you can use the  the Panel from vertices option in the magicManager tool, selecting the appropriate edges. To create separate Pads from one Sketch, wires must not touch each other. If the Sketch is placed in containers, for example Part or LinkGroup with set offsets, you need to adjust the panel position, for example using the panelMove2Anchor tool, selecting two edges. You can also consider creating panels from the Sketch in the root directory, see the addExternal tool.")
+	info += translate('wires2pad', "<b>Please select at least one Sketch to create a Pad from wires.</b><br><br><b>Note:</b> This tool allows you to create panels from wires in Sketch. A Pad with the default size of MagicPanels.gWoodThickness will be created for each wire. To change the default wood size use magicSettings tool or change the Pad.Length option. Also you can use the  the Panel from vertices option in the magicManager tool, selecting the appropriate edges. To create separate Pads from one Sketch, wires must not touch each other. If the Sketch is placed in containers, for example Part or LinkGroup with set offsets, you need to adjust the panel position, for example using the panelMove2Anchor tool, selecting two edges. You can also consider creating panels from the Sketch in the root directory, see the addExternal tool.")
 
 	MagicPanels.showInfo("wires2pad", info)
 

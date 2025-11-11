@@ -31,6 +31,7 @@ The Woodworking workbench started as a simple cut-list, as a macro for FreeCAD. 
 
 > [!IMPORTANT]
 > * The `README.md` file should be: `~/.local/share/FreeCAD/Mod/Woodworking/README.md` <br>
+> * Read more about: [Add-on Manager installation and update problems](https://github.com/dprojects/Woodworking/issues/77) <br>
 > * Read more about: [FreeCAD 1.0+ Support](https://github.com/dprojects/Woodworking/issues/49) <br>
 > * For more details see: [Installation section at Woodworking workbench documentation](https://github.com/dprojects/Woodworking/tree/master/Docs#installation)
 

@@ -5,7 +5,7 @@ def getItems(iType):
 	parts = []
 	# #######################################################################
 	
-	if iType == "Woodworking - default":
+	if iType == "Woodworking - start":
 		parts = [
 			"magicStart",
 			"panelDefaultXY",
@@ -16,28 +16,21 @@ def getItems(iType):
 			"panelDefaultZY"
 		]
 
-	if iType == "Woodworking - move":
+	if iType == "Woodworking - move and copy":
 		parts = [
 			"magicMove",
-			"magicAngle",
-			"mapPosition",
-			"panelMove2Face",
-			"panelMove2Anchor",
-			"panelMove2Center",
-			"shelvesEqual",
-			"align2Curve",
 			"panelMoveXp",
 			"panelMoveXm",
 			"panelMoveYp",
 			"panelMoveYm",
 			"panelMoveZp",
-			"panelMoveZm"
+			"panelMoveZm",
+			"magicAngle"
 		]
-
+	
 	if iType == "Woodworking - resize":
 		parts = [
 			"magicResizer",
-			"showConstraints",
 			"panelResize1",
 			"panelResize2",
 			"panelResize3",
@@ -46,37 +39,59 @@ def getItems(iType):
 			"panelResize6"
 		]
 
+	if iType == "Woodworking - face":
+		parts = [
+			"panelFaceXY",
+			"panelFaceYX",
+			"panelFaceXZ",
+			"panelFaceZX",
+			"panelFaceYZ",
+			"panelFaceZY"
+		]
+
+	if iType == "Woodworking - between":
+		parts = [
+			"panelBetweenXY",
+			"panelBetweenYX",
+			"panelBetweenXZ",
+			"panelBetweenZX",
+			"panelBetweenYZ",
+			"panelBetweenZY"
+		]
+
+	if iType == "Woodworking - irregular shapes":
+		parts = [
+			"magicManager",
+			"panelSideLeft",
+			"panelSideRight",
+			"panelSideLeftUP",
+			"panelSideRightUP",
+			"panelBackOut",
+			"panelCoverXY",
+			"addExternal",
+			"sketch2pad",
+			"wires2pad"
+		]
+
+	if iType == "Woodworking - position":
+		parts = [
+			"panelMove2Anchor",
+			"showVertex",
+			"selectVertex",
+			"panelMove2Face",
+			"mapPosition",
+			"panelMove2Center",
+			"shelvesEqual"
+		]
+
 	if iType == "Woodworking - preview":
 		parts = [
 			"fitModel",
 			"makeTransparent",
 			"frontsOpenClose",
-			"magicView",
-			"showVertex",
-			"selectVertex",
-			"roundCurve"
+			"magicView"
 		]
 	
-	if iType == "Woodworking - dowels and screws":
-		parts = [
-			"magicDowels",
-			"panel2link",
-			"panel2clone",
-			"sketch2dowel",
-			"edge2dowel"
-		]
-
-	if iType == "Woodworking - drilling holes":
-		parts = [
-			"magicDriller",
-			"drillHoles",
-			"drillCountersinks",
-			"drillCounterbores",
-			"drillCounterbores2x",
-			"magicCNC",
-			"cutDowels"
-		]
-
 	if iType == "Woodworking - project manage":
 		parts = [
 			"magicSettings",
@@ -90,16 +105,6 @@ def getItems(iType):
 			"selected2Assembly",
 			"selected2Outside"
 		]
-	
-	if iType == "Woodworking - dimensions":
-		parts = [
-			"getDimensions",
-			"Std_Print",
-			"sheet2export",
-			"showOccupiedSpace",
-			"showMeasurements",
-			"magicMeasure"
-		]
 
 	if iType == "Woodworking - decorations":
 		parts = [
@@ -108,18 +113,42 @@ def getItems(iType):
 			"makeBeautiful"
 		]
 
-	if iType == "Woodworking - advanced":
+	if iType == "Woodworking - dimensions":
 		parts = [
-			"addVeneer",
-			"addExternal",
-			"wires2pad",
-			"Std_Part",
-			"PartDesign_Body", 
-			"PartDesign_NewSketch",
-			"PartDesign_Pad"
+			"getDimensions",
+			"Std_Print",
+			"sheet2export",
+			"showMeasurements",
+			"magicMeasure"
 		]
 
-	if iType == "Woodworking - copy":
+	if iType == "Woodworking - dowels and screws":
+		parts = [
+			"magicDowels",
+			"panel2link",
+			"panel2clone",
+			"sketch2dowel",
+			"edge2dowel"
+		]
+
+	if iType == "Woodworking - fixture":
+		parts = [
+			"magicFixture",
+			"edge2drillbit"
+		]
+
+	if iType == "Woodworking - drilling holes":
+		parts = [
+			"magicDriller",
+			"drillHoles",
+			"drillCountersinks",
+			"drillCounterbores",
+			"drillCounterbores2x",
+			"magicCNC",
+			"cutDowels"
+		]
+
+	if iType == "Woodworking - convert":
 		parts = [
 			"panel2pad",
 			"panelCopyXY",
@@ -139,12 +168,6 @@ def getItems(iType):
 			"Std_VarSet"
 		]
 
-	if iType == "Woodworking - fixture":
-		parts = [
-			"magicFixture",
-			"edge2drillbit"
-		]
-	
 	if iType == "Woodworking - construction":
 		parts = [
 			"panel2profile",
@@ -193,35 +216,17 @@ def getItems(iType):
 			"multiPocket4"
 		]
 
-	if iType == "Woodworking - face":
+	if iType == "Woodworking - advanced":
 		parts = [
-			"panelFaceXY",
-			"panelFaceYX",
-			"panelFaceXZ",
-			"panelFaceZX",
-			"panelFaceYZ",
-			"panelFaceZY"
-		]
-
-	if iType == "Woodworking - between":
-		parts = [
-			"panelBetweenXY",
-			"panelBetweenYX",
-			"panelBetweenXZ",
-			"panelBetweenZX",
-			"panelBetweenYZ",
-			"panelBetweenZY"
-		]
-		
-	if iType == "Woodworking - special":
-		parts = [
-			"magicManager",
-			"panelSideLeft",
-			"panelSideRight",
-			"panelSideLeftUP",
-			"panelSideRightUP",
-			"panelBackOut",
-			"panelCoverXY"
+			"addVeneer",
+			"align2Curve",
+			"roundCurve",
+			"showOccupiedSpace",
+			"showConstraints",
+			"Std_Part",
+			"PartDesign_Body", 
+			"PartDesign_NewSketch",
+			"PartDesign_Pad"
 		]
 
 	if iType == "Woodworking - code and debug":

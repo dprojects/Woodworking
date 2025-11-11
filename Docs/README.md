@@ -12,47 +12,50 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 * [Extras](#extras)
 * [Translations](#translations)
 * [Objects, Workflow, Golden rules](#objects-workflow-golden-rules)
-* [How to start - magicStart](#how-to-start---magicstart)
-	* [Construction geometry](#construction-geometry)
-	* [Cabinet structure](#cabinet-structure)
-	* [US style](#us-style)
-	* [Drawers for cabinets](#drawers-for-cabinets)
-	* [Fronts for cabinets](#fronts-for-cabinets)
-	* [Shelves and top for cabinets](#shelves-and-top-for-cabinets)
-	* [Sides for cabinets](#sides-for-cabinets)
-	* [Back](#back)
-	* [Foot for cabinets](#foot-for-cabinets)
-	* [Table](#table)
-	* [Connections](#connections)
-	* [Accessories](#accessories)
-	* [Other](#other)
-* [Making panels](#making-panels)
+* [How to start](#how-to-start)
+	* [magicStart](#magicstart)
+		* [Construction geometry](#construction-geometry)
+		* [Cabinet structure](#cabinet-structure)
+		* [US style](#us-style)
+		* [Drawers for cabinets](#drawers-for-cabinets)
+		* [Fronts for cabinets](#fronts-for-cabinets)
+		* [Shelves and top for cabinets](#shelves-and-top-for-cabinets)
+		* [Sides for cabinets](#sides-for-cabinets)
+		* [Back](#back)
+		* [Foot for cabinets](#foot-for-cabinets)
+		* [Table](#table)
+		* [Connections](#connections)
+		* [Accessories](#accessories)
+		* [Other](#other)
 	* [Default panels](#default-panels)
-	* [Copy panels](#copy-panels)
-	* [Dedicated panels](#dedicated-panels)
-	* [magicManager](#magicmanager)
+* [Move and copy](#move-and-copy)
+	* [magicMove](#magicmove)
+	* [Arrows](#arrows)
+	* [magicAngle](#magicangle)
 * [Resize panels](#resize-panels)
 	* [magicResizer](#magicresizer)
-	* [showConstraints](#showconstraints)
 	* [Quick resize icons](#quick-resize-icons)
-* [Move panels](#move-panels)
-	* [magicMove](#magicmove)
-	* [magicAngle](#magicangle)
-	* [mapPosition](#mapposition)
-	* [panelMove2Face](#panelmove2face)
+* [Panel on face and between](#panel-on-face-and-between)
+	* [Create panel on face](#create-panel-on-face)
+	* [Create panel between](#create-panel-between)
+* [Custom regular and irregular shapes](#custom-regular-and-irregular-shapes)
+	* [magicManager](#magicmanager)
+	* [addExternal](#addexternal)
+	* [sketch2pad](#sketch2pad)
+	* [wires2pad](#wires2pad)
+* [Position](#position)
 	* [panelMove2Anchor](#panelmove2anchor)
+	* [showVertex](#showvertex)
+	* [selectVertex](#selectvertex)
+	* [panelMove2Face](#panelmove2face)
+	* [mapPosition](#mapposition)
 	* [panelMove2Center](#panelmove2center)
 	* [shelvesEqual](#shelvesequal)
-	* [align2Curve](#align2curve)
-	* [Arrows](#arrows)
-* [Preview](#preview)
+* [Preview furniture](#preview-furniture)
 	* [fitModel](#fitmodel)
 	* [makeTransparent](#maketransparent)
 	* [frontsOpenClose](#frontsopenclose)
 	* [magicView](#magicview)
-	* [showVertex](#showvertex)
-	* [selectVertex](#selectvertex)
-	* [roundCurve](#roundcurve)
 * [Project manage](#project-manage)
 	* [magicSettings](#magicsettings)
 	* [selected2LinkGroup](#selected2linkgroup)
@@ -61,6 +64,10 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 	* [selected2Assembly](#selected2assembly)
 	* [selected2Outside](#selected2outside)
 * [How to use containers - short tutorial](#how-to-use-containers---short-tutorial)
+* [Decoration](#decoration)
+	* [magicColors](#magiccolors)
+	* [setTextures](#settextures)
+	* [makeBeautiful](#makebeautiful)
 * [Cut list, Measure, Dimensions, Bill Of Materials](#cut-list-measure-dimensions-bill-of-materials)
 	* [getDimensions](#getdimensions)
 		* [Report type](#report-type)
@@ -73,19 +80,8 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 		* [Supported transformations](#supported-transformations)
 		* [Video tutorials & Documentation](#video-tutorials-&-documentation)
 	* [sheet2export](#sheet2export)
-	* [showOccupiedSpace](#showoccupiedspace)
 	* [showMeasurements](#showmeasurements)
 	* [magicMeasure](#magicmeasure)
-* [Decoration](#decoration)
-	* [magicColors](#magiccolors)
-	* [setTextures](#settextures)
-	* [makeBeautiful](#makebeautiful)
-* [Router](#router)
-	* [Router bit - Cove](#router-bit---cove)
-	* [Router bit - Round Over](#router-bit---round-over)
-	* [Router bit - Straight](#router-bit---straight)
-	* [Router bit - Chamfer](#router-bit---chamfer)
-	* [multiPocket](#multipocket)
 * [Dowels and Screws](#dowels-and-screws)
 	* [magicDowels](#magicdowels)
 	* [panel2link](#panel2link)
@@ -117,7 +113,14 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 	* [Realistic screws and angles](#realistic-screws-and-angles)
 	* [Realistic screws and pocket holes](#realistic-screws-and-pocket-holes)
 	* [Counterbore 2x with bolt](#counterbore-2x-with-bolt)
-* [Construction](#construction)
+	* [Panels conversion](#panels-conversion)
+	* [panel2pad](#panel2pad)
+	* [Backward conversion](#backward-conversion)
+* [Parameterization](#parameterization)
+	* [magicGlue](#magicglue)
+	* [sketch2clone](#sketch2clone)
+	* [showAlias](#showalias)
+* [Construction profiles](#construction-profiles)
 	* [panel2profile](#panel2profile)
 	* [panel2angle](#panel2angle)
 	* [panel2angle45cut](#panel2angle45cut)
@@ -142,15 +145,18 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 	* [cutTenonDowelsP](#cuttenondowelsp)
 * [Raw wood, Lumber](#raw-wood-lumber)
 	* [Glued table top](#glued-table-top)
-* [Parameterization](#parameterization)
-	* [magicGlue](#magicglue)
-	* [sketch2clone](#sketch2clone)
-	* [showAlias](#showalias)
+* [Router](#router)
+	* [Router bit - Cove](#router-bit---cove)
+	* [Router bit - Round Over](#router-bit---round-over)
+	* [Router bit - Straight](#router-bit---straight)
+	* [Router bit - Chamfer](#router-bit---chamfer)
+	* [multiPocket](#multipocket)
 * [Advanced](#advanced)
 	* [addVeneer](#addveneer)
-	* [panel2pad](#panel2pad)
-	* [addExternal](#addexternal)
-	* [wires2pad](#wires2pad)
+	* [align2Curve](#align2curve)
+	* [roundCurve](#roundcurve)
+	* [showOccupiedSpace](#showoccupiedspace)
+	* [showConstraints](#showconstraints)
 * [Code and Debug](#code-and-debug)
 	* [scanObjects](#scanobjects)
 	* [showPlacement](#showplacement)
@@ -176,6 +182,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * tool to create Pad from Sketch quickly (sketch2pad)
     * update binaries to fix transparency issue in FreeCAD 1.1
     * parametric sides with holes (magicStart)
     * tool to open and close all fronts (frontsOpenClose)
@@ -303,7 +310,9 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * Always make backup of your project. Read documentation, watch videos, learn more or open issue.
 * Break all rules, if you know what you are doing.
 
-# How to start - magicStart
+# How to start
+
+## magicStart
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicStart.png">This tool was created to make it easier to start designing furniture. It contains some structures that I often use personally, as well as other carpentry solutions suggested by users. However, this tool does not contain a complete list of solutions, because there are too many of them in the world of carpentry, practically every carpenter and manufacturer of furniture or accessories has their own standards. I try to adjust the contents of this tool in such a way that it gives the greatest possible possibilities for later processing and adapting the initial structure to your own needs. If you have any interesting woodworking idea or solution, worth to be added, please let me know.
 
@@ -312,11 +321,11 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 
 **Currently available solutions:**
 
-## Construction geometry
+### Construction geometry
 
 * Workspace platform
 
-## Cabinet structure
+### Cabinet structure
 
 * Storage module ( front outside, back inside, veneer )
 * Storage module ( front outside, back outside, veneer )
@@ -338,7 +347,7 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * [New furniture samples in magicStart](https://www.youtube.com/watch?v=o2cw2Z8vQoE)
 * [How to build complex furniture from modules](https://www.youtube.com/watch?v=SUm_N2rjXbs)
 
-## US style
+### US style
 
 * Simple storage ( face frame, no front, back HDF )
 * Simple bookcase ( face frame, no front, back HDF )
@@ -354,7 +363,7 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * [How to add Face Frame to the furniture](https://www.youtube.com/watch?v=CtWfvxd4UmI)
 * [Kitchen cabinet with face frame](https://www.youtube.com/watch?v=WW8du2l_ZuY)
 
-## Drawers for cabinets
+### Drawers for cabinets
 
 * Drawer ( single, X or Y direction, front outside )
 * Drawer ( single, X or Y direction, front inside )
@@ -371,7 +380,7 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * [How to make drawer series](https://www.youtube.com/watch?v=tncytX82NSY)
 * [How to connect drawer elements together](https://www.youtube.com/watch?v=FwyzZR5V05c)
 
-## Fronts for cabinets
+### Fronts for cabinets
 
 * Front outside
 * Front outside ( decorative )
@@ -389,7 +398,7 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * [How to create front with glass](https://www.youtube.com/watch?v=csZK_k8GpnQ)
 * [How to use decoration features](https://www.youtube.com/watch?v=R9u6ikswO_0)
 
-## Shelves and top for cabinets
+### Shelves and top for cabinets
 
 * Shelf
 * Shelf series with equal space
@@ -399,7 +408,7 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * [How to create shelf inside gap](https://www.youtube.com/watch?v=zbhK4dNWQl0)
 * [How to create shelves with equal space](https://www.youtube.com/watch?v=2odJa0baGqw)
 
-## Sides for cabinets
+### Sides for cabinets
 
 * Side
 * Center side
@@ -411,7 +420,7 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * [How to create center side](https://www.youtube.com/watch?v=0rSwB46ssEk)
 * [How to use decoration features](https://www.youtube.com/watch?v=R9u6ikswO_0)
 
-## Back
+### Back
 
 * Back outside ( HDF )
 * Back inside ( full )
@@ -419,7 +428,7 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 **Video tutorials:** 
 * [Simple office bookcase](https://www.youtube.com/watch?v=U_oi3POJmSw)
 
-## Foot for cabinets
+### Foot for cabinets
 
 * Foot ( good for cleaning )
 * Foot ( standard )
@@ -431,7 +440,7 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * [How to add feet](https://www.youtube.com/watch?v=E4yfRFIqops)
 * [New furniture samples in magicStart](https://www.youtube.com/watch?v=o2cw2Z8vQoE)
 
-## Table
+### Table
 
 * Table ( kitchen simple style )
 * Table ( kitchen modern style )
@@ -449,7 +458,7 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * [Simple table with drawers quickly](https://www.youtube.com/watch?v=0b5DRSQg52U)
 * [New furniture samples in magicStart](https://www.youtube.com/watch?v=o2cw2Z8vQoE)
 
-## Connections
+### Connections
 
 * Dowel 8x35 mm ( import parametric )
 * Biscuits 4x16x48 mm ( import parametric ) 
@@ -470,7 +479,7 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * [How to add screws to HDF back](https://www.youtube.com/watch?v=MvIRFPDGKYQ)
 * [Biscuits joints](https://www.youtube.com/watch?v=NCf07IwuRJI)
 
-## Accessories
+### Accessories
 
 * Shelf Pin 5x16 mm ( import parametric )
 * Handle ( single hole )
@@ -487,7 +496,7 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * [How to add handle and see soft-close animation](https://www.youtube.com/watch?v=iOseEBGmwAU)
 * [How to add feet](https://www.youtube.com/watch?v=E4yfRFIqops)
 
-## Other
+### Other
 
 * Simple chair ( import parametric )
 * Picture frame ( import parametric )
@@ -495,8 +504,6 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 
 > [!TIP]
 > To set default wood thickenss or wood color you can use [magicSettings](#magicsettings) tool.
-
-# Making panels
 
 ## Default panels
 
@@ -506,94 +513,7 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 > All furniture elements should be created according to the `XYZ` axis plane, if possible. Avoid building whole furniture with rotated elements. If you want to rotate panel with dowels, better create panel with dowels without rotation, pack panel with dowels into container like `LinkGroup`, and use [magicAngle](#magicangle) to rotate whole `LinkGroup`. You can rotate whole furniture like this with single click and the dowels will be in the correct place after rotation. If you would like to apply dowels at rotated element it would be pointless complication, almost impossible at FreeCAD. 
 > To set default wood sizes or wood color you can use [magicSettings](#magicsettings) tool.
 
-## Copy panels
-
-<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyZY.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyYZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyZX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyXZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyYX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyXY.png"> This tool creates a new Cube (Part::Box) object based on a selected object of any type. The newly created object will be consistent with the selected orientation relative to the XYZ planes visible on the icon. You have the following selections for creating a new object:
-* **object**: in this case the new object will be created at position (0, 0, 0) on the XYZ axis.
-* **object and face**: to start in CenterOfMass of the face.
-* **object and edge**: to start in CenterOfMass of the edge.
-* **object and vertex**: to start in CenterOfMass of the vertex.
-
-> [!TIP]
-> If you want to copy Pad, you need to have Constraints named `SizeX` and `SizeY` at the Sketch. For custom objects types you need to have `Length`, `Width`, `Height` properties at object (Group: `Base`, Type: `App::PropertyLength`).
-
-<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelFaceZY.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelFaceYZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelFaceZX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelFaceXZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelFaceYX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelFaceXY.png"> This icons creates new panel at selected face. The blue panel represents the selected object and the red one represents the new created object. The icon refers to base `XY` model view (0 key position). Click [fitModel](#fitmodel) to set model into referred view, and to be sure the model and face you have selected refers to exact icon. The new created panel will get the same dimensions as panel of the selected face. 
-
-> [!TIP]
-> If you have problems with unpredicted result, "side effect of Magic Panels", please use [magicManager](#magicmanager) to preview panel before creation and [magicMove](#magicmove) to move or copy panels.
-
-<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelBetweenZY.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelBetweenYZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelBetweenZX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelBetweenXZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelBetweenYX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelBetweenXY.png"> This icons creates new panel between two selected faces. Selection faces order is important. To select more than one face, hold left `CTRL` key during second face selection. The blue panels represents the selected objects and the red one represents the new created object. The icon refers to base `XY` model view (0 key position). Click [fitModel](#fitmodel) to set model into referred view. If the two selected panels will be matching the icon, the new created panel should fill the gap between the selected faces. You can experiment with selection faces outside to resize the new panel. 
-
-> [!TIP]
-> If you have problems with unpredicted result, "side effect of Magic Panels", please use [magicManager](#magicmanager) to preview panel before creation and [magicMove](#magicmove) to move or copy panels.
-
-## Dedicated panels
-
-<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCoverXY.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelBackOut.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelSideRightUP.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelSideLeftUP.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelSideRight.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelSideLeft.png"> Dedicated panels allows you to add specific furniture element. You can add sides, back or top of the furniture with single click. The side panels improves the thickness offset at the face tools. If you would like to add back of the furniture manually, you have to calculate the back dimensions first. Next you have to move the panel exactly to the back of the furniture position. It is not so easy to do it manually because `1 mm` offset might be a problem. Now you can make it with several clicks, without calculating anything manually. 
-
-> [!TIP]
-> If you have problems with unpredicted result, "side effect of Magic Panels", please use [magicManager](#magicmanager) to preview panel before creation and [magicMove](#magicmove) to move or copy panels.
-
-## magicManager
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicManager.png">
-This tool allows to preview panel before creation. It allows to see panel at single selected face and also panel between two faces. This tool can be used if you have problems with unpredicted result, "side effect of Magic Panels". However, clicking single icon is sometimes more quicker than opening GUI and choosing right panel. Sice `0.21 version` this tool is able to create panel from selected vertices. This functionality uses observer for reading and helping select vertices. You do not have to hit the vertex directly. If you select edge or face, the nearest vertex will be selected for you. Also you can remove last selected vertex from list if you make mistake. The selected vertices should create wire, shape, but you do not have to select last vertex to close the wire. The first selected vertex will be automatically added at the end to close the wire. If the panel thickness is not set by the user, the thickness for the new panel from vertices will be set from first selected object. Custom thickenss works only for vertices.
-
-* **Panel at face:** To create panel at face select single face and click `refresh selection`.
-* **Panel between faces:** To create panel between two faces select two faces and click `refresh selection`. To select more faces hold `CTRL` key. The selection order is important. If the panel is created outside change selection order.
-* **Panel from vertices:** To create panel from vertices, you have to activate observer. The `first` means the thickness will be get from first selected object. You can set custom thickness if you want or you can also use this option to create panel from selected edges in Sketch, see also [wires2pad](#wires2pad) tool. 
-
-**Options:**
-  
-* **Plane:** You can select panel orientation according to the `XYZ` coordinate axes. The panel can be created at planes: `XY`, `YX`, `XZ`, `ZX`, `YZ`, `ZY`, if you select single face. If you select two faces this tool automatically recognize plane of selected faces and adjust possible panels to create, there will be two panels for valid planes only.
-* **Anchor:** You can select position for the new panel. The anchors are the face vertices. If the object is for example `Cut` there might be more than four anchors to choose.
-* **Size:** Custom size is taken from edges. For example, if you have `Cut` object you can set panel with the same size as the cut edge. All edges should be available, search for the right one.
-* **Offset:** The first selected offset means `no offset` from currently selected `Anchor`. All next are offset with current selected `Size` for `X-`, `X+`, `Y-`, `Y+`, `Z-`, `Z+` coordinate axis. This can be helpful if you want to make frame but the frame is for example `20 mm x 40 mm x 600 mm` and need to be offset with `40 mm`, different size than thickenss `20 mm`.
-
-**Video tutorials:** 
-* [How to create panel from wires in Sketch](https://www.youtube.com/watch?v=wV6nlN2z1Ng)
-* [Panel from vertices](https://www.youtube.com/watch?v=6s0fbagPeZA)
-* [Making panels improvement](https://www.youtube.com/watch?v=sunE2rLThZI)
-
-# Resize panels
-
-## magicResizer
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicResizer.png"> This tool allows to resize `Part::Box` or `PartDesign::Pad` objects and also other objects based on `PartDesign::Pad` e.g. [construction profiles](#panel2profile). Make sure your `Pad` object has defined constraints, you can use [showConstraints](#showConstraints) tool for that. If the object has no constraint at the selected edge the object will not be resized. The constraints do not have to be named but must be defined. 
-
-**Possible selection:**
-
-* **set** first button allows you to load selected edge to resize and second one below allows you to load selected face, edge or vertex as destination to resize. The buttons can be used for individual reload but to select destination you have to have loaded edge to resize first.
-* **refresh selection** allows you to load selected edge to resize and also selected face, edge or vertex as destination to resize. First selected needs to be edge to resize and next destination.
-
-> [!TIP]
-> If you first select edge and next destination and open this tool, the objects will be loaded automatically, 
-> so you do not have to press `refresh selection` button.
-
-**Resize options:**
-
-* **Resize step:** if you have loaded destination sub-object this resize step will be automatically recalculated.
-* **resize -** button allows you to make smaller loaded edge to resize. The resize size will be `resize step`.
-* **resize +** button allows you to make bigger loaded edge to resize. The resize size will be `resize step`.
-* **resize to nearest** button allows you to resize object to the nearest face, edge or vertex of other object. This option is able to make panel smaller or bigger automatically to the destination.
-
-**Video tutorials:** 
-* [How to use magicResizer](https://www.youtube.com/watch?v=GzC_XoOzeJ8)
-
-## showConstraints
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showConstraints.png"> To use this tool first select objects to see edges with the same size as defined constraints. 
-
-> [!NOTE] 
-> This tool search all constraints for selected objects. If the constraints is non-zero this tool search for all edges with the same size. It allows for quick preview if all the edges are defined by the Sketch. However, in some cases, if the constraints is offset and it is equal edge size this will give false result. To select more objects hold left CTRL key during selection. 
-
-<br><br>
-
-## Quick resize icons
-
-<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelResize6.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelResize5.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelResize4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelResize3.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelResize2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelResize1.png"> You can resize panel, or even many panels at once, very quickly. The resize step is selected panel thickness, so you can solve the common problem with thickness offset. For example to move top of the furniture and make shelf from it, you have to resize the panel `2 x` with thickness step and once from other side. This may not be so easy calculation, and you may have to calculate something like `534 - 18 - 18 = ?` and `613 - 18 = ?`. Now you can click three times and you have it without thinking. You can also resize Cylinders (drill bits), the long side will be `Height`, the short will be diameter, the thickness will be `Radius`. For Cone objects (drill bits - countersinks, counterbore) the long side will be `Height`, the thickness will be `Radius1` (bottom radius) and the short will be `Radius2` (top radius). [Holes, Countersinks, Counterbores](#holes-countersinks-counterbores---short-tutorial).
-
-# Move panels
+# Move and copy
 
 ## magicMove
 
@@ -674,6 +594,14 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 * [How to add handle and see soft-close animation](https://www.youtube.com/watch?v=iOseEBGmwAU)
 * [Simple office bookcase](https://www.youtube.com/watch?v=U_oi3POJmSw)
 
+## Arrows
+
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveXp.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveXm.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveYp.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveYm.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveZp.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveZm.png"> With the arrows you can quickly move panel with thickness step to solve common furniture problem with thickness offset. If you select PartDesign object, it will be moved with thickness step via Body container. If you select containers `App :: Part`, `PartDesign :: Body`, `App :: LinkGroup` and object `App :: Link`, the move step will be 100, to allow move whole furniture modules or drawers inside container more quickly. Also if the thickness will not be recognized the step will be 100. You can also use the arrows for quick copy. Select object at objects Tree, click `CTRL-C` and `CTRL-V` to copy in-place the selected object and use arrows to move the object.
+
+> [!WARNING]
+> You can move many objects at once, but make sure the objects have the same thickness to avoid moving objects with different step. If you want precisely move many objects with given step, please use [magicMove](#magicmove) tool, instead. <br>
+> The arrows recognize the view model rotation. However, all possible rotations are not recognized, sometimes the movement may not be correctly aligned with the arrow icon. So, it is strongly recommended to click [fitModel](#fitmodel) tool before using arrows.
+
 ## magicAngle
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicAngle.png"> This tool allows to rotate panels and even other more complicated objects, like construction profiles or containers. It allows for multi-selection, so you can rotate many elements with the same rotation point at once. You can use this tool to open or close cabinet door with soft close animation.
@@ -696,16 +624,138 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 * [How to add handle and see soft-close animation](https://www.youtube.com/watch?v=iOseEBGmwAU)
 * [Quick parametric fence](https://www.youtube.com/watch?v=egmC-uR4aa4)
 
-## mapPosition
+# Resize panels
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/mapPosition.png"> First select object to copy position, next select objects to move. 
+## magicResizer
 
-> [!NOTE]
-> This tool allows to move objects to the same position as first selected object. The objects will be moved without rotation. Only the placement will change. If the first selected object is rotated the objects may not match exactly the starting point. This tool is very useful if you want to redesign furniture and you want to create new element. Using this tool you can quickly move the new element to the same position of old element and remove the old element. To select more objects hold left CTRL key during selection. With this tool you can also move Cylinders and Sketches more precisely. If first you select Edge or Face the Cylinders or Sketches will be moved to the CenterOfMass. If first you select Vertex the Cylinders or Sketches will be moved to the selected Vertex position.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicResizer.png"> This tool allows to resize `Part::Box` or `PartDesign::Pad` objects and also other objects based on `PartDesign::Pad` e.g. [construction profiles](#panel2profile). Make sure your `Pad` object has defined constraints, you can use [showConstraints](#showConstraints) tool for that. If the object has no constraint at the selected edge the object will not be resized. The constraints do not have to be named but must be defined. 
+
+**Possible selection:**
+
+* **set** first button allows you to load selected edge to resize and second one below allows you to load selected face, edge or vertex as destination to resize. The buttons can be used for individual reload but to select destination you have to have loaded edge to resize first.
+* **refresh selection** allows you to load selected edge to resize and also selected face, edge or vertex as destination to resize. First selected needs to be edge to resize and next destination.
+
+> [!TIP]
+> If you first select edge and next destination and open this tool, the objects will be loaded automatically, 
+> so you do not have to press `refresh selection` button.
+
+**Resize options:**
+
+* **Resize step:** if you have loaded destination sub-object this resize step will be automatically recalculated.
+* **resize -** button allows you to make smaller loaded edge to resize. The resize size will be `resize step`.
+* **resize +** button allows you to make bigger loaded edge to resize. The resize size will be `resize step`.
+* **resize to nearest** button allows you to resize object to the nearest face, edge or vertex of other object. This option is able to make panel smaller or bigger automatically to the destination.
 
 **Video tutorials:** 
-* [Mapping position](https://www.youtube.com/watch?v=841xzb_uRpc)
-* [mapPosition little improved](https://www.youtube.com/watch?v=pMKLXvwmGSI)
+* [How to use magicResizer](https://www.youtube.com/watch?v=GzC_XoOzeJ8)
+
+## Quick resize icons
+
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelResize6.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelResize5.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelResize4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelResize3.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelResize2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelResize1.png"> You can resize panel, or even many panels at once, very quickly. The resize step is selected panel thickness, so you can solve the common problem with thickness offset. For example to move top of the furniture and make shelf from it, you have to resize the panel `2 x` with thickness step and once from other side. This may not be so easy calculation, and you may have to calculate something like `534 - 18 - 18 = ?` and `613 - 18 = ?`. Now you can click three times and you have it without thinking. You can also resize Cylinders (drill bits), the long side will be `Height`, the short will be diameter, the thickness will be `Radius`. For Cone objects (drill bits - countersinks, counterbore) the long side will be `Height`, the thickness will be `Radius1` (bottom radius) and the short will be `Radius2` (top radius). [Holes, Countersinks, Counterbores](#holes-countersinks-counterbores---short-tutorial).
+
+# Panel on face and between
+
+## Create panel on face
+
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelFaceZY.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelFaceYZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelFaceZX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelFaceXZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelFaceYX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelFaceXY.png"> This icons creates new panel at selected face. The blue panel represents the selected object and the red one represents the new created object. The icon refers to base `XY` model view (0 key position). Click [fitModel](#fitmodel) to set model into referred view, and to be sure the model and face you have selected refers to exact icon. The new created panel will get the same dimensions as panel of the selected face. 
+
+> [!TIP]
+> If you have problems with unpredicted result, "side effect of Magic Panels", please use [magicManager](#magicmanager) to preview panel before creation and [magicMove](#magicmove) to move or copy panels.
+
+## Create panel between
+
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelBetweenZY.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelBetweenYZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelBetweenZX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelBetweenXZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelBetweenYX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelBetweenXY.png"> This icons creates new panel between two selected faces. Selection faces order is important. To select more than one face, hold left `CTRL` key during second face selection. The blue panels represents the selected objects and the red one represents the new created object. The icon refers to base `XY` model view (0 key position). Click [fitModel](#fitmodel) to set model into referred view. If the two selected panels will be matching the icon, the new created panel should fill the gap between the selected faces. You can experiment with selection faces outside to resize the new panel. 
+
+> [!TIP]
+> If you have problems with unpredicted result, "side effect of Magic Panels", please use [magicManager](#magicmanager) to preview panel before creation and [magicMove](#magicmove) to move or copy panels.
+
+# Custom regular and irregular shapes
+
+## magicManager
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicManager.png">
+This tool allows to preview panel before creation. It allows to see panel at single selected face and also panel between two faces. This tool can be used if you have problems with unpredicted result, "side effect of Magic Panels". However, clicking single icon is sometimes more quicker than opening GUI and choosing right panel. Sice `0.21 version` this tool is able to create panel from selected vertices. This functionality uses observer for reading and helping select vertices. You do not have to hit the vertex directly. If you select edge or face, the nearest vertex will be selected for you. Also you can remove last selected vertex from list if you make mistake. The selected vertices should create wire, shape, but you do not have to select last vertex to close the wire. The first selected vertex will be automatically added at the end to close the wire. If the panel thickness is not set by the user, the thickness for the new panel from vertices will be set from first selected object. Custom thickenss works only for vertices.
+
+* **Panel at face:** To create panel at face select single face and click `refresh selection`.
+* **Panel between faces:** To create panel between two faces select two faces and click `refresh selection`. To select more faces hold `CTRL` key. The selection order is important. If the panel is created outside change selection order.
+* **Panel from vertices:** To create panel from vertices, you have to activate observer. The `first` means the thickness will be get from first selected object. You can set custom thickness if you want or you can also use this option to create panel from selected edges in Sketch, see also [wires2pad](#wires2pad) tool. 
+
+**Options:**
+  
+* **Plane:** You can select panel orientation according to the `XYZ` coordinate axes. The panel can be created at planes: `XY`, `YX`, `XZ`, `ZX`, `YZ`, `ZY`, if you select single face. If you select two faces this tool automatically recognize plane of selected faces and adjust possible panels to create, there will be two panels for valid planes only.
+* **Anchor:** You can select position for the new panel. The anchors are the face vertices. If the object is for example `Cut` there might be more than four anchors to choose.
+* **Size:** Custom size is taken from edges. For example, if you have `Cut` object you can set panel with the same size as the cut edge. All edges should be available, search for the right one.
+* **Offset:** The first selected offset means `no offset` from currently selected `Anchor`. All next are offset with current selected `Size` for `X-`, `X+`, `Y-`, `Y+`, `Z-`, `Z+` coordinate axis. This can be helpful if you want to make frame but the frame is for example `20 mm x 40 mm x 600 mm` and need to be offset with `40 mm`, different size than thickenss `20 mm`.
+
+**Video tutorials:** 
+* [How to create panel from wires in Sketch](https://www.youtube.com/watch?v=wV6nlN2z1Ng)
+* [Panel from vertices](https://www.youtube.com/watch?v=6s0fbagPeZA)
+* [Making panels improvement](https://www.youtube.com/watch?v=sunE2rLThZI)
+
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCoverXY.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelBackOut.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelSideRightUP.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelSideLeftUP.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelSideRight.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelSideLeft.png"> Dedicated panels allows you to add specific furniture element. You can add sides, back or top of the furniture with single click. The side panels improves the thickness offset at the face tools. If you would like to add back of the furniture manually, you have to calculate the back dimensions first. Next you have to move the panel exactly to the back of the furniture position. It is not so easy to do it manually because `1 mm` offset might be a problem. Now you can make it with several clicks, without calculating anything manually. 
+
+> [!TIP]
+> If you have problems with unpredicted result, "side effect of Magic Panels", please use [magicManager](#magicmanager) to preview panel before creation and [magicMove](#magicmove) to move or copy panels.
+
+## addExternal
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/addExternal.png"> This tool allows you to quickly create external geometry visible in a sketch from selected edges and faces. Edges or faces can belong to any objects. If you select face all edges will be added as external geometry, if you select edge only single edge will be added. This tool uses the `PartDesign::SubShapeBinder` function but in a slightly more advanced form. To select more objects, hold down CTRL-left while selecting them. 
+
+**Possible selections methods:**
+
+* **Face as Plane + Edges and Faces** - in this case new Sketch with external geometry will be created. The new sketch plane will be taken from first selected face. I recommend this method, because in this case the sketch will be created in the root directory and all drawn wires can be converted to Pads in-place, using for example tool [wires2pad](#wires2pad) or [magicManager](#magicmanager) `Panel from vertices` option.
+* **Sketch + Edges and Faces** - in this case the external geometry will be created inside the selected Sketch. If the Sketch is inside containers with offsets you can adjust position of the converted Pads using for example tool [panelMove2Anchor](#panelmove2anchor) and selecting two edges.
+
+**Video tutorials:** 
+* [How to add external geometry quickly](https://www.youtube.com/watch?v=TMcw2JkUeVM)
+* [Irregular Shapes: create and measure Part :: Extrusion](https://www.youtube.com/watch?v=l8W5IDqvGgw)
+
+## sketch2pad
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/sketch2pad.png"> This tool allows you to create Pad object from selected Sketch. A Pad with the default size of `MagicPanels.gWoodThickness` and color from [magicSettings](#magicsettings) tool will be created for each selected Sketch. To change the default wood size or color use [magicSettings](#magicsettings) tool or change the Pad attributes directly. To select more Sketches hold left CTRL key during selection. This tool has been created to quickly create Pad object from Sketch created via [addExternal](#addexternal) tool to create irregular panels very quickly.
+
+<br><br><br>
+
+## wires2pad
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/wires2pad.png"> You have to select at least one Sketch to create a Pad from wires. This tool allows you to create panels from wires in Sketch. A Pad with the default size of `MagicPanels.gWoodThickness` will be created for each wire. To change the default wood size use [magicSettings](#magicsettings) tool or change the `Pad.Length` option. Also you can use the `Panel from vertices` option in the [magicManager](#magicmanager) tool, selecting the appropriate edges. To create separate Pads from one Sketch, wires must not touch each other. If the Sketch is placed in containers, for example `Part` or `LinkGroup` with set offsets, you need to adjust the panel position, for example using the [panelMove2Anchor](#panelmove2anchor) tool, selecting two edges. You can also consider creating panels from the Sketch in the root directory, see the [addExternal](#addexternal) tool.
+
+**Video tutorials:** 
+* [How to create panel from wires in Sketch](https://www.youtube.com/watch?v=wV6nlN2z1Ng)
+
+<br><br><br>
+
+# Position
+
+## panelMove2Anchor
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMove2Anchor.png"> This tool allows to align panels more precisely, with anchor. To align panels with anchors first select anchor at base object, next select anchor at each object to move. Hold left CTRL key to select anchors.
+
+Available anchors to select: 
+
+* **vertex** - selected vertex will be set as anchor,
+* **edge** - CenterOfMass of the selected face will be set as anchor,
+* **face** - CenterOfMass of the selected face will be set as anchor,
+* **object** - default object anchor, of the Placement, will be set as anchor.
+
+**Video tutorials:** 
+* [Align to anchor](https://www.youtube.com/watch?v=IfVJVXVc9r8)
+
+## showVertex
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showVertex.png"> This tool allows you to resize all vertices for selected objects or for all objects if there is no selected objects. Resized vertices are easier to select. This tool also change vertices color to red for better visibility. If the object have already resized or red vertices it will be changed back to normal. So, you can keep the model good looking with small vertices and if you have problem with vertices selection, you can quickly resize vertices for selection purposes only and back to normal later.
+
+**Video tutorials:** 
+* [Helping Vertex selection](https://www.youtube.com/watch?v=qSsua04AKg8)
+
+<br><br>
+
+## selectVertex
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/selectVertex.png"> This tool helps vertex selection. If you click this tool icon the tool activates observer and listen for your selection. If you select Face or Edge the nearest Vertex will be selected instead. If you select Vertex the Vertex will stay selected. The observer is closed after selection so this help works only once to not disturb face or edge selection later. If you want select more vertices with help of this tool, you have to hold left CTRL key during Edge or Face selection, you can also hold it during icon click. 
+
+**Video tutorials:** 
+* [Helping Vertex selection](https://www.youtube.com/watch?v=qSsua04AKg8)
 
 ## panelMove2Face
 
@@ -722,19 +772,16 @@ This tool allows to preview panel before creation. It allows to see panel at sin
 * [Simple table](https://www.youtube.com/watch?v=Xru52f8uyBk)
 * [Move to face](https://www.youtube.com/watch?v=i9pXqdEhahU)
 
-## panelMove2Anchor
+## mapPosition
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMove2Anchor.png"> This tool allows to align panels more precisely, with anchor. To align panels with anchors first select anchor at base object, next select anchor at each object to move. Hold left CTRL key to select anchors.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/mapPosition.png"> First select object to copy position, next select objects to move. 
 
-Available anchors to select: 
-
-* **vertex** - selected vertex will be set as anchor,
-* **edge** - CenterOfMass of the selected face will be set as anchor,
-* **face** - CenterOfMass of the selected face will be set as anchor,
-* **object** - default object anchor, of the Placement, will be set as anchor.
+> [!NOTE]
+> This tool allows to move objects to the same position as first selected object. The objects will be moved without rotation. Only the placement will change. If the first selected object is rotated the objects may not match exactly the starting point. This tool is very useful if you want to redesign furniture and you want to create new element. Using this tool you can quickly move the new element to the same position of old element and remove the old element. To select more objects hold left CTRL key during selection. With this tool you can also move Cylinders and Sketches more precisely. If first you select Edge or Face the Cylinders or Sketches will be moved to the CenterOfMass. If first you select Vertex the Cylinders or Sketches will be moved to the selected Vertex position.
 
 **Video tutorials:** 
-* [Align to anchor](https://www.youtube.com/watch?v=IfVJVXVc9r8)
+* [Mapping position](https://www.youtube.com/watch?v=841xzb_uRpc)
+* [mapPosition little improved](https://www.youtube.com/watch?v=pMKLXvwmGSI)
 
 ## panelMove2Center
 
@@ -766,28 +813,7 @@ Available anchors to select:
 **Video tutorials:** 
 * [How to create shelves with equal space](https://www.youtube.com/watch?v=2odJa0baGqw)
 
-## align2Curve
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/align2Curve.png"> This tool allows to align panels to the curve. It has been created for magicMove Copy Path option, to align panels to the curve. To select more objects hold left CTRL key during selection. To use this tool the panel need to have only single axis rotation offset. For example if you rotate panel 35 degrees around Y axis the and the vertex will touch the curve. This tool not works if you need to rotate the panel additionally, for example 15 degrees around X axis. For more details see description at documentation page. 
-
-Selection modes:
-
-* **Curve and Edges** In this mode you can select curve and next edge at each object you want to align to the curve. This mode is automatic and this tool will try to calculate the angle between the curve and the selected edge. The selected edge need to be this one with object anchor and the object anchor should be already at the curve. If this tool will be able to determine the angle, it will align the panel. Otherwise the panel will be skipped.
-
-* **Curve and Vertex** In this mode you can select curve and next vertex at each object you want to align to the curve. This mode is more precised and slower. It allow to align panel backwards, so the selected vertex will be before he anchor. In this mode the tool will try to search the curve from the nearest side of the vertex. If the curve will be found the panel will be aligned, otherwise the panel will be skipped.
-
-**Video tutorials:** 
-* [Align to curve](https://www.youtube.com/watch?v=fbJV_SEuNLg)
-
-## Arrows
-
-<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveXp.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveXm.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveYp.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveYm.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveZp.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMoveZm.png"> With the arrows you can quickly move panel with thickness step to solve common furniture problem with thickness offset. If you select PartDesign object, it will be moved with thickness step via Body container. If you select containers `App :: Part`, `PartDesign :: Body`, `App :: LinkGroup` and object `App :: Link`, the move step will be 100, to allow move whole furniture modules or drawers inside container more quickly. Also if the thickness will not be recognized the step will be 100. You can also use the arrows for quick copy. Select object at objects Tree, click `CTRL-C` and `CTRL-V` to copy in-place the selected object and use arrows to move the object.
-
-> [!WARNING]
-> You can move many objects at once, but make sure the objects have the same thickness to avoid moving objects with different step. If you want precisely move many objects with given step, please use [magicMove](#magicmove) tool, instead. <br>
-> The arrows recognize the view model rotation. However, all possible rotations are not recognized, sometimes the movement may not be correctly aligned with the arrow icon. So, it is strongly recommended to click [fitModel](#fitmodel) tool before using arrows.
-
-# Preview
+# Preview furniture
 
 ## fitModel
 
@@ -846,31 +872,6 @@ Selection modes:
 * [Parametric bookcase with Dado joints](https://www.youtube.com/watch?v=kcP1WmKizDg)
 * [How to create view and export to TechDraw](https://www.youtube.com/watch?v=yiZfyMRlE-U)
 
-## showVertex
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showVertex.png"> This tool allows you to resize all vertices for selected objects or for all objects if there is no selected objects. Resized vertices are easier to select. This tool also change vertices color to red for better visibility. If the object have already resized or red vertices it will be changed back to normal. So, you can keep the model good looking with small vertices and if you have problem with vertices selection, you can quickly resize vertices for selection purposes only and back to normal later.
-
-**Video tutorials:** 
-* [Helping Vertex selection](https://www.youtube.com/watch?v=qSsua04AKg8)
-
-<br><br>
-
-## selectVertex
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/selectVertex.png"> This tool helps vertex selection. If you click this tool icon the tool activates observer and listen for your selection. If you select Face or Edge the nearest Vertex will be selected instead. If you select Vertex the Vertex will stay selected. The observer is closed after selection so this help works only once to not disturb face or edge selection later. If you want select more vertices with help of this tool, you have to hold left CTRL key during Edge or Face selection, you can also hold it during icon click. 
-
-**Video tutorials:** 
-* [Helping Vertex selection](https://www.youtube.com/watch?v=qSsua04AKg8)
-
-## roundCurve
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/roundCurve.png"> This tool allows to improve curve visibility. It makes the curve to look more rounded. Normally, circle Sketch is rendering from straight line segments. If you want to align panel to the curve manually this might be problem to hit exactly the point you want at curve. This tool may help for more precised alignment. If you select the curve and click this tool again the curve will back to default settings. To select more object hold left CTRL key during selection. 
-
-**Video tutorials:** 
-* [Align to curve](https://www.youtube.com/watch?v=fbJV_SEuNLg)
-
-<br><br><br>
-
 # Project manage
 
 ## magicSettings
@@ -880,10 +881,10 @@ Selection modes:
 **Settings - page 1:**
 
 * **Theme:** allows you to choose a color theme for all Woodworking workbench tools. Switching the theme causes an immediate preview on the tool interface. To save a given theme, press the `save settings` button. The `default` means no theme.
-* **Wood thickness:** allows you to set the default thickness of the wood you create. This setting is used by tools such as [magicStart](#how-to-start---magicstart), [wires2pad](#wires2pad), [Default panels](#default-panels) and all others.
+* **Wood thickness:** allows you to set the default thickness of the wood you create. This setting is used by tools such as [magicStart](#magicstart), [wires2pad](#wires2pad), [Default panels](#default-panels) and all others.
 * **Wood size X (long):** means the longer size for `XY` default panel, see: [Default panels](#default-panels).
 * **Wood size Y (short):** means the shorter size for `XY` default panel, see: [Default panels](#default-panels).
-* **Wood color:** allows you to set the default color of the wood you create in RGBA color schema. This setting is used by tools like [magicStart](#how-to-start---magicstart), [wires2pad](#wires2pad), [Default panels](#default-panels) and all others. If you want to revert to the default wood color which is `RGBA = [ 247, 185, 108, 255 ]` leave all fields empty and press the `save settings` button.
+* **Wood color:** allows you to set the default color of the wood you create in RGBA color schema. This setting is used by tools like [magicStart](#magicstart), [wires2pad](#wires2pad), [Default panels](#default-panels) and all others. If you want to revert to the default wood color which is `RGBA = [ 247, 185, 108, 255 ]` leave all fields empty and press the `save settings` button.
 * **Window stays on top:**
   * `yes` - Tool windows always stay on top of all other applications. I personally use this feature when creating documentation. I have Krusader (Kwrite Edit) and the new tool window open simultaneously, so I can describe all the options without constantly clicking on the new tool window.
   * `no` - Enables the default window behavior, i.e. when you switch to another application, the window disappears.
@@ -909,8 +910,8 @@ Selection modes:
 
 **Settings - page 3:**
 
-* **Veneer thickness:** allows you to simulate veneer thickness. Constructions with `veneer` description in [magicStart](#how-to-start---magicstart) supports this option and add additional gap for edgeband.
-* **Veneer apply:** allows you to simulate veneer and choose method of veneer applying. Constructions with `veneer` description in [magicStart](#how-to-start---magicstart) supports this option and add additional gap for edgeband.
+* **Veneer thickness:** allows you to simulate veneer thickness. Constructions with `veneer` description in [magicStart](#magicstart) supports this option and add additional gap for edgeband.
+* **Veneer apply:** allows you to simulate veneer and choose method of veneer applying. Constructions with `veneer` description in [magicStart](#magicstart) supports this option and add additional gap for edgeband.
   * `everywhere` for example you can buy chipboards with `2 mm` PCV veneer. So the veneer will be applied everywhere in this case.
   * `visible` it is more custom way, related mostly only to visible edges.
 * **Veneer color:** allows you to set the default RGBA color of the veneer. If you want to revert to the default color which is `white: RGBA = [ 255, 255, 255, 255 ]` leave all fields empty and press the `save settings` button.
@@ -999,6 +1000,99 @@ Selection modes:
 
 > [!IMPORTANT]
 > If you want to use `Part :: Boolean :: Cut` inside `LinkGroup` container, first you have to get out of the container all the elements using [selected2Outside](#selected2outside). See video: [Boolean cut with containers](https://www.youtube.com/watch?v=OVwazL8MQwI)
+
+# Decoration
+
+## magicColors
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicColors.png"> This tool allows you to change colors in real time. Color changes can be made for multiple objects, multiple faces, or different objects and faces at the same time.
+
+**Options:**
+
+* **refresh selection:** Loads the objects for which colors are to be changed.
+* **Target:** This is the target attribute of the color structure.
+  * `DiffuseColor` normal color.
+  * `AmbientColor` available since FreeCAD 1.0 new color schema.
+  * `EmissiveColor` available since FreeCAD 1.0 new color schema.
+  * `SpecularColor` available since FreeCAD 1.0 new color schema.
+  * `Shininess` available since FreeCAD 1.0 new color schema.
+  * `Transparency` transparency.
+  * `let's slide all` sliders to set all target attributes at once.
+* **Sample:** These are defined color schemes that can be quickly set.
+  * `custom` this is the startup setting mode and does not set any color.
+  * `Woodworking - default` this is the default color set in the MagicPanels library for all new objects you create.
+  * `reset` this is the FreeCAD default color for objects.
+  * `Wood & other` these are sample wood colors chosen by me.
+  * `from spreadsheet` allows you to set face colors from a spreadsheet for all objects.
+
+**Setting modes:**
+
+* **simple** color settings can be made using the `-` and `+` buttons or by manually entering values ​​into the text fields. In the case of manually entering values ​​into the text fields, they must be confirmed with the `set custom color` button. In the case of the `-` and `+` buttons, the color value will be changed in real time for all loaded objects.
+  * `Red:` changes the proportions of the red color intensity.
+  * `Green:` changes the proportions of the green color intensity.
+  * `Blue:` changes the proportions of the blue color intensity.
+  * `Alpha:` changes the proportions of the red, green and blue color intensity. However, in the case of FreeCAD it works by making a face or object transparent.
+  * `RGBA step:` sets the value that will be reduced or added to the current color value when the `-` or `+` button is pressed for red, green, blue and alpha channel text fields.
+  * `set custom color` button sets the color based on manually entered color values ​​into text fields.
+  
+* **extended** allows you to select a color in a way that is typical for graphics programs. When the `Color property` is set to `Shininess` or `Transparency` the vertical slider, or `Val:` field, can be used to change this color attribute. When the `Color property` is of type RGB it works in a standard way affecting the RGB color.
+
+> [!IMPORTANT]
+> * The "Sample" color will be set only for currently selected target attribute, i.e. "Target".
+> * In FreeCAD 0.21.2 only DiffuseColor and Transparency attributes are available. Transparency works only for objects but you can use alpha channel to make faces transparent.
+> * In FreeCAD 1.1 only DiffuseColor and Transparency attributes works for faces and objects, other attributes works only for objects, looks like it is not implemented by FreeCAD yet but this tool is ready for it and set it correctly.
+> * In FreeCAD 1.1 alpha channel not works for faces and objects, only the Transparency works for faces and objects, looks like it is not implemented by FreeCAD yet but this tool is ready for it and set it correctly.
+
+**Video tutorials:** 
+* [How to use magicColors](https://www.youtube.com/watch?v=7Ly2Ot-kwSM)
+
+## setTextures
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/setTextures.png"> This is FreeCAD macro for woodworking to apply and store textures.
+
+**Main features:**
+
+* Store texture URL or local HDD path, repeat factor, rotation and fit mode in object's property.
+* Download and show textures from stored URL or local HDD path.
+* Set and refresh texture for all objects or selected object only.
+* Auto fit mode to object shape type.
+* Small GUI interface in corner to see 3D model refresh.
+
+**Options:**
+
+* **show stored textures for all objects:** loads textures for all objects that have texture information saved.
+
+* **Adjust type:** This is the target attribute of the color structure.
+  * `biggest surface` adjust texture to the biggest surface, but not to edges.
+  * `fit to Cube` adjust texture to edges.
+  * `fit to Cylinder` adjust texture to cylinder shapes, like dowels or drill bits.
+  * `fit to Sphere` adjust texture to sphere shapes.
+  * `auto fit` recognize the object type and try to adjust texture.
+  * `glass mirror effect` mirror effect.
+* **Texture URL or local HDD path:** allows you to load a URL link to a texture or from your local disk.
+* **repeat X** allows you to repeat texture along X axis, to create pattern, 1.0 means no repeat.
+* **repeat Y** allows you to repeat texture along Y axis, to create pattern, 1.0 means no repeat.
+* **rotation** allows you to rotate texture, to create pattern, 0.0 means no rotate.
+* **set white color** sets the white color for the object to make the texture look better.
+
+* **Store texture properties for:**
+  * `selected only` this button will save information to the texture only for the currently selected objects.
+  * `all objects` this button will save information to the texture for all objects in the active document.
+
+* **Refresh texture for:**
+  * `selected only` this button will show the texture only for the currently selected objects.
+  * `all objects` this button will show the texture for all objects in the active document.
+
+> [!IMPORTANT]
+> Make sure you have the following option disabled:
+> `Edit -> Preferences -> Display -> 3D View -> Use OpenGL VBO (Vertex Buffer Object)`
+> Especially if you are using the `FreeCAD Dark` or `FreeCAD Light` theme, because they turn on this option and then you may not see the textures.
+
+## makeBeautiful
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/makeBeautiful.png"> This tool change all objects look, make edges and vertices smaller to look better at screenshots. If you click it again all objects will be changed to default values.
+
+<br><br><br><br>
 
 # Cut list, Measure, Dimensions, Bill Of Materials
 
@@ -1149,12 +1243,6 @@ By default the values at report are rounded to have more clear listing. Rounding
 **Video tutorials:** 
 * [How to create cut-list](https://www.youtube.com/watch?v=_n7SUYSGHls)
 
-## showOccupiedSpace
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showOccupiedSpace.png"> This tool allows you to calculate the overall occupied space in 3D by the selected parts or whole model, if nothing is selected. This approach might be very useful at furniture designing process. For example you can see how much space in your room will take opened front of the furniture or how much space take selected parts of the furniture. Normally, all the `Pad` or `Cube` elements, should be created according to the `XYZ` plane, so there will be no difference between the real dimensions and occupied space in 3D.
-
-<br><br><br>
-
 ## showMeasurements
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showMeasurements.png"> This tool allows you to quickly create or remove measurements for all simple objects. The objects that will be dimensioned are `Part :: Box` and `PartDesign :: Pad`. For each such object, the list of edges will be searched and all linear edges of various dimensions will be described with a measurement. The text size depends on the distance, so small dimensions like `18 mm` thick may not be visible from a distance. This tool is a typical **quick shot** that allows you to quickly enable or disable measurements for objects. Because there are so many dimensions, it should be used primarily with [magicView](#magicview) and primarily for `X`, `Y`, `Z`, or `explode` views. For each such measurement object there is special attribute named `Remove` set by default to `True`. So if you click the icon again such measurement will be removed. If you want to keep such measurement, just set this `Remove` attribute to `False`. Also the measurements created via this tool are parametric. So you can change views in [magicView](#magicview) and the measurements will follow the changes.
@@ -1227,156 +1315,6 @@ This tool allows you to quickly measure objects. All measurements are recognized
 **Video tutorials:** 
 * [New measurement features](https://www.youtube.com/watch?v=9F_fBQYuxvU)
 * [How to use magicMeasure](https://www.youtube.com/watch?v=_yGLzNmeK0Q)
-
-# Decoration
-
-## magicColors
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicColors.png"> This tool allows you to change colors in real time. Color changes can be made for multiple objects, multiple faces, or different objects and faces at the same time.
-
-**Options:**
-
-* **refresh selection:** Loads the objects for which colors are to be changed.
-* **Target:** This is the target attribute of the color structure.
-  * `DiffuseColor` normal color.
-  * `AmbientColor` available since FreeCAD 1.0 new color schema.
-  * `EmissiveColor` available since FreeCAD 1.0 new color schema.
-  * `SpecularColor` available since FreeCAD 1.0 new color schema.
-  * `Shininess` available since FreeCAD 1.0 new color schema.
-  * `Transparency` transparency.
-  * `let's slide all` sliders to set all target attributes at once.
-* **Sample:** These are defined color schemes that can be quickly set.
-  * `custom` this is the startup setting mode and does not set any color.
-  * `Woodworking - default` this is the default color set in the MagicPanels library for all new objects you create.
-  * `reset` this is the FreeCAD default color for objects.
-  * `Wood & other` these are sample wood colors chosen by me.
-  * `from spreadsheet` allows you to set face colors from a spreadsheet for all objects.
-
-**Setting modes:**
-
-* **simple** color settings can be made using the `-` and `+` buttons or by manually entering values ​​into the text fields. In the case of manually entering values ​​into the text fields, they must be confirmed with the `set custom color` button. In the case of the `-` and `+` buttons, the color value will be changed in real time for all loaded objects.
-  * `Red:` changes the proportions of the red color intensity.
-  * `Green:` changes the proportions of the green color intensity.
-  * `Blue:` changes the proportions of the blue color intensity.
-  * `Alpha:` changes the proportions of the red, green and blue color intensity. However, in the case of FreeCAD it works by making a face or object transparent.
-  * `RGBA step:` sets the value that will be reduced or added to the current color value when the `-` or `+` button is pressed for red, green, blue and alpha channel text fields.
-  * `set custom color` button sets the color based on manually entered color values ​​into text fields.
-  
-* **extended** allows you to select a color in a way that is typical for graphics programs. When the `Color property` is set to `Shininess` or `Transparency` the vertical slider, or `Val:` field, can be used to change this color attribute. When the `Color property` is of type RGB it works in a standard way affecting the RGB color.
-
-> [!IMPORTANT]
-> * The "Sample" color will be set only for currently selected target attribute, i.e. "Target".
-> * In FreeCAD 0.21.2 only DiffuseColor and Transparency attributes are available. Transparency works only for objects but you can use alpha channel to make faces transparent.
-> * In FreeCAD 1.1 only DiffuseColor and Transparency attributes works for faces and objects, other attributes works only for objects, looks like it is not implemented by FreeCAD yet but this tool is ready for it and set it correctly.
-> * In FreeCAD 1.1 alpha channel not works for faces and objects, only the Transparency works for faces and objects, looks like it is not implemented by FreeCAD yet but this tool is ready for it and set it correctly.
-
-**Video tutorials:** 
-* [How to use magicColors](https://www.youtube.com/watch?v=7Ly2Ot-kwSM)
-
-## setTextures
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/setTextures.png"> This is FreeCAD macro for woodworking to apply and store textures.
-
-**Main features:**
-
-* Store texture URL or local HDD path, repeat factor, rotation and fit mode in object's property.
-* Download and show textures from stored URL or local HDD path.
-* Set and refresh texture for all objects or selected object only.
-* Auto fit mode to object shape type.
-* Small GUI interface in corner to see 3D model refresh.
-
-**Options:**
-
-* **show stored textures for all objects:** loads textures for all objects that have texture information saved.
-
-* **Adjust type:** This is the target attribute of the color structure.
-  * `biggest surface` adjust texture to the biggest surface, but not to edges.
-  * `fit to Cube` adjust texture to edges.
-  * `fit to Cylinder` adjust texture to cylinder shapes, like dowels or drill bits.
-  * `fit to Sphere` adjust texture to sphere shapes.
-  * `auto fit` recognize the object type and try to adjust texture.
-  * `glass mirror effect` mirror effect.
-* **Texture URL or local HDD path:** allows you to load a URL link to a texture or from your local disk.
-* **repeat X** allows you to repeat texture along X axis, to create pattern, 1.0 means no repeat.
-* **repeat Y** allows you to repeat texture along Y axis, to create pattern, 1.0 means no repeat.
-* **rotation** allows you to rotate texture, to create pattern, 0.0 means no rotate.
-* **set white color** sets the white color for the object to make the texture look better.
-
-* **Store texture properties for:**
-  * `selected only` this button will save information to the texture only for the currently selected objects.
-  * `all objects` this button will save information to the texture for all objects in the active document.
-
-* **Refresh texture for:**
-  * `selected only` this button will show the texture only for the currently selected objects.
-  * `all objects` this button will show the texture for all objects in the active document.
-
-> [!IMPORTANT]
-> Make sure you have the following option disabled:
-> `Edit -> Preferences -> Display -> 3D View -> Use OpenGL VBO (Vertex Buffer Object)`
-> Especially if you are using the `FreeCAD Dark` or `FreeCAD Light` theme, because they turn on this option and then you may not see the textures.
-
-## makeBeautiful
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/makeBeautiful.png"> This tool change all objects look, make edges and vertices smaller to look better at screenshots. If you click it again all objects will be changed to default values.
-
-<br><br><br><br>
-
-# Router
-
-## Router bit - Cove
-
-<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerCove4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerCove2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerCove.png"> 
-> [!NOTE]
-> This tool allows to create decoration router bits effect. You can select many edges or faces. The selected edges or faces do not have to be at the same object. You can select edges or faces at any object. But each edge or face need to be according to the XYZ coordinate axis to get correct plane of the edge or face. For face the routing path is the CenterOfMass of the face and also along the longest edge. Hold left CTRL key during edges or faces selection. The router bits get size from object thickness. If the router bit is for example Cove2, it means the size of the Cove will be 1/2 of the object thickness.
-
-**Video tutorials:** 
-* [Router Cove](https://www.youtube.com/watch?v=MQYaZ4NEiBI)
-* [Decoration testing with router bits](https://www.youtube.com/watch?v=K229hhMt8Vc)
-* [How to use decoration features](https://www.youtube.com/watch?v=R9u6ikswO_0)
-
-## Router bit - Round Over
-
-<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerRoundOver4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerRoundOver2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerRoundOver.png"> 
-> [!NOTE]
-> This tool allows to create decoration router bits effect. You can select many edges or faces. The selected edges or faces do not have to be at the same object. You can select edges or faces at any object. But each edge or face need to be according to the XYZ coordinate axis to get correct plane of the edge or face. For face the routing path is the CenterOfMass of the face and also along the longest edge. Hold left CTRL key during edges or faces selection. The router bits get size from object thickness. If the router bit is for example Cove2, it means the size of the Cove will be 1/2 of the object thickness.
-
-**Video tutorials:** 
-* [Router Round Over](https://www.youtube.com/watch?v=RErYZpqbqAY)
-* [Decoration testing with router bits](https://www.youtube.com/watch?v=K229hhMt8Vc)
-* [How to use decoration features](https://www.youtube.com/watch?v=R9u6ikswO_0)
-
-## Router bit - Straight
-
-<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerStraight4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerStraight3.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerStraight2.png"> 
-> [!NOTE]
-> This tool allows to create decoration router bits effect. You can select many edges or faces. The selected edges or faces do not have to be at the same object. You can select edges or faces at any object. But each edge or face need to be according to the XYZ coordinate axis to get correct plane of the edge or face. For face the routing path is the CenterOfMass of the face and also along the longest edge. Hold left CTRL key during edges or faces selection. The router bits get size from object thickness. If the router bit is for example Cove2, it means the size of the Cove will be 1/2 of the object thickness.
-
-**Video tutorials:** 
-* [Router Straight](https://www.youtube.com/watch?v=NDBLmh2SwwI)
-* [Decoration testing with router bits](https://www.youtube.com/watch?v=K229hhMt8Vc)
-
-## Router bit - Chamfer
-
-<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerChamfer4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerChamfer2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerChamfer.png"> 
-> [!NOTE]
-> This tool allows to create decoration router bits effect. You can select many edges or faces. The selected edges or faces do not have to be at the same object. You can select edges or faces at any object. But each edge or face need to be according to the XYZ coordinate axis to get correct plane of the edge or face. For face the routing path is the CenterOfMass of the face and also along the longest edge. Hold left CTRL key during edges or faces selection. The router bits get size from object thickness. If the router bit is for example Cove2, it means the size of the Cove will be 1/2 of the object thickness.
-
-**Video tutorials:** 
-* [Router Chamfer](https://www.youtube.com/watch?v=Z45TDosmb-U)
-* [Decoration testing with router bits](https://www.youtube.com/watch?v=K229hhMt8Vc)
-
-## multiPocket
-
-<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/multiPocket4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/multiPocket2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/multiPocket.png">
-> [!NOTE]
-> This tool allows to create custom decoration from Sketches. You can select many Sketches at once. The selected Sketches will make Pockets at the first selected object. The Sketches need to be correctly aligned at the object. Hold left CTRL key during Sketches selection. For 2 and 4 variant this tool gets first selected object size and create Pocket with 1/2 thickness or 1/4 thickness.
-
-**Video tutorials:** 
-* [How to create custom decoration](https://www.youtube.com/watch?v=sZDToy3qCk4)
-* [multiPocket custom decoration](https://www.youtube.com/watch?v=FHups7Zvl5E)
-* [Future of parametric modeling](https://www.youtube.com/watch?v=0M9EW0I9iwg)
-
-<br><br><br>
 
 # Dowels and Screws
 
@@ -1877,7 +1815,105 @@ Personally, the two side counterbore I use for screwing things to the table. I u
 
 <br><br>
 
-# Construction
+## Panels conversion
+
+## panel2pad
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2pad.png"> This tool allows to replace `Cube` panel with `Pad` panel. The new created `Pad` panel will get the same dimensions, placement and rotation as the selected `Cube` panel. You can transform many `Cube` panels into `Pad` at once. To select more `Cubes` hold `left CTRL key` during selection. This tool is mostly dedicated to add decoration that is not supported for `Cube` objects by FreeCAD PartDesign workbench. You can also change shape by changing the `Sketch`. This is mostly used for decoration that can be applied only to `Pad`, like `Fillet`.
+
+**Video tutorials:** 
+* [Automatic parametrization](https://www.youtube.com/watch?v=JuZsAjrQr6M)
+* [FreeCAD 1.1 direct assembly](https://www.youtube.com/watch?v=u3Yh2WvdUIk)
+
+<br><br><br>
+
+## Backward conversion
+
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyZY.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyYZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyZX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyXZ.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyYX.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCopyXY.png"> This tool creates a new Cube (Part::Box) object based on a selected object of any type. The newly created object will be consistent with the selected orientation relative to the XYZ planes visible on the icon. You have the following selections for creating a new object:
+* **object**: in this case the new object will be created at position (0, 0, 0) on the XYZ axis.
+* **object and face**: to start in CenterOfMass of the face.
+* **object and edge**: to start in CenterOfMass of the edge.
+* **object and vertex**: to start in CenterOfMass of the vertex.
+
+> [!TIP]
+> If you want to copy Pad, you need to have Constraints named `SizeX` and `SizeY` at the Sketch. For custom objects types you need to have `Length`, `Width`, `Height` properties at object (Group: `Base`, Type: `App::PropertyLength`).
+
+# Parameterization
+
+## magicGlue
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicGlue.png"> This tool allows you to add or remove expressions to keep objects position and size.
+
+**Options:**
+
+* **Glue position:** This option allows you to glue position of target objects to the source object position.
+  * `set` **for source** allows you to add source object position. The source can be vertex or face. For vertex the `XYZ` placement will be get as reference point. For face the `CenterOfMass` will be the reference point, so you need to be careful with linking to this face source because the `CenterOfMass` move `1/2` of the object move way. However it can be used to glue object to the center, for example center furniture side.
+  * `set` **for target** allows you to add target objects to set expressions. If the object is Cube `Part::Box` the expression will be set at `Placement` of the `Cube`. If the object is Pad `PartDesign::Pad` the expression will be set at `Placement` of its `Body`.
+  * `refresh all selection` allows you to add quickly source and targets. First selected vertex or face will be the source and all other objects will be considered as targets to set expressions. Also this is default init option, for example if you select vertex and 2 objects and open the tool this will be ready to set glue position.
+  * `add glue` for `X` direction allows you to add expression for moving objects along `X` axis.
+  * `add glue` for `Y` direction allows you to add expression for moving objects along `Y` axis.
+  * `add glue` for `Z` direction allows you to add expression for moving objects along `Z` axis.
+  * `use VarSet` checkbox if this option is checked then a file named `magicGlueVarSet` will be created and the position values ​​will be saved there. However, in this case it is not possible to link the source object to the values ​​in the `magicGlueVarSet` file, due to the limitation of the FreeCAD VarSet object, which throws `cyclic reference` errors. The `magicGlueVarSet` file is recognized by the `.Label` attribute, so you only need to change the file name to use more VarSet files. This option is available only since FreeCAD 1.0 version.
+
+* **Glue size:** 
+  * `set` **for source** allows you to add source object position. The source can be edge. The selected `edge.Length` will be the reference point.
+  * `set` **for target** allows you to add target objects to set expressions. The selected objects should be edges. 
+    * If the object is Cube `Part::Box` the expression will be set to `Length` or `Width` or `Height` of the `Cube` according to the selected edge plane. 
+    * If the object is Pad `PartDesign::Pad` the expression will be set at `Length` property or `Sketch` constraints.
+    * If the object is for example Profile `PartDesign::Thickness` the expression will be set at `Value` property or `Sketch` constraints.
+    * If the object is for example cornerBlock `PartDesign::Chamfer` the expression will be set at `Size` property or `Sketch` constraints.
+  * `refresh all selection` allows you to add quickly source and targets. First selected edge will be the source and all other edges will be considered as targets to set expressions.
+  * `add glue size` allows you to add expression for size changes of source edge.
+  * `use VarSet` checkbox if this option is checked then a file named `magicGlueVarSet` will be created and the size values ​​will be saved there. However, in this case it is not possible to link the source object to the values ​​in the `magicGlueVarSet` file, due to the limitation of the FreeCAD VarSet object, which throws `cyclic reference` errors. The `magicGlueVarSet` file is recognized by the `.Label` attribute, so you only need to change the file name to use more VarSet files. This option is available only since FreeCAD 1.0 version.
+  
+* **Clean glue:** 
+  * `refresh all selection` allows you to add target objects to clean expressions.
+  * `clean glue position` clean all position expressions. Make sure you do not have your private expressions.
+  * `clean glue size` clean all size expressions. Make sure you do not have your private expressions.
+
+* **Super glue everywhere:** this option is an attempt to quickly automatically parameterize a simple model so that the thickness of the wood used or the dimensions can be changed. The position parameterization is saved directly in the objects, while the VarSet object is used to parameterize the sizes, so that you can conveniently change the sizes in one place.
+  * `add super glue everywhere` this option set parameterization for position and sizes at once for all objects.
+  * `clean super glue everywhere` this option remove parameterization for position and sizes at once from all objects.
+  * `set order from selected` sets the objects to be parameterized in the appropriate order selected by the user. This option is useful in more complex, multi-level structures, where with automatic ordering, the elements from the top level may not be parameterized correctly due to the same position as the lower elements.
+  * `glue position` this option sets the parameterization for a position, for all objects, or only for user-selected objects.
+  * `glue size` this option creates VarSet object and set the parameterization for a size, for all objects, or only for user-selected objects.
+  * `clean position` this option removes the parameterization for a position, for all objects, or only for user-selected objects.
+  * `clean size` this option removes the parameterization for a size, for all objects, or only for user-selected objects. But this option not removes the VarSet object.
+
+* **Cross:**
+  * `Corner cross:` buttons `-`, `+` resize the cross in the right bottom of the screen, it has auto-repeat.
+  * `Center cross:` buttons `on`, `off` turn on and off the center cross at the screen.
+  * `keep custom cross settings` allows to store the custom cross setting after this tool exit.
+
+> [!IMPORTANT]
+> Sometimes after adding glue it doesn't work, FreeCAD shows a corrupted file in the objects window Tree. However, the expressions set by magicGlue tool are correct but magicGlue skills are too advanced for FreeCAD parser. This is because FreeCAD expression parser works when opening the file and has a very basic parsing solution, the are no reference for Faces and Edges, key thing im my opinion. **To make it work you have to reopen the file and move or resize the source element, the errors should disappear.**
+
+**Video tutorials:** 
+* [How to make parametric furniture quickly](https://www.youtube.com/watch?v=z2rpVoLgqWI)
+* [FreeCAD 1.1 automatic parameterization](https://www.youtube.com/watch?v=ZAKGnY_0sj8)
+* [Table with adjustable height](https://www.youtube.com/watch?v=JhbRkCsrQWg)
+
+## sketch2clone
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/sketch2clone.png"> This tool allows to replace selected Sketches with Clones and thanks to it, convert static model to parametric. First selected Sketch will be changed into `Parametric Pattern` for all other selected Sketches. After this operation, if you change the `Parametric Pattern` all other Sketches will be automatically updated with new pattern. For example if you have Pad, it will change the shape. Make sure the center of coordinate axes XYZ for each selected Sketch is in the middle of the pattern, this will allow for correct positioning of the Sketches. To select more objects hold left CTRL key during selection. For more complicated objects use [panel2link](#panel2link) or [panel2clone](#panel2clone) at the whole `Part`. 
+
+**Video tutorials:** 
+* [Automatic parametrization](https://www.youtube.com/watch?v=JuZsAjrQr6M)
+* [Playlist for parametrization](https://www.youtube.com/playlist?list=PLSKOS_LK45BCzvg_B7oSTk1IsQnu5thtZ)
+
+## showAlias
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showAlias.png"> To see all objects with alias: 1. First select spreadsheet at objects Tree. 2. Click this tool icon to activate the preview mode. 3. Click any spreadsheet cell with alias. 
+
+> [!IMPORTANT]
+> This tool needs to be activated to work. To activate this tool you have to select spreadsheet at objects Tree and click this tool icon. If this tool will be activated you can select any cell with alias to see all objects selected. The selected objects at 3D model will be those that uses the selected alias. Also the objects will be selected at objects Tree. To finish the preview mode, click the tool icon without any selection.
+
+**Video tutorials:** 
+* [Preview alias](https://www.youtube.com/watch?v=tS9pvkPH5RI)
+
+<br><br><br>
+
+# Construction profiles
 
 ## panel2profile
 
@@ -2163,78 +2199,60 @@ Working with raw wood is an art of some sort. This is the true form of working w
 
 <br><br>
 
-# Parameterization
+# Router
 
-## magicGlue
+## Router bit - Cove
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicGlue.png"> This tool allows you to add or remove expressions to keep objects position and size.
-
-**Options:**
-
-* **Glue position:** This option allows you to glue position of target objects to the source object position.
-  * `set` **for source** allows you to add source object position. The source can be vertex or face. For vertex the `XYZ` placement will be get as reference point. For face the `CenterOfMass` will be the reference point, so you need to be careful with linking to this face source because the `CenterOfMass` move `1/2` of the object move way. However it can be used to glue object to the center, for example center furniture side.
-  * `set` **for target** allows you to add target objects to set expressions. If the object is Cube `Part::Box` the expression will be set at `Placement` of the `Cube`. If the object is Pad `PartDesign::Pad` the expression will be set at `Placement` of its `Body`.
-  * `refresh all selection` allows you to add quickly source and targets. First selected vertex or face will be the source and all other objects will be considered as targets to set expressions. Also this is default init option, for example if you select vertex and 2 objects and open the tool this will be ready to set glue position.
-  * `add glue` for `X` direction allows you to add expression for moving objects along `X` axis.
-  * `add glue` for `Y` direction allows you to add expression for moving objects along `Y` axis.
-  * `add glue` for `Z` direction allows you to add expression for moving objects along `Z` axis.
-  * `use VarSet` checkbox if this option is checked then a file named `magicGlueVarSet` will be created and the position values ​​will be saved there. However, in this case it is not possible to link the source object to the values ​​in the `magicGlueVarSet` file, due to the limitation of the FreeCAD VarSet object, which throws `cyclic reference` errors. The `magicGlueVarSet` file is recognized by the `.Label` attribute, so you only need to change the file name to use more VarSet files. This option is available only since FreeCAD 1.0 version.
-
-* **Glue size:** 
-  * `set` **for source** allows you to add source object position. The source can be edge. The selected `edge.Length` will be the reference point.
-  * `set` **for target** allows you to add target objects to set expressions. The selected objects should be edges. 
-    * If the object is Cube `Part::Box` the expression will be set to `Length` or `Width` or `Height` of the `Cube` according to the selected edge plane. 
-    * If the object is Pad `PartDesign::Pad` the expression will be set at `Length` property or `Sketch` constraints.
-    * If the object is for example Profile `PartDesign::Thickness` the expression will be set at `Value` property or `Sketch` constraints.
-    * If the object is for example cornerBlock `PartDesign::Chamfer` the expression will be set at `Size` property or `Sketch` constraints.
-  * `refresh all selection` allows you to add quickly source and targets. First selected edge will be the source and all other edges will be considered as targets to set expressions.
-  * `add glue size` allows you to add expression for size changes of source edge.
-  * `use VarSet` checkbox if this option is checked then a file named `magicGlueVarSet` will be created and the size values ​​will be saved there. However, in this case it is not possible to link the source object to the values ​​in the `magicGlueVarSet` file, due to the limitation of the FreeCAD VarSet object, which throws `cyclic reference` errors. The `magicGlueVarSet` file is recognized by the `.Label` attribute, so you only need to change the file name to use more VarSet files. This option is available only since FreeCAD 1.0 version.
-  
-* **Clean glue:** 
-  * `refresh all selection` allows you to add target objects to clean expressions.
-  * `clean glue position` clean all position expressions. Make sure you do not have your private expressions.
-  * `clean glue size` clean all size expressions. Make sure you do not have your private expressions.
-
-* **Super glue everywhere:** this option is an attempt to quickly automatically parameterize a simple model so that the thickness of the wood used or the dimensions can be changed. The position parameterization is saved directly in the objects, while the VarSet object is used to parameterize the sizes, so that you can conveniently change the sizes in one place.
-  * `add super glue everywhere` this option set parameterization for position and sizes at once for all objects.
-  * `clean super glue everywhere` this option remove parameterization for position and sizes at once from all objects.
-  * `set order from selected` sets the objects to be parameterized in the appropriate order selected by the user. This option is useful in more complex, multi-level structures, where with automatic ordering, the elements from the top level may not be parameterized correctly due to the same position as the lower elements.
-  * `glue position` this option sets the parameterization for a position, for all objects, or only for user-selected objects.
-  * `glue size` this option creates VarSet object and set the parameterization for a size, for all objects, or only for user-selected objects.
-  * `clean position` this option removes the parameterization for a position, for all objects, or only for user-selected objects.
-  * `clean size` this option removes the parameterization for a size, for all objects, or only for user-selected objects. But this option not removes the VarSet object.
-
-* **Cross:**
-  * `Corner cross:` buttons `-`, `+` resize the cross in the right bottom of the screen, it has auto-repeat.
-  * `Center cross:` buttons `on`, `off` turn on and off the center cross at the screen.
-  * `keep custom cross settings` allows to store the custom cross setting after this tool exit.
-
-> [!IMPORTANT]
-> Sometimes after adding glue it doesn't work, FreeCAD shows a corrupted file in the objects window Tree. However, the expressions set by magicGlue tool are correct but magicGlue skills are too advanced for FreeCAD parser. This is because FreeCAD expression parser works when opening the file and has a very basic parsing solution, the are no reference for Faces and Edges, key thing im my opinion. **To make it work you have to reopen the file and move or resize the source element, the errors should disappear.**
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerCove4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerCove2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerCove.png"> 
+> [!NOTE]
+> This tool allows to create decoration router bits effect. You can select many edges or faces. The selected edges or faces do not have to be at the same object. You can select edges or faces at any object. But each edge or face need to be according to the XYZ coordinate axis to get correct plane of the edge or face. For face the routing path is the CenterOfMass of the face and also along the longest edge. Hold left CTRL key during edges or faces selection. The router bits get size from object thickness. If the router bit is for example Cove2, it means the size of the Cove will be 1/2 of the object thickness.
 
 **Video tutorials:** 
-* [How to make parametric furniture quickly](https://www.youtube.com/watch?v=z2rpVoLgqWI)
-* [FreeCAD 1.1 automatic parameterization](https://www.youtube.com/watch?v=ZAKGnY_0sj8)
-* [Table with adjustable height](https://www.youtube.com/watch?v=JhbRkCsrQWg)
+* [Router Cove](https://www.youtube.com/watch?v=MQYaZ4NEiBI)
+* [Decoration testing with router bits](https://www.youtube.com/watch?v=K229hhMt8Vc)
+* [How to use decoration features](https://www.youtube.com/watch?v=R9u6ikswO_0)
 
-## sketch2clone
+## Router bit - Round Over
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/sketch2clone.png"> This tool allows to replace selected Sketches with Clones and thanks to it, convert static model to parametric. First selected Sketch will be changed into `Parametric Pattern` for all other selected Sketches. After this operation, if you change the `Parametric Pattern` all other Sketches will be automatically updated with new pattern. For example if you have Pad, it will change the shape. Make sure the center of coordinate axes XYZ for each selected Sketch is in the middle of the pattern, this will allow for correct positioning of the Sketches. To select more objects hold left CTRL key during selection. For more complicated objects use [panel2link](#panel2link) or [panel2clone](#panel2clone) at the whole `Part`. 
-
-**Video tutorials:** 
-* [Automatic parametrization](https://www.youtube.com/watch?v=JuZsAjrQr6M)
-* [Playlist for parametrization](https://www.youtube.com/playlist?list=PLSKOS_LK45BCzvg_B7oSTk1IsQnu5thtZ)
-
-## showAlias
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showAlias.png"> To see all objects with alias: 1. First select spreadsheet at objects Tree. 2. Click this tool icon to activate the preview mode. 3. Click any spreadsheet cell with alias. 
-
-> [!IMPORTANT]
-> This tool needs to be activated to work. To activate this tool you have to select spreadsheet at objects Tree and click this tool icon. If this tool will be activated you can select any cell with alias to see all objects selected. The selected objects at 3D model will be those that uses the selected alias. Also the objects will be selected at objects Tree. To finish the preview mode, click the tool icon without any selection.
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerRoundOver4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerRoundOver2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerRoundOver.png"> 
+> [!NOTE]
+> This tool allows to create decoration router bits effect. You can select many edges or faces. The selected edges or faces do not have to be at the same object. You can select edges or faces at any object. But each edge or face need to be according to the XYZ coordinate axis to get correct plane of the edge or face. For face the routing path is the CenterOfMass of the face and also along the longest edge. Hold left CTRL key during edges or faces selection. The router bits get size from object thickness. If the router bit is for example Cove2, it means the size of the Cove will be 1/2 of the object thickness.
 
 **Video tutorials:** 
-* [Preview alias](https://www.youtube.com/watch?v=tS9pvkPH5RI)
+* [Router Round Over](https://www.youtube.com/watch?v=RErYZpqbqAY)
+* [Decoration testing with router bits](https://www.youtube.com/watch?v=K229hhMt8Vc)
+* [How to use decoration features](https://www.youtube.com/watch?v=R9u6ikswO_0)
+
+## Router bit - Straight
+
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerStraight4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerStraight3.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerStraight2.png"> 
+> [!NOTE]
+> This tool allows to create decoration router bits effect. You can select many edges or faces. The selected edges or faces do not have to be at the same object. You can select edges or faces at any object. But each edge or face need to be according to the XYZ coordinate axis to get correct plane of the edge or face. For face the routing path is the CenterOfMass of the face and also along the longest edge. Hold left CTRL key during edges or faces selection. The router bits get size from object thickness. If the router bit is for example Cove2, it means the size of the Cove will be 1/2 of the object thickness.
+
+**Video tutorials:** 
+* [Router Straight](https://www.youtube.com/watch?v=NDBLmh2SwwI)
+* [Decoration testing with router bits](https://www.youtube.com/watch?v=K229hhMt8Vc)
+
+## Router bit - Chamfer
+
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerChamfer4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerChamfer2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/routerChamfer.png"> 
+> [!NOTE]
+> This tool allows to create decoration router bits effect. You can select many edges or faces. The selected edges or faces do not have to be at the same object. You can select edges or faces at any object. But each edge or face need to be according to the XYZ coordinate axis to get correct plane of the edge or face. For face the routing path is the CenterOfMass of the face and also along the longest edge. Hold left CTRL key during edges or faces selection. The router bits get size from object thickness. If the router bit is for example Cove2, it means the size of the Cove will be 1/2 of the object thickness.
+
+**Video tutorials:** 
+* [Router Chamfer](https://www.youtube.com/watch?v=Z45TDosmb-U)
+* [Decoration testing with router bits](https://www.youtube.com/watch?v=K229hhMt8Vc)
+
+## multiPocket
+
+<img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/multiPocket4.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/multiPocket2.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/multiPocket.png">
+> [!NOTE]
+> This tool allows to create custom decoration from Sketches. You can select many Sketches at once. The selected Sketches will make Pockets at the first selected object. The Sketches need to be correctly aligned at the object. Hold left CTRL key during Sketches selection. For 2 and 4 variant this tool gets first selected object size and create Pocket with 1/2 thickness or 1/4 thickness.
+
+**Video tutorials:** 
+* [How to create custom decoration](https://www.youtube.com/watch?v=sZDToy3qCk4)
+* [multiPocket custom decoration](https://www.youtube.com/watch?v=FHups7Zvl5E)
+* [Future of parametric modeling](https://www.youtube.com/watch?v=0M9EW0I9iwg)
 
 <br><br><br>
 
@@ -2249,37 +2267,42 @@ Working with raw wood is an art of some sort. This is the true form of working w
 
 <br><br><br>
 
-## panel2pad
+## align2Curve
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2pad.png"> This tool allows to replace `Cube` panel with `Pad` panel. The new created `Pad` panel will get the same dimensions, placement and rotation as the selected `Cube` panel. You can transform many `Cube` panels into `Pad` at once. To select more `Cubes` hold `left CTRL key` during selection. This tool is mostly dedicated to add decoration that is not supported for `Cube` objects by FreeCAD PartDesign workbench. You can also change shape by changing the `Sketch`. This is mostly used for decoration that can be applied only to `Pad`, like `Fillet`.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/align2Curve.png"> This tool allows to align panels to the curve. It has been created for magicMove Copy Path option, to align panels to the curve. To select more objects hold left CTRL key during selection. To use this tool the panel need to have only single axis rotation offset. For example if you rotate panel 35 degrees around Y axis the and the vertex will touch the curve. This tool not works if you need to rotate the panel additionally, for example 15 degrees around X axis. For more details see description at documentation page. 
+
+Selection modes:
+
+* **Curve and Edges** In this mode you can select curve and next edge at each object you want to align to the curve. This mode is automatic and this tool will try to calculate the angle between the curve and the selected edge. The selected edge need to be this one with object anchor and the object anchor should be already at the curve. If this tool will be able to determine the angle, it will align the panel. Otherwise the panel will be skipped.
+
+* **Curve and Vertex** In this mode you can select curve and next vertex at each object you want to align to the curve. This mode is more precised and slower. It allow to align panel backwards, so the selected vertex will be before he anchor. In this mode the tool will try to search the curve from the nearest side of the vertex. If the curve will be found the panel will be aligned, otherwise the panel will be skipped.
 
 **Video tutorials:** 
-* [Automatic parametrization](https://www.youtube.com/watch?v=JuZsAjrQr6M)
-* [FreeCAD 1.1 direct assembly](https://www.youtube.com/watch?v=u3Yh2WvdUIk)
+* [Align to curve](https://www.youtube.com/watch?v=fbJV_SEuNLg)
+
+## roundCurve
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/roundCurve.png"> This tool allows to improve curve visibility. It makes the curve to look more rounded. Normally, circle Sketch is rendering from straight line segments. If you want to align panel to the curve manually this might be problem to hit exactly the point you want at curve. This tool may help for more precised alignment. If you select the curve and click this tool again the curve will back to default settings. To select more object hold left CTRL key during selection. 
+
+**Video tutorials:** 
+* [Align to curve](https://www.youtube.com/watch?v=fbJV_SEuNLg)
 
 <br><br><br>
 
-## addExternal
+## showOccupiedSpace
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/addExternal.png"> This tool allows you to quickly create external geometry visible in a sketch from selected edges and faces. Edges or faces can belong to any objects. If you select face all edges will be added as external geometry, if you select edge only single edge will be added. This tool uses the `PartDesign::SubShapeBinder` function but in a slightly more advanced form. To select more objects, hold down CTRL-left while selecting them. 
-
-**Possible selections methods:**
-
-* **Face as Plane + Edges and Faces** - in this case new Sketch with external geometry will be created. The new sketch plane will be taken from first selected face. I recommend this method, because in this case the sketch will be created in the root directory and all drawn wires can be converted to Pads in-place, using for example tool [wires2pad](#wires2pad) or [magicManager](#magicmanager) `Panel from vertices` option.
-* **Sketch + Edges and Faces** - in this case the external geometry will be created inside the selected Sketch. If the Sketch is inside containers with offsets you can adjust position of the converted Pads using for example tool [panelMove2Anchor](#panelmove2anchor) and selecting two edges.
-
-**Video tutorials:** 
-* [How to add external geometry quickly](https://www.youtube.com/watch?v=TMcw2JkUeVM)
-* [Irregular Shapes: create and measure Part :: Extrusion](https://www.youtube.com/watch?v=l8W5IDqvGgw)
-
-## wires2pad
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/wires2pad.png"> You have to select at least one Sketch to create a Pad from wires. This tool allows you to create panels from wires in Sketch. A Pad with the default size of `MagicPanels.gWoodThickness` will be created for each wire. To change the default wood size use [magicSettings](#magicsettings) tool or change the `Pad.Length` option. Also you can use the `Panel from vertices` option in the [magicManager](#magicmanager) tool, selecting the appropriate edges. To create separate Pads from one Sketch, wires must not touch each other. If the Sketch is placed in containers, for example `Part` or `LinkGroup` with set offsets, you need to adjust the panel position, for example using the [panelMove2Anchor](#panelmove2anchor) tool, selecting two edges. You can also consider creating panels from the Sketch in the root directory, see the [addExternal](#addexternal) tool.
-
-**Video tutorials:** 
-* [How to create panel from wires in Sketch](https://www.youtube.com/watch?v=wV6nlN2z1Ng)
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showOccupiedSpace.png"> This tool allows you to calculate the overall occupied space in 3D by the selected parts or whole model, if nothing is selected. This approach might be very useful at furniture designing process. For example you can see how much space in your room will take opened front of the furniture or how much space take selected parts of the furniture. Normally, all the `Pad` or `Cube` elements, should be created according to the `XYZ` plane, so there will be no difference between the real dimensions and occupied space in 3D.
 
 <br><br><br>
+
+## showConstraints
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showConstraints.png"> To use this tool first select objects to see edges with the same size as defined constraints. 
+
+> [!NOTE] 
+> This tool search all constraints for selected objects. If the constraints is non-zero this tool search for all edges with the same size. It allows for quick preview if all the edges are defined by the Sketch. However, in some cases, if the constraints is offset and it is equal edge size this will give false result. To select more objects hold left CTRL key during selection. 
+
+<br><br>
 
 # Code and Debug
 

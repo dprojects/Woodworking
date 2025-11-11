@@ -42,14 +42,26 @@ class WoodworkingWorkbench (Workbench):
 		# toolbar
 		# ################################################################################################
 		
-		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - default"), 
-			loadToolbar.getItems("Woodworking - default"))
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - start"), 
+			loadToolbar.getItems("Woodworking - start"))
 
-		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - move"), 
-			loadToolbar.getItems("Woodworking - move"))
-
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - move and copy"), 
+			loadToolbar.getItems("Woodworking - move and copy"))
+		
 		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - resize"), 
 			loadToolbar.getItems("Woodworking - resize"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - face"), 
+			loadToolbar.getItems("Woodworking - face"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - between"), 
+			loadToolbar.getItems("Woodworking - between"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - irregular shapes"), 
+			loadToolbar.getItems("Woodworking - irregular shapes"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - position"), 
+			loadToolbar.getItems("Woodworking - position"))
 
 		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - preview"), 
 			loadToolbar.getItems("Woodworking - preview"))
@@ -57,29 +69,26 @@ class WoodworkingWorkbench (Workbench):
 		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - dowels and screws"), 
 			loadToolbar.getItems("Woodworking - dowels and screws"))
 		
-		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - drilling holes"), 
-			loadToolbar.getItems("Woodworking - drilling holes"))
-
-		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - project manage"), 
-			loadToolbar.getItems("Woodworking - project manage"))
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - fixture"), 
+			loadToolbar.getItems("Woodworking - fixture"))
 
 		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - dimensions"), 
 			loadToolbar.getItems("Woodworking - dimensions"))
 
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - project manage"), 
+			loadToolbar.getItems("Woodworking - project manage"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - drilling holes"), 
+			loadToolbar.getItems("Woodworking - drilling holes"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - convert"), 
+			loadToolbar.getItems("Woodworking - convert"))
+
 		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - decorations"), 
 			loadToolbar.getItems("Woodworking - decorations"))
 		
-		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - advanced"), 
-			loadToolbar.getItems("Woodworking - advanced"))
-	
-		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - copy"), 
-			loadToolbar.getItems("Woodworking - copy"))
-
 		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - parameterization"), 
 			loadToolbar.getItems("Woodworking - parameterization"))
-	
-		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - fixture"), 
-			loadToolbar.getItems("Woodworking - fixture"))
 	
 		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - construction"), 
 			loadToolbar.getItems("Woodworking - construction"))
@@ -90,15 +99,9 @@ class WoodworkingWorkbench (Workbench):
 		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - router"), 
 			loadToolbar.getItems("Woodworking - router"))
 
-		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - face"), 
-			loadToolbar.getItems("Woodworking - face"))
-
-		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - between"), 
-			loadToolbar.getItems("Woodworking - between"))
-
-		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - special"), 
-			loadToolbar.getItems("Woodworking - special"))
-
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - advanced"), 
+			loadToolbar.getItems("Woodworking - advanced"))
+		
 		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - code and debug"), 
 			loadToolbar.getItems("Woodworking - code and debug"))
 
@@ -135,13 +138,13 @@ class WoodworkingWorkbench (Workbench):
 					msg = QT_TRANSLATE_NOOP("Workbench", "Setting icons position ...")
 					pref = 'User parameter:Tux/PersistentToolbars/User/WoodworkingWorkbench'
 					
-					pos = 'Workbench,Woodworking - router,Woodworking - advanced,Woodworking - parameterization,Woodworking - code and debug,Break,Woodworking - copy,Woodworking - face,Woodworking - between,Woodworking - special,Woodworking - construction,Break,Woodworking - project manage,Woodworking - resize,Woodworking - move,Woodworking - preview'
+					pos = 'Break,Workbench,Woodworking - router,Woodworking - advanced,Woodworking - parameterization,Woodworking - code and debug,Break,Woodworking - convert,Woodworking - face,Woodworking - between,Woodworking - irregular shapes,Woodworking - construction,Break,Woodworking - project manage,Woodworking - resize,Woodworking - move and copy,Woodworking - preview,Woodworking - position'
 					FreeCAD.ParamGet(pref).SetString('Top', pos)
 					
-					pos = 'Woodworking - default,Woodworking - decorations,Woodworking - dimensions'
+					pos = 'Woodworking - start,Woodworking - decorations,Woodworking - dimensions'
 					FreeCAD.ParamGet(pref).SetString('Left', pos)
 					
-					pos = 'Woodworking - joinery,Break,Woodworking - dowels and screws,Woodworking - drilling holes,Woodworking - fixture'
+					pos = 'Break,Woodworking - joinery,Break,Woodworking - dowels and screws,Woodworking - drilling holes,Woodworking - fixture'
 					FreeCAD.ParamGet(pref).SetString('Right', pos)
 					
 					FreeCAD.ParamGet(pref).SetString('Bottom', '')
