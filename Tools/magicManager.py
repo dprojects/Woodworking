@@ -912,10 +912,8 @@ def showQtGUI():
 			MagicPanels.moveToFirstWithInverse([ part ], gLastSelected)
 			
 			# set color of last selected object
-			try:
-				MagicPanels.copyColors(gLastSelected, pad)
-			except:
-				skip = 1
+			MagicPanels.copyColors(gLastSelected, pad)
+			MagicPanels.copyColors(gLastSelected, body)
 			
 			# turn off observer after operation
 			if gObserver != "":
