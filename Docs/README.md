@@ -1131,11 +1131,13 @@ Available anchors to select:
 
 ### Report type
 
-* **default:** default object search path. This path should also be used for the built-in Assembly workbench.
+* **default:** default object search path. This path should also be used for the built-in Assembly workbench. This option allows you to search all objects in active document.
+* **selected:** allows you to search only for selected objects in active document. This might be useful if you have many furniture version in the same active document but you are not able to get it to work the [Visibility](#visibility) feature.
 * **assembly:** object search path dedicated only to [Assembly4](https://codeberg.org/Zolko/Assembly4) workbench by [Zolko](https://forum.freecad.org/viewtopic.php?t=86110).
+
 * **q - report type:** the default report type allows you to quickly create a cutting list needed to order boards from a DIY store in Poland. Objects are grouped by the same dimensions, making cutting easier.
-* **n - report type:** this is a list of all items, grouped by item name. This report type is necessary to verify that all boards were received from cutting service with correct dimensions.
-* **g - report type:** this type of report groups all items based on their location in folders. This allows you to place all items of a given color, type, or material in a single folder, and this will be reflected in the report. This makes it easier to order boards of different types or thicknesses but with the same dimensions. This type of report can also be used to create groups with edge veneer, left, right, or without veneer.
+* **n - report type:** this is a list of all items, grouped by item name (`object.Label`). This report type is necessary to verify that all boards were received from cutting service with correct dimensions.
+* **g - report type:** this type of report groups all items based on their location in folders and containers. This allows you to place all items of a given color, type, or material in a single folder, and this will be reflected in the report. This makes it easier to order boards of different types or thicknesses but with the same dimensions. This type of report can also be used to create groups with edge veneer, left, right, or without veneer.
 * **e - report type:** this type of report allows you to precisely describe each face of the object, based on the edge length. Thanks to this you can describe which edge lengths should be covered with veneer. To determine the edge color with veneer, you must set the color of the entire furniture as a color reference. Also you must set the edge symbol, which will appear on the report.
 * **d - report type:** this report type is an extended version of the `e - report` type, but also displays named constraints from the `PartDesign::Hole` object sketch. Additionally, the header comes from the Body object. This allows you to describe all edge distances, diameters, and depths for holes.
 * **c - report type:** this report type shows the dimensions for all named constraints inside Sketch objects and the `Length` size from `PartDesign` objects.
@@ -1191,6 +1193,10 @@ By default the values at report are rounded to have more clear listing. Rounding
   * **screw:** dedicated mostly to hide the base realistic looking screw.
   * **inherit:** not list elements inside highest hidden container. This is useful to hide whole cabinet inside LinkGroup container. For example you have wardrobe with 5 modules, and each cabinet module inside separate LinkGroup container and you want generate cut-list only for single visible cabinet module and to create it one by one in real-life.
   * **special BOM attribute:** if object has `BOM` attribute set to `False` (`App::PropertyBool`) it will be skipped during parsing and not listed at the report. This special attribute is used by [magicCut](#magiccut) and [magicKnife](#magicknife) tools to skip copies at the report. For more details see video tutorial: [Skip copies in cut-list](https://www.youtube.com/watch?v=rFEDLaD8lxM).
+
+> [!TIP]
+> If you are not able to get it to working, for example you have many deep nesting containers and you do not want to parse 
+> all objects, please try `selected` option in [Report type](#report-type).
 
 * **Part :: Cut content:**
   * **all:** shows Base and Tool

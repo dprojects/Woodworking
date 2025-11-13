@@ -24,7 +24,8 @@ translate = FreeCAD.Qt.translate
 # Parse path mode
 sPPM = "default" # default
 sPPMDsc = {
-	"default" : translate("getDimensions", "normal mode"),
+	"default" : translate("getDimensions", "all objects in active document"),
+	"selected" : translate("getDimensions", "only selected objects in active document"),
 	"assembly" : translate("getDimensions", "dedicated for Assembly4 workbench objects") # no comma
 }
 
@@ -32,13 +33,13 @@ sPPMDsc = {
 # Report customization (Label Type Feature):
 sLTF = "q" # default
 sLTFDsc = {
-	"q" : translate("getDimensions", "quick, quantity first"),
-	"n" : translate("getDimensions", "names, objects listing"),
-	"g" : translate("getDimensions", "group, grandparent or parent folder name first"),
-	"e" : translate("getDimensions", "edgeband, extended edge"),
-	"d" : translate("getDimensions", "detailed, edgeband, drill holes, countersinks"),
-	"c" : translate("getDimensions", "constraints names, totally custom report"),
-	"p" : translate("getDimensions", "pads, show list of all constraints"),
+	"q" : translate("getDimensions", "quantity first for cut chipboards service"),
+	"n" : translate("getDimensions", "objects labels for verification"),
+	"g" : translate("getDimensions", "containers labels for wood type"),
+	"e" : translate("getDimensions", "dedicated for edgeband"),
+	"d" : translate("getDimensions", "dedicated for holes description"),
+	"c" : translate("getDimensions", "constraints names for custom report"),
+	"p" : translate("getDimensions", "all constraints"),
 	"a" : translate("getDimensions", "approximation for cutlistoptimizer.com") # no comma
 }
 
@@ -400,6 +401,7 @@ def showQtGUI():
 			toolSH = 680
 			
 			selWidth = 150 # selection width
+			selWidthSmall = 80 # selection width small
 			
 			# ############################################################################
 			# main window
@@ -430,9 +432,10 @@ def showQtGUI():
 			self.rcO.addItems(self.rcList)
 			self.rcO.setCurrentIndex(self.rcList.index(str(sLTF)))
 			self.rcO.textActivated[str].connect(self.setRC)
-			self.rcO.setFixedWidth(selWidth)
+			self.rcO.setFixedWidth(selWidthSmall)
 			
-			self.rcIS = QtGui.QLabel(str(sLTFDsc[sLTF]) + sEmptyDsc, self)
+			info = str(sPPMDsc[sPPM]) + ", " + str(sLTFDsc[sLTF]) + sEmptyDsc
+			self.rcIS = QtGui.QLabel(info, self)
 			
 			# additional reports
 			self.artsCB = QtGui.QCheckBox(translate('getDimensions', '- thickness summary'), self)
@@ -781,6 +784,7 @@ def showQtGUI():
 		def setSubmenu(self, iAction):
 
 			if iAction == "show":
+				self.groupU.show()
 				# units for area
 				self.ufaL.show()
 				self.ufaO.show()
@@ -803,7 +807,8 @@ def showQtGUI():
 		def setRC(self, selectedText):
 			global sLTF
 			sLTF = selectedText
-			self.rcIS.setText(str(sLTFDsc[sLTF]) + sEmptyDsc)
+			info = str(sPPMDsc[sPPM]) + ", " + str(sLTFDsc[sLTF]) + sEmptyDsc
+			self.rcIS.setText(info)
 
 			# submenu for report type
 			if selectedText == "c" or selectedText == "p" or selectedText == "a":
@@ -835,6 +840,7 @@ def showQtGUI():
 				self.ufsL.hide()
 				self.ufsO.hide()
 				self.ufsIS.hide()
+				self.groupU.hide()
 				
 				self.artsCB.hide()
 				self.areiCB.hide()
@@ -884,6 +890,8 @@ def showQtGUI():
 		def setPPM(self, selectedText):
 			global sPPM
 			sPPM = selectedText
+			info = str(sPPMDsc[sPPM]) + ", " + str(sLTFDsc[sLTF]) + sEmptyDsc
+			self.rcIS.setText(info)
 
 		def setDFO(self, selectedText):
 			global sUnitsMetric, sPDD
@@ -5023,26 +5031,20 @@ def checkStatus():
 	global sQT
 	global gExecute
 	
-	skip = 0
-	
 	try:
-	
 		gAD = FreeCAD.ActiveDocument
+		gOBs = gAD.Objects
 		
 		# remove existing Fake Cube object if exists (auto clean after error)
 		if gAD.getObject("gFakeCube"):
 			gAD.removeObject("gFakeCube")
 		
-		gOBs = gAD.Objects
+		# execute only if tests passed
 		gExecute = "yes"
-
+		
 	except:
-
 		sQT = "no"
 		gExecute = "no"
-		skip = 1
-	
-	if skip == 1:
 	
 		info = ""
 		info += translate("getDimensions", "Please create active document and objects to generate cut-list.")
@@ -5067,6 +5069,12 @@ if sQT == "yes":
 
 # if Qt GUI ok button
 if gExecute == "yes":
+
+	# set objects to parse
+	if sPPM == "selected":
+		gOBs = FreeCADGui.Selection.getSelection()
+	else:
+		gOBs = FreeCAD.ActiveDocument.Objects
 
 	# create Fake Cube but not call recompute
 	gFakeCube = gAD.addObject("Part::Box", "gFakeCube")
