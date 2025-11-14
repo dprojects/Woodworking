@@ -40,6 +40,7 @@ sLTFDsc = {
 	"d" : translate("getDimensions", "dedicated for holes description"),
 	"c" : translate("getDimensions", "constraints names for custom report"),
 	"p" : translate("getDimensions", "all constraints"),
+	"w" : translate("getDimensions", "calculate weight"),
 	"a" : translate("getDimensions", "approximation for cutlistoptimizer.com") # no comma
 }
 
@@ -286,6 +287,7 @@ gLang24 = ""
 gLang25 = ""
 gLang26 = ""
 gLang27 = ""
+gLang28 = ""
 
 
 # ###################################################################################################################
@@ -302,10 +304,12 @@ dbFCL = dict() # length
 # init database for dimensions
 dbDQ = dict() # quantity
 dbDA = dict() # area
+dbDW = dict() # weight
 
 # init database for thickness
 dbTQ = dict() # quantity
 dbTA = dict() # area
+dbTW = dict() # weight
 
 # init database for edge
 dbE = dict()
@@ -1145,6 +1149,10 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 		if sUnitsEdge == "system":
 			return MagicPanels.unit2gui( round(v, sPDE) )
 	
+	# for weight
+	if iType == "weight":
+		return MagicPanels.unit2gui( iValue, "kg", sPDA )
+	
 	# for area
 	if iType == "area":
 		
@@ -1237,6 +1245,10 @@ def toSheet(iValue, iType, iCaller="toSheet"):
 		else:
 			return  "=<<" + getUnit(iValue, iType, iCaller) + ">>"
 
+	# for weight
+	if iType == "weight":
+		return  "=<<" + getUnit(iValue, iType, iCaller) + " " + ">>"
+		
 	# for raw angle
 	if iType == "to-angle":
 		return  getUnit(iValue, iType, iCaller)
@@ -1426,7 +1438,7 @@ def getKey(iObj, iW, iH, iL, iType, iCaller="getKey"):
 	vKey += str(vKeyArr[2])
 
 	# key for name report
-	if iType == "d" and (sLTF == "n" or sLTF == "e" or sLTF == "d"):
+	if iType == "d" and (sLTF == "n" or sLTF == "w" or sLTF == "e" or sLTF == "d"):
 		vKey = str(vKey) + ":" + str(iObj.Label)
 
 	# key for group report
@@ -1469,6 +1481,19 @@ def getArea(iObj, iW, iH, iL, iCaller="getArea"):
 	vArea = vD1 * vD2
 
 	return vArea
+
+
+# ###################################################################################################################
+def getWeight(iObj, iArea, iCaller="getWeight"):
+
+	if hasattr(iObj, "Woodworking_Weight"):
+		woodWeight = MagicPanels.unit2value(iObj.Woodworking_Weight, "weight")
+	else:
+		woodWeight = float(MagicPanels.gWoodWeight)
+	
+	weight = (iArea * float(0.000001)) * woodWeight
+	
+	return weight
 
 
 # ###################################################################################################################
@@ -1632,6 +1657,10 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 		# get area for object
 		vArea = getArea(iObj, iW, iH, iL, iCaller) 
 	
+		# get weight
+		if sLTF == "w":
+			weight = getWeight(iObj, vArea, iCaller) 
+	
 		# get key  for object
 		vKey = getKey(iObj, iW, iH, iL, "d", iCaller)
 	
@@ -1640,10 +1669,17 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 	
 			dbDQ[vKey] = dbDQ[vKey] + 1
 			dbDA[vKey] = dbDA[vKey] + vArea
+			
+			if sLTF == "w":
+				dbDW[vKey] = dbDW[vKey] + weight
+
 		else:
 	
 			dbDQ[vKey] = 1
 			dbDA[vKey] = vArea
+
+			if sLTF == "w":
+				dbDW[vKey] = weight
 
 		# get key  for object (convert value to dimension string)
 		vKeyT = str(getKey(iObj, iW, iH, iL, "thick", iCaller))
@@ -1653,11 +1689,17 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 	
 			dbTQ[vKeyT] = dbTQ[vKeyT] + 1
 			dbTA[vKeyT] = dbTA[vKeyT] + vArea
+			
+			if sLTF == "w":
+				dbTW[vKeyT] = dbTW[vKeyT] + weight
 		else:
 	
 			dbTQ[vKeyT] = 1
 			dbTA[vKeyT] = vArea
 
+			if sLTF == "w":
+				dbTW[vKeyT] = weight
+				
 		# check visibility for edge if visibility feature is "edge"
 		# if visibility feature is "on" the whole object is skipped
 		# so never run this part for such object
@@ -3339,6 +3381,7 @@ def initLang():
 	global gLang25
 	global gLang26
 	global gLang27
+	global gLang28
 
 	# Polish language
 	if sLang  == "pl":
@@ -3381,6 +3424,7 @@ def initLang():
 		gLang25 = "poziomo"
 		gLang26 = "pionowo"
 		gLang27 = "Rozmiar forniru dla koloru "
+		gLang28 = "Waga"
 
 	# from system translation files
 	elif sLang  == "system":
@@ -3423,6 +3467,7 @@ def initLang():
 		gLang25 = translate("getDimensions", "horizontal")
 		gLang26 = translate("getDimensions", "vertical")
 		gLang27 = translate("getDimensions", "Needed veneer for color")
+		gLang28 = translate("getDimensions", "Weight")
 
 	# English language
 	else:
@@ -3465,6 +3510,7 @@ def initLang():
 		gLang25 = "horizontal"
 		gLang26 = "vertical"
 		gLang27 = "Needed veneer for color"
+		gLang28 = "Weight"
 
 
 # ###################################################################################################################
@@ -4657,6 +4703,107 @@ def setViewP(iCaller="setViewP"):
 
 
 # ###################################################################################################################
+def setViewWeight(iCaller="setViewWeight"):
+
+	global gSheet
+	global gSheetRow
+
+	# set headers
+	gSheet.set("A1", gLang1)
+	gSheet.set("D1", gLang4)
+	gSheet.set("E1", gLang2)
+	gSheet.set("F1", gLang5)
+	gSheet.set("G1", gLang28)
+
+	# merge cells
+	gSheet.mergeCells("A1:C1")
+
+	# text header decoration
+	gSheet.setStyle("A1:G1", "bold", "add")
+
+	# set background
+	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	gSheet.setBackground(vCell, gHeadCS)
+
+	# go to next spreadsheet row
+	gSheetRow = gSheetRow + 1
+
+	# add values
+	for key in dbDA.keys():
+
+		a = key.split(":")
+
+		gSheet.set("A" + str(gSheetRow), toSheet(a[3], "string", iCaller))
+		gSheet.set("B" + str(gSheetRow), "")
+		gSheet.set("C" + str(gSheetRow), "")
+		gSheet.set("D" + str(gSheetRow), toSheet(a[0], "d", iCaller))
+		gSheet.set("E" + str(gSheetRow), toSheet(dbDQ[key], "string", iCaller))
+		gSheet.set("F" + str(gSheetRow), toSheet(dbDA[key], "area", iCaller))
+		gSheet.set("G" + str(gSheetRow), toSheet(dbDW[key], "weight", iCaller))
+
+		# merge cells
+		gSheet.mergeCells( "A"+str(gSheetRow) +":"+ "C"+str(gSheetRow) )
+	
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+	# cell sizes
+	gSheet.setColumnWidth("A", 215)
+	gSheet.setColumnWidth("B", 90)
+	gSheet.setColumnWidth("C", 20)
+	gSheet.setColumnWidth("D", 90)
+	gSheet.setColumnWidth("E", 100)
+	gSheet.setColumnWidth("F", 80)
+	gSheet.setColumnWidth("G", 120)
+
+	# alignment
+	gSheet.setAlignment("A1:A" + str(gSheetRow), "left", "keep")
+	gSheet.setAlignment("B1:B" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("C1:C" + str(gSheetRow), "center", "keep")
+	gSheet.setAlignment("D1:D" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("E1:E" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("F1:F" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("G1:G" + str(gSheetRow), "right", "keep")
+
+	# fix for center header text in merged cells
+	gSheet.setAlignment("B1:B1", "center", "keep")
+	gSheet.setAlignment("C1:C1", "center", "keep")
+	gSheet.setAlignment("D1:D1", "center", "keep")
+
+	# ########################################################
+	# summary thickness part
+	# ########################################################
+
+	if sATS == False:
+		return
+
+	# add summary title for thickness
+	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+	gSheet.set(vCell, gLang7)
+	gSheet.setStyle(vCell, "bold", "add")
+	gSheet.setAlignment(vCell, "left", "keep")
+	gSheet.setBackground(vCell, gHeadCS)
+
+	# go to next spreadsheet row
+	gSheetRow = gSheetRow + 1
+	
+	for key in dbTQ.keys():
+
+		gSheet.set("D" + str(gSheetRow), toSheet(key, "d", iCaller))
+		gSheet.set("E" + str(gSheetRow), toSheet(dbTQ[key], "string", iCaller))
+		gSheet.set("F" + str(gSheetRow), toSheet(dbTA[key], "area", iCaller))
+		gSheet.set("G" + str(gSheetRow), toSheet(dbTW[key], "weight", iCaller))
+		gSheet.setAlignment("D" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("E" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("F" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("G" + str(gSheetRow), "right", "keep")
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+
+# ###################################################################################################################
 def setViewEdge(iCaller="setViewEdge"):
 
 	global gSheet
@@ -4925,6 +5072,10 @@ def selectView(iCaller="selectView"):
 	# main report - pads (all constraints report)
 	if sLTF == "p":
 		setViewP(iCaller)
+	
+	# main report - calculate weight
+	if sLTF == "w":
+		setViewWeight(iCaller)
 		
 	# main report - approximation (raw values calculated from vertex)
 	if sLTF == "a":

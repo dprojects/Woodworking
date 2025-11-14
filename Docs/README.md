@@ -182,6 +182,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * selected objects & weight in cut-list (getDimensions, MagicPanels, magicSettings)
     * tool to create Pad from Sketch quickly (sketch2pad)
     * update binaries to fix transparency issue in FreeCAD 1.1
     * parametric sides with holes (magicStart)
@@ -910,6 +911,7 @@ Available anchors to select:
 * **Wood thickness:** allows you to set the default thickness of the wood you create. This setting is used by tools such as [magicStart](#magicstart), [wires2pad](#wires2pad), [Default panels](#default-panels) and all others.
 * **Wood size X (long):** means the longer size for `XY` default panel, see: [Default panels](#default-panels).
 * **Wood size Y (short):** means the shorter size for `XY` default panel, see: [Default panels](#default-panels).
+* **Wood weight:** allows you to set default weight unit for wood. The wood weight value should be set in `kg per square meter` for metric units (`kg/m^2`), and for imperial units the wood weight in `pounds per square inch` (`lb/in^2`). By default, the weight of `18 mm` chipboard is set to `12.6 kg/m^2`. This value is used by [getDimensions](#getdimensions) cut-list tool to create `w - report type` and is recalculated to user units system settings.
 * **Wood color:** allows you to set the default color of the wood you create in RGBA color schema. This setting is used by tools like [magicStart](#magicstart), [wires2pad](#wires2pad), [Default panels](#default-panels) and all others. If you want to revert to the default wood color which is `RGBA = [ 247, 185, 108, 255 ]` leave all fields empty and press the `save settings` button.
 * **Window stays on top:**
   * `yes` - Tool windows always stay on top of all other applications. I personally use this feature when creating documentation. I have Krusader (Kwrite Edit) and the new tool window open simultaneously, so I can describe all the options without constantly clicking on the new tool window.
@@ -1135,6 +1137,7 @@ Available anchors to select:
 * **selected:** allows you to search only for selected objects in active document. This might be useful if you have many furniture version in the same active document but you are not able to get it to work the [Visibility](#visibility) feature.
 * **assembly:** object search path dedicated only to [Assembly4](https://codeberg.org/Zolko/Assembly4) workbench by [Zolko](https://forum.freecad.org/viewtopic.php?t=86110).
 
+
 * **q - report type:** the default report type allows you to quickly create a cutting list needed to order boards from a DIY store in Poland. Objects are grouped by the same dimensions, making cutting easier.
 * **n - report type:** this is a list of all items, grouped by item name (`object.Label`). This report type is necessary to verify that all boards were received from cutting service with correct dimensions.
 * **g - report type:** this type of report groups all items based on their location in folders and containers. This allows you to place all items of a given color, type, or material in a single folder, and this will be reflected in the report. This makes it easier to order boards of different types or thicknesses but with the same dimensions. This type of report can also be used to create groups with edge veneer, left, right, or without veneer.
@@ -1142,6 +1145,7 @@ Available anchors to select:
 * **d - report type:** this report type is an extended version of the `e - report` type, but also displays named constraints from the `PartDesign::Hole` object sketch. Additionally, the header comes from the Body object. This allows you to describe all edge distances, diameters, and depths for holes.
 * **c - report type:** this report type shows the dimensions for all named constraints inside Sketch objects and the `Length` size from `PartDesign` objects.
 * **p - report type:** this report type shows the dimensions for all constraints on Sketch objects, whether named or unnamed, and the `Length` size from `PartDesign` objects.
+* **w - report type:** this report type calculates the weight based on the designated area and the wood weight unit for one square meter. First, it checks whether the object has a `Woodworking_Weight` attribute of the `App::PropertyString` type, for example, `12.6 kg/m^2`. If it does, that unit is used to calculate the wood weight. If it doesn't, the wood weight is retrieved from the global variable `MagicPanels.gWoodWeight`, which can be changed using the [magicSettings](#magicsettings) tool and is saved in the user preferences as `wWoodWeight` in the form of a float for `kg/m^2`. The final weight of a given furniture elements is reported in kilograms or pounds, depending on the user's unit settings. Additionally, the decimal value is rounded according to the precision set for the area.
 * **a - report type:** this report is some kind of approximation of needed material. It uses different approach to dimensions, because the dimensions are not get here from objects, they are calculated from raw vertices. You have to be careful because the dimensions are occupied space in 3D by the object and you can see the difference for all rotated elements. This type of report can be directly imported at [cutlistoptimizer.com](https://www.cutlistoptimizer.com/) website tool.
 
 > [!TIP]

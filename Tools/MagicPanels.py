@@ -58,6 +58,7 @@ gTheme = "default"                         # no theme by default <br>
 gWoodThickness = 18                        # main construction wood thickness <br>
 gWoodSizeX = 600                           # default panel long size <br>
 gWoodSizeY = 300                           # default panel short size <br>
+gWoodWeight = 12.6                         # weight per square meter kg/m^2 <br>
 gWindowStaysOnTop = True                   # to keep window on top <br> 
 gCurrentSelection = False                  # to skip refresh selection button <br>
 gFrontInsideThickness = 18                 # front inside wood thickness <br>
@@ -4987,7 +4988,7 @@ def getDistanceBetweenFaces(iObj1, iObj2, iFace1, iFace2):
 
 
 # ###################################################################################################################
-def unit2gui(iValue):
+def unit2gui(iValue, iType="system", iPrecision="2"):
 	'''
 	Description:
 	
@@ -4996,7 +4997,11 @@ def unit2gui(iValue):
 	Args:
 
 		iValue: float from FreeCAD or from calculations
-		
+		iType:
+			* "system" - by default convert by system
+			* "weight" - return string for weight per meter for user gui
+			* "kg" - return string for weight in kilograms for user gui
+		iPrecision: int, represents digits number for precision round
 	Usage:
 
 		unitForUser = MagicPanels.unit2gui(300.55)
@@ -5010,6 +5015,9 @@ def unit2gui(iValue):
 
 	'''
 
+	# ######################################################################
+	# get user unit settings
+	# ######################################################################
 
 	# fix FreeCAD 1.1 bug
 	userSettings = 0
@@ -5020,24 +5028,60 @@ def unit2gui(iValue):
 	except:
 		skip = 1
 
-	value = Units.Quantity( str(iValue) + " mm" )
-	forUser = Units.schemaTranslate(value, userSettings)[0]
+	# ######################################################################
+	# create weight string for GUI
+	# ######################################################################
+	
+	if iType == "weight":
+		
+		unitsUS = [ 2, 3, 5, 7 ]
+		if userSettings in unitsUS:
+			value = Units.Quantity(str(iValue)+' kg/m^2').getValueAs("lb/in^2")
+			forUser = str(value) + " " + "lb/in^2"
+		else:
+			forUser = str(iValue) + " " + "kg/m^2"
 
-	# fix for FreeCAD bug with "Building US", 
-	# only "0 mm" is translated to "0" value without units
-	# see: https://github.com/dprojects/Woodworking/issues/57#issuecomment-2841510545
-	if userSettings == 5:
-		try:
-			float(forUser)
-			forUser = str(forUser) + " in"
-		except:
-			skip = 1
+	# ######################################################################
+	# create kilogram string for GUI
+	# ######################################################################
+	
+	if iType == "kg":
+		
+		unitsUS = [ 2, 3, 5, 7 ]
+		if userSettings in unitsUS:
+			value = Units.Quantity(str(iValue)+' kg').getValueAs("lb")
+			forUser = str(round(value, iPrecision)) + " " + "lb"
+		else:
+			forUser = str(round(iValue, iPrecision)) + " " + "kg"
+
+	# ######################################################################
+	# create unit string for GUI driven by system
+	# ######################################################################
+
+	if iType == "system":
+
+		value = Units.Quantity( str(iValue) + " mm" )
+		forUser = Units.schemaTranslate(value, userSettings)[0]
+
+		# fix for FreeCAD bug with "Building US", 
+		# only "0 mm" is translated to "0" value without units
+		# see: https://github.com/dprojects/Woodworking/issues/57#issuecomment-2841510545
+		if userSettings == 5:
+			try:
+				float(forUser)
+				forUser = str(forUser) + " in"
+			except:
+				skip = 1
+
+	# ######################################################################
+	# return string for user GUI
+	# ######################################################################
 
 	return str(forUser)
 
 
 # ###################################################################################################################
-def unit2value(iString):
+def unit2value(iString, iType="system"):
 	'''
 	Description:
 	
@@ -5047,6 +5091,9 @@ def unit2value(iString):
 
 		iString: units string in user settings notation, for example "5 mm", "5 in", "5 ft", 
 		but also accept quick value notation like "500" for all units schemas.
+		iType:
+			* "system" - by default convert by system
+			* "weight" - return value for weight for calculation in kg/m^2
 		
 	Usage:
 		
@@ -5062,6 +5109,10 @@ def unit2value(iString):
 	'''
 
 
+	# ######################################################################
+	# get user unit gui string and settings
+	# ######################################################################
+	
 	unitString = str(iString)
 
 	# fix FreeCAD 1.1 bug
@@ -5073,27 +5124,46 @@ def unit2value(iString):
 	except:
 		skip = 1
 
-	# fix FreeCAD Building US units schema conversion syntax bug 
-	# https://github.com/dprojects/Woodworking/issues/63
-	try:
-		if userSettings == 5:
-			unitString = unitString.replace("+","--")
-
-	except:
-		skip = 1
+	# ######################################################################
+	# weight for calculation
+	# ######################################################################
 	
-	# quick value notation
-	try:
-		value = unitString.replace(",",".")
-		float(value)
+	if iType == "weight":
 		
-		unit = Units.schemaTranslate( Units.Quantity("1.0 mm"), userSettings )[2]
-		unitString = str(value) + " " + str(unit)
+		# in Poland we have this unit for chipboards
+		forCalculation = Units.Quantity(str(unitString)).getValueAs("kg/m^2")
+	
+	# ######################################################################
+	# system for other units
+	# ######################################################################
+	
+	if iType == "system":
+		
+		# fix FreeCAD Building US units schema conversion syntax bug 
+		# https://github.com/dprojects/Woodworking/issues/63
+		try:
+			if userSettings == 5:
+				unitString = unitString.replace("+","--")
 
-	except:
-		skip = 1
+		except:
+			skip = 1
+		
+		# quick value notation
+		try:
+			value = unitString.replace(",",".")
+			float(value)
+			
+			unit = Units.schemaTranslate( Units.Quantity("1.0 mm"), userSettings )[2]
+			unitString = str(value) + " " + str(unit)
 
-	forCalculation = Units.Quantity(str(unitString)).getValueAs("mm")
+		except:
+			skip = 1
+
+		forCalculation = Units.Quantity(str(unitString)).getValueAs("mm")
+
+	# ######################################################################
+	# return value for calculation
+	# ######################################################################
 
 	return float(forCalculation)
 
@@ -9019,6 +9089,13 @@ def updateGlobals():
 		if "wWoodSizeY" in wusStrings:
 			global gWoodSizeY
 			gWoodSizeY = float( wus.GetString('wWoodSizeY') )
+	except:
+		skip = 1
+
+	try:
+		if "wWoodWeight" in wusStrings:
+			global gWoodWeight
+			gWoodWeight = float( wus.GetString('wWoodWeight') )
 	except:
 		skip = 1
 

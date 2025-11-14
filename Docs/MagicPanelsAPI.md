@@ -30,6 +30,7 @@
 * `gWoodThickness = 18`: main construction wood thickness <br>
 * `gWoodSizeX = 600`: default panel long size <br>
 * `gWoodSizeY = 300`: default panel short size <br>
+* `gWoodWeight = 12.6 `: weight per square meter kg/m^2 <br>
 * `gWindowStaysOnTop = True `: to keep window on top <br> 
 * `gCurrentSelection = False`: to skip refresh selection button <br>
 * `gFrontInsideThickness = 18`: front inside wood thickness <br>
@@ -1779,7 +1780,7 @@
 
 # Units
 
-### unit2gui(iValue):
+### unit2gui(iValue, iType="system", iPrecision="2"):
 
 	
 ##### Description:
@@ -1789,7 +1790,11 @@
 ##### Args:
 
 		iValue: float from FreeCAD or from calculations
-		
+		iType:
+			* "system" - by default convert by system
+			* "weight" - return string for weight per meter for user gui
+			* "kg" - return string for weight in kilograms for user gui
+		iPrecision: int, represents digits number for precision round
 ##### Usage:
 
 		unitForUser = MagicPanels.unit2gui(300.55)
@@ -1802,7 +1807,7 @@
 
 		string
 
-### unit2value(iString):
+### unit2value(iString, iType="system"):
 
 	
 ##### Description:
@@ -1813,6 +1818,9 @@
 
 		iString: units string in user settings notation, for example "5 mm", "5 in", "5 ft", 
 		but also accept quick value notation like "500" for all units schemas.
+		iType:
+			* "system" - by default convert by system
+			* "weight" - return value for weight for calculation in kg/m^2
 		
 ##### Usage:
 		

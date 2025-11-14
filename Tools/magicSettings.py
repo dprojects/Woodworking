@@ -112,6 +112,11 @@ def showQtGUI():
 			self.oWoodSizeYE = QtGui.QLineEdit(self)
 			self.oWoodSizeYE.setText(MagicPanels.unit2gui(0))
 			
+			# wood weight
+			self.oWoodWeightL = QtGui.QLabel(translate('magicSettings', 'Wood weight:'), self)
+			self.oWoodWeightE = QtGui.QLineEdit(self)
+			self.oWoodWeightE.setText("0")
+			
 			# wood color
 			self.oWoodColorRL = QtGui.QLabel(translate('magicSettings', 'Wood color (red):'), self)
 			self.oWoodColorRE = QtGui.QLineEdit(self)
@@ -415,6 +420,8 @@ def showQtGUI():
 			self.Page12.addWidget(self.oWoodSizeXE, 1, 1)
 			self.Page12.addWidget(self.oWoodSizeYL, 2, 0)
 			self.Page12.addWidget(self.oWoodSizeYE, 2, 1)
+			self.Page12.addWidget(self.oWoodWeightL, 3, 0)
+			self.Page12.addWidget(self.oWoodWeightE, 3, 1)
 			self.groupPage12 = QtGui.QGroupBox(None, self)
 			self.groupPage12.setLayout(self.Page12)
 		
@@ -747,6 +754,13 @@ def showQtGUI():
 				skip = 1
 
 			try:
+				val = MagicPanels.gWoodWeight
+				val = MagicPanels.unit2gui(val, "weight")
+				self.oWoodWeightE.setText(val)
+			except:
+				skip = 1
+			
+			try:
 				color = MagicPanels.gDefaultColor
 				color = MagicPanels.convertColor(color, "RGBA")
 				[ r, g, b, a ] = [ str(color[0]), str(color[1]), str(color[2]), str(color[3]) ]
@@ -1078,6 +1092,10 @@ def showQtGUI():
 				val = MagicPanels.unit2value(val)
 				wus.SetString('wWoodSizeY', str(val))
 
+				val = self.oWoodWeightE.text()
+				val = MagicPanels.unit2value(val, "weight")
+				wus.SetString('wWoodWeight', str(val))
+				
 				# color
 				cR = self.oWoodColorRE.text()
 				cG = self.oWoodColorGE.text()
