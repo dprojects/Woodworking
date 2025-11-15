@@ -74,6 +74,9 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 * [Cut list, Measure, Dimensions, Bill Of Materials](#cut-list-measure-dimensions-bill-of-materials)
 	* [getDimensions](#getdimensions)
 		* [Report type](#report-type)
+				* [Search methods](#search-methods)
+				* [Main report type](#main-report-type)
+				* [Additional reports](#additional-reports)
 		* [Units](#units)
 		* [Precision](#precision)
 		* [Visibility](#visibility)
@@ -912,6 +915,23 @@ Available anchors to select:
 * **Wood size X (long):** means the longer size for `XY` default panel, see: [Default panels](#default-panels).
 * **Wood size Y (short):** means the shorter size for `XY` default panel, see: [Default panels](#default-panels).
 * **Wood weight:** allows you to set default weight unit for wood. The wood weight value should be set in `kg per square meter` for metric units (`kg/m^2`), and for imperial units the wood weight in `pounds per square inch` (`lb/in^2`). By default, the weight of `18 mm` chipboard is set to `12.6 kg/m^2`. This value is used by [getDimensions](#getdimensions) cut-list tool to create `w - report type` and is recalculated to user units system settings.
+
+Example weights of commonly used wood:
+
+| Wood type | Thickness | Metric units | Imperial units |
+| :---        | ---: | ---: | ---: |
+| HDF board | 3 mm | 2.5 kg/m^2 | 0.00355583583 lb/in^2 |
+| Hardwood plywood | 6 mm | 4.5 kg/m^2 | 0.00640050449 lb/in^2 |
+| Spruce wood | 18 mm | 8.64 kg/m^2 | 0.0122889686 lb/in^2 | 
+| Mahogany wood | 18 mm | 11.88 kg/m^2 | 0.0168973318 lb/in^2 |
+| Hardwood plywood | 18 mm | 12.32 kg/m^2 | 0.017523159 lb/in^2 |
+| Laminated chipboard | 18 mm | 12.6 kg/m^2 | 0.0179214126 lb/in^2 |
+| Oak wood | 18 mm | 12.8 kg/m^2 | 0.0182058794 lb/in^2 |
+| Beech wood | 18 mm | 13.14 kg/m^2 | 0.0186894731 lb/in^2 |
+
+> [!TIP]
+> I personally weighed a `342 mm x 860 mm` shelf and found it weighed exactly `4 kg`, which translates to `13.6 kg/m^2`. The shelf is `18 mm` thick and made of laminated chipboard, but it came from an old wardrobe from 20 years ago, which suggests that chipboards were much heavier in the past. Currently, the goal is to achieve increasingly lower weight and greater durability, so it is best to weigh a sample of the wood you are working with. The larger the sample, the greater the accuracy. 
+
 * **Wood color:** allows you to set the default color of the wood you create in RGBA color schema. This setting is used by tools like [magicStart](#magicstart), [wires2pad](#wires2pad), [Default panels](#default-panels) and all others. If you want to revert to the default wood color which is `RGBA = [ 247, 185, 108, 255 ]` leave all fields empty and press the `save settings` button.
 * **Window stays on top:**
   * `yes` - Tool windows always stay on top of all other applications. I personally use this feature when creating documentation. I have Krusader (Kwrite Edit) and the new tool window open simultaneously, so I can describe all the options without constantly clicking on the new tool window.
@@ -1133,10 +1153,13 @@ Available anchors to select:
 
 ### Report type
 
+##### Search methods
+
 * **default:** default object search path. This path should also be used for the built-in Assembly workbench. This option allows you to search all objects in active document.
 * **selected:** allows you to search only for selected objects in active document. This might be useful if you have many furniture version in the same active document but you are not able to get it to work the [Visibility](#visibility) feature.
 * **assembly:** object search path dedicated only to [Assembly4](https://codeberg.org/Zolko/Assembly4) workbench by [Zolko](https://forum.freecad.org/viewtopic.php?t=86110).
 
+##### Main report type
 
 * **q - report type:** the default report type allows you to quickly create a cutting list needed to order boards from a DIY store in Poland. Objects are grouped by the same dimensions, making cutting easier.
 * **n - report type:** this is a list of all items, grouped by item name (`object.Label`). This report type is necessary to verify that all boards were received from cutting service with correct dimensions.
@@ -1154,6 +1177,8 @@ Available anchors to select:
 > elements had the correct dimensions, so I can write on it. I usually create furniture for myself from `18 mm white chipboard`, 
 > but if, for example, I need to order plywood shelves or boards in a different color, I create `g - report type` 
 > for the person in the cutting service, where the appropriate board types and colors are grouped.
+
+##### Additional reports
 
 * **thickness summary:** turns off or on the thickenss summary.
 * **dowels and screws:** shows dowels created via [magicDowels](#magicdowels) tool and also Woodworking workbench screw replaced via [panel2link](#panel2link) or [panel2clone](#panel2clone) tools. If you want to have custom dowels or screws visible at the report you need to have `Part::Cylinder` object inside with measurements.
