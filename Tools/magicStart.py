@@ -23,7 +23,7 @@ getMenuIndex = {
 	translate('magicStart', 'Storage box ( import parametric )'): 7, 
 	translate('magicStart', 'Dowel 8x35 mm ( import parametric )'): 8, 
 	translate('magicStart', 'Screw 4x40 mm ( import parametric )'): 9, 
-	translate('magicStart', 'Modular storage ( front outside, modules )'): 10, 
+	translate('magicStart', 'Storage ( front outside, back inside, heavy duty )'): 10, 
 	translate('magicStart', 'Screw 3x20 mm for HDF ( import parametric )'): 11, 
 	translate('magicStart', 'Screw 5x50 mm ( import parametric )'): 12, 
 	translate('magicStart', 'Counterbore 2x 5x60 mm ( import parametric )'): 13, 
@@ -91,12 +91,14 @@ getMenuIndex = {
 	translate('magicStart', 'Back inside ( full )'): 75, 
 	translate('magicStart', 'Handle ( single hole, decorated )'): 76, 
 	translate('magicStart', 'Handle ( double hole, decorated )'): 77, 
-	translate('magicStart', 'Modular bookcase ( no front, back inside, modules )'): 78, 
-	translate('magicStart', 'Modular bookcase ( no front, back outside, modules )'): 79, 
+	translate('magicStart', 'Bookcase ( no front, back inside, simple )'): 78, 
+	translate('magicStart', 'Bookcase ( no front, back outside, simple )'): 79, 
 	translate('magicStart', 'Table ( school desk, single right side )'): 80, 
 	translate('magicStart', 'Table ( School desk, single left side )'): 81, 
 	translate('magicStart', 'Table ( school desk, both sides )'): 82, 
-	translate('magicStart', 'Sides with holes ( import parametric )'): 83 # no comma
+	translate('magicStart', 'Sides with holes ( import parametric )'): 83, 
+	translate('magicStart', 'Wardrobe ( front outside, back outside, 2x clothes width )'): 84, 
+	translate('magicStart', 'Wardrobe ( front outside, back outside, clothes hangers )'): 85 # no comma
 }
 
 # ############################################################################
@@ -815,9 +817,11 @@ def showQtGUI():
 				translate('magicStart', 'Kitchen wall module ( front outside, back outside, veneer )'), 
 				translate('magicStart', 'Bookcase module ( no front, back outside, veneer )'), 
 				"------------------------------------------------------------------------------------", 
-				translate('magicStart', 'Modular storage ( front outside, modules )'), 
-				translate('magicStart', 'Modular bookcase ( no front, back inside, modules )'), 
-				translate('magicStart', 'Modular bookcase ( no front, back outside, modules )'), 
+				translate('magicStart', 'Storage ( front outside, back inside, heavy duty )'), 
+				translate('magicStart', 'Wardrobe ( front outside, back outside, 2x clothes width )'), 
+				translate('magicStart', 'Wardrobe ( front outside, back outside, clothes hangers )'), 
+				translate('magicStart', 'Bookcase ( no front, back inside, simple )'), 
+				translate('magicStart', 'Bookcase ( no front, back outside, simple )'), 
 				translate('magicStart', 'Bookcase ( import parametric )'), 
 				"------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Simple storage ( face frame, no front, back HDF )'), 
@@ -4805,9 +4809,9 @@ def showQtGUI():
 			selectedIndex = getMenuIndex[selectedText]
 			self.gSelectedFurniture = "F"+str(selectedIndex)
 			
-			# ####################################################
+			# ##########################################################################
 			# set icon
-			# ####################################################
+			# ##########################################################################
 			
 			if selectedIndex < 10:
 				self.setIcon("msf00"+str(selectedIndex))
@@ -4816,10 +4820,10 @@ def showQtGUI():
 			if selectedIndex >= 100:
 				self.setIcon("msf"+str(selectedIndex))
 			
-			# ####################################################
+			# ##########################################################################
 			# set GUI and help info
-			# ####################################################
-			
+			# ##########################################################################
+
 			if selectedIndex == -1:
 				self.setGUIInfo("empty")
 				self.helpInfo.setText("")
@@ -4873,7 +4877,9 @@ def showQtGUI():
 				selectedIndex == 66 or 
 				selectedIndex == 67 or 
 				selectedIndex == 78 or 
-				selectedIndex == 79 
+				selectedIndex == 79 or 
+				selectedIndex == 84 or 
+				selectedIndex == 85 
 				):
 				self.setGUIInfo()
 				self.helpInfo.setText(self.gHelpInfoF0)
@@ -4967,9 +4973,9 @@ def showQtGUI():
 				self.setGUIInfo("back")
 				self.helpInfo.setText(self.gHelpInfoF74)
 
-			# ####################################################
-			# custom settings
-			# ####################################################
+			# ##########################################################################
+			# show and hide GUI elements
+			# ##########################################################################
 			
 			# set defaults for furniture
 			if (
@@ -4985,7 +4991,9 @@ def showQtGUI():
 				selectedIndex == 66 or 
 				selectedIndex == 67 or 
 				selectedIndex == 78 or 
-				selectedIndex == 79 
+				selectedIndex == 79 or 
+				selectedIndex == 84 or 
+				selectedIndex == 85 
 				):
 				self.oThickL.show()
 				self.oThickE.show()
@@ -5068,10 +5076,18 @@ def showQtGUI():
 			if (
 				selectedIndex == 10 or 
 				selectedIndex == 78 or 
-				selectedIndex == 79 
+				selectedIndex == 79 or 
+				selectedIndex == 84 or 
+				selectedIndex == 85 
 				):
 				self.oModulesNumL.show()
 				self.oModulesNumE.show()
+			
+			# ##########################################################################
+			# custom values
+			# ##########################################################################
+			
+			self.oFootThickE.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			
 			if selectedIndex == 0:
 				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
@@ -5108,6 +5124,33 @@ def showQtGUI():
 				self.oWidthE.setText( MagicPanels.unit2gui(500) )
 				self.oDepthE.setText( MagicPanels.unit2gui(400) )
 			
+			if selectedIndex == 20:
+				self.oFootThickE.setText(MagicPanels.unit2gui(80))
+			
+			if selectedIndex == 21:
+				self.og10L.setText(translate('magicStart', 'Drawer front overlap:'))
+				self.og101E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetL))
+				self.og102E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetB))
+			
+			if selectedIndex == 22:
+				self.og10L.setText(translate('magicStart', 'Drawer front offset:'))
+				self.og101E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetL))
+				self.og102E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetB))
+				
+			if selectedIndex == 23:
+				self.ofr7E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideThickness))
+				self.ofr81E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetL))
+				self.ofr82E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetR))
+				self.ofr83E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetT))
+				self.ofr84E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetB))
+				
+			if selectedIndex == 24:
+				self.ofr7E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideThickness))
+				self.ofr81E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetL))
+				self.ofr82E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetR))
+				self.ofr83E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetT))
+				self.ofr84E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetB))
+		
 			if selectedIndex == 27:
 				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
 				self.oThickBackE.setText( MagicPanels.unit2gui(MagicPanels.gBackOutsideThickness) )
@@ -5147,99 +5190,6 @@ def showQtGUI():
 				self.oWidthE.setText( MagicPanels.unit2gui(500) )
 				self.oDepthE.setText( MagicPanels.unit2gui(400) )
 			
-			if selectedIndex == 35:
-				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
-				self.oThickBackE.hide()
-				self.oThickShelfE.hide()
-				self.oHeightE.setText( MagicPanels.unit2gui(760) )
-				self.oWidthE.setText( MagicPanels.unit2gui(900) )
-				self.oDepthE.setText( MagicPanels.unit2gui(400) )
-			
-			if selectedIndex == 36:
-				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
-				self.oThickBackE.hide()
-				self.oThickShelfE.hide()
-				self.oHeightE.setText( MagicPanels.unit2gui(760) )
-				self.oWidthE.setText( MagicPanels.unit2gui(900) )
-				self.oDepthE.setText( MagicPanels.unit2gui(400) )
-			
-			if selectedIndex == 65:
-				self.oThickE.setText(MagicPanels.unit2gui(19.05))
-				self.oThickBackE.setText( MagicPanels.unit2gui(6.35) )
-				self.oHeightE.setText(MagicPanels.unit2gui(876.3))
-				self.oWidthE.setText(MagicPanels.unit2gui(914.4))
-				self.oDepthE.setText(MagicPanels.unit2gui(609.6))
-			
-			if selectedIndex == 66:
-				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
-				self.oThickBackE.setText( MagicPanels.unit2gui(MagicPanels.gBackOutsideThickness) )
-				self.oThickShelfE.setText( MagicPanels.unit2gui(6) )
-				self.oThickFrontE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideThickness) )
-				self.oOffsetFrontLE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetL) )
-				self.oOffsetFrontRE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetR) )
-				self.oOffsetFrontTE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetT) )
-				self.oOffsetFrontBE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetB) )
-				self.oHeightE.setText( MagicPanels.unit2gui(600) )
-				self.oWidthE.setText( MagicPanels.unit2gui(400) )
-				self.oDepthE.setText( MagicPanels.unit2gui(321) )
-
-			if selectedIndex == 67:
-				self.oThickE.setText(MagicPanels.unit2gui(19.05))
-				self.oThickBackE.setText( MagicPanels.unit2gui(6.35) )
-				self.oThickShelfE.setText( MagicPanels.unit2gui(19.05) )
-				self.oHeightE.setText(MagicPanels.unit2gui(762))
-				self.oWidthE.setText(MagicPanels.unit2gui(457.2))
-				self.oDepthE.setText(MagicPanels.unit2gui(330.2 - 19.05)) # 13 inch without front
-			
-			if selectedIndex == 78:
-				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
-				self.oThickBackE.setText( MagicPanels.unit2gui(MagicPanels.gBackInsideThickness) )
-				self.oThickShelfE.setText( MagicPanels.unit2gui(MagicPanels.gShelfThickness) )
-				self.oModulesNumE.setText("3")
-				self.oHeightE.setText( MagicPanels.unit2gui(2300) )
-				self.oWidthE.setText( MagicPanels.unit2gui(500) )
-				self.oDepthE.setText( MagicPanels.unit2gui(400) )
-			
-			if selectedIndex == 79:
-				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
-				self.oThickBackE.setText( MagicPanels.unit2gui(MagicPanels.gBackOutsideThickness) )
-				self.oThickShelfE.setText( MagicPanels.unit2gui(MagicPanels.gShelfThickness) )
-				self.oModulesNumE.setText("3")
-				self.oHeightE.setText( MagicPanels.unit2gui(2300) )
-				self.oWidthE.setText( MagicPanels.unit2gui(500) )
-				self.oDepthE.setText( MagicPanels.unit2gui(400) )
-			
-			# overwrite some of them
-			
-			if selectedIndex == 20:
-				self.oFootThickE.setText(MagicPanels.unit2gui(80))
-			else:
-				self.oFootThickE.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
-			
-			if selectedIndex == 21:
-				self.og10L.setText(translate('magicStart', 'Drawer front overlap:'))
-				self.og101E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetL))
-				self.og102E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetB))
-			
-			if selectedIndex == 22:
-				self.og10L.setText(translate('magicStart', 'Drawer front offset:'))
-				self.og101E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetL))
-				self.og102E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetB))
-				
-			if selectedIndex == 23:
-				self.ofr7E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideThickness))
-				self.ofr81E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetL))
-				self.ofr82E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetR))
-				self.ofr83E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetT))
-				self.ofr84E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetB))
-				
-			if selectedIndex == 24:
-				self.ofr7E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideThickness))
-				self.ofr81E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetL))
-				self.ofr82E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetR))
-				self.ofr83E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetT))
-				self.ofr84E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetB))
-			
 			if selectedIndex == 30:
 				self.ods11L.setText(translate('magicStart', 'Drawer front overlap:'))
 				self.ods111E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetL))
@@ -5259,6 +5209,22 @@ def showQtGUI():
 				self.ods31E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideThickness))
 				self.ods32E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.ods33E.setText(MagicPanels.unit2gui(3))
+		
+			if selectedIndex == 35:
+				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
+				self.oThickBackE.hide()
+				self.oThickShelfE.hide()
+				self.oHeightE.setText( MagicPanels.unit2gui(760) )
+				self.oWidthE.setText( MagicPanels.unit2gui(900) )
+				self.oDepthE.setText( MagicPanels.unit2gui(400) )
+			
+			if selectedIndex == 36:
+				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
+				self.oThickBackE.hide()
+				self.oThickShelfE.hide()
+				self.oHeightE.setText( MagicPanels.unit2gui(760) )
+				self.oWidthE.setText( MagicPanels.unit2gui(900) )
+				self.oDepthE.setText( MagicPanels.unit2gui(400) )
 			
 			if selectedIndex == 37 or selectedIndex == 38:
 				self.ofglass3E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetL))
@@ -5271,7 +5237,7 @@ def showQtGUI():
 				self.ofglass4E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetB))
 				self.ofglass3L.setText(translate('magicStart', 'Offset horizontal:'))
 				self.ofglass4L.setText(translate('magicStart', 'Offset vertical:'))
-			
+		
 			if selectedIndex == 42:
 				self.oTableSizeXE.setText(MagicPanels.unit2gui(1050))
 				self.oTableSizeYE.setText(MagicPanels.unit2gui(600))
@@ -5331,7 +5297,35 @@ def showQtGUI():
 				self.odf4E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetB))
 				self.odf3L.setText(translate('magicStart', 'Front offset horizontal:'))
 				self.odf4L.setText(translate('magicStart', 'Front offset vertical:'))
+			
+			if selectedIndex == 65:
+				self.oThickE.setText(MagicPanels.unit2gui(19.05))
+				self.oThickBackE.setText( MagicPanels.unit2gui(6.35) )
+				self.oHeightE.setText(MagicPanels.unit2gui(876.3))
+				self.oWidthE.setText(MagicPanels.unit2gui(914.4))
+				self.oDepthE.setText(MagicPanels.unit2gui(609.6))
+			
+			if selectedIndex == 66:
+				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
+				self.oThickBackE.setText( MagicPanels.unit2gui(MagicPanels.gBackOutsideThickness) )
+				self.oThickShelfE.setText( MagicPanels.unit2gui(6) )
+				self.oThickFrontE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideThickness) )
+				self.oOffsetFrontLE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetL) )
+				self.oOffsetFrontRE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetR) )
+				self.oOffsetFrontTE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetT) )
+				self.oOffsetFrontBE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetB) )
+				self.oHeightE.setText( MagicPanels.unit2gui(600) )
+				self.oWidthE.setText( MagicPanels.unit2gui(400) )
+				self.oDepthE.setText( MagicPanels.unit2gui(321) )
 
+			if selectedIndex == 67:
+				self.oThickE.setText(MagicPanels.unit2gui(19.05))
+				self.oThickBackE.setText( MagicPanels.unit2gui(6.35) )
+				self.oThickShelfE.setText( MagicPanels.unit2gui(19.05) )
+				self.oHeightE.setText(MagicPanels.unit2gui(762))
+				self.oWidthE.setText(MagicPanels.unit2gui(457.2))
+				self.oDepthE.setText(MagicPanels.unit2gui(330.2 - 19.05)) # 13 inch without front
+			
 			if selectedIndex == 71:
 				self.ods11L.setText(translate('magicStart', 'Drawer front overlap:'))
 				self.ods111E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetL))
@@ -5359,7 +5353,7 @@ def showQtGUI():
 				self.oBackOffsets2E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.oBackOffsets3E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.oBackOffsets4E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
-				
+			
 			if selectedIndex == 75:
 				self.oBackOffsetsL.setText(translate('magicStart', 'Back offsets:'))
 				self.oBackThickE.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
@@ -5367,6 +5361,24 @@ def showQtGUI():
 				self.oBackOffsets2E.setText(MagicPanels.unit2gui(0))
 				self.oBackOffsets3E.setText(MagicPanels.unit2gui(0))
 				self.oBackOffsets4E.setText(MagicPanels.unit2gui(0))
+			
+			if selectedIndex == 78:
+				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
+				self.oThickBackE.setText( MagicPanels.unit2gui(MagicPanels.gBackInsideThickness) )
+				self.oThickShelfE.setText( MagicPanels.unit2gui(MagicPanels.gShelfThickness) )
+				self.oModulesNumE.setText("3")
+				self.oHeightE.setText( MagicPanels.unit2gui(2300) )
+				self.oWidthE.setText( MagicPanels.unit2gui(500) )
+				self.oDepthE.setText( MagicPanels.unit2gui(400) )
+			
+			if selectedIndex == 79:
+				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
+				self.oThickBackE.setText( MagicPanels.unit2gui(MagicPanels.gBackOutsideThickness) )
+				self.oThickShelfE.setText( MagicPanels.unit2gui(MagicPanels.gShelfThickness) )
+				self.oModulesNumE.setText("3")
+				self.oHeightE.setText( MagicPanels.unit2gui(2300) )
+				self.oWidthE.setText( MagicPanels.unit2gui(500) )
+				self.oDepthE.setText( MagicPanels.unit2gui(400) )
 			
 			if selectedIndex == 80 or selectedIndex == 81:
 				self.oTableSizeXE.setText(MagicPanels.unit2gui(1000))
@@ -5383,6 +5395,34 @@ def showQtGUI():
 				self.oTableTopThickE.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.oTableLegThickE.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.oTableTopOffsetE.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
+			
+			if selectedIndex == 84:
+				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
+				self.oThickBackE.setText( MagicPanels.unit2gui(MagicPanels.gBackOutsideThickness) )
+				self.oThickShelfE.setText( MagicPanels.unit2gui(MagicPanels.gShelfThickness) )
+				self.oThickFrontE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideThickness) )
+				self.oOffsetFrontLE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetL) )
+				self.oOffsetFrontRE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetR) )
+				self.oOffsetFrontTE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetT) )
+				self.oOffsetFrontBE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetB) )
+				self.oModulesNumE.setText("4")
+				self.oHeightE.setText( MagicPanels.unit2gui(2300) )
+				self.oWidthE.setText( MagicPanels.unit2gui(620) )
+				self.oDepthE.setText( MagicPanels.unit2gui(521) )
+			
+			if selectedIndex == 85:
+				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
+				self.oThickBackE.setText( MagicPanels.unit2gui(MagicPanels.gBackOutsideThickness) )
+				self.oThickShelfE.setText( MagicPanels.unit2gui(MagicPanels.gShelfThickness) )
+				self.oThickFrontE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideThickness) )
+				self.oOffsetFrontLE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetL) )
+				self.oOffsetFrontRE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetR) )
+				self.oOffsetFrontTE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetT) )
+				self.oOffsetFrontBE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetB) )
+				self.oModulesNumE.setText("3")
+				self.oHeightE.setText( MagicPanels.unit2gui(2300) )
+				self.oWidthE.setText( MagicPanels.unit2gui(620) )
+				self.oDepthE.setText( MagicPanels.unit2gui(521) )
 			
 		# ############################################################################
 		def createObject(self):
@@ -5618,6 +5658,12 @@ def showQtGUI():
 			if self.gSelectedFurniture == "F83":
 				self.mergeF("msf083.FCStd", "magicStart")
 			
+			if self.gSelectedFurniture == "F84":
+				self.createF84()
+			
+			if self.gSelectedFurniture == "F85":
+				self.createF85()
+				
 			# here to allow recalculation with selection
 			FreeCADGui.Selection.clearSelection()
 
@@ -12037,6 +12083,378 @@ def showQtGUI():
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
 
+		# ############################################################################
+		def createF84(self):
+			
+			self.gFSX = MagicPanels.unit2value(self.oWidthE.text())
+			self.gFSZ = MagicPanels.unit2value(self.oHeightE.text())
+			self.gFSY = MagicPanels.unit2value(self.oDepthE.text())
+			
+			self.gThick = MagicPanels.unit2value(self.oThickE.text())
+			
+			thickFront = MagicPanels.unit2value( self.oThickFrontE.text() )
+			offsetFrontL = MagicPanels.unit2value( self.oOffsetFrontLE.text() )
+			offsetFrontR = MagicPanels.unit2value( self.oOffsetFrontRE.text() )
+			offsetFrontT = MagicPanels.unit2value( self.oOffsetFrontTE.text() )
+			offsetFrontB = MagicPanels.unit2value( self.oOffsetFrontBE.text() )
+		
+			thickBack = MagicPanels.unit2value( self.oThickBackE.text() )
+			thickShelf = MagicPanels.unit2value( self.oThickShelfE.text() )
+
+			sx = MagicPanels.unit2value(self.oStartXE.text())
+			sy = MagicPanels.unit2value(self.oStartYE.text())
+			sz = MagicPanels.unit2value(self.oStartZE.text())
+			
+			# calculation
+			mNum = int(self.oModulesNumE.text())
+			topsSize = (mNum - 1) * self.gThick
+			
+			baseSideZ = 578 # to have eaqual modules size
+			modulesSideZ = self.gFSZ - baseSideZ - self.gThick - topsSize
+
+			sideZ = modulesSideZ / (mNum - 1)
+			depth = self.gFSY - thickBack - thickFront
+			
+			# #######################
+			# Base
+			# #######################
+			
+			# Floor
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
+			o1.Label = translate('magicStart', 'Floor') + ' M1'
+			o1.Length = self.gFSX - (2 * self.gThick)
+			o1.Height = self.gThick
+			o1.Width = depth
+			pl = FreeCAD.Vector(sx + self.gThick, sy + thickFront, sz + 100)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
+			
+			# Left Side
+			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
+			o2.Label = translate('magicStart', 'Left') + ' M1'
+			o2.Length = self.gThick
+			o2.Height = baseSideZ
+			o2.Width = depth
+			pl = FreeCAD.Vector(sx, sy + thickFront, sz)
+			o2.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
+			
+			# Right Side
+			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
+			o3.Label = translate('magicStart', 'Right') + ' M1'
+			o3.Length = self.gThick
+			o3.Height = baseSideZ
+			o3.Width = depth
+			pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy + thickFront, sz)
+			o3.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
+		
+			# Back
+			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
+			o4.Label = translate('magicStart', 'Back') + ' M1'
+			o4.Length = self.gFSX
+			o4.Height = baseSideZ - 100 + self.gThick
+			o4.Width = thickBack
+			pl = FreeCAD.Vector(sx, sy + depth + thickFront, sz + 100)
+			o4.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
+			MagicPanels.setColor(o4, 3, (1.0, 1.0, 1.0, 1.0), "color")
+			
+			# Shelf
+			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
+			o5.Label = translate('magicStart', 'Shelf') + ' M1'
+			o5.Length = self.gFSX - (2 * self.gThick)
+			o5.Height = thickShelf
+			o5.Width = depth - self.gThick
+			gap = baseSideZ - 100 - self.gThick
+			pZ = 100 + self.gThick + (gap / 2) - (thickShelf / 2)
+			pl = FreeCAD.Vector(sx + self.gThick, sy + thickFront + self.gThick, sz + pZ)
+			o5.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o5, 0, self.gColor, "color")
+			
+			# Top
+			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
+			o6.Label = translate('magicStart', 'Top') + ' M1'
+			o6.Length = self.gFSX
+			o6.Height = self.gThick
+			o6.Width = depth
+			pl = FreeCAD.Vector(sx, sy + thickFront, sz + baseSideZ)
+			o6.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o6, 0, self.gColor, "color")
+		
+			# Front
+			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
+			o7.Label = translate('magicStart', 'Front') + ' M1'
+			o7.Length = self.gFSX - (2 * self.gThick) + offsetFrontL + offsetFrontR
+			o7.Height = baseSideZ - 100 - self.gThick + offsetFrontB + offsetFrontT
+			o7.Width = thickFront
+			pl = FreeCAD.Vector(sx + self.gThick - offsetFrontL, sy, sz + 100 + self.gThick - offsetFrontB)
+			o7.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o7, 0, self.gColor, "color")
+			
+			# create container
+			objects = [o1, o2, o3, o4, o5, o6, o7]
+			label = translate('magicStart', 'Module 1')
+			container = MagicPanels.createContainer(objects, label, False)
+			
+			# #######################
+			# Modules
+			# #######################
+			
+			for i in range(1, mNum):
+			
+				posZ = baseSideZ + (i * self.gThick) + ((i - 1) * sideZ)
+
+				# Left Side
+				o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
+				o1.Label = translate('magicStart', 'Left') + ' M' + str(i+1)
+				o1.Length = self.gThick
+				o1.Height = sideZ
+				o1.Width = depth
+				pl = FreeCAD.Vector(sx, sy + thickFront, sz + posZ)
+				o1.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o1, 0, self.gColor, "color")
+				
+				# Right Side
+				o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
+				o2.Label = translate('magicStart', 'Right') + ' M' + str(i+1)
+				o2.Length = self.gThick
+				o2.Height = sideZ
+				o2.Width = depth
+				pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy + thickFront, sz + posZ)
+				o2.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o2, 0, self.gColor, "color")
+				
+				# Back
+				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
+				o3.Label = translate('magicStart', 'Back') + ' M' + str(i+1)
+				o3.Length = self.gFSX
+				o3.Height = sideZ + self.gThick
+				o3.Width = thickBack
+				pl = FreeCAD.Vector(sx, sy + thickFront + depth, sz + posZ)
+				o3.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o3, 0, self.gColor, "color")
+				MagicPanels.setColor(o3, 3, (1.0, 1.0, 1.0, 1.0), "color")
+		
+				# Shelf
+				o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
+				o4.Label = translate('magicStart', 'Shelf') + ' M' + str(i+1)
+				o4.Length = self.gFSX - (2 * self.gThick)
+				o4.Height = thickShelf
+				o4.Width = depth - self.gThick
+				pZ = posZ + (sideZ / 2) - (thickShelf / 2)
+				pl = FreeCAD.Vector(sx + self.gThick, sy + thickFront + self.gThick, sz + pZ)
+				o4.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o4, 0, self.gColor, "color")
+			
+				# Top
+				o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
+				o5.Label = translate('magicStart', 'Top') + ' M' + str(i+1)
+				o5.Length = self.gFSX
+				o5.Height = self.gThick
+				o5.Width = depth
+				pl = FreeCAD.Vector(sx, sy + thickFront, sz + posZ + sideZ)
+				o5.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o5, 0, self.gColor, "color")
+				
+				# Front
+				o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
+				o6.Label = translate('magicStart', 'Front') + ' M1' + str(i+1)
+				o6.Length = self.gFSX - (2 * self.gThick) + offsetFrontL + offsetFrontR
+				o6.Height = sideZ + offsetFrontB + offsetFrontT
+				o6.Width = thickFront
+				pl = FreeCAD.Vector(sx + self.gThick - offsetFrontL, sy, sz + posZ - offsetFrontB)
+				o6.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o6, 0, self.gColor, "color")
+			
+				# create container
+				objects = [o1, o2, o3, o4, o5, o6]
+				label = translate('magicStart', 'Module ') + str(i+1)
+				container = MagicPanels.createContainer(objects, label, False)
+			
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+		
+		# ############################################################################
+		def createF85(self):
+			
+			self.gFSX = MagicPanels.unit2value(self.oWidthE.text())
+			self.gFSZ = MagicPanels.unit2value(self.oHeightE.text())
+			self.gFSY = MagicPanels.unit2value(self.oDepthE.text())
+			
+			self.gThick = MagicPanels.unit2value(self.oThickE.text())
+			
+			thickFront = MagicPanels.unit2value( self.oThickFrontE.text() )
+			offsetFrontL = MagicPanels.unit2value( self.oOffsetFrontLE.text() )
+			offsetFrontR = MagicPanels.unit2value( self.oOffsetFrontRE.text() )
+			offsetFrontT = MagicPanels.unit2value( self.oOffsetFrontTE.text() )
+			offsetFrontB = MagicPanels.unit2value( self.oOffsetFrontBE.text() )
+		
+			thickBack = MagicPanels.unit2value( self.oThickBackE.text() )
+			thickShelf = MagicPanels.unit2value( self.oThickShelfE.text() )
+
+			sx = MagicPanels.unit2value(self.oStartXE.text())
+			sy = MagicPanels.unit2value(self.oStartYE.text())
+			sz = MagicPanels.unit2value(self.oStartZE.text())
+			
+			# calculation
+			mNum = int(self.oModulesNumE.text())
+			topsSize = (mNum - 1) * self.gThick
+			
+			baseSideZ = 1146 # to have eaqual modules size
+			modulesSideZ = self.gFSZ - baseSideZ - self.gThick - topsSize
+
+			sideZ = modulesSideZ / (mNum - 1)
+			depth = self.gFSY - thickBack - thickFront
+			
+			# #######################
+			# Base
+			# #######################
+			
+			# Floor
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
+			o1.Label = translate('magicStart', 'Floor') + ' M1'
+			o1.Length = self.gFSX - (2 * self.gThick)
+			o1.Height = self.gThick
+			o1.Width = depth
+			pl = FreeCAD.Vector(sx + self.gThick, sy + thickFront, sz + 100)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
+			
+			# Left Side
+			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
+			o2.Label = translate('magicStart', 'Left') + ' M1'
+			o2.Length = self.gThick
+			o2.Height = baseSideZ
+			o2.Width = depth
+			pl = FreeCAD.Vector(sx, sy + thickFront, sz)
+			o2.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
+			
+			# Right Side
+			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
+			o3.Label = translate('magicStart', 'Right') + ' M1'
+			o3.Length = self.gThick
+			o3.Height = baseSideZ
+			o3.Width = depth
+			pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy + thickFront, sz)
+			o3.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
+		
+			# Back
+			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
+			o4.Label = translate('magicStart', 'Back') + ' M1'
+			o4.Length = self.gFSX
+			o4.Height = baseSideZ - 100 + self.gThick
+			o4.Width = thickBack
+			pl = FreeCAD.Vector(sx, sy + depth + thickFront, sz + 100)
+			o4.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
+			MagicPanels.setColor(o4, 3, (1.0, 1.0, 1.0, 1.0), "color")
+			
+			# Top
+			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
+			o6.Label = translate('magicStart', 'Top') + ' M1'
+			o6.Length = self.gFSX
+			o6.Height = self.gThick
+			o6.Width = depth
+			pl = FreeCAD.Vector(sx, sy + thickFront, sz + baseSideZ)
+			o6.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o6, 0, self.gColor, "color")
+		
+			# Front
+			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
+			o7.Label = translate('magicStart', 'Front') + ' M1'
+			o7.Length = self.gFSX - (2 * self.gThick) + offsetFrontL + offsetFrontR
+			o7.Height = baseSideZ - 100 - self.gThick + offsetFrontB + offsetFrontT
+			o7.Width = thickFront
+			pl = FreeCAD.Vector(sx + self.gThick - offsetFrontL, sy, sz + 100 + self.gThick - offsetFrontB)
+			o7.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o7, 0, self.gColor, "color")
+			
+			# create container
+			objects = [o1, o2, o3, o4, o6, o7]
+			label = translate('magicStart', 'Module 1')
+			container = MagicPanels.createContainer(objects, label, False)
+			
+			# #######################
+			# Modules
+			# #######################
+			
+			for i in range(1, mNum):
+			
+				posZ = baseSideZ + (i * self.gThick) + ((i - 1) * sideZ)
+
+				# Left Side
+				o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
+				o1.Label = translate('magicStart', 'Left') + ' M' + str(i+1)
+				o1.Length = self.gThick
+				o1.Height = sideZ
+				o1.Width = depth
+				pl = FreeCAD.Vector(sx, sy + thickFront, sz + posZ)
+				o1.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o1, 0, self.gColor, "color")
+				
+				# Right Side
+				o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
+				o2.Label = translate('magicStart', 'Right') + ' M' + str(i+1)
+				o2.Length = self.gThick
+				o2.Height = sideZ
+				o2.Width = depth
+				pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy + thickFront, sz + posZ)
+				o2.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o2, 0, self.gColor, "color")
+				
+				# Back
+				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
+				o3.Label = translate('magicStart', 'Back') + ' M' + str(i+1)
+				o3.Length = self.gFSX
+				o3.Height = sideZ + self.gThick
+				o3.Width = thickBack
+				pl = FreeCAD.Vector(sx, sy + thickFront + depth, sz + posZ)
+				o3.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o3, 0, self.gColor, "color")
+				MagicPanels.setColor(o3, 3, (1.0, 1.0, 1.0, 1.0), "color")
+		
+				# Shelf
+				o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
+				o4.Label = translate('magicStart', 'Shelf') + ' M' + str(i+1)
+				o4.Length = self.gFSX - (2 * self.gThick)
+				o4.Height = thickShelf
+				o4.Width = depth - self.gThick
+				pZ = posZ + (sideZ / 2) - (thickShelf / 2)
+				pl = FreeCAD.Vector(sx + self.gThick, sy + thickFront + self.gThick, sz + pZ)
+				o4.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o4, 0, self.gColor, "color")
+			
+				# Top
+				o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
+				o5.Label = translate('magicStart', 'Top') + ' M' + str(i+1)
+				o5.Length = self.gFSX
+				o5.Height = self.gThick
+				o5.Width = depth
+				pl = FreeCAD.Vector(sx, sy + thickFront, sz + posZ + sideZ)
+				o5.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o5, 0, self.gColor, "color")
+				
+				# Front
+				o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
+				o6.Label = translate('magicStart', 'Front') + ' M1' + str(i+1)
+				o6.Length = self.gFSX - (2 * self.gThick) + offsetFrontL + offsetFrontR
+				o6.Height = sideZ + offsetFrontB + offsetFrontT
+				o6.Width = thickFront
+				pl = FreeCAD.Vector(sx + self.gThick - offsetFrontL, sy, sz + posZ - offsetFrontB)
+				o6.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o6, 0, self.gColor, "color")
+			
+				# create container
+				objects = [o1, o2, o3, o4, o5, o6]
+				label = translate('magicStart', 'Module ') + str(i+1)
+				container = MagicPanels.createContainer(objects, label, False)
+			
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+		
 	# ############################################################################
 	# final settings
 	# ############################################################################

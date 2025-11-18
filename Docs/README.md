@@ -185,6 +185,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 	**New significant changes since the last release 1.0 stable:**
 
+    * wardrobe samples (magicStart)
     * selected objects & weight in cut-list (getDimensions, MagicPanels, magicSettings)
     * tool to create Pad from Sketch quickly (sketch2pad)
     * update binaries to fix transparency issue in FreeCAD 1.1
@@ -341,9 +342,11 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 > [!TIP]
 > Constructions with `veneer` descriptions support veneer settings in [magicSettings](#magicsettings) tool.
 
-* Modular storage ( front outside, 3 modules )
-* Modular bookcase ( no front, back inside, 3 modules )
-* Modular bookcase ( no front, back outside, 3 modules )
+* Storage ( front outside, back inside, heavy duty )
+* Wardrobe ( front outside, back outside, 2x clothes width )
+* Wardrobe ( front outside, back outside, clothes hangers )
+* Bookcase ( no front, back inside, simple )
+* Bookcase ( no front, back outside, simple )
 * Bookcase ( import parametric )
 
 **Video tutorials:** 

@@ -543,7 +543,7 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 320
+			toolSW = 380
 			toolSH = 650
 			
 			# ############################################################################
@@ -628,14 +628,16 @@ def showQtGUI():
 			self.vsL = QtGui.QLabel(translate('magicMeasure', 'Vertices size:'), self)
 			
 			# measurement observer active button
-			self.vsBM = QtGui.QPushButton('- 5', self)
+			self.vsBM = QtGui.QPushButton('-5', self)
 			self.vsBM.clicked.connect(self.vertexSizeM)
+			self.vsBM.setFixedWidth(80)
 			self.vsBM.setFixedHeight(40)
 			self.vsBM.setAutoRepeat(True)
 			
 			# measurement observer active button
-			self.vsBP = QtGui.QPushButton('+ 5', self)
+			self.vsBP = QtGui.QPushButton('+5', self)
 			self.vsBP.clicked.connect(self.vertexSizeP)
+			self.vsBP.setFixedWidth(80)
 			self.vsBP.setFixedHeight(40)
 			self.vsBP.setAutoRepeat(True)
 			
@@ -680,10 +682,10 @@ def showQtGUI():
 			self.body1.addWidget(self.psmL, 1, 0)
 			self.body1.addWidget(self.psmB1, 1, 1)
 			self.body1.addWidget(self.psmB2, 1, 1)
-			self.body12 = QtGui.QHBoxLayout()
-			self.body12.addWidget(self.vsL)
-			self.body12.addWidget(self.vsBM)
-			self.body12.addWidget(self.vsBP)
+			self.body12 = QtGui.QGridLayout()
+			self.body12.addWidget(self.vsL, 0, 0)
+			self.body12.addWidget(self.vsBM, 0, 1)
+			self.body12.addWidget(self.vsBP, 0, 2)
 			self.lay1 = QtGui.QVBoxLayout()
 			self.lay1.addLayout(self.body0)
 			self.lay1.addLayout(self.body1)
