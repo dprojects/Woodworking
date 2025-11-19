@@ -395,7 +395,7 @@ def showQtGUI():
 			self.oStatusL = QtGui.QLabel("", self)
 			
 			# button
-			self.oSaveB = QtGui.QPushButton(translate('magicSettings', 'save settigns'), self)
+			self.oSaveB = QtGui.QPushButton(translate('magicSettings', 'save settings'), self)
 			self.oSaveB.clicked.connect(self.saveSettings)
 			self.oSaveB.setFixedHeight(40)
 			

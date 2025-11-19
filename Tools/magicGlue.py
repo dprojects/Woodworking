@@ -122,7 +122,7 @@ def showQtGUI():
 			self.sMode.textActivated[str].connect(self.setModeType)
 
 			# ############################################################################
-			# settigns for custom GUI
+			# settings for custom GUI
 			# ############################################################################
 
 			btsize = 50
