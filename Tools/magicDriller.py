@@ -369,7 +369,7 @@ def showQtGUI():
 			self.s5B2.setAutoRepeat(True)
 
 			# ############################################################################
-			# body - custom settigns - holes
+			# body - custom settings - holes
 			# ############################################################################
 
 			# holes per side
