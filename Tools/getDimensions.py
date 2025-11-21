@@ -9,7 +9,7 @@ translate = FreeCAD.Qt.translate
 # ###################################################################################################################
 #
 # 				  Default Settings
-#		Qt GUI gets from here to avoid inconsistency
+#		Qt GUI gets from here to avoid inconsistency 
 #
 # 			CHANGE ONLY HERE IF NEEDED
 #
@@ -22,16 +22,32 @@ translate = FreeCAD.Qt.translate
 
 
 # Parse path mode
-sPPM = "default" # default
+sPPMMenuIndex = {
+	translate("getDimensions", "all objects"): "default",
+	translate("getDimensions", "selected objects"): "selected",
+	translate("getDimensions", "Assembly4 structure"): "assembly" # no comma
+}
 sPPMDsc = {
 	"default" : translate("getDimensions", "all objects in active document"),
 	"selected" : translate("getDimensions", "only selected objects in active document"),
 	"assembly" : translate("getDimensions", "dedicated for Assembly4 workbench objects") # no comma
 }
-
+sPPMkey = translate("getDimensions", "all objects") # for GUI init
+sPPM = sPPMMenuIndex[sPPMkey] # default is "default"
 
 # Report customization (Label Type Feature):
-sLTF = "q" # default
+sLTFMenuIndex = {
+	translate("getDimensions", "q - for cut service"): "q",
+	translate("getDimensions", "n - for verification"): "n",
+	translate("getDimensions", "g - groups"): "g",
+	translate("getDimensions", "e - edgeband"): "e",
+	translate("getDimensions", "d - drilling"): "d",
+	translate("getDimensions", "c - constraints names"): "c",
+	translate("getDimensions", "p - pads all constraints"): "p",
+	translate("getDimensions", "w - weight"): "w",
+	translate("getDimensions", "b - budget"): "b",
+	translate("getDimensions", "a - approximation"): "a" # no comma
+}
 sLTFDsc = {
 	"q" : translate("getDimensions", "quantity first for cut chipboards service"),
 	"n" : translate("getDimensions", "objects labels for verification"),
@@ -41,8 +57,11 @@ sLTFDsc = {
 	"c" : translate("getDimensions", "constraints names for custom report"),
 	"p" : translate("getDimensions", "all constraints"),
 	"w" : translate("getDimensions", "calculate weight"),
+	"b" : translate("getDimensions", "calculate needed budget for wood"),
 	"a" : translate("getDimensions", "approximation for cutlistoptimizer.com") # no comma
 }
+sLTFKey = translate("getDimensions", "q - for cut service") # for GUI init
+sLTF = sLTFMenuIndex[sLTFKey] # default is "q"
 
 # checkboxes - additional reports
 sARME = True      # measurements
@@ -288,6 +307,7 @@ gLang25 = ""
 gLang26 = ""
 gLang27 = ""
 gLang28 = ""
+gLang29 = ""
 
 
 # ###################################################################################################################
@@ -305,11 +325,13 @@ dbFCL = dict() # length
 dbDQ = dict() # quantity
 dbDA = dict() # area
 dbDW = dict() # weight
+dbDP = dict() # price
 
 # init database for thickness
 dbTQ = dict() # quantity
 dbTA = dict() # area
 dbTW = dict() # weight
+dbTP = dict() # price
 
 # init database for edge
 dbE = dict()
@@ -405,7 +427,8 @@ def showQtGUI():
 			toolSH = 680
 			
 			selWidth = 150 # selection width
-			selWidthSmall = 80 # selection width small
+			selWidth2 = 200 # selection width small
+			infoWidth = 600 # info description
 			
 			# ############################################################################
 			# main window
@@ -424,22 +447,29 @@ def showQtGUI():
 			# ############################################################################
 			
 			# report customization
-			self.ppmList = tuple(sPPMDsc.keys())
+			self.ppmOL = QtGui.QLabel(translate("getDimensions", "Search path:"), self)
+			
+			self.ppmList = tuple(sPPMMenuIndex.keys())
 			self.ppmO = QtGui.QComboBox(self)
 			self.ppmO.addItems(self.ppmList)
-			self.ppmO.setCurrentIndex(self.ppmList.index(str(sPPM)))
+			self.ppmO.setCurrentIndex(self.ppmList.index(sPPMkey))
 			self.ppmO.textActivated[str].connect(self.setPPM)
-			self.ppmO.setFixedWidth(selWidth)
+			self.ppmO.setFixedWidth(selWidth2)
 			
-			self.rcList = tuple(sLTFDsc.keys())
+			self.rcOL = QtGui.QLabel(translate("getDimensions", "Main report:"), self)
+			
+			self.rcList = tuple(sLTFMenuIndex.keys())
 			self.rcO = QtGui.QComboBox(self)
 			self.rcO.addItems(self.rcList)
-			self.rcO.setCurrentIndex(self.rcList.index(str(sLTF)))
+			self.rcO.setCurrentIndex(self.rcList.index(sLTFKey))
 			self.rcO.textActivated[str].connect(self.setRC)
-			self.rcO.setFixedWidth(selWidthSmall)
+			self.rcO.setFixedWidth(selWidth2)
 			
-			info = str(sPPMDsc[sPPM]) + ", " + str(sLTFDsc[sLTF]) + sEmptyDsc
-			self.rcIS = QtGui.QLabel(info, self)
+			self.ppmOIS = QtGui.QLabel(str(sPPMDsc[sPPM]) + sEmptyDsc, self)
+			self.ppmOIS.setFixedWidth(infoWidth)
+			
+			self.rcIS = QtGui.QLabel(str(sLTFDsc[sLTF]) + sEmptyDsc, self)
+			self.rcIS.setFixedWidth(infoWidth)
 			
 			# additional reports
 			self.artsCB = QtGui.QCheckBox(translate('getDimensions', '- thickness summary'), self)
@@ -582,6 +612,7 @@ def showQtGUI():
 			self.rpqO.setFixedWidth(selWidth)
 			
 			self.rpqIS = QtGui.QLabel(str(sRPQDsc[sRPQ]) + sEmptyDsc, self)
+			self.rpqIS.setFixedWidth(infoWidth)
 			
 			# ############################################################################
 			# edgeband
@@ -628,11 +659,13 @@ def showQtGUI():
 			# ############################################################################
 			
 			# create structure
-			self.layRC = QtGui.QHBoxLayout()
-			self.layRC.setAlignment(QtGui.Qt.AlignLeft)
-			self.layRC.addWidget(self.ppmO)
-			self.layRC.addWidget(self.rcO)
-			self.layRC.addWidget(self.rcIS)
+			self.layRC = QtGui.QGridLayout()
+			self.layRC.addWidget(self.ppmOL, 0, 0)
+			self.layRC.addWidget(self.ppmO, 0, 1)
+			self.layRC.addWidget(self.ppmOIS, 0, 2)
+			self.layRC.addWidget(self.rcOL, 1, 0)
+			self.layRC.addWidget(self.rcO, 1, 1)
+			self.layRC.addWidget(self.rcIS, 1, 2)
 			
 			self.layAR = QtGui.QGridLayout()
 			self.layAR.addWidget(self.artsCB, 0, 0)
@@ -670,35 +703,23 @@ def showQtGUI():
 			self.groupU = QtGui.QGroupBox(translate('getDimensions', 'Units:'), self)
 			self.groupU.setLayout(self.layU)
 			
-			self.layV1 = QtGui.QHBoxLayout()
-			self.layV1.setAlignment(QtGui.Qt.AlignLeft)
-			self.layV1.addWidget(self.visibilityL)
-			self.layV1.addWidget(self.visibilityO)
-			self.layV1.addWidget(self.visibilityIS)
-			self.layV2 = QtGui.QHBoxLayout()
-			self.layV2.setAlignment(QtGui.Qt.AlignLeft)
-			self.layV2.addWidget(self.pcvisibilityL)
-			self.layV2.addWidget(self.pcvisibilityO)
-			self.layV2.addWidget(self.pcvisibilityIS)
-			self.layV = QtGui.QVBoxLayout()
-			self.layV.addLayout(self.layV1)
-			self.layV.addLayout(self.layV2)
+			self.layV = QtGui.QGridLayout()
+			self.layV.addWidget(self.visibilityL, 0, 0)
+			self.layV.addWidget(self.visibilityO, 0, 1)
+			self.layV.addWidget(self.visibilityIS, 0, 2)
+			self.layV.addWidget(self.pcvisibilityL, 1, 0)
+			self.layV.addWidget(self.pcvisibilityO, 1, 1)
+			self.layV.addWidget(self.pcvisibilityIS, 1, 2)
 			self.groupV = QtGui.QGroupBox(translate('getDimensions', 'Visibility:'), self)
 			self.groupV.setLayout(self.layV)
 			
-			self.layAS1 = QtGui.QHBoxLayout()
-			self.layAS1.setAlignment(QtGui.Qt.AlignLeft)
-			self.layAS1.addWidget(self.LangL)
-			self.layAS1.addWidget(self.LangO)
-			self.layAS1.addWidget(self.LangIS)
-			self.layAS2 = QtGui.QHBoxLayout()
-			self.layAS2.setAlignment(QtGui.Qt.AlignLeft)
-			self.layAS2.addWidget(self.rpqL)
-			self.layAS2.addWidget(self.rpqO)
-			self.layAS2.addWidget(self.rpqIS)
-			self.layAS = QtGui.QVBoxLayout()
-			self.layAS.addLayout(self.layAS1)
-			self.layAS.addLayout(self.layAS2)
+			self.layAS = QtGui.QGridLayout()
+			self.layAS.addWidget(self.LangL, 0, 0)
+			self.layAS.addWidget(self.LangO, 0, 1)
+			self.layAS.addWidget(self.LangIS, 0, 2)
+			self.layAS.addWidget(self.rpqL, 1, 0)
+			self.layAS.addWidget(self.rpqO, 1, 1)
+			self.layAS.addWidget(self.rpqIS, 1, 2)
 			self.groupAS = QtGui.QGroupBox(translate('getDimensions', 'Additional settings:'), self)
 			self.groupAS.setLayout(self.layAS)
 			
@@ -810,18 +831,20 @@ def showQtGUI():
 				
 		def setRC(self, selectedText):
 			global sLTF
-			sLTF = selectedText
-			info = str(sPPMDsc[sPPM]) + ", " + str(sLTFDsc[sLTF]) + sEmptyDsc
+			sLTF = sLTFMenuIndex[translate("getDimensions", selectedText)]
+			info = str(sPPMDsc[sPPM]) + sEmptyDsc
+			self.ppmOIS.setText(info)
+			info = str(sLTFDsc[sLTF]) + sEmptyDsc
 			self.rcIS.setText(info)
 
 			# submenu for report type
-			if selectedText == "c" or selectedText == "p" or selectedText == "a":
+			if sLTF == "c" or sLTF == "p" or sLTF == "a":
 				self.setSubmenu("hide")
 			else:
 				self.setSubmenu("show")
 
 			# edgeband code
-			if selectedText == "e" or selectedText == "d":
+			if sLTF == "e" or sLTF == "d":
 				self.ecL.show()
 				self.ecO.show()
 				self.ectiL.show()
@@ -832,7 +855,7 @@ def showQtGUI():
 				self.ectiL.hide()
 				self.ecti.hide()
 				
-			if selectedText == "a":
+			if sLTF == "a":
 				self.ufdL.hide()
 				self.ufdO.hide()
 				self.ufdIS.hide()
@@ -893,8 +916,10 @@ def showQtGUI():
 
 		def setPPM(self, selectedText):
 			global sPPM
-			sPPM = selectedText
-			info = str(sPPMDsc[sPPM]) + ", " + str(sLTFDsc[sLTF]) + sEmptyDsc
+			sPPM = sPPMMenuIndex[translate("getDimensions", selectedText)]
+			info = str(sPPMDsc[sPPM]) + sEmptyDsc
+			self.ppmOIS.setText(info)
+			info = str(sLTFDsc[sLTF]) + sEmptyDsc
 			self.rcIS.setText(info)
 
 		def setDFO(self, selectedText):
@@ -1153,6 +1178,16 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 	if iType == "weight":
 		return MagicPanels.unit2gui( iValue, "kg", sPDA )
 	
+	if iType == "price":
+		if MagicPanels.gWoodPriceSymbol == "zł":
+			guiString = str(round(iValue, sPDA)) + " "
+			guiString += str(MagicPanels.gWoodPriceSymbol)
+		else:
+			guiString = str(MagicPanels.gWoodPriceSymbol) + " "
+			guiString += str(round(iValue, sPDA))
+			
+		return guiString
+	
 	# for area
 	if iType == "area":
 		
@@ -1248,7 +1283,11 @@ def toSheet(iValue, iType, iCaller="toSheet"):
 	# for weight
 	if iType == "weight":
 		return  "=<<" + getUnit(iValue, iType, iCaller) + " " + ">>"
-		
+	
+	# for price
+	if iType == "price":
+		return  "=<<" + getUnit(iValue, iType, iCaller) + " " + ">>"
+	
 	# for raw angle
 	if iType == "to-angle":
 		return  getUnit(iValue, iType, iCaller)
@@ -1438,7 +1477,7 @@ def getKey(iObj, iW, iH, iL, iType, iCaller="getKey"):
 	vKey += str(vKeyArr[2])
 
 	# key for name report
-	if iType == "d" and (sLTF == "n" or sLTF == "w" or sLTF == "e" or sLTF == "d"):
+	if iType == "d" and (sLTF == "n" or sLTF == "w" or sLTF == "b" or sLTF == "e" or sLTF == "d"):
 		vKey = str(vKey) + ":" + str(iObj.Label)
 
 	# key for group report
@@ -1494,6 +1533,34 @@ def getWeight(iObj, iArea, iCaller="getWeight"):
 	weight = (iArea * float(0.000001)) * woodWeight
 	
 	return weight
+
+
+# ###################################################################################################################
+def getPrice(iObj, iW, iH, iL, iCaller="getPrice"):
+
+	if hasattr(iObj, "Woodworking_Price"):
+		p = float(iObj.Woodworking_Price)
+	else:
+		p = float(MagicPanels.gWoodPrice)
+	
+	if MagicPanels.gWoodPriceCalculation == "m^2":
+		sizes = [ iW, iH, iL ]
+		sizes.sort()
+		price = ( sizes[1] * sizes[2] * float(0.000001) ) * p
+	
+	if MagicPanels.gWoodPriceCalculation == "m^3":
+		price = ( iW * iH * iL * float(0.000001) ) * p
+	
+	if MagicPanels.gWoodPriceCalculation == "wood":
+		price = p
+	
+	# board feet = length (ft) × width (in) × thickness (in) / 12
+	if MagicPanels.gWoodPriceCalculation == "foot":
+		sizes = [ iW, iH, iL ]
+		sizes.sort()
+		price = ( ( (sizes[2] * 0.0032808399) * (sizes[1] * 0.0393700787) * (sizes[0] * 0.0393700787) ) / 12 ) * p
+		
+	return price
 
 
 # ###################################################################################################################
@@ -1661,6 +1728,10 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 		if sLTF == "w":
 			weight = getWeight(iObj, vArea, iCaller) 
 	
+		# get weight
+		if sLTF == "b":
+			price = getPrice(iObj, iW, iH, iL, iCaller) 
+			
 		# get key  for object
 		vKey = getKey(iObj, iW, iH, iL, "d", iCaller)
 	
@@ -1673,6 +1744,8 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 			if sLTF == "w":
 				dbDW[vKey] = dbDW[vKey] + weight
 
+			if sLTF == "b":
+				dbDP[vKey] = dbDP[vKey] + price
 		else:
 	
 			dbDQ[vKey] = 1
@@ -1681,6 +1754,9 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 			if sLTF == "w":
 				dbDW[vKey] = weight
 
+			if sLTF == "b":
+				dbDP[vKey] = price
+				
 		# get key  for object (convert value to dimension string)
 		vKeyT = str(getKey(iObj, iW, iH, iL, "thick", iCaller))
 	
@@ -1692,6 +1768,9 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 			
 			if sLTF == "w":
 				dbTW[vKeyT] = dbTW[vKeyT] + weight
+			
+			if sLTF == "b":
+				dbTP[vKeyT] = dbTP[vKeyT] + price
 		else:
 	
 			dbTQ[vKeyT] = 1
@@ -1699,6 +1778,9 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 
 			if sLTF == "w":
 				dbTW[vKeyT] = weight
+			
+			if sLTF == "b":
+				dbTP[vKeyT] = price
 				
 		# check visibility for edge if visibility feature is "edge"
 		# if visibility feature is "on" the whole object is skipped
@@ -3382,6 +3464,7 @@ def initLang():
 	global gLang26
 	global gLang27
 	global gLang28
+	global gLang29
 
 	# Polish language
 	if sLang  == "pl":
@@ -3425,6 +3508,7 @@ def initLang():
 		gLang26 = "pionowo"
 		gLang27 = "Rozmiar forniru dla koloru "
 		gLang28 = "Waga"
+		gLang29 = "Cena"
 
 	# from system translation files
 	elif sLang  == "system":
@@ -3468,6 +3552,7 @@ def initLang():
 		gLang26 = translate("getDimensions", "vertical")
 		gLang27 = translate("getDimensions", "Needed veneer for color")
 		gLang28 = translate("getDimensions", "Weight")
+		gLang29 = translate("getDimensions", "Price")
 
 	# English language
 	else:
@@ -3511,6 +3596,7 @@ def initLang():
 		gLang26 = "vertical"
 		gLang27 = "Needed veneer for color"
 		gLang28 = "Weight"
+		gLang29 = "Price"
 
 
 # ###################################################################################################################
@@ -4804,6 +4890,107 @@ def setViewWeight(iCaller="setViewWeight"):
 
 
 # ###################################################################################################################
+def setViewPrice(iCaller="setViewPrice"):
+
+	global gSheet
+	global gSheetRow
+
+	# set headers
+	gSheet.set("A1", gLang1)
+	gSheet.set("D1", gLang4)
+	gSheet.set("E1", gLang2)
+	gSheet.set("F1", gLang5)
+	gSheet.set("G1", gLang29)
+
+	# merge cells
+	gSheet.mergeCells("A1:C1")
+
+	# text header decoration
+	gSheet.setStyle("A1:G1", "bold", "add")
+
+	# set background
+	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	gSheet.setBackground(vCell, gHeadCS)
+
+	# go to next spreadsheet row
+	gSheetRow = gSheetRow + 1
+
+	# add values
+	for key in dbDA.keys():
+
+		a = key.split(":")
+
+		gSheet.set("A" + str(gSheetRow), toSheet(a[3], "string", iCaller))
+		gSheet.set("B" + str(gSheetRow), "")
+		gSheet.set("C" + str(gSheetRow), "")
+		gSheet.set("D" + str(gSheetRow), toSheet(a[0], "d", iCaller))
+		gSheet.set("E" + str(gSheetRow), toSheet(dbDQ[key], "string", iCaller))
+		gSheet.set("F" + str(gSheetRow), toSheet(dbDA[key], "area", iCaller))
+		gSheet.set("G" + str(gSheetRow), toSheet(dbDP[key], "price", iCaller))
+
+		# merge cells
+		gSheet.mergeCells( "A"+str(gSheetRow) +":"+ "C"+str(gSheetRow) )
+	
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+	# cell sizes
+	gSheet.setColumnWidth("A", 215)
+	gSheet.setColumnWidth("B", 90)
+	gSheet.setColumnWidth("C", 20)
+	gSheet.setColumnWidth("D", 90)
+	gSheet.setColumnWidth("E", 100)
+	gSheet.setColumnWidth("F", 80)
+	gSheet.setColumnWidth("G", 120)
+
+	# alignment
+	gSheet.setAlignment("A1:A" + str(gSheetRow), "left", "keep")
+	gSheet.setAlignment("B1:B" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("C1:C" + str(gSheetRow), "center", "keep")
+	gSheet.setAlignment("D1:D" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("E1:E" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("F1:F" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("G1:G" + str(gSheetRow), "right", "keep")
+
+	# fix for center header text in merged cells
+	gSheet.setAlignment("B1:B1", "center", "keep")
+	gSheet.setAlignment("C1:C1", "center", "keep")
+	gSheet.setAlignment("D1:D1", "center", "keep")
+
+	# ########################################################
+	# summary thickness part
+	# ########################################################
+
+	if sATS == False:
+		return
+
+	# add summary title for thickness
+	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+	gSheet.set(vCell, gLang7)
+	gSheet.setStyle(vCell, "bold", "add")
+	gSheet.setAlignment(vCell, "left", "keep")
+	gSheet.setBackground(vCell, gHeadCS)
+
+	# go to next spreadsheet row
+	gSheetRow = gSheetRow + 1
+	
+	for key in dbTQ.keys():
+
+		gSheet.set("D" + str(gSheetRow), toSheet(key, "d", iCaller))
+		gSheet.set("E" + str(gSheetRow), toSheet(dbTQ[key], "string", iCaller))
+		gSheet.set("F" + str(gSheetRow), toSheet(dbTA[key], "area", iCaller))
+		gSheet.set("G" + str(gSheetRow), toSheet(dbTP[key], "price", iCaller))
+		gSheet.setAlignment("D" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("E" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("F" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("G" + str(gSheetRow), "right", "keep")
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+
+# ###################################################################################################################
 def setViewEdge(iCaller="setViewEdge"):
 
 	global gSheet
@@ -5076,6 +5263,10 @@ def selectView(iCaller="selectView"):
 	# main report - calculate weight
 	if sLTF == "w":
 		setViewWeight(iCaller)
+	
+	# main report - calculate price
+	if sLTF == "b":
+		setViewPrice(iCaller)
 		
 	# main report - approximation (raw values calculated from vertex)
 	if sLTF == "a":

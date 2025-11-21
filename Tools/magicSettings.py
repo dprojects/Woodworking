@@ -19,6 +19,14 @@ getMenuIndex1 = {
 	translate('magicSettings', 'Settings - page 5'): 4 # no comma 
 }
 
+# add new items only at the end and change self.oWoodPriceCalculationList
+getWoodPriceCalculation = {
+	translate('magicSettings', 'price per area in m^2'): 'm^2',
+	translate('magicSettings', 'price per volume in m^3'): 'm^3',
+	translate('magicSettings', 'price per wood piece'):'wood',
+	translate('magicSettings', 'price per board foot'): 'foot' # no comma
+}
+
 # ############################################################################
 # Qt Main
 # ############################################################################
@@ -33,6 +41,7 @@ def showQtGUI():
 		# ############################################################################
 		
 		gTheme = MagicPanels.gTheme
+		gWoodPriceCalculation = MagicPanels.gWoodPriceCalculation
 		gPage = 0
 		
 		# ############################################################################
@@ -51,7 +60,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 400
-			toolSH = 600
+			toolSH = 670
 			
 			# ############################################################################
 			# main window
@@ -116,6 +125,29 @@ def showQtGUI():
 			self.oWoodWeightL = QtGui.QLabel(translate('magicSettings', 'Wood weight:'), self)
 			self.oWoodWeightE = QtGui.QLineEdit(self)
 			self.oWoodWeightE.setText("0")
+			
+			# wood price
+			self.oWoodPriceL = QtGui.QLabel(translate('magicSettings', 'Wood price:'), self)
+			self.oWoodPriceE = QtGui.QLineEdit(self)
+			self.oWoodPriceE.setText("0")
+			
+			# wood price symbol
+			self.oWoodPriceSymbolL = QtGui.QLabel(translate('magicSettings', 'Wood price symbol:'), self)
+			self.oWoodPriceSymbolE = QtGui.QLineEdit(self)
+			self.oWoodPriceSymbolE.setText("0")
+			
+			# wood price calculation
+			self.oWoodPriceCalculationL = QtGui.QLabel(translate('magicSettings', 'Wood price calculation:'), self)
+			self.oWoodPriceCalculationList = (
+				translate('magicSettings', 'price per area in m^2'),
+				translate('magicSettings', 'price per volume in m^3'),
+				translate('magicSettings', 'price per wood piece'),
+				translate('magicSettings', 'price per board foot') # no comma
+			)
+			self.oWoodPriceCalculationE = QtGui.QComboBox(self)
+			self.oWoodPriceCalculationE.addItems(self.oWoodPriceCalculationList)
+			self.oWoodPriceCalculationE.setCurrentIndex(0) # default
+			self.oWoodPriceCalculationE.textActivated[str].connect(self.setWoodPriceCalculation)
 			
 			# wood color
 			self.oWoodColorRL = QtGui.QLabel(translate('magicSettings', 'Wood color (red):'), self)
@@ -422,6 +454,12 @@ def showQtGUI():
 			self.Page12.addWidget(self.oWoodSizeYE, 2, 1)
 			self.Page12.addWidget(self.oWoodWeightL, 3, 0)
 			self.Page12.addWidget(self.oWoodWeightE, 3, 1)
+			self.Page12.addWidget(self.oWoodPriceL, 4, 0)
+			self.Page12.addWidget(self.oWoodPriceE, 4, 1)
+			self.Page12.addWidget(self.oWoodPriceSymbolL, 5, 0)
+			self.Page12.addWidget(self.oWoodPriceSymbolE, 5, 1)
+			self.Page12.addWidget(self.oWoodPriceCalculationL, 6, 0)
+			self.Page12.addWidget(self.oWoodPriceCalculationE, 6, 1)
 			self.groupPage12 = QtGui.QGroupBox(None, self)
 			self.groupPage12.setLayout(self.Page12)
 		
@@ -636,6 +674,9 @@ def showQtGUI():
 		def doNothing(self):
 			skip = 1
 
+		def setWoodPriceCalculation(self, selectedText):
+			self.gWoodPriceCalculation = getWoodPriceCalculation[selectedText]
+
 		def showPage(self, selectedText):
 			selectedIndex = getMenuIndex1[selectedText]
 			self.gPage = selectedIndex
@@ -760,6 +801,25 @@ def showQtGUI():
 			except:
 				skip = 1
 			
+			try:
+				val = MagicPanels.gWoodPrice
+				val = str(float(val))
+				self.oWoodPriceE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gWoodPriceSymbol
+				val = str(val)
+				self.oWoodPriceSymbolE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				self.oWoodPriceCalculationE.setCurrentText(MagicPanels.gWoodPriceCalculation)
+			except:
+				skip = 1
+
 			try:
 				color = MagicPanels.gDefaultColor
 				color = MagicPanels.convertColor(color, "RGBA")
@@ -1095,6 +1155,15 @@ def showQtGUI():
 				val = self.oWoodWeightE.text()
 				val = MagicPanels.unit2value(val, "weight")
 				wus.SetString('wWoodWeight', str(val))
+				
+				val = self.oWoodPriceE.text()
+				val = float(val)
+				wus.SetString('wWoodPrice', str(val))
+				
+				val = self.oWoodPriceSymbolE.text()
+				wus.SetString('wWoodPriceSymbol', str(val))
+				
+				wus.SetString('wWoodPriceCalculation', str(self.gWoodPriceCalculation))
 				
 				# color
 				cR = self.oWoodColorRE.text()

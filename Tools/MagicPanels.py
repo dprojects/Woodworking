@@ -59,6 +59,9 @@ gWoodThickness = 18                        # main construction wood thickness <b
 gWoodSizeX = 600                           # default panel long size <br>
 gWoodSizeY = 300                           # default panel short size <br>
 gWoodWeight = 12.6                         # weight per square meter kg/m^2 <br>
+gWoodPrice = 37.98                         # wood price float in user currency, by default in Poland in zł/m^2 <br>
+gWoodPriceSymbol = "zł"                    # wood price symbol to show in cut-list <br>
+gWoodPriceCalculation = "m^2"              # wood price calculation way: "m^2", "m^3", "wood", "foot" <br>
 gWindowStaysOnTop = True                   # to keep window on top <br> 
 gCurrentSelection = False                  # to skip refresh selection button <br>
 gFrontInsideThickness = 18                 # front inside wood thickness <br>
@@ -9099,6 +9102,27 @@ def updateGlobals():
 	except:
 		skip = 1
 
+	try:
+		if "wWoodPrice" in wusStrings:
+			global gWoodPrice
+			gWoodPrice = float( wus.GetString('wWoodPrice') )
+	except:
+		skip = 1
+	
+	try:
+		if "wWoodPriceSymbol" in wusStrings:
+			global gWoodPriceSymbol
+			gWoodPriceSymbol = str(wus.GetString('wWoodPriceSymbol'))
+	except:
+		skip = 1
+	
+	try:
+		if "wWoodPriceCalculation" in wusStrings:
+			global gWoodPriceCalculation
+			gWoodPriceCalculation = str( wus.GetString('wWoodPriceCalculation') )
+	except:
+		skip = 1
+		
 	# color
 	try:
 		if "wWoodColorR" in wusStrings:
