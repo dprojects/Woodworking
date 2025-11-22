@@ -16,7 +16,16 @@ getMenuIndex1 = {
 	translate('magicSettings', 'Settings - page 2'): 1, 
 	translate('magicSettings', 'Settings - page 3'): 2, 
 	translate('magicSettings', 'Settings - page 4'): 3, 
-	translate('magicSettings', 'Settings - page 5'): 4 # no comma 
+	translate('magicSettings', 'Settings - page 5'): 4, 
+	translate('magicSettings', 'Settings - page 6'): 5 # no comma 
+}
+
+# add new items only at the end and change self.oWoodWeightCalculationList
+getWoodWeightCalculation = {
+	translate('magicSettings', 'kg per area in m^2'): 'kg/m^2',
+	translate('magicSettings', 'kg per volume in m^3'): 'kg/m^3',
+	translate('magicSettings', 'pounds per area in ft^2'): 'lb/ft^2',
+	translate('magicSettings', 'pounds per volume in ft^3'): 'lb/ft^3' # no comma
 }
 
 # add new items only at the end and change self.oWoodPriceCalculationList
@@ -41,6 +50,7 @@ def showQtGUI():
 		# ############################################################################
 		
 		gTheme = MagicPanels.gTheme
+		gWoodWeightCalculation = MagicPanels.gWoodWeightCalculation
 		gWoodPriceCalculation = MagicPanels.gWoodPriceCalculation
 		gPage = 0
 		
@@ -59,8 +69,8 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 400
-			toolSH = 670
+			toolSW = 450
+			toolSH = 600
 			
 			# ############################################################################
 			# main window
@@ -84,7 +94,8 @@ def showQtGUI():
 				translate('magicSettings', 'Settings - page 2'), 
 				translate('magicSettings', 'Settings - page 3'), 
 				translate('magicSettings', 'Settings - page 4'), 
-				translate('magicSettings', 'Settings - page 5') # no comma 
+				translate('magicSettings', 'Settings - page 5'),
+				translate('magicSettings', 'Settings - page 6') # no comma 
 			)
 			
 			self.sPage = QtGui.QComboBox(self)
@@ -125,6 +136,19 @@ def showQtGUI():
 			self.oWoodWeightL = QtGui.QLabel(translate('magicSettings', 'Wood weight:'), self)
 			self.oWoodWeightE = QtGui.QLineEdit(self)
 			self.oWoodWeightE.setText("0")
+			
+			# wood price calculation
+			self.oWoodWeightCalculationL = QtGui.QLabel(translate('magicSettings', 'Wood weight calculation:'), self)
+			self.oWoodWeightCalculationList = (
+				translate('magicSettings', 'kg per area in m^2'),
+				translate('magicSettings', 'kg per volume in m^3'),
+				translate('magicSettings', 'pounds per area in ft^2'),
+				translate('magicSettings', 'pounds per volume in ft^3') # no comma
+			)
+			self.oWoodWeightCalculationE = QtGui.QComboBox(self)
+			self.oWoodWeightCalculationE.addItems(self.oWoodWeightCalculationList)
+			self.oWoodWeightCalculationE.setCurrentIndex(0) # default
+			self.oWoodWeightCalculationE.textActivated[str].connect(self.setWoodWeightCalculation)
 			
 			# wood price
 			self.oWoodPriceL = QtGui.QLabel(translate('magicSettings', 'Wood price:'), self)
@@ -452,38 +476,48 @@ def showQtGUI():
 			self.Page12.addWidget(self.oWoodSizeXE, 1, 1)
 			self.Page12.addWidget(self.oWoodSizeYL, 2, 0)
 			self.Page12.addWidget(self.oWoodSizeYE, 2, 1)
-			self.Page12.addWidget(self.oWoodWeightL, 3, 0)
-			self.Page12.addWidget(self.oWoodWeightE, 3, 1)
-			self.Page12.addWidget(self.oWoodPriceL, 4, 0)
-			self.Page12.addWidget(self.oWoodPriceE, 4, 1)
-			self.Page12.addWidget(self.oWoodPriceSymbolL, 5, 0)
-			self.Page12.addWidget(self.oWoodPriceSymbolE, 5, 1)
-			self.Page12.addWidget(self.oWoodPriceCalculationL, 6, 0)
-			self.Page12.addWidget(self.oWoodPriceCalculationE, 6, 1)
 			self.groupPage12 = QtGui.QGroupBox(None, self)
 			self.groupPage12.setLayout(self.Page12)
-		
+			
 			self.Page13 = QtGui.QGridLayout()
-			self.Page13.addWidget(self.oWoodColorRL, 0, 0)
-			self.Page13.addWidget(self.oWoodColorRE, 0, 1)
-			self.Page13.addWidget(self.oWoodColorGL, 1, 0)
-			self.Page13.addWidget(self.oWoodColorGE, 1, 1)
-			self.Page13.addWidget(self.oWoodColorBL, 2, 0)
-			self.Page13.addWidget(self.oWoodColorBE, 2, 1)
-			self.Page13.addWidget(self.oWoodColorAL, 3, 0)
-			self.Page13.addWidget(self.oWoodColorAE, 3, 1)
+			self.Page13.addWidget(self.oWoodWeightL, 0, 0)
+			self.Page13.addWidget(self.oWoodWeightE, 0, 1)
+			self.Page13.addWidget(self.oWoodWeightCalculationL, 1, 0)
+			self.Page13.addWidget(self.oWoodWeightCalculationE, 1, 1)
 			self.groupPage13 = QtGui.QGroupBox(None, self)
 			self.groupPage13.setLayout(self.Page13)
-
+			
 			self.Page14 = QtGui.QGridLayout()
-			self.Page14.addWidget(self.oWindowL, 1, 0)
-			self.Page14.addWidget(self.oWindowRB1, 1, 1)
-			self.Page14.addWidget(self.oWindowRB2, 1, 2)
-			self.Page14.addWidget(self.oCurrentSelectionL, 2, 0)
-			self.Page14.addWidget(self.oCurrentSelectionRB1, 2, 1)
-			self.Page14.addWidget(self.oCurrentSelectionRB2, 2, 2)
+			self.Page14.addWidget(self.oWoodPriceL, 0, 0)
+			self.Page14.addWidget(self.oWoodPriceE, 0, 1)
+			self.Page14.addWidget(self.oWoodPriceSymbolL, 1, 0)
+			self.Page14.addWidget(self.oWoodPriceSymbolE, 1, 1)
+			self.Page14.addWidget(self.oWoodPriceCalculationL, 2, 0)
+			self.Page14.addWidget(self.oWoodPriceCalculationE, 2, 1)
 			self.groupPage14 = QtGui.QGroupBox(None, self)
 			self.groupPage14.setLayout(self.Page14)
+		
+			self.Page15 = QtGui.QGridLayout()
+			self.Page15.addWidget(self.oWoodColorRL, 0, 0)
+			self.Page15.addWidget(self.oWoodColorRE, 0, 1)
+			self.Page15.addWidget(self.oWoodColorGL, 1, 0)
+			self.Page15.addWidget(self.oWoodColorGE, 1, 1)
+			self.Page15.addWidget(self.oWoodColorBL, 2, 0)
+			self.Page15.addWidget(self.oWoodColorBE, 2, 1)
+			self.Page15.addWidget(self.oWoodColorAL, 3, 0)
+			self.Page15.addWidget(self.oWoodColorAE, 3, 1)
+			self.groupPage15 = QtGui.QGroupBox(None, self)
+			self.groupPage15.setLayout(self.Page15)
+
+			self.Page16 = QtGui.QGridLayout()
+			self.Page16.addWidget(self.oWindowL, 0, 0)
+			self.Page16.addWidget(self.oWindowRB1, 0, 1)
+			self.Page16.addWidget(self.oWindowRB2, 0, 2)
+			self.Page16.addWidget(self.oCurrentSelectionL, 1, 0)
+			self.Page16.addWidget(self.oCurrentSelectionRB1, 1, 1)
+			self.Page16.addWidget(self.oCurrentSelectionRB2, 1, 2)
+			self.groupPage16 = QtGui.QGroupBox(None, self)
+			self.groupPage16.setLayout(self.Page16)
 
 			self.Page21 = QtGui.QGridLayout()
 			self.Page21.addWidget(self.oFrontInsideThicknessL, 0, 0)
@@ -615,6 +649,8 @@ def showQtGUI():
 			self.layout.addWidget(self.groupPage12)
 			self.layout.addWidget(self.groupPage13)
 			self.layout.addWidget(self.groupPage14)
+			self.layout.addWidget(self.groupPage15)
+			self.layout.addWidget(self.groupPage16)
 			self.layout.addWidget(self.groupPage21)
 			self.layout.addWidget(self.groupPage22)
 			self.layout.addWidget(self.groupPage23)
@@ -632,8 +668,10 @@ def showQtGUI():
 			# init
 			self.groupPage11.show()
 			self.groupPage12.show()
-			self.groupPage13.show()
-			self.groupPage14.show()
+			self.groupPage13.hide()
+			self.groupPage14.hide()
+			self.groupPage15.show()
+			self.groupPage16.show()
 			self.groupPage21.hide()
 			self.groupPage22.hide()
 			self.groupPage23.hide()
@@ -674,6 +712,9 @@ def showQtGUI():
 		def doNothing(self):
 			skip = 1
 
+		def setWoodWeightCalculation(self, selectedText):
+			self.gWoodWeightCalculation = getWoodWeightCalculation[selectedText]
+			
 		def setWoodPriceCalculation(self, selectedText):
 			self.gWoodPriceCalculation = getWoodPriceCalculation[selectedText]
 
@@ -684,8 +725,10 @@ def showQtGUI():
 			if self.gPage == 0:
 				self.groupPage11.show()
 				self.groupPage12.show()
-				self.groupPage13.show()
-				self.groupPage14.show()
+				self.groupPage13.hide()
+				self.groupPage14.hide()
+				self.groupPage15.show()
+				self.groupPage16.show()
 				self.groupPage21.hide()
 				self.groupPage22.hide()
 				self.groupPage23.hide()
@@ -700,8 +743,28 @@ def showQtGUI():
 			if self.gPage == 1:
 				self.groupPage11.hide()
 				self.groupPage12.hide()
+				self.groupPage13.show()
+				self.groupPage14.show()
+				self.groupPage15.hide()
+				self.groupPage16.hide()
+				self.groupPage21.hide()
+				self.groupPage22.hide()
+				self.groupPage23.hide()
+				self.groupPage31.hide()
+				self.groupPage32.hide()
+				self.groupPage41.hide()
+				self.groupPage42.hide()
+				self.groupPage51.hide()
+				self.groupPage52.hide()
+				self.groupPage53.hide()
+			
+			if self.gPage == 2:
+				self.groupPage11.hide()
+				self.groupPage12.hide()
 				self.groupPage13.hide()
 				self.groupPage14.hide()
+				self.groupPage15.hide()
+				self.groupPage16.hide()
 				self.groupPage21.show()
 				self.groupPage22.show()
 				self.groupPage23.show()
@@ -713,11 +776,13 @@ def showQtGUI():
 				self.groupPage52.hide()
 				self.groupPage53.hide()
 
-			if self.gPage == 2:
+			if self.gPage == 3:
 				self.groupPage11.hide()
 				self.groupPage12.hide()
 				self.groupPage13.hide()
 				self.groupPage14.hide()
+				self.groupPage15.hide()
+				self.groupPage16.hide()
 				self.groupPage21.hide()
 				self.groupPage22.hide()
 				self.groupPage23.hide()
@@ -729,11 +794,13 @@ def showQtGUI():
 				self.groupPage52.hide()
 				self.groupPage53.hide()
 
-			if self.gPage == 3:
+			if self.gPage == 4:
 				self.groupPage11.hide()
 				self.groupPage12.hide()
 				self.groupPage13.hide()
 				self.groupPage14.hide()
+				self.groupPage15.hide()
+				self.groupPage16.hide()
 				self.groupPage21.hide()
 				self.groupPage22.hide()
 				self.groupPage23.hide()
@@ -745,11 +812,13 @@ def showQtGUI():
 				self.groupPage52.hide()
 				self.groupPage53.hide()
 			
-			if self.gPage == 4:
+			if self.gPage == 5:
 				self.groupPage11.hide()
 				self.groupPage12.hide()
 				self.groupPage13.hide()
 				self.groupPage14.hide()
+				self.groupPage15.hide()
+				self.groupPage16.hide()
 				self.groupPage21.hide()
 				self.groupPage22.hide()
 				self.groupPage23.hide()
@@ -796,11 +865,17 @@ def showQtGUI():
 
 			try:
 				val = MagicPanels.gWoodWeight
-				val = MagicPanels.unit2gui(val, "weight")
+				val = str(float(val))
 				self.oWoodWeightE.setText(val)
 			except:
 				skip = 1
 			
+			try:
+				k = [ key for key, val in getWoodWeightCalculation.items() if val == MagicPanels.gWoodWeightCalculation ][0]
+				self.oWoodWeightCalculationE.setCurrentText(k)
+			except:
+				skip = 1
+
 			try:
 				val = MagicPanels.gWoodPrice
 				val = str(float(val))
@@ -1154,8 +1229,10 @@ def showQtGUI():
 				wus.SetString('wWoodSizeY', str(val))
 
 				val = self.oWoodWeightE.text()
-				val = MagicPanels.unit2value(val, "weight")
+				val = float(val)
 				wus.SetString('wWoodWeight', str(val))
+				
+				wus.SetString('wWoodWeightCalculation', str(self.gWoodWeightCalculation))
 				
 				val = self.oWoodPriceE.text()
 				val = float(val)

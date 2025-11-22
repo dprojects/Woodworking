@@ -30,7 +30,8 @@
 * `gWoodThickness = 18`: main construction wood thickness <br>
 * `gWoodSizeX = 600`: default panel long size <br>
 * `gWoodSizeY = 300`: default panel short size <br>
-* `gWoodWeight = 12.6 `: weight per square meter kg/m^2 <br>
+* `gWoodWeight = 12.6 `: wood weight float in selected calculation method <br>
+* `gWoodWeightCalculation = "kg/m^2" `: wood weight calculation string: "kg/m^2", "lb/in^2"
 * `gWoodPrice = 37.98 `: wood price float in user currency, by default in Poland in zł/m^2 <br>
 * `gWoodPriceSymbol = "zł"`: wood price symbol to show in cut-list <br>
 * `gWoodPriceCalculation = "m^2"`: wood price calculation way: "m^2", "m^3", "wood", "foot" <br>
@@ -1783,7 +1784,7 @@
 
 # Units
 
-### unit2gui(iValue, iType="system", iPrecision="2"):
+### unit2gui(iValue):
 
 	
 ##### Description:
@@ -1793,11 +1794,7 @@
 ##### Args:
 
 		iValue: float from FreeCAD or from calculations
-		iType:
-			* "system" - by default convert by system
-			* "weight" - return string for weight per meter for user gui
-			* "kg" - return string for weight in kilograms for user gui
-		iPrecision: int, represents digits number for precision round
+
 ##### Usage:
 
 		unitForUser = MagicPanels.unit2gui(300.55)
@@ -1810,7 +1807,7 @@
 
 		string
 
-### unit2value(iString, iType="system"):
+### unit2value(iString):
 
 	
 ##### Description:
@@ -1821,9 +1818,6 @@
 
 		iString: units string in user settings notation, for example "5 mm", "5 in", "5 ft", 
 		but also accept quick value notation like "500" for all units schemas.
-		iType:
-			* "system" - by default convert by system
-			* "weight" - return value for weight for calculation in kg/m^2
 		
 ##### Usage:
 		

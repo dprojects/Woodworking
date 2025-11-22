@@ -1176,7 +1176,19 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 	
 	# for weight
 	if iType == "weight":
-		return MagicPanels.unit2gui( iValue, "kg", sPDA )
+		if (
+			MagicPanels.gWoodWeightCalculation == "kg/m^2" or 
+			MagicPanels.gWoodWeightCalculation == "kg/m^3"
+			):
+			guiString = str(round(iValue, sPDA)) + " " + "kg"
+		
+		if (
+			MagicPanels.gWoodWeightCalculation == "lb/ft^2" or 
+			MagicPanels.gWoodWeightCalculation == "lb/ft^3"
+			):
+			guiString = str(round(iValue, sPDA)) + " " + "lb"
+			
+		return guiString
 	
 	if iType == "price":
 		if MagicPanels.gWoodPriceSymbol == "zł":
@@ -1523,14 +1535,27 @@ def getArea(iObj, iW, iH, iL, iCaller="getArea"):
 
 
 # ###################################################################################################################
-def getWeight(iObj, iArea, iCaller="getWeight"):
+def getWeight(iObj, iW, iH, iL, iCaller="getWeight"):
 
 	if hasattr(iObj, "Woodworking_Weight"):
-		woodWeight = MagicPanels.unit2value(iObj.Woodworking_Weight, "weight")
+		w = float(iObj.Woodworking_Weight)
 	else:
-		woodWeight = float(MagicPanels.gWoodWeight)
+		w = float(MagicPanels.gWoodWeight)
 	
-	weight = (iArea * float(0.000001)) * woodWeight
+	sizes = [ iW, iH, iL ]
+	sizes.sort()
+		
+	if MagicPanels.gWoodWeightCalculation == "kg/m^2":
+		weight = ( sizes[1] * sizes[2] * float(0.000001) ) * w
+		
+	if MagicPanels.gWoodWeightCalculation == "kg/m^3":
+		weight = ( sizes[0] * sizes[1] * sizes[2] * float(0.000001) ) * w
+		
+	if MagicPanels.gWoodWeightCalculation == "lb/ft^2":
+		weight = ( sizes[1] * sizes[2] * float(0.000001) ) * w * 0.204816144
+		
+	if MagicPanels.gWoodWeightCalculation == "lb/ft^3":
+		weight = ( sizes[0] * sizes[1] * sizes[2] * float(0.000001) ) * w * 0.0624279606
 	
 	return weight
 
@@ -1543,9 +1568,10 @@ def getPrice(iObj, iW, iH, iL, iCaller="getPrice"):
 	else:
 		p = float(MagicPanels.gWoodPrice)
 	
+	sizes = [ iW, iH, iL ]
+	sizes.sort()
+
 	if MagicPanels.gWoodPriceCalculation == "m^2":
-		sizes = [ iW, iH, iL ]
-		sizes.sort()
 		price = ( sizes[1] * sizes[2] * float(0.000001) ) * p
 	
 	if MagicPanels.gWoodPriceCalculation == "m^3":
@@ -1556,8 +1582,6 @@ def getPrice(iObj, iW, iH, iL, iCaller="getPrice"):
 	
 	# board feet = length (ft) × width (in) × thickness (in) / 12
 	if MagicPanels.gWoodPriceCalculation == "foot":
-		sizes = [ iW, iH, iL ]
-		sizes.sort()
 		price = ( ( (sizes[2] * 0.0032808399) * (sizes[1] * 0.0393700787) * (sizes[0] * 0.0393700787) ) / 12 ) * p
 		
 	return price
@@ -1726,7 +1750,7 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 	
 		# get weight
 		if sLTF == "w":
-			weight = getWeight(iObj, vArea, iCaller) 
+			weight = getWeight(iObj, iW, iH, iL, iCaller) 
 	
 		# get weight
 		if sLTF == "b":
