@@ -6,7 +6,7 @@ Woodworking workbench is mainly intended for creating simple cabinets for home o
 * Quick process of adding dowels and other mounting elements, screws, minifix via [magicDowels](https://github.com/dprojects/Woodworking/tree/master/Docs#magicdowels).
 * Quick process of drilling holes, countersinks, counterbores or pockets holes via [magicDriller](https://github.com/dprojects/Woodworking/tree/master/Docs#magicdriller).
 * Quick process of making furniture parametric via [magicGlue](https://github.com/dprojects/Woodworking/tree/master/Docs#magicglue).
-* Quick process of measurement via [https://github.com/dprojects/Woodworking/tree/master/Docs#magicmeasure] and [showMeasurements](https://github.com/dprojects/Woodworking/tree/master/Docs#showmeasurements).
+* Quick process of measurement via [magicMeasure](https://github.com/dprojects/Woodworking/tree/master/Docs#magicmeasure) and [showMeasurements](https://github.com/dprojects/Woodworking/tree/master/Docs#showmeasurements).
 * Automatic cut-list after design via [getDimensions](https://github.com/dprojects/Woodworking/tree/master/Docs#getdimensions).
 * Export cut-list to format csv, json, html, markdown via [sheet2export](https://github.com/dprojects/Woodworking/tree/master/Docs#sheet2export).
 * Improved furniture preview via [makeTransparent](https://github.com/dprojects/Woodworking/tree/master/Docs#maketransparent), [frontsOpenClose](https://github.com/dprojects/Woodworking/tree/master/Docs#frontsopenclose) and [magicView](https://github.com/dprojects/Woodworking/tree/master/Docs#magicview) and real-time color management via [magicColors](https://github.com/dprojects/Woodworking/tree/master/Docs#magiccolors).
