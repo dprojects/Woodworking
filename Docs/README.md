@@ -61,6 +61,12 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 	* [magicView](#magicview)
 * [Project manage](#project-manage)
 	* [magicSettings](#magicsettings)
+		* [Settings - page 1](#settings---page-1)
+		* [Settings - page 2](#settings---page-2)
+		* [Settings - page 3](#settings---page-3)
+		* [Settings - page 4](#settings---page-4)
+		* [Settings - page 5](#settings---page-5)
+		* [Settings - page 6](#settings---page-6)
 	* [selected2LinkGroup](#selected2linkgroup)
 	* [selected2Link](#selected2link)
 	* [selected2Group](#selected2group)
@@ -912,7 +918,7 @@ Available anchors to select:
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicSettings.png"> This tool allows you to save default settings for Woodworking workbench. 
 
-**Settings - page 1:**
+### Settings - page 1
 
 * **Theme:** allows you to choose a color theme for all Woodworking workbench tools. Switching the theme causes an immediate preview on the tool interface. To save a given theme, press the `save settings` button. The `default` means no theme.
 * **Wood thickness:** allows you to set the default thickness of the wood you create. This setting is used by tools such as [magicStart](#magicstart), [wires2pad](#wires2pad), [Default panels](#default-panels) and all others.
@@ -926,7 +932,7 @@ Available anchors to select:
   * `yes` - Allows you to bypass the `refresh selection` button. When enabled, you do not have to constantly press the `refresh selection` button to load objects into memory, you can simply select them. However, this is an experimental option and only works for the [magicMove](#magicmove) tool.
   * `no` - The default behavior of the tools is that moving objects requires loading the objects into memory by pressing the `refresh selection` button.
 
-**Settings - page 2:**
+### Settings - page 2
 
 * **Wood weight:** allows you to set default weight unit for wood. The wood weight value should be set in float in user weight calculation method. By default, the weight of `18 mm` chipboard is set to `12.6`. This value is used by [getDimensions](#getdimensions) cut-list tool to create `w - weight` report type.
 
@@ -963,7 +969,7 @@ Example weights of commonly used wood:
   * `price per wood piece`: in this case, the price will be set per piece of wood, regardless of its size. In this case, the price is influenced only by the number of pieces of a given wood, and this can be easily verified by cloning the object.
   * `price per board foot`: this is a way of calculating the price for the board foot given on the website [omnicalculator.com/construction/board-foot](https://www.omnicalculator.com/construction/board-foot) according to the formula: `board feet = length (ft) × width (in) × thickness (in) / 12`.
 
-**Settings - page 3:**
+### Settings - page 3
 
 * **Front inside thickness:** allows you to set default thickness for fronts inside.
 * **Front inside offset left:** allows you to set default left gap for fronts inside.
@@ -979,7 +985,7 @@ Example weights of commonly used wood:
 * **Back inside thickness:** allows you to set default thickness for back inside, usually 18 mm chipboard in Poland.
 * **Back outside thickness:** allows you to set default thickness for back outside, usually 3 mm HDF in Poland.
 
-**Settings - page 4:**
+### Settings - page 4
 
 * **Veneer thickness:** allows you to simulate veneer thickness. Constructions with `veneer` description in [magicStart](#magicstart) supports this option and add additional gap for edgeband.
 * **Veneer apply:** allows you to simulate veneer and choose method of veneer applying. Constructions with `veneer` description in [magicStart](#magicstart) supports this option and add additional gap for edgeband.
@@ -987,7 +993,7 @@ Example weights of commonly used wood:
   * `visible` it is more custom way, related mostly only to visible edges.
 * **Veneer color:** allows you to set the default RGBA color of the veneer. If you want to revert to the default color which is `white: RGBA = [ 255, 255, 255, 255 ]` leave all fields empty and press the `save settings` button.
 
-**Settings - page 5:** 
+### Settings - page 5
 
 * **Prefer magicSettings defaults:**
   * `yes` to open [magicDowels](#magicdowels) and [magicDriller](#magicdriller) with defaults from this magicSettings tool.
@@ -1001,7 +1007,7 @@ Example weights of commonly used wood:
 * **Offset between items:** space between dowels or drill bits.
 * **Offset from edge:** means space to the front where is the currently selected edge. This value should be calculated from board thickness to get drill bit or dowel in the center but here you can define it permanently for all boards. This might be helpful if you plan to create holes for shelves with custom offset.
 
-**Settings - page 6:**
+### Settings - page 6
 
 * **Dowel diameter:** diameter for dowels in [magicDowels](#magicdowels) tool.
 * **Dowel size:** the length for the dowels in [magicDowels](#magicdowels) tool.
@@ -1196,7 +1202,7 @@ Example weights of commonly used wood:
 * **d - drilling:** this report type is an extended version of the `e - report` type, but also displays named constraints from the `PartDesign::Hole` object sketch. Additionally, the header comes from the Body object. This allows you to describe all edge distances, diameters, and depths for holes.
 * **c - constraints names:** this report type shows the dimensions for all named constraints inside Sketch objects and the `Length` size from `PartDesign` objects.
 * **p - pads all constraints:** this report type shows the dimensions for all constraints on Sketch objects, whether named or unnamed, and the `Length` size from `PartDesign` objects.
-* **w - weight:** this report type calculates the weight based on the designated area and the wood weight unit for one square meter. First, it checks whether the object has a `Woodworking_Weight`attribute of the `App::PropertyFloat` or `App::PropertyString` type, or any other that can be converted to float. If it does, that unit is used to calculate the wood weight. If it doesn't, the wood weight is retrieved from the global variable `MagicPanels.gWoodWeight`, which can be changed using the [magicSettings](#magicsettings) tool and is saved in the user preferences as `wWoodWeight` in the form of a float. The final weight value is calculated according to the calculation method from the `MagicPanels.gWoodWeightCalculation` global variable, which can be changed using the [magicSettings](#magicsettings) tool and is saved in the user preferences as `wWoodWeightCalculation` in the form of a string method key. If the object has a `Woodworking_Weight` weight attribute set, the final weight will be calculated according to the selected weight calculation method. Additionally, the decimal value is rounded according to the precision set for the area.
+* **w - weight:** this report type calculates the weight based on the wood weight unit and calculation method. First, it checks whether the object has a `Woodworking_Weight`attribute of the `App::PropertyFloat` or `App::PropertyString` type, or any other that can be converted to float. If it does, that unit is used to calculate the wood weight. If it doesn't, the wood weight is retrieved from the global variable `MagicPanels.gWoodWeight`, which can be changed using the [magicSettings](#magicsettings) tool and is saved in the user preferences as `wWoodWeight` in the form of a float. The final weight value is calculated according to the calculation method from the `MagicPanels.gWoodWeightCalculation` global variable, which can be changed using the [magicSettings](#magicsettings) tool and is saved in the user preferences as `wWoodWeightCalculation` in the form of a string method key. If the object has a `Woodworking_Weight` weight attribute set, the final weight will be calculated according to the selected weight calculation method. Additionally, the decimal value is rounded according to the precision set for the area.
 * **b - budget:** this type of report allows you to estimate the costs associated with purchasing wood or furniture boards. First, it checks whether the object has a `Woodworking_Price` attribute of the `App::PropertyFloat` or `App::PropertyString` type, or any other that can be converted to float. If it does, that unit is used to calculate the wood price. If it doesn't, the wood price is retrieved from the `MagicPanels.gWoodPrice` global variable, which can be changed using the [magicSettings](#magicsettings) tool and is saved in the user preferences as `wWoodPrice` in the form of a float. The final price of a given furniture elements is reported in user currency symbol from `MagicPanels.gWoodPriceSymbol` global variable, which can be changed using the [magicSettings](#magicsettings) tool and is saved in the user preferences as `wWoodPriceSymbol` in the form of a string. The final price value is calculated according to the calculation method from the `MagicPanels.gWoodPriceCalculation` global variable, which can be changed using the [magicSettings](#magicsettings) tool and is saved in the user preferences as `wWoodPriceCalculation` in the form of a string method key. If the object has a `Woodworking_Price` price attribute set, the final price will be calculated according to the selected price calculation method. Additionally, the decimal value is rounded according to the precision set for the area. This approach allows for determining the price of furniture and individual components depending on the currency and wood pricing method. In Poland, chipboard prices are set by cut services per square meter, with additional fees charged for the number of cuts. However, currencies and price calculation methods vary around the world, so this approach seems to cover most wood pricing methods.
 * **a - approximation:** this report is some kind of approximation of needed material. It uses different approach to dimensions, because the dimensions are not get here from objects, they are calculated from raw vertices. You have to be careful because the dimensions are occupied space in 3D by the object and you can see the difference for all rotated elements. This type of report can be directly imported at [cutlistoptimizer.com](https://www.cutlistoptimizer.com/) website tool.
 

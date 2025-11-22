@@ -1552,10 +1552,10 @@ def getWeight(iObj, iW, iH, iL, iCaller="getWeight"):
 		weight = ( sizes[0] * sizes[1] * sizes[2] * float(0.000001) ) * w
 		
 	if MagicPanels.gWoodWeightCalculation == "lb/ft^2":
-		weight = ( sizes[1] * sizes[2] * float(0.000001) ) * w * 0.204816144
+		weight = (sizes[1] * 0.0032808399) * (sizes[2] * 0.0032808399) * w
 		
 	if MagicPanels.gWoodWeightCalculation == "lb/ft^3":
-		weight = ( sizes[0] * sizes[1] * sizes[2] * float(0.000001) ) * w * 0.0624279606
+		weight = (sizes[0] * 0.0032808399) * (sizes[1] * 0.0032808399) * (sizes[2] * 0.0032808399) * w
 	
 	return weight
 
