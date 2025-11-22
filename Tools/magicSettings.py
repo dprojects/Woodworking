@@ -816,7 +816,8 @@ def showQtGUI():
 				skip = 1
 			
 			try:
-				self.oWoodPriceCalculationE.setCurrentText(MagicPanels.gWoodPriceCalculation)
+				k = [ key for key, val in getWoodPriceCalculation.items() if val == MagicPanels.gWoodPriceCalculation ][0]
+				self.oWoodPriceCalculationE.setCurrentText(k)
 			except:
 				skip = 1
 

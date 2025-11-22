@@ -76,7 +76,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 		* [Report type](#report-type)
 			* [Search path](#search-path)
 			* [Main report](#main-report)
-				* [Additional reports](#additional-reports)
+			* [Additional reports](#additional-reports)
 		* [Units](#units)
 		* [Precision](#precision)
 		* [Visibility](#visibility)
@@ -1181,7 +1181,7 @@ Example weights of commonly used wood:
 * **c - constraints names:** this report type shows the dimensions for all named constraints inside Sketch objects and the `Length` size from `PartDesign` objects.
 * **p - pads all constraints:** this report type shows the dimensions for all constraints on Sketch objects, whether named or unnamed, and the `Length` size from `PartDesign` objects.
 * **w - weight:** this report type calculates the weight based on the designated area and the wood weight unit for one square meter. First, it checks whether the object has a `Woodworking_Weight` attribute of the `App::PropertyString` type, for example, `12.6 kg/m^2`. If it does, that unit is used to calculate the wood weight. If it doesn't, the wood weight is retrieved from the global variable `MagicPanels.gWoodWeight`, which can be changed using the [magicSettings](#magicsettings) tool and is saved in the user preferences as `wWoodWeight` in the form of a float for `kg/m^2`. The final weight of a given furniture elements is reported in kilograms or pounds, depending on the user's unit settings. Additionally, the decimal value is rounded according to the precision set for the area.
-* **b - budget:** this type of report allows you to estimate the costs associated with purchasing wood or furniture boards. The data for the calculations is retrieved from user settings available via the [magicSettings](#magicsettings) tool. Additionally, the decimal value is rounded according to the precision set for the area.
+* **b - budget:** this type of report allows you to estimate the costs associated with purchasing wood or furniture boards. First, it checks whether the object has a `Woodworking_Price` attribute of the `App::PropertyFloat` or `App::PropertyString` type, or any other that can be converted to float. If it does, that unit is used to calculate the wood price. If it doesn't, the wood price is retrieved from the `MagicPanels.gWoodPrice` global variable, which can be changed using the [magicSettings](#magicsettings) tool and is saved in the user preferences as `wWoodPrice` in the form of a float. The final price of a given furniture elements is reported in user currency symbol from `MagicPanels.gWoodPriceSymbol` global variable, which can be changed using the [magicSettings](#magicsettings) tool and is saved in the user preferences as `wWoodPriceSymbol` in the form of a string. The final price value is calculated according to the calculation method from the `MagicPanels.gWoodPriceCalculation` global variable, which can be changed using the [magicSettings](#magicsettings) tool and is saved in the user preferences as `wWoodPriceCalculation` in the form of a string method key. If the object has a `Woodworking_Price` price attribute set, the final price will be calculated according to the selected price calculation method. Additionally, the decimal value is rounded according to the precision set for the area. This approach allows for determining the price of furniture and individual components depending on the currency and wood pricing method. In Poland, chipboard prices are set by cut services per square meter, with additional fees charged for the number of cuts. However, currencies and price calculation methods vary around the world, so this approach seems to cover most wood pricing methods.
 * **a - approximation:** this report is some kind of approximation of needed material. It uses different approach to dimensions, because the dimensions are not get here from objects, they are calculated from raw vertices. You have to be careful because the dimensions are occupied space in 3D by the object and you can see the difference for all rotated elements. This type of report can be directly imported at [cutlistoptimizer.com](https://www.cutlistoptimizer.com/) website tool.
 
 > [!TIP]
@@ -1191,7 +1191,7 @@ Example weights of commonly used wood:
 > but if, for example, I need to order plywood shelves or boards in a different color, I create `g - report type` 
 > for the person in the cutting service, where the appropriate board types and colors are grouped.
 
-##### Additional reports
+#### Additional reports
 
 * **thickness summary:** turns off or on the thickenss summary.
 * **dowels and screws:** shows dowels created via [magicDowels](#magicdowels) tool and also Woodworking workbench screw replaced via [panel2link](#panel2link) or [panel2clone](#panel2clone) tools. If you want to have custom dowels or screws visible at the report you need to have `Part::Cylinder` object inside with measurements.

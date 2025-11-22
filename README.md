@@ -1,12 +1,17 @@
-The Woodworking workbench started as a simple cut-list, as a macro for FreeCAD. However, Woodworking workbench now has so many additional tools, features and simplifications that it can be considered as a new CAD program based only on the FreeCAD kernel. The Woodworking workbench is mainly intended to make cabinet creation more simple, although it has many solutions to speed up and make more simple typical carpentry work and other CAD projects. I hope you will find something for yourself here.
+Woodworking workbench is mainly intended for creating simple cabinets for home or garage. However it has many solutions to speed up and make more simple typical carpentry work and other CAD projects. I hope you will find something for yourself here.
 
 **Key features:**
-* Fast process of creating the main structure of the furniture with automatic recognition of the thickness of the elements, via [magicStart](https://github.com/dprojects/Woodworking/tree/master/Docs#how-to-start---magicstart) and other tools.
+* Quick start and fast process of creating the main structure of the furniture via [magicStart](https://github.com/dprojects/Woodworking/tree/master/Docs#how-to-start---magicstart).
+* Quick and simple copy, move and redesign furniture via [magicMove](https://github.com/dprojects/Woodworking/tree/master/Docs#magicmove), [magicResizer](https://github.com/dprojects/Woodworking/tree/master/Docs#magicresizer) and other tools.
 * Quick process of adding dowels and other mounting elements, screws, minifix via [magicDowels](https://github.com/dprojects/Woodworking/tree/master/Docs#magicdowels).
-* Quick process of drilling holes according to the defined 32 mm furniture system via [magicDriller](https://github.com/dprojects/Woodworking/tree/master/Docs#magicdriller).
-* Automatic parameterization on demend via [magicGlue](https://github.com/dprojects/Woodworking/tree/master/Docs#magicglue) tool, also using VarSet, without inventing mathematical formulas.
-* Automatic cut-list after design via [getDimensions](https://github.com/dprojects/Woodworking/tree/master/Docs#getdimensions) tool and export to format csv, json, html, markdown via [sheet2export](https://github.com/dprojects/Woodworking/tree/master/Docs#sheet2export).
-* Full support for system units in all tools and special units settings in cut-list (mm, cm, m, inches, fractions, system).
+* Quick process of drilling holes, countersinks, counterbores or pockets holes via [magicDriller](https://github.com/dprojects/Woodworking/tree/master/Docs#magicdriller).
+* Quick process of making furniture parametric via [magicGlue](https://github.com/dprojects/Woodworking/tree/master/Docs#magicglue).
+* Quick process of measurement via [https://github.com/dprojects/Woodworking/tree/master/Docs#magicmeasure] and [showMeasurements](https://github.com/dprojects/Woodworking/tree/master/Docs#showmeasurements).
+* Automatic cut-list after design via [getDimensions](https://github.com/dprojects/Woodworking/tree/master/Docs#getdimensions).
+* Export cut-list to format csv, json, html, markdown via [sheet2export](https://github.com/dprojects/Woodworking/tree/master/Docs#sheet2export).
+* Improved furniture preview via [makeTransparent](https://github.com/dprojects/Woodworking/tree/master/Docs#maketransparent), [frontsOpenClose](https://github.com/dprojects/Woodworking/tree/master/Docs#frontsopenclose) and [magicView](https://github.com/dprojects/Woodworking/tree/master/Docs#magicview) and real-time color management via [magicColors](https://github.com/dprojects/Woodworking/tree/master/Docs#magiccolors).
+* Support for system units in all tools and special units settings in cut-list (mm, cm, m, inches, fractions, system).
+* Wood weight and costs calculation via [getDimensions](https://github.com/dprojects/Woodworking/tree/master/Docs#getdimensions).
 
 ![intro](https://raw.githubusercontent.com/dprojects/media/master/intro.gif)
 
@@ -79,6 +84,12 @@ But **you always need to keep the note about real author**. You should never cla
 > If there will be paid version this will be new repository, new project.
 > If you have still doubts, you can always open issue and ask.
 
+# Support & Cooperation
+
+Unfortunately, tax law in Poland is so absurd that to settle even small amounts, you have to set up a company or run to the tax office for every small donation. I would rather spend my time doing what I enjoy, programming and inventing new features, than running around offices wondering if I will be accused of terrorism because someone from a "dodgy country" donated a small amount. Therefore, the safest way to support me right now is by **liking and promoting my channel on GitHub and YouTube, and offering a small thank you**.
+
+Perhaps in the future, if there is a greater desire for financial support, I will start a company or launch other financial support channels. However, even if I start developing a paid version in the future, I would like my workbench to continue allowing ordinary individuals to create simple furniture for their home and garage for free.
+
 # Contact
 
 For questions, feature requests, please open issue at: [github.com/dprojects/Woodworking/issues](https://github.com/dprojects/Woodworking/issues)
@@ -93,3 +104,4 @@ For questions, feature requests, please open issue at: [github.com/dprojects/Woo
 | [![c1r5](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/c1r5.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/c1r5.png) | [![c2r5](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/c2r5.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/c2r5.png) |
 | [![c1r6](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/c1r6.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/c1r6.png) | [![c2r6](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/c2r6.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/c2r6.png) |
 | [![c1r7](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/c1r7.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/c1r7.png) | [![c2r7](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/c2r7.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/c2r7.png) |
+| [![c1r8](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/c1r8.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/c1r8.png) | [![c2r7](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/c2r8.png)](https://raw.githubusercontent.com/dprojects/Woodworking/master/Screenshots/c2r8.png) |
