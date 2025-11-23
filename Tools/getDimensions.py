@@ -1184,7 +1184,8 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 		
 		if (
 			MagicPanels.gWoodWeightCalculation == "lb/ft^2" or 
-			MagicPanels.gWoodWeightCalculation == "lb/ft^3"
+			MagicPanels.gWoodWeightCalculation == "lb/ft^3" or 
+			MagicPanels.gWoodWeightCalculation == "foot"
 			):
 			guiString = str(round(iValue, sPDA)) + " " + "lb"
 			
@@ -1557,6 +1558,10 @@ def getWeight(iObj, iW, iH, iL, iCaller="getWeight"):
 	if MagicPanels.gWoodWeightCalculation == "lb/ft^3":
 		weight = (sizes[0] * 0.0032808399) * (sizes[1] * 0.0032808399) * (sizes[2] * 0.0032808399) * w
 	
+	if MagicPanels.gWoodWeightCalculation == "foot":
+		volume = (sizes[0] * 0.0393700787) * (sizes[1] * 0.0393700787) * (sizes[2] * 0.0393700787)
+		weight =  ( volume / 12 ) * w
+		
 	return weight
 
 

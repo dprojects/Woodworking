@@ -174,13 +174,14 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 # Installation
 
-**Step 0. Install correct FreeCAD version:**
+**Step 0. Install working FreeCAD version:**
 
 * Recommended version for Linux: [FreeCAD_1.0.1-conda-Linux-x86_64-py311.AppImage](https://github.com/FreeCAD/FreeCAD/releases/download/1.0.1/FreeCAD_1.0.1-conda-Linux-x86_64-py311.AppImage)
 * For other operating systems download and install: [FreeCAD 1.0.1](https://github.com/FreeCAD/FreeCAD/releases/tag/1.0.1)
 
 > [!NOTE]
-> I don't have `Windows` or `macOS`, so I am not able to test and certify this workbench for those systems. However, if you use `FreeCAD AppImage` there is a good chance this will be working correctly.
+> * I don't have `Windows` or `macOS`, so I am not able to test and certify this workbench for those systems. However, if you use `FreeCAD AppImage` there is a good chance this will be working correctly. <br>
+> * Read more about: [FreeCAD 1.0+ Support](https://github.com/dprojects/Woodworking/issues/49) <br>
 
 **Step 1. Download Woodworking workbench:**
 
@@ -277,8 +278,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 		~/.local/share/FreeCAD/Mod/Woodworking/
 
 > [!TIP]
-> You can update this workbench later via [debuginfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool. <br>
-> To get better stability make sure your current Woodworking workbench version has always the same prefix version number as the FreeCAD version. You can also verify this via [debuginfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool. 
+> The `README.md` file should be: `~/.local/share/FreeCAD/Mod/Woodworking/README.md`
 
 # Extras
 
@@ -936,10 +936,10 @@ Available anchors to select:
 
 * **Wood weight:** allows you to set default weight unit for wood. The wood weight value should be set in float in user weight calculation method. By default, the weight of `18 mm` chipboard is set to `12.6`. This value is used by [getDimensions](#getdimensions) cut-list tool to create `w - weight` report type.
 
-Example weights of commonly used wood:
+Example weights unit of commonly used wood in Poland:
 
 | Wood type | Thickness | kg/m^2 |
-| :---        | ---: | ---: |
+| :--- | ---: | ---: |
 | HDF board | 3 mm | 2.5 |
 | Hardwood plywood | 6 mm | 4.5 |
 | Spruce wood | 18 mm | 8.64 |
@@ -949,17 +949,37 @@ Example weights of commonly used wood:
 | Oak wood | 18 mm | 12.8 |
 | Beech wood | 18 mm | 13.14 |
 
+Example weights unit of commonly used wood in lb/board foot:
+
+| Wood type | lb/board foot |
+| :--- | ---: |
+| Pine | 2.5 |
+| Ponderosa Pine | 2.67 |
+| Eastern White Pine | 2.7 |
+| Spanish Cedar | 2.75 |
+| Cherry | 3.3 |
+| Oak | 3.6 |
+| Red Oak | 4 |
+| White Oak | 4.1 |
+
 * **Wood weight calculation:** this option allows you to choose the weight calculation method. Currently, the following calculation methods are supported:
   * `kg per area in m^2`: in this case give `Wood weight` value will be considered as kilograms and will be multiplied by the area in meters.
   * `kg per volume in m^3`: in this case give `Wood weight` value will be considered as kilograms and will be multiplied by the volume in meters.
   * `pounds per area in ft^2`: in this case give `Wood weight` value will be considered as pounds and will be multiplied by the area in feet.
   * `pounds per volume in ft^3`: in this case give `Wood weight` value will be considered as pounds and will be multiplied by the volume in feet.
+  * `pounds per board foot`: in this case give `Wood weight` value will be considered as pounds and will be multiplied by board foot.
 
 > [!TIP]
 > I personally weighed a `342 mm x 860 mm` shelf and found it weighed exactly `4 kg`, which translates to `13.6 kg/m^2`. 
 > The shelf is `18 mm` thick and made of laminated chipboard, but it came from an old wardrobe from many years ago, 
-> which suggests that chipboards were much heavier in the past. So it is best to weigh a sample of the wood you 
-> are working with. The larger the sample, the greater the accuracy. 
+> which suggests that chipboards were much heavier in the past. <br><br>
+> The weight of wood depends on many factors. In the case of laminated chipboard, information about density is not always 
+> provided, and even the true composition is a trade secret. Typically, stores only provide the weight of the entire board 
+> sheet with specific dimensions. In the case of real wood, weight can be influenced not only by the density and type of 
+> wood, but also by the degree of drying, the number of voids, knots, and other properties. Furthermore, if you find a piece 
+> of old chipboard in the basement, or a piece of real wood, you probably will not be able to determine its density and 
+> therefore its weight. <br><br>
+> **So it is best to weigh and measure a sample of the wood you are working with. The larger the sample, the greater the accuracy.**
 
 * **Wood price:** this should be a float representing the price in your country's currency. By default, it's set to the price of one square meter of typical 18 mm white chipboard in Poland.
 * **Wood price symbol:** this should be text representing your country's currency. By default, it's `zł`, representing one `złoty (PLN)`, the base currency in Poland. This symbol will appear in the cut-list generated by the [getDimensions](#getdimensions) tool for a report of type `b - budget`.
