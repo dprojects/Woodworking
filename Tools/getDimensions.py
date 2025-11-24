@@ -273,6 +273,8 @@ gSheetRow = 1
 
 # unit for calculation purposes (not change)
 gUnitC = "mm"
+gInch = 0.0393700787
+gFoot = 0.0032808399
 
 # header color
 gHeadCS = (0.862745,0.862745,0.862745,1.000000) # strong
@@ -1116,9 +1118,9 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 		
 		if sUnitsMetric == "in":
 			if sPDD == 0:
-				return str( int(round(v * float(0.0393700787), sPDD)) )
+				return str( int(round(v * gInch, sPDD)) )
 			else:
-				return str( round(v * float(0.0393700787), sPDD) )
+				return str( round(v * gInch, sPDD) )
 	
 		if sUnitsMetric == "fractions":
 			return MagicPanels.unit2fractions( round(v, sPDD), 0, "system", "")
@@ -1158,9 +1160,9 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 		
 		if sUnitsEdge == "in":
 			if sPDE == 0:
-				return str( int(round(v * float(0.0393700787), sPDE)) )
+				return str( int(round(v * gInch, sPDE)) )
 			else:
-				return str( round(v * float(0.0393700787), sPDE) )
+				return str( round(v * gInch, sPDE) )
 		
 		if sUnitsEdge == "fractions":
 			return MagicPanels.unit2fractions( round(v, sPDE), 0, "system", "")
@@ -1178,14 +1180,17 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 	if iType == "weight":
 		if (
 			MagicPanels.gWoodWeightCalculation == "kg/m^2" or 
-			MagicPanels.gWoodWeightCalculation == "kg/m^3"
+			MagicPanels.gWoodWeightCalculation == "kg/m^3" or 
+			MagicPanels.gWoodWeightCalculation == "kg/piece" 
 			):
 			guiString = str(round(iValue, sPDA)) + " " + "kg"
 		
 		if (
 			MagicPanels.gWoodWeightCalculation == "lb/ft^2" or 
 			MagicPanels.gWoodWeightCalculation == "lb/ft^3" or 
-			MagicPanels.gWoodWeightCalculation == "foot"
+			MagicPanels.gWoodWeightCalculation == "lb/in^3" or 
+			MagicPanels.gWoodWeightCalculation == "lb/boardfoot" or 
+			MagicPanels.gWoodWeightCalculation == "lb/piece" 
 			):
 			guiString = str(round(iValue, sPDA)) + " " + "lb"
 			
@@ -1551,17 +1556,32 @@ def getWeight(iObj, iW, iH, iL, iCaller="getWeight"):
 		
 	if MagicPanels.gWoodWeightCalculation == "kg/m^3":
 		weight = ( sizes[0] * sizes[1] * sizes[2] * float(0.000001) ) * w
+	
+	if MagicPanels.gWoodWeightCalculation == "kg/piece":
+		weight = w
 		
 	if MagicPanels.gWoodWeightCalculation == "lb/ft^2":
-		weight = (sizes[1] * 0.0032808399) * (sizes[2] * 0.0032808399) * w
+		weight = (sizes[1] * gFoot) * (sizes[2] * gFoot) * w
 		
 	if MagicPanels.gWoodWeightCalculation == "lb/ft^3":
-		weight = (sizes[0] * 0.0032808399) * (sizes[1] * 0.0032808399) * (sizes[2] * 0.0032808399) * w
+		weight = (sizes[0] * gFoot) * (sizes[1] * gFoot) * (sizes[2] * gFoot) * w
 	
-	if MagicPanels.gWoodWeightCalculation == "foot":
-		volume = (sizes[0] * 0.0393700787) * (sizes[1] * 0.0393700787) * (sizes[2] * 0.0393700787)
-		weight =  ( volume / 12 ) * w
-		
+	if MagicPanels.gWoodWeightCalculation == "lb/in^3":
+		weight = (sizes[0] * gInch) * (sizes[1] * gInch) * (sizes[2] * gInch) * w
+	
+	# convert the volume to board feet: 
+	# board foot = 12 ft × 1 in × 1 in
+	# board foot = 144 cu in = 144 in^3 = 144 * ( 1 in x 1 in x 1 in)
+	# for example: volume cubic inches / 144 (cubic inches/board foot) = board feet
+	# so if you have ft + inches need to divide by 12
+	# if you have only inches need to divide by 144
+	if MagicPanels.gWoodWeightCalculation == "lb/boardfoot":
+		volumeCU = (sizes[0] * gInch) * (sizes[1] * gInch) * (sizes[2] * gInch)
+		weight =  ( volumeCU / 144 ) * w
+	
+	if MagicPanels.gWoodWeightCalculation == "lb/piece":
+		weight = w
+
 	return weight
 
 
@@ -1580,14 +1600,23 @@ def getPrice(iObj, iW, iH, iL, iCaller="getPrice"):
 		price = ( sizes[1] * sizes[2] * float(0.000001) ) * p
 	
 	if MagicPanels.gWoodPriceCalculation == "m^3":
-		price = ( iW * iH * iL * float(0.000001) ) * p
+		price = ( sizes[0] * sizes[1] * sizes[2] * float(0.000001) ) * p
 	
-	if MagicPanels.gWoodPriceCalculation == "wood":
+	if MagicPanels.gWoodPriceCalculation == "piece":
 		price = p
 	
-	# board feet = length (ft) × width (in) × thickness (in) / 12
-	if MagicPanels.gWoodPriceCalculation == "foot":
-		price = ( ( (sizes[2] * 0.0032808399) * (sizes[1] * 0.0393700787) * (sizes[0] * 0.0393700787) ) / 12 ) * p
+	if MagicPanels.gWoodPriceCalculation == "ft^2":
+		price = (sizes[1] * gFoot) * (sizes[2] * gFoot) * p
+	
+	if MagicPanels.gWoodPriceCalculation == "ft^3":
+		price = (sizes[0] * gFoot) * (sizes[1] * gFoot) * (sizes[2] * gFoot) * p
+	
+	if MagicPanels.gWoodPriceCalculation == "in^3":
+		price = (sizes[0] * gInch) * (sizes[1] * gInch) * (sizes[2] * gInch) * p
+		
+	if MagicPanels.gWoodPriceCalculation == "boardfoot":
+		volumeCU = (sizes[0] * gInch) * (sizes[1] * gInch) * (sizes[2] * gInch)
+		price =  ( volumeCU / 144 ) * p
 		
 	return price
 

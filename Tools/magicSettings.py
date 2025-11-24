@@ -24,17 +24,23 @@ getMenuIndex1 = {
 getWoodWeightCalculation = {
 	translate('magicSettings', 'kg per area in m^2'): 'kg/m^2',
 	translate('magicSettings', 'kg per volume in m^3'): 'kg/m^3',
+	translate('magicSettings', 'kg per wood piece'): 'kg/piece',
 	translate('magicSettings', 'pounds per area in ft^2'): 'lb/ft^2',
-	translate('magicSettings', 'pounds per volume in ft^3'): 'lb/ft^3',
-	translate('magicSettings', 'pounds per board foot'): 'foot' # no comma
+	translate('magicSettings', 'pounds per cubic foot'): 'lb/ft^3',
+	translate('magicSettings', 'pounds per cubic inch'): 'lb/in^3',
+	translate('magicSettings', 'pounds per board foot'): 'lb/boardfoot',
+	translate('magicSettings', 'pounds per wood piece'): 'lb/piece' # no comma
 }
 
 # add new items only at the end and change self.oWoodPriceCalculationList
 getWoodPriceCalculation = {
 	translate('magicSettings', 'price per area in m^2'): 'm^2',
 	translate('magicSettings', 'price per volume in m^3'): 'm^3',
-	translate('magicSettings', 'price per wood piece'):'wood',
-	translate('magicSettings', 'price per board foot'): 'foot' # no comma
+	translate('magicSettings', 'price per wood piece'): 'piece',
+	translate('magicSettings', 'price per area in ft^2'): 'ft^2',
+	translate('magicSettings', 'price per cubic foot'): 'ft^3',
+	translate('magicSettings', 'price per cubic inch'): 'in^3',
+	translate('magicSettings', 'price per board foot'): 'boardfoot' # no comma
 }
 
 # ############################################################################
@@ -143,9 +149,12 @@ def showQtGUI():
 			self.oWoodWeightCalculationList = (
 				translate('magicSettings', 'kg per area in m^2'),
 				translate('magicSettings', 'kg per volume in m^3'),
+				translate('magicSettings', 'kg per wood piece'),
 				translate('magicSettings', 'pounds per area in ft^2'),
-				translate('magicSettings', 'pounds per volume in ft^3'), 
-				translate('magicSettings', 'pounds per board foot') # no comma
+				translate('magicSettings', 'pounds per cubic foot'),
+				translate('magicSettings', 'pounds per cubic inch'),
+				translate('magicSettings', 'pounds per board foot'),
+				translate('magicSettings', 'pounds per wood piece') # no comma
 			)
 			self.oWoodWeightCalculationE = QtGui.QComboBox(self)
 			self.oWoodWeightCalculationE.addItems(self.oWoodWeightCalculationList)
@@ -168,6 +177,9 @@ def showQtGUI():
 				translate('magicSettings', 'price per area in m^2'),
 				translate('magicSettings', 'price per volume in m^3'),
 				translate('magicSettings', 'price per wood piece'),
+				translate('magicSettings', 'price per area in ft^2'),
+				translate('magicSettings', 'price per cubic foot'),
+				translate('magicSettings', 'price per cubic inch'),
 				translate('magicSettings', 'price per board foot') # no comma
 			)
 			self.oWoodPriceCalculationE = QtGui.QComboBox(self)

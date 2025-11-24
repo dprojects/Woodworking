@@ -22,9 +22,9 @@ Woodworking workbench is mainly intended for creating simple cabinets for home o
 > [!NOTE]
 > * This is installation package with tested FreeCAD kernel and Woodworking workbench. 
 > This `AppImage` will copy the Woodworking workbench into `~/.local/share/FreeCAD/Mod` folder, 
-> will run the FreeCAD, and set the Woodworking workbench as default. 
-> So you will be able to update later the Woodworking workbench via [debugInfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool. <br>
-> * Read more about: [Add-on Manager installation and update problems](https://github.com/dprojects/Woodworking/issues/77) <br>
+> will run the FreeCAD, and set the Woodworking workbench as default. So you will be able to update later 
+> the Woodworking workbench via [debugInfo](https://github.com/dprojects/Woodworking/tree/master/Docs#debuginfo) tool. 
+> Read more about: [Add-on Manager installation and update problems](https://github.com/dprojects/Woodworking/issues/77) <br>
 > * For more details see: [Installation section at Woodworking workbench documentation](https://github.com/dprojects/Woodworking/tree/master/Docs#installation)
 
 # Documentation
