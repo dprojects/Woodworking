@@ -1,4 +1,4 @@
-Woodworking workbench is mainly intended for creating simple cabinets for home or garage. However it has many solutions to speed up and make more simple typical carpentry work and other CAD projects. I hope you will find something for yourself here.
+Woodworking workbench was designed primarily for creating simple cabinets for your home or garage. However, it includes many features that will make everyday carpentry and other CAD projects easier and faster. I hope you will find something you enjoy here.
 
 **Key features:**
 * Quick start and fast process of creating the main structure of the furniture via [magicStart](https://github.com/dprojects/Woodworking/tree/master/Docs#how-to-start---magicstart).

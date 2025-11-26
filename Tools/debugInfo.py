@@ -5,8 +5,15 @@
 gMaster = "https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip"
 
 gTests = dict()
-gWBCurrent = dict()
-gWBLatest = dict()
+gUserVersion = dict()
+gLatestVersion = dict()
+
+gTestedKernels = [ 
+	"0.21.2.33771", 
+	"1.0.1.39285", 
+	"1.0.2.39319",
+	"1.1.0.20251104" # no comma
+]
 
 gJokeDates = [ "22-03", "01-04", "19-12", "24-12", "25-12", "26-12", "31-12", "01-01" ]
 gCurrentDate = ""
@@ -204,7 +211,7 @@ def setTests():
 # set latest workbench database
 # ###################################################################################################################
 
-def setWBLatest():
+def setLatestVersion():
 	
 	try:
 		import urllib.request
@@ -230,93 +237,86 @@ def setWBLatest():
 		# create Metadata and get Version
 		md = FreeCAD.Metadata(tmpFile)
 		xmlVersion = str(md.Version)
+		xmlDate = str(md.Date)
 		
-		versionWB = xmlVersion.split(".")[-6:]
-		versionFC = xmlVersion.split(".")[:-6]
+		# testing purposes
+		#xmlVersion = "2.0.20251120"
+		#xmlDate = "2025-11-20"
 		
-		gWBLatest["Version"] = xmlVersion
-		gWBLatest["Release"] = str(versionWB[0]) + "." + str(versionWB[1])
-		gWBLatest["Date"] = ".".join( versionWB[-3:] )
+		[ release, path, commit ] = xmlVersion.split(".")
+		
+		gLatestVersion["Version"] = xmlVersion
+		gLatestVersion["Release"] = release
+		gLatestVersion["Path"] = path
+		gLatestVersion["Commit"] = commit
+		gLatestVersion["Date"] = xmlDate
 		
 	except:
 		skip = 1
 
 # ###################################################################################################################
-# set current workbench database
+# set user workbench database
 # ###################################################################################################################
 
-def setWBCurrent():
+def setUserVersion():
 
 	try:
 		wb = FreeCADGui.activeWorkbench()
 		package = os.path.join(wb.path, "package.xml")
 		md = FreeCAD.Metadata(package)
+		xmlVersion = str(md.Version)
+		xmlDate = str(md.Date)
+		[ release, path, commit ] = xmlVersion.split(".")
 	except:
 		return
 	
 	try:
-		versionWB = str(md.Version).split(".")[-6:]
-		versionFC = str(md.Version).split(".")[:-6]
+		gUserVersion["Description"] = str(md.Description)
 	except:
 		skip = 1
 
 	try:
-		gWBCurrent["Name"] = str(md.Name)
+		gUserVersion["Author"] = str(md.Author[0]["name"])
 	except:
 		skip = 1
 
 	try:
-		gWBCurrent["Description"] = str(md.Description)
-	except:
-		skip = 1
-
-	try:
-		gWBCurrent["Author"] = str(md.Author)
-	except:
-		skip = 1
-
-	try:
-		gWBCurrent["Maintainer"] = str(md.Maintainer)
-	except:
-		skip = 1
-
-	try:
-		gWBCurrent["Urls"] = str(md.Urls)
-	except:
-		skip = 1
-
-	try:
-		gWBCurrent["Version"] = str(md.Version)
-	except:
-		skip = 1
-
-	try:
-		gWBCurrent["DedicatedFreeCAD"] = ".".join(versionFC)
-	except:
-		skip = 1
-
-	try:
-		gWBCurrent["Release"] = str(versionWB[0]) + "." + str(versionWB[1])
-	except:
-		skip = 1
-
-	try:
-		gWBCurrent["ReleaseState"] = str(versionWB[2])
-	except:
-		skip = 1
-
-	try:
-		gWBCurrent["Date"] = ".".join(versionWB[-3:])
+		gUserVersion["AuthorURL"] = str(md.Urls[0]["location"])[8:]
 	except:
 		skip = 1
 		
+	try:
+		gUserVersion["Version"] = xmlVersion
+	except:
+		skip = 1
+
+	try:
+		gUserVersion["Release"] = release
+	except:
+		skip = 1
+
+	try:
+		gUserVersion["Path"] = path
+	except:
+		skip = 1
+
+	try:
+		gUserVersion["Commit"] = commit
+	except:
+		skip = 1
+
+	try:
+		gUserVersion["Date"] = xmlDate
+	except:
+		skip = 1
+
 # ###################################################################################################################
-def setFreeCADVersion():
+def setKernelVersion():
 
 	try:
 		v = str(FreeCAD.ConfigDump()["ExeVersion"]) + "."
 		v += str(FreeCAD.ConfigDump()["BuildRevision"]).split(" ")[0]
-		gWBCurrent["FreeCADVersion"] = v
+		gUserVersion["kernelVersion"] = v
 	except:
 		skip = 1
 
@@ -325,16 +325,10 @@ def setCertified():
 
 	# certify supported kernels for backward compatibility
 	try:
-		certifiedKernels = [ 
-			"0.21.2.33771", 
-			"1.0.1.39285", 
-			"1.0.2.39319"
-		]
-	
-		if gWBCurrent["FreeCADVersion"] in certifiedKernels:
-			gWBCurrent["Certified"] = "yes"
+		if gUserVersion["kernelVersion"] in gTestedKernels:
+			gUserVersion["Certified"] = "yes"
 		else:
-			gWBCurrent["Certified"] = "no"
+			gUserVersion["Certified"] = "no"
 	except:
 		skip = 1
 	
@@ -342,47 +336,12 @@ def setCertified():
 def setUpToDate():
 	
 	try:
-		gWBCurrent["up-to-date"] = ""
-		gWBCurrent["update"] = ""
+		gUserVersion["up-to-date"] = ""
 
-		# version string is the same
-		if gWBCurrent["Version"] == gWBLatest["Version"]:
-			gWBCurrent["up-to-date"] = "yes"
-			gWBCurrent["update"] = "no-update"
-			gWBCurrent["info"] = "1"
-		
-		# version string is different
+		if gUserVersion["Date"] == gLatestVersion["Date"]:
+			gUserVersion["up-to-date"] = "yes"
 		else:
-		
-			# check date first
-			if gWBCurrent["Date"] != gWBLatest["Date"]:
-				gWBCurrent["up-to-date"] = "no"
-				gWBCurrent["update"] = "update"
-				gWBCurrent["info"] = "2"
-			
-			# same date
-			else:
-			
-				# release not the same
-				if gWBCurrent["Release"] != gWBLatest["Release"]:
-					
-					# stable version, consider upgrade to the latest master branch
-					if gWBCurrent["ReleaseState"] == "0":
-						gWBCurrent["up-to-date"] = "yes"
-						gWBCurrent["update"] = "upgrade"
-						gWBCurrent["info"] = "3"
-						
-					# development version, change version branch, upgrade to the latest master branch
-					else:
-						gWBCurrent["up-to-date"] = "no"
-						gWBCurrent["update"] = "upgrade"
-						gWBCurrent["info"] = "4"
-					
-				# change version branch, upgrade to the latest master branch
-				else:
-					gWBCurrent["up-to-date"] = "no"
-					gWBCurrent["update"] = "upgrade"
-					gWBCurrent["info"] = "4"
+			gUserVersion["up-to-date"] = "no"
 
 	except:
 		skip = 1
@@ -474,8 +433,8 @@ def showQtGUI():
 			# settings
 			# ############################################################################
 			
-			toolSW = 550                    # tool GUI width
-			toolSH = 690                    # tool GUI height
+			toolSW = 1200                   # tool GUI width
+			toolSH = 600                    # tool GUI height
 			
 			area = toolSW - 20              # GUI text area
 			
@@ -499,50 +458,53 @@ def showQtGUI():
 			self.setMinimumHeight(toolSH)
 				
 			# ############################################################################
-			# release info header
+			# header
 			# ############################################################################
 			
+			icon = self.getIcon("Woodworking", imageSize, "left")
+			self.oHeaderIcon = QtGui.QLabel(icon, self)
+			self.oHeaderIcon.resize(imageSize, imageSize)
+			self.oHeaderIcon.setWordWrap(False)
+			self.oHeaderIcon.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.oHeaderIcon.setOpenExternalLinks(True)
+			self.oHeaderIcon.setFixedWidth(imageSize)
+			self.oHeaderIcon.setFixedHeight(imageSize)
+			
+			
 			info = ""
-			info += "<div style='margin-bottom:10px;'>"
-			info += "<span style='font-size:20px;font-weight:bold;'>"
-			info += translate('debugInfo', 'Woodworking') + ": "
-			info += gWBCurrent["Release"] + " "
-			info += "</span>"
-			info += "<span style='font-size:20px;'>"
-			if gWBCurrent["ReleaseState"] == "0":
-				info += "(release)"
-			else:
-				info += "(development)"
-			info += "</span>"
+			info += "<div style='font-size:30px;font-weight:bold;'>"
+			info += translate('debugInfo', 'Woodworking') + " "
+			info += gUserVersion["Release"] + "." + gUserVersion["Path"]
 			info += "</div>"
-
-			self.orih = QtGui.QLabel(info, self)
-			self.orih.setWordWrap(False)
-			self.orih.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.orih.setOpenExternalLinks(True)
-
+			self.oHeaderName = QtGui.QLabel(info, self)
+			self.oHeaderName.setWordWrap(False)
+			self.oHeaderName.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.oHeaderName.setOpenExternalLinks(True)
+		
 			# ############################################################################
 			# release info description
 			# ############################################################################
 
 			info = ""
-			info += "<div>"
-			info += translate('debugInfo', 'Woodworking workbench version ')
-			info += gWBCurrent["Release"] + " "
-			if gWBCurrent["ReleaseState"] == "0":
-				info += "(release)"
-			else:
-				info += "(development)"
+			info += "<div style='margin:10px;font-size:12px;font-weight:normal;'>"
+			info += gUserVersion["Description"]
 			info += "</div>"
-			info += "<div>"
-			info += translate('debugInfo', 'is currently developed for FreeCAD version ')
-			info += gWBCurrent["DedicatedFreeCAD"]
-			info += "</div>"
+			self.oHeaderDescription = QtGui.QLabel(info, self)
+			self.oHeaderDescription.setWordWrap(True)
+			self.oHeaderDescription.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.oHeaderDescription.setOpenExternalLinks(True)
 			
-			self.orid = QtGui.QLabel(info, self)
-			self.orid.setWordWrap(False)
-			self.orid.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.orid.setOpenExternalLinks(True)
+			info = ""
+			info += "<div style='margin:10px;font-size:12px;font-weight:bold;text-align:right;'>"
+			info += gUserVersion["Author"] + ", "
+			info += '<a href=https://www.' + gUserVersion["AuthorURL"] + '>'
+			info += gUserVersion["AuthorURL"] 
+			info += '</a>'
+			info += "</div>"
+			self.oHeaderAuthor = QtGui.QLabel(info, self)
+			self.oHeaderAuthor.setWordWrap(True)
+			self.oHeaderAuthor.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.oHeaderAuthor.setOpenExternalLinks(True)
 			
 			# ############################################################################
 			# overall validation status icon
@@ -552,13 +514,13 @@ def showQtGUI():
 			
 			# validation status icon
 			try:
-				if gWBCurrent["up-to-date"] == "yes" and gTests["status"] == "" and gWBCurrent["Certified"] == "yes":
+				if gUserVersion["up-to-date"] == "yes" and gTests["status"] == "" and gUserVersion["Certified"] == "yes":
 					if gCurrentDate in gJokeDates:
 						info += self.getIcon("worm_unhappy", imageSize, "right")
 					else:
 						info += self.getIcon("yes", imageSize, "right")
 				
-				elif gWBCurrent["up-to-date"] == "no" and gTests["status"] != "" and gWBCurrent["Certified"] == "no":
+				elif gUserVersion["up-to-date"] == "no" and gTests["status"] != "" and gUserVersion["Certified"] == "no":
 					if gCurrentDate in gJokeDates:
 						info += self.getIcon("worm_happy", imageSize, "right")
 					else:
@@ -590,30 +552,16 @@ def showQtGUI():
 			infoD = ""
 
 			try:
-				if gWBCurrent["info"] == "1":
+				if gUserVersion["up-to-date"] == "yes":
 					
 					infoI += self.getIcon("yes", iconSize, iconAlign)
 					infoD += translate('debugInfo', 'Your workbench is up-to-date. ')
 					
-				if gWBCurrent["info"] == "2":
+				if gUserVersion["up-to-date"] == "no":
 					
 					infoI += self.getIcon("no", iconSize, iconAlign)
 					infoD += translate('debugInfo', 'New update for your workbench')
-					infoD += ": " + '<a href="' + gMaster + '">' + gWBLatest["Date"] + '.</a>'
-					
-				if gWBCurrent["info"] == "3":
-					
-					infoI += self.getIcon("yes", iconSize, iconAlign)
-					infoD += translate('debugInfo', 'Consider upgrade workbench to the new version branch')
-					infoD += ": " + gWBLatest["Version"]
-					infoD += ", " + '<a href="' + gMaster + '">' + gWBLatest["Date"] + '.</a>'
-					
-				if gWBCurrent["info"] == "4":
-					
-					infoI += self.getIcon("no", iconSize, iconAlign)
-					infoD += translate('debugInfo', 'Consider upgrade workbench to the new version branch')
-					infoD += ": " + gWBLatest["Version"]
-					infoD += ", " + '<a href="' + gMaster + '">' + gWBLatest["Date"] + '.</a>'
+					infoD += ": " + '<a href="' + gMaster + '">' + gLatestVersion["Date"] + '.</a>'
 
 			except:
 				skip = 1
@@ -642,10 +590,10 @@ def showQtGUI():
 			try:
 				if gTests["status"] == "":
 					infoI += self.getIcon("yes", iconSize, iconAlign)
-					infoD += translate('debugInfo', 'All tests passed. This FreeCAD version is safe to use.')
+					infoD += translate('debugInfo', 'This kernel passed all tests.')
 				else:
 					infoI += self.getIcon("no", iconSize, iconAlign)
-					infoD += translate('debugInfo', 'This FreeCAD version might not work correctly.')
+					infoD += translate('debugInfo', 'This kernel version might not work correctly.')
 					infoD += translate('debugInfo', 'Tests failed: ')
 					infoD += gTests["status"] + ". "
 			except:
@@ -673,12 +621,12 @@ def showQtGUI():
 			infoD = ""
 
 			try:
-				if gWBCurrent["Certified"] == "yes":
+				if gUserVersion["Certified"] == "yes":
 					infoI += self.getIcon("yes", iconSize, iconAlign)
-					infoD += translate('debugInfo', 'You are using certified version. Thanks.')
+					infoD += translate('debugInfo', 'You are using tested kernel version. Thanks.')
 				else:
 					infoI += self.getIcon("no", iconSize, iconAlign)
-					infoD += translate('debugInfo', 'Your FreeCAD version is not certified.')
+					infoD += translate('debugInfo', 'Your kernel version is not tested.')
 			except:
 				skip = 1
 				
@@ -701,7 +649,7 @@ def showQtGUI():
 			# ############################################################################
 
 			self.odie = QtGui.QTextEdit(self)
-			self.odie.setFixedHeight(230)
+			self.odie.setFixedHeight(250)
 			self.odie.paste()
 
 			# ############################################################################
@@ -722,10 +670,10 @@ def showQtGUI():
 			# ############################################################################
 			
 			try:
-				if gWBCurrent["update"] == "update":
-					self.ub1 = QtGui.QPushButton(translate('debugInfo', 'update workbench \n and restart FreeCAD'), self)
-				if gWBCurrent["update"] == "upgrade":
-					self.ub1 = QtGui.QPushButton(translate('debugInfo', 'upgrade workbench \n and restart FreeCAD'), self)
+				if gUserVersion["up-to-date"] == "no":
+					self.ub1 = QtGui.QPushButton(translate('debugInfo', 'update Woodworking workbench and restart'), self)
+					self.ub1.setFixedHeight(40)
+					
 				
 				self.ub1.clicked.connect(self.wbUpdate)
 				
@@ -737,9 +685,24 @@ def showQtGUI():
 			# ############################################################################
 			
 			# create structure
-			self.header = QtGui.QVBoxLayout()
-			self.header.addWidget(self.orih)
-			self.header.addWidget(self.orid)
+			self.headerIcon = QtGui.QVBoxLayout()
+			self.headerIcon.addWidget(self.oHeaderIcon)
+			
+			self.headerInfo1 = QtGui.QVBoxLayout()
+			self.headerInfo1.addWidget(self.oHeaderName)
+			
+			self.headerInfo2 = QtGui.QVBoxLayout()
+			self.headerInfo2.addWidget(self.oHeaderDescription)
+			self.headerInfo2.addWidget(self.oHeaderAuthor)
+			
+			self.headerInfo = QtGui.QVBoxLayout()
+			self.headerInfo.addLayout(self.headerInfo1)
+			self.headerInfo.addLayout(self.headerInfo2)
+			
+			self.header = QtGui.QHBoxLayout()
+			self.header.addLayout(self.headerIcon)
+			self.header.addLayout(self.headerInfo)
+			
 			self.groupHeader = QtGui.QGroupBox(None, self)
 			self.groupHeader.setLayout(self.header)
 			
@@ -769,10 +732,12 @@ def showQtGUI():
 				self.layFoot.addWidget(self.ub1)
 			
 			# set layout to main window
+			self.layoutHeader = QtGui.QHBoxLayout()
+			self.layoutHeader.addWidget(self.groupHeader)
+			self.layoutHeader.addWidget(self.groupTests)
+			
 			self.layout = QtGui.QVBoxLayout()
-			self.layout.addWidget(self.groupHeader)
-			self.layout.addStretch()
-			self.layout.addWidget(self.groupTests)
+			self.layout.addLayout(self.layoutHeader)
 			self.layout.addStretch()
 			self.layout.addLayout(self.layDebug)
 			self.layout.addStretch()
@@ -789,7 +754,7 @@ def showQtGUI():
 			sw = self.width()
 			sh = self.height()
 			pw = int( (FreeCADGui.getMainWindow().width() / 2) - ( sw / 2 ) )
-			ph = int( FreeCADGui.getMainWindow().height() - sh )
+			ph = int( FreeCADGui.getMainWindow().height() - sh ) - 10
 			self.setGeometry(pw, ph, sw, sh)
 			
 			# set theme
@@ -822,7 +787,7 @@ def showQtGUI():
 			# #########################
 			
 			info = self.odie.toPlainText() + "\n"
-			info += translate('debugInfo', 'Downloading latest update...')
+			info += translate('debugInfo', 'Downloading latest update for Woodworking workbench...')
 			self.odie.setPlainText(info)
 			self.odie.repaint()
 			
@@ -837,7 +802,7 @@ def showQtGUI():
 			url = gMaster
 			master = urllib.request.urlopen(url)
 
-			zipPattern = "Woodworking" + " " + gWBLatest["Date"]
+			zipPattern = "Woodworking" + " " + gLatestVersion["Date"]
 			zipFileName = zipPattern + ".zip"
 			zipFilePath = os.path.join(pathMod, zipFileName)
 
@@ -879,7 +844,7 @@ def showQtGUI():
 			# #########################
 			
 			info = self.odie.toPlainText() + "\n"
-			info += translate('debugInfo', 'Disable old workbench...')
+			info += translate('debugInfo', 'Disable old Woodworking workbench...')
 			self.odie.setPlainText(info)
 			self.odie.repaint()
 			
@@ -925,6 +890,7 @@ def showQtGUI():
 			info += translate('debugInfo', 'Latest update for Woodworking workbench will be downloaded. ')
 			info += translate('debugInfo', 'FreeCAD will restart with new Woodworking workbench version ')
 			info += translate('debugInfo', 'but old version will be stored and disabled. ')
+			info += translate('debugInfo', 'So you can remove the old version manually, if you not have private data there. ')
 			info += "\n\n"
 			
 			self.odie.setPlainText(info)
@@ -967,10 +933,10 @@ if (
 	if gTests["translate"] == True:
 		translate = FreeCAD.Qt.translate
 
-	setWBLatest()
-	setWBCurrent()
+	setLatestVersion()
+	setUserVersion()
 
-	setFreeCADVersion()
+	setKernelVersion()
 	setCertified()
 	setUpToDate()
 

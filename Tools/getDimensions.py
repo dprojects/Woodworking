@@ -39,25 +39,25 @@ sPPM = sPPMMenuIndex[sPPMkey] # default is "default"
 sLTFMenuIndex = {
 	translate("getDimensions", "q - for cut service"): "q",
 	translate("getDimensions", "n - for verification"): "n",
-	translate("getDimensions", "g - groups"): "g",
-	translate("getDimensions", "e - edgeband"): "e",
+	translate("getDimensions", "g - wood type"): "g",
+	translate("getDimensions", "e - veneer"): "e",
 	translate("getDimensions", "d - drilling"): "d",
-	translate("getDimensions", "c - constraints names"): "c",
-	translate("getDimensions", "p - pads all constraints"): "p",
+	translate("getDimensions", "c - named constraints"): "c",
+	translate("getDimensions", "p - all constraints"): "p",
 	translate("getDimensions", "w - weight"): "w",
 	translate("getDimensions", "b - budget"): "b",
 	translate("getDimensions", "a - approximation"): "a" # no comma
 }
 sLTFDsc = {
 	"q" : translate("getDimensions", "quantity first for cut chipboards service"),
-	"n" : translate("getDimensions", "objects labels for verification"),
-	"g" : translate("getDimensions", "containers labels for wood type"),
-	"e" : translate("getDimensions", "dedicated for edgeband"),
-	"d" : translate("getDimensions", "dedicated for holes description"),
-	"c" : translate("getDimensions", "constraints names for custom report"),
-	"p" : translate("getDimensions", "all constraints"),
-	"w" : translate("getDimensions", "calculate weight"),
-	"b" : translate("getDimensions", "calculate needed budget for wood"),
+	"n" : translate("getDimensions", "objects labels for verification, furniture parts listing"),
+	"g" : translate("getDimensions", "containers labels for wood type, colors, custom groups"),
+	"e" : translate("getDimensions", "dedicated for veneer by edge color, quick edgeband"),
+	"d" : translate("getDimensions", "dedicated for holes, countersinks, counterbores, pocket holes description"),
+	"c" : translate("getDimensions", "only named constraints for PartDesign objects, custom report"),
+	"p" : translate("getDimensions", "all constraints for PartDesign objects, quick report"),
+	"w" : translate("getDimensions", "calculate weight using magicSeetings settings"),
+	"b" : translate("getDimensions", "calculate needed budget using magicSeetings settings"),
 	"a" : translate("getDimensions", "approximation for cutlistoptimizer.com") # no comma
 }
 sLTFKey = translate("getDimensions", "q - for cut service") # for GUI init

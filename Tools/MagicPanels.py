@@ -7246,8 +7246,11 @@ def edgeRouter(iPad, iSub, iSketch, iLength, iLabel, iType):
 		router.Label = iLabel + " "
 		
 		if iLength == 0:
-			router.Type = 1
+			router.Type = 1 # ThroughAll
+			router.SideType = 2 # Symmetric
 		else:
+			router.Type = 0 # Length
+			router.SideType = 2 # Symmetric
 			router.Length = iLength
 
 		iSketch.Visibility = False
@@ -7319,17 +7322,22 @@ def makePockets(iObjects, iLength):
 
 		pocket = body.newObject('PartDesign::Pocket','multiPocket')
 		pocket.Profile = s
-		pocket.Midplane = 1
 		pocket.Label = "multiPocket "
-		pocket.Midplane = 1
 
 		if iLength == 0:
-			pocket.Type = 1
+			pocket.Type = 1 # ThroughAll
+			pocket.Midplane = 1
 		else:
 			# fix for FreeCAD 1.1 midplane bug
 			if gKernelVersion >= 1.1:
+				pocket.Midplane = 0
+				pocket.SideType = 1 # Symmetric
+				pocket.Type = 0 # Length
 				pocket.Length = iLength
+				pocket.Length2 = iLength
 			else:
+				pocket.Midplane = 1
+				pocket.Type = 1 # Length
 				pocket.Length = 2 * iLength
 
 		s.Visibility = False

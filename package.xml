@@ -1,30 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <package format="1" xmlns="https://wiki.freecad.org/Package_Metadata">
   <name>Woodworking</name>
-  <description>FreeCAD workbench for woodworking purposes.</description>
+  <description>Woodworking workbench was designed primarily for creating simple cabinets for your home or garage. However, it includes many features that will make everyday carpentry and other CAD projects easier and faster. I hope you will find something you enjoy here.</description>
   
   <!-- 
-  Syntax: 1.1.0.dev.1.1.1.2025.08.23
-  1.1.0.dev - current development FreeCAD kernel version
-  1.1 - Woodworking workebench version
-  1 or 0 - current state, development 1 or stable release 0
-  2025.08.23 - last commit date
+  Syntax: 2.1.20251120
+  2 - release, stable, tested, and published on GitHub
+  1 - first patch for 2.0 release, should be stable and tested, not published on GitHub
+  20251120 - important and stable commit date only, triggers Add-on Manager update
   -->
-  <version>1.1.0.dev.1.1.1.2025.11.24</version>
+  <version>2.0.20251126</version>
   
   <!--
-  This date tag is not used by Woodworking workbench but it is good to keep it up-to-date
+  this date below is used by Woodworking workbench tools for update
   -->
-  <date>2025-11-24</date>
+  <date>2025-11-26</date>
   
-  <!--
-  Keep it for author rights purposes 
-  -->
-  <author>Darek L (https://github.com/dprojects)</author>
-  
-  <maintainer email="you@null.com">FreeCAD updates appear every week. Unfortunately, I do not have the ability to consistently follow the changes and wonder if something has been broken.</maintainer>
-  <license file="LICENSE">MIT, keep author tag without change.</license>
+  <author>Darek L</author>
+  <maintainer>Darek L</maintainer>
+  <url type="website">https://github.com/dprojects</url>
   <url type="repository" branch="master">https://github.com/dprojects/Woodworking</url>
+  <license file="LICENSE">MIT</license>
   <icon>Icons/Woodworking.png</icon>
 
   <content>
