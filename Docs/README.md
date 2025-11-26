@@ -190,74 +190,9 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 	
 		git clone https://github.com/dprojects/Woodworking.git
 
-	**New significant changes since the last release 1.0 stable:**
+	**New significant changes since the last release 2.0 stable:**
 
-    * price calculation in cut-list & menu improve (getDimensions, magicSettings)
-    * wardrobe samples (magicStart)
-    * selected objects & weight in cut-list (getDimensions, MagicPanels, magicSettings)
-    * tool to create Pad from Sketch quickly (sketch2pad)
-    * update binaries to fix transparency issue in FreeCAD 1.1
-    * parametric sides with holes (magicStart)
-    * tool to open and close all fronts (frontsOpenClose)
-    * custom drilling standards (magicSettings, magicDowels, magicDriller, MagicPanels)
-    * auto-adjust drill bits (magicDriller)
-    * multi-color veneer info at cut-list (getDimensions)
-    * fix making non-transparent objects while new object was created (makeTransparent)
-    * edgeband veneer simulation tool and cut-list support (addVeneer, getDimensions)
-    * edgeband veneer simulation (MagicPanels, magicStart, magicSettings)
-    * more options for furniture (magicStart)
-    * more user options (magicSettings, MagicPanels, magicStart)
-    * new 3D v2 themes with outset style (MagicPanels)
-    * "fractions" default units for "Building US", keep metrics, and "system" for others (getDimensions)
-    * move to face whole cabinet module in LinkGroup container (panelMove2Face)
-    * rename inherit visibility to screw and implement inherit for highest container (getDimensions)
-    * improve direct copy, clone, link containers like LinkGroup, Part, Body (magicMove, MagicPanels)
-    * add global position calculation for LinkGroup, Link, Part (MagicPanels)
-    * float precision for angle (magicAngle)
-    * improve measurement from Vertex to Edge (magicMeasure, MagicPanels)
-    * option to copy rotated object with correct offset (magicMove)
-    * quick shot to show or hide measurements (showMeasurements)
-    * arrange icons to fit to laptop screen 
-    * magicView offset resize for better TechDraw export (magicView)
-    * magicGlue label fix (magicGlue)
-    * new measurements drawing styles (MagicPanels, magicMeasure)
-    * fix white color setting and load all objects (setTextures)
-    * add mortise tool for tenons created via jointTenonCut tool (jointMortiseCut)
-    * improve sketch pattern positioning (magicJoints, MagicPanels)
-    * add set buttons for countersink drilling for shelves with unknown position (magicDriller)
-    * add new cutTenonDowelsP tool, parametric version of cutTenonDowels tool
-    * add new parametric tenon dowel version and add cut attribute
-    * rename cutTenons into cutTenonDowels to keep correct meaning
-    * rename jointTenon into jointTenonDowel and create new tool for better positioning
-    * rename jointCustom into jointTenonCut and create new tool to use PartDesign cut
-    * describe better all tools in toolbar
-    * improve sizes and irregular shapes (getDimensions, MagicPanels)
-    * add centimeters recalculation option for units (getDimensions)
-    * school desk, single right side (magicStart)
-	* school desk, single left side (magicStart)
-	* school desk, both sides (magicStart)
-    * modular bookcase with back HDF (magicStart)
-    * modular bookcase with back full (magicStart)
-    * add fractions equal option for units (getDimensions, MagicPanels)
-    * add fractions minus option for units (getDimensions, MagicPanels)
-    * add fractions option for units (getDimensions, MagicPanels)
-    * add system option for units (getDimensions, MagicPanels)
-    * add system option for language (getDimensions)
-    * allow to make panel smaller and improve (magicResizer)
-    * improve Foot feature, via face, edge or vertex (magicStart)
-    * improve API for developers (makeAPI, MagicPanels, MagicPanelsAPI)
-    * fix globals (MagicPanels)
-    * current selection feature to skip refresh selection button (magicSettings, magicMove)
-    * window stays on top feature (magicSettings, all tools with GUI)
-    * improve user settings (magicSettings)
-    * certification and versioning for package and backward compatibility
-    * toolbar icons positioning
-    * changes for installation package
-    * create copy as Array (magicMove)
-    * move to equal for Array objects (magicMove)
-    * units fixes
-    * automatic parameterization (magicGlue)
-    * tool to convert model to Assembly (selected2Assembly)
+    * nothing yet...
 
 **Step 2. Get FreeCAD Mod folder localization:**
 
