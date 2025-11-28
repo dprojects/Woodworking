@@ -19,21 +19,22 @@ for line in data:
 		# ########################################
 		
 		if line.startswith("#") == True:
-			line = line.replace("\n","")
-			line = line.replace(",","")
-			line = line.replace(".","")
 			
-			# debug
-			#toc.append(line)
-			#continue
+			line = line.replace("\n","")
 			
 			head = line
 			link = line
 			
-			link = line.lower()
+			link = link.lower()
+			link = link.replace(",","")
+			link = link.replace(".","")
 			link = link.replace(" ","-")
 			link = link.replace("#-","# ")
 		
+			# debug
+			#toc.append(link)
+			#continue
+			
 		# ########################################
 		# individual rules
 		# ########################################
