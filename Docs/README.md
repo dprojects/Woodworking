@@ -181,13 +181,17 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 ## Step 0. Install supported kernel
 
 **Currently supported kernels:**
-* [FreeCAD 0.21.2.33771](https://github.com/FreeCAD/FreeCAD/releases/tag/0.21.2)
-* [FreeCAD 1.0.1.39285](https://github.com/FreeCAD/FreeCAD/releases/tag/1.0.1)
-* [FreeCAD 1.0.2.39319](https://github.com/FreeCAD/FreeCAD/releases/tag/1.0.2)
-* [FreeCAD weekly 1.1.0.20251104](https://github.com/FreeCAD/FreeCAD/releases/tag/weekly-2025.11.05) this kernel is available in [magicCAD_2.0](https://github.com/dprojects/Woodworking-package/releases/tag/2.0) forever.
+* [FreeCAD 0.21.2.33771](https://github.com/FreeCAD/FreeCAD/releases/tag/0.21.2): Personally, I like this version of FreeCAD. It runs very fast on my slow laptop, is stable, and all the bugs are well-known. So, I would like to keep backward compatibility with this version as long as possible. The only thing missing is `VarSet`, which is more handy than spreadsheet in my opinion.
+* [FreeCAD 0.21.4.33929](https://codeberg.org/xCAD/FreeCAD21/releases/tag/0.21.4): This is Werner and Zolko xCAD branch. I think the guys are doing the right thing by wanting to maintain support for such a good version of FreeCAD as 0.21.2 version. That is why I decided to test their version and add support for this version as well.
+* [FreeCAD 1.0.1.39285](https://github.com/FreeCAD/FreeCAD/releases/tag/1.0.1): The advantage of this version is VarSet. Unfortunately, this version has encountered issues with edge, face, vertex selection for Pad objects in LinkGroup containers, which makes using such objects very uncomfortable. However, there are no noticeable issues with simple Part::Box panels. However, this version is much slower on my slow laptop. Read more about: [FreeCAD 1.0+ Support](https://github.com/dprojects/Woodworking/issues/49).
+* [FreeCAD 1.0.2.39319](https://github.com/FreeCAD/FreeCAD/releases/tag/1.0.2): Personally, I don't see any major differences or benefits between versions 1.0.1 and 1.0.2. Since this is the next official stable release, I decided to add it to the list of supported kernels.
+* [FreeCAD weekly 1.1.0.20251104](https://github.com/FreeCAD/FreeCAD/releases/tag/weekly-2025.11.05): This is the last of the weekly development releases before the 1.2 development release. I have been using this version for a while now to develop new features fr Woodworking workbench, so I have had the opportunity to test it quite thoroughly with the Woodworking workbench. A major advantage of the 1.1dev release is that it eliminates the issues with selecting and deleting objects in LinkGroup containers, which significantly improves the user experience. An additional advantage is the new version of PySide6, which extends the life of this kernel. Therefore, I decided to add this version to the tested kernels and create an installation package [magicCAD_2.0](https://github.com/dprojects/Woodworking-package/releases/tag/2.0) with this version to keep it working forever.
   
 > [!NOTE]
-> * Read more about: [FreeCAD 1.0+ Support](https://github.com/dprojects/Woodworking/issues/49) <br>
+> * Whenever possible, I try to use and test the latest development versions so that I do not have to work so long on fixing 
+> Woodworking wokbench after the stable kernel version is released. Because of this, backward compatibility for some features 
+> can sometimes be lost. However, if you are still using any of the above listed kernels and have noticed such a problem, 
+> please open an issue and I will try to fix it if possible. <br>
 > * I don't have `Windows` or `macOS`, so I am not able to test and certify this workbench for those systems. <br>
 
 ## Step 1. Download Woodworking workbench

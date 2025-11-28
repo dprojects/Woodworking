@@ -10,6 +10,7 @@ gLatestVersion = dict()
 
 gTestedKernels = [ 
 	"0.21.2.33771",      # https://github.com/FreeCAD/FreeCAD/releases/tag/0.21.2
+	"0.21.4.33929",       # https://codeberg.org/xCAD/FreeCAD21/releases/tag/0.21.4
 	"1.0.1.39285",       # https://github.com/FreeCAD/FreeCAD/releases/tag/1.0.1
 	"1.0.2.39319",       # https://github.com/FreeCAD/FreeCAD/releases/tag/1.0.2
 	"1.1.0.20251104"     # https://github.com/FreeCAD/FreeCAD/releases/tag/weekly-2025.11.05 or magicCAD_2.0
