@@ -94,7 +94,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 		* [Edgeband](#edgeband)
 		* [Supported objects](#supported-objects)
 		* [Supported transformations](#supported-transformations)
-		* [Video tutorials & Documentation](#video-tutorials-&-documentation)
+		* [Video tutorials and documentation](#video-tutorials-and-documentation)
 	* [sheet2export](#sheet2export)
 	* [showMeasurements](#showmeasurements)
 	* [magicMeasure](#magicmeasure)
@@ -1282,7 +1282,7 @@ By default the values at report are rounded to have more clear listing. Rounding
 * `Part :: Cut`,
 * and probably many more...
 
-### Video tutorials & Documentation
+### Video tutorials and documentation
 
 * **YouTube playlist:** [Cut-list, BOM, dimensions](https://www.youtube.com/playlist?list=PLSKOS_LK45BCnwvCGt4klfF6uVAxfQQTy)
 * **Old documentation:** [getDimensions macro](https://github.com/dprojects/getDimensions/tree/master/Docs)
