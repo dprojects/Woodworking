@@ -313,7 +313,7 @@ class TRANSLATION():
 			wb = FreeCADGui.activeWorkbench()
 			package = os.path.join(wb.path, "package.xml")
 			md = FreeCAD.Metadata(package)
-			versionWB = str(md.Version).split(".")[-6:]
+			versionWB = str(md.Version).split(".")
 			wbrelease = str(versionWB[0]) + "." + str(versionWB[1])
 
 		except:

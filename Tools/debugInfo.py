@@ -9,10 +9,10 @@ gUserVersion = dict()
 gLatestVersion = dict()
 
 gTestedKernels = [ 
-	"0.21.2.33771", 
-	"1.0.1.39285", 
-	"1.0.2.39319",
-	"1.1.0.20251104" # no comma
+	"0.21.2.33771",      # https://github.com/FreeCAD/FreeCAD/releases/tag/0.21.2
+	"1.0.1.39285",       # https://github.com/FreeCAD/FreeCAD/releases/tag/1.0.1
+	"1.0.2.39319",       # https://github.com/FreeCAD/FreeCAD/releases/tag/1.0.2
+	"1.1.0.20251104"     # https://github.com/FreeCAD/FreeCAD/releases/tag/weekly-2025.11.05 or magicCAD_2.0
 ]
 
 gJokeDates = [ "22-03", "01-04", "19-12", "24-12", "25-12", "26-12", "31-12", "01-01" ]

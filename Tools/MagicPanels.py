@@ -4909,25 +4909,42 @@ def showMeasure(iP1, iP2, iObject1="", iObject2="", iSubName1="", iSubName2="", 
 		
 		if iType == 0:
 			
-			m.setExpression('.Position1.x', exprSX)
-			m.setExpression('.Position1.y', exprSY)
-			m.setExpression('.Position1.z', exprSZ)
-			m.setExpression('.Position2.x', exprEX)
-			m.setExpression('.Position2.y', exprEY)
-			m.setExpression('.Position2.z', exprEZ)
+			if hasattr(m, "Position1"):
+				m.setExpression('.Position1.x', exprSX)
+				m.setExpression('.Position1.y', exprSY)
+				m.setExpression('.Position1.z', exprSZ)
+			
+			if hasattr(m, "Position2"):
+				m.setExpression('.Position2.x', exprEX)
+				m.setExpression('.Position2.y', exprEY)
+				m.setExpression('.Position2.z', exprEZ)
+			
+			if hasattr(m, "P1"):
+				m.setExpression('.P1.x', exprSX)
+				m.setExpression('.P1.y', exprSY)
+				m.setExpression('.P1.z', exprSZ)
+			
+			if hasattr(m, "P2"):
+				m.setExpression('.P2.x', exprEX)
+				m.setExpression('.P2.y', exprEY)
+				m.setExpression('.P2.z', exprEZ)
 		
 		if iType >= 1 and iType <= 8:
 			
-			m.setExpression('.Start.x', exprSX)
-			m.setExpression('.Start.y', exprSY)
-			m.setExpression('.Start.z', exprSZ)
-			m.setExpression('.End.x', exprEX)
-			m.setExpression('.End.y', exprEY)
-			m.setExpression('.End.z', exprEZ)
+			if hasattr(m, "Start"):
+				m.setExpression('.Start.x', exprSX)
+				m.setExpression('.Start.y', exprSY)
+				m.setExpression('.Start.z', exprSZ)
 			
-			m.setExpression('.Dimline.x', '.Start.x + ' + str(dimlineOffsetX) + ' mm')
-			m.setExpression('.Dimline.y', '.Start.y + ' + str(dimlineOffsetY) + ' mm')
-			m.setExpression('.Dimline.z', '.Start.z + ' + str(dimlineOffsetZ) + ' mm')
+			if hasattr(m, "End"):
+				m.setExpression('.End.x', exprEX)
+				m.setExpression('.End.y', exprEY)
+				m.setExpression('.End.z', exprEZ)
+			
+			if hasattr(m, "Dimline"):
+				m.setExpression('.Dimline.x', '.Start.x + ' + str(dimlineOffsetX) + ' mm')
+				m.setExpression('.Dimline.y', '.Start.y + ' + str(dimlineOffsetY) + ' mm')
+				m.setExpression('.Dimline.z', '.Start.z + ' + str(dimlineOffsetZ) + ' mm')
 
 	# #############################################################################
 	# recompute & return
@@ -7239,20 +7256,23 @@ def edgeRouter(iPad, iSub, iSketch, iLength, iLabel, iType):
 		anchor = iSub.CenterOfMass
 		r = getSketchPatternRotation(iPad, iSub)
 		setSketchPlacement(iSketch, anchor.x, anchor.y, anchor.z, r, "global")
-		
+
 		router = iPad._Body.newObject('PartDesign::Pocket','router')
 		router.Profile = iSketch
-		router.Midplane = 1
 		router.Label = iLabel + " "
-		
+
 		if iLength == 0:
 			router.Type = 1 # ThroughAll
-			router.SideType = 2 # Symmetric
 		else:
 			router.Type = 0 # Length
-			router.SideType = 2 # Symmetric
-			router.Length = iLength
-
+		
+		if hasattr(router, "SideType"):
+			router.SideType = 2 # Symmetric in new FreeCAD 1.1
+			router.Length = 2 * iLength
+		else:
+			router.Midplane = 1 # for backward compatibility in FreeCAD 0.21.2
+			router.Length = 2 * iLength
+		
 		iSketch.Visibility = False
 		iPad.Visibility = False
 		FreeCAD.ActiveDocument.recompute()
@@ -7326,20 +7346,16 @@ def makePockets(iObjects, iLength):
 
 		if iLength == 0:
 			pocket.Type = 1 # ThroughAll
-			pocket.Midplane = 1
 		else:
-			# fix for FreeCAD 1.1 midplane bug
-			if gKernelVersion >= 1.1:
-				pocket.Midplane = 0
-				pocket.SideType = 1 # Symmetric
-				pocket.Type = 0 # Length
-				pocket.Length = iLength
-				pocket.Length2 = iLength
-			else:
-				pocket.Midplane = 1
-				pocket.Type = 1 # Length
-				pocket.Length = 2 * iLength
-
+			pocket.Type = 0 # Length
+		
+		if hasattr(pocket, "SideType"):
+			pocket.SideType = 2 # Symmetric in new FreeCAD 1.1
+			pocket.Length = 2 * iLength
+		else:
+			pocket.Midplane = 1 # for backward compatibility in FreeCAD 0.21.2
+			pocket.Length = 2 * iLength
+		
 		s.Visibility = False
 		base.Visibility = False
 		FreeCAD.ActiveDocument.recompute()

@@ -9,6 +9,10 @@ In 2014, FreeCAD [did not have any tools to help create even simple cabinets](ht
 I added many tools, and now Woodworking workbench has so many features and simplifications that it can be considered as a new CAD program based only on the FreeCAD kernel. It is mainly intended to make cabinet creation more simple, although it has many solutions to speed up and make more simple typical carpentry work and other CAD projects. I hope you will find something for yourself here.
 
 * [Installation](#installation)
+	* [Step 0. Install supported kernel](#step-0.-install-supported-kernel)
+	* [Step 1. Download Woodworking workbench](#step-1.-download-woodworking-workbench)
+	* [Step 2. Get FreeCAD Mod folder localization](#step-2.-get-freecad-mod-folder-localization)
+	* [Step 3. Install Woodworking workbench](#step-3.-install-woodworking-workbench)
 * [Extras](#extras)
 * [Translations](#translations)
 * [Objects, Workflow, Golden rules](#objects-workflow-golden-rules)
@@ -174,27 +178,28 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 # Installation
 
-**Step 0. Install working FreeCAD version:**
+## Step 0. Install supported kernel
 
-* Recommended version for Linux: [FreeCAD_1.0.1-conda-Linux-x86_64-py311.AppImage](https://github.com/FreeCAD/FreeCAD/releases/download/1.0.1/FreeCAD_1.0.1-conda-Linux-x86_64-py311.AppImage)
-* For other operating systems download and install: [FreeCAD 1.0.1](https://github.com/FreeCAD/FreeCAD/releases/tag/1.0.1)
-
+**Currently supported kernels:**
+* [FreeCAD 0.21.2.33771](https://github.com/FreeCAD/FreeCAD/releases/tag/0.21.2)
+* [FreeCAD 1.0.1.39285](https://github.com/FreeCAD/FreeCAD/releases/tag/1.0.1)
+* [FreeCAD 1.0.2.39319](https://github.com/FreeCAD/FreeCAD/releases/tag/1.0.2)
+* [FreeCAD weekly 1.1.0.20251104](https://github.com/FreeCAD/FreeCAD/releases/tag/weekly-2025.11.05) this kernel is available in [magicCAD_2.0](https://github.com/dprojects/Woodworking-package/releases/tag/2.0) forever.
+  
 > [!NOTE]
-> * I don't have `Windows` or `macOS`, so I am not able to test and certify this workbench for those systems. However, if you use `FreeCAD AppImage` there is a good chance this will be working correctly. <br>
 > * Read more about: [FreeCAD 1.0+ Support](https://github.com/dprojects/Woodworking/issues/49) <br>
+> * I don't have `Windows` or `macOS`, so I am not able to test and certify this workbench for those systems. <br>
 
-**Step 1. Download Woodworking workbench:**
+## Step 1. Download Woodworking workbench
 
 * Stable certified versions download at: [Woodworking/releases](https://github.com/dprojects/Woodworking/releases)
-* For cutting edge features download: [the master branch](https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip) or run command:
-	
-		git clone https://github.com/dprojects/Woodworking.git
+* For cutting edge features download: [the master branch](https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip) or run command: `git clone https://github.com/dprojects/Woodworking.git`
 
-	**New significant changes since the last release 2.0 stable:**
+> [!NOTE]
+> **New significant changes since the last release 2.0 stable:** <br>
+> * router and pocket backward compatibilty fix (MagicPanels) <br>
 
-    * nothing yet...
-
-**Step 2. Get FreeCAD Mod folder localization:**
+## Step 2. Get FreeCAD Mod folder localization
 
 * From FreeCAD python console run command:
 
@@ -202,7 +207,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 * If there is no `Mod` folder, create it.
 
-**Step 3. Install Woodworking workbench:**
+## Step 3. Install Woodworking workbench
 
 * Go to FreeCAD `Mod` folder, for example, in Xubuntu operating system:
 
