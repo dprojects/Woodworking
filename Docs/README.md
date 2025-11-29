@@ -201,6 +201,8 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * toolbar fix for FreeCAD 1.2dev (InitGui) <br>
+> * map to face for pocket hole object (panelMove2Face) <br>
 > * router and pocket backward compatibilty fix (MagicPanels) <br>
 
 ## Step 2. Get FreeCAD Mod folder localization

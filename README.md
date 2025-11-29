@@ -71,7 +71,7 @@ But **you always need to keep the note about real author**. You should never cla
 > If there will be paid version this will be new repository, new project.
 > If you have still doubts, you can always open issue and ask.
 
-# Support & Cooperation
+# Donations & Cooperation
 
 Unfortunately, tax law in Poland is so absurd that to settle even small amounts, you have to set up a company or run to the tax office for every small donation. I would rather spend my time doing what I enjoy, programming and inventing new features, than running around offices wondering if I will be accused of terrorism because someone from a "dodgy country" donated a small amount. Therefore, the safest way to support me right now is by **liking and promoting my channel on GitHub and YouTube, and offering a small thank you**.
 

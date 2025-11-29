@@ -14,9 +14,21 @@ try:
 	targetObj = selectedObjects[0]
 	targetFace = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 	targetPlane = MagicPanels.getFacePlane(targetFace)
-	
-	centerFace = targetFace.CenterOfMass
-	centerObj = targetObj.Shape.CenterOfMass
+
+	if hasattr(targetFace, "CenterOfMass"):
+		centerFace = targetFace.CenterOfMass
+	elif hasattr(targetFace, "CenterOfGravity"):
+		centerFace = targetFace.CenterOfGravity
+	else:
+		raise
+
+	if hasattr(targetObj.Shape, "CenterOfMass"):
+		centerObj = targetObj.Shape.CenterOfMass
+	elif hasattr(targetObj.Shape, "CenterOfGravity"):
+		centerObj = targetObj.Shape.CenterOfGravity
+	else:
+		raise
+		
 	[ centerFace, centerObj ] = MagicPanels.getVerticesPosition([ centerFace, centerObj ], targetObj, "vector")
 
 	objects = selectedObjects[1:]
@@ -64,7 +76,7 @@ try:
 				X = X - sizeX
 
 		MagicPanels.setPosition(toMove, X, Y, Z, "global")
-	
+
 	# clean selection and recompute
 	FreeCADGui.Selection.clearSelection()
 	FreeCAD.ActiveDocument.recompute()
@@ -76,4 +88,3 @@ except:
 	info += translate('panelMove2Face', '<b>Please first select face, next select objects to move.</b><br><br><b>Note:</b> This tool allows to move panels to the selected face position. You can select more objects holding left CTRL key. This tool allows you to avoid thickness step problem, if you want to move panel to the other edge but the way is not a multiple of the panel thickness. Also you can move shelves to the back or to the sides of the furniture. For rotated containers use panelMove2Anchor.')
 	
 	MagicPanels.showInfo("panelMove2Face", info)
-

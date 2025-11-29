@@ -138,7 +138,7 @@ class WoodworkingWorkbench (Workbench):
 					msg = QT_TRANSLATE_NOOP("Workbench", "Setting icons position ...")
 					pref = 'User parameter:Tux/PersistentToolbars/User/WoodworkingWorkbench'
 					
-					pos = 'Break,Workbench,Woodworking - router,Woodworking - advanced,Woodworking - parameterization,Woodworking - code and debug,Break,Woodworking - convert,Woodworking - face,Woodworking - between,Woodworking - irregular shapes,Woodworking - construction,Break,Woodworking - project manage,Woodworking - resize,Woodworking - move and copy,Woodworking - preview,Woodworking - position'
+					pos = 'Workbench,Woodworking - router,Woodworking - advanced,Woodworking - code and debug,Break,Woodworking - convert,Woodworking - face,Woodworking - between,Woodworking - construction,Woodworking - irregular shapes,Woodworking - parameterization,Break,Woodworking - project manage,Woodworking - resize,Woodworking - move and copy,Woodworking - preview,Woodworking - position'
 					FreeCAD.ParamGet(pref).SetString('Top', pos)
 					
 					pos = 'Woodworking - start,Woodworking - decorations,Woodworking - dimensions'
