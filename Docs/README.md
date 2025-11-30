@@ -76,6 +76,8 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 	* [selected2Group](#selected2group)
 	* [selected2Assembly](#selected2assembly)
 	* [selected2Outside](#selected2outside)
+	* [eyeRa](#eyera)
+	* [eyeHorus](#eyehorus)
 	* [How to use containers - short tutorial](#how-to-use-containers---short-tutorial)
 * [Decoration](#decoration)
 	* [magicColors](#magiccolors)
@@ -201,9 +203,10 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * tools to show and hide tree structure (eyeRa, eyeHorus) <br>
 > * toolbar fix for FreeCAD 1.2dev (InitGui) <br>
 > * map to face for pocket hole object (panelMove2Face) <br>
-> * router and pocket backward compatibilty fix (MagicPanels) <br>
+> * router and pocket backward compatibility fix (MagicPanels) <br>
 
 ## Step 2. Get FreeCAD Mod folder localization
 
@@ -1045,6 +1048,30 @@ Example weights unit of commonly used wood in lb/board foot:
 **Video tutorials:** 
 * [Boolean cut with containers](https://www.youtube.com/watch?v=OVwazL8MQwI)
 * [FreeCAD 1.1 direct assembly](https://www.youtube.com/watch?v=u3Yh2WvdUIk)
+
+<br><br>
+
+## eyeRa
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/eyeRa.png"> Please create active document and at least one object inside container to expand tree for container and show its content. This tool allows you to expand all containers in tree view to see quickly full tree structure of your model. Personally I use auto-expand tree after object selection in 3D view option but to exapand full structure you have to select all abject at 3D model or manually expand each container what is time-consuming. This simple tool allows you to make it with single click and together with treeHide tool allows you to quickly view and hide full structure. 
+
+> [!NOTE] 
+> I did not have any ideas for an icon related to carpentry, and quite by chance I came up with the idea that the Eye of Ra 
+> and Horus would be cool in this case. Personally, I love stories about ancient Egyptian gods and the icon represents the 
+> eye of the god Ra, who saw everything, so it perfectly fits to the expanding the entire object tree structure and 
+> displaying all objects.
+
+<br><br>
+
+## eyeHorus
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/eyeHorus.png"> Please create active document and at least one object inside container to close tree for container. This tool allows you to close all containers in tree view to have cleaner tree structure. Personally I use auto-expand tree after object selection in 3D view option but after modeling and selecting many objects the objects tree look less readable if you have many deeply nested containers. So this simple tool allows you to make it cleaner with single click.
+
+> [!NOTE] 
+> About icon: I did not have any ideas for an icon related to carpentry, and quite by chance I came up with the idea 
+> that the Eye of Ra and Horus would be cool in this case. Personally, I love stories about ancient Egyptian gods 
+> and the icon represents the eye of the god Horus, whose power was limited. So, in a sense, it is the 
+> opposite of the Eye of Ra. 
 
 <br><br>
 

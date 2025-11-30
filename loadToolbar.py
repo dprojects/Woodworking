@@ -103,7 +103,9 @@ def getItems(iType):
 			"selected2Link",
 			"selected2Group",
 			"selected2Assembly",
-			"selected2Outside"
+			"selected2Outside",
+			"eyeRa",
+			"eyeHorus"
 		]
 
 	if iType == "Woodworking - decorations":

@@ -2392,6 +2392,84 @@ FreeCADGui.addCommand("selected2Outside", selected2Outside())
 
 	
 # ######################################################################################################################
+class eyeRa():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "eyeRa.png"),
+				"MenuText": QT_TRANSLATE_NOOP("eyeRa", "eyeRa, allows you to show tree structure"),
+				"ToolTip" : QT_TRANSLATE_NOOP("eyeRa", "This tool allows you to expand tree structure for each container and show its content."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "eyeRa"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("eyeRa", eyeRa())
+
+	
+# ######################################################################################################################
+class eyeHorus():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "eyeHorus.png"),
+				"MenuText": QT_TRANSLATE_NOOP("eyeHorus", "eyeHorus, allows you to hide tree structure"),
+				"ToolTip" : QT_TRANSLATE_NOOP("eyeHorus", "This tool allows you to close tree structure for each container and hide its content."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "eyeHorus"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("eyeHorus", eyeHorus())
+
+	
+# ######################################################################################################################
 class magicColors():
 
 	def GetResources(self):

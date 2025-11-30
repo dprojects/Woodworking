@@ -128,6 +128,8 @@ Tools = [
 	"selected2Group", "png", "selected2Group, to create folder", "This tool allows you to move selected objects to simple folder.",
 	"selected2Assembly", "png", "selected2Assembly, to export to Assembly", "This tool allows you to convert selected objects to Assembly.",
 	"selected2Outside", "png", "selected2Outside, to move out from container", "This tool allows you to move selected objects outside the container and keep global position.",
+	"eyeRa", "png", "eyeRa, allows you to show tree structure", "This tool allows you to expand tree structure for each container and show its content.",
+	"eyeHorus", "png", "eyeHorus, allows you to hide tree structure", "This tool allows you to close tree structure for each container and hide its content.",
 
 	# #################################################################################################################################
 	# Woodworking - decorations
