@@ -154,20 +154,17 @@ class WoodworkingWorkbench (Workbench):
 					msg += "fail."
 				FreeCAD.Console.PrintMessage(msg)
 
-				# turn off duplicated groups of icons
-				# not works because FreeCAD overwrite
+				# switch to normal
 				FreeCAD.Console.PrintMessage("\n")
 				try:
-					msg = QT_TRANSLATE_NOOP("Workbench", "Turn off duplicated groups of icons ...")
-					pref = 'User parameter:BaseApp/MainWindow/Toolbars'
-					FreeCAD.ParamGet(pref).SetBool('Clipboard', False)
-					FreeCAD.ParamGet(pref).SetBool('Edit', False)
-					FreeCAD.ParamGet(pref).SetBool('File', False)
-					FreeCAD.ParamGet(pref).SetBool('Help', False)
-					FreeCAD.ParamGet(pref).SetBool('Individual views', False)
-					FreeCAD.ParamGet(pref).SetBool('Macro', False)
-					FreeCAD.ParamGet(pref).SetBool('Structure', False)
-					FreeCAD.ParamGet(pref).SetBool('View', False)
+					msg = QT_TRANSLATE_NOOP("Workbench", "Additional settings... ")
+					
+					pref = 'User parameter:BaseApp/Preferences/View'
+					FreeCAD.ParamGet(pref).SetInt('RotationMode', 1)
+					
+					pref = 'User parameter:BaseApp/Preferences/TreeView'
+					FreeCAD.ParamGet(pref).SetBool('SyncSelection', True)
+					
 					msg += "ok."
 				except:
 					msg += "fail."
