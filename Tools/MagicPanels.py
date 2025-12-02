@@ -51,7 +51,7 @@ def QT_TRANSLATE_NOOP(context, text): #
 
 gSettingsPref = 'User parameter:BaseApp/Preferences/Woodworking'                     # settings path <br>
 gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0)   # default color [247, 185, 108, 255] <br>
-gWoodDescription = "Płyta laminowana Biel Aplejska"  # used in cut-list if Label2 is empty <br>
+gWoodDescription = "Płyta laminowana Biel Alpejska"  # used in cut-list if Label2 is empty <br>
 gRoundPrecision = 2                        # should be set according to the user FreeCAD GUI settings <br>
 gSearchDepth = 200                         # recursive search depth <br>
 gKernelVersion = 0                         # FreeCAD version to add support for new kernel changes <br>
