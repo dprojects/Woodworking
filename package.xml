@@ -9,12 +9,12 @@
   1 - first patch for 2.0 release, should be stable and tested, not published on GitHub
   20251120 - important and stable commit date only, triggers Add-on Manager update
   -->
-  <version>2.0.20251130</version>
+  <version>2.0.20251202</version>
   
   <!--
   this date below is used by Woodworking workbench tools for update
   -->
-  <date>2025-11-30</date>
+  <date>2025-12-02</date>
   
   <author email="github.com/dprojects">Darek L</author>
   <maintainer email="github.com/dprojects/Woodworking/issues">Darek L</maintainer>

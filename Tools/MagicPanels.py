@@ -51,6 +51,7 @@ def QT_TRANSLATE_NOOP(context, text): #
 
 gSettingsPref = 'User parameter:BaseApp/Preferences/Woodworking'                     # settings path <br>
 gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0)   # default color [247, 185, 108, 255] <br>
+gWoodDescription = "Płyta laminowana Biel Aplejska"  # used in cut-list if Label2 is empty <br>
 gRoundPrecision = 2                        # should be set according to the user FreeCAD GUI settings <br>
 gSearchDepth = 200                         # recursive search depth <br>
 gKernelVersion = 0                         # FreeCAD version to add support for new kernel changes <br>
@@ -5908,6 +5909,21 @@ def copyColors(iSource, iTarget):
 
 
 	try:
+		if hasattr(iSource, "ShapeMaterial") and hasattr(iTarget, "ShapeMaterial"):
+			if hasattr(iSource.ShapeMaterial, "Name") and hasattr(iTarget.ShapeMaterial, "Name"):
+				if iSource.ShapeMaterial.Name != "Default" and iTarget.ShapeMaterial.Name == "Default":
+					iTarget.ShapeMaterial = iSource.ShapeMaterial
+	except:
+		skip = 1
+
+	try:
+		if hasattr(iSource, "Label2") and hasattr(iTarget, "Label2"):
+			if iSource.Label2 != "" and iTarget.Label2 == "":
+				iTarget.Label2 = iSource.Label2
+	except:
+		skip = 1
+		
+	try:
 		color = getColor(iSource, 0, "color")
 		if color == "":
 			color = getColor(iSource, 1, "color")
@@ -9067,6 +9083,13 @@ def updateGlobals():
 		if "wWoodSizeY" in wusStrings:
 			global gWoodSizeY
 			gWoodSizeY = float( wus.GetString('wWoodSizeY') )
+	except:
+		skip = 1
+
+	try:
+		if "wWoodDescription" in wusStrings:
+			global gWoodDescription
+			gWoodDescription = str(wus.GetString('wWoodDescription'))
 	except:
 		skip = 1
 

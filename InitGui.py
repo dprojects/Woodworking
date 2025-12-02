@@ -165,6 +165,9 @@ class WoodworkingWorkbench (Workbench):
 					pref = 'User parameter:BaseApp/Preferences/TreeView'
 					FreeCAD.ParamGet(pref).SetBool('SyncSelection', True)
 					
+					pref = 'User parameter:BaseApp/Preferences/PropertyView'
+					FreeCAD.ParamGet(pref).SetInt('LastTabIndex', 1)
+					
 					msg += "ok."
 				except:
 					msg += "fail."

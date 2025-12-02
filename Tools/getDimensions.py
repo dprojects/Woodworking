@@ -40,6 +40,7 @@ sLTFMenuIndex = {
 	translate("getDimensions", "q - for cut service"): "q",
 	translate("getDimensions", "n - for verification"): "n",
 	translate("getDimensions", "g - wood type"): "g",
+	translate("getDimensions", "m - material description"): "m",
 	translate("getDimensions", "e - veneer"): "e",
 	translate("getDimensions", "d - drilling"): "d",
 	translate("getDimensions", "c - named constraints"): "c",
@@ -52,6 +53,7 @@ sLTFDsc = {
 	"q" : translate("getDimensions", "quantity first for cut chipboards service"),
 	"n" : translate("getDimensions", "objects labels for verification, furniture parts listing"),
 	"g" : translate("getDimensions", "containers labels for wood type, colors, custom groups"),
+	"m" : translate("getDimensions", "get description from Label2 of any dimensions group member"),
 	"e" : translate("getDimensions", "dedicated for veneer by edge color, quick edgeband"),
 	"d" : translate("getDimensions", "dedicated for holes, countersinks, counterbores, pocket holes description"),
 	"c" : translate("getDimensions", "only named constraints for PartDesign objects, custom report"),
@@ -72,6 +74,8 @@ sARGD = True      # grain direction
 sATS = True       # thickness summary
 sAEI = True       # edgeband info
 sARVS = True      # veneer simulation
+sAWC = True       # weight column
+sAPC = True       # price column
 
 # ###################################################################################################################
 # Dimensions
@@ -95,7 +99,7 @@ sUnitsMetricDsc = {
 sPrecisionDD = {
 	"mm" : 0,
 	"cm" : 1,
-	"m" : 2,
+	"m" : 3,
 	"in" : 3,
 	"fractions" : 6,
 	"fractions minus" : 6,
@@ -127,7 +131,7 @@ sUnitsEdgeDsc = {
 sPrecisionDE = {
 	"mm" : 0,
 	"cm" : 1,
-	"m" : 2,
+	"m" : 3,
 	"in" : 3,
 	"fractions" : 6,
 	"fractions minus" : 6,
@@ -159,7 +163,7 @@ sUnitsAreaDsc = {
 sPrecisionDA = {
 	"mm" : 0,
 	"cm" : 1,
-	"m" : 2,
+	"m" : 3,
 	"in" : 6,
 	"fractions" : 2,
 	"fractions minus" : 2,
@@ -426,7 +430,7 @@ def showQtGUI():
 			
 			# tool screen size
 			toolSW = 820
-			toolSH = 680
+			toolSH = 700
 			
 			selWidth = 150 # selection width
 			selWidth2 = 200 # selection width small
@@ -497,6 +501,12 @@ def showQtGUI():
 			
 			self.arvsCB = QtGui.QCheckBox(translate('getDimensions', '- veneer simulation'), self)
 			self.arvsCB.setCheckState(QtCore.Qt.Checked)
+			
+			self.awcCB = QtGui.QCheckBox(translate('getDimensions', '- weight column'), self)
+			self.awcCB.setCheckState(QtCore.Qt.Unchecked)
+			
+			self.apcCB = QtGui.QCheckBox(translate('getDimensions', '- price column'), self)
+			self.apcCB.setCheckState(QtCore.Qt.Unchecked)
 			
 			# ############################################################################
 			# units
@@ -673,11 +683,13 @@ def showQtGUI():
 			self.layAR.addWidget(self.artsCB, 0, 0)
 			self.layAR.addWidget(self.areiCB, 0, 1)
 			self.layAR.addWidget(self.armeCB, 0, 2)
-			self.layAR.addWidget(self.armCB, 1, 0)
-			self.layAR.addWidget(self.arpCB, 1, 1)
-			self.layAR.addWidget(self.argdCB, 1, 2)
-			self.layAR.addWidget(self.ardCB, 2, 0)
-			self.layAR.addWidget(self.arvsCB, 2, 1)
+			self.layAR.addWidget(self.armCB, 0, 3)
+			self.layAR.addWidget(self.arpCB, 1, 0)
+			self.layAR.addWidget(self.argdCB, 1, 1)
+			self.layAR.addWidget(self.ardCB, 1, 2)
+			self.layAR.addWidget(self.arvsCB, 1, 3)
+			self.layAR.addWidget(self.awcCB, 2, 0)
+			self.layAR.addWidget(self.apcCB, 2, 1)
 			
 			self.layRT = QtGui.QVBoxLayout()
 			self.layRT.addLayout(self.layRC)
@@ -991,7 +1003,7 @@ def showQtGUI():
 	if form.result == userOK:
 		global sEColor
 		global sARME, sARM, sARP, sARD, sARGD
-		global sATS, sAEI, sARVS
+		global sATS, sAEI, sARVS, sAWC, sAPC
 		global sPDD, sPDA, sPDE
 		
 		# set edgeband code from text form
@@ -1050,6 +1062,18 @@ def showQtGUI():
 		else:
 			sARVS = False
 		
+		# weight column
+		if form.awcCB.isChecked():
+			sAWC = True
+		else:
+			sAWC = False
+		
+		# price column
+		if form.apcCB.isChecked():
+			sAPC = True
+		else:
+			sAPC = False
+
 		gExecute = "yes"
 
 
@@ -1509,6 +1533,28 @@ def getKey(iObj, iW, iH, iL, iType, iCaller="getKey"):
 		else:
 			vKey = str(vKey) + ":[...]"
 
+	# key for Label2 group member
+	if iType == "d" and sLTF == "m":
+		
+		if not hasattr(iObj, "Label2"):
+			vGroup = MagicPanels.gWoodDescription
+		
+		if hasattr(iObj, "Label2"):
+			if iObj.Label2 == "":
+				vGroup = MagicPanels.gWoodDescription
+			else:
+				vGroup = str(iObj.Label2)
+		
+		if hasattr(iObj, "ShapeMaterial"):
+			if hasattr(iObj.ShapeMaterial, "Name") and hasattr(iObj.ShapeMaterial, "Description"):
+				if iObj.ShapeMaterial.Name != "Default":
+					vGroup = str(iObj.ShapeMaterial.Description)
+
+		if vGroup != "":
+			vKey = str(vKey) + ":" + str(vGroup)
+		else:
+			vKey = str(vKey) + ": "
+		
 	# return thickness (this is value, not string)
 	if iType == "thick":
 		return vKeyArr[0]
@@ -1783,11 +1829,11 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 		vArea = getArea(iObj, iW, iH, iL, iCaller) 
 	
 		# get weight
-		if sLTF == "w":
+		if sLTF == "w" or sAWC == True:
 			weight = getWeight(iObj, iW, iH, iL, iCaller) 
 	
 		# get weight
-		if sLTF == "b":
+		if sLTF == "b" or sAPC == True:
 			price = getPrice(iObj, iW, iH, iL, iCaller) 
 			
 		# get key  for object
@@ -1799,20 +1845,20 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 			dbDQ[vKey] = dbDQ[vKey] + 1
 			dbDA[vKey] = dbDA[vKey] + vArea
 			
-			if sLTF == "w":
+			if sLTF == "w" or sAWC == True:
 				dbDW[vKey] = dbDW[vKey] + weight
 
-			if sLTF == "b":
+			if sLTF == "b" or sAPC == True:
 				dbDP[vKey] = dbDP[vKey] + price
 		else:
 	
 			dbDQ[vKey] = 1
 			dbDA[vKey] = vArea
 
-			if sLTF == "w":
+			if sLTF == "w" or sAWC == True:
 				dbDW[vKey] = weight
 
-			if sLTF == "b":
+			if sLTF == "b" or sAPC == True:
 				dbDP[vKey] = price
 				
 		# get key  for object (convert value to dimension string)
@@ -1824,20 +1870,20 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 			dbTQ[vKeyT] = dbTQ[vKeyT] + 1
 			dbTA[vKeyT] = dbTA[vKeyT] + vArea
 			
-			if sLTF == "w":
+			if sLTF == "w" or sAWC == True:
 				dbTW[vKeyT] = dbTW[vKeyT] + weight
 			
-			if sLTF == "b":
+			if sLTF == "b" or sAPC == True:
 				dbTP[vKeyT] = dbTP[vKeyT] + price
 		else:
 	
 			dbTQ[vKeyT] = 1
 			dbTA[vKeyT] = vArea
 
-			if sLTF == "w":
+			if sLTF == "w" or sAWC == True:
 				dbTW[vKeyT] = weight
 			
-			if sLTF == "b":
+			if sLTF == "b" or sAPC == True:
 				dbTP[vKeyT] = price
 				
 		# check visibility for edge if visibility feature is "edge"
@@ -2826,7 +2872,7 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 	# additional report - veneer simulation
 	if sARVS == True:
 		setVeneerSimulation(iObj, iCaller)
-
+	
 	# skip not supported furniture parts with no error
 	# Sheet, Transformations will be handling later
 	return 0
@@ -2895,7 +2941,8 @@ def setAppLink(iObj, iCaller="setAppLink"):
 			key = iObj.LinkedObject
 
 			# select and add furniture part
-			scanObjects([ key ], iCaller)
+			if not key.isDerivedFrom("Part::Box"):
+				scanObjects([ key ], iCaller)
 		
 		except:
 			
@@ -3668,9 +3715,15 @@ def setViewQ(iCaller="setViewQ"):
 	gSheet.set("C1", gLang3)
 	gSheet.set("F1", gLang4)
 	gSheet.set("G1", gLang5)
-
+	if sAWC == True:
+		gSheet.set("H1", gLang28)
+	if sAWC == True and sAPC == True:
+		gSheet.set("I1", gLang29)
+	if sAWC == False and sAPC == True:
+		gSheet.set("H1", gLang29)
+		
 	# text header decoration
-	gSheet.setStyle("A1:G1", "bold", "add")
+	gSheet.setStyle("A1:I1", "bold", "add")
 
 	# merge cells
 	gSheet.mergeCells("A1:B1")
@@ -3678,8 +3731,12 @@ def setViewQ(iCaller="setViewQ"):
 
 	# set background
 	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	if sAWC == True or sAPC == True:
+		vCell = "A" + str(gSheetRow) + ":H" + str(gSheetRow)
+	if sAWC == True and sAPC == True:
+		vCell = "A" + str(gSheetRow) + ":I" + str(gSheetRow)
 	gSheet.setBackground(vCell, gHeadCS)
-
+	
 	# go to next spreadsheet row
 	gSheetRow = gSheetRow + 1
 
@@ -3694,7 +3751,14 @@ def setViewQ(iCaller="setViewQ"):
 		gSheet.set("E" + str(gSheetRow), toSheet(a[2], "d", iCaller))
 		gSheet.set("F" + str(gSheetRow), toSheet(a[0], "d", iCaller))
 		gSheet.set("G" + str(gSheetRow), toSheet(dbDA[key], "area", iCaller))
-
+		if sAWC == True and sAPC == False:
+			gSheet.set("H" + str(gSheetRow), toSheet(dbDW[key], "weight", iCaller))
+		if sAWC == False and sAPC == True:
+			gSheet.set("H" + str(gSheetRow), toSheet(dbDP[key], "price", iCaller))
+		if sAWC == True and sAPC == True:
+			gSheet.set("H" + str(gSheetRow), toSheet(dbDW[key], "weight", iCaller))
+			gSheet.set("I" + str(gSheetRow), toSheet(dbDP[key], "price", iCaller))
+		
 		# merge cells
 		vCell = "A" + str(gSheetRow) + ":B" + str(gSheetRow)	
 		gSheet.mergeCells(vCell)
@@ -3710,6 +3774,8 @@ def setViewQ(iCaller="setViewQ"):
 	gSheet.setColumnWidth("E", 90)
 	gSheet.setColumnWidth("F", 100)
 	gSheet.setColumnWidth("G", 120)
+	gSheet.setColumnWidth("H", 120)
+	gSheet.setColumnWidth("I", 120)
 
 	# alignment
 	gSheet.setAlignment("A1:A" + str(gSheetRow), "right", "keep")
@@ -3719,6 +3785,8 @@ def setViewQ(iCaller="setViewQ"):
 	gSheet.setAlignment("E1:E" + str(gSheetRow), "right", "keep")
 	gSheet.setAlignment("F1:F" + str(gSheetRow), "right", "keep")
 	gSheet.setAlignment("G1:G" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("H1:H" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("I1:I" + str(gSheetRow), "right", "keep")
 
 	# fix for center header text in merged cells
 	gSheet.setAlignment("C1:C1", "center", "keep")
@@ -3734,6 +3802,11 @@ def setViewQ(iCaller="setViewQ"):
 
 	# add summary title for thickness
 	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	if sAWC == True or sAPC == True:
+		vCell = "A" + str(gSheetRow) + ":H" + str(gSheetRow)
+	if sAWC == True and sAPC == True:
+		vCell = "A" + str(gSheetRow) + ":I" + str(gSheetRow)
+		
 	gSheet.mergeCells(vCell)
 	gSheet.set(vCell, gLang7)
 	gSheet.setStyle(vCell, "bold", "add")
@@ -3748,11 +3821,21 @@ def setViewQ(iCaller="setViewQ"):
 		gSheet.set("A" + str(gSheetRow), toSheet(dbTQ[key], "string", iCaller) + " x")
 		gSheet.set("F" + str(gSheetRow), toSheet(key, "d", iCaller))
 		gSheet.set("G" + str(gSheetRow), toSheet(dbTA[key], "area", iCaller))
+		if sAWC == True and sAPC == False:
+			gSheet.set("H" + str(gSheetRow), toSheet(dbTW[key], "weight", iCaller))
+		if sAWC == False and sAPC == True:
+			gSheet.set("H" + str(gSheetRow), toSheet(dbTP[key], "price", iCaller))
+		if sAWC == True and sAPC == True:
+			gSheet.set("H" + str(gSheetRow), toSheet(dbTW[key], "weight", iCaller))
+			gSheet.set("I" + str(gSheetRow), toSheet(dbTP[key], "price", iCaller))
+		
 		gSheet.setAlignment("A" + str(gSheetRow), "right", "keep")
 		gSheet.setAlignment("B" + str(gSheetRow), "right", "keep")
 		gSheet.setAlignment("F" + str(gSheetRow), "right", "keep")
 		gSheet.setAlignment("G" + str(gSheetRow), "right", "keep")
-
+		gSheet.setAlignment("H" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("I" + str(gSheetRow), "right", "keep")
+		
 		# merge cells
 		vCell = "A" + str(gSheetRow) + ":B" + str(gSheetRow)	
 		gSheet.mergeCells(vCell)
@@ -3962,15 +4045,25 @@ def setViewG(iCaller="setViewG"):
 	gSheet.set("C1", gLang3)
 	gSheet.set("F1", gLang2)
 	gSheet.set("G1", gLang5)
-
+	if sAWC == True:
+		gSheet.set("H1", gLang28)
+	if sAWC == True and sAPC == True:
+		gSheet.set("I1", gLang29)
+	if sAWC == False and sAPC == True:
+		gSheet.set("H1", gLang29)
+	
 	# text header decoration
-	gSheet.setStyle("A1:G1", "bold", "add")
+	gSheet.setStyle("A1:I1", "bold", "add")
 
 	# merge cells
 	gSheet.mergeCells("C1:E1")
 
 	# set background
 	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	if sAWC == True or sAPC == True:
+		vCell = "A" + str(gSheetRow) + ":H" + str(gSheetRow)
+	if sAWC == True and sAPC == True:
+		vCell = "A" + str(gSheetRow) + ":I" + str(gSheetRow)
 	gSheet.setBackground(vCell, gHeadCS)
 
 	# go to next spreadsheet row
@@ -3988,7 +4081,14 @@ def setViewG(iCaller="setViewG"):
 		gSheet.set("E" + str(gSheetRow), toSheet(a[2], "d", iCaller))
 		gSheet.set("F" + str(gSheetRow), toSheet(dbDQ[key], "string", iCaller))
 		gSheet.set("G" + str(gSheetRow), toSheet(dbDA[key], "area", iCaller))
-
+		if sAWC == True and sAPC == False:
+			gSheet.set("H" + str(gSheetRow), toSheet(dbDW[key], "weight", iCaller))
+		if sAWC == False and sAPC == True:
+			gSheet.set("H" + str(gSheetRow), toSheet(dbDP[key], "price", iCaller))
+		if sAWC == True and sAPC == True:
+			gSheet.set("H" + str(gSheetRow), toSheet(dbDW[key], "weight", iCaller))
+			gSheet.set("I" + str(gSheetRow), toSheet(dbDP[key], "price", iCaller))
+		
 		# go to next spreadsheet row
 		gSheetRow = gSheetRow + 1
 
@@ -4000,6 +4100,8 @@ def setViewG(iCaller="setViewG"):
 	gSheet.setColumnWidth("E", 90)
 	gSheet.setColumnWidth("F", 80)
 	gSheet.setColumnWidth("G", 120)
+	gSheet.setColumnWidth("H", 120)
+	gSheet.setColumnWidth("I", 120)
 
 	# alignment
 	gSheet.setAlignment("A1:A" + str(gSheetRow), "left", "keep")
@@ -4009,6 +4111,8 @@ def setViewG(iCaller="setViewG"):
 	gSheet.setAlignment("E1:E" + str(gSheetRow), "right", "keep")
 	gSheet.setAlignment("F1:F" + str(gSheetRow), "right", "keep")
 	gSheet.setAlignment("G1:G" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("H1:H" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("I1:I" + str(gSheetRow), "right", "keep")
 
 	# fix for center header text in merged cells
 	gSheet.setAlignment("C1:C1", "center", "keep")
@@ -4024,6 +4128,11 @@ def setViewG(iCaller="setViewG"):
 
 	# add summary title for thickness
 	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
+	if sAWC == True or sAPC == True:
+		vCell = "A" + str(gSheetRow) + ":H" + str(gSheetRow)
+	if sAWC == True and sAPC == True:
+		vCell = "A" + str(gSheetRow) + ":I" + str(gSheetRow)
+		
 	gSheet.mergeCells(vCell)
 	gSheet.set(vCell, gLang7)
 	gSheet.setStyle(vCell, "bold", "add")
@@ -4038,10 +4147,20 @@ def setViewG(iCaller="setViewG"):
 		gSheet.set("B" + str(gSheetRow), toSheet(key, "d", iCaller))
 		gSheet.set("F" + str(gSheetRow), toSheet(dbTQ[key], "string", iCaller))
 		gSheet.set("G" + str(gSheetRow), toSheet(dbTA[key], "area", iCaller))
+		if sAWC == True and sAPC == False:
+			gSheet.set("H" + str(gSheetRow), toSheet(dbTW[key], "weight", iCaller))
+		if sAWC == False and sAPC == True:
+			gSheet.set("H" + str(gSheetRow), toSheet(dbTP[key], "price", iCaller))
+		if sAWC == True and sAPC == True:
+			gSheet.set("H" + str(gSheetRow), toSheet(dbTW[key], "weight", iCaller))
+			gSheet.set("I" + str(gSheetRow), toSheet(dbTP[key], "price", iCaller))
+		
 		gSheet.setAlignment("B" + str(gSheetRow), "right", "keep")
 		gSheet.setAlignment("F" + str(gSheetRow), "right", "keep")
 		gSheet.setAlignment("G" + str(gSheetRow), "right", "keep")
-
+		gSheet.setAlignment("H" + str(gSheetRow), "right", "keep")
+		gSheet.setAlignment("I" + str(gSheetRow), "right", "keep")
+		
 		# go to next spreadsheet row
 		gSheetRow = gSheetRow + 1
 
@@ -5295,6 +5414,13 @@ def selectView(iCaller="selectView"):
 		
 		if sAEI == True:
 			setViewEdge(iCaller)
+	
+	# main report - material description
+	if sLTF == "m":
+		setViewG(iCaller)
+		
+		if sAEI == True:
+			setViewEdge(iCaller)
 
 	# main report - edge extended
 	if sLTF == "e":
@@ -5358,7 +5484,7 @@ def setTechDraw(iCaller="setTechDraw"):
 		gAD.removeObject("toPrint")
 
 	# create TechDraw page for print
-	if sLTF == "a":
+	if sLTF == "a" or sAWC == True or sAPC == True:
 		gPrint = MagicPanels.createTechDrawPage("toPrint", "A4", "h")
 	else:
 		gPrint = MagicPanels.createTechDrawPage("toPrint", "A4", "v")
@@ -5377,7 +5503,7 @@ def setTechDraw(iCaller="setTechDraw"):
 		if templateWidth == 0 or templateHeight == 0:
 			
 			# horizontal page
-			if sLTF == "a":
+			if sLTF == "a" or sAWC == True or sAPC == True:
 				templateWidth = float(297)
 				templateHeight = float(210)
 			
@@ -5417,7 +5543,13 @@ def setTechDraw(iCaller="setTechDraw"):
 	else:
 		gPrintSheet.CellEnd = "G" + str(gSheetRow)
 
-
+	if sAWC == True and sAPC == False:
+		gPrintSheet.CellEnd = "H" + str(gSheetRow)
+	if sAWC == False and sAPC == True:
+		gPrintSheet.CellEnd = "H" + str(gSheetRow)
+	if sAWC == True and sAPC == True:
+		gPrintSheet.CellEnd = "I" + str(gSheetRow)
+		
 # ###################################################################################################################
 # INIT - check status
 # ###################################################################################################################
