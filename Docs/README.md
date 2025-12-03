@@ -1217,10 +1217,11 @@ Example weights unit of commonly used wood in lb/board foot:
 * **a - approximation:** this report is some kind of approximation of needed material. It uses different approach to dimensions, because the dimensions are not get here from objects, they are calculated from raw vertices. You have to be careful because the dimensions are occupied space in 3D by the object and you can see the difference for all rotated elements. This type of report can be directly imported at [cutlistoptimizer.com](https://www.cutlistoptimizer.com/) website tool.
 
 > [!TIP]
-> Personally, I create two cutting lists. First is `q - report type` for the person in the cutting chipboard service. 
-> The second one is `n - report type` so I can verify that all the elements I received from the store and all 
-> elements had the correct dimensions, so I can write on it. I usually create furniture for myself from `18 mm white chipboard`, 
-> but if, for example, I need to order plywood shelves or boards in a different color, I create `g - report type` 
+> Personally, I create two cutting lists. First is `q - for cut service` for the person in the cutting chipboard service. 
+> The second one is `n - for verification` so I can verify that all the elements I received from the store and all 
+> elements had the correct dimensions, so I can write "OK" on it. <br>
+> I usually create furniture for myself from `18 mm white chipboard`, but if, for example, I need to order 
+> plywood shelves or boards in a different color, I create `g - wood type` or `m - material description` 
 > for the person in the cutting service, where the appropriate board types and colors are grouped.
 
 #### Additional reports

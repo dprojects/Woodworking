@@ -53,13 +53,13 @@ sLTFDsc = {
 	"q" : translate("getDimensions", "quantity first for cut chipboards service"),
 	"n" : translate("getDimensions", "objects labels for verification, furniture parts listing"),
 	"g" : translate("getDimensions", "containers labels for wood type, colors, custom groups"),
-	"m" : translate("getDimensions", "get description from Label2 of any dimensions group member"),
+	"m" : translate("getDimensions", "material description from object material, Label2 attribute or magicSettings"),
 	"e" : translate("getDimensions", "dedicated for veneer by edge color, quick edgeband"),
 	"d" : translate("getDimensions", "dedicated for holes, countersinks, counterbores, pocket holes description"),
 	"c" : translate("getDimensions", "only named constraints for PartDesign objects, custom report"),
 	"p" : translate("getDimensions", "all constraints for PartDesign objects, quick report"),
-	"w" : translate("getDimensions", "calculate weight using magicSeetings settings"),
-	"b" : translate("getDimensions", "calculate needed budget using magicSeetings settings"),
+	"w" : translate("getDimensions", "calculate weight using magicSettings tool settings"),
+	"b" : translate("getDimensions", "calculate needed budget using magicSettings tool settings"),
 	"a" : translate("getDimensions", "approximation for cutlistoptimizer.com") # no comma
 }
 sLTFKey = translate("getDimensions", "q - for cut service") # for GUI init
@@ -433,7 +433,7 @@ def showQtGUI():
 			toolSH = 700
 			
 			selWidth = 150 # selection width
-			selWidth2 = 200 # selection width small
+			selWidth2 = 220 # selection width for report type
 			infoWidth = 600 # info description
 			
 			# ############################################################################
@@ -891,6 +891,8 @@ def showQtGUI():
 				self.arpCB.hide()
 				self.argdCB.hide()
 				self.arvsCB.hide()
+				self.awcCB.hide()
+				self.apcCB.hide()
 				
 				self.pufdL.hide()
 				self.pufde.hide()
@@ -920,6 +922,8 @@ def showQtGUI():
 				self.arpCB.show()
 				self.argdCB.show()
 				self.arvsCB.show()
+				self.awcCB.show()
+				self.apcCB.show()
 				
 				self.pufdL.show()
 				self.pufde.show()
