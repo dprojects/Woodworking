@@ -1550,9 +1550,9 @@ def getKey(iObj, iW, iH, iL, iType, iCaller="getKey"):
 				vGroup = str(iObj.Label2)
 		
 		if hasattr(iObj, "ShapeMaterial"):
-			if hasattr(iObj.ShapeMaterial, "Name") and hasattr(iObj.ShapeMaterial, "Description"):
+			if hasattr(iObj.ShapeMaterial, "Name"):
 				if iObj.ShapeMaterial.Name != "Default":
-					vGroup = str(iObj.ShapeMaterial.Description)
+					vGroup = str(iObj.ShapeMaterial.Name)
 
 		if vGroup != "":
 			vKey = str(vKey) + ":" + str(vGroup)

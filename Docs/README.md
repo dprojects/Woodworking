@@ -203,6 +203,9 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * load textures from Woods workbench material texture attribute (setTextures) <br>
+> * add Woods workbench material description to cut-list (getDimensions) <br>
+> * copy .Label2 description and .ShapeMaterial to new copied objects (MagicPanels) <br>
 > * material description in cut-list (getDimensions, MagicPanels, magicSettings, fixes) <br>
 > * weight and price as additional column in cut-list (getDimensions) <br>
 > * tools to show and hide tree structure (eyeRa, eyeHorus) <br>
@@ -1146,10 +1149,23 @@ Example weights unit of commonly used wood in lb/board foot:
 * Auto fit mode to object shape type.
 * Small GUI interface in corner to see 3D model refresh.
 
+**Textures can be stored at:**
+* `.ShapeMaterial.AppearanceProperties["TextureImage"]` material added to the object, new material approach used by Woods workbench.
+* `.Material.Material["TexturePath"]` old material way with setting URL to the texture in material card.
+* `.Texture` attribute with URL to the texture.
+* `.Label2` attribute, object description, with URL to the texture.
+* `.Texture_URL` attribute with URL online or from HDD to the texture added by this [setTextures](#settextures) tool.
+
+> [!TIP]
+> Personally, I prefer to add online links to textures. This way, the file size does not increase and there 
+> is no need to install additional repositories. However, you need to make sure the server supports external linking. 
+> Unfortunately, [commons.wikimedia.org](https://commons.wikimedia.org/) has blocked this option, 
+> so you will get broken link from there, this is how they support free software.
+
 **Options:**
 
 * **show stored textures for all objects:** loads textures for all objects that have texture information saved.
-
+  
 * **Adjust type:** This is the target attribute of the color structure.
   * `biggest surface` adjust texture to the biggest surface, but not to edges.
   * `fit to Cube` adjust texture to edges.
@@ -1205,7 +1221,7 @@ Example weights unit of commonly used wood in lb/board foot:
 * **n - for verification:** this is a list of all items, grouped by item name (`object.Label`). This report type is necessary to verify that all boards were received from cutting service with correct dimensions.
 * **g - wood type:** this type of report groups all items based on their location in folders and containers. This allows you to place all items of a given color, type, or material in a single folder, and this will be reflected in the report. This makes it easier to order boards of different types or thicknesses but with the same dimensions. This type of report can also be used to create groups with edge veneer, left, right, or without veneer.
 * **m - material description:** this type of report is the same as `g - wood type` but the group name is created from material description as follows:
-  * If you have set Material for object, I mean the `.ShapeMaterial.Name` is not `Default` the `.ShapeMaterial.Description` attribute will be used. In this case if you have `.Label2` attribute the `.ShapeMaterial.Description` will be used.
+  * If you have set Material for object, I mean the `.ShapeMaterial.Name` is not `Default` the `.ShapeMaterial.Name` attribute will be used. In this case if you have `.Label2` attribute the `.ShapeMaterial.Name` will be used.
   * If you not have set Material but you have `.Label2` the `.Label2` attribute will be used.
   * If you not have set Material and also not have set `.Label2` attribute the global variable `MagicPanels.gWoodDescription` will be used. The global variable `MagicPanels.gWoodDescription` can be set via [magicSettings](#magicsettings) tool.
 * **e - veneer:** this type of report allows you to precisely describe each face of the object, based on the edge length. Thanks to this you can describe which edge lengths should be covered with veneer. To determine the edge color with veneer, you must set the color of the entire furniture as a color reference. Also you must set the edge symbol, which will appear on the report.

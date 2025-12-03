@@ -355,7 +355,14 @@ def showQtMain():
 					return textureURL
 			except:
 				skip = 1
-		
+			
+			# support for texture URL stored at Material properties
+			try:
+				if iObj.ShapeMaterial.Name != "Default":
+					return "ShapeMaterial"
+			except:
+				skip = 1
+			
 			# no texture URL set
 			return ""
 			
@@ -373,23 +380,32 @@ def showQtMain():
 				os.makedirs(tmpDir)
 
 			# get texture filename
-			textureFilename = os.path.basename(iURL)
+			if iURL == "ShapeMaterial":
+				textureFilename = str(iObj.Name) + "_" + str(iObj.ShapeMaterial.Name)
+			else:
+				textureFilename = os.path.basename(iURL)
+			
 			textureFilePath = os.path.join(tmpDir, textureFilename)
 
 			# check if file already exists and skip slow downloading
 			if not os.path.exists(textureFilePath):
 
+				# get image from URL
 				try:
-					# get image from URL
-					data = urllib.request.urlopen(iURL)
+					if iURL == "ShapeMaterial":
+						import base64
+						img = iObj.ShapeMaterial.getAppearanceValue("TextureImage")
+						img = img.encode('utf-8')
+						data = base64.b64decode(img)
+					else:
+						data = urllib.request.urlopen(iURL).read()
 				except:
-					# if broken URL or removed image
 					self.gBrokenURL[str(iObj.Label)] = iURL
 					return ""
-
+				
 				# create temp file with image
 				out = open(str(textureFilePath), "wb")
-				out.write(data.read())
+				out.write(data)
 				out.close()
 
 			return textureFilePath
@@ -517,7 +533,7 @@ def showQtMain():
 					MagicPanels.setColor(obj, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 				textureURL = self.getTextureURL(obj)
-
+				
 				# if no texture found for object skip it
 				if str(textureURL) == "":
 					continue
@@ -525,7 +541,7 @@ def showQtMain():
 					empty = "no"
 
 				# chose URL or local HDD
-				if textureURL.startswith("http"):
+				if textureURL.startswith("http") or textureURL == "ShapeMaterial":
 					filename = self.downloadTexture(obj, textureURL)
 				else:
 					filename = str(textureURL)
