@@ -203,6 +203,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * improve samples of furniture modules (magicStart) <br>
 > * load textures from Woods workbench material texture attribute (setTextures) <br>
 > * add Woods workbench material description to cut-list (getDimensions) <br>
 > * copy .Label2 description and .ShapeMaterial to new copied objects (MagicPanels) <br>
@@ -300,15 +301,20 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * Kitchen wall module ( front outside, back outside, veneer )
 * Bookcase module ( no front, back outside, veneer )
 
-> [!TIP]
-> Constructions with `veneer` descriptions support veneer settings in [magicSettings](#magicsettings) tool.
-
 * Storage ( front outside, back inside, heavy duty )
 * Wardrobe ( front outside, back outside, 2x clothes width )
 * Wardrobe ( front outside, back outside, clothes hangers )
 * Bookcase ( no front, back inside, simple )
 * Bookcase ( no front, back outside, simple )
 * Bookcase ( import parametric )
+
+* Module base ( back inside, veneer )
+* Module on top ( back inside, veneer )
+* Module base ( back outside, veneer )
+* Module on top ( back outside, veneer )
+
+> [!TIP]
+> Constructions with `veneer` descriptions support veneer settings in [magicSettings](#magicsettings) tool.
 
 **Video tutorials:** 
 * [Furniture creation tool](https://www.youtube.com/watch?v=lHQ1J9Nahcs)
