@@ -76,6 +76,7 @@ sAEI = True       # edgeband info
 sARVS = True      # veneer simulation
 sAWC = True       # weight column
 sAPC = True       # price column
+sAMAX = True      # max and min size
 
 # ###################################################################################################################
 # Dimensions
@@ -314,6 +315,8 @@ gLang26 = ""
 gLang27 = ""
 gLang28 = ""
 gLang29 = ""
+gLang30 = ""
+gLang31 = ""
 
 
 # ###################################################################################################################
@@ -344,6 +347,8 @@ dbE = dict()
 dbE["total"] = 0 # total
 dbE["empty"] = 0 # empty
 dbE["edgeband"] = 0 # edgeband
+dbE["max"] = 0 # max edge size
+dbE["min"] = 0 # min edge size
 
 # init database for face number
 dbEFN = dict() # array names
@@ -366,9 +371,11 @@ dbARV = dict() # values
 
 gColorReference = ""
 
+
 # ###################################################################################################################
 # Overwrite defaults here
 # ###################################################################################################################
+
 
 try:
 	from FreeCAD import Units
@@ -507,6 +514,9 @@ def showQtGUI():
 			
 			self.apcCB = QtGui.QCheckBox(translate('getDimensions', '- price column'), self)
 			self.apcCB.setCheckState(QtCore.Qt.Unchecked)
+			
+			self.amaxCB = QtGui.QCheckBox(translate('getDimensions', '- max and min size'), self)
+			self.amaxCB.setCheckState(QtCore.Qt.Unchecked)
 			
 			# ############################################################################
 			# units
@@ -680,16 +690,21 @@ def showQtGUI():
 			self.layRC.addWidget(self.rcIS, 1, 2)
 			
 			self.layAR = QtGui.QGridLayout()
+			
 			self.layAR.addWidget(self.artsCB, 0, 0)
+			self.layAR.addWidget(self.awcCB, 1, 0)
+			self.layAR.addWidget(self.apcCB, 2, 0)
+			
 			self.layAR.addWidget(self.areiCB, 0, 1)
-			self.layAR.addWidget(self.armeCB, 0, 2)
-			self.layAR.addWidget(self.armCB, 0, 3)
-			self.layAR.addWidget(self.arpCB, 1, 0)
-			self.layAR.addWidget(self.argdCB, 1, 1)
-			self.layAR.addWidget(self.ardCB, 1, 2)
-			self.layAR.addWidget(self.arvsCB, 1, 3)
-			self.layAR.addWidget(self.awcCB, 2, 0)
-			self.layAR.addWidget(self.apcCB, 2, 1)
+			self.layAR.addWidget(self.armeCB, 1, 1)
+			self.layAR.addWidget(self.amaxCB, 2, 1)
+			
+			self.layAR.addWidget(self.armCB, 0, 2)
+			self.layAR.addWidget(self.arpCB, 1, 2)
+			self.layAR.addWidget(self.ardCB, 2, 2)
+			
+			self.layAR.addWidget(self.arvsCB, 0, 3)
+			self.layAR.addWidget(self.argdCB, 1, 3)
 			
 			self.layRT = QtGui.QVBoxLayout()
 			self.layRT.addLayout(self.layRC)
@@ -893,6 +908,7 @@ def showQtGUI():
 				self.arvsCB.hide()
 				self.awcCB.hide()
 				self.apcCB.hide()
+				self.amaxCB.hide()
 				
 				self.pufdL.hide()
 				self.pufde.hide()
@@ -924,6 +940,7 @@ def showQtGUI():
 				self.arvsCB.show()
 				self.awcCB.show()
 				self.apcCB.show()
+				self.amaxCB.show()
 				
 				self.pufdL.show()
 				self.pufde.show()
@@ -1007,7 +1024,7 @@ def showQtGUI():
 	if form.result == userOK:
 		global sEColor
 		global sARME, sARM, sARP, sARD, sARGD
-		global sATS, sAEI, sARVS, sAWC, sAPC
+		global sATS, sAEI, sARVS, sAWC, sAPC, sAMAX
 		global sPDD, sPDA, sPDE
 		
 		# set edgeband code from text form
@@ -1078,6 +1095,12 @@ def showQtGUI():
 		else:
 			sAPC = False
 
+		# max and min
+		if form.amaxCB.isChecked():
+			sAMAX = True
+		else:
+			sAMAX = False
+		
 		gExecute = "yes"
 
 
@@ -1620,11 +1643,12 @@ def getWeight(iObj, iW, iH, iL, iCaller="getWeight"):
 		weight = (sizes[0] * gInch) * (sizes[1] * gInch) * (sizes[2] * gInch) * w
 	
 	# convert the volume to board feet: 
+	# board foot = 1 ft × 1 ft × 1 in
+	# board foot = 12 in × 12 in × 1 in
 	# board foot = 12 ft × 1 in × 1 in
-	# board foot = 144 cu in = 144 in^3 = 144 * ( 1 in x 1 in x 1 in)
+	# board foot = 144 cu in
+	# board foot = 1/12 cu ft
 	# for example: volume cubic inches / 144 (cubic inches/board foot) = board feet
-	# so if you have ft + inches need to divide by 12
-	# if you have only inches need to divide by 144
 	if MagicPanels.gWoodWeightCalculation == "lb/boardfoot":
 		volumeCU = (sizes[0] * gInch) * (sizes[1] * gInch) * (sizes[2] * gInch)
 		weight =  ( volumeCU / 144 ) * w
@@ -1920,6 +1944,24 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 
 			# set edge db for empty edge size
 			dbE["empty"] = dbE["total"] - dbE["edgeband"]
+			
+			# set max and min edge size
+			if sAMAX == True:
+				
+				sizes = [ iW, iH, iL ]
+				sizes.sort()
+				
+				if dbE["min"] == 0:
+					dbE["min"] = sizes[1]
+				else:
+					if sizes[1] < dbE["min"]:
+						dbE["min"] = sizes[1]
+
+				if dbE["max"] == 0:
+					dbE["max"] = sizes[2]
+				else:
+					if sizes[2] > dbE["max"]:
+						dbE["max"] = sizes[2]
 
 	except:
 
@@ -2876,7 +2918,7 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 	# additional report - veneer simulation
 	if sARVS == True:
 		setVeneerSimulation(iObj, iCaller)
-	
+
 	# skip not supported furniture parts with no error
 	# Sheet, Transformations will be handling later
 	return 0
@@ -3574,6 +3616,8 @@ def initLang():
 	global gLang27
 	global gLang28
 	global gLang29
+	global gLang30
+	global gLang31
 
 	# Polish language
 	if sLang  == "pl":
@@ -3618,6 +3662,8 @@ def initLang():
 		gLang27 = "Rozmiar forniru dla koloru "
 		gLang28 = "Waga"
 		gLang29 = "Cena"
+		gLang30 = "Minimalna długość krawędzi"
+		gLang31 = "Maksymalna długość krawędzi"
 
 	# from system translation files
 	elif sLang  == "system":
@@ -3662,6 +3708,8 @@ def initLang():
 		gLang27 = translate("getDimensions", "Needed veneer for color")
 		gLang28 = translate("getDimensions", "Weight")
 		gLang29 = translate("getDimensions", "Price")
+		gLang30 = translate("getDimensions", "Minimum edge size")
+		gLang31 = translate("getDimensions", "Maximum edge size")
 
 	# English language
 	else:
@@ -3706,6 +3754,8 @@ def initLang():
 		gLang27 = "Needed veneer for color"
 		gLang28 = "Weight"
 		gLang29 = "Price"
+		gLang30 = "Minimum edge size"
+		gLang31 = "Maximum edge size"
 
 
 # ###################################################################################################################
@@ -5263,6 +5313,41 @@ def setViewEdge(iCaller="setViewEdge"):
 
 	vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
 	gSheet.setBackground(vCell, gHeadCS)
+
+	# max and min edge size
+	if sAMAX == True:
+	
+		# min
+		gSheetRow = gSheetRow + 1
+
+		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+		gSheet.mergeCells(vCell)
+		gSheet.set(vCell, gLang30)
+		gSheet.setStyle(vCell, "bold", "add")
+		gSheet.setAlignment(vCell, "left", "keep")
+
+		vCell = "G" + str(gSheetRow)
+		gSheet.set(vCell, toSheet(dbE["min"], "edge", iCaller))
+		gSheet.setAlignment(vCell, "right", "keep")
+
+		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+		gSheet.setBackground(vCell, gHeadCS)
+
+		# max
+		gSheetRow = gSheetRow + 1
+
+		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+		gSheet.mergeCells(vCell)
+		gSheet.set(vCell, gLang31)
+		gSheet.setStyle(vCell, "bold", "add")
+		gSheet.setAlignment(vCell, "left", "keep")
+
+		vCell = "G" + str(gSheetRow)
+		gSheet.set(vCell, toSheet(dbE["max"], "edge", iCaller))
+		gSheet.setAlignment(vCell, "right", "keep")
+
+		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+		gSheet.setBackground(vCell, gHeadCS)
 
 
 # ###################################################################################################################
