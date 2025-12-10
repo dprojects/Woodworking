@@ -317,6 +317,8 @@ gLang28 = ""
 gLang29 = ""
 gLang30 = ""
 gLang31 = ""
+gLang32 = ""
+gLang33 = ""
 
 
 # ###################################################################################################################
@@ -349,6 +351,8 @@ dbE["empty"] = 0 # empty
 dbE["edgeband"] = 0 # edgeband
 dbE["max"] = 0 # max edge size
 dbE["min"] = 0 # min edge size
+dbE["needW"] = 0 # needed width for transport
+dbE["needL"] = 0 # needed length for transport
 
 # init database for face number
 dbEFN = dict() # array names
@@ -1962,6 +1966,22 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 				else:
 					if sizes[2] > dbE["max"]:
 						dbE["max"] = sizes[2]
+
+				if sizes[1] < sizes[2]:
+					if dbE["needW"] == 0:
+						dbE["needW"] = sizes[1]
+					else:
+						if sizes[1] > dbE["needW"]:
+							dbE["needW"] = sizes[1]
+					
+					if dbE["needL"] == 0:
+						dbE["needL"] = sizes[2]
+					else:
+						if sizes[2] > dbE["needL"]:
+							dbE["needL"] = sizes[2]
+				else:
+					dbE["needW"] = sizes[2]
+					dbE["needL"] = sizes[1]
 
 	except:
 
@@ -3618,6 +3638,8 @@ def initLang():
 	global gLang29
 	global gLang30
 	global gLang31
+	global gLang32
+	global gLang33
 
 	# Polish language
 	if sLang  == "pl":
@@ -3664,6 +3686,8 @@ def initLang():
 		gLang29 = "Cena"
 		gLang30 = "Minimalna długość krawędzi"
 		gLang31 = "Maksymalna długość krawędzi"
+		gLang32 = "Potrzebna szerokość do transportu"
+		gLang33 = "Potrzebna długość do transportu"
 
 	# from system translation files
 	elif sLang  == "system":
@@ -3710,6 +3734,8 @@ def initLang():
 		gLang29 = translate("getDimensions", "Price")
 		gLang30 = translate("getDimensions", "Minimum edge size")
 		gLang31 = translate("getDimensions", "Maximum edge size")
+		gLang32 = translate("getDimensions", "Required width for transporting boards")
+		gLang33 = translate("getDimensions", "Required length for transporting boards")
 
 	# English language
 	else:
@@ -3756,7 +3782,9 @@ def initLang():
 		gLang29 = "Price"
 		gLang30 = "Minimum edge size"
 		gLang31 = "Maximum edge size"
-
+		gLang32 = "Required width for transporting boards"
+		gLang33 = "Required length for transporting boards"
+		
 
 # ###################################################################################################################
 def setViewQ(iCaller="setViewQ"):
@@ -5344,6 +5372,38 @@ def setViewEdge(iCaller="setViewEdge"):
 
 		vCell = "G" + str(gSheetRow)
 		gSheet.set(vCell, toSheet(dbE["max"], "edge", iCaller))
+		gSheet.setAlignment(vCell, "right", "keep")
+
+		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+		gSheet.setBackground(vCell, gHeadCS)
+
+		# need width
+		gSheetRow = gSheetRow + 1
+
+		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+		gSheet.mergeCells(vCell)
+		gSheet.set(vCell, gLang32)
+		gSheet.setStyle(vCell, "bold", "add")
+		gSheet.setAlignment(vCell, "left", "keep")
+
+		vCell = "G" + str(gSheetRow)
+		gSheet.set(vCell, toSheet(dbE["needW"], "edge", iCaller))
+		gSheet.setAlignment(vCell, "right", "keep")
+
+		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+		gSheet.setBackground(vCell, gHeadCS)
+		
+		# need length
+		gSheetRow = gSheetRow + 1
+
+		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+		gSheet.mergeCells(vCell)
+		gSheet.set(vCell, gLang33)
+		gSheet.setStyle(vCell, "bold", "add")
+		gSheet.setAlignment(vCell, "left", "keep")
+
+		vCell = "G" + str(gSheetRow)
+		gSheet.set(vCell, toSheet(dbE["needL"], "edge", iCaller))
 		gSheet.setAlignment(vCell, "right", "keep")
 
 		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
