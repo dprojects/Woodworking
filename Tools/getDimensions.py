@@ -1967,22 +1967,28 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 					if sizes[2] > dbE["max"]:
 						dbE["max"] = sizes[2]
 
-				if sizes[1] < sizes[2]:
-					if dbE["needW"] == 0:
-						dbE["needW"] = sizes[1]
-					else:
-						if sizes[1] > dbE["needW"]:
-							dbE["needW"] = sizes[1]
-					
-					if dbE["needL"] == 0:
-						dbE["needL"] = sizes[2]
-					else:
-						if sizes[2] > dbE["needL"]:
-							dbE["needL"] = sizes[2]
-				else:
-					dbE["needW"] = sizes[2]
-					dbE["needL"] = sizes[1]
+				# needed for transport
+				needW = 0
+				needL = 0
 
+				if sizes[1] < sizes[2]:
+					needW = sizes[1]
+					needL = sizes[2]
+				else:
+					needW = sizes[2]
+					needL = sizes[1]
+
+				if dbE["needW"] == 0:
+					dbE["needW"] = needW
+				else:
+					if needW > dbE["needW"]:
+						dbE["needW"] = needW
+				
+				if dbE["needL"] == 0:
+					dbE["needL"] = needL
+				else:
+					if needL > dbE["needL"]:
+						dbE["needL"] = needL
 	except:
 
 		# set db error
