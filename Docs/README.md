@@ -203,6 +203,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * improve textures, GUI, add live preview and any axis (setTextures) <br>
 > * maximum and minimum edge size in cut-list (getDimensions) <br>
 > * improve samples of furniture modules (magicStart) <br>
 > * load textures from Woods workbench material texture attribute (setTextures) <br>
@@ -1152,7 +1153,7 @@ Example weights unit of commonly used wood in lb/board foot:
 
 ## setTextures
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/setTextures.png"> This is FreeCAD macro for woodworking to apply and store textures.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/setTextures.png"> This tool allows to store textures information and load textures. Also solves problem with huge project file size because this tool allows to store only link to texture not texture.
 
 **Main features:**
 
@@ -1171,34 +1172,36 @@ Example weights unit of commonly used wood in lb/board foot:
 
 > [!TIP]
 > Personally, I prefer to add online links to textures. This way, the file size does not increase and there 
-> is no need to install additional repositories. However, you need to make sure the server supports external linking. 
-> Unfortunately, [commons.wikimedia.org](https://commons.wikimedia.org/) has blocked this option, 
-> so you will get broken link from there, this is how they support free software.
+> is no need to install additional repositories. However, you need to make sure the server supports external linking. <br>
+> Also if you want to use texture from material make sure the URL attribute is not exist or is empty.
 
-**Options:**
+**refresh selection:** allows you to set the objects to which textures will be added. By default, loading and setting texture attributes will be for all objects. You can also select the objects first and then open this tool, then the selected objects will be loaded automatically.
 
-* **show stored textures for all objects:** loads textures for all objects that have texture information saved.
+**Setting texture attributes:**
   
-* **Adjust type:** This is the target attribute of the color structure.
-  * `biggest surface` adjust texture to the biggest surface, but not to edges.
-  * `fit to Cube` adjust texture to edges.
+* **First selection:** Allows for better texture matching to the object. Available options:
+  * `biggest surface` adjust texture to the biggest surface, but not to edges of the board.
+  * `fit to Cube` adjust texture to edges of the board.
   * `fit to Cylinder` adjust texture to cylinder shapes, like dowels or drill bits.
   * `fit to Sphere` adjust texture to sphere shapes.
   * `auto fit` recognize the object type and try to adjust texture.
   * `glass mirror effect` mirror effect.
-* **Texture URL or local HDD path:** allows you to load a URL link to a texture or from your local disk.
-* **repeat X** allows you to repeat texture along X axis, to create pattern, 1.0 means no repeat.
-* **repeat Y** allows you to repeat texture along Y axis, to create pattern, 1.0 means no repeat.
-* **rotation** allows you to rotate texture, to create pattern, 0.0 means no rotate.
+* **Texture URL or local HDD path:** allows you to store the URL link to a texture or set link to your local disk.
+* **repeat X:** allows you to repeat texture along X axis, to create pattern, `1.0` means visible once but not repeat.
+* **repeat Y:** allows you to repeat texture along Y axis, to create pattern, `1.0` means visible once but not repeat.
+* **repeat Z:** allows you to repeat texture along Y axis, to create pattern, `1.0` means visible once but not repeat.
+* **Rotation X axis:** allows you to store texture rotation coordinate axis value around X coordinate axis. The `1.0` value means rotate around X axis and the `0.0` means not rotate around X axis.
+* **Rotation Y axis:** allows you to store texture rotation coordinate axis value around Y coordinate axis. The `1.0` value means rotate around Y axis and the `0.0` means not rotate around Y axis.
+* **Rotation Z axis:** allows you to store texture rotation coordinate axis value around Z coordinate axis. The `1.0` value means rotate around Z axis and the `0.0` means not rotate around Z axis.
+* **Rotation angle (degrees):** allows you to store texture rotation angle in degrees, more human-readable form than radians.
+* **set texture attributes** allows you to store the values to objects attributes.
+
+**Live preview:** allows you to choose live preview target and adjust the texture in real-time. For example if you set `rotation Z axis` the `-` and `+` buttons will be rotating the texture around `Z` axis with the `Step` measured with degrees. If you decide to save the current visible texture state, make sure to press `set texture attributes` button and verify if the object's attributes has been stored.
+
+**Loading textures:**
+
 * **set white color** sets the white color for the object to make the texture look better.
-
-* **Store texture properties for:**
-  * `selected only` this button will save information to the texture only for the currently selected objects.
-  * `all objects` this button will save information to the texture for all objects in the active document.
-
-* **Refresh texture for:**
-  * `selected only` this button will show the texture only for the currently selected objects.
-  * `all objects` this button will show the texture for all objects in the active document.
+* **show textures:** loads textures for all objects or for selected objects that have texture information saved.
 
 > [!IMPORTANT]
 > Make sure you have the following option disabled:

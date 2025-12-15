@@ -1,11 +1,35 @@
 import FreeCAD, FreeCADGui
 from PySide import QtGui, QtCore
 from pivy import coin
+import math
 
 import MagicPanels
 
 translate = FreeCAD.Qt.translate
 
+# ############################################################################
+# Global definitions
+# ############################################################################
+
+# add new items only at the end and change self.fitList
+getMenuIndexFit = {
+	translate('setTextures', 'biggest surface')     : "biggest",
+	translate('setTextures', 'fit to Cube')         : "cube",
+	translate('setTextures', 'fit to Cylinder')     : "cylinder",
+	translate('setTextures', 'fit to Sphere')       : "sphere",
+	translate('setTextures', 'auto fit')            : "auto",
+	translate('setTextures', 'glass mirror effect') : "glass" # no comma 
+}
+
+# add new items only at the end and change self.previewTargetList
+getMenuIndexPreview = {
+	translate('setTextures', 'repeat X axis')   : "repeatX",
+	translate('setTextures', 'repeat Y axis')   : "repeatY",
+	translate('setTextures', 'repeat Z axis')   : "repeatZ",
+	translate('setTextures', 'rotation X axis') : "rotateX",
+	translate('setTextures', 'rotation Y axis') : "rotateY",
+	translate('setTextures', 'rotation Z axis') : "rotateZ" # no comma 
+}
 
 # ###################################################################################################################
 # Qt GUI
@@ -20,9 +44,12 @@ def showQtMain():
 		# globals
 		# ############################################################################
 
-		gFit = ""
+		gObjects = []
 		gBrokenURL = dict()
-
+		
+		infoSO = translate('setTextures', 'Settings for: SELECTED objects')
+		infoAO = translate('setTextures', 'Settings for: ALL objects')
+		
 		# ############################################################################
 		# init
 		# ############################################################################
@@ -39,7 +66,7 @@ def showQtMain():
 			
 			# tool screen size
 			toolSW = 300
-			toolSH = 550
+			toolSH = 700
 			
 			# active screen size - FreeCAD main window
 			gSW = FreeCADGui.getMainWindow().width()
@@ -49,6 +76,8 @@ def showQtMain():
 			gPW = int( gSW - toolSW )
 			gPH = int( gSH - toolSH )
 
+			area = toolSW - 20     # area for info
+			
 			# ############################################################################
 			# main window
 			# ############################################################################
@@ -60,87 +89,135 @@ def showQtMain():
 				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
-			# header
+			# objects
 			# ############################################################################
 
+			# screen
+			self.oObjectsI = QtGui.QLabel(self.infoAO, self)
+			self.oObjectsI.setMaximumWidth(area)
+			
 			# button
-			self.initBA = QtGui.QPushButton(translate('setTextures', 'show stored textures for all objects'), self)
-			self.initBA.clicked.connect(self.loadAll)
-			self.initBA.setFixedHeight(40)
-			
+			self.oObjectsB = QtGui.QPushButton(translate('setTextures', 'refresh selection'), self)
+			self.oObjectsB.clicked.connect(self.getSelected)
+			self.oObjectsB.setFixedHeight(40)
+
 			# ############################################################################
-			# body - settings
+			# attributes
 			# ############################################################################
 
-			# fit mode
+			# you can change order here
 			self.fitList = (
-				"biggest surface",
-				"fit to Cube",
-				"fit to Cylinder",
-				"fit to Sphere",
-				"auto fit",
-				"glass mirror effect"
+				translate('setTextures', 'biggest surface'),
+				translate('setTextures', 'fit to Cube'),
+				translate('setTextures', 'fit to Cylinder'),
+				translate('setTextures', 'fit to Sphere'),
+				translate('setTextures', 'auto fit'),
+				translate('setTextures', 'glass mirror effect') # no comma 
 			)
-			self.gFit = "biggest surface"
 			
-			self.fitO = QtGui.QComboBox(self)
-			self.fitO.addItems(self.fitList)
-			self.fitO.setCurrentIndex(self.fitList.index(self.gFit))
-			self.fitO.textActivated[str].connect(self.setCoordinate)
-			
-			# color
-			self.checkColor = QtGui.QCheckBox(translate('setTextures', '- set white color'), self)
-			self.checkColor.setCheckState(QtCore.Qt.Unchecked)
+			self.oFit = QtGui.QComboBox(self)
+			self.oFit.addItems(self.fitList)
+			self.oFit.setCurrentIndex(0) # to not complicate things always 0 by default
+			self.oFit.textActivated[str].connect(self.setTextureFit)
 			
 			# URL
-			self.urlL = QtGui.QLabel(translate('setTextures', 'Texture URL or local HDD path:'), self)
+			self.oURLInfo = QtGui.QLabel(translate('setTextures', 'Texture URL or local HDD path:'), self)
 			
-			# text input
-			self.urlO = QtGui.QLineEdit(self)
-			self.urlO.setText("")
+			self.oURLPath = QtGui.QLineEdit(self)
+			self.oURLPath.setText("")
 			
-			self.urlHDD = QtGui.QPushButton("...", self)
-			self.urlHDD.clicked.connect(self.loadCustomFile)
+			self.oURLHDD = QtGui.QPushButton("...", self)
+			self.oURLHDD.clicked.connect(self.loadCustomFile)
+			self.oURLHDD.setFixedWidth(20)
 			
-			# repeat
-			self.repeatXO = QtGui.QLineEdit(self)
-			self.repeatXO.setText("1.0")
-			self.repeatXO.setFixedWidth(50)
-			
-			self.repeatXL = QtGui.QLabel(translate('setTextures', '- repeat X, set 1 to not repeat'), self)
-			
-			self.repeatYO = QtGui.QLineEdit(self)
-			self.repeatYO.setText("1.0")
-			self.repeatYO.setFixedWidth(50)
-			
-			self.repeatYL = QtGui.QLabel(translate('setTextures', '- repeat Y, set 1 to not repeat'), self)
-			
-			# rotation
-			self.rotateO = QtGui.QLineEdit(self)
-			self.rotateO.setText("0.0")
-			self.rotateO.setFixedWidth(50)
-			
-			self.rotateL = QtGui.QLabel(translate('setTextures', '- rotation, set 0 to not rotate'), self)
-			
-			# ############################################################################
-			# body - store & load buttons
-			# ############################################################################
+			# repeat X
+			self.oRepeatXL = QtGui.QLabel(translate('setTextures', 'Repeat X:'), self)
+			self.oRepeatXE = QtGui.QLineEdit(self)
+			self.oRepeatXE.setText("1.0")
 
-			self.storeBS = QtGui.QPushButton(translate('setTextures', 'selected only'), self)
-			self.storeBS.clicked.connect(self.storeSelected)
-			self.storeBS.setFixedHeight(40)
+			# repeat Y
+			self.oRepeatYL = QtGui.QLabel(translate('setTextures', 'Repeat Y:'), self)
+			self.oRepeatYE = QtGui.QLineEdit(self)
+			self.oRepeatYE.setText("1.0")
+
+			# repeat Z
+			self.oRepeatZL = QtGui.QLabel(translate('setTextures', 'Repeat Z:'), self)
+			self.oRepeatZE = QtGui.QLineEdit(self)
+			self.oRepeatZE.setText("1.0")
+
+			# rotation X axis
+			self.oRotateAxisXL = QtGui.QLabel(translate('setTextures', 'Rotation X axis:'), self)
+			self.oRotateAxisXE = QtGui.QLineEdit(self)
+			self.oRotateAxisXE.setText("0.0")
 			
-			self.storeBA = QtGui.QPushButton(translate('setTextures', 'all objects'), self)
-			self.storeBA.clicked.connect(self.storeAll)
-			self.storeBA.setFixedHeight(40)
+			# rotation Y axis
+			self.oRotateAxisYL = QtGui.QLabel(translate('setTextures', 'Rotation Y axis:'), self)
+			self.oRotateAxisYE = QtGui.QLineEdit(self)
+			self.oRotateAxisYE.setText("0.0")
 			
-			self.loadBS = QtGui.QPushButton(translate('setTextures', 'selected only'), self)
-			self.loadBS.clicked.connect(self.loadSelected)
-			self.loadBS.setFixedHeight(40)
+			# rotation Z axis
+			self.oRotateAxisZL = QtGui.QLabel(translate('setTextures', 'Rotation Z axis:'), self)
+			self.oRotateAxisZE = QtGui.QLineEdit(self)
+			self.oRotateAxisZE.setText("1.0")
 			
-			self.loadBA = QtGui.QPushButton(translate('setTextures', 'all objects'), self)
-			self.loadBA.clicked.connect(self.loadAll)
-			self.loadBA.setFixedHeight(40)
+			# rotation angle
+			self.oRotateAngleL = QtGui.QLabel(translate('setTextures', 'Rotation angle (degrees):'), self)
+			self.oRotateAngleE = QtGui.QLineEdit(self)
+			self.oRotateAngleE.setText("0.0")
+		
+			# color
+			self.oWhiteColor = QtGui.QCheckBox(translate('setTextures', '- set white color'), self)
+			self.oWhiteColor.setCheckState(QtCore.Qt.Unchecked)
+
+			# store attributes
+			self.oStoreB = QtGui.QPushButton(translate('setTextures', 'set texture attributes'), self)
+			self.oStoreB.clicked.connect(self.storeTextures)
+			self.oStoreB.setFixedHeight(40)
+			
+			# ############################################################################
+			# live preview
+			# ############################################################################
+			
+			# you can change order here
+			
+			self.oPreviewTargetL = QtGui.QLabel(translate('setTextures', 'Live preview:'), self)
+			
+			self.previewTargetList = (
+				translate('setTextures', 'repeat X axis'),
+				translate('setTextures', 'repeat Y axis'),
+				translate('setTextures', 'repeat Z axis'),
+				translate('setTextures', 'rotation X axis'),
+				translate('setTextures', 'rotation Y axis'),
+				translate('setTextures', 'rotation Z axis') # no comma
+			)
+			self.oPreviewTarget = QtGui.QComboBox(self)
+			self.oPreviewTarget.addItems(self.previewTargetList)
+			self.oPreviewTarget.setCurrentIndex(5)
+			self.oPreviewTarget.textActivated[str].connect(self.setPreviewTarget)
+			
+			# step
+			self.oPreviewStepL = QtGui.QLabel(translate('setTextures', 'Step:'), self)
+
+			self.oPreviewStepE = QtGui.QLineEdit(self)
+			self.oPreviewStepE.setText("1")
+
+			# adjust buttons
+			self.oPreviewB1 = QtGui.QPushButton("-", self)
+			self.oPreviewB1.clicked.connect(self.setPreview1)
+			self.oPreviewB1.setAutoRepeat(True)
+			
+			self.oPreviewB2 = QtGui.QPushButton("+", self)
+			self.oPreviewB2.clicked.connect(self.setPreview2)
+			self.oPreviewB2.setAutoRepeat(True)
+
+			# ############################################################################
+			# load texture
+			# ############################################################################
+			
+			# button
+			self.oLoadB = QtGui.QPushButton(translate('setTextures', 'show textures'), self)
+			self.oLoadB.clicked.connect(self.loadTextures)
+			self.oLoadB.setFixedHeight(40)
 			
 			# ############################################################################
 			# status
@@ -153,64 +230,82 @@ def showQtMain():
 			# ############################################################################
 			
 			# create structure
-			self.head = QtGui.QHBoxLayout()
-			self.head.addWidget(self.initBA)
+			self.layObjects = QtGui.QVBoxLayout()
+			self.layObjects.addWidget(self.oObjectsI)
+			self.layObjects.addWidget(self.oObjectsB)
 			
-			self.row1 = QtGui.QVBoxLayout()
-			self.row1.addWidget(self.fitO)
-			self.row1.addSpacing(20)
-			self.row1.addWidget(self.urlL)
+			self.layFit = QtGui.QVBoxLayout()
+			self.layFit.addWidget(self.oFit)
+			self.layFit.addSpacing(20)
+			self.layFit.addWidget(self.oURLInfo)
 			
-			self.row2 = QtGui.QHBoxLayout()
-			self.row2.addWidget(self.urlO)
-			self.row2.addWidget(self.urlHDD)
+			self.layURL = QtGui.QHBoxLayout()
+			self.layURL.addWidget(self.oURLPath)
+			self.layURL.addWidget(self.oURLHDD)
 			
-			self.row3 = QtGui.QGridLayout()
-			self.row3.addWidget(self.repeatXO, 0, 0)
-			self.row3.addWidget(self.repeatXL, 0, 1)
-			self.row3.addWidget(self.repeatYO, 1, 0)
-			self.row3.addWidget(self.repeatYL, 1, 1)
-			self.row3.addWidget(self.rotateO, 2, 0)
-			self.row3.addWidget(self.rotateL, 2, 1)
+			self.layGrid = QtGui.QGridLayout()
+			self.layGrid.addWidget(self.oRepeatXL, 0, 0)
+			self.layGrid.addWidget(self.oRepeatXE, 0, 1)
+			self.layGrid.addWidget(self.oRepeatYL, 1, 0)
+			self.layGrid.addWidget(self.oRepeatYE, 1, 1)
+			self.layGrid.addWidget(self.oRepeatZL, 2, 0)
+			self.layGrid.addWidget(self.oRepeatZE, 2, 1)
+			self.layGrid.addWidget(self.oRotateAxisXL, 3, 0)
+			self.layGrid.addWidget(self.oRotateAxisXE, 3, 1)
+			self.layGrid.addWidget(self.oRotateAxisYL, 4, 0)
+			self.layGrid.addWidget(self.oRotateAxisYE, 4, 1)
+			self.layGrid.addWidget(self.oRotateAxisZL, 5, 0)
+			self.layGrid.addWidget(self.oRotateAxisZE, 5, 1)
+			self.layGrid.addWidget(self.oRotateAngleL, 6, 0)
+			self.layGrid.addWidget(self.oRotateAngleE, 6, 1)
 			
-			self.row4 = QtGui.QVBoxLayout()
-			self.row4.addSpacing(20)
-			self.row4.addWidget(self.checkColor)
+			self.layStoreB = QtGui.QVBoxLayout()
+			self.layStoreB.addWidget(self.oStoreB)
 			
-			self.layBody1 = QtGui.QVBoxLayout()
-			self.layBody1.addLayout(self.row1)
-			self.layBody1.addLayout(self.row2)
-			self.layBody1.addLayout(self.row3)
-			self.layBody1.addLayout(self.row4)
-			self.groupBody1 = QtGui.QGroupBox(None, self)
-			self.groupBody1.setLayout(self.layBody1)
+			self.layStore = QtGui.QVBoxLayout()
+			self.layStore.addLayout(self.layFit)
+			self.layStore.addLayout(self.layURL)
+			self.layStore.addLayout(self.layGrid)
+			self.layStore.addLayout(self.layStoreB)
+			self.groupAdjust = QtGui.QGroupBox(None, self)
+			self.groupAdjust.setLayout(self.layStore)
 			
-			self.rowB1 = QtGui.QHBoxLayout()
-			self.rowB1.addWidget(self.storeBS)
-			self.rowB1.addWidget(self.storeBA)
-			self.groupBodyB1 = QtGui.QGroupBox(translate('setTextures', 'Store texture properties for:'), self)
-			self.groupBodyB1.setLayout(self.rowB1)
+			self.layGridPreview1 = QtGui.QGridLayout()
+			self.layGridPreview1.addWidget(self.oPreviewTargetL, 0, 0)
+			self.layGridPreview1.addWidget(self.oPreviewTarget, 0, 1)
+			self.layGridPreview1.addWidget(self.oPreviewStepL, 1, 0)
+			self.layGridPreview1.addWidget(self.oPreviewStepE, 1, 1)
 			
-			self.rowB2 = QtGui.QHBoxLayout()
-			self.rowB2.addWidget(self.loadBS)
-			self.rowB2.addWidget(self.loadBA)
-			self.groupBodyB2 = QtGui.QGroupBox(translate('setTextures', 'Refresh texture for:'), self)
-			self.groupBodyB2.setLayout(self.rowB2)
+			self.layGridPreview2 = QtGui.QHBoxLayout()
+			self.layGridPreview2.addWidget(self.oPreviewB1)
+			self.layGridPreview2.addWidget(self.oPreviewB2)
+			
+			self.layPreview = QtGui.QVBoxLayout()
+			self.layPreview.addLayout(self.layGridPreview1)
+			self.layPreview.addLayout(self.layGridPreview2)
+			
+			self.groupPreview = QtGui.QGroupBox(None, self)
+			self.groupPreview.setLayout(self.layPreview)
+			
+			self.layLoad = QtGui.QVBoxLayout()
+			self.layLoad.addWidget(self.oWhiteColor)
+			self.layLoad.addWidget(self.oLoadB)
 			
 			# set layout to main window
 			self.layout = QtGui.QVBoxLayout()
 			
-			self.layout.addLayout(self.head)
+			self.layout.addLayout(self.layObjects)
 			self.layout.addStretch()
-			self.layout.addWidget(self.groupBody1)
+			self.layout.addWidget(self.groupAdjust)
 			self.layout.addStretch()
-			self.layout.addWidget(self.groupBodyB1)
+			self.layout.addWidget(self.groupPreview)
 			self.layout.addStretch()
-			self.layout.addWidget(self.groupBodyB2)
+			self.layout.addLayout(self.layLoad)
 			self.layout.addStretch()
 			self.layout.addWidget(self.status)
-			self.setLayout(self.layout)
 			
+			self.setLayout(self.layout)
+
 			# ############################################################################
 			# show all
 			# ############################################################################
@@ -221,35 +316,106 @@ def showQtMain():
 			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
 			self.setStyleSheet(QtCSS)
 			
+			# init
+			self.getSelected()
+			
 		# ############################################################################
-		# actions - status
+		# internal functions
 		# ############################################################################
 		
+		# ############################################################################
+		def resetGlobals(self):
+			self.gBrokenURL = dict()
+			self.oRepeatXE.setText("1")
+			self.oRepeatYE.setText("1")
+			self.oRepeatZE.setText("1")
+			self.oRotateAxisXE.setText("0")
+			self.oRotateAxisYE.setText("0")
+			self.oRotateAxisZE.setText("1")
+			self.oRotateAngleE.setText("0")
+		
+		# ############################################################################
 		def showStatus(self, iText):
 			self.status.setText(str(iText))
 
 		# ############################################################################
-		# actions - store
+		# actions
 		# ############################################################################
-		
+
+		# ############################################################################
+		def setTextureFit(self, selectedText):
+			skip = 1
+
+		# ############################################################################		
 		def loadCustomFile(self):
 			hdd = str(QtGui.QFileDialog.getOpenFileName()[0])
-			self.urlO.setText(hdd)
+			self.oURLPath.setText(hdd)
 		
-		def storeTextures(self, iSearch, iSelect):
+		# ############################################################################
+		def getSelected(self):
+			
+			try:
+				if MagicPanels.gCurrentSelection == True:
+					self.oObjectsB.setDisabled(True)
+				else:
+					self.oObjectsB.setDisabled(False)
+
+				self.gObjects = FreeCADGui.Selection.getSelection()
+				if len(self.gObjects) < 1:
+					self.gObjects = FreeCAD.ActiveDocument.Objects
+					self.oObjectsI.setText(self.infoAO)
+				else:
+					self.oObjectsI.setText(self.infoSO)
+
+				self.resetGlobals()
+				
+				if len(self.gObjects) == 1:
+					
+					obj = self.gObjects[0]
+					
+					if hasattr(obj, "Texture_Repeat_X"):
+						self.oRepeatXE.setText(str( obj.Texture_Repeat_X ))
+
+					if hasattr(obj, "Texture_Repeat_Y"):
+						self.oRepeatYE.setText(str( obj.Texture_Repeat_Y ))
+					
+					if hasattr(obj, "Texture_Repeat_Z"):
+						self.oRepeatZE.setText(str( obj.Texture_Repeat_Z ))
+						
+					if hasattr(obj, "Texture_Rotation_Axis_X"):
+						self.oRotateAxisXE.setText(str( round(obj.Texture_Rotation_Axis_X, 4) ))
+					
+					if hasattr(obj, "Texture_Rotation_Axis_Y"):
+						self.oRotateAxisYE.setText(str( round(obj.Texture_Rotation_Axis_Y, 4) ))
+						
+					if hasattr(obj, "Texture_Rotation_Axis_Z"):
+						self.oRotateAxisZE.setText(str( round(obj.Texture_Rotation_Axis_Z, 4) ))
+
+					if hasattr(obj, "Texture_Rotation_Angle"):
+						self.oRotateAngleE.setText(str( round(obj.Texture_Rotation_Angle, 4) ))
+				
+				FreeCADGui.Selection.clearSelection()
+			except:
+				self.oObjectsI.setText(self.infoAO)
+
+		# ############################################################################
+		# store texture attributes
+		# ############################################################################
+		
+		# ############################################################################
+		def storeTextures(self):
 
 			# set flag
 			skip = 0
 
 			# get texture URL from GUI text form
-			textureURL = self.urlO.text()
+			textureURL = self.oURLPath.text()
 
 			# scan all given objects and set all properties
-			for obj in iSearch:
+			for obj in self.gObjects:
 
 				# skip everything except supported parts
 				if (
-					iSelect != "selected" and 
 					not obj.isDerivedFrom("Part::Box") and 
 					not obj.isDerivedFrom("Part::Cylinder") and 
 					not obj.isDerivedFrom("Part::Sphere") and 
@@ -259,6 +425,10 @@ def showQtMain():
 
 				# set properties
 				try:
+
+					if not hasattr(obj, "Texture_Fit"):
+						info = "Texture coordinate to fit object shape better."
+						obj.addProperty("App::PropertyString", "Texture_Fit", "Texture", info)
 
 					if not hasattr(obj, "Texture_URL"):
 						info = "Texture URL or HDD local path."
@@ -271,57 +441,191 @@ def showQtMain():
 					if not hasattr(obj, "Texture_Repeat_Y"):
 						info = "How many times reapeat the texture to Y direction. Float 1.0 is default value for no repeat."
 						obj.addProperty("App::PropertyFloat", "Texture_Repeat_Y", "Texture", info)
-
-					if not hasattr(obj, "Texture_Rotation"):
-						info = "Texture rotation. Float 0 is default value for no rotation."
-						obj.addProperty("App::PropertyFloat", "Texture_Rotation", "Texture", info)
 					
-					if not hasattr(obj, "Texture_Fit"):
-						info = "Texture coordinate to fit object shape better."
-						obj.addProperty("App::PropertyString", "Texture_Fit", "Texture", info)
+					if not hasattr(obj, "Texture_Repeat_Z"):
+						info = "How many times reapeat the texture to Z direction. Float 1.0 is default value for no repeat."
+						obj.addProperty("App::PropertyFloat", "Texture_Repeat_Z", "Texture", info)
+						
+					if not hasattr(obj, "Texture_Rotation_Axis_X"):
+						info = 'Texture rotation X axis value. Float 0 means not rotate around this axis. Float 1 means rotate.'
+						obj.addProperty("App::PropertyFloat", "Texture_Rotation_Axis_X", "Texture", info)
+					
+					if not hasattr(obj, "Texture_Rotation_Axis_Y"):
+						info = 'Texture rotation Y axis value. Float 0 means not rotate around this axis. Float 1 means rotate.'
+						obj.addProperty("App::PropertyFloat", "Texture_Rotation_Axis_Y", "Texture", info)
+						
+					if not hasattr(obj, "Texture_Rotation_Axis_Z"):
+						info = 'Texture rotation Z axis value. Float 0 means not rotate around this axis. Float 1 means rotate.'
+						obj.addProperty("App::PropertyFloat", "Texture_Rotation_Axis_Z", "Texture", info)
 
+					if not hasattr(obj, "Texture_Rotation_Angle"):
+						info = "Texture rotation in degrees. Float 0 is default value for no rotation."
+						obj.addProperty("App::PropertyFloat", "Texture_Rotation_Angle", "Texture", info)
+					
+					obj.Texture_Fit = str(self.oFit.currentText())
+					
 					if str(textureURL) != "":
 						obj.Texture_URL = str(textureURL)
 						
-					if str(self.repeatXO.text()) != "":
-						obj.Texture_Repeat_X = float(self.repeatXO.text())
-						
-					if str(self.repeatYO.text()) != "":
-						obj.Texture_Repeat_Y = float(self.repeatYO.text())
-						
-					if str(self.rotateO.text()) != "":
-						obj.Texture_Rotation = float(self.rotateO.text())
+					if str(self.oRepeatXE.text()) != "":
+						obj.Texture_Repeat_X = float(self.oRepeatXE.text())
 					
-					obj.Texture_Fit = str(self.gFit)
+					if str(self.oRepeatYE.text()) != "":
+						obj.Texture_Repeat_Y = float(self.oRepeatYE.text())
 					
+					if str(self.oRepeatZE.text()) != "":
+						obj.Texture_Repeat_Z = float(self.oRepeatZE.text())
+					
+					if str(self.oRotateAxisXE.text()) != "":
+						obj.Texture_Rotation_Axis_X = float(self.oRotateAxisXE.text())
+					
+					if str(self.oRotateAxisYE.text()) != "":
+						obj.Texture_Rotation_Axis_Y = float(self.oRotateAxisYE.text())
+					
+					if str(self.oRotateAxisZE.text()) != "":
+						obj.Texture_Rotation_Axis_Z = float(self.oRotateAxisZE.text())
+					
+					if str(self.oRotateAngleE.text()) != "":
+						obj.Texture_Rotation_Angle = float(self.oRotateAngleE.text())
+				
 				except:
 					skip = 1
-		
+
+			FreeCAD.ActiveDocument.recompute()
+
 			# show status
 			if skip == 0:
 				self.showStatus(translate('setTextures', 'Texture properties has been stored.'))
 			else:
 				self.showStatus(translate('setTextures', 'Error during setting properties.'))
 
-
 		# ############################################################################
-		# actions - load internal functions
+		# Preview
 		# ############################################################################
-
-
-		def getChildPosition(self, iRootnode):
+		
+		# ############################################################################
+		def setPreviewTarget(self):
+			skip = 1
+		
+		# ############################################################################		
+		def updatePreview(self, iTarget, repeatX, repeatY, repeatZ, rotateX, rotateY, rotateZ, step):
 			
-			pos = 0
-			for c in iRootnode.getChildren():
-				if str(c).find("SoSwitch") != -1:
-					return pos
-					break
+			for o in self.gObjects:
+				rootnode = o.ViewObject.RootNode
+				for i in rootnode.getChildren():
+					if str(i).find("SoTexture3Transform") != -1:
+						if hasattr(i, "scaleFactor") and hasattr(i, "rotation"):
+							
+							# repeat
+							if iTarget.startswith("repeat"):
+								coinSFV = coin.SbVec3f(repeatX, repeatY, repeatZ)
+								i.scaleFactor.setValue(coinSFV)
+								
+								# set new values to gui form
+								self.oRepeatXE.setText(str(repeatX))
+								self.oRepeatYE.setText(str(repeatY))
+								self.oRepeatZE.setText(str(repeatZ))
+								
+							# rotation
+							if iTarget.startswith("rotate"):
+								[ q1, q2, q3, q4 ] = i.rotation.getValue().getValue()
+								currentRotation = FreeCAD.Rotation(q1, q2, q3, q4)
+								addRotation = FreeCAD.Rotation( FreeCAD.Vector(rotateX, rotateY, rotateZ), step)
+								newRotation = addRotation * currentRotation
+								
+								axisX = newRotation.Axis.x
+								axisY = newRotation.Axis.y
+								axisZ = newRotation.Axis.z
+								angle = newRotation.Angle
+								axis = coin.SbVec3f(axisX, axisY, axisZ)
+								setRotation = coin.SbRotation( axis, angle )
+								i.rotation.setValue(setRotation)
+								
+								# set new values to gui form
+								self.oRotateAxisXE.setText(str( round(axisX, 4) ))
+								self.oRotateAxisYE.setText(str( round(axisY, 4) ))
+								self.oRotateAxisZE.setText(str( round(axisZ, 4) ))
+								self.oRotateAngleE.setText(str( round(math.degrees(angle), 4) ))
 
-				pos = pos + 1
+			FreeCAD.ActiveDocument.recompute()
+	
+		# ############################################################################		
+		def setPreview1(self):
+			
+			target = getMenuIndexPreview[self.oPreviewTarget.currentText()]
+			
+			repeatX = float(self.oRepeatXE.text())
+			repeatY = float(self.oRepeatYE.text())
+			repeatZ = float(self.oRepeatZE.text())
+			rotateX = 0
+			rotateY = 0
+			rotateZ = 0
+			rotateAngle = float(self.oRotateAngleE.text())
+			
+			if target == "repeatX":
+				repeatX = repeatX - float(self.oPreviewStepE.text())
 
-			return -1
+			if target == "repeatY":
+				repeatY = repeatY - float(self.oPreviewStepE.text())
+	
+			if target == "repeatZ":
+				repeatZ = repeatZ - float(self.oPreviewStepE.text())
+				
+			if target == "rotateX":
+				rotateX = 1
+				rotateAngle = - float(self.oPreviewStepE.text())
+
+			if target == "rotateY":
+				rotateY = 1
+				rotateAngle = - float(self.oPreviewStepE.text())
+
+			if target == "rotateZ":
+				rotateZ = 1
+				rotateAngle = - float(self.oPreviewStepE.text())
+				
+			self.updatePreview(target, repeatX, repeatY, repeatZ, rotateX, rotateY, rotateZ, rotateAngle)
 			
+		# ############################################################################		
+		def setPreview2(self):
 			
+			target = getMenuIndexPreview[self.oPreviewTarget.currentText()]
+			
+			repeatX = float(self.oRepeatXE.text())
+			repeatY = float(self.oRepeatYE.text())
+			repeatZ = float(self.oRepeatZE.text())
+			rotateX = 0
+			rotateY = 0
+			rotateZ = 0
+			rotateAngle = float(self.oRotateAngleE.text())
+			
+			if target == "repeatX":
+				repeatX = repeatX + float(self.oPreviewStepE.text())
+
+			if target == "repeatY":
+				repeatY = repeatY + float(self.oPreviewStepE.text())
+	
+			if target == "repeatZ":
+				repeatZ = repeatZ + float(self.oPreviewStepE.text())
+				
+			if target == "rotateX":
+				rotateX = 1
+				rotateAngle = float(self.oPreviewStepE.text())
+
+			if target == "rotateY":
+				rotateY = 1
+				rotateAngle = float(self.oPreviewStepE.text())
+
+			if target == "rotateZ":
+				rotateZ = 1
+				rotateAngle = float(self.oPreviewStepE.text())
+				
+			self.updatePreview(target, repeatX, repeatY, repeatZ, rotateX, rotateY, rotateZ, rotateAngle)
+			
+		# ############################################################################
+		# load textures
+		# ############################################################################
+		
+		# ############################################################################
 		def getTextureURL(self, iObj):
 			
 			# support for texture URL stored at objects Texture_URL property
@@ -366,7 +670,7 @@ def showQtMain():
 			# no texture URL set
 			return ""
 			
-		
+		# ############################################################################
 		def downloadTexture(self, iObj, iURL):
 			
 			import urllib.request
@@ -410,94 +714,135 @@ def showQtMain():
 
 			return textureFilePath
 
-		
+		# ############################################################################
 		def setTexture(self, iObj, iFile):
 		
+			# read attributes
+			if hasattr(iObj, "Texture_Repeat_X"):
+				repeatX = float(iObj.Texture_Repeat_X)
+			
+			if hasattr(iObj, "Texture_Repeat_Y"):
+				repeatY = float(iObj.Texture_Repeat_Y)
+			
+			if hasattr(iObj, "Texture_Repeat_Z"):
+				repeatZ = float(iObj.Texture_Repeat_Z)
+				
+			if hasattr(iObj, "Texture_Rotation_Axis_X"):
+				axisX = float(iObj.Texture_Rotation_Axis_X)
+			
+			if hasattr(iObj, "Texture_Rotation_Axis_Y"):
+				axisY = float(iObj.Texture_Rotation_Axis_Y)
+				
+			if hasattr(iObj, "Texture_Rotation_Axis_Z"):
+				axisZ = float(iObj.Texture_Rotation_Axis_Z)
+			
+			if hasattr(iObj, "Texture_Rotation_Angle"):
+				angle = math.radians(float(iObj.Texture_Rotation_Angle))
+					
+			# set node
 			rootnode = iObj.ViewObject.RootNode
 			
-			# set flag
-			setTrans = 0
-
-			# set X repeat factor
-			if hasattr(iObj, "Texture_Repeat_X"):
-				if isinstance(iObj.Texture_Repeat_X, float):
-					repeatX = float(iObj.Texture_Repeat_X)
-					setTrans = setTrans + 1
-
-			# set Y repeat factor
-			if hasattr(iObj, "Texture_Repeat_Y"):
-				if isinstance(iObj.Texture_Repeat_Y, float):
-					repeatY = float(iObj.Texture_Repeat_Y)
-					setTrans = setTrans + 1
-
-			# set rotation factor
-			if hasattr(iObj, "Texture_Rotation"):
-				if isinstance(iObj.Texture_Rotation, float):
-					rotation = float(iObj.Texture_Rotation)
-					setTrans = setTrans + 1
-
-			# update if there is transformation child
-			skip = 0
-			counter = 0
+			# try update existing node
+			updateST2 = False
+			updateST3T = False
+			try:
+				for i in rootnode.getChildren():
+					
+					if str(i).find("SoTexture2") != -1:
+						
+						if hasattr(i, "filename"):
+							i.filename = iFile
+							updateST2 = True
+					
+					if str(i).find("SoTexture3Transform") != -1:
+						
+						if hasattr(i, "scaleFactor") and hasattr(i, "rotation"):
+							
+							# repeat
+							coinSFV = coin.SbVec3f(repeatX, repeatY, repeatZ)
+							i.scaleFactor.setValue(coinSFV)
+							
+							# rotation
+							axis = coin.SbVec3f(axisX, axisY, axisZ)
+							coinRotation = coin.SbRotation( axis, angle )
+							i.rotation.setValue(coinRotation)
+							updateST3T = True
+			except:
+				updateST2 = False
+				updateST3T = False
 			
-			for i in rootnode.getChildren():
-				
-				if hasattr(i, "filename"):
-
-					# replace texure URL
-					i.filename = ""
-					i.filename = iFile
-					skip = 1
-
-				if hasattr(i, "scaleFactor") and hasattr(i, "rotation"):
-					counter = counter + 1
-					if counter == 2:
-						if setTrans == 3:
-							i.scaleFactor.setValue(repeatX, repeatY)
-							i.rotation.setValue(rotation)
-
 			# add new if there is no transformation child
-			if skip == 0:
+			if updateST3T == False:
 
-				if setTrans == 3:
-					# set transform
-					trans = coin.SoTexture2Transform()
-					trans.scaleFactor.setValue(repeatX, repeatY)
-					trans.rotation.setValue(rotation)
-					rootnode.insertChild(trans, 1)
-
+				trans = coin.SoTexture3Transform()
+				
+				# repeat
+				coinSFV = coin.SbVec3f(repeatX, repeatY, repeatZ)
+				trans.scaleFactor.setValue(coinSFV)
+				
+				# rotation
+				axis = coin.SbVec3f(axisX, axisY, axisZ)
+				coinRotation = coin.SbRotation( axis, angle )
+				trans.rotation.setValue(coinRotation)
+						
+				rootnode.insertChild(trans, 1)
+			
+			if updateST2 == False:
+				
 				# set texture with URL
 				texture =  coin.SoTexture2()
 				texture.filename = iFile
 				rootnode.insertChild(texture, 2)
 
+			# reset gui values
+			self.oRepeatXE.setText("1")
+			self.oRepeatYE.setText("1")
+			self.oRepeatZE.setText("1")
+			self.oRotateAxisXE.setText("0")
+			self.oRotateAxisYE.setText("0")
+			self.oRotateAxisZE.setText("1")
+			self.oRotateAngleE.setText("0")
 
+		# ############################################################################
+		def getChildPosition(self, iRootnode):
+			
+			pos = 0
+			for c in iRootnode.getChildren():
+				if str(c).find("SoSwitch") != -1:
+					return pos
+					break
+
+				pos = pos + 1
+
+			return -1
+
+		# ############################################################################
 		def fitTexture(self, iObj):
 		
 			rootnode = iObj.ViewObject.RootNode
 		
 			if hasattr(iObj, "Texture_Fit"):
 				if isinstance(iObj.Texture_Fit, str):
-					cr = str(iObj.Texture_Fit)
+					cr = getMenuIndexFit[iObj.Texture_Fit]
 					
 					coordinate = ""
 					
-					if cr == "biggest surface":
+					if cr == "biggest":
 						coordinate = coin.SoTextureCoordinateDefault()
 					
-					if cr == "fit to Cube":
+					if cr == "cube":
 						coordinate = coin.SoTextureCoordinateCube()
 
-					if cr == "fit to Cylinder":
+					if cr == "cylinder":
 						coordinate = coin.SoTextureCoordinateCylinder()
 					
-					if cr == "fit to Sphere":
+					if cr == "sphere":
 						coordinate = coin.SoTextureCoordinateSphere()
 					
-					if cr == "glass mirror effect":
+					if cr == "glass":
 						coordinate = coin.SoTextureCoordinateEnvironment()
 					
-					if cr == "auto fit":
+					if cr == "auto":
 						
 						coordinate = coin.SoTextureCoordinateDefault()
 						
@@ -514,22 +859,17 @@ def showQtMain():
 					pos = self.getChildPosition(rootnode)
 					rootnode.insertChild(coordinate, pos)
 					
-
 		# ############################################################################
-		# actions - load
-		# ############################################################################
-
-
-		def loadTextures(self, iSearch):
+		def loadTextures(self):
 
 			self.gBrokenURL = dict()
 			empty = ""
 			
 			# search all objects and set URL
-			for obj in iSearch:
+			for obj in self.gObjects:
 				
 				# try set color
-				if self.checkColor.isChecked():
+				if self.oWhiteColor.isChecked():
 					MagicPanels.setColor(obj, 0, (1.0, 1.0, 1.0, 1.0), "color")
 					
 				textureURL = self.getTextureURL(obj)
@@ -581,67 +921,9 @@ def showQtMain():
 					info += translate('setTextures', 'See console for broken URLs.')
 					self.showStatus(info)
 
-
-		# ############################################################################
-		# actions - caller selection
-		# ############################################################################
-
-
-		def checkSelected(self, iOperation, iSelection):
-
-			# set objects to search
-			if iSelection == "selected":
-				selected = FreeCADGui.Selection.getSelection()
-				if len(selected) == 0:
-					iText = translate('setTextures', 'Please select objects and try again.')
-					self.showStatus(iText)
-					return
-				else:
-					searchObjects = selected
-			else:
-				searchObjects = FreeCAD.ActiveDocument.Objects
-
-			if iOperation == "store":
-				self.storeTextures(searchObjects, iSelection)
-			
-			if iOperation == "load":
-				if iSelection == "selected":
-					FreeCADGui.Selection.clearSelection()
-				
-				self.loadTextures(searchObjects)
-
-
-		# ############################################################################
-		# actions - select
-		# ############################################################################
-
-
-		def storeSelected(self):
-			self.checkSelected("store", "selected")
-
-		def storeAll(self):
-			self.checkSelected("store", "all")
-
-		def loadSelected(self):
-			self.checkSelected("load", "selected")
-
-		def loadAll(self):
-			self.checkSelected("load", "all")
-
-
-		# ############################################################################
-		# actions - Coordinate
-		# ############################################################################
-
-
-		def setCoordinate(self, selectedText):
-			self.gFit = str(selectedText)
-
-
 	# ############################################################################
 	# final settings, if needed
 	# ############################################################################
-
 
 	userCancelled = "Cancelled"
 	userOK = "OK"

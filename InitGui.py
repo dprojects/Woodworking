@@ -21,7 +21,7 @@ class WoodworkingWorkbench (Workbench):
 	def Initialize(self):
 
 		import FreeCAD, FreeCADGui
-		
+
 		def QT_TRANSLATE_NOOP(context, text):
 			return text
 
@@ -115,14 +115,13 @@ class WoodworkingWorkbench (Workbench):
 		# configure Woodworking at first run
 		# ################################################################################################
 		
-		FreeCAD.Console.PrintMessage("\n")
 		try:
 			pref = 'User parameter:BaseApp/Preferences/Woodworking'
 			test = FreeCAD.ParamGet(pref).GetString('wInit')
 			if test == "" or test == "True":
 				
 				# set default workbench
-				FreeCAD.Console.PrintMessage("\n")
+				FreeCAD.Console.PrintMessage("\n\n")
 				try:
 					msg = QT_TRANSLATE_NOOP("Workbench", "Setting Woodworking wokbench as default ...")
 					pref = 'User parameter:BaseApp/Preferences/General'
@@ -138,7 +137,7 @@ class WoodworkingWorkbench (Workbench):
 					msg = QT_TRANSLATE_NOOP("Workbench", "Setting icons position ...")
 					pref = 'User parameter:Tux/PersistentToolbars/User/WoodworkingWorkbench'
 					
-					pos = 'Workbench,Woodworking - router,Woodworking - advanced,Woodworking - code and debug,Break,Woodworking - convert,Woodworking - face,Woodworking - between,Woodworking - construction,Woodworking - irregular shapes,Woodworking - parameterization,Break,Woodworking - project manage,Woodworking - resize,Woodworking - move and copy,Woodworking - preview,Woodworking - position'
+					pos = 'Workbench,Woodworking - router,Woodworking - advanced,Woodworking - code and debug,Break,Woodworking - convert,Woodworking - face,Woodworking - between,Woodworking - irregular shapes,Woodworking - parameterization,Woodworking - construction,Break,Woodworking - project manage,Woodworking - resize,Woodworking - move and copy,Woodworking - preview,Woodworking - position'
 					FreeCAD.ParamGet(pref).SetString('Top', pos)
 					
 					pos = 'Woodworking - start,Woodworking - decorations,Woodworking - dimensions'
@@ -172,12 +171,13 @@ class WoodworkingWorkbench (Workbench):
 				except:
 					msg += "fail."
 				FreeCAD.Console.PrintMessage(msg)
-				
+			
+			# after first open wInit set to False
+			# also if wInit not exist, was empty
 			pref = 'User parameter:BaseApp/Preferences/Woodworking'
 			FreeCAD.ParamGet(pref).SetString('wInit', "False")
 		except:
 			skip = 1
-		FreeCAD.Console.PrintMessage("\n\n")
 		
 	# ################################################################################################
 	def Activated(self):
