@@ -1196,12 +1196,12 @@ Example weights unit of commonly used wood in lb/board foot:
 * **Rotation angle (degrees):** allows you to store texture rotation angle in degrees, more human-readable form than radians.
 * **set texture attributes** allows you to store the values to objects attributes.
 
-**Live preview:** allows you to choose live preview target and adjust the texture in real-time. For example if you set `rotation Z axis` the `-` and `+` buttons will be rotating the texture around `Z` axis with the `Step` measured with degrees. If you decide to save the current visible texture state, make sure to press `set texture attributes` button and verify if the object's attributes has been stored.
+**Live preview:** allows you to choose live preview target and adjust the texture in real-time. For example if you set `rotation Z axis` the `-` and `+` buttons will be rotating the texture around `Z` axis with the `Step` measured with degrees. If you decide to save the current visible texture state, make sure to press `set texture attributes` button and verify if the object's attributes has been stored. To use this feature you need to load texture first via `show textures` button.
 
 **Loading textures:**
 
 * **set white color** sets the white color for the object to make the texture look better.
-* **show textures:** loads textures for all objects or for selected objects that have texture information saved.
+* **show textures:** loads textures for all objects or for selected objects that have texture information saved. If you have added meterial to the object via `Right Mouse Click -> Material...` the material texture will be loaded even if the object has no texture attributes, so you can use `Live preview` option and save the attributes later via `set texture attributes` button.
 
 > [!IMPORTANT]
 > Make sure you have the following option disabled:

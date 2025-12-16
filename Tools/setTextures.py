@@ -717,7 +717,16 @@ def showQtMain():
 		# ############################################################################
 		def setTexture(self, iObj, iFile):
 		
-			# read attributes
+			# init with default to allow texture loading without attributes
+			repeatX = 1
+			repeatY = 1
+			repeatZ = 1
+			axisX = 0
+			axisY = 0
+			axisZ = 1
+			angle = 0
+		
+			# ovewrite if there are attributes
 			if hasattr(iObj, "Texture_Repeat_X"):
 				repeatX = float(iObj.Texture_Repeat_X)
 			
