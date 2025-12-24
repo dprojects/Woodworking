@@ -58,10 +58,8 @@ try:
 					edge = o.getSubObject(edgeName)
 					angle = -45
 					axis = FreeCAD.Vector(0, 0, 1)
-					
 					v = edge.CenterOfMass
-					[ v ] = MagicPanels.getVerticesPosition([ v ], edgeObj, "vector")
-				
+					
 					parse = True
 				except:
 					skip = 1
@@ -83,7 +81,6 @@ try:
 						axis = FreeCAD.Vector(0, 0, 1)
 					
 					v = edge.CenterOfMass
-					[ v ] = MagicPanels.getVerticesPosition([ v ], edgeObj, "vector")
 			
 					parse = True
 				except:
@@ -94,8 +91,6 @@ try:
 
 			if parse == True:
 				Draft.rotate(o, angle, v, axis, False)
-			else:
-				continue
 	else:
 		
 		parse = True

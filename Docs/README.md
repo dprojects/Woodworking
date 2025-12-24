@@ -203,6 +203,8 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * not calculate global position for measurement inside containers (MagicPanels) <br>
+> * fix fronts open and close inside containers (frontsOpenClose) <br>
 > * improve textures, GUI, add live preview and any axis (setTextures) <br>
 > * maximum and minimum edge size in cut-list (getDimensions) <br>
 > * improve samples of furniture modules (magicStart) <br>

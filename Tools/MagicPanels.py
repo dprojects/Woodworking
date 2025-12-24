@@ -3275,6 +3275,13 @@ def getPosition(iObj, iType="global"):
 						searchElements(o)
 
 					else:
+					
+						# skip objects with zero or any other placement 
+						# but not important from global position for container elements
+						if hasattr(o, "Woodworking_Type"):
+							if o.Woodworking_Type == "Measurement":
+								continue
+						
 						[ ox, oy, oz ] = searchGlobalPosition(o)
 						
 						# init with first element in container
