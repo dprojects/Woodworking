@@ -203,6 +203,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * object anchor option to create panel along path (magicMove) <br>
 > * not calculate global position for measurement inside containers (MagicPanels) <br>
 > * fix fronts open and close inside containers (frontsOpenClose) <br>
 > * improve textures, GUI, add live preview and any axis (setTextures) <br>
@@ -550,9 +551,12 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
   * `Link` if you only want to generate a cut-list and do no further processing on this object, it will only be a visual representation of the base object, and you will not measure or drill into such an object.
   * `Array` creates parametric array object, it can be useful if you want to have single parametric object instead of many independent objects.
   * `copy to new container` next element will be copied to new `LinkGroup` container. If you click the button this will turn into disabled and will be waiting for new copy created to avoid double clicks.
+  * `set` allows to load the path or reset start position. You can refresh only path here without changing objects to copy. The path can be Wire, Sketch, Helix, or any edge, also edge of the hole.
   * `Rotation X, Y, Z` allows to apply rotation angle for the new object before it will be created. The rotation is added to the last panel rotation, so to stop rotate you have to set 0 again. This approach allows to add rotation during panel creation, so you can adjust each panel during creation to fit the curve, see also [align2Curve](#align2curve).
   * `Next point step` is offset for new panel. This is related to the point at the path. By default it is set to second size of the panel.
-  * `set` allows to load the path or reset start position. You can refresh only path here without changing objects to copy. The path can be Wire, Sketch, Helix, or any edge, also edge of the hole.
+  * `Anchor` allows to set anchor for new created object:
+    * `default` normal object placement.
+    * `object center` the object CenterOfMass.
   * `copy along path` creates new panel along the path. This button has auto-repeat mode, if you hold it this will be creating panels without clicking many times.
 
 * **Mirror:** This option create mirror with reference as edge, face or vertex, also you can add additinal offset. 

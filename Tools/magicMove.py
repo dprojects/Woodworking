@@ -42,6 +42,12 @@ getMenuIndex4 = {
 	translate('magicMove', 'rotated'): 1 # no comma
 }
 
+# add new items only at the end and change self.oPathAnchorTypeList
+getMenuIndex5 = {
+	translate('magicMove', 'default'): 0,
+	translate('magicMove', 'object center'): 1 # no comma
+}
+
 # ############################################################################
 # Qt Main
 # ############################################################################
@@ -63,7 +69,7 @@ def showQtGUI():
 		gInfoPath1 = translate('magicMove', 'Rotation X, Y, Z:')
 		gInfoPath2 = translate('magicMove', 'Next point step:')
 
-		gNoSelection = translate('magicMove', 'select object to move or copy')
+		gNoSelection = translate('magicMove', 'select objects to move or copy')
 		gNoPathSelection = translate('magicMove', 'select copy path')
 		gNoCopyByEdge = translate('magicMove', 'select edge or face')
 		gNoMirrorPoint = translate('magicMove', 'edge, face or vertex')
@@ -86,6 +92,7 @@ def showQtGUI():
 		gPathRotation = dict() # last rotation
 		gPathLast = dict() # last path position
 		gPathInit = dict() # if init from 0 or last selected panel
+		gPathAnchorType = 0
 		
 		# move to equal start
 		gMTESObj = ""
@@ -501,7 +508,21 @@ def showQtGUI():
 			
 			self.oPathStepE = QtGui.QLineEdit(self)
 			self.oPathStepE.setText("1")
-			self.oPathStepE.setFixedWidth(65)
+			self.oPathStepE.setFixedWidth(3 * rfs)
+			
+			self.oPathAnchorTypeL = QtGui.QLabel(translate('magicMove', 'Anchor:'), self)
+			
+			# not write here, copy text from getMenuIndex5 to avoid typo
+			self.oPathAnchorTypeList = (
+				translate('magicMove', 'default'), 
+				translate('magicMove', 'object center') # no comma
+			)
+			
+			self.oPathAnchorType = QtGui.QComboBox(self)
+			self.oPathAnchorType.addItems(self.oPathAnchorTypeList)
+			self.oPathAnchorType.setCurrentIndex(self.gPathAnchorType) # default
+			self.oPathAnchorType.textActivated[str].connect(self.setPathAnchorType)
+			self.oPathAnchorType.setFixedWidth(3 * rfs)
 			
 			self.oPathBC = QtGui.QPushButton(translate('magicMove', 'copy along path'), self)
 			self.oPathBC.clicked.connect(self.createPathPanel)
@@ -769,28 +790,38 @@ def showQtGUI():
 			self.groupBodyCBE.hide()
 			
 			# body - path
-			self.layoutBodyPath = QtGui.QVBoxLayout()
 			self.row21 = QtGui.QHBoxLayout()
 			self.row21.setAlignment(QtGui.Qt.AlignLeft)
 			self.row21.addWidget(self.oPathBS)
 			self.row21.addWidget(self.oPathCurveL)
-			self.layoutBodyPath.addLayout(self.row21)
-			self.layoutBodyPath.addSpacing(10)
+			
 			self.row22 = QtGui.QHBoxLayout()
 			self.row22.setAlignment(QtGui.Qt.AlignRight)
 			self.row22.addWidget(self.oPathRotL)
 			self.row22.addWidget(self.oPathRotXE)
 			self.row22.addWidget(self.oPathRotYE)
 			self.row22.addWidget(self.oPathRotZE)
-			self.layoutBodyPath.addLayout(self.row22)
+			
 			self.row23 = QtGui.QHBoxLayout()
 			self.row23.addWidget(self.oPathStepL)
 			self.row23.addWidget(self.oPathStepE)
-			self.layoutBodyPath.addLayout(self.row23)
-			self.layoutBodyPath.addSpacing(10)
+			
+			self.rowPatchAnchor = QtGui.QHBoxLayout()
+			self.rowPatchAnchor.addWidget(self.oPathAnchorTypeL)
+			self.rowPatchAnchor.addWidget(self.oPathAnchorType)
+			
 			self.row24 = QtGui.QHBoxLayout()
 			self.row24.addWidget(self.oPathBC)
+			
+			self.layoutBodyPath = QtGui.QVBoxLayout()
+			self.layoutBodyPath.addLayout(self.row21)
+			self.layoutBodyPath.addSpacing(10)
+			self.layoutBodyPath.addLayout(self.row22)
+			self.layoutBodyPath.addLayout(self.row23)
+			self.layoutBodyPath.addLayout(self.rowPatchAnchor)
+			self.layoutBodyPath.addSpacing(10)
 			self.layoutBodyPath.addLayout(self.row24)
+			
 			self.groupBodyPath = QtGui.QGroupBox(None, self)
 			self.groupBodyPath.setLayout(self.layoutBodyPath)
 			self.groupBodyPath.hide()
@@ -1529,6 +1560,11 @@ def showQtGUI():
 				
 				copy.Placement.Rotation = self.gPathRotation[key] * rotX * rotY * rotZ
 				
+				# get offset to anchor
+				if self.gPathAnchorType == 1:
+					[ offetX, offetY, offetZ ] = MagicPanels.getOffset(copy, copy.Shape.CenterOfMass, "vector")
+					MagicPanels.setPosition(copy, -offetX, -offetY, -offetZ, "offset")
+
 				# save rotation and position
 				step = int(float(self.oPathStepE.text()))
 				self.gPathRotation[key] = copy.Placement.Rotation
@@ -1819,6 +1855,10 @@ def showQtGUI():
 		# ############################################################################
 		def setCopyAnchor(self, selectedText):
 			self.gCopyAnchor = getMenuIndex4[selectedText]
+		
+		# ############################################################################
+		def setPathAnchorType(self, selectedText):
+			self.gPathAnchorType = getMenuIndex5[selectedText]
 		
 		# ############################################################################
 		def setMoveX1(self):
