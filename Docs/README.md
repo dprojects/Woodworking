@@ -203,6 +203,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * new global variable and option for shelf sides offset (MagicPanels, magicSettings, magicStart) <br>
 > * object anchor option to create panel along path (magicMove) <br>
 > * not calculate global position for measurement inside containers (MagicPanels) <br>
 > * fix fronts open and close inside containers (frontsOpenClose) <br>
@@ -987,6 +988,7 @@ Example weights unit of commonly used wood in lb/board foot:
 * **Front outside overlap bottom:** allows you to set default bottom overlap for fronts outside.
 * **Front outside overlap top:** allows you to set default top overlap for fronts outside.
 * **Shelf thickness:** allows you to set default thickness for shelves.
+* **Shelf sides offset:** this option allows you for global setting of the gap on both sides for the inner shelf, making it easier to insert the shelf. In practice, cutting inner shelves to within a millimeter is quite risky. A 1-millimeter error in cutting can also occur, causing the shelf to fit too tightly, and hammering the shelf into place can cause unnecessary stress on the joints, screws, dowels, and weaken the structure. Not everyone has a table saw or jigsaw capable of cutting 2 mm of chipboard, or sanding such an oversized wooden shelf can be time-consuming. Additionally, shelf supports pins are approximately 5 mm length outside, with 1 mm being the flange. Therefore, maintaining a 1 mm gap on each side allows the shelf to rest on the entire support rather than just the flange, as can be the case with shelves that are too tight.
 * **Back inside thickness:** allows you to set default thickness for back inside, usually 18 mm chipboard in Poland.
 * **Back outside thickness:** allows you to set default thickness for back outside, usually 3 mm HDF in Poland.
 
@@ -1207,7 +1209,7 @@ Example weights unit of commonly used wood in lb/board foot:
 **Loading textures:**
 
 * **set white color** sets the white color for the object to make the texture look better.
-* **show textures:** loads textures for all objects or for selected objects that have texture information saved. If you have added meterial to the object via `Right Mouse Click -> Material...` the material texture will be loaded even if the object has no texture attributes, so you can use `Live preview` option and save the attributes later via `set texture attributes` button.
+* **show textures:** loads textures for all objects or for selected objects that have texture information saved. If you have added material to the object via `Right Mouse Click -> Material...` the material texture will be loaded even if the object has no texture attributes, so you can use `Live preview` option and save the attributes later via `set texture attributes` button.
 
 > [!IMPORTANT]
 > Make sure you have the following option disabled:

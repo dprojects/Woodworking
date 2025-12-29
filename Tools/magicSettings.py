@@ -298,6 +298,11 @@ def showQtGUI():
 			self.oShelfThicknessE = QtGui.QLineEdit(self)
 			self.oShelfThicknessE.setText(MagicPanels.unit2gui(0))
 			
+			# shelf offset sides
+			self.oShelfOffsetSidesL = QtGui.QLabel(translate('magicSettings', 'Shelf sides offset:'), self)
+			self.oShelfOffsetSidesE = QtGui.QLineEdit(self)
+			self.oShelfOffsetSidesE.setText(MagicPanels.unit2gui(0))
+			
 			# back inside wood thickness
 			self.oBackIThicknessL = QtGui.QLabel(translate('magicSettings', 'Back inside thickness:'), self)
 			self.oBackIThicknessE = QtGui.QLineEdit(self)
@@ -571,10 +576,12 @@ def showQtGUI():
 			self.Page23 = QtGui.QGridLayout()
 			self.Page23.addWidget(self.oShelfThicknessL, 0, 0)
 			self.Page23.addWidget(self.oShelfThicknessE, 0, 1)
-			self.Page23.addWidget(self.oBackIThicknessL, 1, 0)
-			self.Page23.addWidget(self.oBackIThicknessE, 1, 1)
-			self.Page23.addWidget(self.oBackOThicknessL, 2, 0)
-			self.Page23.addWidget(self.oBackOThicknessE, 2, 1)
+			self.Page23.addWidget(self.oShelfOffsetSidesL, 1, 0)
+			self.Page23.addWidget(self.oShelfOffsetSidesE, 1, 1)
+			self.Page23.addWidget(self.oBackIThicknessL, 2, 0)
+			self.Page23.addWidget(self.oBackIThicknessE, 2, 1)
+			self.Page23.addWidget(self.oBackOThicknessL, 3, 0)
+			self.Page23.addWidget(self.oBackOThicknessE, 3, 1)
 			self.groupPage23 = QtGui.QGroupBox(None, self)
 			self.groupPage23.setLayout(self.Page23)
 			
@@ -1036,6 +1043,13 @@ def showQtGUI():
 				skip = 1
 			
 			try:
+				val = MagicPanels.gShelfOffsetSides
+				val = MagicPanels.unit2gui(val)
+				self.oShelfOffsetSidesE.setText(val)
+			except:
+				skip = 1
+
+			try:
 				val = MagicPanels.gBackInsideThickness
 				val = MagicPanels.unit2gui(val)
 				self.oBackIThicknessE.setText(val)
@@ -1341,6 +1355,10 @@ def showQtGUI():
 				val = self.oShelfThicknessE.text()
 				val = MagicPanels.unit2value(val)
 				wus.SetString('wShelfThickness', str(val))
+				
+				val = self.oShelfOffsetSidesE.text()
+				val = MagicPanels.unit2value(val)
+				wus.SetString('wShelfOffsetSides', str(val))
 				
 				val = self.oBackIThicknessE.text()
 				val = MagicPanels.unit2value(val)

@@ -77,6 +77,7 @@ gFrontOutsideOffsetR = 9                   # overlap right <br>
 gFrontOutsideOffsetB = 7                   # overlap bottom <br>
 gFrontOutsideOffsetT = 7                   # overlap top <br>
 gShelfThickness = 18                       # shelf wood thickness, usually full wood but can be plywood 6 mm <br>
+gShelfOffsetSides = 2                      # shelf offset for sides <br>
 gBackInsideThickness = 18                  # back inside thickness, usually full wood <br>
 gBackOutsideThickness = 3                  # back outside thickness, usually HDF <br>
 gEdgebandThickness = 0                     # edgeband thickness <br>
@@ -9242,6 +9243,13 @@ def updateGlobals():
 		if "wShelfThickness" in wusStrings:
 			global gShelfThickness
 			gShelfThickness = float( wus.GetString('wShelfThickness') )
+	except:
+		skip = 1
+
+	try:
+		if "wShelfOffsetSides" in wusStrings:
+			global gShelfOffsetSides
+			gShelfOffsetSides = float( wus.GetString('wShelfOffsetSides') )
 	except:
 		skip = 1
 
