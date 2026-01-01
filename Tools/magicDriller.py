@@ -1180,7 +1180,14 @@ def showQtGUI():
 			centerDrillBit = d.Shape.CenterOfMass
 			[ centerDrillBit ] = MagicPanels.getVerticesPosition([ centerDrillBit ], d, "vector")
 			
-			centerObject = self.gFacePositionO.Shape.CenterOfMass
+			centerObject = ""
+			if hasattr(self.gFacePositionO.Shape, "CenterOfMass"):
+				centerObject = self.gFacePositionO.Shape.CenterOfMass
+			elif hasattr(self.gFacePositionO.Shape, "CenterOfGravity"):
+				centerObject = self.gFacePositionO.Shape.CenterOfGravity
+			else:
+				return
+				
 			[ centerObject ] = MagicPanels.getVerticesPosition([ centerObject ], self.gFacePositionO, "vector")
 			
 			axis = self.getDrillBitAxis()
