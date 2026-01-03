@@ -414,15 +414,6 @@ def showQtMain():
 			# scan all given objects and set all properties
 			for obj in self.gObjects:
 
-				# skip everything except supported parts
-				if (
-					not obj.isDerivedFrom("Part::Box") and 
-					not obj.isDerivedFrom("Part::Cylinder") and 
-					not obj.isDerivedFrom("Part::Sphere") and 
-					not obj.isDerivedFrom("PartDesign::Pad")
-				):
-					continue
-
 				# set properties
 				try:
 
