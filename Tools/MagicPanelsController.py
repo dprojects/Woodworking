@@ -71,7 +71,6 @@ def panelCopy(iType):
 		
 		sub = False
 		try:
-			selection = FreeCADGui.Selection.getSelection()[1]
 			obj = FreeCADGui.Selection.getSelection()[1]
 			sub = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
 			
@@ -133,35 +132,49 @@ def panelFace(iType):
 	
 	try:
 
-		selection = FreeCADGui.Selection.getSelection()[0]
-		
-		objRef = MagicPanels.getReference(selection)
+		obj = FreeCADGui.Selection.getSelection()[0]
+		objRef = MagicPanels.getReference(obj)
 		face = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 		
+		[ x, y, z ] = MagicPanels.getFaceAnchor(face, obj, "minimum")
+		[ coX, coY, coZ ] = MagicPanels.getObjectCenter(obj)
+		
 		[ L, W, H ] = MagicPanels.sizesToCubePanel(objRef, iType)
-		
-		if objRef.isDerivedFrom("Part::Box"):
-			[ x, y, z ] = MagicPanels.getVertex(face, 0, 1)
-		else:
-			[ x, y, z ] = MagicPanels.getVertex(face, 1, 0)
-		
-		if selection.isDerivedFrom("Part::Cut"):
-			[ x, y, z ] = MagicPanels.getVertex(face, 2, 0)
-
 		panel = FreeCAD.activeDocument().addObject("Part::Box", "panelFace"+iType)
 		panel.Length, panel.Width, panel.Height = L, W, H
+		[ sizeX, sizeY, sizeZ ] = MagicPanels.getSizesFromVertices(panel)
 
-		[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(objRef)
-		x = x + coX
-		y = y + coY
-		z = z + coZ
-		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x, y, z), FreeCAD.Rotation(0, 0, 0))
+		edgeband = MagicPanels.gEdgebandThickness
+		if MagicPanels.gEdgebandApply == "everywhere":
+			edgebandE = edgeband
+		else:
+			edgebandE = 0
+
+		plane = MagicPanels.getFacePlane(face)
 		
-		MagicPanels.addRotation(objRef, [ panel ])
+		if plane == "XY":
+			if z < coZ:
+				z = z - sizeZ - edgebandE
+			else:
+				z = z + edgebandE
+				
+		if plane == "XZ":
+			if y < coY:
+				y = y - sizeY - edgebandE
+			else:
+				y = y + edgebandE
+				
+		if plane == "YZ":
+			if x < coX:
+				x = x - sizeX - edgebandE
+			else:
+				x = x + edgebandE
+		
+		MagicPanels.setPosition(panel, x, y, z, "global")
 		
 		try:
-			if selection.isDerivedFrom("Part::Cut"):
-				MagicPanels.copyColors(selection, panel)
+			if obj.isDerivedFrom("Part::Cut"):
+				MagicPanels.copyColors(obj, panel)
 			else:
 				MagicPanels.copyColors(objRef, panel)
 		except:
@@ -174,7 +187,7 @@ def panelFace(iType):
 		
 		info = ""
 		
-		info += translate('panelFace', '<b>Please select face to create panel. </b><br><br><b>Note:</b> This tool creates new panel at selected face. The blue panel represents the selected object and the red one represents the new created object. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view. The new created panel will get the same dimensions as panel of the selected face. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
+		info += translate('panelFace', '<b>Please select face to create panel at this face. </b><br><br><b>Note:</b> This tool creates new panel at selected face. The blue panel represents the selected face direction and the red one represents the new created panel direction. The icon refers to the base XY model view (0 key position), click fitModel tool icon to set model into referred view. The new created panel will get the same dimensions as panel of the selected face. This tool supports veneer thickness from magicSettings and will add addiional offset but not resize the panel. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
 
 		MagicPanels.showInfo("panelFace"+iType, info)
 
@@ -184,59 +197,70 @@ def panelBetween(iType):
 	
 	try:
 		
-		selection = FreeCADGui.Selection.getSelection()[0]
-		obj1Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[0])
-		obj2Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[1])
+		obj1 = FreeCADGui.Selection.getSelection()[0]
+		obj2 = FreeCADGui.Selection.getSelection()[1]
+		obj1Ref = MagicPanels.getReference(obj1)
+		obj2Ref = MagicPanels.getReference(obj2)
 
 		face1 = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 		face2 = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
 	
-		[ x1, y1, z1 ] = MagicPanels.getVertex(face1, 0, 1)
-		[ x2, y2, z2 ] = MagicPanels.getVertex(face2, 0, 1)
-
-		# add cointainer offset for PartDesign object and skip Cut
-		if not obj1Ref.isDerivedFrom("Part::Cut"):
-			[[ x1, y1, z1 ]] = MagicPanels.getVerticesOffset([[ x1, y1, z1 ]], obj1Ref, "array")
+		[ x1, y1, z1 ] = MagicPanels.getFaceAnchor(face1, obj1, "minimum")
+		[ x2, y2, z2 ] = MagicPanels.getFaceAnchor(face2, obj2, "minimum")
 		
-		if not obj2Ref.isDerivedFrom("Part::Cut"):
-			[[ x2, y2, z2 ]] = MagicPanels.getVerticesOffset([[ x2, y2, z2 ]], obj2Ref, "array")
-
-		L = abs(x2 - x1)
-		W = abs(y2 - y1)
-		H = abs(z2 - z1)
-
-		panel = FreeCAD.activeDocument().addObject("Part::Box", "panelBetween"+iType)
-		[ panel.Length, panel.Width, panel.Height ] = MagicPanels.sizesToCubePanel(obj1Ref, iType)
-
-		z1 = z1 + obj1Ref.Height.Value - panel.Height.Value
+		if x2 < x1 or y2 < y1 or z2 < z1:
+			face = face2
+			obj = obj2
+			objRef = obj2Ref
+			[ x, y, z ] = [ x2, y2, z2 ]
+		else:
+			face = face1
+			obj = obj1
+			objRef = obj1Ref
+			[ x, y, z ] = [ x1, y1, z1 ]
 		
-		if L > 0:
-			panel.Length = L
+		edgeband = MagicPanels.gEdgebandThickness
+		if MagicPanels.gEdgebandApply == "everywhere":
+			edgebandE = edgeband
+		else:
+			edgebandE = 0
+
+		[ sizeX, sizeY, sizeZ ] = MagicPanels.sizesToCubePanel(objRef, iType)
+		plane = MagicPanels.getFacePlane(face)
 		
-		if W > 0:
-			panel.Width = W
+		if plane == "XY":
+			sizeZ = abs(z1 - z2) - (2 * edgebandE)
+			z = z + edgebandE
 			
-		if H > 0:
-			panel.Height = H
-
-		panel.Placement = FreeCAD.Placement(FreeCAD.Vector(x1, y1, z1), FreeCAD.Rotation(0, 0, 0))
+		if plane == "XZ":
+			sizeY = abs(y1 - y2) - (2 * edgebandE)
+			y = y + edgebandE
+			
+		if plane == "YZ":
+			sizeX = abs(x1 - x2) - (2 * edgebandE)
+			x = x + edgebandE
+		
+		panel = FreeCAD.activeDocument().addObject("Part::Box", "panelBetween"+iType)
+		[ panel.Length, panel.Width, panel.Height ] = [ sizeX, sizeY, sizeZ ]
+		
+		MagicPanels.setPosition(panel, x, y, z, "global")
 		
 		try:
-			if selection.isDerivedFrom("Part::Cut"):
-				MagicPanels.copyColors(selection, panel)
+			if obj.isDerivedFrom("Part::Cut"):
+				MagicPanels.copyColors(obj, panel)
 			else:
-				MagicPanels.copyColors(obj1Ref, panel)
+				MagicPanels.copyColors(objRef, panel)
 		except:
 			skip = 1
 
 		FreeCAD.ActiveDocument.recompute()
-		MagicPanels.moveToFirst([ panel ], obj1Ref)
+		MagicPanels.moveToFirst([ panel ], objRef)
 
 	except:
 		
 		info = ""
 		
-		info += translate('panelBetween', '<b>Please select two valid faces at two different valid objects, to create panel between them. </b><br><br><b>Note:</b> This tool creates new panel between two selected faces. Selection faces order is important. To select more than one face, hold left CTRL key during second face selection. The blue panels represents the selected objects and the red one represents the new created object. The icon refers to base XY model view (0 key position). Click fitModel to set model into referred view.  If the two selected panels will be matching the icon, the new created panel should fill the gap between the selected faces. You can experiment with selection faces outside to resize the new panel. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
+		info += translate('panelBetween', '<b>Please select two faces at two different objects, to create panel between them. </b><br><br><b>Note:</b> This tool creates new panel between two selected faces. Selection faces order is not important. To select more than one face, hold left CTRL key during second face selection. The blue panels represents the selected faces direction and the red one represents the new created panel direction. The icon refers to base XY model view (0 key position), click fitModel to set model into referred view.  If the two selected panels will be matching the icon, the new created panel should fill the gap between the selected faces according to the icon red panel direction. This tool supports veneer thickness from magicSettings tool and will add addiional offset and will resize the panel to fit the gap between. You can experiment with selection faces outside to resize the new panel. If you have problem with unpredicted result, use magicManager tool to preview panel before creation.')
 
 		MagicPanels.showInfo("panelBetween"+iType, info)
 
@@ -245,7 +269,7 @@ def panelBetween(iType):
 def panelSide(iType):
 	
 	try:
-		selection = FreeCADGui.Selection.getSelection()[0]
+		obj = FreeCADGui.Selection.getSelection()[0]
 		objRef = MagicPanels.getReference()
 		face = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
 
@@ -291,8 +315,8 @@ def panelSide(iType):
 		MagicPanels.addRotation(objRef, [ panel ])
 		
 		try:
-			if selection.isDerivedFrom("Part::Cut"):
-				MagicPanels.copyColors(selection, panel)
+			if obj.isDerivedFrom("Part::Cut"):
+				MagicPanels.copyColors(obj, panel)
 			else:
 				MagicPanels.copyColors(objRef, panel)
 		except:
@@ -322,7 +346,7 @@ def panelBackOut():
 	
 	try:
 
-		selection = FreeCADGui.Selection.getSelection()[0]
+		obj = FreeCADGui.Selection.getSelection()[0]
 		obj1Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[0])
 		obj2Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[1])
 		obj3Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[2])
@@ -356,8 +380,8 @@ def panelBackOut():
 			MagicPanels.addRotation(obj1Ref, [ panel ])
 			
 			try:
-				if selection.isDerivedFrom("Part::Cut"):
-					MagicPanels.copyColors(selection, panel)
+				if obj.isDerivedFrom("Part::Cut"):
+					MagicPanels.copyColors(obj, panel)
 				else:
 					MagicPanels.copyColors(obj1Ref, panel)
 			except:
@@ -383,7 +407,7 @@ def panelBackOut():
 def panelCover(iType):
 	
 	try:
-		selection = FreeCADGui.Selection.getSelection()[0]
+		obj = FreeCADGui.Selection.getSelection()[0]
 		obj1Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[0])
 		obj2Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[1])
 		obj3Ref = MagicPanels.getReference(FreeCADGui.Selection.getSelection()[2])
@@ -417,8 +441,8 @@ def panelCover(iType):
 			MagicPanels.addRotation(obj1Ref, [ panel ])
 			
 			try:
-				if selection.isDerivedFrom("Part::Cut"):
-					MagicPanels.copyColors(selection, panel)
+				if obj.isDerivedFrom("Part::Cut"):
+					MagicPanels.copyColors(obj, panel)
 				else:
 					MagicPanels.copyColors(obj1Ref, panel)
 			except:

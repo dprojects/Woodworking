@@ -1841,6 +1841,65 @@ def getFaceToCube(iFace, iDepth, iOffset=0):
 
 
 # ###################################################################################################################
+def getFaceAnchor(iFace, iObj=None, iType="minimum"):
+	'''
+	Description:
+	
+		Return anchor for fac. Created for panel at face tools.
+	
+	Args:
+	
+		iFace: face object
+		iObj: object of the face to calculate global position inside containers, or return local by default
+		iType (optional): 
+			* "minimum" - return vertex with minimum X and Y and Z coordinate axes.
+
+	Usage:
+	
+		[ minX, minY, minZ ] = MagicPanels.getFaceVertices(face, "minimum")
+
+	Result:
+	
+		Return vertices array XYZ like [ [ 1, 1, 1 ], [ 2, 2, 2 ], [ 3, 3, 3 ] ]
+
+	'''
+	
+	
+	if iType == "minimum":
+		
+		vertices = touchTypo(iFace)
+		[ minX, minY, minZ ] = [ "", "", "" ]
+		
+		for v in vertices:
+			
+			if minX == "":
+				minX = v.X
+			else:
+				if v.X < minX:
+					minX = v.X
+			
+			if minY == "":
+				minY = v.Y
+			else:
+				if v.Y < minY:
+					minY = v.Y
+					
+			if minZ == "":
+				minZ = v.Z
+			else:
+				if v.Z < minZ:
+					minZ = v.Z
+			
+		if iObj != None:
+			[[ minX, minY, minZ ]] = getVerticesPosition([[ minX, minY, minZ ]], iObj, "array")
+		
+		return [ minX, minY, minZ ]
+	
+	
+	return ""
+
+
+# ###################################################################################################################
 '''
 # Vertices
 '''
@@ -3478,16 +3537,19 @@ def getObjectCenter(iObj):
 
 	'''
 
-	try:
+
+	center = ""
+	if hasattr(iObj.Shape, "CenterOfMass"):
+		center = iObj.Shape.CenterOfMass
+		[ center ] = getVerticesPosition([ center ], iObj, "vector")
+		return [ center.x, center.y, center.z ]
 		
-		v = iObj.Shape.CenterOfMass
-		return [ v[0], v[1], v[2] ]
+	elif hasattr(iObj.Shape, "CenterOfGravity"):
+		center = iObj.Shape.CenterOfGravity
+		[ center ] = getVerticesPosition([ center ], iObj, "vector")
+		return [ center.x, center.y, center.z ]
 		
-	except:
-		
-		noCenterOfMass = True
-	
-	if noCenterOfMass:
+	else:
 		
 		[ sx, sy, sz ] = getSizesFromVertices(iObj)
 		
@@ -3498,6 +3560,8 @@ def getObjectCenter(iObj):
 		cy = setVertexPadding(iObj, v, sy / 2, "Y")
 		cz = setVertexPadding(iObj, v, sy / 2, "Z")
 
+		[[ cx, cy, cz ]] = getVerticesPosition([[ cx, cy, cz ]], iObj, "vector")
+		
 		return [ cx, cy, cz ]
 		
 	return ""
