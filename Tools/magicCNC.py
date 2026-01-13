@@ -29,6 +29,13 @@ def showQtGUI():
 		gObj = ""
 		gStep = 9
 		
+		gCNCReferenceSubObj = ""
+		gCNCReferenceSub = ""
+		gCNCTarget = ""
+		gCNCsx = 0
+		gCNCsy = 0
+		gCNCsz = 0
+		
 		# foot
 		gCornerCrossSupport = True
 		gAxisCrossSupport = True
@@ -60,8 +67,8 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 350
-			toolSH = 500
+			toolSW = 320
+			toolSH = 620
 			
 			cutLabel = toolSW - 80
 			
@@ -70,8 +77,8 @@ def showQtGUI():
 			gSH = FreeCADGui.getMainWindow().height()
 
 			# tool screen position
-			gPW = 0 + 100
-			gPH = int( gSH - toolSH ) - 30
+			gPW = 0 + 300
+			gPH = 10
 
 			# ############################################################################
 			# main window
@@ -84,7 +91,7 @@ def showQtGUI():
 				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
 			# ############################################################################
-			# options - selection mode
+			# options - manual drilling
 			# ############################################################################
 			
 			self.oFaceB = QtGui.QPushButton(translate('magicCNC', 'set'), self)
@@ -106,10 +113,6 @@ def showQtGUI():
 			self.s1B1.clicked.connect(self.getSelected)
 			self.s1B1.setFixedHeight(40)
 
-			# ############################################################################
-			# options - X axis
-			# ############################################################################
-
 			# label
 			self.o1L = QtGui.QLabel(translate('magicCNC', 'Move along X:'), self)
 			
@@ -125,10 +128,6 @@ def showQtGUI():
 			self.o1B2.setFixedWidth(50)
 			self.o1B2.setAutoRepeat(True)
 			
-			# ############################################################################
-			# options - Y axis
-			# ############################################################################
-
 			# label
 			self.o2L = QtGui.QLabel(translate('magicCNC', 'Move along Y:'), self)
 			
@@ -144,10 +143,6 @@ def showQtGUI():
 			self.o2B2.setFixedWidth(50)
 			self.o2B2.setAutoRepeat(True)
 			
-			# ############################################################################
-			# options - Z axis
-			# ############################################################################
-
 			# label
 			self.o3L = QtGui.QLabel(translate('magicCNC', 'Move along Z:'), self)
 			
@@ -163,20 +158,12 @@ def showQtGUI():
 			self.o3B2.setFixedWidth(50)
 			self.o3B2.setAutoRepeat(True)
 			
-			# ############################################################################
-			# options - additional
-			# ############################################################################
-
 			# label
 			self.o4L = QtGui.QLabel(translate('magicCNC', 'Move step:'), self)
 
 			# text input
 			self.o4E = QtGui.QLineEdit(self)
 			self.o4E.setText(MagicPanels.unit2gui(self.gStep))
-
-			# ############################################################################
-			# options - transform command
-			# ############################################################################
 
 			# button
 			self.e2B1 = QtGui.QPushButton(translate('magicCNC', 'set manually'), self)
@@ -188,14 +175,32 @@ def showQtGUI():
 			self.e2B2.clicked.connect(self.setEditModeOFF)
 			self.e2B2.setFixedHeight(40)
 
-			# ############################################################################
-			# options - drilling
-			# ############################################################################
-
 			# button
 			self.o8B1 = QtGui.QPushButton(translate('magicCNC', 'create'), self)
 			self.o8B1.clicked.connect(self.runDriller)
 			self.o8B1.setFixedHeight(40)
+
+			# ############################################################################
+			# options - settings for CNC
+			# ############################################################################
+
+			self.ocncReferenceSubB = QtGui.QPushButton(translate('magicCNC', 'set'), self)
+			self.ocncReferenceSubB.clicked.connect(self.setReferenceSub)
+			self.ocncReferenceSubB.setFixedWidth(50)
+			
+			self.ocncReferenceSubL = QtGui.QLabel(translate('magicCNC', 'edge, face or vertex as start reference'), self)
+			self.ocncReferenceSubL.setFixedWidth(cutLabel)
+			
+			self.ocncReferenceTargetB = QtGui.QPushButton(translate('magicCNC', 'set'), self)
+			self.ocncReferenceTargetB.clicked.connect(self.setReferenceTarget)
+			self.ocncReferenceTargetB.setFixedWidth(50)
+			
+			self.ocncReferenceTargetL = QtGui.QLabel(translate('magicCNC', 'object to set CNC attributes'), self)
+			self.ocncReferenceTargetL.setFixedWidth(cutLabel)
+
+			self.ocncCB1 = QtGui.QPushButton(translate('magicCNC', 'set CNC attributes to target'), self)
+			self.ocncCB1.clicked.connect(self.setAttributesForCNC)
+			self.ocncCB1.setFixedHeight(40)
 
 			# ############################################################################
 			# GUI for common foot
@@ -244,7 +249,10 @@ def showQtGUI():
 			# build GUI layout
 			# ############################################################################
 			
-			# create structure
+			# #########################################################
+			# manual drilling
+			# #########################################################
+			
 			self.row1 = QtGui.QHBoxLayout()
 			self.row1.addWidget(self.oFaceB)
 			self.row1.addWidget(self.oFaceL)
@@ -276,9 +284,6 @@ def showQtGUI():
 			self.rowBody5.addWidget(self.e2B1)
 			self.rowBody5.addWidget(self.e2B2)
 			
-			self.layCB = QtGui.QHBoxLayout()
-			self.layCB.addWidget(self.o8B1)
-			
 			self.layBody1 = QtGui.QVBoxLayout()
 			self.layBody1.addLayout(self.rowBody1)
 			self.layBody1.addLayout(self.rowBody2)
@@ -287,42 +292,86 @@ def showQtGUI():
 			self.layBody1.addSpacing(20)
 			self.layBody1.addLayout(self.rowBody5)
 			
-			self.groupBody1 = QtGui.QGroupBox(None, self)
-			self.groupBody1.setLayout(self.layBody1)
+			self.layCB = QtGui.QHBoxLayout()
+			self.layCB.addWidget(self.o8B1)
+			
+			# drilling layout
+			self.layDrill = QtGui.QVBoxLayout()
+			self.layDrill.addLayout(self.row1)
+			self.layDrill.addLayout(self.row2)
+			self.layDrill.addLayout(self.row3)
+			self.layDrill.addStretch()
+			self.layDrill.addLayout(self.layBody1)
+			self.layDrill.addStretch()
+			self.layDrill.addLayout(self.layCB)
+
+			self.groupDrill = QtGui.QGroupBox(translate('magicCNC', 'Manual drilling:'), self)
+			self.groupDrill.setLayout(self.layDrill)
+			
+			# #########################################################
+			# CNC
+			# #########################################################
+			
+			self.layCNCSub = QtGui.QHBoxLayout()
+			self.layCNCSub.addWidget(self.ocncReferenceSubB)
+			self.layCNCSub.addWidget(self.ocncReferenceSubL)
+			
+			self.layCNCTarget = QtGui.QHBoxLayout()
+			self.layCNCTarget.addWidget(self.ocncReferenceTargetB)
+			self.layCNCTarget.addWidget(self.ocncReferenceTargetL)
+			
+			self.layCNCB1 = QtGui.QVBoxLayout()
+			self.layCNCB1.addWidget(self.ocncCB1)
+			
+			# CNC layout
+			self.layoutCNC = QtGui.QVBoxLayout()
+			self.layoutCNC.addLayout(self.layCNCSub)
+			self.layoutCNC.addLayout(self.layCNCTarget)
+			self.layoutCNC.addLayout(self.layCNCB1)
+			
+			self.groupCNC = QtGui.QGroupBox(translate('magicCNC', 'Set attributes for CNC:'), self)
+			self.groupCNC.setLayout(self.layoutCNC)
+
+			# #########################################################
+			# foot
+			# #########################################################
 			
 			# create foot
-			self.layoutFoot = QtGui.QVBoxLayout()
-			
 			self.rowFoot1 = QtGui.QHBoxLayout()
 			self.rowFoot1.addWidget(self.cocL)
 			self.rowFoot1.addWidget(self.cocB1)
 			self.rowFoot1.addWidget(self.cocB2)
-			self.layoutFoot.addLayout(self.rowFoot1)
 
 			self.rowFoot2 = QtGui.QHBoxLayout()
 			self.rowFoot2.addWidget(self.cecL)
 			self.rowFoot2.addWidget(self.cecB1)
 			self.rowFoot2.addWidget(self.cecB2)
-			self.layoutFoot.addLayout(self.rowFoot2)
 			
 			self.rowFoot3 = QtGui.QHBoxLayout()
 			self.rowFoot3.addWidget(self.kccscb)
+
+			# foot layout
+			self.layoutFoot = QtGui.QVBoxLayout()
+			self.layoutFoot.addLayout(self.rowFoot1)
+			self.layoutFoot.addLayout(self.rowFoot2)
 			self.layoutFoot.addLayout(self.rowFoot3)
 			
+			self.groupFoot = QtGui.QGroupBox(None, self)
+			self.groupFoot.setLayout(self.layoutFoot)
+
+			# #########################################################
 			# set layout to main window
-			self.layout = QtGui.QVBoxLayout()
+			# #########################################################
 			
-			self.layout.addLayout(self.row1)
-			self.layout.addLayout(self.row2)
-			self.layout.addLayout(self.row3)
+			self.layout = QtGui.QVBoxLayout()
+			self.layout.addWidget(self.groupDrill)
 			self.layout.addStretch()
-			self.layout.addWidget(self.groupBody1)
+			self.layout.addWidget(self.groupCNC)
 			self.layout.addStretch()
-			self.layout.addLayout(self.layCB)
-			self.layout.addStretch()
-			self.layout.addLayout(self.layoutFoot)
+			self.layout.addWidget(self.groupFoot)
 			self.setLayout(self.layout)
 			
+			# hide axes
 			self.o1L.hide()
 			self.o1B1.hide()
 			self.o1B2.hide()
@@ -482,6 +531,62 @@ def showQtGUI():
 			except:
 				self.oBitL.setText(translate('magicCNC', 'select drill bit'))
 				self.gDrillBit = ""
+		
+		# ############################################################################
+		def setReferenceSub(self):
+			
+			try:
+			
+				obj = FreeCADGui.Selection.getSelection()[0]
+				sub = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
+				
+				if sub.ShapeType == "Edge":
+					info = "Edge"+str(MagicPanels.getEdgeIndex(obj, sub))
+					self.gCNCsx = sub.CenterOfMass.x
+					self.gCNCsy = sub.CenterOfMass.y
+					self.gCNCsz = sub.CenterOfMass.z
+				
+				elif sub.ShapeType == "Face":
+					info = "Face"+str(MagicPanels.getFaceIndex(obj, sub))
+					self.gCNCsx = sub.CenterOfMass.x
+					self.gCNCsy = sub.CenterOfMass.y
+					self.gCNCsz = sub.CenterOfMass.z
+					
+				elif sub.ShapeType == "Vertex":
+					info = "Vertex"+str(MagicPanels.getVertexIndex(obj, sub))
+					self.gCNCsx = sub.X
+					self.gCNCsy = sub.Y
+					self.gCNCsz = sub.Z
+					
+				else:
+					raise
+				
+				# set CNC starting point
+				[[ self.gCNCsx, 
+					self.gCNCsy, 
+					self.gCNCsz 
+				]] = MagicPanels.getVerticesPosition([[self.gCNCsx, self.gCNCsy, self.gCNCsz]], obj, "array")
+				
+				self.ocncReferenceSubL.setText(str(obj.Label)+", "+info)
+				
+				self.gCNCReferenceSubObj = obj
+				self.gCNCReferenceSub = sub
+				
+				FreeCADGui.Selection.clearSelection()
+				
+			except:
+				self.ocncReferenceSubL.setText(translate('magicCNC', 'edge, face or vertex as start reference'))
+		
+		# ############################################################################
+		def setReferenceTarget(self):
+			
+			try:
+				self.gCNCTarget = FreeCADGui.Selection.getSelection()[0]
+				self.ocncReferenceTargetL.setText(str(self.gCNCTarget.Label))
+				FreeCADGui.Selection.clearSelection()
+				
+			except:
+				self.ocncReferenceTargetL.setText(translate('magicCNC', 'object to set CNC attributes'))
 		
 		# ############################################################################
 		def getSelected(self):
@@ -656,6 +761,147 @@ def showQtGUI():
 			except:
 				self.resetInfoScreen()
 
+		# ############################################################################
+		def setAttributesForCNC(self):
+			
+			# set correct objects order to search
+			objects = self.gCNCReferenceSubObj.OutListRecursive
+			objects = objects + [ self.gCNCReferenceSubObj ]
+			
+			names = []
+			for o in objects:
+				names.append(str(o.Name))
+			
+			names.sort()
+			
+			objects = []
+			for name in names:
+				objects.append(FreeCAD.ActiveDocument.getObject(name))
+
+			# create structure for each hole driven by hole position
+			holesCNC = {}
+			for o in objects:
+				if o.isDerivedFrom("PartDesign::Hole"):
+					for e in o.Shape.Edges:
+						if e.Curve.isDerivedFrom("Part::GeomCircle"):
+							
+							hx = e.Curve.Location.x
+							hy = e.Curve.Location.y
+							hz = e.Curve.Location.z
+							[[ hx, hy, hz ]] = MagicPanels.getVerticesPosition([[hx, hy, hz]], o, "array")
+							
+							plane = False
+							if MagicPanels.equal(hx, self.gCNCsx):
+								plane = True
+							if MagicPanels.equal(hy, self.gCNCsy):
+								plane = True
+							if MagicPanels.equal(hz, self.gCNCsz):
+								plane = True
+							
+							if plane == False:
+								continue
+							
+							dx = hx - self.gCNCsx
+							dy = hy - self.gCNCsy
+							dz = hz - self.gCNCsz
+							
+							# check existing label
+							key = str(hx) + "_" + str(hy) + "_" + str(hz)
+							
+							if key in holesCNC.keys():
+								continue
+							
+							# if hole passed the tests update the structure
+							holesCNC[key] = {}
+							holesCNC[key]["Label"] = str(o.Label)
+							holesCNC[key]["X"] = hx
+							holesCNC[key]["Y"] = hy
+							holesCNC[key]["Z"] = hz
+							holesCNC[key]["OffsetX"] = dx
+							holesCNC[key]["OffsetY"] = dy
+							holesCNC[key]["OffsetZ"] = dz
+							holesCNC[key]["Depth"] = o.Depth.Value
+							holesCNC[key]["Diameter"] = o.Diameter.Value
+							
+			# create common attributes
+			if not hasattr(self.gCNCTarget, "CNC_StartX"):
+				info = translate("magicCNC", "Zero position for CNC along X axis.")
+				self.gCNCTarget.addProperty("App::PropertyFloat", "CNC_StartX", "CNC", info)
+			self.gCNCTarget.CNC_StartX = self.gCNCsx
+
+			if not hasattr(self.gCNCTarget, "CNC_StartY"):
+				info = translate("magicCNC", "Zero position for CNC along Y axis.")
+				self.gCNCTarget.addProperty("App::PropertyFloat", "CNC_StartY", "CNC", info)
+			self.gCNCTarget.CNC_StartY = self.gCNCsy
+			
+			if not hasattr(self.gCNCTarget, "CNC_StartZ"):
+				info = translate("magicCNC", "Zero position for CNC along Z axis.")
+				self.gCNCTarget.addProperty("App::PropertyFloat", "CNC_StartZ", "CNC", info)
+			self.gCNCTarget.CNC_StartZ = self.gCNCsz
+			
+			# create attributes for holes
+			if not hasattr(self.gCNCTarget, "CNC_Label"):
+				info = translate("magicCNC", "Label of the hole object.")
+				self.gCNCTarget.addProperty("App::PropertyStringList", "CNC_Label", "CNC", info)
+			
+			if not hasattr(self.gCNCTarget, "CNC_X"):
+				info = translate("magicCNC", "Hole position along X axis.")
+				self.gCNCTarget.addProperty("App::PropertyFloatList", "CNC_X", "CNC", info)
+			
+			if not hasattr(self.gCNCTarget, "CNC_Y"):
+				info = translate("magicCNC", "Hole position along Y axis.")
+				self.gCNCTarget.addProperty("App::PropertyFloatList", "CNC_Y", "CNC", info)
+			
+			if not hasattr(self.gCNCTarget, "CNC_Z"):
+				info = translate("magicCNC", "Hole position along Z axis.")
+				self.gCNCTarget.addProperty("App::PropertyFloatList", "CNC_Z", "CNC", info)
+
+			if not hasattr(self.gCNCTarget, "CNC_OffsetX"):
+				info = translate("magicCNC", "Offset for CNC from start position to hole position along X axis.")
+				self.gCNCTarget.addProperty("App::PropertyFloatList", "CNC_OffsetX", "CNC", info)
+			
+			if not hasattr(self.gCNCTarget, "CNC_OffsetY"):
+				info = translate("magicCNC", "Offset for CNC from start position to hole position along Y axis.")
+				self.gCNCTarget.addProperty("App::PropertyFloatList", "CNC_OffsetY", "CNC", info)
+			
+			if not hasattr(self.gCNCTarget, "CNC_OffsetZ"):
+				info = translate("magicCNC", "Offset for CNC from start position to hole position along Z axis.")
+				self.gCNCTarget.addProperty("App::PropertyFloatList", "CNC_OffsetZ", "CNC", info)
+			
+			if not hasattr(self.gCNCTarget, "CNC_Depth"):
+				info = translate("magicCNC", "Depth for the hole.")
+				self.gCNCTarget.addProperty("App::PropertyFloatList", "CNC_Depth", "CNC", info)
+			
+			if not hasattr(self.gCNCTarget, "CNC_Diameter"):
+				info = translate("magicCNC", "Diameter for the hole.")
+				self.gCNCTarget.addProperty("App::PropertyFloatList", "CNC_Diameter", "CNC", info)
+			
+			# reset attributes for holes for clean update
+			self.gCNCTarget.CNC_Label = []
+			self.gCNCTarget.CNC_X = []
+			self.gCNCTarget.CNC_Y = []
+			self.gCNCTarget.CNC_Z = []
+			self.gCNCTarget.CNC_OffsetX = []
+			self.gCNCTarget.CNC_OffsetY = []
+			self.gCNCTarget.CNC_OffsetZ = []
+			self.gCNCTarget.CNC_Depth = []
+			self.gCNCTarget.CNC_Diameter = []
+			
+			# add attributes for each hole
+			for key in holesCNC.keys():
+				
+				self.gCNCTarget.CNC_Label = self.gCNCTarget.CNC_Label + [ holesCNC[key]["Label"] ]
+				self.gCNCTarget.CNC_X = self.gCNCTarget.CNC_X + [ holesCNC[key]["X"] ]
+				self.gCNCTarget.CNC_Y = self.gCNCTarget.CNC_Y + [ holesCNC[key]["Y"] ]
+				self.gCNCTarget.CNC_Z = self.gCNCTarget.CNC_Z + [ holesCNC[key]["Z"] ]
+				self.gCNCTarget.CNC_OffsetX = self.gCNCTarget.CNC_OffsetX + [ holesCNC[key]["OffsetX"] ]
+				self.gCNCTarget.CNC_OffsetY = self.gCNCTarget.CNC_OffsetY + [ holesCNC[key]["OffsetY"] ]
+				self.gCNCTarget.CNC_OffsetZ = self.gCNCTarget.CNC_OffsetZ + [ holesCNC[key]["OffsetZ"] ]
+				self.gCNCTarget.CNC_Depth = self.gCNCTarget.CNC_Depth + [ holesCNC[key]["Depth"] ]
+				self.gCNCTarget.CNC_Diameter = self.gCNCTarget.CNC_Diameter + [ holesCNC[key]["Diameter"] ]
+
+			#FreeCAD.Console.PrintMessage("\n\n")
+			#FreeCAD.Console.PrintMessage(holesCNC)
 
 	# ############################################################################
 	# final settings

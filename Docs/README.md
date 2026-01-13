@@ -203,6 +203,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * attributes option for drilling via CNC (magicCNC) <br>
 > * improve panel at face and panel between (MagicPanels, MagicPanelsController) <br>
 > * new global variable and option for shelf sides offset (MagicPanels, magicSettings, magicStart) <br>
 > * object anchor option to create panel along path (magicMove) <br>
@@ -1658,22 +1659,49 @@ However, if you make your own detailed part or order somewhere, you need to fulf
 
 ## magicCNC
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicCNC.png"> This tool is some kind of CNC drilling machine simulator to drill custom holes. The axis which move the drill bit up and down is automatically hidden at this tool. So, you can move the drill bit at the surface and you not move the drill bit up or down by mistake and cause incorrect hole depth. Also this tool has option to drill by button click. It recognize the drill bit type by the label. For the countersink the label need to contains "countersink", and for counterbore need to contains "counterbore". For other label the simple hole will be drilled. This tool also allows for turn on and off the manuall edit mode. So, you can move the drill bit by hand and drill holes by clicking buttons. For more info see: [Drilling via magicCNC](#drilling-via-magiccnc)
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicCNC.png"> 
 
-**Options:**
+**Manual drilling:**
+
+This tool is some kind of CNC drilling machine simulator to drill custom holes. The axis which move the drill bit up and down is automatically hidden at this tool. So, you can move the drill bit at the surface and you not move the drill bit up or down by mistake and cause incorrect hole depth. Also this tool has option to drill by button click. It recognize the drill bit type by the label. For the countersink the label need to contains `countersink`, and for counterbore need to contains `counterbore`. For other label the simple hole will be drilled. This tool also allows for turn on and off the manuall edit mode. So, you can move the drill bit by hand and drill holes by clicking buttons. For more info see: [Drilling via magicCNC](#drilling-via-magiccnc)
 
 * **set** button allows you to set face or drill bit individually. This option is useful when you need to hide an object to access a specific face or drill bit.
 * **refresh selection:** allows you to load at once the first selected face and next drill bit.
-
-* **Move along X:** The `-` and `+` buttons allows you to move drill bit along the X coordinate axis.
-* **Move along Y:** The `-` and `+` buttons allows you to move drill bit along the Y coordinate axis.
-* **Move along Z:** The `-` and `+` buttons allows you to move drill bit along the Z coordinate axis.
+* **Move along X:** The `-` and `+` buttons allows you to move drill bit along the `X` coordinate axis.
+* **Move along Y:** The `-` and `+` buttons allows you to move drill bit along the `Y` coordinate axis.
+* **Move along Z:** The `-` and `+` buttons allows you to move drill bit along the `Z` coordinate axis.
 * **Move step:** Allows you to set the offset step for the `-` and `+` buttons.
 * **set manually:** open manual edit mode.
 * **finish manually:** finish manual edit mode.
 * **create:** This button will create the hole below the drill bit according to the drill bit type.
 
-* **Cross:**
+**Set attributes for CNC:**
+
+This option was added [to support CNC scripts](https://github.com/dprojects/Woodworking/issues/91). This solution supports PartDesign::Hole objects and allows you to add attributes describing each hole to any object, as well as select an arbitrary starting point from which all hole spacing is calculated.
+
+* **1st set** allows you to select a starting point from which the spacing for each hole will be calculated. If an edge or face is selected, the starting point will be the CenterOfMass.
+* **2nd set** allows you to add an object to which all attributes will be saved for easy retrieval by scripts.
+* **set CNC attributes to target** this button allows you to save attributes to the target object. Attributes related to holes are in lists, so you can easily retrieve any information for a given hole using a script. Currently supported attributes:
+  * `.CNC_Label` a list of labels of `PartDesign::Hole` objects that created the given hole.
+  * `.CNC_StartX` starting point (zero position) for CNC along `X` axis.
+  * `.CNC_StartY` starting point (zero position) for CNC along `Y` axis.
+  * `.CNC_StartZ` starting point (zero position) for CNC along `Z` axis.
+  * `.CNC_X` a list of global positions of the hole on the `X` coordinate axis.
+  * `.CNC_Y` a list of global positions of the hole on the `Y` coordinate axis.
+  * `.CNC_Z` a list of global positions of the hole on the `Z` coordinate axis.
+  * `.CNC_OffsetX` a list of the distances the CNC needs to go from the starting point (attribute `.CNC_StartX`) to the center of the hole (attribute `.CNC_X`) along the `X` coordinate axis.
+  * `.CNC_OffsetY` a list of distances the CNC needs to go from the starting point (attribute `.CNC_StartY`) to the center of the hole (attribute `.CNC_Y`) along the `Y` coordinate axis.
+  * `.CNC_OffsetZ` a list of distances the CNC needs to go from the starting point (attribute `.CNC_StartZ`) to the center of the hole (attribute `.CNC_Z`) along the `Z` coordinate axis.
+  * `.CNC_Depth` a list of depths for each hole taken from each `PartDesign::Hole` object that created the hole.
+  * `.CNC_Diameter`  a list of diameters for each hole taken from each `PartDesign::Hole` object that created the hole.
+			
+> [!NOTE]
+> The dimensions for each hole are stored in millimeters as the attribute type `App::PropertyFloatList` because FreeCAD does 
+> not have any attribute type that can store distances with dynamic user unit settings, for example `App::PropertyLengthList`. 
+> For more info see opened issue: [please add App::PropertyLengthList to store dimensions for CNC](https://github.com/FreeCAD/FreeCAD/issues/26897)
+
+**Cross:**
+
   * `Corner cross:` buttons `-`, `+` resize the cross in the right bottom of the screen, it has auto-repeat.
   * `Center cross:` buttons `on`, `off` turn on and off the center cross at the screen.
   * `keep custom cross settings` allows to store the custom cross setting after this tool exit.

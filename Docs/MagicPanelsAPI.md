@@ -23,6 +23,7 @@
 
 * `gSettingsPref = 'User parameter:BaseApp/Preferences/Woodworking'`: settings path <br>
 * `gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0)`: default color [247, 185, 108, 255] <br>
+* `gWoodDescription = "Płyta laminowana Biel Alpejska"`: used in cut-list if Label2 is empty <br>
 * `gRoundPrecision = 2`: should be set according to the user FreeCAD GUI settings <br>
 * `gSearchDepth = 200 `: recursive search depth <br>
 * `gKernelVersion = 0 `: FreeCAD version to add support for new kernel changes <br>
@@ -48,6 +49,7 @@
 * `gFrontOutsideOffsetB = 7 `: overlap bottom <br>
 * `gFrontOutsideOffsetT = 7 `: overlap top <br>
 * `gShelfThickness = 18`: shelf wood thickness, usually full wood but can be plywood 6 mm <br>
+* `gShelfOffsetSides = 2 `: shelf offset for sides <br>
 * `gBackInsideThickness = 18`: back inside thickness, usually full wood <br>
 * `gBackOutsideThickness = 3`: back outside thickness, usually HDF <br>
 * `gEdgebandThickness = 0`: edgeband thickness <br>
@@ -803,6 +805,28 @@
 	
 		return array with the dimensions as face with iOffset and iDepth in order:
 		[ Length, Width, Height ] so it can be directly assigned to XY panel
+
+### getFaceAnchor(iFace, iObj=None, iType="minimum"):
+
+	
+##### Description:
+	
+		Return anchor for fac. Created for panel at face tools.
+	
+##### Args:
+	
+		iFace: face object
+		iObj: object of the face to calculate global position inside containers, or return local by default
+		iType (optional): 
+			* "minimum" - return vertex with minimum X and Y and Z coordinate axes.
+
+##### Usage:
+	
+		[ minX, minY, minZ ] = MagicPanels.getFaceVertices(face, "minimum")
+
+##### Result:
+	
+		Return vertices array XYZ like [ [ 1, 1, 1 ], [ 2, 2, 2 ], [ 3, 3, 3 ] ]
 
 
 # Vertices
