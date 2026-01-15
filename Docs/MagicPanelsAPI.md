@@ -811,7 +811,7 @@
 	
 ##### Description:
 	
-		Return anchor for fac. Created for panel at face tools.
+		Return anchor for face. Created for panel at face tools.
 	
 ##### Args:
 	
@@ -822,11 +822,11 @@
 
 ##### Usage:
 	
-		[ minX, minY, minZ ] = MagicPanels.getFaceVertices(face, "minimum")
+		[ minX, minY, minZ ] = MagicPanels.getFaceAnchor(face, obj, "minimum")
 
 ##### Result:
 	
-		Return vertices array XYZ like [ [ 1, 1, 1 ], [ 2, 2, 2 ], [ 3, 3, 3 ] ]
+		Return vertices array XYZ like [ minX, minY, minZ ]
 
 
 # Vertices

@@ -1181,6 +1181,12 @@ Example weights unit of commonly used wood in lb/board foot:
 
 **refresh selection:** allows you to set the objects to which textures will be added. By default, loading and setting texture attributes will be for all objects. You can also select the objects first and then open this tool, then the selected objects will be loaded automatically.
 
+> [!NOTE]
+> This tool supports the `Current selection` setting from [magicSettings](#magicsettings) tool. 
+> If you set the `Current selection` option to `Yes` in [magicSettings](#magicsettings) tool, then all operations 
+> will be performed on the currently selected objects and the button `refresh selection` will be disabled. 
+> If you use this mode try to select face, not whole object, to see texture in real-time.
+
 **Setting texture attributes:**
   
 * **First selection:** Allows for better texture matching to the object. Available options:

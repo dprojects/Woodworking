@@ -325,6 +325,7 @@ def showQtMain():
 		
 		# ############################################################################
 		def resetGlobals(self):
+			self.gObjects = []
 			self.gBrokenURL = dict()
 			self.oRepeatXE.setText("1")
 			self.oRepeatYE.setText("1")
@@ -337,6 +338,24 @@ def showQtMain():
 		# ############################################################################
 		def showStatus(self, iText):
 			self.status.setText(str(iText))
+
+		# ############################################################################
+		def setObjects(self):
+			
+			selection = FreeCADGui.Selection.getSelection()
+			if len(selection) < 1:
+				self.gObjects = FreeCAD.ActiveDocument.Objects
+				info = translate('setTextures', 'ALL OBJECTS, ') + str(self.gObjects[0].Label)
+				self.oObjectsI.setText(info)
+
+			elif len(selection) == 1:
+				self.gObjects = FreeCADGui.Selection.getSelection()
+				self.oObjectsI.setText( str(self.gObjects[0].Label) )
+
+			else:
+				self.gObjects = FreeCADGui.Selection.getSelection()
+				info = translate('setTextures', 'Multi, ') + str(self.gObjects[0].Label)
+				self.oObjectsI.setText(info)
 
 		# ############################################################################
 		# actions
@@ -355,24 +374,19 @@ def showQtMain():
 		def getSelected(self):
 			
 			try:
+				self.resetGlobals()
+			
 				if MagicPanels.gCurrentSelection == True:
 					self.oObjectsB.setDisabled(True)
 				else:
 					self.oObjectsB.setDisabled(False)
 
-				self.gObjects = FreeCADGui.Selection.getSelection()
-				if len(self.gObjects) < 1:
-					self.gObjects = FreeCAD.ActiveDocument.Objects
-					self.oObjectsI.setText(self.infoAO)
-				else:
-					self.oObjectsI.setText(self.infoSO)
-
-				self.resetGlobals()
+				self.setObjects()
 				
 				if len(self.gObjects) == 1:
 					
 					obj = self.gObjects[0]
-					
+
 					if hasattr(obj, "Texture_Repeat_X"):
 						self.oRepeatXE.setText(str( obj.Texture_Repeat_X ))
 
@@ -393,7 +407,12 @@ def showQtMain():
 
 					if hasattr(obj, "Texture_Rotation_Angle"):
 						self.oRotateAngleE.setText(str( round(obj.Texture_Rotation_Angle, 4) ))
-				
+					elif hasattr(obj, "Texture_Rotation"):
+						degree = math.degrees(obj.Texture_Rotation) 
+						self.oRotateAngleE.setText(str( round(degree, 4) ))
+					else:
+						skip = 1
+
 				FreeCADGui.Selection.clearSelection()
 			except:
 				self.oObjectsI.setText(self.infoAO)
@@ -404,6 +423,9 @@ def showQtMain():
 		
 		# ############################################################################
 		def storeTextures(self):
+
+			if MagicPanels.gCurrentSelection == True:
+				self.setObjects()
 
 			# set flag
 			skip = 0
@@ -543,6 +565,9 @@ def showQtMain():
 		# ############################################################################		
 		def setPreview1(self):
 			
+			if MagicPanels.gCurrentSelection == True:
+				self.setObjects()
+			
 			target = getMenuIndexPreview[self.oPreviewTarget.currentText()]
 			
 			repeatX = float(self.oRepeatXE.text())
@@ -579,6 +604,9 @@ def showQtMain():
 		# ############################################################################		
 		def setPreview2(self):
 			
+			if MagicPanels.gCurrentSelection == True:
+				self.setObjects()
+
 			target = getMenuIndexPreview[self.oPreviewTarget.currentText()]
 			
 			repeatX = float(self.oRepeatXE.text())
@@ -738,7 +766,11 @@ def showQtMain():
 			
 			if hasattr(iObj, "Texture_Rotation_Angle"):
 				angle = math.radians(float(iObj.Texture_Rotation_Angle))
-					
+			elif hasattr(iObj, "Texture_Rotation"):
+				angle = float(iObj.Texture_Rotation)
+			else:
+				skip = 1
+
 			# set node
 			rootnode = iObj.ViewObject.RootNode
 			
@@ -861,6 +893,9 @@ def showQtMain():
 					
 		# ############################################################################
 		def loadTextures(self):
+
+			if MagicPanels.gCurrentSelection == True:
+				self.setObjects()
 
 			self.gBrokenURL = dict()
 			empty = ""
