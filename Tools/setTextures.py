@@ -1,7 +1,7 @@
 import FreeCAD, FreeCADGui
 from PySide import QtGui, QtCore
 from pivy import coin
-import math
+import math, os
 
 import MagicPanels
 
@@ -46,6 +46,7 @@ def showQtMain():
 
 		gObjects = []
 		gBrokenURL = dict()
+		gFolderTextures = []
 		
 		infoSO = translate('setTextures', 'Settings for: SELECTED objects')
 		infoAO = translate('setTextures', 'Settings for: ALL objects')
@@ -73,7 +74,7 @@ def showQtMain():
 			gSH = FreeCADGui.getMainWindow().height()
 
 			# tool screen position
-			gPW = int( gSW - toolSW )
+			gPW = int( gSW - toolSW - 15)
 			gPH = int( gSH - toolSH )
 
 			area = toolSW - 20     # area for info
@@ -102,6 +103,68 @@ def showQtMain():
 			self.oObjectsB.setFixedHeight(40)
 
 			# ############################################################################
+			# load texture & live preview
+			# ############################################################################
+			
+			# color
+			self.oWhiteColor = QtGui.QCheckBox(translate('setTextures', '- set white color'), self)
+			self.oWhiteColor.setCheckState(QtCore.Qt.Unchecked)
+
+			# button
+			self.oLoadB = QtGui.QPushButton(translate('setTextures', 'load saved'), self)
+			self.oLoadB.clicked.connect(self.loadTextures)
+
+			self.oPathURL = QtGui.QPushButton(translate('setTextures', 'load from URL'), self)
+			self.oPathURL.clicked.connect(self.loadURLPath)
+			
+			self.oPathLocal = QtGui.QPushButton(translate('setTextures', 'load from local'), self)
+			self.oPathLocal.clicked.connect(self.loadLocalPath)
+
+			# URL
+			self.oPathE = QtGui.QLineEdit(self)
+			self.oPathE.setPlaceholderText(translate('setTextures', 'set URL or full path to local file'))
+			self.oPathE.setText("")
+
+			# browse directory
+			self.oBrowseB1 = QtGui.QPushButton("< local file", self)
+			self.oBrowseB1.clicked.connect(self.browseP)
+			self.oBrowseB1.setAutoRepeat(True)
+			
+			self.oBrowseB2 = QtGui.QPushButton("local file >", self)
+			self.oBrowseB2.clicked.connect(self.browseN)
+			self.oBrowseB2.setAutoRepeat(True)
+
+			self.oPreviewTargetL = QtGui.QLabel(translate('setTextures', 'Live preview target:'), self)
+			
+			self.previewTargetList = (
+				translate('setTextures', 'repeat X axis'),
+				translate('setTextures', 'repeat Y axis'),
+				translate('setTextures', 'repeat Z axis'),
+				translate('setTextures', 'rotation X axis'),
+				translate('setTextures', 'rotation Y axis'),
+				translate('setTextures', 'rotation Z axis') # no comma
+			)
+			self.oPreviewTarget = QtGui.QComboBox(self)
+			self.oPreviewTarget.addItems(self.previewTargetList)
+			self.oPreviewTarget.setCurrentIndex(5)
+			self.oPreviewTarget.textActivated[str].connect(self.setPreviewTarget)
+			
+			# step
+			self.oPreviewStepL = QtGui.QLabel(translate('setTextures', 'Step:'), self)
+
+			self.oPreviewStepE = QtGui.QLineEdit(self)
+			self.oPreviewStepE.setText("1")
+
+			# adjust buttons
+			self.oPreviewB1 = QtGui.QPushButton("-", self)
+			self.oPreviewB1.clicked.connect(self.setPreview1)
+			self.oPreviewB1.setAutoRepeat(True)
+			
+			self.oPreviewB2 = QtGui.QPushButton("+", self)
+			self.oPreviewB2.clicked.connect(self.setPreview2)
+			self.oPreviewB2.setAutoRepeat(True)
+
+			# ############################################################################
 			# attributes
 			# ############################################################################
 
@@ -119,16 +182,6 @@ def showQtMain():
 			self.oFit.addItems(self.fitList)
 			self.oFit.setCurrentIndex(0) # to not complicate things always 0 by default
 			self.oFit.textActivated[str].connect(self.setTextureFit)
-			
-			# URL
-			self.oURLInfo = QtGui.QLabel(translate('setTextures', 'Texture URL or local HDD path:'), self)
-			
-			self.oURLPath = QtGui.QLineEdit(self)
-			self.oURLPath.setText("")
-			
-			self.oURLHDD = QtGui.QPushButton("...", self)
-			self.oURLHDD.clicked.connect(self.loadCustomFile)
-			self.oURLHDD.setFixedWidth(20)
 			
 			# repeat X
 			self.oRepeatXL = QtGui.QLabel(translate('setTextures', 'Repeat X:'), self)
@@ -164,60 +217,20 @@ def showQtMain():
 			self.oRotateAngleL = QtGui.QLabel(translate('setTextures', 'Rotation angle (degrees):'), self)
 			self.oRotateAngleE = QtGui.QLineEdit(self)
 			self.oRotateAngleE.setText("0.0")
-		
-			# color
-			self.oWhiteColor = QtGui.QCheckBox(translate('setTextures', '- set white color'), self)
-			self.oWhiteColor.setCheckState(QtCore.Qt.Unchecked)
-
-			# store attributes
-			self.oStoreB = QtGui.QPushButton(translate('setTextures', 'set texture attributes'), self)
-			self.oStoreB.clicked.connect(self.storeTextures)
-			self.oStoreB.setFixedHeight(40)
-			
-			# ############################################################################
-			# live preview
-			# ############################################################################
-			
-			# you can change order here
-			
-			self.oPreviewTargetL = QtGui.QLabel(translate('setTextures', 'Live preview:'), self)
-			
-			self.previewTargetList = (
-				translate('setTextures', 'repeat X axis'),
-				translate('setTextures', 'repeat Y axis'),
-				translate('setTextures', 'repeat Z axis'),
-				translate('setTextures', 'rotation X axis'),
-				translate('setTextures', 'rotation Y axis'),
-				translate('setTextures', 'rotation Z axis') # no comma
-			)
-			self.oPreviewTarget = QtGui.QComboBox(self)
-			self.oPreviewTarget.addItems(self.previewTargetList)
-			self.oPreviewTarget.setCurrentIndex(5)
-			self.oPreviewTarget.textActivated[str].connect(self.setPreviewTarget)
-			
-			# step
-			self.oPreviewStepL = QtGui.QLabel(translate('setTextures', 'Step:'), self)
-
-			self.oPreviewStepE = QtGui.QLineEdit(self)
-			self.oPreviewStepE.setText("1")
-
-			# adjust buttons
-			self.oPreviewB1 = QtGui.QPushButton("-", self)
-			self.oPreviewB1.clicked.connect(self.setPreview1)
-			self.oPreviewB1.setAutoRepeat(True)
-			
-			self.oPreviewB2 = QtGui.QPushButton("+", self)
-			self.oPreviewB2.clicked.connect(self.setPreview2)
-			self.oPreviewB2.setAutoRepeat(True)
-
-			# ############################################################################
-			# load texture
-			# ############################################################################
 			
 			# button
-			self.oLoadB = QtGui.QPushButton(translate('setTextures', 'show textures'), self)
-			self.oLoadB.clicked.connect(self.loadTextures)
-			self.oLoadB.setFixedHeight(40)
+			self.oLoadCustom = QtGui.QPushButton(translate('setTextures', 'preview custom attributes'), self)
+			self.oLoadCustom.clicked.connect(self.previewTexture)
+			# self.oLoadCustom.setFixedHeight(30)
+
+			# ############################################################################
+			# save texture
+			# ############################################################################
+			
+			# store attributes
+			self.oStoreB = QtGui.QPushButton(translate('setTextures', 'save texture'), self)
+			self.oStoreB.clicked.connect(self.storeTextures)
+			self.oStoreB.setFixedHeight(40)
 			
 			# ############################################################################
 			# status
@@ -229,19 +242,49 @@ def showQtMain():
 			# build GUI layout
 			# ############################################################################
 			
-			# create structure
+			# objects
 			self.layObjects = QtGui.QVBoxLayout()
 			self.layObjects.addWidget(self.oObjectsI)
 			self.layObjects.addWidget(self.oObjectsB)
+
+			# preview
+			self.layLoad = QtGui.QGridLayout()
+			self.layLoad.addWidget(self.oWhiteColor, 0, 0)
+			self.layLoad.addWidget(self.oLoadB, 0, 1)
+			self.layLoad.addWidget(self.oPathURL, 1, 0)
+			self.layLoad.addWidget(self.oPathLocal, 1, 1)
 			
+			self.layURL = QtGui.QVBoxLayout()
+			self.layURL.addWidget(self.oPathE)
+
+			self.layBrowse = QtGui.QGridLayout()
+			self.layBrowse.addWidget(self.oBrowseB1, 0, 0)
+			self.layBrowse.addWidget(self.oBrowseB2, 0, 1)
+
+			self.layGridPreview1 = QtGui.QGridLayout()
+			self.layGridPreview1.addWidget(self.oPreviewTargetL, 0, 0)
+			self.layGridPreview1.addWidget(self.oPreviewTarget, 0, 1)
+			self.layGridPreview1.addWidget(self.oPreviewStepL, 1, 0)
+			self.layGridPreview1.addWidget(self.oPreviewStepE, 1, 1)
+			
+			self.layGridPreview2 = QtGui.QHBoxLayout()
+			self.layGridPreview2.addWidget(self.oPreviewB1)
+			self.layGridPreview2.addWidget(self.oPreviewB2)
+			
+			self.layPreview = QtGui.QVBoxLayout()
+			self.layPreview.addLayout(self.layLoad)
+			self.layPreview.addLayout(self.layURL)
+			self.layPreview.addLayout(self.layBrowse)
+			self.layPreview.addSpacing(20)
+			self.layPreview.addLayout(self.layGridPreview1)
+			self.layPreview.addLayout(self.layGridPreview2)
+			
+			self.groupPreview = QtGui.QGroupBox(None, self)
+			self.groupPreview.setLayout(self.layPreview)
+
+			# attributes
 			self.layFit = QtGui.QVBoxLayout()
 			self.layFit.addWidget(self.oFit)
-			self.layFit.addSpacing(20)
-			self.layFit.addWidget(self.oURLInfo)
-			
-			self.layURL = QtGui.QHBoxLayout()
-			self.layURL.addWidget(self.oURLPath)
-			self.layURL.addWidget(self.oURLHDD)
 			
 			self.layGrid = QtGui.QGridLayout()
 			self.layGrid.addWidget(self.oRepeatXL, 0, 0)
@@ -259,50 +302,29 @@ def showQtMain():
 			self.layGrid.addWidget(self.oRotateAngleL, 6, 0)
 			self.layGrid.addWidget(self.oRotateAngleE, 6, 1)
 			
-			self.layStoreB = QtGui.QVBoxLayout()
-			self.layStoreB.addWidget(self.oStoreB)
+			self.layAttributes = QtGui.QVBoxLayout()
+			self.layAttributes.addLayout(self.layFit)
+			self.layAttributes.addLayout(self.layGrid)
+			self.layAttributes.addWidget(self.oLoadCustom)
+			self.groupAttributes = QtGui.QGroupBox(None, self)
+			self.groupAttributes.setLayout(self.layAttributes)
 			
-			self.layStore = QtGui.QVBoxLayout()
-			self.layStore.addLayout(self.layFit)
-			self.layStore.addLayout(self.layURL)
-			self.layStore.addLayout(self.layGrid)
-			self.layStore.addLayout(self.layStoreB)
-			self.groupAdjust = QtGui.QGroupBox(None, self)
-			self.groupAdjust.setLayout(self.layStore)
-			
-			self.layGridPreview1 = QtGui.QGridLayout()
-			self.layGridPreview1.addWidget(self.oPreviewTargetL, 0, 0)
-			self.layGridPreview1.addWidget(self.oPreviewTarget, 0, 1)
-			self.layGridPreview1.addWidget(self.oPreviewStepL, 1, 0)
-			self.layGridPreview1.addWidget(self.oPreviewStepE, 1, 1)
-			
-			self.layGridPreview2 = QtGui.QHBoxLayout()
-			self.layGridPreview2.addWidget(self.oPreviewB1)
-			self.layGridPreview2.addWidget(self.oPreviewB2)
-			
-			self.layPreview = QtGui.QVBoxLayout()
-			self.layPreview.addLayout(self.layGridPreview1)
-			self.layPreview.addLayout(self.layGridPreview2)
-			
-			self.groupPreview = QtGui.QGroupBox(None, self)
-			self.groupPreview.setLayout(self.layPreview)
-			
-			self.layLoad = QtGui.QVBoxLayout()
-			self.layLoad.addWidget(self.oWhiteColor)
-			self.layLoad.addWidget(self.oLoadB)
+			# save
+			self.laySaveTexture = QtGui.QVBoxLayout()
+			self.laySaveTexture.addWidget(self.oStoreB)
 			
 			# set layout to main window
 			self.layout = QtGui.QVBoxLayout()
 			
 			self.layout.addLayout(self.layObjects)
 			self.layout.addStretch()
-			self.layout.addWidget(self.groupAdjust)
-			self.layout.addStretch()
 			self.layout.addWidget(self.groupPreview)
 			self.layout.addStretch()
-			self.layout.addLayout(self.layLoad)
+			self.layout.addWidget(self.groupAttributes)
 			self.layout.addStretch()
 			self.layout.addWidget(self.status)
+			self.layout.addStretch()
+			self.layout.addLayout(self.laySaveTexture)
 			
 			self.setLayout(self.layout)
 
@@ -366,10 +388,60 @@ def showQtMain():
 			skip = 1
 
 		# ############################################################################		
-		def loadCustomFile(self):
+		def loadLocalPath(self):
+
 			hdd = str(QtGui.QFileDialog.getOpenFileName()[0])
-			self.oURLPath.setText(hdd)
-		
+			self.oPathE.setText(hdd)
+			
+			dirname = os.path.dirname(hdd)
+			self.gFolderTextures = os.listdir(dirname)
+			self.gFolderTextures.sort()
+
+			filename = self.downloadTexture(self.gObjects[0], hdd)
+			self.previewTexture("hdd")
+	
+		# ############################################################################		
+		def loadURLPath(self):
+
+			url = str(self.oPathE.text())
+			filename = self.downloadTexture(self.gObjects[0], url)
+			if filename == "":
+				self.printBroken()
+			else:
+				self.previewTexture("url", filename)
+	
+		# ############################################################################
+		def browseP(self):
+			
+			try:
+				hdd = str(self.oPathE.text())
+				basename = os.path.basename(hdd)
+
+				index = self.gFolderTextures.index(basename)
+				if index > 0:
+					newhdd = hdd.replace(basename, self.gFolderTextures[index-1])
+					self.oPathE.setText(newhdd)
+					filename = self.downloadTexture(self.gObjects[0], newhdd)
+					self.previewTexture("hdd")
+			except:
+				skip = 1
+			
+		# ############################################################################
+		def browseN(self):
+			
+			try:
+				hdd = str(self.oPathE.text())
+				basename = os.path.basename(hdd)
+			
+				index = self.gFolderTextures.index(basename)
+				if index < len(self.gFolderTextures)-1:
+					newhdd = hdd.replace(basename, self.gFolderTextures[index+1])
+					self.oPathE.setText(newhdd)
+					filename = self.downloadTexture(self.gObjects[0], newhdd)
+					self.previewTexture("hdd")
+			except:
+				skip = 1
+
 		# ############################################################################
 		def getSelected(self):
 			
@@ -386,6 +458,9 @@ def showQtMain():
 				if len(self.gObjects) == 1:
 					
 					obj = self.gObjects[0]
+
+					if hasattr(obj, "Texture_Fit"):
+						self.oFit.setCurrentText(str(obj.Texture_Fit))
 
 					if hasattr(obj, "Texture_Repeat_X"):
 						self.oRepeatXE.setText(str( obj.Texture_Repeat_X ))
@@ -431,7 +506,7 @@ def showQtMain():
 			skip = 0
 
 			# get texture URL from GUI text form
-			textureURL = self.oURLPath.text()
+			textureURL = self.oPathE.text()
 
 			# scan all given objects and set all properties
 			for obj in self.gObjects:
@@ -639,7 +714,126 @@ def showQtMain():
 				rotateAngle = float(self.oPreviewStepE.text())
 				
 			self.updatePreview(target, repeatX, repeatY, repeatZ, rotateX, rotateY, rotateZ, rotateAngle)
+		
+		# ############################################################################		
+		def previewTexture(self, iType="attributes", iFilename=""):
 			
+			fit = getMenuIndexFit[str(self.oFit.currentText())]
+			repeatX = float(self.oRepeatXE.text())
+			repeatY = float(self.oRepeatYE.text())
+			repeatZ = float(self.oRepeatZE.text())
+			axisX = float(self.oRotateAxisXE.text())
+			axisY = float(self.oRotateAxisYE.text())
+			axisZ = float(self.oRotateAxisZE.text())
+			angle = math.radians( float(self.oRotateAngleE.text()) )
+			
+			if iType == "url":
+				filename = iFilename
+			else:
+				filename = self.oPathE.text()
+			
+			for o in self.gObjects:
+				rootnode = o.ViewObject.RootNode
+				
+				# try update existing node
+				updateST2 = False
+				updateST3T1 = False
+				updateST3T2 = False
+				
+				try:
+					for i in rootnode.getChildren():
+						
+						# existing filename
+						if filename != "":
+							if iType == "hdd" or iType == "url":
+								if str(i).find("SoTexture2") != -1:
+									if hasattr(i, "filename"):
+										i.filename = filename
+										updateST2 = True
+
+						if str(i).find("SoTexture3Transform") != -1:
+							
+							# existing repeat
+							if hasattr(i, "scaleFactor"):
+								coinSFV = coin.SbVec3f(repeatX, repeatY, repeatZ)
+								i.scaleFactor.setValue(coinSFV)
+								updateST3T1 = True
+
+							# existing rotate
+							if hasattr(i, "rotation"):
+								axis = coin.SbVec3f(axisX, axisY, axisZ)
+								setRotation = coin.SbRotation( axis, angle )
+								i.rotation.setValue(setRotation)
+								updateST3T2 = True
+
+				except:
+					updateST2 = False
+					updateST3T1 = False
+					updateST3T2 = False
+			
+				# new repeat
+				if updateST3T1 == False:
+					trans = coin.SoTexture3Transform()
+					coinSFV = coin.SbVec3f(repeatX, repeatY, repeatZ)
+					trans.scaleFactor.setValue(coinSFV)
+				
+				# new rotation
+				if updateST3T2 == False:
+					trans = coin.SoTexture3Transform()
+					axis = coin.SbVec3f(axisX, axisY, axisZ)
+					coinRotation = coin.SbRotation( axis, angle )
+					trans.rotation.setValue(coinRotation)
+							
+					rootnode.insertChild(trans, 1)
+				
+				# new filename
+				if updateST2 == False and filename != "":
+					if iType == "hdd" or iType == "url":
+						texture =  coin.SoTexture2()
+						texture.filename = filename
+						rootnode.insertChild(texture, 2)
+				
+				# fit mode
+				coordinate = ""
+				
+				if fit == "biggest":
+					coordinate = coin.SoTextureCoordinateDefault()
+					
+				if fit == "cube":
+					coordinate = coin.SoTextureCoordinateCube()
+
+				if fit == "cylinder":
+					coordinate = coin.SoTextureCoordinateCylinder()
+				
+				if fit == "sphere":
+					coordinate = coin.SoTextureCoordinateSphere()
+				
+				if fit == "glass":
+					coordinate = coin.SoTextureCoordinateEnvironment()
+				
+				if fit == "auto":
+					
+					coordinate = coin.SoTextureCoordinateDefault()
+					
+					if o.isDerivedFrom("Part::Box"):
+						coordinate = coin.SoTextureCoordinateCube()
+		
+					if o.isDerivedFrom("Part::Cylinder"):
+						coordinate = coin.SoTextureCoordinateCylinder()
+					
+					if o.isDerivedFrom("Part::Sphere"):
+						coordinate = coin.SoTextureCoordinateSphere()
+
+				pos = self.getChildPosition(rootnode)
+				rootnode.insertChild(coordinate, pos)
+				
+				# set color
+				if self.oWhiteColor.isChecked():
+					if iType == "hdd" or iType == "url":
+						MagicPanels.setColor(o, 0, (1.0, 1.0, 1.0, 1.0), "color")
+		
+			FreeCAD.ActiveDocument.recompute()
+		
 		# ############################################################################
 		# load textures
 		# ############################################################################
@@ -688,7 +882,7 @@ def showQtMain():
 			
 			# no texture URL set
 			return ""
-			
+		
 		# ############################################################################
 		def downloadTexture(self, iObj, iURL):
 			
@@ -890,7 +1084,24 @@ def showQtMain():
 					# add fit texture
 					pos = self.getChildPosition(rootnode)
 					rootnode.insertChild(coordinate, pos)
-					
+		
+		
+		# ############################################################################
+		def printBroken(self):
+
+			FreeCAD.Console.PrintMessage("\n ====================== \n")
+			for n, b in self.gBrokenURL.items():
+				FreeCAD.Console.PrintMessage("\n")
+				FreeCAD.Console.PrintMessage(translate('setTextures', 'Object Label') + ': '+n)
+				FreeCAD.Console.PrintMessage("\n")
+				FreeCAD.Console.PrintMessage(translate('setTextures', 'Broken URL') + ': '+b)
+				FreeCAD.Console.PrintMessage("\n")
+			FreeCAD.Console.PrintMessage("\n ====================== \n")
+
+			info = ""
+			info += translate('setTextures', 'See console for broken URLs.')
+			self.showStatus(info)
+
 		# ############################################################################
 		def loadTextures(self):
 
@@ -931,30 +1142,14 @@ def showQtMain():
 
 			# set status
 			if empty == "":
-				
 				iText = translate('setTextures', 'No textures URLs found.')
 				self.showStatus(iText)
 			
 			else:
-			
 				if len(self.gBrokenURL) == 0:
-					
 					self.showStatus(translate('setTextures', 'All textures has been loaded.'))
-				
 				else:
-					
-					FreeCAD.Console.PrintMessage("\n ====================== \n")
-					for n, b in self.gBrokenURL.items():
-						FreeCAD.Console.PrintMessage("\n")
-						FreeCAD.Console.PrintMessage(translate('setTextures', 'Object Label') + ': '+n)
-						FreeCAD.Console.PrintMessage("\n")
-						FreeCAD.Console.PrintMessage(translate('setTextures', 'Broken URL') + ': '+b)
-						FreeCAD.Console.PrintMessage("\n")
-					FreeCAD.Console.PrintMessage("\n ====================== \n")
-
-					info = ""
-					info += translate('setTextures', 'See console for broken URLs.')
-					self.showStatus(info)
+					self.printBroken()
 
 	# ############################################################################
 	# final settings, if needed

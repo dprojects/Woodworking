@@ -203,6 +203,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * options to browse folder with textures and redesign GUI (setTextures) <br>
 > * attributes option for drilling via CNC (magicCNC) <br>
 > * improve panel at face and panel between (MagicPanels, MagicPanelsController) <br>
 > * new global variable and option for shelf sides offset (MagicPanels, magicSettings, magicStart) <br>
@@ -1159,13 +1160,15 @@ Example weights unit of commonly used wood in lb/board foot:
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/setTextures.png"> This tool allows to store textures information and load textures. Also solves problem with huge project file size because this tool allows to store only link to texture not texture.
 
-**Main features:**
-
-* Store texture URL or local HDD path, repeat factor, rotation and fit mode in object's property.
-* Download and show textures from stored URL or local HDD path.
-* Set and refresh texture for all objects or selected object only.
-* Auto fit mode to object shape type.
-* Small GUI interface in corner to see 3D model refresh.
+> [!TIP]
+> * To load texture from saved attributes: press `load saved` button.
+> * To load texture from URL: write URL and press `load from URL` button.
+> * To load texture from local disk: press `load from local` button and choose texture, 
+> you can browse the folder later via `< local file` and `local file >` buttons.
+> * To preview written manually attributes for fit, repeat, rotation: press `preview custom attributes`, 
+> however to keep it forever you have to press `save texture` button.
+> * To edit texture in real-time: load texture somehow, choose `Live preview target:` and use `-` and `+` buttons, 
+> however to keep current texture look forever you have to press `save texture` button.
 
 **Textures can be stored at:**
 * `.ShapeMaterial.AppearanceProperties["TextureImage"]` material added to the object, new material approach used by Woods workbench.
@@ -1177,15 +1180,31 @@ Example weights unit of commonly used wood in lb/board foot:
 > [!TIP]
 > Personally, I prefer to add online links to textures. This way, the file size does not increase and there 
 > is no need to install additional repositories. However, you need to make sure the server supports external linking. <br>
-> Also if you want to use texture from material make sure the URL attribute is not exist or is empty.
+> Also if you want to use texture from material make sure the `.Texture_URL` attribute for object not exists or is empty, 
+> because the `.Texture_URL` is preferred and will be loaded first.
 
-**refresh selection:** allows you to set the objects to which textures will be added. By default, loading and setting texture attributes will be for all objects. You can also select the objects first and then open this tool, then the selected objects will be loaded automatically.
+**Setting objects:**
+* **refresh selection** button allows you to set the objects to which textures will be added. By default, loading and setting texture attributes will be for all objects. You can also select the objects first and then open this tool, then the selected objects will be loaded automatically.
 
 > [!NOTE]
 > This tool supports the `Current selection` setting from [magicSettings](#magicsettings) tool. 
 > If you set the `Current selection` option to `Yes` in [magicSettings](#magicsettings) tool, then all operations 
 > will be performed on the currently selected objects and the button `refresh selection` will be disabled. 
 > If you use this mode try to select face, not whole object, to see texture in real-time.
+
+**Preview texture:**
+* **set white color** sets the white color for the object to make the texture look better, shows the real texture color without additional mask.
+* **load saved:** loads textures for all objects or for selected objects that have texture information saved. If you have added material to the object via `Right Mouse Click -> Material...` the material texture will be loaded even if the object has no texture attributes, so you can use `Live preview target:` options and save the attributes later via `save texture` button.
+* **load from URL** button allows you to load written manually URL to the texture.
+* **load from local** button allows you to open local file dialog to choose texture from local disk and automatically preview the texture.
+* **< local file** button allows you to load previous texture from the folder you have already loaded texture from disk via button `load from local`.
+* **local file >** button allows you to load next texture from the folder you have already loaded texture from disk via button `load from local`.
+* **Live preview target:** allows you to choose live preview target and adjust the texture in real-time. For example if you set `rotation Z axis` the `-` and `+` buttons will be rotating the texture around `Z` axis with the `Step` measured with degrees. If you decide to save the current visible texture state, make sure to press `save texture` button and verify if the object's attributes has been stored. To use this feature you need to load texture first.
+
+> [!IMPORTANT]
+> Make sure you have the following option disabled:
+> `Edit -> Preferences -> Display -> 3D View -> Use OpenGL VBO (Vertex Buffer Object)`
+> Especially if you are using the `FreeCAD Dark` or `FreeCAD Light` theme, because they turn on this option and then you may not see the textures.
 
 **Setting texture attributes:**
   
@@ -1196,7 +1215,6 @@ Example weights unit of commonly used wood in lb/board foot:
   * `fit to Sphere` adjust texture to sphere shapes.
   * `auto fit` recognize the object type and try to adjust texture.
   * `glass mirror effect` mirror effect.
-* **Texture URL or local HDD path:** allows you to store the URL link to a texture or set link to your local disk.
 * **repeat X:** allows you to repeat texture along X axis, to create pattern, `1.0` means visible once but not repeat.
 * **repeat Y:** allows you to repeat texture along Y axis, to create pattern, `1.0` means visible once but not repeat.
 * **repeat Z:** allows you to repeat texture along Y axis, to create pattern, `1.0` means visible once but not repeat.
@@ -1204,19 +1222,10 @@ Example weights unit of commonly used wood in lb/board foot:
 * **Rotation Y axis:** allows you to store texture rotation coordinate axis value around Y coordinate axis. The `1.0` value means rotate around Y axis and the `0.0` means not rotate around Y axis.
 * **Rotation Z axis:** allows you to store texture rotation coordinate axis value around Z coordinate axis. The `1.0` value means rotate around Z axis and the `0.0` means not rotate around Z axis.
 * **Rotation angle (degrees):** allows you to store texture rotation angle in degrees, more human-readable form than radians.
-* **set texture attributes** allows you to store the values to objects attributes.
+* **preview custom attributes** button allows you to preview written manually attributes for fit, repeat and rotation.
 
-**Live preview:** allows you to choose live preview target and adjust the texture in real-time. For example if you set `rotation Z axis` the `-` and `+` buttons will be rotating the texture around `Z` axis with the `Step` measured with degrees. If you decide to save the current visible texture state, make sure to press `set texture attributes` button and verify if the object's attributes has been stored. To use this feature you need to load texture first via `show textures` button.
-
-**Loading textures:**
-
-* **set white color** sets the white color for the object to make the texture look better.
-* **show textures:** loads textures for all objects or for selected objects that have texture information saved. If you have added material to the object via `Right Mouse Click -> Material...` the material texture will be loaded even if the object has no texture attributes, so you can use `Live preview` option and save the attributes later via `set texture attributes` button.
-
-> [!IMPORTANT]
-> Make sure you have the following option disabled:
-> `Edit -> Preferences -> Display -> 3D View -> Use OpenGL VBO (Vertex Buffer Object)`
-> Especially if you are using the `FreeCAD Dark` or `FreeCAD Light` theme, because they turn on this option and then you may not see the textures.
+**Save texture attributes:**
+* **save texture** button allows you store current texture attributes and save current texture look forever.
 
 ## makeBeautiful
 
