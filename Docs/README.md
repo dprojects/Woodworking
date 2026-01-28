@@ -1184,12 +1184,16 @@ Example weights unit of commonly used wood in lb/board foot:
 > because the `.Texture_URL` is preferred and will be loaded first.
 
 **Setting objects:**
-* **refresh selection** button allows you to set the objects to which textures will be added. By default, loading and setting texture attributes will be for all objects. You can also select the objects first and then open this tool, then the selected objects will be loaded automatically.
+* **chooser:** allows you to choose selection mode. Possible options:
+  * `selected objects` allows you to load only selected objects to this tool's memory.
+  * `all objects` allows you to set texture for all objects in the `ActiveDocument`. This can be very useful if you want to see if any object has already added texture or just add texture for whole wardrobe elements at once. In this selection mode the button `refresh selection` will be disabled.
+* **refresh selection** button allows you to load selected objects into the tool's memory and then perform various texture-related operations on these objects without selecting them.
 
-> [!NOTE]
-> This tool supports the `Current selection` setting from [magicSettings](#magicsettings) tool. 
+> [!TIP]
+> * You can also select the objects first and then open this tool, then the selected objects will be loaded automatically.
+> * This tool supports the `Current selection` setting from [magicSettings](#magicsettings) tool. 
 > If you set the `Current selection` option to `Yes` in [magicSettings](#magicsettings) tool, then all operations 
-> will be performed on the currently selected objects and the button `refresh selection` will be disabled. 
+> will be performed on the currently selected objects and the `chooser` and button `refresh selection` will be disabled. 
 > If you use this mode try to select face, not whole object, to see texture in real-time.
 
 **Preview texture:**

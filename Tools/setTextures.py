@@ -11,6 +11,13 @@ translate = FreeCAD.Qt.translate
 # Global definitions
 # ############################################################################
 
+# add new items only at the end and change self.selectionList
+getMenuIndexSelection = {
+	translate('setTextures', 'selected objects')   : "selected",
+	translate('setTextures', 'all objects')        : "all" # no comma 
+	# translate('setTextures', 'faces only')       : "faces" # no comma 
+}
+
 # add new items only at the end and change self.fitList
 getMenuIndexFit = {
 	translate('setTextures', 'biggest surface')     : "biggest",
@@ -45,11 +52,12 @@ def showQtMain():
 		# ############################################################################
 
 		gObjects = []
+		gObjectsSelected = []
+		
 		gBrokenURL = dict()
 		gFolderTextures = []
 		
-		infoSO = translate('setTextures', 'Settings for: SELECTED objects')
-		infoAO = translate('setTextures', 'Settings for: ALL objects')
+		infoStart = translate('setTextures', 'please select valid objects and refresh')
 		
 		# ############################################################################
 		# init
@@ -94,13 +102,23 @@ def showQtMain():
 			# ############################################################################
 
 			# screen
-			self.oObjectsI = QtGui.QLabel(self.infoAO, self)
+			self.oObjectsI = QtGui.QLabel(self.infoStart, self)
 			self.oObjectsI.setMaximumWidth(area)
+			
+			# selection
+			self.selectionList = (
+				translate('setTextures', 'selected objects'),
+				translate('setTextures', 'all objects') # no comma 
+	
+			)
+			self.oSelection = QtGui.QComboBox(self)
+			self.oSelection.addItems(self.selectionList)
+			self.oSelection.setCurrentIndex(0)
+			self.oSelection.textActivated[str].connect(self.setSelection)
 			
 			# button
 			self.oObjectsB = QtGui.QPushButton(translate('setTextures', 'refresh selection'), self)
 			self.oObjectsB.clicked.connect(self.getSelected)
-			self.oObjectsB.setFixedHeight(40)
 
 			# ############################################################################
 			# load texture & live preview
@@ -221,7 +239,6 @@ def showQtMain():
 			# button
 			self.oLoadCustom = QtGui.QPushButton(translate('setTextures', 'preview custom attributes'), self)
 			self.oLoadCustom.clicked.connect(self.previewTexture)
-			# self.oLoadCustom.setFixedHeight(30)
 
 			# ############################################################################
 			# save texture
@@ -245,7 +262,10 @@ def showQtMain():
 			# objects
 			self.layObjects = QtGui.QVBoxLayout()
 			self.layObjects.addWidget(self.oObjectsI)
-			self.layObjects.addWidget(self.oObjectsB)
+			
+			self.laySelection = QtGui.QGridLayout()
+			self.laySelection.addWidget(self.oSelection, 0, 0)
+			self.laySelection.addWidget(self.oObjectsB, 0, 1)
 
 			# preview
 			self.layLoad = QtGui.QGridLayout()
@@ -317,6 +337,7 @@ def showQtMain():
 			self.layout = QtGui.QVBoxLayout()
 			
 			self.layout.addLayout(self.layObjects)
+			self.layout.addLayout(self.laySelection)
 			self.layout.addStretch()
 			self.layout.addWidget(self.groupPreview)
 			self.layout.addStretch()
@@ -348,6 +369,7 @@ def showQtMain():
 		# ############################################################################
 		def resetGlobals(self):
 			self.gObjects = []
+			self.gObjectsSelected = []
 			self.gBrokenURL = dict()
 			self.oRepeatXE.setText("1")
 			self.oRepeatYE.setText("1")
@@ -356,6 +378,7 @@ def showQtMain():
 			self.oRotateAxisYE.setText("0")
 			self.oRotateAxisZE.setText("1")
 			self.oRotateAngleE.setText("0")
+			self.oObjectsI.setText(self.infoStart)
 		
 		# ############################################################################
 		def showStatus(self, iText):
@@ -366,9 +389,7 @@ def showQtMain():
 			
 			selection = FreeCADGui.Selection.getSelection()
 			if len(selection) < 1:
-				self.gObjects = FreeCAD.ActiveDocument.Objects
-				info = translate('setTextures', 'ALL OBJECTS, ') + str(self.gObjects[0].Label)
-				self.oObjectsI.setText(info)
+				self.resetGlobals()
 
 			elif len(selection) == 1:
 				self.gObjects = FreeCADGui.Selection.getSelection()
@@ -387,9 +408,35 @@ def showQtMain():
 		def setTextureFit(self, selectedText):
 			skip = 1
 
+		# ############################################################################
+		def setSelection(self, selectedText):
+			
+			index = getMenuIndexSelection[selectedText]
+			
+			if index == "selected":
+				self.gObjects = self.gObjectsSelected
+				self.oObjectsB.setDisabled(False)
+				
+				if len(self.gObjects) < 1:
+					self.oObjectsI.setText(self.infoStart)
+				
+				elif len(self.gObjects) == 1:
+					self.oObjectsI.setText( str(self.gObjects[0].Label) )
+
+				else:
+					info = translate('setTextures', 'Multi, ') + str(self.gObjects[0].Label)
+					self.oObjectsI.setText(info)
+
+			if index == "all":
+				self.gObjects = FreeCAD.ActiveDocument.Objects
+				self.oObjectsB.setDisabled(True)
+				
+				info = translate('setTextures', 'ALL OBJECTS, ') + str(self.gObjects[0].Label)
+				self.oObjectsI.setText(info)
+
 		# ############################################################################		
 		def loadLocalPath(self):
-
+			
 			hdd = str(QtGui.QFileDialog.getOpenFileName()[0])
 			self.oPathE.setText(hdd)
 			
@@ -446,14 +493,18 @@ def showQtMain():
 		def getSelected(self):
 			
 			try:
+				FreeCAD.ActiveDocument.recompute() # for clean ActiveDocument state
 				self.resetGlobals()
 			
 				if MagicPanels.gCurrentSelection == True:
 					self.oObjectsB.setDisabled(True)
+					self.oSelection.setDisabled(True)
 				else:
 					self.oObjectsB.setDisabled(False)
+					self.oSelection.setDisabled(False)
 
 				self.setObjects()
+				self.gObjectsSelected = self.gObjects
 				
 				if len(self.gObjects) == 1:
 					
@@ -489,9 +540,12 @@ def showQtMain():
 						skip = 1
 
 				FreeCADGui.Selection.clearSelection()
+			
 			except:
-				self.oObjectsI.setText(self.infoAO)
-
+				self.oObjectsI.setText(self.infoStart)
+				error = translate('setTextures', 'setTextures: Error during refresh selection. Probably invalid object.')
+				FreeCAD.Console.PrintMessage(error)
+			
 		# ############################################################################
 		# store texture attributes
 		# ############################################################################
@@ -578,6 +632,8 @@ def showQtMain():
 				
 				except:
 					skip = 1
+					error = translate('setTextures', 'setTextures: Skipped object: ') + str(obj.Label)
+					FreeCAD.Console.PrintMessage(error)
 
 			FreeCAD.ActiveDocument.recompute()
 
@@ -824,8 +880,11 @@ def showQtMain():
 					if o.isDerivedFrom("Part::Sphere"):
 						coordinate = coin.SoTextureCoordinateSphere()
 
-				pos = self.getChildPosition(rootnode)
-				rootnode.insertChild(coordinate, pos)
+				
+					
+				else:
+					pos = self.getChildPosition(rootnode)
+					rootnode.insertChild(coordinate, pos)
 				
 				# set color
 				if self.oWhiteColor.isChecked():
@@ -1084,7 +1143,6 @@ def showQtMain():
 					# add fit texture
 					pos = self.getChildPosition(rootnode)
 					rootnode.insertChild(coordinate, pos)
-		
 		
 		# ############################################################################
 		def printBroken(self):
