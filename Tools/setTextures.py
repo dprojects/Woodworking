@@ -880,11 +880,8 @@ def showQtMain():
 					if o.isDerivedFrom("Part::Sphere"):
 						coordinate = coin.SoTextureCoordinateSphere()
 
-				
-					
-				else:
-					pos = self.getChildPosition(rootnode)
-					rootnode.insertChild(coordinate, pos)
+				pos = self.getChildPosition(rootnode)
+				rootnode.insertChild(coordinate, pos)
 				
 				# set color
 				if self.oWhiteColor.isChecked():
