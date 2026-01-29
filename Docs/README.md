@@ -203,6 +203,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * support for Draft::PathArray objects at cut-list (getDimensions) <br>
 > * options to browse folder with textures and redesign GUI (setTextures) <br>
 > * attributes option for drilling via CNC (magicCNC) <br>
 > * improve panel at face and panel between (MagicPanels, MagicPanelsController) <br>
@@ -1365,6 +1366,7 @@ By default the values at report are rounded to have more clear listing. Rounding
 * `Part :: Mirroring`,
 * `Draft :: Array`,
 * `Draft :: Array Polar`,
+* `Draft :: PathArray`,
 * `Draft :: Clone`,
 * `PartDesign :: Pocket`,
 * `PartDesign :: Hole`,

@@ -3132,56 +3132,59 @@ def setPartMirroring(iObj, iCaller="setPartMirroring"):
 def setDraftArray(iObj, iCaller="setDraftArray"):
 
 	# support for Array FreeCAD feature
-	if iObj.isDerivedFrom("Part::FeaturePython") and iObj.Name.startswith("Array"):
+	if iObj.isDerivedFrom("Part::FeaturePython"):
+		if "Array" in iObj.Name:
 
-		try:
+			try:
 
-			# set reference point to the furniture part
-			key = iObj.Base
+				# set reference point to the furniture part
+				key = iObj.Base
 
-			if iObj.ArrayType == "polar":
-				
 				# without the base furniture part
-				vArray = iObj.NumberPolar - 1
-			else:
+				if hasattr(iObj, "ArrayType") and hasattr(iObj, "NumberPolar"):
+					vArray = iObj.NumberPolar - 1
 				
-				# without the base furniture part
-				vArray = (iObj.NumberX * iObj.NumberY * iObj.NumberZ) - 1
+				if hasattr(iObj,"NumberX") and hasattr(iObj,"NumberY") and hasattr(iObj,"NumberZ"):
+					vArray = (iObj.NumberX * iObj.NumberY * iObj.NumberZ) - 1
 
-			# array on array
-			if iCaller == "self":
-				vArray = vArray + 1
+				if "PathArray" in iObj.Name and hasattr(iObj,"Count"):
+					vArray = iObj.Count - 1
+					
+				# array on array
+				if iCaller == "self":
+					vArray = vArray + 1
 
-			# if array on array add base too
-			if key.isDerivedFrom("Part::FeaturePython") and key.Name.startswith("Array"):
+				# if array on array add base too
+				if key.isDerivedFrom("Part::FeaturePython"):
+					if "Array" in key.Name:
+					
+						k = 0
+						while k < vArray:
+							setDraftArray(key, "self")
+							k = k + 1
 				
-				k = 0
-				while k < vArray:
-					setDraftArray(key, "self")
-					k = k + 1
-			
-			# array on Compound
-			elif key.isDerivedFrom("Part::Compound"):
+				# array on Compound
+				elif key.isDerivedFrom("Part::Compound"):
+					
+					for c in key.Links:
+						k = 0
+						while k < vArray:
+							scanObjects([ c ], iCaller)
+							k = k + 1
+					
+				# single array
+				else:
 				
-				for c in key.Links:
 					k = 0
 					while k < vArray:
-						scanObjects([ c ], iCaller)
+						scanObjects([ key ], iCaller)
 						k = k + 1
-				
-			# single array
-			else:
-			
-				k = 0
-				while k < vArray:
-					scanObjects([ key ], iCaller)
-					k = k + 1
 
-		except:
-			
-			# if there is wrong structure
-			showError(iCaller, iObj, "setDraftArray", "wrong structure")
-			return -1
+			except:
+				
+				# if there is wrong structure
+				showError(iCaller, iObj, "setDraftArray", "wrong structure")
+				return -1
 	
 	return 0
 
