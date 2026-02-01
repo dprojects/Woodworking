@@ -1232,6 +1232,9 @@ Example weights unit of commonly used wood in lb/board foot:
 **Save texture attributes:**
 * **save texture** button allows you store current texture attributes and save current texture look forever.
 
+**Video tutorials:** 
+* [Furniture from textures](https://www.youtube.com/watch?v=kiD0VqpiTEk)
+
 ## makeBeautiful
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/makeBeautiful.png"> This tool change all objects look, make edges and vertices smaller to look better at screenshots. If you click it again all objects will be changed to default values.

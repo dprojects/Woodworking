@@ -15,7 +15,6 @@ translate = FreeCAD.Qt.translate
 getMenuIndexSelection = {
 	translate('setTextures', 'selected objects')   : "selected",
 	translate('setTextures', 'all objects')        : "all" # no comma 
-	# translate('setTextures', 'faces only')       : "faces" # no comma 
 }
 
 # add new items only at the end and change self.fitList
@@ -381,10 +380,6 @@ def showQtMain():
 			self.oObjectsI.setText(self.infoStart)
 		
 		# ############################################################################
-		def showStatus(self, iText):
-			self.status.setText(str(iText))
-
-		# ############################################################################
 		def setObjects(self):
 			
 			selection = FreeCADGui.Selection.getSelection()
@@ -401,12 +396,358 @@ def showQtMain():
 				self.oObjectsI.setText(info)
 
 		# ############################################################################
-		# actions
-		# ############################################################################
+		def getObjectAttributes(self, iObj):
+		
+			[ fit, repeatX, repeatY, repeatZ, axisX, axisY, axisZ, angle ] = [ "", 1, 1, 1, 0, 0, 1, 0 ]
+			
+			if hasattr(iObj, "Texture_Fit"):
+				fit = str(iObj.Texture_Fit)
+			
+			if hasattr(iObj, "Texture_Repeat_X"):
+				repeatX = float(iObj.Texture_Repeat_X)
+			
+			if hasattr(iObj, "Texture_Repeat_Y"):
+				repeatY = float(iObj.Texture_Repeat_Y)
+			
+			if hasattr(iObj, "Texture_Repeat_Z"):
+				repeatZ = float(iObj.Texture_Repeat_Z)
+				
+			if hasattr(iObj, "Texture_Rotation_Axis_X"):
+				axisX = float(iObj.Texture_Rotation_Axis_X)
+			
+			if hasattr(iObj, "Texture_Rotation_Axis_Y"):
+				axisY = float(iObj.Texture_Rotation_Axis_Y)
+				
+			if hasattr(iObj, "Texture_Rotation_Axis_Z"):
+				axisZ = float(iObj.Texture_Rotation_Axis_Z)
+			
+			if hasattr(iObj, "Texture_Rotation_Angle"):
+				angle = math.radians(float(iObj.Texture_Rotation_Angle))
+			elif hasattr(iObj, "Texture_Rotation"):
+				angle = float(iObj.Texture_Rotation)
+			else:
+				skip = 1
+
+			return [ fit, repeatX, repeatY, repeatZ, axisX, axisY, axisZ, angle ]
 
 		# ############################################################################
-		def setTextureFit(self, selectedText):
-			skip = 1
+		def updateGUIAttributes(self, iFit="", iRepeatX=1, iRepeatY=1, iRepeatZ=1, 
+						iAxisX=0, iAxisY=0, iAxisZ=1, iAngle=0):
+		
+			if iFit != "":
+				self.oFit.setCurrentText( str(iFit) )
+			
+			self.oRepeatXE.setText( str(iRepeatX) )
+			self.oRepeatYE.setText( str(iRepeatY) )
+			self.oRepeatZE.setText( str(iRepeatZ) )
+			self.oRotateAxisXE.setText( str(iAxisX) )
+			self.oRotateAxisYE.setText( str(iAxisY) )
+			self.oRotateAxisZE.setText( str(iAxisZ) )
+			self.oRotateAngleE.setText( str( math.degrees(iAngle) ) )
+
+		# ############################################################################
+		def getTextureURL(self, iObj):
+			
+			# support for texture URL stored at objects Texture_URL property
+			try:
+				textureURL = str(iObj.Texture_URL)
+				if textureURL != "":
+					return textureURL
+			except:
+				skip = 1
+
+			# support for texture URL stored at objects description
+			try:
+				textureURL = str(iObj.Label2)
+				if textureURL != "":
+					return textureURL
+			except:
+				skip = 1
+
+			# backward compatibility and support for manually added to Texture property
+			try:
+				textureURL = str(iObj.Texture)
+				if textureURL != "":
+					return textureURL
+			except:
+				skip = 1
+
+			# support for texture URL stored at Material Card TexturePath
+			try:
+				textureURL = str(iObj.Material.Material["TexturePath"])
+				if textureURL != "":
+					return textureURL
+			except:
+				skip = 1
+			
+			# support for texture URL stored at Material properties
+			try:
+				if iObj.ShapeMaterial.Name != "Default":
+					return "ShapeMaterial"
+			except:
+				skip = 1
+			
+			# no texture URL set
+			return ""
+		
+		# ############################################################################
+		def downloadTexture(self, iObj, iURL):
+			
+			import urllib.request
+			import tempfile
+			import os
+			
+			# create temp directory
+			tmpDir = tempfile.gettempdir()
+			tmpDir = os.path.join(tmpDir, "FreeCAD_Textures")
+			if not os.path.exists(tmpDir):
+				os.makedirs(tmpDir)
+
+			# get texture filename
+			if iURL == "ShapeMaterial":
+				textureFilename = str(iObj.Name) + "_" + str(iObj.ShapeMaterial.Name)
+			else:
+				textureFilename = os.path.basename(iURL)
+			
+			textureFilePath = os.path.join(tmpDir, textureFilename)
+
+			# check if file already exists and skip slow downloading
+			if not os.path.exists(textureFilePath):
+
+				# get image from URL
+				try:
+					if iURL == "ShapeMaterial":
+						import base64
+						img = iObj.ShapeMaterial.getAppearanceValue("TextureImage")
+						img = img.encode('utf-8')
+						data = base64.b64decode(img)
+					else:
+						data = urllib.request.urlopen(iURL).read()
+				except:
+					self.gBrokenURL[str(iObj.Label)] = iURL
+					return ""
+				
+				# create temp file with image
+				out = open(str(textureFilePath), "wb")
+				out.write(data)
+				out.close()
+
+			return textureFilePath
+
+		# ############################################################################
+		def printBroken(self):
+
+			FreeCAD.Console.PrintMessage("\n ====================== \n")
+			for n, b in self.gBrokenURL.items():
+				FreeCAD.Console.PrintMessage("\n")
+				FreeCAD.Console.PrintMessage(translate('setTextures', 'Object Label') + ': '+n)
+				FreeCAD.Console.PrintMessage("\n")
+				FreeCAD.Console.PrintMessage(translate('setTextures', 'Broken URL') + ': '+b)
+				FreeCAD.Console.PrintMessage("\n")
+			FreeCAD.Console.PrintMessage("\n ====================== \n")
+
+			info = ""
+			info += translate('setTextures', 'See console for broken URLs.')
+			self.showStatus(info)
+
+		# ############################################################################
+		def showStatus(self, iText):
+			self.status.setText(str(iText))
+
+		# ############################################################################
+		def getChildPosition(self, iRootnode):
+			
+			pos = 0
+			for c in iRootnode.getChildren():
+				if str(c).find("SoSwitch") != -1:
+					return pos
+					break
+
+				pos = pos + 1
+
+			return -1
+
+		# ############################################################################
+		def fitTexture(self, iObj, iType="object"):
+		
+			rootnode = iObj.ViewObject.RootNode
+			
+			fit = ""
+			if iType == "object":
+				if hasattr(iObj, "Texture_Fit"):
+					if isinstance(iObj.Texture_Fit, str):
+						try:
+							fit = getMenuIndexFit[iObj.Texture_Fit]
+						except:
+							skip = 1
+			
+			if iType == "chooser":
+				try:
+					fit = getMenuIndexFit[str(self.oFit.currentText())]
+				except:
+					skip = 1
+			
+			if fit == "":
+				return
+				
+			# set coin fit mode
+			coordinate = ""
+			
+			if fit == "biggest":
+				coordinate = coin.SoTextureCoordinateDefault()
+			
+			if fit == "cube":
+				coordinate = coin.SoTextureCoordinateCube()
+
+			if fit == "cylinder":
+				coordinate = coin.SoTextureCoordinateCylinder()
+			
+			if fit == "sphere":
+				coordinate = coin.SoTextureCoordinateSphere()
+			
+			if fit == "glass":
+				coordinate = coin.SoTextureCoordinateEnvironment()
+			
+			if fit == "auto":
+				
+				coordinate = coin.SoTextureCoordinateDefault()
+				
+				if iObj.isDerivedFrom("Part::Box"):
+					coordinate = coin.SoTextureCoordinateCube()
+	
+				if iObj.isDerivedFrom("Part::Cylinder"):
+					coordinate = coin.SoTextureCoordinateCylinder()
+				
+				if iObj.isDerivedFrom("Part::Sphere"):
+					coordinate = coin.SoTextureCoordinateSphere()
+
+
+			# add fit texture
+			if str(coordinate) != "":
+				pos = self.getChildPosition(rootnode)
+				rootnode.insertChild(coordinate, pos)
+
+		# ############################################################################
+		def showTexture(self, iObjects=[], iType="", iFilename="", 
+						iRepeatX=1, iRepeatY=1, iRepeatZ=1, iAxisX=0, iAxisY=0, iAxisZ=1, iAngle=0):
+			
+			for o in iObjects:
+				rootnode = o.ViewObject.RootNode
+				
+				# try update existing node
+				updateST2 = False
+				updateST3T1 = False
+				updateST3T2 = False
+				
+				try:
+					for i in rootnode.getChildren():
+						
+						# existing filename
+						if iFilename != "":
+							if str(i).find("SoTexture2") != -1:
+								if hasattr(i, "filename"):
+									i.filename = iFilename
+									updateST2 = True
+
+						if str(i).find("SoTexture3Transform") != -1:
+							
+							# existing repeat
+							if hasattr(i, "scaleFactor"):
+								coinSFV = coin.SbVec3f(iRepeatX, iRepeatY, iRepeatZ)
+								i.scaleFactor.setValue(coinSFV)
+								updateST3T1 = True
+
+							# existing rotate
+							if hasattr(i, "rotation"):
+								axis = coin.SbVec3f(iAxisX, iAxisY, iAxisZ)
+								setRotation = coin.SbRotation( axis, iAngle )
+								i.rotation.setValue(setRotation)
+								updateST3T2 = True
+
+				except:
+					updateST2 = False
+					updateST3T1 = False
+					updateST3T2 = False
+			
+				# new repeat
+				if updateST3T1 == False:
+					trans = coin.SoTexture3Transform()
+					coinSFV = coin.SbVec3f(iRepeatX, iRepeatY, iRepeatZ)
+					trans.scaleFactor.setValue(coinSFV)
+				
+				# new rotation
+				if updateST3T2 == False:
+					trans = coin.SoTexture3Transform()
+					axis = coin.SbVec3f(iAxisX, iAxisY, iAxisZ)
+					coinRotation = coin.SbRotation( axis, iAngle )
+					trans.rotation.setValue(coinRotation)
+							
+					rootnode.insertChild(trans, 1)
+				
+				# new filename
+				if updateST2 == False and iFilename != "":
+					texture =  coin.SoTexture2()
+					texture.filename = iFilename
+					rootnode.insertChild(texture, 2)
+				
+				# fit texture
+				if iType == "saved":
+					self.fitTexture(o, "object")
+				
+				if iType == "url" or iType == "local" or iType == "preview":
+					self.fitTexture(o, "chooser")
+					
+				# set color
+				if self.oWhiteColor.isChecked():
+					MagicPanels.setColor(o, 0, (1.0, 1.0, 1.0, 1.0), "color")
+
+			FreeCAD.ActiveDocument.recompute()
+
+		# ############################################################################
+		def updatePreview(self, iTarget, repeatX, repeatY, repeatZ, rotateX, rotateY, rotateZ, step):
+			
+			for o in self.gObjects:
+				rootnode = o.ViewObject.RootNode
+				for i in rootnode.getChildren():
+					if str(i).find("SoTexture3Transform") != -1:
+						if hasattr(i, "scaleFactor") and hasattr(i, "rotation"):
+							
+							# repeat
+							if iTarget.startswith("repeat"):
+								coinSFV = coin.SbVec3f(repeatX, repeatY, repeatZ)
+								i.scaleFactor.setValue(coinSFV)
+								
+								# set new values to gui form
+								self.oRepeatXE.setText(str(repeatX))
+								self.oRepeatYE.setText(str(repeatY))
+								self.oRepeatZE.setText(str(repeatZ))
+								
+							# rotation
+							if iTarget.startswith("rotate"):
+								[ q1, q2, q3, q4 ] = i.rotation.getValue().getValue()
+								currentRotation = FreeCAD.Rotation(q1, q2, q3, q4)
+								addRotation = FreeCAD.Rotation( FreeCAD.Vector(rotateX, rotateY, rotateZ), step)
+								newRotation = addRotation * currentRotation
+								
+								axisX = newRotation.Axis.x
+								axisY = newRotation.Axis.y
+								axisZ = newRotation.Axis.z
+								angle = newRotation.Angle
+								axis = coin.SbVec3f(axisX, axisY, axisZ)
+								setRotation = coin.SbRotation( axis, angle )
+								i.rotation.setValue(setRotation)
+								
+								# set new values to gui form
+								self.oRotateAxisXE.setText(str( round(axisX, 4) ))
+								self.oRotateAxisYE.setText(str( round(axisY, 4) ))
+								self.oRotateAxisZE.setText(str( round(axisZ, 4) ))
+								self.oRotateAngleE.setText(str( round(math.degrees(angle), 4) ))
+
+			FreeCAD.ActiveDocument.recompute()
+
+		# ############################################################################
+		# actions - button press
+		# ############################################################################
 
 		# ############################################################################
 		def setSelection(self, selectedText):
@@ -433,61 +774,6 @@ def showQtMain():
 				
 				info = translate('setTextures', 'ALL OBJECTS, ') + str(self.gObjects[0].Label)
 				self.oObjectsI.setText(info)
-
-		# ############################################################################		
-		def loadLocalPath(self):
-			
-			hdd = str(QtGui.QFileDialog.getOpenFileName()[0])
-			self.oPathE.setText(hdd)
-			
-			dirname = os.path.dirname(hdd)
-			self.gFolderTextures = os.listdir(dirname)
-			self.gFolderTextures.sort()
-
-			filename = self.downloadTexture(self.gObjects[0], hdd)
-			self.previewTexture("hdd")
-	
-		# ############################################################################		
-		def loadURLPath(self):
-
-			url = str(self.oPathE.text())
-			filename = self.downloadTexture(self.gObjects[0], url)
-			if filename == "":
-				self.printBroken()
-			else:
-				self.previewTexture("url", filename)
-	
-		# ############################################################################
-		def browseP(self):
-			
-			try:
-				hdd = str(self.oPathE.text())
-				basename = os.path.basename(hdd)
-
-				index = self.gFolderTextures.index(basename)
-				if index > 0:
-					newhdd = hdd.replace(basename, self.gFolderTextures[index-1])
-					self.oPathE.setText(newhdd)
-					filename = self.downloadTexture(self.gObjects[0], newhdd)
-					self.previewTexture("hdd")
-			except:
-				skip = 1
-			
-		# ############################################################################
-		def browseN(self):
-			
-			try:
-				hdd = str(self.oPathE.text())
-				basename = os.path.basename(hdd)
-			
-				index = self.gFolderTextures.index(basename)
-				if index < len(self.gFolderTextures)-1:
-					newhdd = hdd.replace(basename, self.gFolderTextures[index+1])
-					self.oPathE.setText(newhdd)
-					filename = self.downloadTexture(self.gObjects[0], newhdd)
-					self.previewTexture("hdd")
-			except:
-				skip = 1
 
 		# ############################################################################
 		def getSelected(self):
@@ -545,11 +831,203 @@ def showQtMain():
 				self.oObjectsI.setText(self.infoStart)
 				error = translate('setTextures', 'setTextures: Error during refresh selection. Probably invalid object.')
 				FreeCAD.Console.PrintMessage(error)
+
+		# ############################################################################
+		def loadTextures(self):
+
+			if MagicPanels.gCurrentSelection == True:
+				self.setObjects()
+
+			self.gBrokenURL = dict()
+			empty = ""
+			
+			# search all objects and set URL
+			for o in self.gObjects:
+			
+				# if no texture found for object skip it
+				textureURL = self.getTextureURL(o)
+				if str(textureURL) == "":
+					continue
+				else:
+					empty = "no"
+
+				# chose URL or local HDD
+				if textureURL.startswith("http") or textureURL == "ShapeMaterial":
+					filename = self.downloadTexture(o, textureURL)
+				else:
+					filename = str(textureURL)
+				
+				# should be no empty
+				if str(filename) == "":
+					continue
+
+				# set texture
+				[ fit, repeatX, repeatY, repeatZ, axisX, axisY, axisZ, angle ] = self.getObjectAttributes(o)
+				self.showTexture([ o ], "saved", filename, repeatX, repeatY, repeatZ, axisX, axisY, axisZ, angle)
+				self.updateGUIAttributes(fit, repeatX, repeatY, repeatZ, axisX, axisY, axisZ, angle)
+
+			# set status
+			if empty == "":
+				iText = translate('setTextures', 'No textures URLs found.')
+				self.showStatus(iText)
+			
+			else:
+				if len(self.gBrokenURL) == 0:
+					self.showStatus(translate('setTextures', 'All textures has been loaded.'))
+				else:
+					self.printBroken()
+			
+		# ############################################################################		
+		def loadURLPath(self):
+
+			url = str(self.oPathE.text())
+			filename = self.downloadTexture(self.gObjects[0], url)
+			if filename == "":
+				self.printBroken()
+			else:
+				self.showTexture(iObjects=self.gObjects, iType="url", iFilename=filename)
+	
+		# ############################################################################		
+		def loadLocalPath(self):
+			
+			filename = str(QtGui.QFileDialog.getOpenFileName()[0])
+			self.oPathE.setText(filename)
+			
+			dirname = os.path.dirname(filename)
+			self.gFolderTextures = os.listdir(dirname)
+			self.gFolderTextures.sort()
+
+			self.showTexture(iObjects=self.gObjects, iType="local", iFilename=filename)
+	
+		# ############################################################################
+		def browseP(self):
+			
+			try:
+				filename = str(self.oPathE.text())
+				basename = os.path.basename(filename)
+
+				index = self.gFolderTextures.index(basename)
+				if index > 0:
+					filename = filename.replace(basename, self.gFolderTextures[index-1])
+					self.oPathE.setText(filename)
+					self.showTexture(iObjects=self.gObjects, iType="local", iFilename=filename)
+			except:
+				skip = 1
 			
 		# ############################################################################
-		# store texture attributes
-		# ############################################################################
+		def browseN(self):
+			
+			#try:
+			filename = str(self.oPathE.text())
+			basename = os.path.basename(filename)
 		
+			index = self.gFolderTextures.index(basename)
+			if index < len(self.gFolderTextures)-1:
+				filename = filename.replace(basename, self.gFolderTextures[index+1])
+				self.oPathE.setText(filename)
+				self.showTexture(iObjects=self.gObjects, iType="local", iFilename=filename)
+			#except:
+				#skip = 1
+
+		# ############################################################################
+		def setPreviewTarget(self):
+			skip = 1
+
+		# ############################################################################		
+		def setPreview1(self):
+			
+			if MagicPanels.gCurrentSelection == True:
+				self.setObjects()
+			
+			target = getMenuIndexPreview[self.oPreviewTarget.currentText()]
+			
+			repeatX = float(self.oRepeatXE.text())
+			repeatY = float(self.oRepeatYE.text())
+			repeatZ = float(self.oRepeatZE.text())
+			rotateX = 0
+			rotateY = 0
+			rotateZ = 0
+			rotateAngle = float(self.oRotateAngleE.text())
+			
+			if target == "repeatX":
+				repeatX = repeatX - float(self.oPreviewStepE.text())
+
+			if target == "repeatY":
+				repeatY = repeatY - float(self.oPreviewStepE.text())
+	
+			if target == "repeatZ":
+				repeatZ = repeatZ - float(self.oPreviewStepE.text())
+				
+			if target == "rotateX":
+				rotateX = 1
+				rotateAngle = - float(self.oPreviewStepE.text())
+
+			if target == "rotateY":
+				rotateY = 1
+				rotateAngle = - float(self.oPreviewStepE.text())
+
+			if target == "rotateZ":
+				rotateZ = 1
+				rotateAngle = - float(self.oPreviewStepE.text())
+				
+			self.updatePreview(target, repeatX, repeatY, repeatZ, rotateX, rotateY, rotateZ, rotateAngle)
+			
+		# ############################################################################		
+		def setPreview2(self):
+			
+			if MagicPanels.gCurrentSelection == True:
+				self.setObjects()
+
+			target = getMenuIndexPreview[self.oPreviewTarget.currentText()]
+			
+			repeatX = float(self.oRepeatXE.text())
+			repeatY = float(self.oRepeatYE.text())
+			repeatZ = float(self.oRepeatZE.text())
+			rotateX = 0
+			rotateY = 0
+			rotateZ = 0
+			rotateAngle = float(self.oRotateAngleE.text())
+			
+			if target == "repeatX":
+				repeatX = repeatX + float(self.oPreviewStepE.text())
+
+			if target == "repeatY":
+				repeatY = repeatY + float(self.oPreviewStepE.text())
+	
+			if target == "repeatZ":
+				repeatZ = repeatZ + float(self.oPreviewStepE.text())
+				
+			if target == "rotateX":
+				rotateX = 1
+				rotateAngle = float(self.oPreviewStepE.text())
+
+			if target == "rotateY":
+				rotateY = 1
+				rotateAngle = float(self.oPreviewStepE.text())
+
+			if target == "rotateZ":
+				rotateZ = 1
+				rotateAngle = float(self.oPreviewStepE.text())
+				
+			self.updatePreview(target, repeatX, repeatY, repeatZ, rotateX, rotateY, rotateZ, rotateAngle)
+		
+		# ############################################################################
+		def setTextureFit(self, selectedText):
+			skip = 1
+
+		# ############################################################################		
+		def previewTexture(self):
+			
+			repeatX = float(self.oRepeatXE.text())
+			repeatY = float(self.oRepeatYE.text())
+			repeatZ = float(self.oRepeatZE.text())
+			axisX = float(self.oRotateAxisXE.text())
+			axisY = float(self.oRotateAxisYE.text())
+			axisZ = float(self.oRotateAxisZE.text())
+			angle = math.radians( float(self.oRotateAngleE.text()) )
+			
+			self.showTexture(self.gObjects, "preview", "", repeatX, repeatY, repeatZ, axisX, axisY, axisZ, angle)
+
 		# ############################################################################
 		def storeTextures(self):
 
@@ -642,569 +1120,6 @@ def showQtMain():
 				self.showStatus(translate('setTextures', 'Texture properties has been stored.'))
 			else:
 				self.showStatus(translate('setTextures', 'Error during setting properties.'))
-
-		# ############################################################################
-		# Preview
-		# ############################################################################
-		
-		# ############################################################################
-		def setPreviewTarget(self):
-			skip = 1
-		
-		# ############################################################################		
-		def updatePreview(self, iTarget, repeatX, repeatY, repeatZ, rotateX, rotateY, rotateZ, step):
-			
-			for o in self.gObjects:
-				rootnode = o.ViewObject.RootNode
-				for i in rootnode.getChildren():
-					if str(i).find("SoTexture3Transform") != -1:
-						if hasattr(i, "scaleFactor") and hasattr(i, "rotation"):
-							
-							# repeat
-							if iTarget.startswith("repeat"):
-								coinSFV = coin.SbVec3f(repeatX, repeatY, repeatZ)
-								i.scaleFactor.setValue(coinSFV)
-								
-								# set new values to gui form
-								self.oRepeatXE.setText(str(repeatX))
-								self.oRepeatYE.setText(str(repeatY))
-								self.oRepeatZE.setText(str(repeatZ))
-								
-							# rotation
-							if iTarget.startswith("rotate"):
-								[ q1, q2, q3, q4 ] = i.rotation.getValue().getValue()
-								currentRotation = FreeCAD.Rotation(q1, q2, q3, q4)
-								addRotation = FreeCAD.Rotation( FreeCAD.Vector(rotateX, rotateY, rotateZ), step)
-								newRotation = addRotation * currentRotation
-								
-								axisX = newRotation.Axis.x
-								axisY = newRotation.Axis.y
-								axisZ = newRotation.Axis.z
-								angle = newRotation.Angle
-								axis = coin.SbVec3f(axisX, axisY, axisZ)
-								setRotation = coin.SbRotation( axis, angle )
-								i.rotation.setValue(setRotation)
-								
-								# set new values to gui form
-								self.oRotateAxisXE.setText(str( round(axisX, 4) ))
-								self.oRotateAxisYE.setText(str( round(axisY, 4) ))
-								self.oRotateAxisZE.setText(str( round(axisZ, 4) ))
-								self.oRotateAngleE.setText(str( round(math.degrees(angle), 4) ))
-
-			FreeCAD.ActiveDocument.recompute()
-	
-		# ############################################################################		
-		def setPreview1(self):
-			
-			if MagicPanels.gCurrentSelection == True:
-				self.setObjects()
-			
-			target = getMenuIndexPreview[self.oPreviewTarget.currentText()]
-			
-			repeatX = float(self.oRepeatXE.text())
-			repeatY = float(self.oRepeatYE.text())
-			repeatZ = float(self.oRepeatZE.text())
-			rotateX = 0
-			rotateY = 0
-			rotateZ = 0
-			rotateAngle = float(self.oRotateAngleE.text())
-			
-			if target == "repeatX":
-				repeatX = repeatX - float(self.oPreviewStepE.text())
-
-			if target == "repeatY":
-				repeatY = repeatY - float(self.oPreviewStepE.text())
-	
-			if target == "repeatZ":
-				repeatZ = repeatZ - float(self.oPreviewStepE.text())
-				
-			if target == "rotateX":
-				rotateX = 1
-				rotateAngle = - float(self.oPreviewStepE.text())
-
-			if target == "rotateY":
-				rotateY = 1
-				rotateAngle = - float(self.oPreviewStepE.text())
-
-			if target == "rotateZ":
-				rotateZ = 1
-				rotateAngle = - float(self.oPreviewStepE.text())
-				
-			self.updatePreview(target, repeatX, repeatY, repeatZ, rotateX, rotateY, rotateZ, rotateAngle)
-			
-		# ############################################################################		
-		def setPreview2(self):
-			
-			if MagicPanels.gCurrentSelection == True:
-				self.setObjects()
-
-			target = getMenuIndexPreview[self.oPreviewTarget.currentText()]
-			
-			repeatX = float(self.oRepeatXE.text())
-			repeatY = float(self.oRepeatYE.text())
-			repeatZ = float(self.oRepeatZE.text())
-			rotateX = 0
-			rotateY = 0
-			rotateZ = 0
-			rotateAngle = float(self.oRotateAngleE.text())
-			
-			if target == "repeatX":
-				repeatX = repeatX + float(self.oPreviewStepE.text())
-
-			if target == "repeatY":
-				repeatY = repeatY + float(self.oPreviewStepE.text())
-	
-			if target == "repeatZ":
-				repeatZ = repeatZ + float(self.oPreviewStepE.text())
-				
-			if target == "rotateX":
-				rotateX = 1
-				rotateAngle = float(self.oPreviewStepE.text())
-
-			if target == "rotateY":
-				rotateY = 1
-				rotateAngle = float(self.oPreviewStepE.text())
-
-			if target == "rotateZ":
-				rotateZ = 1
-				rotateAngle = float(self.oPreviewStepE.text())
-				
-			self.updatePreview(target, repeatX, repeatY, repeatZ, rotateX, rotateY, rotateZ, rotateAngle)
-		
-		# ############################################################################		
-		def previewTexture(self, iType="attributes", iFilename=""):
-			
-			fit = getMenuIndexFit[str(self.oFit.currentText())]
-			repeatX = float(self.oRepeatXE.text())
-			repeatY = float(self.oRepeatYE.text())
-			repeatZ = float(self.oRepeatZE.text())
-			axisX = float(self.oRotateAxisXE.text())
-			axisY = float(self.oRotateAxisYE.text())
-			axisZ = float(self.oRotateAxisZE.text())
-			angle = math.radians( float(self.oRotateAngleE.text()) )
-			
-			if iType == "url":
-				filename = iFilename
-			else:
-				filename = self.oPathE.text()
-			
-			for o in self.gObjects:
-				rootnode = o.ViewObject.RootNode
-				
-				# try update existing node
-				updateST2 = False
-				updateST3T1 = False
-				updateST3T2 = False
-				
-				try:
-					for i in rootnode.getChildren():
-						
-						# existing filename
-						if filename != "":
-							if iType == "hdd" or iType == "url":
-								if str(i).find("SoTexture2") != -1:
-									if hasattr(i, "filename"):
-										i.filename = filename
-										updateST2 = True
-
-						if str(i).find("SoTexture3Transform") != -1:
-							
-							# existing repeat
-							if hasattr(i, "scaleFactor"):
-								coinSFV = coin.SbVec3f(repeatX, repeatY, repeatZ)
-								i.scaleFactor.setValue(coinSFV)
-								updateST3T1 = True
-
-							# existing rotate
-							if hasattr(i, "rotation"):
-								axis = coin.SbVec3f(axisX, axisY, axisZ)
-								setRotation = coin.SbRotation( axis, angle )
-								i.rotation.setValue(setRotation)
-								updateST3T2 = True
-
-				except:
-					updateST2 = False
-					updateST3T1 = False
-					updateST3T2 = False
-			
-				# new repeat
-				if updateST3T1 == False:
-					trans = coin.SoTexture3Transform()
-					coinSFV = coin.SbVec3f(repeatX, repeatY, repeatZ)
-					trans.scaleFactor.setValue(coinSFV)
-				
-				# new rotation
-				if updateST3T2 == False:
-					trans = coin.SoTexture3Transform()
-					axis = coin.SbVec3f(axisX, axisY, axisZ)
-					coinRotation = coin.SbRotation( axis, angle )
-					trans.rotation.setValue(coinRotation)
-							
-					rootnode.insertChild(trans, 1)
-				
-				# new filename
-				if updateST2 == False and filename != "":
-					if iType == "hdd" or iType == "url":
-						texture =  coin.SoTexture2()
-						texture.filename = filename
-						rootnode.insertChild(texture, 2)
-				
-				# fit mode
-				coordinate = ""
-				
-				if fit == "biggest":
-					coordinate = coin.SoTextureCoordinateDefault()
-					
-				if fit == "cube":
-					coordinate = coin.SoTextureCoordinateCube()
-
-				if fit == "cylinder":
-					coordinate = coin.SoTextureCoordinateCylinder()
-				
-				if fit == "sphere":
-					coordinate = coin.SoTextureCoordinateSphere()
-				
-				if fit == "glass":
-					coordinate = coin.SoTextureCoordinateEnvironment()
-				
-				if fit == "auto":
-					
-					coordinate = coin.SoTextureCoordinateDefault()
-					
-					if o.isDerivedFrom("Part::Box"):
-						coordinate = coin.SoTextureCoordinateCube()
-		
-					if o.isDerivedFrom("Part::Cylinder"):
-						coordinate = coin.SoTextureCoordinateCylinder()
-					
-					if o.isDerivedFrom("Part::Sphere"):
-						coordinate = coin.SoTextureCoordinateSphere()
-
-				pos = self.getChildPosition(rootnode)
-				rootnode.insertChild(coordinate, pos)
-				
-				# set color
-				if self.oWhiteColor.isChecked():
-					if iType == "hdd" or iType == "url":
-						MagicPanels.setColor(o, 0, (1.0, 1.0, 1.0, 1.0), "color")
-		
-			FreeCAD.ActiveDocument.recompute()
-		
-		# ############################################################################
-		# load textures
-		# ############################################################################
-		
-		# ############################################################################
-		def getTextureURL(self, iObj):
-			
-			# support for texture URL stored at objects Texture_URL property
-			try:
-				textureURL = str(iObj.Texture_URL)
-				if textureURL != "":
-					return textureURL
-			except:
-				skip = 1
-
-			# support for texture URL stored at objects description
-			try:
-				textureURL = str(iObj.Label2)
-				if textureURL != "":
-					return textureURL
-			except:
-				skip = 1
-
-			# backward compatibility and support for manually added to Texture property
-			try:
-				textureURL = str(iObj.Texture)
-				if textureURL != "":
-					return textureURL
-			except:
-				skip = 1
-
-			# support for texture URL stored at Material Card TexturePath
-			try:
-				textureURL = str(iObj.Material.Material["TexturePath"])
-				if textureURL != "":
-					return textureURL
-			except:
-				skip = 1
-			
-			# support for texture URL stored at Material properties
-			try:
-				if iObj.ShapeMaterial.Name != "Default":
-					return "ShapeMaterial"
-			except:
-				skip = 1
-			
-			# no texture URL set
-			return ""
-		
-		# ############################################################################
-		def downloadTexture(self, iObj, iURL):
-			
-			import urllib.request
-			import tempfile
-			import os
-			
-			# create temp directory
-			tmpDir = tempfile.gettempdir()
-			tmpDir = os.path.join(tmpDir, "FreeCAD_Textures")
-			if not os.path.exists(tmpDir):
-				os.makedirs(tmpDir)
-
-			# get texture filename
-			if iURL == "ShapeMaterial":
-				textureFilename = str(iObj.Name) + "_" + str(iObj.ShapeMaterial.Name)
-			else:
-				textureFilename = os.path.basename(iURL)
-			
-			textureFilePath = os.path.join(tmpDir, textureFilename)
-
-			# check if file already exists and skip slow downloading
-			if not os.path.exists(textureFilePath):
-
-				# get image from URL
-				try:
-					if iURL == "ShapeMaterial":
-						import base64
-						img = iObj.ShapeMaterial.getAppearanceValue("TextureImage")
-						img = img.encode('utf-8')
-						data = base64.b64decode(img)
-					else:
-						data = urllib.request.urlopen(iURL).read()
-				except:
-					self.gBrokenURL[str(iObj.Label)] = iURL
-					return ""
-				
-				# create temp file with image
-				out = open(str(textureFilePath), "wb")
-				out.write(data)
-				out.close()
-
-			return textureFilePath
-
-		# ############################################################################
-		def setTexture(self, iObj, iFile):
-		
-			# init with default to allow texture loading without attributes
-			repeatX = 1
-			repeatY = 1
-			repeatZ = 1
-			axisX = 0
-			axisY = 0
-			axisZ = 1
-			angle = 0
-		
-			# ovewrite if there are attributes
-			if hasattr(iObj, "Texture_Repeat_X"):
-				repeatX = float(iObj.Texture_Repeat_X)
-			
-			if hasattr(iObj, "Texture_Repeat_Y"):
-				repeatY = float(iObj.Texture_Repeat_Y)
-			
-			if hasattr(iObj, "Texture_Repeat_Z"):
-				repeatZ = float(iObj.Texture_Repeat_Z)
-				
-			if hasattr(iObj, "Texture_Rotation_Axis_X"):
-				axisX = float(iObj.Texture_Rotation_Axis_X)
-			
-			if hasattr(iObj, "Texture_Rotation_Axis_Y"):
-				axisY = float(iObj.Texture_Rotation_Axis_Y)
-				
-			if hasattr(iObj, "Texture_Rotation_Axis_Z"):
-				axisZ = float(iObj.Texture_Rotation_Axis_Z)
-			
-			if hasattr(iObj, "Texture_Rotation_Angle"):
-				angle = math.radians(float(iObj.Texture_Rotation_Angle))
-			elif hasattr(iObj, "Texture_Rotation"):
-				angle = float(iObj.Texture_Rotation)
-			else:
-				skip = 1
-
-			# set node
-			rootnode = iObj.ViewObject.RootNode
-			
-			# try update existing node
-			updateST2 = False
-			updateST3T = False
-			try:
-				for i in rootnode.getChildren():
-					
-					if str(i).find("SoTexture2") != -1:
-						
-						if hasattr(i, "filename"):
-							i.filename = iFile
-							updateST2 = True
-					
-					if str(i).find("SoTexture3Transform") != -1:
-						
-						if hasattr(i, "scaleFactor") and hasattr(i, "rotation"):
-							
-							# repeat
-							coinSFV = coin.SbVec3f(repeatX, repeatY, repeatZ)
-							i.scaleFactor.setValue(coinSFV)
-							
-							# rotation
-							axis = coin.SbVec3f(axisX, axisY, axisZ)
-							coinRotation = coin.SbRotation( axis, angle )
-							i.rotation.setValue(coinRotation)
-							updateST3T = True
-			except:
-				updateST2 = False
-				updateST3T = False
-			
-			# add new if there is no transformation child
-			if updateST3T == False:
-
-				trans = coin.SoTexture3Transform()
-				
-				# repeat
-				coinSFV = coin.SbVec3f(repeatX, repeatY, repeatZ)
-				trans.scaleFactor.setValue(coinSFV)
-				
-				# rotation
-				axis = coin.SbVec3f(axisX, axisY, axisZ)
-				coinRotation = coin.SbRotation( axis, angle )
-				trans.rotation.setValue(coinRotation)
-						
-				rootnode.insertChild(trans, 1)
-			
-			if updateST2 == False:
-				
-				# set texture with URL
-				texture =  coin.SoTexture2()
-				texture.filename = iFile
-				rootnode.insertChild(texture, 2)
-
-			# reset gui values
-			self.oRepeatXE.setText("1")
-			self.oRepeatYE.setText("1")
-			self.oRepeatZE.setText("1")
-			self.oRotateAxisXE.setText("0")
-			self.oRotateAxisYE.setText("0")
-			self.oRotateAxisZE.setText("1")
-			self.oRotateAngleE.setText("0")
-
-		# ############################################################################
-		def getChildPosition(self, iRootnode):
-			
-			pos = 0
-			for c in iRootnode.getChildren():
-				if str(c).find("SoSwitch") != -1:
-					return pos
-					break
-
-				pos = pos + 1
-
-			return -1
-
-		# ############################################################################
-		def fitTexture(self, iObj):
-		
-			rootnode = iObj.ViewObject.RootNode
-		
-			if hasattr(iObj, "Texture_Fit"):
-				if isinstance(iObj.Texture_Fit, str):
-					cr = getMenuIndexFit[iObj.Texture_Fit]
-					
-					coordinate = ""
-					
-					if cr == "biggest":
-						coordinate = coin.SoTextureCoordinateDefault()
-					
-					if cr == "cube":
-						coordinate = coin.SoTextureCoordinateCube()
-
-					if cr == "cylinder":
-						coordinate = coin.SoTextureCoordinateCylinder()
-					
-					if cr == "sphere":
-						coordinate = coin.SoTextureCoordinateSphere()
-					
-					if cr == "glass":
-						coordinate = coin.SoTextureCoordinateEnvironment()
-					
-					if cr == "auto":
-						
-						coordinate = coin.SoTextureCoordinateDefault()
-						
-						if iObj.isDerivedFrom("Part::Box"):
-							coordinate = coin.SoTextureCoordinateCube()
-			
-						if iObj.isDerivedFrom("Part::Cylinder"):
-							coordinate = coin.SoTextureCoordinateCylinder()
-						
-						if iObj.isDerivedFrom("Part::Sphere"):
-							coordinate = coin.SoTextureCoordinateSphere()
-
-					# add fit texture
-					pos = self.getChildPosition(rootnode)
-					rootnode.insertChild(coordinate, pos)
-		
-		# ############################################################################
-		def printBroken(self):
-
-			FreeCAD.Console.PrintMessage("\n ====================== \n")
-			for n, b in self.gBrokenURL.items():
-				FreeCAD.Console.PrintMessage("\n")
-				FreeCAD.Console.PrintMessage(translate('setTextures', 'Object Label') + ': '+n)
-				FreeCAD.Console.PrintMessage("\n")
-				FreeCAD.Console.PrintMessage(translate('setTextures', 'Broken URL') + ': '+b)
-				FreeCAD.Console.PrintMessage("\n")
-			FreeCAD.Console.PrintMessage("\n ====================== \n")
-
-			info = ""
-			info += translate('setTextures', 'See console for broken URLs.')
-			self.showStatus(info)
-
-		# ############################################################################
-		def loadTextures(self):
-
-			if MagicPanels.gCurrentSelection == True:
-				self.setObjects()
-
-			self.gBrokenURL = dict()
-			empty = ""
-			
-			# search all objects and set URL
-			for obj in self.gObjects:
-				
-				# try set color
-				if self.oWhiteColor.isChecked():
-					MagicPanels.setColor(obj, 0, (1.0, 1.0, 1.0, 1.0), "color")
-					
-				textureURL = self.getTextureURL(obj)
-				
-				# if no texture found for object skip it
-				if str(textureURL) == "":
-					continue
-				else:
-					empty = "no"
-
-				# chose URL or local HDD
-				if textureURL.startswith("http") or textureURL == "ShapeMaterial":
-					filename = self.downloadTexture(obj, textureURL)
-				else:
-					filename = str(textureURL)
-				
-				# should be no empty
-				if str(filename) == "":
-					continue
-
-				# set texture
-				self.setTexture(obj, filename)
-				self.fitTexture(obj)
-
-			# set status
-			if empty == "":
-				iText = translate('setTextures', 'No textures URLs found.')
-				self.showStatus(iText)
-			
-			else:
-				if len(self.gBrokenURL) == 0:
-					self.showStatus(translate('setTextures', 'All textures has been loaded.'))
-				else:
-					self.printBroken()
 
 	# ############################################################################
 	# final settings, if needed
