@@ -56,6 +56,7 @@ gRoundPrecision = 2                        # should be set according to the user
 gSearchDepth = 200                         # recursive search depth <br>
 gKernelVersion = 0                         # FreeCAD version to add support for new kernel changes <br>
 gTheme = "default"                         # no theme by default <br>
+gMainWindowTheme = False                   # no theme to main window by default <br>
 gWoodThickness = 18                        # main construction wood thickness <br>
 gWoodSizeX = 600                           # default panel long size <br>
 gWoodSizeY = 300                           # default panel short size <br>
@@ -7864,6 +7865,16 @@ def getTheme(iType=""):
 		QDialogButtonBox#qt_msgbox_buttonbox > QPushButton {
 			width: 100%;
 		}
+		
+		QMainWindow > QWidget {
+			color: '''+color3+''';
+			border: 1px solid '''+color4+''';
+			background-color: qlineargradient( 
+				x1: 0, y1: 0, 
+				x2: 1, y2: 1,
+				stop: 0 '''+color1+''', stop: 1 '''+color2+'''
+			);
+		}
 
 	'''
 
@@ -7947,6 +7958,15 @@ def getTheme(iType=""):
 		}
 		QDialogButtonBox#qt_msgbox_buttonbox > QPushButton {
 			width: 100%;
+		}
+		
+		QMainWindow > QWidget {
+			color: '''+color3+''';
+			background-color: '''+color2+''';
+			border-left: 1px solid '''+color4+''';
+			border-top: 1px solid '''+color4+''';
+			border-right: 1px solid '''+color1+''';
+			border-bottom: 1px solid '''+color1+''';
 		}
 		
 	'''
@@ -8037,6 +8057,19 @@ def getTheme(iType=""):
 			width: 100%;
 		}
 		
+		QMainWindow > QWidget {
+			color: '''+color3+''';
+			background-color: qlineargradient( 
+				x1: 0, y1: 0, 
+				x2: 1, y2: 1,
+				stop: 0 '''+color2+''', stop: 1 '''+color1+'''
+			);
+			border-left: 1px solid '''+color1+''';
+			border-top: 1px solid '''+color1+''';
+			border-right: 1px solid '''+color4+''';
+			border-bottom: 1px solid '''+color4+''';
+		}
+		
 	'''
 
 	# ##############################################################
@@ -8044,12 +8077,13 @@ def getTheme(iType=""):
 	# ##############################################################
 
 	if iType[-3:] == " 3D":
-		return QtCSS3D
+		css = QtCSS3D
 	elif iType[-6:] == " 3D v2":
-		return QtCSS3Dv2
+		css = QtCSS3Dv2
 	else:
-		return QtCSS
+		css = QtCSS
 
+	return css
 
 # ###################################################################################################################
 '''
@@ -9133,6 +9167,14 @@ def updateGlobals():
 		if "wTheme" in wusStrings:
 			global gTheme
 			gTheme = wus.GetString('wTheme')
+	except:
+		skip = 1
+
+	# main window theme
+	try:
+		if "wMainWindowTheme" in wusBools:
+			global gMainWindowTheme
+			gMainWindowTheme = wus.GetBool('wMainWindowTheme')
 	except:
 		skip = 1
 

@@ -124,6 +124,21 @@ def showQtGUI():
 			self.oTheme.textActivated[str].connect(self.setThemeType)
 			self.oTheme.setMinimumWidth(150)
 			
+			# main window theme
+			self.oMainWindowThemeL = QtGui.QLabel(translate('magicSettings', 'Main window theme:'), self)
+			
+			self.oMainWindowThemeRB1 = QtGui.QRadioButton(self)
+			self.oMainWindowThemeRB1.setText(translate('magicSettings', 'yes'))
+			self.oMainWindowThemeRB1.toggled.connect(self.doNothing)
+
+			self.oMainWindowThemeRB2 = QtGui.QRadioButton(self)
+			self.oMainWindowThemeRB2.setText(translate('magicSettings', 'no'))
+			self.oMainWindowThemeRB2.toggled.connect(self.doNothing)
+
+			self.oMainWindowThemeGRP = QtGui.QButtonGroup(self)
+			self.oMainWindowThemeGRP.addButton(self.oMainWindowThemeRB1)
+			self.oMainWindowThemeGRP.addButton(self.oMainWindowThemeRB2)
+
 			# wood thickness
 			self.oWoodThicknessL = QtGui.QLabel(translate('magicSettings', 'Wood thickness:'), self)
 			self.oWoodThicknessE = QtGui.QLineEdit(self)
@@ -490,8 +505,15 @@ def showQtGUI():
 			self.Page11 = QtGui.QGridLayout()
 			self.Page11.addWidget(self.oThemeL, 0, 0)
 			self.Page11.addWidget(self.oTheme, 0, 1)
+			self.Page11mw = QtGui.QGridLayout()
+			self.Page11mw.addWidget(self.oMainWindowThemeL, 0, 0)
+			self.Page11mw.addWidget(self.oMainWindowThemeRB1, 0, 1)
+			self.Page11mw.addWidget(self.oMainWindowThemeRB2, 0, 2)
+			self.layTheme = QtGui.QVBoxLayout()
+			self.layTheme.addLayout(self.Page11)
+			self.layTheme.addLayout(self.Page11mw)
 			self.groupPage11 = QtGui.QGroupBox(None, self)
-			self.groupPage11.setLayout(self.Page11)
+			self.groupPage11.setLayout(self.layTheme)
 			
 			self.Page12 = QtGui.QGridLayout()
 			self.Page12.addWidget(self.oWoodThicknessL, 0, 0)
@@ -869,7 +891,16 @@ def showQtGUI():
 				self.oTheme.setCurrentText(MagicPanels.gTheme)
 			except:
 				skip = 1
-				
+			
+			try:
+				val = MagicPanels.gMainWindowTheme
+				if val == True:
+					self.oMainWindowThemeRB1.setChecked(True)
+				else:
+					self.oMainWindowThemeRB2.setChecked(True)
+			except:
+				skip = 1
+			
 			try:
 				val = MagicPanels.gWoodThickness
 				val = MagicPanels.unit2gui(val)
@@ -1245,6 +1276,9 @@ def showQtGUI():
 			# set theme
 			QtCSS = MagicPanels.getTheme(self.gTheme)
 			self.setStyleSheet(QtCSS)
+			
+			if MagicPanels.gMainWindowTheme == True:
+				FreeCADGui.getMainWindow().setStyleSheet(QtCSS)
 
 		# ############################################################################
 		def saveSettings(self):
@@ -1257,6 +1291,8 @@ def showQtGUI():
 				# ################################################################
 				
 				wus.SetString('wTheme', str(self.gTheme))
+				
+				wus.SetBool('wMainWindowTheme', self.oMainWindowThemeRB1.isChecked())
 				
 				val = self.oWoodThicknessE.text()
 				val = MagicPanels.unit2value(val)

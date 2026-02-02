@@ -203,6 +203,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * option to add theme to main window (magicSettings, MagicPanels) <br>
 > * support for Draft::PathArray objects at cut-list (getDimensions) <br>
 > * options to browse folder with textures and redesign GUI (setTextures) <br>
 > * attributes option for drilling via CNC (magicCNC) <br>
@@ -894,6 +895,7 @@ Available anchors to select:
 ### Settings - page 1
 
 * **Theme:** allows you to choose a color theme for all Woodworking workbench tools. Switching the theme causes an immediate preview on the tool interface. To save a given theme, press the `save settings` button. The `default` means no theme.
+* **Main window theme:** allows you to set theme to FreeCAD main window. The main window theme will be set by this [magicSettings](#magicsettings) tool during theme selection but after FreeCAD restart it disappear and also might be overwritten by FreeCAD during some tasks.
 * **Wood thickness:** allows you to set the default thickness of the wood you create. This setting is used by tools such as [magicStart](#magicstart), [wires2pad](#wires2pad), [Default panels](#default-panels) and all others.
 * **Wood size X (long):** means the longer size for `XY` default panel, see: [Default panels](#default-panels).
 * **Wood size Y (short):** means the shorter size for `XY` default panel, see: [Default panels](#default-panels).
