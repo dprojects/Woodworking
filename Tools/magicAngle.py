@@ -55,7 +55,7 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 280
+			toolSW = 350
 			toolSH = 400
 			
 			# ############################################################################
@@ -67,11 +67,13 @@ def showQtGUI():
 			if MagicPanels.gWindowStaysOnTop == True:
 				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
+			self.setMinimumSize(toolSW, toolSH)
+
 			# ############################################################################
 			# options - selection mode
 			# ############################################################################
 			
-			bsize = 50
+			bsize = 60
 			area = toolSW - 20
 			roffset = 10 + bsize
 			row = 10
@@ -299,19 +301,14 @@ def showQtGUI():
 			# show & init defaults
 			# ############################################################################
 
-			# show window
-			self.show()
-			
 			# set theme
 			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
 			self.setStyleSheet(QtCSS)
 			
-			# set window position
-			sw = self.width()
-			sh = self.height()
-			pw = int( FreeCADGui.getMainWindow().width() - sw ) - 5
-			ph = int( FreeCADGui.getMainWindow().height() - sh ) + 30
-			self.setGeometry(pw, ph, sw, sh)
+			# show window
+			self.show()
+			
+			MagicPanels.adjustGUI(self, "right-bottom")
 
 			# init
 			self.getSelected()

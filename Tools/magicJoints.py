@@ -93,30 +93,19 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 300
-			toolSH = 720
+			toolSW = 393
+			toolSH = 690
 			
-			area = toolSW - 50
-			
-			# active screen size (FreeCAD main window)
-			gSW = FreeCADGui.getMainWindow().width()
-			gSH = FreeCADGui.getMainWindow().height()
-
-			# tool screen position
-			gPW = 0 + 250
-			gPH = 50
-
 			# ############################################################################
 			# main window
 			# ############################################################################
 			
 			self.result = userCancelled
-			self.setGeometry(gPW, gPH, toolSW, toolSH)
 			self.setWindowTitle(translate('magicJoints', 'magicJoints'))
 			if MagicPanels.gWindowStaysOnTop == True:
 				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 			
-			self.setFixedHeight(toolSH)
+			self.setMinimumSize(toolSW, toolSH)
 
 			# ############################################################################
 			# options - 1st object
@@ -125,11 +114,10 @@ def showQtGUI():
 			# button
 			self.ob1B1 = QtGui.QPushButton(translate('magicJoints', 'set'), self)
 			self.ob1B1.clicked.connect(self.setObj1)
-			self.ob1B1.setFixedWidth(30)
+			self.ob1B1.setFixedWidth(50)
 			
 			# screen
 			self.ob1S = QtGui.QLabel("", self)
-			self.ob1S.setFixedWidth(area)
 			
 			# ############################################################################
 			# options - 2nd object
@@ -138,11 +126,10 @@ def showQtGUI():
 			# button
 			self.ob2B1 = QtGui.QPushButton(translate('magicJoints', 'set'), self)
 			self.ob2B1.clicked.connect(self.setObj2)
-			self.ob2B1.setFixedWidth(30)
+			self.ob2B1.setFixedWidth(50)
 			
 			# screen
 			self.ob2S = QtGui.QLabel("", self)
-			self.ob2S.setFixedWidth(area)
 			
 			# ############################################################################
 			# options - 3rd object
@@ -151,11 +138,10 @@ def showQtGUI():
 			# button
 			self.ob3B1 = QtGui.QPushButton(translate('magicJoints', 'set'), self)
 			self.ob3B1.clicked.connect(self.setObj3)
-			self.ob3B1.setFixedWidth(30)
+			self.ob3B1.setFixedWidth(50)
 			
 			# screen
 			self.ob3S = QtGui.QLabel("", self)
-			self.ob3S.setFixedWidth(area)
 			
 			# ############################################################################
 			# options - refresh all
@@ -309,12 +295,10 @@ def showQtGUI():
 			# button
 			self.e2B1 = QtGui.QPushButton(translate('magicJoints', 'set manually'), self)
 			self.e2B1.clicked.connect(self.setEditModeON)
-			self.e2B1.setFixedHeight(30)
 			
 			# button
 			self.e2B2 = QtGui.QPushButton(translate('magicJoints', 'finish manually'), self)
 			self.e2B2.clicked.connect(self.setEditModeOFF)
-			self.e2B2.setFixedHeight(30)
 			
 			# ############################################################################
 			# options - depth
@@ -334,12 +318,10 @@ def showQtGUI():
 			# apply button
 			self.e3B1 = QtGui.QPushButton(translate('magicJoints', 'create Mortise'), self)
 			self.e3B1.clicked.connect(self.setMortise)
-			self.e3B1.setFixedHeight(30)
 			
 			# apply button
 			self.e3B2 = QtGui.QPushButton(translate('magicJoints', 'create Tenon'), self)
 			self.e3B2.clicked.connect(self.setTenon)
-			self.e3B2.setFixedHeight(30)
 			
 			# ############################################################################
 			# options - final save both
@@ -508,9 +490,6 @@ def showQtGUI():
 			# show & init defaults
 			# ############################################################################
 
-			# init
-			self.show()
-			
 			# set theme
 			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
 			self.setStyleSheet(QtCSS)
@@ -520,6 +499,11 @@ def showQtGUI():
 			
 			if self.gCornerCrossSupport == True:
 				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(50)
+			
+			# init
+			self.show()
+			
+			MagicPanels.adjustGUI(self, "left-offset")
 			
 			self.getSelected()
 

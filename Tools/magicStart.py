@@ -132,11 +132,11 @@ def showQtGUI():
 		gSideEdgePlane = "X"
 		gSideDirection = "+"
 		
-		toolSW = 0
-		toolSH = 0
-		gPW = 0
-		gPH = 0
-		
+		toolSW = 480
+		toolSH = 700
+		imageSizeW = 200
+		imageSizeH = 200
+
 		# ############################################################################
 		# help info
 		# ############################################################################
@@ -747,64 +747,27 @@ def showQtGUI():
 		def initUI(self):
 
 			# ############################################################################
-			# set screen
-			# ############################################################################
-			
-			# tool screen size
-			self.toolSW = 550           # tool screen width
-			self.toolSH = 680           # tool screen height
-			
-			self.helpSW = 500           # help info screen width
-			self.helpSH = self.toolSH   # help info screen height
-			
-			# active screen size - FreeCAD main window
-			gSW = FreeCADGui.getMainWindow().width()
-			gSH = FreeCADGui.getMainWindow().height()
-
-			# tool screen position
-			self.gPW = 0
-			self.gPH = int( gSH - self.toolSH )
-
-			# ############################################################################
 			# main window
 			# ############################################################################
 			
 			self.result = userCancelled
-			self.setGeometry(self.gPW, self.gPH, self.toolSW, self.toolSH)
 			self.setWindowTitle(translate('magicStart', 'magicStart'))
 			if MagicPanels.gWindowStaysOnTop == True:
 				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
+			self.setMinimumSize(self.toolSW, self.toolSH)
+			
 			# ############################################################################
 			# options - settings
 			# ############################################################################
 			
-			row = 10                                           # main row
-			area = self.toolSW - 20                            # full width gui area
-			infoarea = area - 220                              # area for first info
-			
-			createSize = 40                                    # create button size
-			createRow = self.toolSH - createSize - 10          # row for create button
-			
 			ioffset = 10                                       # items offset
 			
-			starttfs = 120                                     # start text field size
-			startcZ = area - starttfs + 10                     # column for Z
-			startcY = startcZ - ioffset - starttfs             # column for Y
-			startcX = startcY - ioffset - starttfs             # column for X
+			createSize = 40                                    # create button height
 			
-			rsize1x = starttfs                                 # row size 1
-			rsize2x = (2 * starttfs) + ioffset                 # row size 2 x row
-			rsize3x = (3 * starttfs) + (2 * ioffset)           # row size 3 x row
-			
-			fieldSize = 100                                    # text field size
+			fieldSize = 200                                    # text field size
 			fieldSize2x = (2 * fieldSize) + ioffset            # text field size x2
 			fieldSize3x = (3 * fieldSize) + (2 * ioffset)      # text field size x3
-			
-			column0 = 10                                       # column 0 for label
-			column1 = 200                                      # column 1 for 1st text field
-			column2 = column1 + fieldSize + ioffset            # column 2 for 2nd text field
-			column3 = column2 + fieldSize + ioffset            # column 3 for 3rd text field
 			
 			# ############################################################################
 			# options - selection
@@ -924,58 +887,28 @@ def showQtGUI():
 			self.sMode.addItems(self.sModeList)
 			self.sMode.setCurrentIndex(0)
 			self.sMode.textActivated[str].connect(self.selectedOption)
-			self.sMode.resize(area - 30 - helpButtonSize, 40)
-			self.sMode.move(10, 10)
+			self.sMode.setMinimumWidth(380)
+			self.sMode.setStyleSheet("min-height: 40px;")
 
 			# ############################################################################
 			# help buttons and info screen
 			# ############################################################################
 			
-			# button
-			self.helpBSHOW = QtGui.QPushButton(translate('magicStart', 'HELP >'), self)
+			self.helpBSHOW = QtGui.QPushButton(translate('magicStart', 'show help info'), self)
 			self.helpBSHOW.clicked.connect(self.helpSHOW)
-			self.helpBSHOW.resize(helpButtonSize, 40)
-			self.helpBSHOW.move(self.toolSW - helpButtonSize - 30, 10)
+			self.helpBSHOW.setFixedHeight(createSize)
 
-			# button
-			self.helpBHIDE = QtGui.QPushButton(translate('magicStart', '< HELP'), self)
+			self.helpBHIDE = QtGui.QPushButton(translate('magicStart', 'hide help info'), self)
 			self.helpBHIDE.clicked.connect(self.helpHIDE)
-			self.helpBHIDE.resize(helpButtonSize, 40)
-			self.helpBHIDE.move(self.toolSW - helpButtonSize - 30, 10)
+			self.helpBHIDE.setFixedHeight(createSize)
 			self.helpBHIDE.hide()
 			
-			# label
 			self.helpInfo = QtGui.QLabel(self.gHelpInfoF73, self)
-			self.helpInfo.move(self.toolSW + 10, 10)
-			self.helpInfo.setFixedWidth(self.helpSW - 20)
-			self.helpInfo.setFixedHeight(self.helpSH - 20)
 			self.helpInfo.setWordWrap(True)
 			self.helpInfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
 			self.helpInfo.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
-
-			# ############################################################################
-			# custom row settings
-			# ############################################################################
-
-			row += 70
-			
-			rowhelp = row - 20
-			rowgap = row - 20
-			rowds = row - 20
-			rowfoot = row
-			rowtbl = row - 20
-			rowfront = row
-			rowfglass = row - 20
-			rowfdec = row - 20
-			rowodf = row - 20
-			rowfframe = row - 20
-			rowshelf = row
-			rowsseries = row - 20
-			rowcside = row
-			rowside = row - 20
-			rowsdec = row - 20
-			rowwsp = row - 20
-			rowback = row - 20
+			self.helpInfo.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
+			self.helpInfo.hide()
 			
 			# ############################################################################
 			# selection icon
@@ -984,8 +917,8 @@ def showQtGUI():
 			icon = ""
 			
 			self.si = QtGui.QLabel(icon, self)
-			self.si.setFixedWidth(200)
-			self.si.setFixedHeight(200)
+			self.si.setFixedWidth(self.imageSizeW)
+			self.si.setFixedHeight(self.imageSizeH)
 			self.si.setWordWrap(True)
 			self.si.setTextFormat(QtCore.Qt.TextFormat.RichText)
 			self.si.setOpenExternalLinks(True)
@@ -995,7 +928,6 @@ def showQtGUI():
 			# GUI for merge (hidden by default)
 			# ############################################################################
 
-			# label
 			info = translate('magicStart', 'This object has its own settings in spreadsheet and will be imported from Woodworking workbench Examples folder.')
 			info += '<br><br>'
 			info += translate('magicStart', 'More examples see at: ')
@@ -1008,317 +940,167 @@ def showQtGUI():
 			info += '</a></li>'
 			info += '</ul>'
 			self.minfo = QtGui.QLabel(info, self)
-			self.minfo.move(10, row+3)
-			self.minfo.setFixedWidth(200)
 			self.minfo.setWordWrap(True)
 			self.minfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.minfo.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 			self.minfo.hide()
 			
 			# button
 			self.mergeB = QtGui.QPushButton(translate('magicStart', 'import from examples'), self)
 			self.mergeB.clicked.connect(self.createObject)
-			self.mergeB.resize(area, createSize)
-			self.mergeB.move(10, createRow)
+			self.mergeB.setFixedHeight(createSize)
 			self.mergeB.hide()
 			
 			# ############################################################################
 			# GUI for Workspace (visible by default)
 			# ############################################################################
 			
-			# label
 			info = translate('magicStart', 'Choose one selection method and make selection before calculate or create button press, possible selections: <br><br> 1. Edge - to set workspace start XYZ position same as edge center <br><br> 2. Face - to set workspace start XYZ position same as face center <br><br> 3. Vertex - to set workspace start XYZ position same as vertex position <br><br> 4. no selection - to create with custom settings')
 			self.oworkspaceInfo = QtGui.QLabel(info, self)
-			self.oworkspaceInfo.move(10, rowwsp+3)
-			self.oworkspaceInfo.setFixedWidth(infoarea)
 			self.oworkspaceInfo.setWordWrap(True)
 			self.oworkspaceInfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.oworkspaceInfo.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 			
-			rowwsp += 220
-			
-			# label
 			self.oworkspaceXL = QtGui.QLabel(translate('magicStart', 'X size:'), self)
-			self.oworkspaceXL.move(10, rowwsp+3)
-
-			# text input
 			self.oworkspaceXE = QtGui.QLineEdit(self)
 			self.oworkspaceXE.setText(MagicPanels.unit2gui(3000))
-			self.oworkspaceXE.setFixedWidth(200)
-			self.oworkspaceXE.move(120, rowwsp)
-		
-			rowwsp += 30
+			self.oworkspaceXE.setFixedWidth(fieldSize)
 			
-			# label
 			self.oworkspaceYL = QtGui.QLabel(translate('magicStart', 'Y size:'), self)
-			self.oworkspaceYL.move(10, rowwsp+3)
-
-			# text input
 			self.oworkspaceYE = QtGui.QLineEdit(self)
 			self.oworkspaceYE.setText(MagicPanels.unit2gui(1500))
-			self.oworkspaceYE.setFixedWidth(200)
-			self.oworkspaceYE.move(120, rowwsp)
+			self.oworkspaceYE.setFixedWidth(fieldSize)
 			
-			rowwsp += 30
-			
-			# label
 			self.oworkspaceZL = QtGui.QLabel(translate('magicStart', 'Z size:'), self)
-			self.oworkspaceZL.move(10, rowwsp+3)
-
-			# text input
 			self.oworkspaceZE = QtGui.QLineEdit(self)
 			self.oworkspaceZE.setText(MagicPanels.unit2gui(10))
-			self.oworkspaceZE.setFixedWidth(200)
-			self.oworkspaceZE.move(120, rowwsp)
+			self.oworkspaceZE.setFixedWidth(fieldSize)
 			
-			rowwsp += 60
-			
-			# button
 			self.oworkspaceBCL = QtGui.QPushButton(translate('magicStart', 'calculate workspace position'), self)
 			self.oworkspaceBCL.clicked.connect(self.calculateWorkspace)
-			self.oworkspaceBCL.resize(area, createSize)
-			self.oworkspaceBCL.move(10, rowwsp)
+			self.oworkspaceBCL.setFixedHeight(createSize)
 			
-			rowwsp += 80
-			
-			# label
-			self.oworkspaceSL = QtGui.QLabel(translate('magicStart', 'Start XYZ:'), self)
-			self.oworkspaceSL.move(10, rowwsp+3)
-			
-			# text input
+			self.oworkspaceSXL = QtGui.QLabel(translate('magicStart', 'Start X:'), self)
 			self.oworkspaceSXE = QtGui.QLineEdit(self)
 			self.oworkspaceSXE.setText(MagicPanels.unit2gui(0))
-			self.oworkspaceSXE.setFixedWidth(starttfs)
-			self.oworkspaceSXE.move(startcX, rowwsp)
+			self.oworkspaceSXE.setFixedWidth(fieldSize)
 			
-			# text input
+			self.oworkspaceSYL = QtGui.QLabel(translate('magicStart', 'Start Y:'), self)
 			self.oworkspaceSYE = QtGui.QLineEdit(self)
 			self.oworkspaceSYE.setText(MagicPanels.unit2gui(0))
-			self.oworkspaceSYE.setFixedWidth(starttfs)
-			self.oworkspaceSYE.move(startcY, rowwsp)
+			self.oworkspaceSYE.setFixedWidth(fieldSize)
 			
-			# text input
+			self.oworkspaceSZL = QtGui.QLabel(translate('magicStart', 'Start Z:'), self)
 			self.oworkspaceSZE = QtGui.QLineEdit(self)
 			self.oworkspaceSZE.setText(MagicPanels.unit2gui(-10))
-			self.oworkspaceSZE.setFixedWidth(starttfs)
-			self.oworkspaceSZE.move(startcZ, rowwsp)
+			self.oworkspaceSZE.setFixedWidth(fieldSize)
 			
-			rowwsp += 40
-
-			# button
 			self.oworkspaceBCR = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.oworkspaceBCR.clicked.connect(self.createObject)
-			self.oworkspaceBCR.resize(area, createSize)
-			self.oworkspaceBCR.move(10, createRow)
+			self.oworkspaceBCR.setFixedHeight(createSize)
 
 			# ############################################################################
 			# GUI for furniture
 			# ############################################################################
 			
-			# label
 			self.oThickL = QtGui.QLabel(translate('magicStart', 'Construction wood thickness:'), self)
-			self.oThickL.move(column0, row+3)
-
-			# text input
 			self.oThickE = QtGui.QLineEdit(self)
 			self.oThickE.setText(MagicPanels.unit2gui(self.gThick))
 			self.oThickE.setFixedWidth(fieldSize)
-			self.oThickE.move(column1, row)
 			
-			row += 30
-			
-			# label
 			self.oThickBackL = QtGui.QLabel(translate('magicStart', 'Back wood thickness:'), self)
-			self.oThickBackL.move(column0, row+3)
-
-			# text input
 			self.oThickBackE = QtGui.QLineEdit(self)
 			self.oThickBackE.setText(MagicPanels.unit2gui(self.gThick))
 			self.oThickBackE.setFixedWidth(fieldSize)
-			self.oThickBackE.move(column1, row)
 			
-			row += 30
-			
-			# label
 			self.oThickShelfL = QtGui.QLabel(translate('magicStart', 'Shelf wood thickness:'), self)
-			self.oThickShelfL.move(column0, row+3)
-
-			# text input
 			self.oThickShelfE = QtGui.QLineEdit(self)
 			self.oThickShelfE.setText(MagicPanels.unit2gui(self.gThick))
 			self.oThickShelfE.setFixedWidth(fieldSize)
-			self.oThickShelfE.move(column1, row)
 			
-			row += 30
-			
-			# label
 			self.oThickFrontL = QtGui.QLabel(translate('magicStart', 'Front wood thickness:'), self)
-			self.oThickFrontL.move(column0, row+3)
-
-			# text input
 			self.oThickFrontE = QtGui.QLineEdit(self)
 			self.oThickFrontE.setText(MagicPanels.unit2gui(self.gThick))
 			self.oThickFrontE.setFixedWidth(fieldSize)
-			self.oThickFrontE.move(column1, row)
 			
-			row += 30
-			
-			# label
 			self.oOffsetFrontLL = QtGui.QLabel(translate('magicStart', 'Left front offset:'), self)
-			self.oOffsetFrontLL.move(column0, row+3)
-
-			# text input
 			self.oOffsetFrontLE = QtGui.QLineEdit(self)
 			self.oOffsetFrontLE.setText(MagicPanels.unit2gui(self.gThick))
 			self.oOffsetFrontLE.setFixedWidth(fieldSize)
-			self.oOffsetFrontLE.move(column1, row)
 			
-			row += 30
-			
-			# label
 			self.oOffsetFrontRL = QtGui.QLabel(translate('magicStart', 'Right front offset:'), self)
-			self.oOffsetFrontRL.move(column0, row+3)
-
-			# text input
 			self.oOffsetFrontRE = QtGui.QLineEdit(self)
 			self.oOffsetFrontRE.setText(MagicPanels.unit2gui(self.gThick))
 			self.oOffsetFrontRE.setFixedWidth(fieldSize)
-			self.oOffsetFrontRE.move(column1, row)
 			
-			row += 30
-			
-			# label
 			self.oOffsetFrontTL = QtGui.QLabel(translate('magicStart', 'Top front offset:'), self)
-			self.oOffsetFrontTL.move(column0, row+3)
-
-			# text input
 			self.oOffsetFrontTE = QtGui.QLineEdit(self)
 			self.oOffsetFrontTE.setText(MagicPanels.unit2gui(self.gThick))
 			self.oOffsetFrontTE.setFixedWidth(fieldSize)
-			self.oOffsetFrontTE.move(column1, row)
 			
-			row += 30
-			
-			# label
 			self.oOffsetFrontBL = QtGui.QLabel(translate('magicStart', 'Bottom front offset:'), self)
-			self.oOffsetFrontBL.move(column0, row+3)
-
-			# text input
 			self.oOffsetFrontBE = QtGui.QLineEdit(self)
 			self.oOffsetFrontBE.setText(MagicPanels.unit2gui(self.gThick))
 			self.oOffsetFrontBE.setFixedWidth(fieldSize)
-			self.oOffsetFrontBE.move(column1, row)
 			
-			row += 30
-			
-			# label
 			self.oModulesNumL = QtGui.QLabel(translate('magicStart', 'Modules number:'), self)
-			self.oModulesNumL.move(column0, row+3)
-
-			# text input
 			self.oModulesNumE = QtGui.QLineEdit(self)
 			self.oModulesNumE.setText("0")
 			self.oModulesNumE.setFixedWidth(fieldSize)
-			self.oModulesNumE.move(column1, row)
 			
-			row += 30
-			
-			# label
-			self.oSelectionOffsetL = QtGui.QLabel(translate('magicStart', 'Offset from selection XYZ:'), self)
-			self.oSelectionOffsetL.move(column0, row+3)
-			
-			# text input
+			self.oSelectionOffset1L = QtGui.QLabel(translate('magicStart', 'Offset from selection X:'), self)
 			self.oSelectionOffset1E = QtGui.QLineEdit(self)
 			self.oSelectionOffset1E.setText(MagicPanels.unit2gui(0))
 			self.oSelectionOffset1E.setFixedWidth(fieldSize)
-			self.oSelectionOffset1E.move(column1, row)
 			
-			# text input
+			self.oSelectionOffset2L = QtGui.QLabel(translate('magicStart', 'Offset from selection Y:'), self)
 			self.oSelectionOffset2E = QtGui.QLineEdit(self)
 			self.oSelectionOffset2E.setText(MagicPanels.unit2gui(0))
 			self.oSelectionOffset2E.setFixedWidth(fieldSize)
-			self.oSelectionOffset2E.move(column2, row)
 			
-			# text input
+			self.oSelectionOffset3L = QtGui.QLabel(translate('magicStart', 'Offset from selection Z:'), self)
 			self.oSelectionOffset3E = QtGui.QLineEdit(self)
 			self.oSelectionOffset3E.setText(MagicPanels.unit2gui(0))
 			self.oSelectionOffset3E.setFixedWidth(fieldSize)
-			self.oSelectionOffset3E.move(column3, row)
 			
-			row += 30
-
-			# label
 			self.oHeightL = QtGui.QLabel(translate('magicStart', 'Furniture along Z (height):'), self)
-			self.oHeightL.move(10, row+3)
-
-			# text input
 			self.oHeightE = QtGui.QLineEdit(self)
 			self.oHeightE.setText(MagicPanels.unit2gui(self.gFSZ))
-			self.oHeightE.setFixedWidth(fieldSize3x)
-			self.oHeightE.move(column1, row)
-
-			row += 50
+			self.oHeightE.setFixedWidth(fieldSize)
 			
-			# button
 			self.oCalculateB1 = QtGui.QPushButton(translate('magicStart', 'calculate furniture from selection'), self)
 			self.oCalculateB1.clicked.connect(self.calculateFurniture)
-			self.oCalculateB1.resize(area, createSize)
-			self.oCalculateB1.move(10, row)
+			self.oCalculateB1.setFixedHeight(createSize)
 			
-			row += 80
-			
-			# label
-			self.oStartXYZL = QtGui.QLabel(translate('magicStart', 'Start XYZ:'), self)
-			self.oStartXYZL.move(column0, row+3)
-			
-			# text input
+			self.oStartXL = QtGui.QLabel(translate('magicStart', 'Start X:'), self)
 			self.oStartXE = QtGui.QLineEdit(self)
 			self.oStartXE.setText(MagicPanels.unit2gui(0))
 			self.oStartXE.setFixedWidth(fieldSize)
-			self.oStartXE.move(column1, row)
 			
-			# text input
+			self.oStartYL = QtGui.QLabel(translate('magicStart', 'Start Y:'), self)
 			self.oStartYE = QtGui.QLineEdit(self)
 			self.oStartYE.setText(MagicPanels.unit2gui(0))
 			self.oStartYE.setFixedWidth(fieldSize)
-			self.oStartYE.move(column2, row)
 			
-			# text input
+			self.oStartZL = QtGui.QLabel(translate('magicStart', 'Start Z:'), self)
 			self.oStartZE = QtGui.QLineEdit(self)
 			self.oStartZE.setText(MagicPanels.unit2gui(0))
 			self.oStartZE.setFixedWidth(fieldSize)
-			self.oStartZE.move(column3, row)
-
-			row += 30
 			
-			# label
 			self.oWidthL = QtGui.QLabel(translate('magicStart', 'Furniture along X (width):'), self)
-			self.oWidthL.move(10, row+3)
-			
-			# text input
 			self.oWidthE = QtGui.QLineEdit(self)
 			self.oWidthE.setText(MagicPanels.unit2gui(self.gFSX))
-			self.oWidthE.setFixedWidth(fieldSize3x)
-			self.oWidthE.move(column1, row)
-
-			row += 30
+			self.oWidthE.setFixedWidth(fieldSize)
 			
-			# label
 			self.oDepthL = QtGui.QLabel(translate('magicStart', 'Furniture along Y (depth):'), self)
-			self.oDepthL.move(10, row+3)
-
-			# text input
 			self.oDepthE = QtGui.QLineEdit(self)
 			self.oDepthE.setText(MagicPanels.unit2gui(self.gFSY))
-			self.oDepthE.setFixedWidth(fieldSize3x)
-			self.oDepthE.move(column1, row)
+			self.oDepthE.setFixedWidth(fieldSize)
 			
-			row += 40
-
-			# button
 			self.oCreateB1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.oCreateB1.clicked.connect(self.createObject)
-			self.oCreateB1.resize(area, createSize)
-			self.oCreateB1.move(10, createRow)
-
+			self.oCreateB1.setFixedHeight(createSize)
+			
 			# hide by default
 			self.oThickL.hide()
 			self.oThickE.hide()
@@ -1338,14 +1120,18 @@ def showQtGUI():
 			self.oOffsetFrontBE.hide()
 			self.oModulesNumL.hide()
 			self.oModulesNumE.hide()
-			self.oSelectionOffsetL.hide()
+			self.oSelectionOffset1L.hide()
+			self.oSelectionOffset2L.hide()
+			self.oSelectionOffset3L.hide()
 			self.oSelectionOffset1E.hide()
 			self.oSelectionOffset2E.hide()
 			self.oSelectionOffset3E.hide()
 			self.oHeightL.hide()
 			self.oHeightE.hide()
 			self.oCalculateB1.hide()
-			self.oStartXYZL.hide()
+			self.oStartXL.hide()
+			self.oStartYL.hide()
+			self.oStartZL.hide()
 			self.oStartXE.hide()
 			self.oStartYE.hide()
 			self.oStartZE.hide()
@@ -1359,104 +1145,55 @@ def showQtGUI():
 			# GUI for foot (hidden by default)
 			# ############################################################################
 			
-			rowfoot -= 20
-			
-			# label
 			info = translate('magicStart', 'Possible selections, choose one method and make selection before calculate or create button press: <br><br> 1. XY face - to set size and position <br><br> 2. X edge - to set X size and position <br><br> 3. Vertex - to set XYZ start position <br><br> 4. no selection - to create with custom settings')
 			self.oFootInfo = QtGui.QLabel(info, self)
-			self.oFootInfo.move(10, rowfoot+3)
-			self.oFootInfo.setFixedWidth(infoarea)
 			self.oFootInfo.setWordWrap(True)
 			self.oFootInfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.oFootInfo.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 			
-			rowfoot += 200
-
-			# label
 			self.oFootThickL = QtGui.QLabel(translate('magicStart', 'Wood thickness:'), self)
-			self.oFootThickL.move(10, rowfoot+3)
-
-			# text input
 			self.oFootThickE = QtGui.QLineEdit(self)
 			self.oFootThickE.setText(MagicPanels.unit2gui(self.gThick))
-			self.oFootThickE.setFixedWidth(90)
-			self.oFootThickE.move(190, rowfoot)
-
-			rowfoot += 30
+			self.oFootThickE.setFixedWidth(fieldSize)
 			
-			# label
 			self.oFootSizeZL = QtGui.QLabel(translate('magicStart', 'Foot height (Z axis):'), self)
-			self.oFootSizeZL.move(10, rowfoot+3)
-
-			# text input
 			self.oFootSizeZE = QtGui.QLineEdit(self)
 			self.oFootSizeZE.setText(MagicPanels.unit2gui(100))
-			self.oFootSizeZE.setFixedWidth(90)
-			self.oFootSizeZE.move(190, rowfoot)
-
-			rowfoot += 30
+			self.oFootSizeZE.setFixedWidth(fieldSize)
 			
-			# button
 			self.oFootCalculateB = QtGui.QPushButton(translate('magicStart', 'calculate foot'), self)
 			self.oFootCalculateB.clicked.connect(self.calculateFoot)
-			self.oFootCalculateB.resize(area, createSize)
-			self.oFootCalculateB.move(10, rowfoot)
+			self.oFootCalculateB.setFixedHeight(createSize)
 			
-			rowfoot += 70
-			
-			# label
-			self.oFootStartL = QtGui.QLabel(translate('magicStart', 'Start XYZ:'), self)
-			self.oFootStartL.move(10, rowfoot+3)
-			
-			# text input
+			self.oFootStartXL = QtGui.QLabel(translate('magicStart', 'Start X:'), self)
 			self.oFootStartXE = QtGui.QLineEdit(self)
 			self.oFootStartXE.setText(MagicPanels.unit2gui(0))
-			self.oFootStartXE.setFixedWidth(starttfs)
-			self.oFootStartXE.move(startcX, rowfoot)
+			self.oFootStartXE.setFixedWidth(fieldSize)
 			
-			# text input
+			self.oFootStartYL = QtGui.QLabel(translate('magicStart', 'Start Y:'), self)
 			self.oFootStartYE = QtGui.QLineEdit(self)
 			self.oFootStartYE.setText(MagicPanels.unit2gui(0))
-			self.oFootStartYE.setFixedWidth(starttfs)
-			self.oFootStartYE.move(startcY, rowfoot)
+			self.oFootStartYE.setFixedWidth(fieldSize)
 			
-			# text input
+			self.oFootStartZL = QtGui.QLabel(translate('magicStart', 'Start Z:'), self)
 			self.oFootStartZE = QtGui.QLineEdit(self)
 			self.oFootStartZE.setText(MagicPanels.unit2gui(0))
-			self.oFootStartZE.setFixedWidth(starttfs)
-			self.oFootStartZE.move(startcZ, rowfoot)
-
-			rowfoot += 30
-
-			# label
-			self.oFootSizeXL = QtGui.QLabel(translate('magicStart', 'Foot width (X axis):'), self)
-			self.oFootSizeXL.move(10, rowfoot+3)
+			self.oFootStartZE.setFixedWidth(fieldSize)
 			
-			# text input
+			self.oFootSizeXL = QtGui.QLabel(translate('magicStart', 'Foot width (X axis):'), self)
 			self.oFootSizeXE = QtGui.QLineEdit(self)
 			self.oFootSizeXE.setText(MagicPanels.unit2gui(0))
-			self.oFootSizeXE.setFixedWidth(rsize2x)
-			self.oFootSizeXE.move(startcY, rowfoot)
-
-			rowfoot += 30
-
-			# label
+			self.oFootSizeXE.setFixedWidth(fieldSize)
+			
 			self.oFootSizeYL = QtGui.QLabel(translate('magicStart', 'Foot depth (Y axis):'), self)
-			self.oFootSizeYL.move(10, rowfoot+3)
-
-			# text input
 			self.oFootSizeYE = QtGui.QLineEdit(self)
 			self.oFootSizeYE.setText(MagicPanels.unit2gui(0))
-			self.oFootSizeYE.setFixedWidth(rsize2x)
-			self.oFootSizeYE.move(startcY, rowfoot)
-
-			rowfoot += 60
-
-			# button
+			self.oFootSizeYE.setFixedWidth(fieldSize)
+			
 			self.oFootCreateB = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.oFootCreateB.clicked.connect(self.createObject)
-			self.oFootCreateB.resize(area, createSize)
-			self.oFootCreateB.move(10, createRow)
-
+			self.oFootCreateB.setFixedHeight(createSize)
+			
 			# hide by default
 			self.oFootInfo.hide()
 			self.oFootThickL.hide()
@@ -1464,7 +1201,9 @@ def showQtGUI():
 			self.oFootSizeZL.hide()
 			self.oFootSizeZE.hide()
 			self.oFootCalculateB.hide()
-			self.oFootStartL.hide()
+			self.oFootStartXL.hide()
+			self.oFootStartYL.hide()
+			self.oFootStartZL.hide()
 			self.oFootStartXE.hide()
 			self.oFootStartYE.hide()
 			self.oFootStartZE.hide()
@@ -1478,125 +1217,64 @@ def showQtGUI():
 			# GUI for Table (hidden by default)
 			# ############################################################################
 			
-			# label
 			info = translate('magicStart', 'Possible selections: <br><br>1. Vertex - to set XYZ position <br><br>2. no selection - to create with custom settings')
 			self.oTableInfo = QtGui.QLabel(info, self)
-			self.oTableInfo.move(10, rowtbl+3)
-			self.oTableInfo.setFixedWidth(infoarea)
 			self.oTableInfo.setWordWrap(True)
 			self.oTableInfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.oTableInfo.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 		
-			rowtbl += 120
-			
-			# label
 			self.oTableSizeXL = QtGui.QLabel(translate('magicStart', 'Table width X:'), self)
-			self.oTableSizeXL.move(10, rowtbl+3)
-			
-			# text input
 			self.oTableSizeXE = QtGui.QLineEdit(self)
 			self.oTableSizeXE.setText(MagicPanels.unit2gui(990))
-			self.oTableSizeXE.setFixedWidth(90)
-			self.oTableSizeXE.move(150, rowtbl)
-
-			rowtbl += 30
-
-			# label
+			self.oTableSizeXE.setFixedWidth(fieldSize)
+			
 			self.oTableSizeYL = QtGui.QLabel(translate('magicStart', 'Table depth Y:'), self)
-			self.oTableSizeYL.move(10, rowtbl+3)
-
-			# text input
 			self.oTableSizeYE = QtGui.QLineEdit(self)
 			self.oTableSizeYE.setText(MagicPanels.unit2gui(525))
-			self.oTableSizeYE.setFixedWidth(90)
-			self.oTableSizeYE.move(150, rowtbl)
-
-			rowtbl += 30
-
-			# label
+			self.oTableSizeYE.setFixedWidth(fieldSize)
+			
 			self.oTableSizeZL = QtGui.QLabel(translate('magicStart', 'Table height Z:'), self)
-			self.oTableSizeZL.move(10, rowtbl+3)
-
-			# text input
 			self.oTableSizeZE = QtGui.QLineEdit(self)
 			self.oTableSizeZE.setText(MagicPanels.unit2gui(430))
-			self.oTableSizeZE.setFixedWidth(90)
-			self.oTableSizeZE.move(150, rowtbl)
-
-			rowtbl += 30
-
-			# label
+			self.oTableSizeZE.setFixedWidth(fieldSize)
+			
 			self.oTableTopThickL = QtGui.QLabel(translate('magicStart', 'Table top thickness:'), self)
-			self.oTableTopThickL.move(10, rowtbl+3)
-
-			# text input
 			self.oTableTopThickE = QtGui.QLineEdit(self)
 			self.oTableTopThickE.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
-			self.oTableTopThickE.setFixedWidth(90)
-			self.oTableTopThickE.move(220, rowtbl)
+			self.oTableTopThickE.setFixedWidth(fieldSize)
 
-			rowtbl += 30
-
-			# label
 			self.oTableLegThickL = QtGui.QLabel(translate('magicStart', 'Legs and Supporters thickness:'), self)
-			self.oTableLegThickL.move(10, rowtbl+3)
-
-			# text input
 			self.oTableLegThickE = QtGui.QLineEdit(self)
 			self.oTableLegThickE.setText(MagicPanels.unit2gui(80))
-			self.oTableLegThickE.setFixedWidth(90)
-			self.oTableLegThickE.move(220, rowtbl)
+			self.oTableLegThickE.setFixedWidth(fieldSize)
 			
-			rowtbl += 30
-
-			# label
 			self.oTableTopOffsetL = QtGui.QLabel(translate('magicStart', 'Table top offset:'), self)
-			self.oTableTopOffsetL.move(10, rowtbl+3)
-
-			# text input
 			self.oTableTopOffsetE = QtGui.QLineEdit(self)
 			self.oTableTopOffsetE.setText(MagicPanels.unit2gui(35))
-			self.oTableTopOffsetE.setFixedWidth(90)
-			self.oTableTopOffsetE.move(220, rowtbl)
-		
-			rowtbl += 60
+			self.oTableTopOffsetE.setFixedWidth(fieldSize)
 			
-			# button
 			self.oTableCalculateB = QtGui.QPushButton(translate('magicStart', 'calculate table position'), self)
 			self.oTableCalculateB.clicked.connect(self.calculateTable)
-			self.oTableCalculateB.resize(area, createSize)
-			self.oTableCalculateB.move(10, rowtbl)
+			self.oTableCalculateB.setFixedHeight(createSize)
 			
-			rowtbl += 70
-			
-			# label
-			self.oTableStartInfoL = QtGui.QLabel(translate('magicStart', 'Start XYZ:'), self)
-			self.oTableStartInfoL.move(10, rowtbl+3)
-			
-			# text input
+			self.oTableStartXL = QtGui.QLabel(translate('magicStart', 'Start X:'), self)
 			self.oTableStartXE = QtGui.QLineEdit(self)
 			self.oTableStartXE.setText(MagicPanels.unit2gui(0))
-			self.oTableStartXE.setFixedWidth(starttfs)
-			self.oTableStartXE.move(startcX, rowtbl)
+			self.oTableStartXE.setFixedWidth(fieldSize)
 			
-			# text input
+			self.oTableStartYL = QtGui.QLabel(translate('magicStart', 'Start Y:'), self)
 			self.oTableStartYE = QtGui.QLineEdit(self)
 			self.oTableStartYE.setText(MagicPanels.unit2gui(0))
-			self.oTableStartYE.setFixedWidth(starttfs)
-			self.oTableStartYE.move(startcY, rowtbl)
+			self.oTableStartYE.setFixedWidth(fieldSize)
 			
-			# text input
+			self.oTableStartZL = QtGui.QLabel(translate('magicStart', 'Start Z:'), self)
 			self.oTableStartZE = QtGui.QLineEdit(self)
 			self.oTableStartZE.setText(MagicPanels.unit2gui(0))
-			self.oTableStartZE.setFixedWidth(starttfs)
-			self.oTableStartZE.move(startcZ, rowtbl)
+			self.oTableStartZE.setFixedWidth(fieldSize)
 			
-			rowtbl += 40
-
-			# button
 			self.oTableCreateB = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.oTableCreateB.clicked.connect(self.createObject)
-			self.oTableCreateB.resize(area, createSize)
-			self.oTableCreateB.move(10, createRow)
+			self.oTableCreateB.setFixedHeight(createSize)
 			
 			# hide by default
 			self.oTableInfo.hide()
@@ -1613,7 +1291,9 @@ def showQtGUI():
 			self.oTableTopOffsetL.hide()
 			self.oTableTopOffsetE.hide()
 			self.oTableCalculateB.hide()
-			self.oTableStartInfoL.hide()
+			self.oTableStartXL.hide()
+			self.oTableStartYL.hide()
+			self.oTableStartZL.hide()
 			self.oTableStartXE.hide()
 			self.oTableStartYE.hide()
 			self.oTableStartZE.hide()
@@ -1623,213 +1303,100 @@ def showQtGUI():
 			# GUI for Single drawer (hidden by default)
 			# ############################################################################
 
-			# label
 			info = translate('magicStart', 'Possible selections: <br><br>1. top edge<br>2. top edge + back face<br>3. bottom edge + top edge<br>4. bottom edge + top edge + back face<br>5. bottom edge + top edge + left edge + right edge + back face<br><br>The edge can be along X or Y axis.')
 			self.og1i = QtGui.QLabel(info, self)
-			self.og1i.move(10, rowgap+3)
-			self.og1i.setFixedWidth(infoarea)
 			self.og1i.setWordWrap(True)
 			self.og1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			
-			rowgap += 150
+			self.og1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 
-			# label
-			self.og10L = QtGui.QLabel(translate('magicStart', 'Drawer front overlap:'), self)
-			self.og10L.setFixedWidth(150)
-			self.og10L.move(10, rowgap+3)
-
-			rowgap += 20
-
-			# label
-			self.og101L = QtGui.QLabel(translate('magicStart', 'Horizontal:'), self)
-			self.og101L.move(10, rowgap+3)
-			
-			# label
-			self.og102L = QtGui.QLabel(translate('magicStart', 'Vertical:'), self)
-			self.og102L.move(110, rowgap+3)
-			
-			rowgap += 20
-			
-			# text input
+			self.og101L = QtGui.QLabel(translate('magicStart', 'Drawer front horizontal overlap:'), self)
 			self.og101E = QtGui.QLineEdit(self)
 			self.og101E.setText(MagicPanels.unit2gui(9))
-			self.og101E.setFixedWidth(80)
-			self.og101E.move(10, rowgap)
+			self.og101E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.og102L = QtGui.QLabel(translate('magicStart', 'Drawer front vertical overlap:'), self)
 			self.og102E = QtGui.QLineEdit(self)
 			self.og102E.setText(MagicPanels.unit2gui(7))
-			self.og102E.setFixedWidth(80)
-			self.og102E.move(110, rowgap)
+			self.og102E.setFixedWidth(fieldSize)
 		
-			rowgap += 30
-			
-			# label
-			self.og8L = QtGui.QLabel(translate('magicStart', 'Drawer wood thickness:'), self)
-			self.og8L.move(10, rowgap+3)
-
-			rowgap += 20
-
-			# label
-			self.og81L = QtGui.QLabel(translate('magicStart', 'Front:'), self)
-			self.og81L.move(10, rowgap+3)
-			
-			# label
-			self.og82L = QtGui.QLabel(translate('magicStart', 'Sides:'), self)
-			self.og82L.move(110, rowgap+3)
-			
-			# label
-			self.og83L = QtGui.QLabel(translate('magicStart', 'Bottom:'), self)
-			self.og83L.move(210, rowgap+3)
-			
-			rowgap += 20
-			
-			# text input
+			self.og81L = QtGui.QLabel(translate('magicStart', 'Drawer front wood thickness:'), self)
 			self.og81E = QtGui.QLineEdit(self)
 			self.og81E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
-			self.og81E.setFixedWidth(80)
-			self.og81E.move(10, rowgap)
+			self.og81E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.og82L = QtGui.QLabel(translate('magicStart', 'Drawer sides wood thickness:'), self)
 			self.og82E = QtGui.QLineEdit(self)
 			self.og82E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
-			self.og82E.setFixedWidth(80)
-			self.og82E.move(110, rowgap)
+			self.og82E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.og83L = QtGui.QLabel(translate('magicStart', 'Drawer bottom wood thickness:'), self)
 			self.og83E = QtGui.QLineEdit(self)
 			self.og83E.setText(MagicPanels.unit2gui(3))
-			self.og83E.setFixedWidth(80)
-			self.og83E.move(210, rowgap)
+			self.og83E.setFixedWidth(fieldSize)
 			
-			rowgap += 30
-			
-			# label
-			self.og9L = QtGui.QLabel(translate('magicStart', 'Drawer system offsets:'), self)
-			self.og9L.move(10, rowgap+3)
-
-			rowgap += 20
-			
-			# label
-			self.og91L = QtGui.QLabel(translate('magicStart', 'Sides:'), self)
-			self.og91L.move(10, rowgap+3)
-			
-			# label
-			self.og92L = QtGui.QLabel(translate('magicStart', 'Back:'), self)
-			self.og92L.move(110, rowgap+3)
-			
-			# label
-			self.og93L = QtGui.QLabel(translate('magicStart', 'Top:'), self)
-			self.og93L.move(210, rowgap+3)
-			
-			# label
-			self.og94L = QtGui.QLabel(translate('magicStart', 'Bottom:'), self)
-			self.og94L.move(310, rowgap+3)
-
-			rowgap += 20
-			
-			# text input
+			self.og91L = QtGui.QLabel(translate('magicStart', 'Drawer system offsets for sides:'), self)
 			self.og91E = QtGui.QLineEdit(self)
 			self.og91E.setText(MagicPanels.unit2gui(26))
-			self.og91E.setFixedWidth(80)
-			self.og91E.move(10, rowgap)
+			self.og91E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.og92L = QtGui.QLabel(translate('magicStart', 'Drawer system offsets for back:'), self)
 			self.og92E = QtGui.QLineEdit(self)
 			self.og92E.setText(MagicPanels.unit2gui(20))
-			self.og92E.setFixedWidth(80)
-			self.og92E.move(110, rowgap)
+			self.og92E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.og93L = QtGui.QLabel(translate('magicStart', 'Drawer system offsets for top:'), self)
 			self.og93E = QtGui.QLineEdit(self)
 			self.og93E.setText(MagicPanels.unit2gui(30))
-			self.og93E.setFixedWidth(80)
-			self.og93E.move(210, rowgap)
+			self.og93E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.og94L = QtGui.QLabel(translate('magicStart', 'Drawer system offsets for bottom:'), self)
 			self.og94E = QtGui.QLineEdit(self)
 			self.og94E.setText(MagicPanels.unit2gui(10))
-			self.og94E.setFixedWidth(80)
-			self.og94E.move(310, rowgap)
-
-			rowgap += 50
-
-			# button
+			self.og94E.setFixedWidth(fieldSize)
+			
 			self.og4B1 = QtGui.QPushButton(translate('magicStart', 'calculate gap for drawer'), self)
 			self.og4B1.clicked.connect(self.calculateSingleDrawer)
-			self.og4B1.resize(area, createSize)
-			self.og4B1.move(10, rowgap)
+			self.og4B1.setFixedHeight(createSize)
 			
-			rowgap += 60
-			
-			# label
-			self.og2L = QtGui.QLabel(translate('magicStart', 'Gap start XYZ:'), self)
-			self.og2L.move(10, rowgap+3)
-			
-			# text input
+			self.og2L = QtGui.QLabel(translate('magicStart', 'Gap start X:'), self)
 			self.og2E = QtGui.QLineEdit(self)
 			self.og2E.setText(MagicPanels.unit2gui(0))
-			self.og2E.setFixedWidth(starttfs)
-			self.og2E.move(startcX, rowgap)
+			self.og2E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.og3L = QtGui.QLabel(translate('magicStart', 'Gap start Y:'), self)
 			self.og3E = QtGui.QLineEdit(self)
 			self.og3E.setText(MagicPanels.unit2gui(0))
-			self.og3E.setFixedWidth(starttfs)
-			self.og3E.move(startcY, rowgap)
+			self.og3E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.og4L = QtGui.QLabel(translate('magicStart', 'Gap start Z:'), self)
 			self.og4E = QtGui.QLineEdit(self)
 			self.og4E.setText(MagicPanels.unit2gui(0))
-			self.og4E.setFixedWidth(starttfs)
-			self.og4E.move(startcZ, rowgap)
+			self.og4E.setFixedWidth(fieldSize)
 			
-			rowgap += 30
-
-			# label
 			self.og5L = QtGui.QLabel(translate('magicStart', 'Gap width:'), self)
-			self.og5L.move(10, rowgap+3)
-			
-			# text input
 			self.og5E = QtGui.QLineEdit(self)
 			self.og5E.setText(MagicPanels.unit2gui(400))
-			self.og5E.setFixedWidth(rsize2x)
-			self.og5E.move(startcY, rowgap)
+			self.og5E.setFixedWidth(fieldSize)
 			
-			rowgap += 30
-			
-			# label
 			self.og6L = QtGui.QLabel(translate('magicStart', 'Gap height:'), self)
-			self.og6L.move(10, rowgap+3)
-
-			# text input
 			self.og6E = QtGui.QLineEdit(self)
 			self.og6E.setText(MagicPanels.unit2gui(150))
-			self.og6E.setFixedWidth(rsize2x)
-			self.og6E.move(startcY, rowgap)
+			self.og6E.setFixedWidth(fieldSize)
 			
-			rowgap += 30
-			
-			# label
 			self.og7L = QtGui.QLabel(translate('magicStart', 'Gap depth:'), self)
-			self.og7L.move(10, rowgap+3)
-
-			# text input
 			self.og7E = QtGui.QLineEdit(self)
 			self.og7E.setText(MagicPanels.unit2gui(350))
-			self.og7E.setFixedWidth(rsize2x)
-			self.og7E.move(startcY, rowgap)
+			self.og7E.setFixedWidth(fieldSize)
 			
-		
-			# button
 			self.og9B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.og9B1.clicked.connect(self.createObject)
-			self.og9B1.resize(area, createSize)
-			self.og9B1.move(10, createRow)
-
+			self.og9B1.setFixedHeight(createSize)
+			
 			# hide by default
 			self.og1i.hide()
 			self.og2L.hide()
+			self.og3L.hide()
+			self.og4L.hide()
 			self.og2E.hide()
 			self.og3E.hide()
 			self.og4E.hide()
@@ -1840,14 +1407,12 @@ def showQtGUI():
 			self.og6E.hide()
 			self.og7L.hide()
 			self.og7E.hide()
-			self.og8L.hide()
 			self.og81L.hide()
 			self.og82L.hide()
 			self.og83L.hide()
 			self.og81E.hide()
 			self.og82E.hide()
 			self.og83E.hide()
-			self.og9L.hide()
 			self.og91L.hide()
 			self.og92L.hide()
 			self.og93L.hide()
@@ -1857,7 +1422,6 @@ def showQtGUI():
 			self.og93E.hide()
 			self.og94E.hide()
 			self.og9B1.hide()
-			self.og10L.hide()
 			self.og101L.hide()
 			self.og102L.hide()
 			self.og101E.hide()
@@ -1867,255 +1431,120 @@ def showQtGUI():
 			# GUI for drawer series GAP (hidden by default)
 			# ############################################################################
 
-			# label
 			info = translate('magicStart', 'Please select 4 edges around the gap and back face: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge <br> 5. selection - back face')
 			self.ods1i = QtGui.QLabel(info, self)
-			self.ods1i.move(10, rowds+3)
-			self.ods1i.setFixedWidth(infoarea)
 			self.ods1i.setWordWrap(True)
 			self.ods1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.ods1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 			
-			rowds += 130
-			
-			# label
 			self.ods2L = QtGui.QLabel(translate('magicStart', 'Number of drawers:'), self)
-			self.ods2L.move(10, rowds+3)
-			
-			# text input
 			self.ods2E = QtGui.QLineEdit(self)
 			self.ods2E.setText("4")
-			self.ods2E.setFixedWidth(80)
-			self.ods2E.move(180, rowds)
-		
-			rowds += 30
-		
-			# label
-			self.ods11L = QtGui.QLabel(translate('magicStart', 'Drawer front overlap:'), self)
-			self.ods11L.setFixedWidth(150)
-			self.ods11L.move(10, rowds+3)
-
-			rowds += 20
-
-			# label
-			self.ods111L = QtGui.QLabel(translate('magicStart', 'Horizontal:'), self)
-			self.ods111L.move(10, rowds+3)
+			self.ods2E.setFixedWidth(fieldSize)
 			
-			# label
-			self.ods112L = QtGui.QLabel(translate('magicStart', 'Vertical:'), self)
-			self.ods112L.move(110, rowds+3)
-			
-			# label
-			self.ods113L = QtGui.QLabel(translate('magicStart', 'Space between:'), self)
-			self.ods113L.move(210, rowds+3)
-			
-			rowds += 20
-			
-			# text input
+			self.ods111L = QtGui.QLabel(translate('magicStart', 'Drawer front horizontal overlap:'), self)
 			self.ods111E = QtGui.QLineEdit(self)
 			self.ods111E.setText(MagicPanels.unit2gui(9))
-			self.ods111E.setFixedWidth(90)
-			self.ods111E.move(10, rowds)
+			self.ods111E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ods112L = QtGui.QLabel(translate('magicStart', 'Drawer front vertical overlap:'), self)
 			self.ods112E = QtGui.QLineEdit(self)
 			self.ods112E.setText(MagicPanels.unit2gui(7))
-			self.ods112E.setFixedWidth(90)
-			self.ods112E.move(110, rowds)
-		
-			# text input
+			self.ods112E.setFixedWidth(fieldSize)
+			
+			self.ods113L = QtGui.QLabel(translate('magicStart', 'Space between drawers fronts:'), self)
 			self.ods113E = QtGui.QLineEdit(self)
 			self.ods113E.setText(MagicPanels.unit2gui(4))
-			self.ods113E.setFixedWidth(90)
-			self.ods113E.move(210, rowds)
+			self.ods113E.setFixedWidth(fieldSize)
 			
-			rowds += 30
-			
-			# label
-			self.ods3L = QtGui.QLabel(translate('magicStart', 'Drawer wood thickness:'), self)
-			self.ods3L.move(10, rowds+3)
-
-			rowds += 20
-
-			# label
-			self.ods31L = QtGui.QLabel(translate('magicStart', 'Front:'), self)
-			self.ods31L.move(10, rowds+3)
-			
-			# label
-			self.ods32L = QtGui.QLabel(translate('magicStart', 'Sides:'), self)
-			self.ods32L.move(110, rowds+3)
-			
-			# label
-			self.ods33L = QtGui.QLabel(translate('magicStart', 'Bottom:'), self)
-			self.ods33L.move(210, rowds+3)
-			
-			rowds += 20
-			
-			# text input
+			self.ods31L = QtGui.QLabel(translate('magicStart', 'Drawer front wood thickness:'), self)
 			self.ods31E = QtGui.QLineEdit(self)
 			self.ods31E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
-			self.ods31E.setFixedWidth(80)
-			self.ods31E.move(10, rowds)
+			self.ods31E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ods32L = QtGui.QLabel(translate('magicStart', 'Drawer sides wood thickness:'), self)
 			self.ods32E = QtGui.QLineEdit(self)
 			self.ods32E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
-			self.ods32E.setFixedWidth(80)
-			self.ods32E.move(110, rowds)
+			self.ods32E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ods33L = QtGui.QLabel(translate('magicStart', 'Drawer bottom wood thickness:'), self)
 			self.ods33E = QtGui.QLineEdit(self)
 			self.ods33E.setText(MagicPanels.unit2gui(3))
-			self.ods33E.setFixedWidth(80)
-			self.ods33E.move(210, rowds)
+			self.ods33E.setFixedWidth(fieldSize)
 			
-			rowds += 30
-			
-			# label
-			self.ods4L = QtGui.QLabel(translate('magicStart', 'Drawer system offsets:'), self)
-			self.ods4L.move(10, rowds+3)
-
-			rowds += 20
-			
-			# label
-			self.ods41L = QtGui.QLabel(translate('magicStart', 'Sides:'), self)
-			self.ods41L.move(10, rowds+3)
-			
-			# label
-			self.ods42L = QtGui.QLabel(translate('magicStart', 'Back:'), self)
-			self.ods42L.move(110, rowds+3)
-			
-			# label
-			self.ods43L = QtGui.QLabel(translate('magicStart', 'Top:'), self)
-			self.ods43L.move(210, rowds+3)
-			
-			# label
-			self.ods44L = QtGui.QLabel(translate('magicStart', 'Bottom:'), self)
-			self.ods44L.move(310, rowds+3)
-			
-			# label
-			self.ods45L = QtGui.QLabel(translate('magicStart', 'Back sides:'), self)
-			self.ods45L.move(410, rowds+3)
-			
-			rowds += 20
-			
-			# text input
+			self.ods41L = QtGui.QLabel(translate('magicStart', 'Drawer system offsets for sides:'), self)
 			self.ods41E = QtGui.QLineEdit(self)
 			self.ods41E.setText(MagicPanels.unit2gui(26))
-			self.ods41E.setFixedWidth(80)
-			self.ods41E.move(10, rowds)
+			self.ods41E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ods42L = QtGui.QLabel(translate('magicStart', 'Drawer system offsets for back:'), self)
 			self.ods42E = QtGui.QLineEdit(self)
 			self.ods42E.setText(MagicPanels.unit2gui(20))
-			self.ods42E.setFixedWidth(80)
-			self.ods42E.move(110, rowds)
+			self.ods42E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ods43L = QtGui.QLabel(translate('magicStart', 'Drawer system offsets for top:'), self)
 			self.ods43E = QtGui.QLineEdit(self)
 			self.ods43E.setText(MagicPanels.unit2gui(30))
-			self.ods43E.setFixedWidth(80)
-			self.ods43E.move(210, rowds)
+			self.ods43E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ods44L = QtGui.QLabel(translate('magicStart', 'Drawer system offsets for bottom:'), self)
 			self.ods44E = QtGui.QLineEdit(self)
 			self.ods44E.setText(MagicPanels.unit2gui(10))
-			self.ods44E.setFixedWidth(80)
-			self.ods44E.move(310, rowds)
+			self.ods44E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ods45L = QtGui.QLabel(translate('magicStart', 'Drawer system offsets for back sides:'), self)
 			self.ods45E = QtGui.QLineEdit(self)
 			self.ods45E.setText(MagicPanels.unit2gui(87))
-			self.ods45E.setFixedWidth(80)
-			self.ods45E.move(410, rowds)
+			self.ods45E.setFixedWidth(fieldSize)
 			
-			rowds += 30
-			
-			# button
 			self.ods5B = QtGui.QPushButton(translate('magicStart', 'calculate gaps'), self)
 			self.ods5B.clicked.connect(self.calculateDrawerSeries)
-			self.ods5B.resize(area, createSize)
-			self.ods5B.move(10, rowds)
+			self.ods5B.setFixedHeight(createSize)
 			
-			rowds += 60
-			
-			# label
-			self.ods6L = QtGui.QLabel(translate('magicStart', 'Gap start XYZ:'), self)
-			self.ods6L.move(10, rowds+3)
-			
-			# text input
+			self.ods61L = QtGui.QLabel(translate('magicStart', 'Gap start X:'), self)
 			self.ods61E = QtGui.QLineEdit(self)
 			self.ods61E.setText(MagicPanels.unit2gui(0))
-			self.ods61E.setFixedWidth(starttfs)
-			self.ods61E.move(startcX, rowds)
+			self.ods61E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ods62L = QtGui.QLabel(translate('magicStart', 'Gap start Y:'), self)
 			self.ods62E = QtGui.QLineEdit(self)
 			self.ods62E.setText(MagicPanels.unit2gui(0))
-			self.ods62E.setFixedWidth(starttfs)
-			self.ods62E.move(startcY, rowds)
+			self.ods62E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ods63L = QtGui.QLabel(translate('magicStart', 'Gap start Z:'), self)
 			self.ods63E = QtGui.QLineEdit(self)
 			self.ods63E.setText(MagicPanels.unit2gui(0))
-			self.ods63E.setFixedWidth(starttfs)
-			self.ods63E.move(startcZ, rowds)
+			self.ods63E.setFixedWidth(fieldSize)
 			
-			rowds += 30
-
-			# label
 			self.ods7L = QtGui.QLabel(translate('magicStart', 'Single gap width:'), self)
-			self.ods7L.move(10, rowds+3)
-			
-			# text input
 			self.ods7E = QtGui.QLineEdit(self)
 			self.ods7E.setText(MagicPanels.unit2gui(400))
-			self.ods7E.setFixedWidth(rsize2x)
-			self.ods7E.move(startcY, rowds)
+			self.ods7E.setFixedWidth(fieldSize)
 			
-			rowds += 30
-			
-			# label
 			self.ods8L = QtGui.QLabel(translate('magicStart', 'Single gap height:'), self)
-			self.ods8L.move(10, rowds+3)
-
-			# text input
 			self.ods8E = QtGui.QLineEdit(self)
 			self.ods8E.setText(MagicPanels.unit2gui(150))
-			self.ods8E.setFixedWidth(rsize2x)
-			self.ods8E.move(startcY, rowds)
+			self.ods8E.setFixedWidth(fieldSize)
 			
-			rowds += 30
-			
-			# label
 			self.ods9L = QtGui.QLabel(translate('magicStart', 'Single gap depth:'), self)
-			self.ods9L.move(10, rowds+3)
-
-			# text input
 			self.ods9E = QtGui.QLineEdit(self)
 			self.ods9E.setText(MagicPanels.unit2gui(350))
-			self.ods9E.setFixedWidth(rsize2x)
-			self.ods9E.move(startcY, rowds)
+			self.ods9E.setFixedWidth(fieldSize)
 			
-			rowds += 30
-
-			# button
 			self.ods10B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ods10B.clicked.connect(self.createObject)
-			self.ods10B.resize(area, createSize)
-			self.ods10B.move(10, createRow)
-
+			self.ods10B.setFixedHeight(createSize)
+			
 			# hide by default
 			self.ods1i.hide()
 			self.ods2L.hide()
 			self.ods2E.hide()
-			self.ods3L.hide()
 			self.ods31L.hide()
 			self.ods32L.hide()
 			self.ods33L.hide()
 			self.ods31E.hide()
 			self.ods32E.hide()
 			self.ods33E.hide()
-			self.ods4L.hide()
 			self.ods41L.hide()
 			self.ods42L.hide()
 			self.ods43L.hide()
@@ -2127,7 +1556,9 @@ def showQtGUI():
 			self.ods44E.hide()
 			self.ods45E.hide()
 			self.ods5B.hide()
-			self.ods6L.hide()
+			self.ods61L.hide()
+			self.ods62L.hide()
+			self.ods63L.hide()
 			self.ods61E.hide()
 			self.ods62E.hide()
 			self.ods63E.hide()
@@ -2138,7 +1569,6 @@ def showQtGUI():
 			self.ods9L.hide()
 			self.ods9E.hide()
 			self.ods10B.hide()
-			self.ods11L.hide()
 			self.ods111L.hide()
 			self.ods112L.hide()
 			self.ods113L.hide()
@@ -2150,143 +1580,75 @@ def showQtGUI():
 			# GUI for Front from GAP (hidden by default)
 			# ############################################################################
 
-			# label
 			info = translate('magicStart', 'Please select 4 edges around the gap to calculate front size in this order: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
 			self.ofr1i = QtGui.QLabel(info, self)
-			self.ofr1i.move(10, rowfront+3)
-			self.ofr1i.setFixedWidth(infoarea)
 			self.ofr1i.setWordWrap(True)
 			self.ofr1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.ofr1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 			
-			rowfront += 130
-			
-			# label
 			self.ofr7L = QtGui.QLabel(translate('magicStart', 'Front thickness:'), self)
-			self.ofr7L.move(10, rowfront+3)
-
-			# text input
 			self.ofr7E = QtGui.QLineEdit(self)
 			self.ofr7E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
-			self.ofr7E.setFixedWidth(90)
-			self.ofr7E.move(120, rowfront)
-		
-			rowfront += 40
+			self.ofr7E.setFixedWidth(fieldSize)
 			
-			# label
-			self.ofr8L = QtGui.QLabel(translate('magicStart', 'Front offsets:'), self)
-			self.ofr8L.move(10, rowfront+3)
-
-			rowfront += 20
-			
-			# label
-			self.ofr81L = QtGui.QLabel(translate('magicStart', 'Left side:'), self)
-			self.ofr81L.move(10, rowfront+3)
-			
-			# label
-			self.ofr82L = QtGui.QLabel(translate('magicStart', 'Right side:'), self)
-			self.ofr82L.move(110, rowfront+3)
-			
-			# label
-			self.ofr83L = QtGui.QLabel(translate('magicStart', 'Top:'), self)
-			self.ofr83L.move(210, rowfront+3)
-			
-			# label
-			self.ofr84L = QtGui.QLabel(translate('magicStart', 'Bottom:'), self)
-			self.ofr84L.move(310, rowfront+3)
-
-			rowfront += 20
-			
-			# text input
+			self.ofr81L = QtGui.QLabel(translate('magicStart', 'Front offset from left:'), self)
 			self.ofr81E = QtGui.QLineEdit(self)
 			self.ofr81E.setText(MagicPanels.unit2gui(0))
-			self.ofr81E.setFixedWidth(80)
-			self.ofr81E.move(10, rowfront)
+			self.ofr81E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ofr82L = QtGui.QLabel(translate('magicStart', 'Front offset from right:'), self)
 			self.ofr82E = QtGui.QLineEdit(self)
 			self.ofr82E.setText(MagicPanels.unit2gui(0))
-			self.ofr82E.setFixedWidth(80)
-			self.ofr82E.move(110, rowfront)
+			self.ofr82E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ofr83L = QtGui.QLabel(translate('magicStart', 'Front offset from top:'), self)
 			self.ofr83E = QtGui.QLineEdit(self)
 			self.ofr83E.setText(MagicPanels.unit2gui(0))
-			self.ofr83E.setFixedWidth(80)
-			self.ofr83E.move(210, rowfront)
+			self.ofr83E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ofr84L = QtGui.QLabel(translate('magicStart', 'Front offset from bottom:'), self)
 			self.ofr84E = QtGui.QLineEdit(self)
 			self.ofr84E.setText(MagicPanels.unit2gui(0))
-			self.ofr84E.setFixedWidth(80)
-			self.ofr84E.move(310, rowfront)
-
-			rowfront += 40
+			self.ofr84E.setFixedWidth(fieldSize)
 			
-			# button
 			self.ofr4B1 = QtGui.QPushButton(translate('magicStart', 'calculate front'), self)
 			self.ofr4B1.clicked.connect(self.calculateFrontFromGap)
-			self.ofr4B1.resize(area, createSize)
-			self.ofr4B1.move(10, rowfront)
+			self.ofr4B1.setFixedHeight(createSize)
 			
-			rowfront += 80
-			
-			# label
-			self.ofr2L = QtGui.QLabel(translate('magicStart', 'Front start XYZ:'), self)
-			self.ofr2L.move(10, rowfront+3)
-			
-			# text input
+			self.ofr2L = QtGui.QLabel(translate('magicStart', 'Front start X:'), self)
 			self.ofr2E = QtGui.QLineEdit(self)
 			self.ofr2E.setText(MagicPanels.unit2gui(0))
-			self.ofr2E.setFixedWidth(starttfs)
-			self.ofr2E.move(startcX, rowfront)
+			self.ofr2E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ofr3L = QtGui.QLabel(translate('magicStart', 'Front start Y:'), self)
 			self.ofr3E = QtGui.QLineEdit(self)
 			self.ofr3E.setText(MagicPanels.unit2gui(0))
-			self.ofr3E.setFixedWidth(starttfs)
-			self.ofr3E.move(startcY, rowfront)
+			self.ofr3E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ofr4L = QtGui.QLabel(translate('magicStart', 'Front start Z:'), self)
 			self.ofr4E = QtGui.QLineEdit(self)
 			self.ofr4E.setText(MagicPanels.unit2gui(0))
-			self.ofr4E.setFixedWidth(starttfs)
-			self.ofr4E.move(startcZ, rowfront)
+			self.ofr4E.setFixedWidth(fieldSize)
 			
-			rowfront += 30
-
-			# label
 			self.ofr5L = QtGui.QLabel(translate('magicStart', 'Front width:'), self)
-			self.ofr5L.move(10, rowfront+3)
-			
-			# text input
 			self.ofr5E = QtGui.QLineEdit(self)
 			self.ofr5E.setText(MagicPanels.unit2gui(0))
-			self.ofr5E.setFixedWidth(rsize2x)
-			self.ofr5E.move(startcY, rowfront)
+			self.ofr5E.setFixedWidth(fieldSize)
 			
-			rowfront += 30
-			
-			# label
 			self.ofr6L = QtGui.QLabel(translate('magicStart', 'Front height:'), self)
-			self.ofr6L.move(10, rowfront+3)
-
-			# text input
 			self.ofr6E = QtGui.QLineEdit(self)
 			self.ofr6E.setText(MagicPanels.unit2gui(0))
-			self.ofr6E.setFixedWidth(rsize2x)
-			self.ofr6E.move(startcY, rowfront)
+			self.ofr6E.setFixedWidth(fieldSize)
 			
-			rowfront += 40
-
-			# button
 			self.ofr8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ofr8B1.clicked.connect(self.createObject)
-			self.ofr8B1.resize(area, createSize)
-			self.ofr8B1.move(10, createRow)
-
+			self.ofr8B1.setFixedHeight(createSize)
+			
 			# hide by default
 			self.ofr1i.hide()
 			self.ofr2L.hide()
+			self.ofr3L.hide()
+			self.ofr4L.hide()
 			self.ofr2E.hide()
 			self.ofr3E.hide()
 			self.ofr4E.hide()
@@ -2297,7 +1659,6 @@ def showQtGUI():
 			self.ofr6E.hide()
 			self.ofr7L.hide()
 			self.ofr7E.hide()
-			self.ofr8L.hide()
 			self.ofr81L.hide()
 			self.ofr82L.hide()
 			self.ofr83L.hide()
@@ -2312,146 +1673,74 @@ def showQtGUI():
 			# GUI for Back from GAP (hidden by default)
 			# ############################################################################
 
-			# label
 			info = translate('magicStart', 'Please select 4 edges around the gap to calculate back: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge from back model view <br> 4. selection - Z right edge from back model view')
 			self.oBackInfo = QtGui.QLabel(info, self)
-			self.oBackInfo.move(10, rowback+3)
-			self.oBackInfo.setFixedWidth(infoarea)
 			self.oBackInfo.setWordWrap(True)
 			self.oBackInfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.oBackInfo.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 			
-			rowback += 130
-			
-			# label
 			self.oBackThickL = QtGui.QLabel(translate('magicStart', 'Back thickness along Y:'), self)
-			self.oBackThickL.move(10, rowback+3)
-
-			# text input
 			self.oBackThickE = QtGui.QLineEdit(self)
 			self.oBackThickE.setText(MagicPanels.unit2gui(0))
-			self.oBackThickE.setFixedWidth(90)
-			self.oBackThickE.move(190, rowback)
+			self.oBackThickE.setFixedWidth(fieldSize)
 		
-			rowback += 40
-			
-			# label
-			self.oBackOffsetsL = QtGui.QLabel(translate('magicStart', 'Back offsets:'), self)
-			self.oBackOffsetsL.setFixedWidth(150)
-			self.oBackOffsetsL.move(10, rowback+3)
-
-			rowback += 20
-			
-			# label
-			self.oBackOffsets1L = QtGui.QLabel(translate('magicStart', 'Left side:'), self)
-			self.oBackOffsets1L.move(10, rowback+3)
-			
-			# label
-			self.oBackOffsets2L = QtGui.QLabel(translate('magicStart', 'Right side:'), self)
-			self.oBackOffsets2L.move(110, rowback+3)
-			
-			# label
-			self.oBackOffsets3L = QtGui.QLabel(translate('magicStart', 'Top:'), self)
-			self.oBackOffsets3L.move(210, rowback+3)
-			
-			# label
-			self.oBackOffsets4L = QtGui.QLabel(translate('magicStart', 'Bottom:'), self)
-			self.oBackOffsets4L.move(310, rowback+3)
-
-			rowback += 20
-			
-			# text input
+			self.oBackOffsets1L = QtGui.QLabel(translate('magicStart', 'Back offset from left:'), self)
 			self.oBackOffsets1E = QtGui.QLineEdit(self)
 			self.oBackOffsets1E.setText(MagicPanels.unit2gui(0))
-			self.oBackOffsets1E.setFixedWidth(80)
-			self.oBackOffsets1E.move(10, rowback)
+			self.oBackOffsets1E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.oBackOffsets2L = QtGui.QLabel(translate('magicStart', 'Back offset from right:'), self)
 			self.oBackOffsets2E = QtGui.QLineEdit(self)
 			self.oBackOffsets2E.setText(MagicPanels.unit2gui(0))
-			self.oBackOffsets2E.setFixedWidth(80)
-			self.oBackOffsets2E.move(110, rowback)
+			self.oBackOffsets2E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.oBackOffsets3L = QtGui.QLabel(translate('magicStart', 'Back offset from top:'), self)
 			self.oBackOffsets3E = QtGui.QLineEdit(self)
 			self.oBackOffsets3E.setText(MagicPanels.unit2gui(0))
-			self.oBackOffsets3E.setFixedWidth(80)
-			self.oBackOffsets3E.move(210, rowback)
+			self.oBackOffsets3E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.oBackOffsets4L = QtGui.QLabel(translate('magicStart', 'Back offset from bottom:'), self)
 			self.oBackOffsets4E = QtGui.QLineEdit(self)
 			self.oBackOffsets4E.setText(MagicPanels.unit2gui(0))
-			self.oBackOffsets4E.setFixedWidth(80)
-			self.oBackOffsets4E.move(310, rowback)
+			self.oBackOffsets4E.setFixedWidth(fieldSize)
 
-			rowback += 40
-			
-			# button
 			self.oBackBCL = QtGui.QPushButton(translate('magicStart', 'calculate back'), self)
 			self.oBackBCL.clicked.connect(self.calculateBack)
-			self.oBackBCL.resize(area, createSize)
-			self.oBackBCL.move(10, rowback)
+			self.oBackBCL.setFixedHeight(createSize)
 			
-			rowback += 80
-			
-			# label
-			self.oBackStartL = QtGui.QLabel(translate('magicStart', 'Start XYZ:'), self)
-			self.oBackStartL.move(10, rowback+3)
-			
-			# text input
+			self.oBackSXL = QtGui.QLabel(translate('magicStart', 'Start X:'), self)
 			self.oBackSXE = QtGui.QLineEdit(self)
 			self.oBackSXE.setText(MagicPanels.unit2gui(0))
-			self.oBackSXE.setFixedWidth(starttfs)
-			self.oBackSXE.move(startcX, rowback)
-			
-			# text input
+			self.oBackSXE.setFixedWidth(fieldSize)
+
+			self.oBackSYL = QtGui.QLabel(translate('magicStart', 'Start Y:'), self)
 			self.oBackSYE = QtGui.QLineEdit(self)
 			self.oBackSYE.setText(MagicPanels.unit2gui(0))
-			self.oBackSYE.setFixedWidth(starttfs)
-			self.oBackSYE.move(startcY, rowback)
+			self.oBackSYE.setFixedWidth(fieldSize)
 			
-			# text input
+			self.oBackSZL = QtGui.QLabel(translate('magicStart', 'Start Z:'), self)
 			self.oBackSZE = QtGui.QLineEdit(self)
 			self.oBackSZE.setText(MagicPanels.unit2gui(0))
-			self.oBackSZE.setFixedWidth(starttfs)
-			self.oBackSZE.move(startcZ, rowback)
+			self.oBackSZE.setFixedWidth(fieldSize)
 			
-			rowback += 30
-
-			# label
 			self.oBackSizeXL = QtGui.QLabel(translate('magicStart', 'Calculated back width along X:'), self)
-			self.oBackSizeXL.move(10, rowback+3)
-			
-			# text input
 			self.oBackSizeXE = QtGui.QLineEdit(self)
 			self.oBackSizeXE.setText(MagicPanels.unit2gui(0))
-			self.oBackSizeXE.setFixedWidth(rsize2x)
-			self.oBackSizeXE.move(startcY, rowback)
+			self.oBackSizeXE.setFixedWidth(fieldSize)
 			
-			rowback += 30
-			
-			# label
 			self.oBackSizeYL = QtGui.QLabel(translate('magicStart', 'Calculated back height along Z:'), self)
-			self.oBackSizeYL.move(10, rowback+3)
-
-			# text input
 			self.oBackSizeYE = QtGui.QLineEdit(self)
 			self.oBackSizeYE.setText(MagicPanels.unit2gui(0))
-			self.oBackSizeYE.setFixedWidth(rsize2x)
-			self.oBackSizeYE.move(startcY, rowback)
+			self.oBackSizeYE.setFixedWidth(fieldSize)
 			
-			rowback += 40
-
-			# button
 			self.oBackBCR = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.oBackBCR.clicked.connect(self.createObject)
-			self.oBackBCR.resize(area, createSize)
-			self.oBackBCR.move(10, createRow)
+			self.oBackBCR.setFixedHeight(createSize)
 
 			# hide by default
 			self.oBackInfo.hide()
 			self.oBackThickL.hide()
 			self.oBackThickE.hide()
-			self.oBackOffsetsL.hide()
 			self.oBackOffsets1L.hide()
 			self.oBackOffsets2L.hide()
 			self.oBackOffsets3L.hide()
@@ -2461,7 +1750,9 @@ def showQtGUI():
 			self.oBackOffsets3E.hide()
 			self.oBackOffsets4E.hide()
 			self.oBackBCL.hide()
-			self.oBackStartL.hide()
+			self.oBackSXL.hide()
+			self.oBackSYL.hide()
+			self.oBackSZL.hide()
 			self.oBackSXE.hide()
 			self.oBackSYE.hide()
 			self.oBackSZE.hide()
@@ -2475,139 +1766,69 @@ def showQtGUI():
 			# GUI for Front with glass (hidden by default)
 			# ############################################################################
 
-			# label
 			info = translate('magicStart', 'Please select 4 edges around the gap to calculate Front with glass: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
 			self.ofglass1i = QtGui.QLabel(info, self)
-			self.ofglass1i.move(10, rowfglass+3)
-			self.ofglass1i.setFixedWidth(infoarea)
 			self.ofglass1i.setWordWrap(True)
 			self.ofglass1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.ofglass1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 			
-			rowfglass += 120
-			
-			# label
 			self.ofglass2L = QtGui.QLabel(translate('magicStart', 'Wood thickness:'), self)
-			self.ofglass2L.move(10, rowfglass+3)
-			
-			# text input
 			self.ofglass2E = QtGui.QLineEdit(self)
 			self.ofglass2E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
-			self.ofglass2E.setFixedWidth(90)
-			self.ofglass2E.move(150, rowfglass)
+			self.ofglass2E.setFixedWidth(fieldSize)
 			
-			rowfglass += 30
-			
-			# label
 			self.ofglass3L = QtGui.QLabel(translate('magicStart', 'Overlap horizontal:'), self)
-			self.ofglass3L.setFixedWidth(120)
-			self.ofglass3L.move(10, rowfglass+3)
-
-			# text input
 			self.ofglass3E = QtGui.QLineEdit(self)
 			self.ofglass3E.setText(MagicPanels.unit2gui(0))
-			self.ofglass3E.setFixedWidth(90)
-			self.ofglass3E.move(150, rowfglass)
+			self.ofglass3E.setFixedWidth(fieldSize)
 		
-			rowfglass += 30
-
-			# label
 			self.ofglass4L = QtGui.QLabel(translate('magicStart', 'Overlap vertical:'), self)
-			self.ofglass4L.setFixedWidth(120)
-			self.ofglass4L.move(10, rowfglass+3)
-
-			# text input
 			self.ofglass4E = QtGui.QLineEdit(self)
 			self.ofglass4E.setText(MagicPanels.unit2gui(0))
-			self.ofglass4E.setFixedWidth(90)
-			self.ofglass4E.move(150, rowfglass)
+			self.ofglass4E.setFixedWidth(fieldSize)
 			
-			rowfglass += 30
-			
-			# label
 			self.ofglass5L = QtGui.QLabel(translate('magicStart', 'Glass thickness:'), self)
-			self.ofglass5L.move(10, rowfglass+3)
-
-			# text input
 			self.ofglass5E = QtGui.QLineEdit(self)
 			self.ofglass5E.setText(MagicPanels.unit2gui(4))
-			self.ofglass5E.setFixedWidth(90)
-			self.ofglass5E.move(150, rowfglass)
+			self.ofglass5E.setFixedWidth(fieldSize)
 			
-			rowfglass += 40
-			
-			# button
 			self.ofglass6B = QtGui.QPushButton(translate('magicStart', 'calculate front with glass'), self)
 			self.ofglass6B.clicked.connect(self.calculateFrontWithGlass)
-			self.ofglass6B.resize(area, createSize)
-			self.ofglass6B.move(10, rowfglass)
+			self.ofglass6B.setFixedHeight(createSize)
 			
-			rowfglass += 80
-			
-			# label
-			self.ofglass7L = QtGui.QLabel(translate('magicStart', 'Front start XYZ:'), self)
-			self.ofglass7L.move(10, rowfglass+3)
-			
-			# text input
+			self.ofglass71L = QtGui.QLabel(translate('magicStart', 'Front start X:'), self)
 			self.ofglass71E = QtGui.QLineEdit(self)
 			self.ofglass71E.setText(MagicPanels.unit2gui(0))
-			self.ofglass71E.setFixedWidth(starttfs)
-			self.ofglass71E.move(startcX, rowfglass)
+			self.ofglass71E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ofglass72L = QtGui.QLabel(translate('magicStart', 'Front start Y:'), self)
 			self.ofglass72E = QtGui.QLineEdit(self)
 			self.ofglass72E.setText(MagicPanels.unit2gui(0))
-			self.ofglass72E.setFixedWidth(starttfs)
-			self.ofglass72E.move(startcY, rowfglass)
+			self.ofglass72E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ofglass73L = QtGui.QLabel(translate('magicStart', 'Front start Z:'), self)
 			self.ofglass73E = QtGui.QLineEdit(self)
 			self.ofglass73E.setText(MagicPanels.unit2gui(0))
-			self.ofglass73E.setFixedWidth(starttfs)
-			self.ofglass73E.move(startcZ, rowfglass)
+			self.ofglass73E.setFixedWidth(fieldSize)
 			
-			rowfglass += 30
-			
-			# label
 			self.ofglass8L = QtGui.QLabel(translate('magicStart', 'Calculated single bar width:'), self)
-			self.ofglass8L.move(10, rowfglass+3)
-			
-			# text input
 			self.ofglass8E = QtGui.QLineEdit(self)
 			self.ofglass8E.setText(MagicPanels.unit2gui(0))
-			self.ofglass8E.setFixedWidth(rsize2x)
-			self.ofglass8E.move(startcY, rowfglass)
+			self.ofglass8E.setFixedWidth(fieldSize)
 			
-			rowfglass += 30
-			
-			# label
 			self.ofglass9L = QtGui.QLabel(translate('magicStart', 'Calculated front width:'), self)
-			self.ofglass9L.move(10, rowfglass+3)
-			
-			# text input
 			self.ofglass9E = QtGui.QLineEdit(self)
 			self.ofglass9E.setText(MagicPanels.unit2gui(0))
-			self.ofglass9E.setFixedWidth(rsize2x)
-			self.ofglass9E.move(startcY, rowfglass)
+			self.ofglass9E.setFixedWidth(fieldSize)
 			
-			rowfglass += 30
-			
-			# label
 			self.ofglass10L = QtGui.QLabel(translate('magicStart', 'Calculated front height:'), self)
-			self.ofglass10L.move(10, rowfglass+3)
-
-			# text input
 			self.ofglass10E = QtGui.QLineEdit(self)
 			self.ofglass10E.setText(MagicPanels.unit2gui(0))
-			self.ofglass10E.setFixedWidth(rsize2x)
-			self.ofglass10E.move(startcY, rowfglass)
-		
-			rowfglass += 40
+			self.ofglass10E.setFixedWidth(fieldSize)
 
-			# button
 			self.ofglass11B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ofglass11B.clicked.connect(self.createObject)
-			self.ofglass11B.resize(area, createSize)
-			self.ofglass11B.move(10, createRow)
+			self.ofglass11B.setFixedHeight(createSize)
 
 			# hide by default
 			self.ofglass1i.hide()
@@ -2620,7 +1841,9 @@ def showQtGUI():
 			self.ofglass5L.hide()
 			self.ofglass5E.hide()
 			self.ofglass6B.hide()
-			self.ofglass7L.hide()
+			self.ofglass71L.hide()
+			self.ofglass72L.hide()
+			self.ofglass73L.hide()
 			self.ofglass71E.hide()
 			self.ofglass72E.hide()
 			self.ofglass73E.hide()
@@ -2636,141 +1859,69 @@ def showQtGUI():
 			# GUI for Decorative front (hidden by default)
 			# ############################################################################
 
-			# label
 			info = translate('magicStart', 'Please select 4 edges around the gap to calculate decorative front: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
 			self.odf1i = QtGui.QLabel(info, self)
-			self.odf1i.move(10, rowodf+3)
-			self.odf1i.setFixedWidth(infoarea)
 			self.odf1i.setWordWrap(True)
 			self.odf1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			
-			rowodf += 120
-			
-			# label
+			self.odf1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
+
 			self.odf2L = QtGui.QLabel(translate('magicStart', 'Single beam thickness:'), self)
-			self.odf2L.setFixedWidth(160)
-			self.odf2L.move(10, rowodf+3)
-			
-			# text input
 			self.odf2E = QtGui.QLineEdit(self)
 			self.odf2E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
-			self.odf2E.setFixedWidth(90)
-			self.odf2E.move(170, rowodf)
-			
-			rowodf += 30
-			
-			# label
-			self.odf3L = QtGui.QLabel(translate('magicStart', 'Front overlap horizontal:'), self)
-			self.odf3L.setFixedWidth(160)
-			self.odf3L.move(10, rowodf+3)
+			self.odf2E.setFixedWidth(fieldSize)
 
-			# text input
+			self.odf3L = QtGui.QLabel(translate('magicStart', 'Front overlap horizontal:'), self)
 			self.odf3E = QtGui.QLineEdit(self)
 			self.odf3E.setText(MagicPanels.unit2gui(0))
-			self.odf3E.setFixedWidth(90)
-			self.odf3E.move(170, rowodf)
-		
-			rowodf += 30
+			self.odf3E.setFixedWidth(fieldSize)
 
-			# label
 			self.odf4L = QtGui.QLabel(translate('magicStart', 'Front overlap vertical:'), self)
-			self.odf4L.setFixedWidth(160)
-			self.odf4L.move(10, rowodf+3)
-
-			# text input
 			self.odf4E = QtGui.QLineEdit(self)
 			self.odf4E.setText(MagicPanels.unit2gui(0))
-			self.odf4E.setFixedWidth(90)
-			self.odf4E.move(170, rowodf)
+			self.odf4E.setFixedWidth(fieldSize)
 			
-			rowodf += 30
-			
-			# label
 			self.odf5L = QtGui.QLabel(translate('magicStart', 'Inner board thickness:'), self)
-			self.odf5L.setFixedWidth(160)
-			self.odf5L.move(10, rowodf+3)
-
-			# text input
 			self.odf5E = QtGui.QLineEdit(self)
 			self.odf5E.setText(MagicPanels.unit2gui(6))
-			self.odf5E.setFixedWidth(90)
-			self.odf5E.move(170, rowodf)
-			
-			rowodf += 40
-			
-			# button
+			self.odf5E.setFixedWidth(fieldSize)
+
 			self.odf6B = QtGui.QPushButton(translate('magicStart', 'calculate decorative front'), self)
 			self.odf6B.clicked.connect(self.calculateDecorativeFront)
-			self.odf6B.resize(area, createSize)
-			self.odf6B.move(10, rowodf)
+			self.odf6B.setFixedHeight(createSize)
 			
-			rowodf += 80
-			
-			# label
-			self.odf7L = QtGui.QLabel(translate('magicStart', 'Front start XYZ:'), self)
-			self.odf7L.move(10, rowodf+3)
-			
-			# text input
+			self.odf71L = QtGui.QLabel(translate('magicStart', 'Front start X:'), self)
 			self.odf71E = QtGui.QLineEdit(self)
 			self.odf71E.setText(MagicPanels.unit2gui(0))
-			self.odf71E.setFixedWidth(starttfs)
-			self.odf71E.move(startcX, rowodf)
-			
-			# text input
+			self.odf71E.setFixedWidth(fieldSize)
+
+			self.odf72L = QtGui.QLabel(translate('magicStart', 'Front start Y:'), self)
 			self.odf72E = QtGui.QLineEdit(self)
 			self.odf72E.setText(MagicPanels.unit2gui(0))
-			self.odf72E.setFixedWidth(starttfs)
-			self.odf72E.move(startcY, rowodf)
+			self.odf72E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.odf73L = QtGui.QLabel(translate('magicStart', 'Front start Z:'), self)
 			self.odf73E = QtGui.QLineEdit(self)
 			self.odf73E.setText(MagicPanels.unit2gui(0))
-			self.odf73E.setFixedWidth(starttfs)
-			self.odf73E.move(startcZ, rowodf)
+			self.odf73E.setFixedWidth(fieldSize)
 			
-			rowodf += 30
-			
-			# label
 			self.odf8L = QtGui.QLabel(translate('magicStart', 'Calculated single beam width:'), self)
-			self.odf8L.move(10, rowodf+3)
-			
-			# text input
 			self.odf8E = QtGui.QLineEdit(self)
 			self.odf8E.setText(MagicPanels.unit2gui(0))
-			self.odf8E.setFixedWidth(rsize2x)
-			self.odf8E.move(startcY, rowodf)
+			self.odf8E.setFixedWidth(fieldSize)
 			
-			rowodf += 30
-			
-			# label
 			self.odf9L = QtGui.QLabel(translate('magicStart', 'Calculated front width:'), self)
-			self.odf9L.move(10, rowodf+3)
-			
-			# text input
 			self.odf9E = QtGui.QLineEdit(self)
 			self.odf9E.setText(MagicPanels.unit2gui(0))
-			self.odf9E.setFixedWidth(rsize2x)
-			self.odf9E.move(startcY, rowodf)
+			self.odf9E.setFixedWidth(fieldSize)
 			
-			rowodf += 30
-			
-			# label
 			self.odf10L = QtGui.QLabel(translate('magicStart', 'Calculated front height:'), self)
-			self.odf10L.move(10, rowodf+3)
-
-			# text input
 			self.odf10E = QtGui.QLineEdit(self)
 			self.odf10E.setText(MagicPanels.unit2gui(0))
-			self.odf10E.setFixedWidth(rsize2x)
-			self.odf10E.move(startcY, rowodf)
+			self.odf10E.setFixedWidth(fieldSize)
 		
-			rowodf += 40
-
-			# button
 			self.odf11B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.odf11B.clicked.connect(self.createObject)
-			self.odf11B.resize(area, createSize)
-			self.odf11B.move(10, createRow)
+			self.odf11B.setFixedHeight(createSize)
 
 			# hide by default
 			self.odf1i.hide()
@@ -2783,7 +1934,9 @@ def showQtGUI():
 			self.odf5L.hide()
 			self.odf5E.hide()
 			self.odf6B.hide()
-			self.odf7L.hide()
+			self.odf71L.hide()
+			self.odf72L.hide()
+			self.odf73L.hide()
 			self.odf71E.hide()
 			self.odf72E.hide()
 			self.odf73E.hide()
@@ -2799,125 +1952,64 @@ def showQtGUI():
 			# GUI for Front decoration (hidden by default)
 			# ############################################################################
 
-			# label
 			info = translate('magicStart', 'Please select face or 4 edges around the front to calculate Front decoration: <br><br> 1. selection - XZ face of front<br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
 			self.ofdec1i = QtGui.QLabel(info, self)
-			self.ofdec1i.move(10, rowfdec+3)
-			self.ofdec1i.setFixedWidth(infoarea)
 			self.ofdec1i.setWordWrap(True)
 			self.ofdec1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.ofdec1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 			
-			rowfdec += 170
-			
-			# label
 			self.ofdec2L = QtGui.QLabel(translate('magicStart', 'Single bar width:'), self)
-			self.ofdec2L.move(10, rowfdec+3)
-			
-			# text input
 			self.ofdec2E = QtGui.QLineEdit(self)
 			self.ofdec2E.setText(MagicPanels.unit2gui(25))
-			self.ofdec2E.setFixedWidth(rsize1x)
-			self.ofdec2E.move(startcX, rowfdec)
+			self.ofdec2E.setFixedWidth(fieldSize)
 			
-			rowfdec += 30
-			
-			# label
 			self.ofdec3L = QtGui.QLabel(translate('magicStart', 'Single bar thickness:'), self)
-			self.ofdec3L.move(10, rowfdec+3)
-
-			# text input
 			self.ofdec3E = QtGui.QLineEdit(self)
 			self.ofdec3E.setText(MagicPanels.unit2gui(20))
-			self.ofdec3E.setFixedWidth(rsize1x)
-			self.ofdec3E.move(startcX, rowfdec)
-		
-			rowfdec += 30
+			self.ofdec3E.setFixedWidth(fieldSize)
 
-			# label
 			self.ofdecOHL = QtGui.QLabel(translate('magicStart', 'Offset from edge horizontal:'), self)
-			self.ofdecOHL.move(10, rowfdec+3)
-
-			# text input
 			self.ofdecOHE = QtGui.QLineEdit(self)
 			self.ofdecOHE.setText(MagicPanels.unit2gui(50))
-			self.ofdecOHE.setFixedWidth(rsize1x)
-			self.ofdecOHE.move(startcY, rowfdec)
-			
-			rowfdec += 30
+			self.ofdecOHE.setFixedWidth(fieldSize)
 
-			# label
 			self.ofdecOVL = QtGui.QLabel(translate('magicStart', 'Offset from edge vertical:'), self)
-			self.ofdecOVL.move(10, rowfdec+3)
-
-			# text input
 			self.ofdecOVE = QtGui.QLineEdit(self)
 			self.ofdecOVE.setText(MagicPanels.unit2gui(50))
-			self.ofdecOVE.setFixedWidth(rsize1x)
-			self.ofdecOVE.move(startcY, rowfdec)
+			self.ofdecOVE.setFixedWidth(fieldSize)
 			
-			rowfdec += 40
-			
-			# button
 			self.ofdec5B = QtGui.QPushButton(translate('magicStart', 'calculate front decoration'), self)
 			self.ofdec5B.clicked.connect(self.calculateFrontDecoration)
-			self.ofdec5B.resize(area, createSize)
-			self.ofdec5B.move(10, rowfdec)
+			self.ofdec5B.setFixedHeight(createSize)
 			
-			rowfdec += 80
-			
-			# label
-			self.ofdec6L = QtGui.QLabel(translate('magicStart', 'Start XYZ:'), self)
-			self.ofdec6L.move(10, rowfdec+3)
-			
-			# text input
+			self.ofdec61L = QtGui.QLabel(translate('magicStart', 'Start X:'), self)
 			self.ofdec61E = QtGui.QLineEdit(self)
 			self.ofdec61E.setText(MagicPanels.unit2gui(0))
-			self.ofdec61E.setFixedWidth(starttfs)
-			self.ofdec61E.move(startcX, rowfdec)
+			self.ofdec61E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ofdec62L = QtGui.QLabel(translate('magicStart', 'Start Y:'), self)
 			self.ofdec62E = QtGui.QLineEdit(self)
 			self.ofdec62E.setText(MagicPanels.unit2gui(0))
-			self.ofdec62E.setFixedWidth(starttfs)
-			self.ofdec62E.move(startcY, rowfdec)
+			self.ofdec62E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ofdec63L = QtGui.QLabel(translate('magicStart', 'Start Z:'), self)
 			self.ofdec63E = QtGui.QLineEdit(self)
 			self.ofdec63E.setText(MagicPanels.unit2gui(0))
-			self.ofdec63E.setFixedWidth(starttfs)
-			self.ofdec63E.move(startcZ, rowfdec)
+			self.ofdec63E.setFixedWidth(fieldSize)
 			
-			rowfdec += 30
-			
-			# label
 			self.ofdec7L = QtGui.QLabel(translate('magicStart', 'Calculated decoration width:'), self)
-			self.ofdec7L.move(10, rowfdec+3)
-			
-			# text input
 			self.ofdec7E = QtGui.QLineEdit(self)
 			self.ofdec7E.setText(MagicPanels.unit2gui(0))
-			self.ofdec7E.setFixedWidth(rsize2x)
-			self.ofdec7E.move(startcY, rowfdec)
+			self.ofdec7E.setFixedWidth(fieldSize)
 			
-			rowfdec += 30
-			
-			# label
 			self.ofdec8L = QtGui.QLabel(translate('magicStart', 'Calculated decoration height:'), self)
-			self.ofdec8L.move(10, rowfdec+3)
-
-			# text input
 			self.ofdec8E = QtGui.QLineEdit(self)
 			self.ofdec8E.setText(MagicPanels.unit2gui(0))
-			self.ofdec8E.setFixedWidth(rsize2x)
-			self.ofdec8E.move(startcY, rowfdec)
+			self.ofdec8E.setFixedWidth(fieldSize)
 		
-			rowfdec += 40
-
-			# button
 			self.ofdec9B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ofdec9B.clicked.connect(self.createObject)
-			self.ofdec9B.resize(area, createSize)
-			self.ofdec9B.move(10, createRow)
+			self.ofdec9B.setFixedHeight(createSize)
 
 			# hide by default
 			self.ofdec1i.hide()
@@ -2930,7 +2022,9 @@ def showQtGUI():
 			self.ofdecOVL.hide()
 			self.ofdecOVE.hide()
 			self.ofdec5B.hide()
-			self.ofdec6L.hide()
+			self.ofdec61L.hide()
+			self.ofdec62L.hide()
+			self.ofdec63L.hide()
 			self.ofdec61E.hide()
 			self.ofdec62E.hide()
 			self.ofdec63E.hide()
@@ -2944,126 +2038,65 @@ def showQtGUI():
 			# GUI for Face Frame from GAP (hidden by default)
 			# ############################################################################
 
-			# label
 			info = translate('magicStart', 'Please select 4 edges around the gap to calculate Face Frame: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
 			self.offrame1i = QtGui.QLabel(info, self)
-			self.offrame1i.move(10, rowfframe+3)
-			self.offrame1i.setFixedWidth(infoarea)
 			self.offrame1i.setWordWrap(True)
 			self.offrame1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.offrame1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 			
-			rowfframe += 120
-			
-			# label
 			self.offrame2L = QtGui.QLabel(translate('magicStart', 'Single bar width:'), self)
-			self.offrame2L.move(10, rowfframe+3)
-			
-			# text input
 			self.offrame2E = QtGui.QLineEdit(self)
 			self.offrame2E.setText(MagicPanels.unit2gui(38))
-			self.offrame2E.setFixedWidth(90)
-			self.offrame2E.move(150, rowfframe)
+			self.offrame2E.setFixedWidth(fieldSize)
 			
-			rowfframe += 30
-			
-			# label
 			self.offrame3L = QtGui.QLabel(translate('magicStart', 'Single bar thickness:'), self)
-			self.offrame3L.move(10, rowfframe+3)
-
-			# text input
 			self.offrame3E = QtGui.QLineEdit(self)
 			self.offrame3E.setText(MagicPanels.unit2gui(19))
-			self.offrame3E.setFixedWidth(90)
-			self.offrame3E.move(150, rowfframe)
-		
-			rowfframe += 30
-
-			# label
+			self.offrame3E.setFixedWidth(fieldSize)
+			
 			self.offrame4L = QtGui.QLabel(translate('magicStart', 'Lip outside:'), self)
-			self.offrame4L.move(10, rowfframe+3)
-
-			# text input
 			self.offrame4E = QtGui.QLineEdit(self)
 			self.offrame4E.setText(MagicPanels.unit2gui(0))
-			self.offrame4E.setFixedWidth(90)
-			self.offrame4E.move(150, rowfframe)
+			self.offrame4E.setFixedWidth(fieldSize)
 			
-			rowfframe += 30
-			
-			# label
 			self.offrame5L = QtGui.QLabel(translate('magicStart', 'Delve into furniture:'), self)
-			self.offrame5L.move(10, rowfframe+3)
-
-			# text input
 			self.offrame5E = QtGui.QLineEdit(self)
 			self.offrame5E.setText(MagicPanels.unit2gui(0))
-			self.offrame5E.setFixedWidth(90)
-			self.offrame5E.move(150, rowfframe)
+			self.offrame5E.setFixedWidth(fieldSize)
 			
-			rowfframe += 40
-			
-			# button
-			self.offrame6B = QtGui.QPushButton(translate('magicStart', 'calculate Face Frame'), self)
+			self.offrame6B = QtGui.QPushButton(translate('magicStart', 'calculate face frame'), self)
 			self.offrame6B.clicked.connect(self.calculateFaceframeFromGap)
-			self.offrame6B.resize(area, createSize)
-			self.offrame6B.move(10, rowfframe)
+			self.offrame6B.setFixedHeight(createSize)
 			
-			rowfframe += 80
-			
-			# label
-			self.offrame7L = QtGui.QLabel(translate('magicStart', 'Frame start XYZ:'), self)
-			self.offrame7L.move(10, rowfframe+3)
-			
-			# text input
+			self.offrame71L = QtGui.QLabel(translate('magicStart', 'Frame start X:'), self)
 			self.offrame71E = QtGui.QLineEdit(self)
 			self.offrame71E.setText(MagicPanels.unit2gui(0))
-			self.offrame71E.setFixedWidth(starttfs)
-			self.offrame71E.move(startcX, rowfframe)
+			self.offrame71E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.offrame72L = QtGui.QLabel(translate('magicStart', 'Frame start Y:'), self)
 			self.offrame72E = QtGui.QLineEdit(self)
 			self.offrame72E.setText(MagicPanels.unit2gui(0))
-			self.offrame72E.setFixedWidth(starttfs)
-			self.offrame72E.move(startcY, rowfframe)
+			self.offrame72E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.offrame73L = QtGui.QLabel(translate('magicStart', 'Frame start Z:'), self)
 			self.offrame73E = QtGui.QLineEdit(self)
 			self.offrame73E.setText(MagicPanels.unit2gui(0))
-			self.offrame73E.setFixedWidth(starttfs)
-			self.offrame73E.move(startcZ, rowfframe)
+			self.offrame73E.setFixedWidth(fieldSize)
 			
-			rowfframe += 30
-			
-			# label
 			self.offrame8L = QtGui.QLabel(translate('magicStart', 'Calculated Face Frame width:'), self)
-			self.offrame8L.move(10, rowfframe+3)
-			
-			# text input
 			self.offrame8E = QtGui.QLineEdit(self)
 			self.offrame8E.setText(MagicPanels.unit2gui(0))
-			self.offrame8E.setFixedWidth(rsize2x)
-			self.offrame8E.move(startcY, rowfframe)
+			self.offrame8E.setFixedWidth(fieldSize)
 			
-			rowfframe += 30
-			
-			# label
 			self.offrame9L = QtGui.QLabel(translate('magicStart', 'Calculated Face Frame height:'), self)
-			self.offrame9L.move(10, rowfframe+3)
-
-			# text input
 			self.offrame9E = QtGui.QLineEdit(self)
 			self.offrame9E.setText(MagicPanels.unit2gui(0))
-			self.offrame9E.setFixedWidth(rsize2x)
-			self.offrame9E.move(startcY, rowfframe)
-		
-			rowfframe += 40
-
-			# button
+			self.offrame9E.setFixedWidth(fieldSize)
+			
 			self.offrame10B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.offrame10B.clicked.connect(self.createObject)
-			self.offrame10B.resize(area, createSize)
-			self.offrame10B.move(10, createRow)
-
+			self.offrame10B.setFixedHeight(createSize)
+			
 			# hide by default
 			self.offrame1i.hide()
 			self.offrame2L.hide()
@@ -3075,7 +2108,9 @@ def showQtGUI():
 			self.offrame5L.hide()
 			self.offrame5E.hide()
 			self.offrame6B.hide()
-			self.offrame7L.hide()
+			self.offrame71L.hide()
+			self.offrame72L.hide()
+			self.offrame73L.hide()
 			self.offrame71E.hide()
 			self.offrame72E.hide()
 			self.offrame73E.hide()
@@ -3089,161 +2124,81 @@ def showQtGUI():
 			# GUI for Shelf from GAP (hidden by default)
 			# ############################################################################
 			
-			rowshelf -= 20
-			
-			# label
 			info = translate('magicStart', 'Please select 2 edges and face to calculate shelf: <br><br> 1. selection - Z left edge <br> 2. selection - Z right edge <br> 3. selection - back face <br><br> Please add "Shelf by depth" or "Shelf by offsets", if you do not want full depth.')
 			self.osh1i = QtGui.QLabel(info, self)
-			self.osh1i.move(10, rowshelf+3)
-			self.osh1i.setFixedWidth(infoarea)
 			self.osh1i.setWordWrap(True)
 			self.osh1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.osh1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 			
-			rowshelf += 150
-			
-			# label
 			self.osh1L = QtGui.QLabel(translate('magicStart', 'Shelf thickness:'), self)
-			self.osh1L.move(10, rowshelf+3)
-
-			# text input
 			self.osh1E = QtGui.QLineEdit(self)
 			self.osh1E.setText(MagicPanels.unit2gui(MagicPanels.gShelfThickness))
-			self.osh1E.setFixedWidth(90)
-			self.osh1E.move(120, rowshelf)
-		
-			rowshelf += 30
+			self.osh1E.setFixedWidth(fieldSize)
 			
-			# label
 			self.osh2L = QtGui.QLabel(translate('magicStart', 'Shelf by depth:'), self)
-			self.osh2L.move(10, rowshelf+3)
-
-			# text input
 			self.osh2E = QtGui.QLineEdit(self)
 			self.osh2E.setText(MagicPanels.unit2gui(0))
-			self.osh2E.setFixedWidth(90)
-			self.osh2E.move(120, rowshelf)
+			self.osh2E.setFixedWidth(fieldSize)
 			
-			rowshelf += 30
-			
-			# label
-			self.osh3L = QtGui.QLabel(translate('magicStart', 'Shelf by offsets:'), self)
-			self.osh3L.move(10, rowshelf+3)
-
-			rowshelf += 20
-			
-			# label
-			self.osh31L = QtGui.QLabel(translate('magicStart', 'Left side:'), self)
-			self.osh31L.move(10, rowshelf+3)
-			
-			# label
-			self.osh32L = QtGui.QLabel(translate('magicStart', 'Right side:'), self)
-			self.osh32L.move(110, rowshelf+3)
-			
-			# label
-			self.osh33L = QtGui.QLabel(translate('magicStart', 'Front:'), self)
-			self.osh33L.move(210, rowshelf+3)
-			
-			# label
-			self.osh34L = QtGui.QLabel(translate('magicStart', 'Back:'), self)
-			self.osh34L.move(310, rowshelf+3)
-
-			rowshelf += 20
-			
-			# text input
+			self.osh31L = QtGui.QLabel(translate('magicStart', 'Shelf by offset from left:'), self)
 			self.osh31E = QtGui.QLineEdit(self)
 			self.osh31E.setText(MagicPanels.unit2gui(0))
-			self.osh31E.setFixedWidth(80)
-			self.osh31E.move(10, rowshelf)
+			self.osh31E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.osh32L = QtGui.QLabel(translate('magicStart', 'Shelf by offset from right:'), self)
 			self.osh32E = QtGui.QLineEdit(self)
 			self.osh32E.setText(MagicPanels.unit2gui(0))
-			self.osh32E.setFixedWidth(80)
-			self.osh32E.move(110, rowshelf)
+			self.osh32E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.osh33L = QtGui.QLabel(translate('magicStart', 'Shelf by offset from front:'), self)
 			self.osh33E = QtGui.QLineEdit(self)
 			self.osh33E.setText(MagicPanels.unit2gui(0))
-			self.osh33E.setFixedWidth(80)
-			self.osh33E.move(210, rowshelf)
+			self.osh33E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.osh34L = QtGui.QLabel(translate('magicStart', 'Shelf by offset from back:'), self)
 			self.osh34E = QtGui.QLineEdit(self)
 			self.osh34E.setText(MagicPanels.unit2gui(0))
-			self.osh34E.setFixedWidth(80)
-			self.osh34E.move(310, rowshelf)
-
-			rowshelf += 40
+			self.osh34E.setFixedWidth(fieldSize)
 			
-			# button
 			self.osh4B1 = QtGui.QPushButton(translate('magicStart', 'calculate shelf'), self)
 			self.osh4B1.clicked.connect(self.calculateShelfFromGap)
-			self.osh4B1.resize(area, createSize)
-			self.osh4B1.move(10, rowshelf)
+			self.osh4B1.setFixedHeight(createSize)
 			
-			rowshelf += 70
-			
-			# label
-			self.osh5L = QtGui.QLabel(translate('magicStart', 'Shelf start XYZ:'), self)
-			self.osh5L.move(10, rowshelf+3)
-			
-			# text input
+			self.osh51L = QtGui.QLabel(translate('magicStart', 'Shelf start X:'), self)
 			self.osh51E = QtGui.QLineEdit(self)
 			self.osh51E.setText(MagicPanels.unit2gui(0))
-			self.osh51E.setFixedWidth(starttfs)
-			self.osh51E.move(startcX, rowshelf)
+			self.osh51E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.osh52L = QtGui.QLabel(translate('magicStart', 'Shelf start Y:'), self)
 			self.osh52E = QtGui.QLineEdit(self)
 			self.osh52E.setText(MagicPanels.unit2gui(0))
-			self.osh52E.setFixedWidth(starttfs)
-			self.osh52E.move(startcY, rowshelf)
+			self.osh52E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.osh53L = QtGui.QLabel(translate('magicStart', 'Shelf start Z:'), self)
 			self.osh53E = QtGui.QLineEdit(self)
 			self.osh53E.setText(MagicPanels.unit2gui(0))
-			self.osh53E.setFixedWidth(starttfs)
-			self.osh53E.move(startcZ, rowshelf)
+			self.osh53E.setFixedWidth(fieldSize)
 			
-			rowshelf += 30
-
-			# label
 			self.osh6L = QtGui.QLabel(translate('magicStart', 'Calculated shelf width:'), self)
-			self.osh6L.move(10, rowshelf+3)
-			
-			# text input
 			self.osh6E = QtGui.QLineEdit(self)
 			self.osh6E.setText(MagicPanels.unit2gui(0))
-			self.osh6E.setFixedWidth(rsize2x)
-			self.osh6E.move(startcY, rowshelf)
+			self.osh6E.setFixedWidth(fieldSize)
 			
-			rowshelf += 30
-			
-			# label
 			self.osh7L = QtGui.QLabel(translate('magicStart', 'Calculated shelf depth:'), self)
-			self.osh7L.move(10, rowshelf+3)
-
-			# text input
 			self.osh7E = QtGui.QLineEdit(self)
 			self.osh7E.setText(MagicPanels.unit2gui(0))
-			self.osh7E.setFixedWidth(rsize2x)
-			self.osh7E.move(startcY, rowshelf)
+			self.osh7E.setFixedWidth(fieldSize)
 			
-			rowshelf += 40
-
-			# button
 			self.osh8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.osh8B1.clicked.connect(self.createObject)
-			self.osh8B1.resize(area, createSize)
-			self.osh8B1.move(10, createRow)
-
+			self.osh8B1.setFixedHeight(createSize)
+			
 			# hide by default
 			self.osh1i.hide()
 			self.osh1L.hide()
 			self.osh1E.hide()
 			self.osh2L.hide()
 			self.osh2E.hide()
-			self.osh3L.hide()
 			self.osh31L.hide()
 			self.osh32L.hide()
 			self.osh33L.hide()
@@ -3253,7 +2208,9 @@ def showQtGUI():
 			self.osh33E.hide()
 			self.osh34E.hide()
 			self.osh4B1.hide()
-			self.osh5L.hide()
+			self.osh51L.hide()
+			self.osh52L.hide()
+			self.osh53L.hide()
 			self.osh51E.hide()
 			self.osh52E.hide()
 			self.osh53E.hide()
@@ -3267,114 +2224,60 @@ def showQtGUI():
 			# GUI for Shelf series (hidden by default)
 			# ############################################################################
 			
-			# label
 			info = translate('magicStart', 'Please select 4 edges and face to calculate shelf series: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge <br> 5. selection - back face')
 			self.oshs1i = QtGui.QLabel(info, self)
-			self.oshs1i.move(10, rowsseries+3)
-			self.oshs1i.setFixedWidth(infoarea)
 			self.oshs1i.setWordWrap(True)
 			self.oshs1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.oshs1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 			
-			rowsseries += 150
-			
-			# label
 			self.oshs1L = QtGui.QLabel(translate('magicStart', 'Single shelf thickness:'), self)
-			self.oshs1L.move(10, rowsseries+3)
-
-			# text input
 			self.oshs1E = QtGui.QLineEdit(self)
 			self.oshs1E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
-			self.oshs1E.setFixedWidth(90)
-			self.oshs1E.move(150, rowsseries)
-		
-			rowsseries += 30
+			self.oshs1E.setFixedWidth(fieldSize)
 			
-			# label
 			self.oshs2L = QtGui.QLabel(translate('magicStart', 'Number of shelves:'), self)
-			self.oshs2L.move(10, rowsseries+3)
-
-			# text input
 			self.oshs2E = QtGui.QLineEdit(self)
 			self.oshs2E.setText("3")
-			self.oshs2E.setFixedWidth(90)
-			self.oshs2E.move(150, rowsseries)
+			self.oshs2E.setFixedWidth(fieldSize)
 			
-			rowsseries += 40
-			
-			# button
 			self.oshs3B = QtGui.QPushButton(translate('magicStart', 'calculate shelf series'), self)
 			self.oshs3B.clicked.connect(self.calculateShelfSeries)
-			self.oshs3B.resize(area, createSize)
-			self.oshs3B.move(10, rowsseries)
+			self.oshs3B.setFixedHeight(createSize)
 			
-			rowsseries += 70
-			
-			# label
-			self.oshs4L = QtGui.QLabel(translate('magicStart', 'Shelf start XYZ:'), self)
-			self.oshs4L.move(10, rowsseries+3)
-			
-			# text input
+			self.oshs41L = QtGui.QLabel(translate('magicStart', 'Shelf start X:'), self)
 			self.oshs41E = QtGui.QLineEdit(self)
 			self.oshs41E.setText(MagicPanels.unit2gui(0))
-			self.oshs41E.setFixedWidth(starttfs)
-			self.oshs41E.move(startcX, rowsseries)
+			self.oshs41E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.oshs42L = QtGui.QLabel(translate('magicStart', 'Shelf start Y:'), self)
 			self.oshs42E = QtGui.QLineEdit(self)
 			self.oshs42E.setText(MagicPanels.unit2gui(0))
-			self.oshs42E.setFixedWidth(starttfs)
-			self.oshs42E.move(startcY, rowsseries)
+			self.oshs42E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.oshs43L = QtGui.QLabel(translate('magicStart', 'Shelf start Z:'), self)
 			self.oshs43E = QtGui.QLineEdit(self)
 			self.oshs43E.setText(MagicPanels.unit2gui(0))
-			self.oshs43E.setFixedWidth(starttfs)
-			self.oshs43E.move(startcZ, rowsseries)
+			self.oshs43E.setFixedWidth(fieldSize)
 			
-			rowsseries += 30
-
-			# label
 			self.oshs5L = QtGui.QLabel(translate('magicStart', 'Calculated shelf width:'), self)
-			self.oshs5L.move(10, rowsseries+3)
-			
-			# text input
 			self.oshs5E = QtGui.QLineEdit(self)
 			self.oshs5E.setText(MagicPanels.unit2gui(0))
-			self.oshs5E.setFixedWidth(rsize2x)
-			self.oshs5E.move(startcY, rowsseries)
+			self.oshs5E.setFixedWidth(fieldSize)
 			
-			rowsseries += 30
-			
-			# label
 			self.oshs6L = QtGui.QLabel(translate('magicStart', 'Calculated shelf depth:'), self)
-			self.oshs6L.move(10, rowsseries+3)
-
-			# text input
 			self.oshs6E = QtGui.QLineEdit(self)
 			self.oshs6E.setText(MagicPanels.unit2gui(0))
-			self.oshs6E.setFixedWidth(rsize2x)
-			self.oshs6E.move(startcY, rowsseries)
+			self.oshs6E.setFixedWidth(fieldSize)
 			
-			rowsseries += 30
-
-			# label
 			self.oshs7L = QtGui.QLabel(translate('magicStart', 'Calculated shelves space:'), self)
-			self.oshs7L.move(10, rowsseries+3)
-			
-			# text input
 			self.oshs7E = QtGui.QLineEdit(self)
 			self.oshs7E.setText(MagicPanels.unit2gui(0))
-			self.oshs7E.setFixedWidth(rsize2x)
-			self.oshs7E.move(startcY, rowsseries)
+			self.oshs7E.setFixedWidth(fieldSize)
 			
-			rowsseries += 40
-
-			# button
 			self.oshs8B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.oshs8B.clicked.connect(self.createObject)
-			self.oshs8B.resize(area, createSize)
-			self.oshs8B.move(10, createRow)
-
+			self.oshs8B.setFixedHeight(createSize)
+			
 			# hide by default
 			self.oshs1i.hide()
 			self.oshs1L.hide()
@@ -3382,7 +2285,9 @@ def showQtGUI():
 			self.oshs2L.hide()
 			self.oshs2E.hide()
 			self.oshs3B.hide()
-			self.oshs4L.hide()
+			self.oshs41L.hide()
+			self.oshs42L.hide()
+			self.oshs43L.hide()
 			self.oshs41E.hide()
 			self.oshs42E.hide()
 			self.oshs43E.hide()
@@ -3398,161 +2303,81 @@ def showQtGUI():
 			# GUI for Side from GAP (hidden by default)
 			# ############################################################################
 			
-			rowside += 20
-			
-			# label
 			info = translate('magicStart', 'Please select 4 edges around the gap to calculate Side: <br><br> 1. selection - X or Y bottom edge <br> 2. selection - X or Y top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
 			self.oside1i = QtGui.QLabel(info, self)
-			self.oside1i.move(10, rowside+3)
-			self.oside1i.setFixedWidth(infoarea)
 			self.oside1i.setWordWrap(True)
 			self.oside1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.oside1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 			
-			rowside += 120
-			
-			# label
 			self.oside1L = QtGui.QLabel(translate('magicStart', 'Side thickness:'), self)
-			self.oside1L.move(10, rowside+3)
-
-			# text input
 			self.oside1E = QtGui.QLineEdit(self)
 			self.oside1E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
-			self.oside1E.setFixedWidth(90)
-			self.oside1E.move(120, rowside)
-		
-			rowside += 30
+			self.oside1E.setFixedWidth(fieldSize)
 			
-			# label
 			self.oside2L = QtGui.QLabel(translate('magicStart', 'Side by width:'), self)
-			self.oside2L.move(10, rowside+3)
-
-			# text input
 			self.oside2E = QtGui.QLineEdit(self)
 			self.oside2E.setText(MagicPanels.unit2gui(0))
-			self.oside2E.setFixedWidth(90)
-			self.oside2E.move(120, rowside)
+			self.oside2E.setFixedWidth(fieldSize)
 			
-			rowside += 30
-			
-			# label
-			self.oside3L = QtGui.QLabel(translate('magicStart', 'Side by offsets:'), self)
-			self.oside3L.move(10, rowside+3)
-
-			rowside += 20
-			
-			# label
-			self.oside31L = QtGui.QLabel(translate('magicStart', 'Left:'), self)
-			self.oside31L.move(10, rowside+3)
-			
-			# label
-			self.oside32L = QtGui.QLabel(translate('magicStart', 'Right:'), self)
-			self.oside32L.move(110, rowside+3)
-			
-			# label
-			self.oside33L = QtGui.QLabel(translate('magicStart', 'Top:'), self)
-			self.oside33L.move(210, rowside+3)
-			
-			# label
-			self.oside34L = QtGui.QLabel(translate('magicStart', 'Bottom:'), self)
-			self.oside34L.move(310, rowside+3)
-
-			rowside += 20
-			
-			# text input
+			self.oside31L = QtGui.QLabel(translate('magicStart', 'Side by offset from left:'), self)
 			self.oside31E = QtGui.QLineEdit(self)
 			self.oside31E.setText(MagicPanels.unit2gui(0))
-			self.oside31E.setFixedWidth(80)
-			self.oside31E.move(10, rowside)
+			self.oside31E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.oside32L = QtGui.QLabel(translate('magicStart', 'Side by offset from right:'), self)
 			self.oside32E = QtGui.QLineEdit(self)
 			self.oside32E.setText(MagicPanels.unit2gui(0))
-			self.oside32E.setFixedWidth(80)
-			self.oside32E.move(110, rowside)
+			self.oside32E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.oside33L = QtGui.QLabel(translate('magicStart', 'Side by offset from top:'), self)
 			self.oside33E = QtGui.QLineEdit(self)
 			self.oside33E.setText(MagicPanels.unit2gui(0))
-			self.oside33E.setFixedWidth(80)
-			self.oside33E.move(210, rowside)
+			self.oside33E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.oside34L = QtGui.QLabel(translate('magicStart', 'Side by offset from bottom:'), self)
 			self.oside34E = QtGui.QLineEdit(self)
 			self.oside34E.setText(MagicPanels.unit2gui(0))
-			self.oside34E.setFixedWidth(80)
-			self.oside34E.move(310, rowside)
-
-			rowside += 40
+			self.oside34E.setFixedWidth(fieldSize)
 			
-			# button
 			self.oside4B1 = QtGui.QPushButton(translate('magicStart', 'calculate side'), self)
 			self.oside4B1.clicked.connect(self.calculateSideFromGap)
-			self.oside4B1.resize(area, createSize)
-			self.oside4B1.move(10, rowside)
+			self.oside4B1.setFixedHeight(createSize)
 			
-			rowside += 70
-			
-			# label
-			self.oside5L = QtGui.QLabel(translate('magicStart', 'Side start XYZ:'), self)
-			self.oside5L.move(10, rowside+3)
-			
-			# text input
+			self.oside51L = QtGui.QLabel(translate('magicStart', 'Side start X:'), self)
 			self.oside51E = QtGui.QLineEdit(self)
 			self.oside51E.setText(MagicPanels.unit2gui(0))
-			self.oside51E.setFixedWidth(starttfs)
-			self.oside51E.move(startcX, rowside)
+			self.oside51E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.oside52L = QtGui.QLabel(translate('magicStart', 'Side start Y:'), self)
 			self.oside52E = QtGui.QLineEdit(self)
 			self.oside52E.setText(MagicPanels.unit2gui(0))
-			self.oside52E.setFixedWidth(starttfs)
-			self.oside52E.move(startcY, rowside)
+			self.oside52E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.oside53L = QtGui.QLabel(translate('magicStart', 'Side start Z:'), self)
 			self.oside53E = QtGui.QLineEdit(self)
 			self.oside53E.setText(MagicPanels.unit2gui(0))
-			self.oside53E.setFixedWidth(starttfs)
-			self.oside53E.move(startcZ, rowside)
+			self.oside53E.setFixedWidth(fieldSize)
 			
-			rowside += 30
-
-			# label
 			self.oside6L = QtGui.QLabel(translate('magicStart', 'Calculated side width:'), self)
-			self.oside6L.move(10, rowside+3)
-			
-			# text input
 			self.oside6E = QtGui.QLineEdit(self)
 			self.oside6E.setText(MagicPanels.unit2gui(0))
-			self.oside6E.setFixedWidth(rsize2x)
-			self.oside6E.move(startcY, rowside)
+			self.oside6E.setFixedWidth(fieldSize)
 			
-			rowside += 30
-			
-			# label
 			self.oside7L = QtGui.QLabel(translate('magicStart', 'Calculated side height:'), self)
-			self.oside7L.move(10, rowside+3)
-
-			# text input
 			self.oside7E = QtGui.QLineEdit(self)
 			self.oside7E.setText(MagicPanels.unit2gui(0))
-			self.oside7E.setFixedWidth(rsize2x)
-			self.oside7E.move(startcY, rowside)
+			self.oside7E.setFixedWidth(fieldSize)
 			
-			rowside += 40
-
-			# button
 			self.oside8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.oside8B1.clicked.connect(self.createObject)
-			self.oside8B1.resize(area, createSize)
-			self.oside8B1.move(10, createRow)
-
+			self.oside8B1.setFixedHeight(createSize)
+			
 			# hide by default
 			self.oside1i.hide()
 			self.oside1L.hide()
 			self.oside1E.hide()
 			self.oside2L.hide()
 			self.oside2E.hide()
-			self.oside3L.hide()
 			self.oside31L.hide()
 			self.oside32L.hide()
 			self.oside33L.hide()
@@ -3562,7 +2387,9 @@ def showQtGUI():
 			self.oside33E.hide()
 			self.oside34E.hide()
 			self.oside4B1.hide()
-			self.oside5L.hide()
+			self.oside51L.hide()
+			self.oside52L.hide()
+			self.oside53L.hide()
 			self.oside51E.hide()
 			self.oside52E.hide()
 			self.oside53E.hide()
@@ -3576,161 +2403,81 @@ def showQtGUI():
 			# GUI for Center side from GAP (hidden by default)
 			# ############################################################################
 			
-			rowcside -= 20
-			
-			# label
 			info = translate('magicStart', 'Please select 2 edges (top or bottom at Y axis direction) and 1 face (bottom or top at XY plane) to calculate side in the center: <br><br> 1. selection - Y left edge <br> 2. selection - Y right edge <br> 3. selection - XY face')
 			self.ocs1i = QtGui.QLabel(info, self)
-			self.ocs1i.move(10, rowcside+3)
-			self.ocs1i.setFixedWidth(infoarea)
 			self.ocs1i.setWordWrap(True)
 			self.ocs1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.ocs1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 			
-			rowcside += 150
-			
-			# label
 			self.ocs1L = QtGui.QLabel(translate('magicStart', 'Side thickness:'), self)
-			self.ocs1L.move(10, rowcside+3)
-
-			# text input
 			self.ocs1E = QtGui.QLineEdit(self)
 			self.ocs1E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
-			self.ocs1E.setFixedWidth(90)
-			self.ocs1E.move(120, rowcside)
-		
-			rowcside += 30
+			self.ocs1E.setFixedWidth(fieldSize)
 			
-			# label
 			self.ocs2L = QtGui.QLabel(translate('magicStart', 'Side by depth:'), self)
-			self.ocs2L.move(10, rowcside+3)
-
-			# text input
 			self.ocs2E = QtGui.QLineEdit(self)
 			self.ocs2E.setText(MagicPanels.unit2gui(0))
-			self.ocs2E.setFixedWidth(90)
-			self.ocs2E.move(120, rowcside)
+			self.ocs2E.setFixedWidth(fieldSize)
 			
-			rowcside += 30
-			
-			# label
-			self.ocs3L = QtGui.QLabel(translate('magicStart', 'Side by offsets:'), self)
-			self.ocs3L.move(10, rowcside+3)
-
-			rowcside += 20
-			
-			# label
-			self.ocs31L = QtGui.QLabel(translate('magicStart', 'Top:'), self)
-			self.ocs31L.move(10, rowcside+3)
-			
-			# label
-			self.ocs32L = QtGui.QLabel(translate('magicStart', 'Bottom:'), self)
-			self.ocs32L.move(110, rowcside+3)
-			
-			# label
-			self.ocs33L = QtGui.QLabel(translate('magicStart', 'Front:'), self)
-			self.ocs33L.move(210, rowcside+3)
-			
-			# label
-			self.ocs34L = QtGui.QLabel(translate('magicStart', 'Back:'), self)
-			self.ocs34L.move(310, rowcside+3)
-
-			rowcside += 20
-			
-			# text input
+			self.ocs31L = QtGui.QLabel(translate('magicStart', 'Side by offset from top:'), self)
 			self.ocs31E = QtGui.QLineEdit(self)
 			self.ocs31E.setText(MagicPanels.unit2gui(0))
-			self.ocs31E.setFixedWidth(80)
-			self.ocs31E.move(10, rowcside)
+			self.ocs31E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ocs32L = QtGui.QLabel(translate('magicStart', 'Side by offset from bottom:'), self)
 			self.ocs32E = QtGui.QLineEdit(self)
 			self.ocs32E.setText(MagicPanels.unit2gui(0))
-			self.ocs32E.setFixedWidth(80)
-			self.ocs32E.move(110, rowcside)
+			self.ocs32E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ocs33L = QtGui.QLabel(translate('magicStart', 'Side by offset from front:'), self)
 			self.ocs33E = QtGui.QLineEdit(self)
 			self.ocs33E.setText(MagicPanels.unit2gui(0))
-			self.ocs33E.setFixedWidth(80)
-			self.ocs33E.move(210, rowcside)
+			self.ocs33E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ocs34L = QtGui.QLabel(translate('magicStart', 'Side by offset from back:'), self)
 			self.ocs34E = QtGui.QLineEdit(self)
 			self.ocs34E.setText(MagicPanels.unit2gui(0))
-			self.ocs34E.setFixedWidth(80)
-			self.ocs34E.move(310, rowcside)
-
-			rowcside += 40
+			self.ocs34E.setFixedWidth(fieldSize)
 			
-			# button
 			self.ocs4B1 = QtGui.QPushButton(translate('magicStart', 'calculate center side'), self)
 			self.ocs4B1.clicked.connect(self.calculateCenterSideFromGap)
-			self.ocs4B1.resize(area, createSize)
-			self.ocs4B1.move(10, rowcside)
+			self.ocs4B1.setFixedHeight(createSize)
 			
-			rowcside += 70
-			
-			# label
-			self.ocs5L = QtGui.QLabel(translate('magicStart', 'Side start XYZ:'), self)
-			self.ocs5L.move(10, rowcside+3)
-			
-			# text input
+			self.ocs51L = QtGui.QLabel(translate('magicStart', 'Side start X:'), self)
 			self.ocs51E = QtGui.QLineEdit(self)
 			self.ocs51E.setText(MagicPanels.unit2gui(0))
-			self.ocs51E.setFixedWidth(starttfs)
-			self.ocs51E.move(startcX, rowcside)
+			self.ocs51E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ocs52L = QtGui.QLabel(translate('magicStart', 'Side start Y:'), self)
 			self.ocs52E = QtGui.QLineEdit(self)
 			self.ocs52E.setText(MagicPanels.unit2gui(0))
-			self.ocs52E.setFixedWidth(starttfs)
-			self.ocs52E.move(startcY, rowcside)
+			self.ocs52E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.ocs53L = QtGui.QLabel(translate('magicStart', 'Side start Z:'), self)
 			self.ocs53E = QtGui.QLineEdit(self)
 			self.ocs53E.setText(MagicPanels.unit2gui(0))
-			self.ocs53E.setFixedWidth(starttfs)
-			self.ocs53E.move(startcZ, rowcside)
+			self.ocs53E.setFixedWidth(fieldSize)
 			
-			rowcside += 30
-
-			# label
 			self.ocs6L = QtGui.QLabel(translate('magicStart', 'Calculated center side height:'), self)
-			self.ocs6L.move(10, rowcside+3)
-			
-			# text input
 			self.ocs6E = QtGui.QLineEdit(self)
 			self.ocs6E.setText(MagicPanels.unit2gui(0))
-			self.ocs6E.setFixedWidth(rsize2x)
-			self.ocs6E.move(startcY, rowcside)
+			self.ocs6E.setFixedWidth(fieldSize)
 			
-			rowcside += 30
-			
-			# label
 			self.ocs7L = QtGui.QLabel(translate('magicStart', 'Calculated center side depth:'), self)
-			self.ocs7L.move(10, rowcside+3)
-
-			# text input
 			self.ocs7E = QtGui.QLineEdit(self)
 			self.ocs7E.setText(MagicPanels.unit2gui(0))
-			self.ocs7E.setFixedWidth(rsize2x)
-			self.ocs7E.move(startcY, rowcside)
+			self.ocs7E.setFixedWidth(fieldSize)
 			
-			rowcside += 40
-
-			# button
 			self.ocs8B1 = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.ocs8B1.clicked.connect(self.createObject)
-			self.ocs8B1.resize(area, createSize)
-			self.ocs8B1.move(10, createRow)
-
+			self.ocs8B1.setFixedHeight(createSize)
+			
 			# hide by default
 			self.ocs1i.hide()
 			self.ocs1L.hide()
 			self.ocs1E.hide()
 			self.ocs2L.hide()
 			self.ocs2E.hide()
-			self.ocs3L.hide()
 			self.ocs31L.hide()
 			self.ocs32L.hide()
 			self.ocs33L.hide()
@@ -3740,7 +2487,9 @@ def showQtGUI():
 			self.ocs33E.hide()
 			self.ocs34E.hide()
 			self.ocs4B1.hide()
-			self.ocs5L.hide()
+			self.ocs51L.hide()
+			self.ocs52L.hide()
+			self.ocs53L.hide()
 			self.ocs51E.hide()
 			self.ocs52E.hide()
 			self.ocs53E.hide()
@@ -3754,126 +2503,65 @@ def showQtGUI():
 			# GUI for Side decoration (hidden by default)
 			# ############################################################################
 
-			# label
 			info = translate('magicStart', 'Please select face or 4 edges around the side to calculate Side decoration: <br><br> 1. selection - YZ face of side <br><br> 1. selection - Y bottom edge <br> 2. selection - Y top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
 			self.osdec1i = QtGui.QLabel(info, self)
-			self.osdec1i.move(10, rowsdec+3)
-			self.osdec1i.setFixedWidth(infoarea)
 			self.osdec1i.setWordWrap(True)
 			self.osdec1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
+			self.osdec1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 			
-			rowsdec += 170
-			
-			# label
 			self.osdec2L = QtGui.QLabel(translate('magicStart', 'Single bar width:'), self)
-			self.osdec2L.move(10, rowsdec+3)
-			
-			# text input
 			self.osdec2E = QtGui.QLineEdit(self)
 			self.osdec2E.setText(MagicPanels.unit2gui(25))
-			self.osdec2E.setFixedWidth(rsize1x)
-			self.osdec2E.move(startcX, rowsdec)
+			self.osdec2E.setFixedWidth(fieldSize)
 			
-			rowsdec += 30
-			
-			# label
 			self.osdec3L = QtGui.QLabel(translate('magicStart', 'Single bar thickness:'), self)
-			self.osdec3L.move(10, rowsdec+3)
-
-			# text input
 			self.osdec3E = QtGui.QLineEdit(self)
 			self.osdec3E.setText(MagicPanels.unit2gui(20))
-			self.osdec3E.setFixedWidth(rsize1x)
-			self.osdec3E.move(startcX, rowsdec)
-		
-			rowsdec += 30
-
-			# label
+			self.osdec3E.setFixedWidth(fieldSize)
+			
 			self.osdecOHL = QtGui.QLabel(translate('magicStart', 'Offset from edge horizontal:'), self)
-			self.osdecOHL.move(10, rowsdec+3)
-
-			# text input
 			self.osdecOHE = QtGui.QLineEdit(self)
 			self.osdecOHE.setText(MagicPanels.unit2gui(50))
-			self.osdecOHE.setFixedWidth(rsize1x)
-			self.osdecOHE.move(startcY, rowsdec)
+			self.osdecOHE.setFixedWidth(fieldSize)
 			
-			rowsdec += 30
-
-			# label
 			self.osdecOVL = QtGui.QLabel(translate('magicStart', 'Offset from edge vertical:'), self)
-			self.osdecOVL.move(10, rowsdec+3)
-
-			# text input
 			self.osdecOVE = QtGui.QLineEdit(self)
 			self.osdecOVE.setText(MagicPanels.unit2gui(50))
-			self.osdecOVE.setFixedWidth(rsize1x)
-			self.osdecOVE.move(startcY, rowsdec)
+			self.osdecOVE.setFixedWidth(fieldSize)
 			
-			rowsdec += 40
-			
-			# button
 			self.osdec5B = QtGui.QPushButton(translate('magicStart', 'calculate side decoration'), self)
 			self.osdec5B.clicked.connect(self.calculateSideDecoration)
-			self.osdec5B.resize(area, createSize)
-			self.osdec5B.move(10, rowsdec)
+			self.osdec5B.setFixedHeight(createSize)
 			
-			rowsdec += 80
-			
-			# label
-			self.osdec6L = QtGui.QLabel(translate('magicStart', 'Start XYZ:'), self)
-			self.osdec6L.move(10, rowsdec+3)
-			
-			# text input
+			self.osdec61L = QtGui.QLabel(translate('magicStart', 'Start X:'), self)
 			self.osdec61E = QtGui.QLineEdit(self)
 			self.osdec61E.setText(MagicPanels.unit2gui(0))
-			self.osdec61E.setFixedWidth(starttfs)
-			self.osdec61E.move(startcX, rowsdec)
+			self.osdec61E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.osdec62L = QtGui.QLabel(translate('magicStart', 'Start Y:'), self)
 			self.osdec62E = QtGui.QLineEdit(self)
 			self.osdec62E.setText(MagicPanels.unit2gui(0))
-			self.osdec62E.setFixedWidth(starttfs)
-			self.osdec62E.move(startcY, rowsdec)
+			self.osdec62E.setFixedWidth(fieldSize)
 			
-			# text input
+			self.osdec63L = QtGui.QLabel(translate('magicStart', 'Start Z:'), self)
 			self.osdec63E = QtGui.QLineEdit(self)
 			self.osdec63E.setText(MagicPanels.unit2gui(0))
-			self.osdec63E.setFixedWidth(starttfs)
-			self.osdec63E.move(startcZ, rowsdec)
+			self.osdec63E.setFixedWidth(fieldSize)
 			
-			rowsdec += 30
-			
-			# label
 			self.osdec7L = QtGui.QLabel(translate('magicStart', 'Calculated decoration width:'), self)
-			self.osdec7L.move(10, rowsdec+3)
-			
-			# text input
 			self.osdec7E = QtGui.QLineEdit(self)
 			self.osdec7E.setText(MagicPanels.unit2gui(0))
-			self.osdec7E.setFixedWidth(rsize2x)
-			self.osdec7E.move(startcY, rowsdec)
+			self.osdec7E.setFixedWidth(fieldSize)
 			
-			rowsdec += 30
-			
-			# label
 			self.osdec8L = QtGui.QLabel(translate('magicStart', 'Calculated decoration height:'), self)
-			self.osdec8L.move(10, rowsdec+3)
-
-			# text input
 			self.osdec8E = QtGui.QLineEdit(self)
 			self.osdec8E.setText(MagicPanels.unit2gui(0))
-			self.osdec8E.setFixedWidth(rsize2x)
-			self.osdec8E.move(startcY, rowsdec)
-		
-			rowsdec += 40
-
-			# button
+			self.osdec8E.setFixedWidth(fieldSize)
+			
 			self.osdec9B = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.osdec9B.clicked.connect(self.createObject)
-			self.osdec9B.resize(area, createSize)
-			self.osdec9B.move(10, createRow)
-
+			self.osdec9B.setFixedHeight(createSize)
+			
 			# hide by default
 			self.osdec1i.hide()
 			self.osdec2L.hide()
@@ -3885,7 +2573,9 @@ def showQtGUI():
 			self.osdecOVL.hide()
 			self.osdecOVE.hide()
 			self.osdec5B.hide()
-			self.osdec6L.hide()
+			self.osdec61L.hide()
+			self.osdec62L.hide()
+			self.osdec63L.hide()
 			self.osdec61E.hide()
 			self.osdec62E.hide()
 			self.osdec63E.hide()
@@ -3896,15 +2586,591 @@ def showQtGUI():
 			self.osdec9B.hide()
 			
 			# ############################################################################
+			# build GUI layout
+			# ############################################################################
+			
+			# ############################################################################
+			# header
+			# ############################################################################
+			
+			self.layoutHead = QtGui.QVBoxLayout()
+			self.layoutHead.addWidget(self.sMode)
+			self.layoutHead.addWidget(self.si)
+			
+			# ############################################################################
+			# info
+			# ############################################################################
+			
+			self.layoutInfo = QtGui.QVBoxLayout()
+			
+			# info screens
+			self.layoutInfo.addWidget(self.oworkspaceInfo)
+			self.layoutInfo.addWidget(self.oFootInfo)
+			self.layoutInfo.addWidget(self.oTableInfo)
+			self.layoutInfo.addWidget(self.og1i)
+			self.layoutInfo.addWidget(self.ods1i)
+			self.layoutInfo.addWidget(self.ofr1i)
+			self.layoutInfo.addWidget(self.oBackInfo)
+			self.layoutInfo.addWidget(self.ofglass1i)
+			self.layoutInfo.addWidget(self.odf1i)
+			self.layoutInfo.addWidget(self.ofdec1i)
+			self.layoutInfo.addWidget(self.offrame1i)
+			self.layoutInfo.addWidget(self.osh1i)
+			self.layoutInfo.addWidget(self.oshs1i)
+			self.layoutInfo.addWidget(self.oside1i)
+			self.layoutInfo.addWidget(self.ocs1i)
+			self.layoutInfo.addWidget(self.osdec1i)
+			
+			# buttons
+			self.layoutInfo.addWidget(self.helpInfo)
+			self.layoutInfo.addWidget(self.helpBSHOW)
+			self.layoutInfo.addWidget(self.helpBHIDE)
+			
+			# merge
+			self.layoutInfo.addWidget(self.minfo)
+			self.layoutInfo.addWidget(self.mergeB)
+			
+			# group
+			self.groupInfo = QtGui.QGroupBox()
+			self.groupInfo.setLayout(self.layoutInfo)
+
+			# ############################################################################
+			# options before calculate
+			# ############################################################################
+			
+			self.layoutOptions = QtGui.QGridLayout()
+			
+			# workspace
+			self.layoutOptions.addWidget(self.oworkspaceXL, 0, 0)
+			self.layoutOptions.addWidget(self.oworkspaceXE, 0, 1)
+			self.layoutOptions.addWidget(self.oworkspaceYL, 1, 0)
+			self.layoutOptions.addWidget(self.oworkspaceYE, 1, 1)
+			self.layoutOptions.addWidget(self.oworkspaceZL, 2, 0)
+			self.layoutOptions.addWidget(self.oworkspaceZE, 2, 1)
+			
+			# furniture
+			self.layoutOptions.addWidget(self.oThickL, 0, 0)
+			self.layoutOptions.addWidget(self.oThickE, 0, 1)
+			self.layoutOptions.addWidget(self.oThickBackL, 1, 0)
+			self.layoutOptions.addWidget(self.oThickBackE, 1, 1)
+			self.layoutOptions.addWidget(self.oThickShelfL, 2, 0)
+			self.layoutOptions.addWidget(self.oThickShelfE, 2, 1)
+			self.layoutOptions.addWidget(self.oThickFrontL, 3, 0)
+			self.layoutOptions.addWidget(self.oThickFrontE, 3, 1)
+			self.layoutOptions.addWidget(self.oOffsetFrontLL, 4, 0)
+			self.layoutOptions.addWidget(self.oOffsetFrontLE, 4, 1)
+			self.layoutOptions.addWidget(self.oOffsetFrontRL, 5, 0)
+			self.layoutOptions.addWidget(self.oOffsetFrontRE, 5, 1)
+			self.layoutOptions.addWidget(self.oOffsetFrontTL, 6, 0)
+			self.layoutOptions.addWidget(self.oOffsetFrontTE, 6, 1)
+			self.layoutOptions.addWidget(self.oOffsetFrontBL, 7, 0)
+			self.layoutOptions.addWidget(self.oOffsetFrontBE, 7, 1)
+			self.layoutOptions.addWidget(self.oModulesNumL, 8, 0)
+			self.layoutOptions.addWidget(self.oModulesNumE, 8, 1)
+			self.layoutOptions.addWidget(self.oSelectionOffset1L, 9, 0)
+			self.layoutOptions.addWidget(self.oSelectionOffset1E, 9, 1)
+			self.layoutOptions.addWidget(self.oSelectionOffset2L, 10, 0)
+			self.layoutOptions.addWidget(self.oSelectionOffset2E, 10, 1)
+			self.layoutOptions.addWidget(self.oSelectionOffset3L, 11, 0)
+			self.layoutOptions.addWidget(self.oSelectionOffset3E, 11, 1)
+			self.layoutOptions.addWidget(self.oHeightL, 12, 0)
+			self.layoutOptions.addWidget(self.oHeightE, 12, 1)
+			
+			# foot
+			self.layoutOptions.addWidget(self.oFootThickL, 0, 0)
+			self.layoutOptions.addWidget(self.oFootThickE, 0, 1)
+			self.layoutOptions.addWidget(self.oFootSizeZL, 1, 0)
+			self.layoutOptions.addWidget(self.oFootSizeZE, 1, 1)
+			
+			# table
+			self.layoutOptions.addWidget(self.oTableSizeXL, 0, 0)
+			self.layoutOptions.addWidget(self.oTableSizeXE, 0, 1)
+			self.layoutOptions.addWidget(self.oTableSizeYL, 1, 0)
+			self.layoutOptions.addWidget(self.oTableSizeYE, 1, 1)
+			self.layoutOptions.addWidget(self.oTableSizeZL, 2, 0)
+			self.layoutOptions.addWidget(self.oTableSizeZE, 2, 1)
+			self.layoutOptions.addWidget(self.oTableTopThickL, 3, 0)
+			self.layoutOptions.addWidget(self.oTableTopThickE, 3, 1)
+			self.layoutOptions.addWidget(self.oTableLegThickL, 4, 0)
+			self.layoutOptions.addWidget(self.oTableLegThickE, 4, 1)
+			self.layoutOptions.addWidget(self.oTableTopOffsetL, 5, 0)
+			self.layoutOptions.addWidget(self.oTableTopOffsetE, 5, 1)
+			
+			# single drawer
+			self.layoutOptions.addWidget(self.og101L, 0, 0)
+			self.layoutOptions.addWidget(self.og101E, 0, 1)
+			self.layoutOptions.addWidget(self.og102L, 1, 0)
+			self.layoutOptions.addWidget(self.og102E, 1, 1)
+			self.layoutOptions.addWidget(self.og81L, 2, 0)
+			self.layoutOptions.addWidget(self.og81E, 2, 1)
+			self.layoutOptions.addWidget(self.og82L, 3, 0)
+			self.layoutOptions.addWidget(self.og82E, 3, 1)
+			self.layoutOptions.addWidget(self.og83L, 4, 0)
+			self.layoutOptions.addWidget(self.og83E, 4, 1)
+			self.layoutOptions.addWidget(self.og91L, 5, 0)
+			self.layoutOptions.addWidget(self.og91E, 5, 1)
+			self.layoutOptions.addWidget(self.og92L, 6, 0)
+			self.layoutOptions.addWidget(self.og92E, 6, 1)
+			self.layoutOptions.addWidget(self.og93L, 7, 0)
+			self.layoutOptions.addWidget(self.og93E, 7, 1)
+			self.layoutOptions.addWidget(self.og94L, 8, 0)
+			self.layoutOptions.addWidget(self.og94E, 8, 1)
+			
+			# drawer series
+			self.layoutOptions.addWidget(self.ods2L, 0, 0)
+			self.layoutOptions.addWidget(self.ods2E, 0, 1)
+			self.layoutOptions.addWidget(self.ods111L, 1, 0)
+			self.layoutOptions.addWidget(self.ods111E, 1, 1)
+			self.layoutOptions.addWidget(self.ods112L, 2, 0)
+			self.layoutOptions.addWidget(self.ods112E, 2, 1)
+			self.layoutOptions.addWidget(self.ods113L, 3, 0)
+			self.layoutOptions.addWidget(self.ods113E, 3, 1)
+			self.layoutOptions.addWidget(self.ods31L, 4, 0)
+			self.layoutOptions.addWidget(self.ods31E, 4, 1)
+			self.layoutOptions.addWidget(self.ods32L, 5, 0)
+			self.layoutOptions.addWidget(self.ods32E, 5, 1)
+			self.layoutOptions.addWidget(self.ods33L, 6, 0)
+			self.layoutOptions.addWidget(self.ods33E, 6, 1)
+			self.layoutOptions.addWidget(self.ods41L, 7, 0)
+			self.layoutOptions.addWidget(self.ods41E, 7, 1)
+			self.layoutOptions.addWidget(self.ods42L, 8, 0)
+			self.layoutOptions.addWidget(self.ods42E, 8, 1)
+			self.layoutOptions.addWidget(self.ods43L, 9, 0)
+			self.layoutOptions.addWidget(self.ods43E, 9, 1)
+			self.layoutOptions.addWidget(self.ods44L, 10, 0)
+			self.layoutOptions.addWidget(self.ods44E, 10, 1)
+			self.layoutOptions.addWidget(self.ods45L, 11, 0)
+			self.layoutOptions.addWidget(self.ods45E, 11, 1)
+			
+			# front
+			self.layoutOptions.addWidget(self.ofr7L, 0, 0)
+			self.layoutOptions.addWidget(self.ofr7E, 0, 1)
+			self.layoutOptions.addWidget(self.ofr81L, 1, 0)
+			self.layoutOptions.addWidget(self.ofr81E, 1, 1)
+			self.layoutOptions.addWidget(self.ofr82L, 2, 0)
+			self.layoutOptions.addWidget(self.ofr82E, 2, 1)
+			self.layoutOptions.addWidget(self.ofr83L, 3, 0)
+			self.layoutOptions.addWidget(self.ofr83E, 3, 1)
+			self.layoutOptions.addWidget(self.ofr84L, 4, 0)
+			self.layoutOptions.addWidget(self.ofr84E, 4, 1)
+			
+			# back
+			self.layoutOptions.addWidget(self.oBackThickL, 0, 0)
+			self.layoutOptions.addWidget(self.oBackThickE, 0, 1)
+			self.layoutOptions.addWidget(self.oBackOffsets1L, 1, 0)
+			self.layoutOptions.addWidget(self.oBackOffsets1E, 1, 1)
+			self.layoutOptions.addWidget(self.oBackOffsets2L, 2, 0)
+			self.layoutOptions.addWidget(self.oBackOffsets2E, 2, 1)
+			self.layoutOptions.addWidget(self.oBackOffsets3L, 3, 0)
+			self.layoutOptions.addWidget(self.oBackOffsets3E, 3, 1)
+			self.layoutOptions.addWidget(self.oBackOffsets4L, 4, 0)
+			self.layoutOptions.addWidget(self.oBackOffsets4E, 4, 1)
+			
+			# front with glass
+			self.layoutOptions.addWidget(self.ofglass2L, 0, 0)
+			self.layoutOptions.addWidget(self.ofglass2E, 0, 1)
+			self.layoutOptions.addWidget(self.ofglass3L, 1, 0)
+			self.layoutOptions.addWidget(self.ofglass3E, 1, 1)
+			self.layoutOptions.addWidget(self.ofglass4L, 2, 0)
+			self.layoutOptions.addWidget(self.ofglass4E, 2, 1)
+			self.layoutOptions.addWidget(self.ofglass5L, 3, 0)
+			self.layoutOptions.addWidget(self.ofglass5E, 3, 1)
+			
+			# decorative front
+			self.layoutOptions.addWidget(self.odf2L, 0, 0)
+			self.layoutOptions.addWidget(self.odf2E, 0, 1)
+			self.layoutOptions.addWidget(self.odf3L, 1, 0)
+			self.layoutOptions.addWidget(self.odf3E, 1, 1)
+			self.layoutOptions.addWidget(self.odf4L, 2, 0)
+			self.layoutOptions.addWidget(self.odf4E, 2, 1)
+			self.layoutOptions.addWidget(self.odf5L, 3, 0)
+			self.layoutOptions.addWidget(self.odf5E, 3, 1)
+			
+			# front decoration
+			self.layoutOptions.addWidget(self.ofdec2L, 0, 0)
+			self.layoutOptions.addWidget(self.ofdec2E, 0, 1)
+			self.layoutOptions.addWidget(self.ofdec3L, 1, 0)
+			self.layoutOptions.addWidget(self.ofdec3E, 1, 1)
+			self.layoutOptions.addWidget(self.ofdecOHL, 2, 0)
+			self.layoutOptions.addWidget(self.ofdecOHE, 2, 1)
+			self.layoutOptions.addWidget(self.ofdecOVL, 3, 0)
+			self.layoutOptions.addWidget(self.ofdecOVE, 3, 1)
+			
+			# face frame
+			self.layoutOptions.addWidget(self.offrame2L, 0, 0)
+			self.layoutOptions.addWidget(self.offrame2E, 0, 1)
+			self.layoutOptions.addWidget(self.offrame3L, 1, 0)
+			self.layoutOptions.addWidget(self.offrame3E, 1, 1)
+			self.layoutOptions.addWidget(self.offrame4L, 2, 0)
+			self.layoutOptions.addWidget(self.offrame4E, 2, 1)
+			self.layoutOptions.addWidget(self.offrame5L, 3, 0)
+			self.layoutOptions.addWidget(self.offrame5E, 3, 1)
+			
+			# shelf
+			self.layoutOptions.addWidget(self.osh1L, 0, 0)
+			self.layoutOptions.addWidget(self.osh1E, 0, 1)
+			self.layoutOptions.addWidget(self.osh2L, 1, 0)
+			self.layoutOptions.addWidget(self.osh2E, 1, 1)
+			self.layoutOptions.addWidget(self.osh31L, 2, 0)
+			self.layoutOptions.addWidget(self.osh31E, 2, 1)
+			self.layoutOptions.addWidget(self.osh32L, 3, 0)
+			self.layoutOptions.addWidget(self.osh32E, 3, 1)
+			self.layoutOptions.addWidget(self.osh33L, 4, 0)
+			self.layoutOptions.addWidget(self.osh33E, 4, 1)
+			self.layoutOptions.addWidget(self.osh34L, 5, 0)
+			self.layoutOptions.addWidget(self.osh34E, 5, 1)
+			
+			# shelf series
+			self.layoutOptions.addWidget(self.oshs1L, 0, 0)
+			self.layoutOptions.addWidget(self.oshs1E, 0, 1)
+			self.layoutOptions.addWidget(self.oshs2L, 1, 0)
+			self.layoutOptions.addWidget(self.oshs2E, 1, 1)
+			
+			# side
+			self.layoutOptions.addWidget(self.oside1L, 0, 0)
+			self.layoutOptions.addWidget(self.oside1E, 0, 1)
+			self.layoutOptions.addWidget(self.oside2L, 1, 0)
+			self.layoutOptions.addWidget(self.oside2E, 1, 1)
+			self.layoutOptions.addWidget(self.oside31L, 2, 0)
+			self.layoutOptions.addWidget(self.oside31E, 2, 1)
+			self.layoutOptions.addWidget(self.oside32L, 3, 0)
+			self.layoutOptions.addWidget(self.oside32E, 3, 1)
+			self.layoutOptions.addWidget(self.oside33L, 4, 0)
+			self.layoutOptions.addWidget(self.oside33E, 4, 1)
+			self.layoutOptions.addWidget(self.oside34L, 5, 0)
+			self.layoutOptions.addWidget(self.oside34E, 5, 1)
+			
+			# center side
+			self.layoutOptions.addWidget(self.ocs1L, 0, 0)
+			self.layoutOptions.addWidget(self.ocs1E, 0, 1)
+			self.layoutOptions.addWidget(self.ocs2L, 1, 0)
+			self.layoutOptions.addWidget(self.ocs2E, 1, 1)
+			self.layoutOptions.addWidget(self.ocs31L, 2, 0)
+			self.layoutOptions.addWidget(self.ocs31E, 2, 1)
+			self.layoutOptions.addWidget(self.ocs32L, 3, 0)
+			self.layoutOptions.addWidget(self.ocs32E, 3, 1)
+			self.layoutOptions.addWidget(self.ocs33L, 4, 0)
+			self.layoutOptions.addWidget(self.ocs33E, 4, 1)
+			self.layoutOptions.addWidget(self.ocs34L, 5, 0)
+			self.layoutOptions.addWidget(self.ocs34E, 5, 1)
+			
+			# side decoration
+			self.layoutOptions.addWidget(self.osdec2L, 0, 0)
+			self.layoutOptions.addWidget(self.osdec2E, 0, 1)
+			self.layoutOptions.addWidget(self.osdec3L, 1, 0)
+			self.layoutOptions.addWidget(self.osdec3E, 1, 1)
+			self.layoutOptions.addWidget(self.osdecOHL, 2, 0)
+			self.layoutOptions.addWidget(self.osdecOHE, 2, 1)
+			self.layoutOptions.addWidget(self.osdecOVL, 3, 0)
+			self.layoutOptions.addWidget(self.osdecOVE, 3, 1)
+			
+			# calculate
+			self.layoutCalculate = QtGui.QVBoxLayout()
+			
+			# buttons
+			self.layoutCalculate.addLayout(self.layoutOptions)
+			self.layoutCalculate.addWidget(self.oworkspaceBCL)
+			self.layoutCalculate.addWidget(self.oCalculateB1)
+			self.layoutCalculate.addWidget(self.oFootCalculateB)
+			self.layoutCalculate.addWidget(self.oTableCalculateB)
+			self.layoutCalculate.addWidget(self.og4B1)
+			self.layoutCalculate.addWidget(self.ods5B)
+			self.layoutCalculate.addWidget(self.ofr4B1)
+			self.layoutCalculate.addWidget(self.oBackBCL)
+			self.layoutCalculate.addWidget(self.ofglass6B)
+			self.layoutCalculate.addWidget(self.odf6B)
+			self.layoutCalculate.addWidget(self.ofdec5B)
+			self.layoutCalculate.addWidget(self.offrame6B)
+			self.layoutCalculate.addWidget(self.osh4B1)
+			self.layoutCalculate.addWidget(self.oshs3B)
+			self.layoutCalculate.addWidget(self.oside4B1)
+			self.layoutCalculate.addWidget(self.ocs4B1)
+			self.layoutCalculate.addWidget(self.osdec5B)
+			
+			# group
+			self.groupCalculate = QtGui.QGroupBox()
+			self.groupCalculate.setLayout(self.layoutCalculate)
+			
+			# ############################################################################
+			# result after calculate
+			# ############################################################################
+			
+			self.layoutResult = QtGui.QGridLayout()
+			
+			# workspace
+			self.layoutResult.addWidget(self.oworkspaceSXL, 0, 0)
+			self.layoutResult.addWidget(self.oworkspaceSXE, 0, 1)
+			self.layoutResult.addWidget(self.oworkspaceSYL, 1, 0)
+			self.layoutResult.addWidget(self.oworkspaceSYE, 1, 1)
+			self.layoutResult.addWidget(self.oworkspaceSZL, 2, 0)
+			self.layoutResult.addWidget(self.oworkspaceSZE, 2, 1)
+			
+			# furniture
+			self.layoutResult.addWidget(self.oStartXL, 0, 0)
+			self.layoutResult.addWidget(self.oStartXE, 0, 1)
+			self.layoutResult.addWidget(self.oStartYL, 1, 0)
+			self.layoutResult.addWidget(self.oStartYE, 1, 1)
+			self.layoutResult.addWidget(self.oStartZL, 2, 0)
+			self.layoutResult.addWidget(self.oStartZE, 2, 1)
+			self.layoutResult.addWidget(self.oWidthL, 3, 0)
+			self.layoutResult.addWidget(self.oWidthE, 3, 1)
+			self.layoutResult.addWidget(self.oDepthL, 4, 0)
+			self.layoutResult.addWidget(self.oDepthE, 4, 1)
+			
+			# foot
+			self.layoutResult.addWidget(self.oFootStartXL, 0, 0)
+			self.layoutResult.addWidget(self.oFootStartXE, 0, 1)
+			self.layoutResult.addWidget(self.oFootStartYL, 1, 0)
+			self.layoutResult.addWidget(self.oFootStartYE, 1, 1)
+			self.layoutResult.addWidget(self.oFootStartZL, 2, 0)
+			self.layoutResult.addWidget(self.oFootStartZE, 2, 1)
+			self.layoutResult.addWidget(self.oFootSizeXL, 3, 0)
+			self.layoutResult.addWidget(self.oFootSizeXE, 3, 1)
+			self.layoutResult.addWidget(self.oFootSizeYL, 4, 0)
+			self.layoutResult.addWidget(self.oFootSizeYE, 4, 1)
+			
+			# table
+			self.layoutResult.addWidget(self.oTableStartXL, 0, 0)
+			self.layoutResult.addWidget(self.oTableStartXE, 0, 1)
+			self.layoutResult.addWidget(self.oTableStartYL, 1, 0)
+			self.layoutResult.addWidget(self.oTableStartYE, 1, 1)
+			self.layoutResult.addWidget(self.oTableStartZL, 2, 0)
+			self.layoutResult.addWidget(self.oTableStartZE, 2, 1)
+			
+			# single drawer
+			self.layoutResult.addWidget(self.og2L, 0, 0)
+			self.layoutResult.addWidget(self.og2E, 0, 1)
+			self.layoutResult.addWidget(self.og3L, 1, 0)
+			self.layoutResult.addWidget(self.og3E, 1, 1)
+			self.layoutResult.addWidget(self.og4L, 2, 0)
+			self.layoutResult.addWidget(self.og4E, 2, 1)
+			self.layoutResult.addWidget(self.og5L, 3, 0)
+			self.layoutResult.addWidget(self.og5E, 3, 1)
+			self.layoutResult.addWidget(self.og6L, 4, 0)
+			self.layoutResult.addWidget(self.og6E, 4, 1)
+			self.layoutResult.addWidget(self.og7L, 5, 0)
+			self.layoutResult.addWidget(self.og7E, 5, 1)
+			
+			# drawer series
+			self.layoutResult.addWidget(self.ods61L, 0, 0)
+			self.layoutResult.addWidget(self.ods61E, 0, 1)
+			self.layoutResult.addWidget(self.ods62L, 1, 0)
+			self.layoutResult.addWidget(self.ods62E, 1, 1)
+			self.layoutResult.addWidget(self.ods63L, 2, 0)
+			self.layoutResult.addWidget(self.ods63E, 2, 1)
+			self.layoutResult.addWidget(self.ods7L, 3, 0)
+			self.layoutResult.addWidget(self.ods7E, 3, 1)
+			self.layoutResult.addWidget(self.ods8L, 4, 0)
+			self.layoutResult.addWidget(self.ods8E, 4, 1)
+			self.layoutResult.addWidget(self.ods9L, 5, 0)
+			self.layoutResult.addWidget(self.ods9E, 5, 1)
+			
+			# front
+			self.layoutResult.addWidget(self.ofr2L, 0, 0)
+			self.layoutResult.addWidget(self.ofr2E, 0, 1)
+			self.layoutResult.addWidget(self.ofr3L, 1, 0)
+			self.layoutResult.addWidget(self.ofr3E, 1, 1)
+			self.layoutResult.addWidget(self.ofr4L, 2, 0)
+			self.layoutResult.addWidget(self.ofr4E, 2, 1)
+			self.layoutResult.addWidget(self.ofr5L, 3, 0)
+			self.layoutResult.addWidget(self.ofr5E, 3, 1)
+			self.layoutResult.addWidget(self.ofr6L, 4, 0)
+			self.layoutResult.addWidget(self.ofr6E, 4, 1)
+			
+			# back
+			self.layoutResult.addWidget(self.oBackSXL, 0, 0)
+			self.layoutResult.addWidget(self.oBackSXE, 0, 1)
+			self.layoutResult.addWidget(self.oBackSYL, 1, 0)
+			self.layoutResult.addWidget(self.oBackSYE, 1, 1)
+			self.layoutResult.addWidget(self.oBackSZL, 2, 0)
+			self.layoutResult.addWidget(self.oBackSZE, 2, 1)
+			self.layoutResult.addWidget(self.oBackSizeXL, 3, 0)
+			self.layoutResult.addWidget(self.oBackSizeXE, 3, 1)
+			self.layoutResult.addWidget(self.oBackSizeYL, 4, 0)
+			self.layoutResult.addWidget(self.oBackSizeYE, 4, 1)
+			
+			# front with glass
+			self.layoutResult.addWidget(self.ofglass71L, 0, 0)
+			self.layoutResult.addWidget(self.ofglass71E, 0, 1)
+			self.layoutResult.addWidget(self.ofglass72L, 1, 0)
+			self.layoutResult.addWidget(self.ofglass72E, 1, 1)
+			self.layoutResult.addWidget(self.ofglass73L, 2, 0)
+			self.layoutResult.addWidget(self.ofglass73E, 2, 1)
+			self.layoutResult.addWidget(self.ofglass8L, 3, 0)
+			self.layoutResult.addWidget(self.ofglass8E, 3, 1)
+			self.layoutResult.addWidget(self.ofglass9L, 4, 0)
+			self.layoutResult.addWidget(self.ofglass9E, 4, 1)
+			self.layoutResult.addWidget(self.ofglass10L, 5, 0)
+			self.layoutResult.addWidget(self.ofglass10E, 5, 1)
+			
+			# decorative front
+			self.layoutResult.addWidget(self.odf71L, 0, 0)
+			self.layoutResult.addWidget(self.odf71E, 0, 1)
+			self.layoutResult.addWidget(self.odf72L, 1, 0)
+			self.layoutResult.addWidget(self.odf72E, 1, 1)
+			self.layoutResult.addWidget(self.odf73L, 2, 0)
+			self.layoutResult.addWidget(self.odf73E, 2, 1)
+			self.layoutResult.addWidget(self.odf8L, 3, 0)
+			self.layoutResult.addWidget(self.odf8E, 3, 1)
+			self.layoutResult.addWidget(self.odf9L, 4, 0)
+			self.layoutResult.addWidget(self.odf9E, 4, 1)
+			self.layoutResult.addWidget(self.odf10L, 5, 0)
+			self.layoutResult.addWidget(self.odf10E, 5, 1)
+			
+			# front decoration
+			self.layoutResult.addWidget(self.ofdec61L, 0, 0)
+			self.layoutResult.addWidget(self.ofdec61E, 0, 1)
+			self.layoutResult.addWidget(self.ofdec62L, 1, 0)
+			self.layoutResult.addWidget(self.ofdec62E, 1, 1)
+			self.layoutResult.addWidget(self.ofdec63L, 2, 0)
+			self.layoutResult.addWidget(self.ofdec63E, 2, 1)
+			self.layoutResult.addWidget(self.ofdec7L, 3, 0)
+			self.layoutResult.addWidget(self.ofdec7E, 3, 1)
+			self.layoutResult.addWidget(self.ofdec8L, 4, 0)
+			self.layoutResult.addWidget(self.ofdec8E, 4, 1)
+			
+			# face frame
+			self.layoutResult.addWidget(self.offrame71L, 0, 0)
+			self.layoutResult.addWidget(self.offrame71E, 0, 1)
+			self.layoutResult.addWidget(self.offrame72L, 1, 0)
+			self.layoutResult.addWidget(self.offrame72E, 1, 1)
+			self.layoutResult.addWidget(self.offrame73L, 2, 0)
+			self.layoutResult.addWidget(self.offrame73E, 2, 1)
+			self.layoutResult.addWidget(self.offrame8L, 3, 0)
+			self.layoutResult.addWidget(self.offrame8E, 3, 1)
+			self.layoutResult.addWidget(self.offrame9L, 4, 0)
+			self.layoutResult.addWidget(self.offrame9E, 4, 1)
+			
+			# shelf
+			self.layoutResult.addWidget(self.osh51L, 0, 0)
+			self.layoutResult.addWidget(self.osh51E, 0, 1)
+			self.layoutResult.addWidget(self.osh52L, 1, 0)
+			self.layoutResult.addWidget(self.osh52E, 1, 1)
+			self.layoutResult.addWidget(self.osh53L, 2, 0)
+			self.layoutResult.addWidget(self.osh53E, 2, 1)
+			self.layoutResult.addWidget(self.osh6L, 3, 0)
+			self.layoutResult.addWidget(self.osh6E, 3, 1)
+			self.layoutResult.addWidget(self.osh7L, 4, 0)
+			self.layoutResult.addWidget(self.osh7E, 4, 1)
+			
+			# shelf series
+			self.layoutResult.addWidget(self.oshs41L, 0, 0)
+			self.layoutResult.addWidget(self.oshs41E, 0, 1)
+			self.layoutResult.addWidget(self.oshs42L, 1, 0)
+			self.layoutResult.addWidget(self.oshs42E, 1, 1)
+			self.layoutResult.addWidget(self.oshs43L, 2, 0)
+			self.layoutResult.addWidget(self.oshs43E, 2, 1)
+			self.layoutResult.addWidget(self.oshs5L, 3, 0)
+			self.layoutResult.addWidget(self.oshs5E, 3, 1)
+			self.layoutResult.addWidget(self.oshs6L, 4, 0)
+			self.layoutResult.addWidget(self.oshs6E, 4, 1)
+			self.layoutResult.addWidget(self.oshs7L, 5, 0)
+			self.layoutResult.addWidget(self.oshs7E, 5, 1)
+			
+			# side
+			self.layoutResult.addWidget(self.oside51L, 0, 0)
+			self.layoutResult.addWidget(self.oside51E, 0, 1)
+			self.layoutResult.addWidget(self.oside52L, 1, 0)
+			self.layoutResult.addWidget(self.oside52E, 1, 1)
+			self.layoutResult.addWidget(self.oside53L, 2, 0)
+			self.layoutResult.addWidget(self.oside53E, 2, 1)
+			self.layoutResult.addWidget(self.oside6L, 3, 0)
+			self.layoutResult.addWidget(self.oside6E, 3, 1)
+			self.layoutResult.addWidget(self.oside7L, 4, 0)
+			self.layoutResult.addWidget(self.oside7E, 4, 1)
+			
+			# center side
+			self.layoutResult.addWidget(self.ocs51L, 0, 0)
+			self.layoutResult.addWidget(self.ocs51E, 0, 1)
+			self.layoutResult.addWidget(self.ocs52L, 1, 0)
+			self.layoutResult.addWidget(self.ocs52E, 1, 1)
+			self.layoutResult.addWidget(self.ocs53L, 2, 0)
+			self.layoutResult.addWidget(self.ocs53E, 2, 1)
+			self.layoutResult.addWidget(self.ocs6L, 3, 0)
+			self.layoutResult.addWidget(self.ocs6E, 3, 1)
+			self.layoutResult.addWidget(self.ocs7L, 4, 0)
+			self.layoutResult.addWidget(self.ocs7E, 4, 1)
+			
+			# side decoration
+			self.layoutResult.addWidget(self.osdec61L, 0, 0)
+			self.layoutResult.addWidget(self.osdec61E, 0, 1)
+			self.layoutResult.addWidget(self.osdec62L, 1, 0)
+			self.layoutResult.addWidget(self.osdec62E, 1, 1)
+			self.layoutResult.addWidget(self.osdec63L, 2, 0)
+			self.layoutResult.addWidget(self.osdec63E, 2, 1)
+			self.layoutResult.addWidget(self.osdec7L, 3, 0)
+			self.layoutResult.addWidget(self.osdec7E, 3, 1)
+			self.layoutResult.addWidget(self.osdec8L, 4, 0)
+			self.layoutResult.addWidget(self.osdec8E, 4, 1)
+			
+			# create
+			self.layoutCreate = QtGui.QVBoxLayout()
+			
+			# buttons
+			self.layoutCreate.addLayout(self.layoutResult)
+			self.layoutCreate.addWidget(self.oworkspaceBCR)
+			self.layoutCreate.addWidget(self.oCreateB1)
+			self.layoutCreate.addWidget(self.oFootCreateB)
+			self.layoutCreate.addWidget(self.oTableCreateB)
+			self.layoutCreate.addWidget(self.og9B1)
+			self.layoutCreate.addWidget(self.ods10B)
+			self.layoutCreate.addWidget(self.ofr8B1)
+			self.layoutCreate.addWidget(self.oBackBCR)
+			self.layoutCreate.addWidget(self.ofglass11B)
+			self.layoutCreate.addWidget(self.odf11B)
+			self.layoutCreate.addWidget(self.ofdec9B)
+			self.layoutCreate.addWidget(self.offrame10B)
+			self.layoutCreate.addWidget(self.osh8B1)
+			self.layoutCreate.addWidget(self.oshs8B)
+			self.layoutCreate.addWidget(self.oside8B1)
+			self.layoutCreate.addWidget(self.ocs8B1)
+			self.layoutCreate.addWidget(self.osdec9B)
+			
+			# group
+			self.groupCreate = QtGui.QGroupBox()
+			self.groupCreate.setLayout(self.layoutCreate)
+
+			# ############################################################################
+			# scroller
+			# ############################################################################
+			
+			self.layoutScrollContent = QtGui.QVBoxLayout()
+			self.layoutScrollContent.addLayout(self.layoutHead)
+			self.layoutScrollContent.addWidget(self.groupInfo)
+			self.layoutScrollContent.addWidget(self.groupCalculate)
+			self.layoutScrollContent.addWidget(self.groupCreate)
+			self.layoutScrollContent.addStretch()
+			
+			self.scrollContainer = QtGui.QWidget()
+			self.scrollContainer.setLayout(self.layoutScrollContent)
+			
+			self.widgetScroll = QtGui.QScrollArea()
+			self.widgetScroll.setWidgetResizable(True)
+			self.widgetScroll.setVerticalScrollBarPolicy(QtGui.Qt.ScrollBarAsNeeded)
+			self.widgetScroll.setHorizontalScrollBarPolicy(QtGui.Qt.ScrollBarAlwaysOff)
+			self.widgetScroll.setWidget(self.scrollContainer)
+			
+			# ############################################################################
+			# main layout
+			# ############################################################################
+			
+			self.layout = QtGui.QVBoxLayout()
+			self.layout.setContentsMargins(0, 0, 0, 0)
+			self.layout.addWidget(self.widgetScroll)
+			self.setLayout(self.layout)
+			
+			# ############################################################################
 			# show & init defaults
 			# ############################################################################
-
-			# show window
-			self.show()
 
 			# set theme
 			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
 			self.setStyleSheet(QtCSS)
+		
+			# show window
+			self.show()
+			
+			MagicPanels.adjustGUI(self, "left")
 		
 		# ############################################################################
 		# actions - GUI
@@ -3917,6 +3183,13 @@ def showQtGUI():
 			# hide everything first
 			# ##############################################
 			
+			self.groupInfo.hide()
+			self.groupCalculate.hide()
+			self.groupCreate.hide()
+			self.helpBSHOW.hide()
+			self.helpBHIDE.hide()
+			self.helpInfo.hide()
+			
 			# workspace
 			self.oworkspaceInfo.hide()
 			self.oworkspaceXL.hide()
@@ -3926,7 +3199,9 @@ def showQtGUI():
 			self.oworkspaceZL.hide()
 			self.oworkspaceZE.hide()
 			self.oworkspaceBCL.hide()
-			self.oworkspaceSL.hide()
+			self.oworkspaceSXL.hide()
+			self.oworkspaceSYL.hide()
+			self.oworkspaceSZL.hide()
 			self.oworkspaceSXE.hide()
 			self.oworkspaceSYE.hide()
 			self.oworkspaceSZE.hide()
@@ -3938,7 +3213,6 @@ def showQtGUI():
 			self.oside1E.hide()
 			self.oside2L.hide()
 			self.oside2E.hide()
-			self.oside3L.hide()
 			self.oside31L.hide()
 			self.oside32L.hide()
 			self.oside33L.hide()
@@ -3948,7 +3222,9 @@ def showQtGUI():
 			self.oside33E.hide()
 			self.oside34E.hide()
 			self.oside4B1.hide()
-			self.oside5L.hide()
+			self.oside51L.hide()
+			self.oside52L.hide()
+			self.oside53L.hide()
 			self.oside51E.hide()
 			self.oside52E.hide()
 			self.oside53E.hide()
@@ -3964,7 +3240,6 @@ def showQtGUI():
 			self.ocs1E.hide()
 			self.ocs2L.hide()
 			self.ocs2E.hide()
-			self.ocs3L.hide()
 			self.ocs31L.hide()
 			self.ocs32L.hide()
 			self.ocs33L.hide()
@@ -3974,7 +3249,9 @@ def showQtGUI():
 			self.ocs33E.hide()
 			self.ocs34E.hide()
 			self.ocs4B1.hide()
-			self.ocs5L.hide()
+			self.ocs51L.hide()
+			self.ocs52L.hide()
+			self.ocs53L.hide()
 			self.ocs51E.hide()
 			self.ocs52E.hide()
 			self.ocs53E.hide()
@@ -3995,7 +3272,9 @@ def showQtGUI():
 			self.osdecOVL.hide()
 			self.osdecOVE.hide()
 			self.osdec5B.hide()
-			self.osdec6L.hide()
+			self.osdec61L.hide()
+			self.osdec62L.hide()
+			self.osdec63L.hide()
 			self.osdec61E.hide()
 			self.osdec62E.hide()
 			self.osdec63E.hide()
@@ -4011,7 +3290,6 @@ def showQtGUI():
 			self.osh1E.hide()
 			self.osh2L.hide()
 			self.osh2E.hide()
-			self.osh3L.hide()
 			self.osh31L.hide()
 			self.osh32L.hide()
 			self.osh33L.hide()
@@ -4021,7 +3299,9 @@ def showQtGUI():
 			self.osh33E.hide()
 			self.osh34E.hide()
 			self.osh4B1.hide()
-			self.osh5L.hide()
+			self.osh51L.hide()
+			self.osh52L.hide()
+			self.osh53L.hide()
 			self.osh51E.hide()
 			self.osh52E.hide()
 			self.osh53E.hide()
@@ -4038,7 +3318,9 @@ def showQtGUI():
 			self.oshs2L.hide()
 			self.oshs2E.hide()
 			self.oshs3B.hide()
-			self.oshs4L.hide()
+			self.oshs41L.hide()
+			self.oshs42L.hide()
+			self.oshs43L.hide()
 			self.oshs41E.hide()
 			self.oshs42E.hide()
 			self.oshs43E.hide()
@@ -4053,6 +3335,8 @@ def showQtGUI():
 			# front
 			self.ofr1i.hide()
 			self.ofr2L.hide()
+			self.ofr3L.hide()
+			self.ofr4L.hide()
 			self.ofr2E.hide()
 			self.ofr3E.hide()
 			self.ofr4E.hide()
@@ -4063,7 +3347,6 @@ def showQtGUI():
 			self.ofr6E.hide()
 			self.ofr7L.hide()
 			self.ofr7E.hide()
-			self.ofr8L.hide()
 			self.ofr81L.hide()
 			self.ofr82L.hide()
 			self.ofr83L.hide()
@@ -4078,7 +3361,6 @@ def showQtGUI():
 			self.oBackInfo.hide()
 			self.oBackThickL.hide()
 			self.oBackThickE.hide()
-			self.oBackOffsetsL.hide()
 			self.oBackOffsets1L.hide()
 			self.oBackOffsets2L.hide()
 			self.oBackOffsets3L.hide()
@@ -4088,7 +3370,9 @@ def showQtGUI():
 			self.oBackOffsets3E.hide()
 			self.oBackOffsets4E.hide()
 			self.oBackBCL.hide()
-			self.oBackStartL.hide()
+			self.oBackSXL.hide()
+			self.oBackSYL.hide()
+			self.oBackSZL.hide()
 			self.oBackSXE.hide()
 			self.oBackSYE.hide()
 			self.oBackSZE.hide()
@@ -4109,7 +3393,9 @@ def showQtGUI():
 			self.ofglass5L.hide()
 			self.ofglass5E.hide()
 			self.ofglass6B.hide()
-			self.ofglass7L.hide()
+			self.ofglass71L.hide()
+			self.ofglass72L.hide()
+			self.ofglass73L.hide()
 			self.ofglass71E.hide()
 			self.ofglass72E.hide()
 			self.ofglass73E.hide()
@@ -4132,7 +3418,9 @@ def showQtGUI():
 			self.odf5L.hide()
 			self.odf5E.hide()
 			self.odf6B.hide()
-			self.odf7L.hide()
+			self.odf71L.hide()
+			self.odf72L.hide()
+			self.odf73L.hide()
 			self.odf71E.hide()
 			self.odf72E.hide()
 			self.odf73E.hide()
@@ -4155,7 +3443,9 @@ def showQtGUI():
 			self.ofdecOVL.hide()
 			self.ofdecOVE.hide()
 			self.ofdec5B.hide()
-			self.ofdec6L.hide()
+			self.ofdec61L.hide()
+			self.ofdec62L.hide()
+			self.ofdec63L.hide()
 			self.ofdec61E.hide()
 			self.ofdec62E.hide()
 			self.ofdec63E.hide()
@@ -4176,7 +3466,9 @@ def showQtGUI():
 			self.offrame5L.hide()
 			self.offrame5E.hide()
 			self.offrame6B.hide()
-			self.offrame7L.hide()
+			self.offrame71L.hide()
+			self.offrame72L.hide()
+			self.offrame73L.hide()
 			self.offrame71E.hide()
 			self.offrame72E.hide()
 			self.offrame73E.hide()
@@ -4189,6 +3481,8 @@ def showQtGUI():
 			# drawer
 			self.og1i.hide()
 			self.og2L.hide()
+			self.og3L.hide()
+			self.og4L.hide()
 			self.og2E.hide()
 			self.og3E.hide()
 			self.og4E.hide()
@@ -4199,14 +3493,12 @@ def showQtGUI():
 			self.og6E.hide()
 			self.og7L.hide()
 			self.og7E.hide()
-			self.og8L.hide()
 			self.og81L.hide()
 			self.og82L.hide()
 			self.og83L.hide()
 			self.og81E.hide()
 			self.og82E.hide()
 			self.og83E.hide()
-			self.og9L.hide()
 			self.og91L.hide()
 			self.og92L.hide()
 			self.og93L.hide()
@@ -4216,7 +3508,6 @@ def showQtGUI():
 			self.og93E.hide()
 			self.og94E.hide()
 			self.og9B1.hide()
-			self.og10L.hide()
 			self.og101L.hide()
 			self.og102L.hide()
 			self.og101E.hide()
@@ -4226,14 +3517,12 @@ def showQtGUI():
 			self.ods1i.hide()
 			self.ods2L.hide()
 			self.ods2E.hide()
-			self.ods3L.hide()
 			self.ods31L.hide()
 			self.ods32L.hide()
 			self.ods33L.hide()
 			self.ods31E.hide()
 			self.ods32E.hide()
 			self.ods33E.hide()
-			self.ods4L.hide()
 			self.ods41L.hide()
 			self.ods42L.hide()
 			self.ods43L.hide()
@@ -4245,7 +3534,9 @@ def showQtGUI():
 			self.ods44E.hide()
 			self.ods45E.hide()
 			self.ods5B.hide()
-			self.ods6L.hide()
+			self.ods61L.hide()
+			self.ods62L.hide()
+			self.ods63L.hide()
 			self.ods61E.hide()
 			self.ods62E.hide()
 			self.ods63E.hide()
@@ -4256,7 +3547,6 @@ def showQtGUI():
 			self.ods9L.hide()
 			self.ods9E.hide()
 			self.ods10B.hide()
-			self.ods11L.hide()
 			self.ods111L.hide()
 			self.ods112L.hide()
 			self.ods113L.hide()
@@ -4271,7 +3561,9 @@ def showQtGUI():
 			self.oFootSizeZL.hide()
 			self.oFootSizeZE.hide()
 			self.oFootCalculateB.hide()
-			self.oFootStartL.hide()
+			self.oFootStartXL.hide()
+			self.oFootStartYL.hide()
+			self.oFootStartZL.hide()
 			self.oFootStartXE.hide()
 			self.oFootStartYE.hide()
 			self.oFootStartZE.hide()
@@ -4296,7 +3588,9 @@ def showQtGUI():
 			self.oTableTopOffsetL.hide()
 			self.oTableTopOffsetE.hide()
 			self.oTableCalculateB.hide()
-			self.oTableStartInfoL.hide()
+			self.oTableStartXL.hide()
+			self.oTableStartYL.hide()
+			self.oTableStartZL.hide()
 			self.oTableStartXE.hide()
 			self.oTableStartYE.hide()
 			self.oTableStartZE.hide()
@@ -4325,14 +3619,18 @@ def showQtGUI():
 			self.oOffsetFrontBE.hide()
 			self.oModulesNumL.hide()
 			self.oModulesNumE.hide()
-			self.oSelectionOffsetL.hide()
+			self.oSelectionOffset1L.hide()
+			self.oSelectionOffset2L.hide()
+			self.oSelectionOffset3L.hide()
 			self.oSelectionOffset1E.hide()
 			self.oSelectionOffset2E.hide()
 			self.oSelectionOffset3E.hide()
 			self.oHeightL.hide()
 			self.oHeightE.hide()
 			self.oCalculateB1.hide()
-			self.oStartXYZL.hide()
+			self.oStartXL.hide()
+			self.oStartYL.hide()
+			self.oStartZL.hide()
 			self.oStartXE.hide()
 			self.oStartYE.hide()
 			self.oStartZE.hide()
@@ -4346,6 +3644,14 @@ def showQtGUI():
 			# show only needed
 			# ##############################################
 			
+			if iType != "empty":
+				self.groupInfo.show()
+				self.groupCalculate.show()
+				self.groupCreate.show()
+				self.helpBSHOW.show()
+				self.helpBHIDE.hide()
+				self.helpInfo.hide()
+			
 			if iType == "workspace":
 				self.oworkspaceInfo.show()
 				self.oworkspaceXL.show()
@@ -4355,7 +3661,9 @@ def showQtGUI():
 				self.oworkspaceZL.show()
 				self.oworkspaceZE.show()
 				self.oworkspaceBCL.show()
-				self.oworkspaceSL.show()
+				self.oworkspaceSXL.show()
+				self.oworkspaceSYL.show()
+				self.oworkspaceSZL.show()
 				self.oworkspaceSXE.show()
 				self.oworkspaceSYE.show()
 				self.oworkspaceSZE.show()
@@ -4380,14 +3688,18 @@ def showQtGUI():
 				self.oOffsetFrontBE.hide()
 				self.oModulesNumL.hide()
 				self.oModulesNumE.hide()
-				self.oSelectionOffsetL.show()
+				self.oSelectionOffset1L.show()
+				self.oSelectionOffset2L.show()
+				self.oSelectionOffset3L.show()
 				self.oSelectionOffset1E.show()
 				self.oSelectionOffset2E.show()
 				self.oSelectionOffset3E.show()
 				self.oHeightL.show()
 				self.oHeightE.show()
 				self.oCalculateB1.show()
-				self.oStartXYZL.show()
+				self.oStartXL.show()
+				self.oStartYL.show()
+				self.oStartZL.show()
 				self.oStartXE.show()
 				self.oStartYE.show()
 				self.oStartZE.show()
@@ -4403,7 +3715,6 @@ def showQtGUI():
 				self.oside1E.show()
 				self.oside2L.show()
 				self.oside2E.show()
-				self.oside3L.show()
 				self.oside31L.show()
 				self.oside32L.show()
 				self.oside33L.show()
@@ -4413,7 +3724,9 @@ def showQtGUI():
 				self.oside33E.show()
 				self.oside34E.show()
 				self.oside4B1.show()
-				self.oside5L.show()
+				self.oside51L.show()
+				self.oside52L.show()
+				self.oside53L.show()
 				self.oside51E.show()
 				self.oside52E.show()
 				self.oside53E.show()
@@ -4429,7 +3742,6 @@ def showQtGUI():
 				self.ocs1E.show()
 				self.ocs2L.show()
 				self.ocs2E.show()
-				self.ocs3L.show()
 				self.ocs31L.show()
 				self.ocs32L.show()
 				self.ocs33L.show()
@@ -4439,7 +3751,9 @@ def showQtGUI():
 				self.ocs33E.show()
 				self.ocs34E.show()
 				self.ocs4B1.show()
-				self.ocs5L.show()
+				self.ocs51L.show()
+				self.ocs52L.show()
+				self.ocs53L.show()
 				self.ocs51E.show()
 				self.ocs52E.show()
 				self.ocs53E.show()
@@ -4460,7 +3774,9 @@ def showQtGUI():
 				self.osdecOVL.show()
 				self.osdecOVE.show()
 				self.osdec5B.show()
-				self.osdec6L.show()
+				self.osdec61L.show()
+				self.osdec62L.show()
+				self.osdec63L.show()
 				self.osdec61E.show()
 				self.osdec62E.show()
 				self.osdec63E.show()
@@ -4476,7 +3792,6 @@ def showQtGUI():
 				self.osh1E.show()
 				self.osh2L.show()
 				self.osh2E.show()
-				self.osh3L.show()
 				self.osh31L.show()
 				self.osh32L.show()
 				self.osh33L.show()
@@ -4486,7 +3801,9 @@ def showQtGUI():
 				self.osh33E.show()
 				self.osh34E.show()
 				self.osh4B1.show()
-				self.osh5L.show()
+				self.osh51L.show()
+				self.osh52L.show()
+				self.osh53L.show()
 				self.osh51E.show()
 				self.osh52E.show()
 				self.osh53E.show()
@@ -4503,7 +3820,9 @@ def showQtGUI():
 				self.oshs2L.show()
 				self.oshs2E.show()
 				self.oshs3B.show()
-				self.oshs4L.show()
+				self.oshs41L.show()
+				self.oshs42L.show()
+				self.oshs43L.show()
 				self.oshs41E.show()
 				self.oshs42E.show()
 				self.oshs43E.show()
@@ -4518,6 +3837,8 @@ def showQtGUI():
 			if iType == "front":
 				self.ofr1i.show()
 				self.ofr2L.show()
+				self.ofr3L.show()
+				self.ofr4L.show()
 				self.ofr2E.show()
 				self.ofr3E.show()
 				self.ofr4E.show()
@@ -4528,7 +3849,6 @@ def showQtGUI():
 				self.ofr6E.show()
 				self.ofr7L.show()
 				self.ofr7E.show()
-				self.ofr8L.show()
 				self.ofr81L.show()
 				self.ofr82L.show()
 				self.ofr83L.show()
@@ -4543,7 +3863,6 @@ def showQtGUI():
 				self.oBackInfo.show()
 				self.oBackThickL.show()
 				self.oBackThickE.show()
-				self.oBackOffsetsL.show()
 				self.oBackOffsets1L.show()
 				self.oBackOffsets2L.show()
 				self.oBackOffsets3L.show()
@@ -4553,7 +3872,9 @@ def showQtGUI():
 				self.oBackOffsets3E.show()
 				self.oBackOffsets4E.show()
 				self.oBackBCL.show()
-				self.oBackStartL.show()
+				self.oBackSXL.show()
+				self.oBackSYL.show()
+				self.oBackSZL.show()
 				self.oBackSXE.show()
 				self.oBackSYE.show()
 				self.oBackSZE.show()
@@ -4574,7 +3895,9 @@ def showQtGUI():
 				self.odf5L.show()
 				self.odf5E.show()
 				self.odf6B.show()
-				self.odf7L.show()
+				self.odf71L.show()
+				self.odf72L.show()
+				self.odf73L.show()
 				self.odf71E.show()
 				self.odf72E.show()
 				self.odf73E.show()
@@ -4597,7 +3920,9 @@ def showQtGUI():
 				self.ofglass5L.show()
 				self.ofglass5E.show()
 				self.ofglass6B.show()
-				self.ofglass7L.show()
+				self.ofglass71L.show()
+				self.ofglass72L.show()
+				self.ofglass73L.show()
 				self.ofglass71E.show()
 				self.ofglass72E.show()
 				self.ofglass73E.show()
@@ -4620,7 +3945,9 @@ def showQtGUI():
 				self.ofdecOVL.show()
 				self.ofdecOVE.show()
 				self.ofdec5B.show()
-				self.ofdec6L.show()
+				self.ofdec61L.show()
+				self.ofdec62L.show()
+				self.ofdec63L.show()
 				self.ofdec61E.show()
 				self.ofdec62E.show()
 				self.ofdec63E.show()
@@ -4641,7 +3968,9 @@ def showQtGUI():
 				self.offrame5L.show()
 				self.offrame5E.show()
 				self.offrame6B.show()
-				self.offrame7L.show()
+				self.offrame71L.show()
+				self.offrame72L.show()
+				self.offrame73L.show()
 				self.offrame71E.show()
 				self.offrame72E.show()
 				self.offrame73E.show()
@@ -4654,6 +3983,8 @@ def showQtGUI():
 			if iType == "drawer":
 				self.og1i.show()
 				self.og2L.show()
+				self.og3L.show()
+				self.og4L.show()
 				self.og2E.show()
 				self.og3E.show()
 				self.og4E.show()
@@ -4664,14 +3995,12 @@ def showQtGUI():
 				self.og6E.show()
 				self.og7L.show()
 				self.og7E.show()
-				self.og8L.show()
 				self.og81L.show()
 				self.og82L.show()
 				self.og83L.show()
 				self.og81E.show()
 				self.og82E.show()
 				self.og83E.show()
-				self.og9L.show()
 				self.og91L.show()
 				self.og92L.show()
 				self.og93L.show()
@@ -4681,7 +4010,6 @@ def showQtGUI():
 				self.og93E.show()
 				self.og94E.show()
 				self.og9B1.show()
-				self.og10L.show()
 				self.og101L.show()
 				self.og102L.show()
 				self.og101E.show()
@@ -4691,14 +4019,12 @@ def showQtGUI():
 				self.ods1i.show()
 				self.ods2L.show()
 				self.ods2E.show()
-				self.ods3L.show()
 				self.ods31L.show()
 				self.ods32L.show()
 				self.ods33L.show()
 				self.ods31E.show()
 				self.ods32E.show()
 				self.ods33E.show()
-				self.ods4L.show()
 				self.ods41L.show()
 				self.ods42L.show()
 				self.ods43L.show()
@@ -4710,7 +4036,9 @@ def showQtGUI():
 				self.ods44E.show()
 				self.ods45E.show()
 				self.ods5B.show()
-				self.ods6L.show()
+				self.ods61L.show()
+				self.ods62L.show()
+				self.ods63L.show()
 				self.ods61E.show()
 				self.ods62E.show()
 				self.ods63E.show()
@@ -4721,7 +4049,6 @@ def showQtGUI():
 				self.ods9L.show()
 				self.ods9E.show()
 				self.ods10B.show()
-				self.ods11L.show()
 				self.ods111L.show()
 				self.ods112L.show()
 				self.ods113L.show()
@@ -4733,14 +4060,12 @@ def showQtGUI():
 				self.ods1i.show()
 				self.ods2L.show()
 				self.ods2E.show()
-				self.ods3L.show()
 				self.ods31L.show()
 				self.ods32L.show()
 				self.ods33L.show()
 				self.ods31E.show()
 				self.ods32E.show()
 				self.ods33E.show()
-				self.ods4L.show()
 				self.ods41L.show()
 				self.ods42L.show()
 				self.ods43L.show()
@@ -4750,7 +4075,9 @@ def showQtGUI():
 				self.ods43E.show()
 				self.ods44E.show()
 				self.ods5B.show()
-				self.ods6L.show()
+				self.ods61L.show()
+				self.ods62L.show()
+				self.ods63L.show()
 				self.ods61E.show()
 				self.ods62E.show()
 				self.ods63E.show()
@@ -4761,7 +4088,6 @@ def showQtGUI():
 				self.ods9L.show()
 				self.ods9E.show()
 				self.ods10B.show()
-				self.ods11L.show()
 				self.ods111L.show()
 				self.ods112L.show()
 				self.ods113L.show()
@@ -4776,7 +4102,9 @@ def showQtGUI():
 				self.oFootSizeZL.show()
 				self.oFootSizeZE.show()
 				self.oFootCalculateB.show()
-				self.oFootStartL.show()
+				self.oFootStartXL.show()
+				self.oFootStartYL.show()
+				self.oFootStartZL.show()
 				self.oFootStartXE.show()
 				self.oFootStartYE.show()
 				self.oFootStartZE.show()
@@ -4801,7 +4129,9 @@ def showQtGUI():
 				self.oTableTopOffsetL.show()
 				self.oTableTopOffsetE.show()
 				self.oTableCalculateB.show()
-				self.oTableStartInfoL.show()
+				self.oTableStartXL.show()
+				self.oTableStartYL.show()
+				self.oTableStartZL.show()
 				self.oTableStartXE.show()
 				self.oTableStartYE.show()
 				self.oTableStartZE.show()
@@ -4810,6 +4140,11 @@ def showQtGUI():
 			if iType == "merge":
 				self.minfo.show()
 				self.mergeB.show()
+				self.groupCalculate.hide()
+				self.groupCreate.hide()
+				self.helpBSHOW.hide()
+				self.helpBHIDE.hide()
+				self.helpInfo.hide()
 
 		# ############################################################################	
 		def selectedOption(self, selectedText):
@@ -5149,12 +4484,14 @@ def showQtGUI():
 				self.oFootThickE.setText(MagicPanels.unit2gui(80))
 			
 			if selectedIndex == 21:
-				self.og10L.setText(translate('magicStart', 'Drawer front overlap:'))
+				self.og101L.setText(translate('magicStart', 'Drawer front horizontal overlap:'))
+				self.og102L.setText(translate('magicStart', 'Drawer front vertical overlap:'))
 				self.og101E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetL))
 				self.og102E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetB))
 			
 			if selectedIndex == 22:
-				self.og10L.setText(translate('magicStart', 'Drawer front offset:'))
+				self.og101L.setText(translate('magicStart', 'Drawer front horizontal offset:'))
+				self.og102L.setText(translate('magicStart', 'Drawer front vertical offset:'))
 				self.og101E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetL))
 				self.og102E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetB))
 				
@@ -5216,7 +4553,9 @@ def showQtGUI():
 				self.oDepthE.setText( MagicPanels.unit2gui(400) )
 			
 			if selectedIndex == 30:
-				self.ods11L.setText(translate('magicStart', 'Drawer front overlap:'))
+				self.ods111L.setText(translate('magicStart', 'Drawer front horizontal overlap:'))
+				self.ods112L.setText(translate('magicStart', 'Drawer front vertical overlap:'))
+				self.ods113L.setText(translate('magicStart', 'Space between drawers fronts:'))
 				self.ods111E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetL))
 				self.ods112E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetB))
 				self.ods113E.setText(MagicPanels.unit2gui(4))
@@ -5226,7 +4565,9 @@ def showQtGUI():
 				self.ods33E.setText(MagicPanels.unit2gui(3))
 			
 			if selectedIndex == 31:
-				self.ods11L.setText(translate('magicStart', 'Drawer front offset:'))
+				self.ods111L.setText(translate('magicStart', 'Drawer front horizontal offset:'))
+				self.ods112L.setText(translate('magicStart', 'Drawer front vertical offset:'))
+				self.ods113L.setText(translate('magicStart', 'Space between drawers fronts:'))
 				self.ods111E.setText(MagicPanels.unit2gui(2 * MagicPanels.gFrontInsideOffsetL))
 				self.ods112E.setText(MagicPanels.unit2gui(2 * MagicPanels.gFrontInsideOffsetB))
 				self.ods113E.setText(MagicPanels.unit2gui(4))
@@ -5352,7 +4693,9 @@ def showQtGUI():
 				self.oDepthE.setText(MagicPanels.unit2gui(330.2 - 19.05)) # 13 inch without front
 			
 			if selectedIndex == 71:
-				self.ods11L.setText(translate('magicStart', 'Drawer front overlap:'))
+				self.ods111L.setText(translate('magicStart', 'Drawer front horizontal overlap:'))
+				self.ods112L.setText(translate('magicStart', 'Drawer front vertical overlap:'))
+				self.ods113L.setText(translate('magicStart', 'Space between drawers fronts:'))
 				self.ods111E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetL))
 				self.ods112E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetB))
 				self.ods113E.setText(MagicPanels.unit2gui(4))
@@ -5362,7 +4705,9 @@ def showQtGUI():
 				self.ods33E.setText(MagicPanels.unit2gui(16))
 			
 			if selectedIndex == 72:
-				self.ods11L.setText(translate('magicStart', 'Drawer front offset:'))
+				self.ods111L.setText(translate('magicStart', 'Drawer front horizontal offset:'))
+				self.ods112L.setText(translate('magicStart', 'Drawer front vertical offset:'))
+				self.ods113L.setText(translate('magicStart', 'Space between drawers fronts:'))
 				self.ods111E.setText(MagicPanels.unit2gui(2 * MagicPanels.gFrontInsideOffsetL))
 				self.ods112E.setText(MagicPanels.unit2gui(2 * MagicPanels.gFrontInsideOffsetB))
 				self.ods113E.setText(MagicPanels.unit2gui(4))
@@ -5372,7 +4717,10 @@ def showQtGUI():
 				self.ods33E.setText(MagicPanels.unit2gui(16))
 			
 			if selectedIndex == 74:
-				self.oBackOffsetsL.setText(translate('magicStart', 'Back overlaps:'))
+				self.oBackOffsets1L.setText(translate('magicStart', 'Back overlap from left:'))
+				self.oBackOffsets2L.setText(translate('magicStart', 'Back overlap from right:'))
+				self.oBackOffsets3L.setText(translate('magicStart', 'Back overlap from top:'))
+				self.oBackOffsets4L.setText(translate('magicStart', 'Back overlap from bottom:'))
 				self.oBackThickE.setText(MagicPanels.unit2gui(3))
 				self.oBackOffsets1E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.oBackOffsets2E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
@@ -5380,7 +4728,10 @@ def showQtGUI():
 				self.oBackOffsets4E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			
 			if selectedIndex == 75:
-				self.oBackOffsetsL.setText(translate('magicStart', 'Back offsets:'))
+				self.oBackOffsets1L.setText(translate('magicStart', 'Back offset from left:'))
+				self.oBackOffsets2L.setText(translate('magicStart', 'Back offset from right:'))
+				self.oBackOffsets3L.setText(translate('magicStart', 'Back offset from top:'))
+				self.oBackOffsets4L.setText(translate('magicStart', 'Back offset from bottom:'))
 				self.oBackThickE.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.oBackOffsets1E.setText(MagicPanels.unit2gui(0))
 				self.oBackOffsets2E.setText(MagicPanels.unit2gui(0))
@@ -5749,11 +5100,11 @@ def showQtGUI():
 			
 			if os.path.exists(f):
 				filename = f
-				icon = '<img src="'+ filename + '" width="200" height="200" align="right">'
-				self.si.hide()
-				self.si = QtGui.QLabel(icon, self)
-				self.si.move(self.toolSW - 200 - 10, 50)
-				self.si.show()
+				icon = '<img src="'+ filename
+				icon += '" width="'+str(self.imageSizeW)
+				icon += '" height="'+str(self.imageSizeH)
+				icon += '" align="left">'
+				self.si.setText(icon)
 
 		# ############################################################################
 		def getPathToMerge(self, iName, iType="magicStart"):
@@ -5851,16 +5202,12 @@ def showQtGUI():
 		
 		# ############################################################################
 		def helpSHOW(self):
-			
-			self.resize(self.toolSW + self.helpSW, self.toolSH)
 			self.helpBSHOW.hide()
 			self.helpBHIDE.show()
 			self.helpInfo.show()
 
 		# ############################################################################
 		def helpHIDE(self):
-			
-			self.resize(self.toolSW, self.toolSH)
 			self.helpBSHOW.show()
 			self.helpBHIDE.hide()
 			self.helpInfo.hide()

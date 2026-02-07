@@ -73,26 +73,19 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 300
+			toolSW = 402
 			toolSH = 650
 			
-			# active screen size (FreeCAD main window)
-			gSW = FreeCADGui.getMainWindow().width()
-			gSH = FreeCADGui.getMainWindow().height()
-
-			# tool screen position
-			gPW = 0 + 200
-			gPH = 50
-
 			# ############################################################################
 			# main window
 			# ############################################################################
 			
 			self.result = userCancelled
-			self.setGeometry(gPW, gPH, toolSW, toolSH)
 			self.setWindowTitle(translate('magicFixture', 'magicFixture'))
 			if MagicPanels.gWindowStaysOnTop == True:
 				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+
+			self.setMinimumSize(toolSW, toolSH)
 
 			# ############################################################################
 			# options - settings
@@ -466,9 +459,6 @@ def showQtGUI():
 			# show & init defaults
 			# ############################################################################
 
-			# show window
-			self.show()
-			
 			# set theme
 			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
 			self.setStyleSheet(QtCSS)
@@ -478,6 +468,11 @@ def showQtGUI():
 			
 			if self.gCornerCrossSupport == True:
 				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(50)
+	
+			# show window
+			self.show()
+	
+			MagicPanels.adjustGUI(self, "left-offset")
 			
 			# init
 			self.getSelected()

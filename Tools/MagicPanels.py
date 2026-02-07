@@ -7596,6 +7596,8 @@ def getTheme(iType=""):
 		
 		# to return list of available themes
 		self.sModeList = MagicPanels.getTheme("config")
+		
+		# now you can set it like this to drop-down menu:
 		self.sMode = QtGui.QComboBox(self)
 		self.sMode.addItems(self.sModeList)
 
@@ -7645,10 +7647,7 @@ def getTheme(iType=""):
 	# setting color for themes
 	# ##############################################################
 	
-	if iType == "default" or iType == "":
-		return ""
-	
-	if iType == "classic":
+	if iType == "classic" or iType == "default" or iType == "":
 		color1 = "#FFFFFF"   # background gradient start
 		color2 = "#E4E4E4"   # background gradient stop
 		color3 = "#000000"   # text color
@@ -7793,10 +7792,24 @@ def getTheme(iType=""):
 		color4 = "#A1A1A1"   # border around elements
 
 	# ##############################################################
-	# QtCSS - 2D
+	# reset
 	# ##############################################################
 
-	QtCSS =  '''
+	resetQt =  '''
+	
+		QPushButton {
+			padding: 1px 15px;
+			margin: 0px;
+			min-width: 0px
+		}
+	
+	'''
+	
+	# ##############################################################
+	# version 1
+	# ##############################################################
+
+	v1 =  '''
 	
 		QDialog {
 			color: '''+color3+''';
@@ -7862,9 +7875,6 @@ def getTheme(iType=""):
 			padding: 15px;
 			margin: 15px 25px 15px 0px;
 		}
-		QDialogButtonBox#qt_msgbox_buttonbox > QPushButton {
-			width: 100%;
-		}
 		
 		QMainWindow > QWidget {
 			color: '''+color3+''';
@@ -7879,10 +7889,10 @@ def getTheme(iType=""):
 	'''
 
 	# ##############################################################
-	# QtCSS - 3D
+	# version 2
 	# ##############################################################
 
-	QtCSS3D =  '''
+	v2 =  '''
 			
 		QDialog {
 			color: '''+color3+''';
@@ -7956,9 +7966,6 @@ def getTheme(iType=""):
 			padding: 15px;
 			margin: 15px 25px 15px 0px;
 		}
-		QDialogButtonBox#qt_msgbox_buttonbox > QPushButton {
-			width: 100%;
-		}
 		
 		QMainWindow > QWidget {
 			color: '''+color3+''';
@@ -7972,10 +7979,10 @@ def getTheme(iType=""):
 	'''
 	
 	# ##############################################################
-	# QtCSS - 3D v2
+	# version 3
 	# ##############################################################
 
-	QtCSS3Dv2 =  '''
+	v3 =  '''
 			
 		QDialog {
 			color: '''+color3+''';
@@ -8053,9 +8060,6 @@ def getTheme(iType=""):
 			padding: 15px;
 			margin: 15px 25px 15px 0px;
 		}
-		QDialogButtonBox#qt_msgbox_buttonbox > QPushButton {
-			width: 100%;
-		}
 		
 		QMainWindow > QWidget {
 			color: '''+color3+''';
@@ -8076,14 +8080,76 @@ def getTheme(iType=""):
 	# set
 	# ##############################################################
 
-	if iType[-3:] == " 3D":
-		css = QtCSS3D
+	if iType == "default" or iType == "":
+		QtCss = resetQt
+	elif iType[-3:] == " 3D":
+		QtCss = resetQt + v2
 	elif iType[-6:] == " 3D v2":
-		css = QtCSS3Dv2
+		QtCss = resetQt + v3
 	else:
-		css = QtCSS
+		QtCss = resetQt + v1
 
-	return css
+	return QtCss
+
+
+# ###################################################################################################################
+def adjustGUI(iSelf, iType="right"):
+	'''
+	Description:
+	
+		Adjust GUI position and not repeat code in all tools.
+
+	Args:
+	
+		iSelf: self window object
+		iType: positions string:
+			* "left": move gui to the left top FreeCAD window corner
+			* "left-offset": move gui to the left bottom FreeCAD window corner with offset from left and bottom
+			* "right": move gui to the right top FreeCAD window corner
+			* "right-bottom": move gui to the right bottom FreeCAD window corner
+			* "center": move gui to the center of the FreeCAD window
+
+	Usage:
+
+		MagicPanels.adjustGUI(self, "right")
+
+	Result:
+	
+		Adjust GUI position.
+
+	'''
+
+	iSelf.layout.setSizeConstraint(QtGui.QLayout.SetNoConstraint)
+	iSelf.layout.activate() 
+	QtGui.QApplication.processEvents()
+
+	toolW = iSelf.frameGeometry().width()
+	toolH = iSelf.frameGeometry().height()
+    
+	if iType == "left":
+		pw = FreeCADGui.getMainWindow().frameGeometry().left()
+		ph = FreeCADGui.getMainWindow().frameGeometry().top()
+
+	if iType == "left-offset":
+		pw = FreeCADGui.getMainWindow().frameGeometry().left() + 180
+		ph = FreeCADGui.getMainWindow().frameGeometry().height() - toolH - 50
+
+	if iType == "right":
+		pw = FreeCADGui.getMainWindow().frameGeometry().right() - toolW
+		ph = FreeCADGui.getMainWindow().frameGeometry().top()
+	
+	if iType == "right-bottom":
+		pw = FreeCADGui.getMainWindow().frameGeometry().right() - toolW
+		ph = FreeCADGui.getMainWindow().frameGeometry().height() - toolH
+	
+	if iType == "center":
+		cw = (FreeCADGui.getMainWindow().frameGeometry().width() / 2) - (toolW / 2)
+		ch = (FreeCADGui.getMainWindow().frameGeometry().height() / 2) - (toolH / 2)
+		pw = FreeCADGui.getMainWindow().frameGeometry().left() + cw
+		ph = FreeCADGui.getMainWindow().frameGeometry().top() + ch
+		
+	iSelf.move(pw, ph)
+
 
 # ###################################################################################################################
 '''

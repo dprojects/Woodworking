@@ -118,7 +118,6 @@ def getItems(iType):
 	if iType == "Woodworking - dimensions":
 		parts = [
 			"getDimensions",
-			"Std_Print",
 			"sheet2export",
 			"showMeasurements",
 			"magicMeasure"

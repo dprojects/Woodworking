@@ -72,29 +72,22 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 300
-			toolSH = 440
+			toolSW = 326
+			toolSH = 388
 			
 			area = toolSW - 20          # full gui area
 			rside = toolSW - 10         # right side of the GUI
-			
-			# active screen size (FreeCAD main window)
-			gSW = FreeCADGui.getMainWindow().width()
-			gSH = FreeCADGui.getMainWindow().height()
-
-			# tool screen position
-			gPW = 230
-			gPH = int( gSH - toolSH ) - 40
 
 			# ############################################################################
 			# main window
 			# ############################################################################
 			
 			self.result = userCancelled
-			self.setGeometry(gPW, gPH, toolSW, toolSH)
 			self.setWindowTitle(translate('magicView', 'magicView'))
 			if MagicPanels.gWindowStaysOnTop == True:
 				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+
+			self.setMinimumSize(toolSW, toolSH)
 
 			# ############################################################################
 			# settings
@@ -254,12 +247,14 @@ def showQtGUI():
 			# show & init defaults
 			# ############################################################################
 
-			# show window
-			self.show()
-			
 			# set theme
 			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
 			self.setStyleSheet(QtCSS)
+
+			# show window
+			self.show()
+			
+			MagicPanels.adjustGUI(self, "left-offset")
 
 			# init
 			self.initSettings()

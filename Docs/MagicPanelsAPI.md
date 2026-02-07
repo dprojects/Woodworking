@@ -28,6 +28,7 @@
 * `gSearchDepth = 200 `: recursive search depth <br>
 * `gKernelVersion = 0 `: FreeCAD version to add support for new kernel changes <br>
 * `gTheme = "default" `: no theme by default <br>
+* `gMainWindowTheme = False `: no theme to main window by default <br>
 * `gWoodThickness = 18`: main construction wood thickness <br>
 * `gWoodSizeX = 600`: default panel long size <br>
 * `gWoodSizeY = 300`: default panel short size <br>
@@ -2511,12 +2512,39 @@
 		
 		# to return list of available themes
 		self.sModeList = MagicPanels.getTheme("config")
+		
+		# now you can set it like this to drop-down menu:
 		self.sMode = QtGui.QComboBox(self)
 		self.sMode.addItems(self.sModeList)
 
 ##### Result:
 	
 		return Qt CSS string to set via self.setStyleSheet(QtCSS)
+
+### adjustGUI(iSelf, iType="right"):
+
+	
+##### Description:
+	
+		Adjust GUI position and not repeat code in all tools.
+
+##### Args:
+	
+		iSelf: self window object
+		iType: positions string:
+			* "left": move gui to the left top FreeCAD window corner
+			* "left-offset": move gui to the left bottom FreeCAD window corner with offset from left and bottom
+			* "right": move gui to the right top FreeCAD window corner
+			* "right-bottom": move gui to the right bottom FreeCAD window corner
+			* "center": move gui to the center of the FreeCAD window
+
+##### Usage:
+
+		MagicPanels.adjustGUI(self, "right")
+
+##### Result:
+	
+		Adjust GUI position.
 
 
 # Info screen

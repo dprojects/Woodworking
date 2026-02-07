@@ -69,7 +69,7 @@ def showQtGUI():
 		# tool screen size
 		toolSW = 310
 		toolSH = 710
-		
+
 		# object settings
 		gObj = ""
 		gObjBase = ""
@@ -147,8 +147,7 @@ def showQtGUI():
 			if MagicPanels.gWindowStaysOnTop == True:
 				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 			
-			self.setMaximumSize(self.toolSW, self.toolSH)
-			self.setFixedHeight(self.toolSH)
+			self.setMinimumSize(self.toolSW, self.toolSH)
 			
 			# ############################################################################
 			# show & init defaults
@@ -157,19 +156,14 @@ def showQtGUI():
 			# show GUI
 			self.setGUI("init")
 			
-			# set window position
-			sw = self.width()
-			sh = self.height()
-			pw = int( FreeCADGui.getMainWindow().width() - sw ) - 45
-			ph = 50
-			self.setGeometry(pw, ph, sw, sh)
-
-			# show window
-			self.show()
-			
 			# set theme
 			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
 			self.setStyleSheet(QtCSS)
+			
+			# show window
+			self.show()
+			
+			MagicPanels.adjustGUI(self, "right")
 			
 		# ############################################################################
 		# actions - internal functions
@@ -184,15 +178,7 @@ def showQtGUI():
 				# options - settings
 				# ############################################################################
 				
-				area = self.toolSW - 20              # gui area
-				rside = self.toolSW - 10             # right side of the gui area
-				cutLabel = area                      # to cut long label strings
-				
 				btsize = 50                          # button size
-				btcol1 = rside - btsize - 105        # button column 1 (left)
-				btcol2 = rside - btsize - 45         # button column 2 (counter screen)
-				btcol3 = rside - btsize              # button column 3 (right)
-				
 				tfsize = 100                         # text field size
 				
 				# ############################################################################
@@ -200,7 +186,6 @@ def showQtGUI():
 				# ############################################################################
 				
 				self.faceinfo = QtGui.QLabel("", self)
-				self.faceinfo.setFixedWidth(cutLabel)
 				
 				self.faceinfoB1 = QtGui.QPushButton(translate('magicDowels', 'refresh face selection'), self)
 				self.faceinfoB1.clicked.connect(self.setFaceSettins)

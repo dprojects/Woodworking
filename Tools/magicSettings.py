@@ -56,6 +56,8 @@ def showQtGUI():
 		# globals
 		# ############################################################################
 		
+		toolSW = 450
+		toolSH = 600
 		gTheme = MagicPanels.gTheme
 		gWoodWeightCalculation = MagicPanels.gWoodWeightCalculation
 		gWoodPriceCalculation = MagicPanels.gWoodPriceCalculation
@@ -72,14 +74,6 @@ def showQtGUI():
 		def initUI(self):
 
 			# ############################################################################
-			# set screen
-			# ############################################################################
-			
-			# tool screen size
-			toolSW = 450
-			toolSH = 600
-			
-			# ############################################################################
 			# main window
 			# ############################################################################
 			
@@ -88,9 +82,8 @@ def showQtGUI():
 			if MagicPanels.gWindowStaysOnTop == True:
 				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 			
-			self.setMinimumWidth(toolSW)
-			self.setMinimumHeight(toolSH)
-
+			self.setMinimumSize(self.toolSW, self.toolSH)
+			
 			# ############################################################################
 			# pages
 			# ############################################################################
@@ -737,19 +730,14 @@ def showQtGUI():
 			# show & init defaults
 			# ############################################################################
 
-			# show window
-			self.show()
-
 			# set theme
 			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
 			self.setStyleSheet(QtCSS)
+			
+			# show window
+			self.show()
 
-			# set window position
-			sw = self.width()
-			sh = self.height()
-			pw = int( (FreeCADGui.getMainWindow().width() / 2) - ( sw / 2 ) )
-			ph = int( (FreeCADGui.getMainWindow().height() / 2) - ( sh / 2 ) )
-			self.setGeometry(pw, ph, sw, sh)
+			MagicPanels.adjustGUI(self, "center")
 			
 			# init
 			self.getSettings()

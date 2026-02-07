@@ -162,8 +162,8 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 260
-			toolSH = 490
+			toolSW = 301
+			toolSH = 512
 			
 			cutLabel = toolSW - 20
 			
@@ -175,6 +175,8 @@ def showQtGUI():
 			self.setWindowTitle(translate('magicManager', 'magicManager'))
 			if MagicPanels.gWindowStaysOnTop == True:
 				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+
+			self.setMinimumSize(toolSW, toolSH)
 
 			# ############################################################################
 			# options
@@ -358,19 +360,14 @@ def showQtGUI():
 			# show & init defaults
 			# ############################################################################
 
-			# show window
-			self.show()
-
 			# set theme
 			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
 			self.setStyleSheet(QtCSS)
+			
+			# show window
+			self.show()
 
-			# set window position
-			sw = self.width()
-			sh = self.height()
-			pw = int( FreeCADGui.getMainWindow().width() - sw ) - 5
-			ph = int( FreeCADGui.getMainWindow().height() - sh ) + 30
-			self.setGeometry(pw, ph, sw, sh)
+			MagicPanels.adjustGUI(self, "right")
 
 			# init
 			self.resetGUIGlobals()

@@ -456,8 +456,7 @@ def showQtGUI():
 			if MagicPanels.gWindowStaysOnTop == True:
 				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 			
-			self.setMinimumWidth(toolSW)
-			self.setMinimumHeight(toolSH)
+			self.setMinimumSize(toolSW, toolSH)
 			
 			# ############################################################################
 			# report types
@@ -801,19 +800,14 @@ def showQtGUI():
 			# show
 			# ############################################################################
 
-			self.show()
-			
-			# set window position
-			sw = self.width()
-			sh = self.height()
-			pw = int( (FreeCADGui.getMainWindow().width() / 2) - ( sw / 2 ) )
-			ph = int( (FreeCADGui.getMainWindow().height() / 2) - ( sh / 2 ) )
-			self.setGeometry(pw, ph, sw, sh)
-			
 			# set theme
 			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
 			self.setStyleSheet(QtCSS)
 
+			self.show()
+			
+			MagicPanels.adjustGUI(self, "center")
+			
 		# ############################################################################
 		# actions auto define
 		# ############################################################################

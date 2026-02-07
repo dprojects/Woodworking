@@ -150,7 +150,7 @@ def showQtGUI():
 		# tool screen size
 		toolSW = 310
 		toolSH = 710
-		
+
 		# face for drill bit position
 		gFacePosition = ""  # face as object
 		gFacePositionO = "" # object to which face belongs
@@ -226,25 +226,15 @@ def showQtGUI():
 			if MagicPanels.gWindowStaysOnTop == True:
 				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 			
-			self.setMaximumSize(self.toolSW, self.toolSH)
-			self.setFixedHeight(self.toolSH)
-
+			self.setMinimumSize(self.toolSW, self.toolSH)
+			
 			# ############################################################################
 			# options - settings
 			# ############################################################################
 			
-			area = self.toolSW - 20              # gui area
-			rside = self.toolSW - 10             # right side of the gui area
-			cutLabel = area                      # to cut long label strings
-
 			btsize = 50                          # button size
-			btcol1 = rside - btsize - 105        # button column 1 (left)
-			btcol2 = rside - btsize - 45         # button column 2 (counter screen)
-			btcol3 = rside - btsize              # button column 3 (right)
-			
 			tfsize = 100                         # text field size
-			tfcol = rside - tfsize               # text field column
-
+			
 			# ############################################################################
 			# header - selection
 			# ############################################################################
@@ -257,7 +247,6 @@ def showQtGUI():
 			
 			# screen
 			self.sFacePositionL = QtGui.QLabel("", self)
-			self.sFacePositionL.setFixedWidth(cutLabel - 60)
 			
 			# button
 			self.sFaceDrillB = QtGui.QPushButton(translate('magicDriller', 'set'), self)
@@ -266,7 +255,6 @@ def showQtGUI():
 			
 			# screen
 			self.sFaceDrillL = QtGui.QLabel("", self)
-			self.sFaceDrillL.setFixedWidth(cutLabel - 60)
 			
 			# button
 			self.sFaceAllB = QtGui.QPushButton(translate('magicDriller', 'refresh all faces selection'), self)
@@ -534,20 +522,15 @@ def showQtGUI():
 			# show & init defaults
 			# ############################################################################
 
-			# show window
-			self.show()
-			
 			# set theme
 			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
 			self.setStyleSheet(QtCSS)
 
-			# set window position
-			sw = self.width()
-			sh = self.height()
-			pw = int( FreeCADGui.getMainWindow().width() - sw ) - 15
-			ph = 50
-			self.setGeometry(pw, ph, sw, sh)
-
+			# show window
+			self.show()
+			
+			MagicPanels.adjustGUI(self, "right")
+			
 			# init
 			self.getSelected()
 

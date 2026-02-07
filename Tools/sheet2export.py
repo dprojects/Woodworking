@@ -158,8 +158,7 @@ def showQtMain():
 			if MagicPanels.gWindowStaysOnTop == True:
 				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 			
-			self.setMinimumWidth(toolSW)
-			self.setMinimumHeight(toolSH)
+			self.setMinimumSize(toolSW, toolSH)
 
 			# ############################################################################
 			# export type
@@ -200,7 +199,7 @@ def showQtMain():
 			self.fileTypeO.addItems(self.fileTypeOlist)
 			self.fileTypeO.setCurrentIndex(self.fileTypeOlist.index("html"))
 			self.fileTypeO.textActivated[str].connect(self.setFileType)
-			self.fileTypeO.setFixedSize(80, 20)
+			self.fileTypeO.setFixedSize(150, 20)
 			
 			self.fileTypeOIS = QtGui.QLabel(translate('sheet2export', 'HyperText Markup Language (.html file)'), self)
 			
@@ -322,19 +321,14 @@ def showQtMain():
 			# show
 			# ############################################################################
 
-			self.show()
-
-			# set window position
-			sw = self.width()
-			sh = self.height()
-			pw = int( (FreeCADGui.getMainWindow().width() / 2) - ( sw / 2 ) )
-			ph = int( (FreeCADGui.getMainWindow().height() / 2) - ( sh / 2 ) )
-			self.setGeometry(pw, ph, sw, sh)
-			
 			# set theme
 			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
 			self.setStyleSheet(QtCSS)
-				
+			
+			self.show()
+
+			MagicPanels.adjustGUI(self, "center")
+			
 		# ############################################################################
 		# actions
 		# ############################################################################

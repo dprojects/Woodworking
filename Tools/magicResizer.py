@@ -18,6 +18,9 @@ def showQtGUI():
 		# globals
 		# ############################################################################
 
+		toolSW = 300
+		toolSH = 300
+
 		gResizeObj = ""
 		gResizeSub = ""
 		gResizeSubIndex = 0
@@ -47,31 +50,16 @@ def showQtGUI():
 		def initUI(self):
 
 			# ############################################################################
-			# set screen
-			# ############################################################################
-			
-			# tool screen size
-			toolSW = 300
-			toolSH = 300
-			
-			# active screen size (FreeCAD main window)
-			gSW = FreeCADGui.getMainWindow().width()
-			gSH = FreeCADGui.getMainWindow().height()
-
-			# tool screen position
-			gPW = 0 + 100
-			gPH = int( gSH - toolSH ) - 100
-
-			# ############################################################################
 			# main window
 			# ############################################################################
 			
 			self.result = userCancelled
-			self.setGeometry(gPW, gPH, toolSW, toolSH)
 			self.setWindowTitle(translate('magicResizer', 'magicResizer'))
 			if MagicPanels.gWindowStaysOnTop == True:
 				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
+			self.setMinimumSize(self.toolSW, self.toolSH)
+			
 			# ############################################################################
 			# options - selection mode
 			# ############################################################################
@@ -82,7 +70,6 @@ def showQtGUI():
 			
 			# label
 			self.s1S = QtGui.QLabel("", self)
-			self.s1S.setFixedWidth(toolSW-70)
 			
 			# button
 			self.s2B = QtGui.QPushButton(translate('magicResizer', 'set'), self)
@@ -91,7 +78,6 @@ def showQtGUI():
 		
 			# label
 			self.s2S = QtGui.QLabel("", self)
-			self.s2S.setFixedWidth(toolSW-70)
 			
 			# button
 			self.sBR = QtGui.QPushButton(translate('magicResizer', 'refresh selection'), self)
@@ -186,13 +172,15 @@ def showQtGUI():
 			# show & init defaults
 			# ############################################################################
 
-			# show window
-			self.show()
-
 			# set theme
 			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
 			self.setStyleSheet(QtCSS)
 
+			# show window
+			self.show()
+
+			MagicPanels.adjustGUI(self, "left-offset")
+			
 			# init
 			self.getSelected()
 			

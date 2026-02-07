@@ -73,36 +73,26 @@ def showQtMain():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 300
-			toolSH = 700
-			
-			# active screen size - FreeCAD main window
-			gSW = FreeCADGui.getMainWindow().width()
-			gSH = FreeCADGui.getMainWindow().height()
-
-			# tool screen position
-			gPW = int( gSW - toolSW - 15)
-			gPH = int( gSH - toolSH )
-
-			area = toolSW - 20     # area for info
+			toolSW = 334
+			toolSH = 710
 			
 			# ############################################################################
 			# main window
 			# ############################################################################
 			
 			self.result = userCancelled
-			self.setGeometry(gPW, gPH, toolSW, toolSH)
 			self.setWindowTitle(translate('setTextures', 'setTextures'))
 			if MagicPanels.gWindowStaysOnTop == True:
 				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 
+			self.setMinimumSize(toolSW, toolSH)
+			
 			# ############################################################################
 			# objects
 			# ############################################################################
 
 			# screen
 			self.oObjectsI = QtGui.QLabel(self.infoStart, self)
-			self.oObjectsI.setMaximumWidth(area)
 			
 			# selection
 			self.selectionList = (
@@ -352,11 +342,13 @@ def showQtMain():
 			# show all
 			# ############################################################################
 
-			self.show()
-			
 			# set theme
 			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
 			self.setStyleSheet(QtCSS)
+			
+			self.show()
+			
+			MagicPanels.adjustGUI(self, "right")
 			
 			# init
 			self.getSelected()

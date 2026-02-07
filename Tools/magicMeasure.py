@@ -543,7 +543,7 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 380
+			toolSW = 360
 			toolSH = 650
 			
 			# ############################################################################
@@ -553,8 +553,8 @@ def showQtGUI():
 			self.result = userCancelled
 			self.setWindowTitle(translate('magicMeasure', 'magicMeasure'))
 			self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
-			self.setFixedWidth(toolSW)
-			self.setFixedHeight(toolSH)
+			
+			self.setMinimumSize(toolSW, toolSH)
 			
 			# ############################################################################
 			# measure type selection
@@ -718,19 +718,14 @@ def showQtGUI():
 			# show & init defaults
 			# ############################################################################
 
-			# show window
-			self.show()
-
 			# set theme
 			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
 			self.setStyleSheet(QtCSS)
 
-			# set window position
-			sw = self.width()
-			sh = self.height()
-			pw = int( FreeCADGui.getMainWindow().width() - sw ) - 5
-			ph = int( FreeCADGui.getMainWindow().height() - sh ) + 30
-			self.setGeometry(pw, ph, sw, sh)
+			# show window
+			self.show()
+
+			MagicPanels.adjustGUI(self, "right")
 
 			# init
 			self.setInit()

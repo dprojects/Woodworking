@@ -80,7 +80,7 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 310
+			toolSW = 293
 			toolSH = 520
 			
 			rside = toolSW - 20
@@ -94,8 +94,7 @@ def showQtGUI():
 			if MagicPanels.gWindowStaysOnTop == True:
 				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
 			
-			self.setMinimumWidth(toolSW)
-			self.setMinimumHeight(toolSH)
+			self.setMinimumSize(toolSW, toolSH)
 			
 			# ############################################################################
 			# GUI for common selection part (visible by default)
@@ -472,9 +471,6 @@ def showQtGUI():
 			# show & init defaults
 			# ############################################################################
 
-			# init
-			self.show()
-			
 			# set theme
 			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
 			self.setStyleSheet(QtCSS)
@@ -485,12 +481,10 @@ def showQtGUI():
 			if self.gCornerCrossSupport == True:
 				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(50)
 			
-			# set window position
-			sw = self.width()
-			sh = self.height()
-			pw = int( FreeCADGui.getMainWindow().width() - sw ) - 5
-			ph = 55
-			self.setGeometry(pw, ph, sw, sh)
+			# init
+			self.show()
+			
+			MagicPanels.adjustGUI(self, "right")
 
 			self.setGPAll()
 		

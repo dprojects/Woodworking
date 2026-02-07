@@ -67,28 +67,19 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 320
-			toolSH = 620
+			toolSW = 386
+			toolSH = 650
 			
-			cutLabel = toolSW - 80
-			
-			# active screen size (FreeCAD main window)
-			gSW = FreeCADGui.getMainWindow().width()
-			gSH = FreeCADGui.getMainWindow().height()
-
-			# tool screen position
-			gPW = 0 + 300
-			gPH = 10
-
 			# ############################################################################
 			# main window
 			# ############################################################################
 			
 			self.result = userCancelled
-			self.setGeometry(gPW, gPH, toolSW, toolSH)
 			self.setWindowTitle(translate('magicCNC', 'magicCNC'))
 			if MagicPanels.gWindowStaysOnTop == True:
 				self.setWindowFlags(QtCore.Qt.WindowStaysOnTopHint)
+
+			self.setMinimumSize(toolSW, toolSH)
 
 			# ############################################################################
 			# options - manual drilling
@@ -99,14 +90,12 @@ def showQtGUI():
 			self.oFaceB.setFixedWidth(50)
 			
 			self.oFaceL = QtGui.QLabel("", self)
-			self.oFaceL.setFixedWidth(cutLabel)
 			
 			self.oBitB = QtGui.QPushButton(translate('magicCNC', 'set'), self)
 			self.oBitB.clicked.connect(self.setDrillBit)
 			self.oBitB.setFixedWidth(50)
 			
 			self.oBitL = QtGui.QLabel("", self)
-			self.oBitL.setFixedWidth(cutLabel)
 
 			# button
 			self.s1B1 = QtGui.QPushButton(translate('magicCNC', 'refresh selection'), self)
@@ -189,14 +178,12 @@ def showQtGUI():
 			self.ocncReferenceSubB.setFixedWidth(50)
 			
 			self.ocncReferenceSubL = QtGui.QLabel(translate('magicCNC', 'edge, face or vertex as start reference'), self)
-			self.ocncReferenceSubL.setFixedWidth(cutLabel)
 			
 			self.ocncReferenceTargetB = QtGui.QPushButton(translate('magicCNC', 'set'), self)
 			self.ocncReferenceTargetB.clicked.connect(self.setReferenceTarget)
 			self.ocncReferenceTargetB.setFixedWidth(50)
 			
 			self.ocncReferenceTargetL = QtGui.QLabel(translate('magicCNC', 'object to set CNC attributes'), self)
-			self.ocncReferenceTargetL.setFixedWidth(cutLabel)
 
 			self.ocncCB1 = QtGui.QPushButton(translate('magicCNC', 'set CNC attributes to target'), self)
 			self.ocncCB1.clicked.connect(self.setAttributesForCNC)
@@ -386,9 +373,6 @@ def showQtGUI():
 			# show & init defaults
 			# ############################################################################
 
-			# show window
-			self.show()
-
 			# set theme
 			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
 			self.setStyleSheet(QtCSS)
@@ -398,6 +382,11 @@ def showQtGUI():
 			
 			if self.gCornerCrossSupport == True:
 				FreeCADGui.ActiveDocument.ActiveView.setCornerCrossSize(50)
+			
+			# show window
+			self.show()
+
+			MagicPanels.adjustGUI(self, "left-offset")
 			
 			# init
 			self.getSelected()

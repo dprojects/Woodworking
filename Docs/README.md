@@ -203,6 +203,9 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * Ukrainian translation <br>
+> * improve layout position and size (MagicPanels, all tools with GUI) <br>
+> * new magicStart layout with scroller (magicStart) <br>
 > * option to add theme to main window (magicSettings, MagicPanels) <br>
 > * support for Draft::PathArray objects at cut-list (getDimensions) <br>
 > * options to browse folder with textures and redesign GUI (setTextures) <br>
@@ -260,6 +263,7 @@ Currently supported languages:
   
 * **English** - by default development language
 * **Polish** - my native language supported since 0.23 release
+* **Ukrainian** added by [Andrii Semerun](https://github.com/dprojects/Woodworking-translations/pull/1) since 2.0 release
 
 Of course, if someone is interested in doing a translation, please create pull request at: [github.com/dprojects/Woodworking-translations](https://github.com/dprojects/Woodworking-translations) repository.
   
