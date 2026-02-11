@@ -203,6 +203,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * improve workbench update and add buttons to list and remove disabled workbenches (debugInfo) <br>
 > * Ukrainian translation <br>
 > * improve layout position and size (MagicPanels, all tools with GUI) <br>
 > * new magicStart layout with scroller (magicStart) <br>
@@ -2207,18 +2208,17 @@ Tool repository: [github.com/dprojects/scanObjects](https://github.com/dprojects
 
 ## debugInfo
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/debugInfo.png"> This tool allows to get platform information used for FreeCAD bug report.
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/debugInfo.png"> This tool allows to get platform information used for FreeCAD bug report and update Woodworking workbench.
 
-Main features:
+**Main features:**
 
-* This tool compares date of your Woodworking workbench with the latest date for you version branch, from github repository. If the date of your Woodworking workbench match the latest master branch date you have information "up-to-date". Otherwise you have link to download the latest version from github master branch. 
-* Additionally, `update button` will be visible allowing you to update your workbench with single button click. The latest update for Woodworking workbench will be downloaded and unpacked. After this the FreeCAD will restart with new Woodworking workbench version. The old Woodworking workbench version will remain untouched but only disabled to protect your personal files, if there are such any.
-* This tool also run some test cases, mostly import modules used by Woodworking workbench, to find out if the FreeCAD version is safe to use.
-* Additionally, this tool will verify if your Woodworking workbench is certified.
-* There is also funny worm icon describing current verification status: 
-  * The worms are unhappy, if everything works.
-  * The worms are happy, if everything is broken.
-  * If not everything is broken, the worm will be partially happy, I mean happy and sad at the same time, good joke? ;-)
+* Shows your system information which can be used for FreeCAD bug report.
+* Run some test cases, mostly import modules used by Woodworking workbench, to find out if the FreeCAD version is safe to use.
+* Show information about tested FreeCAD kernel version.
+* Checking for Woodworking workbench updates at GitHub.
+* Allows you to update Woodworking workbench. If the date of your Woodworking workbench match the latest master branch date you have information `up-to-date`. Otherwise you have link to download the latest version from github master branch and also the button to update will be available. After Woodworking workbench update the FreeCAD will restar with new Woodworking workbench version.
+* Allows you to list disabled old Woodworking workbench versions. If you have `up-to-date` Woodworking workbench version, the button to list disabled old Woodworking workbench versions will be visible.
+* Allows you to remove old Woodworking workbench versions. If you list disabled old Woodworking workbench versions the button to remove the old Woodworking workbench versions will be visible. After the button press those folder will be removed permanently, so make sure yu want to remove them.
 
 # API for developers
 

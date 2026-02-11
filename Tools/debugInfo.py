@@ -25,6 +25,7 @@ import MagicPanels
 # tests
 # ###################################################################################################################
 
+# ###################################################################################################################
 def setTests():
 	
 	gTests["status"] = ""
@@ -152,6 +153,16 @@ def setTests():
 		gTests["status"] += "zipfile, "
 
 	# ######################################
+	# test: shutil
+	# ######################################
+	try:
+		import shutil
+		gTests["shutil"] = True
+	except:
+		gTests["shutil"] = False
+		gTests["status"] += "shutil, "
+
+	# ######################################
 	# test: RegularPolygon
 	# ######################################
 	try:
@@ -212,6 +223,7 @@ def setTests():
 # set latest workbench database
 # ###################################################################################################################
 
+# ###################################################################################################################
 def setLatestVersion():
 	
 	try:
@@ -259,6 +271,7 @@ def setLatestVersion():
 # set user workbench database
 # ###################################################################################################################
 
+# ###################################################################################################################
 def setUserVersion():
 
 	try:
@@ -354,6 +367,7 @@ def setUpToDate():
 # https://forum.freecadweb.org/viewtopic.php?p=187448#p187448
 # ###################################################################################################################
 
+# ###################################################################################################################
 def getDebugInfo():
 
 	getDebug = True
@@ -420,6 +434,7 @@ def getDebugInfo():
 # main Qt screen
 # ############################################################################
 
+# ###################################################################################################################
 def showQtGUI():
 	
 	class QtMainClass(QtGui.QDialog):
@@ -445,6 +460,8 @@ def showQtGUI():
 			imageSize = 200                 # overall image width and height
 			iconSize = 40                   # test status icon size
 			iconAlign = "left"              # test status icon align
+			
+			oldWorkbenches = []             # disabled old workbenches to remove
 			
 			# ############################################################################
 			# main window
@@ -669,16 +686,20 @@ def showQtGUI():
 			# update button
 			# ############################################################################
 			
-			try:
-				if gUserVersion["up-to-date"] == "no":
-					self.ub1 = QtGui.QPushButton(translate('debugInfo', 'update Woodworking workbench and restart'), self)
-					self.ub1.setFixedHeight(40)
-					
-				
-				self.ub1.clicked.connect(self.wbUpdate)
-				
-			except:
-				self.ub1 = False
+			self.ub1 = QtGui.QPushButton(translate('debugInfo', 'update Woodworking workbench and restart'), self)
+			self.ub1.setFixedHeight(40)
+			self.ub1.clicked.connect(self.wbUpdate)
+			self.ub1.hide()
+			
+			self.ub2 = QtGui.QPushButton(translate('debugInfo', 'show disabled workbenches'), self)
+			self.ub2.setFixedHeight(40)
+			self.ub2.clicked.connect(self.listOldWorkbenches)
+			self.ub2.hide()
+			
+			self.ub3 = QtGui.QPushButton(translate('debugInfo', 'remove disabled workbenches'), self)
+			self.ub3.setFixedHeight(40)
+			self.ub3.clicked.connect(self.removeOldWorkbenches)
+			self.ub3.hide()
 
 			# ############################################################################
 			# build GUI layout
@@ -728,8 +749,9 @@ def showQtGUI():
 			
 			self.layFoot = QtGui.QHBoxLayout()
 			self.layFoot.addWidget(self.odin)
-			if self.ub1 != False:
-				self.layFoot.addWidget(self.ub1)
+			self.layFoot.addWidget(self.ub1)
+			self.layFoot.addWidget(self.ub2)
+			self.layFoot.addWidget(self.ub3)
 			
 			# set layout to main window
 			self.layoutHeader = QtGui.QHBoxLayout()
@@ -744,6 +766,13 @@ def showQtGUI():
 			self.layout.addLayout(self.layFoot)
 			self.setLayout(self.layout)
 
+			if gUserVersion["up-to-date"] == "no":
+				self.ub1.show()
+			elif len(oldWorkbenches) == 0:
+				self.ub2.show()
+			else:
+				self.ub3.show()
+				
 			# ############################################################################
 			# show
 			# ############################################################################
@@ -751,7 +780,9 @@ def showQtGUI():
 			# set theme
 			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
 			self.setStyleSheet(QtCSS)
-
+			self.ub2.setStyleSheet("background-color: green; color: black; font-weight: bold;")
+			self.ub3.setStyleSheet("background-color: red; color: black; font-weight: bold;")
+			
 			self.show()
 
 			MagicPanels.adjustGUI(self, "center")
@@ -760,6 +791,7 @@ def showQtGUI():
 		# actions - internal functions
 		# ############################################################################
 
+		# ############################################################################
 		def getIcon(self, iType, iSize, iAlign):
 			
 			path = FreeCADGui.activeWorkbench().path
@@ -775,71 +807,111 @@ def showQtGUI():
 			
 			return icon
 
+		# ############################################################################
+		def searchPathName(self, iPath):
+		
+			newPath = iPath
+			
+			i = 1
+			while os.path.exists(newPath):
+				newPath = iPath + " " + str(i)
+				i += 1
+
+			return newPath
+
+		# ############################################################################
 		def wbUpdateTask(self):
+			
+			from zipfile import ZipFile
+			import urllib.request
+			import tempfile, os
+			
+			pathRoot = str(FreeCAD.ConfigDump()["UserAppData"])
+			pathMod = str(os.path.join(pathRoot, "Mod"))
+			pathWB = FreeCADGui.activeWorkbench().path
+			unzipPath = pathMod
+			
+			unzipDirName = "Woodworking-master"
+			tmpFlag = False
+			if os.path.exists(os.path.join(unzipPath, unzipDirName)):
+				unzipPath = tempfile.mkdtemp(dir=pathMod)
+				tmpFlag = True
 			
 			# #########################
 			# download zip file
 			# #########################
 			
 			info = self.odie.toPlainText() + "\n"
-			info += translate('debugInfo', 'Downloading latest update for Woodworking workbench...')
+			info += translate('debugInfo', 'Downloading latest update for Woodworking workbench from')
+			info += ": " + str(gMaster) + " ..."
 			self.odie.setPlainText(info)
 			self.odie.repaint()
-			
-			from zipfile import ZipFile
-			import urllib.request
-			import tempfile, os
 
-			pathRoot = str(FreeCAD.ConfigDump()["UserAppData"])
-			pathMod = str(os.path.join(pathRoot, "Mod"))
-			pathWB = FreeCADGui.activeWorkbench().path
-			
-			url = gMaster
-			master = urllib.request.urlopen(url)
+			try:
+				zipFilePath = os.path.join(unzipPath, unzipDirName + ".zip")
+				req = urllib.request.Request( gMaster, headers={'User-Agent': 'Mozilla/5.0'} )
+				master = urllib.request.urlopen(req)
+				out = open(str(zipFilePath), "wb")
+				out.write(master.read())
+				out.close()
+				master.close()
 
-			zipPattern = "Woodworking" + " " + gLatestVersion["Date"]
-			zipFileName = zipPattern + ".zip"
-			zipFilePath = os.path.join(pathMod, zipFileName)
+			except Exception as e:
+				info = self.odie.toPlainText() + "\n"
+				info += translate('debugInfo', 'Download failed!')
+				info += "\n"
+				info += translate('debugInfo', 'Error: ')
+				info += str(e)
+				self.odie.setPlainText(info)
+				return
 
-			out = open(str(zipFilePath), "wb")
-			out.write(master.read())
-			out.close()
-			
 			# #########################
 			# extract zip file
 			# #########################
 			
 			info = self.odie.toPlainText() + "\n"
-			info += translate('debugInfo', 'Extracting latest update...')
+			info += translate('debugInfo', 'Unpacking Woodworking workbench to')
+			info += ": " + str(unzipPath) + " ..."
 			self.odie.setPlainText(info)
 			self.odie.repaint()
 			
 			with ZipFile(zipFilePath, 'r') as ex:
-				ex.extractall(path=pathMod)
+				ex.extractall(path=unzipPath)
 				ex.close()
 
 			# #########################
-			# rename extracted folder
+			# setting new folder
 			# #########################
 			
-			try:
-				info = self.odie.toPlainText() + "\n"
-				info += translate('debugInfo', 'Renaming extracted folder...')
-				self.odie.setPlainText(info)
-				self.odie.repaint()
+			oldPath = os.path.join(unzipPath, "Woodworking-master")
+			
+			newDirName = "Woodworking" + " " + gLatestVersion["Date"]
+			if tmpFlag == False:
+				newPath = os.path.join(unzipPath, newDirName)
+				newPath = self.searchPathName(newPath)
+			else:
+				newPath = os.path.join(pathMod, newDirName)
+				newPath = self.searchPathName(newPath)
 				
-				oldDir = os.path.join(pathMod, "Woodworking-master")
-				newDir = os.path.join(pathMod, zipPattern)
-				os.rename(oldDir, newDir)
-			except:
-				skip = 1
-
+			info = self.odie.toPlainText() + "\n"
+			info += translate('debugInfo', 'Setting new folder as:')
+			info += ": " + str(newPath) + " ..."
+			self.odie.setPlainText(info)
+			self.odie.repaint()
+			
+			if tmpFlag == False:
+				os.rename(oldPath, newPath)
+			else:
+				import shutil
+				shutil.move(oldPath, newPath)
+			
 			# #########################
 			# disable old workbench
 			# #########################
 			
 			info = self.odie.toPlainText() + "\n"
-			info += translate('debugInfo', 'Disable old Woodworking workbench...')
+			info += translate('debugInfo', 'Disable old Woodworking workbench')
+			info += ": " + str(pathWB) + " ..."
 			self.odie.setPlainText(info)
 			self.odie.repaint()
 			
@@ -852,24 +924,37 @@ def showQtGUI():
 				skip = 1
 			
 			# #########################
-			# remove zip file
+			# remove temporary files
 			# #########################
 			
 			info = self.odie.toPlainText() + "\n"
-			info += translate('debugInfo', 'Clean...')
+			info += translate('debugInfo', 'Cleaning temporary files')
+			info += " ..."
 			self.odie.setPlainText(info)
 			self.odie.repaint()
 			
-			os.remove(zipFilePath)
+			if tmpFlag == False:
+				os.remove(zipFilePath)
+			else:
+				if unzipPath != pathMod:
+					shutil.rmtree(unzipPath)
 			
 			# #########################
 			# restart FreeCAD
 			# #########################
 			
 			info = self.odie.toPlainText() + "\n"
-			info += translate('debugInfo', 'Restarting FreeCAD...')
+			info += translate('debugInfo', 'Restarting FreeCAD')
+			info += " ..."
 			self.odie.setPlainText(info)
 			self.odie.repaint()
+			
+			if FreeCAD.ActiveDocument != None:
+				info = self.odie.toPlainText() + "\n"
+				info += translate('debugInfo', 'Please save current ActiveDocument to continue')
+				info += " ..."
+				self.odie.setPlainText(info)
+				self.odie.repaint()
 			
 			args = QtWidgets.QApplication.arguments()[1:]
 			if FreeCADGui.getMainWindow().close():
@@ -877,6 +962,7 @@ def showQtGUI():
 					QtWidgets.QApplication.applicationFilePath(), args
 				)
 
+		# ############################################################################
 		def wbUpdate(self):
 			
 			self.ub1.setDisabled(True)
@@ -884,14 +970,84 @@ def showQtGUI():
 			info = ""
 			info += translate('debugInfo', 'Latest update for Woodworking workbench will be downloaded. ')
 			info += translate('debugInfo', 'FreeCAD will restart with new Woodworking workbench version ')
+			info += "\n"
 			info += translate('debugInfo', 'but old version will be stored and disabled. ')
-			info += translate('debugInfo', 'So you can remove the old version manually, if you not have private data there. ')
 			info += "\n\n"
 			
 			self.odie.setPlainText(info)
 			self.odie.repaint()
 			
 			self.wbUpdateTask()
+
+		# ############################################################################
+		def listOldWorkbenches(self):
+			
+			import os
+			
+			pathRoot = str(FreeCAD.ConfigDump()["UserAppData"])
+			pathMod = os.path.join(pathRoot, "Mod")
+			self.oldWorkbenches = []
+			
+			info = "\n"
+			info += translate('debugInfo', 'Woodworking workbench folders to remove')
+			info += ": \n" 
+			self.odie.setPlainText(info)
+			
+			for folder in os.listdir(pathMod):
+				fullPath = os.path.join(pathMod, folder)
+				
+				if os.path.isdir(fullPath):
+					package = os.path.join(fullPath, "package.xml")
+					disabled = os.path.join(fullPath, "ADDON_DISABLED")
+					
+					if os.path.exists(package) and os.path.exists(disabled):
+						try:
+							md = FreeCAD.Metadata(package)
+							name = str(md.Name)
+							if name == "Woodworking":
+								self.oldWorkbenches.append(fullPath)
+								info += "\n" + str(fullPath)
+						except:
+							continue
+							
+			if not self.oldWorkbenches:
+				info += "\n" + translate('debugInfo', 'No old Woodworking workbench versions found.')
+			else:
+				self.ub2.hide()
+				self.ub3.show()
+		
+			self.odie.setPlainText(info)
+			self.odie.repaint()
+			
+		# ############################################################################
+		def removeOldWorkbenches(self):
+    
+			import shutil
+			
+			info = "\n"
+			
+			if not self.oldWorkbenches:
+				info += translate('debugInfo', 'Nothing to remove.')
+				self.odie.setPlainText(info)
+				self.ub2.show()
+				self.ub3.hide()
+				return
+
+			for path in self.oldWorkbenches:
+				try:
+					shutil.rmtree(path)
+					info += "\n" + translate('debugInfo', 'Removed')
+					info += ": " + str(path)
+				except Exception as e:
+					info += "\n" + translate('debugInfo', 'Error removing')
+					info += ": " + str(path)
+					
+			self.oldWorkbenches = []
+			self.odie.setPlainText(info)
+			self.odie.repaint()
+
+			self.ub2.show()
+			self.ub3.hide()
 
 	# ############################################################################
 	# final settings
