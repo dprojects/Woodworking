@@ -54,6 +54,9 @@
 * `gBackInsideThickness = 18`: back inside thickness, usually full wood <br>
 * `gBackOutsideThickness = 3`: back outside thickness, usually HDF <br>
 * `gEdgebandThickness = 0`: edgeband thickness <br>
+* `gEdgebandPrice = 4.99 `: edgeband price float in user currency, by default in Poland in zł/m <br>
+* `gEdgebandPriceSymbol = "zł" `: edgeband price symbol to show in cut-list <br>
+* `gEdgebandPriceCalculation = "m"`: edgeband price calculation way: "mm", "cm", "m", "ft", "in" <br>
 * `gEdgebandApply = "visible"`: edgeband apply way "everywhere" or "visible"<br>
 * `gEdgebandColor = (1.0, 1.0, 1.0, 1.0)`: white <br>
 * `gPreferCustomSettings = False`: True - prefer settings from magicSettings, False - no by default <br>

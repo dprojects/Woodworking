@@ -43,6 +43,16 @@ getWoodPriceCalculation = {
 	translate('magicSettings', 'price per board foot'): 'boardfoot' # no comma
 }
 
+# add new items only at the end and change self.oEdgebandPriceCalculationList
+getEdgebandPriceCalculation = {
+	translate('magicSettings', 'price per mm - millimeter'): 'mm',
+	translate('magicSettings', 'price per cm - centimeter'): 'cm',
+	translate('magicSettings', 'price per m - meter'): 'm',
+	translate('magicSettings', 'price per ft - foot'): 'ft',
+	translate('magicSettings', 'price per in - inch'): 'in' # no comma
+}
+
+
 # ############################################################################
 # Qt Main
 # ############################################################################
@@ -61,6 +71,7 @@ def showQtGUI():
 		gTheme = MagicPanels.gTheme
 		gWoodWeightCalculation = MagicPanels.gWoodWeightCalculation
 		gWoodPriceCalculation = MagicPanels.gWoodPriceCalculation
+		gEdgebandPriceCalculation = MagicPanels.gEdgebandPriceCalculation
 		gPage = 0
 		
 		# ############################################################################
@@ -157,7 +168,7 @@ def showQtGUI():
 			self.oWoodWeightE = QtGui.QLineEdit(self)
 			self.oWoodWeightE.setText("0")
 			
-			# wood price calculation
+			# wood weight calculation
 			self.oWoodWeightCalculationL = QtGui.QLabel(translate('magicSettings', 'Wood weight calculation:'), self)
 			self.oWoodWeightCalculationList = (
 				translate('magicSettings', 'kg per area in m^2'),
@@ -344,7 +355,7 @@ def showQtGUI():
 			self.oEdgebandApplyGRP = QtGui.QButtonGroup(self)
 			self.oEdgebandApplyGRP.addButton(self.oEdgebandApplyRB1)
 			self.oEdgebandApplyGRP.addButton(self.oEdgebandApplyRB2)
-			
+
 			# edgeband color
 			self.oEdgebandColorRL = QtGui.QLabel(translate('magicSettings', 'Veneer color (red):'), self)
 			self.oEdgebandColorRE = QtGui.QLineEdit(self)
@@ -361,6 +372,30 @@ def showQtGUI():
 			self.oEdgebandColorAL = QtGui.QLabel(translate('magicSettings', 'Veneer color (alpha channel):'), self)
 			self.oEdgebandColorAE = QtGui.QLineEdit(self)
 			self.oEdgebandColorAE.setText("0")
+
+			# edgeband price
+			self.oEdgebandPriceL = QtGui.QLabel(translate('magicSettings', 'Edgeband price:'), self)
+			self.oEdgebandPriceE = QtGui.QLineEdit(self)
+			self.oEdgebandPriceE.setText("0")
+			
+			# edgeband price symbol
+			self.oEdgebandPriceSymbolL = QtGui.QLabel(translate('magicSettings', 'Edgeband price symbol:'), self)
+			self.oEdgebandPriceSymbolE = QtGui.QLineEdit(self)
+			self.oEdgebandPriceSymbolE.setText("0")
+			
+			# edgeband price calculation
+			self.oEdgebandPriceCalculationL = QtGui.QLabel(translate('magicSettings', 'Edgeband price calculation:'), self)
+			self.oEdgebandPriceCalculationList = (
+				translate('magicSettings', 'price per mm - millimeter'),
+				translate('magicSettings', 'price per cm - centimeter'),
+				translate('magicSettings', 'price per m - meter'),
+				translate('magicSettings', 'price per ft - foot'),
+				translate('magicSettings', 'price per in - inch') # no comma
+			)
+			self.oEdgebandPriceCalculationE = QtGui.QComboBox(self)
+			self.oEdgebandPriceCalculationE.addItems(self.oEdgebandPriceCalculationList)
+			self.oEdgebandPriceCalculationE.setCurrentIndex(0) # default
+			self.oEdgebandPriceCalculationE.textActivated[str].connect(self.setEdgebandPriceCalculation)
 			
 			# ############################################################################
 			# page 4
@@ -621,6 +656,16 @@ def showQtGUI():
 			self.groupPage32 = QtGui.QGroupBox(None, self)
 			self.groupPage32.setLayout(self.Page32)
 
+			self.Page33 = QtGui.QGridLayout()
+			self.Page33.addWidget(self.oEdgebandPriceL, 0, 0)
+			self.Page33.addWidget(self.oEdgebandPriceE, 0, 1)
+			self.Page33.addWidget(self.oEdgebandPriceSymbolL, 1, 0)
+			self.Page33.addWidget(self.oEdgebandPriceSymbolE, 1, 1)
+			self.Page33.addWidget(self.oEdgebandPriceCalculationL, 2, 0)
+			self.Page33.addWidget(self.oEdgebandPriceCalculationE, 2, 1)
+			self.groupPage33 = QtGui.QGroupBox(None, self)
+			self.groupPage33.setLayout(self.Page33)
+
 			self.Page41 = QtGui.QGridLayout()
 			self.Page41.addWidget(self.oPreferCustomSettingsL, 0, 0)
 			self.Page41.addWidget(self.oPreferCustomSettingsRB1, 0, 1)
@@ -699,6 +744,7 @@ def showQtGUI():
 			self.layout.addWidget(self.groupPage23)
 			self.layout.addWidget(self.groupPage31)
 			self.layout.addWidget(self.groupPage32)
+			self.layout.addWidget(self.groupPage33)
 			self.layout.addWidget(self.groupPage41)
 			self.layout.addWidget(self.groupPage42)
 			self.layout.addWidget(self.groupPage51)
@@ -720,6 +766,7 @@ def showQtGUI():
 			self.groupPage23.hide()
 			self.groupPage31.hide()
 			self.groupPage32.hide()
+			self.groupPage33.hide()
 			self.groupPage41.hide()
 			self.groupPage42.hide()
 			self.groupPage51.hide()
@@ -756,6 +803,9 @@ def showQtGUI():
 		def setWoodPriceCalculation(self, selectedText):
 			self.gWoodPriceCalculation = getWoodPriceCalculation[selectedText]
 
+		def setEdgebandPriceCalculation(self, selectedText):
+			self.gEdgebandPriceCalculation = getEdgebandPriceCalculation[selectedText]
+			
 		def showPage(self, selectedText):
 			selectedIndex = getMenuIndex1[selectedText]
 			self.gPage = selectedIndex
@@ -772,6 +822,7 @@ def showQtGUI():
 				self.groupPage23.hide()
 				self.groupPage31.hide()
 				self.groupPage32.hide()
+				self.groupPage33.hide()
 				self.groupPage41.hide()
 				self.groupPage42.hide()
 				self.groupPage51.hide()
@@ -790,6 +841,7 @@ def showQtGUI():
 				self.groupPage23.hide()
 				self.groupPage31.hide()
 				self.groupPage32.hide()
+				self.groupPage33.hide()
 				self.groupPage41.hide()
 				self.groupPage42.hide()
 				self.groupPage51.hide()
@@ -808,6 +860,7 @@ def showQtGUI():
 				self.groupPage23.show()
 				self.groupPage31.hide()
 				self.groupPage32.hide()
+				self.groupPage33.hide()
 				self.groupPage41.hide()
 				self.groupPage42.hide()
 				self.groupPage51.hide()
@@ -826,6 +879,7 @@ def showQtGUI():
 				self.groupPage23.hide()
 				self.groupPage31.show()
 				self.groupPage32.show()
+				self.groupPage33.show()
 				self.groupPage41.hide()
 				self.groupPage42.hide()
 				self.groupPage51.hide()
@@ -844,6 +898,7 @@ def showQtGUI():
 				self.groupPage23.hide()
 				self.groupPage31.hide()
 				self.groupPage32.hide()
+				self.groupPage33.hide()
 				self.groupPage41.show()
 				self.groupPage42.show()
 				self.groupPage51.hide()
@@ -862,6 +917,7 @@ def showQtGUI():
 				self.groupPage23.hide()
 				self.groupPage31.hide()
 				self.groupPage32.hide()
+				self.groupPage33.hide()
 				self.groupPage41.hide()
 				self.groupPage42.hide()
 				self.groupPage51.show()
@@ -1111,6 +1167,26 @@ def showQtGUI():
 				self.oEdgebandColorGE.setText(g)
 				self.oEdgebandColorBE.setText(b)
 				self.oEdgebandColorAE.setText(a)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gEdgebandPrice
+				val = str(float(val))
+				self.oEdgebandPriceE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gEdgebandPriceSymbol
+				val = str(val)
+				self.oEdgebandPriceSymbolE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				k = [ key for key, val in getEdgebandPriceCalculation.items() if val == MagicPanels.gEdgebandPriceCalculation ][0]
+				self.oEdgebandPriceCalculationE.setCurrentText(k)
 			except:
 				skip = 1
 			
@@ -1421,6 +1497,15 @@ def showQtGUI():
 				wus.SetString('wEdgebandColorG', cG)
 				wus.SetString('wEdgebandColorB', cB)
 				wus.SetString('wEdgebandColorA', cA)
+				
+				val = self.oEdgebandPriceE.text()
+				val = float(val)
+				wus.SetString('wEdgebandPrice', str(val))
+				
+				val = self.oEdgebandPriceSymbolE.text()
+				wus.SetString('wEdgebandPriceSymbol', str(val))
+				
+				wus.SetString('wEdgebandPriceCalculation', str(self.gEdgebandPriceCalculation))
 				
 				# ################################################################
 				# page 4

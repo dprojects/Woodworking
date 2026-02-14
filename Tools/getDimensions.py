@@ -319,6 +319,8 @@ gLang30 = ""
 gLang31 = ""
 gLang32 = ""
 gLang33 = ""
+gLang34 = ""
+gLang35 = ""
 
 
 # ###################################################################################################################
@@ -1255,6 +1257,16 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 			
 		return guiString
 	
+	if iType == "edgebandPrice":
+		if MagicPanels.gEdgebandPriceSymbol == "zł":
+			guiString = str(round(iValue, sPDA)) + " "
+			guiString += str(MagicPanels.gEdgebandPriceSymbol)
+		else:
+			guiString = str(MagicPanels.gEdgebandPriceSymbol) + " "
+			guiString += str(round(iValue, sPDA))
+			
+		return guiString
+	
 	# for area
 	if iType == "area":
 		
@@ -1355,6 +1367,9 @@ def toSheet(iValue, iType, iCaller="toSheet"):
 	if iType == "price":
 		return  "=<<" + getUnit(iValue, iType, iCaller) + " " + ">>"
 	
+	if iType == "edgebandPrice":
+		return  "=<<" + getUnit(iValue, iType, iCaller) + " " + ">>"
+		
 	# for raw angle
 	if iType == "to-angle":
 		return  getUnit(iValue, iType, iCaller)
@@ -1694,6 +1709,29 @@ def getPrice(iObj, iW, iH, iL, iCaller="getPrice"):
 
 
 # ###################################################################################################################
+def getEdgebandPrice(iEdgebandSize, iCaller="getPrice"):
+
+	p = float(MagicPanels.gEdgebandPrice)
+	
+	if MagicPanels.gEdgebandPriceCalculation == "mm":
+		price = iEdgebandSize * p
+	
+	if MagicPanels.gEdgebandPriceCalculation == "cm":
+		price = ( 0.1 * iEdgebandSize ) * p
+	
+	if MagicPanels.gEdgebandPriceCalculation == "m":
+		price = ( 0.001 * iEdgebandSize ) * p
+	
+	if MagicPanels.gEdgebandPriceCalculation == "ft":
+		price = ( 0.0032808399 * iEdgebandSize ) * p
+	
+	if MagicPanels.gEdgebandPriceCalculation == "in":
+		price = ( 0.0393700787 * iEdgebandSize ) * p
+
+	return price
+
+
+# ###################################################################################################################
 def getEdge(iObj, iW, iH, iL, iCaller="getEdge"):
 
 	# skip the thickness dimension
@@ -1858,7 +1896,7 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 		if sLTF == "w" or sAWC == True:
 			weight = getWeight(iObj, iW, iH, iL, iCaller) 
 	
-		# get weight
+		# get price
 		if sLTF == "b" or sAPC == True:
 			price = getPrice(iObj, iW, iH, iL, iCaller) 
 			
@@ -3643,6 +3681,8 @@ def initLang():
 	global gLang31
 	global gLang32
 	global gLang33
+	global gLang34
+	global gLang35
 
 	# Polish language
 	if sLang  == "pl":
@@ -3691,6 +3731,8 @@ def initLang():
 		gLang31 = "Maksymalna długość krawędzi"
 		gLang32 = "Potrzebna szerokość do transportu"
 		gLang33 = "Potrzebna długość do transportu"
+		gLang34 = "Cena potrzebnego forniru"
+		gLang35 = "Cena forniru dla wszystkich krawędzi"
 
 	# from system translation files
 	elif sLang  == "system":
@@ -3739,6 +3781,8 @@ def initLang():
 		gLang31 = translate("getDimensions", "Maximum edge size")
 		gLang32 = translate("getDimensions", "Required width for transporting boards")
 		gLang33 = translate("getDimensions", "Required length for transporting boards")
+		gLang34 = translate("getDimensions", "Price for needed veneer")
+		gLang35 = translate("getDimensions", "Veneer price for total edge")
 
 	# English language
 	else:
@@ -3787,7 +3831,9 @@ def initLang():
 		gLang31 = "Maximum edge size"
 		gLang32 = "Required width for transporting boards"
 		gLang33 = "Required length for transporting boards"
-		
+		gLang34 = "Price for needed veneer"
+		gLang35 = "Veneer price for total edge"
+
 
 # ###################################################################################################################
 def setViewQ(iCaller="setViewQ"):
@@ -5287,6 +5333,27 @@ def setViewEdge(iCaller="setViewEdge"):
 			
 				vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
 				gSheet.setBackground(vCell, gHeadCS)
+				
+				# price for needed veneer
+		
+				if sAPC == True or sLTF == "b":
+					
+					gSheetRow = gSheetRow + 1
+					
+					vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+					gSheet.mergeCells(vCell)
+					gSheet.set(vCell, gLang34 + " " + color)
+					gSheet.setStyle(vCell, "bold", "add")
+					gSheet.setAlignment(vCell, "left", "keep")
+				
+					vCell = "G" + str(gSheetRow)
+					price = getEdgebandPrice(dbE[k])
+					gSheet.set(vCell, toSheet(price, "edgebandPrice", iCaller))
+					gSheet.setAlignment(vCell, "right", "keep")
+				
+					vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+					gSheet.setBackground(vCell, gHeadCS)
+
 	
 		# #############################################
 		# total needed veneer
@@ -5306,6 +5373,28 @@ def setViewEdge(iCaller="setViewEdge"):
 	
 		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
 		gSheet.setBackground(vCell, gHeadCS)
+
+		# #############################################
+		# price for needed veneer
+		# #############################################
+	
+		if sAPC == True or sLTF == "b":
+			
+			gSheetRow = gSheetRow + 1
+			
+			vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+			gSheet.mergeCells(vCell)
+			gSheet.set(vCell, gLang34)
+			gSheet.setStyle(vCell, "bold", "add")
+			gSheet.setAlignment(vCell, "left", "keep")
+		
+			vCell = "G" + str(gSheetRow)
+			price = getEdgebandPrice(dbE["edgeband"])
+			gSheet.set(vCell, toSheet(price, "edgebandPrice", iCaller))
+			gSheet.setAlignment(vCell, "right", "keep")
+		
+			vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+			gSheet.setBackground(vCell, gHeadCS)
 
 		# #############################################
 		# no veneer size
@@ -5345,7 +5434,33 @@ def setViewEdge(iCaller="setViewEdge"):
 	vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
 	gSheet.setBackground(vCell, gHeadCS)
 
+
+	# #############################################
+	# veneer price for total edge
+	# #############################################
+
+	if sAPC == True or sLTF == "b":
+	
+		gSheetRow = gSheetRow + 1
+		
+		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+		gSheet.mergeCells(vCell)
+		gSheet.set(vCell, gLang35)
+		gSheet.setStyle(vCell, "bold", "add")
+		gSheet.setAlignment(vCell, "left", "keep")
+
+		vCell = "G" + str(gSheetRow)
+		price = getEdgebandPrice(dbE["total"])
+		gSheet.set(vCell, toSheet(price, "edgebandPrice", iCaller))
+		gSheet.setAlignment(vCell, "right", "keep")
+
+		vCell = "A" + str(gSheetRow) + ":F" + str(gSheetRow)
+		gSheet.setBackground(vCell, gHeadCS)
+
+	# #############################################
 	# max and min edge size
+	# #############################################
+	
 	if sAMAX == True:
 	
 		# min
@@ -5604,6 +5719,9 @@ def selectView(iCaller="selectView"):
 	if sLTF == "b":
 		setViewPrice(iCaller)
 		
+		if sAEI == True:
+			setViewEdge(iCaller)
+
 	# main report - approximation (raw values calculated from vertex)
 	if sLTF == "a":
 		setViewA(iCaller)
