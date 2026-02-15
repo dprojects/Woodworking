@@ -3327,6 +3327,13 @@ def getPosition(iObj, iType="global"):
 				else:
 					return
 				
+				# escape for direct Part::Box linking
+				if io.isDerivedFrom("App::Link"):
+					if len(target) > 0:
+						if target[0].isDerivedFrom("Part::Box"):
+							[ gx, gy, gz ] = searchGlobalPosition(io)
+							return
+				
 				# go deeper
 				for o in target:
 		
@@ -3369,12 +3376,13 @@ def getPosition(iObj, iType="global"):
 			
 			# recalculate Link offset
 			if iObj.isDerivedFrom("App::Link"):
-				try:
-					[ gx, gy, gz ] = iObj.Placement.multVec( FreeCAD.Vector(gx, gy, gz) )
-					if iObj.LinkedObject.isDerivedFrom("App::LinkGroup") or iObj.LinkedObject.isDerivedFrom("App::Part"):
-						[ gx, gy, gz ] = iObj.LinkedObject.Placement.inverse().multVec( FreeCAD.Vector(gx, gy, gz) )
-				except:
-					skip = 1
+				if not iObj.LinkedObject.isDerivedFrom("Part::Box"):
+					try:
+						[ gx, gy, gz ] = iObj.Placement.multVec( FreeCAD.Vector(gx, gy, gz) )
+						if iObj.LinkedObject.isDerivedFrom("App::LinkGroup") or iObj.LinkedObject.isDerivedFrom("App::Part"):
+							[ gx, gy, gz ] = iObj.LinkedObject.Placement.inverse().multVec( FreeCAD.Vector(gx, gy, gz) )
+					except:
+						skip = 1
 			
 			# return the updated minimum via recursive search
 			# little crazy way but currently I do not have better idea

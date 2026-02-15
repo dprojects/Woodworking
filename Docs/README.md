@@ -203,6 +203,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * fix global position for direct Part::Box linking (MagicPanels) <br>
 > * tools GUI position anchor option (MagicPanels, magicSettings, magicStart) <br>
 > * added edgeband price to cut-list (MagicPanels, magicSettings, getDimensions) <br>
 > * improve workbench update and add buttons to list and remove disabled workbenches (debugInfo) <br>
