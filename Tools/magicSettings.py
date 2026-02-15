@@ -52,6 +52,12 @@ getEdgebandPriceCalculation = {
 	translate('magicSettings', 'price per in - inch'): 'in' # no comma
 }
 
+# add new items only at the end and change self.oWindowAnchorList
+getWindowAnchor = {
+	translate('magicSettings', 'FreeCAD Main Window'): 'freecad',
+	translate('magicSettings', 'Desktop screen'): 'screen' # no comma
+}
+
 
 # ############################################################################
 # Qt Main
@@ -72,6 +78,7 @@ def showQtGUI():
 		gWoodWeightCalculation = MagicPanels.gWoodWeightCalculation
 		gWoodPriceCalculation = MagicPanels.gWoodPriceCalculation
 		gEdgebandPriceCalculation = MagicPanels.gEdgebandPriceCalculation
+		gWindowAnchor = MagicPanels.gWindowAnchor
 		gPage = 0
 		
 		# ############################################################################
@@ -227,6 +234,17 @@ def showQtGUI():
 			self.oWoodColorAL = QtGui.QLabel(translate('magicSettings', 'Wood color (alpha channel):'), self)
 			self.oWoodColorAE = QtGui.QLineEdit(self)
 			self.oWoodColorAE.setText("0")
+			
+			# window anchor
+			self.oWindowAnchorL = QtGui.QLabel(translate('magicSettings', 'Tools GUI anchor:'), self)
+			self.oWindowAnchorList = (
+				translate('magicSettings', 'FreeCAD Main Window'),
+				translate('magicSettings', 'Desktop screen') # no comma
+			)
+			self.oWindowAnchorE = QtGui.QComboBox(self)
+			self.oWindowAnchorE.addItems(self.oWindowAnchorList)
+			self.oWindowAnchorE.setCurrentIndex(0) # default
+			self.oWindowAnchorE.textActivated[str].connect(self.setWindowAnchor)
 			
 			# window stays on top
 			self.oWindowL = QtGui.QLabel(translate('magicSettings', 'Window stays on top:'), self)
@@ -585,13 +603,22 @@ def showQtGUI():
 			self.groupPage15 = QtGui.QGroupBox(None, self)
 			self.groupPage15.setLayout(self.Page15)
 
-			self.Page16 = QtGui.QGridLayout()
-			self.Page16.addWidget(self.oWindowL, 0, 0)
-			self.Page16.addWidget(self.oWindowRB1, 0, 1)
-			self.Page16.addWidget(self.oWindowRB2, 0, 2)
-			self.Page16.addWidget(self.oCurrentSelectionL, 1, 0)
-			self.Page16.addWidget(self.oCurrentSelectionRB1, 1, 1)
-			self.Page16.addWidget(self.oCurrentSelectionRB2, 1, 2)
+			self.Page161 = QtGui.QGridLayout()
+			self.Page161.addWidget(self.oWindowAnchorL, 0, 0)
+			self.Page161.addWidget(self.oWindowAnchorE, 0, 1)
+			
+			self.Page162 = QtGui.QGridLayout()
+			self.Page162.addWidget(self.oWindowL, 0, 0)
+			self.Page162.addWidget(self.oWindowRB1, 0, 1)
+			self.Page162.addWidget(self.oWindowRB2, 0, 2)
+			self.Page162.addWidget(self.oCurrentSelectionL, 1, 0)
+			self.Page162.addWidget(self.oCurrentSelectionRB1, 1, 1)
+			self.Page162.addWidget(self.oCurrentSelectionRB2, 1, 2)
+
+			self.Page16 = QtGui.QVBoxLayout()
+			self.Page16.addLayout(self.Page161)
+			self.Page16.addLayout(self.Page162)
+
 			self.groupPage16 = QtGui.QGroupBox(None, self)
 			self.groupPage16.setLayout(self.Page16)
 
@@ -778,8 +805,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# set theme
-			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
-			self.setStyleSheet(QtCSS)
+			MagicPanels.setTheme(self)
 			
 			# show window
 			self.show()
@@ -805,6 +831,9 @@ def showQtGUI():
 
 		def setEdgebandPriceCalculation(self, selectedText):
 			self.gEdgebandPriceCalculation = getEdgebandPriceCalculation[selectedText]
+		
+		def setWindowAnchor(self, selectedText):
+			self.gWindowAnchor = getWindowAnchor[selectedText]
 			
 		def showPage(self, selectedText):
 			selectedIndex = getMenuIndex1[selectedText]
@@ -1015,6 +1044,12 @@ def showQtGUI():
 				self.oWoodColorGE.setText(g)
 				self.oWoodColorBE.setText(b)
 				self.oWoodColorAE.setText(a)
+			except:
+				skip = 1
+			
+			try:
+				k = [ key for key, val in getWindowAnchor.items() if val == MagicPanels.gWindowAnchor ][0]
+				self.oWindowAnchorE.setCurrentText(k)
 			except:
 				skip = 1
 			
@@ -1337,7 +1372,8 @@ def showQtGUI():
 			
 			self.gTheme = selectedText
 			
-			# set theme
+			# set theme only for current selection preview
+			# not for global MagicPanels.gTheme variable
 			QtCSS = MagicPanels.getTheme(self.gTheme)
 			self.setStyleSheet(QtCSS)
 			
@@ -1401,6 +1437,8 @@ def showQtGUI():
 				wus.SetString('wWoodColorG', cG)
 				wus.SetString('wWoodColorB', cB)
 				wus.SetString('wWoodColorA', cA)
+				
+				wus.SetString('wWindowAnchor', str(self.gWindowAnchor))
 				
 				# window stays on top
 				wus.SetBool('wWindowStaysOnTop', self.oWindowRB1.isChecked())

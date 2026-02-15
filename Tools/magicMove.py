@@ -896,8 +896,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# set theme
-			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
-			self.setStyleSheet(QtCSS)
+			MagicPanels.setTheme(self)
 			
 			# init
 			if self.gAxisCrossSupport == True:

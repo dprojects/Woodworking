@@ -37,6 +37,7 @@
 * `gWoodPrice = 37.98 `: wood price float in user currency, by default in Poland in zł/m^2 <br>
 * `gWoodPriceSymbol = "zł"`: wood price symbol to show in cut-list <br>
 * `gWoodPriceCalculation = "m^2"`: wood price calculation way: "m^2", "m^3", "wood", "foot" <br>
+* `gWindowAnchor = "feecad" `: anchors for tools GUI: "freecad", "screen" <br>
 * `gWindowStaysOnTop = True `: to keep window on top <br> 
 * `gCurrentSelection = False`: to skip refresh selection button <br>
 * `gFrontInsideThickness = 18`: front inside wood thickness <br>
@@ -2524,22 +2525,41 @@
 	
 		return Qt CSS string to set via self.setStyleSheet(QtCSS)
 
+### setTheme(iSelf):
+
+	
+##### Description:
+	
+		Allows to set QtCSS theme to self GUI object directly from gTheme global variable.
+
+##### Args:
+	
+		iSelf: self object for GUI window
+		
+##### Usage:
+
+		MagicPanels.setTheme(self)
+		
+##### Result:
+	
+		no return, just set the theme
+
 ### adjustGUI(iSelf, iType="right"):
 
 	
 ##### Description:
 	
-		Adjust GUI position and not repeat code in all tools.
+		Adjust GUI position to the defined window anchor.
 
 ##### Args:
 	
 		iSelf: self window object
 		iType: positions string:
-			* "left": move gui to the left top FreeCAD window corner
-			* "left-offset": move gui to the left bottom FreeCAD window corner with offset from left and bottom
-			* "right": move gui to the right top FreeCAD window corner
-			* "right-bottom": move gui to the right bottom FreeCAD window corner
-			* "center": move gui to the center of the FreeCAD window
+			* "left": move gui to the left
+			* "left-offset": move gui to the left bottom with offset from left and bottom
+			* "right": move gui to the right top
+			* "right-bottom": move gui to the right bottom
+			* "center": move gui to the center
 
 ##### Usage:
 

@@ -203,6 +203,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * tools GUI position anchor option (MagicPanels, magicSettings, magicStart) <br>
 > * added edgeband price to cut-list (MagicPanels, magicSettings, getDimensions) <br>
 > * improve workbench update and add buttons to list and remove disabled workbenches (debugInfo) <br>
 > * Ukrainian translation <br>
@@ -907,6 +908,9 @@ Available anchors to select:
 * **Wood size Y (short):** means the shorter size for `XY` default panel, see: [Default panels](#default-panels).
 * **Wood description:** this is default material description used by [getDimensions](#getdimensions) cut-list tool if you do not have set Material or `.Label2` attribute.
 * **Wood color:** allows you to set the default color of the wood you create in RGBA color schema. This setting is used by tools like [magicStart](#magicstart), [wires2pad](#wires2pad), [Default panels](#default-panels) and all others. If you want to revert to the default wood color which is `RGBA = [ 247, 185, 108, 255 ]` leave all fields empty and press the `save settings` button.
+* **Tools GUI anchor:** allows anchor selection for all graphical tool interfaces. Currently supported anchors:
+  * `FreeCAD Main Window` the graphical interface of the tools will be positioned according to the size and position of the main FreeCAD window.
+  * `Desktop screen` the graphical interface of the tools will be positioned according to the size of the available desktop screen.
 * **Window stays on top:**
   * `yes` - Tool windows always stay on top of all other applications. I personally use this feature when creating documentation. I have Krusader (Kwrite Edit) and the new tool window open simultaneously, so I can describe all the options without constantly clicking on the new tool window.
   * `no` - Enables the default window behavior, i.e. when you switch to another application, the window disappears.

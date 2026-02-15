@@ -157,8 +157,7 @@ def showQtGUI():
 			self.setGUI("init")
 			
 			# set theme
-			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
-			self.setStyleSheet(QtCSS)
+			MagicPanels.setTheme(self)
 			
 			# show window
 			self.show()

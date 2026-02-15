@@ -778,8 +778,8 @@ def showQtGUI():
 			# ############################################################################
 
 			# set theme
-			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
-			self.setStyleSheet(QtCSS)
+			MagicPanels.setTheme(self)
+			
 			self.ub2.setStyleSheet("background-color: green; color: black; font-weight: bold;")
 			self.ub3.setStyleSheet("background-color: red; color: black; font-weight: bold;")
 			

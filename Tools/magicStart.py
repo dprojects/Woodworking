@@ -134,6 +134,14 @@ def showQtGUI():
 		
 		toolSW = 480
 		toolSH = 700
+		
+		# adjust size to screen
+		if MagicPanels.gWindowAnchor == "screen":
+			toolSH = QtGui.QGuiApplication.primaryScreen().availableGeometry().height() - 25
+		
+		if MagicPanels.gWindowAnchor == "freecad":
+			toolSH = FreeCADGui.getMainWindow().geometry().height() - 5
+			
 		imageSizeW = 200
 		imageSizeH = 200
 
@@ -3164,8 +3172,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# set theme
-			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
-			self.setStyleSheet(QtCSS)
+			MagicPanels.setTheme(self)
 		
 			# show window
 			self.show()

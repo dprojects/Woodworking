@@ -472,8 +472,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# set theme
-			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
-			self.setStyleSheet(QtCSS)
+			MagicPanels.setTheme(self)
 
 			if self.gAxisCrossSupport == True:
 				FreeCADGui.ActiveDocument.ActiveView.setAxisCross(True)

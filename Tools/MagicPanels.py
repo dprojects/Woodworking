@@ -65,6 +65,7 @@ gWoodWeightCalculation = "kg/m^2"          # wood weight calculation string: "kg
 gWoodPrice = 37.98                         # wood price float in user currency, by default in Poland in zł/m^2 <br>
 gWoodPriceSymbol = "zł"                    # wood price symbol to show in cut-list <br>
 gWoodPriceCalculation = "m^2"              # wood price calculation way: "m^2", "m^3", "wood", "foot" <br>
+gWindowAnchor = "feecad"                   # anchors for tools GUI: "freecad", "screen" <br>
 gWindowStaysOnTop = True                   # to keep window on top <br> 
 gCurrentSelection = False                  # to skip refresh selection button <br>
 gFrontInsideThickness = 18                 # front inside wood thickness <br>
@@ -7468,6 +7469,8 @@ def makePockets(iObjects, iLength):
 '''
 # ###################################################################################################################
 
+
+# ###################################################################################################################
 def sheetGetKey(iC, iR):
 	'''
 	Description:
@@ -7516,6 +7519,8 @@ def sheetGetKey(iC, iR):
 '''
 # ###################################################################################################################
 
+
+# ###################################################################################################################
 def createTechDrawPage(iName="page", iSize="A4", iType="v"):
 	'''
 	Description:
@@ -7580,6 +7585,7 @@ def createTechDrawPage(iName="page", iSize="A4", iType="v"):
 # ###################################################################################################################
 
 
+# ###################################################################################################################
 def getTheme(iType=""):
 	'''
 	Description:
@@ -8096,21 +8102,51 @@ def getTheme(iType=""):
 
 
 # ###################################################################################################################
+def setTheme(iSelf):
+	'''
+	Description:
+	
+		Allows to set QtCSS theme to self GUI object directly from gTheme global variable.
+
+	Args:
+	
+		iSelf: self object for GUI window
+		
+	Usage:
+
+		MagicPanels.setTheme(self)
+		
+	Result:
+	
+		no return, just set the theme
+
+	'''
+	
+	# to self GUI
+	QtCSS = getTheme(gTheme)
+	iSelf.setStyleSheet(QtCSS)
+	
+	# to main FreeCAD window
+	if gMainWindowTheme == True:
+		FreeCADGui.getMainWindow().setStyleSheet(QtCSS)
+	
+
+# ###################################################################################################################
 def adjustGUI(iSelf, iType="right"):
 	'''
 	Description:
 	
-		Adjust GUI position and not repeat code in all tools.
+		Adjust GUI position to the defined window anchor.
 
 	Args:
 	
 		iSelf: self window object
 		iType: positions string:
-			* "left": move gui to the left top FreeCAD window corner
-			* "left-offset": move gui to the left bottom FreeCAD window corner with offset from left and bottom
-			* "right": move gui to the right top FreeCAD window corner
-			* "right-bottom": move gui to the right bottom FreeCAD window corner
-			* "center": move gui to the center of the FreeCAD window
+			* "left": move gui to the left
+			* "left-offset": move gui to the left bottom with offset from left and bottom
+			* "right": move gui to the right top
+			* "right-bottom": move gui to the right bottom
+			* "center": move gui to the center
 
 	Usage:
 
@@ -8122,34 +8158,69 @@ def adjustGUI(iSelf, iType="right"):
 
 	'''
 
+	# ########################################################
+	# init
+	# ########################################################
+	
 	iSelf.layout.setSizeConstraint(QtGui.QLayout.SetNoConstraint)
 	iSelf.layout.activate() 
 	QtGui.QApplication.processEvents()
 
+	# ########################################################
+	# set window anchors
+	# ########################################################
+	
+	if gWindowAnchor == "screen":
+		screen = QtGui.QGuiApplication.primaryScreen().geometry()
+		left = screen.left()
+		right = screen.right()
+		top = screen.top()
+		bottom = screen.bottom()
+		width = screen.width()
+		height = screen.height()
+	
+	if gWindowAnchor == "freecad":
+		screen = FreeCADGui.getMainWindow().frameGeometry()
+		
+	left = screen.left()
+	right = screen.right()
+	top = screen.top()
+	bottom = screen.bottom()
+	width = screen.width()
+	height = screen.height()
+	
+	# ########################################################
+	# set tool anchors
+	# ########################################################
+	
 	toolW = iSelf.frameGeometry().width()
 	toolH = iSelf.frameGeometry().height()
     
+    # ########################################################
+    # adjust tool GUI
+    # ########################################################
+    
 	if iType == "left":
-		pw = FreeCADGui.getMainWindow().frameGeometry().left()
-		ph = FreeCADGui.getMainWindow().frameGeometry().top()
+		pw = left
+		ph = top
 
 	if iType == "left-offset":
-		pw = FreeCADGui.getMainWindow().frameGeometry().left() + 180
-		ph = FreeCADGui.getMainWindow().frameGeometry().height() - toolH - 50
+		pw = left + 180
+		ph = height - toolH - 50
 
 	if iType == "right":
-		pw = FreeCADGui.getMainWindow().frameGeometry().right() - toolW
-		ph = FreeCADGui.getMainWindow().frameGeometry().top()
+		pw = right - toolW
+		ph = top
 	
 	if iType == "right-bottom":
-		pw = FreeCADGui.getMainWindow().frameGeometry().right() - toolW
-		ph = FreeCADGui.getMainWindow().frameGeometry().height() - toolH
+		pw = right - toolW
+		ph = height - toolH
 	
 	if iType == "center":
-		cw = (FreeCADGui.getMainWindow().frameGeometry().width() / 2) - (toolW / 2)
-		ch = (FreeCADGui.getMainWindow().frameGeometry().height() / 2) - (toolH / 2)
-		pw = FreeCADGui.getMainWindow().frameGeometry().left() + cw
-		ph = FreeCADGui.getMainWindow().frameGeometry().top() + ch
+		cw = (width / 2) - (toolW / 2)
+		ch = (height / 2) - (toolH / 2)
+		pw = left + cw
+		ph = top + ch
 		
 	iSelf.move(pw, ph)
 
@@ -9321,6 +9392,14 @@ def updateGlobals():
 			colorArr = [ int(float(cR)), int(float(cG)), int(float(cB)), int(float(cA)) ]
 			global gDefaultColor
 			gDefaultColor = convertColor(colorArr, "kernel")
+	except:
+		skip = 1
+
+	# window anchors
+	try:
+		if "wWindowAnchor" in wusStrings:
+			global gWindowAnchor
+			gWindowAnchor = str( wus.GetString('wWindowAnchor') )
 	except:
 		skip = 1
 

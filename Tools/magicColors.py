@@ -631,13 +631,12 @@ def showQtGUI():
 			# show & init defaults
 			# ############################################################################
 	
+			# set theme
+			MagicPanels.setTheme(self)
+	
 			# show window
 			self.show()
 			
-			# set theme
-			QtCSS = MagicPanels.getTheme(MagicPanels.gTheme)
-			self.setStyleSheet(QtCSS)
-
 			# init
 			self.rb1.setChecked(True)
 			self.getSelected()
