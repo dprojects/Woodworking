@@ -8178,24 +8178,20 @@ def adjustGUI(iSelf, iType="right"):
 	# set window anchors
 	# ########################################################
 	
+	screen = None
+
 	if gWindowAnchor == "screen":
-		screen = QtGui.QGuiApplication.primaryScreen().geometry()
-		left = screen.left()
-		right = screen.right()
-		top = screen.top()
-		bottom = screen.bottom()
-		width = screen.width()
-		height = screen.height()
-	
-	if gWindowAnchor == "freecad":
-		screen = FreeCADGui.getMainWindow().frameGeometry()
-		
-	left = screen.left()
-	right = screen.right()
-	top = screen.top()
-	bottom = screen.bottom()
-	width = screen.width()
-	height = screen.height()
+		screen_obj = QtGui.QGuiApplication.primaryScreen()
+		if screen_obj:
+			screen = screen_obj.geometry()
+
+	elif gWindowAnchor == "freecad":
+		mw = FreeCADGui.getMainWindow()
+		if mw:
+			screen = mw.frameGeometry()
+
+	if screen is None:
+		return
 	
 	# ########################################################
 	# set tool anchors
