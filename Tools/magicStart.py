@@ -135,13 +135,16 @@ def showQtGUI():
 		toolSW = 480
 		toolSH = 700
 		
-		# adjust size to screen
-		if MagicPanels.gWindowAnchor == "screen":
-			toolSH = QtGui.QGuiApplication.primaryScreen().availableGeometry().height() - 25
-		
-		if MagicPanels.gWindowAnchor == "freecad":
-			toolSH = FreeCADGui.getMainWindow().geometry().height() - 5
-			
+		# try adjust size
+		try:
+			screen = MagicPanels.getScreenObject()
+			if MagicPanels.gWindowAnchor == "screen":
+				toolSH = screen.height() - 50
+			else:
+				toolSH = screen.height() - 25
+		except:
+			skip = 1
+
 		imageSizeW = 200
 		imageSizeH = 200
 

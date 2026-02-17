@@ -65,7 +65,7 @@ gWoodWeightCalculation = "kg/m^2"          # wood weight calculation string: "kg
 gWoodPrice = 37.98                         # wood price float in user currency, by default in Poland in zł/m^2 <br>
 gWoodPriceSymbol = "zł"                    # wood price symbol to show in cut-list <br>
 gWoodPriceCalculation = "m^2"              # wood price calculation way: "m^2", "m^3", "wood", "foot" <br>
-gWindowAnchor = "feecad"                   # anchors for tools GUI: "freecad", "screen" <br>
+gWindowAnchor = "freecad"                  # anchors for tools GUI: "freecad", "screen" <br>
 gWindowStaysOnTop = True                   # to keep window on top <br> 
 gCurrentSelection = False                  # to skip refresh selection button <br>
 gFrontInsideThickness = 18                 # front inside wood thickness <br>
@@ -8137,7 +8137,48 @@ def setTheme(iSelf):
 	# to main FreeCAD window
 	if gMainWindowTheme == True:
 		FreeCADGui.getMainWindow().setStyleSheet(QtCSS)
+
+
+# ###################################################################################################################
+def getScreenObject():
+	'''
+	Description:
 	
+		To get screen object for defined window anchor.
+
+	Args:
+	
+		nothing
+
+	Usage:
+
+		MagicPanels.getScreenObject()
+
+	Result:
+	
+		return screen object or show error
+
+	'''
+
+	if gWindowAnchor == "screen":
+		
+		primary = QtGui.QGuiApplication.primaryScreen()
+		
+		if not primary:
+			instance = QtGui.QApplication.instance()
+			if instance:
+				primary = instance.primaryScreen()
+		
+		if primary:
+			screen = primary.geometry()
+		else:
+			screen = QtGui.QApplication.desktop().screenGeometry()
+		
+	if gWindowAnchor == "freecad":
+		screen = FreeCADGui.getMainWindow().frameGeometry()
+			
+	return screen
+
 
 # ###################################################################################################################
 def adjustGUI(iSelf, iType="right"):
@@ -8178,18 +8219,8 @@ def adjustGUI(iSelf, iType="right"):
 	# set window anchors
 	# ########################################################
 	
-	if gWindowAnchor == "screen":
-		screen = QtGui.QGuiApplication.primaryScreen().geometry()
-		left = screen.left()
-		right = screen.right()
-		top = screen.top()
-		bottom = screen.bottom()
-		width = screen.width()
-		height = screen.height()
+	screen = getScreenObject()
 	
-	if gWindowAnchor == "freecad":
-		screen = FreeCADGui.getMainWindow().frameGeometry()
-		
 	left = screen.left()
 	right = screen.right()
 	top = screen.top()
@@ -8214,7 +8245,7 @@ def adjustGUI(iSelf, iType="right"):
 
 	if iType == "left-offset":
 		pw = left + 180
-		ph = height - toolH - 50
+		ph = bottom - toolH - 50
 
 	if iType == "right":
 		pw = right - toolW
@@ -8222,7 +8253,7 @@ def adjustGUI(iSelf, iType="right"):
 	
 	if iType == "right-bottom":
 		pw = right - toolW
-		ph = height - toolH
+		ph = bottom - toolH
 	
 	if iType == "center":
 		cw = (width / 2) - (toolW / 2)
@@ -8230,7 +8261,7 @@ def adjustGUI(iSelf, iType="right"):
 		pw = left + cw
 		ph = top + ch
 		
-	iSelf.move(pw, ph)
+	iSelf.move( int(pw), int(ph) )
 
 
 # ###################################################################################################################

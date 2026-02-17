@@ -37,7 +37,7 @@
 * `gWoodPrice = 37.98 `: wood price float in user currency, by default in Poland in zł/m^2 <br>
 * `gWoodPriceSymbol = "zł"`: wood price symbol to show in cut-list <br>
 * `gWoodPriceCalculation = "m^2"`: wood price calculation way: "m^2", "m^3", "wood", "foot" <br>
-* `gWindowAnchor = "feecad" `: anchors for tools GUI: "freecad", "screen" <br>
+* `gWindowAnchor = "freecad"`: anchors for tools GUI: "freecad", "screen" <br>
 * `gWindowStaysOnTop = True `: to keep window on top <br> 
 * `gCurrentSelection = False`: to skip refresh selection button <br>
 * `gFrontInsideThickness = 18`: front inside wood thickness <br>
@@ -2543,6 +2543,25 @@
 ##### Result:
 	
 		no return, just set the theme
+
+### getScreenObject():
+
+	
+##### Description:
+	
+		To get screen object for defined window anchor.
+
+##### Args:
+	
+		nothing
+
+##### Usage:
+
+		MagicPanels.getScreenObject()
+
+##### Result:
+	
+		return screen object or show error
 
 ### adjustGUI(iSelf, iType="right"):
 
