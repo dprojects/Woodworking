@@ -203,6 +203,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * new flexible wardrobe sample (magicStart) <br>
 > * fix global position for direct Part::Box linking (MagicPanels) <br>
 > * tools GUI position anchor option (MagicPanels, magicSettings, magicStart) <br>
 > * added edgeband price to cut-list (MagicPanels, magicSettings, getDimensions) <br>
@@ -327,6 +328,7 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * Storage ( front outside, back inside, heavy duty )
 * Wardrobe ( front outside, back outside, 2x clothes width )
 * Wardrobe ( front outside, back outside, clothes hangers )
+* Wardrobe ( front outside, back outside, flexible )
 * Bookcase ( no front, back inside, simple )
 * Bookcase ( no front, back outside, simple )
 * Bookcase ( import parametric )

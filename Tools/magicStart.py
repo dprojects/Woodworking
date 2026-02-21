@@ -102,7 +102,8 @@ getMenuIndex = {
 	translate('magicStart', 'Module on top ( back inside, veneer )'): 86,
 	translate('magicStart', 'Module on top ( back outside, veneer )'): 87,
 	translate('magicStart', 'Module base ( back inside, veneer )'): 88,
-	translate('magicStart', 'Module base ( back outside, veneer )'): 89 # no comma
+	translate('magicStart', 'Module base ( back outside, veneer )'): 89,
+	translate('magicStart', 'Wardrobe ( front outside, back outside, flexible )'): 90 # no comma
 }
 
 # ############################################################################
@@ -798,6 +799,7 @@ def showQtGUI():
 				translate('magicStart', 'Storage ( front outside, back inside, heavy duty )'), 
 				translate('magicStart', 'Wardrobe ( front outside, back outside, 2x clothes width )'), 
 				translate('magicStart', 'Wardrobe ( front outside, back outside, clothes hangers )'), 
+				translate('magicStart', 'Wardrobe ( front outside, back outside, flexible )'), 
 				translate('magicStart', 'Bookcase ( no front, back inside, simple )'), 
 				translate('magicStart', 'Bookcase ( no front, back outside, simple )'), 
 				translate('magicStart', 'Bookcase ( import parametric )'), 
@@ -893,7 +895,7 @@ def showQtGUI():
 			)
 			
 			helpButtonSize = 80
-			
+
 			self.sMode = QtGui.QComboBox(self)
 			self.sMode.addItems(self.sModeList)
 			self.sMode.setCurrentIndex(0)
@@ -963,7 +965,7 @@ def showQtGUI():
 			self.mergeB.hide()
 			
 			# ############################################################################
-			# GUI for Workspace (visible by default)
+			# GUI for Workspace
 			# ############################################################################
 			
 			info = translate('magicStart', 'Choose one selection method and make selection before calculate or create button press, possible selections: <br><br> 1. Edge - to set workspace start XYZ position same as edge center <br><br> 2. Face - to set workspace start XYZ position same as face center <br><br> 3. Vertex - to set workspace start XYZ position same as vertex position <br><br> 4. no selection - to create with custom settings')
@@ -1009,6 +1011,23 @@ def showQtGUI():
 			self.oworkspaceBCR = QtGui.QPushButton(translate('magicStart', 'create'), self)
 			self.oworkspaceBCR.clicked.connect(self.createObject)
 			self.oworkspaceBCR.setFixedHeight(createSize)
+
+			# hide by default
+			self.oworkspaceInfo.hide()
+			self.oworkspaceXL.hide()
+			self.oworkspaceXE.hide()
+			self.oworkspaceYL.hide()
+			self.oworkspaceYE.hide()
+			self.oworkspaceZL.hide()
+			self.oworkspaceZE.hide()
+			self.oworkspaceBCL.hide()
+			self.oworkspaceSXL.hide()
+			self.oworkspaceSYL.hide()
+			self.oworkspaceSZL.hide()
+			self.oworkspaceSXE.hide()
+			self.oworkspaceSYE.hide()
+			self.oworkspaceSZE.hide()
+			self.oworkspaceBCR.hide()
 
 			# ############################################################################
 			# GUI for furniture
@@ -3181,6 +3200,13 @@ def showQtGUI():
 			self.show()
 			
 			MagicPanels.adjustGUI(self, "left")
+			
+			# set default
+			try:
+				self.sMode.setCurrentIndex(7)
+				self.selectedOption(translate('magicStart', 'Bookcase module ( no front, back outside, veneer )'))
+			except:
+				skip = 1
 		
 		# ############################################################################
 		# actions - GUI
@@ -4237,7 +4263,8 @@ def showQtGUI():
 				selectedIndex == 86 or 
 				selectedIndex == 87 or 
 				selectedIndex == 88 or 
-				selectedIndex == 89
+				selectedIndex == 89 or 
+				selectedIndex == 90
 				):
 				self.setGUIInfo()
 				self.helpInfo.setText(self.gHelpInfoF0)
@@ -4355,7 +4382,8 @@ def showQtGUI():
 				selectedIndex == 86 or 
 				selectedIndex == 87 or 
 				selectedIndex == 88 or 
-				selectedIndex == 89 
+				selectedIndex == 89 or 
+				selectedIndex == 90
 				):
 				self.oThickL.show()
 				self.oThickE.show()
@@ -4444,7 +4472,8 @@ def showQtGUI():
 				selectedIndex == 78 or 
 				selectedIndex == 79 or 
 				selectedIndex == 84 or 
-				selectedIndex == 85 
+				selectedIndex == 85 or 
+				selectedIndex == 90
 				):
 				self.oModulesNumL.show()
 				self.oModulesNumE.show()
@@ -4841,6 +4870,20 @@ def showQtGUI():
 				self.oHeightE.setText( MagicPanels.unit2gui(760) )
 				self.oWidthE.setText( MagicPanels.unit2gui(500) )
 				self.oDepthE.setText( MagicPanels.unit2gui(400) )
+			
+			if selectedIndex == 90:
+				self.oThickE.setText( MagicPanels.unit2gui(self.gThick) )
+				self.oThickBackE.setText( MagicPanels.unit2gui(MagicPanels.gBackOutsideThickness) )
+				self.oThickShelfE.setText( MagicPanels.unit2gui(MagicPanels.gShelfThickness) )
+				self.oThickFrontE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideThickness) )
+				self.oOffsetFrontLE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetL) )
+				self.oOffsetFrontRE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetR) )
+				self.oOffsetFrontTE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetT) )
+				self.oOffsetFrontBE.setText( MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetB) )
+				self.oModulesNumE.setText("3")
+				self.oHeightE.setText( MagicPanels.unit2gui(2300) )
+				self.oWidthE.setText( MagicPanels.unit2gui(620) )
+				self.oDepthE.setText( MagicPanels.unit2gui(521) )
 				
 		# ############################################################################
 		def createObject(self):
@@ -5093,6 +5136,9 @@ def showQtGUI():
 			
 			if self.gSelectedFurniture == "F89":
 				self.createF89()
+			
+			if self.gSelectedFurniture == "F90":
+				self.createF90()
 			
 			# here to allow recalculation with selection
 			FreeCADGui.Selection.clearSelection()
@@ -12257,6 +12303,311 @@ def showQtGUI():
 			# recompute
 			FreeCAD.ActiveDocument.recompute()
 
+		# ############################################################################
+		def createF90(self):
+			
+			self.gFSX = MagicPanels.unit2value(self.oWidthE.text())
+			self.gFSZ = MagicPanels.unit2value(self.oHeightE.text())
+			self.gFSY = MagicPanels.unit2value(self.oDepthE.text())
+			
+			self.gThick = MagicPanels.unit2value(self.oThickE.text())
+			
+			thickFront = MagicPanels.unit2value( self.oThickFrontE.text() )
+			offsetFrontL = MagicPanels.unit2value( self.oOffsetFrontLE.text() )
+			offsetFrontR = MagicPanels.unit2value( self.oOffsetFrontRE.text() )
+			offsetFrontT = MagicPanels.unit2value( self.oOffsetFrontTE.text() )
+			offsetFrontB = MagicPanels.unit2value( self.oOffsetFrontBE.text() )
+		
+			thickBack = MagicPanels.unit2value( self.oThickBackE.text() )
+			thickShelf = MagicPanels.unit2value( self.oThickShelfE.text() )
+			shelfOS = MagicPanels.gShelfOffsetSides / 2
+			
+			sx = MagicPanels.unit2value(self.oStartXE.text())
+			sy = MagicPanels.unit2value(self.oStartYE.text())
+			sz = MagicPanels.unit2value(self.oStartZE.text())
+			
+			# calculation
+			mNum = int(self.oModulesNumE.text())
+			topsSize = (mNum - 1) * self.gThick
+			
+			baseSideZ = 1146 # to have eaqual modules size
+			modulesSideZ = self.gFSZ - baseSideZ - self.gThick - topsSize
+
+			sideZ = modulesSideZ / (mNum - 1)
+			depth = self.gFSY - thickBack - thickFront
+			
+			baseWidthGap = self.gFSX - (2 * self.gThick) - 2 + offsetFrontL + offsetFrontR
+			baseLeftFrontWidth = baseWidthGap / 2
+			baseRightFrontWidth = baseWidthGap / 2
+			
+			baseHeightGap = baseSideZ - 4
+			baseBottomFrontHeight = ( baseHeightGap / 2 ) - 100 - self.gThick + offsetFrontB
+			baseTopFrontHeight = ( baseHeightGap / 2 ) + offsetFrontT
+			
+			baseShelfGap = baseSideZ - 100 - self.gThick
+			
+			# #######################
+			# Base
+			# #######################
+			
+			# Floor
+			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
+			o1.Label = translate('magicStart', 'Floor') + ' M1'
+			o1.Length = self.gFSX - (2 * self.gThick)
+			o1.Height = self.gThick
+			o1.Width = depth
+			pl = FreeCAD.Vector(sx + self.gThick, sy + thickFront, sz + 100)
+			o1.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o1, 0, self.gColor, "color")
+			
+			# Left Side
+			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
+			o2.Label = translate('magicStart', 'Left') + ' M1'
+			o2.Length = self.gThick
+			o2.Height = baseSideZ
+			o2.Width = depth
+			pl = FreeCAD.Vector(sx, sy + thickFront, sz)
+			o2.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o2, 0, self.gColor, "color")
+			
+			# Right Side
+			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
+			o3.Label = translate('magicStart', 'Right') + ' M1'
+			o3.Length = self.gThick
+			o3.Height = baseSideZ
+			o3.Width = depth
+			pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy + thickFront, sz)
+			o3.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o3, 0, self.gColor, "color")
+		
+			# Back
+			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
+			o4.Label = translate('magicStart', 'Back') + ' M1'
+			o4.Length = self.gFSX
+			o4.Height = baseSideZ - 100 + self.gThick
+			o4.Width = thickBack
+			pl = FreeCAD.Vector(sx, sy + depth + thickFront, sz + 100)
+			o4.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o4, 0, self.gColor, "color")
+			MagicPanels.setColor(o4, 3, (1.0, 1.0, 1.0, 1.0), "color")
+			
+			# Top
+			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
+			o6.Label = translate('magicStart', 'Top') + ' M1'
+			o6.Length = self.gFSX
+			o6.Height = self.gThick
+			o6.Width = depth
+			pl = FreeCAD.Vector(sx, sy + thickFront, sz + baseSideZ)
+			o6.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o6, 0, self.gColor, "color")
+		
+			# Front BL
+			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
+			o7.Label = translate('magicStart', 'Front BL') + ' M1'
+			o7.Length = baseLeftFrontWidth
+			o7.Height = baseBottomFrontHeight
+			o7.Width = thickFront
+			pl = FreeCAD.Vector(sx + self.gThick - offsetFrontL, sy, sz + 100 + self.gThick - offsetFrontB)
+			o7.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o7, 0, self.gColor, "color")
+			
+			# Front BR
+			o8 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
+			o8.Label = translate('magicStart', 'Front BR') + ' M1'
+			o8.Length = baseRightFrontWidth
+			o8.Height = baseBottomFrontHeight
+			o8.Width = thickFront
+			px = sx + self.gThick - offsetFrontL + baseLeftFrontWidth + 2
+			py = sy
+			pz = sz + 100 + self.gThick - offsetFrontB
+			pl = FreeCAD.Vector(px, py, pz)
+			o8.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o8, 0, self.gColor, "color")
+			
+			info = translate("frontsOpenClose", "Object type for script parsing.")
+			o8.addProperty("App::PropertyString", "Woodworking_Type", "Woodworking", info)
+			o8.Woodworking_Type = "Front"
+
+			info = translate("frontsOpenClose", "Allows to skip open simple front inside LinkGroup container and rotate whole LinkGroup container instead.")
+			o8.addProperty("App::PropertyBool", "Woodworking_Open", "Woodworking", info)
+			o8.Woodworking_Open = True
+
+			info = translate("frontsOpenClose", "Object name of the edge to open front. By default all objects with name starting with Front or front will be opened to left.")
+			o8.addProperty("App::PropertyString", "Woodworking_OpenObj", "Woodworking", info)
+			o8.Woodworking_OpenObj = str(o8.Name)
+		
+			info = translate("frontsOpenClose", "Edge name to open front as the CenterOfMass vector reference. Edge1 for left open. Edge5 for right open.")
+			o8.addProperty("App::PropertyString", "Woodworking_OpenEdge", "Woodworking", info)
+			o8.Woodworking_OpenEdge = "Edge5"
+	
+			info = translate("Woodworking_OpenAxis", "Axis to rotate front around. Possible strings: X, Y, Z.")
+			o8.addProperty("App::PropertyString", "Woodworking_OpenAxis", "Woodworking", info)
+			o8.Woodworking_OpenAxis = "Z"
+		
+			info = translate("Woodworking_OpenAngleStep", "Angle step to rotate front around. Negative value for left open rotate to other direction.")
+			o8.addProperty("App::PropertyFloat", "Woodworking_OpenAngleStep", "Woodworking", info)
+			o8.Woodworking_OpenAngleStep = 45.0
+
+			# Front TL
+			o9 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
+			o9.Label = translate('magicStart', 'Front TL') + ' M1'
+			o9.Length = baseLeftFrontWidth
+			o9.Height = baseTopFrontHeight
+			o9.Width = thickFront
+			pl = FreeCAD.Vector(sx + self.gThick - offsetFrontL, sy, sz + baseSideZ - baseTopFrontHeight + offsetFrontT)
+			o9.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o9, 0, self.gColor, "color")
+			
+			# Front TR
+			o10 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
+			o10.Label = translate('magicStart', 'Front TR') + ' M1'
+			o10.Length = baseRightFrontWidth
+			o10.Height = baseTopFrontHeight
+			o10.Width = thickFront
+			px = sx + self.gThick - offsetFrontL + baseLeftFrontWidth + 2
+			py = sy
+			pz = sz + baseSideZ - baseTopFrontHeight + offsetFrontT
+			pl = FreeCAD.Vector(px, py, pz)
+			o10.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o10, 0, self.gColor, "color")
+			
+			info = translate("frontsOpenClose", "Object type for script parsing.")
+			o10.addProperty("App::PropertyString", "Woodworking_Type", "Woodworking", info)
+			o10.Woodworking_Type = "Front"
+
+			info = translate("frontsOpenClose", "Allows to skip open simple front inside LinkGroup container and rotate whole LinkGroup container instead.")
+			o10.addProperty("App::PropertyBool", "Woodworking_Open", "Woodworking", info)
+			o10.Woodworking_Open = True
+
+			info = translate("frontsOpenClose", "Object name of the edge to open front. By default all objects with name starting with Front or front will be opened to left.")
+			o10.addProperty("App::PropertyString", "Woodworking_OpenObj", "Woodworking", info)
+			o10.Woodworking_OpenObj = str(o10.Name)
+		
+			info = translate("frontsOpenClose", "Edge name to open front as the CenterOfMass vector reference. Edge1 for left open. Edge5 for right open.")
+			o10.addProperty("App::PropertyString", "Woodworking_OpenEdge", "Woodworking", info)
+			o10.Woodworking_OpenEdge = "Edge5"
+	
+			info = translate("Woodworking_OpenAxis", "Axis to rotate front around. Possible strings: X, Y, Z.")
+			o10.addProperty("App::PropertyString", "Woodworking_OpenAxis", "Woodworking", info)
+			o10.Woodworking_OpenAxis = "Z"
+		
+			info = translate("Woodworking_OpenAngleStep", "Angle step to rotate front around. Negative value for left open rotate to other direction.")
+			o10.addProperty("App::PropertyFloat", "Woodworking_OpenAngleStep", "Woodworking", info)
+			o10.Woodworking_OpenAngleStep = 45.0
+
+			# Shelf 1
+			o11 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
+			o11.Label = translate('magicStart', 'Shelf 1') + ' M1'
+			o11.Length = self.gFSX - (2 * self.gThick) - (2 * shelfOS)
+			o11.Height = thickShelf
+			o11.Width = depth - self.gThick
+			pl = FreeCAD.Vector(sx + self.gThick + shelfOS, sy + thickFront + self.gThick, sz + (baseShelfGap/3) )
+			o11.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o11, 0, self.gColor, "color")
+
+			# Shelf 2
+			o12 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
+			o12.Label = translate('magicStart', 'Shelf 2') + ' M1'
+			o12.Length = self.gFSX - (2 * self.gThick) - (2 * shelfOS)
+			o12.Height = thickShelf
+			o12.Width = depth - self.gThick
+			pl = FreeCAD.Vector(sx + self.gThick + shelfOS, sy + thickFront + self.gThick, sz + (baseShelfGap/2) )
+			o12.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o12, 0, self.gColor, "color")
+			
+			# Shelf 3
+			o13 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
+			o13.Label = translate('magicStart', 'Shelf 3') + ' M1'
+			o13.Length = self.gFSX - (2 * self.gThick) - (2 * shelfOS)
+			o13.Height = thickShelf
+			o13.Width = depth - self.gThick
+			pl = FreeCAD.Vector(sx + self.gThick + shelfOS, sy + thickFront + self.gThick, sz + (2*baseShelfGap/3) )
+			o13.Placement = FreeCAD.Placement(pl, self.gR)
+			MagicPanels.setColor(o13, 0, self.gColor, "color")
+			
+			# create container
+			objects = [o1, o2, o3, o4, o6, o7, o8, o9, o10, o11, o12, o13]
+			label = translate('magicStart', 'Module 1')
+			container = MagicPanels.createContainer(objects, label, False)
+			
+			# #######################
+			# Modules
+			# #######################
+			
+			for i in range(1, mNum):
+			
+				posZ = baseSideZ + (i * self.gThick) + ((i - 1) * sideZ)
+
+				# Left Side
+				o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
+				o1.Label = translate('magicStart', 'Left') + ' M' + str(i+1)
+				o1.Length = self.gThick
+				o1.Height = sideZ
+				o1.Width = depth
+				pl = FreeCAD.Vector(sx, sy + thickFront, sz + posZ)
+				o1.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o1, 0, self.gColor, "color")
+				
+				# Right Side
+				o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
+				o2.Label = translate('magicStart', 'Right') + ' M' + str(i+1)
+				o2.Length = self.gThick
+				o2.Height = sideZ
+				o2.Width = depth
+				pl = FreeCAD.Vector(sx + self.gFSX - self.gThick, sy + thickFront, sz + posZ)
+				o2.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o2, 0, self.gColor, "color")
+				
+				# Back
+				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
+				o3.Label = translate('magicStart', 'Back') + ' M' + str(i+1)
+				o3.Length = self.gFSX
+				o3.Height = sideZ + self.gThick
+				o3.Width = thickBack
+				pl = FreeCAD.Vector(sx, sy + thickFront + depth, sz + posZ)
+				o3.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o3, 0, self.gColor, "color")
+				MagicPanels.setColor(o3, 3, (1.0, 1.0, 1.0, 1.0), "color")
+		
+				# Shelf
+				o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
+				o4.Label = translate('magicStart', 'Shelf') + ' M' + str(i+1)
+				o4.Length = self.gFSX - (2 * self.gThick) - (2 * shelfOS)
+				o4.Height = thickShelf
+				o4.Width = depth - self.gThick
+				pZ = posZ + (sideZ / 2) - (thickShelf / 2)
+				pl = FreeCAD.Vector(sx + self.gThick + shelfOS, sy + thickFront + self.gThick, sz + pZ)
+				o4.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o4, 0, self.gColor, "color")
+			
+				# Top
+				o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
+				o5.Label = translate('magicStart', 'Top') + ' M' + str(i+1)
+				o5.Length = self.gFSX
+				o5.Height = self.gThick
+				o5.Width = depth
+				pl = FreeCAD.Vector(sx, sy + thickFront, sz + posZ + sideZ)
+				o5.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o5, 0, self.gColor, "color")
+				
+				# Front
+				o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
+				o6.Label = translate('magicStart', 'Front') + ' M1' + str(i+1)
+				o6.Length = self.gFSX - (2 * self.gThick) + offsetFrontL + offsetFrontR
+				o6.Height = sideZ + offsetFrontB + offsetFrontT
+				o6.Width = thickFront
+				pl = FreeCAD.Vector(sx + self.gThick - offsetFrontL, sy, sz + posZ - offsetFrontB)
+				o6.Placement = FreeCAD.Placement(pl, self.gR)
+				MagicPanels.setColor(o6, 0, self.gColor, "color")
+			
+				# create container
+				objects = [o1, o2, o3, o4, o5, o6]
+				label = translate('magicStart', 'Module ') + str(i+1)
+				container = MagicPanels.createContainer(objects, label, False)
+			
+			# recompute
+			FreeCAD.ActiveDocument.recompute()
+		
 	# ############################################################################
 	# final settings
 	# ############################################################################
