@@ -154,6 +154,7 @@ sUnitsAreaDsc = {
 	"cm" : translate("getDimensions", "square centimeters (cm2)"),
 	"m" : translate("getDimensions", "square meter (m2)"),
 	"in" : translate("getDimensions", "square inch (in2)"),
+	"bf" : translate("getDimensions", "volume in board foot (1ft × 1ft × 1in)"),
 	"fractions" : translate("getDimensions", "area by system settings"),
 	"fractions minus" : translate("getDimensions", "area by system settings"),
 	"fractions equal" : translate("getDimensions", "square inch (in2)"),
@@ -166,6 +167,7 @@ sPrecisionDA = {
 	"cm" : 1,
 	"m" : 3,
 	"in" : 6,
+	"bf": 2,
 	"fractions" : 2,
 	"fractions minus" : 2,
 	"fractions equal" : 2,
@@ -1296,6 +1298,12 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 			else:
 				return str( round(v * float(0.0015500031), sPDA) )
 		
+		if sUnitsArea == "bf":
+			if sPDA == 0:
+				return str( int(round(float(v), sPDA)) )
+			else:
+				return str( round(float(v), sPDA) )
+		
 		if sUnitsArea == "fractions":
 			return MagicPanels.unitArea2gui( round(v, sPDA) )
 		
@@ -1603,6 +1611,11 @@ def getKey(iObj, iW, iH, iL, iType, iCaller="getKey"):
 
 # ###################################################################################################################
 def getArea(iObj, iW, iH, iL, iCaller="getArea"):
+
+	# return volume
+	if sUnitsArea == "bf":
+		vArea = iW * iH * iL * 0.000000423776
+		return vArea
 
 	# make sure to not calculate thickness
 	vT = getKey(iObj, iW, iH, iL, "thick", iCaller)
@@ -3699,6 +3712,8 @@ def initLang():
 			gLang5 = "m2"
 		if sUnitsArea == "in" or sUnitsArea == "fractions equal":
 			gLang5 = "in2"
+		if sUnitsArea == "bf":
+			gLang5 = "board foot"
 		if sUnitsArea == "system" or sUnitsArea == "fractions" or sUnitsArea == "fractions minus":
 			gLang5 = "Obszar"
 			
@@ -3749,6 +3764,8 @@ def initLang():
 			gLang5 = translate("getDimensions", "m2")
 		if sUnitsArea == "in" or sUnitsArea == "fractions equal":
 			gLang5 = translate("getDimensions", "in2")
+		if sUnitsArea == "bf":
+			gLang5 = translate("getDimensions", "board foot")
 		if sUnitsArea == "system" or sUnitsArea == "fractions" or sUnitsArea == "fractions minus":
 			gLang5 = translate("getDimensions", "Area")
 			
@@ -3799,6 +3816,8 @@ def initLang():
 			gLang5 = "m2"
 		if sUnitsArea == "in" or sUnitsArea == "fractions equal":
 			gLang5 = "in2"
+		if sUnitsArea == "bf":
+			gLang5 = "board foot"
 		if sUnitsArea == "system" or sUnitsArea == "fractions" or sUnitsArea == "fractions minus":
 			gLang5 = "Area"
 			
