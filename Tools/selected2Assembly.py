@@ -58,7 +58,7 @@ except:
 	
 	info = ""
 	
-	info += translate('selected2Assembly', '<b>To convert a model to an Assembly object, you must first select FreeCAD Part :: Box objects to convert.</b><br><br>This tool allows you to convert a simple model based on simple panels, i.e. FreeCAD Part :: Box objects, to an Assembly model. Manually, such conversion could be done by converting Part :: Box objects to PartDesign :: Pad objects using the panel2pad tool and then extracting PartDesign :: Body objects using selected2Outside to keep global position and moving them to the Assembly :: AssemblyObject object. In this tool, these two tools are combined for ease and speed of conversion. However, if you have a problem with converting the model, you can still do such conversion manually.')
+	info += translate('selected2Assembly', '<b>To convert a model to an Assembly object, you must first select FreeCAD Part::Box objects to convert.</b><br><br>This tool allows you to convert a simple model based on simple panels, i.e. FreeCAD Part::Box objects, to an Assembly model. Manually, such conversion could be done by converting Part::Box objects to PartDesign::Pad objects using the panel2pad tool and then extracting PartDesign::Body objects using selected2Outside to keep global position and moving them to the Assembly::AssemblyObject object. In this tool, these two tools are combined for ease and speed of conversion. However, if you have a problem with converting the model, you can still do such conversion manually.')
 
 	MagicPanels.showInfo("selected2Assembly", info)
 

@@ -140,11 +140,11 @@ def showQtGUI():
 		
 		gInfoObserverOFF = translate('magicManager', 'Reading vertices: OFF')
 		gInfoObserverOFF += "\n\n"
-		gInfoObserverOFF += translate('magicManager', 'To create panel from vertices, click "ON" button to start reading vertices with exact order.')
+		gInfoObserverOFF += translate('magicManager', 'To create panel from vertices, click "Turn ON" button to start reading vertices with exact order.')
 		
 		gInfoObserverON = translate('magicManager', 'Reading vertices: ON')
 		gInfoObserverON += "\n\n"
-		gInfoObserverON += translate('magicManager', 'Please select vertices in correct order to create shape. First selected vertex is automatically added to the end to close the wire.')
+		gInfoObserverON += translate('magicManager', 'Please select vertices in correct order to create shape. First selected vertex is automatically added to the end to close the entire edge.')
 
 		
 		# ############################################################################
@@ -196,7 +196,7 @@ def showQtGUI():
 			# options - panel
 			# ############################################################################
 
-			self.spL = QtGui.QLabel(translate('magicManager', 'Plane:'), self)
+			self.spL = QtGui.QLabel(translate('magicManager', 'Surface:'), self)
 
 			self.spBP = QtGui.QPushButton("<", self)
 			self.spBP.clicked.connect(self.setPreviousPanel)
@@ -273,11 +273,11 @@ def showQtGUI():
 			self.shapeIS.setFixedHeight(120)
 			self.shapeIS.setPlainText(self.gInfoObserverOFF)
 			
-			self.shapeB1 = QtGui.QPushButton(translate('magicManager', 'ON'), self)
+			self.shapeB1 = QtGui.QPushButton(translate('magicManager', 'Turn ON'), self)
 			self.shapeB1.clicked.connect(self.observerON)
 			self.shapeB1.setFixedHeight(40)
 
-			self.shapeB2 = QtGui.QPushButton(translate('magicManager', 'OFF'), self)
+			self.shapeB2 = QtGui.QPushButton(translate('magicManager', 'Turn OFF'), self)
 			self.shapeB2.clicked.connect(self.observerOFF)
 			self.shapeB2.setFixedHeight(40)
 			

@@ -409,7 +409,7 @@ def showQtGUI():
 			self.oDBPocketRE.setFixedWidth(tfsize)
 			
 			# pocket sink
-			self.oDBPocketSL = QtGui.QLabel(translate('magicDriller', 'Pocket sink:'), self)
+			self.oDBPocketSL = QtGui.QLabel(translate('magicDriller', 'Pocket hole penetration:'), self)
 			self.oDBPocketSE = QtGui.QLineEdit(self)
 			self.oDBPocketSE.setText(MagicPanels.unit2gui(self.gDBPocketS))
 			self.oDBPocketSE.setFixedWidth(tfsize)

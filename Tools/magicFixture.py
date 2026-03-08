@@ -185,7 +185,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.oOffsetXL = QtGui.QLabel(translate('magicFixture', 'X offset:'), self)
+			self.oOffsetXL = QtGui.QLabel(translate('magicFixture', 'Offset along X axis:'), self)
 
 			# button
 			self.oOffsetXB1 = QtGui.QPushButton("-", self)
@@ -209,7 +209,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.oOffsetYL = QtGui.QLabel(translate('magicFixture', 'Y offset:'), self)
+			self.oOffsetYL = QtGui.QLabel(translate('magicFixture', 'Offset along Y axis:'), self)
 
 			# button
 			self.oOffsetYB1 = QtGui.QPushButton("-", self)
@@ -233,7 +233,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.oOffsetZL = QtGui.QLabel(translate('magicFixture', 'Z offset:'), self)
+			self.oOffsetZL = QtGui.QLabel(translate('magicFixture', 'Offset along Z axis:'), self)
 
 			# button
 			self.oOffsetZB1 = QtGui.QPushButton("-", self)
@@ -330,13 +330,13 @@ def showQtGUI():
 				self.cecL = QtGui.QLabel(translate('magicJoints', 'Center cross:'), self)
 
 				# button
-				self.cecB1 = QtGui.QPushButton(translate('magicJoints', 'on'), self)
+				self.cecB1 = QtGui.QPushButton(translate('magicJoints', 'Turn on'), self)
 				self.cecB1.clicked.connect(self.setCenterOn)
 				self.cecB1.setFixedWidth(50)
 				self.cecB1.setAutoRepeat(True)
 				
 				# button
-				self.cecB2 = QtGui.QPushButton(translate('magicJoints', 'off'), self)
+				self.cecB2 = QtGui.QPushButton(translate('magicJoints', 'Turn off'), self)
 				self.cecB2.clicked.connect(self.setCenterOff)
 				self.cecB2.setFixedWidth(50)
 				self.cecB2.setAutoRepeat(True)

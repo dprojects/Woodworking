@@ -52,7 +52,7 @@ sLTFMenuIndex = {
 sLTFDsc = {
 	"q" : translate("getDimensions", "quantity first for cut chipboards service"),
 	"n" : translate("getDimensions", "objects labels for verification, furniture parts listing"),
-	"g" : translate("getDimensions", "containers labels for wood type, colors, custom groups"),
+	"g" : translate("getDimensions", "shows the labels of the containers, for wood type, colors, custom groups"),
 	"m" : translate("getDimensions", "material description from object material, Label2 attribute or magicSettings"),
 	"e" : translate("getDimensions", "dedicated for veneer by edge color, quick edgeband"),
 	"d" : translate("getDimensions", "dedicated for holes, countersinks, counterbores, pocket holes description"),
@@ -186,16 +186,16 @@ sTVFDsc = {
 	"on" : translate("getDimensions", "simple mode, not show hidden objects for simple structures"),
 	"edge" : translate("getDimensions", "simple edge mode, show all but not add hidden to the edge size"),
 	"parent" : translate("getDimensions", "simple nesting, inherit visibility from the nearest container"),
-	"screw" : translate("getDimensions", "base screw, to hide base screw inside LinkGroup containers"),
+	"screw" : translate("getDimensions", "to hide base object of the screw inside LinkGroup containers"),
 	"inherit" : translate("getDimensions", "advanced nesting, inherit visibility from the highest container") # no comma
 }
 
 # Part Cut Visibility:
 sPartCut = "all" # default
 sPartCutDsc = {
-	"all" : translate("getDimensions", "Woodworking workbench approach, show Base and Tool"),
-	"base" : translate("getDimensions", "FreeCAD default approach, show Base only"),
-	"tool" : translate("getDimensions", "custom approach, show Tool only") # no comma
+	"all" : translate("getDimensions", "Woodworking workbench approach, show Part::Base and Part::Tool"),
+	"base" : translate("getDimensions", "FreeCAD default approach, show Part::Base only"),
+	"tool" : translate("getDimensions", "custom approach, show Part::Tool only") # no comma
 }
 
 
@@ -601,7 +601,7 @@ def showQtGUI():
 			self.visibilityIS = QtGui.QLabel(str(sTVFDsc[sTVF]) + sEmptyDsc, self)
 			
 			# part cut visibility
-			self.pcvisibilityL = QtGui.QLabel(translate("getDimensions", "Part :: Cut content:"), self)
+			self.pcvisibilityL = QtGui.QLabel(translate("getDimensions", "Part::Cut content:"), self)
 			
 			self.pcvisibilityList = tuple(sPartCutDsc.keys())
 			self.pcvisibilityO = QtGui.QComboBox(self)
@@ -665,7 +665,7 @@ def showQtGUI():
 			self.ecO.textActivated[str].connect(self.setEColor)
 			self.ecO.setFixedWidth(selWidth)
 			
-			self.ectiL = QtGui.QLabel(translate("getDimensions", "Custom:"), self)
+			self.ectiL = QtGui.QLabel(translate("getDimensions", "Custom code:"), self)
 			
 			self.ecti = QtGui.QLineEdit(self)
 			self.ecti.setText(str(sEColor))

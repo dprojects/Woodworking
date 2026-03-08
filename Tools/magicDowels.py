@@ -272,7 +272,7 @@ def showQtGUI():
 				self.aeB2.setAutoRepeat(True)
 
 				# adjust sink
-				self.asL = QtGui.QLabel(translate('magicDowels', 'Adjust sink:'), self)
+				self.asL = QtGui.QLabel(translate('magicDowels', 'Adjust penetration:'), self)
 				
 				self.asB1 = QtGui.QPushButton("<", self)
 				self.asB1.clicked.connect(self.adjustSinkP)
@@ -370,8 +370,8 @@ def showQtGUI():
 				self.oTenonHE.setFixedWidth(tfsize)
 				
 				# dowels sink
-				self.oDSinkL = QtGui.QLabel(translate('magicDowels', 'Dowels sink:'), self)
-				self.oDSinkLT = QtGui.QLabel(translate('magicDowels', 'Tenons sink:'), self)
+				self.oDSinkL = QtGui.QLabel(translate('magicDowels', 'Dowels penetration:'), self)
+				self.oDSinkLT = QtGui.QLabel(translate('magicDowels', 'Tenons penetration:'), self)
 				self.oDSinkE = QtGui.QLineEdit(self)
 				self.oDSinkE.setText(MagicPanels.unit2gui(self.gDOFSSet))
 				self.oDSinkE.setFixedWidth(tfsize)

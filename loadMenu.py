@@ -314,7 +314,7 @@ class TRANSLATION():
 			package = os.path.join(wb.path, "package.xml")
 			md = FreeCAD.Metadata(package)
 			versionWB = str(md.Version).split(".")
-			wbrelease = str(versionWB[0]) + "." + str(versionWB[1])
+			wbrelease = str(versionWB[0]) + ".0"
 
 		except:
 			info += translate('manuAutoupdate', 'Error during getting workbench release from file: '+str(package))

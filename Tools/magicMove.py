@@ -246,7 +246,7 @@ def showQtGUI():
 			# ############################################################################
 
 			# label
-			self.oMove1L = QtGui.QLabel(translate('magicMove', 'Move along X:'), self)
+			self.oMove1L = QtGui.QLabel(translate('magicMove', 'Move objects along X:'), self)
 
 			# button
 			self.oMove1B1 = QtGui.QPushButton("X-", self)
@@ -261,7 +261,7 @@ def showQtGUI():
 			self.oMove1B2.setAutoRepeat(True)
 			
 			# label
-			self.oMove2L = QtGui.QLabel(translate('magicMove', 'Move along Y:'), self)
+			self.oMove2L = QtGui.QLabel(translate('magicMove', 'Move objects along Y:'), self)
 			
 			# button
 			self.oMove2B1 = QtGui.QPushButton("Y-", self)
@@ -276,7 +276,7 @@ def showQtGUI():
 			self.oMove2B2.setAutoRepeat(True)
 
 			# label
-			self.oMove3L = QtGui.QLabel(translate('magicMove', 'Move along Z:'), self)
+			self.oMove3L = QtGui.QLabel(translate('magicMove', 'Move objects along Z:'), self)
 			
 			# button
 			self.oMove3B1 = QtGui.QPushButton("Z-", self)
@@ -291,7 +291,7 @@ def showQtGUI():
 			self.oMove3B2.setAutoRepeat(True)
 			
 			# label
-			self.oMoveStepL = QtGui.QLabel(translate('magicMove', 'Move step:'), self)
+			self.oMoveStepL = QtGui.QLabel(translate('magicMove', 'Step to move:'), self)
 			self.oMoveStepL.setFixedWidth(100)
 			
 			# text input
@@ -609,13 +609,13 @@ def showQtGUI():
 				self.cecL = QtGui.QLabel(translate('magicMove', 'Center cross:'), self)
 
 				# button
-				self.cecB1 = QtGui.QPushButton(translate('magicMove', 'on'), self)
+				self.cecB1 = QtGui.QPushButton(translate('magicMove', 'Turn on'), self)
 				self.cecB1.clicked.connect(self.setCenterOn)
 				self.cecB1.setFixedWidth(btsize)
 				self.cecB1.setAutoRepeat(True)
 				
 				# button
-				self.cecB2 = QtGui.QPushButton(translate('magicMove', 'off'), self)
+				self.cecB2 = QtGui.QPushButton(translate('magicMove', 'Turn off'), self)
 				self.cecB2.clicked.connect(self.setCenterOff)
 				self.cecB2.setFixedWidth(btsize)
 				self.cecB2.setAutoRepeat(True)

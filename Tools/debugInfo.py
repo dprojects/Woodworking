@@ -691,12 +691,12 @@ def showQtGUI():
 			self.ub1.clicked.connect(self.wbUpdate)
 			self.ub1.hide()
 			
-			self.ub2 = QtGui.QPushButton(translate('debugInfo', 'show disabled workbenches'), self)
+			self.ub2 = QtGui.QPushButton(translate('debugInfo', 'show inactive workbenches'), self)
 			self.ub2.setFixedHeight(40)
 			self.ub2.clicked.connect(self.listOldWorkbenches)
 			self.ub2.hide()
 			
-			self.ub3 = QtGui.QPushButton(translate('debugInfo', 'remove disabled workbenches'), self)
+			self.ub3 = QtGui.QPushButton(translate('debugInfo', 'remove inactive workbenches'), self)
 			self.ub3.setFixedHeight(40)
 			self.ub3.clicked.connect(self.removeOldWorkbenches)
 			self.ub3.hide()
@@ -971,7 +971,7 @@ def showQtGUI():
 			info += translate('debugInfo', 'Latest update for Woodworking workbench will be downloaded. ')
 			info += translate('debugInfo', 'FreeCAD will restart with new Woodworking workbench version ')
 			info += "\n"
-			info += translate('debugInfo', 'but old version will be stored and disabled. ')
+			info += translate('debugInfo', 'but old version will be stored and set to inactive state. ')
 			info += "\n\n"
 			
 			self.odie.setPlainText(info)
@@ -989,7 +989,7 @@ def showQtGUI():
 			self.oldWorkbenches = []
 			
 			info = "\n"
-			info += translate('debugInfo', 'Woodworking workbench folders to remove')
+			info += translate('debugInfo', 'Woodworking workbench directories to remove')
 			info += ": \n" 
 			self.odie.setPlainText(info)
 			

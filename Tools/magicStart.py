@@ -19,7 +19,7 @@ getMenuIndex = {
 	translate('magicStart', 'Drawer ( simple, parametric )'): 3, 
 	translate('magicStart', 'Simple chair ( import parametric )'): 4, 
 	translate('magicStart', 'Picture frame ( import parametric )'): 5, 
-	translate('magicStart', 'Table ( simple, import parametric )'): 6, 
+	translate('magicStart', 'Wooden table ( simple, import parametric )'): 6, 
 	translate('magicStart', 'Storage box ( import parametric )'): 7, 
 	translate('magicStart', 'Dowel 8x35 mm ( import parametric )'): 8, 
 	translate('magicStart', 'Screw 4x40 mm ( import parametric )'): 9, 
@@ -27,76 +27,76 @@ getMenuIndex = {
 	translate('magicStart', 'Screw 3x20 mm for HDF ( import parametric )'): 11, 
 	translate('magicStart', 'Screw 5x50 mm ( import parametric )'): 12, 
 	translate('magicStart', 'Counterbore 2x 5x60 mm ( import parametric )'): 13, 
-	translate('magicStart', 'Shelf Pin 5x16 mm ( import parametric )'): 14, 
-	translate('magicStart', 'Angle 40x40x100 mm ( import parametric )'): 15, 
-	translate('magicStart', 'Foot ( good for cleaning )'): 16, 
-	translate('magicStart', 'Foot ( standard )'): 17, 
-	translate('magicStart', 'Foot ( more stable )'): 18, 
-	translate('magicStart', 'Foot ( decorated )'): 19, 
-	translate('magicStart', 'Foot ( chair style )'): 20, 
+	translate('magicStart', 'Shelf support 5x16 mm ( import parametric )'): 14, 
+	translate('magicStart', 'Angle supporter 40x40x100 mm ( import parametric )'): 15, 
+	translate('magicStart', 'Cabinet foot ( good for cleaning )'): 16, 
+	translate('magicStart', 'Cabinet foot ( standard )'): 17, 
+	translate('magicStart', 'Cabinet foot ( more stable )'): 18, 
+	translate('magicStart', 'Cabinet foot ( decorated )'): 19, 
+	translate('magicStart', 'Cabinet foot ( chair style )'): 20, 
 	translate('magicStart', 'Drawer ( single, X or Y direction, front outside )'): 21, 
 	translate('magicStart', 'Drawer ( single, X or Y direction, front inside )'): 22, 
-	translate('magicStart', 'Front outside'): 23, 
-	translate('magicStart', 'Front inside'): 24, 
+	translate('magicStart', 'Furniture front outside'): 23, 
+	translate('magicStart', 'Furniture front inside'): 24, 
 	translate('magicStart', 'Shelf'): 25, 
-	translate('magicStart', 'Center side'): 26, 
+	translate('magicStart', 'Furniture center board'): 26, 
 	translate('magicStart', 'Storage module ( front outside, back outside, veneer )'): 27, 
 	translate('magicStart', 'Storage module ( front inside, back inside, veneer )'): 28, 
 	translate('magicStart', 'Storage module ( front inside, back outside, veneer )'): 29, 
 	translate('magicStart', 'Drawer ( series, front outside )'): 30, 
 	translate('magicStart', 'Drawer ( series, front inside )'): 31, 
-	translate('magicStart', 'Face Frame ( horizontal, around )'): 32, 
-	translate('magicStart', 'Face Frame ( horizontal, with center )'): 33, 
-	translate('magicStart', 'Face Frame ( horizontal, for custom changes )'): 34, 
+	translate('magicStart', 'Furniture face frame ( horizontal, around )'): 32, 
+	translate('magicStart', 'Furniture face frame ( horizontal, with center )'): 33, 
+	translate('magicStart', 'Furniture face frame ( horizontal, for custom changes )'): 34, 
 	translate('magicStart', 'Simple bookcase ( face frame, no front, back HDF )'): 35, 
 	translate('magicStart', 'Simple storage ( face frame, no front, back HDF )'): 36, 
-	translate('magicStart', 'Front outside with glass ( simple frame )'): 37, 
-	translate('magicStart', 'Front outside with glass ( frame with decoration )'): 38, 
-	translate('magicStart', 'Front inside with glass ( simple frame )'): 39, 
-	translate('magicStart', 'Front inside with glass ( frame with decoration )'): 40, 
+	translate('magicStart', 'Furniture front outside with glass ( simple frame )'): 37, 
+	translate('magicStart', 'Furniture front outside with glass ( frame with decoration )'): 38, 
+	translate('magicStart', 'Furniture front inside with glass ( simple frame )'): 39, 
+	translate('magicStart', 'Furniture front inside with glass ( frame with decoration )'): 40, 
 	translate('magicStart', 'Shelf series with equal space'): 41, 
-	translate('magicStart', 'Table ( kitchen simple style )'): 42, 
-	translate('magicStart', 'Table ( coffee simple style )'): 43, 
-	translate('magicStart', 'Table ( kitchen modern style )'): 44, 
-	translate('magicStart', 'Table ( coffee modern style )'): 45, 
-	translate('magicStart', 'Table ( kitchen decorated style )'): 46, 
-	translate('magicStart', 'Table ( coffee decorated style )'): 47, 
-	translate('magicStart', 'Side'): 48, 
+	translate('magicStart', 'Wooden table ( kitchen simple style )'): 42, 
+	translate('magicStart', 'Wooden table ( coffee simple style )'): 43, 
+	translate('magicStart', 'Wooden table ( kitchen modern style )'): 44, 
+	translate('magicStart', 'Wooden table ( coffee modern style )'): 45, 
+	translate('magicStart', 'Wooden table ( kitchen decorated style )'): 46, 
+	translate('magicStart', 'Wooden table ( coffee decorated style )'): 47, 
+	translate('magicStart', 'Furniture side'): 48, 
 	translate('magicStart', 'Biscuits 4x16x48 mm ( import parametric )'): 49, 
 	translate('magicStart', 'Biscuits 4x21x54 mm ( import parametric )'): 50, 
 	translate('magicStart', 'Biscuits 4x24x57 mm ( import parametric )'): 51, 
 	translate('magicStart', 'Pocket screw 4x40 mm ( import parametric )'): 52, 
-	translate('magicStart', 'Angle 30x30x25 mm ( import parametric )'): 53, 
-	translate('magicStart', 'Angle 80x80x20 mm ( import parametric )'): 54, 
-	translate('magicStart', 'Front right (decoration, import parametric )'): 55, 
-	translate('magicStart', 'Front left (decoration, import parametric )'): 56, 
-	translate('magicStart', 'Top (decoration, import parametric )'): 57, 
+	translate('magicStart', 'Angle supporter 30x30x25 mm ( import parametric )'): 53, 
+	translate('magicStart', 'Angle supporter 80x80x20 mm ( import parametric )'): 54, 
+	translate('magicStart', 'Furniture front right (decoration, import parametric )'): 55, 
+	translate('magicStart', 'Furniture front left (decoration, import parametric )'): 56, 
+	translate('magicStart', 'Furniture top (decoration, import parametric )'): 57, 
 	translate('magicStart', 'Drawer ( decoration, parametric )'): 58, 
-	translate('magicStart', 'Front outside ( decorative )'): 59, 
-	translate('magicStart', 'Front inside ( decorative )'): 60, 
-	translate('magicStart', 'Front decoration ( simple frame )'): 61, 
-	translate('magicStart', 'Side decoration ( simple frame )'): 62, 
+	translate('magicStart', 'Furniture front outside ( decorative )'): 59, 
+	translate('magicStart', 'Furniture front inside ( decorative )'): 60, 
+	translate('magicStart', 'Furniture front decoration ( simple frame )'): 61, 
+	translate('magicStart', 'Furniture side decoration ( simple frame )'): 62, 
 	translate('magicStart', 'Minifix 15x45 mm ( import parametric )'): 63,
-	translate('magicStart', 'Face Frame ( vertical, for custom changes )'): 64, 
+	translate('magicStart', 'Furniture face frame ( vertical, for custom changes )'): 64, 
 	translate('magicStart', 'Kitchen cabinet ( US style )'): 65, 
 	translate('magicStart', 'Kitchen wall module ( front outside, back outside, veneer )'): 66, 
 	translate('magicStart', 'Kitchen wall cabinet ( US style )'): 67, 
 	translate('magicStart', 'Handle ( single hole )'): 68, 
 	translate('magicStart', 'Handle ( double hole )'): 69, 
-	translate('magicStart', 'Brackets for wall cabinets ( Camar 807 )'): 70, 
+	translate('magicStart', 'Hooks for wall cabinets ( Camar 807 )'): 70, 
 	translate('magicStart', 'Drawer ( series, Blum, Hafele, GTV, Amix, front outside )'): 71, 
 	translate('magicStart', 'Drawer ( series, Blum, Hafele, GTV, Amix, front inside )'): 72, 
 	translate('magicStart', 'Workspace platform'): 73, 
-	translate('magicStart', 'Back outside ( HDF )'): 74, 
-	translate('magicStart', 'Back inside ( full )'): 75, 
+	translate('magicStart', 'Furniture back board ( outside, HDF )'): 74, 
+	translate('magicStart', 'Furniture back board ( inside, full )'): 75, 
 	translate('magicStart', 'Handle ( single hole, decorated )'): 76, 
 	translate('magicStart', 'Handle ( double hole, decorated )'): 77, 
 	translate('magicStart', 'Bookcase ( no front, back inside, simple )'): 78, 
 	translate('magicStart', 'Bookcase ( no front, back outside, simple )'): 79, 
-	translate('magicStart', 'Table ( school desk, single right side )'): 80, 
-	translate('magicStart', 'Table ( School desk, single left side )'): 81, 
-	translate('magicStart', 'Table ( school desk, both sides )'): 82, 
-	translate('magicStart', 'Sides with holes ( import parametric )'): 83, 
+	translate('magicStart', 'Wooden table ( school desk, single right side )'): 80, 
+	translate('magicStart', 'Wooden table ( School desk, single left side )'): 81, 
+	translate('magicStart', 'Wooden table ( school desk, both sides )'): 82, 
+	translate('magicStart', 'Furniture sides with holes ( import parametric )'): 83, 
 	translate('magicStart', 'Wardrobe ( front outside, back outside, 2x clothes width )'): 84, 
 	translate('magicStart', 'Wardrobe ( front outside, back outside, clothes hangers )'): 85,
 	translate('magicStart', 'Module on top ( back inside, veneer )'): 86,
@@ -246,11 +246,11 @@ def showQtGUI():
 		gHelpInfoF23 += translate('magicStart', 'means the inner right edge of the side of the furniture along the Z coordinate axis.')
 		gHelpInfoF23 += '</li>'
 		gHelpInfoF23 += '<li><b>'
-		gHelpInfoF23 += translate('magicStart', 'Front thickness') + '</b>: '
+		gHelpInfoF23 += translate('magicStart', 'Furniture front thickness') + '</b>: '
 		gHelpInfoF23 += translate('magicStart', 'means the thickness of the front, in line with the Y coordinate axis.')
 		gHelpInfoF23 += '</li>'
 		gHelpInfoF23 += '<li><b>'
-		gHelpInfoF23 += translate('magicStart', 'Front offsets') + '</b>: '
+		gHelpInfoF23 += translate('magicStart', 'Furniture front offsets') + '</b>: '
 		gHelpInfoF23 += translate('magicStart', 'in the case of an external front, it means how much the front will overlap the furniture, and in the case of an internal front, it means how big the gap will be between the front and the remaining parts of the furniture.')
 		gHelpInfoF23 += '</li>'
 		gHelpInfoF23 += '</ul>'
@@ -329,7 +329,7 @@ def showQtGUI():
 		gHelpInfoF26 += translate('magicStart', 'means the inner plane of the gap, for example top or bottom surface of the shelf. The plane should be in line with the X and Y coordinate axes.')
 		gHelpInfoF26 += '</li>'
 		gHelpInfoF26 += '<li><b>'
-		gHelpInfoF26 += translate('magicStart', 'Side thickness') + '</b>: '
+		gHelpInfoF26 += translate('magicStart', 'Furniture side thickness') + '</b>: '
 		gHelpInfoF26 += translate('magicStart', 'means the thickness of the center side, i.e. in the direction of the X coordinate axis.')
 		gHelpInfoF26 += '</li>'
 		gHelpInfoF26 += '</ul>'
@@ -376,7 +376,7 @@ def showQtGUI():
 
 		# ############################################################################
 		gHelpInfoF32 = "" 
-		gHelpInfoF32 += translate('magicStart', 'To pre-calculate the starting point for Face Frame and its dimensions, make selection, fill desired fields and press the "calculate Face Frame" button.')
+		gHelpInfoF32 += translate('magicStart', 'To pre-calculate the starting point for Face Frame and its dimensions, make selection, fill desired fields and press the "calculate furniture face frame" button.')
 		gHelpInfoF32 += '<ul>'
 		gHelpInfoF32 += '<li><b>'
 		gHelpInfoF32 += translate('magicStart', 'X bottom edge') + '</b>: '
@@ -415,7 +415,7 @@ def showQtGUI():
 		
 		# ############################################################################
 		gHelpInfoF37 = "" 
-		gHelpInfoF37 += translate('magicStart', 'To pre-calculate the starting point for the Front with glass and its dimensions, make selection, fill in the required fields and press the "calculate front with glass" button.')
+		gHelpInfoF37 += translate('magicStart', 'To pre-calculate the starting point for the Furniture front with glass and its dimensions, make selection, fill in the required fields and press the "calculate front with glass" button.')
 		gHelpInfoF37 += '<ul>'
 		gHelpInfoF37 += '<li><b>'
 		gHelpInfoF37 += translate('magicStart', 'X bottom edge') + '</b>: '
@@ -497,23 +497,23 @@ def showQtGUI():
 		
 		# ############################################################################
 		gHelpInfoF42 = "" 
-		gHelpInfoF42 += translate('magicStart', 'To pre-calculate the location where the table will be created, select any vertex and press the "calculate table position" button.')
+		gHelpInfoF42 += translate('magicStart', 'To pre-calculate the location where the wooden table will be created, select any vertex and press the "calculate wooden table position" button.')
 		gHelpInfoF42 += '<ul>'
 		gHelpInfoF42 += '<li><b>'
 		gHelpInfoF42 += translate('magicStart', 'Table width X') + '</b>: '
-		gHelpInfoF42 += translate('magicStart', 'means the width of the table, i.e. the size according to the X coordinate axis.')
+		gHelpInfoF42 += translate('magicStart', 'means the width of the wooden table, i.e. the size according to the X coordinate axis.')
 		gHelpInfoF42 += '</li>'
 		gHelpInfoF42 += '<li><b>'
 		gHelpInfoF42 += translate('magicStart', 'Table depth Y') + '</b>: '
-		gHelpInfoF42 += translate('magicStart', 'means the depth of the table, i.e. the size according to the Y coordinate axis.')
+		gHelpInfoF42 += translate('magicStart', 'means the depth of the wooden table, i.e. the size according to the Y coordinate axis.')
 		gHelpInfoF42 += '</li>'
 		gHelpInfoF42 += '<li><b>'
 		gHelpInfoF42 += translate('magicStart', 'Table height Z') + '</b>: '
-		gHelpInfoF42 += translate('magicStart', 'means the height of the table, i.e. the size according to the Z coordinate axis.')
+		gHelpInfoF42 += translate('magicStart', 'means the height of the wooden table, i.e. the size according to the Z coordinate axis.')
 		gHelpInfoF42 += '</li>'
 		gHelpInfoF42 += '<li><b>'
 		gHelpInfoF42 += translate('magicStart', 'Table top thickness') + '</b>: '
-		gHelpInfoF42 += translate('magicStart', 'means the thickness of the table top, i.e. the size according to the Z coordinate axis.')
+		gHelpInfoF42 += translate('magicStart', 'means the thickness of the wooden table top, i.e. the size according to the Z coordinate axis.')
 		gHelpInfoF42 += '</li>'
 		gHelpInfoF42 += '<li><b>'
 		gHelpInfoF42 += translate('magicStart', 'Legs and Supporters thickness') + '</b>: '
@@ -588,19 +588,19 @@ def showQtGUI():
 		gHelpInfoF59 += translate('magicStart', 'means the thickness of the beam of the frame, in line with the Y coordinate axis.')
 		gHelpInfoF59 += '</li>'
 		gHelpInfoF59 += '<li><b>'
-		gHelpInfoF59 += translate('magicStart', 'Front overlap horizontal') + '</b>: '
+		gHelpInfoF59 += translate('magicStart', 'Furniture front overlap horizontal') + '</b>: '
 		gHelpInfoF59 += translate('magicStart', 'in the case of an outside front, this is the width by which the front will overlap the furniture elements. If the front is to cover the entire surface, set the same value as "Single beam thickness".')
 		gHelpInfoF59 += '</li>'
 		gHelpInfoF59 += '<li><b>'
-		gHelpInfoF59 += translate('magicStart', 'Front overlap vertical') + '</b>: '
+		gHelpInfoF59 += translate('magicStart', 'Furniture front overlap vertical') + '</b>: '
 		gHelpInfoF59 += translate('magicStart', 'in the case of an outside front, this is the height by which the front will overlap the furniture elements. If the front is to cover the entire surface, set the same value as "Single beam thickness".')
 		gHelpInfoF59 += '</li>'
 		gHelpInfoF59 += '<li><b>'
-		gHelpInfoF59 += translate('magicStart', 'Front offset horizontal') + '</b>: '
+		gHelpInfoF59 += translate('magicStart', 'Furniture front offset horizontal') + '</b>: '
 		gHelpInfoF59 += translate('magicStart', 'in the case of an inside front, this is the width of the gap between the front frame and the furniture elements.')
 		gHelpInfoF59 += '</li>'
 		gHelpInfoF59 += '<li><b>'
-		gHelpInfoF59 += translate('magicStart', 'Front offset vertical') + '</b>: '
+		gHelpInfoF59 += translate('magicStart', 'Furniture front offset vertical') + '</b>: '
 		gHelpInfoF59 += translate('magicStart', 'in the case of an inside front, this is the height of the gap between the front frame and the furniture elements.')
 		gHelpInfoF59 += '</li>'
 		gHelpInfoF59 += '<li><b>'
@@ -612,7 +612,7 @@ def showQtGUI():
 
 		# ############################################################################
 		gHelpInfoF61 = "" 
-		gHelpInfoF61 += translate('magicStart', 'To pre-calculate the starting point for the Front decoration and its dimensions, make selection, fill in the required fields and press the "calculate front decoration" button.')
+		gHelpInfoF61 += translate('magicStart', 'To pre-calculate the starting point for the Furniture front decoration and its dimensions, make selection, fill in the required fields and press the "calculate front decoration" button.')
 		gHelpInfoF61 += '<ul>'
 		gHelpInfoF61 += '<li><b>'
 		gHelpInfoF61 += translate('magicStart', 'XZ face of front') + '</b>: '
@@ -715,35 +715,35 @@ def showQtGUI():
 		
 		# ############################################################################
 		gHelpInfoF74 = "" 
-		gHelpInfoF74 += translate('magicStart', 'To pre-calculate the starting point for the Back and its dimensions, make selection, fill in the required fields and press the "calculate back" button.')
+		gHelpInfoF74 += translate('magicStart', 'To pre-calculate the starting point for the furniture back and its dimensions, make selection, fill in the required fields and press the "calculate furniture back" button.')
 		gHelpInfoF74 += '<ul>'
 		gHelpInfoF74 += '<li><b>'
 		gHelpInfoF74 += translate('magicStart', 'X bottom edge') + '</b>: '
-		gHelpInfoF74 += translate('magicStart', 'means the inner bottom edge of the furniture where you want to place the back, in line with the X coordinate axis.')
+		gHelpInfoF74 += translate('magicStart', 'means the inner bottom edge of the furniture where you want to place the furniture back, in line with the X coordinate axis.')
 		gHelpInfoF74 += '</li>'
 		gHelpInfoF74 += '<li><b>'
 		gHelpInfoF74 += translate('magicStart', 'X top edge') + '</b>: '
-		gHelpInfoF74 += translate('magicStart', 'means the inner top edge of the furniture where you want to place the back, in line with the X coordinate axis.')
+		gHelpInfoF74 += translate('magicStart', 'means the inner top edge of the furniture where you want to place the furniture back, in line with the X coordinate axis.')
 		gHelpInfoF74 += '</li>'
 		gHelpInfoF74 += '<li><b>'
 		gHelpInfoF74 += translate('magicStart', 'Z left edge from back model view') + '</b>: '
-		gHelpInfoF74 += translate('magicStart', 'means the inner left edge of the furniture where you want to place the back, in line with the Z coordinate axis but looking at the model from the back side.')
+		gHelpInfoF74 += translate('magicStart', 'means the inner left edge of the furniture where you want to place the furniture back, in line with the Z coordinate axis but looking at the model from the back side.')
 		gHelpInfoF74 += '</li>'
 		gHelpInfoF74 += '<li><b>'
 		gHelpInfoF74 += translate('magicStart', 'Z right edge') + '</b>: '
-		gHelpInfoF74 += translate('magicStart', 'means the inner right edge of the furniture where you want to place the back, in line with the Z coordinate axis but looking at the model from the back side.')
+		gHelpInfoF74 += translate('magicStart', 'means the inner right edge of the furniture where you want to place the furniture back, in line with the Z coordinate axis but looking at the model from the back side.')
 		gHelpInfoF74 += '</li>'
 		gHelpInfoF74 += '<li><b>'
-		gHelpInfoF74 += translate('magicStart', 'Back thickness along Y') + '</b>: '
+		gHelpInfoF74 += translate('magicStart', 'Furniture back thickness along Y') + '</b>: '
 		gHelpInfoF74 += translate('magicStart', 'means the thickness of the wood, in line with the Y coordinate axis.')
 		gHelpInfoF74 += '</li>'
 		gHelpInfoF74 += '<li><b>'
-		gHelpInfoF74 += translate('magicStart', 'Back overlaps') + '</b>: '
-		gHelpInfoF74 += translate('magicStart', 'this is the size by which the back will overlap the furniture parts, looking from the back of the model.')
+		gHelpInfoF74 += translate('magicStart', 'Furniture back overlaps') + '</b>: '
+		gHelpInfoF74 += translate('magicStart', 'this is the size by which the furniture back will overlap the furniture parts, looking from the furniture back of the model.')
 		gHelpInfoF74 += '</li>'
 		gHelpInfoF74 += '<li><b>'
-		gHelpInfoF74 += translate('magicStart', 'Back offsets') + '</b>: '
-		gHelpInfoF74 += translate('magicStart', 'this is the size by which the back will be reduced and will create free space between the parts of the furniture, when looking at the model from the back.')
+		gHelpInfoF74 += translate('magicStart', 'Furniture back offsets') + '</b>: '
+		gHelpInfoF74 += translate('magicStart', 'this is the size by which the furniture back will be reduced and will create free space between the parts of the furniture, when looking at the model from the back.')
 		gHelpInfoF74 += '</li>'
 		gHelpInfoF74 += '</ul>'
 		gHelpInfoF74 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
@@ -813,10 +813,10 @@ def showQtGUI():
 				translate('magicStart', 'Simple bookcase ( face frame, no front, back HDF )'), 
 				translate('magicStart', 'Kitchen cabinet ( US style )'), 
 				translate('magicStart', 'Kitchen wall cabinet ( US style )'), 
-				translate('magicStart', 'Face Frame ( vertical, for custom changes )'), 
-				translate('magicStart', 'Face Frame ( horizontal, around )'), 
-				translate('magicStart', 'Face Frame ( horizontal, with center )'), 
-				translate('magicStart', 'Face Frame ( horizontal, for custom changes )'), 
+				translate('magicStart', 'Furniture face frame ( vertical, for custom changes )'), 
+				translate('magicStart', 'Furniture face frame ( horizontal, around )'), 
+				translate('magicStart', 'Furniture face frame ( horizontal, with center )'), 
+				translate('magicStart', 'Furniture face frame ( horizontal, for custom changes )'), 
 				"------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Drawer ( single, X or Y direction, front outside )'), 
 				translate('magicStart', 'Drawer ( single, X or Y direction, front inside )'), 
@@ -827,46 +827,46 @@ def showQtGUI():
 				translate('magicStart', 'Drawer ( simple, parametric )'), 
 				translate('magicStart', 'Drawer ( decoration, parametric )'), 
 				"------------------------------------------------------------------------------------", 
-				translate('magicStart', 'Front outside'), 
-				translate('magicStart', 'Front outside ( decorative )'), 
-				translate('magicStart', 'Front outside with glass ( simple frame )'), 
-				translate('magicStart', 'Front outside with glass ( frame with decoration )'), 
-				translate('magicStart', 'Front inside'), 
-				translate('magicStart', 'Front inside ( decorative )'), 
-				translate('magicStart', 'Front inside with glass ( simple frame )'), 
-				translate('magicStart', 'Front inside with glass ( frame with decoration )'), 
-				translate('magicStart', 'Front decoration ( simple frame )'), 
-				translate('magicStart', 'Front left (decoration, import parametric )'), 
-				translate('magicStart', 'Front right (decoration, import parametric )'), 
+				translate('magicStart', 'Furniture front outside'), 
+				translate('magicStart', 'Furniture front outside ( decorative )'), 
+				translate('magicStart', 'Furniture front outside with glass ( simple frame )'), 
+				translate('magicStart', 'Furniture front outside with glass ( frame with decoration )'), 
+				translate('magicStart', 'Furniture front inside'), 
+				translate('magicStart', 'Furniture front inside ( decorative )'), 
+				translate('magicStart', 'Furniture front inside with glass ( simple frame )'), 
+				translate('magicStart', 'Furniture front inside with glass ( frame with decoration )'), 
+				translate('magicStart', 'Furniture front decoration ( simple frame )'), 
+				translate('magicStart', 'Furniture front left (decoration, import parametric )'), 
+				translate('magicStart', 'Furniture front right (decoration, import parametric )'), 
 				"------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Shelf'), 
 				translate('magicStart', 'Shelf series with equal space'), 
-				translate('magicStart', 'Top (decoration, import parametric )'), 
+				translate('magicStart', 'Furniture top (decoration, import parametric )'), 
 				"------------------------------------------------------------------------------------", 
-				translate('magicStart', 'Side'), 
-				translate('magicStart', 'Center side'), 
-				translate('magicStart', 'Side decoration ( simple frame )'), 
-				translate('magicStart', 'Sides with holes ( import parametric )'), 
+				translate('magicStart', 'Furniture side'), 
+				translate('magicStart', 'Furniture center board'), 
+				translate('magicStart', 'Furniture side decoration ( simple frame )'), 
+				translate('magicStart', 'Furniture sides with holes ( import parametric )'), 
 				"------------------------------------------------------------------------------------", 
-				translate('magicStart', 'Back outside ( HDF )'), 
-				translate('magicStart', 'Back inside ( full )'), 
+				translate('magicStart', 'Furniture back board ( outside, HDF )'), 
+				translate('magicStart', 'Furniture back board ( inside, full )'), 
 				"------------------------------------------------------------------------------------", 
-				translate('magicStart', 'Foot ( good for cleaning )'), 
-				translate('magicStart', 'Foot ( standard )'), 
-				translate('magicStart', 'Foot ( more stable )'), 
-				translate('magicStart', 'Foot ( decorated )'), 
-				translate('magicStart', 'Foot ( chair style )'), 
+				translate('magicStart', 'Cabinet foot ( good for cleaning )'), 
+				translate('magicStart', 'Cabinet foot ( standard )'), 
+				translate('magicStart', 'Cabinet foot ( more stable )'), 
+				translate('magicStart', 'Cabinet foot ( decorated )'), 
+				translate('magicStart', 'Cabinet foot ( chair style )'), 
 				"------------------------------------------------------------------------------------", 
-				translate('magicStart', 'Table ( kitchen simple style )'), 
-				translate('magicStart', 'Table ( kitchen modern style )'), 
-				translate('magicStart', 'Table ( kitchen decorated style )'), 
-				translate('magicStart', 'Table ( coffee simple style )'), 
-				translate('magicStart', 'Table ( coffee modern style )'), 
-				translate('magicStart', 'Table ( coffee decorated style )'), 
-				translate('magicStart', 'Table ( school desk, single right side )'), 
-				translate('magicStart', 'Table ( School desk, single left side )'), 
-				translate('magicStart', 'Table ( school desk, both sides )'), 
-				translate('magicStart', 'Table ( simple, import parametric )'), 
+				translate('magicStart', 'Wooden table ( kitchen simple style )'), 
+				translate('magicStart', 'Wooden table ( kitchen modern style )'), 
+				translate('magicStart', 'Wooden table ( kitchen decorated style )'), 
+				translate('magicStart', 'Wooden table ( coffee simple style )'), 
+				translate('magicStart', 'Wooden table ( coffee modern style )'), 
+				translate('magicStart', 'Wooden table ( coffee decorated style )'), 
+				translate('magicStart', 'Wooden table ( school desk, single right side )'), 
+				translate('magicStart', 'Wooden table ( School desk, single left side )'), 
+				translate('magicStart', 'Wooden table ( school desk, both sides )'), 
+				translate('magicStart', 'Wooden table ( simple, import parametric )'), 
 				"------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Dowel 8x35 mm ( import parametric )'),
 				translate('magicStart', 'Biscuits 4x16x48 mm ( import parametric )'), 
@@ -879,15 +879,15 @@ def showQtGUI():
 				translate('magicStart', 'Minifix 15x45 mm ( import parametric )'), 
 				translate('magicStart', 'Counterbore 2x 5x60 mm ( import parametric )'), 
 				"------------------------------------------------------------------------------------", 
-				translate('magicStart', 'Shelf Pin 5x16 mm ( import parametric )'), 
+				translate('magicStart', 'Shelf support 5x16 mm ( import parametric )'), 
 				translate('magicStart', 'Handle ( single hole )'), 
 				translate('magicStart', 'Handle ( single hole, decorated )'), 
 				translate('magicStart', 'Handle ( double hole )'), 
 				translate('magicStart', 'Handle ( double hole, decorated )'), 
-				translate('magicStart', 'Brackets for wall cabinets ( Camar 807 )'), 
-				translate('magicStart', 'Angle 30x30x25 mm ( import parametric )'), 
-				translate('magicStart', 'Angle 80x80x20 mm ( import parametric )'), 
-				translate('magicStart', 'Angle 40x40x100 mm ( import parametric )'), 
+				translate('magicStart', 'Hooks for wall cabinets ( Camar 807 )'), 
+				translate('magicStart', 'Angle supporter 30x30x25 mm ( import parametric )'), 
+				translate('magicStart', 'Angle supporter 80x80x20 mm ( import parametric )'), 
+				translate('magicStart', 'Angle supporter 40x40x100 mm ( import parametric )'), 
 				"------------------------------------------------------------------------------------", 
 				translate('magicStart', 'Simple chair ( import parametric )'), 
 				translate('magicStart', 'Picture frame ( import parametric )'), 
@@ -949,7 +949,7 @@ def showQtGUI():
 			info += translate('magicStart', 'Fully parametric examples')
 			info += '</a></li>'
 			info += '<li><a href="https://github.com/dprojects/Woodworking/tree/master/Examples/Fixture">'
-			info += translate('magicStart', 'Fixture examples')
+			info += translate('magicStart', 'Furniture fixture examples')
 			info += '</a></li>'
 			info += '</ul>'
 			self.minfo = QtGui.QLabel(info, self)
@@ -1048,7 +1048,7 @@ def showQtGUI():
 			self.oThickShelfE.setText(MagicPanels.unit2gui(self.gThick))
 			self.oThickShelfE.setFixedWidth(fieldSize)
 			
-			self.oThickFrontL = QtGui.QLabel(translate('magicStart', 'Front wood thickness:'), self)
+			self.oThickFrontL = QtGui.QLabel(translate('magicStart', 'Furniture front wood thickness:'), self)
 			self.oThickFrontE = QtGui.QLineEdit(self)
 			self.oThickFrontE.setText(MagicPanels.unit2gui(self.gThick))
 			self.oThickFrontE.setFixedWidth(fieldSize)
@@ -1073,7 +1073,7 @@ def showQtGUI():
 			self.oOffsetFrontBE.setText(MagicPanels.unit2gui(self.gThick))
 			self.oOffsetFrontBE.setFixedWidth(fieldSize)
 			
-			self.oModulesNumL = QtGui.QLabel(translate('magicStart', 'Modules number:'), self)
+			self.oModulesNumL = QtGui.QLabel(translate('magicStart', 'Number of furniture modules:'), self)
 			self.oModulesNumE = QtGui.QLineEdit(self)
 			self.oModulesNumE.setText("0")
 			self.oModulesNumE.setFixedWidth(fieldSize)
@@ -1607,7 +1607,7 @@ def showQtGUI():
 			self.ods113E.hide()
 			
 			# ############################################################################
-			# GUI for Front from GAP (hidden by default)
+			# GUI for Furniture front from GAP (hidden by default)
 			# ############################################################################
 
 			info = translate('magicStart', 'Please select 4 edges around the gap to calculate front size in this order: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
@@ -1616,27 +1616,27 @@ def showQtGUI():
 			self.ofr1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
 			self.ofr1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 			
-			self.ofr7L = QtGui.QLabel(translate('magicStart', 'Front thickness:'), self)
+			self.ofr7L = QtGui.QLabel(translate('magicStart', 'Furniture front thickness:'), self)
 			self.ofr7E = QtGui.QLineEdit(self)
 			self.ofr7E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.ofr7E.setFixedWidth(fieldSize)
 			
-			self.ofr81L = QtGui.QLabel(translate('magicStart', 'Front offset from left:'), self)
+			self.ofr81L = QtGui.QLabel(translate('magicStart', 'Furniture front offset from left:'), self)
 			self.ofr81E = QtGui.QLineEdit(self)
 			self.ofr81E.setText(MagicPanels.unit2gui(0))
 			self.ofr81E.setFixedWidth(fieldSize)
 			
-			self.ofr82L = QtGui.QLabel(translate('magicStart', 'Front offset from right:'), self)
+			self.ofr82L = QtGui.QLabel(translate('magicStart', 'Furniture front offset from right:'), self)
 			self.ofr82E = QtGui.QLineEdit(self)
 			self.ofr82E.setText(MagicPanels.unit2gui(0))
 			self.ofr82E.setFixedWidth(fieldSize)
 			
-			self.ofr83L = QtGui.QLabel(translate('magicStart', 'Front offset from top:'), self)
+			self.ofr83L = QtGui.QLabel(translate('magicStart', 'Furniture front offset from top:'), self)
 			self.ofr83E = QtGui.QLineEdit(self)
 			self.ofr83E.setText(MagicPanels.unit2gui(0))
 			self.ofr83E.setFixedWidth(fieldSize)
 			
-			self.ofr84L = QtGui.QLabel(translate('magicStart', 'Front offset from bottom:'), self)
+			self.ofr84L = QtGui.QLabel(translate('magicStart', 'Furniture front offset from bottom:'), self)
 			self.ofr84E = QtGui.QLineEdit(self)
 			self.ofr84E.setText(MagicPanels.unit2gui(0))
 			self.ofr84E.setFixedWidth(fieldSize)
@@ -1645,27 +1645,27 @@ def showQtGUI():
 			self.ofr4B1.clicked.connect(self.calculateFrontFromGap)
 			self.ofr4B1.setFixedHeight(createSize)
 			
-			self.ofr2L = QtGui.QLabel(translate('magicStart', 'Front start X:'), self)
+			self.ofr2L = QtGui.QLabel(translate('magicStart', 'Furniture front start X:'), self)
 			self.ofr2E = QtGui.QLineEdit(self)
 			self.ofr2E.setText(MagicPanels.unit2gui(0))
 			self.ofr2E.setFixedWidth(fieldSize)
 			
-			self.ofr3L = QtGui.QLabel(translate('magicStart', 'Front start Y:'), self)
+			self.ofr3L = QtGui.QLabel(translate('magicStart', 'Furniture front start Y:'), self)
 			self.ofr3E = QtGui.QLineEdit(self)
 			self.ofr3E.setText(MagicPanels.unit2gui(0))
 			self.ofr3E.setFixedWidth(fieldSize)
 			
-			self.ofr4L = QtGui.QLabel(translate('magicStart', 'Front start Z:'), self)
+			self.ofr4L = QtGui.QLabel(translate('magicStart', 'Furniture front start Z:'), self)
 			self.ofr4E = QtGui.QLineEdit(self)
 			self.ofr4E.setText(MagicPanels.unit2gui(0))
 			self.ofr4E.setFixedWidth(fieldSize)
 			
-			self.ofr5L = QtGui.QLabel(translate('magicStart', 'Front width:'), self)
+			self.ofr5L = QtGui.QLabel(translate('magicStart', 'Furniture front width:'), self)
 			self.ofr5E = QtGui.QLineEdit(self)
 			self.ofr5E.setText(MagicPanels.unit2gui(0))
 			self.ofr5E.setFixedWidth(fieldSize)
 			
-			self.ofr6L = QtGui.QLabel(translate('magicStart', 'Front height:'), self)
+			self.ofr6L = QtGui.QLabel(translate('magicStart', 'Furniture front height:'), self)
 			self.ofr6E = QtGui.QLineEdit(self)
 			self.ofr6E.setText(MagicPanels.unit2gui(0))
 			self.ofr6E.setFixedWidth(fieldSize)
@@ -1703,38 +1703,38 @@ def showQtGUI():
 			# GUI for Back from GAP (hidden by default)
 			# ############################################################################
 
-			info = translate('magicStart', 'Please select 4 edges around the gap to calculate back: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge from back model view <br> 4. selection - Z right edge from back model view')
+			info = translate('magicStart', 'Please select 4 edges around the gap to calculate furniture back: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge from back model view <br> 4. selection - Z right edge from back model view')
 			self.oBackInfo = QtGui.QLabel(info, self)
 			self.oBackInfo.setWordWrap(True)
 			self.oBackInfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
 			self.oBackInfo.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 			
-			self.oBackThickL = QtGui.QLabel(translate('magicStart', 'Back thickness along Y:'), self)
+			self.oBackThickL = QtGui.QLabel(translate('magicStart', 'Furniture back thickness along Y:'), self)
 			self.oBackThickE = QtGui.QLineEdit(self)
 			self.oBackThickE.setText(MagicPanels.unit2gui(0))
 			self.oBackThickE.setFixedWidth(fieldSize)
 		
-			self.oBackOffsets1L = QtGui.QLabel(translate('magicStart', 'Back offset from left:'), self)
+			self.oBackOffsets1L = QtGui.QLabel(translate('magicStart', 'Furniture back offset from left:'), self)
 			self.oBackOffsets1E = QtGui.QLineEdit(self)
 			self.oBackOffsets1E.setText(MagicPanels.unit2gui(0))
 			self.oBackOffsets1E.setFixedWidth(fieldSize)
 			
-			self.oBackOffsets2L = QtGui.QLabel(translate('magicStart', 'Back offset from right:'), self)
+			self.oBackOffsets2L = QtGui.QLabel(translate('magicStart', 'Furniture back offset from right:'), self)
 			self.oBackOffsets2E = QtGui.QLineEdit(self)
 			self.oBackOffsets2E.setText(MagicPanels.unit2gui(0))
 			self.oBackOffsets2E.setFixedWidth(fieldSize)
 			
-			self.oBackOffsets3L = QtGui.QLabel(translate('magicStart', 'Back offset from top:'), self)
+			self.oBackOffsets3L = QtGui.QLabel(translate('magicStart', 'Furniture back offset from top:'), self)
 			self.oBackOffsets3E = QtGui.QLineEdit(self)
 			self.oBackOffsets3E.setText(MagicPanels.unit2gui(0))
 			self.oBackOffsets3E.setFixedWidth(fieldSize)
 			
-			self.oBackOffsets4L = QtGui.QLabel(translate('magicStart', 'Back offset from bottom:'), self)
+			self.oBackOffsets4L = QtGui.QLabel(translate('magicStart', 'Furniture back offset from bottom:'), self)
 			self.oBackOffsets4E = QtGui.QLineEdit(self)
 			self.oBackOffsets4E.setText(MagicPanels.unit2gui(0))
 			self.oBackOffsets4E.setFixedWidth(fieldSize)
 
-			self.oBackBCL = QtGui.QPushButton(translate('magicStart', 'calculate back'), self)
+			self.oBackBCL = QtGui.QPushButton(translate('magicStart', 'calculate furniture back'), self)
 			self.oBackBCL.clicked.connect(self.calculateBack)
 			self.oBackBCL.setFixedHeight(createSize)
 			
@@ -1793,10 +1793,10 @@ def showQtGUI():
 			self.oBackBCR.hide()
 			
 			# ############################################################################
-			# GUI for Front with glass (hidden by default)
+			# GUI for Furniture front with glass (hidden by default)
 			# ############################################################################
 
-			info = translate('magicStart', 'Please select 4 edges around the gap to calculate Front with glass: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
+			info = translate('magicStart', 'Please select 4 edges around the gap to calculate Furniture front with glass: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
 			self.ofglass1i = QtGui.QLabel(info, self)
 			self.ofglass1i.setWordWrap(True)
 			self.ofglass1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
@@ -1826,17 +1826,17 @@ def showQtGUI():
 			self.ofglass6B.clicked.connect(self.calculateFrontWithGlass)
 			self.ofglass6B.setFixedHeight(createSize)
 			
-			self.ofglass71L = QtGui.QLabel(translate('magicStart', 'Front start X:'), self)
+			self.ofglass71L = QtGui.QLabel(translate('magicStart', 'Furniture front start X:'), self)
 			self.ofglass71E = QtGui.QLineEdit(self)
 			self.ofglass71E.setText(MagicPanels.unit2gui(0))
 			self.ofglass71E.setFixedWidth(fieldSize)
 			
-			self.ofglass72L = QtGui.QLabel(translate('magicStart', 'Front start Y:'), self)
+			self.ofglass72L = QtGui.QLabel(translate('magicStart', 'Furniture front start Y:'), self)
 			self.ofglass72E = QtGui.QLineEdit(self)
 			self.ofglass72E.setText(MagicPanels.unit2gui(0))
 			self.ofglass72E.setFixedWidth(fieldSize)
 			
-			self.ofglass73L = QtGui.QLabel(translate('magicStart', 'Front start Z:'), self)
+			self.ofglass73L = QtGui.QLabel(translate('magicStart', 'Furniture front start Z:'), self)
 			self.ofglass73E = QtGui.QLineEdit(self)
 			self.ofglass73E.setText(MagicPanels.unit2gui(0))
 			self.ofglass73E.setFixedWidth(fieldSize)
@@ -1900,12 +1900,12 @@ def showQtGUI():
 			self.odf2E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.odf2E.setFixedWidth(fieldSize)
 
-			self.odf3L = QtGui.QLabel(translate('magicStart', 'Front overlap horizontal:'), self)
+			self.odf3L = QtGui.QLabel(translate('magicStart', 'Furniture front overlap horizontal:'), self)
 			self.odf3E = QtGui.QLineEdit(self)
 			self.odf3E.setText(MagicPanels.unit2gui(0))
 			self.odf3E.setFixedWidth(fieldSize)
 
-			self.odf4L = QtGui.QLabel(translate('magicStart', 'Front overlap vertical:'), self)
+			self.odf4L = QtGui.QLabel(translate('magicStart', 'Furniture front overlap vertical:'), self)
 			self.odf4E = QtGui.QLineEdit(self)
 			self.odf4E.setText(MagicPanels.unit2gui(0))
 			self.odf4E.setFixedWidth(fieldSize)
@@ -1919,17 +1919,17 @@ def showQtGUI():
 			self.odf6B.clicked.connect(self.calculateDecorativeFront)
 			self.odf6B.setFixedHeight(createSize)
 			
-			self.odf71L = QtGui.QLabel(translate('magicStart', 'Front start X:'), self)
+			self.odf71L = QtGui.QLabel(translate('magicStart', 'Furniture front start X:'), self)
 			self.odf71E = QtGui.QLineEdit(self)
 			self.odf71E.setText(MagicPanels.unit2gui(0))
 			self.odf71E.setFixedWidth(fieldSize)
 
-			self.odf72L = QtGui.QLabel(translate('magicStart', 'Front start Y:'), self)
+			self.odf72L = QtGui.QLabel(translate('magicStart', 'Furniture front start Y:'), self)
 			self.odf72E = QtGui.QLineEdit(self)
 			self.odf72E.setText(MagicPanels.unit2gui(0))
 			self.odf72E.setFixedWidth(fieldSize)
 			
-			self.odf73L = QtGui.QLabel(translate('magicStart', 'Front start Z:'), self)
+			self.odf73L = QtGui.QLabel(translate('magicStart', 'Furniture front start Z:'), self)
 			self.odf73E = QtGui.QLineEdit(self)
 			self.odf73E.setText(MagicPanels.unit2gui(0))
 			self.odf73E.setFixedWidth(fieldSize)
@@ -1979,10 +1979,10 @@ def showQtGUI():
 			self.odf11B.hide()
 			
 			# ############################################################################
-			# GUI for Front decoration (hidden by default)
+			# GUI for Furniture front decoration (hidden by default)
 			# ############################################################################
 
-			info = translate('magicStart', 'Please select face or 4 edges around the front to calculate Front decoration: <br><br> 1. selection - XZ face of front<br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
+			info = translate('magicStart', 'Please select face or 4 edges around the front to calculate Furniture front decoration: <br><br> 1. selection - XZ face of front<br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
 			self.ofdec1i = QtGui.QLabel(info, self)
 			self.ofdec1i.setWordWrap(True)
 			self.ofdec1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
@@ -2068,7 +2068,7 @@ def showQtGUI():
 			# GUI for Face Frame from GAP (hidden by default)
 			# ############################################################################
 
-			info = translate('magicStart', 'Please select 4 edges around the gap to calculate Face Frame: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
+			info = translate('magicStart', 'Please select 4 edges around the gap to calculate furniture face frame: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
 			self.offrame1i = QtGui.QLabel(info, self)
 			self.offrame1i.setWordWrap(True)
 			self.offrame1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
@@ -2113,12 +2113,12 @@ def showQtGUI():
 			self.offrame73E.setText(MagicPanels.unit2gui(0))
 			self.offrame73E.setFixedWidth(fieldSize)
 			
-			self.offrame8L = QtGui.QLabel(translate('magicStart', 'Calculated Face Frame width:'), self)
+			self.offrame8L = QtGui.QLabel(translate('magicStart', 'Calculated furniture face frame width:'), self)
 			self.offrame8E = QtGui.QLineEdit(self)
 			self.offrame8E.setText(MagicPanels.unit2gui(0))
 			self.offrame8E.setFixedWidth(fieldSize)
 			
-			self.offrame9L = QtGui.QLabel(translate('magicStart', 'Calculated Face Frame height:'), self)
+			self.offrame9L = QtGui.QLabel(translate('magicStart', 'Calculated furniture face frame height:'), self)
 			self.offrame9E = QtGui.QLineEdit(self)
 			self.offrame9E.setText(MagicPanels.unit2gui(0))
 			self.offrame9E.setFixedWidth(fieldSize)
@@ -2333,67 +2333,67 @@ def showQtGUI():
 			# GUI for Side from GAP (hidden by default)
 			# ############################################################################
 			
-			info = translate('magicStart', 'Please select 4 edges around the gap to calculate Side: <br><br> 1. selection - X or Y bottom edge <br> 2. selection - X or Y top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
+			info = translate('magicStart', 'Please select 4 edges around the gap to calculate furniture side: <br><br> 1. selection - X or Y bottom edge <br> 2. selection - X or Y top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
 			self.oside1i = QtGui.QLabel(info, self)
 			self.oside1i.setWordWrap(True)
 			self.oside1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
 			self.oside1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 			
-			self.oside1L = QtGui.QLabel(translate('magicStart', 'Side thickness:'), self)
+			self.oside1L = QtGui.QLabel(translate('magicStart', 'Furniture side thickness:'), self)
 			self.oside1E = QtGui.QLineEdit(self)
 			self.oside1E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.oside1E.setFixedWidth(fieldSize)
 			
-			self.oside2L = QtGui.QLabel(translate('magicStart', 'Side by width:'), self)
+			self.oside2L = QtGui.QLabel(translate('magicStart', 'Furniture side by width:'), self)
 			self.oside2E = QtGui.QLineEdit(self)
 			self.oside2E.setText(MagicPanels.unit2gui(0))
 			self.oside2E.setFixedWidth(fieldSize)
 			
-			self.oside31L = QtGui.QLabel(translate('magicStart', 'Side by offset from left:'), self)
+			self.oside31L = QtGui.QLabel(translate('magicStart', 'Furniture side by offset from left:'), self)
 			self.oside31E = QtGui.QLineEdit(self)
 			self.oside31E.setText(MagicPanels.unit2gui(0))
 			self.oside31E.setFixedWidth(fieldSize)
 			
-			self.oside32L = QtGui.QLabel(translate('magicStart', 'Side by offset from right:'), self)
+			self.oside32L = QtGui.QLabel(translate('magicStart', 'Furniture side by offset from right:'), self)
 			self.oside32E = QtGui.QLineEdit(self)
 			self.oside32E.setText(MagicPanels.unit2gui(0))
 			self.oside32E.setFixedWidth(fieldSize)
 			
-			self.oside33L = QtGui.QLabel(translate('magicStart', 'Side by offset from top:'), self)
+			self.oside33L = QtGui.QLabel(translate('magicStart', 'Furniture side by offset from top:'), self)
 			self.oside33E = QtGui.QLineEdit(self)
 			self.oside33E.setText(MagicPanels.unit2gui(0))
 			self.oside33E.setFixedWidth(fieldSize)
 			
-			self.oside34L = QtGui.QLabel(translate('magicStart', 'Side by offset from bottom:'), self)
+			self.oside34L = QtGui.QLabel(translate('magicStart', 'Furniture side by offset from bottom:'), self)
 			self.oside34E = QtGui.QLineEdit(self)
 			self.oside34E.setText(MagicPanels.unit2gui(0))
 			self.oside34E.setFixedWidth(fieldSize)
 			
-			self.oside4B1 = QtGui.QPushButton(translate('magicStart', 'calculate side'), self)
+			self.oside4B1 = QtGui.QPushButton(translate('magicStart', 'calculate furniture side'), self)
 			self.oside4B1.clicked.connect(self.calculateSideFromGap)
 			self.oside4B1.setFixedHeight(createSize)
 			
-			self.oside51L = QtGui.QLabel(translate('magicStart', 'Side start X:'), self)
+			self.oside51L = QtGui.QLabel(translate('magicStart', 'Furniture side start X:'), self)
 			self.oside51E = QtGui.QLineEdit(self)
 			self.oside51E.setText(MagicPanels.unit2gui(0))
 			self.oside51E.setFixedWidth(fieldSize)
 			
-			self.oside52L = QtGui.QLabel(translate('magicStart', 'Side start Y:'), self)
+			self.oside52L = QtGui.QLabel(translate('magicStart', 'Furniture side start Y:'), self)
 			self.oside52E = QtGui.QLineEdit(self)
 			self.oside52E.setText(MagicPanels.unit2gui(0))
 			self.oside52E.setFixedWidth(fieldSize)
 			
-			self.oside53L = QtGui.QLabel(translate('magicStart', 'Side start Z:'), self)
+			self.oside53L = QtGui.QLabel(translate('magicStart', 'Furniture side start Z:'), self)
 			self.oside53E = QtGui.QLineEdit(self)
 			self.oside53E.setText(MagicPanels.unit2gui(0))
 			self.oside53E.setFixedWidth(fieldSize)
 			
-			self.oside6L = QtGui.QLabel(translate('magicStart', 'Calculated side width:'), self)
+			self.oside6L = QtGui.QLabel(translate('magicStart', 'Calculated furniture side width:'), self)
 			self.oside6E = QtGui.QLineEdit(self)
 			self.oside6E.setText(MagicPanels.unit2gui(0))
 			self.oside6E.setFixedWidth(fieldSize)
 			
-			self.oside7L = QtGui.QLabel(translate('magicStart', 'Calculated side height:'), self)
+			self.oside7L = QtGui.QLabel(translate('magicStart', 'Calculated furniture side height:'), self)
 			self.oside7E = QtGui.QLineEdit(self)
 			self.oside7E.setText(MagicPanels.unit2gui(0))
 			self.oside7E.setFixedWidth(fieldSize)
@@ -2430,7 +2430,7 @@ def showQtGUI():
 			self.oside8B1.hide()
 
 			# ############################################################################
-			# GUI for Center side from GAP (hidden by default)
+			# GUI for Furniture center board from GAP (hidden by default)
 			# ############################################################################
 			
 			info = translate('magicStart', 'Please select 2 edges (top or bottom at Y axis direction) and 1 face (bottom or top at XY plane) to calculate side in the center: <br><br> 1. selection - Y left edge <br> 2. selection - Y right edge <br> 3. selection - XY face')
@@ -2439,32 +2439,32 @@ def showQtGUI():
 			self.ocs1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
 			self.ocs1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 			
-			self.ocs1L = QtGui.QLabel(translate('magicStart', 'Side thickness:'), self)
+			self.ocs1L = QtGui.QLabel(translate('magicStart', 'Furniture side thickness:'), self)
 			self.ocs1E = QtGui.QLineEdit(self)
 			self.ocs1E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.ocs1E.setFixedWidth(fieldSize)
 			
-			self.ocs2L = QtGui.QLabel(translate('magicStart', 'Side by depth:'), self)
+			self.ocs2L = QtGui.QLabel(translate('magicStart', 'Furniture side by depth:'), self)
 			self.ocs2E = QtGui.QLineEdit(self)
 			self.ocs2E.setText(MagicPanels.unit2gui(0))
 			self.ocs2E.setFixedWidth(fieldSize)
 			
-			self.ocs31L = QtGui.QLabel(translate('magicStart', 'Side by offset from top:'), self)
+			self.ocs31L = QtGui.QLabel(translate('magicStart', 'Furniture side by offset from top:'), self)
 			self.ocs31E = QtGui.QLineEdit(self)
 			self.ocs31E.setText(MagicPanels.unit2gui(0))
 			self.ocs31E.setFixedWidth(fieldSize)
 			
-			self.ocs32L = QtGui.QLabel(translate('magicStart', 'Side by offset from bottom:'), self)
+			self.ocs32L = QtGui.QLabel(translate('magicStart', 'Furniture side by offset from bottom:'), self)
 			self.ocs32E = QtGui.QLineEdit(self)
 			self.ocs32E.setText(MagicPanels.unit2gui(0))
 			self.ocs32E.setFixedWidth(fieldSize)
 			
-			self.ocs33L = QtGui.QLabel(translate('magicStart', 'Side by offset from front:'), self)
+			self.ocs33L = QtGui.QLabel(translate('magicStart', 'Furniture side by offset from front:'), self)
 			self.ocs33E = QtGui.QLineEdit(self)
 			self.ocs33E.setText(MagicPanels.unit2gui(0))
 			self.ocs33E.setFixedWidth(fieldSize)
 			
-			self.ocs34L = QtGui.QLabel(translate('magicStart', 'Side by offset from back:'), self)
+			self.ocs34L = QtGui.QLabel(translate('magicStart', 'Furniture side by offset from back:'), self)
 			self.ocs34E = QtGui.QLineEdit(self)
 			self.ocs34E.setText(MagicPanels.unit2gui(0))
 			self.ocs34E.setFixedWidth(fieldSize)
@@ -2473,17 +2473,17 @@ def showQtGUI():
 			self.ocs4B1.clicked.connect(self.calculateCenterSideFromGap)
 			self.ocs4B1.setFixedHeight(createSize)
 			
-			self.ocs51L = QtGui.QLabel(translate('magicStart', 'Side start X:'), self)
+			self.ocs51L = QtGui.QLabel(translate('magicStart', 'Furniture side start X:'), self)
 			self.ocs51E = QtGui.QLineEdit(self)
 			self.ocs51E.setText(MagicPanels.unit2gui(0))
 			self.ocs51E.setFixedWidth(fieldSize)
 			
-			self.ocs52L = QtGui.QLabel(translate('magicStart', 'Side start Y:'), self)
+			self.ocs52L = QtGui.QLabel(translate('magicStart', 'Furniture side start Y:'), self)
 			self.ocs52E = QtGui.QLineEdit(self)
 			self.ocs52E.setText(MagicPanels.unit2gui(0))
 			self.ocs52E.setFixedWidth(fieldSize)
 			
-			self.ocs53L = QtGui.QLabel(translate('magicStart', 'Side start Z:'), self)
+			self.ocs53L = QtGui.QLabel(translate('magicStart', 'Furniture side start Z:'), self)
 			self.ocs53E = QtGui.QLineEdit(self)
 			self.ocs53E.setText(MagicPanels.unit2gui(0))
 			self.ocs53E.setFixedWidth(fieldSize)
@@ -4694,14 +4694,14 @@ def showQtGUI():
 			if selectedIndex == 59:
 				self.odf3E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetL))
 				self.odf4E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetB))
-				self.odf3L.setText(translate('magicStart', 'Front overlap horizontal:'))
-				self.odf4L.setText(translate('magicStart', 'Front overlap vertical:'))
+				self.odf3L.setText(translate('magicStart', 'Furniture front overlap horizontal:'))
+				self.odf4L.setText(translate('magicStart', 'Furniture front overlap vertical:'))
 
 			if selectedIndex == 60:
 				self.odf3E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetL))
 				self.odf4E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetB))
-				self.odf3L.setText(translate('magicStart', 'Front offset horizontal:'))
-				self.odf4L.setText(translate('magicStart', 'Front offset vertical:'))
+				self.odf3L.setText(translate('magicStart', 'Furniture front offset horizontal:'))
+				self.odf4L.setText(translate('magicStart', 'Furniture front offset vertical:'))
 			
 			if selectedIndex == 65:
 				self.oThickE.setText(MagicPanels.unit2gui(19.05))
@@ -7985,7 +7985,7 @@ def showQtGUI():
 			
 			# Side center
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "SideCenter")
-			o1.Label = translate('magicStart', 'Side Center')
+			o1.Label = translate('magicStart', 'Furniture center board ')
 			o1.Length = thick
 			o1.Height = height
 			o1.Width = depth
@@ -12432,11 +12432,11 @@ def showQtGUI():
 			o8.addProperty("App::PropertyBool", "Woodworking_Open", "Woodworking", info)
 			o8.Woodworking_Open = True
 
-			info = translate("frontsOpenClose", "Object name of the edge to open front. By default all objects with name starting with Front or front will be opened to left.")
+			info = translate("frontsOpenClose", "Object name for the edge to open furniture front. By default all objects with name starting with Front or front will be opened to left.")
 			o8.addProperty("App::PropertyString", "Woodworking_OpenObj", "Woodworking", info)
 			o8.Woodworking_OpenObj = str(o8.Name)
 		
-			info = translate("frontsOpenClose", "Edge name to open front as the CenterOfMass vector reference. Edge1 for left open. Edge5 for right open.")
+			info = translate("frontsOpenClose", "Edge name to open furniture front as the CenterOfMass vector reference. The name Edge1 for left open and name Edge5 for right open.")
 			o8.addProperty("App::PropertyString", "Woodworking_OpenEdge", "Woodworking", info)
 			o8.Woodworking_OpenEdge = "Edge5"
 	
@@ -12444,7 +12444,7 @@ def showQtGUI():
 			o8.addProperty("App::PropertyString", "Woodworking_OpenAxis", "Woodworking", info)
 			o8.Woodworking_OpenAxis = "Z"
 		
-			info = translate("Woodworking_OpenAngleStep", "Angle step to rotate front around. Negative value for left open rotate to other direction.")
+			info = translate("Woodworking_OpenAngleStep", "Angle step to rotate furniture front around. Negative value for open to left direction.")
 			o8.addProperty("App::PropertyFloat", "Woodworking_OpenAngleStep", "Woodworking", info)
 			o8.Woodworking_OpenAngleStep = 45.0
 
@@ -12479,11 +12479,11 @@ def showQtGUI():
 			o10.addProperty("App::PropertyBool", "Woodworking_Open", "Woodworking", info)
 			o10.Woodworking_Open = True
 
-			info = translate("frontsOpenClose", "Object name of the edge to open front. By default all objects with name starting with Front or front will be opened to left.")
+			info = translate("frontsOpenClose", "Object name for the edge to open furniture front. By default all objects with name starting with Front or front will be opened to left.")
 			o10.addProperty("App::PropertyString", "Woodworking_OpenObj", "Woodworking", info)
 			o10.Woodworking_OpenObj = str(o10.Name)
 		
-			info = translate("frontsOpenClose", "Edge name to open front as the CenterOfMass vector reference. Edge1 for left open. Edge5 for right open.")
+			info = translate("frontsOpenClose", "Edge name to open furniture front as the CenterOfMass vector reference. The name Edge1 for left open and name Edge5 for right open.")
 			o10.addProperty("App::PropertyString", "Woodworking_OpenEdge", "Woodworking", info)
 			o10.Woodworking_OpenEdge = "Edge5"
 	
@@ -12491,7 +12491,7 @@ def showQtGUI():
 			o10.addProperty("App::PropertyString", "Woodworking_OpenAxis", "Woodworking", info)
 			o10.Woodworking_OpenAxis = "Z"
 		
-			info = translate("Woodworking_OpenAngleStep", "Angle step to rotate front around. Negative value for left open rotate to other direction.")
+			info = translate("Woodworking_OpenAngleStep", "Angle step to rotate furniture front around. Negative value for open to left direction.")
 			o10.addProperty("App::PropertyFloat", "Woodworking_OpenAngleStep", "Woodworking", info)
 			o10.Woodworking_OpenAngleStep = 45.0
 

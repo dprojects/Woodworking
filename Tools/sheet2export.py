@@ -1085,8 +1085,8 @@ def setOUTPUT():
 			info = ""
 			info += translate('sheet2export', 'The spreadsheet') + ' ' + str(gSheet.Label)
 			info += ' ' + translate('sheet2export', 'has') + ':' + ' ' + '\n\n'
-			info += str(dbMaxC) + ' ' + translate('sheet2export', 'columns') + '\n'
-			info += str(dbMaxR) + ' ' + translate('sheet2export', 'rows') + '\n'
+			info += str(dbMaxC) + ' ' + translate('sheet2export', 'number of columns') + '\n'
+			info += str(dbMaxR) + ' ' + translate('sheet2export', 'number of rows') + '\n'
 			info += "\n"
 			info += translate('sheet2export', 'This may take several minutes to export file.')
 			info += "\n"

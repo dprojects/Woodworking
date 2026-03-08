@@ -474,7 +474,7 @@ def showQtGUI():
 			self.oDowelSizeE.setText("0")
 			
 			# gDowelSink
-			self.oDowelSinkL = QtGui.QLabel(translate('magicSettings', 'Dowel sink:'), self)
+			self.oDowelSinkL = QtGui.QLabel(translate('magicSettings', 'Dowel penetration:'), self)
 			self.oDowelSinkE = QtGui.QLineEdit(self)
 			self.oDowelSinkE.setText("0")
 			
@@ -494,7 +494,7 @@ def showQtGUI():
 			self.oHoleSizeE.setText("0")
 			
 			# gDrillSpike
-			self.oDrillSpikeL = QtGui.QLabel(translate('magicSettings', 'Hole spike:'), self)
+			self.oDrillSpikeL = QtGui.QLabel(translate('magicSettings', 'Spike inside hole:'), self)
 			self.oDrillSpikeE = QtGui.QLineEdit(self)
 			self.oDrillSpikeE.setText("")
 			
@@ -519,12 +519,12 @@ def showQtGUI():
 			self.oPocketOffsetFromEdgeE.setText("0")
 			
 			# gPocketRotation
-			self.oPocketRotationL = QtGui.QLabel(translate('magicSettings', 'Pocket rotation:'), self)
+			self.oPocketRotationL = QtGui.QLabel(translate('magicSettings', 'Pocket hole rotation:'), self)
 			self.oPocketRotationE = QtGui.QLineEdit(self)
 			self.oPocketRotationE.setText("0")
 			
 			# gPocketSink
-			self.oPocketSinkL = QtGui.QLabel(translate('magicSettings', 'Pocket sink:'), self)
+			self.oPocketSinkL = QtGui.QLabel(translate('magicSettings', 'Pocket hole penetration:'), self)
 			self.oPocketSinkE = QtGui.QLineEdit(self)
 			self.oPocketSinkE.setText("0")
 

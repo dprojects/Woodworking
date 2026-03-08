@@ -192,7 +192,7 @@ except:
 	info += translate('align2Curve', 'First select curve, next select vertex at each object you want to align, this might be slower but more precise.')
 	info += "</li></ul>"
 	info += "<b>" + translate('align2Curve', 'Note') + ": </b>"
-	info += translate('align2Curve', 'This tool allows to align panels to the curve. It has been created for magicMove Copy Path option, to align panels to the curve. To select more objects hold left CTRL key during selection. To use this tool the panel need to have only single axis rotation offset. For example if you rotate panel 35 degrees around Y axis and the vertex will touch the curve. This tool not works if you need to rotate the panel additionally, for example 15 degrees around X axis. For more details see description at documentation page.')
+	info += translate('align2Curve', 'This tool allows to align panels to the curve. It has been created for magicMove Copy by Path option, to align panels to the curve. To select more objects hold left CTRL key during selection. To use this tool the panel need to have only single axis rotation offset. For example if you rotate panel 35 degrees around Y axis and the vertex will touch the curve. This tool not works if you need to rotate the panel additionally, for example 15 degrees around X axis. For more details see description at documentation page.')
 	
 	MagicPanels.showInfo("align2Curve", info)
 

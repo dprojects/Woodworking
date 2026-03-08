@@ -12,6 +12,7 @@ Woodworking workbench was designed primarily for creating simple cabinets for yo
 * Improved furniture preview via [makeTransparent](https://github.com/dprojects/Woodworking/tree/master/Docs#maketransparent), [frontsOpenClose](https://github.com/dprojects/Woodworking/tree/master/Docs#frontsopenclose) and [magicView](https://github.com/dprojects/Woodworking/tree/master/Docs#magicview) and real-time color management via [magicColors](https://github.com/dprojects/Woodworking/tree/master/Docs#magiccolors).
 * Support for units in all tools and cut-list (mm, cm, m, inches, fractions, system).
 * Wood weight and costs calculation via [getDimensions](https://github.com/dprojects/Woodworking/tree/master/Docs#getdimensions).
+* Support for all languages using Google AI translation.
 
 ![intro](https://raw.githubusercontent.com/dprojects/media/master/intro.gif)
 

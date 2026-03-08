@@ -216,13 +216,13 @@ def showQtGUI():
 				self.cecL = QtGui.QLabel(translate('magicCNC', 'Center cross:'), self)
 
 				# button
-				self.cecB1 = QtGui.QPushButton(translate('magicCNC', 'on'), self)
+				self.cecB1 = QtGui.QPushButton(translate('magicCNC', 'Turn on'), self)
 				self.cecB1.clicked.connect(self.setCenterOn)
 				self.cecB1.setFixedWidth(50)
 				self.cecB1.setAutoRepeat(True)
 				
 				# button
-				self.cecB2 = QtGui.QPushButton(translate('magicCNC', 'off'), self)
+				self.cecB2 = QtGui.QPushButton(translate('magicCNC', 'Turn off'), self)
 				self.cecB2.clicked.connect(self.setCenterOff)
 				self.cecB2.setFixedWidth(50)
 				self.cecB2.setAutoRepeat(True)

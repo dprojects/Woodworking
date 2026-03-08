@@ -174,13 +174,13 @@ def showQtGUI():
 				self.cecL = QtGui.QLabel(translate('magicView', 'Center cross:'), self)
 
 				# button
-				self.cecB1 = QtGui.QPushButton(translate('magicView', 'on'), self)
+				self.cecB1 = QtGui.QPushButton(translate('magicView', 'Turn on'), self)
 				self.cecB1.clicked.connect(self.setCenterOn)
 				self.cecB1.setFixedWidth(btsize)
 				self.cecB1.setAutoRepeat(True)
 				
 				# button
-				self.cecB2 = QtGui.QPushButton(translate('magicView', 'off'), self)
+				self.cecB2 = QtGui.QPushButton(translate('magicView', 'Turn off'), self)
 				self.cecB2.clicked.connect(self.setCenterOff)
 				self.cecB2.setFixedWidth(btsize)
 				self.cecB2.setAutoRepeat(True)

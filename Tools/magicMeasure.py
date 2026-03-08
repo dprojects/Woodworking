@@ -496,7 +496,7 @@ def showQtGUI():
 		gObserverOff += '</div>'
 		
 		# preselection ON - status
-		gPsOnS = translate('magicMeasure', 'Preselection mode is: ') + '<b>' + translate('magicMeasure', 'ON') + '</b>'
+		gPsOnS = translate('magicMeasure', 'Preselection mode is: ') + '<b>' + translate('magicMeasure', 'Turn ON') + '</b>'
 
 		# preselection ON - info
 		gPsOnI = '<div>'
@@ -516,7 +516,7 @@ def showQtGUI():
 		gPsOnI += '</div>'
 		
 		# preselection OFF - status
-		gPsOffS = translate('magicMeasure', 'Preselection mode is: ') + '<b>' + translate('magicMeasure', 'OFF') + '</b>'
+		gPsOffS = translate('magicMeasure', 'Preselection mode is: ') + '<b>' + translate('magicMeasure', 'Turn OFF') + '</b>'
 		
 		# preselection OFF - info
 		gPsOffI = '<div>'
@@ -609,13 +609,13 @@ def showQtGUI():
 			self.psmL = QtGui.QLabel(translate('magicMeasure', 'Preselection mode:'), self)
 			
 			# preselection mode button
-			self.psmB1 = QtGui.QPushButton(translate('magicMeasure', 'ON'), self)
+			self.psmB1 = QtGui.QPushButton(translate('magicMeasure', 'Turn ON'), self)
 			self.psmB1.clicked.connect(self.setPSMOn)
 			self.psmB1.setFixedWidth(80)
 			self.psmB1.setFixedHeight(40)
 			
 			# preselection mode button
-			self.psmB2 = QtGui.QPushButton(translate('magicMeasure', 'OFF'), self)
+			self.psmB2 = QtGui.QPushButton(translate('magicMeasure', 'Turn OFF'), self)
 			self.psmB2.clicked.connect(self.setPSMOff)
 			self.psmB2.setFixedWidth(80)
 			self.psmB2.setFixedHeight(40)

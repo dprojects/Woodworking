@@ -9,13 +9,13 @@ You can create your own `Woodworking` workbench translation with the following s
 * Generate `.ts` file. At `Xubuntu 22.04 LTS` in `Woodworking` directory:
 	
 	```
-	pylupdate5 `find . -name "*.py"` -ts translations/pyfiles.ts
+	pylupdate5 `find .. -name "*.py"` -ts ./template.ts
 	```
 	
-* Rename `pyfiles.ts` e.g.:
+* Rename `template.ts` e.g.:
 
 	```
-	mv ./translations/pyfiles.ts ./translations/Woodworking_pl.ts
+	mv ./template.ts ./Woodworking_pl.ts
 	```
 	
 	**Note:** Replace `pl` with your language code.
@@ -37,7 +37,7 @@ You can create your own `Woodworking` workbench translation with the following s
 	
 	```
 	sudo apt-get install qttools5-dev-tools
-	/usr/lib/x86_64-linux-gnu/qt5/bin/lrelease ./translations/Woodworking_pl.ts
+	/usr/lib/x86_64-linux-gnu/qt5/bin/lrelease ./Woodworking_pl.ts
 	```
 
 * Set your language at FreeCAD preferences.

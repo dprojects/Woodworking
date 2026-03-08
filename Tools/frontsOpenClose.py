@@ -18,12 +18,12 @@ def setAttributes(iObj, iRefObjName, iRefEdgeName, iAxis, iAngleStep):
 		iObj.Woodworking_Open = True
 
 	if not hasattr(iObj, "Woodworking_OpenObj"):
-		info = translate("frontsOpenClose", "Object name of the edge to open front. By default all objects with name starting with Front or front will be opened to left.")
+		info = translate("frontsOpenClose", "Object name for the edge to open furniture front. By default all objects with name starting with Front or front will be opened to left.")
 		iObj.addProperty("App::PropertyString", "Woodworking_OpenObj", "Woodworking", info)
 		iObj.Woodworking_OpenObj = iRefObjName
 		
 	if not hasattr(iObj, "Woodworking_OpenEdge"):
-		info = translate("frontsOpenClose", "Edge name to open front as the CenterOfMass vector reference. Edge1 for left open. Edge5 for right open.")
+		info = translate("frontsOpenClose", "Edge name to open furniture front as the CenterOfMass vector reference. The name Edge1 for left open and name Edge5 for right open.")
 		iObj.addProperty("App::PropertyString", "Woodworking_OpenEdge", "Woodworking", info)
 		iObj.Woodworking_OpenEdge = iRefEdgeName
 	
@@ -33,7 +33,7 @@ def setAttributes(iObj, iRefObjName, iRefEdgeName, iAxis, iAngleStep):
 		iObj.Woodworking_OpenAxis = iAxis
 		
 	if not hasattr(iObj, "Woodworking_OpenAngleStep"):
-		info = translate("Woodworking_OpenAngleStep", "Angle step to rotate front around. Negative value for left open rotate to other direction.")
+		info = translate("Woodworking_OpenAngleStep", "Angle step to rotate furniture front around. Negative value for open to left direction.")
 		iObj.addProperty("App::PropertyFloat", "Woodworking_OpenAngleStep", "Woodworking", info)
 		iObj.Woodworking_OpenAngleStep = iAngleStep
 
@@ -143,7 +143,7 @@ except:
 	
 	info = ""
 	
-	info += translate('frontsOpenClose', 'Possible selection methods: <ul><li><b>no selection</b> - allows you to open all fronts. If the objects name starts with "front" or "Front" this front will be open by default via Edge1 to the left side.</li><li><b>edges</b> - you have to select single edge for each front to add open front attributes to each front. This allows you to change default left open to right open.</li><li><b>LinkGroup + edge of simple front inside</b> - allows you to set rotation attributes to LinkGroup container with handle and simple front inside, to rotate whole LinkGroup container with handle but via edge of simple front inside. In this case you must also set attributes to simple front inside but turn off open of the simple front inside to not duplicate rotation.</li></ul><br><br><b>Note:</b> This tool allows you to open and close all cabinet fronts simultaneously. This allows you to quickly view the cabinets internal structure without having to search for each front in the object tree and hide or rotate them individually. The fronts rotate with a default rotation increment of 45 degrees. This allows you to select the front opening angle, from a simple tilt to an open inner front that can open beyond 90 degrees. Rotating the fronts around the Z axis avoids the issue of maximum opening angles for different hinge types. However, the opening of the fronts can be customized by editing the attributes for each front. Opening attributes can also be added to each front using this tool. To select more edges or objects hold left CTRL key during selection.')
+	info += translate('frontsOpenClose', 'Possible selection methods: <ul><li><b>no selection</b> - allows you to open all furniture fronts. If the objects name starts with name "front" or name "Front" this furniture front will be open by default via Edge1 to the left side.</li><li><b>edges</b> - you have to select single edge for each furniture front to add open furniture front attributes to each furniture front object. This allows you to change default left open to right open.</li><li><b>LinkGroup + edge of simple furniture front inside</b> - allows you to set rotation attributes to LinkGroup container with handle and simple furniture front inside, to rotate whole LinkGroup container with handle but via edge of simple furniture front inside. In this case you must also set attributes to simple furniture front object inside but turn off open attribute of the simple furniture front object inside to not duplicate rotation.</li></ul><br><br><b>Note:</b> This tool allows you to open and close all cabinet fronts simultaneously. This allows you to quickly view the cabinets internal structure without having to search for each furniture front in the object tree and hide or rotate them individually. The furniture fronts rotate with a default rotation increment of 45 degrees. This allows you to select the furniture front opening angle, from a simple tilt to an open furniture inner front that can open beyond 90 degrees. Rotating the furniture fronts around the Z axis avoids the issue of maximum opening angles for different hinge types. However, the opening of the furniture fronts can be customized by editing the attributes for each furniture front object. Opening attributes can also be added to each furniture front object using this tool. To select more edges or objects hold left CTRL key during selection.')
 
 	MagicPanels.showInfo("frontsOpenClose", info)
 

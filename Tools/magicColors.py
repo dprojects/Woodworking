@@ -24,7 +24,7 @@ getMenuIndex1 = {
 
 # add new items only at the end and change self.sColorsList
 getMenuIndex2 = {
-	translate('magicColors', 'custom'): 0, 
+	translate('magicColors', 'custom color'): 0, 
 	translate('magicColors', 'reset'): 1, 
 	translate('magicColors', 'Wood - white'): 2, 
 	translate('magicColors', 'Wood - black'): 3, 
@@ -182,7 +182,7 @@ def showQtGUI():
 			
 			# not write here, copy text from getMenuIndex2 to avoid typo
 			self.sColorsList = (
-				translate('magicColors', 'custom'), 
+				translate('magicColors', 'custom color'), 
 				translate('magicColors', 'Woodworking - default'), 
 				translate('magicColors', 'reset'), 
 				translate('magicColors', 'Wood - white'), 
