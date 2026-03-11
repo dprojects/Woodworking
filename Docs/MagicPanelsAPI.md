@@ -21,9 +21,7 @@
 
 # Globals
 
-* `gSettingsPref = 'User parameter:BaseApp/Preferences/Woodworking'`: settings path <br>
-* `gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0)`: default color [247, 185, 108, 255] <br>
-* `gWoodDescription = "Płyta laminowana Biel Alpejska"`: used in cut-list if Label2 is empty <br>
+* `gSettingsPref = 'User parameter:BaseApp/Preferences/Woodworking' `: settings path <br>
 * `gRoundPrecision = 2`: should be set according to the user FreeCAD GUI settings <br>
 * `gSearchDepth = 200 `: recursive search depth <br>
 * `gKernelVersion = 0 `: FreeCAD version to add support for new kernel changes <br>
@@ -32,14 +30,21 @@
 * `gWoodThickness = 18`: main construction wood thickness <br>
 * `gWoodSizeX = 2800`: default panel long size <br>
 * `gWoodSizeY = 2070`: default panel short size <br>
+* `gWoodDescription = "Płyta laminowana Biel Alpejska" `: used in cut-list if Label2 is empty <br>
+* `gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0) `: default color [247, 185, 108, 255] <br>
+* `gWindowAnchor = "freecad"`: anchors for tools GUI: "freecad", "screen" <br>
+* `gWindowStaysOnTop = True `: to keep window on top <br> 
+* `gCurrentSelection = False`: to skip refresh selection button <br>
 * `gWoodWeight = 12.6 `: wood weight float in selected calculation method <br>
 * `gWoodWeightCalculation = "kg/m^2" `: wood weight calculation string: "kg/m^2", "lb/in^2"
 * `gWoodPrice = 37.98 `: wood price float in user currency, by default in Poland in zł/m^2 <br>
 * `gWoodPriceSymbol = "zł"`: wood price symbol to show in cut-list <br>
 * `gWoodPriceCalculation = "m^2"`: wood price calculation way: "m^2", "m^3", "wood", "foot" <br>
-* `gWindowAnchor = "freecad"`: anchors for tools GUI: "freecad", "screen" <br>
-* `gWindowStaysOnTop = True `: to keep window on top <br> 
-* `gCurrentSelection = False`: to skip refresh selection button <br>
+* `gLumberLong = 25.4 `: lumber rough round for longer edge, 1 inch = 25.4 mm by default <br>
+* `gLumberShort = 12.7`: lumber rough round for shorter edge, 1/2 inch = 12.7 mm by default <br>
+* `gLumberThickness = 3.175 `: lumber rough round for thickness edge, 1/8 inch = 3.175 mm by default <br>
+* `gSawmillSteps = "25.4; 31.75; 38.1; 50.8; 76.2" `: values to round lumber: 4/4, 5/4, 6/4, 8/4, 12/4 <br>
+* `gSawmillEverywhere = False`: to add lumber offset to all every cut list <br>
 * `gFrontInsideThickness = 18`: front inside wood thickness <br>
 * `gFrontInsideOffsetL = 2`: gap left <br>
 * `gFrontInsideOffsetR = 2`: gap right <br>
@@ -55,11 +60,11 @@
 * `gBackInsideThickness = 18`: back inside thickness, usually full wood <br>
 * `gBackOutsideThickness = 3`: back outside thickness, usually HDF <br>
 * `gEdgebandThickness = 0`: edgeband thickness <br>
+* `gEdgebandApply = "visible"`: edgeband apply way "everywhere" or "visible"<br>
+* `gEdgebandColor = (1.0, 1.0, 1.0, 1.0)`: white <br>
 * `gEdgebandPrice = 4.99 `: edgeband price float in user currency, by default in Poland in zł/m <br>
 * `gEdgebandPriceSymbol = "zł" `: edgeband price symbol to show in cut-list <br>
 * `gEdgebandPriceCalculation = "m"`: edgeband price calculation way: "mm", "cm", "m", "ft", "in" <br>
-* `gEdgebandApply = "visible"`: edgeband apply way "everywhere" or "visible"<br>
-* `gEdgebandColor = (1.0, 1.0, 1.0, 1.0)`: white <br>
 * `gPreferCustomSettings = False`: True - prefer settings from magicSettings, False - no by default <br>
 * `gOffsetSides = 0`: use both sides <br>
 * `gOffsetItemsPerSide = 2`: items per side <br>
@@ -2666,3 +2671,6 @@
 		there is no return, just overwrite all MagicPanels globals from user config
 
 
+	UPDATE GLOBALS HERE AFTER FUNCTIONS LOADED
+	not assign directly to values because user config values may not exist yet
+	and do not repeat default value inside the update function in return to avoid inconsistency

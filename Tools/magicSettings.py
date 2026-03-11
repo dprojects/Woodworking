@@ -170,53 +170,6 @@ def showQtGUI():
 			self.oWoodDescriptionE = QtGui.QLineEdit(self)
 			self.oWoodDescriptionE.setText("0")
 			
-			# wood weight
-			self.oWoodWeightL = QtGui.QLabel(translate('magicSettings', 'Wood weight:'), self)
-			self.oWoodWeightE = QtGui.QLineEdit(self)
-			self.oWoodWeightE.setText("0")
-			
-			# wood weight calculation
-			self.oWoodWeightCalculationL = QtGui.QLabel(translate('magicSettings', 'Wood weight calculation:'), self)
-			self.oWoodWeightCalculationList = (
-				translate('magicSettings', 'kg per area in m^2'),
-				translate('magicSettings', 'kg per volume in m^3'),
-				translate('magicSettings', 'kg per wood piece'),
-				translate('magicSettings', 'pounds per area in ft^2'),
-				translate('magicSettings', 'pounds per cubic foot'),
-				translate('magicSettings', 'pounds per cubic inch'),
-				translate('magicSettings', 'pounds per board foot'),
-				translate('magicSettings', 'pounds per wood piece') # no comma
-			)
-			self.oWoodWeightCalculationE = QtGui.QComboBox(self)
-			self.oWoodWeightCalculationE.addItems(self.oWoodWeightCalculationList)
-			self.oWoodWeightCalculationE.setCurrentIndex(0) # default
-			self.oWoodWeightCalculationE.textActivated[str].connect(self.setWoodWeightCalculation)
-			
-			# wood price
-			self.oWoodPriceL = QtGui.QLabel(translate('magicSettings', 'Wood price:'), self)
-			self.oWoodPriceE = QtGui.QLineEdit(self)
-			self.oWoodPriceE.setText("0")
-			
-			# wood price symbol
-			self.oWoodPriceSymbolL = QtGui.QLabel(translate('magicSettings', 'Wood price symbol:'), self)
-			self.oWoodPriceSymbolE = QtGui.QLineEdit(self)
-			self.oWoodPriceSymbolE.setText("0")
-			
-			# wood price calculation
-			self.oWoodPriceCalculationL = QtGui.QLabel(translate('magicSettings', 'Wood price calculation:'), self)
-			self.oWoodPriceCalculationList = (
-				translate('magicSettings', 'price per area in m^2'),
-				translate('magicSettings', 'price per volume in m^3'),
-				translate('magicSettings', 'price per wood piece'),
-				translate('magicSettings', 'price per area in ft^2'),
-				translate('magicSettings', 'price per cubic foot'),
-				translate('magicSettings', 'price per cubic inch'),
-				translate('magicSettings', 'price per board foot') # no comma
-			)
-			self.oWoodPriceCalculationE = QtGui.QComboBox(self)
-			self.oWoodPriceCalculationE.addItems(self.oWoodPriceCalculationList)
-			self.oWoodPriceCalculationE.setCurrentIndex(0) # default
-			self.oWoodPriceCalculationE.textActivated[str].connect(self.setWoodPriceCalculation)
 			
 			# wood color
 			self.oWoodColorRL = QtGui.QLabel(translate('magicSettings', 'Wood color (red):'), self)
@@ -278,6 +231,83 @@ def showQtGUI():
 			
 			# ############################################################################
 			# page 2
+			# ############################################################################
+			
+			# wood weight
+			self.oWoodWeightL = QtGui.QLabel(translate('magicSettings', 'Wood weight:'), self)
+			self.oWoodWeightE = QtGui.QLineEdit(self)
+			self.oWoodWeightE.setText("0")
+			
+			# wood weight calculation
+			self.oWoodWeightCalculationL = QtGui.QLabel(translate('magicSettings', 'Wood weight calculation:'), self)
+			self.oWoodWeightCalculationList = (
+				translate('magicSettings', 'kg per area in m^2'),
+				translate('magicSettings', 'kg per volume in m^3'),
+				translate('magicSettings', 'kg per wood piece'),
+				translate('magicSettings', 'pounds per area in ft^2'),
+				translate('magicSettings', 'pounds per cubic foot'),
+				translate('magicSettings', 'pounds per cubic inch'),
+				translate('magicSettings', 'pounds per board foot'),
+				translate('magicSettings', 'pounds per wood piece') # no comma
+			)
+			self.oWoodWeightCalculationE = QtGui.QComboBox(self)
+			self.oWoodWeightCalculationE.addItems(self.oWoodWeightCalculationList)
+			self.oWoodWeightCalculationE.setCurrentIndex(0) # default
+			self.oWoodWeightCalculationE.textActivated[str].connect(self.setWoodWeightCalculation)
+			
+			# wood price
+			self.oWoodPriceL = QtGui.QLabel(translate('magicSettings', 'Wood price:'), self)
+			self.oWoodPriceE = QtGui.QLineEdit(self)
+			self.oWoodPriceE.setText("0")
+			
+			# wood price symbol
+			self.oWoodPriceSymbolL = QtGui.QLabel(translate('magicSettings', 'Wood price symbol:'), self)
+			self.oWoodPriceSymbolE = QtGui.QLineEdit(self)
+			self.oWoodPriceSymbolE.setText("0")
+			
+			# wood price calculation
+			self.oWoodPriceCalculationL = QtGui.QLabel(translate('magicSettings', 'Wood price calculation:'), self)
+			self.oWoodPriceCalculationList = (
+				translate('magicSettings', 'price per area in m^2'),
+				translate('magicSettings', 'price per volume in m^3'),
+				translate('magicSettings', 'price per wood piece'),
+				translate('magicSettings', 'price per area in ft^2'),
+				translate('magicSettings', 'price per cubic foot'),
+				translate('magicSettings', 'price per cubic inch'),
+				translate('magicSettings', 'price per board foot') # no comma
+			)
+			self.oWoodPriceCalculationE = QtGui.QComboBox(self)
+			self.oWoodPriceCalculationE.addItems(self.oWoodPriceCalculationList)
+			self.oWoodPriceCalculationE.setCurrentIndex(0) # default
+			self.oWoodPriceCalculationE.textActivated[str].connect(self.setWoodPriceCalculation)
+			
+			# lumber rough long edge
+			self.oLumberLongL = QtGui.QLabel(translate('magicSettings', 'Lumber allowance for length:'), self)
+			self.oLumberLongE = QtGui.QLineEdit(self)
+			self.oLumberLongE.setText(MagicPanels.unit2gui(0))
+			
+			# lumber rough short edge
+			self.oLumberShortL = QtGui.QLabel(translate('magicSettings', 'Lumber allowance for width:'), self)
+			self.oLumberShortE = QtGui.QLineEdit(self)
+			self.oLumberShortE.setText(MagicPanels.unit2gui(0))
+			
+			# lumber rough thickness edge
+			self.oLumberThicknessL = QtGui.QLabel(translate('magicSettings', 'Lumber allowance for thickness:'), self)
+			self.oLumberThicknessE = QtGui.QLineEdit(self)
+			self.oLumberThicknessE.setText(MagicPanels.unit2gui(0))
+			
+			# lumber rough sawmill steps
+			self.oSawmillStepsL = QtGui.QLabel(translate('magicSettings', 'Steps of lumber thickness:'), self)
+			self.oSawmillStepsE = QtGui.QLineEdit(self)
+			self.oSawmillStepsE.setText("")
+			
+			# add to normal cut list
+			self.oSawmillEverywhereL = QtGui.QLabel(translate('magicSettings', 'Add lumber allowance everywhere:'), self)
+			self.oSawmillEverywhereE = QtGui.QCheckBox(translate('magicSettings', ''), self)
+			self.oSawmillEverywhereE.setCheckState(QtCore.Qt.Unchecked)
+			
+			# ############################################################################
+			# page 3
 			# ############################################################################
 
 			# front inside wood thickness
@@ -351,7 +381,7 @@ def showQtGUI():
 			self.oBackOThicknessE.setText(MagicPanels.unit2gui(0))
 			
 			# ############################################################################
-			# page 3
+			# page 4
 			# ############################################################################
 
 			# edgeband thickness
@@ -416,7 +446,7 @@ def showQtGUI():
 			self.oEdgebandPriceCalculationE.textActivated[str].connect(self.setEdgebandPriceCalculation)
 			
 			# ############################################################################
-			# page 4
+			# page 5
 			# ############################################################################
 
 			# gPreferCustomSettings
@@ -460,7 +490,7 @@ def showQtGUI():
 			self.oOffsetFromEdgeE.setText("0")
 			
 			# ############################################################################
-			# page 5
+			# page 6
 			# ############################################################################
 
 			# gDowelDiameter
@@ -572,185 +602,199 @@ def showQtGUI():
 			self.Page12.addWidget(self.oWoodDescriptionE, 3, 1)
 			self.groupPage12 = QtGui.QGroupBox(None, self)
 			self.groupPage12.setLayout(self.Page12)
-			
+		
 			self.Page13 = QtGui.QGridLayout()
-			self.Page13.addWidget(self.oWoodWeightL, 0, 0)
-			self.Page13.addWidget(self.oWoodWeightE, 0, 1)
-			self.Page13.addWidget(self.oWoodWeightCalculationL, 1, 0)
-			self.Page13.addWidget(self.oWoodWeightCalculationE, 1, 1)
+			self.Page13.addWidget(self.oWoodColorRL, 0, 0)
+			self.Page13.addWidget(self.oWoodColorRE, 0, 1)
+			self.Page13.addWidget(self.oWoodColorGL, 1, 0)
+			self.Page13.addWidget(self.oWoodColorGE, 1, 1)
+			self.Page13.addWidget(self.oWoodColorBL, 2, 0)
+			self.Page13.addWidget(self.oWoodColorBE, 2, 1)
+			self.Page13.addWidget(self.oWoodColorAL, 3, 0)
+			self.Page13.addWidget(self.oWoodColorAE, 3, 1)
 			self.groupPage13 = QtGui.QGroupBox(None, self)
 			self.groupPage13.setLayout(self.Page13)
+
+			self.Page141 = QtGui.QGridLayout()
+			self.Page141.addWidget(self.oWindowAnchorL, 0, 0)
+			self.Page141.addWidget(self.oWindowAnchorE, 0, 1)
 			
-			self.Page14 = QtGui.QGridLayout()
-			self.Page14.addWidget(self.oWoodPriceL, 0, 0)
-			self.Page14.addWidget(self.oWoodPriceE, 0, 1)
-			self.Page14.addWidget(self.oWoodPriceSymbolL, 1, 0)
-			self.Page14.addWidget(self.oWoodPriceSymbolE, 1, 1)
-			self.Page14.addWidget(self.oWoodPriceCalculationL, 2, 0)
-			self.Page14.addWidget(self.oWoodPriceCalculationE, 2, 1)
+			self.Page142 = QtGui.QGridLayout()
+			self.Page142.addWidget(self.oWindowL, 0, 0)
+			self.Page142.addWidget(self.oWindowRB1, 0, 1)
+			self.Page142.addWidget(self.oWindowRB2, 0, 2)
+			self.Page142.addWidget(self.oCurrentSelectionL, 1, 0)
+			self.Page142.addWidget(self.oCurrentSelectionRB1, 1, 1)
+			self.Page142.addWidget(self.oCurrentSelectionRB2, 1, 2)
+
+			self.Page14 = QtGui.QVBoxLayout()
+			self.Page14.addLayout(self.Page141)
+			self.Page14.addLayout(self.Page142)
+
 			self.groupPage14 = QtGui.QGroupBox(None, self)
 			self.groupPage14.setLayout(self.Page14)
-		
-			self.Page15 = QtGui.QGridLayout()
-			self.Page15.addWidget(self.oWoodColorRL, 0, 0)
-			self.Page15.addWidget(self.oWoodColorRE, 0, 1)
-			self.Page15.addWidget(self.oWoodColorGL, 1, 0)
-			self.Page15.addWidget(self.oWoodColorGE, 1, 1)
-			self.Page15.addWidget(self.oWoodColorBL, 2, 0)
-			self.Page15.addWidget(self.oWoodColorBE, 2, 1)
-			self.Page15.addWidget(self.oWoodColorAL, 3, 0)
-			self.Page15.addWidget(self.oWoodColorAE, 3, 1)
-			self.groupPage15 = QtGui.QGroupBox(None, self)
-			self.groupPage15.setLayout(self.Page15)
-
-			self.Page161 = QtGui.QGridLayout()
-			self.Page161.addWidget(self.oWindowAnchorL, 0, 0)
-			self.Page161.addWidget(self.oWindowAnchorE, 0, 1)
-			
-			self.Page162 = QtGui.QGridLayout()
-			self.Page162.addWidget(self.oWindowL, 0, 0)
-			self.Page162.addWidget(self.oWindowRB1, 0, 1)
-			self.Page162.addWidget(self.oWindowRB2, 0, 2)
-			self.Page162.addWidget(self.oCurrentSelectionL, 1, 0)
-			self.Page162.addWidget(self.oCurrentSelectionRB1, 1, 1)
-			self.Page162.addWidget(self.oCurrentSelectionRB2, 1, 2)
-
-			self.Page16 = QtGui.QVBoxLayout()
-			self.Page16.addLayout(self.Page161)
-			self.Page16.addLayout(self.Page162)
-
-			self.groupPage16 = QtGui.QGroupBox(None, self)
-			self.groupPage16.setLayout(self.Page16)
 
 			self.Page21 = QtGui.QGridLayout()
-			self.Page21.addWidget(self.oFrontInsideThicknessL, 0, 0)
-			self.Page21.addWidget(self.oFrontInsideThicknessE, 0, 1)
-			self.Page21.addWidget(self.oFrontInsideOffsetLL, 1, 0)
-			self.Page21.addWidget(self.oFrontInsideOffsetLE, 1, 1)
-			self.Page21.addWidget(self.oFrontInsideOffsetRL, 2, 0)
-			self.Page21.addWidget(self.oFrontInsideOffsetRE, 2, 1)
-			self.Page21.addWidget(self.oFrontInsideOffsetBL, 3, 0)
-			self.Page21.addWidget(self.oFrontInsideOffsetBE, 3, 1)
-			self.Page21.addWidget(self.oFrontInsideOffsetTL, 4, 0)
-			self.Page21.addWidget(self.oFrontInsideOffsetTE, 4, 1)
+			self.Page21.addWidget(self.oWoodWeightL, 0, 0)
+			self.Page21.addWidget(self.oWoodWeightE, 0, 1)
+			self.Page21.addWidget(self.oWoodWeightCalculationL, 1, 0)
+			self.Page21.addWidget(self.oWoodWeightCalculationE, 1, 1)
 			self.groupPage21 = QtGui.QGroupBox(None, self)
 			self.groupPage21.setLayout(self.Page21)
-
+			
 			self.Page22 = QtGui.QGridLayout()
-			self.Page22.addWidget(self.oFrontOutsideThicknessL, 0, 0)
-			self.Page22.addWidget(self.oFrontOutsideThicknessE, 0, 1)
-			self.Page22.addWidget(self.oFrontOutsideOffsetLL, 1, 0)
-			self.Page22.addWidget(self.oFrontOutsideOffsetLE, 1, 1)
-			self.Page22.addWidget(self.oFrontOutsideOffsetRL, 2, 0)
-			self.Page22.addWidget(self.oFrontOutsideOffsetRE, 2, 1)
-			self.Page22.addWidget(self.oFrontOutsideOffsetBL, 3, 0)
-			self.Page22.addWidget(self.oFrontOutsideOffsetBE, 3, 1)
-			self.Page22.addWidget(self.oFrontOutsideOffsetTL, 4, 0)
-			self.Page22.addWidget(self.oFrontOutsideOffsetTE, 4, 1)
+			self.Page22.addWidget(self.oWoodPriceL, 0, 0)
+			self.Page22.addWidget(self.oWoodPriceE, 0, 1)
+			self.Page22.addWidget(self.oWoodPriceSymbolL, 1, 0)
+			self.Page22.addWidget(self.oWoodPriceSymbolE, 1, 1)
+			self.Page22.addWidget(self.oWoodPriceCalculationL, 2, 0)
+			self.Page22.addWidget(self.oWoodPriceCalculationE, 2, 1)
 			self.groupPage22 = QtGui.QGroupBox(None, self)
 			self.groupPage22.setLayout(self.Page22)
-
+	
 			self.Page23 = QtGui.QGridLayout()
-			self.Page23.addWidget(self.oShelfThicknessL, 0, 0)
-			self.Page23.addWidget(self.oShelfThicknessE, 0, 1)
-			self.Page23.addWidget(self.oShelfOffsetSidesL, 1, 0)
-			self.Page23.addWidget(self.oShelfOffsetSidesE, 1, 1)
-			self.Page23.addWidget(self.oBackIThicknessL, 2, 0)
-			self.Page23.addWidget(self.oBackIThicknessE, 2, 1)
-			self.Page23.addWidget(self.oBackOThicknessL, 3, 0)
-			self.Page23.addWidget(self.oBackOThicknessE, 3, 1)
+			self.Page23.addWidget(self.oLumberLongL, 0, 0)
+			self.Page23.addWidget(self.oLumberLongE, 0, 1)
+			self.Page23.addWidget(self.oLumberShortL, 1, 0)
+			self.Page23.addWidget(self.oLumberShortE, 1, 1)
+			self.Page23.addWidget(self.oLumberThicknessL, 2, 0)
+			self.Page23.addWidget(self.oLumberThicknessE, 2, 1)
+			self.Page23.addWidget(self.oSawmillStepsL, 3, 0)
+			self.Page23.addWidget(self.oSawmillStepsE, 3, 1)
+			self.Page23.addWidget(self.oSawmillEverywhereL, 4, 0)
+			self.Page23.addWidget(self.oSawmillEverywhereE, 4, 1)
 			self.groupPage23 = QtGui.QGroupBox(None, self)
 			self.groupPage23.setLayout(self.Page23)
-			
+	
 			self.Page31 = QtGui.QGridLayout()
-			self.Page31.addWidget(self.oEdgebandThickL, 0, 0)
-			self.Page31.addWidget(self.oEdgebandThickE, 0, 1)
-			self.Page31.addWidget(self.oEdgebandApplyL, 1, 0)
-			self.Page31.addWidget(self.oEdgebandApplyRB1, 1, 1)
-			self.Page31.addWidget(self.oEdgebandApplyRB2, 1, 2)
+			self.Page31.addWidget(self.oFrontInsideThicknessL, 0, 0)
+			self.Page31.addWidget(self.oFrontInsideThicknessE, 0, 1)
+			self.Page31.addWidget(self.oFrontInsideOffsetLL, 1, 0)
+			self.Page31.addWidget(self.oFrontInsideOffsetLE, 1, 1)
+			self.Page31.addWidget(self.oFrontInsideOffsetRL, 2, 0)
+			self.Page31.addWidget(self.oFrontInsideOffsetRE, 2, 1)
+			self.Page31.addWidget(self.oFrontInsideOffsetBL, 3, 0)
+			self.Page31.addWidget(self.oFrontInsideOffsetBE, 3, 1)
+			self.Page31.addWidget(self.oFrontInsideOffsetTL, 4, 0)
+			self.Page31.addWidget(self.oFrontInsideOffsetTE, 4, 1)
 			self.groupPage31 = QtGui.QGroupBox(None, self)
 			self.groupPage31.setLayout(self.Page31)
 
 			self.Page32 = QtGui.QGridLayout()
-			self.Page32.addWidget(self.oEdgebandColorRL, 0, 0)
-			self.Page32.addWidget(self.oEdgebandColorRE, 0, 1)
-			self.Page32.addWidget(self.oEdgebandColorGL, 1, 0)
-			self.Page32.addWidget(self.oEdgebandColorGE, 1, 1)
-			self.Page32.addWidget(self.oEdgebandColorBL, 2, 0)
-			self.Page32.addWidget(self.oEdgebandColorBE, 2, 1)
-			self.Page32.addWidget(self.oEdgebandColorAL, 3, 0)
-			self.Page32.addWidget(self.oEdgebandColorAE, 3, 1)
+			self.Page32.addWidget(self.oFrontOutsideThicknessL, 0, 0)
+			self.Page32.addWidget(self.oFrontOutsideThicknessE, 0, 1)
+			self.Page32.addWidget(self.oFrontOutsideOffsetLL, 1, 0)
+			self.Page32.addWidget(self.oFrontOutsideOffsetLE, 1, 1)
+			self.Page32.addWidget(self.oFrontOutsideOffsetRL, 2, 0)
+			self.Page32.addWidget(self.oFrontOutsideOffsetRE, 2, 1)
+			self.Page32.addWidget(self.oFrontOutsideOffsetBL, 3, 0)
+			self.Page32.addWidget(self.oFrontOutsideOffsetBE, 3, 1)
+			self.Page32.addWidget(self.oFrontOutsideOffsetTL, 4, 0)
+			self.Page32.addWidget(self.oFrontOutsideOffsetTE, 4, 1)
 			self.groupPage32 = QtGui.QGroupBox(None, self)
 			self.groupPage32.setLayout(self.Page32)
 
 			self.Page33 = QtGui.QGridLayout()
-			self.Page33.addWidget(self.oEdgebandPriceL, 0, 0)
-			self.Page33.addWidget(self.oEdgebandPriceE, 0, 1)
-			self.Page33.addWidget(self.oEdgebandPriceSymbolL, 1, 0)
-			self.Page33.addWidget(self.oEdgebandPriceSymbolE, 1, 1)
-			self.Page33.addWidget(self.oEdgebandPriceCalculationL, 2, 0)
-			self.Page33.addWidget(self.oEdgebandPriceCalculationE, 2, 1)
+			self.Page33.addWidget(self.oShelfThicknessL, 0, 0)
+			self.Page33.addWidget(self.oShelfThicknessE, 0, 1)
+			self.Page33.addWidget(self.oShelfOffsetSidesL, 1, 0)
+			self.Page33.addWidget(self.oShelfOffsetSidesE, 1, 1)
+			self.Page33.addWidget(self.oBackIThicknessL, 2, 0)
+			self.Page33.addWidget(self.oBackIThicknessE, 2, 1)
+			self.Page33.addWidget(self.oBackOThicknessL, 3, 0)
+			self.Page33.addWidget(self.oBackOThicknessE, 3, 1)
 			self.groupPage33 = QtGui.QGroupBox(None, self)
 			self.groupPage33.setLayout(self.Page33)
-
+			
 			self.Page41 = QtGui.QGridLayout()
-			self.Page41.addWidget(self.oPreferCustomSettingsL, 0, 0)
-			self.Page41.addWidget(self.oPreferCustomSettingsRB1, 0, 1)
-			self.Page41.addWidget(self.oPreferCustomSettingsRB2, 0, 2)
+			self.Page41.addWidget(self.oEdgebandThickL, 0, 0)
+			self.Page41.addWidget(self.oEdgebandThickE, 0, 1)
+			self.Page41.addWidget(self.oEdgebandApplyL, 1, 0)
+			self.Page41.addWidget(self.oEdgebandApplyRB1, 1, 1)
+			self.Page41.addWidget(self.oEdgebandApplyRB2, 1, 2)
 			self.groupPage41 = QtGui.QGroupBox(None, self)
 			self.groupPage41.setLayout(self.Page41)
-	
+
 			self.Page42 = QtGui.QGridLayout()
-			self.Page42.addWidget(self.oOffsetSidesL, 0, 0)
-			self.Page42.addWidget(self.oOffsetSidesE, 0, 1)
-			self.Page42.addWidget(self.oOffsetItemsPerSideL, 1, 0)
-			self.Page42.addWidget(self.oOffsetItemsPerSideE, 1, 1)
-			self.Page42.addWidget(self.oOffsetFromCornerL, 2, 0)
-			self.Page42.addWidget(self.oOffsetFromCornerE, 2, 1)
-			self.Page42.addWidget(self.oOffsetBetweenL, 3, 0)
-			self.Page42.addWidget(self.oOffsetBetweenE, 3, 1)
-			self.Page42.addWidget(self.oOffsetFromEdgeL, 4, 0)
-			self.Page42.addWidget(self.oOffsetFromEdgeE, 4, 1)
+			self.Page42.addWidget(self.oEdgebandColorRL, 0, 0)
+			self.Page42.addWidget(self.oEdgebandColorRE, 0, 1)
+			self.Page42.addWidget(self.oEdgebandColorGL, 1, 0)
+			self.Page42.addWidget(self.oEdgebandColorGE, 1, 1)
+			self.Page42.addWidget(self.oEdgebandColorBL, 2, 0)
+			self.Page42.addWidget(self.oEdgebandColorBE, 2, 1)
+			self.Page42.addWidget(self.oEdgebandColorAL, 3, 0)
+			self.Page42.addWidget(self.oEdgebandColorAE, 3, 1)
 			self.groupPage42 = QtGui.QGroupBox(None, self)
 			self.groupPage42.setLayout(self.Page42)
 
+			self.Page43 = QtGui.QGridLayout()
+			self.Page43.addWidget(self.oEdgebandPriceL, 0, 0)
+			self.Page43.addWidget(self.oEdgebandPriceE, 0, 1)
+			self.Page43.addWidget(self.oEdgebandPriceSymbolL, 1, 0)
+			self.Page43.addWidget(self.oEdgebandPriceSymbolE, 1, 1)
+			self.Page43.addWidget(self.oEdgebandPriceCalculationL, 2, 0)
+			self.Page43.addWidget(self.oEdgebandPriceCalculationE, 2, 1)
+			self.groupPage43 = QtGui.QGroupBox(None, self)
+			self.groupPage43.setLayout(self.Page43)
+
 			self.Page51 = QtGui.QGridLayout()
-			self.Page51.addWidget(self.oDowelDiameterL, 0, 0)
-			self.Page51.addWidget(self.oDowelDiameterE, 0, 1)
-			self.Page51.addWidget(self.oDowelSizeL, 1, 0)
-			self.Page51.addWidget(self.oDowelSizeE, 1, 1)
-			self.Page51.addWidget(self.oDowelSinkL, 2, 0)
-			self.Page51.addWidget(self.oDowelSinkE, 2, 1)
+			self.Page51.addWidget(self.oPreferCustomSettingsL, 0, 0)
+			self.Page51.addWidget(self.oPreferCustomSettingsRB1, 0, 1)
+			self.Page51.addWidget(self.oPreferCustomSettingsRB2, 0, 2)
 			self.groupPage51 = QtGui.QGroupBox(None, self)
 			self.groupPage51.setLayout(self.Page51)
-
+	
 			self.Page52 = QtGui.QGridLayout()
-			self.Page52.addWidget(self.oHoleDiameterL, 0, 0)
-			self.Page52.addWidget(self.oHoleDiameterE, 0, 1)
-			self.Page52.addWidget(self.oHoleCountersinkDiameterL, 1, 0)
-			self.Page52.addWidget(self.oHoleCountersinkDiameterE, 1, 1)
-			self.Page52.addWidget(self.oHoleSizeL, 2, 0)
-			self.Page52.addWidget(self.oHoleSizeE, 2, 1)
-			self.Page52.addWidget(self.oDrillSpikeL, 3, 0)
-			self.Page52.addWidget(self.oDrillSpikeE, 3, 1)
+			self.Page52.addWidget(self.oOffsetSidesL, 0, 0)
+			self.Page52.addWidget(self.oOffsetSidesE, 0, 1)
+			self.Page52.addWidget(self.oOffsetItemsPerSideL, 1, 0)
+			self.Page52.addWidget(self.oOffsetItemsPerSideE, 1, 1)
+			self.Page52.addWidget(self.oOffsetFromCornerL, 2, 0)
+			self.Page52.addWidget(self.oOffsetFromCornerE, 2, 1)
+			self.Page52.addWidget(self.oOffsetBetweenL, 3, 0)
+			self.Page52.addWidget(self.oOffsetBetweenE, 3, 1)
+			self.Page52.addWidget(self.oOffsetFromEdgeL, 4, 0)
+			self.Page52.addWidget(self.oOffsetFromEdgeE, 4, 1)
 			self.groupPage52 = QtGui.QGroupBox(None, self)
 			self.groupPage52.setLayout(self.Page52)
 
-			self.Page53 = QtGui.QGridLayout()
-			self.Page53.addWidget(self.oPocketDiameterL, 0, 0)
-			self.Page53.addWidget(self.oPocketDiameterE, 0, 1)
-			self.Page53.addWidget(self.oPocketCountersinkDiameterL, 1, 0)
-			self.Page53.addWidget(self.oPocketCountersinkDiameterE, 1, 1)
-			self.Page53.addWidget(self.oPocketSizeL, 2, 0)
-			self.Page53.addWidget(self.oPocketSizeE, 2, 1)
-			self.Page53.addWidget(self.oPocketOffsetFromEdgeL, 3, 0)
-			self.Page53.addWidget(self.oPocketOffsetFromEdgeE, 3, 1)
-			self.Page53.addWidget(self.oPocketRotationL, 4, 0)
-			self.Page53.addWidget(self.oPocketRotationE, 4, 1)
-			self.Page53.addWidget(self.oPocketSinkL, 5, 0)
-			self.Page53.addWidget(self.oPocketSinkE, 5, 1)
-			self.groupPage53 = QtGui.QGroupBox(None, self)
-			self.groupPage53.setLayout(self.Page53)
+			self.Page61 = QtGui.QGridLayout()
+			self.Page61.addWidget(self.oDowelDiameterL, 0, 0)
+			self.Page61.addWidget(self.oDowelDiameterE, 0, 1)
+			self.Page61.addWidget(self.oDowelSizeL, 1, 0)
+			self.Page61.addWidget(self.oDowelSizeE, 1, 1)
+			self.Page61.addWidget(self.oDowelSinkL, 2, 0)
+			self.Page61.addWidget(self.oDowelSinkE, 2, 1)
+			self.groupPage61 = QtGui.QGroupBox(None, self)
+			self.groupPage61.setLayout(self.Page61)
+
+			self.Page62 = QtGui.QGridLayout()
+			self.Page62.addWidget(self.oHoleDiameterL, 0, 0)
+			self.Page62.addWidget(self.oHoleDiameterE, 0, 1)
+			self.Page62.addWidget(self.oHoleCountersinkDiameterL, 1, 0)
+			self.Page62.addWidget(self.oHoleCountersinkDiameterE, 1, 1)
+			self.Page62.addWidget(self.oHoleSizeL, 2, 0)
+			self.Page62.addWidget(self.oHoleSizeE, 2, 1)
+			self.Page62.addWidget(self.oDrillSpikeL, 3, 0)
+			self.Page62.addWidget(self.oDrillSpikeE, 3, 1)
+			self.groupPage62 = QtGui.QGroupBox(None, self)
+			self.groupPage62.setLayout(self.Page62)
+
+			self.Page63 = QtGui.QGridLayout()
+			self.Page63.addWidget(self.oPocketDiameterL, 0, 0)
+			self.Page63.addWidget(self.oPocketDiameterE, 0, 1)
+			self.Page63.addWidget(self.oPocketCountersinkDiameterL, 1, 0)
+			self.Page63.addWidget(self.oPocketCountersinkDiameterE, 1, 1)
+			self.Page63.addWidget(self.oPocketSizeL, 2, 0)
+			self.Page63.addWidget(self.oPocketSizeE, 2, 1)
+			self.Page63.addWidget(self.oPocketOffsetFromEdgeL, 3, 0)
+			self.Page63.addWidget(self.oPocketOffsetFromEdgeE, 3, 1)
+			self.Page63.addWidget(self.oPocketRotationL, 4, 0)
+			self.Page63.addWidget(self.oPocketRotationE, 4, 1)
+			self.Page63.addWidget(self.oPocketSinkL, 5, 0)
+			self.Page63.addWidget(self.oPocketSinkE, 5, 1)
+			self.groupPage63 = QtGui.QGroupBox(None, self)
+			self.groupPage63.setLayout(self.Page63)
 
 			self.Save = QtGui.QVBoxLayout()
 			self.Save.addWidget(self.oStatusL)
@@ -762,21 +806,22 @@ def showQtGUI():
 			self.layout.addStretch()
 			self.layout.addWidget(self.groupPage11)
 			self.layout.addWidget(self.groupPage12)
-			self.layout.addWidget(self.groupPage13)
-			self.layout.addWidget(self.groupPage14)
-			self.layout.addWidget(self.groupPage15)
-			self.layout.addWidget(self.groupPage16)
 			self.layout.addWidget(self.groupPage21)
 			self.layout.addWidget(self.groupPage22)
 			self.layout.addWidget(self.groupPage23)
+			self.layout.addWidget(self.groupPage13)
+			self.layout.addWidget(self.groupPage14)
 			self.layout.addWidget(self.groupPage31)
 			self.layout.addWidget(self.groupPage32)
 			self.layout.addWidget(self.groupPage33)
 			self.layout.addWidget(self.groupPage41)
 			self.layout.addWidget(self.groupPage42)
+			self.layout.addWidget(self.groupPage43)
 			self.layout.addWidget(self.groupPage51)
 			self.layout.addWidget(self.groupPage52)
-			self.layout.addWidget(self.groupPage53)
+			self.layout.addWidget(self.groupPage61)
+			self.layout.addWidget(self.groupPage62)
+			self.layout.addWidget(self.groupPage63)
 			self.layout.addStretch()
 			self.layout.addLayout(self.Save)
 			self.setLayout(self.layout)
@@ -784,21 +829,22 @@ def showQtGUI():
 			# init
 			self.groupPage11.show()
 			self.groupPage12.show()
-			self.groupPage13.hide()
-			self.groupPage14.hide()
-			self.groupPage15.show()
-			self.groupPage16.show()
 			self.groupPage21.hide()
 			self.groupPage22.hide()
 			self.groupPage23.hide()
+			self.groupPage13.show()
+			self.groupPage14.show()
 			self.groupPage31.hide()
 			self.groupPage32.hide()
 			self.groupPage33.hide()
 			self.groupPage41.hide()
 			self.groupPage42.hide()
+			self.groupPage43.hide()
 			self.groupPage51.hide()
 			self.groupPage52.hide()
-			self.groupPage53.hide()
+			self.groupPage61.hide()
+			self.groupPage62.hide()
+			self.groupPage63.hide()
 			
 			# ############################################################################
 			# show & init defaults
@@ -842,116 +888,152 @@ def showQtGUI():
 			if self.gPage == 0:
 				self.groupPage11.show()
 				self.groupPage12.show()
-				self.groupPage13.hide()
-				self.groupPage14.hide()
-				self.groupPage15.show()
-				self.groupPage16.show()
+				self.groupPage13.show()
+				self.groupPage14.show()
+				
 				self.groupPage21.hide()
 				self.groupPage22.hide()
 				self.groupPage23.hide()
+				
 				self.groupPage31.hide()
 				self.groupPage32.hide()
 				self.groupPage33.hide()
+				
 				self.groupPage41.hide()
 				self.groupPage42.hide()
+				self.groupPage43.hide()
+				
 				self.groupPage51.hide()
 				self.groupPage52.hide()
-				self.groupPage53.hide()
+				
+				self.groupPage61.hide()
+				self.groupPage62.hide()
+				self.groupPage63.hide()
 			
 			if self.gPage == 1:
 				self.groupPage11.hide()
 				self.groupPage12.hide()
-				self.groupPage13.show()
-				self.groupPage14.show()
-				self.groupPage15.hide()
-				self.groupPage16.hide()
-				self.groupPage21.hide()
-				self.groupPage22.hide()
-				self.groupPage23.hide()
+				self.groupPage13.hide()
+				self.groupPage14.hide()
+				
+				self.groupPage21.show()
+				self.groupPage22.show()
+				self.groupPage23.show()
+				
 				self.groupPage31.hide()
 				self.groupPage32.hide()
 				self.groupPage33.hide()
+				
 				self.groupPage41.hide()
 				self.groupPage42.hide()
+				self.groupPage43.hide()
+				
 				self.groupPage51.hide()
 				self.groupPage52.hide()
-				self.groupPage53.hide()
+				
+				self.groupPage61.hide()
+				self.groupPage62.hide()
+				self.groupPage63.hide()
 			
 			if self.gPage == 2:
 				self.groupPage11.hide()
 				self.groupPage12.hide()
 				self.groupPage13.hide()
 				self.groupPage14.hide()
-				self.groupPage15.hide()
-				self.groupPage16.hide()
-				self.groupPage21.show()
-				self.groupPage22.show()
-				self.groupPage23.show()
-				self.groupPage31.hide()
-				self.groupPage32.hide()
-				self.groupPage33.hide()
+				
+				self.groupPage21.hide()
+				self.groupPage22.hide()
+				self.groupPage23.hide()
+				
+				self.groupPage31.show()
+				self.groupPage32.show()
+				self.groupPage33.show()
+				
 				self.groupPage41.hide()
 				self.groupPage42.hide()
+				self.groupPage43.hide()
+				
 				self.groupPage51.hide()
 				self.groupPage52.hide()
-				self.groupPage53.hide()
+				
+				self.groupPage61.hide()
+				self.groupPage62.hide()
+				self.groupPage63.hide()
 
 			if self.gPage == 3:
 				self.groupPage11.hide()
 				self.groupPage12.hide()
 				self.groupPage13.hide()
 				self.groupPage14.hide()
-				self.groupPage15.hide()
-				self.groupPage16.hide()
+				
 				self.groupPage21.hide()
 				self.groupPage22.hide()
 				self.groupPage23.hide()
-				self.groupPage31.show()
-				self.groupPage32.show()
-				self.groupPage33.show()
-				self.groupPage41.hide()
-				self.groupPage42.hide()
+				
+				self.groupPage31.hide()
+				self.groupPage32.hide()
+				self.groupPage33.hide()
+				
+				self.groupPage41.show()
+				self.groupPage42.show()
+				self.groupPage43.show()
+				
 				self.groupPage51.hide()
 				self.groupPage52.hide()
-				self.groupPage53.hide()
+				
+				self.groupPage61.hide()
+				self.groupPage62.hide()
+				self.groupPage63.hide()
 
 			if self.gPage == 4:
 				self.groupPage11.hide()
 				self.groupPage12.hide()
 				self.groupPage13.hide()
 				self.groupPage14.hide()
-				self.groupPage15.hide()
-				self.groupPage16.hide()
+				
 				self.groupPage21.hide()
 				self.groupPage22.hide()
 				self.groupPage23.hide()
+				
 				self.groupPage31.hide()
 				self.groupPage32.hide()
 				self.groupPage33.hide()
-				self.groupPage41.show()
-				self.groupPage42.show()
-				self.groupPage51.hide()
-				self.groupPage52.hide()
-				self.groupPage53.hide()
+				
+				self.groupPage41.hide()
+				self.groupPage42.hide()
+				self.groupPage43.hide()
+				
+				self.groupPage51.show()
+				self.groupPage52.show()
+				
+				self.groupPage61.hide()
+				self.groupPage62.hide()
+				self.groupPage63.hide()
 			
 			if self.gPage == 5:
 				self.groupPage11.hide()
 				self.groupPage12.hide()
 				self.groupPage13.hide()
 				self.groupPage14.hide()
-				self.groupPage15.hide()
-				self.groupPage16.hide()
+				
 				self.groupPage21.hide()
 				self.groupPage22.hide()
 				self.groupPage23.hide()
+				
 				self.groupPage31.hide()
 				self.groupPage32.hide()
 				self.groupPage33.hide()
+				
 				self.groupPage41.hide()
 				self.groupPage42.hide()
-				self.groupPage51.show()
-				self.groupPage52.show()
-				self.groupPage53.show()
+				self.groupPage43.hide()
+				
+				self.groupPage51.hide()
+				self.groupPage52.hide()
+				
+				self.groupPage61.show()
+				self.groupPage62.show()
+				self.groupPage63.show()
 				
 		# ############################################################################
 		def getSettings(self):
@@ -1003,39 +1085,6 @@ def showQtGUI():
 				skip = 1
 			
 			try:
-				val = MagicPanels.gWoodWeight
-				val = str(float(val))
-				self.oWoodWeightE.setText(val)
-			except:
-				skip = 1
-			
-			try:
-				k = [ key for key, val in getWoodWeightCalculation.items() if val == MagicPanels.gWoodWeightCalculation ][0]
-				self.oWoodWeightCalculationE.setCurrentText(k)
-			except:
-				skip = 1
-
-			try:
-				val = MagicPanels.gWoodPrice
-				val = str(float(val))
-				self.oWoodPriceE.setText(val)
-			except:
-				skip = 1
-			
-			try:
-				val = MagicPanels.gWoodPriceSymbol
-				val = str(val)
-				self.oWoodPriceSymbolE.setText(val)
-			except:
-				skip = 1
-			
-			try:
-				k = [ key for key, val in getWoodPriceCalculation.items() if val == MagicPanels.gWoodPriceCalculation ][0]
-				self.oWoodPriceCalculationE.setCurrentText(k)
-			except:
-				skip = 1
-
-			try:
 				color = MagicPanels.gDefaultColor
 				color = MagicPanels.convertColor(color, "RGBA")
 				[ r, g, b, a ] = [ str(color[0]), str(color[1]), str(color[2]), str(color[3]) ]
@@ -1073,6 +1122,80 @@ def showQtGUI():
 
 			# ################################################################
 			# page 2
+			# ################################################################
+			
+			try:
+				val = MagicPanels.gWoodWeight
+				val = str(float(val))
+				self.oWoodWeightE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				k = [ key for key, val in getWoodWeightCalculation.items() if val == MagicPanels.gWoodWeightCalculation ][0]
+				self.oWoodWeightCalculationE.setCurrentText(k)
+			except:
+				skip = 1
+
+			try:
+				val = MagicPanels.gWoodPrice
+				val = str(float(val))
+				self.oWoodPriceE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gWoodPriceSymbol
+				val = str(val)
+				self.oWoodPriceSymbolE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				k = [ key for key, val in getWoodPriceCalculation.items() if val == MagicPanels.gWoodPriceCalculation ][0]
+				self.oWoodPriceCalculationE.setCurrentText(k)
+			except:
+				skip = 1
+
+			try:
+				val = MagicPanels.gLumberLong
+				val = MagicPanels.unit2gui(val)
+				self.oLumberLongE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gLumberShort
+				val = MagicPanels.unit2gui(val)
+				self.oLumberShortE.setText(val)
+			except:
+				skip = 1
+				
+			try:
+				val = MagicPanels.gLumberThickness
+				val = MagicPanels.unit2gui(val)
+				self.oLumberThicknessE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gSawmillSteps
+				v = "; ".join([ MagicPanels.unit2gui(float(x.strip())) for x in val.split(";") ])
+				self.oSawmillStepsE.setText(v)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gSawmillEverywhere
+				if val == True:
+					self.oSawmillEverywhereE.setChecked(True)
+				else:
+					self.oSawmillEverywhereE.setChecked(False)
+			except:
+				skip = 1
+
+			# ################################################################
+			# page 3
 			# ################################################################
 			
 			try:
@@ -1174,7 +1297,7 @@ def showQtGUI():
 				skip = 1
 			
 			# ################################################################
-			# page 3
+			# page 4
 			# ################################################################
 			
 			try:
@@ -1226,7 +1349,7 @@ def showQtGUI():
 				skip = 1
 			
 			# ################################################################
-			# page 4
+			# page 5
 			# ################################################################
 			
 			try:
@@ -1274,7 +1397,7 @@ def showQtGUI():
 				skip = 1
 				
 			# ################################################################
-			# page 5
+			# page 6
 			# ################################################################
 			
 			try:
@@ -1408,22 +1531,7 @@ def showQtGUI():
 
 				val = self.oWoodDescriptionE.text()
 				wus.SetString('wWoodDescription', str(val))
-				
-				val = self.oWoodWeightE.text()
-				val = float(val)
-				wus.SetString('wWoodWeight', str(val))
-				
-				wus.SetString('wWoodWeightCalculation', str(self.gWoodWeightCalculation))
-				
-				val = self.oWoodPriceE.text()
-				val = float(val)
-				wus.SetString('wWoodPrice', str(val))
-				
-				val = self.oWoodPriceSymbolE.text()
-				wus.SetString('wWoodPriceSymbol', str(val))
-				
-				wus.SetString('wWoodPriceCalculation', str(self.gWoodPriceCalculation))
-				
+
 				# color
 				cR = self.oWoodColorRE.text()
 				cG = self.oWoodColorGE.text()
@@ -1446,8 +1554,47 @@ def showQtGUI():
 				# current selection
 				wus.SetBool('wCurrentSelection', self.oCurrentSelectionRB1.isChecked())
 				
+				
+				
 				# ################################################################
 				# page 2
+				# ################################################################
+				
+				val = self.oWoodWeightE.text()
+				val = float(val)
+				wus.SetString('wWoodWeight', str(val))
+				
+				wus.SetString('wWoodWeightCalculation', str(self.gWoodWeightCalculation))
+				
+				val = self.oWoodPriceE.text()
+				val = float(val)
+				wus.SetString('wWoodPrice', str(val))
+				
+				val = self.oWoodPriceSymbolE.text()
+				wus.SetString('wWoodPriceSymbol', str(val))
+				
+				wus.SetString('wWoodPriceCalculation', str(self.gWoodPriceCalculation))
+				
+				val = self.oLumberLongE.text()
+				val = MagicPanels.unit2value(val)
+				wus.SetString('wLumberLong', str(val))
+				
+				val = self.oLumberShortE.text()
+				val = MagicPanels.unit2value(val)
+				wus.SetString('wLumberShort', str(val))
+				
+				val = self.oLumberThicknessE.text()
+				val = MagicPanels.unit2value(val)
+				wus.SetString('wLumberThickness', str(val))
+				
+				val = self.oSawmillStepsE.text()
+				v = "; ".join([ str(MagicPanels.unit2value(x.strip())) for x in val.split(";") ])
+				wus.SetString('wSawmillSteps', str(v))
+			
+				wus.SetBool('wSawmillEverywhere', self.oSawmillEverywhereE.isChecked())
+	
+				# ################################################################
+				# page 3
 				# ################################################################
 				
 				val = self.oFrontInsideThicknessE.text()
@@ -1507,7 +1654,7 @@ def showQtGUI():
 				wus.SetString('wBackOutsideThickness', str(val))
 				
 				# ################################################################
-				# page 3
+				# page 4
 				# ################################################################
 				
 				# edgeband thickness
@@ -1546,7 +1693,7 @@ def showQtGUI():
 				wus.SetString('wEdgebandPriceCalculation', str(self.gEdgebandPriceCalculation))
 				
 				# ################################################################
-				# page 4
+				# page 5
 				# ################################################################
 				
 				wus.SetBool('wPreferCustomSettings', self.oPreferCustomSettingsRB1.isChecked())
@@ -1572,7 +1719,7 @@ def showQtGUI():
 				wus.SetString('wOffsetFromEdge', str(val))
 				
 				# ################################################################
-				# page 5
+				# page 6
 				# ################################################################
 				
 				val = self.oDowelDiameterE.text()

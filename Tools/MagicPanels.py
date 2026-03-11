@@ -49,25 +49,34 @@ def QT_TRANSLATE_NOOP(context, text): #
 # ###################################################################################################################
 
 
-gSettingsPref = 'User parameter:BaseApp/Preferences/Woodworking'                     # settings path <br>
-gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0)   # default color [247, 185, 108, 255] <br>
-gWoodDescription = "Płyta laminowana Biel Alpejska"  # used in cut-list if Label2 is empty <br>
+gSettingsPref = 'User parameter:BaseApp/Preferences/Woodworking' # settings path <br>
 gRoundPrecision = 2                        # should be set according to the user FreeCAD GUI settings <br>
 gSearchDepth = 200                         # recursive search depth <br>
 gKernelVersion = 0                         # FreeCAD version to add support for new kernel changes <br>
+
 gTheme = "default"                         # no theme by default <br>
 gMainWindowTheme = False                   # no theme to main window by default <br>
+
 gWoodThickness = 18                        # main construction wood thickness <br>
 gWoodSizeX = 2800                          # default panel long size <br>
 gWoodSizeY = 2070                          # default panel short size <br>
+gWoodDescription = "Płyta laminowana Biel Alpejska" # used in cut-list if Label2 is empty <br>
+gDefaultColor = (0.9686274528503418, 0.7254902124404907, 0.42352941632270813, 1.0) # default color [247, 185, 108, 255] <br>
+gWindowAnchor = "freecad"                  # anchors for tools GUI: "freecad", "screen" <br>
+gWindowStaysOnTop = True                   # to keep window on top <br> 
+gCurrentSelection = False                  # to skip refresh selection button <br>
+
 gWoodWeight = 12.6                         # wood weight float in selected calculation method <br>
 gWoodWeightCalculation = "kg/m^2"          # wood weight calculation string: "kg/m^2", "lb/in^2"
 gWoodPrice = 37.98                         # wood price float in user currency, by default in Poland in zł/m^2 <br>
 gWoodPriceSymbol = "zł"                    # wood price symbol to show in cut-list <br>
 gWoodPriceCalculation = "m^2"              # wood price calculation way: "m^2", "m^3", "wood", "foot" <br>
-gWindowAnchor = "freecad"                  # anchors for tools GUI: "freecad", "screen" <br>
-gWindowStaysOnTop = True                   # to keep window on top <br> 
-gCurrentSelection = False                  # to skip refresh selection button <br>
+gLumberLong = 25.4                         # lumber rough round for longer edge, 1 inch = 25.4 mm by default <br>
+gLumberShort = 12.7                        # lumber rough round for shorter edge, 1/2 inch = 12.7 mm by default <br>
+gLumberThickness = 3.175                   # lumber rough round for thickness edge, 1/8 inch = 3.175 mm by default <br>
+gSawmillSteps = "25.4; 31.75; 38.1; 50.8; 76.2" # values to round lumber: 4/4, 5/4, 6/4, 8/4, 12/4 <br>
+gSawmillEverywhere = False                 # to add lumber offset to all every cut list <br>
+
 gFrontInsideThickness = 18                 # front inside wood thickness <br>
 gFrontInsideOffsetL = 2                    # gap left <br>
 gFrontInsideOffsetR = 2                    # gap right <br>
@@ -82,18 +91,21 @@ gShelfThickness = 18                       # shelf wood thickness, usually full 
 gShelfOffsetSides = 2                      # shelf offset for sides <br>
 gBackInsideThickness = 18                  # back inside thickness, usually full wood <br>
 gBackOutsideThickness = 3                  # back outside thickness, usually HDF <br>
+
 gEdgebandThickness = 0                     # edgeband thickness <br>
+gEdgebandApply = "visible"                 # edgeband apply way "everywhere" or "visible"<br>
+gEdgebandColor = (1.0, 1.0, 1.0, 1.0)      # white <br>
 gEdgebandPrice = 4.99                      # edgeband price float in user currency, by default in Poland in zł/m <br>
 gEdgebandPriceSymbol = "zł"                # edgeband price symbol to show in cut-list <br>
 gEdgebandPriceCalculation = "m"            # edgeband price calculation way: "mm", "cm", "m", "ft", "in" <br>
-gEdgebandApply = "visible"                 # edgeband apply way "everywhere" or "visible"<br>
-gEdgebandColor = (1.0, 1.0, 1.0, 1.0)      # white <br>
+
 gPreferCustomSettings = False              # True - prefer settings from magicSettings, False - no by default <br>
 gOffsetSides = 0                           # use both sides <br>
 gOffsetItemsPerSide = 2                    # items per side <br>
 gOffsetFromCorner = 50                     # space from corner <br>
 gOffsetBetween = 64                        # space between dowels <br>
 gOffsetFromEdge = 9                        # offset from edge should be calculated from thickness but can be static <br>
+
 gDowelDiameter = 8                         # dowel diameter <br>
 gDowelSize = 35                            # dowel length <br>
 gDowelSink = 20                            # dowel inside the surface <br>
@@ -9341,7 +9353,6 @@ def updateGlobals():
 	# page 1
 	# ##########################################################################################
 
-	# theme
 	try:
 		if "wTheme" in wusStrings:
 			global gTheme
@@ -9349,7 +9360,6 @@ def updateGlobals():
 	except:
 		skip = 1
 
-	# main window theme
 	try:
 		if "wMainWindowTheme" in wusBools:
 			global gMainWindowTheme
@@ -9357,7 +9367,6 @@ def updateGlobals():
 	except:
 		skip = 1
 
-	# wood thickness
 	try:
 		if "wWoodThickness" in wusStrings:
 			global gWoodThickness
@@ -9385,6 +9394,43 @@ def updateGlobals():
 			gWoodDescription = str(wus.GetString('wWoodDescription'))
 	except:
 		skip = 1
+
+	try:
+		if "wWoodColorR" in wusStrings:
+			cR = wus.GetString('wWoodColorR')
+			cG = wus.GetString('wWoodColorG')
+			cB = wus.GetString('wWoodColorB')
+			cA = wus.GetString('wWoodColorA')
+			colorArr = [ int(float(cR)), int(float(cG)), int(float(cB)), int(float(cA)) ]
+			global gDefaultColor
+			gDefaultColor = convertColor(colorArr, "kernel")
+	except:
+		skip = 1
+
+	try:
+		if "wWindowAnchor" in wusStrings:
+			global gWindowAnchor
+			gWindowAnchor = str( wus.GetString('wWindowAnchor') )
+	except:
+		skip = 1
+
+	try:
+		if "wWindowStaysOnTop" in wusBools:
+			global gWindowStaysOnTop
+			gWindowStaysOnTop = wus.GetBool('wWindowStaysOnTop')
+	except:
+		skip = 1
+
+	try:
+		if "wCurrentSelection" in wusBools:
+			global gCurrentSelection
+			gCurrentSelection = wus.GetBool('wCurrentSelection')
+	except:
+		skip = 1
+
+	# ##########################################################################################
+	# page 2
+	# ##########################################################################################
 
 	try:
 		if "wWoodWeight" in wusStrings:
@@ -9420,46 +9466,44 @@ def updateGlobals():
 			gWoodPriceCalculation = str( wus.GetString('wWoodPriceCalculation') )
 	except:
 		skip = 1
-		
-	# color
+	
 	try:
-		if "wWoodColorR" in wusStrings:
-			cR = wus.GetString('wWoodColorR')
-			cG = wus.GetString('wWoodColorG')
-			cB = wus.GetString('wWoodColorB')
-			cA = wus.GetString('wWoodColorA')
-			colorArr = [ int(float(cR)), int(float(cG)), int(float(cB)), int(float(cA)) ]
-			global gDefaultColor
-			gDefaultColor = convertColor(colorArr, "kernel")
+		if "wLumberLong" in wusStrings:
+			global gLumberLong
+			gLumberLong = float( wus.GetString('wLumberLong') )
+	except:
+		skip = 1
+	
+	try:
+		if "wLumberShort" in wusStrings:
+			global gLumberShort
+			gLumberShort = float( wus.GetString('wLumberShort') )
+	except:
+		skip = 1
+	
+	try:
+		if "wLumberThickness" in wusStrings:
+			global gLumberThickness
+			gLumberThickness = float( wus.GetString('wLumberThickness') )
 	except:
 		skip = 1
 
-	# window anchors
 	try:
-		if "wWindowAnchor" in wusStrings:
-			global gWindowAnchor
-			gWindowAnchor = str( wus.GetString('wWindowAnchor') )
+		if "wSawmillSteps" in wusStrings:
+			global gSawmillSteps
+			gSawmillSteps = str(wus.GetString('wSawmillSteps'))
 	except:
 		skip = 1
-
-	# window stays on top
+	
 	try:
-		if "wWindowStaysOnTop" in wusBools:
-			global gWindowStaysOnTop
-			gWindowStaysOnTop = wus.GetBool('wWindowStaysOnTop')
-	except:
-		skip = 1
-
-	# current selection
-	try:
-		if "wCurrentSelection" in wusBools:
-			global gCurrentSelection
-			gCurrentSelection = wus.GetBool('wCurrentSelection')
+		if "wSawmillEverywhere" in wusBools:
+			global gSawmillEverywhere
+			gSawmillEverywhere = wus.GetBool('wSawmillEverywhere')
 	except:
 		skip = 1
 
 	# ##########################################################################################
-	# page 2
+	# page 3
 	# ##########################################################################################
 
 	try:
@@ -9561,14 +9605,32 @@ def updateGlobals():
 		skip = 1
 
 	# ##########################################################################################
-	# page 3
+	# page 4
 	# ##########################################################################################
 
-	# edgeband thickness
 	try:
 		if "wEdgebandThickness" in wusStrings:
 			global gEdgebandThickness
 			gEdgebandThickness = float( wus.GetString('wEdgebandThickness') )
+	except:
+		skip = 1
+
+	try:
+		if "wEdgebandApply" in wusStrings:
+			global gEdgebandApply
+			gEdgebandApply = wus.GetString('wEdgebandApply')
+	except:
+		skip = 1
+
+	try:
+		if "wEdgebandColorR" in wusStrings:
+			cR = wus.GetString('wEdgebandColorR')
+			cG = wus.GetString('wEdgebandColorG')
+			cB = wus.GetString('wEdgebandColorB')
+			cA = wus.GetString('wEdgebandColorA')
+			colorArr = [ int(float(cR)), int(float(cG)), int(float(cB)), int(float(cA)) ]
+			global gEdgebandColor
+			gEdgebandColor = convertColor(colorArr, "kernel")
 	except:
 		skip = 1
 
@@ -9593,29 +9655,8 @@ def updateGlobals():
 	except:
 		skip = 1
 
-	# edgeband apply way
-	try:
-		if "wEdgebandApply" in wusStrings:
-			global gEdgebandApply
-			gEdgebandApply = wus.GetString('wEdgebandApply')
-	except:
-		skip = 1
-
-	# color
-	try:
-		if "wEdgebandColorR" in wusStrings:
-			cR = wus.GetString('wEdgebandColorR')
-			cG = wus.GetString('wEdgebandColorG')
-			cB = wus.GetString('wEdgebandColorB')
-			cA = wus.GetString('wEdgebandColorA')
-			colorArr = [ int(float(cR)), int(float(cG)), int(float(cB)), int(float(cA)) ]
-			global gEdgebandColor
-			gEdgebandColor = convertColor(colorArr, "kernel")
-	except:
-		skip = 1
-
 	# ##########################################################################################
-	# page 4
+	# page 5
 	# ##########################################################################################
 
 	try:
@@ -9661,7 +9702,7 @@ def updateGlobals():
 		skip = 1
 
 	# ##########################################################################################
-	# page 5
+	# page 6
 	# ##########################################################################################
 
 	try:
@@ -9756,26 +9797,7 @@ def updateGlobals():
 		skip = 1
 
 
-
-'''
-'''
-
-
-'''
-FreeCAD.Console.PrintMessage("\n\n")
-FreeCAD.Console.PrintMessage(gKernelVersion)
-FreeCAD.Console.PrintMessage("\n")
-FreeCAD.Console.PrintMessage(gTheme)
-FreeCAD.Console.PrintMessage("\n")
-FreeCAD.Console.PrintMessage(gWoodThickness)
-FreeCAD.Console.PrintMessage("\n")
-FreeCAD.Console.PrintMessage(gDefaultColor)
-FreeCAD.Console.PrintMessage("\n")
-FreeCAD.Console.PrintMessage(gWindowStaysOnTop)
-FreeCAD.Console.PrintMessage("\n")
-FreeCAD.Console.PrintMessage(gCurrentSelection)
-'''
-
+# ###################################################################################################################
 '''
 	UPDATE GLOBALS HERE AFTER FUNCTIONS LOADED
 	not assign directly to values because user config values may not exist yet
@@ -9783,21 +9805,5 @@ FreeCAD.Console.PrintMessage(gCurrentSelection)
 '''
 
 updateGlobals()
-
-
-'''
-FreeCAD.Console.PrintMessage("\n\n")
-FreeCAD.Console.PrintMessage(gKernelVersion)
-FreeCAD.Console.PrintMessage("\n")
-FreeCAD.Console.PrintMessage(gTheme)
-FreeCAD.Console.PrintMessage("\n")
-FreeCAD.Console.PrintMessage(gWoodThickness)
-FreeCAD.Console.PrintMessage("\n")
-FreeCAD.Console.PrintMessage(gDefaultColor)
-FreeCAD.Console.PrintMessage("\n")
-FreeCAD.Console.PrintMessage(gWindowStaysOnTop)
-FreeCAD.Console.PrintMessage("\n")
-FreeCAD.Console.PrintMessage(gCurrentSelection)
-'''
 
 # ###################################################################################################################
