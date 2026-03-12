@@ -4,6 +4,7 @@ import Draft
 
 import MagicPanels
 
+MagicPanels.initConfig()
 translate = FreeCAD.Qt.translate
 
 # ############################################################################

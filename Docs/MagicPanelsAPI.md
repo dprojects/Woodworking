@@ -2652,6 +2652,24 @@
 
 # Functions for MagicPanels library config
 
+### initConfig():
+
+	
+##### Description:
+	
+		This function allows to run something before any tool execute.
+	
+##### Args:
+		none
+		
+##### Usage:
+	
+		MagicPanels.initConfig()
+
+##### Result:
+	
+		there is no return
+
 ### updateGlobals():
 
 	

@@ -15,6 +15,7 @@ import FreeCAD, FreeCADGui
 from PySide import QtGui, QtCore
 
 import MagicPanels
+MagicPanels.initConfig()
 
 # ############################################################################
 # Qt Main

@@ -1,6 +1,7 @@
 import FreeCAD, FreeCADGui
 import MagicPanels
 
+MagicPanels.initConfig()
 translate = FreeCAD.Qt.translate
 curvePoints = []
 

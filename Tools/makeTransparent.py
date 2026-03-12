@@ -4,6 +4,7 @@ from PySide import QtCore
 
 import MagicPanels
 
+MagicPanels.initConfig()
 translate = FreeCAD.Qt.translate
 
 gChange = dict()

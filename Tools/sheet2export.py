@@ -17,6 +17,7 @@ from PySide import QtGui, QtCore
 
 import MagicPanels
 
+MagicPanels.initConfig()
 translate = FreeCAD.Qt.translate
 
 

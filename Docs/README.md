@@ -203,6 +203,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * create new ActiveDocument before any tool execute if there is no (all tools) <br>
 > * add report dedicate to order lumber from sawmill (getDimensions) <br>
 > * add settings for lumber allowance in sawmill (magicSettings, MagicPanels) <br>
 > * add board foot to area column in cut-list (getDimensions) <br>
@@ -1034,9 +1035,6 @@ Example weights unit of commonly used wood in lb/board foot:
   * **price per cubic inch** `in^3`: the `Wood price` will be multiplied by the volume in inches.
   * **price per board foot** `boardfoot`: the `Wood price` will be multiplied by the board foot.
 
-**Video tutorials:** 
-* [Furniture weight and price](https://www.youtube.com/watch?v=AY0_f-lJtc8)
-
 * **Lumber allowance for length:** this option allows you to set the wood allowance for the board's length, which applies to the longer edge of the board. This value allows you to leave a margin of wood for later planing or cutting to achieve the final dimensions.
 * **Lumber allowance for width:** this option allows you to set the wood allowance for the board's width, which applies to the board's shorter edge. This value allows you to leave a margin of wood for later planing or cutting to achieve the final dimensions.
 * **Lumber allowance for thickness:** this option allows you to set the wood allowance for the board's thickness; it applies to the board's shortest edge. This value allows you to leave a margin of wood for later planing or cutting to achieve the final dimensions. However, in the case of the [r - raw wood order](https://github.com/dprojects/Woodworking/tree/master/Docs#main-report) cutting list, the thickness will be rounded to the first threshold encountered from the global variable `MagicPanels.gSawmillSteps`, which can be set using the [magicSettings](https://github.com/dprojects/Woodworking/tree/master/Docs#settings---page-2) tool.
@@ -1117,6 +1115,7 @@ Example weights unit of commonly used wood in lb/board foot:
 
 **Video tutorials:** 
 * [How to use magicSettings tool](https://www.youtube.com/watch?v=kwcO2bRcCrY)
+* [Furniture weight and price](https://www.youtube.com/watch?v=AY0_f-lJtc8)
 
 ## selected2LinkGroup
 

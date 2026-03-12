@@ -4,6 +4,7 @@ import time
 
 import MagicPanels
 
+MagicPanels.initConfig()
 translate = FreeCAD.Qt.translate
 
 # ############################################################################
@@ -861,21 +862,23 @@ def showQtGUI():
 			# create foot
 			self.layoutFoot = QtGui.QVBoxLayout()
 			
-			self.rowFoot1 = QtGui.QHBoxLayout()
-			self.rowFoot1.addWidget(self.cocL)
-			self.rowFoot1.addWidget(self.cocB1)
-			self.rowFoot1.addWidget(self.cocB2)
-			self.layoutFoot.addLayout(self.rowFoot1)
+			if self.gCornerCrossSupport == True or self.gAxisCrossSupport == True:
+				
+				self.rowFoot1 = QtGui.QHBoxLayout()
+				self.rowFoot1.addWidget(self.cocL)
+				self.rowFoot1.addWidget(self.cocB1)
+				self.rowFoot1.addWidget(self.cocB2)
+				self.layoutFoot.addLayout(self.rowFoot1)
 
-			self.rowFoot2 = QtGui.QHBoxLayout()
-			self.rowFoot2.addWidget(self.cecL)
-			self.rowFoot2.addWidget(self.cecB1)
-			self.rowFoot2.addWidget(self.cecB2)
-			self.layoutFoot.addLayout(self.rowFoot2)
-			
-			self.rowFoot3 = QtGui.QHBoxLayout()
-			self.rowFoot3.addWidget(self.kccscb)
-			self.layoutFoot.addLayout(self.rowFoot3)
+				self.rowFoot2 = QtGui.QHBoxLayout()
+				self.rowFoot2.addWidget(self.cecL)
+				self.rowFoot2.addWidget(self.cecB1)
+				self.rowFoot2.addWidget(self.cecB2)
+				self.layoutFoot.addLayout(self.rowFoot2)
+				
+				self.rowFoot3 = QtGui.QHBoxLayout()
+				self.rowFoot3.addWidget(self.kccscb)
+				self.layoutFoot.addLayout(self.rowFoot3)
 			
 			# add layout to main window
 			self.layout = QtGui.QVBoxLayout()

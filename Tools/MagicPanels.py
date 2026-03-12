@@ -9314,6 +9314,37 @@ def setContainerPlacement(iObj, iX, iY, iZ, iR, iAnchor="normal"):
 # ###################################################################################################################
 
 
+# ###################################################################################################################
+def initConfig():
+	'''
+	Description:
+	
+		This function allows to run something before any tool execute.
+	
+	Args:
+		none
+		
+	Usage:
+	
+		MagicPanels.initConfig()
+
+	Result:
+	
+		there is no return
+
+	'''
+
+
+	try:
+		if FreeCAD.ActiveDocument == None:
+			FreeCAD.newDocument()
+			FreeCADGui.SendMsgToActiveView("ViewFit")
+			FreeCADGui.ActiveDocument.ActiveView.viewIsometric()
+	except:
+		skip = 1
+
+
+# ###################################################################################################################
 def updateGlobals():
 	'''
 	Description:

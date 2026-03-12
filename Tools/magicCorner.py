@@ -2,6 +2,7 @@ import FreeCAD, FreeCADGui
 import Part, JoinFeatures, BOPTools.JoinFeatures
 import MagicPanels
 
+MagicPanels.initConfig()
 translate = FreeCAD.Qt.translate
 
 try:

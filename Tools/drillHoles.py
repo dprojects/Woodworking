@@ -1,6 +1,7 @@
 import FreeCAD, FreeCADGui, Part, Sketcher
 import MagicPanels
 
+MagicPanels.initConfig()
 translate = FreeCAD.Qt.translate
 
 try:
