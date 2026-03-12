@@ -742,11 +742,9 @@ def showQtGUI():
 						d.Length = self.gDSizeX
 						colors = [ (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0),
 									(0.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0) ]
-						
+					
 					MagicPanels.setColor(d, 0, colors, "color") 
-					
 					self.gDowels.append(d)
-					
 					i = i + 1
 			
 			# dowels for 2nd side
@@ -888,17 +886,29 @@ def showQtGUI():
 						d.Length = self.gDSizeX
 						colors = [ (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0), (0.0, 0.0, 0.0, 1.0),
 									(0.0, 0.0, 0.0, 1.0), (1.0, 0.0, 0.0, 1.0), (0.0, 1.0, 0.0, 1.0) ]
-						
+
 					MagicPanels.setColor(d, 0, colors, "color")
-					
 					self.gDowels.append(d)
-					
 					i = i + 1
 				
 			# set rotations
 			
 			self.setRotation()
 			MagicPanels.moveToFirst(self.gDowels, self.gObj)
+			
+			# set rotation for Biscuits
+			if self.gCurrentSelection == 3 or self.gCurrentSelection == 4 or self.gCurrentSelection == 5:
+				if not MagicPanels.equal(v1[1], v2[1]):
+					for d in self.gDowels:
+						center = d.Shape.CenterOfMass
+						[ center ] = MagicPanels.getVerticesPosition([ center ], d, "vector")
+						Draft.rotate(d, 90, center, FreeCAD.Vector(0, 0, 1), False)
+					
+				if not MagicPanels.equal(v1[2], v2[2]):
+					for d in self.gDowels:
+						center = d.Shape.CenterOfMass
+						[ center ] = MagicPanels.getVerticesPosition([ center ], d, "vector")
+						Draft.rotate(d, 90, center, FreeCAD.Vector(0, 1, 0), False)
 
 		# ############################################################################
 		def setDowelsSettings(self, selectedIndex):

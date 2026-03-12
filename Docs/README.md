@@ -203,6 +203,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * biscuits position fix (magicDowels, biscuits files) <br>
 > * create new ActiveDocument before any tool execute if there is no (all tools) <br>
 > * add report dedicate to order lumber from sawmill (getDimensions) <br>
 > * add settings for lumber allowance in sawmill (magicSettings, MagicPanels) <br>
