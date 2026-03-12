@@ -3181,12 +3181,19 @@ def setBody(iObj, iCaller="setBody"):
 	if iObj.isDerivedFrom("PartDesign::Body") and iObj.Name.startswith("Body"):
 
 		try:
+			
+			if sPPM == "selected":
+				
+				# get container size in this case
+				[ vW, vH, vL ] = MagicPanels.getSizes(iObj)
+				setDB(iObj, vW, vH, vL, iCaller)
+			
+			else:
+				# set reference point to the Body objects list
+				key = iObj.Group
 
-			# set reference point to the Body objects list
-			key = iObj.Group
-
-			# call scan for each object at the list
-			scanObjects(key, iCaller)
+				# call scan for each object at the list
+				scanObjects(key, iCaller)
 		
 		except:
 			
@@ -3696,9 +3703,10 @@ def scanObjects(iOBs, iCaller="main"):
 		if iCaller != "main":
 			setAppPart(obj)
 			setPartCut(obj)
-			setBody(obj)
 			setAppLinkGroup(obj)
 
+		if iCaller != "main" or sPPM == "selected":
+			setBody(obj)
 
 # ###################################################################################################################
 # View types (regiester each view at view selector)

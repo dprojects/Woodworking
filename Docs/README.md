@@ -203,6 +203,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * add possibility to measure full Body container in cut-list (getDimensions) <br>
 > * biscuits position fix (magicDowels, biscuits files) <br>
 > * create new ActiveDocument before any tool execute if there is no (all tools) <br>
 > * add report dedicate to order lumber from sawmill (getDimensions) <br>
@@ -1440,6 +1441,7 @@ By default the values at report are rounded to have more clear listing. Rounding
 
 * `Part :: Cube`
 * `PartDesign :: Pad`
+* `PartDesign::Body` if you want to measure the full `Body` container instead of each single `PartDesign :: Pad` object inside, for example a tenon created via [magicJoints](#magicjoints) tool, you have to select `Body` and choose the option `selected objects` in [Search path](#search-path).
 * `Part :: Extrusion`
 * `Assembly :: AssemblyObject`, `Assembly :: AssemblyLink` - tested with Assembly4 and FreeCAD 1.0
 * custom objects with `Width`, `Height` and `Length` attribute, for example [Stick Frame Workbench objects](https://gitlab.com/mathcodeprint/stickframe).
@@ -1998,6 +2000,16 @@ This option was added [to support CNC scripts](https://github.com/dprojects/Wood
 * **create Mortise** this button creates a `PartDesign :: Pocket` object on the face loaded with the third `set` button. If no such face has been loaded, a `PartDesign :: Pocket` object will be created on the face loaded with the second `set` button. This allows you to freely select face to create a Mortise, as well as use a joint pattern from tools like [jointTenonCut](#jointtenoncut) and create a Mortise.
 * **create Tenon** this button creates a `PartDesign :: Pad` object on the face loaded with the second `set` button. 
 * **create Tenon and Mortise** this button creates a `PartDesign :: Pad` object on the face loaded with the second `set` button and also creates a `PartDesign :: Pocket` object on the face loaded with the third `set` button.
+
+> [!TIP]
+> In this tool, the tenon is considered as a dowel. This means the length of the tenon will be doubled because 
+> the mortises will be in both pieces of wood, and the same length will be hidden in both pieces of wood simultaneously. 
+> This is correct solution from carpentry point of view because in real life, creating joints is not about building 
+> a snowman in winter, gluing small pieces to the edge of a board to create a joint. In real life, finger joints or dovetail 
+> joints are created by cutting pieces from a large piece of wood, so the recommended workflow with this tool is to use the 
+> mortise option, with each tenon treated as a dowel. This also allows you to verify whether the joint you are designing 
+> can be made by cutting and how the cutting process should proceed in real life. However, if you want to get a tenon as 
+> part of the board, an attachment, in the cut list, you should select Body and choose the option for the selected objects.
 
 **Video tutorials:** 
 * [How to create tenon and mortise quickly](https://www.youtube.com/watch?v=vuddlHfAbCc)
