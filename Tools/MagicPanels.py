@@ -7054,29 +7054,14 @@ def makeMortise(iSketch, iDepth, iPad, iFace):
 	
 	mortise = body.newObject('PartDesign::Pocket','Mortise')
 	mortise.Profile = sketch
-	
-	mortise.Length = 2 * iDepth
-	mortise.Midplane = 1
 	mortise.Label = "Mortise "
 	
-	# not needed
-	#plane = getFacePlane(iFace)
-	
-	#if plane == "XY":
-	#	direction = (0, 0, 1)
-	#if plane == "XZ":
-	#	direction = (0, 1, 0)
-	#if plane == "YZ":
-	#	direction = (1, 0, 0)
-
-	#mortise.TaperAngle = 0.000000
-	#mortise.UseCustomVector = 0
-	#mortise.Direction = direction
-	#mortise.AlongSketchNormal = 1
-	#mortise.Type = 0
-	#mortise.UpToFace = None
-	#mortise.Reversed = 0
-	#mortise.Offset = 0
+	if hasattr(mortise, "SideType"):
+		mortise.SideType = 2 # Symmetric in new FreeCAD 1.1
+		mortise.Length = 2 * iDepth
+	else:
+		mortise.Midplane = 1 # for backward compatibility in FreeCAD 0.21.2
+		mortise.Length = 2 * iDepth
 
 	sketch.Visibility = False
 	pad.Visibility = False
@@ -7146,11 +7131,16 @@ def makeTenon(iSketch, iLength, iPad, iFace):
 	setPosition(sketch, x, y, z, "global")
 
 	tenon = body.newObject('PartDesign::Pad', "Tenon")
-	tenon.Label = "Tenon "
 	tenon.Profile = sketch
-	tenon.Length = FreeCAD.Units.Quantity(2 * iLength)
-	tenon.Midplane = 1
+	tenon.Label = "Tenon "
 	
+	if hasattr(tenon, "SideType"):
+		tenon.SideType = 2 # Symmetric in new FreeCAD 1.1
+		tenon.Length = 2 * iLength
+	else:
+		tenon.Midplane = 1 # for backward compatibility in FreeCAD 0.21.2
+		tenon.Length = 2 * iLength
+
 	sketch.Visibility = False
 	pad.Visibility = False
 	FreeCAD.ActiveDocument.recompute()

@@ -203,6 +203,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 2.0 stable:** <br>
+> * fix tenon and mortise Midplane deprecated warning (MagicPanels)
 > * add possibility to measure full Body container in cut-list (getDimensions) <br>
 > * biscuits position fix (magicDowels, biscuits files) <br>
 > * create new ActiveDocument before any tool execute if there is no (all tools) <br>
@@ -1441,7 +1442,7 @@ By default the values at report are rounded to have more clear listing. Rounding
 
 * `Part :: Cube`
 * `PartDesign :: Pad`
-* `PartDesign::Body` if you want to measure the full `Body` container instead of each single `PartDesign :: Pad` object inside, for example a tenon created via [magicJoints](#magicjoints) tool, you have to select `Body` and choose the option `selected objects` in [Search path](#search-path).
+* `PartDesign :: Body` if you want to measure the full `Body` container instead of each single `PartDesign :: Pad` object inside, for example a tenon created via [magicJoints](#magicjoints) tool, you have to select `Body` and choose the option `selected objects` in [Search path](#search-path).
 * `Part :: Extrusion`
 * `Assembly :: AssemblyObject`, `Assembly :: AssemblyLink` - tested with Assembly4 and FreeCAD 1.0
 * custom objects with `Width`, `Height` and `Length` attribute, for example [Stick Frame Workbench objects](https://gitlab.com/mathcodeprint/stickframe).
