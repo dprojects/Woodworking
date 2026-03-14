@@ -501,19 +501,19 @@ def showQtGUI():
 		gHelpInfoF42 += translate('magicStart', 'To pre-calculate the location where the wooden table will be created, select any vertex and press the "calculate wooden table position" button.')
 		gHelpInfoF42 += '<ul>'
 		gHelpInfoF42 += '<li><b>'
-		gHelpInfoF42 += translate('magicStart', 'Table width X') + '</b>: '
+		gHelpInfoF42 += translate('magicStart', 'Wood table width X') + '</b>: '
 		gHelpInfoF42 += translate('magicStart', 'means the width of the wooden table, i.e. the size according to the X coordinate axis.')
 		gHelpInfoF42 += '</li>'
 		gHelpInfoF42 += '<li><b>'
-		gHelpInfoF42 += translate('magicStart', 'Table depth Y') + '</b>: '
+		gHelpInfoF42 += translate('magicStart', 'Wood table depth Y') + '</b>: '
 		gHelpInfoF42 += translate('magicStart', 'means the depth of the wooden table, i.e. the size according to the Y coordinate axis.')
 		gHelpInfoF42 += '</li>'
 		gHelpInfoF42 += '<li><b>'
-		gHelpInfoF42 += translate('magicStart', 'Table height Z') + '</b>: '
+		gHelpInfoF42 += translate('magicStart', 'Wood table height Z') + '</b>: '
 		gHelpInfoF42 += translate('magicStart', 'means the height of the wooden table, i.e. the size according to the Z coordinate axis.')
 		gHelpInfoF42 += '</li>'
 		gHelpInfoF42 += '<li><b>'
-		gHelpInfoF42 += translate('magicStart', 'Table top thickness') + '</b>: '
+		gHelpInfoF42 += translate('magicStart', 'Wood table top thickness') + '</b>: '
 		gHelpInfoF42 += translate('magicStart', 'means the thickness of the wooden table top, i.e. the size according to the Z coordinate axis.')
 		gHelpInfoF42 += '</li>'
 		gHelpInfoF42 += '<li><b>'
@@ -521,7 +521,7 @@ def showQtGUI():
 		gHelpInfoF42 += translate('magicStart', 'this is the thickness of the wood from which the table legs and the supporting beams under the top will be made.')
 		gHelpInfoF42 += '</li>'
 		gHelpInfoF42 += '<li><b>'
-		gHelpInfoF42 += translate('magicStart', 'Table top offset') + '</b>: '
+		gHelpInfoF42 += translate('magicStart', 'Wood table top offset') + '</b>: '
 		gHelpInfoF42 += translate('magicStart', 'means the distance of the legs and supporting beams from the top. If the top is not to have protruding corners, the value 0 should be entered.')
 		gHelpInfoF42 += '</li>'
 		gHelpInfoF42 += '</ul>'
@@ -1254,22 +1254,22 @@ def showQtGUI():
 			self.oTableInfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
 			self.oTableInfo.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 		
-			self.oTableSizeXL = QtGui.QLabel(translate('magicStart', 'Table width X:'), self)
+			self.oTableSizeXL = QtGui.QLabel(translate('magicStart', 'Wood table width X:'), self)
 			self.oTableSizeXE = QtGui.QLineEdit(self)
 			self.oTableSizeXE.setText(MagicPanels.unit2gui(990))
 			self.oTableSizeXE.setFixedWidth(fieldSize)
 			
-			self.oTableSizeYL = QtGui.QLabel(translate('magicStart', 'Table depth Y:'), self)
+			self.oTableSizeYL = QtGui.QLabel(translate('magicStart', 'Wood table depth Y:'), self)
 			self.oTableSizeYE = QtGui.QLineEdit(self)
 			self.oTableSizeYE.setText(MagicPanels.unit2gui(525))
 			self.oTableSizeYE.setFixedWidth(fieldSize)
 			
-			self.oTableSizeZL = QtGui.QLabel(translate('magicStart', 'Table height Z:'), self)
+			self.oTableSizeZL = QtGui.QLabel(translate('magicStart', 'Wood table height Z:'), self)
 			self.oTableSizeZE = QtGui.QLineEdit(self)
 			self.oTableSizeZE.setText(MagicPanels.unit2gui(430))
 			self.oTableSizeZE.setFixedWidth(fieldSize)
 			
-			self.oTableTopThickL = QtGui.QLabel(translate('magicStart', 'Table top thickness:'), self)
+			self.oTableTopThickL = QtGui.QLabel(translate('magicStart', 'Wood table top thickness:'), self)
 			self.oTableTopThickE = QtGui.QLineEdit(self)
 			self.oTableTopThickE.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.oTableTopThickE.setFixedWidth(fieldSize)
@@ -1279,7 +1279,7 @@ def showQtGUI():
 			self.oTableLegThickE.setText(MagicPanels.unit2gui(80))
 			self.oTableLegThickE.setFixedWidth(fieldSize)
 			
-			self.oTableTopOffsetL = QtGui.QLabel(translate('magicStart', 'Table top offset:'), self)
+			self.oTableTopOffsetL = QtGui.QLabel(translate('magicStart', 'Wood table top offset:'), self)
 			self.oTableTopOffsetE = QtGui.QLineEdit(self)
 			self.oTableTopOffsetE.setText(MagicPanels.unit2gui(35))
 			self.oTableTopOffsetE.setFixedWidth(fieldSize)
@@ -6696,7 +6696,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left')
+			o2.Label = translate('magicStart', 'Left side')
 			o2.Length = thick
 			o2.Height = sizeZ - (2 * thick) - (2 * edgebandE)
 			o2.Width = sizeY - thickFront - (2 * edgeband)
@@ -6706,7 +6706,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right')
+			o3.Label = translate('magicStart', 'Right side')
 			o3.Length = thick
 			o3.Height = sizeZ - (2 * thick) - (2 * edgebandE)
 			o3.Width = sizeY - thickFront - (2 * edgeband)
@@ -6716,7 +6716,7 @@ def showQtGUI():
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back')
+			o4.Label = translate('magicStart', 'Back side')
 			o4.Length = sizeX - (2 * thick) - (2 * edgebandE)
 			o4.Height = sizeZ - (2 * thick) - (2 * edgebandE)
 			o4.Width = thickBack
@@ -6726,7 +6726,7 @@ def showQtGUI():
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o5.Label = translate('magicStart', 'Top')
+			o5.Label = translate('magicStart', 'Top cover')
 			o5.Length = sizeX - (2 * edgeband)
 			o5.Height = thick
 			o5.Width = sizeY - thickFront - (2 * edgeband)
@@ -6801,7 +6801,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left')
+			o2.Label = translate('magicStart', 'Left side')
 			o2.Length = thick
 			o2.Height = sizeZ - (2 * edgeband)
 			o2.Width = sizeY - (2 * edgeband)
@@ -6811,7 +6811,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right')
+			o3.Label = translate('magicStart', 'Right side')
 			o3.Length = thick
 			o3.Height = sizeZ - (2 * edgeband)
 			o3.Width = sizeY - (2 * edgeband)
@@ -6821,7 +6821,7 @@ def showQtGUI():
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back')
+			o4.Label = translate('magicStart', 'Back side')
 			o4.Length = sizeX
 			o4.Height = sizeZ - 100
 			o4.Width = thickBack
@@ -6832,7 +6832,7 @@ def showQtGUI():
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o5.Label = translate('magicStart', 'Top')
+			o5.Label = translate('magicStart', 'Top cover')
 			o5.Length = sizeX - (2 * thick) - (2 * edgebandE)
 			o5.Height = thick
 			o5.Width = sizeY - (2 * edgeband)
@@ -6911,7 +6911,7 @@ def showQtGUI():
 				
 				# Left Side
 				o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-				o2.Label = translate('magicStart', 'Left M'+str(i))
+				o2.Label = translate('magicStart', 'Left side M'+str(i))
 				o2.Length = thick
 				o2.Height = sideZ
 				o2.Width = sizeY - thickFront
@@ -6921,7 +6921,7 @@ def showQtGUI():
 				
 				# Right Side
 				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-				o3.Label = translate('magicStart', 'Right M'+str(i))
+				o3.Label = translate('magicStart', 'Right side M'+str(i))
 				o3.Length = thick
 				o3.Height = sideZ
 				o3.Width = sizeY - thickFront
@@ -6931,7 +6931,7 @@ def showQtGUI():
 				
 				# Back
 				o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-				o4.Label = translate('magicStart', 'Back M'+str(i))
+				o4.Label = translate('magicStart', 'Back side M'+str(i))
 				o4.Length = sizeX - (2 * thick)
 				o4.Height = sideZ
 				o4.Width = thickBack
@@ -6999,7 +6999,7 @@ def showQtGUI():
 			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootLeft")
-			o1.Label = translate('magicStart', 'Foot Left')
+			o1.Label = translate('magicStart', 'Foot from left side')
 			o1.Length = thick
 			o1.Height = height
 			o1.Width = depth
@@ -7009,7 +7009,7 @@ def showQtGUI():
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRight")
-			o2.Label = translate('magicStart', 'Foot Right')
+			o2.Label = translate('magicStart', 'Foot from right side')
 			o2.Length = thick
 			o2.Height = height
 			o2.Width = depth
@@ -7040,7 +7040,7 @@ def showQtGUI():
 			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootLeft")
-			o1.Label = translate('magicStart', 'Foot Left')
+			o1.Label = translate('magicStart', 'Foot from left side')
 			o1.Length = thick
 			o1.Height = height
 			o1.Width = depth
@@ -7050,7 +7050,7 @@ def showQtGUI():
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRight")
-			o2.Label = translate('magicStart', 'Foot Right')
+			o2.Label = translate('magicStart', 'Foot from right side')
 			o2.Length = thick
 			o2.Height = height
 			o2.Width = depth
@@ -7060,7 +7060,7 @@ def showQtGUI():
 			
 			# Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootBack")
-			o3.Label = translate('magicStart', 'Foot Back')
+			o3.Label = translate('magicStart', 'Foot from back')
 			o3.Length = width - (2 * thick)
 			o3.Height = height
 			o3.Width = thick
@@ -7070,7 +7070,7 @@ def showQtGUI():
 			
 			# Front
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootFront")
-			o4.Label = translate('magicStart', 'Foot Front')
+			o4.Label = translate('magicStart', 'Foot from front')
 			o4.Length = width - (2 * thick)
 			o4.Height = height
 			o4.Width = thick
@@ -7101,7 +7101,7 @@ def showQtGUI():
 
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootLeft")
-			o1.Label = translate('magicStart', 'Foot Left')
+			o1.Label = translate('magicStart', 'Foot from left side')
 			o1.Length = thick
 			o1.Height = height
 			o1.Width = depth
@@ -7111,7 +7111,7 @@ def showQtGUI():
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRight")
-			o2.Label = translate('magicStart', 'Foot Right')
+			o2.Label = translate('magicStart', 'Foot from right side')
 			o2.Length = thick
 			o2.Height = height
 			o2.Width = depth
@@ -7121,7 +7121,7 @@ def showQtGUI():
 			
 			# Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootBack")
-			o3.Label = translate('magicStart', 'Foot Back')
+			o3.Label = translate('magicStart', 'Foot from back')
 			o3.Length = width - (2 * thick)
 			o3.Height = height
 			o3.Width = thick
@@ -7131,7 +7131,7 @@ def showQtGUI():
 			
 			# Front
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootFront")
-			o4.Label = translate('magicStart', 'Foot Front')
+			o4.Label = translate('magicStart', 'Foot from front')
 			o4.Length = width - (2 * thick)
 			o4.Height = height
 			o4.Width = thick
@@ -7141,7 +7141,7 @@ def showQtGUI():
 			
 			# Center
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootCenter")
-			o5.Label = translate('magicStart', 'Foot Center')
+			o5.Label = translate('magicStart', 'Foot in center')
 			o5.Length = width - (2 * thick)
 			o5.Height = height
 			o5.Width = thick
@@ -7173,7 +7173,7 @@ def showQtGUI():
 
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootLeft")
-			o1.Label = translate('magicStart', 'Foot Left')
+			o1.Label = translate('magicStart', 'Foot from left side')
 			o1.Length = thick
 			o1.Height = height
 			o1.Width = depth
@@ -7183,7 +7183,7 @@ def showQtGUI():
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootRight")
-			o2.Label = translate('magicStart', 'Foot Right')
+			o2.Label = translate('magicStart', 'Foot from right side')
 			o2.Length = thick
 			o2.Height = height
 			o2.Width = depth
@@ -7193,7 +7193,7 @@ def showQtGUI():
 			
 			# Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootBack")
-			o3.Label = translate('magicStart', 'Foot Back')
+			o3.Label = translate('magicStart', 'Foot from back')
 			o3.Length = width - (2 * thick)
 			o3.Height = height
 			o3.Width = thick
@@ -7203,7 +7203,7 @@ def showQtGUI():
 			
 			# Front
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FootFront")
-			o4.Label = translate('magicStart', 'Foot Front')
+			o4.Label = translate('magicStart', 'Foot from front')
 			o4.Length = width - (2 * thick)
 			o4.Height = height
 			o4.Width = thick
@@ -8037,7 +8037,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left')
+			o2.Label = translate('magicStart', 'Left side')
 			o2.Length = thick
 			o2.Height = sizeZ - (2 * thick) - (2 * edgebandE)
 			o2.Width = sizeY - thickFront - thickBack - (2 * edgeband)
@@ -8047,7 +8047,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right')
+			o3.Label = translate('magicStart', 'Right side')
 			o3.Length = thick
 			o3.Height = sizeZ - (2 * thick) - (2 * edgebandE)
 			o3.Width = sizeY - thickFront - thickBack - (2 * edgeband)
@@ -8068,7 +8068,7 @@ def showQtGUI():
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o5.Label = translate('magicStart', 'Top')
+			o5.Label = translate('magicStart', 'Top cover')
 			o5.Length = sizeX - (2 * edgeband)
 			o5.Height = thick
 			o5.Width = sizeY - thickFront - thickBack - (2 * edgeband)
@@ -8145,7 +8145,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left')
+			o2.Label = translate('magicStart', 'Left side')
 			o2.Length = thick
 			o2.Height = sizeZ - (2 * thick) - (2 * edgebandE)
 			o2.Width = sizeY - (2 * edgeband)
@@ -8155,7 +8155,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right')
+			o3.Label = translate('magicStart', 'Right side')
 			o3.Length = thick
 			o3.Height = sizeZ - (2 * thick) - (2 * edgebandE)
 			o3.Width = sizeY - (2 * edgeband)
@@ -8165,7 +8165,7 @@ def showQtGUI():
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back')
+			o4.Label = translate('magicStart', 'Back side')
 			o4.Length = sizeX - (2 * thick) - (2 * edgebandE)
 			o4.Height = sizeZ - (2 * thick) - (2 * edgebandE)
 			o4.Width = thickBack
@@ -8175,7 +8175,7 @@ def showQtGUI():
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o5.Label = translate('magicStart', 'Top')
+			o5.Label = translate('magicStart', 'Top cover')
 			o5.Length = sizeX - (2 * edgeband)
 			o5.Height = thick
 			o5.Width = sizeY - (2 * edgeband)
@@ -8252,7 +8252,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left')
+			o2.Label = translate('magicStart', 'Left side')
 			o2.Length = thick
 			o2.Height = sizeZ - (2 * thick) - (2 * edgebandE)
 			o2.Width = sizeY - thickBack - (2 * edgeband)
@@ -8262,7 +8262,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right')
+			o3.Label = translate('magicStart', 'Right side')
 			o3.Length = thick
 			o3.Height = sizeZ - (2 * thick) - (2 * edgebandE)
 			o3.Width = sizeY - thickBack - (2 * edgeband)
@@ -8272,7 +8272,7 @@ def showQtGUI():
 			
 			# Back HDF
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back')
+			o4.Label = translate('magicStart', 'Back side')
 			o4.Length = sizeX
 			o4.Height = sizeZ
 			o4.Width = thickBack
@@ -8283,7 +8283,7 @@ def showQtGUI():
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o5.Label = translate('magicStart', 'Top')
+			o5.Label = translate('magicStart', 'Top cover')
 			o5.Length = sizeX - (2 * edgeband)
 			o5.Height = thick
 			o5.Width = sizeY - thickBack - (2 * edgeband)
@@ -8547,7 +8547,7 @@ def showQtGUI():
 			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFLeft")
-			o1.Label = translate('magicStart', 'Face Frame Left')
+			o1.Label = translate('magicStart', 'Left side of frame')
 			o1.Length = barWidth
 			o1.Height = FFHeight - (2 * barWidth)
 			o1.Width = barThick
@@ -8557,7 +8557,7 @@ def showQtGUI():
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFRight")
-			o2.Label = translate('magicStart', 'Face Frame Right')
+			o2.Label = translate('magicStart', 'Right side of frame')
 			o2.Length = barWidth
 			o2.Height = FFHeight - (2 * barWidth)
 			o2.Width = barThick
@@ -8567,7 +8567,7 @@ def showQtGUI():
 			
 			# Bottom
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFBottom")
-			o3.Label = translate('magicStart', 'Face Frame Bottom')
+			o3.Label = translate('magicStart', 'Bottom side of frame')
 			o3.Length = FFWidth
 			o3.Height = barWidth
 			o3.Width = barThick
@@ -8577,7 +8577,7 @@ def showQtGUI():
 			
 			# Top
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFTop")
-			o4.Label = translate('magicStart', 'Face Frame Top')
+			o4.Label = translate('magicStart', 'Top of frame')
 			o4.Length = FFWidth
 			o4.Height = barWidth
 			o4.Width = barThick
@@ -8609,7 +8609,7 @@ def showQtGUI():
 
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFLeft")
-			o1.Label = translate('magicStart', 'Face Frame Left')
+			o1.Label = translate('magicStart', 'Left side of frame')
 			o1.Length = barWidth
 			o1.Height = FFHeight - (2 * barWidth)
 			o1.Width = barThick
@@ -8619,7 +8619,7 @@ def showQtGUI():
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFRight")
-			o2.Label = translate('magicStart', 'Face Frame Right')
+			o2.Label = translate('magicStart', 'Right side of frame')
 			o2.Length = barWidth
 			o2.Height = FFHeight - (2 * barWidth)
 			o2.Width = barThick
@@ -8629,7 +8629,7 @@ def showQtGUI():
 			
 			# Bottom
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFBottom")
-			o3.Label = translate('magicStart', 'Face Frame Bottom')
+			o3.Label = translate('magicStart', 'Bottom side of frame')
 			o3.Length = FFWidth
 			o3.Height = barWidth
 			o3.Width = barThick
@@ -8639,7 +8639,7 @@ def showQtGUI():
 			
 			# Top
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFTop")
-			o4.Label = translate('magicStart', 'Face Frame Top')
+			o4.Label = translate('magicStart', 'Top of frame')
 			o4.Length = FFWidth
 			o4.Height = barWidth
 			o4.Width = barThick
@@ -8649,7 +8649,7 @@ def showQtGUI():
 			
 			# Center Side
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFCenter")
-			o5.Label = translate('magicStart', 'Face Frame Center')
+			o5.Label = translate('magicStart', 'Center part of frame')
 			o5.Length = 2 * barWidth
 			o5.Height = FFHeight - (2 * barWidth)
 			o5.Width = barThick
@@ -8683,7 +8683,7 @@ def showQtGUI():
 			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFLeft")
-			o1.Label = translate('magicStart', 'Face Frame Left')
+			o1.Label = translate('magicStart', 'Left side of frame')
 			o1.Length = barWidth
 			o1.Height = FFHeight - (2 * barWidth)
 			o1.Width = barThick
@@ -8693,7 +8693,7 @@ def showQtGUI():
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFRight")
-			o2.Label = translate('magicStart', 'Face Frame Right')
+			o2.Label = translate('magicStart', 'Right side of frame')
 			o2.Length = barWidth
 			o2.Height = FFHeight - (2 * barWidth)
 			o2.Width = barThick
@@ -8703,7 +8703,7 @@ def showQtGUI():
 			
 			# Bottom
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFBottom")
-			o3.Label = translate('magicStart', 'Face Frame Bottom')
+			o3.Label = translate('magicStart', 'Bottom side of frame')
 			o3.Length = FFWidth
 			o3.Height = barWidth
 			o3.Width = barThick
@@ -8713,7 +8713,7 @@ def showQtGUI():
 			
 			# Top
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFTop")
-			o4.Label = translate('magicStart', 'Face Frame Top')
+			o4.Label = translate('magicStart', 'Top of frame')
 			o4.Length = FFWidth
 			o4.Height = barWidth
 			o4.Width = barThick
@@ -8723,7 +8723,7 @@ def showQtGUI():
 			
 			# Center Side
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFCenter")
-			o5.Label = translate('magicStart', 'Face Frame Center')
+			o5.Label = translate('magicStart', 'Center part of frame')
 			o5.Length = 2 * barWidth
 			o5.Height = FFHeight - (2 * barWidth)
 			o5.Width = barThick
@@ -8733,7 +8733,7 @@ def showQtGUI():
 			
 			# Horizontal bar
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFHorizontal")
-			o6.Label = translate('magicStart', 'Face Frame Horizontal')
+			o6.Label = translate('magicStart', 'Horizontal part of frame')
 			o6.Length = (FFWidth / 2) - barWidth - barWidth
 			o6.Height = 2 * barWidth
 			o6.Width = barThick
@@ -8796,7 +8796,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left')
+			o2.Label = translate('magicStart', 'Left side')
 			o2.Length = self.gThick
 			o2.Height = self.gFSZ
 			o2.Width = depth
@@ -8806,7 +8806,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right')
+			o3.Label = translate('magicStart', 'Right side')
 			o3.Length = self.gThick
 			o3.Height = self.gFSZ
 			o3.Width = depth
@@ -8816,7 +8816,7 @@ def showQtGUI():
 			
 			# Back HDF
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back')
+			o4.Label = translate('magicStart', 'Back side')
 			o4.Length = self.gFSX
 			o4.Height = self.gFSZ - self.gThick
 			o4.Width = 3
@@ -8827,7 +8827,7 @@ def showQtGUI():
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o5.Label = translate('magicStart', 'Top')
+			o5.Label = translate('magicStart', 'Top cover')
 			o5.Length = self.gFSX - (2 * self.gThick)
 			o5.Height = self.gThick
 			o5.Width = depth
@@ -8839,7 +8839,7 @@ def showQtGUI():
 
 			# Left Side
 			ff1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFLeft")
-			ff1.Label = translate('magicStart', 'Face Frame Left')
+			ff1.Label = translate('magicStart', 'Left side of frame')
 			ff1.Length = barWidth
 			ff1.Height = FFHeight - (2 * barWidth)
 			ff1.Width = barThick
@@ -8849,7 +8849,7 @@ def showQtGUI():
 			
 			# Right Side
 			ff2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFRight")
-			ff2.Label = translate('magicStart', 'Face Frame Right')
+			ff2.Label = translate('magicStart', 'Right side of frame')
 			ff2.Length = barWidth
 			ff2.Height = FFHeight - (2 * barWidth)
 			ff2.Width = barThick
@@ -8859,7 +8859,7 @@ def showQtGUI():
 			
 			# Bottom
 			ff3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFBottom")
-			ff3.Label = translate('magicStart', 'Face Frame Bottom')
+			ff3.Label = translate('magicStart', 'Bottom side of frame')
 			ff3.Length = FFWidth
 			ff3.Height = barWidth
 			ff3.Width = barThick
@@ -8869,7 +8869,7 @@ def showQtGUI():
 			
 			# Top
 			ff4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFTop")
-			ff4.Label = translate('magicStart', 'Face Frame Top')
+			ff4.Label = translate('magicStart', 'Top of frame')
 			ff4.Length = FFWidth
 			ff4.Height = barWidth
 			ff4.Width = barThick
@@ -8879,7 +8879,7 @@ def showQtGUI():
 			
 			# Center Side
 			ff5 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFCenter")
-			ff5.Label = translate('magicStart', 'Face Frame Center')
+			ff5.Label = translate('magicStart', 'Center part of frame')
 			ff5.Length = 2 * barWidth
 			ff5.Height = FFHeight - (2 * barWidth)
 			ff5.Width = barThick
@@ -8889,7 +8889,7 @@ def showQtGUI():
 			
 			# Horizontal bar
 			ff6 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFHorizontal")
-			ff6.Label = translate('magicStart', 'Face Frame Horizontal')
+			ff6.Label = translate('magicStart', 'Horizontal part of frame')
 			ff6.Length = (FFWidth / 2) - barWidth - barWidth
 			ff6.Height = 2 * barWidth
 			ff6.Width = barThick
@@ -8956,7 +8956,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left')
+			o2.Label = translate('magicStart', 'Left side')
 			o2.Length = self.gThick
 			o2.Height = self.gFSZ - (2 * self.gThick)
 			o2.Width = depth
@@ -8966,7 +8966,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right')
+			o3.Label = translate('magicStart', 'Right side')
 			o3.Length = self.gThick
 			o3.Height = self.gFSZ - (2 * self.gThick)
 			o3.Width = depth
@@ -8976,7 +8976,7 @@ def showQtGUI():
 			
 			# Back HDF
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back')
+			o4.Label = translate('magicStart', 'Back side')
 			o4.Length = self.gFSX
 			o4.Height = self.gFSZ
 			o4.Width = 3
@@ -8987,7 +8987,7 @@ def showQtGUI():
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o5.Label = translate('magicStart', 'Top')
+			o5.Label = translate('magicStart', 'Top cover')
 			o5.Length = self.gFSX
 			o5.Height = self.gThick
 			o5.Width = depth
@@ -8999,7 +8999,7 @@ def showQtGUI():
 
 			# Left Side
 			ff1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFLeft")
-			ff1.Label = translate('magicStart', 'Face Frame Left')
+			ff1.Label = translate('magicStart', 'Left side of frame')
 			ff1.Length = barWidth
 			ff1.Height = FFHeight - (2 * barWidth)
 			ff1.Width = barThick
@@ -9009,7 +9009,7 @@ def showQtGUI():
 			
 			# Right Side
 			ff2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFRight")
-			ff2.Label = translate('magicStart', 'Face Frame Right')
+			ff2.Label = translate('magicStart', 'Right side of frame')
 			ff2.Length = barWidth
 			ff2.Height = FFHeight - (2 * barWidth)
 			ff2.Width = barThick
@@ -9019,7 +9019,7 @@ def showQtGUI():
 			
 			# Bottom
 			ff3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFBottom")
-			ff3.Label = translate('magicStart', 'Face Frame Bottom')
+			ff3.Label = translate('magicStart', 'Bottom side of frame')
 			ff3.Length = FFWidth
 			ff3.Height = barWidth
 			ff3.Width = barThick
@@ -9029,7 +9029,7 @@ def showQtGUI():
 			
 			# Top
 			ff4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFTop")
-			ff4.Label = translate('magicStart', 'Face Frame Top')
+			ff4.Label = translate('magicStart', 'Top of frame')
 			ff4.Length = FFWidth
 			ff4.Height = barWidth
 			ff4.Width = barThick
@@ -9039,7 +9039,7 @@ def showQtGUI():
 			
 			# Center Side
 			ff5 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFCenter")
-			ff5.Label = translate('magicStart', 'Face Frame Center')
+			ff5.Label = translate('magicStart', 'Center part of frame')
 			ff5.Length = 2 * barWidth
 			ff5.Height = FFHeight - (2 * barWidth)
 			ff5.Width = barThick
@@ -9049,7 +9049,7 @@ def showQtGUI():
 			
 			# Horizontal bar left
 			ff6 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFHorizontalLeft")
-			ff6.Label = translate('magicStart', 'Face Frame Horizontal Left')
+			ff6.Label = translate('magicStart', 'Horizontal left part of frame')
 			ff6.Length = (FFWidth / 2) - barWidth - barWidth
 			ff6.Height = 2 * barWidth
 			ff6.Width = barThick
@@ -9059,7 +9059,7 @@ def showQtGUI():
 			
 			# Horizontal bar right
 			ff7 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFHorizontalRight")
-			ff7.Label = translate('magicStart', 'Face Frame Horizontal Right')
+			ff7.Label = translate('magicStart', 'Horizontal right part of frame')
 			ff7.Length = (FFWidth / 2) - barWidth - barWidth
 			ff7.Height = 2 * barWidth
 			ff7.Width = barThick
@@ -9350,7 +9350,7 @@ def showQtGUI():
 			
 			# Leg Left Front
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLF")
-			o1.Label = translate('magicStart', 'Table Leg LF')
+			o1.Label = translate('magicStart', 'Wood table Leg LF')
 			o1.Length = legThick
 			o1.Height = height - topThick
 			o1.Width = legThick
@@ -9360,7 +9360,7 @@ def showQtGUI():
 			
 			# Leg Left Back
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLB")
-			o2.Label = translate('magicStart', 'Table Leg LB')
+			o2.Label = translate('magicStart', 'Wood table Leg LB')
 			o2.Length = legThick
 			o2.Height = height - topThick
 			o2.Width = legThick
@@ -9371,7 +9371,7 @@ def showQtGUI():
 			
 			# Leg Right Front
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRF")
-			o3.Label = translate('magicStart', 'Table Leg RF')
+			o3.Label = translate('magicStart', 'Wood table Leg RF')
 			o3.Length = legThick
 			o3.Height = height - topThick
 			o3.Width = legThick
@@ -9382,7 +9382,7 @@ def showQtGUI():
 			
 			# Leg Right Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRB")
-			o4.Label = translate('magicStart', 'Table Leg RB')
+			o4.Label = translate('magicStart', 'Wood table Leg RB')
 			o4.Length = legThick
 			o4.Height = height - topThick
 			o4.Width = legThick
@@ -9394,7 +9394,7 @@ def showQtGUI():
 			
 			# Supporter Front
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSF")
-			o5.Label = translate('magicStart', 'Table Supporter Front')
+			o5.Label = translate('magicStart', 'Wood table support from front')
 			o5.Length = width - (2 * offset) - (2 * legThick)
 			o5.Height = legThick
 			o5.Width = legThick
@@ -9407,7 +9407,7 @@ def showQtGUI():
 			
 			# Supporter Back
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSB")
-			o6.Label = translate('magicStart', 'Table Supporter Back')
+			o6.Label = translate('magicStart', 'Wood table support from back')
 			o6.Length = width - (2 * offset) - (2 * legThick)
 			o6.Height = legThick
 			o6.Width = legThick
@@ -9420,7 +9420,7 @@ def showQtGUI():
 			
 			# Supporter Left
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSL")
-			o7.Label = translate('magicStart', 'Table Supporter Left')
+			o7.Label = translate('magicStart', 'Wood table support from left')
 			o7.Length = legThick
 			o7.Height = legThick
 			o7.Width = depth - (2 * offset) - (2 * legThick)
@@ -9433,7 +9433,7 @@ def showQtGUI():
 			
 			# Supporter Right
 			o8 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSR")
-			o8.Label = translate('magicStart', 'Table Supporter Right')
+			o8.Label = translate('magicStart', 'Wood table support from right')
 			o8.Length = legThick
 			o8.Height = legThick
 			o8.Width = depth - (2 * offset) - (2 * legThick)
@@ -9446,7 +9446,7 @@ def showQtGUI():
 			
 			# Table Top
 			o9 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableTop")
-			o9.Label = translate('magicStart', 'Table Top')
+			o9.Label = translate('magicStart', 'Wood table Top')
 			o9.Length = width
 			o9.Height = topThick
 			o9.Width = depth
@@ -9455,7 +9455,7 @@ def showQtGUI():
 			MagicPanels.setColor(o9, 0, self.gColor, "color")
 			
 			objects = [o1, o2, o3, o4, o5, o6, o7, o8, o9]
-			label = "Container, Table"
+			label = "Container, Wood table"
 			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
@@ -9477,7 +9477,7 @@ def showQtGUI():
 			
 			# Leg Left Front
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLF1")
-			o1.Label = translate('magicStart', 'Table Leg LF1')
+			o1.Label = translate('magicStart', 'Wood table Leg LF1')
 			o1.Length = topThick
 			o1.Height = height - topThick
 			o1.Width = legThick
@@ -9487,7 +9487,7 @@ def showQtGUI():
 			
 			# Leg Left Front
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLF2")
-			o2.Label = translate('magicStart', 'Table Leg LF2')
+			o2.Label = translate('magicStart', 'Wood table Leg LF2')
 			o2.Length = legThick
 			o2.Height = height - topThick
 			o2.Width = topThick
@@ -9497,7 +9497,7 @@ def showQtGUI():
 			
 			# Leg Left Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLB1")
-			o3.Label = translate('magicStart', 'Table Leg LB1')
+			o3.Label = translate('magicStart', 'Wood table Leg LB1')
 			o3.Length = topThick
 			o3.Height = height - topThick
 			o3.Width = legThick
@@ -9508,7 +9508,7 @@ def showQtGUI():
 			
 			# Leg Left Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLB2")
-			o4.Label = translate('magicStart', 'Table Leg LB2')
+			o4.Label = translate('magicStart', 'Wood table Leg LB2')
 			o4.Length = legThick
 			o4.Height = height - topThick
 			o4.Width = topThick
@@ -9519,7 +9519,7 @@ def showQtGUI():
 			
 			# Leg Right Front
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRF1")
-			o5.Label = translate('magicStart', 'Table Leg RF1')
+			o5.Label = translate('magicStart', 'Wood table Leg RF1')
 			o5.Length = legThick
 			o5.Height = height - topThick
 			o5.Width = topThick
@@ -9530,7 +9530,7 @@ def showQtGUI():
 			
 			# Leg Right Front
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRF2")
-			o6.Label = translate('magicStart', 'Table Leg RF2')
+			o6.Label = translate('magicStart', 'Wood table Leg RF2')
 			o6.Length = topThick
 			o6.Height = height - topThick
 			o6.Width = legThick
@@ -9541,7 +9541,7 @@ def showQtGUI():
 			
 			# Leg Right Back
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRB1")
-			o7.Label = translate('magicStart', 'Table Leg RB1')
+			o7.Label = translate('magicStart', 'Wood table Leg RB1')
 			o7.Length = topThick
 			o7.Height = height - topThick
 			o7.Width = legThick
@@ -9553,7 +9553,7 @@ def showQtGUI():
 			
 			# Leg Right Back
 			o8 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRB2")
-			o8.Label = translate('magicStart', 'Table Leg RB2')
+			o8.Label = translate('magicStart', 'Wood table Leg RB2')
 			o8.Length = legThick
 			o8.Height = height - topThick
 			o8.Width = topThick
@@ -9565,7 +9565,7 @@ def showQtGUI():
 			
 			# Supporter Front
 			o9 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSF")
-			o9.Label = translate('magicStart', 'Table Supporter Front')
+			o9.Label = translate('magicStart', 'Wood table support from front')
 			o9.Length = width - (2 * offset) - (2 * topThick)
 			o9.Height = legThick
 			o9.Width = topThick
@@ -9578,7 +9578,7 @@ def showQtGUI():
 			
 			# Supporter Back
 			o10 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSB")
-			o10.Label = translate('magicStart', 'Table Supporter Back')
+			o10.Label = translate('magicStart', 'Wood table support from back')
 			o10.Length = width - (2 * offset) - (2 * topThick)
 			o10.Height = legThick
 			o10.Width = topThick
@@ -9591,7 +9591,7 @@ def showQtGUI():
 			
 			# Supporter Left
 			o11 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSL")
-			o11.Label = translate('magicStart', 'Table Supporter Left')
+			o11.Label = translate('magicStart', 'Wood table support from left')
 			o11.Length = topThick
 			o11.Height = legThick
 			o11.Width = depth - (2 * offset) - (2 * topThick)
@@ -9604,7 +9604,7 @@ def showQtGUI():
 			
 			# Supporter Right
 			o12 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSR")
-			o12.Label = translate('magicStart', 'Table Supporter Right')
+			o12.Label = translate('magicStart', 'Wood table support from right')
 			o12.Length = topThick
 			o12.Height = legThick
 			o12.Width = depth - (2 * offset) - (2 * topThick)
@@ -9617,7 +9617,7 @@ def showQtGUI():
 			
 			# Table Top
 			o13 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableTop")
-			o13.Label = translate('magicStart', 'Table Top')
+			o13.Label = translate('magicStart', 'Wood table Top')
 			o13.Length = width
 			o13.Height = topThick
 			o13.Width = depth
@@ -9626,7 +9626,7 @@ def showQtGUI():
 			MagicPanels.setColor(o13, 0, self.gColor, "color")
 			
 			objects = [o1, o2, o3, o4, o5, o6, o7, o8, o9, o10, o11, o12, o13]
-			label = "Container, Table"
+			label = "Container, Wood table"
 			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
@@ -9648,7 +9648,7 @@ def showQtGUI():
 			
 			# Leg Left Front
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLF")
-			o1.Label = translate('magicStart', 'Table Leg LF')
+			o1.Label = translate('magicStart', 'Wood table Leg LF')
 			o1.Length = legThick
 			o1.Height = height - topThick
 			o1.Width = legThick / 2
@@ -9658,7 +9658,7 @@ def showQtGUI():
 			
 			# Leg Left Back
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLLB")
-			o2.Label = translate('magicStart', 'Table Leg LB')
+			o2.Label = translate('magicStart', 'Wood table Leg LB')
 			o2.Length = legThick
 			o2.Height = height - topThick
 			o2.Width = legThick / 2
@@ -9669,7 +9669,7 @@ def showQtGUI():
 			
 			# Leg Right Front
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRF")
-			o3.Label = translate('magicStart', 'Table Leg RF')
+			o3.Label = translate('magicStart', 'Wood table Leg RF')
 			o3.Length = legThick
 			o3.Height = height - topThick
 			o3.Width = legThick / 2
@@ -9680,7 +9680,7 @@ def showQtGUI():
 			
 			# Leg Right Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLRB")
-			o4.Label = translate('magicStart', 'Table Leg RB')
+			o4.Label = translate('magicStart', 'Wood table Leg RB')
 			o4.Length = legThick
 			o4.Height = height - topThick
 			o4.Width = legThick / 2
@@ -9692,7 +9692,7 @@ def showQtGUI():
 			
 			# Supporter Left Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSLT")
-			o5.Label = translate('magicStart', 'Table SLT')
+			o5.Label = translate('magicStart', 'Wood table SLT')
 			o5.Length = legThick
 			o5.Height = legThick / 2
 			o5.Width = depth - (2 * offset) - legThick
@@ -9705,7 +9705,7 @@ def showQtGUI():
 			
 			# Supporter Left Bottom
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSLB")
-			o6.Label = translate('magicStart', 'Table SLB')
+			o6.Label = translate('magicStart', 'Wood table SLB')
 			o6.Length = legThick
 			o6.Height = legThick / 2
 			o6.Width = depth - (2 * offset) - legThick
@@ -9718,7 +9718,7 @@ def showQtGUI():
 			
 			# Supporter Right Top
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSRT")
-			o7.Label = translate('magicStart', 'Table SRT')
+			o7.Label = translate('magicStart', 'Wood table SRT')
 			o7.Length = legThick
 			o7.Height = legThick / 2
 			o7.Width = depth - (2 * offset) - legThick
@@ -9731,7 +9731,7 @@ def showQtGUI():
 			
 			# Supporter Right Bottom
 			o8 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSRB")
-			o8.Label = translate('magicStart', 'Table SRB')
+			o8.Label = translate('magicStart', 'Wood table SRB')
 			o8.Length = legThick
 			o8.Height = legThick / 2
 			o8.Width = depth - (2 * offset) - legThick
@@ -9744,7 +9744,7 @@ def showQtGUI():
 			
 			# Table Top
 			o9 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableTop")
-			o9.Label = translate('magicStart', 'Table Top')
+			o9.Label = translate('magicStart', 'Wood table Top')
 			o9.Length = width
 			o9.Height = topThick
 			o9.Width = depth
@@ -9753,7 +9753,7 @@ def showQtGUI():
 			MagicPanels.setColor(o9, 0, self.gColor, "color")
 			
 			objects = [o1, o2, o3, o4, o5, o6, o7, o8, o9]
-			label = "Container, Table"
+			label = "Container, Wood table"
 			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
@@ -9774,7 +9774,7 @@ def showQtGUI():
 				
 				# Side
 				o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Side")
-				o1.Label = translate('magicStart', 'Side')
+				o1.Label = translate('magicStart', 'Side of the wardrobe')
 				o1.Length = width
 				o1.Height = height
 				o1.Width = thick
@@ -9789,7 +9789,7 @@ def showQtGUI():
 				
 				# Side
 				o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Side")
-				o1.Label = translate('magicStart', 'Side')
+				o1.Label = translate('magicStart', 'Side of the wardrobe')
 				o1.Length = thick
 				o1.Height = height
 				o1.Width = width
@@ -10019,7 +10019,7 @@ def showQtGUI():
 			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFLeft")
-			o1.Label = translate('magicStart', 'Face Frame Left')
+			o1.Label = translate('magicStart', 'Left side of frame')
 			o1.Length = barWidth
 			o1.Height = FFHeight
 			o1.Width = barThick
@@ -10029,7 +10029,7 @@ def showQtGUI():
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFRight")
-			o2.Label = translate('magicStart', 'Face Frame Right')
+			o2.Label = translate('magicStart', 'Right side of frame')
 			o2.Length = barWidth
 			o2.Height = FFHeight
 			o2.Width = barThick
@@ -10039,7 +10039,7 @@ def showQtGUI():
 			
 			# Bottom
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFBottom")
-			o3.Label = translate('magicStart', 'Face Frame Bottom')
+			o3.Label = translate('magicStart', 'Bottom side of frame')
 			o3.Length = FFWidth - (2 * barWidth)
 			o3.Height = barWidth
 			o3.Width = barThick
@@ -10049,7 +10049,7 @@ def showQtGUI():
 			
 			# Top
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFTop")
-			o4.Label = translate('magicStart', 'Face Frame Top')
+			o4.Label = translate('magicStart', 'Top of frame')
 			o4.Length = FFWidth- (2 * barWidth)
 			o4.Height = barWidth
 			o4.Width = barThick
@@ -10059,7 +10059,7 @@ def showQtGUI():
 			
 			# Center Side
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFCenter")
-			o5.Label = translate('magicStart', 'Face Frame Center')
+			o5.Label = translate('magicStart', 'Center part of frame')
 			o5.Length = 2 * barWidth
 			o5.Height = FFHeight - (2 * barWidth)
 			o5.Width = barThick
@@ -10069,7 +10069,7 @@ def showQtGUI():
 			
 			# Horizontal bar
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFHorizontal")
-			o6.Label = translate('magicStart', 'Face Frame Horizontal')
+			o6.Label = translate('magicStart', 'Horizontal part of frame')
 			o6.Length = (FFWidth / 2) - barWidth - barWidth
 			o6.Height = 2 * barWidth
 			o6.Width = barThick
@@ -10140,7 +10140,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left')
+			o2.Label = translate('magicStart', 'Left side')
 			o2.Length = self.gThick
 			o2.Height = self.gFSZ
 			o2.Width = depth
@@ -10150,7 +10150,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right')
+			o3.Label = translate('magicStart', 'Right side')
 			o3.Length = self.gThick
 			o3.Height = self.gFSZ
 			o3.Width = depth
@@ -10160,7 +10160,7 @@ def showQtGUI():
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back')
+			o4.Label = translate('magicStart', 'Back side')
 			o4.Length = self.gFSX
 			o4.Height = self.gFSZ - bfco
 			o4.Width = bcthick
@@ -10309,7 +10309,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left')
+			o2.Label = translate('magicStart', 'Left side')
 			o2.Length = thick
 			o2.Height = sizeZ - (2 * edgeband)
 			o2.Width = sizeY - thickFront - thickBack - (2 * edgeband)
@@ -10321,7 +10321,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right')
+			o3.Label = translate('magicStart', 'Right side')
 			o3.Length = thick
 			o3.Height = sizeZ - (2 * edgeband)
 			o3.Width = sizeY - thickFront - thickBack - (2 * edgeband)
@@ -10344,7 +10344,7 @@ def showQtGUI():
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o5.Label = translate('magicStart', 'Top')
+			o5.Label = translate('magicStart', 'Top cover')
 			o5.Length = sizeX - (2 * thick) - (2 * edgebandE)
 			o5.Height = thick
 			o5.Width = sizeY - thickFront - thickBack - (2 * edgeband)
@@ -10447,7 +10447,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left')
+			o2.Label = translate('magicStart', 'Left side')
 			o2.Length = self.gThick
 			o2.Height = self.gFSZ
 			o2.Width = depth
@@ -10457,7 +10457,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right')
+			o3.Label = translate('magicStart', 'Right side')
 			o3.Length = self.gThick
 			o3.Height = self.gFSZ
 			o3.Width = depth
@@ -10467,7 +10467,7 @@ def showQtGUI():
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back')
+			o4.Label = translate('magicStart', 'Back side')
 			o4.Length = self.gFSX
 			o4.Height = self.gFSZ
 			o4.Width = bcthick
@@ -10477,7 +10477,7 @@ def showQtGUI():
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o5.Label = translate('magicStart', 'Top')
+			o5.Label = translate('magicStart', 'Top cover')
 			o5.Length = self.gFSX - (2 * self.gThick)
 			o5.Height = self.gThick
 			o5.Width = depth
@@ -10507,7 +10507,7 @@ def showQtGUI():
 
 			# Shelf
 			o8 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o8.Label = translate('magicStart', 'Top')
+			o8.Label = translate('magicStart', 'Top cover')
 			o8.Length = self.gFSX - (2 * self.gThick) - (2 * shelfOS)
 			o8.Height = thickShelf
 			o8.Width = depth - self.gThick
@@ -10762,7 +10762,7 @@ def showQtGUI():
 			
 			# Front outside
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o1.Label = translate('magicStart', 'Back')
+			o1.Label = translate('magicStart', 'Back side')
 			o1.Length = width
 			o1.Height = height
 			o1.Width = thick
@@ -10814,7 +10814,7 @@ def showQtGUI():
 					
 					# Left Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-					o2.Label = translate('magicStart', 'Left') + ' M' + str(i+1)
+					o2.Label = translate('magicStart', 'Left side') + ' M' + str(i+1)
 					o2.Length = self.gThick
 					o2.Height = sideZ + self.gThick
 					o2.Width = depth
@@ -10824,7 +10824,7 @@ def showQtGUI():
 					
 					# Right Side
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-					o3.Label = translate('magicStart', 'Right') + ' M' + str(i+1)
+					o3.Label = translate('magicStart', 'Right side') + ' M' + str(i+1)
 					o3.Length = self.gThick
 					o3.Height = sideZ + self.gThick
 					o3.Width = depth
@@ -10834,7 +10834,7 @@ def showQtGUI():
 				
 					# Back
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-					o4.Label = translate('magicStart', 'Back') + ' M' + str(i+1)
+					o4.Label = translate('magicStart', 'Back side') + ' M' + str(i+1)
 					o4.Length = self.gFSX - (2 * self.gThick)
 					o4.Height = sideZ - 100 + self.gThick
 					o4.Width = thickBack
@@ -10865,7 +10865,7 @@ def showQtGUI():
 				
 					# Left Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-					o2.Label = translate('magicStart', 'Left') + ' M' + str(i+1)
+					o2.Label = translate('magicStart', 'Left side') + ' M' + str(i+1)
 					o2.Length = self.gThick
 					o2.Height = sideZ
 					o2.Width = depth
@@ -10875,7 +10875,7 @@ def showQtGUI():
 					
 					# Right Side
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-					o3.Label = translate('magicStart', 'Right') + ' M' + str(i+1)
+					o3.Label = translate('magicStart', 'Right side') + ' M' + str(i+1)
 					o3.Length = self.gThick
 					o3.Height = sideZ
 					o3.Width = depth
@@ -10885,7 +10885,7 @@ def showQtGUI():
 					
 					# Back
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-					o4.Label = translate('magicStart', 'Back') + ' M' + str(i+1)
+					o4.Label = translate('magicStart', 'Back side') + ' M' + str(i+1)
 					o4.Length = self.gFSX - (2 * self.gThick)
 					o4.Height = sideZ
 					o4.Width = thickBack
@@ -10968,7 +10968,7 @@ def showQtGUI():
 					
 					# Left Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-					o2.Label = translate('magicStart', 'Left') + ' M' + str(i+1)
+					o2.Label = translate('magicStart', 'Left side') + ' M' + str(i+1)
 					o2.Length = self.gThick
 					o2.Height = sideZ + self.gThick
 					o2.Width = depth
@@ -10978,7 +10978,7 @@ def showQtGUI():
 					
 					# Right Side
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-					o3.Label = translate('magicStart', 'Right') + ' M' + str(i+1)
+					o3.Label = translate('magicStart', 'Right side') + ' M' + str(i+1)
 					o3.Length = self.gThick
 					o3.Height = sideZ + self.gThick
 					o3.Width = depth
@@ -10988,7 +10988,7 @@ def showQtGUI():
 				
 					# Back
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-					o4.Label = translate('magicStart', 'Back') + ' M' + str(i+1)
+					o4.Label = translate('magicStart', 'Back side') + ' M' + str(i+1)
 					o4.Length = self.gFSX
 					o4.Height = sideZ - 100 + (2 * self.gThick)
 					o4.Width = thickBack
@@ -11020,7 +11020,7 @@ def showQtGUI():
 				
 					# Left Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-					o2.Label = translate('magicStart', 'Left') + ' M' + str(i+1)
+					o2.Label = translate('magicStart', 'Left side') + ' M' + str(i+1)
 					o2.Length = self.gThick
 					o2.Height = sideZ
 					o2.Width = depth
@@ -11030,7 +11030,7 @@ def showQtGUI():
 					
 					# Right Side
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-					o3.Label = translate('magicStart', 'Right') + ' M' + str(i+1)
+					o3.Label = translate('magicStart', 'Right side') + ' M' + str(i+1)
 					o3.Length = self.gThick
 					o3.Height = sideZ
 					o3.Width = depth
@@ -11040,7 +11040,7 @@ def showQtGUI():
 					
 					# Back
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-					o4.Label = translate('magicStart', 'Back') + ' M' + str(i+1)
+					o4.Label = translate('magicStart', 'Back side') + ' M' + str(i+1)
 					o4.Length = self.gFSX
 					o4.Height = sideZ + self.gThick
 					o4.Width = thickBack
@@ -11099,7 +11099,7 @@ def showQtGUI():
 			
 			# Leg Left
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLL")
-			o1.Label = translate('magicStart', 'Table Leg Left')
+			o1.Label = translate('magicStart', 'Wood table Leg Left')
 			o1.Length = legThick
 			o1.Height = height - topThick
 			o1.Width = depth - (2 * offset)
@@ -11109,7 +11109,7 @@ def showQtGUI():
 			
 			# Leg Middle
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLM")
-			o2.Label = translate('magicStart', 'Table Leg Middle')
+			o2.Label = translate('magicStart', 'Wood table Leg Middle')
 			o2.Length = legThick
 			o2.Height = height - topThick
 			o2.Width = depth - (2 * offset)
@@ -11120,7 +11120,7 @@ def showQtGUI():
 			
 			# Leg Right
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLR")
-			o3.Label = translate('magicStart', 'Table Leg Rright')
+			o3.Label = translate('magicStart', 'Wood table Leg Rright')
 			o3.Length = legThick
 			o3.Height = height - topThick
 			o3.Width = depth - (2 * offset)
@@ -11131,7 +11131,7 @@ def showQtGUI():
 			
 			# Back Left 1
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableBL1")
-			o4.Label = translate('magicStart', 'Table Back Left 1')
+			o4.Label = translate('magicStart', 'Wood table back left side 1')
 			o4.Length = width - (2* offset) - (3 * legThick) - (4/10 * width)
 			o4.Height = 200
 			o4.Width = legThick
@@ -11144,7 +11144,7 @@ def showQtGUI():
 			
 			# Back Left 2
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableBL2")
-			o5.Label = translate('magicStart', 'Table Back Left 2')
+			o5.Label = translate('magicStart', 'Wood table back left side 2')
 			o5.Length = width - (2* offset) - (3 * legThick) - (4/10 * width)
 			o5.Height = 100
 			o5.Width = legThick
@@ -11157,7 +11157,7 @@ def showQtGUI():
 			
 			# Right Back 1
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableRB1")
-			o6.Label = translate('magicStart', 'Table Right Back 1')
+			o6.Label = translate('magicStart', 'Wood table right back side 1')
 			o6.Length = 4/10 * width
 			o6.Height = height - topThick
 			o6.Width = legThick
@@ -11170,7 +11170,7 @@ def showQtGUI():
 			
 			# Supporter Front
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSF1")
-			o7.Label = translate('magicStart', 'Table SF1')
+			o7.Label = translate('magicStart', 'Wood table SF1')
 			o7.Length = 4/10 * width
 			o7.Height = 100
 			o7.Width = legThick
@@ -11183,7 +11183,7 @@ def showQtGUI():
 			
 			# Shelf 1
 			o8 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableShelf1")
-			o8.Label = translate('magicStart', 'Table Shelf 1')
+			o8.Label = translate('magicStart', 'Wood table Shelf 1')
 			o8.Length = 4/10 * width
 			o8.Height = legThick
 			o8.Width = depth - (2 * offset) - legThick
@@ -11196,7 +11196,7 @@ def showQtGUI():
 			
 			# Shelf 2
 			o9 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableShelf2")
-			o9.Label = translate('magicStart', 'Table Shelf 2')
+			o9.Label = translate('magicStart', 'Wood table Shelf 2')
 			o9.Length = 4/10 * width
 			o9.Height = legThick
 			o9.Width = depth - (2 * offset) - legThick
@@ -11209,7 +11209,7 @@ def showQtGUI():
 			
 			# Top
 			o10 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableTop")
-			o10.Label = translate('magicStart', 'Table Top')
+			o10.Label = translate('magicStart', 'Wood table Top')
 			o10.Length = width
 			o10.Height = topThick
 			o10.Width = depth
@@ -11221,7 +11221,7 @@ def showQtGUI():
 			MagicPanels.setColor(o10, 0, self.gColor, "color")
 			
 			objects = [o1, o2, o3, o4, o5, o6, o7, o8, o9, o10]
-			label = "Container, Table"
+			label = "Container, Wood table"
 			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
@@ -11243,7 +11243,7 @@ def showQtGUI():
 			
 			# Leg Left
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLL")
-			o1.Label = translate('magicStart', 'Table Leg Left')
+			o1.Label = translate('magicStart', 'Wood table Leg Left')
 			o1.Length = legThick
 			o1.Height = height - topThick
 			o1.Width = depth - (2 * offset)
@@ -11253,7 +11253,7 @@ def showQtGUI():
 			
 			# Leg Middle
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLM")
-			o2.Label = translate('magicStart', 'Table Leg Middle')
+			o2.Label = translate('magicStart', 'Wood table Leg Middle')
 			o2.Length = legThick
 			o2.Height = height - topThick
 			o2.Width = depth - (2 * offset)
@@ -11264,7 +11264,7 @@ def showQtGUI():
 			
 			# Leg Right
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLR")
-			o3.Label = translate('magicStart', 'Table Leg Rright')
+			o3.Label = translate('magicStart', 'Wood table Leg Rright')
 			o3.Length = legThick
 			o3.Height = height - topThick
 			o3.Width = depth - (2 * offset)
@@ -11275,7 +11275,7 @@ def showQtGUI():
 			
 			# Back Right 1
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableBR1")
-			o4.Label = translate('magicStart', 'Table Back Right 1')
+			o4.Label = translate('magicStart', 'Wood table back right side 1')
 			o4.Length = width - (2 * offset) - (3 * legThick) - (4/10 * width)
 			o4.Height = 200
 			o4.Width = legThick
@@ -11288,7 +11288,7 @@ def showQtGUI():
 			
 			# Back Right 2
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableBR2")
-			o5.Label = translate('magicStart', 'Table Back Right 2')
+			o5.Label = translate('magicStart', 'Wood table back right side 2')
 			o5.Length = width - (2 * offset) - (3 * legThick) - (4/10 * width)
 			o5.Height = 100
 			o5.Width = legThick
@@ -11301,7 +11301,7 @@ def showQtGUI():
 			
 			# Back Left 1
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableBL1")
-			o6.Label = translate('magicStart', 'Table Back Left 1')
+			o6.Label = translate('magicStart', 'Wood table back left side 1')
 			o6.Length = 4/10 * width
 			o6.Height = height - topThick
 			o6.Width = legThick
@@ -11314,7 +11314,7 @@ def showQtGUI():
 			
 			# Supporter Front
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSF1")
-			o7.Label = translate('magicStart', 'Table SF1')
+			o7.Label = translate('magicStart', 'Wood table SF1')
 			o7.Length = 4/10 * width
 			o7.Height = 100
 			o7.Width = legThick
@@ -11327,7 +11327,7 @@ def showQtGUI():
 			
 			# Shelf 1
 			o8 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableShelf1")
-			o8.Label = translate('magicStart', 'Table Shelf 1')
+			o8.Label = translate('magicStart', 'Wood table Shelf 1')
 			o8.Length = 4/10 * width
 			o8.Height = legThick
 			o8.Width = depth - (2 * offset) - legThick
@@ -11340,7 +11340,7 @@ def showQtGUI():
 			
 			# Shelf 2
 			o9 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableShelf2")
-			o9.Label = translate('magicStart', 'Table Shelf 2')
+			o9.Label = translate('magicStart', 'Wood table Shelf 2')
 			o9.Length = 4/10 * width
 			o9.Height = legThick
 			o9.Width = depth - (2 * offset) - legThick
@@ -11353,7 +11353,7 @@ def showQtGUI():
 			
 			# Top
 			o10 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableTop")
-			o10.Label = translate('magicStart', 'Table Top')
+			o10.Label = translate('magicStart', 'Wood table Top')
 			o10.Length = width
 			o10.Height = topThick
 			o10.Width = depth
@@ -11365,7 +11365,7 @@ def showQtGUI():
 			MagicPanels.setColor(o10, 0, self.gColor, "color")
 			
 			objects = [o1, o2, o3, o4, o5, o6, o7, o8, o9, o10]
-			label = "Container, Table"
+			label = "Container, Wood table"
 			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
@@ -11389,7 +11389,7 @@ def showQtGUI():
 			
 			# Leg Left 1
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLL1")
-			o1.Label = translate('magicStart', 'Table Leg Left 1')
+			o1.Label = translate('magicStart', 'Wood table Leg Left 1')
 			o1.Length = legThick
 			o1.Height = height - topThick
 			o1.Width = depth - (2 * offset)
@@ -11399,7 +11399,7 @@ def showQtGUI():
 			
 			# Leg Left 2
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLL2")
-			o2.Label = translate('magicStart', 'Table Leg Left 2')
+			o2.Label = translate('magicStart', 'Wood table Leg Left 2')
 			o2.Length = legThick
 			o2.Height = height - topThick
 			o2.Width = depth - (2 * offset)
@@ -11410,7 +11410,7 @@ def showQtGUI():
 			
 			# Leg Right 1
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLR1")
-			o3.Label = translate('magicStart', 'Table Leg Right 1')
+			o3.Label = translate('magicStart', 'Wood table Leg Right 1')
 			o3.Length = legThick
 			o3.Height = height - topThick
 			o3.Width = depth - (2 * offset)
@@ -11421,7 +11421,7 @@ def showQtGUI():
 			
 			# Leg Right 2
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLR2")
-			o4.Label = translate('magicStart', 'Table Leg Right 2')
+			o4.Label = translate('magicStart', 'Wood table Leg Right 2')
 			o4.Length = legThick
 			o4.Height = height - topThick
 			o4.Width = depth - (2 * offset)
@@ -11432,7 +11432,7 @@ def showQtGUI():
 			
 			# Back Left
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableBL")
-			o5.Label = translate('magicStart', 'Table Back Left')
+			o5.Label = translate('magicStart', 'Wood table back left side')
 			o5.Length = space
 			o5.Height = height - topThick
 			o5.Width = legThick
@@ -11445,7 +11445,7 @@ def showQtGUI():
 			
 			# Back Right
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableBR")
-			o6.Label = translate('magicStart', 'Table Back Right')
+			o6.Label = translate('magicStart', 'Wood table back right side')
 			o6.Length = space
 			o6.Height = height - topThick
 			o6.Width = legThick
@@ -11458,7 +11458,7 @@ def showQtGUI():
 			
 			# Back Middle 1
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableBM1")
-			o7.Label = translate('magicStart', 'Table Back Middle 1')
+			o7.Label = translate('magicStart', 'Wood table back middle 1')
 			o7.Length = 2 * space
 			o7.Height = 200
 			o7.Width = legThick
@@ -11471,7 +11471,7 @@ def showQtGUI():
 			
 			# Back Middle 2
 			o8 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableBM2")
-			o8.Label = translate('magicStart', 'Table Back Middle 2')
+			o8.Label = translate('magicStart', 'Wood table back middle 2')
 			o8.Length = 2 * space
 			o8.Height = 200
 			o8.Width = legThick
@@ -11484,7 +11484,7 @@ def showQtGUI():
 			
 			# Supporter Front Left
 			o9 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSFL")
-			o9.Label = translate('magicStart', 'Table Support FL')
+			o9.Label = translate('magicStart', 'Wood table Support FL')
 			o9.Length = space
 			o9.Height = 100
 			o9.Width = legThick
@@ -11497,7 +11497,7 @@ def showQtGUI():
 			
 			# Supporter Front Right
 			o10 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableSFR")
-			o10.Label = translate('magicStart', 'Table Support FR')
+			o10.Label = translate('magicStart', 'Wood table Support FR')
 			o10.Length = space
 			o10.Height = 100
 			o10.Width = legThick
@@ -11510,7 +11510,7 @@ def showQtGUI():
 			
 			# Shelf Left 1
 			o11 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableShelfL1")
-			o11.Label = translate('magicStart', 'Table Shelf Left 1')
+			o11.Label = translate('magicStart', 'Wood table Shelf Left 1')
 			o11.Length = space
 			o11.Height = legThick
 			o11.Width = depth - (2 * offset) - legThick
@@ -11523,7 +11523,7 @@ def showQtGUI():
 			
 			# Shelf Left 2
 			o12 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableShelfL2")
-			o12.Label = translate('magicStart', 'Table Shelf Left 2')
+			o12.Label = translate('magicStart', 'Wood table Shelf Left 2')
 			o12.Length = space
 			o12.Height = legThick
 			o12.Width = depth - (2 * offset) - legThick
@@ -11536,7 +11536,7 @@ def showQtGUI():
 			
 			# Shelf Right 1
 			o13 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableShelfR1")
-			o13.Label = translate('magicStart', 'Table Shelf Right 1')
+			o13.Label = translate('magicStart', 'Wood table Shelf Right 1')
 			o13.Length = space
 			o13.Height = legThick
 			o13.Width = depth - (2 * offset) - legThick
@@ -11549,7 +11549,7 @@ def showQtGUI():
 			
 			# Shelf Right 2
 			o14 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableShelfR2")
-			o14.Label = translate('magicStart', 'Table Shelf Right 2')
+			o14.Label = translate('magicStart', 'Wood table Shelf Right 2')
 			o14.Length = space
 			o14.Height = legThick
 			o14.Width = depth - (2 * offset) - legThick
@@ -11562,7 +11562,7 @@ def showQtGUI():
 			
 			# Top
 			o15 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableTop")
-			o15.Label = translate('magicStart', 'Table Top')
+			o15.Label = translate('magicStart', 'Wood table Top')
 			o15.Length = width
 			o15.Height = topThick
 			o15.Width = depth
@@ -11574,7 +11574,7 @@ def showQtGUI():
 			MagicPanels.setColor(o15, 0, self.gColor, "color")
 			
 			objects = [o1, o2, o3, o4, o5, o6, o7, o8, o9, o10, o11, o12, o13, o14, o15]
-			label = "Container, Table"
+			label = "Container, Wood table"
 			container = MagicPanels.createContainer(objects, label, False)
 			
 			# recompute
@@ -11629,7 +11629,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left') + ' M1'
+			o2.Label = translate('magicStart', 'Left side') + ' M1'
 			o2.Length = self.gThick
 			o2.Height = baseSideZ
 			o2.Width = depth
@@ -11639,7 +11639,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right') + ' M1'
+			o3.Label = translate('magicStart', 'Right side') + ' M1'
 			o3.Length = self.gThick
 			o3.Height = baseSideZ
 			o3.Width = depth
@@ -11649,7 +11649,7 @@ def showQtGUI():
 		
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back') + ' M1'
+			o4.Label = translate('magicStart', 'Back side') + ' M1'
 			o4.Length = self.gFSX
 			o4.Height = baseSideZ - 100 + self.gThick
 			o4.Width = thickBack
@@ -11672,7 +11672,7 @@ def showQtGUI():
 			
 			# Top
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o6.Label = translate('magicStart', 'Top') + ' M1'
+			o6.Label = translate('magicStart', 'Top cover') + ' M1'
 			o6.Length = self.gFSX
 			o6.Height = self.gThick
 			o6.Width = depth
@@ -11705,7 +11705,7 @@ def showQtGUI():
 
 				# Left Side
 				o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-				o1.Label = translate('magicStart', 'Left') + ' M' + str(i+1)
+				o1.Label = translate('magicStart', 'Left side') + ' M' + str(i+1)
 				o1.Length = self.gThick
 				o1.Height = sideZ
 				o1.Width = depth
@@ -11715,7 +11715,7 @@ def showQtGUI():
 				
 				# Right Side
 				o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-				o2.Label = translate('magicStart', 'Right') + ' M' + str(i+1)
+				o2.Label = translate('magicStart', 'Right side') + ' M' + str(i+1)
 				o2.Length = self.gThick
 				o2.Height = sideZ
 				o2.Width = depth
@@ -11725,7 +11725,7 @@ def showQtGUI():
 				
 				# Back
 				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-				o3.Label = translate('magicStart', 'Back') + ' M' + str(i+1)
+				o3.Label = translate('magicStart', 'Back side') + ' M' + str(i+1)
 				o3.Length = self.gFSX
 				o3.Height = sideZ + self.gThick
 				o3.Width = thickBack
@@ -11747,7 +11747,7 @@ def showQtGUI():
 			
 				# Top
 				o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-				o5.Label = translate('magicStart', 'Top') + ' M' + str(i+1)
+				o5.Label = translate('magicStart', 'Top cover') + ' M' + str(i+1)
 				o5.Length = self.gFSX
 				o5.Height = self.gThick
 				o5.Width = depth
@@ -11822,7 +11822,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left') + ' M1'
+			o2.Label = translate('magicStart', 'Left side') + ' M1'
 			o2.Length = self.gThick
 			o2.Height = baseSideZ
 			o2.Width = depth
@@ -11832,7 +11832,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right') + ' M1'
+			o3.Label = translate('magicStart', 'Right side') + ' M1'
 			o3.Length = self.gThick
 			o3.Height = baseSideZ
 			o3.Width = depth
@@ -11842,7 +11842,7 @@ def showQtGUI():
 		
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back') + ' M1'
+			o4.Label = translate('magicStart', 'Back side') + ' M1'
 			o4.Length = self.gFSX
 			o4.Height = baseSideZ - 100 + self.gThick
 			o4.Width = thickBack
@@ -11853,7 +11853,7 @@ def showQtGUI():
 			
 			# Top
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o6.Label = translate('magicStart', 'Top') + ' M1'
+			o6.Label = translate('magicStart', 'Top cover') + ' M1'
 			o6.Length = self.gFSX
 			o6.Height = self.gThick
 			o6.Width = depth
@@ -11886,7 +11886,7 @@ def showQtGUI():
 
 				# Left Side
 				o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-				o1.Label = translate('magicStart', 'Left') + ' M' + str(i+1)
+				o1.Label = translate('magicStart', 'Left side') + ' M' + str(i+1)
 				o1.Length = self.gThick
 				o1.Height = sideZ
 				o1.Width = depth
@@ -11896,7 +11896,7 @@ def showQtGUI():
 				
 				# Right Side
 				o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-				o2.Label = translate('magicStart', 'Right') + ' M' + str(i+1)
+				o2.Label = translate('magicStart', 'Right side') + ' M' + str(i+1)
 				o2.Length = self.gThick
 				o2.Height = sideZ
 				o2.Width = depth
@@ -11906,7 +11906,7 @@ def showQtGUI():
 				
 				# Back
 				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-				o3.Label = translate('magicStart', 'Back') + ' M' + str(i+1)
+				o3.Label = translate('magicStart', 'Back side') + ' M' + str(i+1)
 				o3.Length = self.gFSX
 				o3.Height = sideZ + self.gThick
 				o3.Width = thickBack
@@ -11928,7 +11928,7 @@ def showQtGUI():
 			
 				# Top
 				o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-				o5.Label = translate('magicStart', 'Top') + ' M' + str(i+1)
+				o5.Label = translate('magicStart', 'Top cover') + ' M' + str(i+1)
 				o5.Length = self.gFSX
 				o5.Height = self.gThick
 				o5.Width = depth
@@ -11978,7 +11978,7 @@ def showQtGUI():
 			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o1.Label = translate('magicStart', 'Left M')
+			o1.Label = translate('magicStart', 'Left side M')
 			o1.Length = thick
 			o1.Height = sizeZ - thick - (2 * edgebandE)
 			o1.Width = sizeY - (2 * edgeband)
@@ -11988,7 +11988,7 @@ def showQtGUI():
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o2.Label = translate('magicStart', 'Right M')
+			o2.Label = translate('magicStart', 'Right side M')
 			o2.Length = thick
 			o2.Height = sizeZ - thick - (2 * edgebandE)
 			o2.Width = sizeY - (2 * edgeband)
@@ -11998,7 +11998,7 @@ def showQtGUI():
 			
 			# Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o3.Label = translate('magicStart', 'Back M')
+			o3.Label = translate('magicStart', 'Back side M')
 			o3.Length = sizeX - (2 * thick) - (2 * edgebandE)
 			o3.Height = sizeZ - thick - (2 * edgebandE)
 			o3.Width = thickBack
@@ -12008,7 +12008,7 @@ def showQtGUI():
 			
 			# Top
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o4.Label = translate('magicStart', 'Top M')
+			o4.Label = translate('magicStart', 'Top cover M')
 			o4.Length = sizeX - (2 * edgeband)
 			o4.Height = thick
 			o4.Width = sizeY - (2 * edgeband)
@@ -12060,7 +12060,7 @@ def showQtGUI():
 			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o1.Label = translate('magicStart', 'Left M')
+			o1.Label = translate('magicStart', 'Left side M')
 			o1.Length = thick
 			o1.Height = sizeZ - thick - (2 * edgebandE)
 			o1.Width = sizeY - thickBack - (2 * edgeband)
@@ -12070,7 +12070,7 @@ def showQtGUI():
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o2.Label = translate('magicStart', 'Right M')
+			o2.Label = translate('magicStart', 'Right side M')
 			o2.Length = thick
 			o2.Height = sizeZ - thick - (2 * edgebandE)
 			o2.Width = sizeY - thickBack - (2 * edgeband)
@@ -12080,7 +12080,7 @@ def showQtGUI():
 			
 			# Back HDF
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o3.Label = translate('magicStart', 'Back M')
+			o3.Label = translate('magicStart', 'Back side M')
 			o3.Length = sizeX
 			o3.Height = sizeZ
 			o3.Width = thickBack
@@ -12091,7 +12091,7 @@ def showQtGUI():
 			
 			# Top
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o4.Label = translate('magicStart', 'Top M')
+			o4.Label = translate('magicStart', 'Top cover M')
 			o4.Length = sizeX - (2 * edgeband)
 			o4.Height = thick
 			o4.Width = sizeY - thickBack - (2 * edgeband)
@@ -12153,7 +12153,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left M')
+			o2.Label = translate('magicStart', 'Left side M')
 			o2.Length = thick
 			o2.Height = sizeZ - (2 * edgeband) - thick
 			o2.Width = sizeY - (2 * edgeband)
@@ -12163,7 +12163,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right M')
+			o3.Label = translate('magicStart', 'Right side M')
 			o3.Length = thick
 			o3.Height = sizeZ - (2 * edgeband) - thick
 			o3.Width = sizeY - (2 * edgeband)
@@ -12173,7 +12173,7 @@ def showQtGUI():
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back M')
+			o4.Label = translate('magicStart', 'Back side M')
 			o4.Length = sizeX - (2 * thick)
 			o4.Height = sizeZ - 100 - thick
 			o4.Width = thickBack
@@ -12183,7 +12183,7 @@ def showQtGUI():
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o5.Label = translate('magicStart', 'Top M')
+			o5.Label = translate('magicStart', 'Top cover M')
 			o5.Length = sizeX - (2 * edgebandE)
 			o5.Height = thick
 			o5.Width = sizeY - (2 * edgeband)
@@ -12245,7 +12245,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left M')
+			o2.Label = translate('magicStart', 'Left side M')
 			o2.Length = thick
 			o2.Height = sizeZ - (2 * edgeband) - thick
 			o2.Width = sizeY - (2 * edgeband)
@@ -12255,7 +12255,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right M')
+			o3.Label = translate('magicStart', 'Right side M')
 			o3.Length = thick
 			o3.Height = sizeZ - (2 * edgeband) - thick
 			o3.Width = sizeY - (2 * edgeband)
@@ -12265,7 +12265,7 @@ def showQtGUI():
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back M')
+			o4.Label = translate('magicStart', 'Back side M')
 			o4.Length = sizeX
 			o4.Height = sizeZ - 100
 			o4.Width = thickBack
@@ -12276,7 +12276,7 @@ def showQtGUI():
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o5.Label = translate('magicStart', 'Top M')
+			o5.Label = translate('magicStart', 'Top cover M')
 			o5.Length = sizeX - (2 * edgebandE)
 			o5.Height = thick
 			o5.Width = sizeY - (2 * edgeband)
@@ -12363,7 +12363,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left') + ' M1'
+			o2.Label = translate('magicStart', 'Left side') + ' M1'
 			o2.Length = self.gThick
 			o2.Height = baseSideZ
 			o2.Width = depth
@@ -12373,7 +12373,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right') + ' M1'
+			o3.Label = translate('magicStart', 'Right side') + ' M1'
 			o3.Length = self.gThick
 			o3.Height = baseSideZ
 			o3.Width = depth
@@ -12383,7 +12383,7 @@ def showQtGUI():
 		
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back') + ' M1'
+			o4.Label = translate('magicStart', 'Back side') + ' M1'
 			o4.Length = self.gFSX
 			o4.Height = baseSideZ - 100 + self.gThick
 			o4.Width = thickBack
@@ -12394,7 +12394,7 @@ def showQtGUI():
 			
 			# Top
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o6.Label = translate('magicStart', 'Top') + ' M1'
+			o6.Label = translate('magicStart', 'Top cover') + ' M1'
 			o6.Length = self.gFSX
 			o6.Height = self.gThick
 			o6.Width = depth
@@ -12541,7 +12541,7 @@ def showQtGUI():
 
 				# Left Side
 				o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-				o1.Label = translate('magicStart', 'Left') + ' M' + str(i+1)
+				o1.Label = translate('magicStart', 'Left side') + ' M' + str(i+1)
 				o1.Length = self.gThick
 				o1.Height = sideZ
 				o1.Width = depth
@@ -12551,7 +12551,7 @@ def showQtGUI():
 				
 				# Right Side
 				o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-				o2.Label = translate('magicStart', 'Right') + ' M' + str(i+1)
+				o2.Label = translate('magicStart', 'Right side') + ' M' + str(i+1)
 				o2.Length = self.gThick
 				o2.Height = sideZ
 				o2.Width = depth
@@ -12561,7 +12561,7 @@ def showQtGUI():
 				
 				# Back
 				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-				o3.Label = translate('magicStart', 'Back') + ' M' + str(i+1)
+				o3.Label = translate('magicStart', 'Back side') + ' M' + str(i+1)
 				o3.Length = self.gFSX
 				o3.Height = sideZ + self.gThick
 				o3.Width = thickBack
@@ -12583,7 +12583,7 @@ def showQtGUI():
 			
 				# Top
 				o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-				o5.Label = translate('magicStart', 'Top') + ' M' + str(i+1)
+				o5.Label = translate('magicStart', 'Top cover') + ' M' + str(i+1)
 				o5.Length = self.gFSX
 				o5.Height = self.gThick
 				o5.Width = depth
