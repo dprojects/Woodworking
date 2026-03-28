@@ -641,7 +641,7 @@ class panelResize1():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelResize1.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelResize1", "panel, bigger, long+"),
+				"MenuText": QT_TRANSLATE_NOOP("panelResize1", "make panel bigger from long edge"),
 				"ToolTip" : QT_TRANSLATE_NOOP("panelResize1", "Click to see info."),
 				"Accel"   : "" }
 
@@ -680,7 +680,7 @@ class panelResize2():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelResize2.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelResize2", "panel, smaller, long-"),
+				"MenuText": QT_TRANSLATE_NOOP("panelResize2", "make panel smaller from long edge"),
 				"ToolTip" : QT_TRANSLATE_NOOP("panelResize2", "Click to see info."),
 				"Accel"   : "" }
 
@@ -719,7 +719,7 @@ class panelResize3():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelResize3.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelResize3", "panel, bigger, short+"),
+				"MenuText": QT_TRANSLATE_NOOP("panelResize3", "make panel bigger from short edge"),
 				"ToolTip" : QT_TRANSLATE_NOOP("panelResize3", "Click to see info."),
 				"Accel"   : "" }
 
@@ -758,7 +758,7 @@ class panelResize4():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelResize4.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelResize4", "panel, smaller, short-"),
+				"MenuText": QT_TRANSLATE_NOOP("panelResize4", "make panel smaller from short edge"),
 				"ToolTip" : QT_TRANSLATE_NOOP("panelResize4", "Click to see info."),
 				"Accel"   : "" }
 
@@ -797,7 +797,7 @@ class panelResize5():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelResize5.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelResize5", "panel, bigger, thickness+"),
+				"MenuText": QT_TRANSLATE_NOOP("panelResize5", "make panel thicker"),
 				"ToolTip" : QT_TRANSLATE_NOOP("panelResize5", "Click to see info."),
 				"Accel"   : "" }
 
@@ -836,7 +836,7 @@ class panelResize6():
 
 	def GetResources(self):
 		return {"Pixmap"  : os.path.join(iconPath, "panelResize6.png"),
-				"MenuText": QT_TRANSLATE_NOOP("panelResize6", "panel, smaller, thickness-"),
+				"MenuText": QT_TRANSLATE_NOOP("panelResize6", "make panel thinner"),
 				"ToolTip" : QT_TRANSLATE_NOOP("panelResize6", "Click to see info."),
 				"Accel"   : "" }
 

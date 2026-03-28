@@ -39,7 +39,7 @@ getMenuIndex = {
 	translate('magicStart', 'Drawer ( single, X or Y direction, front inside )'): 22, 
 	translate('magicStart', 'Furniture front outside'): 23, 
 	translate('magicStart', 'Furniture front inside'): 24, 
-	translate('magicStart', 'Shelf'): 25, 
+	translate('magicStart', 'Furniture shelf'): 25, 
 	translate('magicStart', 'Furniture center board'): 26, 
 	translate('magicStart', 'Storage module ( front outside, back outside, veneer )'): 27, 
 	translate('magicStart', 'Storage module ( front inside, back inside, veneer )'): 28, 
@@ -147,608 +147,11 @@ def showQtGUI():
 		except:
 			skip = 1
 
-		imageSizeW = 200
-		imageSizeH = 200
+		#imageSizeW = 200
+		#imageSizeH = 200
+		imageSizeW = toolSW - 50
+		imageSizeH = toolSW - 50
 
-		# ############################################################################
-		# help info
-		# ############################################################################
-
-		# ############################################################################
-		gHelpInfoF0 = "" 
-		gHelpInfoF0 += translate('magicStart', 'Choose one method and make selection before calculate or create button press. Possible selections:')
-		gHelpInfoF0 += '<ul>'
-		gHelpInfoF0 += '<li><b>' + translate('magicStart', 'X edge') + ' - </b>'
-		gHelpInfoF0 += translate('magicStart', 'to set XYZ position and width. X edge means any edge along the X coordinate axis. In this case, the starting point will be the vertex of the edge and the width of the furniture will be the length of the edge.') + '</li>'
-		gHelpInfoF0 += '<li><b>' + translate('magicStart', 'XY face') + ' - </b>'
-		gHelpInfoF0 += translate('magicStart', 'to put next module on top. XY face means the plane on the object along the X and Y coordinate axes, i.e. horizontal, such as the top of the object, to create the next furniture module on top. In this case, the width of the furniture and its depth will be calculated from the selected plane so that the furniture is in line with the previous identical module.') + '</li>'
-		gHelpInfoF0 += '<li><b>' + translate('magicStart', 'Vertex') + ' - </b>'
-		gHelpInfoF0 += translate('magicStart', 'to set XYZ position only. Vertex means selecting any vertex of the object. In this case, only the starting point for creating the furniture will be calculated.') + '</li>'
-		gHelpInfoF0 += '<li><b>' + translate('magicStart', 'no selection') + ' - </b>'
-		gHelpInfoF0 += translate('magicStart', 'to create with custom settings') + '</li>'
-		gHelpInfoF0 += '</ul>'
-		gHelpInfoF0 += translate('magicStart', 'To calculate the furniture and its dimensions, make selection, change fields, and then press the "calculate furniture" button. Before pressing the "create" button, you can manually correct some values ​​if necessary.')
-		
-		# ############################################################################
-		gHelpInfoF16 = "" 
-
-		gHelpInfoF16 += translate('magicStart', 'To initially calculate the the Foot, make selection, fill in the appropriate fields and click the "calculate foot" button. Possible selections:')
-		gHelpInfoF16 += '<ul>'
-		gHelpInfoF16 += '<li><b>'
-		gHelpInfoF16 += translate('magicStart', 'XY face') + '</b>: '
-		gHelpInfoF16 += translate('magicStart', 'indicates the face of the bottom panel of the furniture. In this case, the position, width, and depth of the foot will be taken from the selected face.')
-		gHelpInfoF16 += '</li>'
-		gHelpInfoF16 += '<li><b>'
-		gHelpInfoF16 += translate('magicStart', 'X edge') + '</b>: '
-		gHelpInfoF16 += translate('magicStart', 'indicates the X edge of the bottom panel of the furniture. In this case, the position and width of the foot will be taken from the selected face. The depth needs to be added by you.')
-		gHelpInfoF16 += '</li>'
-		gHelpInfoF16 += '<li><b>'
-		gHelpInfoF16 += translate('magicStart', 'Vertex') + '</b>: '
-		gHelpInfoF16 += translate('magicStart', 'indicates any vertex at any object to set the XYZ start position for the foot creation. In this case, the width and depth needs to be added by you.')
-		gHelpInfoF16 += '</li>'
-		gHelpInfoF16 += '</ul>'
-		gHelpInfoF16 += translate('magicStart', 'Fields:')
-		gHelpInfoF16 += '<ul>'
-		gHelpInfoF16 += '<li><b>'
-		gHelpInfoF16 += translate('magicStart', 'Wood thickness') + '</b>: '
-		gHelpInfoF16 += translate('magicStart', 'means the thickness of the elements from which the foot will be created, i.e. the thickness of the wood.')
-		gHelpInfoF16 += '</li>'
-		gHelpInfoF16 += '<li><b>'
-		gHelpInfoF16 += translate('magicStart', 'Foot height') + '</b>: '
-		gHelpInfoF16 += translate('magicStart', 'means the size of the foot elements, relative to the Z coordinate axis.')
-		gHelpInfoF16 += '</li>'
-		gHelpInfoF16 += '</ul>'
-		gHelpInfoF16 += translate('magicStart', 'The foot will be created at the starting position of the XYZ coordinate axis taking into account the height of the foot.')
-
-		# ############################################################################
-		gHelpInfoF21 = "" 
-		gHelpInfoF21 += '<ul>'
-		gHelpInfoF21 += '<li><b>'
-		gHelpInfoF21 += translate('magicStart', 'top edge') + '</b>: '
-		gHelpInfoF21 += translate('magicStart', 'The drawer will be created from the 0 position on the Z coordinate axis to the position of the selected top edge. The width of the drawer will be taken from the selected top edge size. The depth of the drawer will be taken from the object from the selected top edge. This is a kind of "quick shot" to create the drawer as quickly as possible without a long selection.')
-		gHelpInfoF21 += '</li>'
-		gHelpInfoF21 += '<li><b>'
-		gHelpInfoF21 += translate('magicStart', 'top edge + back face') + '</b>: '
-		gHelpInfoF21 += translate('magicStart', 'This is the same as above, but here selecting the back face allows you to set the depth in a more detailed way.')
-		gHelpInfoF21 += '</li>'
-		gHelpInfoF21 += '<li><b>'
-		gHelpInfoF21 += translate('magicStart', 'bottom edge + top edge') + '</b>: '
-		gHelpInfoF21 += translate('magicStart', 'The drawer will be created from the position of the first selected bottom edge to the position of the second selected top edge. The width and depth of the drawer will be taken from the object with the shortest edge. This is a kind of "quick shot" to create the drawer quickly without a long selection.')
-		gHelpInfoF21 += '</li>'
-		gHelpInfoF21 += '<li><b>'
-		gHelpInfoF21 += translate('magicStart', 'bottom edge + top edge + back face') + '</b>: '
-		gHelpInfoF21 += translate('magicStart', 'This is the same as above, but here selecting the back face allows you to set the depth in a more detailed way.')
-		gHelpInfoF21 += '</li>'
-		gHelpInfoF21 += '<li><b>'
-		gHelpInfoF21 += translate('magicStart', 'bottom edge + top edge + left edge + right edge + back face') + '</b>: '
-		gHelpInfoF21 += translate('magicStart', 'The drawer will be created from the position of the first selected bottom edge to the position of the second selected top edge. The width of the drawer will be obtained from the difference of the third and fourth selected edges. The depth of the drawer will be obtained from the selected back face. There are many more objects to select here, but this is the most precise version of determining the size of the drawer. So if you have trouble with any of the above, I recommend trying this method. Also this method solves the problem with longest bottom and top edges.')
-		gHelpInfoF21 += '</li>'
-		gHelpInfoF21 += '</ul>'
-		gHelpInfoF21 += translate('magicStart', 'The edges can be in line with the X or Y coordinate axis, so the drawer can be created on all four sides of the furniture.')
-
-		# ############################################################################
-		gHelpInfoF23 = "" 
-		gHelpInfoF23 += translate('magicStart', 'To initially calculate the starting point of the front and its dimensions, make selection, fill in the appropriate fields and click the "calculate front" button.')
-		gHelpInfoF23 += '<ul>'
-		gHelpInfoF23 += '<li><b>'
-		gHelpInfoF23 += translate('magicStart', 'X bottom edge') + '</b>: '
-		gHelpInfoF23 += translate('magicStart', 'means the inner bottom edge of the shelf or floor of the furniture along the X coordinate axis.')
-		gHelpInfoF23 += '</li>'
-		gHelpInfoF23 += '<li><b>'
-		gHelpInfoF23 += translate('magicStart', 'X top edge') + '</b>: '
-		gHelpInfoF23 += translate('magicStart', 'means the inner top edge of the shelf or top of the furniture along the X coordinate axis.')
-		gHelpInfoF23 += '</li>'
-		gHelpInfoF23 += '<li><b>'
-		gHelpInfoF23 += translate('magicStart', 'Z left edge') + '</b>: '
-		gHelpInfoF23 += translate('magicStart', 'means the inner left edge of the side of the furniture along the Z coordinate axis.')
-		gHelpInfoF23 += '</li>'
-		gHelpInfoF23 += '<li><b>'
-		gHelpInfoF23 += translate('magicStart', 'Z right edge') + '</b>: '
-		gHelpInfoF23 += translate('magicStart', 'means the inner right edge of the side of the furniture along the Z coordinate axis.')
-		gHelpInfoF23 += '</li>'
-		gHelpInfoF23 += '<li><b>'
-		gHelpInfoF23 += translate('magicStart', 'Furniture front thickness') + '</b>: '
-		gHelpInfoF23 += translate('magicStart', 'means the thickness of the front, in line with the Y coordinate axis.')
-		gHelpInfoF23 += '</li>'
-		gHelpInfoF23 += '<li><b>'
-		gHelpInfoF23 += translate('magicStart', 'Furniture front offsets') + '</b>: '
-		gHelpInfoF23 += translate('magicStart', 'in the case of an external front, it means how much the front will overlap the furniture, and in the case of an internal front, it means how big the gap will be between the front and the remaining parts of the furniture.')
-		gHelpInfoF23 += '</li>'
-		gHelpInfoF23 += '</ul>'
-		gHelpInfoF23 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
-
-		# ############################################################################
-		gHelpInfoF25 = "" 
-		gHelpInfoF25 += translate('magicStart', 'To initially calculate the starting point of the shelf and its dimensions, make selection, fill in the appropriate fields and click the "calculate shelf" button. To calculate a shelf, you need to select the two side edges of the space where the shelf is to be placed and the back face of the gap to determine the shelf depth. There are two ways to create a shelf:')
-		gHelpInfoF25 += '<ul>'
-		gHelpInfoF25 += '<li><b>'
-		gHelpInfoF25 += translate('magicStart', 'Method 1') + '</b>: '
-		gHelpInfoF25 += translate('magicStart', 'By setting the shelf depth, then the front gap will be calculated as the difference between the free space and the desired shelf depth.')
-		gHelpInfoF25 += '</li>'
-		gHelpInfoF25 += '<li><b>'
-		gHelpInfoF25 += translate('magicStart', 'Method 2') + '</b>: '
-		gHelpInfoF25 += translate('magicStart', 'By entering a value of 0 as the depth and setting the offsets for the shelf. Then the depth and width of the shelf will be calculated taking into account the given offsets.')
-		gHelpInfoF25 += '</li>'
-		gHelpInfoF25 += '</ul>'
-		gHelpInfoF25 += translate('magicStart', 'Meaning:')
-		gHelpInfoF25 += '<ul>'
-		gHelpInfoF25 += '<li><b>'
-		gHelpInfoF25 += translate('magicStart', 'Z left edge') + '</b>: '
-		gHelpInfoF25 += translate('magicStart', 'means the left inner edge of the side of the furniture in line with the Z coordinate axis, i.e. vertical.')
-		gHelpInfoF25 += '</li>'
-		gHelpInfoF25 += '<li><b>'
-		gHelpInfoF25 += translate('magicStart', 'Z right edge') + '</b>: '
-		gHelpInfoF25 += translate('magicStart', 'means the right inner edge of the side of the furniture in line with the Z coordinate axis, i.e. vertical.')
-		gHelpInfoF25 += '</li>'
-		gHelpInfoF25 += '<li><b>'
-		gHelpInfoF25 += translate('magicStart', 'back face') + '</b>: '
-		gHelpInfoF25 += translate('magicStart', 'means the inner plane of the back wall of the furniture. The plane should be in line with the X and Z coordinate axes.')
-		gHelpInfoF25 += '</li>'
-		gHelpInfoF25 += '<li><b>'
-		gHelpInfoF25 += translate('magicStart', 'Shelf thickness') + '</b>: '
-		gHelpInfoF25 += translate('magicStart', 'means the thickness of the shelf, i.e. in the direction of the Z coordinate axis.')
-		gHelpInfoF25 += '</li>'
-		gHelpInfoF25 += '</ul>'
-		gHelpInfoF25 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
-
-		# ############################################################################
-		gHelpInfoF26 = "" 
-		gHelpInfoF26 += translate('magicStart', 'To initially calculate the starting point of the center side and its dimensions, make selection, fill in the appropriate fields and click the "calculate center side" button. There are two ways of selection:')
-		gHelpInfoF26 += '<ul>'
-		gHelpInfoF26 += '<li><b>'
-		gHelpInfoF26 += translate('magicStart', 'Method 1') + '</b>: '
-		gHelpInfoF26 += translate('magicStart', 'X top left edge + X top right edge + XY bottom face')
-		gHelpInfoF26 += '</li>'
-		gHelpInfoF26 += '<li><b>'
-		gHelpInfoF26 += translate('magicStart', 'Method 2') + '</b>: '
-		gHelpInfoF26 += translate('magicStart', 'X bottom left edge + X bottom right edge + XY top face')
-		gHelpInfoF26 += '</li>'
-		gHelpInfoF26 += '</ul>'
-		gHelpInfoF26 += translate('magicStart', 'There are two ways to create a center side:')
-		gHelpInfoF26 += '<ul>'
-		gHelpInfoF26 += '<li><b>'
-		gHelpInfoF26 += translate('magicStart', 'Method 1') + '</b>: '
-		gHelpInfoF26 += translate('magicStart', 'By setting the side depth, then the front gap will be calculated as the difference between the free space and the desired side depth.')
-		gHelpInfoF26 += '</li>'
-		gHelpInfoF26 += '<li><b>'
-		gHelpInfoF26 += translate('magicStart', 'Method 2') + '</b>: '
-		gHelpInfoF26 += translate('magicStart', 'By entering a value of 0 as the depth and setting the offsets for the side. Then the depth and height of the center side will be calculated taking into account the given offsets.')
-		gHelpInfoF26 += '</li>'
-		gHelpInfoF26 += '</ul>'
-		gHelpInfoF26 += translate('magicStart', 'Meaning:')
-		gHelpInfoF26 += '<ul>'
-		gHelpInfoF26 += '<li><b>'
-		gHelpInfoF26 += translate('magicStart', 'Y left edge') + '</b>: '
-		gHelpInfoF26 += translate('magicStart', 'means the left inner edge of the side of the furniture in line with the Y coordinate axis.')
-		gHelpInfoF26 += '</li>'
-		gHelpInfoF26 += '<li><b>'
-		gHelpInfoF26 += translate('magicStart', 'Y right edge') + '</b>: '
-		gHelpInfoF26 += translate('magicStart', 'means the right inner edge of the side of the furniture in line with the Y coordinate axis.')
-		gHelpInfoF26 += '</li>'
-		gHelpInfoF26 += '<li><b>'
-		gHelpInfoF26 += translate('magicStart', 'XY face') + '</b>: '
-		gHelpInfoF26 += translate('magicStart', 'means the inner plane of the gap, for example top or bottom surface of the shelf. The plane should be in line with the X and Y coordinate axes.')
-		gHelpInfoF26 += '</li>'
-		gHelpInfoF26 += '<li><b>'
-		gHelpInfoF26 += translate('magicStart', 'Furniture side thickness') + '</b>: '
-		gHelpInfoF26 += translate('magicStart', 'means the thickness of the center side, i.e. in the direction of the X coordinate axis.')
-		gHelpInfoF26 += '</li>'
-		gHelpInfoF26 += '</ul>'
-		gHelpInfoF26 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
-
-		# ############################################################################
-		gHelpInfoF30 = "" 
-		gHelpInfoF30 += translate('magicStart', 'To pre-calculate the starting point for series of drawers and its dimensions, make selection, fill desired fields and press the "calculate gaps" button.')
-		gHelpInfoF30 += '<ul>'
-		gHelpInfoF30 += '<li><b>'
-		gHelpInfoF30 += translate('magicStart', 'X bottom edge') + '</b>: '
-		gHelpInfoF30 += translate('magicStart', 'means the bottom edge in line with the X coordinate axis of the free space where you want to create a series of drawers, i.e. the horizontal edge of the bottom shelf.')
-		gHelpInfoF30 += '</li>'
-		gHelpInfoF30 += '<li><b>'
-		gHelpInfoF30 += translate('magicStart', 'X top edge') + '</b>: '
-		gHelpInfoF30 += translate('magicStart', 'means the top edge in line with the X coordinate axis of the free space where you want to create a series of drawers, i.e. the horizontal edge of the top shelf.')
-		gHelpInfoF30 += '</li>'
-		gHelpInfoF30 += '<li><b>'
-		gHelpInfoF30 += translate('magicStart', 'Z left edge') + '</b>: '
-		gHelpInfoF30 += translate('magicStart', 'means the left edge in line with the Z coordinate axis of the free space where you want to create a series of drawers, i.e. the vertical edge of the left side.')
-		gHelpInfoF30 += '</li>'
-		gHelpInfoF30 += '<li><b>'
-		gHelpInfoF30 += translate('magicStart', 'Z right edge') + '</b>: '
-		gHelpInfoF30 += translate('magicStart', 'means the right edge in line with the Z coordinate axis of the free space where you want to create a series of drawers, i.e. the vertical edge of the right side.')
-		gHelpInfoF30 += '</li>'
-		gHelpInfoF30 += '<li><b>'
-		gHelpInfoF30 += translate('magicStart', 'back face') + '</b>: '
-		gHelpInfoF30 += translate('magicStart', 'means the inner plane of the back wall of the furniture. The plane should be in line with the X and Z coordinate axes, i.e. vertical faced to the front.')
-		gHelpInfoF30 += '</li>'
-		gHelpInfoF30 += '<li><b>'
-		gHelpInfoF30 += translate('magicStart', 'Wood thickness') + '</b>: '
-		gHelpInfoF30 += translate('magicStart', 'means the thickness of the wood from which the walls and the front of the drawer will be made.')
-		gHelpInfoF30 += '</li>'
-		gHelpInfoF30 += '<li><b>'
-		gHelpInfoF30 += translate('magicStart', 'Space between drawers') + '</b>: '
-		gHelpInfoF30 += translate('magicStart', 'this is additional space between drawer fronts and drawers so that drawer fronts do not rub against each other.')
-		gHelpInfoF30 += '</li>'
-		gHelpInfoF30 += '<li><b>'
-		gHelpInfoF30 += translate('magicStart', 'Drawer system offsets') + '</b>: '
-		gHelpInfoF30 += translate('magicStart', 'these are the distances that must be taken into account when installing the drawer system rail. The most important is "Sides" for side guides.')
-		gHelpInfoF30 += '</li>'
-		gHelpInfoF30 += '</ul>'
-		gHelpInfoF30 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
-
-		# ############################################################################
-		gHelpInfoF32 = "" 
-		gHelpInfoF32 += translate('magicStart', 'To pre-calculate the starting point for Face Frame and its dimensions, make selection, fill desired fields and press the "calculate furniture face frame" button.')
-		gHelpInfoF32 += '<ul>'
-		gHelpInfoF32 += '<li><b>'
-		gHelpInfoF32 += translate('magicStart', 'X bottom edge') + '</b>: '
-		gHelpInfoF32 += translate('magicStart', 'means the inner edge of the furniture floor in line with the X coordinate axis.')
-		gHelpInfoF32 += '</li>'
-		gHelpInfoF32 += '<li><b>'
-		gHelpInfoF32 += translate('magicStart', 'X top edge') + '</b>: '
-		gHelpInfoF32 += translate('magicStart', 'means the inner edge of the top of the furniture in line with the X coordinate axis.')
-		gHelpInfoF32 += '</li>'
-		gHelpInfoF32 += '<li><b>'
-		gHelpInfoF32 += translate('magicStart', 'Z left edge') + '</b>: '
-		gHelpInfoF32 += translate('magicStart', 'means the inner edge of the left side of the furniture in line with the Z coordinate axis.')
-		gHelpInfoF32 += '</li>'
-		gHelpInfoF32 += '<li><b>'
-		gHelpInfoF32 += translate('magicStart', 'Z right edge') + '</b>: '
-		gHelpInfoF32 += translate('magicStart', 'means the inner edge of the right side of the furniture in line with the Z coordinate axis.')
-		gHelpInfoF32 += '</li>'
-		gHelpInfoF32 += '<li><b>'
-		gHelpInfoF32 += translate('magicStart', 'Single bar width') + '</b>: '
-		gHelpInfoF32 += translate('magicStart', 'means the width of the beam from which the Face Frame will be built, in line with the X coordinate axis.')
-		gHelpInfoF32 += '</li>'
-		gHelpInfoF32 += '<li><b>'
-		gHelpInfoF32 += translate('magicStart', 'Single bar thickness') + '</b>: '
-		gHelpInfoF32 += translate('magicStart', 'means the thickness of the beam from which the Face Frame will be built, in line with the Y coordinate axis.')
-		gHelpInfoF32 += '</li>'
-		gHelpInfoF32 += '<li><b>'
-		gHelpInfoF32 += translate('magicStart', 'Lip outside') + '</b>: '
-		gHelpInfoF32 += translate('magicStart', 'means how much the Face Frame will protrude outside the furniture.')
-		gHelpInfoF32 += '</li>'
-		gHelpInfoF32 += '<li><b>'
-		gHelpInfoF32 += translate('magicStart', 'Delve into furniture') + '</b>: '
-		gHelpInfoF32 += translate('magicStart', 'means sinking the Face Frame towards the furniture, i.e. in the direction of the Y coordinate axis. This allows you to take into account a possible groove, thanks to which the Face Frame can be placed on the edges of the furniture, which will stiffen the entire structure of the furniture.')
-		gHelpInfoF32 += '</li>'
-		gHelpInfoF32 += '</ul>'
-		gHelpInfoF32 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
-		
-		# ############################################################################
-		gHelpInfoF37 = "" 
-		gHelpInfoF37 += translate('magicStart', 'To pre-calculate the starting point for the Furniture front with glass and its dimensions, make selection, fill in the required fields and press the "calculate front with glass" button.')
-		gHelpInfoF37 += '<ul>'
-		gHelpInfoF37 += '<li><b>'
-		gHelpInfoF37 += translate('magicStart', 'X bottom edge') + '</b>: '
-		gHelpInfoF37 += translate('magicStart', 'means the inner bottom edge of the space, in line with the X coordinate axis.')
-		gHelpInfoF37 += '</li>'
-		gHelpInfoF37 += '<li><b>'
-		gHelpInfoF37 += translate('magicStart', 'X top edge') + '</b>: '
-		gHelpInfoF37 += translate('magicStart', 'means the inner top edge of the space, in line with the X coordinate axis.')
-		gHelpInfoF37 += '</li>'
-		gHelpInfoF37 += '<li><b>'
-		gHelpInfoF37 += translate('magicStart', 'Z left edge') + '</b>: '
-		gHelpInfoF37 += translate('magicStart', 'means the inner left edge of the space, in line with the Z coordinate axis.')
-		gHelpInfoF37 += '</li>'
-		gHelpInfoF37 += '<li><b>'
-		gHelpInfoF37 += translate('magicStart', 'Z right edge') + '</b>: '
-		gHelpInfoF37 += translate('magicStart', 'means the inner right edge of the space, in line with the Z coordinate axis.')
-		gHelpInfoF37 += '</li>'
-		gHelpInfoF37 += '<li><b>'
-		gHelpInfoF37 += translate('magicStart', 'Wood thickness') + '</b>: '
-		gHelpInfoF37 += translate('magicStart', 'means the thickness of the beam of the frame, in line with the Y coordinate axis.')
-		gHelpInfoF37 += '</li>'
-		gHelpInfoF37 += '<li><b>'
-		gHelpInfoF37 += translate('magicStart', 'Overlap horizontal') + '</b>: '
-		gHelpInfoF37 += translate('magicStart', 'in the case of an outside front, this is the width by which the glass front will overlap the furniture elements. If the front is to cover the entire surface, set the same value as Wood thickness.')
-		gHelpInfoF37 += '</li>'
-		gHelpInfoF37 += '<li><b>'
-		gHelpInfoF37 += translate('magicStart', 'Overlap vertical') + '</b>: '
-		gHelpInfoF37 += translate('magicStart', 'in the case of an outside front, this is the height by which the glass front will overlap the furniture elements. If the front is to cover the entire surface, set the same value as Wood thickness.')
-		gHelpInfoF37 += '</li>'
-		gHelpInfoF37 += '<li><b>'
-		gHelpInfoF37 += translate('magicStart', 'Offset horizontal') + '</b>: '
-		gHelpInfoF37 += translate('magicStart', 'in the case of an inside front, this is the width of the gap between the front frame and the furniture elements.')
-		gHelpInfoF37 += '</li>'
-		gHelpInfoF37 += '<li><b>'
-		gHelpInfoF37 += translate('magicStart', 'Offset vertical') + '</b>: '
-		gHelpInfoF37 += translate('magicStart', 'in the case of an inside front, this is the height of the gap between the front frame and the furniture elements.')
-		gHelpInfoF37 += '</li>'
-		gHelpInfoF37 += '<li><b>'
-		gHelpInfoF37 += translate('magicStart', 'Glass thickness') + '</b>: '
-		gHelpInfoF37 += translate('magicStart', 'means the thickness of the glass, in line with the Y coordinate axis.')
-		gHelpInfoF37 += '</li>'
-		gHelpInfoF37 += '</ul>'
-		gHelpInfoF37 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
-
-		# ############################################################################
-		gHelpInfoF41 = "" 
-		gHelpInfoF41 += translate('magicStart', 'To pre-calculate the starting point for shelf series and its dimensions, make selection, fill desired fields and press the "calculate shelf series" button.')
-		gHelpInfoF41 += '<ul>'
-		gHelpInfoF41 += '<li><b>'
-		gHelpInfoF41 += translate('magicStart', 'X bottom edge') + '</b>: '
-		gHelpInfoF41 += translate('magicStart', 'means the lower inner edge from which the series of shelves is to start. The selected edge should be in line with the X coordinate axis.')
-		gHelpInfoF41 += '</li>'
-		gHelpInfoF41 += '<li><b>'
-		gHelpInfoF41 += translate('magicStart', 'X top edge') + '</b>: '
-		gHelpInfoF41 += translate('magicStart', 'means the upper inner edge to which the series of shelves is to end. The selected edge should be in line with the X coordinate axis.')
-		gHelpInfoF41 += '</li>'
-		gHelpInfoF41 += '<li><b>'
-		gHelpInfoF41 += translate('magicStart', 'Z left edge') + '</b>: '
-		gHelpInfoF41 += translate('magicStart', 'means the left inner edge of the free space in which the series of shelves is to be created. The selected edge should be in line with the Z coordinate axis, i.e. the inner edge of the left side of the furniture.')
-		gHelpInfoF41 += '</li>'
-		gHelpInfoF41 += '<li><b>'
-		gHelpInfoF41 += translate('magicStart', 'Z right edge') + '</b>: '
-		gHelpInfoF41 += translate('magicStart', 'means the right inner edge of the free space in which the series of shelves is to be created. The selected edge should be in line with the Z coordinate axis, i.e. the inner edge of the right side of the furniture.')
-		gHelpInfoF41 += '</li>'
-		gHelpInfoF41 += '<li><b>'
-		gHelpInfoF41 += translate('magicStart', 'back face') + '</b>: '
-		gHelpInfoF41 += translate('magicStart', 'means the internal surface of the back wall of the furniture, which is in line with the X and Z coordinate axes.')
-		gHelpInfoF41 += '</li>'
-		gHelpInfoF41 += '<li><b>'
-		gHelpInfoF41 += translate('magicStart', 'Single shelf thickness') + '</b>: '
-		gHelpInfoF41 += translate('magicStart', 'means the thickness of a single shelf, i.e. in the direction of the Z coordinate axis.')
-		gHelpInfoF41 += '</li>'
-		gHelpInfoF41 += '<li><b>'
-		gHelpInfoF41 += translate('magicStart', 'Number of shelves') + '</b>: '
-		gHelpInfoF41 += translate('magicStart', 'means the number of shelves to be created at equal distances.')
-		gHelpInfoF41 += '</li>'
-		gHelpInfoF41 += '</ul>'
-		gHelpInfoF41 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
-		
-		# ############################################################################
-		gHelpInfoF42 = "" 
-		gHelpInfoF42 += translate('magicStart', 'To pre-calculate the location where the wooden table will be created, select any vertex and press the "calculate wooden table position" button.')
-		gHelpInfoF42 += '<ul>'
-		gHelpInfoF42 += '<li><b>'
-		gHelpInfoF42 += translate('magicStart', 'Wood table width X') + '</b>: '
-		gHelpInfoF42 += translate('magicStart', 'means the width of the wooden table, i.e. the size according to the X coordinate axis.')
-		gHelpInfoF42 += '</li>'
-		gHelpInfoF42 += '<li><b>'
-		gHelpInfoF42 += translate('magicStart', 'Wood table depth Y') + '</b>: '
-		gHelpInfoF42 += translate('magicStart', 'means the depth of the wooden table, i.e. the size according to the Y coordinate axis.')
-		gHelpInfoF42 += '</li>'
-		gHelpInfoF42 += '<li><b>'
-		gHelpInfoF42 += translate('magicStart', 'Wood table height Z') + '</b>: '
-		gHelpInfoF42 += translate('magicStart', 'means the height of the wooden table, i.e. the size according to the Z coordinate axis.')
-		gHelpInfoF42 += '</li>'
-		gHelpInfoF42 += '<li><b>'
-		gHelpInfoF42 += translate('magicStart', 'Wood table top thickness') + '</b>: '
-		gHelpInfoF42 += translate('magicStart', 'means the thickness of the wooden table top, i.e. the size according to the Z coordinate axis.')
-		gHelpInfoF42 += '</li>'
-		gHelpInfoF42 += '<li><b>'
-		gHelpInfoF42 += translate('magicStart', 'Legs and Supporters thickness') + '</b>: '
-		gHelpInfoF42 += translate('magicStart', 'this is the thickness of the wood from which the table legs and the supporting beams under the top will be made.')
-		gHelpInfoF42 += '</li>'
-		gHelpInfoF42 += '<li><b>'
-		gHelpInfoF42 += translate('magicStart', 'Wood table top offset') + '</b>: '
-		gHelpInfoF42 += translate('magicStart', 'means the distance of the legs and supporting beams from the top. If the top is not to have protruding corners, the value 0 should be entered.')
-		gHelpInfoF42 += '</li>'
-		gHelpInfoF42 += '</ul>'
-		gHelpInfoF42 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
-		
-		# ############################################################################
-		gHelpInfoF48 = ""
-		gHelpInfoF48 += translate('magicStart', 'To create a side, you need to select 4 edges in the correct order around the free space where you want to create the side:')
-		gHelpInfoF48 += '<ul>'
-		gHelpInfoF48 += '<li><b>'
-		gHelpInfoF48 += translate('magicStart', 'X or Y bottom edge') + '</b>: '
-		gHelpInfoF48 += translate('magicStart', 'means that the selected edge is to be the bottom edge, along the X or Y coordinate axis.')
-		gHelpInfoF48 += '</li>'
-		gHelpInfoF48 += '<li><b>'
-		gHelpInfoF48 += translate('magicStart', 'X or Y top edge') + '</b>: '
-		gHelpInfoF48 += translate('magicStart', 'means that the selected edge is to be the top edge, along the X or Y coordinate axis.')
-		gHelpInfoF48 += '</li>'
-		gHelpInfoF48 += '<li><b>'
-		gHelpInfoF48 += translate('magicStart', 'Z left edge') + '</b>: '
-		gHelpInfoF48 += translate('magicStart', 'means that the selected edge is to be the left edge, along the Z coordinate axis, i.e. vertical.')
-		gHelpInfoF48 += '</li>'
-		gHelpInfoF48 += '<li><b>'
-		gHelpInfoF48 += translate('magicStart', 'Z right edge') + '</b>: '
-		gHelpInfoF48 += translate('magicStart', 'means that the selected edge is to be the right edge, along the Z coordinate axis, i.e. vertical.')
-		gHelpInfoF48 += '</li>'
-		gHelpInfoF48 += '</ul>'
-		gHelpInfoF48 += translate('magicStart', 'Next, you need to decide how the side to be created is to be calculated. There are 3 cases:')
-		gHelpInfoF48 += '<ul>'
-		gHelpInfoF48 += '<li><b>'
-		gHelpInfoF48 += translate('magicStart', '0 width and 0 offsets') + '</b>: '
-		gHelpInfoF48 += translate('magicStart', 'If you do not fill the widths and gaps, the side will fill the entire selected space.')
-		gHelpInfoF48 += '</li>'
-		gHelpInfoF48 += '<li><b>'
-		gHelpInfoF48 += translate('magicStart', 'custom width and 0 offsets') + '</b>: '
-		gHelpInfoF48 += translate('magicStart', 'If a width is given, the right spacing will be the difference between the width of the free space and the previously set desired width.')
-		gHelpInfoF48 += '</li>'
-		gHelpInfoF48 += '<li><b>'
-		gHelpInfoF48 += translate('magicStart', '0 width and custom offsets') + '</b>: '
-		gHelpInfoF48 += translate('magicStart', 'If offsets are set and the width is set to 0, the width and height of the side to be created will be calculated with the offsets taken into account.')
-		gHelpInfoF48 += '</li>'
-		gHelpInfoF48 += '</ul>'
-
-		# ############################################################################
-		gHelpInfoF59 = "" 
-		gHelpInfoF59 += translate('magicStart', 'To pre-calculate the starting point for the Decorative front and its dimensions, make selection, fill in the required fields and press the "calculate decorative front" button.')
-		gHelpInfoF59 += '<ul>'
-		gHelpInfoF59 += '<li><b>'
-		gHelpInfoF59 += translate('magicStart', 'X bottom edge') + '</b>: '
-		gHelpInfoF59 += translate('magicStart', 'means the inner bottom edge of the space, in line with the X coordinate axis.')
-		gHelpInfoF59 += '</li>'
-		gHelpInfoF59 += '<li><b>'
-		gHelpInfoF59 += translate('magicStart', 'X top edge') + '</b>: '
-		gHelpInfoF59 += translate('magicStart', 'means the inner top edge of the space, in line with the X coordinate axis.')
-		gHelpInfoF59 += '</li>'
-		gHelpInfoF59 += '<li><b>'
-		gHelpInfoF59 += translate('magicStart', 'Z left edge') + '</b>: '
-		gHelpInfoF59 += translate('magicStart', 'means the inner left edge of the space, in line with the Z coordinate axis.')
-		gHelpInfoF59 += '</li>'
-		gHelpInfoF59 += '<li><b>'
-		gHelpInfoF59 += translate('magicStart', 'Z right edge') + '</b>: '
-		gHelpInfoF59 += translate('magicStart', 'means the inner right edge of the space, in line with the Z coordinate axis.')
-		gHelpInfoF59 += '</li>'
-		gHelpInfoF59 += '<li><b>'
-		gHelpInfoF59 += translate('magicStart', 'Single beam thickness') + '</b>: '
-		gHelpInfoF59 += translate('magicStart', 'means the thickness of the beam of the frame, in line with the Y coordinate axis.')
-		gHelpInfoF59 += '</li>'
-		gHelpInfoF59 += '<li><b>'
-		gHelpInfoF59 += translate('magicStart', 'Furniture front overlap horizontal') + '</b>: '
-		gHelpInfoF59 += translate('magicStart', 'in the case of an outside front, this is the width by which the front will overlap the furniture elements. If the front is to cover the entire surface, set the same value as "Single beam thickness".')
-		gHelpInfoF59 += '</li>'
-		gHelpInfoF59 += '<li><b>'
-		gHelpInfoF59 += translate('magicStart', 'Furniture front overlap vertical') + '</b>: '
-		gHelpInfoF59 += translate('magicStart', 'in the case of an outside front, this is the height by which the front will overlap the furniture elements. If the front is to cover the entire surface, set the same value as "Single beam thickness".')
-		gHelpInfoF59 += '</li>'
-		gHelpInfoF59 += '<li><b>'
-		gHelpInfoF59 += translate('magicStart', 'Furniture front offset horizontal') + '</b>: '
-		gHelpInfoF59 += translate('magicStart', 'in the case of an inside front, this is the width of the gap between the front frame and the furniture elements.')
-		gHelpInfoF59 += '</li>'
-		gHelpInfoF59 += '<li><b>'
-		gHelpInfoF59 += translate('magicStart', 'Furniture front offset vertical') + '</b>: '
-		gHelpInfoF59 += translate('magicStart', 'in the case of an inside front, this is the height of the gap between the front frame and the furniture elements.')
-		gHelpInfoF59 += '</li>'
-		gHelpInfoF59 += '<li><b>'
-		gHelpInfoF59 += translate('magicStart', 'Inner board thickness') + '</b>: '
-		gHelpInfoF59 += translate('magicStart', 'means the thickness of the board inside the frame, in line with the Y coordinate axis.')
-		gHelpInfoF59 += '</li>'
-		gHelpInfoF59 += '</ul>'
-		gHelpInfoF59 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
-
-		# ############################################################################
-		gHelpInfoF61 = "" 
-		gHelpInfoF61 += translate('magicStart', 'To pre-calculate the starting point for the Furniture front decoration and its dimensions, make selection, fill in the required fields and press the "calculate front decoration" button.')
-		gHelpInfoF61 += '<ul>'
-		gHelpInfoF61 += '<li><b>'
-		gHelpInfoF61 += translate('magicStart', 'XZ face of front') + '</b>: '
-		gHelpInfoF61 += translate('magicStart', 'means the front surface where you want to place the decoration, in line with the X and Z coordinate axes.')
-		gHelpInfoF61 += '</li>'
-		gHelpInfoF61 += '<li><b>'
-		gHelpInfoF61 += translate('magicStart', 'X bottom edge') + '</b>: '
-		gHelpInfoF61 += translate('magicStart', 'means the bottom edge of the front where you want to place the decoration, in line with the X coordinate axis.')
-		gHelpInfoF61 += '</li>'
-		gHelpInfoF61 += '<li><b>'
-		gHelpInfoF61 += translate('magicStart', 'X top edge') + '</b>: '
-		gHelpInfoF61 += translate('magicStart', 'means the top edge of the front where you want to place the decoration, in line with the X coordinate axis.')
-		gHelpInfoF61 += '</li>'
-		gHelpInfoF61 += '<li><b>'
-		gHelpInfoF61 += translate('magicStart', 'Z left edge') + '</b>: '
-		gHelpInfoF61 += translate('magicStart', 'means the left edge of the front where you want to place the decoration, in line with the Z coordinate axis.')
-		gHelpInfoF61 += '</li>'
-		gHelpInfoF61 += '<li><b>'
-		gHelpInfoF61 += translate('magicStart', 'Z right edge') + '</b>: '
-		gHelpInfoF61 += translate('magicStart', 'means the right edge of the front where you want to place the decoration, in line with the Z coordinate axis.')
-		gHelpInfoF61 += '</li>'
-		gHelpInfoF61 += '<li><b>'
-		gHelpInfoF61 += translate('magicStart', 'Single bar width') + '</b>: '
-		gHelpInfoF61 += translate('magicStart', 'means the width of the beam of the frame, in line with the X or Z coordinate axis.')
-		gHelpInfoF61 += '</li>'
-		gHelpInfoF61 += '<li><b>'
-		gHelpInfoF61 += translate('magicStart', 'Single bar thickness') + '</b>: '
-		gHelpInfoF61 += translate('magicStart', 'means the thickness of the beam of the frame, in line with the Y coordinate axis.')
-		gHelpInfoF61 += '</li>'
-		gHelpInfoF61 += '<li><b>'
-		gHelpInfoF61 += translate('magicStart', 'Offset from edge') + '</b>: '
-		gHelpInfoF61 += translate('magicStart', 'this is the distance of the decoration from the selected edges of the front towards the inside of the front.')
-		gHelpInfoF61 += '</li>'
-		gHelpInfoF61 += '</ul>'
-		gHelpInfoF61 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
-
-		# ############################################################################
-		gHelpInfoF62 = "" 
-		gHelpInfoF62 += translate('magicStart', 'To pre-calculate the starting point for the Side decoration and its dimensions, make selection, fill in the required fields and press the "calculate side decoration" button.')
-		gHelpInfoF62 += '<ul>'
-		gHelpInfoF62 += '<li><b>'
-		gHelpInfoF62 += translate('magicStart', 'YZ face of side') + '</b>: '
-		gHelpInfoF62 += translate('magicStart', 'means the side surface where you want to place the decoration, in line with the Y and Z coordinate axes.')
-		gHelpInfoF62 += '</li>'
-		gHelpInfoF62 += '<li><b>'
-		gHelpInfoF62 += translate('magicStart', 'Y bottom edge') + '</b>: '
-		gHelpInfoF62 += translate('magicStart', 'means the bottom edge of the side where you want to place the decoration, in line with the Y coordinate axis.')
-		gHelpInfoF62 += '</li>'
-		gHelpInfoF62 += '<li><b>'
-		gHelpInfoF62 += translate('magicStart', 'Y top edge') + '</b>: '
-		gHelpInfoF62 += translate('magicStart', 'means the top edge of the side where you want to place the decoration, in line with the Y coordinate axis.')
-		gHelpInfoF62 += '</li>'
-		gHelpInfoF62 += '<li><b>'
-		gHelpInfoF62 += translate('magicStart', 'Z left edge') + '</b>: '
-		gHelpInfoF62 += translate('magicStart', 'means the left edge of the side where you want to place the decoration, in line with the Z coordinate axis.')
-		gHelpInfoF62 += '</li>'
-		gHelpInfoF62 += '<li><b>'
-		gHelpInfoF62 += translate('magicStart', 'Z right edge') + '</b>: '
-		gHelpInfoF62 += translate('magicStart', 'means the right edge of the side where you want to place the decoration, in line with the Z coordinate axis.')
-		gHelpInfoF62 += '</li>'
-		gHelpInfoF62 += '<li><b>'
-		gHelpInfoF62 += translate('magicStart', 'Single bar width') + '</b>: '
-		gHelpInfoF62 += translate('magicStart', 'means the width of the beam of the frame, in line with the Y or Z coordinate axis.')
-		gHelpInfoF62 += '</li>'
-		gHelpInfoF62 += '<li><b>'
-		gHelpInfoF62 += translate('magicStart', 'Single bar thickness') + '</b>: '
-		gHelpInfoF62 += translate('magicStart', 'means the thickness of the beam of the frame, in line with the X coordinate axis.')
-		gHelpInfoF62 += '</li>'
-		gHelpInfoF62 += '<li><b>'
-		gHelpInfoF62 += translate('magicStart', 'Offset from edge') + '</b>: '
-		gHelpInfoF62 += translate('magicStart', 'this is the distance of the decoration from the selected edges of the side towards the inside of the side.')
-		gHelpInfoF62 += '</li>'
-		gHelpInfoF62 += '</ul>'
-		gHelpInfoF62 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
-		
-		# ############################################################################
-		gHelpInfoF73 = "" 
-		gHelpInfoF73 += translate('magicStart', 'This workspace allows you to create reference platform. So you can use the workspace edges or faces as reference point for other tools. This is dedicated mostly for specific custom projects to make start easier. The Z size will be used later to workspace resize step. This workspace will not be listed at BOM, cut-list report, so you do not have to remove it later.')
-		gHelpInfoF73 += '<br><br>'
-		gHelpInfoF73 += translate('magicStart', 'To pre-calculate the starting point for the workspace platform, make selection, fill in fields you want to change and press the "calculate workspace position" button. To create workspace press "create" button.')
-		gHelpInfoF73 += '<ul>'
-		gHelpInfoF73 += '<li><b>'
-		gHelpInfoF73 += translate('magicStart', 'X size') + '</b>: '
-		gHelpInfoF73 += translate('magicStart', 'means the workspace platform size along X coordinate axis.')
-		gHelpInfoF73 += '</li>'
-		gHelpInfoF73 += '<li><b>'
-		gHelpInfoF73 += translate('magicStart', 'Y size') + '</b>: '
-		gHelpInfoF73 += translate('magicStart', 'means the workspace platform size along Y coordinate axis.')
-		gHelpInfoF73 += '</li>'
-		gHelpInfoF73 += '<li><b>'
-		gHelpInfoF73 += translate('magicStart', 'Z size') + '</b>: '
-		gHelpInfoF73 += translate('magicStart', 'means the workspace platform size along Z coordinate axis.')
-		gHelpInfoF73 += '</li>'
-		gHelpInfoF73 += '<li><b>'
-		gHelpInfoF73 += translate('magicStart', 'Start XYZ') + '</b>: '
-		gHelpInfoF73 += translate('magicStart', 'means the point the workspace will be created. The workspace will be created in Z position according to its thickness to allow creating abjects on the platfor with (0, 0, 0) start position.')
-		gHelpInfoF73 += '</li>'
-		gHelpInfoF73 += '</ul>'
-		gHelpInfoF73 += translate('magicStart', 'Before pressing the <b>create</b> button, you can manually correct some values ​​if necessary.')
-		
-		# ############################################################################
-		gHelpInfoF74 = "" 
-		gHelpInfoF74 += translate('magicStart', 'To pre-calculate the starting point for the furniture back and its dimensions, make selection, fill in the required fields and press the "calculate furniture back" button.')
-		gHelpInfoF74 += '<ul>'
-		gHelpInfoF74 += '<li><b>'
-		gHelpInfoF74 += translate('magicStart', 'X bottom edge') + '</b>: '
-		gHelpInfoF74 += translate('magicStart', 'means the inner bottom edge of the furniture where you want to place the furniture back, in line with the X coordinate axis.')
-		gHelpInfoF74 += '</li>'
-		gHelpInfoF74 += '<li><b>'
-		gHelpInfoF74 += translate('magicStart', 'X top edge') + '</b>: '
-		gHelpInfoF74 += translate('magicStart', 'means the inner top edge of the furniture where you want to place the furniture back, in line with the X coordinate axis.')
-		gHelpInfoF74 += '</li>'
-		gHelpInfoF74 += '<li><b>'
-		gHelpInfoF74 += translate('magicStart', 'Z left edge from back model view') + '</b>: '
-		gHelpInfoF74 += translate('magicStart', 'means the inner left edge of the furniture where you want to place the furniture back, in line with the Z coordinate axis but looking at the model from the back side.')
-		gHelpInfoF74 += '</li>'
-		gHelpInfoF74 += '<li><b>'
-		gHelpInfoF74 += translate('magicStart', 'Z right edge') + '</b>: '
-		gHelpInfoF74 += translate('magicStart', 'means the inner right edge of the furniture where you want to place the furniture back, in line with the Z coordinate axis but looking at the model from the back side.')
-		gHelpInfoF74 += '</li>'
-		gHelpInfoF74 += '<li><b>'
-		gHelpInfoF74 += translate('magicStart', 'Furniture back thickness along Y') + '</b>: '
-		gHelpInfoF74 += translate('magicStart', 'means the thickness of the wood, in line with the Y coordinate axis.')
-		gHelpInfoF74 += '</li>'
-		gHelpInfoF74 += '<li><b>'
-		gHelpInfoF74 += translate('magicStart', 'Furniture back overlaps') + '</b>: '
-		gHelpInfoF74 += translate('magicStart', 'this is the size by which the furniture back will overlap the furniture parts, looking from the furniture back of the model.')
-		gHelpInfoF74 += '</li>'
-		gHelpInfoF74 += '<li><b>'
-		gHelpInfoF74 += translate('magicStart', 'Furniture back offsets') + '</b>: '
-		gHelpInfoF74 += translate('magicStart', 'this is the size by which the furniture back will be reduced and will create free space between the parts of the furniture, when looking at the model from the back.')
-		gHelpInfoF74 += '</li>'
-		gHelpInfoF74 += '</ul>'
-		gHelpInfoF74 += translate('magicStart', 'Before pressing the "create" button, you can manually correct some values ​​if necessary.')
-		
 		# ############################################################################
 		# init
 		# ############################################################################
@@ -840,7 +243,7 @@ def showQtGUI():
 				translate('magicStart', 'Furniture front left (decoration, import parametric )'), 
 				translate('magicStart', 'Furniture front right (decoration, import parametric )'), 
 				"------------------------------------------------------------------------------------", 
-				translate('magicStart', 'Shelf'), 
+				translate('magicStart', 'Furniture shelf'), 
 				translate('magicStart', 'Shelf series with equal space'), 
 				translate('magicStart', 'Furniture top (decoration, import parametric )'), 
 				"------------------------------------------------------------------------------------", 
@@ -917,20 +320,23 @@ def showQtGUI():
 			self.helpBHIDE.setFixedHeight(createSize)
 			self.helpBHIDE.hide()
 			
-			self.helpInfo = QtGui.QLabel(self.gHelpInfoF73, self)
+			self.helpInfo = QtGui.QLabel("", self)
 			self.helpInfo.setWordWrap(True)
 			self.helpInfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
 			self.helpInfo.setTextInteractionFlags(QtCore.Qt.TextSelectableByMouse)
 			self.helpInfo.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
 			self.helpInfo.hide()
 			
+			self.gHelpHeaderOR = translate('magicStart', '<b>Step 1</b>: Choose one of the selection methods below:')
+			self.gHelpHeaderAND = translate('magicStart', '<b>Step 1</b>: Select all objects listed below in the same order while holding the left CTRL button:')
+			self.gHelpFoot = translate('magicStart', '<b>Step 2</b>: Press <b>calculate</b> button.') + '<br>'
+			self.gHelpFoot += translate('magicStart', '<b>Step 3</b>: Press <b>create</b> button. Before pressing the create button, you can manually correct some values ​​if necessary.') + '<br><br>'
+			
 			# ############################################################################
 			# selection icon
 			# ############################################################################
 			
-			icon = ""
-			
-			self.si = QtGui.QLabel(icon, self)
+			self.si = QtGui.QLabel("", self)
 			self.si.setFixedWidth(self.imageSizeW)
 			self.si.setFixedHeight(self.imageSizeH)
 			self.si.setWordWrap(True)
@@ -939,7 +345,7 @@ def showQtGUI():
 			self.setIcon("msf073")
 
 			# ############################################################################
-			# GUI for merge (hidden by default)
+			# GUI - merge
 			# ############################################################################
 
 			info = translate('magicStart', 'This object has its own settings in spreadsheet and will be imported from Woodworking workbench Examples folder.')
@@ -966,26 +372,35 @@ def showQtGUI():
 			self.mergeB.hide()
 			
 			# ############################################################################
-			# GUI for Workspace
+			# GUI - workspace
 			# ############################################################################
 			
-			info = translate('magicStart', 'Choose one selection method and make selection before calculate or create button press, possible selections: <br><br> 1. Edge - to set workspace start XYZ position same as edge center <br><br> 2. Face - to set workspace start XYZ position same as face center <br><br> 3. Vertex - to set workspace start XYZ position same as vertex position <br><br> 4. no selection - to create with custom settings')
-			self.oworkspaceInfo = QtGui.QLabel(info, self)
-			self.oworkspaceInfo.setWordWrap(True)
-			self.oworkspaceInfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.oworkspaceInfo.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
+			self.gHelpInfoF73 = ""
+			self.gHelpInfoF73 += self.gHelpHeaderOR
+			self.gHelpInfoF73 += '<ul>'
+			self.gHelpInfoF73 += '<li><b>' + translate('magicStart', 'Edge') + '</b>: '
+			self.gHelpInfoF73 += translate('magicStart', 'to set workspace start XYZ position same as edge CenterOfMass.') + '</li>'
+			self.gHelpInfoF73 += '<li><b>' + translate('magicStart', 'Surface') + '</b>: '
+			self.gHelpInfoF73 += translate('magicStart', 'to set workspace start XYZ position same as surface CenterOfMass.') + '</li>'
+			self.gHelpInfoF73 += '<li><b>' + translate('magicStart', 'Vertex') + '</b>: '
+			self.gHelpInfoF73 += translate('magicStart', 'to set workspace start XYZ position same as vertex position.') + '</li>'
+			self.gHelpInfoF73 += '<li><b>' + translate('magicStart', 'no selection') + '</b>: '
+			self.gHelpInfoF73 += translate('magicStart', 'to create with custom settings.') + '</li>'
+			self.gHelpInfoF73 += '</ul>'
+			self.gHelpInfoF73 += self.gHelpFoot
+			self.gHelpInfoF73 += translate('magicStart', '<b>Note</b>: This workspace allows you to create reference platform. So you can use the workspace edges or surfaces as reference point for other tools. This is dedicated mostly for specific custom projects to make start easier. The Z size will be used later to workspace resize step. This workspace will not be listed at BOM, cut-list report, so you do not have to remove it later.')
 			
-			self.oworkspaceXL = QtGui.QLabel(translate('magicStart', 'X size:'), self)
+			self.oworkspaceXL = QtGui.QLabel(translate('magicStart', 'Size along X:'), self)
 			self.oworkspaceXE = QtGui.QLineEdit(self)
 			self.oworkspaceXE.setText(MagicPanels.unit2gui(3000))
 			self.oworkspaceXE.setFixedWidth(fieldSize)
 			
-			self.oworkspaceYL = QtGui.QLabel(translate('magicStart', 'Y size:'), self)
+			self.oworkspaceYL = QtGui.QLabel(translate('magicStart', 'Size along Y:'), self)
 			self.oworkspaceYE = QtGui.QLineEdit(self)
 			self.oworkspaceYE.setText(MagicPanels.unit2gui(1500))
 			self.oworkspaceYE.setFixedWidth(fieldSize)
 			
-			self.oworkspaceZL = QtGui.QLabel(translate('magicStart', 'Z size:'), self)
+			self.oworkspaceZL = QtGui.QLabel(translate('magicStart', 'Size along Z:'), self)
 			self.oworkspaceZE = QtGui.QLineEdit(self)
 			self.oworkspaceZE.setText(MagicPanels.unit2gui(10))
 			self.oworkspaceZE.setFixedWidth(fieldSize)
@@ -1014,7 +429,6 @@ def showQtGUI():
 			self.oworkspaceBCR.setFixedHeight(createSize)
 
 			# hide by default
-			self.oworkspaceInfo.hide()
 			self.oworkspaceXL.hide()
 			self.oworkspaceXE.hide()
 			self.oworkspaceYL.hide()
@@ -1031,45 +445,59 @@ def showQtGUI():
 			self.oworkspaceBCR.hide()
 
 			# ############################################################################
-			# GUI for furniture
+			# GUI - furniture
 			# ############################################################################
+			
+			self.gHelpInfoF0 = "" 
+			self.gHelpInfoF0 += self.gHelpHeaderOR
+			self.gHelpInfoF0 += '<ul>'
+			self.gHelpInfoF0 += '<li><b>' + translate('magicStart', 'edge along X') + '</b>: '
+			self.gHelpInfoF0 += translate('magicStart', 'Means any edge along the X coordinate axis. In this case, the starting point will be the vertex of the edge and the width of the furniture will be the length of the edge. This method can be used to set XYZ position and width.') + '</li>'
+			self.gHelpInfoF0 += '<li><b>' + translate('magicStart', 'surface along X and Y') + '</b>: '
+			self.gHelpInfoF0 += translate('magicStart', 'Means the surface on the object along the X and Y coordinate axes, i.e. horizontal, such as the top of the object, to create the next furniture module on top. In this case, the width of the furniture and its depth will be calculated from the selected surface so that the furniture is in line with the previous identical module. This method can be used to put next module on top.') + '</li>'
+			self.gHelpInfoF0 += '<li><b>' + translate('magicStart', 'Vertex') + '</b>: '
+			self.gHelpInfoF0 += translate('magicStart', 'Means selecting any vertex of the object. In this case, only the starting point for creating the furniture will be calculated. This method can be used to set XYZ position only') + '</li>'
+			self.gHelpInfoF0 += '<li><b>' + translate('magicStart', 'no selection') + '</b>: '
+			self.gHelpInfoF0 += translate('magicStart', 'This method can be used to create with custom settings.') + '</li>'
+			self.gHelpInfoF0 += '</ul>'
+			self.gHelpInfoF0 += self.gHelpFoot
 			
 			self.oThickL = QtGui.QLabel(translate('magicStart', 'Construction wood thickness:'), self)
 			self.oThickE = QtGui.QLineEdit(self)
 			self.oThickE.setText(MagicPanels.unit2gui(self.gThick))
 			self.oThickE.setFixedWidth(fieldSize)
 			
-			self.oThickBackL = QtGui.QLabel(translate('magicStart', 'Back wood thickness:'), self)
+			self.oThickBackL = QtGui.QLabel(translate('magicStart', 'Furniture back - thickness:'), self)
 			self.oThickBackE = QtGui.QLineEdit(self)
 			self.oThickBackE.setText(MagicPanels.unit2gui(self.gThick))
 			self.oThickBackE.setFixedWidth(fieldSize)
 			
-			self.oThickShelfL = QtGui.QLabel(translate('magicStart', 'Shelf wood thickness:'), self)
+			self.oThickShelfL = QtGui.QLabel(translate('magicStart', 'Furniture shelf - thickness:'), self)
 			self.oThickShelfE = QtGui.QLineEdit(self)
 			self.oThickShelfE.setText(MagicPanels.unit2gui(self.gThick))
 			self.oThickShelfE.setFixedWidth(fieldSize)
 			
-			self.oThickFrontL = QtGui.QLabel(translate('magicStart', 'Furniture front wood thickness:'), self)
+			self.oThickFrontL = QtGui.QLabel(translate('magicStart', 'Furniture front - thickness:'), self)
 			self.oThickFrontE = QtGui.QLineEdit(self)
 			self.oThickFrontE.setText(MagicPanels.unit2gui(self.gThick))
 			self.oThickFrontE.setFixedWidth(fieldSize)
 			
-			self.oOffsetFrontLL = QtGui.QLabel(translate('magicStart', 'Left front offset:'), self)
+			self.oOffsetFrontLL = QtGui.QLabel(translate('magicStart', 'Furniture front - gap from left:'), self)
 			self.oOffsetFrontLE = QtGui.QLineEdit(self)
 			self.oOffsetFrontLE.setText(MagicPanels.unit2gui(self.gThick))
 			self.oOffsetFrontLE.setFixedWidth(fieldSize)
 			
-			self.oOffsetFrontRL = QtGui.QLabel(translate('magicStart', 'Right front offset:'), self)
+			self.oOffsetFrontRL = QtGui.QLabel(translate('magicStart', 'Furniture front - gap from right:'), self)
 			self.oOffsetFrontRE = QtGui.QLineEdit(self)
 			self.oOffsetFrontRE.setText(MagicPanels.unit2gui(self.gThick))
 			self.oOffsetFrontRE.setFixedWidth(fieldSize)
 			
-			self.oOffsetFrontTL = QtGui.QLabel(translate('magicStart', 'Top front offset:'), self)
+			self.oOffsetFrontTL = QtGui.QLabel(translate('magicStart', 'Furniture front - gap from top:'), self)
 			self.oOffsetFrontTE = QtGui.QLineEdit(self)
 			self.oOffsetFrontTE.setText(MagicPanels.unit2gui(self.gThick))
 			self.oOffsetFrontTE.setFixedWidth(fieldSize)
 			
-			self.oOffsetFrontBL = QtGui.QLabel(translate('magicStart', 'Bottom front offset:'), self)
+			self.oOffsetFrontBL = QtGui.QLabel(translate('magicStart', 'Furniture front - gap from bottom:'), self)
 			self.oOffsetFrontBE = QtGui.QLineEdit(self)
 			self.oOffsetFrontBE.setText(MagicPanels.unit2gui(self.gThick))
 			self.oOffsetFrontBE.setFixedWidth(fieldSize)
@@ -1099,7 +527,7 @@ def showQtGUI():
 			self.oHeightE.setText(MagicPanels.unit2gui(self.gFSZ))
 			self.oHeightE.setFixedWidth(fieldSize)
 			
-			self.oCalculateB1 = QtGui.QPushButton(translate('magicStart', 'calculate furniture from selection'), self)
+			self.oCalculateB1 = QtGui.QPushButton(translate('magicStart', 'calculate furniture'), self)
 			self.oCalculateB1.clicked.connect(self.calculateFurniture)
 			self.oCalculateB1.setFixedHeight(createSize)
 			
@@ -1173,26 +601,32 @@ def showQtGUI():
 			self.oCreateB1.hide()
 
 			# ############################################################################
-			# GUI for foot (hidden by default)
+			# GUI - foot
 			# ############################################################################
 			
-			info = translate('magicStart', 'Possible selections, choose one method and make selection before calculate or create button press: <br><br> 1. XY face - to set size and position <br><br> 2. X edge - to set X size and position <br><br> 3. Vertex - to set XYZ start position <br><br> 4. no selection - to create with custom settings')
-			self.oFootInfo = QtGui.QLabel(info, self)
-			self.oFootInfo.setWordWrap(True)
-			self.oFootInfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.oFootInfo.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
+			self.gHelpInfoF16 = "" 
+			self.gHelpInfoF16 += self.gHelpHeaderOR
+			self.gHelpInfoF16 += '<ul>'
+			self.gHelpInfoF16 += '<li><b>' + translate('magicStart', 'XY surface') + '</b>: '
+			self.gHelpInfoF16 += translate('magicStart', 'indicates the surface of the bottom panel of the furniture. In this case, the position, width, and depth of the furniture foot will be taken from the selected surface.') + '</li>'
+			self.gHelpInfoF16 += '<li><b>' + translate('magicStart', 'X edge') + '</b>: '
+			self.gHelpInfoF16 += translate('magicStart', 'indicates the X edge of the bottom panel of the furniture. In this case, the position and width of the furniture foot will be taken from the selected edge. The depth needs to be added by you.') + '</li>'
+			self.gHelpInfoF16 += '<li><b>' + translate('magicStart', 'Vertex') + '</b>: '
+			self.gHelpInfoF16 += translate('magicStart', 'indicates any vertex at any object to set the XYZ start position for the furniture foot creation. In this case, the width and depth needs to be added by you.') + '</li>'
+			self.gHelpInfoF16 += '</ul>'
+			self.gHelpInfoF16 += self.gHelpFoot
 			
 			self.oFootThickL = QtGui.QLabel(translate('magicStart', 'Wood thickness:'), self)
 			self.oFootThickE = QtGui.QLineEdit(self)
 			self.oFootThickE.setText(MagicPanels.unit2gui(self.gThick))
 			self.oFootThickE.setFixedWidth(fieldSize)
 			
-			self.oFootSizeZL = QtGui.QLabel(translate('magicStart', 'Foot height (Z axis):'), self)
+			self.oFootSizeZL = QtGui.QLabel(translate('magicStart', 'Furniture foot - height (Z axis):'), self)
 			self.oFootSizeZE = QtGui.QLineEdit(self)
 			self.oFootSizeZE.setText(MagicPanels.unit2gui(100))
 			self.oFootSizeZE.setFixedWidth(fieldSize)
 			
-			self.oFootCalculateB = QtGui.QPushButton(translate('magicStart', 'calculate foot'), self)
+			self.oFootCalculateB = QtGui.QPushButton(translate('magicStart', 'calculate foot of the furniture'), self)
 			self.oFootCalculateB.clicked.connect(self.calculateFoot)
 			self.oFootCalculateB.setFixedHeight(createSize)
 			
@@ -1211,12 +645,12 @@ def showQtGUI():
 			self.oFootStartZE.setText(MagicPanels.unit2gui(0))
 			self.oFootStartZE.setFixedWidth(fieldSize)
 			
-			self.oFootSizeXL = QtGui.QLabel(translate('magicStart', 'Foot width (X axis):'), self)
+			self.oFootSizeXL = QtGui.QLabel(translate('magicStart', 'Furniture foot - width (X axis):'), self)
 			self.oFootSizeXE = QtGui.QLineEdit(self)
 			self.oFootSizeXE.setText(MagicPanels.unit2gui(0))
 			self.oFootSizeXE.setFixedWidth(fieldSize)
 			
-			self.oFootSizeYL = QtGui.QLabel(translate('magicStart', 'Foot depth (Y axis):'), self)
+			self.oFootSizeYL = QtGui.QLabel(translate('magicStart', 'Furniture foot - depth (Y axis):'), self)
 			self.oFootSizeYE = QtGui.QLineEdit(self)
 			self.oFootSizeYE.setText(MagicPanels.unit2gui(0))
 			self.oFootSizeYE.setFixedWidth(fieldSize)
@@ -1226,7 +660,6 @@ def showQtGUI():
 			self.oFootCreateB.setFixedHeight(createSize)
 			
 			# hide by default
-			self.oFootInfo.hide()
 			self.oFootThickL.hide()
 			self.oFootThickE.hide()
 			self.oFootSizeZL.hide()
@@ -1245,46 +678,50 @@ def showQtGUI():
 			self.oFootCreateB.hide()
 
 			# ############################################################################
-			# GUI for Table (hidden by default)
+			# GUI - table
 			# ############################################################################
 			
-			info = translate('magicStart', 'Possible selections: <br><br>1. Vertex - to set XYZ position <br><br>2. no selection - to create with custom settings')
-			self.oTableInfo = QtGui.QLabel(info, self)
-			self.oTableInfo.setWordWrap(True)
-			self.oTableInfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.oTableInfo.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
-		
-			self.oTableSizeXL = QtGui.QLabel(translate('magicStart', 'Wood table width X:'), self)
+			self.gHelpInfoF42 = "" 
+			self.gHelpInfoF42 += self.gHelpHeaderOR
+			self.gHelpInfoF42 += '<ul>'
+			self.gHelpInfoF42 += '<li><b>' + translate('magicStart', 'Vertex') + '</b>: '
+			self.gHelpInfoF42 += translate('magicStart', 'to set XYZ position.') + '</li>'
+			self.gHelpInfoF42 += '<li><b>' + translate('magicStart', 'no selection') + '</b>: '
+			self.gHelpInfoF42 += translate('magicStart', 'to create with custom settings.') + '</li>'
+			self.gHelpInfoF42 += '</ul>'
+			self.gHelpInfoF42 += self.gHelpFoot
+			
+			self.oTableSizeXL = QtGui.QLabel(translate('magicStart', 'Wood table - width X:'), self)
 			self.oTableSizeXE = QtGui.QLineEdit(self)
 			self.oTableSizeXE.setText(MagicPanels.unit2gui(990))
 			self.oTableSizeXE.setFixedWidth(fieldSize)
 			
-			self.oTableSizeYL = QtGui.QLabel(translate('magicStart', 'Wood table depth Y:'), self)
+			self.oTableSizeYL = QtGui.QLabel(translate('magicStart', 'Wood table - depth Y:'), self)
 			self.oTableSizeYE = QtGui.QLineEdit(self)
 			self.oTableSizeYE.setText(MagicPanels.unit2gui(525))
 			self.oTableSizeYE.setFixedWidth(fieldSize)
 			
-			self.oTableSizeZL = QtGui.QLabel(translate('magicStart', 'Wood table height Z:'), self)
+			self.oTableSizeZL = QtGui.QLabel(translate('magicStart', 'Wood table - height Z:'), self)
 			self.oTableSizeZE = QtGui.QLineEdit(self)
 			self.oTableSizeZE.setText(MagicPanels.unit2gui(430))
 			self.oTableSizeZE.setFixedWidth(fieldSize)
 			
-			self.oTableTopThickL = QtGui.QLabel(translate('magicStart', 'Wood table top thickness:'), self)
+			self.oTableTopThickL = QtGui.QLabel(translate('magicStart', 'Wood table - thickness of the top:'), self)
 			self.oTableTopThickE = QtGui.QLineEdit(self)
 			self.oTableTopThickE.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.oTableTopThickE.setFixedWidth(fieldSize)
 
-			self.oTableLegThickL = QtGui.QLabel(translate('magicStart', 'Legs and Supporters thickness:'), self)
+			self.oTableLegThickL = QtGui.QLabel(translate('magicStart', 'Legs and Supporters - thickness:'), self)
 			self.oTableLegThickE = QtGui.QLineEdit(self)
 			self.oTableLegThickE.setText(MagicPanels.unit2gui(80))
 			self.oTableLegThickE.setFixedWidth(fieldSize)
 			
-			self.oTableTopOffsetL = QtGui.QLabel(translate('magicStart', 'Wood table top offset:'), self)
+			self.oTableTopOffsetL = QtGui.QLabel(translate('magicStart', 'Wood table top - size of protrusion:'), self)
 			self.oTableTopOffsetE = QtGui.QLineEdit(self)
 			self.oTableTopOffsetE.setText(MagicPanels.unit2gui(35))
 			self.oTableTopOffsetE.setFixedWidth(fieldSize)
 			
-			self.oTableCalculateB = QtGui.QPushButton(translate('magicStart', 'calculate table position'), self)
+			self.oTableCalculateB = QtGui.QPushButton(translate('magicStart', 'calculate wood table'), self)
 			self.oTableCalculateB.clicked.connect(self.calculateTable)
 			self.oTableCalculateB.setFixedHeight(createSize)
 			
@@ -1308,7 +745,6 @@ def showQtGUI():
 			self.oTableCreateB.setFixedHeight(createSize)
 			
 			# hide by default
-			self.oTableInfo.hide()
 			self.oTableSizeXL.hide()
 			self.oTableSizeXE.hide()
 			self.oTableSizeYL.hide()
@@ -1331,56 +767,67 @@ def showQtGUI():
 			self.oTableCreateB.hide()
 
 			# ############################################################################
-			# GUI for Single drawer (hidden by default)
+			# GUI - single drawer
 			# ############################################################################
 
-			info = translate('magicStart', 'Possible selections: <br><br>1. top edge<br>2. top edge + back face<br>3. bottom edge + top edge<br>4. bottom edge + top edge + back face<br>5. bottom edge + top edge + left edge + right edge + back face<br><br>The edge can be along X or Y axis.')
-			self.og1i = QtGui.QLabel(info, self)
-			self.og1i.setWordWrap(True)
-			self.og1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.og1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
-
-			self.og101L = QtGui.QLabel(translate('magicStart', 'Drawer front horizontal overlap:'), self)
+			self.gHelpInfoF21 = ""
+			self.gHelpInfoF21 += self.gHelpHeaderOR
+			self.gHelpInfoF21 += '<ul>'
+			self.gHelpInfoF21 += '<li><b>' + translate('magicStart', 'top edge') + '</b>: '
+			self.gHelpInfoF21 += translate('magicStart', 'The drawer will be created from the 0 position on the Z coordinate axis to the position of the selected top edge. The width of the drawer will be taken from the selected top edge size. The depth of the drawer will be taken from the object from the selected top edge. This is a kind of "quick shot" to create the drawer as quickly as possible without a long selection.') + '</li>'
+			self.gHelpInfoF21 += '<li><b>' + translate('magicStart', 'top edge + surface of furniture back') + '</b>: '
+			self.gHelpInfoF21 += translate('magicStart', 'This is the same as above, but here selecting the surface of furniture back allows you to set the depth in a more detailed way.') + '</li>'
+			self.gHelpInfoF21 += '<li><b>' + translate('magicStart', 'bottom edge + top edge') + '</b>: '
+			self.gHelpInfoF21 += translate('magicStart', 'The drawer will be created from the position of the first selected bottom edge to the position of the second selected top edge. The width and depth of the drawer will be taken from the object with the shortest edge. This is a kind of "quick shot" to create the drawer quickly without a long selection.') + '</li>'
+			self.gHelpInfoF21 += '<li><b>' + translate('magicStart', 'bottom edge + top edge + surface of furniture back') + '</b>: '
+			self.gHelpInfoF21 += translate('magicStart', 'This is the same as above, but here selecting the surface of furniture back allows you to set the depth in a more detailed way.') + '</li>'
+			self.gHelpInfoF21 += '<li><b>' + translate('magicStart', 'bottom edge + top edge + left edge + right edge + surface of furniture back') + '</b>: '
+			self.gHelpInfoF21 += translate('magicStart', 'The drawer will be created from the position of the first selected bottom edge to the position of the second selected top edge. The width of the drawer will be obtained from the difference of the third and fourth selected edges. The depth of the drawer will be obtained from the selected surface of furniture back. There are many more objects to select here, but this is the most precise version of determining the size of the drawer. So if you have trouble with any of the above, I recommend trying this method. Also this method solves the problem with longest bottom and top edges.') + '</li>'
+			self.gHelpInfoF21 += '</ul>'
+			self.gHelpInfoF21 += self.gHelpFoot
+			self.gHelpInfoF21 += translate('magicStart', '<b>Note</b>: The edges can be in line with the X or Y coordinate axis, so the drawer can be created on all four sides of the furniture.')
+			
+			self.og101L = QtGui.QLabel(translate('magicStart', 'Drawer front - horizontal overlap:'), self)
 			self.og101E = QtGui.QLineEdit(self)
 			self.og101E.setText(MagicPanels.unit2gui(9))
 			self.og101E.setFixedWidth(fieldSize)
 			
-			self.og102L = QtGui.QLabel(translate('magicStart', 'Drawer front vertical overlap:'), self)
+			self.og102L = QtGui.QLabel(translate('magicStart', 'Drawer front - vertical overlap:'), self)
 			self.og102E = QtGui.QLineEdit(self)
 			self.og102E.setText(MagicPanels.unit2gui(7))
 			self.og102E.setFixedWidth(fieldSize)
 		
-			self.og81L = QtGui.QLabel(translate('magicStart', 'Drawer front wood thickness:'), self)
+			self.og81L = QtGui.QLabel(translate('magicStart', 'Drawer front - wood thickness:'), self)
 			self.og81E = QtGui.QLineEdit(self)
 			self.og81E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.og81E.setFixedWidth(fieldSize)
 			
-			self.og82L = QtGui.QLabel(translate('magicStart', 'Drawer sides wood thickness:'), self)
+			self.og82L = QtGui.QLabel(translate('magicStart', 'Drawer sides - wood thickness:'), self)
 			self.og82E = QtGui.QLineEdit(self)
 			self.og82E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.og82E.setFixedWidth(fieldSize)
 			
-			self.og83L = QtGui.QLabel(translate('magicStart', 'Drawer bottom wood thickness:'), self)
+			self.og83L = QtGui.QLabel(translate('magicStart', 'Drawer bottom - wood thickness:'), self)
 			self.og83E = QtGui.QLineEdit(self)
 			self.og83E.setText(MagicPanels.unit2gui(3))
 			self.og83E.setFixedWidth(fieldSize)
 			
-			self.og91L = QtGui.QLabel(translate('magicStart', 'Drawer system offsets for sides:'), self)
+			self.og91L = QtGui.QLabel(translate('magicStart', 'Drawer system - gap from sides:'), self)
 			self.og91E = QtGui.QLineEdit(self)
 			self.og91E.setText(MagicPanels.unit2gui(26))
 			self.og91E.setFixedWidth(fieldSize)
 			
-			self.og92L = QtGui.QLabel(translate('magicStart', 'Drawer system offsets for back:'), self)
+			self.og92L = QtGui.QLabel(translate('magicStart', 'Drawer system - gap from back:'), self)
 			self.og92E = QtGui.QLineEdit(self)
 			self.og92E.setText(MagicPanels.unit2gui(20))
 			self.og92E.setFixedWidth(fieldSize)
 			
-			self.og93L = QtGui.QLabel(translate('magicStart', 'Drawer system offsets for top:'), self)
+			self.og93L = QtGui.QLabel(translate('magicStart', 'Drawer system - gap from top:'), self)
 			self.og93E = QtGui.QLineEdit(self)
 			self.og93E.setText(MagicPanels.unit2gui(30))
 			self.og93E.setFixedWidth(fieldSize)
 			
-			self.og94L = QtGui.QLabel(translate('magicStart', 'Drawer system offsets for bottom:'), self)
+			self.og94L = QtGui.QLabel(translate('magicStart', 'Drawer system - gap from bottom:'), self)
 			self.og94E = QtGui.QLineEdit(self)
 			self.og94E.setText(MagicPanels.unit2gui(10))
 			self.og94E.setFixedWidth(fieldSize)
@@ -1389,32 +836,32 @@ def showQtGUI():
 			self.og4B1.clicked.connect(self.calculateSingleDrawer)
 			self.og4B1.setFixedHeight(createSize)
 			
-			self.og2L = QtGui.QLabel(translate('magicStart', 'Gap start X:'), self)
+			self.og2L = QtGui.QLabel(translate('magicStart', 'Drawer gap - start X:'), self)
 			self.og2E = QtGui.QLineEdit(self)
 			self.og2E.setText(MagicPanels.unit2gui(0))
 			self.og2E.setFixedWidth(fieldSize)
 			
-			self.og3L = QtGui.QLabel(translate('magicStart', 'Gap start Y:'), self)
+			self.og3L = QtGui.QLabel(translate('magicStart', 'Drawer gap - start Y:'), self)
 			self.og3E = QtGui.QLineEdit(self)
 			self.og3E.setText(MagicPanels.unit2gui(0))
 			self.og3E.setFixedWidth(fieldSize)
 			
-			self.og4L = QtGui.QLabel(translate('magicStart', 'Gap start Z:'), self)
+			self.og4L = QtGui.QLabel(translate('magicStart', 'Drawer gap - start Z:'), self)
 			self.og4E = QtGui.QLineEdit(self)
 			self.og4E.setText(MagicPanels.unit2gui(0))
 			self.og4E.setFixedWidth(fieldSize)
 			
-			self.og5L = QtGui.QLabel(translate('magicStart', 'Gap width:'), self)
+			self.og5L = QtGui.QLabel(translate('magicStart', 'Drawer gap - width:'), self)
 			self.og5E = QtGui.QLineEdit(self)
 			self.og5E.setText(MagicPanels.unit2gui(400))
 			self.og5E.setFixedWidth(fieldSize)
 			
-			self.og6L = QtGui.QLabel(translate('magicStart', 'Gap height:'), self)
+			self.og6L = QtGui.QLabel(translate('magicStart', 'Drawer gap - height:'), self)
 			self.og6E = QtGui.QLineEdit(self)
 			self.og6E.setText(MagicPanels.unit2gui(150))
 			self.og6E.setFixedWidth(fieldSize)
 			
-			self.og7L = QtGui.QLabel(translate('magicStart', 'Gap depth:'), self)
+			self.og7L = QtGui.QLabel(translate('magicStart', 'Drawer gap - depth:'), self)
 			self.og7E = QtGui.QLineEdit(self)
 			self.og7E.setText(MagicPanels.unit2gui(350))
 			self.og7E.setFixedWidth(fieldSize)
@@ -1424,7 +871,6 @@ def showQtGUI():
 			self.og9B1.setFixedHeight(createSize)
 			
 			# hide by default
-			self.og1i.hide()
 			self.og2L.hide()
 			self.og3L.hide()
 			self.og4L.hide()
@@ -1459,26 +905,36 @@ def showQtGUI():
 			self.og102E.hide()
 			
 			# ############################################################################
-			# GUI for drawer series GAP (hidden by default)
+			# GUI - drawers series
 			# ############################################################################
-
-			info = translate('magicStart', 'Please select 4 edges around the gap and back face: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge <br> 5. selection - back face')
-			self.ods1i = QtGui.QLabel(info, self)
-			self.ods1i.setWordWrap(True)
-			self.ods1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.ods1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
+			
+			self.gHelpInfoF30 = ""
+			self.gHelpInfoF30 += self.gHelpHeaderAND
+			self.gHelpInfoF30 += '<ul>'
+			self.gHelpInfoF30 += '<li><b>' + translate('magicStart', 'bottom edge along X') + '</b>: '
+			self.gHelpInfoF30 += translate('magicStart', 'means the bottom edge in line with the X coordinate axis of the free space where you want to create a series of drawers, i.e. the horizontal edge of the bottom shelf.') + '</li>'
+			self.gHelpInfoF30 += '<li><b>' + translate('magicStart', 'top edge along X') + '</b>: '
+			self.gHelpInfoF30 += translate('magicStart', 'means the top edge in line with the X coordinate axis of the free space where you want to create a series of drawers, i.e. the horizontal edge of the top shelf.') + '</li>'
+			self.gHelpInfoF30 += '<li><b>' + translate('magicStart', 'left edge along Z') + '</b>: '
+			self.gHelpInfoF30 += translate('magicStart', 'means the left edge in line with the Z coordinate axis of the free space where you want to create a series of drawers, i.e. the vertical edge of the left side of the furniture.') + '</li>'
+			self.gHelpInfoF30 += '<li><b>' + translate('magicStart', 'right edge along Z') + '</b>: '
+			self.gHelpInfoF30 += translate('magicStart', 'means the right edge in line with the Z coordinate axis of the free space where you want to create a series of drawers, i.e. the vertical edge of the right side of the furniture.') + '</li>'
+			self.gHelpInfoF30 += '<li><b>' + translate('magicStart', 'surface of the furniture back') + '</b>: '
+			self.gHelpInfoF30 += translate('magicStart', 'means the inner surface of the back wall of the furniture. The surface should be in line with the X and Z coordinate axes, i.e. vertical faced to the furniture front.') + '</li>'
+			self.gHelpInfoF30 += '</ul>'
+			self.gHelpInfoF30 += self.gHelpFoot
 			
 			self.ods2L = QtGui.QLabel(translate('magicStart', 'Number of drawers:'), self)
 			self.ods2E = QtGui.QLineEdit(self)
 			self.ods2E.setText("4")
 			self.ods2E.setFixedWidth(fieldSize)
 			
-			self.ods111L = QtGui.QLabel(translate('magicStart', 'Drawer front horizontal overlap:'), self)
+			self.ods111L = QtGui.QLabel(translate('magicStart', 'Drawer front - horizontal overlap:'), self)
 			self.ods111E = QtGui.QLineEdit(self)
 			self.ods111E.setText(MagicPanels.unit2gui(9))
 			self.ods111E.setFixedWidth(fieldSize)
 			
-			self.ods112L = QtGui.QLabel(translate('magicStart', 'Drawer front vertical overlap:'), self)
+			self.ods112L = QtGui.QLabel(translate('magicStart', 'Drawer front - vertical overlap:'), self)
 			self.ods112E = QtGui.QLineEdit(self)
 			self.ods112E.setText(MagicPanels.unit2gui(7))
 			self.ods112E.setFixedWidth(fieldSize)
@@ -1488,76 +944,76 @@ def showQtGUI():
 			self.ods113E.setText(MagicPanels.unit2gui(4))
 			self.ods113E.setFixedWidth(fieldSize)
 			
-			self.ods31L = QtGui.QLabel(translate('magicStart', 'Drawer front wood thickness:'), self)
+			self.ods31L = QtGui.QLabel(translate('magicStart', 'Drawer front - wood thickness:'), self)
 			self.ods31E = QtGui.QLineEdit(self)
 			self.ods31E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.ods31E.setFixedWidth(fieldSize)
 			
-			self.ods32L = QtGui.QLabel(translate('magicStart', 'Drawer sides wood thickness:'), self)
+			self.ods32L = QtGui.QLabel(translate('magicStart', 'Drawer sides - wood thickness:'), self)
 			self.ods32E = QtGui.QLineEdit(self)
 			self.ods32E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.ods32E.setFixedWidth(fieldSize)
 			
-			self.ods33L = QtGui.QLabel(translate('magicStart', 'Drawer bottom wood thickness:'), self)
+			self.ods33L = QtGui.QLabel(translate('magicStart', 'Drawer bottom - wood thickness:'), self)
 			self.ods33E = QtGui.QLineEdit(self)
 			self.ods33E.setText(MagicPanels.unit2gui(3))
 			self.ods33E.setFixedWidth(fieldSize)
 			
-			self.ods41L = QtGui.QLabel(translate('magicStart', 'Drawer system offsets for sides:'), self)
+			self.ods41L = QtGui.QLabel(translate('magicStart', 'Drawer system - gap from sides:'), self)
 			self.ods41E = QtGui.QLineEdit(self)
 			self.ods41E.setText(MagicPanels.unit2gui(26))
 			self.ods41E.setFixedWidth(fieldSize)
 			
-			self.ods42L = QtGui.QLabel(translate('magicStart', 'Drawer system offsets for back:'), self)
+			self.ods42L = QtGui.QLabel(translate('magicStart', 'Drawer system - gap from back:'), self)
 			self.ods42E = QtGui.QLineEdit(self)
 			self.ods42E.setText(MagicPanels.unit2gui(20))
 			self.ods42E.setFixedWidth(fieldSize)
 			
-			self.ods43L = QtGui.QLabel(translate('magicStart', 'Drawer system offsets for top:'), self)
+			self.ods43L = QtGui.QLabel(translate('magicStart', 'Drawer system - gap from top:'), self)
 			self.ods43E = QtGui.QLineEdit(self)
 			self.ods43E.setText(MagicPanels.unit2gui(30))
 			self.ods43E.setFixedWidth(fieldSize)
 			
-			self.ods44L = QtGui.QLabel(translate('magicStart', 'Drawer system offsets for bottom:'), self)
+			self.ods44L = QtGui.QLabel(translate('magicStart', 'Drawer system - gap from bottom:'), self)
 			self.ods44E = QtGui.QLineEdit(self)
 			self.ods44E.setText(MagicPanels.unit2gui(10))
 			self.ods44E.setFixedWidth(fieldSize)
 			
-			self.ods45L = QtGui.QLabel(translate('magicStart', 'Drawer system offsets for back sides:'), self)
+			self.ods45L = QtGui.QLabel(translate('magicStart', 'Drawer system - gap from back sides:'), self)
 			self.ods45E = QtGui.QLineEdit(self)
 			self.ods45E.setText(MagicPanels.unit2gui(87))
 			self.ods45E.setFixedWidth(fieldSize)
 			
-			self.ods5B = QtGui.QPushButton(translate('magicStart', 'calculate gaps'), self)
+			self.ods5B = QtGui.QPushButton(translate('magicStart', 'calculate gaps for drawers series'), self)
 			self.ods5B.clicked.connect(self.calculateDrawerSeries)
 			self.ods5B.setFixedHeight(createSize)
 			
-			self.ods61L = QtGui.QLabel(translate('magicStart', 'Gap start X:'), self)
+			self.ods61L = QtGui.QLabel(translate('magicStart', 'Drawer gap - start X:'), self)
 			self.ods61E = QtGui.QLineEdit(self)
 			self.ods61E.setText(MagicPanels.unit2gui(0))
 			self.ods61E.setFixedWidth(fieldSize)
 			
-			self.ods62L = QtGui.QLabel(translate('magicStart', 'Gap start Y:'), self)
+			self.ods62L = QtGui.QLabel(translate('magicStart', 'Drawer gap - start Y:'), self)
 			self.ods62E = QtGui.QLineEdit(self)
 			self.ods62E.setText(MagicPanels.unit2gui(0))
 			self.ods62E.setFixedWidth(fieldSize)
 			
-			self.ods63L = QtGui.QLabel(translate('magicStart', 'Gap start Z:'), self)
+			self.ods63L = QtGui.QLabel(translate('magicStart', 'Drawer gap - start Z:'), self)
 			self.ods63E = QtGui.QLineEdit(self)
 			self.ods63E.setText(MagicPanels.unit2gui(0))
 			self.ods63E.setFixedWidth(fieldSize)
 			
-			self.ods7L = QtGui.QLabel(translate('magicStart', 'Single gap width:'), self)
+			self.ods7L = QtGui.QLabel(translate('magicStart', 'Drawer gap - width:'), self)
 			self.ods7E = QtGui.QLineEdit(self)
 			self.ods7E.setText(MagicPanels.unit2gui(400))
 			self.ods7E.setFixedWidth(fieldSize)
 			
-			self.ods8L = QtGui.QLabel(translate('magicStart', 'Single gap height:'), self)
+			self.ods8L = QtGui.QLabel(translate('magicStart', 'Drawer gap - height:'), self)
 			self.ods8E = QtGui.QLineEdit(self)
 			self.ods8E.setText(MagicPanels.unit2gui(150))
 			self.ods8E.setFixedWidth(fieldSize)
 			
-			self.ods9L = QtGui.QLabel(translate('magicStart', 'Single gap depth:'), self)
+			self.ods9L = QtGui.QLabel(translate('magicStart', 'Drawer gap - depth:'), self)
 			self.ods9E = QtGui.QLineEdit(self)
 			self.ods9E.setText(MagicPanels.unit2gui(350))
 			self.ods9E.setFixedWidth(fieldSize)
@@ -1567,7 +1023,6 @@ def showQtGUI():
 			self.ods10B.setFixedHeight(createSize)
 			
 			# hide by default
-			self.ods1i.hide()
 			self.ods2L.hide()
 			self.ods2E.hide()
 			self.ods31L.hide()
@@ -1608,65 +1063,73 @@ def showQtGUI():
 			self.ods113E.hide()
 			
 			# ############################################################################
-			# GUI for Furniture front from GAP (hidden by default)
+			# GUI - furniture front
 			# ############################################################################
 
-			info = translate('magicStart', 'Please select 4 edges around the gap to calculate front size in this order: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
-			self.ofr1i = QtGui.QLabel(info, self)
-			self.ofr1i.setWordWrap(True)
-			self.ofr1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.ofr1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
-			
-			self.ofr7L = QtGui.QLabel(translate('magicStart', 'Furniture front thickness:'), self)
+			self.gHelpInfoF23 = ""
+			self.gHelpInfoF23 += self.gHelpHeaderAND
+			self.gHelpInfoF23 += '<ul>'
+			self.gHelpInfoF23 += '<li><b>' + translate('magicStart', 'bottom edge along X') + '</b>: '
+			self.gHelpInfoF23 += translate('magicStart', 'means the inner bottom edge of the shelf or floor of the furniture along the X coordinate axis.') + '</li>'
+			self.gHelpInfoF23 += '<li><b>' + translate('magicStart', 'top edge along X') + '</b>: '
+			self.gHelpInfoF23 += translate('magicStart', 'means the inner top edge of the shelf or top of the furniture along the X coordinate axis.') + '</li>'
+			self.gHelpInfoF23 += '<li><b>' + translate('magicStart', 'left edge along Z') + '</b>: '
+			self.gHelpInfoF23 += translate('magicStart', 'means the inner left edge of the side of the furniture along the Z coordinate axis.') + '</li>'
+			self.gHelpInfoF23 += '<li><b>' + translate('magicStart', 'right edge along Z') + '</b>: '
+			self.gHelpInfoF23 += translate('magicStart', 'means the inner right edge of the side of the furniture along the Z coordinate axis.') + '</li>'
+			self.gHelpInfoF23 += '</ul>'
+			self.gHelpInfoF23 += self.gHelpFoot
+
+			self.ofr7L = QtGui.QLabel(translate('magicStart', 'Furniture front - wood thickness:'), self)
 			self.ofr7E = QtGui.QLineEdit(self)
 			self.ofr7E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.ofr7E.setFixedWidth(fieldSize)
 			
-			self.ofr81L = QtGui.QLabel(translate('magicStart', 'Furniture front offset from left:'), self)
+			self.ofr81L = QtGui.QLabel(translate('magicStart', 'Furniture front - gap from left:'), self)
 			self.ofr81E = QtGui.QLineEdit(self)
 			self.ofr81E.setText(MagicPanels.unit2gui(0))
 			self.ofr81E.setFixedWidth(fieldSize)
 			
-			self.ofr82L = QtGui.QLabel(translate('magicStart', 'Furniture front offset from right:'), self)
+			self.ofr82L = QtGui.QLabel(translate('magicStart', 'Furniture front - gap from right:'), self)
 			self.ofr82E = QtGui.QLineEdit(self)
 			self.ofr82E.setText(MagicPanels.unit2gui(0))
 			self.ofr82E.setFixedWidth(fieldSize)
 			
-			self.ofr83L = QtGui.QLabel(translate('magicStart', 'Furniture front offset from top:'), self)
+			self.ofr83L = QtGui.QLabel(translate('magicStart', 'Furniture front - gap from top:'), self)
 			self.ofr83E = QtGui.QLineEdit(self)
 			self.ofr83E.setText(MagicPanels.unit2gui(0))
 			self.ofr83E.setFixedWidth(fieldSize)
 			
-			self.ofr84L = QtGui.QLabel(translate('magicStart', 'Furniture front offset from bottom:'), self)
+			self.ofr84L = QtGui.QLabel(translate('magicStart', 'Furniture front - gap from bottom:'), self)
 			self.ofr84E = QtGui.QLineEdit(self)
 			self.ofr84E.setText(MagicPanels.unit2gui(0))
 			self.ofr84E.setFixedWidth(fieldSize)
 			
-			self.ofr4B1 = QtGui.QPushButton(translate('magicStart', 'calculate front'), self)
+			self.ofr4B1 = QtGui.QPushButton(translate('magicStart', 'calculate front of the furniture'), self)
 			self.ofr4B1.clicked.connect(self.calculateFrontFromGap)
 			self.ofr4B1.setFixedHeight(createSize)
 			
-			self.ofr2L = QtGui.QLabel(translate('magicStart', 'Furniture front start X:'), self)
+			self.ofr2L = QtGui.QLabel(translate('magicStart', 'Furniture front - start X:'), self)
 			self.ofr2E = QtGui.QLineEdit(self)
 			self.ofr2E.setText(MagicPanels.unit2gui(0))
 			self.ofr2E.setFixedWidth(fieldSize)
 			
-			self.ofr3L = QtGui.QLabel(translate('magicStart', 'Furniture front start Y:'), self)
+			self.ofr3L = QtGui.QLabel(translate('magicStart', 'Furniture front - start Y:'), self)
 			self.ofr3E = QtGui.QLineEdit(self)
 			self.ofr3E.setText(MagicPanels.unit2gui(0))
 			self.ofr3E.setFixedWidth(fieldSize)
 			
-			self.ofr4L = QtGui.QLabel(translate('magicStart', 'Furniture front start Z:'), self)
+			self.ofr4L = QtGui.QLabel(translate('magicStart', 'Furniture front - start Z:'), self)
 			self.ofr4E = QtGui.QLineEdit(self)
 			self.ofr4E.setText(MagicPanels.unit2gui(0))
 			self.ofr4E.setFixedWidth(fieldSize)
 			
-			self.ofr5L = QtGui.QLabel(translate('magicStart', 'Furniture front width:'), self)
+			self.ofr5L = QtGui.QLabel(translate('magicStart', 'Furniture front - width:'), self)
 			self.ofr5E = QtGui.QLineEdit(self)
 			self.ofr5E.setText(MagicPanels.unit2gui(0))
 			self.ofr5E.setFixedWidth(fieldSize)
 			
-			self.ofr6L = QtGui.QLabel(translate('magicStart', 'Furniture front height:'), self)
+			self.ofr6L = QtGui.QLabel(translate('magicStart', 'Furniture front - height:'), self)
 			self.ofr6E = QtGui.QLineEdit(self)
 			self.ofr6E.setText(MagicPanels.unit2gui(0))
 			self.ofr6E.setFixedWidth(fieldSize)
@@ -1676,7 +1139,6 @@ def showQtGUI():
 			self.ofr8B1.setFixedHeight(createSize)
 			
 			# hide by default
-			self.ofr1i.hide()
 			self.ofr2L.hide()
 			self.ofr3L.hide()
 			self.ofr4L.hide()
@@ -1701,41 +1163,49 @@ def showQtGUI():
 			self.ofr8B1.hide()
 
 			# ############################################################################
-			# GUI for Back from GAP (hidden by default)
+			# GUI - furniture back
 			# ############################################################################
 
-			info = translate('magicStart', 'Please select 4 edges around the gap to calculate furniture back: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge from back model view <br> 4. selection - Z right edge from back model view')
-			self.oBackInfo = QtGui.QLabel(info, self)
-			self.oBackInfo.setWordWrap(True)
-			self.oBackInfo.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.oBackInfo.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
+			self.gHelpInfoF74 = ""
+			self.gHelpInfoF74 += self.gHelpHeaderAND
+			self.gHelpInfoF74 += '<ul>'
+			self.gHelpInfoF74 += '<li><b>' + translate('magicStart', 'bottom edge along X') + '</b>: '
+			self.gHelpInfoF74 += translate('magicStart', 'means the inner bottom edge of the furniture where you want to place the back of the furniture, in line with the X coordinate axis.') + '</li>'
+			self.gHelpInfoF74 += '<li><b>' + translate('magicStart', 'top edge along X') + '</b>: '
+			self.gHelpInfoF74 += translate('magicStart', 'means the inner top edge of the furniture where you want to place the back of the furniture, in line with the X coordinate axis.') + '</li>'
+			self.gHelpInfoF74 += '<li><b>' + translate('magicStart', 'left edge along Z in back model view') + '</b>: '
+			self.gHelpInfoF74 += translate('magicStart', 'means the inner left edge of the furniture where you want to place the back of the furniture, in line with the Z coordinate axis but looking at the model from the back side.') + '</li>'
+			self.gHelpInfoF74 += '<li><b>' + translate('magicStart', 'right edge along Z') + '</b>: '
+			self.gHelpInfoF74 += translate('magicStart', 'means the inner right edge of the furniture where you want to place the back of the furniture, in line with the Z coordinate axis but looking at the model from the back side.') + '</li>'
+			self.gHelpInfoF74 += '</ul>'
+			self.gHelpInfoF74 += self.gHelpFoot
 			
-			self.oBackThickL = QtGui.QLabel(translate('magicStart', 'Furniture back thickness along Y:'), self)
+			self.oBackThickL = QtGui.QLabel(translate('magicStart', 'Furniture back - thickness along Y:'), self)
 			self.oBackThickE = QtGui.QLineEdit(self)
 			self.oBackThickE.setText(MagicPanels.unit2gui(0))
 			self.oBackThickE.setFixedWidth(fieldSize)
 		
-			self.oBackOffsets1L = QtGui.QLabel(translate('magicStart', 'Furniture back offset from left:'), self)
+			self.oBackOffsets1L = QtGui.QLabel(translate('magicStart', 'Furniture back - offset from left:'), self)
 			self.oBackOffsets1E = QtGui.QLineEdit(self)
 			self.oBackOffsets1E.setText(MagicPanels.unit2gui(0))
 			self.oBackOffsets1E.setFixedWidth(fieldSize)
 			
-			self.oBackOffsets2L = QtGui.QLabel(translate('magicStart', 'Furniture back offset from right:'), self)
+			self.oBackOffsets2L = QtGui.QLabel(translate('magicStart', 'Furniture back - offset from right:'), self)
 			self.oBackOffsets2E = QtGui.QLineEdit(self)
 			self.oBackOffsets2E.setText(MagicPanels.unit2gui(0))
 			self.oBackOffsets2E.setFixedWidth(fieldSize)
 			
-			self.oBackOffsets3L = QtGui.QLabel(translate('magicStart', 'Furniture back offset from top:'), self)
+			self.oBackOffsets3L = QtGui.QLabel(translate('magicStart', 'Furniture back - offset from top:'), self)
 			self.oBackOffsets3E = QtGui.QLineEdit(self)
 			self.oBackOffsets3E.setText(MagicPanels.unit2gui(0))
 			self.oBackOffsets3E.setFixedWidth(fieldSize)
 			
-			self.oBackOffsets4L = QtGui.QLabel(translate('magicStart', 'Furniture back offset from bottom:'), self)
+			self.oBackOffsets4L = QtGui.QLabel(translate('magicStart', 'Furniture back - offset from bottom:'), self)
 			self.oBackOffsets4E = QtGui.QLineEdit(self)
 			self.oBackOffsets4E.setText(MagicPanels.unit2gui(0))
 			self.oBackOffsets4E.setFixedWidth(fieldSize)
 
-			self.oBackBCL = QtGui.QPushButton(translate('magicStart', 'calculate furniture back'), self)
+			self.oBackBCL = QtGui.QPushButton(translate('magicStart', 'calculate back of the furniture'), self)
 			self.oBackBCL.clicked.connect(self.calculateBack)
 			self.oBackBCL.setFixedHeight(createSize)
 			
@@ -1754,12 +1224,12 @@ def showQtGUI():
 			self.oBackSZE.setText(MagicPanels.unit2gui(0))
 			self.oBackSZE.setFixedWidth(fieldSize)
 			
-			self.oBackSizeXL = QtGui.QLabel(translate('magicStart', 'Calculated back width along X:'), self)
+			self.oBackSizeXL = QtGui.QLabel(translate('magicStart', 'Calculated width along X:'), self)
 			self.oBackSizeXE = QtGui.QLineEdit(self)
 			self.oBackSizeXE.setText(MagicPanels.unit2gui(0))
 			self.oBackSizeXE.setFixedWidth(fieldSize)
 			
-			self.oBackSizeYL = QtGui.QLabel(translate('magicStart', 'Calculated back height along Z:'), self)
+			self.oBackSizeYL = QtGui.QLabel(translate('magicStart', 'Calculated height along Z:'), self)
 			self.oBackSizeYE = QtGui.QLineEdit(self)
 			self.oBackSizeYE.setText(MagicPanels.unit2gui(0))
 			self.oBackSizeYE.setFixedWidth(fieldSize)
@@ -1769,7 +1239,6 @@ def showQtGUI():
 			self.oBackBCR.setFixedHeight(createSize)
 
 			# hide by default
-			self.oBackInfo.hide()
 			self.oBackThickL.hide()
 			self.oBackThickE.hide()
 			self.oBackOffsets1L.hide()
@@ -1794,15 +1263,23 @@ def showQtGUI():
 			self.oBackBCR.hide()
 			
 			# ############################################################################
-			# GUI for Furniture front with glass (hidden by default)
+			# GUI - furniture front with glass
 			# ############################################################################
 
-			info = translate('magicStart', 'Please select 4 edges around the gap to calculate Furniture front with glass: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
-			self.ofglass1i = QtGui.QLabel(info, self)
-			self.ofglass1i.setWordWrap(True)
-			self.ofglass1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.ofglass1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
-			
+			self.gHelpInfoF37 = ""
+			self.gHelpInfoF37 += self.gHelpHeaderAND
+			self.gHelpInfoF37 += '<ul>'
+			self.gHelpInfoF37 += '<li><b>' + translate('magicStart', 'bottom edge along X') + '</b>: '
+			self.gHelpInfoF37 += translate('magicStart', 'means the inner bottom edge of the space, in line with the X coordinate axis.') + '</li>'
+			self.gHelpInfoF37 += '<li><b>' + translate('magicStart', 'top edge along X') + '</b>: '
+			self.gHelpInfoF37 += translate('magicStart', 'means the inner top edge of the space, in line with the X coordinate axis.') + '</li>'
+			self.gHelpInfoF37 += '<li><b>' + translate('magicStart', 'left edge along Z') + '</b>: '
+			self.gHelpInfoF37 += translate('magicStart', 'means the inner left edge of the space, in line with the Z coordinate axis.') + '</li>'
+			self.gHelpInfoF37 += '<li><b>' + translate('magicStart', 'right edge along Z') + '</b>: '
+			self.gHelpInfoF37 += translate('magicStart', 'means the inner right edge of the space, in line with the Z coordinate axis.') + '</li>'
+			self.gHelpInfoF37 += '</ul>'
+			self.gHelpInfoF37 += self.gHelpFoot
+
 			self.ofglass2L = QtGui.QLabel(translate('magicStart', 'Wood thickness:'), self)
 			self.ofglass2E = QtGui.QLineEdit(self)
 			self.ofglass2E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
@@ -1827,32 +1304,32 @@ def showQtGUI():
 			self.ofglass6B.clicked.connect(self.calculateFrontWithGlass)
 			self.ofglass6B.setFixedHeight(createSize)
 			
-			self.ofglass71L = QtGui.QLabel(translate('magicStart', 'Furniture front start X:'), self)
+			self.ofglass71L = QtGui.QLabel(translate('magicStart', 'Furniture front - start X:'), self)
 			self.ofglass71E = QtGui.QLineEdit(self)
 			self.ofglass71E.setText(MagicPanels.unit2gui(0))
 			self.ofglass71E.setFixedWidth(fieldSize)
 			
-			self.ofglass72L = QtGui.QLabel(translate('magicStart', 'Furniture front start Y:'), self)
+			self.ofglass72L = QtGui.QLabel(translate('magicStart', 'Furniture front - start Y:'), self)
 			self.ofglass72E = QtGui.QLineEdit(self)
 			self.ofglass72E.setText(MagicPanels.unit2gui(0))
 			self.ofglass72E.setFixedWidth(fieldSize)
 			
-			self.ofglass73L = QtGui.QLabel(translate('magicStart', 'Furniture front start Z:'), self)
+			self.ofglass73L = QtGui.QLabel(translate('magicStart', 'Furniture front - start Z:'), self)
 			self.ofglass73E = QtGui.QLineEdit(self)
 			self.ofglass73E.setText(MagicPanels.unit2gui(0))
 			self.ofglass73E.setFixedWidth(fieldSize)
 			
-			self.ofglass8L = QtGui.QLabel(translate('magicStart', 'Calculated single bar width:'), self)
+			self.ofglass8L = QtGui.QLabel(translate('magicStart', 'Calculated single beam width:'), self)
 			self.ofglass8E = QtGui.QLineEdit(self)
 			self.ofglass8E.setText(MagicPanels.unit2gui(0))
 			self.ofglass8E.setFixedWidth(fieldSize)
 			
-			self.ofglass9L = QtGui.QLabel(translate('magicStart', 'Calculated front width:'), self)
+			self.ofglass9L = QtGui.QLabel(translate('magicStart', 'Calculated front - width:'), self)
 			self.ofglass9E = QtGui.QLineEdit(self)
 			self.ofglass9E.setText(MagicPanels.unit2gui(0))
 			self.ofglass9E.setFixedWidth(fieldSize)
 			
-			self.ofglass10L = QtGui.QLabel(translate('magicStart', 'Calculated front height:'), self)
+			self.ofglass10L = QtGui.QLabel(translate('magicStart', 'Calculated front - height:'), self)
 			self.ofglass10E = QtGui.QLineEdit(self)
 			self.ofglass10E.setText(MagicPanels.unit2gui(0))
 			self.ofglass10E.setFixedWidth(fieldSize)
@@ -1862,7 +1339,6 @@ def showQtGUI():
 			self.ofglass11B.setFixedHeight(createSize)
 
 			# hide by default
-			self.ofglass1i.hide()
 			self.ofglass2L.hide()
 			self.ofglass2E.hide()
 			self.ofglass3L.hide()
@@ -1887,26 +1363,34 @@ def showQtGUI():
 			self.ofglass11B.hide()
 			
 			# ############################################################################
-			# GUI for Decorative front (hidden by default)
+			# GUI - decorative front
 			# ############################################################################
 
-			info = translate('magicStart', 'Please select 4 edges around the gap to calculate decorative front: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
-			self.odf1i = QtGui.QLabel(info, self)
-			self.odf1i.setWordWrap(True)
-			self.odf1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.odf1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
-
+			self.gHelpInfoF59 = ""
+			self.gHelpInfoF59 += self.gHelpHeaderAND
+			self.gHelpInfoF59 += '<ul>'
+			self.gHelpInfoF59 += '<li><b>' + translate('magicStart', 'bottom edge along X') + '</b>: '
+			self.gHelpInfoF59 += translate('magicStart', 'means the inner bottom edge of the space, in line with the X coordinate axis.') + '</li>'
+			self.gHelpInfoF59 += '<li><b>' + translate('magicStart', 'top edge along X') + '</b>: '
+			self.gHelpInfoF59 += translate('magicStart', 'means the inner top edge of the space, in line with the X coordinate axis.') + '</li>'
+			self.gHelpInfoF59 += '<li><b>' + translate('magicStart', 'left edge along Z') + '</b>: '
+			self.gHelpInfoF59 += translate('magicStart', 'means the inner left edge of the space, in line with the Z coordinate axis.') + '</li>'
+			self.gHelpInfoF59 += '<li><b>' + translate('magicStart', 'right edge along Z') + '</b>: '
+			self.gHelpInfoF59 += translate('magicStart', 'means the inner right edge of the space, in line with the Z coordinate axis.') + '</li>'
+			self.gHelpInfoF59 += '</ul>'
+			self.gHelpInfoF59 += self.gHelpFoot
+			
 			self.odf2L = QtGui.QLabel(translate('magicStart', 'Single beam thickness:'), self)
 			self.odf2E = QtGui.QLineEdit(self)
 			self.odf2E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.odf2E.setFixedWidth(fieldSize)
 
-			self.odf3L = QtGui.QLabel(translate('magicStart', 'Furniture front overlap horizontal:'), self)
+			self.odf3L = QtGui.QLabel(translate('magicStart', 'Furniture front - overlap horizontal:'), self)
 			self.odf3E = QtGui.QLineEdit(self)
 			self.odf3E.setText(MagicPanels.unit2gui(0))
 			self.odf3E.setFixedWidth(fieldSize)
 
-			self.odf4L = QtGui.QLabel(translate('magicStart', 'Furniture front overlap vertical:'), self)
+			self.odf4L = QtGui.QLabel(translate('magicStart', 'Furniture front - overlap vertical:'), self)
 			self.odf4E = QtGui.QLineEdit(self)
 			self.odf4E.setText(MagicPanels.unit2gui(0))
 			self.odf4E.setFixedWidth(fieldSize)
@@ -1916,21 +1400,21 @@ def showQtGUI():
 			self.odf5E.setText(MagicPanels.unit2gui(6))
 			self.odf5E.setFixedWidth(fieldSize)
 
-			self.odf6B = QtGui.QPushButton(translate('magicStart', 'calculate decorative front'), self)
+			self.odf6B = QtGui.QPushButton(translate('magicStart', 'calculate front of the furniture'), self)
 			self.odf6B.clicked.connect(self.calculateDecorativeFront)
 			self.odf6B.setFixedHeight(createSize)
 			
-			self.odf71L = QtGui.QLabel(translate('magicStart', 'Furniture front start X:'), self)
+			self.odf71L = QtGui.QLabel(translate('magicStart', 'Furniture front - start X:'), self)
 			self.odf71E = QtGui.QLineEdit(self)
 			self.odf71E.setText(MagicPanels.unit2gui(0))
 			self.odf71E.setFixedWidth(fieldSize)
 
-			self.odf72L = QtGui.QLabel(translate('magicStart', 'Furniture front start Y:'), self)
+			self.odf72L = QtGui.QLabel(translate('magicStart', 'Furniture front - start Y:'), self)
 			self.odf72E = QtGui.QLineEdit(self)
 			self.odf72E.setText(MagicPanels.unit2gui(0))
 			self.odf72E.setFixedWidth(fieldSize)
 			
-			self.odf73L = QtGui.QLabel(translate('magicStart', 'Furniture front start Z:'), self)
+			self.odf73L = QtGui.QLabel(translate('magicStart', 'Furniture front - start Z:'), self)
 			self.odf73E = QtGui.QLineEdit(self)
 			self.odf73E.setText(MagicPanels.unit2gui(0))
 			self.odf73E.setFixedWidth(fieldSize)
@@ -1940,12 +1424,12 @@ def showQtGUI():
 			self.odf8E.setText(MagicPanels.unit2gui(0))
 			self.odf8E.setFixedWidth(fieldSize)
 			
-			self.odf9L = QtGui.QLabel(translate('magicStart', 'Calculated front width:'), self)
+			self.odf9L = QtGui.QLabel(translate('magicStart', 'Calculated front - width:'), self)
 			self.odf9E = QtGui.QLineEdit(self)
 			self.odf9E.setText(MagicPanels.unit2gui(0))
 			self.odf9E.setFixedWidth(fieldSize)
 			
-			self.odf10L = QtGui.QLabel(translate('magicStart', 'Calculated front height:'), self)
+			self.odf10L = QtGui.QLabel(translate('magicStart', 'Calculated front - height:'), self)
 			self.odf10E = QtGui.QLineEdit(self)
 			self.odf10E.setText(MagicPanels.unit2gui(0))
 			self.odf10E.setFixedWidth(fieldSize)
@@ -1955,7 +1439,6 @@ def showQtGUI():
 			self.odf11B.setFixedHeight(createSize)
 
 			# hide by default
-			self.odf1i.hide()
 			self.odf2L.hide()
 			self.odf2E.hide()
 			self.odf3L.hide()
@@ -1980,31 +1463,44 @@ def showQtGUI():
 			self.odf11B.hide()
 			
 			# ############################################################################
-			# GUI for Furniture front decoration (hidden by default)
+			# GUI - furniture front decoration
 			# ############################################################################
 
-			info = translate('magicStart', 'Please select face or 4 edges around the front to calculate Furniture front decoration: <br><br> 1. selection - XZ face of front<br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
-			self.ofdec1i = QtGui.QLabel(info, self)
-			self.ofdec1i.setWordWrap(True)
-			self.ofdec1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.ofdec1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
-			
-			self.ofdec2L = QtGui.QLabel(translate('magicStart', 'Single bar width:'), self)
+			self.gHelpInfoF61 = ""
+			self.gHelpInfoF61 += self.gHelpHeaderAND
+			self.gHelpInfoF61 += '<ul>'
+			self.gHelpInfoF61 += '<li><b>' + translate('magicStart', 'XZ face of front') + '</b>: '
+			self.gHelpInfoF61 += translate('magicStart', 'means the front surface where you want to place the decoration, in line with the X and Z coordinate axes.') + '</li>'
+			self.gHelpInfoF61 += '</ul>'
+			self.gHelpInfoF61 += self.gHelpHeaderAND
+			self.gHelpInfoF61 += '<ul>'
+			self.gHelpInfoF61 += '<li><b>' + translate('magicStart', 'bottom edge along X') + '</b>: '
+			self.gHelpInfoF61 += translate('magicStart', 'means the bottom edge of the front where you want to place the decoration, in line with the X coordinate axis.') + '</li>'
+			self.gHelpInfoF61 += '<li><b>' + translate('magicStart', 'top edge along X') + '</b>: '
+			self.gHelpInfoF61 += translate('magicStart', 'means the top edge of the front where you want to place the decoration, in line with the X coordinate axis.') + '</li>'
+			self.gHelpInfoF61 += '<li><b>' + translate('magicStart', 'left edge along Z') + '</b>: '
+			self.gHelpInfoF61 += translate('magicStart', 'means the left edge of the front where you want to place the decoration, in line with the Z coordinate axis.') + '</li>'
+			self.gHelpInfoF61 += '<li><b>' + translate('magicStart', 'right edge along Z') + '</b>: '
+			self.gHelpInfoF61 += translate('magicStart', 'means the right edge of the front where you want to place the decoration, in line with the Z coordinate axis.') + '</li>'
+			self.gHelpInfoF61 += '</ul>'
+			self.gHelpInfoF61 += self.gHelpFoot
+
+			self.ofdec2L = QtGui.QLabel(translate('magicStart', 'Single beam - width:'), self)
 			self.ofdec2E = QtGui.QLineEdit(self)
 			self.ofdec2E.setText(MagicPanels.unit2gui(25))
 			self.ofdec2E.setFixedWidth(fieldSize)
 			
-			self.ofdec3L = QtGui.QLabel(translate('magicStart', 'Single bar thickness:'), self)
+			self.ofdec3L = QtGui.QLabel(translate('magicStart', 'Single beam - thickness:'), self)
 			self.ofdec3E = QtGui.QLineEdit(self)
 			self.ofdec3E.setText(MagicPanels.unit2gui(20))
 			self.ofdec3E.setFixedWidth(fieldSize)
 
-			self.ofdecOHL = QtGui.QLabel(translate('magicStart', 'Offset from edge horizontal:'), self)
+			self.ofdecOHL = QtGui.QLabel(translate('magicStart', 'Offset from edge - horizontal:'), self)
 			self.ofdecOHE = QtGui.QLineEdit(self)
 			self.ofdecOHE.setText(MagicPanels.unit2gui(50))
 			self.ofdecOHE.setFixedWidth(fieldSize)
 
-			self.ofdecOVL = QtGui.QLabel(translate('magicStart', 'Offset from edge vertical:'), self)
+			self.ofdecOVL = QtGui.QLabel(translate('magicStart', 'Offset from edge - vertical:'), self)
 			self.ofdecOVE = QtGui.QLineEdit(self)
 			self.ofdecOVE.setText(MagicPanels.unit2gui(50))
 			self.ofdecOVE.setFixedWidth(fieldSize)
@@ -2028,12 +1524,12 @@ def showQtGUI():
 			self.ofdec63E.setText(MagicPanels.unit2gui(0))
 			self.ofdec63E.setFixedWidth(fieldSize)
 			
-			self.ofdec7L = QtGui.QLabel(translate('magicStart', 'Calculated decoration width:'), self)
+			self.ofdec7L = QtGui.QLabel(translate('magicStart', 'Calculated decoration - width:'), self)
 			self.ofdec7E = QtGui.QLineEdit(self)
 			self.ofdec7E.setText(MagicPanels.unit2gui(0))
 			self.ofdec7E.setFixedWidth(fieldSize)
 			
-			self.ofdec8L = QtGui.QLabel(translate('magicStart', 'Calculated decoration height:'), self)
+			self.ofdec8L = QtGui.QLabel(translate('magicStart', 'Calculated decoration - height:'), self)
 			self.ofdec8E = QtGui.QLineEdit(self)
 			self.ofdec8E.setText(MagicPanels.unit2gui(0))
 			self.ofdec8E.setFixedWidth(fieldSize)
@@ -2043,7 +1539,6 @@ def showQtGUI():
 			self.ofdec9B.setFixedHeight(createSize)
 
 			# hide by default
-			self.ofdec1i.hide()
 			self.ofdec2L.hide()
 			self.ofdec2E.hide()
 			self.ofdec3L.hide()
@@ -2066,21 +1561,29 @@ def showQtGUI():
 			self.ofdec9B.hide()
 
 			# ############################################################################
-			# GUI for Face Frame from GAP (hidden by default)
+			# GUI - furniture face frame
 			# ############################################################################
 
-			info = translate('magicStart', 'Please select 4 edges around the gap to calculate furniture face frame: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
-			self.offrame1i = QtGui.QLabel(info, self)
-			self.offrame1i.setWordWrap(True)
-			self.offrame1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.offrame1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
+			self.gHelpInfoF32 = ""
+			self.gHelpInfoF32 += self.gHelpHeaderAND
+			self.gHelpInfoF32 += '<ul>'
+			self.gHelpInfoF32 += '<li><b>' + translate('magicStart', 'bottom edge along X') + '</b>: '
+			self.gHelpInfoF32 += translate('magicStart', 'means the inner edge of the furniture floor in line with the X coordinate axis.') + '</li>'
+			self.gHelpInfoF32 += '<li><b>' + translate('magicStart', 'top edge along X') + '</b>: '
+			self.gHelpInfoF32 += translate('magicStart', 'means the inner edge of the top of the furniture in line with the X coordinate axis.') + '</li>'
+			self.gHelpInfoF32 += '<li><b>' + translate('magicStart', 'left edge along Z') + '</b>: '
+			self.gHelpInfoF32 += translate('magicStart', 'means the inner edge of the left side of the furniture in line with the Z coordinate axis.') + '</li>'
+			self.gHelpInfoF32 += '<li><b>' + translate('magicStart', 'right edge along Z') + '</b>: '
+			self.gHelpInfoF32 += translate('magicStart', 'means the inner edge of the right side of the furniture in line with the Z coordinate axis.') + '</li>'
+			self.gHelpInfoF32 += '</ul>'
+			self.gHelpInfoF32 += self.gHelpFoot
 			
-			self.offrame2L = QtGui.QLabel(translate('magicStart', 'Single bar width:'), self)
+			self.offrame2L = QtGui.QLabel(translate('magicStart', 'Single beam - width:'), self)
 			self.offrame2E = QtGui.QLineEdit(self)
 			self.offrame2E.setText(MagicPanels.unit2gui(38))
 			self.offrame2E.setFixedWidth(fieldSize)
 			
-			self.offrame3L = QtGui.QLabel(translate('magicStart', 'Single bar thickness:'), self)
+			self.offrame3L = QtGui.QLabel(translate('magicStart', 'Single beam - thickness:'), self)
 			self.offrame3E = QtGui.QLineEdit(self)
 			self.offrame3E.setText(MagicPanels.unit2gui(19))
 			self.offrame3E.setFixedWidth(fieldSize)
@@ -2095,31 +1598,31 @@ def showQtGUI():
 			self.offrame5E.setText(MagicPanels.unit2gui(0))
 			self.offrame5E.setFixedWidth(fieldSize)
 			
-			self.offrame6B = QtGui.QPushButton(translate('magicStart', 'calculate face frame'), self)
+			self.offrame6B = QtGui.QPushButton(translate('magicStart', 'calculate face frame of the furniture'), self)
 			self.offrame6B.clicked.connect(self.calculateFaceframeFromGap)
 			self.offrame6B.setFixedHeight(createSize)
 			
-			self.offrame71L = QtGui.QLabel(translate('magicStart', 'Frame start X:'), self)
+			self.offrame71L = QtGui.QLabel(translate('magicStart', 'Frame - start X:'), self)
 			self.offrame71E = QtGui.QLineEdit(self)
 			self.offrame71E.setText(MagicPanels.unit2gui(0))
 			self.offrame71E.setFixedWidth(fieldSize)
 			
-			self.offrame72L = QtGui.QLabel(translate('magicStart', 'Frame start Y:'), self)
+			self.offrame72L = QtGui.QLabel(translate('magicStart', 'Frame - start Y:'), self)
 			self.offrame72E = QtGui.QLineEdit(self)
 			self.offrame72E.setText(MagicPanels.unit2gui(0))
 			self.offrame72E.setFixedWidth(fieldSize)
 			
-			self.offrame73L = QtGui.QLabel(translate('magicStart', 'Frame start Z:'), self)
+			self.offrame73L = QtGui.QLabel(translate('magicStart', 'Frame - start Z:'), self)
 			self.offrame73E = QtGui.QLineEdit(self)
 			self.offrame73E.setText(MagicPanels.unit2gui(0))
 			self.offrame73E.setFixedWidth(fieldSize)
 			
-			self.offrame8L = QtGui.QLabel(translate('magicStart', 'Calculated furniture face frame width:'), self)
+			self.offrame8L = QtGui.QLabel(translate('magicStart', 'Calculated frame - width:'), self)
 			self.offrame8E = QtGui.QLineEdit(self)
 			self.offrame8E.setText(MagicPanels.unit2gui(0))
 			self.offrame8E.setFixedWidth(fieldSize)
 			
-			self.offrame9L = QtGui.QLabel(translate('magicStart', 'Calculated furniture face frame height:'), self)
+			self.offrame9L = QtGui.QLabel(translate('magicStart', 'Calculated frame - height:'), self)
 			self.offrame9E = QtGui.QLineEdit(self)
 			self.offrame9E.setText(MagicPanels.unit2gui(0))
 			self.offrame9E.setFixedWidth(fieldSize)
@@ -2129,7 +1632,6 @@ def showQtGUI():
 			self.offrame10B.setFixedHeight(createSize)
 			
 			# hide by default
-			self.offrame1i.hide()
 			self.offrame2L.hide()
 			self.offrame2E.hide()
 			self.offrame3L.hide()
@@ -2152,41 +1654,54 @@ def showQtGUI():
 			self.offrame10B.hide()
 
 			# ############################################################################
-			# GUI for Shelf from GAP (hidden by default)
+			# GUI - shelf
 			# ############################################################################
 			
-			info = translate('magicStart', 'Please select 2 edges and face to calculate shelf: <br><br> 1. selection - Z left edge <br> 2. selection - Z right edge <br> 3. selection - back face <br><br> Please add "Shelf by depth" or "Shelf by offsets", if you do not want full depth.')
-			self.osh1i = QtGui.QLabel(info, self)
-			self.osh1i.setWordWrap(True)
-			self.osh1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.osh1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
-			
-			self.osh1L = QtGui.QLabel(translate('magicStart', 'Shelf thickness:'), self)
+			self.gHelpInfoF25 = ""
+			self.gHelpInfoF25 += self.gHelpHeaderAND
+			self.gHelpInfoF25 += '<ul>'
+			self.gHelpInfoF25 += '<li><b>' + translate('magicStart', 'left edge along Z') + '</b>: '
+			self.gHelpInfoF25 += translate('magicStart', 'means the left inner edge of the side of the furniture in line with the Z coordinate axis, i.e. vertical.') + '</li>'
+			self.gHelpInfoF25 += '<li><b>' + translate('magicStart', 'right edge along Z') + '</b>: '
+			self.gHelpInfoF25 += translate('magicStart', 'means the right inner edge of the side of the furniture in line with the Z coordinate axis, i.e. vertical.') + '</li>'
+			self.gHelpInfoF25 += '<li><b>' + translate('magicStart', 'surface of the furniture back board') + '</b>: '
+			self.gHelpInfoF25 += translate('magicStart', 'means the inner surface of the furniture back wall of the furniture. The surface should be in line with the X and Z coordinate axes.') + '</li>'
+			self.gHelpInfoF25 += '</ul>'
+			self.gHelpInfoF25 += self.gHelpFoot
+			self.gHelpInfoF25 += translate('magicStart', '<b>Note</b>: There are two methods:')
+			self.gHelpInfoF25 += '<ul>'
+			self.gHelpInfoF25 += '<li><b>' + translate('magicStart', 'Method 1') + '</b>: '
+			self.gHelpInfoF25 += translate('magicStart', 'By setting the shelf depth, then the front gap will be calculated as the difference between the free space and the desired shelf depth.') + '</li>'
+			self.gHelpInfoF25 += '<li><b>' + translate('magicStart', 'Method 2') + '</b>: '
+			self.gHelpInfoF25 += translate('magicStart', 'By entering a value of 0 as the depth and setting the gaps for the shelf. Then the depth and width of the shelf will be calculated taking into account the given gaps.') + '</li>'
+			self.gHelpInfoF25 += '<ul>'
+	
+			self.osh1L = QtGui.QLabel(translate('magicStart', 'Shelf - thickness:'), self)
 			self.osh1E = QtGui.QLineEdit(self)
 			self.osh1E.setText(MagicPanels.unit2gui(MagicPanels.gShelfThickness))
 			self.osh1E.setFixedWidth(fieldSize)
 			
-			self.osh2L = QtGui.QLabel(translate('magicStart', 'Shelf by depth:'), self)
+			self.osh2L = QtGui.QLabel(translate('magicStart', 'Shelf - by depth:'), self)
 			self.osh2E = QtGui.QLineEdit(self)
 			self.osh2E.setText(MagicPanels.unit2gui(0))
 			self.osh2E.setFixedWidth(fieldSize)
 			
-			self.osh31L = QtGui.QLabel(translate('magicStart', 'Shelf by offset from left:'), self)
+			self.osh31L = QtGui.QLabel(translate('magicStart', 'Shelf - by gap from left:'), self)
 			self.osh31E = QtGui.QLineEdit(self)
 			self.osh31E.setText(MagicPanels.unit2gui(0))
 			self.osh31E.setFixedWidth(fieldSize)
 			
-			self.osh32L = QtGui.QLabel(translate('magicStart', 'Shelf by offset from right:'), self)
+			self.osh32L = QtGui.QLabel(translate('magicStart', 'Shelf - by gap from right:'), self)
 			self.osh32E = QtGui.QLineEdit(self)
 			self.osh32E.setText(MagicPanels.unit2gui(0))
 			self.osh32E.setFixedWidth(fieldSize)
 			
-			self.osh33L = QtGui.QLabel(translate('magicStart', 'Shelf by offset from front:'), self)
+			self.osh33L = QtGui.QLabel(translate('magicStart', 'Shelf - by gap from front:'), self)
 			self.osh33E = QtGui.QLineEdit(self)
 			self.osh33E.setText(MagicPanels.unit2gui(0))
 			self.osh33E.setFixedWidth(fieldSize)
 			
-			self.osh34L = QtGui.QLabel(translate('magicStart', 'Shelf by offset from back:'), self)
+			self.osh34L = QtGui.QLabel(translate('magicStart', 'Shelf - by gap from back:'), self)
 			self.osh34E = QtGui.QLineEdit(self)
 			self.osh34E.setText(MagicPanels.unit2gui(0))
 			self.osh34E.setFixedWidth(fieldSize)
@@ -2195,27 +1710,27 @@ def showQtGUI():
 			self.osh4B1.clicked.connect(self.calculateShelfFromGap)
 			self.osh4B1.setFixedHeight(createSize)
 			
-			self.osh51L = QtGui.QLabel(translate('magicStart', 'Shelf start X:'), self)
+			self.osh51L = QtGui.QLabel(translate('magicStart', 'Shelf - start X:'), self)
 			self.osh51E = QtGui.QLineEdit(self)
 			self.osh51E.setText(MagicPanels.unit2gui(0))
 			self.osh51E.setFixedWidth(fieldSize)
 			
-			self.osh52L = QtGui.QLabel(translate('magicStart', 'Shelf start Y:'), self)
+			self.osh52L = QtGui.QLabel(translate('magicStart', 'Shelf - start Y:'), self)
 			self.osh52E = QtGui.QLineEdit(self)
 			self.osh52E.setText(MagicPanels.unit2gui(0))
 			self.osh52E.setFixedWidth(fieldSize)
 			
-			self.osh53L = QtGui.QLabel(translate('magicStart', 'Shelf start Z:'), self)
+			self.osh53L = QtGui.QLabel(translate('magicStart', 'Shelf - start Z:'), self)
 			self.osh53E = QtGui.QLineEdit(self)
 			self.osh53E.setText(MagicPanels.unit2gui(0))
 			self.osh53E.setFixedWidth(fieldSize)
 			
-			self.osh6L = QtGui.QLabel(translate('magicStart', 'Calculated shelf width:'), self)
+			self.osh6L = QtGui.QLabel(translate('magicStart', 'Calculated shelf - width:'), self)
 			self.osh6E = QtGui.QLineEdit(self)
 			self.osh6E.setText(MagicPanels.unit2gui(0))
 			self.osh6E.setFixedWidth(fieldSize)
 			
-			self.osh7L = QtGui.QLabel(translate('magicStart', 'Calculated shelf depth:'), self)
+			self.osh7L = QtGui.QLabel(translate('magicStart', 'Calculated shelf - depth:'), self)
 			self.osh7E = QtGui.QLineEdit(self)
 			self.osh7E.setText(MagicPanels.unit2gui(0))
 			self.osh7E.setFixedWidth(fieldSize)
@@ -2225,7 +1740,6 @@ def showQtGUI():
 			self.osh8B1.setFixedHeight(createSize)
 			
 			# hide by default
-			self.osh1i.hide()
 			self.osh1L.hide()
 			self.osh1E.hide()
 			self.osh2L.hide()
@@ -2252,16 +1766,26 @@ def showQtGUI():
 			self.osh8B1.hide()
 
 			# ############################################################################
-			# GUI for Shelf series (hidden by default)
+			# GUI - shelf series
 			# ############################################################################
 			
-			info = translate('magicStart', 'Please select 4 edges and face to calculate shelf series: <br><br> 1. selection - X bottom edge <br> 2. selection - X top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge <br> 5. selection - back face')
-			self.oshs1i = QtGui.QLabel(info, self)
-			self.oshs1i.setWordWrap(True)
-			self.oshs1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.oshs1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
-			
-			self.oshs1L = QtGui.QLabel(translate('magicStart', 'Single shelf thickness:'), self)
+			self.gHelpInfoF41 = ""
+			self.gHelpInfoF41 += self.gHelpHeaderAND
+			self.gHelpInfoF41 += '<ul>'
+			self.gHelpInfoF41 += '<li><b>' + translate('magicStart', 'bottom edge along X') + '</b>: '
+			self.gHelpInfoF41 += translate('magicStart', 'means the lower inner edge from which the series of shelves is to start. The selected edge should be in line with the X coordinate axis.') + '</li>'
+			self.gHelpInfoF41 += '<li><b>' + translate('magicStart', 'top edge along X') + '</b>: '
+			self.gHelpInfoF41 += translate('magicStart', 'means the upper inner edge to which the series of shelves is to end. The selected edge should be in line with the X coordinate axis.') + '</li>'
+			self.gHelpInfoF41 += '<li><b>' + translate('magicStart', 'left edge along Z') + '</b>: '
+			self.gHelpInfoF41 += translate('magicStart', 'means the left inner edge of the free space in which the series of shelves is to be created. The selected edge should be in line with the Z coordinate axis, i.e. the inner edge of the left side of the furniture.') + '</li>'
+			self.gHelpInfoF41 += '<li><b>' + translate('magicStart', 'right edge along Z') + '</b>: '
+			self.gHelpInfoF41 += translate('magicStart', 'means the right inner edge of the free space in which the series of shelves is to be created. The selected edge should be in line with the Z coordinate axis, i.e. the inner edge of the right side of the furniture.') + '</li>'
+			self.gHelpInfoF41 += '<li><b>' + translate('magicStart', 'surface of the furniture back board') + '</b>: '
+			self.gHelpInfoF41 += translate('magicStart', 'means the internal surface of the back wall of the furniture, which is in line with the X and Z coordinate axes.') + '</li>'
+			self.gHelpInfoF41 += '</ul>'
+			self.gHelpInfoF41 += self.gHelpFoot
+
+			self.oshs1L = QtGui.QLabel(translate('magicStart', 'Single shelf - thickness:'), self)
 			self.oshs1E = QtGui.QLineEdit(self)
 			self.oshs1E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.oshs1E.setFixedWidth(fieldSize)
@@ -2275,27 +1799,27 @@ def showQtGUI():
 			self.oshs3B.clicked.connect(self.calculateShelfSeries)
 			self.oshs3B.setFixedHeight(createSize)
 			
-			self.oshs41L = QtGui.QLabel(translate('magicStart', 'Shelf start X:'), self)
+			self.oshs41L = QtGui.QLabel(translate('magicStart', 'Shelf - start X:'), self)
 			self.oshs41E = QtGui.QLineEdit(self)
 			self.oshs41E.setText(MagicPanels.unit2gui(0))
 			self.oshs41E.setFixedWidth(fieldSize)
 			
-			self.oshs42L = QtGui.QLabel(translate('magicStart', 'Shelf start Y:'), self)
+			self.oshs42L = QtGui.QLabel(translate('magicStart', 'Shelf - start Y:'), self)
 			self.oshs42E = QtGui.QLineEdit(self)
 			self.oshs42E.setText(MagicPanels.unit2gui(0))
 			self.oshs42E.setFixedWidth(fieldSize)
 			
-			self.oshs43L = QtGui.QLabel(translate('magicStart', 'Shelf start Z:'), self)
+			self.oshs43L = QtGui.QLabel(translate('magicStart', 'Shelf - start Z:'), self)
 			self.oshs43E = QtGui.QLineEdit(self)
 			self.oshs43E.setText(MagicPanels.unit2gui(0))
 			self.oshs43E.setFixedWidth(fieldSize)
 			
-			self.oshs5L = QtGui.QLabel(translate('magicStart', 'Calculated shelf width:'), self)
+			self.oshs5L = QtGui.QLabel(translate('magicStart', 'Calculated shelf - width:'), self)
 			self.oshs5E = QtGui.QLineEdit(self)
 			self.oshs5E.setText(MagicPanels.unit2gui(0))
 			self.oshs5E.setFixedWidth(fieldSize)
 			
-			self.oshs6L = QtGui.QLabel(translate('magicStart', 'Calculated shelf depth:'), self)
+			self.oshs6L = QtGui.QLabel(translate('magicStart', 'Calculated shelf - depth:'), self)
 			self.oshs6E = QtGui.QLineEdit(self)
 			self.oshs6E.setText(MagicPanels.unit2gui(0))
 			self.oshs6E.setFixedWidth(fieldSize)
@@ -2310,7 +1834,6 @@ def showQtGUI():
 			self.oshs8B.setFixedHeight(createSize)
 			
 			# hide by default
-			self.oshs1i.hide()
 			self.oshs1L.hide()
 			self.oshs1E.hide()
 			self.oshs2L.hide()
@@ -2331,70 +1854,87 @@ def showQtGUI():
 			self.oshs8B.hide()
 
 			# ############################################################################
-			# GUI for Side from GAP (hidden by default)
+			# GUI - side
 			# ############################################################################
 			
-			info = translate('magicStart', 'Please select 4 edges around the gap to calculate furniture side: <br><br> 1. selection - X or Y bottom edge <br> 2. selection - X or Y top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
-			self.oside1i = QtGui.QLabel(info, self)
-			self.oside1i.setWordWrap(True)
-			self.oside1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.oside1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
-			
-			self.oside1L = QtGui.QLabel(translate('magicStart', 'Furniture side thickness:'), self)
+			self.gHelpInfoF48 = ""
+			self.gHelpInfoF48 += self.gHelpHeaderAND
+			self.gHelpInfoF48 += '<ul>'
+			self.gHelpInfoF48 += '<li><b>' + translate('magicStart', 'bottom edge along X or Y') + '</b>: '
+			self.gHelpInfoF48 += translate('magicStart', 'means that the selected edge is to be the bottom edge, along the X or Y coordinate axis.') + '</li>'
+			self.gHelpInfoF48 += '<li><b>' + translate('magicStart', 'top edge along X or Y') + '</b>: '
+			self.gHelpInfoF48 += translate('magicStart', 'means that the selected edge is to be the top edge, along the X or Y coordinate axis.') + '</li>'
+			self.gHelpInfoF48 += '<li><b>' + translate('magicStart', 'left edge along Z') + '</b>: '
+			self.gHelpInfoF48 += translate('magicStart', 'means that the selected edge is to be the left edge, along the Z coordinate axis, i.e. vertical.') + '</li>'
+			self.gHelpInfoF48 += '<li><b>' + translate('magicStart', 'right edge along Z') + '</b>: '
+			self.gHelpInfoF48 += translate('magicStart', 'means that the selected edge is to be the right edge, along the Z coordinate axis, i.e. vertical.') + '</li>'
+			self.gHelpInfoF48 += '</ul>'
+			self.gHelpInfoF48 += self.gHelpFoot
+			self.gHelpInfoF48 += translate('magicStart', '<b>Note</b>: Next, you need to decide how the side to be created is to be calculated. There are three methods:')
+			self.gHelpInfoF48 += '<ul>'
+			self.gHelpInfoF48 += '<li><b>' + translate('magicStart', '0 width and 0 gaps') + '</b>: '
+			self.gHelpInfoF48 += translate('magicStart', 'If you do not fill the widths and gaps, the side will fill the entire selected space.') + '</li>'
+			self.gHelpInfoF48 += '<li><b>' + translate('magicStart', 'custom width and 0 gaps') + '</b>: '
+			self.gHelpInfoF48 += translate('magicStart', 'If a width is given, the right spacing will be the difference between the width of the free space and the previously set desired width.') + '</li>'
+			self.gHelpInfoF48 += '<li><b>' + translate('magicStart', '0 width and custom gaps') + '</b>: '
+			self.gHelpInfoF48 += translate('magicStart', 'If gaps are set and the width is set to 0, the width and height of the side to be created will be calculated with the gaps taken into account.') + '</li>'
+			self.gHelpInfoF48 += '</ul>'
+
+			self.oside1L = QtGui.QLabel(translate('magicStart', 'Furniture side - thickness:'), self)
 			self.oside1E = QtGui.QLineEdit(self)
 			self.oside1E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.oside1E.setFixedWidth(fieldSize)
 			
-			self.oside2L = QtGui.QLabel(translate('magicStart', 'Furniture side by width:'), self)
+			self.oside2L = QtGui.QLabel(translate('magicStart', 'Furniture side - by width:'), self)
 			self.oside2E = QtGui.QLineEdit(self)
 			self.oside2E.setText(MagicPanels.unit2gui(0))
 			self.oside2E.setFixedWidth(fieldSize)
 			
-			self.oside31L = QtGui.QLabel(translate('magicStart', 'Furniture side by offset from left:'), self)
+			self.oside31L = QtGui.QLabel(translate('magicStart', 'Furniture side - by gap from left:'), self)
 			self.oside31E = QtGui.QLineEdit(self)
 			self.oside31E.setText(MagicPanels.unit2gui(0))
 			self.oside31E.setFixedWidth(fieldSize)
 			
-			self.oside32L = QtGui.QLabel(translate('magicStart', 'Furniture side by offset from right:'), self)
+			self.oside32L = QtGui.QLabel(translate('magicStart', 'Furniture side - by gap from right:'), self)
 			self.oside32E = QtGui.QLineEdit(self)
 			self.oside32E.setText(MagicPanels.unit2gui(0))
 			self.oside32E.setFixedWidth(fieldSize)
 			
-			self.oside33L = QtGui.QLabel(translate('magicStart', 'Furniture side by offset from top:'), self)
+			self.oside33L = QtGui.QLabel(translate('magicStart', 'Furniture side - by gap from top:'), self)
 			self.oside33E = QtGui.QLineEdit(self)
 			self.oside33E.setText(MagicPanels.unit2gui(0))
 			self.oside33E.setFixedWidth(fieldSize)
 			
-			self.oside34L = QtGui.QLabel(translate('magicStart', 'Furniture side by offset from bottom:'), self)
+			self.oside34L = QtGui.QLabel(translate('magicStart', 'Furniture side - by gap from bottom:'), self)
 			self.oside34E = QtGui.QLineEdit(self)
 			self.oside34E.setText(MagicPanels.unit2gui(0))
 			self.oside34E.setFixedWidth(fieldSize)
 			
-			self.oside4B1 = QtGui.QPushButton(translate('magicStart', 'calculate furniture side'), self)
+			self.oside4B1 = QtGui.QPushButton(translate('magicStart', 'calculate side of the furniture'), self)
 			self.oside4B1.clicked.connect(self.calculateSideFromGap)
 			self.oside4B1.setFixedHeight(createSize)
 			
-			self.oside51L = QtGui.QLabel(translate('magicStart', 'Furniture side start X:'), self)
+			self.oside51L = QtGui.QLabel(translate('magicStart', 'Furniture side - start X:'), self)
 			self.oside51E = QtGui.QLineEdit(self)
 			self.oside51E.setText(MagicPanels.unit2gui(0))
 			self.oside51E.setFixedWidth(fieldSize)
 			
-			self.oside52L = QtGui.QLabel(translate('magicStart', 'Furniture side start Y:'), self)
+			self.oside52L = QtGui.QLabel(translate('magicStart', 'Furniture side - start Y:'), self)
 			self.oside52E = QtGui.QLineEdit(self)
 			self.oside52E.setText(MagicPanels.unit2gui(0))
 			self.oside52E.setFixedWidth(fieldSize)
 			
-			self.oside53L = QtGui.QLabel(translate('magicStart', 'Furniture side start Z:'), self)
+			self.oside53L = QtGui.QLabel(translate('magicStart', 'Furniture side - start Z:'), self)
 			self.oside53E = QtGui.QLineEdit(self)
 			self.oside53E.setText(MagicPanels.unit2gui(0))
 			self.oside53E.setFixedWidth(fieldSize)
 			
-			self.oside6L = QtGui.QLabel(translate('magicStart', 'Calculated furniture side width:'), self)
+			self.oside6L = QtGui.QLabel(translate('magicStart', 'Calculated furniture side - width:'), self)
 			self.oside6E = QtGui.QLineEdit(self)
 			self.oside6E.setText(MagicPanels.unit2gui(0))
 			self.oside6E.setFixedWidth(fieldSize)
 			
-			self.oside7L = QtGui.QLabel(translate('magicStart', 'Calculated furniture side height:'), self)
+			self.oside7L = QtGui.QLabel(translate('magicStart', 'Calculated furniture side - height:'), self)
 			self.oside7E = QtGui.QLineEdit(self)
 			self.oside7E.setText(MagicPanels.unit2gui(0))
 			self.oside7E.setFixedWidth(fieldSize)
@@ -2404,7 +1944,6 @@ def showQtGUI():
 			self.oside8B1.setFixedHeight(createSize)
 			
 			# hide by default
-			self.oside1i.hide()
 			self.oside1L.hide()
 			self.oside1E.hide()
 			self.oside2L.hide()
@@ -2431,70 +1970,94 @@ def showQtGUI():
 			self.oside8B1.hide()
 
 			# ############################################################################
-			# GUI for Furniture center board from GAP (hidden by default)
+			# GUI - center board
 			# ############################################################################
 			
-			info = translate('magicStart', 'Please select 2 edges (top or bottom at Y axis direction) and 1 face (bottom or top at XY plane) to calculate side in the center: <br><br> 1. selection - Y left edge <br> 2. selection - Y right edge <br> 3. selection - XY face')
-			self.ocs1i = QtGui.QLabel(info, self)
-			self.ocs1i.setWordWrap(True)
-			self.ocs1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.ocs1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
+			self.gHelpInfoF26 = ""
+			self.gHelpInfoF26 += translate('magicStart', '<b>Referring to the top part of the furniture sides:</b>') + '<br>'
+			self.gHelpInfoF26 += self.gHelpHeaderAND
+			self.gHelpInfoF26 += '<ul>'
+			self.gHelpInfoF26 += '<li><b>' + translate('magicStart', 'top left edge along Y') + '</b>: '
+			self.gHelpInfoF26 += translate('magicStart', 'means the left inner edge of the side of the furniture at the top in line with the Y coordinate axis.') + '</li>'
+			self.gHelpInfoF26 += '<li><b>' + translate('magicStart', 'top right edge along Y') + '</b>: '
+			self.gHelpInfoF26 += translate('magicStart', 'means the right inner edge of the side of the furniture at the top in line with the Y coordinate axis.') + '</li>'
+			self.gHelpInfoF26 += '<li><b>' + translate('magicStart', 'bottom surface along X and Y') + '</b>: '
+			self.gHelpInfoF26 += translate('magicStart', 'means the bottom inner surface of the gap, for example bottom surface of the shelf. The surface should be in line with the X and Y coordinate axes.') + '</li>'
+			self.gHelpInfoF26 += '</ul>'
+			self.gHelpInfoF26 += translate('magicStart', '<b>Referring to the bottom part of the furniture sides:</b>') + '<br>'
+			self.gHelpInfoF26 += self.gHelpHeaderAND
+			self.gHelpInfoF26 += '<ul>'
+			self.gHelpInfoF26 += '<li><b>' + translate('magicStart', 'bottom left edge along Y') + '</b>: '
+			self.gHelpInfoF26 += translate('magicStart', 'means the left inner edge of the side of the furniture at the bottom in line with the Y coordinate axis.') + '</li>'
+			self.gHelpInfoF26 += '<li><b>' + translate('magicStart', 'bottom right edge along Y') + '</b>: '
+			self.gHelpInfoF26 += translate('magicStart', 'means the right inner edge of the side of the furniture at the bottom in line with the Y coordinate axis.') + '</li>'
+			self.gHelpInfoF26 += '<li><b>' + translate('magicStart', 'top surface along X and Y') + '</b>: '
+			self.gHelpInfoF26 += translate('magicStart', 'means the top inner surface of the gap, for example top surface of the shelf. The surface should be in line with the X and Y coordinate axes.') + '</li>'
+			self.gHelpInfoF26 += '</ul>'
+			self.gHelpInfoF26 += self.gHelpFoot
+			self.gHelpInfoF26 += translate('magicStart', '<b>Note</b>: There are two methods to create a center side:')
+			self.gHelpInfoF26 += '<ul>'
+			self.gHelpInfoF26 += '<li><b>' + translate('magicStart', 'Method 1') + '</b>: '
+			self.gHelpInfoF26 += translate('magicStart', 'By setting the side depth, then the front gap will be calculated as the difference between the free space and the desired side depth.') + '</li>'
+			self.gHelpInfoF26 += '<li><b>' + translate('magicStart', 'Method 2') + '</b>: '
+			self.gHelpInfoF26 += translate('magicStart', 'By entering a value of 0 as the depth and setting the gaps for the side. Then the depth and height of the center board of the furniture will be calculated taking into account the given gaps.') + '</li>'
+			self.gHelpInfoF26 += '</ul>'
 			
 			self.ocs1L = QtGui.QLabel(translate('magicStart', 'Furniture side thickness:'), self)
 			self.ocs1E = QtGui.QLineEdit(self)
 			self.ocs1E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			self.ocs1E.setFixedWidth(fieldSize)
 			
-			self.ocs2L = QtGui.QLabel(translate('magicStart', 'Furniture side by depth:'), self)
+			self.ocs2L = QtGui.QLabel(translate('magicStart', 'Furniture side - by depth:'), self)
 			self.ocs2E = QtGui.QLineEdit(self)
 			self.ocs2E.setText(MagicPanels.unit2gui(0))
 			self.ocs2E.setFixedWidth(fieldSize)
 			
-			self.ocs31L = QtGui.QLabel(translate('magicStart', 'Furniture side by offset from top:'), self)
+			self.ocs31L = QtGui.QLabel(translate('magicStart', 'Furniture side - by gap from top:'), self)
 			self.ocs31E = QtGui.QLineEdit(self)
 			self.ocs31E.setText(MagicPanels.unit2gui(0))
 			self.ocs31E.setFixedWidth(fieldSize)
 			
-			self.ocs32L = QtGui.QLabel(translate('magicStart', 'Furniture side by offset from bottom:'), self)
+			self.ocs32L = QtGui.QLabel(translate('magicStart', 'Furniture side - by gap from bottom:'), self)
 			self.ocs32E = QtGui.QLineEdit(self)
 			self.ocs32E.setText(MagicPanels.unit2gui(0))
 			self.ocs32E.setFixedWidth(fieldSize)
 			
-			self.ocs33L = QtGui.QLabel(translate('magicStart', 'Furniture side by offset from front:'), self)
+			self.ocs33L = QtGui.QLabel(translate('magicStart', 'Furniture side - by gap from front:'), self)
 			self.ocs33E = QtGui.QLineEdit(self)
 			self.ocs33E.setText(MagicPanels.unit2gui(0))
 			self.ocs33E.setFixedWidth(fieldSize)
 			
-			self.ocs34L = QtGui.QLabel(translate('magicStart', 'Furniture side by offset from back:'), self)
+			self.ocs34L = QtGui.QLabel(translate('magicStart', 'Furniture side - by gap from back:'), self)
 			self.ocs34E = QtGui.QLineEdit(self)
 			self.ocs34E.setText(MagicPanels.unit2gui(0))
 			self.ocs34E.setFixedWidth(fieldSize)
 			
-			self.ocs4B1 = QtGui.QPushButton(translate('magicStart', 'calculate center side'), self)
+			self.ocs4B1 = QtGui.QPushButton(translate('magicStart', 'calculate center board of the furniture'), self)
 			self.ocs4B1.clicked.connect(self.calculateCenterSideFromGap)
 			self.ocs4B1.setFixedHeight(createSize)
 			
-			self.ocs51L = QtGui.QLabel(translate('magicStart', 'Furniture side start X:'), self)
+			self.ocs51L = QtGui.QLabel(translate('magicStart', 'Furniture side - start X:'), self)
 			self.ocs51E = QtGui.QLineEdit(self)
 			self.ocs51E.setText(MagicPanels.unit2gui(0))
 			self.ocs51E.setFixedWidth(fieldSize)
 			
-			self.ocs52L = QtGui.QLabel(translate('magicStart', 'Furniture side start Y:'), self)
+			self.ocs52L = QtGui.QLabel(translate('magicStart', 'Furniture side - start Y:'), self)
 			self.ocs52E = QtGui.QLineEdit(self)
 			self.ocs52E.setText(MagicPanels.unit2gui(0))
 			self.ocs52E.setFixedWidth(fieldSize)
 			
-			self.ocs53L = QtGui.QLabel(translate('magicStart', 'Furniture side start Z:'), self)
+			self.ocs53L = QtGui.QLabel(translate('magicStart', 'Furniture side - start Z:'), self)
 			self.ocs53E = QtGui.QLineEdit(self)
 			self.ocs53E.setText(MagicPanels.unit2gui(0))
 			self.ocs53E.setFixedWidth(fieldSize)
 			
-			self.ocs6L = QtGui.QLabel(translate('magicStart', 'Calculated center side height:'), self)
+			self.ocs6L = QtGui.QLabel(translate('magicStart', 'Calculated board - height:'), self)
 			self.ocs6E = QtGui.QLineEdit(self)
 			self.ocs6E.setText(MagicPanels.unit2gui(0))
 			self.ocs6E.setFixedWidth(fieldSize)
 			
-			self.ocs7L = QtGui.QLabel(translate('magicStart', 'Calculated center side depth:'), self)
+			self.ocs7L = QtGui.QLabel(translate('magicStart', 'Calculated board - depth:'), self)
 			self.ocs7E = QtGui.QLineEdit(self)
 			self.ocs7E.setText(MagicPanels.unit2gui(0))
 			self.ocs7E.setFixedWidth(fieldSize)
@@ -2504,7 +2067,6 @@ def showQtGUI():
 			self.ocs8B1.setFixedHeight(createSize)
 			
 			# hide by default
-			self.ocs1i.hide()
 			self.ocs1L.hide()
 			self.ocs1E.hide()
 			self.ocs2L.hide()
@@ -2531,31 +2093,46 @@ def showQtGUI():
 			self.ocs8B1.hide()
 			
 			# ############################################################################
-			# GUI for Side decoration (hidden by default)
+			# GUI - side decoration
 			# ############################################################################
 
-			info = translate('magicStart', 'Please select face or 4 edges around the side to calculate Side decoration: <br><br> 1. selection - YZ face of side <br><br> 1. selection - Y bottom edge <br> 2. selection - Y top edge <br> 3. selection - Z left edge <br> 4. selection - Z right edge')
-			self.osdec1i = QtGui.QLabel(info, self)
-			self.osdec1i.setWordWrap(True)
-			self.osdec1i.setTextFormat(QtCore.Qt.TextFormat.RichText)
-			self.osdec1i.setSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.MinimumExpanding)
-			
-			self.osdec2L = QtGui.QLabel(translate('magicStart', 'Single bar width:'), self)
+			self.gHelpInfoF62 = ""
+			self.gHelpInfoF62 += translate('magicStart', '<b>Referring to the surface only:</b>') + '<br>'
+			self.gHelpInfoF62 += self.gHelpHeaderAND
+			self.gHelpInfoF62 += '<ul>'
+			self.gHelpInfoF62 += '<li><b>' + translate('magicStart', 'surface of furniture side along Y and Z') + '</b>: '
+			self.gHelpInfoF62 += translate('magicStart', 'means the surface of furniture side where you want to place the decoration, in line with the Y and Z coordinate axes.') + '</li>'
+			self.gHelpInfoF62 += '</ul>'
+			self.gHelpInfoF62 += translate('magicStart', '<b>Referring to the edges around the surface:</b>') + '<br>'
+			self.gHelpInfoF62 += self.gHelpHeaderAND
+			self.gHelpInfoF62 += '<ul>'
+			self.gHelpInfoF62 += '<li><b>' + translate('magicStart', 'bottom edge along Y') + '</b>: '
+			self.gHelpInfoF62 += translate('magicStart', 'means the bottom edge of the furniture side where you want to place the decoration, in line with the Y coordinate axis.') + '</li>'
+			self.gHelpInfoF62 += '<li><b>' + translate('magicStart', 'top edge along Y') + '</b>: '
+			self.gHelpInfoF62 += translate('magicStart', 'means the top edge of the furniture side where you want to place the decoration, in line with the Y coordinate axis.') + '</li>'
+			self.gHelpInfoF62 += '<li><b>' + translate('magicStart', 'left edge along Z') + '</b>: '
+			self.gHelpInfoF62 += translate('magicStart', 'means the left edge of the furniture side where you want to place the decoration, in line with the Z coordinate axis.') + '</li>'
+			self.gHelpInfoF62 += '<li><b>' + translate('magicStart', 'right edge along Z') + '</b>: '
+			self.gHelpInfoF62 += translate('magicStart', 'means the right edge of the furniture side where you want to place the decoration, in line with the Z coordinate axis.') + '</li>'
+			self.gHelpInfoF62 += '</ul>'
+			self.gHelpInfoF62 += self.gHelpFoot
+
+			self.osdec2L = QtGui.QLabel(translate('magicStart', 'Single beam - width:'), self)
 			self.osdec2E = QtGui.QLineEdit(self)
 			self.osdec2E.setText(MagicPanels.unit2gui(25))
 			self.osdec2E.setFixedWidth(fieldSize)
 			
-			self.osdec3L = QtGui.QLabel(translate('magicStart', 'Single bar thickness:'), self)
+			self.osdec3L = QtGui.QLabel(translate('magicStart', 'Single beam - thickness:'), self)
 			self.osdec3E = QtGui.QLineEdit(self)
 			self.osdec3E.setText(MagicPanels.unit2gui(20))
 			self.osdec3E.setFixedWidth(fieldSize)
 			
-			self.osdecOHL = QtGui.QLabel(translate('magicStart', 'Offset from edge horizontal:'), self)
+			self.osdecOHL = QtGui.QLabel(translate('magicStart', 'Offset from edge - horizontal:'), self)
 			self.osdecOHE = QtGui.QLineEdit(self)
 			self.osdecOHE.setText(MagicPanels.unit2gui(50))
 			self.osdecOHE.setFixedWidth(fieldSize)
 			
-			self.osdecOVL = QtGui.QLabel(translate('magicStart', 'Offset from edge vertical:'), self)
+			self.osdecOVL = QtGui.QLabel(translate('magicStart', 'Offset from edge - vertical:'), self)
 			self.osdecOVE = QtGui.QLineEdit(self)
 			self.osdecOVE.setText(MagicPanels.unit2gui(50))
 			self.osdecOVE.setFixedWidth(fieldSize)
@@ -2579,12 +2156,12 @@ def showQtGUI():
 			self.osdec63E.setText(MagicPanels.unit2gui(0))
 			self.osdec63E.setFixedWidth(fieldSize)
 			
-			self.osdec7L = QtGui.QLabel(translate('magicStart', 'Calculated decoration width:'), self)
+			self.osdec7L = QtGui.QLabel(translate('magicStart', 'Calculated decoration - width:'), self)
 			self.osdec7E = QtGui.QLineEdit(self)
 			self.osdec7E.setText(MagicPanels.unit2gui(0))
 			self.osdec7E.setFixedWidth(fieldSize)
 			
-			self.osdec8L = QtGui.QLabel(translate('magicStart', 'Calculated decoration height:'), self)
+			self.osdec8L = QtGui.QLabel(translate('magicStart', 'Calculated decoration - height:'), self)
 			self.osdec8E = QtGui.QLineEdit(self)
 			self.osdec8E.setText(MagicPanels.unit2gui(0))
 			self.osdec8E.setFixedWidth(fieldSize)
@@ -2594,7 +2171,6 @@ def showQtGUI():
 			self.osdec9B.setFixedHeight(createSize)
 			
 			# hide by default
-			self.osdec1i.hide()
 			self.osdec2L.hide()
 			self.osdec2E.hide()
 			self.osdec3L.hide()
@@ -2633,24 +2209,6 @@ def showQtGUI():
 			# ############################################################################
 			
 			self.layoutInfo = QtGui.QVBoxLayout()
-			
-			# info screens
-			self.layoutInfo.addWidget(self.oworkspaceInfo)
-			self.layoutInfo.addWidget(self.oFootInfo)
-			self.layoutInfo.addWidget(self.oTableInfo)
-			self.layoutInfo.addWidget(self.og1i)
-			self.layoutInfo.addWidget(self.ods1i)
-			self.layoutInfo.addWidget(self.ofr1i)
-			self.layoutInfo.addWidget(self.oBackInfo)
-			self.layoutInfo.addWidget(self.ofglass1i)
-			self.layoutInfo.addWidget(self.odf1i)
-			self.layoutInfo.addWidget(self.ofdec1i)
-			self.layoutInfo.addWidget(self.offrame1i)
-			self.layoutInfo.addWidget(self.osh1i)
-			self.layoutInfo.addWidget(self.oshs1i)
-			self.layoutInfo.addWidget(self.oside1i)
-			self.layoutInfo.addWidget(self.ocs1i)
-			self.layoutInfo.addWidget(self.osdec1i)
 			
 			# buttons
 			self.layoutInfo.addWidget(self.helpInfo)
@@ -3228,7 +2786,6 @@ def showQtGUI():
 			self.helpInfo.hide()
 			
 			# workspace
-			self.oworkspaceInfo.hide()
 			self.oworkspaceXL.hide()
 			self.oworkspaceXE.hide()
 			self.oworkspaceYL.hide()
@@ -3245,7 +2802,6 @@ def showQtGUI():
 			self.oworkspaceBCR.hide()
 			
 			# side
-			self.oside1i.hide()
 			self.oside1L.hide()
 			self.oside1E.hide()
 			self.oside2L.hide()
@@ -3272,7 +2828,6 @@ def showQtGUI():
 			self.oside8B1.hide()
 			
 			# center side
-			self.ocs1i.hide()
 			self.ocs1L.hide()
 			self.ocs1E.hide()
 			self.ocs2L.hide()
@@ -3299,7 +2854,6 @@ def showQtGUI():
 			self.ocs8B1.hide()
 			
 			# side decoration
-			self.osdec1i.hide()
 			self.osdec2L.hide()
 			self.osdec2E.hide()
 			self.osdec3L.hide()
@@ -3322,7 +2876,6 @@ def showQtGUI():
 			self.osdec9B.hide()
 			
 			# shelf
-			self.osh1i.hide()
 			self.osh1L.hide()
 			self.osh1E.hide()
 			self.osh2L.hide()
@@ -3349,7 +2902,6 @@ def showQtGUI():
 			self.osh8B1.hide()
 
 			# shelf series
-			self.oshs1i.hide()
 			self.oshs1L.hide()
 			self.oshs1E.hide()
 			self.oshs2L.hide()
@@ -3370,7 +2922,6 @@ def showQtGUI():
 			self.oshs8B.hide()
 
 			# front
-			self.ofr1i.hide()
 			self.ofr2L.hide()
 			self.ofr3L.hide()
 			self.ofr4L.hide()
@@ -3395,7 +2946,6 @@ def showQtGUI():
 			self.ofr8B1.hide()
 		
 			# back
-			self.oBackInfo.hide()
 			self.oBackThickL.hide()
 			self.oBackThickE.hide()
 			self.oBackOffsets1L.hide()
@@ -3420,7 +2970,6 @@ def showQtGUI():
 			self.oBackBCR.hide()
 		
 			# front with glass
-			self.ofglass1i.hide()
 			self.ofglass2L.hide()
 			self.ofglass2E.hide()
 			self.ofglass3L.hide()
@@ -3445,7 +2994,6 @@ def showQtGUI():
 			self.ofglass11B.hide()
 		
 			# decorative front
-			self.odf1i.hide()
 			self.odf2L.hide()
 			self.odf2E.hide()
 			self.odf3L.hide()
@@ -3470,7 +3018,6 @@ def showQtGUI():
 			self.odf11B.hide()
 		
 			# front decoration
-			self.ofdec1i.hide()
 			self.ofdec2L.hide()
 			self.ofdec2E.hide()
 			self.ofdec3L.hide()
@@ -3493,7 +3040,6 @@ def showQtGUI():
 			self.ofdec9B.hide()
 		
 			# face frame
-			self.offrame1i.hide()
 			self.offrame2L.hide()
 			self.offrame2E.hide()
 			self.offrame3L.hide()
@@ -3516,7 +3062,6 @@ def showQtGUI():
 			self.offrame10B.hide()
 			
 			# drawer
-			self.og1i.hide()
 			self.og2L.hide()
 			self.og3L.hide()
 			self.og4L.hide()
@@ -3551,7 +3096,6 @@ def showQtGUI():
 			self.og102E.hide()
 		
 			# drawer series
-			self.ods1i.hide()
 			self.ods2L.hide()
 			self.ods2E.hide()
 			self.ods31L.hide()
@@ -3592,7 +3136,6 @@ def showQtGUI():
 			self.ods113E.hide()
 		
 			# foot
-			self.oFootInfo.hide()
 			self.oFootThickL.hide()
 			self.oFootThickE.hide()
 			self.oFootSizeZL.hide()
@@ -3611,7 +3154,6 @@ def showQtGUI():
 			self.oFootCreateB.hide()
 			
 			# table
-			self.oTableInfo.hide()
 			self.oTableSizeXL.hide()
 			self.oTableSizeXE.hide()
 			self.oTableSizeYL.hide()
@@ -3690,7 +3232,6 @@ def showQtGUI():
 				self.helpInfo.hide()
 			
 			if iType == "workspace":
-				self.oworkspaceInfo.show()
 				self.oworkspaceXL.show()
 				self.oworkspaceXE.show()
 				self.oworkspaceYL.show()
@@ -3747,7 +3288,6 @@ def showQtGUI():
 				self.oCreateB1.show()
 				
 			if iType == "side":
-				self.oside1i.show()
 				self.oside1L.show()
 				self.oside1E.show()
 				self.oside2L.show()
@@ -3774,7 +3314,6 @@ def showQtGUI():
 				self.oside8B1.show()
 
 			if iType == "center side":
-				self.ocs1i.show()
 				self.ocs1L.show()
 				self.ocs1E.show()
 				self.ocs2L.show()
@@ -3801,7 +3340,6 @@ def showQtGUI():
 				self.ocs8B1.show()
 
 			if iType == "side decoration":
-				self.osdec1i.show()
 				self.osdec2L.show()
 				self.osdec2E.show()
 				self.osdec3L.show()
@@ -3824,7 +3362,6 @@ def showQtGUI():
 				self.osdec9B.show()
 
 			if iType == "shelf":
-				self.osh1i.show()
 				self.osh1L.show()
 				self.osh1E.show()
 				self.osh2L.show()
@@ -3851,7 +3388,6 @@ def showQtGUI():
 				self.osh8B1.show()
 
 			if iType == "shelf series":
-				self.oshs1i.show()
 				self.oshs1L.show()
 				self.oshs1E.show()
 				self.oshs2L.show()
@@ -3872,7 +3408,6 @@ def showQtGUI():
 				self.oshs8B.show()
 			
 			if iType == "front":
-				self.ofr1i.show()
 				self.ofr2L.show()
 				self.ofr3L.show()
 				self.ofr4L.show()
@@ -3897,7 +3432,6 @@ def showQtGUI():
 				self.ofr8B1.show()
 			
 			if iType == "back":
-				self.oBackInfo.show()
 				self.oBackThickL.show()
 				self.oBackThickE.show()
 				self.oBackOffsets1L.show()
@@ -3922,7 +3456,6 @@ def showQtGUI():
 				self.oBackBCR.show()
 			
 			if iType == "decorative front":
-				self.odf1i.show()
 				self.odf2L.show()
 				self.odf2E.show()
 				self.odf3L.show()
@@ -3947,7 +3480,6 @@ def showQtGUI():
 				self.odf11B.show()
 			
 			if iType == "front with glass":
-				self.ofglass1i.show()
 				self.ofglass2L.show()
 				self.ofglass2E.show()
 				self.ofglass3L.show()
@@ -3972,7 +3504,6 @@ def showQtGUI():
 				self.ofglass11B.show()
 			
 			if iType == "front decoration":
-				self.ofdec1i.show()
 				self.ofdec2L.show()
 				self.ofdec2E.show()
 				self.ofdec3L.show()
@@ -3995,7 +3526,6 @@ def showQtGUI():
 				self.ofdec9B.show()
 			
 			if iType == "face frame":
-				self.offrame1i.show()
 				self.offrame2L.show()
 				self.offrame2E.show()
 				self.offrame3L.show()
@@ -4018,7 +3548,6 @@ def showQtGUI():
 				self.offrame10B.show()
 
 			if iType == "drawer":
-				self.og1i.show()
 				self.og2L.show()
 				self.og3L.show()
 				self.og4L.show()
@@ -4053,7 +3582,6 @@ def showQtGUI():
 				self.og102E.show()
 
 			if iType == "drawer hafele":
-				self.ods1i.show()
 				self.ods2L.show()
 				self.ods2E.show()
 				self.ods31L.show()
@@ -4094,7 +3622,6 @@ def showQtGUI():
 				self.ods113E.show()
 
 			if iType == "drawer series":
-				self.ods1i.show()
 				self.ods2L.show()
 				self.ods2E.show()
 				self.ods31L.show()
@@ -4133,7 +3660,6 @@ def showQtGUI():
 				self.ods113E.show()
 
 			if iType == "foot":
-				self.oFootInfo.show()
 				self.oFootThickL.show()
 				self.oFootThickE.show()
 				self.oFootSizeZL.show()
@@ -4152,7 +3678,6 @@ def showQtGUI():
 				self.oFootCreateB.show()
 		
 			if iType == "table":
-				self.oTableInfo.show()
 				self.oTableSizeXL.show()
 				self.oTableSizeXE.show()
 				self.oTableSizeYL.show()
@@ -4524,14 +4049,14 @@ def showQtGUI():
 				self.oFootThickE.setText(MagicPanels.unit2gui(80))
 			
 			if selectedIndex == 21:
-				self.og101L.setText(translate('magicStart', 'Drawer front horizontal overlap:'))
-				self.og102L.setText(translate('magicStart', 'Drawer front vertical overlap:'))
+				self.og101L.setText(translate('magicStart', 'Drawer front - horizontal overlap:'))
+				self.og102L.setText(translate('magicStart', 'Drawer front - vertical overlap:'))
 				self.og101E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetL))
 				self.og102E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetB))
 			
 			if selectedIndex == 22:
-				self.og101L.setText(translate('magicStart', 'Drawer front horizontal offset:'))
-				self.og102L.setText(translate('magicStart', 'Drawer front vertical offset:'))
+				self.og101L.setText(translate('magicStart', 'Drawer front - horizontal offset:'))
+				self.og102L.setText(translate('magicStart', 'Drawer front - vertical offset:'))
 				self.og101E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetL))
 				self.og102E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetB))
 				
@@ -4593,8 +4118,8 @@ def showQtGUI():
 				self.oDepthE.setText( MagicPanels.unit2gui(400) )
 			
 			if selectedIndex == 30:
-				self.ods111L.setText(translate('magicStart', 'Drawer front horizontal overlap:'))
-				self.ods112L.setText(translate('magicStart', 'Drawer front vertical overlap:'))
+				self.ods111L.setText(translate('magicStart', 'Drawer front - horizontal overlap:'))
+				self.ods112L.setText(translate('magicStart', 'Drawer front - vertical overlap:'))
 				self.ods113L.setText(translate('magicStart', 'Space between drawers fronts:'))
 				self.ods111E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetL))
 				self.ods112E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetB))
@@ -4605,8 +4130,8 @@ def showQtGUI():
 				self.ods33E.setText(MagicPanels.unit2gui(3))
 			
 			if selectedIndex == 31:
-				self.ods111L.setText(translate('magicStart', 'Drawer front horizontal offset:'))
-				self.ods112L.setText(translate('magicStart', 'Drawer front vertical offset:'))
+				self.ods111L.setText(translate('magicStart', 'Drawer front - horizontal offset:'))
+				self.ods112L.setText(translate('magicStart', 'Drawer front - vertical offset:'))
 				self.ods113L.setText(translate('magicStart', 'Space between drawers fronts:'))
 				self.ods111E.setText(MagicPanels.unit2gui(2 * MagicPanels.gFrontInsideOffsetL))
 				self.ods112E.setText(MagicPanels.unit2gui(2 * MagicPanels.gFrontInsideOffsetB))
@@ -4695,14 +4220,14 @@ def showQtGUI():
 			if selectedIndex == 59:
 				self.odf3E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetL))
 				self.odf4E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetB))
-				self.odf3L.setText(translate('magicStart', 'Furniture front overlap horizontal:'))
-				self.odf4L.setText(translate('magicStart', 'Furniture front overlap vertical:'))
+				self.odf3L.setText(translate('magicStart', 'Furniture front - overlap horizontal:'))
+				self.odf4L.setText(translate('magicStart', 'Furniture front - overlap vertical:'))
 
 			if selectedIndex == 60:
 				self.odf3E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetL))
 				self.odf4E.setText(MagicPanels.unit2gui(MagicPanels.gFrontInsideOffsetB))
-				self.odf3L.setText(translate('magicStart', 'Furniture front offset horizontal:'))
-				self.odf4L.setText(translate('magicStart', 'Furniture front offset vertical:'))
+				self.odf3L.setText(translate('magicStart', 'Furniture front - offset horizontal:'))
+				self.odf4L.setText(translate('magicStart', 'Furniture front - offset vertical:'))
 			
 			if selectedIndex == 65:
 				self.oThickE.setText(MagicPanels.unit2gui(19.05))
@@ -4733,8 +4258,8 @@ def showQtGUI():
 				self.oDepthE.setText(MagicPanels.unit2gui(330.2 - 19.05)) # 13 inch without front
 			
 			if selectedIndex == 71:
-				self.ods111L.setText(translate('magicStart', 'Drawer front horizontal overlap:'))
-				self.ods112L.setText(translate('magicStart', 'Drawer front vertical overlap:'))
+				self.ods111L.setText(translate('magicStart', 'Drawer front - horizontal overlap:'))
+				self.ods112L.setText(translate('magicStart', 'Drawer front - vertical overlap:'))
 				self.ods113L.setText(translate('magicStart', 'Space between drawers fronts:'))
 				self.ods111E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetL))
 				self.ods112E.setText(MagicPanels.unit2gui(MagicPanels.gFrontOutsideOffsetB))
@@ -4745,8 +4270,8 @@ def showQtGUI():
 				self.ods33E.setText(MagicPanels.unit2gui(16))
 			
 			if selectedIndex == 72:
-				self.ods111L.setText(translate('magicStart', 'Drawer front horizontal offset:'))
-				self.ods112L.setText(translate('magicStart', 'Drawer front vertical offset:'))
+				self.ods111L.setText(translate('magicStart', 'Drawer front - horizontal offset:'))
+				self.ods112L.setText(translate('magicStart', 'Drawer front - vertical offset:'))
 				self.ods113L.setText(translate('magicStart', 'Space between drawers fronts:'))
 				self.ods111E.setText(MagicPanels.unit2gui(2 * MagicPanels.gFrontInsideOffsetL))
 				self.ods112E.setText(MagicPanels.unit2gui(2 * MagicPanels.gFrontInsideOffsetB))
@@ -4757,10 +4282,10 @@ def showQtGUI():
 				self.ods33E.setText(MagicPanels.unit2gui(16))
 			
 			if selectedIndex == 74:
-				self.oBackOffsets1L.setText(translate('magicStart', 'Back overlap from left:'))
-				self.oBackOffsets2L.setText(translate('magicStart', 'Back overlap from right:'))
-				self.oBackOffsets3L.setText(translate('magicStart', 'Back overlap from top:'))
-				self.oBackOffsets4L.setText(translate('magicStart', 'Back overlap from bottom:'))
+				self.oBackOffsets1L.setText(translate('magicStart', 'Furniture back - overlap from left:'))
+				self.oBackOffsets2L.setText(translate('magicStart', 'Furniture back - overlap from right:'))
+				self.oBackOffsets3L.setText(translate('magicStart', 'Furniture back - overlap from top:'))
+				self.oBackOffsets4L.setText(translate('magicStart', 'Furniture back - overlap from bottom:'))
 				self.oBackThickE.setText(MagicPanels.unit2gui(3))
 				self.oBackOffsets1E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.oBackOffsets2E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
@@ -4768,10 +4293,10 @@ def showQtGUI():
 				self.oBackOffsets4E.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 			
 			if selectedIndex == 75:
-				self.oBackOffsets1L.setText(translate('magicStart', 'Back offset from left:'))
-				self.oBackOffsets2L.setText(translate('magicStart', 'Back offset from right:'))
-				self.oBackOffsets3L.setText(translate('magicStart', 'Back offset from top:'))
-				self.oBackOffsets4L.setText(translate('magicStart', 'Back offset from bottom:'))
+				self.oBackOffsets1L.setText(translate('magicStart', 'Furniture back - offset from left:'))
+				self.oBackOffsets2L.setText(translate('magicStart', 'Furniture back - offset from right:'))
+				self.oBackOffsets3L.setText(translate('magicStart', 'Furniture back - offset from top:'))
+				self.oBackOffsets4L.setText(translate('magicStart', 'Furniture back - offset from bottom:'))
 				self.oBackThickE.setText(MagicPanels.unit2gui(MagicPanels.gWoodThickness))
 				self.oBackOffsets1E.setText(MagicPanels.unit2gui(0))
 				self.oBackOffsets2E.setText(MagicPanels.unit2gui(0))
@@ -6686,7 +6211,7 @@ def showQtGUI():
 			
 			# Floor
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
-			o1.Label = translate('magicStart', 'Floor')
+			o1.Label = translate('magicStart', 'Furniture - Floor')
 			o1.Length = sizeX - (2 * edgeband)
 			o1.Height = thick
 			o1.Width = sizeY - thickFront - (2 * edgeband)
@@ -6696,7 +6221,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left side')
+			o2.Label = translate('magicStart', 'Furniture - Left side')
 			o2.Length = thick
 			o2.Height = sizeZ - (2 * thick) - (2 * edgebandE)
 			o2.Width = sizeY - thickFront - (2 * edgeband)
@@ -6706,7 +6231,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right side')
+			o3.Label = translate('magicStart', 'Furniture - Right side')
 			o3.Length = thick
 			o3.Height = sizeZ - (2 * thick) - (2 * edgebandE)
 			o3.Width = sizeY - thickFront - (2 * edgeband)
@@ -6716,7 +6241,7 @@ def showQtGUI():
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back side')
+			o4.Label = translate('magicStart', 'Furniture - Back board')
 			o4.Length = sizeX - (2 * thick) - (2 * edgebandE)
 			o4.Height = sizeZ - (2 * thick) - (2 * edgebandE)
 			o4.Width = thickBack
@@ -6726,7 +6251,7 @@ def showQtGUI():
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o5.Label = translate('magicStart', 'Top cover')
+			o5.Label = translate('magicStart', 'Furniture - Top board')
 			o5.Length = sizeX - (2 * edgeband)
 			o5.Height = thick
 			o5.Width = sizeY - thickFront - (2 * edgeband)
@@ -6736,7 +6261,7 @@ def showQtGUI():
 			
 			# Front
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
-			o6.Label = translate('magicStart', 'Front')
+			o6.Label = translate('magicStart', 'Furniture - Front')
 			o6.Length = sizeX - (2 * thick) + offsetFrontL + offsetFrontR - (2 * edgeband)
 			o6.Height = sizeZ - (2 * thick) + offsetFrontB + offsetFrontT - (2 * edgeband)
 			o6.Width = thickFront
@@ -6749,7 +6274,7 @@ def showQtGUI():
 			
 			# Shelf
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
-			o7.Label = translate('magicStart', 'Shelf')
+			o7.Label = translate('magicStart', 'Furniture - Shelf')
 			o7.Length = sizeX - (2 * thick) - (2 * edgebandE) - (2 * shelfOS)
 			o7.Height = thickShelf
 			o7.Width = sizeY - thickFront - thickBack - thick - edgeband - edgebandE
@@ -6791,7 +6316,7 @@ def showQtGUI():
 			
 			# Floor
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
-			o1.Label = translate('magicStart', 'Floor')
+			o1.Label = translate('magicStart', 'Furniture - Floor')
 			o1.Length = sizeX - (2 * thick) - (2 * edgebandE)
 			o1.Height = thick
 			o1.Width = sizeY - thickBack - (2 * edgeband)
@@ -6801,7 +6326,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left side')
+			o2.Label = translate('magicStart', 'Furniture - Left side')
 			o2.Length = thick
 			o2.Height = sizeZ - (2 * edgeband)
 			o2.Width = sizeY - (2 * edgeband)
@@ -6811,7 +6336,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right side')
+			o3.Label = translate('magicStart', 'Furniture - Right side')
 			o3.Length = thick
 			o3.Height = sizeZ - (2 * edgeband)
 			o3.Width = sizeY - (2 * edgeband)
@@ -6821,7 +6346,7 @@ def showQtGUI():
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back side')
+			o4.Label = translate('magicStart', 'Furniture - Back board')
 			o4.Length = sizeX
 			o4.Height = sizeZ - 100
 			o4.Width = thickBack
@@ -6832,7 +6357,7 @@ def showQtGUI():
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o5.Label = translate('magicStart', 'Top cover')
+			o5.Label = translate('magicStart', 'Furniture - Top board')
 			o5.Length = sizeX - (2 * thick) - (2 * edgebandE)
 			o5.Height = thick
 			o5.Width = sizeY - (2 * edgeband)
@@ -6842,7 +6367,7 @@ def showQtGUI():
 
 			# Shelf
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
-			o6.Label = translate('magicStart', 'Shelf')
+			o6.Label = translate('magicStart', 'Furniture - Shelf')
 			o6.Length = sizeX - (2 * thick) - (2 * edgebandE) - (2 * shelfOS)
 			o6.Height = thickShelf
 			o6.Width = sizeY - edgeband - edgebandE
@@ -6931,7 +6456,7 @@ def showQtGUI():
 				
 				# Back
 				o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-				o4.Label = translate('magicStart', 'Back side M'+str(i))
+				o4.Label = translate('magicStart', 'Back board M'+str(i))
 				o4.Length = sizeX - (2 * thick)
 				o4.Height = sideZ
 				o4.Width = thickBack
@@ -6971,7 +6496,7 @@ def showQtGUI():
 			
 			# final top
 			t1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			t1.Label = translate('magicStart', 'Top cover')
+			t1.Label = translate('magicStart', 'Furniture - Top board')
 			t1.Length = sizeX
 			t1.Height = thick
 			t1.Width = sizeY - thickFront
@@ -7309,7 +6834,7 @@ def showQtGUI():
 
 					# Left Side
 					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
-					o1.Label = translate('magicStart', 'Drawer Left')
+					o1.Label = translate('magicStart', 'Drawer - Left side')
 					o1.Length = thickSides
 					o1.Height = height - bottomOF - topOF - thickBottom
 					o1.Width = depth - backOF
@@ -7319,7 +6844,7 @@ def showQtGUI():
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
-					o2.Label = translate('magicStart', 'Drawer Right')
+					o2.Label = translate('magicStart', 'Drawer - Right side')
 					o2.Length = thickSides
 					o2.Height = height - bottomOF - topOF - thickBottom
 					o2.Width = depth - backOF
@@ -7329,7 +6854,7 @@ def showQtGUI():
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
-					o3.Label = translate('magicStart', 'Drawer Back')
+					o3.Label = translate('magicStart', 'Drawer - Back board')
 					o3.Length = width - (2 * thickSides) - sidesOF
 					o3.Height = height - bottomOF - topOF - thickBottom
 					o3.Width = thickSides
@@ -7339,7 +6864,7 @@ def showQtGUI():
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
-					o4.Label = translate('magicStart', 'Drawer Front Inside')
+					o4.Label = translate('magicStart', 'Drawer - Front Inside')
 					o4.Length = width - (2 * thickSides) - sidesOF
 					o4.Height = height - bottomOF - topOF - thickBottom
 					o4.Width = thickSides
@@ -7349,7 +6874,7 @@ def showQtGUI():
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
-					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
+					o5.Label = translate('magicStart', 'Drawer - Bottom HDF')
 					o5.Length = width - sidesOF
 					o5.Height = thickBottom
 					o5.Width = depth - backOF
@@ -7360,7 +6885,7 @@ def showQtGUI():
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
-					o6.Label = translate('magicStart', 'Drawer Front Outside')
+					o6.Label = translate('magicStart', 'Drawer - Front Outside')
 					o6.Length = width + frontOffsetH
 					o6.Height = height + frontOffsetV
 					o6.Width = thickFront
@@ -7379,7 +6904,7 @@ def showQtGUI():
 
 					# Left Side
 					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
-					o1.Label = translate('magicStart', 'Drawer Left')
+					o1.Label = translate('magicStart', 'Drawer - Left side')
 					o1.Length = thickSides
 					o1.Height = height - bottomOF - topOF - thickBottom
 					o1.Width = depth - backOF
@@ -7389,7 +6914,7 @@ def showQtGUI():
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
-					o2.Label = translate('magicStart', 'Drawer Right')
+					o2.Label = translate('magicStart', 'Drawer - Right side')
 					o2.Length = thickSides
 					o2.Height = height - bottomOF - topOF - thickBottom
 					o2.Width = depth - backOF
@@ -7399,7 +6924,7 @@ def showQtGUI():
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
-					o3.Label = translate('magicStart', 'Drawer Back')
+					o3.Label = translate('magicStart', 'Drawer - Back board')
 					o3.Length = width - (2 * thickSides) - sidesOF
 					o3.Height = height - bottomOF - topOF - thickBottom
 					o3.Width = thickSides
@@ -7409,7 +6934,7 @@ def showQtGUI():
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
-					o4.Label = translate('magicStart', 'Drawer Front Inside')
+					o4.Label = translate('magicStart', 'Drawer - Front Inside')
 					o4.Length = width - (2 * thickSides) - sidesOF
 					o4.Height = height - bottomOF - topOF - thickBottom
 					o4.Width = thickSides
@@ -7419,7 +6944,7 @@ def showQtGUI():
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
-					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
+					o5.Label = translate('magicStart', 'Drawer - Bottom HDF')
 					o5.Length = width - sidesOF
 					o5.Height = thickBottom
 					o5.Width = depth - backOF
@@ -7430,7 +6955,7 @@ def showQtGUI():
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
-					o6.Label = translate('magicStart', 'Drawer Front Outside')
+					o6.Label = translate('magicStart', 'Drawer - Front Outside')
 					o6.Length = width + frontOffsetH
 					o6.Height = height + frontOffsetV
 					o6.Width = thickFront
@@ -7451,7 +6976,7 @@ def showQtGUI():
 				
 					# Left Side
 					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
-					o1.Label = translate('magicStart', 'Drawer Left')
+					o1.Label = translate('magicStart', 'Drawer - Left side')
 					o1.Length = depth - backOF
 					o1.Height = height - bottomOF - topOF - thickBottom
 					o1.Width = thickSides
@@ -7461,7 +6986,7 @@ def showQtGUI():
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
-					o2.Label = translate('magicStart', 'Drawer Right')
+					o2.Label = translate('magicStart', 'Drawer - Right side')
 					o2.Length = depth - backOF
 					o2.Height = height - bottomOF - topOF - thickBottom
 					o2.Width = thickSides
@@ -7471,7 +6996,7 @@ def showQtGUI():
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
-					o3.Label = translate('magicStart', 'Drawer Back')
+					o3.Label = translate('magicStart', 'Drawer - Back board')
 					o3.Length = thickSides
 					o3.Height = height - bottomOF - topOF - thickBottom
 					o3.Width = width - (2 * thickSides) - sidesOF
@@ -7484,7 +7009,7 @@ def showQtGUI():
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
-					o4.Label = translate('magicStart', 'Drawer Front Inside')
+					o4.Label = translate('magicStart', 'Drawer - Front Inside')
 					o4.Length = thickSides
 					o4.Height = height - bottomOF - topOF - thickBottom
 					o4.Width = width - (2 * thickSides) - sidesOF
@@ -7494,7 +7019,7 @@ def showQtGUI():
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
-					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
+					o5.Label = translate('magicStart', 'Drawer - Bottom HDF')
 					o5.Length = depth - backOF
 					o5.Height = thickBottom
 					o5.Width = width - sidesOF
@@ -7505,7 +7030,7 @@ def showQtGUI():
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
-					o6.Label = translate('magicStart', 'Drawer Front Outside')
+					o6.Label = translate('magicStart', 'Drawer - Front Outside')
 					o6.Length = thickFront
 					o6.Height = height + frontOffsetV
 					o6.Width = width + frontOffsetH
@@ -7524,7 +7049,7 @@ def showQtGUI():
 
 					# Left Side
 					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
-					o1.Label = translate('magicStart', 'Drawer Left')
+					o1.Label = translate('magicStart', 'Drawer - Left side')
 					o1.Length = depth - backOF
 					o1.Height = height - bottomOF - topOF - thickBottom
 					o1.Width = thickSides
@@ -7534,7 +7059,7 @@ def showQtGUI():
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
-					o2.Label = translate('magicStart', 'Drawer Right')
+					o2.Label = translate('magicStart', 'Drawer - Right side')
 					o2.Length = depth - backOF
 					o2.Height = height - bottomOF - topOF - thickBottom
 					o2.Width = thickSides
@@ -7544,7 +7069,7 @@ def showQtGUI():
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
-					o3.Label = translate('magicStart', 'Drawer Back')
+					o3.Label = translate('magicStart', 'Drawer - Back board')
 					o3.Length = thickSides
 					o3.Height = height - bottomOF - topOF - thickBottom
 					o3.Width = width - (2 * thickSides) - sidesOF
@@ -7554,7 +7079,7 @@ def showQtGUI():
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
-					o4.Label = translate('magicStart', 'Drawer Front Inside')
+					o4.Label = translate('magicStart', 'Drawer - Front Inside')
 					o4.Length = thickSides
 					o4.Height = height - bottomOF - topOF - thickBottom
 					o4.Width = width - (2 * thickSides) - sidesOF
@@ -7564,7 +7089,7 @@ def showQtGUI():
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
-					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
+					o5.Label = translate('magicStart', 'Drawer - Bottom HDF')
 					o5.Length = depth - backOF
 					o5.Height = thickBottom
 					o5.Width = width - sidesOF
@@ -7575,7 +7100,7 @@ def showQtGUI():
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
-					o6.Label = translate('magicStart', 'Drawer Front Outside')
+					o6.Label = translate('magicStart', 'Drawer - Front Outside')
 					o6.Length = thickFront
 					o6.Height = height + frontOffsetV
 					o6.Width = width + frontOffsetH
@@ -7620,7 +7145,7 @@ def showQtGUI():
 
 					# Left Side
 					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
-					o1.Label = translate('magicStart', 'Drawer Left')
+					o1.Label = translate('magicStart', 'Drawer - Left side')
 					o1.Length = thickSides
 					o1.Height = height - bottomOF - topOF - thickBottom
 					o1.Width = depth - backOF - thickFront
@@ -7630,7 +7155,7 @@ def showQtGUI():
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
-					o2.Label = translate('magicStart', 'Drawer Right')
+					o2.Label = translate('magicStart', 'Drawer - Right side')
 					o2.Length = thickSides
 					o2.Height = height - bottomOF - topOF - thickBottom
 					o2.Width = depth - backOF - thickFront
@@ -7640,7 +7165,7 @@ def showQtGUI():
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
-					o3.Label = translate('magicStart', 'Drawer Back')
+					o3.Label = translate('magicStart', 'Drawer - Back board')
 					o3.Length = width - (2 * thickSides) - sidesOF
 					o3.Height = height - bottomOF - topOF - thickBottom
 					o3.Width = thickSides
@@ -7650,7 +7175,7 @@ def showQtGUI():
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
-					o4.Label = translate('magicStart', 'Drawer Front Inside')
+					o4.Label = translate('magicStart', 'Drawer - Front Inside')
 					o4.Length = width - (2 * thickSides) - sidesOF
 					o4.Height = height - bottomOF - topOF - thickBottom
 					o4.Width = thickSides
@@ -7660,7 +7185,7 @@ def showQtGUI():
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
-					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
+					o5.Label = translate('magicStart', 'Drawer - Bottom HDF')
 					o5.Length = width - sidesOF
 					o5.Height = thickBottom
 					o5.Width = depth - backOF - thickFront
@@ -7671,7 +7196,7 @@ def showQtGUI():
 
 					# Front outside make inside as well
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
-					o6.Label = translate('magicStart', 'Drawer Front Outside')
+					o6.Label = translate('magicStart', 'Drawer - Front Outside')
 					o6.Length = width - ( 2 * frontOffsetH )
 					o6.Height = height - ( 2 * frontOffsetV )
 					o6.Width = thickFront
@@ -7690,7 +7215,7 @@ def showQtGUI():
 
 					# Left Side
 					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
-					o1.Label = translate('magicStart', 'Drawer Left')
+					o1.Label = translate('magicStart', 'Drawer - Left side')
 					o1.Length = thickSides
 					o1.Height = height - bottomOF - topOF - thickBottom
 					o1.Width = depth - backOF - thickFront
@@ -7700,7 +7225,7 @@ def showQtGUI():
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
-					o2.Label = translate('magicStart', 'Drawer Right')
+					o2.Label = translate('magicStart', 'Drawer - Right side')
 					o2.Length = thickSides
 					o2.Height = height - bottomOF - topOF - thickBottom
 					o2.Width = depth - backOF - thickFront
@@ -7710,7 +7235,7 @@ def showQtGUI():
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
-					o3.Label = translate('magicStart', 'Drawer Back')
+					o3.Label = translate('magicStart', 'Drawer - Back board')
 					o3.Length = width - (2 * thickSides) - sidesOF
 					o3.Height = height - bottomOF - topOF - thickBottom
 					o3.Width = thickSides
@@ -7720,7 +7245,7 @@ def showQtGUI():
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
-					o4.Label = translate('magicStart', 'Drawer Front Inside')
+					o4.Label = translate('magicStart', 'Drawer - Front Inside')
 					o4.Length = width - (2 * thickSides) - sidesOF
 					o4.Height = height - bottomOF - topOF - thickBottom
 					o4.Width = thickSides
@@ -7730,7 +7255,7 @@ def showQtGUI():
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
-					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
+					o5.Label = translate('magicStart', 'Drawer - Bottom HDF')
 					o5.Length = width - sidesOF
 					o5.Height = thickBottom
 					o5.Width = depth - backOF - thickFront
@@ -7741,7 +7266,7 @@ def showQtGUI():
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
-					o6.Label = translate('magicStart', 'Drawer Front Outside')
+					o6.Label = translate('magicStart', 'Drawer - Front Outside')
 					o6.Length = width - ( 2 * frontOffsetH )
 					o6.Height = height - ( 2 * frontOffsetV )
 					o6.Width = thickFront
@@ -7762,7 +7287,7 @@ def showQtGUI():
 
 					# Left Side
 					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
-					o1.Label = translate('magicStart', 'Drawer Left')
+					o1.Label = translate('magicStart', 'Drawer - Left side')
 					o1.Length = depth - backOF - thickFront
 					o1.Height = height - bottomOF - topOF - thickBottom
 					o1.Width = thickSides
@@ -7772,7 +7297,7 @@ def showQtGUI():
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
-					o2.Label = translate('magicStart', 'Drawer Right')
+					o2.Label = translate('magicStart', 'Drawer - Right side')
 					o2.Length = depth - backOF - thickFront
 					o2.Height = height - bottomOF - topOF - thickBottom
 					o2.Width = thickSides
@@ -7782,7 +7307,7 @@ def showQtGUI():
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
-					o3.Label = translate('magicStart', 'Drawer Back')
+					o3.Label = translate('magicStart', 'Drawer - Back board')
 					o3.Length = thickSides
 					o3.Height = height - bottomOF - topOF - thickBottom
 					o3.Width = width - (2 * thickSides) - sidesOF
@@ -7795,7 +7320,7 @@ def showQtGUI():
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
-					o4.Label = translate('magicStart', 'Drawer Front Inside')
+					o4.Label = translate('magicStart', 'Drawer - Front Inside')
 					o4.Length = thickSides
 					o4.Height = height - bottomOF - topOF - thickBottom
 					o4.Width = width - (2 * thickSides) - sidesOF
@@ -7805,7 +7330,7 @@ def showQtGUI():
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
-					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
+					o5.Label = translate('magicStart', 'Drawer - Bottom HDF')
 					o5.Length = depth - backOF - thickFront
 					o5.Height = thickBottom
 					o5.Width = width - sidesOF
@@ -7816,7 +7341,7 @@ def showQtGUI():
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
-					o6.Label = translate('magicStart', 'Drawer Front Outside')
+					o6.Label = translate('magicStart', 'Drawer - Front Outside')
 					o6.Length = thickFront
 					o6.Height = height - ( 2 * frontOffsetV )
 					o6.Width = width - ( 2 * frontOffsetH )
@@ -7835,7 +7360,7 @@ def showQtGUI():
 
 					# Left Side
 					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerLeft")
-					o1.Label = translate('magicStart', 'Drawer Left')
+					o1.Label = translate('magicStart', 'Drawer - Left side')
 					o1.Length = depth - backOF - thickFront
 					o1.Height = height - bottomOF - topOF - thickBottom
 					o1.Width = thickSides
@@ -7845,7 +7370,7 @@ def showQtGUI():
 					
 					# Right Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerRight")
-					o2.Label = translate('magicStart', 'Drawer Right')
+					o2.Label = translate('magicStart', 'Drawer - Right side')
 					o2.Length = depth - backOF - thickFront
 					o2.Height = height - bottomOF - topOF - thickBottom
 					o2.Width = thickSides
@@ -7855,7 +7380,7 @@ def showQtGUI():
 					
 					# Back
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBack")
-					o3.Label = translate('magicStart', 'Drawer Back')
+					o3.Label = translate('magicStart', 'Drawer - Back board')
 					o3.Length = thickSides
 					o3.Height = height - bottomOF - topOF - thickBottom
 					o3.Width = width - (2 * thickSides) - sidesOF
@@ -7865,7 +7390,7 @@ def showQtGUI():
 					
 					# Front inside
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontInside")
-					o4.Label = translate('magicStart', 'Drawer Front Inside')
+					o4.Label = translate('magicStart', 'Drawer - Front Inside')
 					o4.Length = thickSides
 					o4.Height = height - bottomOF - topOF - thickBottom
 					o4.Width = width - (2 * thickSides) - sidesOF
@@ -7875,7 +7400,7 @@ def showQtGUI():
 
 					# HDF bottom
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerBottom")
-					o5.Label = translate('magicStart', 'Drawer Bottom HDF')
+					o5.Label = translate('magicStart', 'Drawer - Bottom HDF')
 					o5.Length = depth - backOF - thickFront
 					o5.Height = thickBottom
 					o5.Width = width - sidesOF
@@ -7886,7 +7411,7 @@ def showQtGUI():
 
 					# Front outside
 					o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "DrawerFrontOutside")
-					o6.Label = translate('magicStart', 'Drawer Front Outside')
+					o6.Label = translate('magicStart', 'Drawer - Front Outside')
 					o6.Length = thickFront
 					o6.Height = height - ( 2 * frontOffsetV )
 					o6.Width = width - ( 2 * frontOffsetH )
@@ -7962,7 +7487,7 @@ def showQtGUI():
 			
 			# Front outside
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
-			o1.Label = translate('magicStart', 'Shelf')
+			o1.Label = translate('magicStart', 'Furniture - Shelf')
 			o1.Length = width
 			o1.Height = thick
 			o1.Width = depth
@@ -8027,7 +7552,7 @@ def showQtGUI():
 				
 			# Floor
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
-			o1.Label = translate('magicStart', 'Floor')
+			o1.Label = translate('magicStart', 'Furniture - Floor')
 			o1.Length = sizeX - (2 * edgeband)
 			o1.Height = thick
 			o1.Width = sizeY - thickFront - thickBack - (2 * edgeband)
@@ -8037,7 +7562,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left side')
+			o2.Label = translate('magicStart', 'Furniture - Left side')
 			o2.Length = thick
 			o2.Height = sizeZ - (2 * thick) - (2 * edgebandE)
 			o2.Width = sizeY - thickFront - thickBack - (2 * edgeband)
@@ -8047,7 +7572,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right side')
+			o3.Label = translate('magicStart', 'Furniture - Right side')
 			o3.Length = thick
 			o3.Height = sizeZ - (2 * thick) - (2 * edgebandE)
 			o3.Width = sizeY - thickFront - thickBack - (2 * edgeband)
@@ -8057,7 +7582,7 @@ def showQtGUI():
 			
 			# Back HDF
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "BackHDF")
-			o4.Label = translate('magicStart', 'Back HDF')
+			o4.Label = translate('magicStart', 'Furniture back HDF')
 			o4.Length = sizeX
 			o4.Height = sizeZ
 			o4.Width = thickBack
@@ -8068,7 +7593,7 @@ def showQtGUI():
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o5.Label = translate('magicStart', 'Top cover')
+			o5.Label = translate('magicStart', 'Furniture - Top board')
 			o5.Length = sizeX - (2 * edgeband)
 			o5.Height = thick
 			o5.Width = sizeY - thickFront - thickBack - (2 * edgeband)
@@ -8078,7 +7603,7 @@ def showQtGUI():
 			
 			# Front
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
-			o6.Label = translate('magicStart', 'Front')
+			o6.Label = translate('magicStart', 'Furniture - Front')
 			o6.Length = sizeX - (2 * thick) + offsetFrontL + offsetFrontR - (2 * edgeband)
 			o6.Height = sizeZ - (2 * thick) + offsetFrontB + offsetFrontT - (2 * edgeband)
 			o6.Width = thickFront
@@ -8088,7 +7613,7 @@ def showQtGUI():
 			
 			# Shelf
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
-			o7.Label = translate('magicStart', 'Shelf')
+			o7.Label = translate('magicStart', 'Furniture - Shelf')
 			o7.Length = sizeX - (2 * thick) - (2 * edgebandE) - (2 * shelfOS)
 			o7.Height = thickShelf
 			o7.Width = sizeY - thickFront - thickBack - thick - edgeband - edgebandE
@@ -8135,7 +7660,7 @@ def showQtGUI():
 			
 			# Floor
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
-			o1.Label = translate('magicStart', 'Floor')
+			o1.Label = translate('magicStart', 'Furniture - Floor')
 			o1.Length = sizeX - (2 * edgeband)
 			o1.Height = thick
 			o1.Width = sizeY - (2 * edgeband)
@@ -8145,7 +7670,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left side')
+			o2.Label = translate('magicStart', 'Furniture - Left side')
 			o2.Length = thick
 			o2.Height = sizeZ - (2 * thick) - (2 * edgebandE)
 			o2.Width = sizeY - (2 * edgeband)
@@ -8155,7 +7680,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right side')
+			o3.Label = translate('magicStart', 'Furniture - Right side')
 			o3.Length = thick
 			o3.Height = sizeZ - (2 * thick) - (2 * edgebandE)
 			o3.Width = sizeY - (2 * edgeband)
@@ -8165,7 +7690,7 @@ def showQtGUI():
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back side')
+			o4.Label = translate('magicStart', 'Furniture - Back board')
 			o4.Length = sizeX - (2 * thick) - (2 * edgebandE)
 			o4.Height = sizeZ - (2 * thick) - (2 * edgebandE)
 			o4.Width = thickBack
@@ -8175,7 +7700,7 @@ def showQtGUI():
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o5.Label = translate('magicStart', 'Top cover')
+			o5.Label = translate('magicStart', 'Furniture - Top board')
 			o5.Length = sizeX - (2 * edgeband)
 			o5.Height = thick
 			o5.Width = sizeY - (2 * edgeband)
@@ -8185,7 +7710,7 @@ def showQtGUI():
 			
 			# Front
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
-			o6.Label = translate('magicStart', 'Front')
+			o6.Label = translate('magicStart', 'Furniture - Front')
 			o6.Length = sizeX - (2 * thick) - offsetFrontL - offsetFrontR - (2 * edgeband)
 			o6.Height = sizeZ - (2 * thick) - offsetFrontB - offsetFrontT - (2 * edgeband)
 			o6.Width = thickFront
@@ -8195,7 +7720,7 @@ def showQtGUI():
 			
 			# Shelf
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
-			o7.Label = translate('magicStart', 'Shelf')
+			o7.Label = translate('magicStart', 'Furniture - Shelf')
 			o7.Length = sizeX - (2 * thick) - (2 * edgebandE) - (2 * shelfOS)
 			o7.Height = thickShelf
 			o7.Width = sizeY - thickFront - thick - thickBack - edgeband - edgebandE
@@ -8242,7 +7767,7 @@ def showQtGUI():
 			
 			# Floor
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
-			o1.Label = translate('magicStart', 'Floor')
+			o1.Label = translate('magicStart', 'Furniture - Floor')
 			o1.Length = sizeX - (2 * edgeband)
 			o1.Height = thick
 			o1.Width = sizeY - thickBack - (2 * edgeband)
@@ -8252,7 +7777,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left side')
+			o2.Label = translate('magicStart', 'Furniture - Left side')
 			o2.Length = thick
 			o2.Height = sizeZ - (2 * thick) - (2 * edgebandE)
 			o2.Width = sizeY - thickBack - (2 * edgeband)
@@ -8262,7 +7787,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right side')
+			o3.Label = translate('magicStart', 'Furniture - Right side')
 			o3.Length = thick
 			o3.Height = sizeZ - (2 * thick) - (2 * edgebandE)
 			o3.Width = sizeY - thickBack - (2 * edgeband)
@@ -8272,7 +7797,7 @@ def showQtGUI():
 			
 			# Back HDF
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back side')
+			o4.Label = translate('magicStart', 'Furniture - Back board')
 			o4.Length = sizeX
 			o4.Height = sizeZ
 			o4.Width = thickBack
@@ -8283,7 +7808,7 @@ def showQtGUI():
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o5.Label = translate('magicStart', 'Top cover')
+			o5.Label = translate('magicStart', 'Furniture - Top board')
 			o5.Length = sizeX - (2 * edgeband)
 			o5.Height = thick
 			o5.Width = sizeY - thickBack - (2 * edgeband)
@@ -8293,7 +7818,7 @@ def showQtGUI():
 			
 			# Front
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
-			o6.Label = translate('magicStart', 'Front')
+			o6.Label = translate('magicStart', 'Furniture - Front')
 			o6.Length = sizeX - (2 * thick) - offsetFrontL - offsetFrontR - (2 * edgeband)
 			o6.Height = sizeZ - (2 * thick) - offsetFrontB - offsetFrontT - (2 * edgeband)
 			o6.Width = thickFront
@@ -8303,7 +7828,7 @@ def showQtGUI():
 			
 			# Shelf
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
-			o7.Label = translate('magicStart', 'Shelf')
+			o7.Label = translate('magicStart', 'Furniture - Shelf')
 			o7.Length = sizeX - (2 * thick) - (2 * edgebandE) - (2 * shelfOS)
 			o7.Height = thickShelf
 			o7.Width = sizeY - thickFront - thick - thickBack - edgeband -  edgebandE
@@ -8359,7 +7884,7 @@ def showQtGUI():
 			
 				# Left Side
 				o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSLeft")
-				o1.Label = translate('magicStart', 'DS ' + str(i+1) + ' Left')
+				o1.Label = translate('magicStart', 'DS ' + str(i+1) + ' Left side')
 				o1.Length = thickSides
 				o1.Height = gapZ - bottomOF - topOF - thickBottom
 				o1.Width = gapY - backOF
@@ -8369,7 +7894,7 @@ def showQtGUI():
 				
 				# Right Side
 				o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSRight")
-				o2.Label = translate('magicStart', 'DS ' + str(i+1) + ' Right')
+				o2.Label = translate('magicStart', 'DS ' + str(i+1) + ' Right side')
 				o2.Length = thickSides
 				o2.Height = gapZ - bottomOF - topOF - thickBottom
 				o2.Width = gapY - backOF
@@ -8379,7 +7904,7 @@ def showQtGUI():
 				
 				# Back
 				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSBack")
-				o3.Label = translate('magicStart', 'DS ' + str(i+1) + ' Back')
+				o3.Label = translate('magicStart', 'DS ' + str(i+1) + ' Back board')
 				o3.Length = gapX - (2 * thickSides) - sidesOF
 				o3.Height = gapZ - bottomOF - topOF - thickBottom
 				o3.Width = thickSides
@@ -8465,7 +7990,7 @@ def showQtGUI():
 				
 				# Left Side
 				o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSLeft")
-				o1.Label = translate('magicStart', 'DS ' + str(i+1) + ' Left')
+				o1.Label = translate('magicStart', 'DS ' + str(i+1) + ' Left side')
 				o1.Length = thickSides
 				o1.Height = gapZ - bottomOF - topOF - thickBottom
 				o1.Width = gapY - backOF - thickFront
@@ -8475,7 +8000,7 @@ def showQtGUI():
 				
 				# Right Side
 				o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSRight")
-				o2.Label = translate('magicStart', 'DS ' + str(i+1) + ' Right')
+				o2.Label = translate('magicStart', 'DS ' + str(i+1) + ' Right side')
 				o2.Length = thickSides
 				o2.Height = gapZ - bottomOF - topOF - thickBottom
 				o2.Width = gapY - backOF - thickFront
@@ -8485,7 +8010,7 @@ def showQtGUI():
 				
 				# Back
 				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSBack")
-				o3.Label = translate('magicStart', 'DS ' + str(i+1) + ' Back')
+				o3.Label = translate('magicStart', 'DS ' + str(i+1) + ' Back board')
 				o3.Length = gapX - (2 * thickSides) - sidesOF
 				o3.Height = gapZ - bottomOF - topOF - thickBottom
 				o3.Width = thickSides
@@ -8786,7 +8311,7 @@ def showQtGUI():
 			
 			# Floor
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
-			o1.Label = translate('magicStart', 'Floor')
+			o1.Label = translate('magicStart', 'Furniture - Floor')
 			o1.Length = self.gFSX - (2 * self.gThick)
 			o1.Height = self.gThick
 			o1.Width = depth
@@ -8796,7 +8321,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left side')
+			o2.Label = translate('magicStart', 'Furniture - Left side')
 			o2.Length = self.gThick
 			o2.Height = self.gFSZ
 			o2.Width = depth
@@ -8806,7 +8331,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right side')
+			o3.Label = translate('magicStart', 'Furniture - Right side')
 			o3.Length = self.gThick
 			o3.Height = self.gFSZ
 			o3.Width = depth
@@ -8816,7 +8341,7 @@ def showQtGUI():
 			
 			# Back HDF
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back side')
+			o4.Label = translate('magicStart', 'Furniture - Back board')
 			o4.Length = self.gFSX
 			o4.Height = self.gFSZ - self.gThick
 			o4.Width = 3
@@ -8827,7 +8352,7 @@ def showQtGUI():
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o5.Label = translate('magicStart', 'Top cover')
+			o5.Label = translate('magicStart', 'Furniture - Top board')
 			o5.Length = self.gFSX - (2 * self.gThick)
 			o5.Height = self.gThick
 			o5.Width = depth
@@ -8946,7 +8471,7 @@ def showQtGUI():
 			
 			# Floor
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
-			o1.Label = translate('magicStart', 'Floor')
+			o1.Label = translate('magicStart', 'Furniture - Floor')
 			o1.Length = self.gFSX
 			o1.Height = self.gThick
 			o1.Width = depth
@@ -8956,7 +8481,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left side')
+			o2.Label = translate('magicStart', 'Furniture - Left side')
 			o2.Length = self.gThick
 			o2.Height = self.gFSZ - (2 * self.gThick)
 			o2.Width = depth
@@ -8966,7 +8491,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right side')
+			o3.Label = translate('magicStart', 'Furniture - Right side')
 			o3.Length = self.gThick
 			o3.Height = self.gFSZ - (2 * self.gThick)
 			o3.Width = depth
@@ -8976,7 +8501,7 @@ def showQtGUI():
 			
 			# Back HDF
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back side')
+			o4.Label = translate('magicStart', 'Furniture - Back board')
 			o4.Length = self.gFSX
 			o4.Height = self.gFSZ
 			o4.Width = 3
@@ -8987,7 +8512,7 @@ def showQtGUI():
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o5.Label = translate('magicStart', 'Top cover')
+			o5.Label = translate('magicStart', 'Furniture - Top board')
 			o5.Length = self.gFSX
 			o5.Height = self.gThick
 			o5.Width = depth
@@ -9092,7 +8617,7 @@ def showQtGUI():
 			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGLeft")
-			o1.Label = translate('magicStart', 'FG Left')
+			o1.Label = translate('magicStart', 'FG Left side')
 			o1.Length = barWidth
 			o1.Height = FFHeight - (2 * barWidth)
 			o1.Width = barThick
@@ -9102,7 +8627,7 @@ def showQtGUI():
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGRight")
-			o2.Label = translate('magicStart', 'FG Right')
+			o2.Label = translate('magicStart', 'FG Right side')
 			o2.Length = barWidth
 			o2.Height = FFHeight - (2 * barWidth)
 			o2.Width = barThick
@@ -9172,7 +8697,7 @@ def showQtGUI():
 			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGLeft")
-			o1.Label = translate('magicStart', 'FG Left')
+			o1.Label = translate('magicStart', 'FG Left side')
 			o1.Length = barWidth
 			o1.Height = FFHeight - (2 * barWidth)
 			o1.Width = barThick
@@ -9182,7 +8707,7 @@ def showQtGUI():
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FGRight")
-			o2.Label = translate('magicStart', 'FG Right')
+			o2.Label = translate('magicStart', 'FG Right side')
 			o2.Length = barWidth
 			o2.Height = FFHeight - (2 * barWidth)
 			o2.Width = barThick
@@ -9818,7 +9343,7 @@ def showQtGUI():
 			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "DFLeft")
-			o1.Label = translate('magicStart', 'DF Left')
+			o1.Label = translate('magicStart', 'DF Left side')
 			o1.Length = barWidth
 			o1.Height = FFHeight
 			o1.Width = barThick
@@ -9828,7 +9353,7 @@ def showQtGUI():
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "DFRight")
-			o2.Label = translate('magicStart', 'DF Right')
+			o2.Label = translate('magicStart', 'DF Right side')
 			o2.Length = barWidth
 			o2.Height = FFHeight
 			o2.Width = barThick
@@ -9893,7 +9418,7 @@ def showQtGUI():
 			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FDLeft")
-			o1.Label = translate('magicStart', 'FD Left')
+			o1.Label = translate('magicStart', 'FD Left side')
 			o1.Length = barWidth
 			o1.Height = FFHeight
 			o1.Width = barThick
@@ -9903,7 +9428,7 @@ def showQtGUI():
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FDRight")
-			o2.Label = translate('magicStart', 'FD Right')
+			o2.Label = translate('magicStart', 'FD Right side')
 			o2.Length = barWidth
 			o2.Height = FFHeight
 			o2.Width = barThick
@@ -9955,7 +9480,7 @@ def showQtGUI():
 			
 			# Left Side
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "SDLeft")
-			o1.Label = translate('magicStart', 'SD Left')
+			o1.Label = translate('magicStart', 'SD Left side')
 			o1.Length = barThick
 			o1.Height = FFHeight
 			o1.Width = barWidth
@@ -9965,7 +9490,7 @@ def showQtGUI():
 			
 			# Right Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "SDRight")
-			o2.Label = translate('magicStart', 'SD Right')
+			o2.Label = translate('magicStart', 'SD Right side')
 			o2.Length = barThick
 			o2.Height = FFHeight
 			o2.Width = barWidth
@@ -10130,7 +9655,7 @@ def showQtGUI():
 			
 			# Floor
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
-			o1.Label = translate('magicStart', 'Floor')
+			o1.Label = translate('magicStart', 'Furniture - Floor')
 			o1.Length = self.gFSX - (2 * self.gThick)
 			o1.Height = self.gThick
 			o1.Width = depth
@@ -10140,7 +9665,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left side')
+			o2.Label = translate('magicStart', 'Furniture - Left side')
 			o2.Length = self.gThick
 			o2.Height = self.gFSZ
 			o2.Width = depth
@@ -10150,7 +9675,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right side')
+			o3.Label = translate('magicStart', 'Furniture - Right side')
 			o3.Length = self.gThick
 			o3.Height = self.gFSZ
 			o3.Width = depth
@@ -10160,7 +9685,7 @@ def showQtGUI():
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back side')
+			o4.Label = translate('magicStart', 'Furniture - Back board')
 			o4.Length = self.gFSX
 			o4.Height = self.gFSZ - bfco
 			o4.Width = bcthick
@@ -10202,7 +9727,7 @@ def showQtGUI():
 
 			# Left Side
 			ff1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFLeft")
-			ff1.Label = translate('magicStart', 'FF Left')
+			ff1.Label = translate('magicStart', 'FF Left side')
 			ff1.Length = barWidth
 			ff1.Height = FFHeight
 			ff1.Width = barThick
@@ -10212,7 +9737,7 @@ def showQtGUI():
 			
 			# Right Side
 			ff2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFRight")
-			ff2.Label = translate('magicStart', 'FF Right')
+			ff2.Label = translate('magicStart', 'FF Right side')
 			ff2.Length = barWidth
 			ff2.Height = FFHeight
 			ff2.Width = barThick
@@ -10297,7 +9822,7 @@ def showQtGUI():
 			
 			# Floor
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
-			o1.Label = translate('magicStart', 'Floor')
+			o1.Label = translate('magicStart', 'Furniture - Floor')
 			o1.Length = sizeX - (2 * thick) - (2 * edgebandE)
 			o1.Height = thick
 			o1.Width = sizeY - thickFront - thickBack - (2 * edgeband)
@@ -10309,7 +9834,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left side')
+			o2.Label = translate('magicStart', 'Furniture - Left side')
 			o2.Length = thick
 			o2.Height = sizeZ - (2 * edgeband)
 			o2.Width = sizeY - thickFront - thickBack - (2 * edgeband)
@@ -10321,7 +9846,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right side')
+			o3.Label = translate('magicStart', 'Furniture - Right side')
 			o3.Length = thick
 			o3.Height = sizeZ - (2 * edgeband)
 			o3.Width = sizeY - thickFront - thickBack - (2 * edgeband)
@@ -10333,7 +9858,7 @@ def showQtGUI():
 			
 			# Back HDF
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "BackHDF")
-			o4.Label = translate('magicStart', 'Back HDF')
+			o4.Label = translate('magicStart', 'Furniture back HDF')
 			o4.Length = sizeX
 			o4.Height = sizeZ
 			o4.Width = thickBack
@@ -10344,7 +9869,7 @@ def showQtGUI():
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o5.Label = translate('magicStart', 'Top cover')
+			o5.Label = translate('magicStart', 'Furniture - Top board')
 			o5.Length = sizeX - (2 * thick) - (2 * edgebandE)
 			o5.Height = thick
 			o5.Width = sizeY - thickFront - thickBack - (2 * edgeband)
@@ -10356,7 +9881,7 @@ def showQtGUI():
 			
 			# Front
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
-			o6.Label = translate('magicStart', 'Front')
+			o6.Label = translate('magicStart', 'Furniture - Front')
 			o6.Length = sizeX - (2 * thick) + offsetFrontL + offsetFrontR - (2 * edgeband)
 			o6.Height = sizeZ - (2 * thick) + offsetFrontB + offsetFrontT - (2 * edgeband)
 			o6.Width = thickFront
@@ -10369,7 +9894,7 @@ def showQtGUI():
 			
 			# Shelf
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
-			o7.Label = translate('magicStart', 'Shelf')
+			o7.Label = translate('magicStart', 'Furniture - Shelf')
 			o7.Length = sizeX - (2 * thick) - (2 * edgebandE) - (2 * shelfOS)
 			o7.Height = thickShelf
 			o7.Width = sizeY - thickFront - thick - thickBack - edgeband - edgebandE
@@ -10437,7 +9962,7 @@ def showQtGUI():
 			
 			# Floor
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
-			o1.Label = translate('magicStart', 'Floor')
+			o1.Label = translate('magicStart', 'Furniture - Floor')
 			o1.Length = self.gFSX - (2 * self.gThick)
 			o1.Height = self.gThick
 			o1.Width = depth
@@ -10447,7 +9972,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left side')
+			o2.Label = translate('magicStart', 'Furniture - Left side')
 			o2.Length = self.gThick
 			o2.Height = self.gFSZ
 			o2.Width = depth
@@ -10457,7 +9982,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right side')
+			o3.Label = translate('magicStart', 'Furniture - Right side')
 			o3.Length = self.gThick
 			o3.Height = self.gFSZ
 			o3.Width = depth
@@ -10467,7 +9992,7 @@ def showQtGUI():
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back side')
+			o4.Label = translate('magicStart', 'Furniture - Back board')
 			o4.Length = self.gFSX
 			o4.Height = self.gFSZ
 			o4.Width = bcthick
@@ -10477,7 +10002,7 @@ def showQtGUI():
 			
 			# Top
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o5.Label = translate('magicStart', 'Top cover')
+			o5.Label = translate('magicStart', 'Furniture - Top board')
 			o5.Length = self.gFSX - (2 * self.gThick)
 			o5.Height = self.gThick
 			o5.Width = depth
@@ -10507,7 +10032,7 @@ def showQtGUI():
 
 			# Shelf
 			o8 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o8.Label = translate('magicStart', 'Top cover')
+			o8.Label = translate('magicStart', 'Furniture - Top board')
 			o8.Length = self.gFSX - (2 * self.gThick) - (2 * shelfOS)
 			o8.Height = thickShelf
 			o8.Width = depth - self.gThick
@@ -10521,7 +10046,7 @@ def showQtGUI():
 
 			# Left Side
 			ff1 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFLeft")
-			ff1.Label = translate('magicStart', 'FF Left')
+			ff1.Label = translate('magicStart', 'FF Left side')
 			ff1.Length = barWidthV
 			ff1.Height = FFHeight
 			ff1.Width = barThick
@@ -10531,7 +10056,7 @@ def showQtGUI():
 			
 			# Right Side
 			ff2 = FreeCAD.ActiveDocument.addObject("Part::Box", "FFRight")
-			ff2.Label = translate('magicStart', 'FF Right')
+			ff2.Label = translate('magicStart', 'FF Right side')
 			ff2.Length = barWidthV
 			ff2.Height = FFHeight
 			ff2.Width = barThick
@@ -10606,7 +10131,7 @@ def showQtGUI():
 			
 				# Back
 				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSBack")
-				o3.Label = translate('magicStart', 'DS ' + str(i+1) + ' Back')
+				o3.Label = translate('magicStart', 'DS ' + str(i+1) + ' Back board')
 				o3.Length = gapX - backSidesOF
 				o3.Height = gapZ - bottomOF - topOF - thickBottom
 				o3.Width = thickSides
@@ -10682,7 +10207,7 @@ def showQtGUI():
 				
 				# Back
 				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "DSBack")
-				o3.Label = translate('magicStart', 'DS ' + str(i+1) + ' Back')
+				o3.Label = translate('magicStart', 'DS ' + str(i+1) + ' Back board')
 				o3.Length = gapX - backSidesOF
 				o3.Height = gapZ - bottomOF - topOF - thickBottom
 				o3.Width = thickSides
@@ -10762,7 +10287,7 @@ def showQtGUI():
 			
 			# Front outside
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o1.Label = translate('magicStart', 'Back side')
+			o1.Label = translate('magicStart', 'Furniture - Back board')
 			o1.Length = width
 			o1.Height = height
 			o1.Width = thick
@@ -10804,7 +10329,7 @@ def showQtGUI():
 				if i == 0:
 					# Floor
 					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
-					o1.Label = translate('magicStart', 'Floor') + ' M' + str(i+1)
+					o1.Label = translate('magicStart', 'Furniture - Floor') + ' M' + str(i+1)
 					o1.Length = self.gFSX - (2 * self.gThick)
 					o1.Height = self.gThick
 					o1.Width = depth - thickBack
@@ -10814,7 +10339,7 @@ def showQtGUI():
 					
 					# Left Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-					o2.Label = translate('magicStart', 'Left side') + ' M' + str(i+1)
+					o2.Label = translate('magicStart', 'Furniture - Left side') + ' M' + str(i+1)
 					o2.Length = self.gThick
 					o2.Height = sideZ + self.gThick
 					o2.Width = depth
@@ -10824,7 +10349,7 @@ def showQtGUI():
 					
 					# Right Side
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-					o3.Label = translate('magicStart', 'Right side') + ' M' + str(i+1)
+					o3.Label = translate('magicStart', 'Furniture - Right side') + ' M' + str(i+1)
 					o3.Length = self.gThick
 					o3.Height = sideZ + self.gThick
 					o3.Width = depth
@@ -10834,7 +10359,7 @@ def showQtGUI():
 				
 					# Back
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-					o4.Label = translate('magicStart', 'Back side') + ' M' + str(i+1)
+					o4.Label = translate('magicStart', 'Furniture - Back board') + ' M' + str(i+1)
 					o4.Length = self.gFSX - (2 * self.gThick)
 					o4.Height = sideZ - 100 + self.gThick
 					o4.Width = thickBack
@@ -10844,7 +10369,7 @@ def showQtGUI():
 					
 					# Shelf
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
-					o5.Label = translate('magicStart', 'Shelf') + ' M' + str(i+1)
+					o5.Label = translate('magicStart', 'Furniture - Shelf') + ' M' + str(i+1)
 					o5.Length = self.gFSX - (2 * self.gThick) - (2 * shelfOS)
 					o5.Height = thickShelf
 					o5.Width = depth - self.gThick - thickBack
@@ -10855,7 +10380,7 @@ def showQtGUI():
 				else:
 					# Floor
 					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
-					o1.Label = translate('magicStart', 'Floor') + ' M' + str(i+1)
+					o1.Label = translate('magicStart', 'Furniture - Floor') + ' M' + str(i+1)
 					o1.Length = self.gFSX
 					o1.Height = self.gThick
 					o1.Width = depth
@@ -10865,7 +10390,7 @@ def showQtGUI():
 				
 					# Left Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-					o2.Label = translate('magicStart', 'Left side') + ' M' + str(i+1)
+					o2.Label = translate('magicStart', 'Furniture - Left side') + ' M' + str(i+1)
 					o2.Length = self.gThick
 					o2.Height = sideZ
 					o2.Width = depth
@@ -10875,7 +10400,7 @@ def showQtGUI():
 					
 					# Right Side
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-					o3.Label = translate('magicStart', 'Right side') + ' M' + str(i+1)
+					o3.Label = translate('magicStart', 'Furniture - Right side') + ' M' + str(i+1)
 					o3.Length = self.gThick
 					o3.Height = sideZ
 					o3.Width = depth
@@ -10885,7 +10410,7 @@ def showQtGUI():
 					
 					# Back
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-					o4.Label = translate('magicStart', 'Back side') + ' M' + str(i+1)
+					o4.Label = translate('magicStart', 'Furniture - Back board') + ' M' + str(i+1)
 					o4.Length = self.gFSX - (2 * self.gThick)
 					o4.Height = sideZ
 					o4.Width = thickBack
@@ -10895,7 +10420,7 @@ def showQtGUI():
 					
 					# Shelf
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
-					o5.Label = translate('magicStart', 'Shelf') + ' M' + str(i+1)
+					o5.Label = translate('magicStart', 'Furniture - Shelf') + ' M' + str(i+1)
 					o5.Length = self.gFSX - (2 * self.gThick) - (2 * shelfOS)
 					o5.Height = thickShelf
 					o5.Width = depth - self.gThick - thickBack
@@ -10915,7 +10440,7 @@ def showQtGUI():
 			
 			# final top
 			t1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			t1.Label = translate('magicStart', 'Top cover')
+			t1.Label = translate('magicStart', 'Furniture - Top board')
 			t1.Length = self.gFSX
 			t1.Height = self.gThick
 			t1.Width = depth
@@ -10958,7 +10483,7 @@ def showQtGUI():
 				if i == 0:
 					# Floor
 					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
-					o1.Label = translate('magicStart', 'Floor') + ' M' + str(i+1)
+					o1.Label = translate('magicStart', 'Furniture - Floor') + ' M' + str(i+1)
 					o1.Length = self.gFSX - (2 * self.gThick)
 					o1.Height = self.gThick
 					o1.Width = depth
@@ -10968,7 +10493,7 @@ def showQtGUI():
 					
 					# Left Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-					o2.Label = translate('magicStart', 'Left side') + ' M' + str(i+1)
+					o2.Label = translate('magicStart', 'Furniture - Left side') + ' M' + str(i+1)
 					o2.Length = self.gThick
 					o2.Height = sideZ + self.gThick
 					o2.Width = depth
@@ -10978,7 +10503,7 @@ def showQtGUI():
 					
 					# Right Side
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-					o3.Label = translate('magicStart', 'Right side') + ' M' + str(i+1)
+					o3.Label = translate('magicStart', 'Furniture - Right side') + ' M' + str(i+1)
 					o3.Length = self.gThick
 					o3.Height = sideZ + self.gThick
 					o3.Width = depth
@@ -10988,7 +10513,7 @@ def showQtGUI():
 				
 					# Back
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-					o4.Label = translate('magicStart', 'Back side') + ' M' + str(i+1)
+					o4.Label = translate('magicStart', 'Furniture - Back board') + ' M' + str(i+1)
 					o4.Length = self.gFSX
 					o4.Height = sideZ - 100 + (2 * self.gThick)
 					o4.Width = thickBack
@@ -10999,7 +10524,7 @@ def showQtGUI():
 					
 					# Shelf
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
-					o5.Label = translate('magicStart', 'Shelf') + ' M' + str(i+1)
+					o5.Label = translate('magicStart', 'Furniture - Shelf') + ' M' + str(i+1)
 					o5.Length = self.gFSX - (2 * self.gThick) - (2 * shelfOS)
 					o5.Height = thickShelf
 					o5.Width = depth - self.gThick
@@ -11010,7 +10535,7 @@ def showQtGUI():
 				else:
 					# Floor
 					o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
-					o1.Label = translate('magicStart', 'Floor') + ' M' + str(i+1)
+					o1.Label = translate('magicStart', 'Furniture - Floor') + ' M' + str(i+1)
 					o1.Length = self.gFSX
 					o1.Height = self.gThick
 					o1.Width = depth
@@ -11020,7 +10545,7 @@ def showQtGUI():
 				
 					# Left Side
 					o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-					o2.Label = translate('magicStart', 'Left side') + ' M' + str(i+1)
+					o2.Label = translate('magicStart', 'Furniture - Left side') + ' M' + str(i+1)
 					o2.Length = self.gThick
 					o2.Height = sideZ
 					o2.Width = depth
@@ -11030,7 +10555,7 @@ def showQtGUI():
 					
 					# Right Side
 					o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-					o3.Label = translate('magicStart', 'Right side') + ' M' + str(i+1)
+					o3.Label = translate('magicStart', 'Furniture - Right side') + ' M' + str(i+1)
 					o3.Length = self.gThick
 					o3.Height = sideZ
 					o3.Width = depth
@@ -11040,7 +10565,7 @@ def showQtGUI():
 					
 					# Back
 					o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-					o4.Label = translate('magicStart', 'Back side') + ' M' + str(i+1)
+					o4.Label = translate('magicStart', 'Furniture - Back board') + ' M' + str(i+1)
 					o4.Length = self.gFSX
 					o4.Height = sideZ + self.gThick
 					o4.Width = thickBack
@@ -11051,7 +10576,7 @@ def showQtGUI():
 			
 					# Shelf
 					o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
-					o5.Label = translate('magicStart', 'Shelf') + ' M' + str(i+1)
+					o5.Label = translate('magicStart', 'Furniture - Shelf') + ' M' + str(i+1)
 					o5.Length = self.gFSX - (2 * self.gThick) - (2 * shelfOS)
 					o5.Height = thickShelf
 					o5.Width = depth - self.gThick
@@ -11071,7 +10596,7 @@ def showQtGUI():
 			
 			# final top
 			t1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			t1.Label = translate('magicStart', 'Top cover')
+			t1.Label = translate('magicStart', 'Furniture - Top board')
 			t1.Length = self.gFSX
 			t1.Height = self.gThick
 			t1.Width = depth
@@ -11120,7 +10645,7 @@ def showQtGUI():
 			
 			# Leg Right
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "TableLR")
-			o3.Label = translate('magicStart', 'Wood table Leg Rright')
+			o3.Label = translate('magicStart', 'Wood table Leg Right')
 			o3.Length = legThick
 			o3.Height = height - topThick
 			o3.Width = depth - (2 * offset)
@@ -11619,7 +11144,7 @@ def showQtGUI():
 			
 			# Floor
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
-			o1.Label = translate('magicStart', 'Floor') + ' M1'
+			o1.Label = translate('magicStart', 'Furniture - Floor') + ' M1'
 			o1.Length = self.gFSX - (2 * self.gThick)
 			o1.Height = self.gThick
 			o1.Width = depth
@@ -11629,7 +11154,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left side') + ' M1'
+			o2.Label = translate('magicStart', 'Furniture - Left side') + ' M1'
 			o2.Length = self.gThick
 			o2.Height = baseSideZ
 			o2.Width = depth
@@ -11639,7 +11164,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right side') + ' M1'
+			o3.Label = translate('magicStart', 'Furniture - Right side') + ' M1'
 			o3.Length = self.gThick
 			o3.Height = baseSideZ
 			o3.Width = depth
@@ -11649,7 +11174,7 @@ def showQtGUI():
 		
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back side') + ' M1'
+			o4.Label = translate('magicStart', 'Furniture - Back board') + ' M1'
 			o4.Length = self.gFSX
 			o4.Height = baseSideZ - 100 + self.gThick
 			o4.Width = thickBack
@@ -11660,7 +11185,7 @@ def showQtGUI():
 			
 			# Shelf
 			o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
-			o5.Label = translate('magicStart', 'Shelf') + ' M1'
+			o5.Label = translate('magicStart', 'Furniture - Shelf') + ' M1'
 			o5.Length = self.gFSX - (2 * self.gThick) - (2 * shelfOS)
 			o5.Height = thickShelf
 			o5.Width = depth - self.gThick
@@ -11672,7 +11197,7 @@ def showQtGUI():
 			
 			# Top
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o6.Label = translate('magicStart', 'Top cover') + ' M1'
+			o6.Label = translate('magicStart', 'Furniture - Top board') + ' M1'
 			o6.Length = self.gFSX
 			o6.Height = self.gThick
 			o6.Width = depth
@@ -11682,7 +11207,7 @@ def showQtGUI():
 		
 			# Front
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
-			o7.Label = translate('magicStart', 'Front') + ' M1'
+			o7.Label = translate('magicStart', 'Furniture - Front') + ' M1'
 			o7.Length = self.gFSX - (2 * self.gThick) + offsetFrontL + offsetFrontR
 			o7.Height = baseSideZ - 100 - self.gThick + offsetFrontB + offsetFrontT
 			o7.Width = thickFront
@@ -11705,7 +11230,7 @@ def showQtGUI():
 
 				# Left Side
 				o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-				o1.Label = translate('magicStart', 'Left side') + ' M' + str(i+1)
+				o1.Label = translate('magicStart', 'Furniture - Left side') + ' M' + str(i+1)
 				o1.Length = self.gThick
 				o1.Height = sideZ
 				o1.Width = depth
@@ -11715,7 +11240,7 @@ def showQtGUI():
 				
 				# Right Side
 				o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-				o2.Label = translate('magicStart', 'Right side') + ' M' + str(i+1)
+				o2.Label = translate('magicStart', 'Furniture - Right side') + ' M' + str(i+1)
 				o2.Length = self.gThick
 				o2.Height = sideZ
 				o2.Width = depth
@@ -11725,7 +11250,7 @@ def showQtGUI():
 				
 				# Back
 				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-				o3.Label = translate('magicStart', 'Back side') + ' M' + str(i+1)
+				o3.Label = translate('magicStart', 'Furniture - Back board') + ' M' + str(i+1)
 				o3.Length = self.gFSX
 				o3.Height = sideZ + self.gThick
 				o3.Width = thickBack
@@ -11736,7 +11261,7 @@ def showQtGUI():
 		
 				# Shelf
 				o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
-				o4.Label = translate('magicStart', 'Shelf') + ' M' + str(i+1)
+				o4.Label = translate('magicStart', 'Furniture - Shelf') + ' M' + str(i+1)
 				o4.Length = self.gFSX - (2 * self.gThick) - (2 * shelfOS)
 				o4.Height = thickShelf
 				o4.Width = depth - self.gThick
@@ -11747,7 +11272,7 @@ def showQtGUI():
 			
 				# Top
 				o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-				o5.Label = translate('magicStart', 'Top cover') + ' M' + str(i+1)
+				o5.Label = translate('magicStart', 'Furniture - Top board') + ' M' + str(i+1)
 				o5.Length = self.gFSX
 				o5.Height = self.gThick
 				o5.Width = depth
@@ -11757,7 +11282,7 @@ def showQtGUI():
 				
 				# Front
 				o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
-				o6.Label = translate('magicStart', 'Front') + ' M1' + str(i+1)
+				o6.Label = translate('magicStart', 'Furniture - Front') + ' M1' + str(i+1)
 				o6.Length = self.gFSX - (2 * self.gThick) + offsetFrontL + offsetFrontR
 				o6.Height = sideZ + offsetFrontB + offsetFrontT
 				o6.Width = thickFront
@@ -11812,7 +11337,7 @@ def showQtGUI():
 			
 			# Floor
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
-			o1.Label = translate('magicStart', 'Floor') + ' M1'
+			o1.Label = translate('magicStart', 'Furniture - Floor') + ' M1'
 			o1.Length = self.gFSX - (2 * self.gThick)
 			o1.Height = self.gThick
 			o1.Width = depth
@@ -11822,7 +11347,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left side') + ' M1'
+			o2.Label = translate('magicStart', 'Furniture - Left side') + ' M1'
 			o2.Length = self.gThick
 			o2.Height = baseSideZ
 			o2.Width = depth
@@ -11832,7 +11357,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right side') + ' M1'
+			o3.Label = translate('magicStart', 'Furniture - Right side') + ' M1'
 			o3.Length = self.gThick
 			o3.Height = baseSideZ
 			o3.Width = depth
@@ -11842,7 +11367,7 @@ def showQtGUI():
 		
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back side') + ' M1'
+			o4.Label = translate('magicStart', 'Furniture - Back board') + ' M1'
 			o4.Length = self.gFSX
 			o4.Height = baseSideZ - 100 + self.gThick
 			o4.Width = thickBack
@@ -11853,7 +11378,7 @@ def showQtGUI():
 			
 			# Top
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o6.Label = translate('magicStart', 'Top cover') + ' M1'
+			o6.Label = translate('magicStart', 'Furniture - Top board') + ' M1'
 			o6.Length = self.gFSX
 			o6.Height = self.gThick
 			o6.Width = depth
@@ -11863,7 +11388,7 @@ def showQtGUI():
 		
 			# Front
 			o7 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
-			o7.Label = translate('magicStart', 'Front') + ' M1'
+			o7.Label = translate('magicStart', 'Furniture - Front') + ' M1'
 			o7.Length = self.gFSX - (2 * self.gThick) + offsetFrontL + offsetFrontR
 			o7.Height = baseSideZ - 100 - self.gThick + offsetFrontB + offsetFrontT
 			o7.Width = thickFront
@@ -11886,7 +11411,7 @@ def showQtGUI():
 
 				# Left Side
 				o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-				o1.Label = translate('magicStart', 'Left side') + ' M' + str(i+1)
+				o1.Label = translate('magicStart', 'Furniture - Left side') + ' M' + str(i+1)
 				o1.Length = self.gThick
 				o1.Height = sideZ
 				o1.Width = depth
@@ -11896,7 +11421,7 @@ def showQtGUI():
 				
 				# Right Side
 				o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-				o2.Label = translate('magicStart', 'Right side') + ' M' + str(i+1)
+				o2.Label = translate('magicStart', 'Furniture - Right side') + ' M' + str(i+1)
 				o2.Length = self.gThick
 				o2.Height = sideZ
 				o2.Width = depth
@@ -11906,7 +11431,7 @@ def showQtGUI():
 				
 				# Back
 				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-				o3.Label = translate('magicStart', 'Back side') + ' M' + str(i+1)
+				o3.Label = translate('magicStart', 'Furniture - Back board') + ' M' + str(i+1)
 				o3.Length = self.gFSX
 				o3.Height = sideZ + self.gThick
 				o3.Width = thickBack
@@ -11917,7 +11442,7 @@ def showQtGUI():
 		
 				# Shelf
 				o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
-				o4.Label = translate('magicStart', 'Shelf') + ' M' + str(i+1)
+				o4.Label = translate('magicStart', 'Furniture - Shelf') + ' M' + str(i+1)
 				o4.Length = self.gFSX - (2 * self.gThick) - (2 * shelfOS)
 				o4.Height = thickShelf
 				o4.Width = depth - self.gThick
@@ -11928,7 +11453,7 @@ def showQtGUI():
 			
 				# Top
 				o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-				o5.Label = translate('magicStart', 'Top cover') + ' M' + str(i+1)
+				o5.Label = translate('magicStart', 'Furniture - Top board') + ' M' + str(i+1)
 				o5.Length = self.gFSX
 				o5.Height = self.gThick
 				o5.Width = depth
@@ -11938,7 +11463,7 @@ def showQtGUI():
 				
 				# Front
 				o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
-				o6.Label = translate('magicStart', 'Front') + ' M1' + str(i+1)
+				o6.Label = translate('magicStart', 'Furniture - Front') + ' M1' + str(i+1)
 				o6.Length = self.gFSX - (2 * self.gThick) + offsetFrontL + offsetFrontR
 				o6.Height = sideZ + offsetFrontB + offsetFrontT
 				o6.Width = thickFront
@@ -11998,7 +11523,7 @@ def showQtGUI():
 			
 			# Back
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o3.Label = translate('magicStart', 'Back side M')
+			o3.Label = translate('magicStart', 'Back board M')
 			o3.Length = sizeX - (2 * thick) - (2 * edgebandE)
 			o3.Height = sizeZ - thick - (2 * edgebandE)
 			o3.Width = thickBack
@@ -12080,7 +11605,7 @@ def showQtGUI():
 			
 			# Back HDF
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o3.Label = translate('magicStart', 'Back side M')
+			o3.Label = translate('magicStart', 'Back board M')
 			o3.Length = sizeX
 			o3.Height = sizeZ
 			o3.Width = thickBack
@@ -12173,7 +11698,7 @@ def showQtGUI():
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back side M')
+			o4.Label = translate('magicStart', 'Back board M')
 			o4.Length = sizeX - (2 * thick)
 			o4.Height = sizeZ - 100 - thick
 			o4.Width = thickBack
@@ -12265,7 +11790,7 @@ def showQtGUI():
 			
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back side M')
+			o4.Label = translate('magicStart', 'Back board M')
 			o4.Length = sizeX
 			o4.Height = sizeZ - 100
 			o4.Width = thickBack
@@ -12353,7 +11878,7 @@ def showQtGUI():
 			
 			# Floor
 			o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Floor")
-			o1.Label = translate('magicStart', 'Floor') + ' M1'
+			o1.Label = translate('magicStart', 'Furniture - Floor') + ' M1'
 			o1.Length = self.gFSX - (2 * self.gThick)
 			o1.Height = self.gThick
 			o1.Width = depth
@@ -12363,7 +11888,7 @@ def showQtGUI():
 			
 			# Left Side
 			o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-			o2.Label = translate('magicStart', 'Left side') + ' M1'
+			o2.Label = translate('magicStart', 'Furniture - Left side') + ' M1'
 			o2.Length = self.gThick
 			o2.Height = baseSideZ
 			o2.Width = depth
@@ -12373,7 +11898,7 @@ def showQtGUI():
 			
 			# Right Side
 			o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-			o3.Label = translate('magicStart', 'Right side') + ' M1'
+			o3.Label = translate('magicStart', 'Furniture - Right side') + ' M1'
 			o3.Length = self.gThick
 			o3.Height = baseSideZ
 			o3.Width = depth
@@ -12383,7 +11908,7 @@ def showQtGUI():
 		
 			# Back
 			o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-			o4.Label = translate('magicStart', 'Back side') + ' M1'
+			o4.Label = translate('magicStart', 'Furniture - Back board') + ' M1'
 			o4.Length = self.gFSX
 			o4.Height = baseSideZ - 100 + self.gThick
 			o4.Width = thickBack
@@ -12394,7 +11919,7 @@ def showQtGUI():
 			
 			# Top
 			o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-			o6.Label = translate('magicStart', 'Top cover') + ' M1'
+			o6.Label = translate('magicStart', 'Furniture - Top board') + ' M1'
 			o6.Length = self.gFSX
 			o6.Height = self.gThick
 			o6.Width = depth
@@ -12541,7 +12066,7 @@ def showQtGUI():
 
 				# Left Side
 				o1 = FreeCAD.ActiveDocument.addObject("Part::Box", "Left")
-				o1.Label = translate('magicStart', 'Left side') + ' M' + str(i+1)
+				o1.Label = translate('magicStart', 'Furniture - Left side') + ' M' + str(i+1)
 				o1.Length = self.gThick
 				o1.Height = sideZ
 				o1.Width = depth
@@ -12551,7 +12076,7 @@ def showQtGUI():
 				
 				# Right Side
 				o2 = FreeCAD.ActiveDocument.addObject("Part::Box", "Right")
-				o2.Label = translate('magicStart', 'Right side') + ' M' + str(i+1)
+				o2.Label = translate('magicStart', 'Furniture - Right side') + ' M' + str(i+1)
 				o2.Length = self.gThick
 				o2.Height = sideZ
 				o2.Width = depth
@@ -12561,7 +12086,7 @@ def showQtGUI():
 				
 				# Back
 				o3 = FreeCAD.ActiveDocument.addObject("Part::Box", "Back")
-				o3.Label = translate('magicStart', 'Back side') + ' M' + str(i+1)
+				o3.Label = translate('magicStart', 'Furniture - Back board') + ' M' + str(i+1)
 				o3.Length = self.gFSX
 				o3.Height = sideZ + self.gThick
 				o3.Width = thickBack
@@ -12572,7 +12097,7 @@ def showQtGUI():
 		
 				# Shelf
 				o4 = FreeCAD.ActiveDocument.addObject("Part::Box", "Shelf")
-				o4.Label = translate('magicStart', 'Shelf') + ' M' + str(i+1)
+				o4.Label = translate('magicStart', 'Furniture - Shelf') + ' M' + str(i+1)
 				o4.Length = self.gFSX - (2 * self.gThick) - (2 * shelfOS)
 				o4.Height = thickShelf
 				o4.Width = depth - self.gThick
@@ -12583,7 +12108,7 @@ def showQtGUI():
 			
 				# Top
 				o5 = FreeCAD.ActiveDocument.addObject("Part::Box", "Top")
-				o5.Label = translate('magicStart', 'Top cover') + ' M' + str(i+1)
+				o5.Label = translate('magicStart', 'Furniture - Top board') + ' M' + str(i+1)
 				o5.Length = self.gFSX
 				o5.Height = self.gThick
 				o5.Width = depth
@@ -12593,7 +12118,7 @@ def showQtGUI():
 				
 				# Front
 				o6 = FreeCAD.ActiveDocument.addObject("Part::Box", "Front")
-				o6.Label = translate('magicStart', 'Front') + ' M1' + str(i+1)
+				o6.Label = translate('magicStart', 'Furniture - Front') + ' M1' + str(i+1)
 				o6.Length = self.gFSX - (2 * self.gThick) + offsetFrontL + offsetFrontR
 				o6.Height = sideZ + offsetFrontB + offsetFrontT
 				o6.Width = thickFront

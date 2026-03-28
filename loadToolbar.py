@@ -73,7 +73,7 @@ def getItems(iType):
 			"wires2pad"
 		]
 
-	if iType == "Woodworking - position":
+	if iType == "Woodworking - location":
 		parts = [
 			"panelMove2Anchor",
 			"showVertex",

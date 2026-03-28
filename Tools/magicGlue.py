@@ -286,13 +286,11 @@ def showQtGUI():
 				# button
 				self.cocB1 = QtGui.QPushButton("-", self)
 				self.cocB1.clicked.connect(self.setCornerM)
-				self.cocB1.setFixedWidth(btsize)
 				self.cocB1.setAutoRepeat(True)
 				
 				# button
 				self.cocB2 = QtGui.QPushButton("+", self)
 				self.cocB2.clicked.connect(self.setCornerP)
-				self.cocB2.setFixedWidth(btsize)
 				self.cocB2.setAutoRepeat(True)
 
 			if self.gAxisCrossSupport == True:
@@ -301,15 +299,13 @@ def showQtGUI():
 				self.cecL = QtGui.QLabel(translate('magicGlue', 'Center cross:'), self)
 
 				# button
-				self.cecB1 = QtGui.QPushButton(translate('magicGlue', 'Turn on'), self)
+				self.cecB1 = QtGui.QPushButton(translate('magicGlue', 'turn it on'), self)
 				self.cecB1.clicked.connect(self.setCenterOn)
-				self.cecB1.setFixedWidth(btsize)
 				self.cecB1.setAutoRepeat(True)
 				
 				# button
-				self.cecB2 = QtGui.QPushButton(translate('magicGlue', 'Turn off'), self)
+				self.cecB2 = QtGui.QPushButton(translate('magicGlue', 'turn it off'), self)
 				self.cecB2.clicked.connect(self.setCenterOff)
-				self.cecB2.setFixedWidth(btsize)
 				self.cecB2.setAutoRepeat(True)
 
 			if self.gCornerCrossSupport == True or self.gAxisCrossSupport == True:

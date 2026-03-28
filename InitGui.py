@@ -60,8 +60,8 @@ class WoodworkingWorkbench (Workbench):
 		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - irregular shapes"), 
 			loadToolbar.getItems("Woodworking - irregular shapes"))
 
-		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - position"), 
-			loadToolbar.getItems("Woodworking - position"))
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - location"), 
+			loadToolbar.getItems("Woodworking - location"))
 
 		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - preview"), 
 			loadToolbar.getItems("Woodworking - preview"))
@@ -134,10 +134,10 @@ class WoodworkingWorkbench (Workbench):
 				# set order of groups with icons
 				FreeCAD.Console.PrintMessage("\n")
 				try:
-					msg = QT_TRANSLATE_NOOP("Workbench", "Setting icons position ...")
+					msg = QT_TRANSLATE_NOOP("Workbench", "Setting icons location ...")
 					pref = 'User parameter:Tux/PersistentToolbars/User/WoodworkingWorkbench'
 					
-					pos = 'Workbench,Woodworking - router,Woodworking - advanced,Woodworking - code and debug,Break,Woodworking - convert,Woodworking - face,Woodworking - between,Woodworking - irregular shapes,Woodworking - parameterization,Woodworking - construction,Break,Woodworking - project manage,Woodworking - resize,Woodworking - move and copy,Woodworking - preview,Woodworking - position'
+					pos = 'Workbench,Woodworking - router,Woodworking - advanced,Woodworking - code and debug,Break,Woodworking - convert,Woodworking - face,Woodworking - between,Woodworking - irregular shapes,Woodworking - parameterization,Woodworking - construction,Break,Woodworking - project manage,Woodworking - resize,Woodworking - move and copy,Woodworking - preview,Woodworking - location'
 					FreeCAD.ParamGet(pref).SetString('Top', pos)
 					
 					pos = 'Woodworking - start,Woodworking - decorations,Woodworking - dimensions'

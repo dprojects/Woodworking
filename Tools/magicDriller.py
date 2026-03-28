@@ -52,8 +52,8 @@ getMainMenuIndex = {
 			translate('magicDriller', 'Minifix 15 x 45 mm - side '), 
 			translate('magicDriller', 'Cabinet handle - single hole '), 
 			translate('magicDriller', 'Cabinet handle - double hole '), 
-			translate('magicDriller', 'Wall cabinet brackets - camar 1 '), 
-			translate('magicDriller', 'Wall cabinet brackets - camar 2 ') # no comma
+			translate('magicDriller', 'Hooks for wall cabinets - camar 1 '), 
+			translate('magicDriller', 'Hooks for wall cabinets - camar 2 ') # no comma
 		), # for submenu above copy from getSubMenuIndex, order here can be changed 
 		
 		defaultHoles # default index for submenu
@@ -130,8 +130,8 @@ getSubMenuIndex = {
 	translate('magicDriller', 'Minifix 15 x 45 mm - side '): 15, 
 	translate('magicDriller', 'Cabinet handle - single hole '): 16, 
 	translate('magicDriller', 'Cabinet handle - double hole '): 17, 
-	translate('magicDriller', 'Wall cabinet brackets - camar 1 '): 18,
-	translate('magicDriller', 'Wall cabinet brackets - camar 2 '): 19, 
+	translate('magicDriller', 'Hooks for wall cabinets - camar 1 '): 18,
+	translate('magicDriller', 'Hooks for wall cabinets - camar 2 '): 19, 
 	translate('magicDriller', 'magicSettings'): 20 # no comma
 }
 
@@ -1637,7 +1637,7 @@ def showQtGUI():
 					self.gDBOEdge = 50
 					self.gDBSides = 2
 				
-				# Wall cabinet brackets - camar 1
+				# Hooks for wall cabinets - camar 1
 				if selectedIndex == 18:
 					self.gDBDiameter = 11 # because it is better to drill little bigger
 					self.gDBDiameter2 = 11
@@ -1649,7 +1649,7 @@ def showQtGUI():
 					self.gDBSides = 1
 					self.gDrillPoint = "Flat"
 
-				# Wall cabinet brackets - camar 2
+				# Hooks for wall cabinets - camar 2
 				if selectedIndex == 19:
 					self.gDBDiameter = 11 # because it is better to drill little bigger
 					self.gDBDiameter2 = 11

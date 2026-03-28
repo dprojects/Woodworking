@@ -37,7 +37,7 @@
 * `gCurrentSelection = False`: to skip refresh selection button <br>
 * `gWoodWeight = 12.6 `: wood weight float in selected calculation method <br>
 * `gWoodWeightCalculation = "kg/m^2" `: wood weight calculation string: "kg/m^2", "lb/in^2"
-* `gWoodPrice = 37.98 `: wood price float in user currency, by default in Poland in zł/m^2 <br>
+* `gWoodPrice = 45.98 `: wood price float in user currency, in Poland: 45.98 zł/m^2 (Castorama), 37.98 zł/m^2 (OBI but with additional cost 3.49 zł per single cut - unpredicted) <br>
 * `gWoodPriceSymbol = "zł"`: wood price symbol to show in cut-list <br>
 * `gWoodPriceCalculation = "m^2"`: wood price calculation way: "m^2", "m^3", "wood", "foot" <br>
 * `gLumberLong = 25.4 `: lumber rough round for longer edge, 1 inch = 25.4 mm by default <br>
@@ -2530,7 +2530,7 @@
 	
 		return Qt CSS string to set via self.setStyleSheet(QtCSS)
 
-### setTheme(iSelf):
+### setTheme(iWindowSelf):
 
 	
 ##### Description:
@@ -2539,7 +2539,7 @@
 
 ##### Args:
 	
-		iSelf: self object for GUI window
+		iWindowSelf: self object for GUI window
 		
 ##### Usage:
 
@@ -2568,7 +2568,7 @@
 	
 		return screen object or show error
 
-### adjustGUI(iSelf, iType="right"):
+### adjustGUI(iWindowSelf, iType="right"):
 
 	
 ##### Description:
@@ -2577,7 +2577,7 @@
 
 ##### Args:
 	
-		iSelf: self window object
+		iWindowSelf: self window object
 		iType: positions string:
 			* "left": move gui to the left
 			* "left-offset": move gui to the left bottom with offset from left and bottom

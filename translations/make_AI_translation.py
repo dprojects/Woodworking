@@ -157,7 +157,7 @@ words_same = {
 # #############################################################################################################
 
 # #############################################################################################################
-def makeTranslation(iTemplate="template.ts", iLang="pl"):
+def makeTranslation(iTemplate="template.ts", iLang="pl", iDebug="yes"):
     output_file = f"Woodworking_{iLang}.ts"
     
     print(f"Starting: {iTemplate} -> {iLang}", flush=True)
@@ -181,16 +181,31 @@ def makeTranslation(iTemplate="template.ts", iLang="pl"):
                     for w in words_same:
                         if w in text_source:
                             text_source = text_source.replace(w, w + keep)
-                            # print(f" [Keep: ] {w} -> {w}", flush=True)
+                            if iDebug == "yes":
+                                print(f" [Keep: ] {w} -> {w}", flush=True)
                     
                     try:
-                        text_translated = translator.translate(text_source)
+                        import time
+                        max_attempts = 3
+                        for i in range(max_attempts):
+                            text_translated = translator.translate(text_source)
+                            if "Error 500" not in text_translated:
+                                break
+                            else:
+                                if i < max_attempts - 1:
+                                    wait_seconds = (i + 1) * 120
+                                    print(f" [sleep: ] Error 500. Try {i+1}/3. Wait {wait_seconds} seconds...")
+                                    time.sleep(wait_seconds)
+                                else:
+                                    print(f" [sleep: ] No success after {max_attempts}.", flush=True)
+                                
                     except Exception as e:
                         print(f"Error: '{text_source}': {e}", flush=True)
                     
                     text_translated = text_translated.replace(keep, "")
                     translation.text = text_translated
-                    print(f" [Translated debug: ] {text_translated}", flush=True)
+                    if iDebug == "yes":
+                        print(f" [Translated debug: ] {text_translated}", flush=True)
                     
                     if 'type' in translation.attrib:
                         del translation.attrib['type']
@@ -210,7 +225,7 @@ def makeTranslation(iTemplate="template.ts", iLang="pl"):
 # #############################################################################################################
 
 if len(sys.argv) > 1:
-    makeTranslation("template.ts", sys.argv[1])
+    makeTranslation("template.ts", sys.argv[1], "no")
 else:
-    makeTranslation("template.ts", "pl")
+    makeTranslation("template.ts", "pl", "yes")
     

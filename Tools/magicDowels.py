@@ -40,9 +40,9 @@ getMenuIndex = {
 	translate('magicDowels', 'Screw 4 x 40 mm '): 8, 
 	translate('magicDowels', 'Screw 5 x 50 mm '): 9, 
 	translate('magicDowels', 'Screw 6 x 60 mm '): 10, 
-	translate('magicDowels', 'Confirmation 7 x 40 mm '): 11, 
-	translate('magicDowels', 'Confirmation 7 x 50 mm '): 12, 
-	translate('magicDowels', 'Confirmation 7 x 70 mm '): 13, 
+	translate('magicDowels', 'Confirmat screw 7 x 40 mm '): 11, 
+	translate('magicDowels', 'Confirmat screw 7 x 50 mm '): 12, 
+	translate('magicDowels', 'Confirmat screw 7 x 70 mm '): 13, 
 	translate('magicDowels', 'Shelf Pin 5 x 16 mm '): 14, 
 	translate('magicDowels', 'Profile Pin 5 x 30 mm '): 15, 
 	translate('magicDowels', 'Profile Pin 8 x 40 mm '): 16, 
@@ -209,9 +209,9 @@ def showQtGUI():
 					translate('magicDowels', 'Screw 4 x 40 mm '), 
 					translate('magicDowels', 'Screw 5 x 50 mm '), 
 					translate('magicDowels', 'Screw 6 x 60 mm '), 
-					translate('magicDowels', 'Confirmation 7 x 40 mm '), 
-					translate('magicDowels', 'Confirmation 7 x 50 mm '), 
-					translate('magicDowels', 'Confirmation 7 x 70 mm '), 
+					translate('magicDowels', 'Confirmat screw 7 x 40 mm '), 
+					translate('magicDowels', 'Confirmat screw 7 x 50 mm '), 
+					translate('magicDowels', 'Confirmat screw 7 x 70 mm '), 
 					translate('magicDowels', 'Minifix 15 x 45 mm '), 
 					translate('magicDowels', 'Shelf Pin 5 x 16 mm '), 
 					translate('magicDowels', 'Cabinet handle - single hole '), 
@@ -335,7 +335,7 @@ def showQtGUI():
 				
 				# dowels number per side
 				self.oDNumL = QtGui.QLabel(translate('magicDowels', 'Dowels per side:'), self)
-				self.oDNumLT = QtGui.QLabel(translate('magicDowels', 'Tenons per side:'), self)
+				self.oDNumLT = QtGui.QLabel(translate('magicDowels', 'Tenons from side:'), self)
 				self.oDNumE = QtGui.QLineEdit(self)
 				self.oDNumE.setText(str(self.gDNum))
 				self.oDNumE.setFixedWidth(tfsize)
@@ -1082,21 +1082,21 @@ def showQtGUI():
 					self.gDNum = 2
 					self.gDONext = 64
 				
-				# Confirmation 7 x 40 mm
+				# Confirmat screw 7 x 40 mm
 				if self.gCurrentSelection == 11:
 					self.gDDiameter = 7
 					self.gDSize = 40
 					self.gDOFSSet = 25
 					self.gDNum = 1
 				
-				# Confirmation 7 x 50 mm
+				# Confirmat screw 7 x 50 mm
 				if self.gCurrentSelection == 12:
 					self.gDDiameter = 7
 					self.gDSize = 50
 					self.gDOFSSet = 35
 					self.gDNum = 1
 				
-				# Confirmation 7 x 70 mm
+				# Confirmat screw 7 x 70 mm
 				if self.gCurrentSelection == 13:
 					self.gDDiameter = 7
 					self.gDSize = 70

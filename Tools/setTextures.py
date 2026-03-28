@@ -119,7 +119,7 @@ def showQtMain():
 			self.oWhiteColor.setCheckState(QtCore.Qt.Unchecked)
 
 			# button
-			self.oLoadB = QtGui.QPushButton(translate('setTextures', 'load saved'), self)
+			self.oLoadB = QtGui.QPushButton(translate('setTextures', 'load from saved'), self)
 			self.oLoadB.clicked.connect(self.loadTextures)
 
 			self.oPathURL = QtGui.QPushButton(translate('setTextures', 'load from URL'), self)

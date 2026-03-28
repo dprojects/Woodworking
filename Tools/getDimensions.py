@@ -42,7 +42,7 @@ sLTFMenuIndex = {
 	translate("getDimensions", "n - for verification"): "n",
 	translate("getDimensions", "g - wood type"): "g",
 	translate("getDimensions", "m - material description"): "m",
-	translate("getDimensions", "r - raw wood order"): "r",
+	translate("getDimensions", "r - raw wood"): "r",
 	translate("getDimensions", "e - veneer"): "e",
 	translate("getDimensions", "d - drilling"): "d",
 	translate("getDimensions", "c - named constraints"): "c",
@@ -156,11 +156,11 @@ sUnitsAreaDsc = {
 	"mm" : translate("getDimensions", "square millimeter (mm2)"),
 	"cm" : translate("getDimensions", "square centimeters (cm2)"),
 	"m" : translate("getDimensions", "square meter (m2)"),
-	"in" : translate("getDimensions", "square inch (in2)"),
+	"in" : translate("getDimensions", "square inch (inch2)"),
 	"bf" : translate("getDimensions", "volume in board foot (1ft × 1ft × 1in)"),
 	"fractions" : translate("getDimensions", "area by system settings"),
 	"fractions minus" : translate("getDimensions", "area by system settings"),
-	"fractions equal" : translate("getDimensions", "square inch (in2)"),
+	"fractions equal" : translate("getDimensions", "square inch (inch2)"),
 	"system" : translate("getDimensions", "user system settings") # no comma
 }
 
@@ -416,7 +416,7 @@ try:
 		sPDE = sPrecisionDE[sUnitsEdge]
 		sPDA = sPrecisionDA[sUnitsArea]
 		
-		sLTFKey = translate("getDimensions", "r - raw wood order")
+		sLTFKey = translate("getDimensions", "r - raw wood")
 		sLTF = sLTFMenuIndex[sLTFKey]
 		
 	# for all others set system
@@ -3765,13 +3765,13 @@ def initLang():
 		gLang4 = "Grubość"
 		
 		if sUnitsArea == "mm":
-			gLang5 = "mm2"
+			gLang5 = "mm^2"
 		if sUnitsArea == "cm":
-			gLang5 = "cm2"
+			gLang5 = "cm^2"
 		if sUnitsArea == "m":
-			gLang5 = "m2"
+			gLang5 = "m^2"
 		if sUnitsArea == "in" or sUnitsArea == "fractions equal":
-			gLang5 = "in2"
+			gLang5 = "cal^2"
 		if sUnitsArea == "bf":
 			gLang5 = "Stopa Deski"
 		if sUnitsArea == "system" or sUnitsArea == "fractions" or sUnitsArea == "fractions minus":
@@ -3821,13 +3821,13 @@ def initLang():
 		gLang4 = translate("getDimensions", "Thickness")
 
 		if sUnitsArea == "mm":
-			gLang5 = translate("getDimensions", "mm2")
+			gLang5 = translate("getDimensions", "mm^2")
 		if sUnitsArea == "cm":
-			gLang5 = translate("getDimensions", "cm2")
+			gLang5 = translate("getDimensions", "cm^2")
 		if sUnitsArea == "m":
-			gLang5 = translate("getDimensions", "m2")
+			gLang5 = translate("getDimensions", "m^2")
 		if sUnitsArea == "in" or sUnitsArea == "fractions equal":
-			gLang5 = translate("getDimensions", "in2")
+			gLang5 = translate("getDimensions", "inch^2")
 		if sUnitsArea == "bf":
 			gLang5 = translate("getDimensions", "Board Foot")
 		if sUnitsArea == "system" or sUnitsArea == "fractions" or sUnitsArea == "fractions minus":
@@ -3877,13 +3877,13 @@ def initLang():
 		gLang4 = "Thickness"
 
 		if sUnitsArea == "mm":
-			gLang5 = "mm2"
+			gLang5 = "mm^2"
 		if sUnitsArea == "cm":
-			gLang5 = "cm2"
+			gLang5 = "cm^2"
 		if sUnitsArea == "m":
-			gLang5 = "m2"
+			gLang5 = "m^2"
 		if sUnitsArea == "in" or sUnitsArea == "fractions equal":
-			gLang5 = "in2"
+			gLang5 = "inch^2"
 		if sUnitsArea == "bf":
 			gLang5 = "B.F."
 		if sUnitsArea == "system" or sUnitsArea == "fractions" or sUnitsArea == "fractions minus":

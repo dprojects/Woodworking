@@ -23,15 +23,15 @@ gMeasureType = 8
 
 # add new items only at the end and change self.sModeList
 getMenuIndex1 = {
-	translate('magicMeasure', 'PartDesign - system'): 0, 
-	translate('magicMeasure', 'Draft - green'): 1,
-	translate('magicMeasure', 'Draft - yellow'): 2,
-	translate('magicMeasure', 'Draft - black'): 3,
-	translate('magicMeasure', 'Draft - red'): 4, 
-	translate('magicMeasure', 'Draft - handwrite green'): 5,
-	translate('magicMeasure', 'Draft - handwrite yellow'): 6,
-	translate('magicMeasure', 'Draft - handwrite black'): 7,
-	translate('magicMeasure', 'Draft - handwrite red'): 8
+	translate('magicMeasure', 'simple'): 0, 
+	translate('magicMeasure', 'green'): 1,
+	translate('magicMeasure', 'yellow'): 2,
+	translate('magicMeasure', 'black'): 3,
+	translate('magicMeasure', 'red'): 4, 
+	translate('magicMeasure', 'handwrite green'): 5,
+	translate('magicMeasure', 'handwrite yellow'): 6,
+	translate('magicMeasure', 'handwrite black'): 7,
+	translate('magicMeasure', 'handwrite red'): 8
 }
 
 # ###################################################################################################################
@@ -492,12 +492,12 @@ def showQtGUI():
 		gObserverOff += '<li><b>' + translate('magicMeasure', 'Preselection mode: ') + '</b>'
 		gObserverOff += translate('magicMeasure', 'this mode allows you to measure objects quickly only by moving mouse cursor over the object.') + '</li>'
 		gObserverOff += '<li><b>' + translate('magicMeasure', 'Selection mode: ') + '</b>'
-		gObserverOff += translate('magicMeasure', 'this mode allows you to measure objects by selecting vertex, face or holes.') + '</li>'
+		gObserverOff += translate('magicMeasure', 'this mode allows you to measure objects by selecting edge, vertex, surface or hole.') + '</li>'
 		gObserverOff += '</ul>'
 		gObserverOff += '</div>'
 		
 		# preselection ON - status
-		gPsOnS = translate('magicMeasure', 'Preselection mode is: ') + '<b>' + translate('magicMeasure', 'Turn ON') + '</b>'
+		gPsOnS = translate('magicMeasure', 'Preselection mode is:') + ' <b>' + translate('magicMeasure', 'ACTIVATED') + '</b>'
 
 		# preselection ON - info
 		gPsOnI = '<div>'
@@ -517,7 +517,7 @@ def showQtGUI():
 		gPsOnI += '</div>'
 		
 		# preselection OFF - status
-		gPsOffS = translate('magicMeasure', 'Preselection mode is: ') + '<b>' + translate('magicMeasure', 'Turn OFF') + '</b>'
+		gPsOffS = translate('magicMeasure', 'Preselection mode is:') + ' <b>' + translate('magicMeasure', 'NOT ACTIVATED') + '</b>'
 		
 		# preselection OFF - info
 		gPsOffI = '<div>'
@@ -566,15 +566,15 @@ def showQtGUI():
 			
 			# not write here, copy text from getMenuIndex1 to avoid typo
 			self.sModeList = (
-				translate('magicMeasure', 'PartDesign - system'),
-				translate('magicMeasure', 'Draft - green'),
-				translate('magicMeasure', 'Draft - yellow'),
-				translate('magicMeasure', 'Draft - black'),
-				translate('magicMeasure', 'Draft - red'),
-				translate('magicMeasure', 'Draft - handwrite green'),
-				translate('magicMeasure', 'Draft - handwrite yellow'),
-				translate('magicMeasure', 'Draft - handwrite black'),
-				translate('magicMeasure', 'Draft - handwrite red') # no comma
+				translate('magicMeasure', 'simple'),
+				translate('magicMeasure', 'green'),
+				translate('magicMeasure', 'yellow'),
+				translate('magicMeasure', 'black'),
+				translate('magicMeasure', 'red'),
+				translate('magicMeasure', 'handwrite green'),
+				translate('magicMeasure', 'handwrite yellow'),
+				translate('magicMeasure', 'handwrite black'),
+				translate('magicMeasure', 'handwrite red') # no comma
 			)
 			
 			self.sMode = QtGui.QComboBox(self)
@@ -593,13 +593,11 @@ def showQtGUI():
 			# measurement observer active button
 			self.moaBON = QtGui.QPushButton(translate('magicMeasure', 'START'), self)
 			self.moaBON.clicked.connect(self.measureStart)
-			self.moaBON.setFixedWidth(80)
 			self.moaBON.setFixedHeight(40)
 			
 			# measurement observer active button
 			self.moaBPAUSE = QtGui.QPushButton(translate('magicMeasure', 'PAUSE'), self)
 			self.moaBPAUSE.clicked.connect(self.measureFinish)
-			self.moaBPAUSE.setFixedWidth(80)
 			self.moaBPAUSE.setFixedHeight(40)
 			
 			# ############################################################################
@@ -610,15 +608,13 @@ def showQtGUI():
 			self.psmL = QtGui.QLabel(translate('magicMeasure', 'Preselection mode:'), self)
 			
 			# preselection mode button
-			self.psmB1 = QtGui.QPushButton(translate('magicMeasure', 'Turn ON'), self)
+			self.psmB1 = QtGui.QPushButton(translate('magicMeasure', 'turn it on'), self)
 			self.psmB1.clicked.connect(self.setPSMOn)
-			self.psmB1.setFixedWidth(80)
 			self.psmB1.setFixedHeight(40)
 			
 			# preselection mode button
-			self.psmB2 = QtGui.QPushButton(translate('magicMeasure', 'Turn OFF'), self)
+			self.psmB2 = QtGui.QPushButton(translate('magicMeasure', 'turn it off'), self)
 			self.psmB2.clicked.connect(self.setPSMOff)
-			self.psmB2.setFixedWidth(80)
 			self.psmB2.setFixedHeight(40)
 			
 			# ############################################################################
@@ -631,14 +627,12 @@ def showQtGUI():
 			# measurement observer active button
 			self.vsBM = QtGui.QPushButton('-5', self)
 			self.vsBM.clicked.connect(self.vertexSizeM)
-			self.vsBM.setFixedWidth(80)
 			self.vsBM.setFixedHeight(40)
 			self.vsBM.setAutoRepeat(True)
 			
 			# measurement observer active button
 			self.vsBP = QtGui.QPushButton('+5', self)
 			self.vsBP.clicked.connect(self.vertexSizeP)
-			self.vsBP.setFixedWidth(80)
 			self.vsBP.setFixedHeight(40)
 			self.vsBP.setAutoRepeat(True)
 			
@@ -673,22 +667,20 @@ def showQtGUI():
 			# ############################################################################
 			
 			# create structure
-			self.body0 = QtGui.QGridLayout()
-			self.body0.addWidget(self.sModeL, 0, 0)
-			self.body0.addWidget(self.sMode, 0, 1)
 			self.body1 = QtGui.QGridLayout()
-			self.body1.addWidget(self.moas, 0, 0)
-			self.body1.addWidget(self.moaBON, 0, 1)
-			self.body1.addWidget(self.moaBPAUSE, 0, 1)
-			self.body1.addWidget(self.psmL, 1, 0)
-			self.body1.addWidget(self.psmB1, 1, 1)
-			self.body1.addWidget(self.psmB2, 1, 1)
+			self.body1.addWidget(self.sModeL, 0, 0)
+			self.body1.addWidget(self.sMode, 0, 1)
+			self.body1.addWidget(self.moas, 1, 0)
+			self.body1.addWidget(self.moaBON, 1, 1)
+			self.body1.addWidget(self.moaBPAUSE, 1, 1)
+			self.body1.addWidget(self.psmL, 2, 0)
+			self.body1.addWidget(self.psmB1, 2, 1)
+			self.body1.addWidget(self.psmB2, 2, 1)
 			self.body12 = QtGui.QGridLayout()
 			self.body12.addWidget(self.vsL, 0, 0)
 			self.body12.addWidget(self.vsBM, 0, 1)
 			self.body12.addWidget(self.vsBP, 0, 2)
 			self.lay1 = QtGui.QVBoxLayout()
-			self.lay1.addLayout(self.body0)
 			self.lay1.addLayout(self.body1)
 			self.lay1.addLayout(self.body12)
 			self.groupBody1 = QtGui.QGroupBox(None, self)

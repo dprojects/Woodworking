@@ -53,12 +53,12 @@ Tools = [
 	# #################################################################################################################################
 	
 	"magicResizer", "png", "magicResizer, smart resizer tool", "This tool allows you to resize object via selected edge or to the nearest face of other object.",
-	"panelResize1", "png", "panel, bigger, long+", "Click to see info.",
-	"panelResize2", "png", "panel, smaller, long-", "Click to see info.",
-	"panelResize3", "png", "panel, bigger, short+", "Click to see info.",
-	"panelResize4", "png", "panel, smaller, short-", "Click to see info.",
-	"panelResize5", "png", "panel, bigger, thickness+", "Click to see info.",
-	"panelResize6", "png", "panel, smaller, thickness-", "Click to see info.",
+	"panelResize1", "png", "make panel bigger from long edge", "Click to see info.",
+	"panelResize2", "png", "make panel smaller from long edge", "Click to see info.",
+	"panelResize3", "png", "make panel bigger from short edge", "Click to see info.",
+	"panelResize4", "png", "make panel smaller from short edge", "Click to see info.",
+	"panelResize5", "png", "make panel thicker", "Click to see info.",
+	"panelResize6", "png", "make panel thinner", "Click to see info.",
 
 	# #################################################################################################################################
 	# Woodworking - face
@@ -98,7 +98,7 @@ Tools = [
 	"wires2pad", "png", "wires2pad, to create panels from closed edges in sketch", "This tool allows you to create objects from each closed edge based on selected sketches.",
 
 	# #################################################################################################################################
-	# Woodworking - position
+	# Woodworking - location
 	# #################################################################################################################################
 
 	"panelMove2Anchor", "png", "panelMove2Anchor, move objects to selected anchor", "Click to see info.",

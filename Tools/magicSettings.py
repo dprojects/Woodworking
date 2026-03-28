@@ -73,7 +73,7 @@ def showQtGUI():
 		# globals
 		# ############################################################################
 		
-		toolSW = 450
+		toolSW = 500
 		toolSH = 600
 		gTheme = MagicPanels.gTheme
 		gWoodWeightCalculation = MagicPanels.gWoodWeightCalculation
@@ -312,72 +312,72 @@ def showQtGUI():
 			# ############################################################################
 
 			# front inside wood thickness
-			self.oFrontInsideThicknessL = QtGui.QLabel(translate('magicSettings', 'Front inside thickness:'), self)
+			self.oFrontInsideThicknessL = QtGui.QLabel(translate('magicSettings', 'Front inside - thickness:'), self)
 			self.oFrontInsideThicknessE = QtGui.QLineEdit(self)
 			self.oFrontInsideThicknessE.setText(MagicPanels.unit2gui(0))
 			
 			# front inside offset left
-			self.oFrontInsideOffsetLL = QtGui.QLabel(translate('magicSettings', 'Front inside offset left:'), self)
+			self.oFrontInsideOffsetLL = QtGui.QLabel(translate('magicSettings', 'Front inside - offset from left:'), self)
 			self.oFrontInsideOffsetLE = QtGui.QLineEdit(self)
 			self.oFrontInsideOffsetLE.setText(MagicPanels.unit2gui(0))
 			
 			# front inside offset right
-			self.oFrontInsideOffsetRL = QtGui.QLabel(translate('magicSettings', 'Front inside offset right:'), self)
+			self.oFrontInsideOffsetRL = QtGui.QLabel(translate('magicSettings', 'Front inside - offset from right:'), self)
 			self.oFrontInsideOffsetRE = QtGui.QLineEdit(self)
 			self.oFrontInsideOffsetRE.setText(MagicPanels.unit2gui(0))
 			
 			# front inside offset bottom
-			self.oFrontInsideOffsetBL = QtGui.QLabel(translate('magicSettings', 'Front inside offset bottom:'), self)
+			self.oFrontInsideOffsetBL = QtGui.QLabel(translate('magicSettings', 'Front inside - offset from bottom:'), self)
 			self.oFrontInsideOffsetBE = QtGui.QLineEdit(self)
 			self.oFrontInsideOffsetBE.setText(MagicPanels.unit2gui(0))
 			
 			# front inside offset top
-			self.oFrontInsideOffsetTL = QtGui.QLabel(translate('magicSettings', 'Front inside offset top:'), self)
+			self.oFrontInsideOffsetTL = QtGui.QLabel(translate('magicSettings', 'Front inside - offset from top:'), self)
 			self.oFrontInsideOffsetTE = QtGui.QLineEdit(self)
 			self.oFrontInsideOffsetTE.setText(MagicPanels.unit2gui(0))
 			
 			# front outside wood thickness
-			self.oFrontOutsideThicknessL = QtGui.QLabel(translate('magicSettings', 'Front outside thickness:'), self)
+			self.oFrontOutsideThicknessL = QtGui.QLabel(translate('magicSettings', 'Front outside - thickness:'), self)
 			self.oFrontOutsideThicknessE = QtGui.QLineEdit(self)
 			self.oFrontOutsideThicknessE.setText(MagicPanels.unit2gui(0))
 			
 			# front outside overlap left
-			self.oFrontOutsideOffsetLL = QtGui.QLabel(translate('magicSettings', 'Front outside overlap left:'), self)
+			self.oFrontOutsideOffsetLL = QtGui.QLabel(translate('magicSettings', 'Front outside - overlap from left:'), self)
 			self.oFrontOutsideOffsetLE = QtGui.QLineEdit(self)
 			self.oFrontOutsideOffsetLE.setText(MagicPanels.unit2gui(0))
 			
 			# front outside overlap right
-			self.oFrontOutsideOffsetRL = QtGui.QLabel(translate('magicSettings', 'Front outside overlap right:'), self)
+			self.oFrontOutsideOffsetRL = QtGui.QLabel(translate('magicSettings', 'Front outside - overlap from right:'), self)
 			self.oFrontOutsideOffsetRE = QtGui.QLineEdit(self)
 			self.oFrontOutsideOffsetRE.setText(MagicPanels.unit2gui(0))
 			
 			# front outside overlap bottom
-			self.oFrontOutsideOffsetBL = QtGui.QLabel(translate('magicSettings', 'Front outside overlap bottom:'), self)
+			self.oFrontOutsideOffsetBL = QtGui.QLabel(translate('magicSettings', 'Front outside - overlap from bottom:'), self)
 			self.oFrontOutsideOffsetBE = QtGui.QLineEdit(self)
 			self.oFrontOutsideOffsetBE.setText(MagicPanels.unit2gui(0))
 			
 			# front outside overlap top
-			self.oFrontOutsideOffsetTL = QtGui.QLabel(translate('magicSettings', 'Front outside overlap top:'), self)
+			self.oFrontOutsideOffsetTL = QtGui.QLabel(translate('magicSettings', 'Front outside - overlap from top:'), self)
 			self.oFrontOutsideOffsetTE = QtGui.QLineEdit(self)
 			self.oFrontOutsideOffsetTE.setText(MagicPanels.unit2gui(0))
 
 			# shelf wood thickness
-			self.oShelfThicknessL = QtGui.QLabel(translate('magicSettings', 'Shelf thickness:'), self)
+			self.oShelfThicknessL = QtGui.QLabel(translate('magicSettings', 'Shelf - thickness:'), self)
 			self.oShelfThicknessE = QtGui.QLineEdit(self)
 			self.oShelfThicknessE.setText(MagicPanels.unit2gui(0))
 			
 			# shelf offset sides
-			self.oShelfOffsetSidesL = QtGui.QLabel(translate('magicSettings', 'Shelf sides offset:'), self)
+			self.oShelfOffsetSidesL = QtGui.QLabel(translate('magicSettings', 'Shelf - the offset from sides:'), self)
 			self.oShelfOffsetSidesE = QtGui.QLineEdit(self)
 			self.oShelfOffsetSidesE.setText(MagicPanels.unit2gui(0))
 			
 			# back inside wood thickness
-			self.oBackIThicknessL = QtGui.QLabel(translate('magicSettings', 'Back inside thickness:'), self)
+			self.oBackIThicknessL = QtGui.QLabel(translate('magicSettings', 'Back inside - thickness:'), self)
 			self.oBackIThicknessE = QtGui.QLineEdit(self)
 			self.oBackIThicknessE.setText(MagicPanels.unit2gui(0))
 			
 			# back outside wood thickness
-			self.oBackOThicknessL = QtGui.QLabel(translate('magicSettings', 'Back outside thickness:'), self)
+			self.oBackOThicknessL = QtGui.QLabel(translate('magicSettings', 'Back outside - thickness:'), self)
 			self.oBackOThicknessE = QtGui.QLineEdit(self)
 			self.oBackOThicknessE.setText(MagicPanels.unit2gui(0))
 			

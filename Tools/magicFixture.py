@@ -311,40 +311,36 @@ def showQtGUI():
 			if self.gCornerCrossSupport == True:
 			
 				# label
-				self.cocL = QtGui.QLabel(translate('magicJoints', 'Corner cross:'), self)
+				self.cocL = QtGui.QLabel(translate('magicFixture', 'Corner cross:'), self)
 
 				# button
 				self.cocB1 = QtGui.QPushButton("-", self)
 				self.cocB1.clicked.connect(self.setCornerM)
-				self.cocB1.setFixedWidth(50)
 				self.cocB1.setAutoRepeat(True)
 				
 				# button
 				self.cocB2 = QtGui.QPushButton("+", self)
 				self.cocB2.clicked.connect(self.setCornerP)
-				self.cocB2.setFixedWidth(50)
 				self.cocB2.setAutoRepeat(True)
 
 			if self.gAxisCrossSupport == True:
 				
 				# label
-				self.cecL = QtGui.QLabel(translate('magicJoints', 'Center cross:'), self)
+				self.cecL = QtGui.QLabel(translate('magicFixture', 'Center cross:'), self)
 
 				# button
-				self.cecB1 = QtGui.QPushButton(translate('magicJoints', 'Turn on'), self)
+				self.cecB1 = QtGui.QPushButton(translate('magicFixture', 'turn it on'), self)
 				self.cecB1.clicked.connect(self.setCenterOn)
-				self.cecB1.setFixedWidth(50)
 				self.cecB1.setAutoRepeat(True)
 				
 				# button
-				self.cecB2 = QtGui.QPushButton(translate('magicJoints', 'Turn off'), self)
+				self.cecB2 = QtGui.QPushButton(translate('magicFixture', 'turn it off'), self)
 				self.cecB2.clicked.connect(self.setCenterOff)
-				self.cecB2.setFixedWidth(50)
 				self.cecB2.setAutoRepeat(True)
 
 			if self.gCornerCrossSupport == True or self.gAxisCrossSupport == True:
 
-				self.kccscb = QtGui.QCheckBox(translate('magicJoints', ' - keep custom cross settings'), self)
+				self.kccscb = QtGui.QCheckBox(translate('magicFixture', ' - keep custom cross settings'), self)
 				self.kccscb.setCheckState(QtCore.Qt.Unchecked)
 	
 			# ############################################################################

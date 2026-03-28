@@ -68,7 +68,7 @@ gCurrentSelection = False                  # to skip refresh selection button <b
 
 gWoodWeight = 12.6                         # wood weight float in selected calculation method <br>
 gWoodWeightCalculation = "kg/m^2"          # wood weight calculation string: "kg/m^2", "lb/in^2"
-gWoodPrice = 37.98                         # wood price float in user currency, by default in Poland in zł/m^2 <br>
+gWoodPrice = 45.98                         # wood price float in user currency, in Poland: 45.98 zł/m^2 (Castorama), 37.98 zł/m^2 (OBI but with additional cost 3.49 zł per single cut - unpredicted) <br>
 gWoodPriceSymbol = "zł"                    # wood price symbol to show in cut-list <br>
 gWoodPriceCalculation = "m^2"              # wood price calculation way: "m^2", "m^3", "wood", "foot" <br>
 gLumberLong = 25.4                         # lumber rough round for longer edge, 1 inch = 25.4 mm by default <br>
@@ -8112,7 +8112,7 @@ def getTheme(iType=""):
 
 
 # ###################################################################################################################
-def setTheme(iSelf):
+def setTheme(iWindowSelf):
 	'''
 	Description:
 	
@@ -8120,7 +8120,7 @@ def setTheme(iSelf):
 
 	Args:
 	
-		iSelf: self object for GUI window
+		iWindowSelf: self object for GUI window
 		
 	Usage:
 
@@ -8134,7 +8134,7 @@ def setTheme(iSelf):
 	
 	# to self GUI
 	QtCSS = getTheme(gTheme)
-	iSelf.setStyleSheet(QtCSS)
+	iWindowSelf.setStyleSheet(QtCSS)
 	
 	# to main FreeCAD window
 	if gMainWindowTheme == True:
@@ -8183,7 +8183,7 @@ def getScreenObject():
 
 
 # ###################################################################################################################
-def adjustGUI(iSelf, iType="right"):
+def adjustGUI(iWindowSelf, iType="right"):
 	'''
 	Description:
 	
@@ -8191,7 +8191,7 @@ def adjustGUI(iSelf, iType="right"):
 
 	Args:
 	
-		iSelf: self window object
+		iWindowSelf: self window object
 		iType: positions string:
 			* "left": move gui to the left
 			* "left-offset": move gui to the left bottom with offset from left and bottom
@@ -8213,8 +8213,8 @@ def adjustGUI(iSelf, iType="right"):
 	# init
 	# ########################################################
 	
-	iSelf.layout.setSizeConstraint(QtGui.QLayout.SetNoConstraint)
-	iSelf.layout.activate() 
+	iWindowSelf.layout.setSizeConstraint(QtGui.QLayout.SetNoConstraint)
+	iWindowSelf.layout.activate() 
 	QtGui.QApplication.processEvents()
 
 	# ########################################################
@@ -8234,8 +8234,8 @@ def adjustGUI(iSelf, iType="right"):
 	# set tool anchors
 	# ########################################################
 	
-	toolW = iSelf.frameGeometry().width()
-	toolH = iSelf.frameGeometry().height()
+	toolW = iWindowSelf.frameGeometry().width()
+	toolH = iWindowSelf.frameGeometry().height()
     
     # ########################################################
     # adjust tool GUI
@@ -8263,7 +8263,7 @@ def adjustGUI(iSelf, iType="right"):
 		pw = left + cw
 		ph = top + ch
 		
-	iSelf.move( int(pw), int(ph) )
+	iWindowSelf.move( int(pw), int(ph) )
 
 
 # ###################################################################################################################

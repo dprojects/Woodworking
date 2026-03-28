@@ -57,7 +57,7 @@ DATA=(
     # "Spanish (Argentina)" "es-AR" "es"
     "Swedish" "sv-SE" "sv"
     "Turkish" "tr" "tr"
-    # "Ukrainian" "uk" "uk"
+    "Ukrainian" "uk" "uk"
     "Vietnamese" "vi" "vi"
 )
 
@@ -77,7 +77,6 @@ for ((i=0; i<${#DATA[@]}; i+=3)); do
 		python3 "./make_AI_translation.py" "${ai_code}" >> "./current_status.log" 2>&1
 		mv "./Woodworking_${ai_code}.ts" "./translated/Woodworking_${freecad_code}.ts"
 		echo "done."
-		sleep 2
 	fi
 	
 	if [ -f "./translated/Woodworking_${freecad_code}.qm" ]; then
