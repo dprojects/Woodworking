@@ -244,7 +244,6 @@ def showQtGUI():
 			# button
 			self.sFacePositionB = QtGui.QPushButton(translate('magicDriller', 'set'), self)
 			self.sFacePositionB.clicked.connect(self.setFacePosition)
-			self.sFacePositionB.setFixedWidth(50)
 			
 			# screen
 			self.sFacePositionL = QtGui.QLabel("", self)
@@ -252,7 +251,6 @@ def showQtGUI():
 			# button
 			self.sFaceDrillB = QtGui.QPushButton(translate('magicDriller', 'set'), self)
 			self.sFaceDrillB.clicked.connect(self.setFaceDrill)
-			self.sFaceDrillB.setFixedWidth(50)
 			
 			# screen
 			self.sFaceDrillL = QtGui.QLabel("", self)

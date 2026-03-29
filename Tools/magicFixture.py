@@ -110,7 +110,6 @@ def showQtGUI():
 			# button
 			self.oFixtureB = QtGui.QPushButton(translate('magicFixture', 'set'), self)
 			self.oFixtureB.clicked.connect(self.setFixture)
-			self.oFixtureB.setFixedWidth(50)
 			
 			# label
 			self.oFixtureL = QtGui.QLabel("", self)
@@ -119,7 +118,6 @@ def showQtGUI():
 			# button
 			self.oAnchorB = QtGui.QPushButton(translate('magicFixture', 'set'), self)
 			self.oAnchorB.clicked.connect(self.setAnchor)
-			self.oAnchorB.setFixedWidth(50)
 		
 			# label
 			self.oAnchorL = QtGui.QLabel("", self)

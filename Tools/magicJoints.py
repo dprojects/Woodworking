@@ -115,7 +115,6 @@ def showQtGUI():
 			# button
 			self.ob1B1 = QtGui.QPushButton(translate('magicJoints', 'set'), self)
 			self.ob1B1.clicked.connect(self.setObj1)
-			self.ob1B1.setFixedWidth(50)
 			
 			# screen
 			self.ob1S = QtGui.QLabel("", self)
@@ -127,7 +126,6 @@ def showQtGUI():
 			# button
 			self.ob2B1 = QtGui.QPushButton(translate('magicJoints', 'set'), self)
 			self.ob2B1.clicked.connect(self.setObj2)
-			self.ob2B1.setFixedWidth(50)
 			
 			# screen
 			self.ob2S = QtGui.QLabel("", self)
@@ -139,7 +137,6 @@ def showQtGUI():
 			# button
 			self.ob3B1 = QtGui.QPushButton(translate('magicJoints', 'set'), self)
 			self.ob3B1.clicked.connect(self.setObj3)
-			self.ob3B1.setFixedWidth(50)
 			
 			# screen
 			self.ob3S = QtGui.QLabel("", self)
@@ -377,17 +374,13 @@ def showQtGUI():
 			# ############################################################################
 			
 			# create structure
-			self.row1 = QtGui.QHBoxLayout()
-			self.row1.addWidget(self.ob1B1)
-			self.row1.addWidget(self.ob1S)
-			
-			self.row2 = QtGui.QHBoxLayout()
-			self.row2.addWidget(self.ob2B1)
-			self.row2.addWidget(self.ob2S)
-			
-			self.row3 = QtGui.QHBoxLayout()
-			self.row3.addWidget(self.ob3B1)
-			self.row3.addWidget(self.ob3S)
+			self.row1 = QtGui.QGridLayout()
+			self.row1.addWidget(self.ob1B1, 0, 0)
+			self.row1.addWidget(self.ob1S, 0, 1)
+			self.row1.addWidget(self.ob2B1, 1, 0)
+			self.row1.addWidget(self.ob2S, 1, 1)
+			self.row1.addWidget(self.ob3B1, 2, 0)
+			self.row1.addWidget(self.ob3S, 2, 1)
 			
 			self.row4 = QtGui.QHBoxLayout()
 			self.row4.addWidget(self.s1B1)
@@ -470,8 +463,6 @@ def showQtGUI():
 			self.layout = QtGui.QVBoxLayout()
 			
 			self.layout.addLayout(self.row1)
-			self.layout.addLayout(self.row2)
-			self.layout.addLayout(self.row3)
 			self.layout.addLayout(self.row4)
 			self.layout.addStretch()
 			self.layout.addWidget(self.groupBody1)

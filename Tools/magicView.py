@@ -19,8 +19,8 @@ getMenuIndex1 = {
 	translate('magicView', 'along Y'): 3, 
 	translate('magicView', 'along Z'): 4, 
 	translate('magicView', 'along XYZ'): 5, 
-	translate('magicView', 'Assembly'): 6, 
-	translate('magicView', 'custom'): 7 # no comma 
+	translate('magicView', 'zero XYZ'): 6, 
+	translate('magicView', 'custom settings'): 7 # no comma 
 }
 
 # ############################################################################
@@ -106,14 +106,14 @@ def showQtGUI():
 
 			# not write here, copy text from getMenuIndex1 to avoid typo
 			self.sModeList = (
-				translate('magicView', 'custom'), 
+				translate('magicView', 'custom settings'), 
 				translate('magicView', 'restore'), 
 				translate('magicView', 'explode'), 
 				translate('magicView', 'along X'), 
 				translate('magicView', 'along Y'), 
 				translate('magicView', 'along Z'), 
 				translate('magicView', 'along XYZ'), 
-				translate('magicView', 'Assembly') # no comma
+				translate('magicView', 'zero XYZ') # no comma
 			)
 			
 			self.sMode = QtGui.QComboBox(self)
@@ -568,7 +568,7 @@ def showQtGUI():
 			if self.gCurrentViewIndex == 5:
 				self.setView5()
 			
-			# Assembly
+			# zero XYZ
 			if self.gCurrentViewIndex == 6:
 				self.setView6()
 			

@@ -459,7 +459,7 @@ def showQtGUI():
 			# ############################################################################
 			
 			# tool screen size
-			toolSW = 820
+			toolSW = 1100
 			toolSH = 700
 			
 			selWidth = 150 # selection width
@@ -665,7 +665,7 @@ def showQtGUI():
 			# furniture color reference to calculate edgeband
 			self.fcrB = QtGui.QPushButton(translate('getDimensions', 'set'), self)
 			self.fcrB.clicked.connect(self.getColorReference)
-			self.fcrB.setFixedWidth(50)
+			self.fcrB.setMaximumWidth(100)
 			self.fcrB.setAutoDefault(False)
 			
 			self.fcrE = QtGui.QLineEdit(self)

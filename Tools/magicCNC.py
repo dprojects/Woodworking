@@ -88,13 +88,11 @@ def showQtGUI():
 			
 			self.oFaceB = QtGui.QPushButton(translate('magicCNC', 'set'), self)
 			self.oFaceB.clicked.connect(self.setFace)
-			self.oFaceB.setFixedWidth(50)
 			
 			self.oFaceL = QtGui.QLabel("", self)
 			
 			self.oBitB = QtGui.QPushButton(translate('magicCNC', 'set'), self)
 			self.oBitB.clicked.connect(self.setDrillBit)
-			self.oBitB.setFixedWidth(50)
 			
 			self.oBitL = QtGui.QLabel("", self)
 
@@ -176,13 +174,11 @@ def showQtGUI():
 
 			self.ocncReferenceSubB = QtGui.QPushButton(translate('magicCNC', 'set'), self)
 			self.ocncReferenceSubB.clicked.connect(self.setReferenceSub)
-			self.ocncReferenceSubB.setFixedWidth(50)
 			
 			self.ocncReferenceSubL = QtGui.QLabel(translate('magicCNC', 'edge, face or vertex as start reference'), self)
 			
 			self.ocncReferenceTargetB = QtGui.QPushButton(translate('magicCNC', 'set'), self)
 			self.ocncReferenceTargetB.clicked.connect(self.setReferenceTarget)
-			self.ocncReferenceTargetB.setFixedWidth(50)
 			
 			self.ocncReferenceTargetL = QtGui.QLabel(translate('magicCNC', 'object to set CNC attributes'), self)
 
@@ -237,13 +233,11 @@ def showQtGUI():
 			# manual drilling
 			# #########################################################
 			
-			self.row1 = QtGui.QHBoxLayout()
-			self.row1.addWidget(self.oFaceB)
-			self.row1.addWidget(self.oFaceL)
-			
-			self.row2 = QtGui.QHBoxLayout()
-			self.row2.addWidget(self.oBitB)
-			self.row2.addWidget(self.oBitL)
+			self.row1 = QtGui.QGridLayout()
+			self.row1.addWidget(self.oFaceB, 0, 0)
+			self.row1.addWidget(self.oFaceL, 0, 1)
+			self.row1.addWidget(self.oBitB, 1, 0)
+			self.row1.addWidget(self.oBitL, 1, 1)
 			
 			self.row3 = QtGui.QHBoxLayout()
 			self.row3.addWidget(self.s1B1)
@@ -282,7 +276,6 @@ def showQtGUI():
 			# drilling layout
 			self.layDrill = QtGui.QVBoxLayout()
 			self.layDrill.addLayout(self.row1)
-			self.layDrill.addLayout(self.row2)
 			self.layDrill.addLayout(self.row3)
 			self.layDrill.addStretch()
 			self.layDrill.addLayout(self.layBody1)
@@ -296,21 +289,18 @@ def showQtGUI():
 			# CNC
 			# #########################################################
 			
-			self.layCNCSub = QtGui.QHBoxLayout()
-			self.layCNCSub.addWidget(self.ocncReferenceSubB)
-			self.layCNCSub.addWidget(self.ocncReferenceSubL)
-			
-			self.layCNCTarget = QtGui.QHBoxLayout()
-			self.layCNCTarget.addWidget(self.ocncReferenceTargetB)
-			self.layCNCTarget.addWidget(self.ocncReferenceTargetL)
+			self.layCNCSet = QtGui.QGridLayout()
+			self.layCNCSet.addWidget(self.ocncReferenceSubB, 0, 0)
+			self.layCNCSet.addWidget(self.ocncReferenceSubL, 0, 1)
+			self.layCNCSet.addWidget(self.ocncReferenceTargetB, 1, 0)
+			self.layCNCSet.addWidget(self.ocncReferenceTargetL, 1, 1)
 			
 			self.layCNCB1 = QtGui.QVBoxLayout()
 			self.layCNCB1.addWidget(self.ocncCB1)
 			
 			# CNC layout
 			self.layoutCNC = QtGui.QVBoxLayout()
-			self.layoutCNC.addLayout(self.layCNCSub)
-			self.layoutCNC.addLayout(self.layCNCTarget)
+			self.layoutCNC.addLayout(self.layCNCSet)
 			self.layoutCNC.addLayout(self.layCNCB1)
 			
 			self.groupCNC = QtGui.QGroupBox(translate('magicCNC', 'Set attributes for CNC:'), self)

@@ -316,23 +316,23 @@ def showQtGUI():
 			self.oFrontInsideThicknessE = QtGui.QLineEdit(self)
 			self.oFrontInsideThicknessE.setText(MagicPanels.unit2gui(0))
 			
-			# front inside offset left
-			self.oFrontInsideOffsetLL = QtGui.QLabel(translate('magicSettings', 'Front inside - offset from left:'), self)
+			# front inside gap left
+			self.oFrontInsideOffsetLL = QtGui.QLabel(translate('magicSettings', 'Front inside - gap from left:'), self)
 			self.oFrontInsideOffsetLE = QtGui.QLineEdit(self)
 			self.oFrontInsideOffsetLE.setText(MagicPanels.unit2gui(0))
 			
-			# front inside offset right
-			self.oFrontInsideOffsetRL = QtGui.QLabel(translate('magicSettings', 'Front inside - offset from right:'), self)
+			# front inside gap right
+			self.oFrontInsideOffsetRL = QtGui.QLabel(translate('magicSettings', 'Front inside - gap from right:'), self)
 			self.oFrontInsideOffsetRE = QtGui.QLineEdit(self)
 			self.oFrontInsideOffsetRE.setText(MagicPanels.unit2gui(0))
 			
-			# front inside offset bottom
-			self.oFrontInsideOffsetBL = QtGui.QLabel(translate('magicSettings', 'Front inside - offset from bottom:'), self)
+			# front inside gap bottom
+			self.oFrontInsideOffsetBL = QtGui.QLabel(translate('magicSettings', 'Front inside - gap from bottom:'), self)
 			self.oFrontInsideOffsetBE = QtGui.QLineEdit(self)
 			self.oFrontInsideOffsetBE.setText(MagicPanels.unit2gui(0))
 			
-			# front inside offset top
-			self.oFrontInsideOffsetTL = QtGui.QLabel(translate('magicSettings', 'Front inside - offset from top:'), self)
+			# front inside gap top
+			self.oFrontInsideOffsetTL = QtGui.QLabel(translate('magicSettings', 'Front inside - gap from top:'), self)
 			self.oFrontInsideOffsetTE = QtGui.QLineEdit(self)
 			self.oFrontInsideOffsetTE.setText(MagicPanels.unit2gui(0))
 			
@@ -366,8 +366,8 @@ def showQtGUI():
 			self.oShelfThicknessE = QtGui.QLineEdit(self)
 			self.oShelfThicknessE.setText(MagicPanels.unit2gui(0))
 			
-			# shelf offset sides
-			self.oShelfOffsetSidesL = QtGui.QLabel(translate('magicSettings', 'Shelf - the offset from sides:'), self)
+			# shelf gap sides
+			self.oShelfOffsetSidesL = QtGui.QLabel(translate('magicSettings', 'Shelf - the gap from sides:'), self)
 			self.oShelfOffsetSidesE = QtGui.QLineEdit(self)
 			self.oShelfOffsetSidesE.setText(MagicPanels.unit2gui(0))
 			

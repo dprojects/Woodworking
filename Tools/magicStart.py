@@ -329,9 +329,10 @@ def showQtGUI():
 			
 			self.gHelpHeaderOR = translate('magicStart', '<b>Step 1</b>: Choose one of the selection methods below:')
 			self.gHelpHeaderAND = translate('magicStart', '<b>Step 1</b>: Select all objects listed below in the same order while holding the left CTRL button:')
+
 			self.gHelpFoot = translate('magicStart', '<b>Step 2</b>: Press <b>calculate</b> button.') + '<br>'
-			self.gHelpFoot += translate('magicStart', '<b>Step 3</b>: Press <b>create</b> button. Before pressing the create button, you can manually correct some values ​​if necessary.') + '<br><br>'
-			
+			self.gHelpFoot += translate('magicStart', '<b>Step 3</b>: Press the <b>create</b> button. Before pressing the <b>create</b> button, you can manually correct some values if necessary.') + '<br><br>'
+
 			# ############################################################################
 			# selection icon
 			# ############################################################################

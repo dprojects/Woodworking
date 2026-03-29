@@ -67,7 +67,6 @@ def showQtGUI():
 			
 			self.s1B = QtGui.QPushButton(translate('magicResizer', 'set'), self)
 			self.s1B.clicked.connect(self.getResizeObject)
-			self.s1B.setFixedWidth(50)
 			
 			# label
 			self.s1S = QtGui.QLabel("", self)
@@ -75,7 +74,6 @@ def showQtGUI():
 			# button
 			self.s2B = QtGui.QPushButton(translate('magicResizer', 'set'), self)
 			self.s2B.clicked.connect(self.getNearSub)
-			self.s2B.setFixedWidth(50)
 		
 			# label
 			self.s2S = QtGui.QLabel("", self)

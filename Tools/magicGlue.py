@@ -136,14 +136,12 @@ def showQtGUI():
 
 			self.gp1B = QtGui.QPushButton(translate('magicGlue', 'set'), self)
 			self.gp1B.clicked.connect(self.setGPSO)
-			self.gp1B.setFixedWidth(60)
 			
 			self.gp1L = QtGui.QLabel(self.gNoGPSO, self)
 			self.gp1L.setFixedWidth(rside - 80)
 			
 			self.gp2B = QtGui.QPushButton(translate('magicGlue', 'set'), self)
 			self.gp2B.clicked.connect(self.setGPTO)
-			self.gp2B.setFixedWidth(60)
 			
 			self.gp2L = QtGui.QLabel(self.gNoGPTO, self)
 			self.gp2L.setFixedWidth(rside - 80)
@@ -185,14 +183,12 @@ def showQtGUI():
 			
 			self.gs1B = QtGui.QPushButton(translate('magicGlue', 'set'), self)
 			self.gs1B.clicked.connect(self.setGSSO)
-			self.gs1B.setFixedWidth(60)
 			
 			self.gs1L = QtGui.QLabel(self.gNoGSSO, self)
 			self.gs1L.setFixedWidth(rside - 80)
 			
 			self.gs2B = QtGui.QPushButton(translate('magicGlue', 'set'), self)
 			self.gs2B.clicked.connect(self.setGSTO)
-			self.gs2B.setFixedWidth(60)
 			
 			self.gs2L = QtGui.QLabel(self.gNoGSTO, self)
 			self.gs2L.setFixedWidth(rside - 80)

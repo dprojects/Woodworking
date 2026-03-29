@@ -383,14 +383,12 @@ def showQtGUI():
 			
 			self.mte1B = QtGui.QPushButton(translate('magicMove', 'set'), self)
 			self.mte1B.clicked.connect(self.setMEEdgeStart)
-			self.mte1B.setFixedWidth(btsize)
 			
 			self.mte1L = QtGui.QLabel(self.gNoMEEdgeStart, self)
 			self.mte1L.setMaximumWidth(area-100)
 			
 			self.mte2B = QtGui.QPushButton(translate('magicMove', 'set'), self)
 			self.mte2B.clicked.connect(self.setMEEdgeEnd)
-			self.mte2B.setFixedWidth(btsize)
 			
 			self.mte2L = QtGui.QLabel(self.gNoMEEdgeEnd, self)
 			self.mte2L.setMaximumWidth(area-100)
@@ -433,7 +431,6 @@ def showQtGUI():
 			
 			self.cbe1B = QtGui.QPushButton(translate('magicMove', 'set'), self)
 			self.cbe1B.clicked.connect(self.setCopyByEdge)
-			self.cbe1B.setFixedWidth(btsize)
 			
 			self.cbe1L = QtGui.QLabel(self.gNoCopyByEdge, self)
 			self.cbe1L.setMaximumWidth(area-100)
@@ -479,7 +476,6 @@ def showQtGUI():
 			
 			self.oPathBS = QtGui.QPushButton(translate('magicMove', 'set'), self)
 			self.oPathBS.clicked.connect(self.setCopyPath)
-			self.oPathBS.setFixedWidth(btsize)
 			
 			self.oPathCurveL = QtGui.QLabel(self.gNoPathSelection, self)
 			self.oPathCurveL.setMaximumWidth(area-100)
@@ -529,7 +525,6 @@ def showQtGUI():
 			
 			self.mc1B = QtGui.QPushButton(translate('magicMove', 'set'), self)
 			self.mc1B.clicked.connect(self.setMirrorPoint)
-			self.mc1B.setFixedWidth(btsize)
 			
 			self.mc1L = QtGui.QLabel(self.gNoMirrorPoint, self)
 			self.mc1L.setMaximumWidth(area-100)
