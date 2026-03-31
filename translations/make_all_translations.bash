@@ -66,26 +66,37 @@ mkdir -p ./translated
 
 for ((i=0; i<${#DATA[@]}; i+=3)); do
     
+    time_start=$(date +%s)
+    
     freecad_name="${DATA[i]}"
     freecad_code="${DATA[i+1]}"
     ai_code="${DATA[i+2]}"
 
+    current=$(( i / 3 + 1 ))
+    total=$(( (${#DATA[@]} + 2) / 3 ))
+    
+    echo -e "[ ${current}/${total} ] Starting: [ ${freecad_name} | ${freecad_code} ] => [ ${ai_code} ] ..."
+    
 	if [ -f "./translated/Woodworking_${freecad_code}.ts" ]; then
-		echo -e "Translation .ts file for: [ ${freecad_name} | ${freecad_code} ] => [ ${ai_code} ] already exists, skipped."
+		echo -e "  * Creating : ./translated/Woodworking_${freecad_code}.ts ...already exists, skipped."
 	else
-		echo -n "Creating translation for: [ ${freecad_name} | ${freecad_code} ] => [ ${ai_code} ] ..."
+		echo -n "  * Creating : ./translated/Woodworking_${freecad_code}.ts ..."
 		python3 "./make_AI_translation.py" "${ai_code}" >> "./current_status.log" 2>&1
 		mv "./Woodworking_${ai_code}.ts" "./translated/Woodworking_${freecad_code}.ts"
 		echo "done."
 	fi
 	
 	if [ -f "./translated/Woodworking_${freecad_code}.qm" ]; then
-		echo -e "Translation .qm file for: [ ${freecad_name} | ${freecad_code} ] => [ ${ai_code} ] already exists, skipped."
+		echo -e "  * Creating : ./translated/Woodworking_${freecad_code}.qm ...already exists, skipped."
 	else
-		# echo -n "Compiling .qm for: [ ${freecad_name} | ${freecad_code} ] => [ ${ai_code} ] ... "
-		# /usr/lib/x86_64-linux-gnu/qt5/bin/lrelease "./translated/Woodworking_${freecad_code}.ts" -silent >> "./current_status.log" 2>&1
-		# echo "done."
-		/usr/lib/x86_64-linux-gnu/qt5/bin/lrelease "./translated/Woodworking_${freecad_code}.ts"
+		echo -n "  * Creating : ./translated/Woodworking_${freecad_code}.qm ..."
+		/usr/lib/x86_64-linux-gnu/qt5/bin/lrelease "./translated/Woodworking_${freecad_code}.ts" >> "./current_status.log" 2>&1
+		echo "done."
 	fi
+	
+	time_end=$(date +%s)
+	time_total=$(( time_end - time_start ))
+	time_format=$(date -u -d "@$time_total" +%H:%M:%S)
+	echo -e "  Time: ${time_format}"
 	
 done

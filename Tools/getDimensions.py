@@ -3921,7 +3921,7 @@ def initLang():
 		gLang35 = "Veneer price for total edge"
 		gLang36 = "Pieces"
 		gLang37 = "Width"
-		gLang38 = "ROUGHT"
+		gLang38 = "ROUGH"
 		gLang39 = "FINISH"
 
 

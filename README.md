@@ -14,11 +14,9 @@ Woodworking workbench was designed primarily for creating simple cabinets for yo
 * Wood weight and costs calculation via [getDimensions](https://github.com/dprojects/Woodworking/tree/master/Docs#getdimensions).
 * Support for all languages using Google AI translation.
 
-![intro](https://raw.githubusercontent.com/dprojects/media/master/intro.gif)
-
 # Installation
 
-**For Linux download and run installation package:** [magicCAD_2.0.AppImage](https://github.com/dprojects/Woodworking-package/releases/download/2.0/magicCAD_2.0.AppImage). 
+**For Linux download and run installation package:** [magicCAD_3.0.AppImage](https://github.com/dprojects/Woodworking-package/releases/download/3.0/magicCAD_3.0.AppImage). 
 
 > [!NOTE]
 > * This is installation package with tested FreeCAD kernel and Woodworking workbench. Installation package was created to lock in a compatible and tested version of the FreeCAD kernel and prevent external "breaking" of Woodworking workbench and keep it working forever.

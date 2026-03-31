@@ -190,7 +190,7 @@ def makeTranslation(iTemplate="template.ts", iLang="pl", iDebug="yes"):
                     
                     try:
                         import time
-                        max_attempts = 3
+                        max_attempts = 5
                         for i in range(max_attempts):
                             text_translated = translator.translate(text_source)
                             text_translated = html.unescape(text_translated)
