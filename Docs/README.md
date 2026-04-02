@@ -204,7 +204,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 3.0 stable:** <br>
-> * nothing yet... <br>
+> * fractions inches option in cut-list (getDimensions) <br>
 
 ## Step 2. Get FreeCAD Mod folder localization
 
@@ -1347,9 +1347,10 @@ Example weights unit of commonly used wood in lb/board foot:
 * **m:** all dimensions will be recalculated to `meters` or `square meters` in case of area, independent of user units settings.
 * **inch:** all dimensions will be recalculated to `inches` or `square inches` in case of area, independent of user units settings.
 * **board foot:** volume in millimeters will be recalculated to board foot (1ft × 1ft × 1in).
-* **fractions:** this is notation `X' Y n/d"`, the fractional part is reduced by the system so you have to set `Building US`. The area will be calculated by the system `sqft` (square foot).
-* **fractions minus:** this is notation `X' Y-n/d"`, the fractional part is reduced by the system so you have to set `Building US`. The area will be calculated by the system `sqft` (square foot).
-* **fractions equal:** this is notation `X' Y n/d"`, the fractional part is not reduced and is independent of user units settings, can be also `Standard (mm,...)`. The area will be set to `inch2` (square inch).
+* **fractions:** this is notation `X' Y n/d"`, the fractional part `n/d` is reduced by the system so you have to set `Building US`. The area will be calculated by the system `sqft` (square foot).
+* **fractions minus:** this is notation `X' Y-n/d"`, the fractional part `n/d` is reduced by the system so you have to set `Building US`. The area will be calculated by the system `sqft` (square foot).
+* **fractions equal:** this is notation `X' Y n/d"`, the fractional part `n/d` is not reduced and is independent of user units settings, can be also `Standard (mm,...)`. The area will be set to `inch2` (square inch).
+* **fractions inches:** this is notation `Y n/d"`, without `X` foot part. The fractional part `n/d` is reduced by the system so you have to set `Building US`.
 * **system:** all dimensions will be presented in the user's unit system preferences.
 
 > [!NOTE]

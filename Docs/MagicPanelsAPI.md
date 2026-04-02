@@ -1905,6 +1905,7 @@
 		iReduction: string
 			"system": the fraction part will by reduced by system
 			"no" (default): not reduce the fraction part
+			"nofoot": add foot to inches and show only inches with fraction part
 			"python": reduce the fraction part via python fractions module, but in this case the denominator might be changed also
 		iPrefix: string
 			"": means single space between Y inches part and n/d fraction part
@@ -1935,6 +1936,9 @@
 
 		unitForUser = MagicPanels.unit2fractions(464, 8, "system", "")
 		result: 1' 6 1/4"
+		
+		unitForUser = MagicPanels.unit2fractions(464, 8, "nofoot", "")
+		result: 18 1/4"
 
 ##### Result:
 

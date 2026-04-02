@@ -96,6 +96,7 @@ sUnitsMetricDsc = {
 	"fractions" : translate("getDimensions", "notation X' Y n/d\" with reduction"),
 	"fractions minus" : translate("getDimensions", "notation X' Y-n/d\" with reduction"),
 	"fractions equal" : translate("getDimensions", "notation X' Y n/d\" without reduction"),
+	"fractions inches" : translate("getDimensions", "notation Y n/d\" without part related to the foot"),
 	"system" : translate("getDimensions", "user system settings") # no comma
 }
 
@@ -108,6 +109,7 @@ sPrecisionDD = {
 	"fractions" : 6,
 	"fractions minus" : 6,
 	"fractions equal" : 6,
+	"fractions inches" : 6,
 	"system" : 2 # no comma
 }
 sPDD = sPrecisionDD[sUnitsMetric] # default
@@ -128,6 +130,7 @@ sUnitsEdgeDsc = {
 	"fractions" : translate("getDimensions", "notation X' Y n/d\" with reduction"),
 	"fractions minus" : translate("getDimensions", "notation X' Y-n/d\" with reduction"),
 	"fractions equal" : translate("getDimensions", "notation X' Y n/d\" without reduction"),
+	"fractions inches" : translate("getDimensions", "notation Y n/d\" without part related to the foot"),
 	"system" : translate("getDimensions", "user system settings") # no comma
 }
 
@@ -140,6 +143,7 @@ sPrecisionDE = {
 	"fractions" : 6,
 	"fractions minus" : 6,
 	"fractions equal" : 6,
+	"fractions inches" : 6,
 	"system" : 2 # no comma
 }
 sPDE = sPrecisionDE[sUnitsEdge] # default
@@ -462,7 +466,7 @@ def showQtGUI():
 			toolSW = 1100
 			toolSH = 700
 			
-			selWidth = 150 # selection width
+			selWidth = 200 # selection width
 			selWidth2 = 220 # selection width for report type
 			infoWidth = 600 # info description
 			
@@ -552,7 +556,7 @@ def showQtGUI():
 			self.ufdO.addItems(self.ufdList)
 			self.ufdO.setCurrentIndex(self.ufdList.index(str(sUnitsMetric)))
 			self.ufdO.textActivated[str].connect(self.setDFO)
-			self.ufdO.setFixedWidth(selWidth)
+			self.ufdO.setMinimumWidth(selWidth)
 			
 			self.ufdIS = QtGui.QLabel(str(sUnitsMetricDsc[sUnitsMetric]) + sEmptyDsc, self)
 			
@@ -571,7 +575,7 @@ def showQtGUI():
 			self.ufaO.addItems(self.ufaList)
 			self.ufaO.setCurrentIndex(self.ufaList.index(str(sUnitsArea)))
 			self.ufaO.textActivated[str].connect(self.setUFA)
-			self.ufaO.setFixedWidth(selWidth)
+			self.ufaO.setMinimumWidth(selWidth)
 			
 			self.ufaIS = QtGui.QLabel(str(sUnitsAreaDsc[sUnitsArea]) + sEmptyDsc, self)
 			
@@ -590,7 +594,7 @@ def showQtGUI():
 			self.ufsO.addItems(self.ufsList)
 			self.ufsO.setCurrentIndex(self.ufsList.index(str(sUnitsEdge)))
 			self.ufsO.textActivated[str].connect(self.setUFS)
-			self.ufsO.setFixedWidth(selWidth)
+			self.ufsO.setMinimumWidth(selWidth)
 			
 			self.ufsIS = QtGui.QLabel(str(sUnitsEdgeDsc[sUnitsEdge]) + sEmptyDsc, self)
 			
@@ -1198,6 +1202,9 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 		if sUnitsMetric == "fractions equal":
 			return MagicPanels.unit2fractions( round(v, sPDD), 0, "no", "")
 
+		if sUnitsMetric == "fractions inches":
+			return MagicPanels.unit2fractions( round(v, sPDD), 0, "nofoot", "")
+			
 		if sUnitsMetric == "system":
 			return MagicPanels.unit2gui( round(v, sPDD) )
 			
@@ -1240,6 +1247,9 @@ def getUnit(iValue, iType, iCaller="getUnit"):
 		if sUnitsEdge == "fractions equal":
 			return MagicPanels.unit2fractions( round(v, sPDE), 0, "no", "")
 
+		if sUnitsEdge == "fractions inches":
+			return MagicPanels.unit2fractions( round(v, sPDE), 0, "nofoot", "")
+			
 		if sUnitsEdge == "system":
 			return MagicPanels.unit2gui( round(v, sPDE) )
 	
@@ -1351,7 +1361,8 @@ def toSheet(iValue, iType, iCaller="toSheet"):
 			sUnitsMetric == "system" or 
 			sUnitsMetric == "fractions" or 
 			sUnitsMetric == "fractions minus" or 
-			sUnitsMetric == "fractions equal"
+			sUnitsMetric == "fractions equal" or 
+			sUnitsMetric == "fractions inches"
 			):
 			return  "=<<" + getUnit(iValue, iType, iCaller) + " " + ">>"
 		else:
@@ -1363,7 +1374,8 @@ def toSheet(iValue, iType, iCaller="toSheet"):
 			sUnitsEdge == "system" or 
 			sUnitsEdge == "fractions" or 
 			sUnitsEdge == "fractions minus" or 
-			sUnitsEdge == "fractions equal"
+			sUnitsEdge == "fractions equal" or 
+			sUnitsEdge == "fractions inches"
 			):
 			return  "=<<" + getUnit(iValue, iType, iCaller) + " " + ">>"
 		else:

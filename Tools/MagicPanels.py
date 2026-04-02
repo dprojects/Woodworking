@@ -5305,6 +5305,7 @@ def unit2fractions(iValue, iPrecision=0, iReduction="no", iPrefix=""):
 		iReduction: string
 			"system": the fraction part will by reduced by system
 			"no" (default): not reduce the fraction part
+			"nofoot": add foot to inches and show only inches with fraction part
 			"python": reduce the fraction part via python fractions module, but in this case the denominator might be changed also
 		iPrefix: string
 			"": means single space between Y inches part and n/d fraction part
@@ -5335,6 +5336,9 @@ def unit2fractions(iValue, iPrecision=0, iReduction="no", iPrefix=""):
 
 		unitForUser = MagicPanels.unit2fractions(464, 8, "system", "")
 		result: 1' 6 1/4"
+		
+		unitForUser = MagicPanels.unit2fractions(464, 8, "nofoot", "")
+		result: 18 1/4"
 
 	Result:
 
@@ -5355,6 +5359,26 @@ def unit2fractions(iValue, iPrecision=0, iReduction="no", iPrefix=""):
 			
 		return forUser
 
+	if iReduction == "nofoot":
+		
+		forUser = unit2gui(iValue)
+		arr = forUser.split("+")
+		
+		if len(arr) < 2:
+			return forUser
+		
+		arrFoot = arr[0].strip().split(" ")
+		fraction = arr[1].strip()
+		
+		if len(arrFoot) < 2:
+			return arrFoot[0] + " " + fraction
+			
+		foot = arrFoot[0].strip().replace("'","")
+		inch = arrFoot[1].strip().replace('"',"")
+		inches = str( (12 * int(foot)) + int(inch) )
+		
+		return inches + ' ' + fraction
+		
 	import math
 	
 	# defaults
