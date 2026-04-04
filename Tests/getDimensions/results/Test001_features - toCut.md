@@ -1,6 +1,6 @@
 |   |   |   |   |   |   |   |
 |:--|--:|:-:|--:|--:|--:|--:|
-|   Name   |   Dimensions   |   |   |   Thickness   |   Quantity   |   m2   |
+|   Name   |   Dimensions   |   |   |   Thickness   |   Quantity   |   m^2   |
 |   Back HDF   |   200 mm   |   x   |   300 mm   |   3 mm   |   1   |   0.06   |
 |   Black Front   |   200 mm   |   x   |   300 mm   |   18 mm   |   1   |   0.06   |
 |   Side 1   |   200 mm   |   x   |   300 mm   |   18 mm   |   1   |   0.06   |

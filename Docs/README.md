@@ -89,6 +89,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 			* [Search path](#search-path)
 			* [Main report](#main-report)
 			* [Additional reports](#additional-reports)
+		* [How to sort list](#how-to-sort-list)
 		* [Units](#units)
 		* [Precision](#precision)
 		* [Visibility](#visibility)
@@ -204,6 +205,9 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 3.0 stable:** <br>
+> * custom sort feature for cut-list (getDimensions) <br>
+> * new report type for sawmill based on groups (getDimensions) <br>
+> * summary for `r - raw wood` report type (getDimensions) <br>
 > * fractions inches option in cut-list (getDimensions) <br>
 
 ## Step 2. Get FreeCAD Mod folder localization
@@ -1309,7 +1313,8 @@ Example weights unit of commonly used wood in lb/board foot:
   * If you have set Material for object, I mean the `.ShapeMaterial.Name` is not `Default` the `.ShapeMaterial.Name` attribute will be used. In this case if you have `.Label2` attribute the `.ShapeMaterial.Name` will be used.
   * If you not have set Material but you have `.Label2` the `.Label2` attribute will be used.
   * If you not have set Material and also not have set `.Label2` attribute the global variable `MagicPanels.gWoodDescription` will be used. The global variable `MagicPanels.gWoodDescription` can be set via [magicSettings](#magicsettings) tool.
-* **r - raw wood** this is a dedicated report for ordering boards from a sawmill in the United States. It is also the default cut list report when the units are set to `Building US`. This report has two sections. One is `finish` which is the exact dimensions of the boards you designed. The second section is `rough` which is the dimensions of the boards you can order from the sawmill for subsequent planing and sanding. The surplus wood for the sawmill in the `rough` section can be set in the [magicSettings](https://github.com/dprojects/Woodworking/tree/master/Docs#settings---page-2) tool.
+* **r - raw wood** this is a dedicated report for ordering boards from a sawmill in the United States. It is also the default cut list report when the units are set to `Building US`. This report has two sections. One is `finish` which is the exact dimensions of the boards you designed. The second section is `rough` which is the dimensions of the boards you can order from the sawmill for subsequent planing and sanding. The surplus wood for the sawmill in the `rough` section can be set in the [magicSettings](https://github.com/dprojects/Woodworking/tree/master/Docs#settings---page-2) tool. This report is based on `n - for verification` report type and shows objects labels.
+* **s - sawmill and workflow** this is a dedicated report for ordering boards from a sawmill in the United States. It is also the default cut list report when the units are set to `Building US`. This report has two sections. One is `finish` which is the exact dimensions of the boards you designed. The second section is `rough` which is the dimensions of the boards you can order from the sawmill for subsequent planing and sanding. The surplus wood for the sawmill in the `rough` section can be set in the [magicSettings](https://github.com/dprojects/Woodworking/tree/master/Docs#settings---page-2) tool. This report is based on `g - wood type` report type and shows containers labels.
 * **e - veneer** this type of report allows you to precisely describe each face of the object, based on the edge length. Thanks to this you can describe which edge lengths should be covered with veneer. To determine the edge color with veneer, you must set the color of the entire furniture as a color reference. Also you must set the edge symbol, which will appear on the report.
 * **d - drilling** this report type is an extended version of the `e - report` type, but also displays named constraints from the `PartDesign::Hole` object sketch. Additionally, the header comes from the Body object. This allows you to describe all edge distances, diameters, and depths for holes.
 * **c - named constraints** this report type shows the dimensions for all named constraints inside Sketch objects and the `Length` size from `PartDesign` objects.
@@ -1340,6 +1345,26 @@ Example weights unit of commonly used wood in lb/board foot:
 * **veneer simulation:** create additional report for veneer added via [addVeneer](#addveneer) tool.
 * **grain direction:** shows grain direction for object created via [grainH](#grainh), [grainV](#grainv) or [grainX](#grainx) tools.
 
+### How to sort list
+
+The spreadsheet in FreeCAD does not allow column sorting. When you double-click a column header, FreeCAD resize it by default instead of sorting it as is common in spreadsheets and tables. Furthermore, there is no way to move individual rows or columns. The idea for sorting entries in cut list arose while solving [an issue for carpenters in the United States](https://github.com/dprojects/Woodworking/issues/109#issuecomment-4183358829). I thought it would be nice to extend the sorting option to other lists as well, as it might be useful for me when creating my own lists.
+
+Currently, supported options for forcing the order of elements in a cutting list:
+* By adding the cut list item number in square brackets to the label at the beginning, for example: `[1] Floor`
+* By adding the cut list item number in square brackets to the label at the end, for example: `Floor [1]`
+* By adding an attribute to an entry that appears in the list as follows:
+  * Name: `Woodworking_Order`
+  * Group: `Woodworking`
+  * Type: `App::PropertyString`
+  * Value: `1`
+
+> [!TIP]
+> * If an object or group does not have a position number, it will be assigned a position of `0`, 
+> meaning it will immediately appear at the top of the list. This can be important in long lists to immediately 
+> spot unassigned values.
+> * For a list of type `n - for verification` or `r - raw wood`, add it to the object.
+> * For a list of type `g - wood type` or `s - sawmill and workflow`, add it to the `LinkGroup` container.
+
 ### Units
 
 * **mm:** all dimensions will be recalculated to `millimeters` or `square millimeters` in case of area, independent of user units settings.
@@ -1357,9 +1382,9 @@ Example weights unit of commonly used wood in lb/board foot:
 > * The `X'` represents a whole number of feet, the `Y` represents a whole number of inches and the `n/d"`
 > represents a fraction of an inch, where `n` is the numerator and `d` is the denominator. 
 > The denominator is taken from the user settings from `Edit->Preferences->General->Building US->Minimal fractional inch`.
-> * In the case of the `system` option, the spreadsheet has its own shortening unit format, which causes `mm2` to be saved as `cm2`. 
-> To force the area to be shown in square meters, set `m` square meter (m2) for `Units for area`.
-> * The default units for "Building US" is "fractions", in Poland keep correct metrics, and "system" for others.
+> * In the case of the `system` option, the spreadsheet has its own shortening unit format, which causes `mm^2` to be saved as `cm^2`. 
+> To force the area to be shown in square meters, set `m` square meter (m^2) for `Units for area`.
+> * The default units for "Building US" is "fractions inches", in Poland keep correct metrics, and "system" for others.
 
 ### Precision
 

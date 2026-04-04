@@ -1,5 +1,6 @@
 import FreeCAD, FreeCADGui, Draft, Spreadsheet
 from PySide import QtGui, QtCore
+import re
 
 import MagicPanels
 
@@ -43,6 +44,7 @@ sLTFMenuIndex = {
 	translate("getDimensions", "g - wood type"): "g",
 	translate("getDimensions", "m - material description"): "m",
 	translate("getDimensions", "r - raw wood"): "r",
+	translate("getDimensions", "s - sawmill and workflow"): "s",
 	translate("getDimensions", "e - veneer"): "e",
 	translate("getDimensions", "d - drilling"): "d",
 	translate("getDimensions", "c - named constraints"): "c",
@@ -57,6 +59,7 @@ sLTFDsc = {
 	"g" : translate("getDimensions", "shows the labels of the containers, for wood type, colors, custom groups"),
 	"m" : translate("getDimensions", "material description from object material, Label2 attribute or magicSettings"),
 	"r" : translate("getDimensions", "list for sawmills to order lumber with rough and finish columns"),
+	"s" : translate("getDimensions", "for sawmills with rough and finish columns, grouped by LinkGroup containers with attribute"),
 	"e" : translate("getDimensions", "dedicated for veneer by edge color, quick edgeband"),
 	"d" : translate("getDimensions", "dedicated for holes, countersinks, counterbores, pocket holes description"),
 	"c" : translate("getDimensions", "only named constraints for PartDesign objects, custom report"),
@@ -334,17 +337,19 @@ gLang36 = ""
 gLang37 = ""
 gLang38 = ""
 gLang39 = ""
+gLang40 = ""
+gLang41 = ""
+gLang42 = ""
+gLang43 = ""
 
 # ###################################################################################################################
 # Init databases
 # ###################################################################################################################
 
 
-# init database for Fake Cube
-dbFCO = [] # objects
-dbFCW = dict() # width
-dbFCH = dict() # height
-dbFCL = dict() # length
+# sorted keys used by s - report to get correct groups order
+dbSortedDict = dict() # key = int index, value = others db key
+dbSortedKeys = []     # sorted keys only
 
 # init database for dimensions
 dbDQ = dict() # quantity
@@ -353,16 +358,17 @@ dbDW = dict() # weight
 dbDP = dict() # price
 
 # init database for lumber sawmill
-dbSMQ = dict()  # quantity
 dbSML = dict()  # length
 dbSMW = dict()  # width
 dbSMT = dict()  # thickness
 
 # init database for thickness
 dbTQ = dict() # quantity
-dbTA = dict() # area
 dbTW = dict() # weight
 dbTP = dict() # price
+
+dbTA = dict()     # area for thickness
+dbTA["total"] = 0 # area for total summary
 
 # init database for edge
 dbE = dict()
@@ -412,15 +418,15 @@ try:
 	# for Building US set to fractions
 	elif userUnits == 5:
 		
-		sUnitsMetric = "fractions"
-		sUnitsEdge = "fractions"
+		sUnitsMetric = "fractions inches"
+		sUnitsEdge = "fractions inches"
 		sUnitsArea = "bf"
 		
 		sPDD = sPrecisionDD[sUnitsMetric]
 		sPDE = sPrecisionDE[sUnitsEdge]
 		sPDA = sPrecisionDA[sUnitsArea]
 		
-		sLTFKey = translate("getDimensions", "r - raw wood")
+		sLTFKey = translate("getDimensions", "s - sawmill and workflow")
 		sLTF = sLTFMenuIndex[sLTFKey]
 		
 	# for all others set system
@@ -1593,11 +1599,22 @@ def getKey(iObj, iW, iH, iL, iType, iCaller="getKey"):
 	vKey += str(vKeyArr[2])
 
 	# key for name report
-	if iType == "d" and (sLTF == "n" or sLTF == "w" or sLTF == "b" or sLTF == "e" or sLTF == "d" or sLTF == "r"):
+	if iType == "d" and (
+		sLTF == "n" or 
+		sLTF == "w" or 
+		sLTF == "b" or 
+		sLTF == "e" or 
+		sLTF == "d" or 
+		sLTF == "r"
+		):
 		vKey = str(vKey) + ":" + str(iObj.Label)
 
 	# key for group report
-	if iType == "d" and (sLTF == "g" or sLTF == "d"):
+	if iType == "d" and (
+		sLTF == "g" or 
+		sLTF == "d" or
+		sLTF == "s"
+		):
 		
 		# get grandparent or parent group name
 		vGroup = getGroup(iObj, iCaller)
@@ -1650,9 +1667,11 @@ def getRoughThickness(iThickness, iCaller="getRoughThickness"):
 # ###################################################################################################################
 def getArea(iObj, iW, iH, iL, iCaller="getArea"):
 
+	vKey = getKey(iObj, iW, iH, iL, "d", iCaller)
+
 	# return volume from sawmill
-	if sLTF == "r":
-		vArea = dbSML[iObj.Label] * dbSMW[iObj.Label] * dbSMT[iObj.Label] * 0.000000423776
+	if sLTF == "r" or sLTF == "s":
+		vArea = dbSML[vKey] * dbSMW[vKey] * dbSMT[vKey] * 0.000000423776
 		return float(vArea)
 	
 	# return volume for finish
@@ -1935,34 +1954,50 @@ def getConstraintName(iObj, iName, iCaller="getConstraintName"):
 def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 
 	try:
-
-		# set db for Fake Cube Object 
-		dbFCO.append(iObj)
-
-		# set db for Fake Cube dimensions
-		dbFCW[iObj.Label] = iW
-		dbFCH[iObj.Label] = iH
-		dbFCL[iObj.Label] = iL
+		# get key  for object
+		vKey = getKey(iObj, iW, iH, iL, "d", iCaller)
+		
+		# set db with sorted keys
+		# parse the key string to not determine the group again
+		try:
+			order = 0
+			arr = vKey.split(":")
+			keyLabel = arr[len(arr)-1]
+			keyObj = FreeCAD.ActiveDocument.getObjectsByLabel(keyLabel)[0]
+			
+			if hasattr(keyObj, "Woodworking_Order"):
+				order = int(keyObj.Woodworking_Order)
+			else:
+				match = re.search(r"\[(\d+)\]", keyLabel)
+				if match:
+					order = int(match.group(1))
+			
+			dbSortedDict[vKey] = order
+		
+		# there is no label in key for Q report
+		except:
+			skip = 1
 
 		# set db for sawmill
-		if sLTF == "r":
+		if sLTF == "r" or sLTF == "s":
 			sizes = [ iW, iH, iL ]
 			sizes.sort()
-			dbSMT[iObj.Label] = getRoughThickness(sizes[0])
-			dbSMW[iObj.Label] = sizes[1] + MagicPanels.gLumberShort
-			dbSML[iObj.Label] = sizes[2] + MagicPanels.gLumberLong
+			dbSMT[vKey] = getRoughThickness(sizes[0])
+			dbSMW[vKey] = sizes[1] + MagicPanels.gLumberShort
+			dbSML[vKey] = sizes[2] + MagicPanels.gLumberLong
 
 		# overwrite with sawmill if there is flag for normal reports
-		if sLTF != "r" and MagicPanels.gSawmillEverywhere == True:
-			sizes = [ iW, iH, iL ]
-			sizes.sort()
-			iH = getRoughThickness(sizes[0])
-			iW = sizes[1] + MagicPanels.gLumberShort
-			iL = sizes[2] + MagicPanels.gLumberLong
+		if MagicPanels.gSawmillEverywhere == True:
+			if (sLTF != "r" or sLTF == "s"):
+				sizes = [ iW, iH, iL ]
+				sizes.sort()
+				iH = getRoughThickness(sizes[0])
+				iW = sizes[1] + MagicPanels.gLumberShort
+				iL = sizes[2] + MagicPanels.gLumberLong
 
-		# get area for object
+		# get area for object (after sawmill)
 		vArea = getArea(iObj, iW, iH, iL, iCaller)
-
+		
 		# get weight
 		if sLTF == "w" or sAWC == True:
 			weight = getWeight(iObj, iW, iH, iL, iCaller) 
@@ -1970,10 +2005,7 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 		# get price
 		if sLTF == "b" or sAPC == True:
 			price = getPrice(iObj, iW, iH, iL, iCaller) 
-			
-		# get key  for object
-		vKey = getKey(iObj, iW, iH, iL, "d", iCaller)
-
+	
 		# set dimensions db for quantity & area
 		if vKey in dbDQ:
 
@@ -2020,7 +2052,10 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 			
 			if sLTF == "b" or sAPC == True:
 				dbTP[vKeyT] = price
-				
+		
+		# total area
+		dbTA["total"] = dbTA["total"] + vArea
+		
 		# check visibility for edge if visibility feature is "edge"
 		# if visibility feature is "on" the whole object is skipped
 		# so never run this part for such object
@@ -3767,6 +3802,10 @@ def initLang():
 	global gLang37
 	global gLang38
 	global gLang39
+	global gLang40
+	global gLang41
+	global gLang42
+	global gLang43
 
 	# Polish language
 	if sLang  == "pl":
@@ -3823,6 +3862,10 @@ def initLang():
 		gLang37 = "Szerokość"
 		gLang38 = "Tarcica"
 		gLang39 = "Gotowe"
+		gLang40 = "Całkowita stopa deski"
+		gLang41 = "Dodatek drewna na długość"
+		gLang42 = "Dodatek drewna na szerokość"
+		gLang43 = "Dodatek drewna na grubość"
 
 	# from system translation files
 	elif sLang  == "system":
@@ -3879,6 +3922,10 @@ def initLang():
 		gLang37 = translate("getDimensions", "Width")
 		gLang38 = translate("getDimensions", "raw wood")
 		gLang39 = translate("getDimensions", "finished wood")
+		gLang40 = translate("getDimensions", "Total board foot")
+		gLang41 = translate("getDimensions", "Lumber allowance for length")
+		gLang42 = translate("getDimensions", "Lumber allowance for width")
+		gLang43 = translate("getDimensions", "Lumber allowance for thickness")
 
 	# English language
 	else:
@@ -3935,6 +3982,10 @@ def initLang():
 		gLang37 = "Width"
 		gLang38 = "ROUGH"
 		gLang39 = "FINISH"
+		gLang40 = "Total B.F."
+		gLang41 = "Lumber allowance for length"
+		gLang42 = "Lumber allowance for width"
+		gLang43 = "Lumber allowance for thickness"
 
 
 # ###################################################################################################################
@@ -3974,7 +4025,7 @@ def setViewQ(iCaller="setViewQ"):
 	gSheetRow = gSheetRow + 1
 
 	# add values
-	for key in dbDA.keys():
+	for key in dbSortedKeys:
 
 		a = key.split(":")
 
@@ -4107,7 +4158,7 @@ def setViewA(iCaller="setViewA"):
 	gSheetRow = gSheetRow + 1
 
 	# add values
-	for key in dbDQ.keys():
+	for key in dbSortedKeys:
 		
 		# split key
 		a = key.split(":")
@@ -4197,7 +4248,7 @@ def setViewN(iCaller="setViewN"):
 	gSheetRow = gSheetRow + 1
 
 	# add values
-	for key in dbDA.keys():
+	for key in dbSortedKeys:
 
 		a = key.split(":")
 
@@ -4314,16 +4365,15 @@ def setViewR(iCaller="setViewR"):
 	gSheetRow = gSheetRow + 1
 
 	# add values
-	for key in dbDA.keys():
+	for key in dbSortedKeys:
 
 		a = key.split(":")
-		label = a[3]
 		
 		gSheet.set("A" + str(gSheetRow), toSheet(a[3], "string", iCaller))
 		gSheet.set("B" + str(gSheetRow), toSheet(dbDQ[key], "string", iCaller))
-		gSheet.set("C" + str(gSheetRow), toSheet(dbSML[label], "d", iCaller))
-		gSheet.set("D" + str(gSheetRow), toSheet(dbSMW[label], "d", iCaller))
-		gSheet.set("E" + str(gSheetRow), toSheet(dbSMT[label], "d", iCaller))
+		gSheet.set("C" + str(gSheetRow), toSheet(dbSML[key], "d", iCaller))
+		gSheet.set("D" + str(gSheetRow), toSheet(dbSMW[key], "d", iCaller))
+		gSheet.set("E" + str(gSheetRow), toSheet(dbSMT[key], "d", iCaller))
 	
 		gSheet.set("F" + str(gSheetRow), toSheet(dbDQ[key], "string", iCaller))
 		gSheet.set("G" + str(gSheetRow), toSheet(a[2], "d", iCaller))
@@ -4363,6 +4413,201 @@ def setViewR(iCaller="setViewR"):
 	gSheet.setAlignment("J1:J" + str(gSheetRow), "left", "keep")
 	gSheet.setAlignment("K1:K" + str(gSheetRow), "right", "keep")
 
+	# ########################################################
+	# total board foot
+	# ########################################################
+
+	vCell = "A" + str(gSheetRow) + ":K" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+	gSheet.set(vCell, "")
+	gSheet.setStyle(vCell, "bold", "add")
+	gSheet.setAlignment(vCell, "left", "keep")
+	gSheet.setBackground(vCell, gHeadCS)
+
+	gSheetRow = gSheetRow + 1
+	
+	vCell = "H" + str(gSheetRow) + ":J" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+	gSheet.set("H" + str(gSheetRow), toSheet(gLang40, "string", iCaller))
+	gSheet.set("K" + str(gSheetRow), toSheet(dbTA["total"], "area", iCaller))
+	gSheet.setStyle("H" + str(gSheetRow), "bold", "add")
+	gSheet.setAlignment("K" + str(gSheetRow), "right", "keep")
+	
+	gSheetRow = gSheetRow + 1
+
+	vCell = "H" + str(gSheetRow) + ":J" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+	gSheet.set("H" + str(gSheetRow), toSheet(gLang41, "string", iCaller))
+	gSheet.set("K" + str(gSheetRow), toSheet(MagicPanels.gLumberLong, "d", iCaller))
+	gSheet.setStyle("H" + str(gSheetRow), "bold", "add")
+	gSheet.setAlignment("K" + str(gSheetRow), "right", "keep")
+	
+	gSheetRow = gSheetRow + 1
+
+	vCell = "H" + str(gSheetRow) + ":J" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+	gSheet.set("H" + str(gSheetRow), toSheet(gLang42, "string", iCaller))
+	gSheet.set("K" + str(gSheetRow), toSheet(MagicPanels.gLumberShort, "d", iCaller))
+	gSheet.setStyle("H" + str(gSheetRow), "bold", "add")
+	gSheet.setAlignment("K" + str(gSheetRow), "right", "keep")
+	
+	gSheetRow = gSheetRow + 1
+
+	vCell = "H" + str(gSheetRow) + ":J" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+	gSheet.set("H" + str(gSheetRow), toSheet(gLang43, "string", iCaller))
+	gSheet.set("K" + str(gSheetRow), toSheet(MagicPanels.gLumberThickness, "d", iCaller))
+	gSheet.setStyle("H" + str(gSheetRow), "bold", "add")
+	gSheet.setAlignment("K" + str(gSheetRow), "right", "keep")
+	
+	gSheetRow = gSheetRow + 1
+
+
+# ###################################################################################################################
+def setViewS(iCaller="setViewS"):
+
+	global gSheet
+	global gSheetRow
+
+	# set headers
+	gSheet.set("B1", gLang38)
+	gSheet.set("F1", gLang39)
+	
+	# text header decoration
+	gSheet.setStyle("A1:K1", "bold", "add")
+
+	# merge cells
+	gSheet.mergeCells("B1:E1")
+	gSheet.mergeCells("F1:I1")
+
+	# set background
+	vCell = "A" + str(gSheetRow) + ":K" + str(gSheetRow)
+	gSheet.setBackground(vCell, gHeadCS)
+
+	# go to next spreadsheet row
+	gSheetRow = gSheetRow + 1
+
+	# set headers
+	gSheet.set("A2", gLang1)
+	gSheet.set("B2", gLang36)
+	gSheet.set("C2", gLang9)
+	gSheet.set("D2", gLang37)
+	gSheet.set("E2", gLang4)
+	gSheet.set("F2", gLang36)
+	gSheet.set("G2", gLang9)
+	gSheet.set("H2", gLang37)
+	gSheet.set("I2", gLang4)
+	gSheet.set("J2", gLang21)
+	gSheet.set("K2", gLang5)
+
+	# text header decoration
+	gSheet.setStyle("A2:K2", "bold", "add")
+
+	# set background
+	vCell = "A" + str(gSheetRow) + ":K" + str(gSheetRow)
+	gSheet.setBackground(vCell, gHeadCS)
+
+	# go to next spreadsheet row
+	gSheetRow = gSheetRow + 1
+
+	# add values
+	for key in dbSortedKeys:
+
+		a = key.split(":")
+		
+		gSheet.set("A" + str(gSheetRow), toSheet(a[3], "string", iCaller))
+		gSheet.set("B" + str(gSheetRow), toSheet(dbDQ[key], "string", iCaller))
+		gSheet.set("C" + str(gSheetRow), toSheet(dbSML[key], "d", iCaller))
+		gSheet.set("D" + str(gSheetRow), toSheet(dbSMW[key], "d", iCaller))
+		gSheet.set("E" + str(gSheetRow), toSheet(dbSMT[key], "d", iCaller))
+	
+		gSheet.set("F" + str(gSheetRow), toSheet(dbDQ[key], "string", iCaller))
+		gSheet.set("G" + str(gSheetRow), toSheet(a[2], "d", iCaller))
+		gSheet.set("H" + str(gSheetRow), toSheet(a[1], "d", iCaller))
+		gSheet.set("I" + str(gSheetRow), toSheet(a[0], "d", iCaller))
+		
+		gSheet.set("J" + str(gSheetRow), "")
+		
+		gSheet.set("K" + str(gSheetRow), toSheet(dbDA[key], "area", iCaller))
+
+		# go to next spreadsheet row
+		gSheetRow = gSheetRow + 1
+
+	# cell sizes
+	gSheet.setColumnWidth("A", 150)
+	gSheet.setColumnWidth("B", 60)
+	gSheet.setColumnWidth("C", 100)
+	gSheet.setColumnWidth("D", 100)
+	gSheet.setColumnWidth("E", 100)
+	gSheet.setColumnWidth("F", 60)
+	gSheet.setColumnWidth("G", 100)
+	gSheet.setColumnWidth("H", 100)
+	gSheet.setColumnWidth("I", 100)
+	gSheet.setColumnWidth("J", 50)
+	gSheet.setColumnWidth("K", 80)
+
+	# alignment
+	gSheet.setAlignment("A1:A" + str(gSheetRow), "left", "keep")
+	gSheet.setAlignment("B1:B" + str(gSheetRow), "center", "keep")
+	gSheet.setAlignment("C1:C" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("D1:D" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("E1:E" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("F1:F" + str(gSheetRow), "center", "keep")
+	gSheet.setAlignment("G1:G" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("H1:H" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("I1:I" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("J1:J" + str(gSheetRow), "left", "keep")
+	gSheet.setAlignment("K1:K" + str(gSheetRow), "right", "keep")
+
+	# ########################################################
+	# total board foot
+	# ########################################################
+
+	vCell = "A" + str(gSheetRow) + ":K" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+	gSheet.set(vCell, "")
+	gSheet.setStyle(vCell, "bold", "add")
+	gSheet.setAlignment(vCell, "left", "keep")
+	gSheet.setBackground(vCell, gHeadCS)
+
+	gSheetRow = gSheetRow + 1
+	
+	vCell = "H" + str(gSheetRow) + ":J" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+	gSheet.set("H" + str(gSheetRow), toSheet(gLang40, "string", iCaller))
+	gSheet.set("K" + str(gSheetRow), toSheet(dbTA["total"], "area", iCaller))
+	gSheet.setStyle("H" + str(gSheetRow), "bold", "add")
+	gSheet.setAlignment("K" + str(gSheetRow), "right", "keep")
+	
+	gSheetRow = gSheetRow + 1
+
+	vCell = "H" + str(gSheetRow) + ":J" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+	gSheet.set("H" + str(gSheetRow), toSheet(gLang41, "string", iCaller))
+	gSheet.set("K" + str(gSheetRow), toSheet(MagicPanels.gLumberLong, "d", iCaller))
+	gSheet.setStyle("H" + str(gSheetRow), "bold", "add")
+	gSheet.setAlignment("K" + str(gSheetRow), "right", "keep")
+	
+	gSheetRow = gSheetRow + 1
+
+	vCell = "H" + str(gSheetRow) + ":J" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+	gSheet.set("H" + str(gSheetRow), toSheet(gLang42, "string", iCaller))
+	gSheet.set("K" + str(gSheetRow), toSheet(MagicPanels.gLumberShort, "d", iCaller))
+	gSheet.setStyle("H" + str(gSheetRow), "bold", "add")
+	gSheet.setAlignment("K" + str(gSheetRow), "right", "keep")
+	
+	gSheetRow = gSheetRow + 1
+
+	vCell = "H" + str(gSheetRow) + ":J" + str(gSheetRow)
+	gSheet.mergeCells(vCell)
+	gSheet.set("H" + str(gSheetRow), toSheet(gLang43, "string", iCaller))
+	gSheet.set("K" + str(gSheetRow), toSheet(MagicPanels.gLumberThickness, "d", iCaller))
+	gSheet.setStyle("H" + str(gSheetRow), "bold", "add")
+	gSheet.setAlignment("K" + str(gSheetRow), "right", "keep")
+	
+	gSheetRow = gSheetRow + 1
+
 
 # ###################################################################################################################
 def setViewG(iCaller="setViewG"):
@@ -4401,7 +4646,7 @@ def setViewG(iCaller="setViewG"):
 	gSheetRow = gSheetRow + 1
 
 	# add values
-	for key in dbDA.keys():
+	for key in dbSortedKeys:
 
 		a = key.split(":")
 
@@ -4504,7 +4749,7 @@ def setViewE(iCaller="setViewE"):
 
 
 	# add values
-	for key in dbDA.keys():
+	for key in dbSortedKeys:
 
 		# set headers
 		gSheet.set("A" + str(gSheetRow), gLang1)
@@ -4754,7 +4999,7 @@ def setViewD(iCaller="setViewD"):
 	global gSheetRow
 
 	# add values
-	for key in dbDA.keys():
+	for key in dbSortedKeys:
 
 		a = key.split(":")
 
@@ -5323,7 +5568,7 @@ def setViewWeight(iCaller="setViewWeight"):
 	gSheetRow = gSheetRow + 1
 
 	# add values
-	for key in dbDA.keys():
+	for key in dbSortedKeys:
 
 		a = key.split(":")
 
@@ -5424,7 +5669,7 @@ def setViewPrice(iCaller="setViewPrice"):
 	gSheetRow = gSheetRow + 1
 
 	# add values
-	for key in dbDA.keys():
+	for key in dbSortedKeys:
 
 		a = key.split(":")
 
@@ -5861,6 +6106,15 @@ def selectView(iCaller="selectView"):
 	# create empty spreadsheet
 	gSheet = gAD.addObject("Spreadsheet::Sheet","toCut")
 
+	# sort db keys
+	global dbSortedKeys
+	dbSortedKeys = sorted(dbSortedDict, key=dbSortedDict.get)
+	if len(dbSortedKeys) == 0:
+		if sLTF == "a":
+			dbSortedKeys = dbDQ.keys()
+		else:
+			dbSortedKeys = dbDA.keys()
+	
 	# main report - quantity
 	if sLTF == "q":
 		setViewQ(iCaller)
@@ -5889,9 +6143,13 @@ def selectView(iCaller="selectView"):
 		if sAEI == True:
 			setViewEdge(iCaller)
 
-	# main report - quantity
+	# main report - raw wood
 	if sLTF == "r":
 		setViewR(iCaller)
+	
+	# main report - sawmill
+	if sLTF == "s":
+		setViewS(iCaller)
 		
 	# main report - edge extended
 	if sLTF == "e":
@@ -5960,7 +6218,7 @@ def setTechDraw(iCaller="setTechDraw"):
 	# create TechDraw page for print
 	if sLTF == "a" or sAWC == True or sAPC == True:
 		gPrint = MagicPanels.createTechDrawPage("toPrint", "A4", "h")
-	elif sLTF == "r":
+	elif sLTF == "r" or sLTF == "s":
 		gPrint = MagicPanels.createTechDrawPage("toPrint", "A4", "h")
 	else:
 		gPrint = MagicPanels.createTechDrawPage("toPrint", "A4", "v")
@@ -6016,7 +6274,7 @@ def setTechDraw(iCaller="setTechDraw"):
 	# fix FreeCAD bug
 	if sLTF == "a":
 		gPrintSheet.CellEnd = "K" + str(gSheetRow)
-	elif sLTF == "r":
+	elif sLTF == "r" or sLTF == "s":
 		gPrintSheet.CellEnd = "K" + str(gSheetRow)
 	else:
 		gPrintSheet.CellEnd = "G" + str(gSheetRow)
