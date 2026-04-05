@@ -3835,6 +3835,45 @@ FreeCADGui.addCommand("panel2frame", panel2frame())
 
 	
 # ######################################################################################################################
+class panel2taper():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panel2taper.png"),
+				"MenuText": QT_TRANSLATE_NOOP("panel2taper", "panel2taper, to taper panels"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panel2taper", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+		
+		module = "panel2taper"
+		
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+		
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+		
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		# not needed now, maybe in the future
+		return True
+
+FreeCADGui.addCommand("panel2taper", panel2taper())
+
+	
+# ######################################################################################################################
 class cornerBlock():
 
 	def GetResources(self):

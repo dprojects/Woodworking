@@ -205,6 +205,7 @@ Tools = [
 	"panel2angle", "png", "panel2angle, to create construction angles", "Click to see info.",
 	"panel2angle45cut", "png", "panel2angle45cut, to cut construction profile, angle 45 cut", "Click to see info.",
 	"panel2frame", "png", "panel2frame, to convert panels into frame", "Click to see info.",
+	"panel2taper", "png", "panel2taper, to taper panels", "Click to see info.",
 	"cornerBlock", "png", "cornerBlock, to create furniture table corner block", "Click to see info.",
 	"cornerBrace", "png", "cornerBrace, to create furniture table corner brace", "Click to see info.",
 

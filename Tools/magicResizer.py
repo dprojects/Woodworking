@@ -323,11 +323,20 @@ def showQtGUI():
 		def getResizeObject(self):
 			
 			selection = FreeCADGui.Selection.getSelection()[0]
-			self.gResizeObj = MagicPanels.getReference(selection)
 			self.gResizeSub = FreeCADGui.Selection.getSelectionEx()[0].SubObjects[0]
-			self.gResizeSubIndex = MagicPanels.getEdgeIndex(self.gResizeObj, self.gResizeSub)
-			self.updateEdgeSize()
 			
+			self.gResizeObj = MagicPanels.getReference(selection)
+			self.gResizeSubIndex = MagicPanels.getEdgeIndex(self.gResizeObj, self.gResizeSub)
+			
+			if self.gResizeSubIndex == -1:
+				self.gResizeObj = selection
+				self.gResizeSubIndex = MagicPanels.getEdgeIndex(self.gResizeObj, self.gResizeSub)
+			
+			if self.gResizeSubIndex > 0:
+				self.updateEdgeSize()
+			else:
+				self.s1S.setText(self.gNoSelection1)
+				
 		# ############################################################################
 		def setEdgeSize(self):
 			

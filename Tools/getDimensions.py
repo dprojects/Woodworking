@@ -1669,12 +1669,12 @@ def getArea(iObj, iW, iH, iL, iCaller="getArea"):
 
 	vKey = getKey(iObj, iW, iH, iL, "d", iCaller)
 
-	# return volume from sawmill
-	if sLTF == "r" or sLTF == "s":
+	# return board foot volume for rough
+	if sUnitsArea == "bf" and (sLTF == "r" or sLTF == "s"):
 		vArea = dbSML[vKey] * dbSMW[vKey] * dbSMT[vKey] * 0.000000423776
 		return float(vArea)
 	
-	# return volume for finish
+	# return board foot volume for finish
 	if sUnitsArea == "bf":
 		vArea = iW * iH * iL * 0.000000423776
 		return float(vArea)
@@ -3862,7 +3862,7 @@ def initLang():
 		gLang37 = "Szerokość"
 		gLang38 = "Tarcica"
 		gLang39 = "Gotowe"
-		gLang40 = "Całkowita stopa deski"
+		gLang40 = "Suma"
 		gLang41 = "Dodatek drewna na długość"
 		gLang42 = "Dodatek drewna na szerokość"
 		gLang43 = "Dodatek drewna na grubość"
@@ -3922,7 +3922,7 @@ def initLang():
 		gLang37 = translate("getDimensions", "Width")
 		gLang38 = translate("getDimensions", "raw wood")
 		gLang39 = translate("getDimensions", "finished wood")
-		gLang40 = translate("getDimensions", "Total board foot")
+		gLang40 = translate("getDimensions", "Total")
 		gLang41 = translate("getDimensions", "Lumber allowance for length")
 		gLang42 = translate("getDimensions", "Lumber allowance for width")
 		gLang43 = translate("getDimensions", "Lumber allowance for thickness")
@@ -3982,7 +3982,7 @@ def initLang():
 		gLang37 = "Width"
 		gLang38 = "ROUGH"
 		gLang39 = "FINISH"
-		gLang40 = "Total B.F."
+		gLang40 = "Total"
 		gLang41 = "Lumber allowance for length"
 		gLang42 = "Lumber allowance for width"
 		gLang43 = "Lumber allowance for thickness"
@@ -4414,7 +4414,7 @@ def setViewR(iCaller="setViewR"):
 	gSheet.setAlignment("K1:K" + str(gSheetRow), "right", "keep")
 
 	# ########################################################
-	# total board foot
+	# summary
 	# ########################################################
 
 	vCell = "A" + str(gSheetRow) + ":K" + str(gSheetRow)
@@ -4426,38 +4426,38 @@ def setViewR(iCaller="setViewR"):
 
 	gSheetRow = gSheetRow + 1
 	
-	vCell = "H" + str(gSheetRow) + ":J" + str(gSheetRow)
+	vCell = "G" + str(gSheetRow) + ":J" + str(gSheetRow)
 	gSheet.mergeCells(vCell)
-	gSheet.set("H" + str(gSheetRow), toSheet(gLang40, "string", iCaller))
+	gSheet.set("G" + str(gSheetRow), toSheet(gLang40, "string", iCaller))
 	gSheet.set("K" + str(gSheetRow), toSheet(dbTA["total"], "area", iCaller))
-	gSheet.setStyle("H" + str(gSheetRow), "bold", "add")
+	gSheet.setStyle("G" + str(gSheetRow), "bold", "add")
 	gSheet.setAlignment("K" + str(gSheetRow), "right", "keep")
 	
 	gSheetRow = gSheetRow + 1
 
-	vCell = "H" + str(gSheetRow) + ":J" + str(gSheetRow)
+	vCell = "G" + str(gSheetRow) + ":J" + str(gSheetRow)
 	gSheet.mergeCells(vCell)
-	gSheet.set("H" + str(gSheetRow), toSheet(gLang41, "string", iCaller))
+	gSheet.set("G" + str(gSheetRow), toSheet(gLang41, "string", iCaller))
 	gSheet.set("K" + str(gSheetRow), toSheet(MagicPanels.gLumberLong, "d", iCaller))
-	gSheet.setStyle("H" + str(gSheetRow), "bold", "add")
+	gSheet.setStyle("G" + str(gSheetRow), "bold", "add")
 	gSheet.setAlignment("K" + str(gSheetRow), "right", "keep")
 	
 	gSheetRow = gSheetRow + 1
 
-	vCell = "H" + str(gSheetRow) + ":J" + str(gSheetRow)
+	vCell = "G" + str(gSheetRow) + ":J" + str(gSheetRow)
 	gSheet.mergeCells(vCell)
-	gSheet.set("H" + str(gSheetRow), toSheet(gLang42, "string", iCaller))
+	gSheet.set("G" + str(gSheetRow), toSheet(gLang42, "string", iCaller))
 	gSheet.set("K" + str(gSheetRow), toSheet(MagicPanels.gLumberShort, "d", iCaller))
-	gSheet.setStyle("H" + str(gSheetRow), "bold", "add")
+	gSheet.setStyle("G" + str(gSheetRow), "bold", "add")
 	gSheet.setAlignment("K" + str(gSheetRow), "right", "keep")
 	
 	gSheetRow = gSheetRow + 1
 
-	vCell = "H" + str(gSheetRow) + ":J" + str(gSheetRow)
+	vCell = "G" + str(gSheetRow) + ":J" + str(gSheetRow)
 	gSheet.mergeCells(vCell)
-	gSheet.set("H" + str(gSheetRow), toSheet(gLang43, "string", iCaller))
+	gSheet.set("G" + str(gSheetRow), toSheet(gLang43, "string", iCaller))
 	gSheet.set("K" + str(gSheetRow), toSheet(MagicPanels.gLumberThickness, "d", iCaller))
-	gSheet.setStyle("H" + str(gSheetRow), "bold", "add")
+	gSheet.setStyle("G" + str(gSheetRow), "bold", "add")
 	gSheet.setAlignment("K" + str(gSheetRow), "right", "keep")
 	
 	gSheetRow = gSheetRow + 1
@@ -4560,7 +4560,7 @@ def setViewS(iCaller="setViewS"):
 	gSheet.setAlignment("K1:K" + str(gSheetRow), "right", "keep")
 
 	# ########################################################
-	# total board foot
+	# summary
 	# ########################################################
 
 	vCell = "A" + str(gSheetRow) + ":K" + str(gSheetRow)
@@ -4572,38 +4572,38 @@ def setViewS(iCaller="setViewS"):
 
 	gSheetRow = gSheetRow + 1
 	
-	vCell = "H" + str(gSheetRow) + ":J" + str(gSheetRow)
+	vCell = "G" + str(gSheetRow) + ":J" + str(gSheetRow)
 	gSheet.mergeCells(vCell)
-	gSheet.set("H" + str(gSheetRow), toSheet(gLang40, "string", iCaller))
+	gSheet.set("G" + str(gSheetRow), toSheet(gLang40, "string", iCaller))
 	gSheet.set("K" + str(gSheetRow), toSheet(dbTA["total"], "area", iCaller))
-	gSheet.setStyle("H" + str(gSheetRow), "bold", "add")
+	gSheet.setStyle("G" + str(gSheetRow), "bold", "add")
 	gSheet.setAlignment("K" + str(gSheetRow), "right", "keep")
 	
 	gSheetRow = gSheetRow + 1
 
-	vCell = "H" + str(gSheetRow) + ":J" + str(gSheetRow)
+	vCell = "G" + str(gSheetRow) + ":J" + str(gSheetRow)
 	gSheet.mergeCells(vCell)
-	gSheet.set("H" + str(gSheetRow), toSheet(gLang41, "string", iCaller))
+	gSheet.set("G" + str(gSheetRow), toSheet(gLang41, "string", iCaller))
 	gSheet.set("K" + str(gSheetRow), toSheet(MagicPanels.gLumberLong, "d", iCaller))
-	gSheet.setStyle("H" + str(gSheetRow), "bold", "add")
+	gSheet.setStyle("G" + str(gSheetRow), "bold", "add")
 	gSheet.setAlignment("K" + str(gSheetRow), "right", "keep")
 	
 	gSheetRow = gSheetRow + 1
 
-	vCell = "H" + str(gSheetRow) + ":J" + str(gSheetRow)
+	vCell = "G" + str(gSheetRow) + ":J" + str(gSheetRow)
 	gSheet.mergeCells(vCell)
-	gSheet.set("H" + str(gSheetRow), toSheet(gLang42, "string", iCaller))
+	gSheet.set("G" + str(gSheetRow), toSheet(gLang42, "string", iCaller))
 	gSheet.set("K" + str(gSheetRow), toSheet(MagicPanels.gLumberShort, "d", iCaller))
-	gSheet.setStyle("H" + str(gSheetRow), "bold", "add")
+	gSheet.setStyle("G" + str(gSheetRow), "bold", "add")
 	gSheet.setAlignment("K" + str(gSheetRow), "right", "keep")
 	
 	gSheetRow = gSheetRow + 1
 
-	vCell = "H" + str(gSheetRow) + ":J" + str(gSheetRow)
+	vCell = "G" + str(gSheetRow) + ":J" + str(gSheetRow)
 	gSheet.mergeCells(vCell)
-	gSheet.set("H" + str(gSheetRow), toSheet(gLang43, "string", iCaller))
+	gSheet.set("G" + str(gSheetRow), toSheet(gLang43, "string", iCaller))
 	gSheet.set("K" + str(gSheetRow), toSheet(MagicPanels.gLumberThickness, "d", iCaller))
-	gSheet.setStyle("H" + str(gSheetRow), "bold", "add")
+	gSheet.setStyle("G" + str(gSheetRow), "bold", "add")
 	gSheet.setAlignment("K" + str(gSheetRow), "right", "keep")
 	
 	gSheetRow = gSheetRow + 1

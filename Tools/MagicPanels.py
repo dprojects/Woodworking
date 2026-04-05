@@ -1253,24 +1253,10 @@ def getEdgePlane(iObj, iEdge, iType="auto"):
 			rotated = True
 			w = Part.Wire(iEdge)
 			wire = Part.show(w)
-			wire.Label = "wire"
-			
-			offset = ""
+			wire.Label = "getEdgePlane - wire"
 			
 			if o.isDerivedFrom("PartDesign::Pad"):
-				
 				ref = o.Profile[0].Placement
-				try:
-					support = o.Profile[0].Support[0][0]
-				except:
-					support = o.Profile[0].AttachmentSupport[0][0]
-				
-				if support.Label.startswith("XZ"):
-					offset = FreeCAD.Rotation(FreeCAD.Vector(1, 0, 0), 90)
-					
-				if support.Label.startswith("YZ"):
-					offset = FreeCAD.Rotation(FreeCAD.Vector(0.58, 0.58, 0.58), 120)
-
 			else:
 				ref = o.Placement
 
@@ -1281,7 +1267,6 @@ def getEdgePlane(iObj, iEdge, iType="auto"):
 			[ v1, v2 ] = getEdgeVertices(wire.Shape)
 		
 		else:
-
 			[ v1, v2 ] = getEdgeVertices(iEdge)
 	
 	if iType == "clean":

@@ -175,6 +175,7 @@ def getItems(iType):
 			"panel2angle",
 			"panel2angle45cut",
 			"panel2frame",
+			"panel2taper",
 			"cornerBlock",
 			"cornerBrace"
 		]

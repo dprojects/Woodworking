@@ -128,6 +128,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 	* [panel2angle](#panel2angle)
 	* [panel2angle45cut](#panel2angle45cut)
 	* [panel2frame](#panel2frame)
+	* [panel2taper](#panel2taper)
 	* [cornerBlock](#cornerblock)
 	* [cornerBrace](#cornerbrace)
 * [Joinery](#joinery)
@@ -205,9 +206,12 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 3.0 stable:** <br>
+> * tapered leg feature (panel2taper) <br>
+> * fix to use magicResizer with Pad on Pad (magicResizer, MagicPanels) <br>
+> * fix area calculation for sawmill reports (getDimensions) <br>
 > * custom sort feature for cut-list (getDimensions) <br>
 > * new report type for sawmill based on groups (getDimensions) <br>
-> * summary for `r - raw wood` report type (getDimensions) <br>
+> * summary for r - raw wood report type (getDimensions) <br>
 > * fractions inches option in cut-list (getDimensions) <br>
 
 ## Step 2. Get FreeCAD Mod folder localization
@@ -1921,6 +1925,15 @@ This option was added [to support CNC scripts](https://github.com/dprojects/Wood
 
 **Video tutorials:** 
 * [Quick 45 cut joint](https://www.youtube.com/watch?v=aFe9p4At41c)
+
+<br><br><br>
+
+## panel2taper
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panel2taper.png"> Please select at least one surface to create a tapered panel. This tool allows you to create tapered panel. You can use this tool to create tapered legs of wooden table by selecting the bottom surfaces of each leg. The default taper angle is `-2 degrees` because the new object is created from other side of the selected surface to keep correct position and taper angle direction. You can change the taper angle by edit the `panel2taper` object properties. This tool supports multi surface selection, to select more surfaces hold left `CTRL` key during selection. 
+
+**Video tutorials:** 
+* [Wooden table with tapered legs](https://www.youtube.com/watch?v=NW1o9vuPs8c)
 
 <br><br><br>
 
