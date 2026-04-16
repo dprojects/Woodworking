@@ -206,6 +206,9 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 3.0 stable:** <br>
+> * redesign GUI to handle more features (magicManager) <br>
+> * panel along curve feature (magicManager) <br>
+> * sketch from vertices feature (magicManager) <br>
 > * tapered leg feature (panel2taper) <br>
 > * fix to use magicResizer with Pad on Pad (magicResizer, MagicPanels) <br>
 > * fix area calculation for sawmill reports (getDimensions) <br>
@@ -694,24 +697,22 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 
 ## magicManager
 
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicManager.png">
-This tool allows to preview panel before creation. It allows to see panel at single selected face and also panel between two faces. This tool can be used if you have problems with unpredicted result, "side effect of Magic Panels". However, clicking single icon is sometimes more quicker than opening GUI and choosing right panel. Sice `0.21 version` this tool is able to create panel from selected vertices. This functionality uses observer for reading and helping select vertices. You do not have to hit the vertex directly. If you select edge or face, the nearest vertex will be selected for you. Also you can remove last selected vertex from list if you make mistake. The selected vertices should create wire, shape, but you do not have to select last vertex to close the wire. The first selected vertex will be automatically added at the end to close the wire. If the panel thickness is not set by the user, the thickness for the new panel from vertices will be set from first selected object. Custom thickenss works only for vertices.
-
-* **Panel at face:** To create panel at face select single face and click `refresh selection`.
-* **Panel between faces:** To create panel between two faces select two faces and click `refresh selection`. To select more faces hold `CTRL` key. The selection order is important. If the panel is created outside change selection order.
-* **Panel from vertices:** To create panel from vertices, you have to activate observer. The `first` means the thickness will be get from first selected object. You can set custom thickness if you want or you can also use this option to create panel from selected edges in Sketch, see also [wires2pad](#wires2pad) tool. 
-
-**Options:**
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicManager.png"> This tool allows you to create custom panels. Currently available modes:
   
+**regular rectangle panel:** In this mode, this tool allows you to create panels on the surface of other panels or between two surfaces. To create a panel on the surface of another panel, select the surface and click the `refresh selection` button. To create a panel between two surfaces, select both surfaces while holding down the left `CTRL` key and then click the `refresh selection` button. In this case, you can preview the panel before creating it, as well as customize the panel:
 * **Surface:** You can select panel orientation according to the `XYZ` coordinate axes. The panel can be created at planes: `XY`, `YX`, `XZ`, `ZX`, `YZ`, `ZY`, if you select single face. If you select two faces this tool automatically recognize plane of selected faces and adjust possible panels to create, there will be two panels for valid planes only.
 * **Anchor:** You can select position for the new panel. The anchors are the face vertices. If the object is for example `Cut` there might be more than four anchors to choose.
 * **Size:** Custom size is taken from edges. For example, if you have `Cut` object you can set panel with the same size as the cut edge. All edges should be available, search for the right one.
 * **Offset:** The first selected offset means `no offset` from currently selected `Anchor`. All next are offset with current selected `Size` for `X-`, `X+`, `Y-`, `Y+`, `Z-`, `Z+` coordinate axis. This can be helpful if you want to make frame but the frame is for example `20 mm x 40 mm x 600 mm` and need to be offset with `40 mm`, different size than thickenss `20 mm`.
 
+**panel from vertices (irregular):** In this mode, the tool allows you to create panels from selected vertices. This mode is primarily used to create non-rectangular panels, which can be easily created by selecting vertices on other panels. To start creating an irregularly shaped panel, you must first enable the selection observer by pressing "turn it on" . The observer listens for the user's selection and additionally helps them select the correct vertex. In this case, to select a vertex, simply click an edge or surface near the vertex, and the observer will select the closest vertex. In many cases, direct selection of a vertex may not be possible because such a vertex may be adjacent to another panel. This observer solution makes it much easier and can be done without hiding other panels. In this mode, the observer also checks the panel thickness for the first selected vertex and automatically sets the default thickness for the new panel. If you make a mistake while selecting vertices, you can remove the vertex using the "remove last" button. If you want to create a panel, just press the `create` button at the end.
+
+**sketch from vertices (curve pattern):** This mode was created primarily for the functionality of creating a panel along a curve. Since creating a panel along a curve requires selecting a sketch, and creating a sketch manually using external geometry can be time-consuming, I thought it would be worthwhile to create this option to speed up and simplify the process. Of course, this option can be used for any purpose that requires creating a sketch. To create a sketch in this mode, first enable the observer with the "turn it on" button and select vertices similarly to the "panel from vertices (irregular)" option. In this case, the observer will also help you select the correct vertices, simply click on an edge or surface, which is crucial for quickly creating a sketch in hard-to-reach places.
+
+**panel along curve (based on sketch):** In this mode, you can create panels along a curve. To create a panel along a curve, first activate the observer using the 'turn it on' button. First, select a Sketch, which will describe the panel's thickness and width, and then select edges on other panels in the appropriate order to create a path along which the previously selected Sketch will grow. You can select a Sketch in the object tree or by selecting any edge of the Sketch. Once the list of edges is ready, press the 'create' button. Special attributes 'Woodworking_Height', 'Woodworking_Width', and 'Woodworking_Length' will be added to the object, making the panel visible in the cut list created with the [getDimensions](#getdimensions) tool.
+
 **Video tutorials:** 
-* [How to create panel from wires in Sketch](https://www.youtube.com/watch?v=wV6nlN2z1Ng)
-* [Panel from vertices](https://www.youtube.com/watch?v=6s0fbagPeZA)
-* [Making panels improvement](https://www.youtube.com/watch?v=sunE2rLThZI)
+* [Panel along curve - magicManager improved](https://www.youtube.com/watch?v=RHElKt7s4jU)
 
 <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelCoverXY.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelBackOut.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelSideRightUP.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelSideLeftUP.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelSideRight.png"> <img align="right" width="100" height="100" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelSideLeft.png"> Dedicated panels allows you to add specific furniture element. You can add sides, back or top of the furniture with single click. The side panels improves the thickness offset at the face tools. If you would like to add back of the furniture manually, you have to calculate the back dimensions first. Next you have to move the panel exactly to the back of the furniture position. It is not so easy to do it manually because `1 mm` offset might be a problem. Now you can make it with several clicks, without calculating anything manually. 
 
@@ -1437,7 +1438,13 @@ By default the values at report are rounded to have more clear listing. Rounding
 * `PartDesign :: Body` if you want to measure the full `Body` container instead of each single `PartDesign :: Pad` object inside, for example a tenon created via [magicJoints](#magicjoints) tool, you have to select `Body` and choose the option `selected objects` in [Search path](#search-path).
 * `Part :: Extrusion`
 * `Assembly :: AssemblyObject`, `Assembly :: AssemblyLink` - tested with Assembly4 and FreeCAD 1.0
+* custom objects with `Woodworking_Width`, `Woodworking_Height` and `Woodworking_Length` attributes.
 * custom objects with `Width`, `Height` and `Length` attribute, for example [Stick Frame Workbench objects](https://gitlab.com/mathcodeprint/stickframe).
+
+> [!TIP]
+> The `Woodworking Width`, `Woodworking Height` and `Woodworking Length` attributes are the preferred 
+> dimensions of the object and take precedence over other dimensions. This solution is used in the panel along curve in 
+> [magicManager](#magicmanager) tool to show the correct dimensions in cut list.
 
 ### Supported transformations
 

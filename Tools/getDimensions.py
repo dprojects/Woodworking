@@ -2409,18 +2409,53 @@ def setCustomObject(iObj, iCaller="setCustomObject"):
 		
 		else:
 		
+			vW, vH, vL = 0, 0, 0
+			
 			# get correct dimensions as values
-			vW = iObj.Width.Value
-			vH = iObj.Height.Value
-			vL = iObj.Length.Value
-
+			if hasattr(iObj, "Width") and hasattr(iObj, "Height") and hasattr(iObj, "Length"):
+				vW = iObj.Width.Value
+				vH = iObj.Height.Value
+				vL = iObj.Length.Value
+			
 			# set db for quantity & area & edge size
-			setDB(iObj, vW, vH, vL, iCaller)
+			if vW != 0 and vH != 0 and vL != 0:
+				setDB(iObj, vW, vH, vL, iCaller)
 
 	except:
 
 		# if no access to the values
 		showError(iCaller, iObj, "setCustomObject", "no access to the values")
+		return -1
+
+	return 0
+
+
+# ###################################################################################################################
+def setPrefferedDimensions(iObj, iCaller="setPrefferedDimensions"):
+
+	try:
+
+		if sLTF == "a":
+		
+			setDBApproximation(iObj, iCaller)
+		
+		else:
+		
+			vW, vH, vL = 0, 0, 0
+			
+			if hasattr(iObj, "Woodworking_Width") and hasattr(iObj, "Woodworking_Height") and hasattr(iObj, "Woodworking_Length"):
+				vW = iObj.Woodworking_Width.Value
+				vH = iObj.Woodworking_Height.Value
+				vL = iObj.Woodworking_Length.Value
+				
+			# set db for quantity & area & edge size
+			if vW != 0 and vH != 0 and vL != 0:
+				setDB(iObj, vW, vH, vL, iCaller)
+
+	except:
+
+		# if no access to the values
+		showError(iCaller, iObj, "setPrefferedDimensions", "no access to the values")
 		return -1
 
 	return 0
@@ -3002,6 +3037,11 @@ def setGrainDirection(iObj, iCaller="setGrainDirection"):
 # ###################################################################################################################
 def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 
+	# preffer custom dimensions
+	if hasattr(iObj, "Woodworking_Width") and hasattr(iObj, "Woodworking_Height") and hasattr(iObj, "Woodworking_Length"):
+		setPrefferedDimensions(iObj, iCaller)
+		return 0
+	
 	# normal reports
 	if sLTF != "c" and sLTF != "p":
 
@@ -3021,16 +3061,9 @@ def selectFurniturePart(iObj, iCaller="selectFurniturePart"):
 		elif iObj.isDerivedFrom("Part::Extrusion"):
 			setExtrusion(iObj, iCaller)
 
+		# support for custom objects
 		else:
-			# support for custom objects
-			try:
-				test = iObj.Width.Value
-				test = iObj.Height.Value
-				test = iObj.Length.Value
-				setCustomObject(iObj, iCaller)
-				
-			except:
-				skip = 1
+			setCustomObject(iObj, iCaller)
 
 	# constraints reports
 	else:

@@ -68,10 +68,9 @@ def panelDefault(iType):
 def panelCopy(iType):
 	
 	try:
-		
+		selection = FreeCADGui.Selection.getSelection()
 		sub = False
 		try:
-			obj = FreeCADGui.Selection.getSelection()[1]
 			sub = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
 			
 			if sub.ShapeType == "Vertex":
@@ -92,7 +91,14 @@ def panelCopy(iType):
 		panel = FreeCAD.activeDocument().addObject("Part::Box", "panel"+iType)
 		[ panel.Length, panel.Width, panel.Height ] = [ Length, Width, Height ]
 		
-		MagicPanels.setColor(panel, 0, MagicPanels.gDefaultColor, "color")
+		try:
+			obj = selection[0]
+			if obj.isDerivedFrom("Part::Cut"):
+				MagicPanels.copyColors(obj, panel)
+			else:
+				MagicPanels.copyColors(objRef, panel)
+		except:
+			skip = 1
 		
 		if sub != False:
 			MagicPanels.setContainerPlacement(panel, X, Y, Z, 0, "clean")
@@ -125,7 +131,7 @@ def panelCopy(iType):
 		info += translate('panelCopy', '<b>Note:</b> If you want to copy Pad, you need to have Constraints named "SizeX" and "SizeY" at the Sketch. For custom objects types you need to have Length, Width, Height properties at object (Group: "Base", Type: "App::PropertyLength").') 
 
 		MagicPanels.showInfo("panelCopy"+iType, info)
-
+	
 
 # ###################################################################################################################
 def panelFace(iType):

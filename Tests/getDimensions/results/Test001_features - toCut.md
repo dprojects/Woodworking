@@ -59,9 +59,12 @@
 |   Mirror LinkGroup on Extrude   |   150 mm   |   x   |   1000 mm   |   100 mm   |   2   |   0.3   |
 |   Custom object   |   89 mm   |   x   |   2438 mm   |   38 mm   |   1   |   0.217   |
 |   panelZY003   |   40 mm   |   x   |   600 mm   |   40 mm   |   5   |   0.12   |
+|   along curve - left   |   500 mm   |   x   |   600 mm   |   18 mm   |   2   |   0.6   |
+|   along curve - support between   |   80 mm   |   x   |   400 mm   |   18 mm   |   1   |   0.032   |
+|   curve2panel   |   400 mm   |   x   |   993 mm   |   18 mm   |   1   |   0.397   |
 |   Summary by thickness   |   |   |   |   |   |   |
 |   |   |   |   |   3 mm   |   1   |   0.06   |
-|   |   |   |   |   18 mm   |   57   |   5.416   |
+|   |   |   |   |   18 mm   |   60   |   6.048   |
 |   |   |   |   |   80 mm   |   14   |   0.784   |
 |   |   |   |   |   40 mm   |   6   |   0.48   |
 |   |   |   |   |   100 mm   |   10   |   1.05   |
@@ -69,8 +72,9 @@
 |   |   |   |   |   9 mm   |   4   |   0.002   |
 |   |   |   |   |   30 mm   |   2   |   0.036   |
 |   |   |   |   |   38 mm   |   1   |   0.217   |
+|   |   |   |   |   18 mm   |   1   |   0.397   |
 |   |   |   |   |   |   |   |
-|   Total edge size   |   |   |   |   |   |   143.807 m   |
+|   Total edge size   |   |   |   |   |   |   151.952 m   |
 |   |   |   |   |   |   |   |
 |   4 x    |   Mounting points, Screw, bit PZ2, 4.0 x 40   |   |   |   |   |   |
 |   |   Diameter   |   |   |   |   |   4 mm   |

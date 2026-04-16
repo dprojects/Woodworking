@@ -858,6 +858,11 @@ def getSizes(iObj):
 	
 	# for custom objects
 	try:
+		return [ iObj.Woodworking_Width.Value, iObj.Woodworking_Height.Value, iObj.Woodworking_Length.Value ]
+	except:
+		skip = 1
+	
+	try:
 		return [ iObj.Base_Width.Value, iObj.Base_Height.Value, iObj.Base_Length.Value ]
 	except:
 		skip = 1
