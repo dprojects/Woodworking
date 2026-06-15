@@ -21,6 +21,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 		* [Construction geometry](#construction-geometry)
 		* [Cabinet structure](#cabinet-structure)
 		* [US style](#us-style)
+		* [IKEA, KALLAX sample constructions](#ikea-kallax-sample-constructions)
 		* [Drawers for cabinets](#drawers-for-cabinets)
 		* [Fronts for cabinets](#fronts-for-cabinets)
 		* [Shelves and top for cabinets](#shelves-and-top-for-cabinets)
@@ -207,6 +208,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 3.0 stable:** <br>
+> * IKEA KALLAX sample constructions <br>
 > * support for FreeCAD 1.1.1 stable release <br>
 > * redesign GUI to handle more features (magicManager) <br>
 > * panel along curve feature (magicManager) <br>
@@ -392,6 +394,21 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * [How to add Face Frame to the furniture](https://www.youtube.com/watch?v=CtWfvxd4UmI)
 * [Kitchen cabinet with face frame](https://www.youtube.com/watch?v=WW8du2l_ZuY)
 
+### IKEA, KALLAX sample constructions
+
+* Single shelving unit ( IKEA, KALLAX series style, veneer )
+* Double shelving unit ( IKEA, KALLAX series style, veneer )
+* Cube shelving unit ( IKEA, KALLAX series style, veneer )
+* Bookcase shelving unit ( IKEA, KALLAX series style, veneer )
+
+> [!CAUTION]
+> These are sample structures added for this [issue](https://github.com/dprojects/Woodworking/issues/114). Exercise extreme caution when using these structures and follow 
+> the manufacturer's recommendations. Avoid placing too much weight on such modules or stacking too many of them on top 
+> of each other, as they lack backs and can collapse. Furthermore, be careful when hanging these modules on the wall, 
+> as the lower floor is screwed from the bottom to the sides, causing the entire weight to hang on the joints. 
+> For added safety, I recommend reinforcing these structures with backs. For wall-mounted cabinets, 
+> I recommend placing the lower floor between the sides or reinforcing the joints with additional angle brackets.
+
 ### Drawers for cabinets
 
 * Drawer ( single, X or Y direction, front outside )
@@ -480,6 +497,7 @@ The techniques I show also allow you to avoid problems caused by Sketch or PartD
 * Wooden table ( school desk, single right side )
 * Wooden table ( School desk, single left side )
 * Wooden table ( school desk, both sides )
+* Wooden table ( IKEA, KALLAX desk, single right side )
 * Wooden table ( simple, import parametric )
 
 **Video tutorials:** 
