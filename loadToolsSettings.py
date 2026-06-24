@@ -139,6 +139,12 @@ Tools = [
 	"setTextures", "png", "setTextures, to set textures", "This tool allows to store textures information and load textures. Also solves problem with huge project file size because this tool allows to store only link to texture not texture.",
 	"makeBeautiful", "png", "makeBeautiful, make all objects more beautiful", "This tool change visible properties of all objects to look better at the picture. It can be used to make better looking screenshot. If you click again all objects will be changed back to default settings.",
 
+	"panelMaterial", "png", "panelMaterial, apply material name + color to selected panels", "Lists every .FCMat material in your FreeCAD Material folder and applies the chosen one's name to ShapeMaterial.Name and its DiffuseColor to the panel appearance in one click.",
+	"bandLibrary", "png", "bandLibrary, manage edge band types", "Manages the named edge band types of the active document (name + color). Bands defined here are used by bandApply and reported in the cutlist (mode 'a').",
+	"bandApply", "png", "bandApply, apply an edge band to selected faces", "Select one or more faces of panels, then assign a band (from the EdgeBand Library) and a side (Top/Left/Bottom/Right). The face is painted with the band color.",
+	"bandRemove", "png", "bandRemove, remove edge band from selected faces", "Clears the edge band from selected faces and restores the panel base color.",
+	"bandList", "png", "bandList, list every panel with edge bands", "Lists all panels in the active document that have edge bands assigned, with side and band name. Allows clearing bands per panel.",
+
 	# #################################################################################################################################
 	# Woodworking - dimensions
 	# #################################################################################################################################

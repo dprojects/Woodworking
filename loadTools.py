@@ -5432,4 +5432,194 @@ class debugInfo():
 
 FreeCADGui.addCommand("debugInfo", debugInfo())
 
+
+# ######################################################################################################################
+class bandLibrary():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "bandLibrary.png"),
+				"MenuText": QT_TRANSLATE_NOOP("bandLibrary", "bandLibrary, manage edge band types"),
+				"ToolTip" : QT_TRANSLATE_NOOP("bandLibrary", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+
+		module = "bandLibrary"
+
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		return True
+
+FreeCADGui.addCommand("bandLibrary", bandLibrary())
+
+
+# ######################################################################################################################
+class bandApply():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "bandApply.png"),
+				"MenuText": QT_TRANSLATE_NOOP("bandApply", "bandApply, apply an edge band to selected faces"),
+				"ToolTip" : QT_TRANSLATE_NOOP("bandApply", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+
+		module = "bandApply"
+
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		return True
+
+FreeCADGui.addCommand("bandApply", bandApply())
+
+
+# ######################################################################################################################
+class bandRemove():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "bandRemove.png"),
+				"MenuText": QT_TRANSLATE_NOOP("bandRemove", "bandRemove, remove edge band from selected faces"),
+				"ToolTip" : QT_TRANSLATE_NOOP("bandRemove", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+
+		module = "bandRemove"
+
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		return True
+
+FreeCADGui.addCommand("bandRemove", bandRemove())
+
+
+# ######################################################################################################################
+class bandList():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "bandList.png"),
+				"MenuText": QT_TRANSLATE_NOOP("bandList", "bandList, list every panel with edge bands"),
+				"ToolTip" : QT_TRANSLATE_NOOP("bandList", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+
+		module = "bandList"
+
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		return True
+
+FreeCADGui.addCommand("bandList", bandList())
+
+
+# ######################################################################################################################
+class panelMaterial():
+
+	def GetResources(self):
+		return {"Pixmap"  : os.path.join(iconPath, "panelMaterial.png"),
+				"MenuText": QT_TRANSLATE_NOOP("panelMaterial", "panelMaterial, apply material name + color to selected panels"),
+				"ToolTip" : QT_TRANSLATE_NOOP("panelMaterial", "Click to see info."),
+				"Accel"   : "" }
+
+	def Activated(self):
+
+		import os, sys
+		import fakemodule
+
+		modulePath = sys.path
+
+		module = "panelMaterial"
+
+		path = os.path.dirname(fakemodule.__file__)
+		path = os.path.join(path, "Tools")
+
+		sys.path.append(path)
+
+		if module in sys.modules:
+			del sys.modules[module]
+
+		__import__(module, globals(), locals(), [], 0)
+
+		sys.path = modulePath
+
+		return
+
+	def IsActive(self):
+		return True
+
+FreeCADGui.addCommand("panelMaterial", panelMaterial())
+
 	
