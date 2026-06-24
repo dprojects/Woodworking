@@ -2141,19 +2141,107 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 def setDBApproximation(iObj, iCaller="setDBApproximation"):
 
 	try:
-		
+
 		[ vKey, thick, s1, s2 ] = getApproximation(iObj, iCaller)
-		
+
 		if thick <= 0 or s1 <= 0 or s2 <= 0:
 			raise
-		
+
+		# grain direction reduced to a single value per piece:
+		# first face with "h" wins horizontal, first "v" wins vertical,
+		# empty otherwise. Appended to the key with a "|||" separator so
+		# identical sizes with different grain count as different pieces
+		# and so the group label (which uses ":") is never mis-parsed.
+		vGrain = ""
+		if hasattr(iObj, "Grain"):
+			for g in iObj.Grain:
+				if str(g) == "h":
+					vGrain = "h"
+					break
+				if str(g) == "v":
+					vGrain = "v"
+					break
+
+		# edge banding per piece: 4 entries [Top, Left, Bottom, Right],
+		# each one a band name from the document's edgeband library or "".
+		vBand = [ "", "", "", "" ]
+		if hasattr(iObj, "EdgeBand") and len(iObj.EdgeBand) == 4:
+			for j in range(4):
+				vBand[j] = str(iObj.EdgeBand[j])
+
+		# Material identifier, by priority:
+		#  1. ShapeAppearance[0].Name  - new appearance card name
+		#  2. ShapeMaterial.Name       - legacy material name
+		#  3. Label2                   - free-text user label
+		#  4. hex of the panel's first face DiffuseColor (#RRGGBB)
+		# Cutlistoptimizer groups by string equality.
+		vMaterial = ""
+
+		# 1. appearance card name (FreeCAD 1.x)
+		try:
+			sa = iObj.ViewObject.ShapeAppearance
+			if len(sa) > 0:
+				name = getattr(sa[0], "Name", "") or ""
+				if name and name not in ("Default", "(None)"):
+					vMaterial = str(name)
+		except:
+			pass
+
+		# 2. legacy ShapeMaterial.Name
+		if vMaterial == "":
+			try:
+				if hasattr(iObj, "ShapeMaterial") and hasattr(iObj.ShapeMaterial, "Name"):
+					n = iObj.ShapeMaterial.Name
+					if n and n != "Default":
+						vMaterial = str(n)
+			except:
+				pass
+
+		# 3. Label2 free-text fallback
+		if vMaterial == "" and hasattr(iObj, "Label2"):
+			try:
+				if iObj.Label2:
+					vMaterial = str(iObj.Label2)
+			except:
+				pass
+
+		# 4. hex of the first face color
+		if vMaterial == "":
+			try:
+				c = iObj.ViewObject.ShapeAppearance[0].DiffuseColor
+			except:
+				c = None
+				try:
+					da = iObj.ViewObject.DiffuseColor
+					if hasattr(da, "__len__") and len(da) > 0 and hasattr(da[0], "__len__"):
+						c = da[0]
+					else:
+						c = da
+				except:
+					c = None
+			if c is not None:
+				try:
+					r = int(round(c[0] * 255))
+					g = int(round(c[1] * 255))
+					b = int(round(c[2] * 255))
+					vMaterial = "#%02X%02X%02X" % (r, g, b)
+				except:
+					pass
+
+		vKey = vKey + "|||" + vGrain
+		vKey = vKey + "|||" + vBand[0]
+		vKey = vKey + "|||" + vBand[1]
+		vKey = vKey + "|||" + vBand[2]
+		vKey = vKey + "|||" + vBand[3]
+		vKey = vKey + "|||" + vMaterial
+
 		# set dimensions db
 		if vKey in dbDQ:
-			
+
 			dbDQ[vKey] = dbDQ[vKey] + 1
-			
+
 		else:
-		
+
 			dbDQ[vKey] = 1
 
 	except:
@@ -4192,21 +4280,32 @@ def setViewA(iCaller="setViewA"):
 
 	# add values
 	for key in dbSortedKeys:
-		
-		# split key
-		a = key.split(":")
-		
+
+		# key format produced by setDBApproximation:
+		#   thickness:s1:s2:group|||grain|||top|||left|||bottom|||right|||material
+		parts = key.split("|||")
+		keyBody = parts[0]
+		grain = parts[1] if len(parts) > 1 else ""
+		bandTop = parts[2] if len(parts) > 2 else ""
+		bandLeft = parts[3] if len(parts) > 3 else ""
+		bandBottom = parts[4] if len(parts) > 4 else ""
+		bandRight = parts[5] if len(parts) > 5 else ""
+		material = parts[6] if len(parts) > 6 else ""
+
+		# split key body: thickness:s1:s2:group
+		a = keyBody.split(":")
+
 		# split group
-		group = a[3]
-		label = a[3]
-		grain = ""
-		
+		group = a[3] if len(a) > 3 else ""
+		label = group
+
+		# legacy support: group label of the form "<label>, grain horizontal"
 		if group.find(", ") != -1:
-			
+
 			more = group.split(", ")
 			label = more[0]
 			g = more[1]
-			
+
 			if g == "grain horizontal":
 				grain = "h"
 			if g == "grain vertical":
@@ -4215,14 +4314,20 @@ def setViewA(iCaller="setViewA"):
 		gSheet.set("A" + str(gSheetRow), toSheet(a[1], "string", iCaller)) 			# Length
 		gSheet.set("B" + str(gSheetRow), toSheet(a[2], "string", iCaller)) 			# Width
 		gSheet.set("C" + str(gSheetRow), toSheet(dbDQ[key], "string", iCaller)) 	# Qty
-		gSheet.set("D" + str(gSheetRow), toSheet(a[0], "string", iCaller))			# Material
-		gSheet.set("E" + str(gSheetRow), toSheet(label, "string", iCaller))			# Label
+		# Material column: prefer the panel's ShapeMaterial / Label2 if set,
+		# otherwise fall back to the numeric thickness (legacy behaviour).
+		materialCell = material if material else a[0]
+		gSheet.set("D" + str(gSheetRow), toSheet(materialCell, "string", iCaller))	# Material
+		# Label column: append detected thickness in parentheses so the user
+		# can verify visually that the algorithm picked the right dimension.
+		labelCell = (label if label else "") + " (" + str(a[0]) + ")"
+		gSheet.set("E" + str(gSheetRow), toSheet(labelCell, "string", iCaller))		# Label
 		gSheet.set("F" + str(gSheetRow), "true")									# Enabled
 		gSheet.set("G" + str(gSheetRow), toSheet(grain, "string", iCaller))			# Grain direction
-		gSheet.set("H" + str(gSheetRow), "")										# Top band
-		gSheet.set("I" + str(gSheetRow), "")										# Left band
-		gSheet.set("J" + str(gSheetRow), "")										# Bottom band
-		gSheet.set("K" + str(gSheetRow), "")										# Right band
+		gSheet.set("H" + str(gSheetRow), toSheet(bandTop, "string", iCaller))		# Top band
+		gSheet.set("I" + str(gSheetRow), toSheet(bandLeft, "string", iCaller))		# Left band
+		gSheet.set("J" + str(gSheetRow), toSheet(bandBottom, "string", iCaller))	# Bottom band
+		gSheet.set("K" + str(gSheetRow), toSheet(bandRight, "string", iCaller))		# Right band
 		
 		# go to next spreadsheet row
 		gSheetRow = gSheetRow + 1
