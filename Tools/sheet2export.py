@@ -39,10 +39,20 @@ sFileType = "html"
 sExportType = "a"
 
 # File path:
-# "~" - user home folder
-# "./" - current macro folder
+# default: the folder of the active document's .FCStd if it has been
+# saved, otherwise the user home folder. Cross-platform.
+# "~"           - user home folder
+# "~/Documents" - typical Documents folder
+# "./"          - current macro folder (NOT recommended: CWD depends on
+#                 how FreeCAD was launched and is often not writable)
 # or set Your custom path with write permissions
-sFilePath = "./"
+import os as _os
+_doc = FreeCAD.activeDocument()
+if _doc is not None and getattr(_doc, "FileName", ""):
+	sFilePath = _os.path.dirname(_doc.FileName)
+else:
+	sFilePath = "~"
+del _os, _doc
 
 
 # ###################################################################################################################
@@ -470,21 +480,30 @@ def showInfo(iText):
 def showError(iObj, iPlace, iError):
 
 	FreeCAD.Console.PrintMessage(gSepC)
-	
+
 	try:
-		FreeCAD.Console.PrintMessage("ERROR: ")
-		FreeCAD.Console.PrintMessage(" | ")
-		FreeCAD.Console.PrintMessage(str(iObj.Label))
-		FreeCAD.Console.PrintMessage(" | ")
-		FreeCAD.Console.PrintMessage(str(iPlace))
-		FreeCAD.Console.PrintMessage(" | ")
-		FreeCAD.Console.PrintMessage(str(iError))
-		
+		label = str(iObj.Label)
+	except:
+		label = "?"
+
+	msg = "ERROR | " + label + " | " + str(iPlace) + " | " + str(iError)
+
+	try:
+		FreeCAD.Console.PrintMessage(msg)
 	except:
 		FreeCAD.Console.PrintMessage("FATAL ERROR, or even worse :-)")
-		
+
 	FreeCAD.Console.PrintMessage(gSepC)
-	
+
+	# also surface the error in the GUI; without this the dialog kept
+	# saying "Exported files" even when nothing was written.
+	if sQT == "yes":
+		try:
+			QtGui.QMessageBox.critical(None,
+				translate('sheet2export', 'sheet2export - error'), msg)
+		except:
+			pass
+
 	return 0
 
 
@@ -1205,13 +1224,26 @@ def saveToDisk():
 
 	import os, sys
 	from os.path import expanduser
-	
-	vRoot = expanduser(sFilePath)
+
+	# resolve "~" and turn relative paths into absolute ones; a bare "./"
+	# is relative to FreeCAD's CWD, which depends on how FreeCAD was
+	# launched and is often a non-writable system folder.
+	vRoot = os.path.abspath(expanduser(sFilePath))
+
+	if not os.path.isdir(vRoot):
+		raise IOError("Export directory does not exist: " + vRoot)
+	if not os.access(vRoot, os.W_OK):
+		raise IOError("Export directory is not writable: " + vRoot
+			+ " (check folder permissions; try ~ or a folder you own)")
+
 	vFileName = str(gFile) + "." + str(sFileType)
 	vFile = os.path.join(vRoot, vFileName)
-	
-	with open(vFile, 'w') as vFH:
-		vFH.write("%s" % gOUT)
+
+	try:
+		with open(vFile, 'w') as vFH:
+			vFH.write("%s" % gOUT)
+	except (OSError, IOError) as e:
+		raise IOError("Could not write " + vFile + ": " + str(e))
 
 	gExpFilesN += vFile + "\t\n"
 
@@ -1225,19 +1257,24 @@ def runTasks():
 
 	try:
 		setDB()
-	except:
-		showError(gSheet, "setDB" , "Databese is not set correctly.")
-		
+	except Exception as e:
+		showError(gSheet, "setDB" , "Database is not set correctly: " + str(e))
+		return -1
+
 	try:
 		if setOUTPUT() == -1:
 			return 0
-	except:
-		showError(gSheet, "setOUTPUT" , "Output is not set correctly.")
-		
-	try:	
+	except Exception as e:
+		showError(gSheet, "setOUTPUT" , "Output is not set correctly: " + str(e))
+		return -1
+
+	try:
 		saveToDisk()
-	except:
-		showError(gSheet, "saveToDisk" , "File is not exported correctly.")
+	except Exception as e:
+		showError(gSheet, "saveToDisk" , "File is not exported: " + str(e))
+		return -1
+
+	return 0
 
 
 # ###################################################################################################################
@@ -1266,23 +1303,24 @@ if gExecute == "yes":
 
 			# check if this is correct spreadsheet object
 			if gSheet.isDerivedFrom("Spreadsheet::Sheet"):
-		
+
 				# set output filename
 				gFile = gAD.Label + " - " + gSheet.Label
-		
+
 				# set info
 				FreeCAD.Console.PrintMessage("\n")
 				FreeCAD.Console.PrintMessage("Exporting: ")
 				FreeCAD.Console.PrintMessage(gSheet.Label + " ")
-		
+
 				# create output file
-				runTasks()
-	
-				# info
-				info = ""
-				info += translate('sheet2export', 'Exported files')
-				info += ": \n\n" + str(gExpFilesN) + "\n\n"
-				showInfo(info)
+				rc = runTasks()
+
+				# only confirm if something was actually written
+				if rc == 0 and gExpFilesN != "":
+					info = ""
+					info += translate('sheet2export', 'Exported files')
+					info += ": \n\n" + str(gExpFilesN) + "\n\n"
+					showInfo(info)
 			else:
 				showInfo(translate('sheet2export', 'Please select spreadsheet to export.'))
 		except:
@@ -1310,16 +1348,17 @@ if gExecute == "yes":
 			FreeCAD.Console.PrintMessage("\n")
 			FreeCAD.Console.PrintMessage("Exporting: ")
 			FreeCAD.Console.PrintMessage(gSheet.Label + " ")
-			
+
 			# create output file
 			resetDB()
 			runTasks()
 
-		# info
-		info = ""
-		info += translate('sheet2export', 'Exported files')
-		info += ": \n\n" + str(gExpFilesN) + "\n\n"
-		showInfo(info)
+		# only confirm if at least one file was actually written
+		if gExpFilesN != "":
+			info = ""
+			info += translate('sheet2export', 'Exported files')
+			info += ": \n\n" + str(gExpFilesN) + "\n\n"
+			showInfo(info)
 	else:
 		showError(gAD, "main", "Please set sExportType correctly.")
 
