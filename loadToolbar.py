@@ -112,7 +112,12 @@ def getItems(iType):
 		parts = [
 			"magicColors",
 			"setTextures",
-			"makeBeautiful"
+			"makeBeautiful",
+			"panelMaterial",
+			"bandLibrary",
+			"bandApply",
+			"bandRemove",
+			"bandList"
 		]
 
 	if iType == "Woodworking - dimensions":
