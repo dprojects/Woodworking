@@ -136,9 +136,6 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 	* [magicJoints](#magicjoints)
 	* [jointTenonCut](#jointtenoncut)
 	* [jointMortiseCut](#jointmortisecut)
-	* [grainH](#grainh)
-	* [grainV](#grainv)
-	* [grainX](#grainx)
 	* [magicCut](#magiccut)
 	* [magicKnife](#magicknife)
 	* [jointTenonDowel](#jointtenondowel)
@@ -154,16 +151,28 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 	* [Router bit - Straight](#router-bit---straight)
 	* [Router bit - Chamfer](#router-bit---chamfer)
 	* [multiPocket](#multipocket)
+* [Veneer](#veneer)
+	* [Simple veneer](#simple-veneer)
+	* [Veneer simulation - addVeneer](#veneer-simulation---addveneer)
+	* [Advanced professional veneer](#advanced-professional-veneer)
+		* [bandLibrary](#bandlibrary)
+		* [bandApply](#bandapply)
+		* [bandRemove](#bandremove)
+		* [bandList](#bandlist)
+		* [panelMaterial](#panelmaterial)
+* [Grain direction](#grain-direction)
+	* [grainH](#grainh)
+	* [grainV](#grainv)
+	* [grainX](#grainx)
 * [Advanced](#advanced)
-	* [addVeneer](#addveneer)
 	* [align2Curve](#align2curve)
 	* [roundCurve](#roundcurve)
 	* [showOccupiedSpace](#showoccupiedspace)
 	* [showConstraints](#showconstraints)
 * [Code and Debug](#code-and-debug)
+	* [debugInfo](#debuginfo)
 	* [scanObjects](#scanobjects)
 	* [showPlacement](#showplacement)
-	* [debugInfo](#debuginfo)
 * [API for developers](#api-for-developers)
 * [Short old tutorials](#short-old-tutorials)
 	* [Drilling serially](#drilling-serially)
@@ -208,6 +217,8 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 3.0 stable:** <br>
+> * icons and docs improvement <br>
+> * veneer and grain direction improvement by [Julio Cortez](https://github.com/JoKradept) (pull requests: [117](https://github.com/dprojects/Woodworking/pull/117), [118](https://github.com/dprojects/Woodworking/pull/118), [119](https://github.com/dprojects/Woodworking/pull/119), [120](https://github.com/dprojects/Woodworking/pull/120))  <br>
 > * IKEA KALLAX sample constructions <br>
 > * support for FreeCAD 1.1.1 stable release <br>
 > * redesign GUI to handle more features (magicManager) <br>
@@ -1367,7 +1378,7 @@ Example weights unit of commonly used wood in lb/board foot:
 * **dowels and screws:** shows dowels created via [magicDowels](#magicdowels) tool and also Woodworking workbench screw replaced via [panel2link](#panel2link) or [panel2clone](#panel2clone) tools. If you want to have custom dowels or screws visible at the report you need to have `Part::Cylinder` object inside with measurements.
 * **construction profiles:** shows construction profiles created via [panel2profile](#panel2profile) or [panel2angle](#panel2angle) tools. If you want to have custom profiles you need to have `PartDesign::Thickness` object type. This report type supports also [Dodo workbench construction profiles](https://github.com/oddtopus/dodo).
 * **decorations:** shows dimensions for objects considered as decoration, i.e. `PartDesign::Fillet`, `PartDesign::Chamfer`, `Part::Sphere`, `Part::Cone`, `Part::Torus` object types.
-* **veneer simulation:** create additional report for veneer added via [addVeneer](#addveneer) tool.
+* **veneer simulation:** create additional report for veneer added via [addVeneer](#veneer-simulation---addveneer) tool.
 * **grain direction:** shows grain direction for object created via [grainH](#grainh), [grainV](#grainv) or [grainX](#grainx) tools.
 
 ### How to sort list
@@ -2069,36 +2080,6 @@ This option was added [to support CNC scripts](https://github.com/dprojects/Wood
 * [How to create tenon and mortise quickly](https://www.youtube.com/watch?v=vuddlHfAbCc)
 * [Playlist for Joinery](https://www.youtube.com/playlist?list=PLSKOS_LK45BBG8kJ2AZvQKBfOSfzhTrLt)
 
-## grainH
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/grainH.png"> This tool creates horizontal grain direction description at selected face. You can select multiple faces and multiple objects. Hold left CTRL key during selection. The Grain attribute will be added to the object. After adding grain direction description the object can be moved and the grain description will be moved together with the object.
-
-**Video tutorials:** 
-* [Grain Direction Marker](https://www.youtube.com/watch?v=PXXKBrtAtzQ)
-* [Grain Direction Report](https://www.youtube.com/watch?v=4W6Lnkh3DRs)
-
-<br><br><br>
-
-## grainV
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/grainV.png"> This tool creates horizontal grain direction description at selected face. You can select multiple faces and multiple objects. Hold left CTRL key during selection. The Grain attribute will be added to the object. After adding grain direction description the object can be moved and the grain description will be moved together with the object.
-
-**Video tutorials:** 
-* [Grain Direction Marker](https://www.youtube.com/watch?v=PXXKBrtAtzQ)
-* [Grain Direction Report](https://www.youtube.com/watch?v=4W6Lnkh3DRs)
-
-<br><br><br>
-
-## grainX
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/grainX.png"> This tool creates horizontal grain direction description at selected face. You can select multiple faces and multiple objects. Hold left CTRL key during selection. The Grain attribute will be added to the object. After adding grain direction description the object can be moved and the grain description will be moved together with the object.
-
-**Video tutorials:** 
-* [Grain Direction Marker](https://www.youtube.com/watch?v=PXXKBrtAtzQ)
-* [Grain Direction Report](https://www.youtube.com/watch?v=4W6Lnkh3DRs)
-
-<br><br><br>
-
 ## magicCut
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/magicCut.png"> This tool make multi boolean cut operation at selected objects. First object should be the base object to cut. All other selected objects will cut the base 1st selected object. To select more objects hold left CTRL key during selection. During this process only the copies will be used to cut, so the original objects will not be moved at tree. Also there will be auto labeling to keep the cut tree more informative and cleaner. If you are looking for parametric Boolean Cut operation you may consider [magicCutLinks](#magiccutlinks) instead.
@@ -2237,9 +2218,13 @@ This option was added [to support CNC scripts](https://github.com/dprojects/Wood
 
 <br><br><br>
 
-# Advanced
+# Veneer
 
-## addVeneer
+## Simple veneer
+
+The quickest way to add veneer to the edge is to use the [magicColors](#magiccolors) tool and mark the corresponding edges with a different color. This selection will be automatically recognized when creating a standard cut list using the [getDimensions](#getdimensions) tool.
+
+## Veneer simulation - addVeneer
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/addVeneer.png"> Veneer created from `PVC` material can be up to `2 mm` thick. In such a case, you can use this tool, which allows you to simulate the addition of veneer. A `Part::Box` object will be created on the selected face, simulating the added veneer. This approach allows the added veneer to be easily modified. You can modify the length, width, thickness, and other parameters of the applied veneer, which means you can more accurately calculate how much veneer is needed and what spacing should be maintained when calculating board sizes. The default size and other parameters of the applied veneer are taken from the settings in the [magicSettings](#magicsettings) tool. By default, the thickness of the applied veneer is set to `0 mm` to avoid interfering with the modeling process. However, the object cannot be `0 mm` thick, so the default settings set the veneer thickness to `0.01 mm`. The default veneer color is white because the default board color is brown. Personally, I often use white veneer heat-sealing tape on plywood shelves, which makes the shelf look much better in white furniture. I use black veneer on white chipboard furniture. This approach allows you also to add texture only to veneer and get more realistic look. Added venner is also supported by cut-list created via [getDimensions](#getdimensions) tool, so you can create detailed description of added veneer.
 
@@ -2247,6 +2232,74 @@ This option was added [to support CNC scripts](https://github.com/dprojects/Wood
 * [Veneer simulation](https://www.youtube.com/watch?v=VONecUTGSwE)
 
 <br><br><br>
+
+## Advanced professional veneer
+
+This functionality was created by [Julio Cortez](https://github.com/JoKradept) (pull requests: [117](https://github.com/dprojects/Woodworking/pull/117), [118](https://github.com/dprojects/Woodworking/pull/118), [119](https://github.com/dprojects/Woodworking/pull/119), [120](https://github.com/dprojects/Woodworking/pull/120)) to generate an [a - approximation](#main-report) cut list type.
+
+### bandLibrary
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/bandLibrary.png"> This tool allows you to create a list of veneer colors. The items from this list can then be used to add veneer using the [bandApply](#bandapply) tool. 
+
+<br><br><br><br><br><br>
+
+### bandApply
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/bandApply.png"> This tool allows you to add edge information from a pre-defined list using the [bandLibrary](#bandlibrary) tool. Simply select any number of board edges while holding down the left CTRL key and later select a color from the list. The edge will be described and can be displayed in the [a - approximation](#main-report) cut list type.
+
+<br><br><br><br><br><br>
+
+### bandRemove
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/bandRemove.png"> This tool allows you to remove edge information from selected faces. Select the appropriate faces that have a defined veneer and click this button. 
+
+<br><br><br><br><br><br>
+
+### bandList
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/bandList.png"> This tool allows you to display a list of all edges with veneer and also remove such veneer description directly from the list.
+
+<br><br><br><br><br><br>
+
+### panelMaterial
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/panelMaterial.png"> will be described soon...
+
+<br><br><br><br><br><br>
+
+# Grain direction
+
+## grainH
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/grainH.png"> This tool creates horizontal grain direction description at selected face. You can select multiple faces and multiple objects. Hold left CTRL key during selection. The Grain attribute will be added to the object. After adding grain direction description the object can be moved and the grain description will be moved together with the object.
+
+**Video tutorials:** 
+* [Grain Direction Marker](https://www.youtube.com/watch?v=PXXKBrtAtzQ) (outdated but may be useful)
+* [Grain Direction Report](https://www.youtube.com/watch?v=4W6Lnkh3DRs) (outdated but may be useful)
+
+<br><br><br>
+
+## grainV
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/grainV.png"> This tool creates horizontal grain direction description at selected face. You can select multiple faces and multiple objects. Hold left CTRL key during selection. The Grain attribute will be added to the object. After adding grain direction description the object can be moved and the grain description will be moved together with the object.
+
+**Video tutorials:** 
+* [Grain Direction Marker](https://www.youtube.com/watch?v=PXXKBrtAtzQ) (outdated but may be useful)
+* [Grain Direction Report](https://www.youtube.com/watch?v=4W6Lnkh3DRs) (outdated but may be useful)
+
+<br><br><br>
+
+## grainX
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/grainX.png"> This tool creates horizontal grain direction description at selected face. You can select multiple faces and multiple objects. Hold left CTRL key during selection. The Grain attribute will be added to the object. After adding grain direction description the object can be moved and the grain description will be moved together with the object.
+
+**Video tutorials:** 
+* [Grain Direction Marker](https://www.youtube.com/watch?v=PXXKBrtAtzQ) (outdated but may be useful)
+* [Grain Direction Report](https://www.youtube.com/watch?v=4W6Lnkh3DRs) (outdated but may be useful)
+
+<br><br><br>
+
+# Advanced
 
 ## align2Curve
 
@@ -2287,6 +2340,20 @@ Selection modes:
 
 # Code and Debug
 
+## debugInfo
+
+<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/debugInfo.png"> This tool allows to get platform information used for FreeCAD bug report and update Woodworking workbench.
+
+**Main features:**
+
+* Shows your system information which can be used for FreeCAD bug report.
+* Run some test cases, mostly import modules used by Woodworking workbench, to find out if the FreeCAD version is safe to use.
+* Show information about tested FreeCAD kernel version.
+* Checking for Woodworking workbench updates at GitHub.
+* Allows you to update Woodworking workbench. If the date of your Woodworking workbench match the latest master branch date you have information `up-to-date`. Otherwise you have link to download the latest version from github master branch and also the button to update will be available. After Woodworking workbench update the FreeCAD will restar with new Woodworking workbench version.
+* Allows you to list disabled old Woodworking workbench versions. If you have `up-to-date` Woodworking workbench version, the button to list disabled old Woodworking workbench versions will be visible.
+* Allows you to remove old Woodworking workbench versions. If you list disabled old Woodworking workbench versions the button to remove the old Woodworking workbench versions will be visible. After the button press those folder will be removed permanently, so make sure yu want to remove them.
+
 ## scanObjects
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/scanObjects.png"> This is inspection tool for FreeCAD, macro or workbench tools development, live API. It allows for live preview of FreeCAD projects, code debugging, browsing FreeCAD modules, custom libraries or even command results. 
@@ -2313,26 +2380,11 @@ Tool repository: [github.com/dprojects/scanObjects](https://github.com/dprojects
 * [Debugger, Live API](https://www.youtube.com/watch?v=nFK_o95y6xk)
 * [Debugger, Search filter](https://www.youtube.com/watch?v=5h_feMn_lsQ)
 
-
 ## showPlacement
 
 <img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/showPlacement.png"> This tool allows to see objects anchor placement for selected objects or for all objects, if nothing was selected. To select more objects hold left CTRL key during selection. This tool creates a ball in the default anchor for an object, which corresponds to the X, Y, Z coordinates for the Placement attribute. This allows you to quickly see where the object is anchored and to which vertex it is positioned by default. Additionally, it allows you to quickly check for possible problems with the function of calculating the global position of the object and to further improve it for more complex objects. Unfortunately, FreeCAD has not solved the basic problem with object position for so many years, which means that more complex objects do not know their position and cannot be managed.
 
 <br><br><br>
-
-## debugInfo
-
-<img align="right" width="200" height="200" src="https://raw.githubusercontent.com/dprojects/Woodworking/master/Icons/debugInfo.png"> This tool allows to get platform information used for FreeCAD bug report and update Woodworking workbench.
-
-**Main features:**
-
-* Shows your system information which can be used for FreeCAD bug report.
-* Run some test cases, mostly import modules used by Woodworking workbench, to find out if the FreeCAD version is safe to use.
-* Show information about tested FreeCAD kernel version.
-* Checking for Woodworking workbench updates at GitHub.
-* Allows you to update Woodworking workbench. If the date of your Woodworking workbench match the latest master branch date you have information `up-to-date`. Otherwise you have link to download the latest version from github master branch and also the button to update will be available. After Woodworking workbench update the FreeCAD will restar with new Woodworking workbench version.
-* Allows you to list disabled old Woodworking workbench versions. If you have `up-to-date` Woodworking workbench version, the button to list disabled old Woodworking workbench versions will be visible.
-* Allows you to remove old Woodworking workbench versions. If you list disabled old Woodworking workbench versions the button to remove the old Woodworking workbench versions will be visible. After the button press those folder will be removed permanently, so make sure yu want to remove them.
 
 # API for developers
 

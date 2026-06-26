@@ -99,6 +99,12 @@ class WoodworkingWorkbench (Workbench):
 		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - router"), 
 			loadToolbar.getItems("Woodworking - router"))
 
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - veneer"), 
+			loadToolbar.getItems("Woodworking - veneer"))
+
+		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - grain direction"), 
+			loadToolbar.getItems("Woodworking - grain direction"))
+		
 		self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Woodworking - advanced"), 
 			loadToolbar.getItems("Woodworking - advanced"))
 		
@@ -137,13 +143,13 @@ class WoodworkingWorkbench (Workbench):
 					msg = QT_TRANSLATE_NOOP("Workbench", "Setting icons location ...")
 					pref = 'User parameter:Tux/PersistentToolbars/User/WoodworkingWorkbench'
 					
-					pos = 'Workbench,Woodworking - router,Woodworking - advanced,Woodworking - code and debug,Break,Woodworking - convert,Woodworking - face,Woodworking - between,Woodworking - irregular shapes,Woodworking - parameterization,Woodworking - construction,Break,Woodworking - project manage,Woodworking - resize,Woodworking - move and copy,Woodworking - preview,Woodworking - location'
+					pos = 'Break,Workbench,Woodworking - router,Woodworking - veneer,Woodworking - grain direction,Woodworking - advanced,Break,Woodworking - convert,Woodworking - face,Woodworking - between,Woodworking - irregular shapes,Woodworking - parameterization,Woodworking - construction,Break,Woodworking - project manage,Woodworking - resize,Woodworking - move and copy,Woodworking - preview,Woodworking - location'
 					FreeCAD.ParamGet(pref).SetString('Top', pos)
 					
 					pos = 'Woodworking - start,Woodworking - decorations,Woodworking - dimensions'
 					FreeCAD.ParamGet(pref).SetString('Left', pos)
 					
-					pos = 'Break,Woodworking - joinery,Break,Woodworking - dowels and screws,Woodworking - drilling holes,Woodworking - fixture'
+					pos = 'Break,Woodworking - joinery,Woodworking - code and debug,Break,Woodworking - dowels and screws,Woodworking - drilling holes,Woodworking - fixture'
 					FreeCAD.ParamGet(pref).SetString('Right', pos)
 					
 					FreeCAD.ParamGet(pref).SetString('Bottom', '')

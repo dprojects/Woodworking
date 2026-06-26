@@ -139,12 +139,6 @@ Tools = [
 	"setTextures", "png", "setTextures, to set textures", "This tool allows to store textures information and load textures. Also solves problem with huge project file size because this tool allows to store only link to texture not texture.",
 	"makeBeautiful", "png", "makeBeautiful, make all objects more beautiful", "This tool change visible properties of all objects to look better at the picture. It can be used to make better looking screenshot. If you click again all objects will be changed back to default settings.",
 
-	"panelMaterial", "png", "panelMaterial, apply material name + color to selected panels", "Lists every .FCMat material in your FreeCAD Material folder and applies the chosen one's name to ShapeMaterial.Name and its DiffuseColor to the panel appearance in one click.",
-	"bandLibrary", "png", "bandLibrary, manage edge band types", "Manages the named edge band types of the active document (name + color). Bands defined here are used by bandApply and reported in the cutlist (mode 'a').",
-	"bandApply", "png", "bandApply, apply an edge band to selected faces", "Select one or more faces of panels, then assign a band (from the EdgeBand Library) and a side (Top/Left/Bottom/Right). The face is painted with the band color.",
-	"bandRemove", "png", "bandRemove, remove edge band from selected faces", "Clears the edge band from selected faces and restores the panel base color.",
-	"bandList", "png", "bandList, list every panel with edge bands", "Lists all panels in the active document that have edge bands assigned, with side and band name. Allows clearing bands per panel.",
-
 	# #################################################################################################################################
 	# Woodworking - dimensions
 	# #################################################################################################################################
@@ -223,10 +217,6 @@ Tools = [
 	"jointTenonCut", "png", "jointTenonCut, to create tenon by cut", "Click to see info.",
 	"jointMortiseCut", "png", "jointMortiseCut, to create mortise for jointTenonCut", "Click to see info.",
 	
-	"grainH", "png", "grainH, to create horizontal grain direction", "Click to see info.",
-	"grainV", "png", "grainV, to create vertical grain direction", "Click to see info.",
-	"grainX", "png", "grainX, to create a empty of grain direction", "Click to see info.",
-
 	"magicCut", "png", "magicCut, to cut single panel by many knives with copies", "Click to see info.",
 	"magicKnife", "png", "magicKnife, to cut many panels by single knife with copies", "Click to see info.",
 	"jointTenonDowel", "png", "jointTenonDowel, to create tenon as dowel", "Click to see info.",
@@ -260,10 +250,28 @@ Tools = [
 	"multiPocket4", "png", "multiPocket4, to create pocket from selected sketch, 1/4 panel thickness", "Click to see info.",
 
 	# #################################################################################################################################
-	# Woodworking - advanced
+	# Woodworking - veneer
 	# #################################################################################################################################
 
 	"addVeneer", "png", "addVeneer, to create simulation of veneer", "This tool allows you to simulate needed offset for veneer.",
+	"bandLibrary", "png", "bandLibrary, manage edge band types", "Manages the named edge band types of the active document (name + color). Bands defined here are used by bandApply and reported in the cutlist (mode 'a').",
+	"bandApply", "png", "bandApply, apply an edge band to selected faces", "Select one or more faces of panels, then assign a band (from the EdgeBand Library) and a side (Top/Left/Bottom/Right). The face is painted with the band color.",
+	"bandRemove", "png", "bandRemove, remove edge band from selected faces", "Clears the edge band from selected faces and restores the panel base color.",
+	"bandList", "png", "bandList, list every panel with edge bands", "Lists all panels in the active document that have edge bands assigned, with side and band name. Allows clearing bands per panel.",
+	"panelMaterial", "png", "panelMaterial, apply material name + color to selected panels", "Lists every .FCMat material in your FreeCAD Material folder and applies the chosen one's name to ShapeMaterial.Name and its DiffuseColor to the panel appearance in one click.",
+
+	# #################################################################################################################################
+	# Woodworking - grain direction
+	# #################################################################################################################################
+
+	"grainH", "png", "grainH, to create horizontal grain direction", "Click to see info.",
+	"grainV", "png", "grainV, to create vertical grain direction", "Click to see info.",
+	"grainX", "png", "grainX, to create a empty of grain direction", "Click to see info.",
+
+	# #################################################################################################################################
+	# Woodworking - advanced
+	# #################################################################################################################################
+
 	"align2Curve", "png", "align2Curve, to align panel to selected curve", "Click to see info.",
 	"roundCurve", "png", "roundCurve, to render curve precisely", "Click to see info.",
 	"showOccupiedSpace", "png", "showOccupiedSpace, to show occupied space", "This tool allows you to calculate the overall occupied space in 3D by the selected parts or whole model, if nothing is selected.",
@@ -273,9 +281,9 @@ Tools = [
 	# Woodworking - code and debug
 	# #################################################################################################################################
 
+	"debugInfo", "png", "debugInfo, to show system info and update Woodworking workbench", "This tool allows you to show installation information and update Woodworking workbench, if there is new version available.",
 	"scanObjects", "png", "scanObjects, for development purposes", "Inspection tool for FreeCAD macro development & project debug (live API).",
-	"showPlacement", "png", "showPlacement, for development purposes", "This tool allows you to see objects anchor placement for selected objects or for all objects, if nothing was selected. Also allows for quick global placement function debugging and further improvements.",
-	"debugInfo", "png", "debugInfo, to show system info and update Woodworking workbench", "This tool allows you to show installation information and update Woodworking workbench, if there is new version available."  # no comma at the end
+	"showPlacement", "png", "showPlacement, for development purposes", "This tool allows you to see objects anchor placement for selected objects or for all objects, if nothing was selected. Also allows for quick global placement function debugging and further improvements." # no comma at the end
 
 	# #################################################################################################################################	
 ]

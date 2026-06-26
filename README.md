@@ -76,6 +76,44 @@ Unfortunately, tax law in Poland is so absurd that to settle even small amounts,
 
 Perhaps in the future, if there is a greater desire for financial support, I will start a company or launch other financial support channels. However, even if I start developing a paid version in the future, I would like my workbench to continue allowing ordinary individuals to create simple furniture for their home and garage for free.
 
+# Contributions & Pull Requests
+
+If you'd like to help develop this add-on and have any suggestions or comments, the best way is to open an issue at [github.com/dprojects/Woodworking/issues](https://github.com/dprojects/Woodworking/issues) and discuss the changes.
+
+### Pull requests
+
+* You can also create a pull request to highlight specific issues, but pull requests may be closed.
+* If you create a pull request, you must agree to the [MIT](https://github.com/dprojects/Woodworking/blob/master/LICENSE) license. 
+* You also cannot request funding for your work now or in the future.
+* You must accept that your code will be improved or removed by others, or that you will never be thanked for your hard work. Unfortunately, that is how open source works.
+* Changes should be consistent with the current vision for the add-on and not introduce any drastic changes to the interface or user experience. If something really bothers you, it is better to open an issue at [github.com/dprojects/Woodworking/issues](https://github.com/dprojects/Woodworking/issues) and discuss the changes.
+* The changes you want to make should be well-tested in practice, and it is also a good idea to include them in the [Woodworking/Docs/README.md](https://github.com/dprojects/Woodworking/blob/master/Docs/README.md) file.
+
+### Testing changes
+
+To test pull requests, use the multiple pull request merge command:
+
+1. First, create a directory with the official version:
+
+		git clone https://github.com/dprojects/Woodworking.git
+
+2. Then, enter this directory:
+
+		cd ./Woodworking
+
+3. Pull all unaccepted pull requests into this directory, preserving their numbering, using the command:
+
+		git fetch origin pull/PR_NUMBER/head && git merge FETCH_HEAD --no-edit
+
+Replace `PR_NUMBER` with the pull request number, for example:
+
+		git fetch origin pull/117/head && git merge FETCH_HEAD --no-edit
+		git fetch origin pull/118/head && git merge FETCH_HEAD --no-edit
+		git fetch origin pull/119/head && git merge FETCH_HEAD --no-edit
+		git fetch origin pull/120/head && git merge FETCH_HEAD --no-edit
+
+4. Copy the resulting `Woodworking` directory to the `Mod` directory and test in FreeCAD whether the changes you want to make are correct and will actually work in practice.
+
 # Contact
 
 For questions, feature requests, please open issue at: [github.com/dprojects/Woodworking/issues](https://github.com/dprojects/Woodworking/issues)

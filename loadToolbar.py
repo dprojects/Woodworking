@@ -112,12 +112,7 @@ def getItems(iType):
 		parts = [
 			"magicColors",
 			"setTextures",
-			"makeBeautiful",
-			"panelMaterial",
-			"bandLibrary",
-			"bandApply",
-			"bandRemove",
-			"bandList"
+			"makeBeautiful"
 		]
 
 	if iType == "Woodworking - dimensions":
@@ -190,9 +185,6 @@ def getItems(iType):
 			"magicJoints",
 			"jointTenonCut",
 			"jointMortiseCut",
-			"grainH",
-			"grainV",
-			"grainX",
 			"magicCut",
 			"magicKnife",
 			"jointTenonDowel",
@@ -223,9 +215,25 @@ def getItems(iType):
 			"multiPocket4"
 		]
 
-	if iType == "Woodworking - advanced":
+	if iType == "Woodworking - veneer":
 		parts = [
 			"addVeneer",
+			"bandLibrary",
+			"bandApply",
+			"bandRemove",
+			"bandList",
+			"panelMaterial"
+		]
+
+	if iType == "Woodworking - grain direction":
+		parts = [
+			"grainH",
+			"grainV",
+			"grainX"
+		]
+
+	if iType == "Woodworking - advanced":
+		parts = [
 			"align2Curve",
 			"roundCurve",
 			"showOccupiedSpace",
@@ -238,10 +246,10 @@ def getItems(iType):
 
 	if iType == "Woodworking - code and debug":
 		parts = [
-			"scanObjects",
-			"showPlacement",
 			"debugInfo",
+			"scanObjects",
 			"Std_DependencyGraph",
+			"showPlacement",
 			"Std_DlgMacroExecute",
 			"Std_DlgMacroExecuteDirect",
 			"Std_DlgMacroRecord"
