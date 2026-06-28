@@ -78,7 +78,7 @@ Perhaps in the future, if there is a greater desire for financial support, I wil
 
 # Contributions & Pull Requests
 
-If you'd like to help develop this add-on and have any suggestions or comments, the best way is to open an issue at [github.com/dprojects/Woodworking/issues](https://github.com/dprojects/Woodworking/issues) and discuss the changes.
+If you would like to help develop this add-on and have any suggestions or comments, the best way is to open an issue at [github.com/dprojects/Woodworking/issues](https://github.com/dprojects/Woodworking/issues) and discuss the changes.
 
 ### Pull requests
 

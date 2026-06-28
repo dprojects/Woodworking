@@ -51,7 +51,7 @@ def QT_TRANSLATE_NOOP(context, text): #
 
 gSettingsPref = 'User parameter:BaseApp/Preferences/Woodworking' # settings path <br>
 gRoundPrecision = 2                        # should be set according to the user FreeCAD GUI settings <br>
-gSearchDepth = 200                         # recursive search depth <br>
+gSearchLength = 200                         # recursive search depth <br>
 gKernelVersion = 0                         # FreeCAD version to add support for new kernel changes <br>
 
 gTheme = "default"                         # no theme by default <br>
@@ -66,6 +66,8 @@ gWindowAnchor = "freecad"                  # anchors for tools GUI: "freecad", "
 gWindowStaysOnTop = True                   # to keep window on top <br> 
 gCurrentSelection = False                  # to skip refresh selection button <br>
 
+gTransportWidth = 900                      # Kia Picanto Smartstream G1.0 GDi width: 900 mm <br>
+gTransportLength = 1100                    # Kia Picanto Smartstream G1.0 GDi length: 400 mm (without seats: 1100 mm) <br>
 gWoodWeight = 12.6                         # wood weight float in selected calculation method <br>
 gWoodWeightCalculation = "kg/m^2"          # wood weight calculation string: "kg/m^2", "lb/in^2"
 gWoodPrice = 45.98                         # wood price float in user currency, in Poland: 45.98 zł/m^2 (Castorama), 37.98 zł/m^2 (OBI but with additional cost 3.49 zł per single cut - unpredicted) <br>
@@ -9466,6 +9468,20 @@ def updateGlobals():
 	# ##########################################################################################
 	# page 2
 	# ##########################################################################################
+
+	try:
+		if "wTransportWidth" in wusStrings:
+			global gTransportWidth
+			gTransportWidth = float( wus.GetString('wTransportWidth') )
+	except:
+		skip = 1
+		
+	try:
+		if "wTransportLength" in wusStrings:
+			global gTransportLength
+			gTransportLength = float( wus.GetString('wTransportLength') )
+	except:
+		skip = 1
 
 	try:
 		if "wWoodWeight" in wusStrings:

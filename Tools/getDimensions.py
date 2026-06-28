@@ -341,6 +341,9 @@ gLang40 = ""
 gLang41 = ""
 gLang42 = ""
 gLang43 = ""
+gLang44 = ""
+gLang45 = ""
+gLang46 = ""
 
 # ###################################################################################################################
 # Init databases
@@ -398,6 +401,14 @@ dbCNOH = dict() # objects for hole
 dbARQ = dict() # quantity
 dbARN = dict() # names
 dbARV = dict() # values
+
+# help for columns range for additional reports
+dbColumns = dict() # init
+dbColumns["names"] = [ "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N" ] # sheet index
+dbColumns["max"] = "" # will be set according to the report type, see getColumnsMax() function
+
+# transport range
+dbTransportRange = dict()
 
 gColorReference = ""
 
@@ -1946,6 +1957,36 @@ def getConstraintName(iObj, iName, iCaller="getConstraintName"):
 
 
 # ###################################################################################################################
+def getTransportRange(iObj, iW, iH, iL, iCaller="getTransportRange"):
+
+	try:
+		
+		sizes = [ iW, iH, iL ]
+		sizes.sort()
+		
+		panelSize1 = sizes[1]
+		panelSize2 = sizes[2]
+
+		spaceSize1 = MagicPanels.gTransportWidth
+		spaceSize2 = MagicPanels.gTransportLength
+
+		normal = (panelSize1 <= spaceSize1) and (panelSize2 <= spaceSize2)
+		rotated = (panelSize1 <= spaceSize2) and (panelSize2 <= spaceSize1)
+
+		fits = normal or rotated
+
+		if fits:
+			return gLang45
+		else: 
+			return gLang46
+
+	except:
+
+		showError(iCaller, iObj, "getTransportRange", "error during getting transport range")
+		return -1
+
+
+# ###################################################################################################################
 # Database controllers - set db only via this controllers
 # ###################################################################################################################
 
@@ -1998,6 +2039,10 @@ def setDB(iObj, iW, iH, iL, iCaller="setDB"):
 		# get area for object (after sawmill)
 		vArea = getArea(iObj, iW, iH, iL, iCaller)
 		
+		# set transport range
+		if sAMAX == True:
+			dbTransportRange[vKey] = getTransportRange(iObj, iW, iH, iL, iCaller)
+			
 		# get weight
 		if sLTF == "w" or sAWC == True:
 			weight = getWeight(iObj, iW, iH, iL, iCaller) 
@@ -3750,6 +3795,35 @@ def getAssemblyObject(iObj, iCaller="getAssemblyObject"):
 	
 
 # ###################################################################################################################
+def getColumnsMax(iCaller="getColumnsMax"):
+
+	try:
+		
+		index = 0
+		
+		if sLTF == "a" or sLTF == "r" or sLTF == "s":
+			index = 10
+		else:
+			index = 6
+		
+		if sAWC == True:
+			index = index + 1
+		
+		if sAPC == True:
+			index = index + 1
+
+		if sAMAX == True:
+			index = index + 1
+			
+		return dbColumns["names"][index]
+
+	except:
+
+		showError(iCaller, "getColumnsMax", "error during getting maximum column for sheet")
+		return -1
+
+
+# ###################################################################################################################
 def scanObjects(iOBs, iCaller="main"):
 	
 	global gCallerObj
@@ -3927,6 +4001,9 @@ def initLang():
 	global gLang41
 	global gLang42
 	global gLang43
+	global gLang44
+	global gLang45
+	global gLang46
 
 	# Polish language
 	if sLang  == "pl":
@@ -3987,6 +4064,9 @@ def initLang():
 		gLang41 = "Dodatek drewna na długość"
 		gLang42 = "Dodatek drewna na szerokość"
 		gLang43 = "Dodatek drewna na grubość"
+		gLang44 = "Transport"
+		gLang45 = "OK"
+		gLang46 = "ponad limit"
 
 	# from system translation files
 	elif sLang  == "system":
@@ -4047,6 +4127,9 @@ def initLang():
 		gLang41 = translate("getDimensions", "Lumber allowance for length")
 		gLang42 = translate("getDimensions", "Lumber allowance for width")
 		gLang43 = translate("getDimensions", "Lumber allowance for thickness")
+		gLang44 = translate("getDimensions", "Transport")
+		gLang45 = translate("getDimensions", "OK")
+		gLang46 = translate("getDimensions", "over limit")
 
 	# English language
 	else:
@@ -4107,6 +4190,9 @@ def initLang():
 		gLang41 = "Lumber allowance for length"
 		gLang42 = "Lumber allowance for width"
 		gLang43 = "Lumber allowance for thickness"
+		gLang44 = "Transport"
+		gLang45 = "OK"
+		gLang46 = "over limit"
 
 
 # ###################################################################################################################
@@ -4116,32 +4202,28 @@ def setViewQ(iCaller="setViewQ"):
 	global gSheetRow
 
 	# set headers
-	gSheet.set("A1", gLang2)
-	gSheet.set("C1", gLang3)
-	gSheet.set("F1", gLang4)
-	gSheet.set("G1", gLang5)
+	headers = [gLang2, "", gLang3, "", "", gLang4, gLang5]
 	if sAWC == True:
-		gSheet.set("H1", gLang28)
-	if sAWC == True and sAPC == True:
-		gSheet.set("I1", gLang29)
-	if sAWC == False and sAPC == True:
-		gSheet.set("H1", gLang29)
-		
+		headers.append(gLang28)
+	if sAPC == True:
+		headers.append(gLang29)
+	if sAMAX == True:
+		headers.append(gLang44)
+	
+	num = len(headers)
+	
+	for i in range(0, num):
+		col = dbColumns["names"][i]
+		gSheet.set(str(col)+"1", headers[i])
+	
 	# text header decoration
-	gSheet.setStyle("A1:I1", "bold", "add")
-
+	gSheet.setStyle("A1:"+dbColumns["max"]+"1", "bold", "add")
+	gSheet.setBackground("A1:"+dbColumns["max"]+"1", gHeadCS)
+	
 	# merge cells
 	gSheet.mergeCells("A1:B1")
 	gSheet.mergeCells("C1:E1")
 
-	# set background
-	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
-	if sAWC == True or sAPC == True:
-		vCell = "A" + str(gSheetRow) + ":H" + str(gSheetRow)
-	if sAWC == True and sAPC == True:
-		vCell = "A" + str(gSheetRow) + ":I" + str(gSheetRow)
-	gSheet.setBackground(vCell, gHeadCS)
-	
 	# go to next spreadsheet row
 	gSheetRow = gSheetRow + 1
 
@@ -4156,13 +4238,23 @@ def setViewQ(iCaller="setViewQ"):
 		gSheet.set("E" + str(gSheetRow), toSheet(a[2], "d", iCaller))
 		gSheet.set("F" + str(gSheetRow), toSheet(a[0], "d", iCaller))
 		gSheet.set("G" + str(gSheetRow), toSheet(dbDA[key], "area", iCaller))
-		if sAWC == True and sAPC == False:
-			gSheet.set("H" + str(gSheetRow), toSheet(dbDW[key], "weight", iCaller))
-		if sAWC == False and sAPC == True:
-			gSheet.set("H" + str(gSheetRow), toSheet(dbDP[key], "price", iCaller))
-		if sAWC == True and sAPC == True:
-			gSheet.set("H" + str(gSheetRow), toSheet(dbDW[key], "weight", iCaller))
-			gSheet.set("I" + str(gSheetRow), toSheet(dbDP[key], "price", iCaller))
+		
+		current = 7
+		
+		if sAWC == True:
+			letter = dbColumns["names"][current]
+			gSheet.set(letter + str(gSheetRow), toSheet(dbDW[key], "weight", iCaller))
+			current += 1
+			
+		if sAPC == True:
+			letter = dbColumns["names"][current]
+			gSheet.set(letter + str(gSheetRow), toSheet(dbDP[key], "price", iCaller))
+			current += 1
+            
+		if sAMAX == True:
+			letter = dbColumns["names"][current]
+			gSheet.set(letter + str(gSheetRow), toSheet(dbTransportRange[key], "string", iCaller))
+			current += 1
 		
 		# merge cells
 		vCell = "A" + str(gSheetRow) + ":B" + str(gSheetRow)	
@@ -4181,7 +4273,8 @@ def setViewQ(iCaller="setViewQ"):
 	gSheet.setColumnWidth("G", 120)
 	gSheet.setColumnWidth("H", 120)
 	gSheet.setColumnWidth("I", 120)
-
+	gSheet.setColumnWidth("J", 120)
+	
 	# alignment
 	gSheet.setAlignment("A1:A" + str(gSheetRow), "right", "keep")
 	gSheet.setAlignment("B1:B" + str(gSheetRow), "right", "keep")
@@ -4192,6 +4285,7 @@ def setViewQ(iCaller="setViewQ"):
 	gSheet.setAlignment("G1:G" + str(gSheetRow), "right", "keep")
 	gSheet.setAlignment("H1:H" + str(gSheetRow), "right", "keep")
 	gSheet.setAlignment("I1:I" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("J1:J" + str(gSheetRow), "right", "keep")
 
 	# fix for center header text in merged cells
 	gSheet.setAlignment("C1:C1", "center", "keep")
@@ -4754,31 +4848,26 @@ def setViewG(iCaller="setViewG"):
 	global gSheetRow
 
 	# set headers
-	gSheet.set("A1", gLang1)
-	gSheet.set("B1", gLang4)
-	gSheet.set("C1", gLang3)
-	gSheet.set("F1", gLang2)
-	gSheet.set("G1", gLang5)
+	headers = [gLang1, gLang4, gLang3, "", "", gLang2, gLang5]
 	if sAWC == True:
-		gSheet.set("H1", gLang28)
-	if sAWC == True and sAPC == True:
-		gSheet.set("I1", gLang29)
-	if sAWC == False and sAPC == True:
-		gSheet.set("H1", gLang29)
+		headers.append(gLang28)
+	if sAPC == True:
+		headers.append(gLang29)
+	if sAMAX == True:
+		headers.append(gLang44)
+	
+	num = len(headers)
+	
+	for i in range(0, num):
+		col = dbColumns["names"][i]
+		gSheet.set(str(col)+"1", headers[i])
 	
 	# text header decoration
-	gSheet.setStyle("A1:I1", "bold", "add")
-
+	gSheet.setStyle("A1:"+dbColumns["max"]+"1", "bold", "add")
+	gSheet.setBackground("A1:"+dbColumns["max"]+"1", gHeadCS)
+	
 	# merge cells
 	gSheet.mergeCells("C1:E1")
-
-	# set background
-	vCell = "A" + str(gSheetRow) + ":G" + str(gSheetRow)
-	if sAWC == True or sAPC == True:
-		vCell = "A" + str(gSheetRow) + ":H" + str(gSheetRow)
-	if sAWC == True and sAPC == True:
-		vCell = "A" + str(gSheetRow) + ":I" + str(gSheetRow)
-	gSheet.setBackground(vCell, gHeadCS)
 
 	# go to next spreadsheet row
 	gSheetRow = gSheetRow + 1
@@ -4795,13 +4884,23 @@ def setViewG(iCaller="setViewG"):
 		gSheet.set("E" + str(gSheetRow), toSheet(a[2], "d", iCaller))
 		gSheet.set("F" + str(gSheetRow), toSheet(dbDQ[key], "string", iCaller))
 		gSheet.set("G" + str(gSheetRow), toSheet(dbDA[key], "area", iCaller))
-		if sAWC == True and sAPC == False:
-			gSheet.set("H" + str(gSheetRow), toSheet(dbDW[key], "weight", iCaller))
-		if sAWC == False and sAPC == True:
-			gSheet.set("H" + str(gSheetRow), toSheet(dbDP[key], "price", iCaller))
-		if sAWC == True and sAPC == True:
-			gSheet.set("H" + str(gSheetRow), toSheet(dbDW[key], "weight", iCaller))
-			gSheet.set("I" + str(gSheetRow), toSheet(dbDP[key], "price", iCaller))
+		
+		current = 7
+		
+		if sAWC == True:
+			letter = dbColumns["names"][current]
+			gSheet.set(letter + str(gSheetRow), toSheet(dbDW[key], "weight", iCaller))
+			current += 1
+			
+		if sAPC == True:
+			letter = dbColumns["names"][current]
+			gSheet.set(letter + str(gSheetRow), toSheet(dbDP[key], "price", iCaller))
+			current += 1
+            
+		if sAMAX == True:
+			letter = dbColumns["names"][current]
+			gSheet.set(letter + str(gSheetRow), toSheet(dbTransportRange[key], "string", iCaller))
+			current += 1
 		
 		# go to next spreadsheet row
 		gSheetRow = gSheetRow + 1
@@ -4816,6 +4915,7 @@ def setViewG(iCaller="setViewG"):
 	gSheet.setColumnWidth("G", 120)
 	gSheet.setColumnWidth("H", 120)
 	gSheet.setColumnWidth("I", 120)
+	gSheet.setColumnWidth("J", 120)
 
 	# alignment
 	gSheet.setAlignment("A1:A" + str(gSheetRow), "left", "keep")
@@ -4827,6 +4927,7 @@ def setViewG(iCaller="setViewG"):
 	gSheet.setAlignment("G1:G" + str(gSheetRow), "right", "keep")
 	gSheet.setAlignment("H1:H" + str(gSheetRow), "right", "keep")
 	gSheet.setAlignment("I1:I" + str(gSheetRow), "right", "keep")
+	gSheet.setAlignment("J1:J" + str(gSheetRow), "right", "keep")
 
 	# fix for center header text in merged cells
 	gSheet.setAlignment("C1:C1", "center", "keep")
@@ -6354,7 +6455,7 @@ def setTechDraw(iCaller="setTechDraw"):
 		gAD.removeObject("toPrint")
 
 	# create TechDraw page for print
-	if sLTF == "a" or sAWC == True or sAPC == True:
+	if sLTF == "a" or sAWC == True or sAPC == True or sAMAX == True:
 		gPrint = MagicPanels.createTechDrawPage("toPrint", "A4", "h")
 	elif sLTF == "r" or sLTF == "s":
 		gPrint = MagicPanels.createTechDrawPage("toPrint", "A4", "h")
@@ -6375,7 +6476,7 @@ def setTechDraw(iCaller="setTechDraw"):
 		if templateWidth == 0 or templateHeight == 0:
 			
 			# horizontal page
-			if sLTF == "a" or sAWC == True or sAPC == True:
+			if sLTF == "a" or sAWC == True or sAPC == True or sAMAX == True:
 				templateWidth = float(297)
 				templateHeight = float(210)
 			
@@ -6409,21 +6510,10 @@ def setTechDraw(iCaller="setTechDraw"):
 	# set border line width
 	gPrintSheet.LineWidth = 0.10
 
-	# fix FreeCAD bug
-	if sLTF == "a":
-		gPrintSheet.CellEnd = "K" + str(gSheetRow)
-	elif sLTF == "r" or sLTF == "s":
-		gPrintSheet.CellEnd = "K" + str(gSheetRow)
-	else:
-		gPrintSheet.CellEnd = "G" + str(gSheetRow)
+	# set last column
+	gPrintSheet.CellEnd = dbColumns["max"] + str(gSheetRow)
 
-	if sAWC == True and sAPC == False:
-		gPrintSheet.CellEnd = "H" + str(gSheetRow)
-	if sAWC == False and sAPC == True:
-		gPrintSheet.CellEnd = "H" + str(gSheetRow)
-	if sAWC == True and sAPC == True:
-		gPrintSheet.CellEnd = "I" + str(gSheetRow)
-		
+
 # ###################################################################################################################
 # INIT - check status
 # ###################################################################################################################
@@ -6488,6 +6578,9 @@ if gExecute == "yes":
 	# set language
 	initLang()
 
+	# set max column letter
+	dbColumns["max"] = getColumnsMax("main")
+		
 	# main loop for calculations
 	scanObjects(gOBs, "main")
 

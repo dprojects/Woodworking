@@ -74,7 +74,7 @@ def showQtGUI():
 		# ############################################################################
 		
 		toolSW = 500
-		toolSH = 600
+		toolSH = 650
 		gTheme = MagicPanels.gTheme
 		gWoodWeightCalculation = MagicPanels.gWoodWeightCalculation
 		gWoodPriceCalculation = MagicPanels.gWoodPriceCalculation
@@ -171,7 +171,6 @@ def showQtGUI():
 			self.oWoodDescriptionE = QtGui.QLineEdit(self)
 			self.oWoodDescriptionE.setText("0")
 			
-			
 			# wood color
 			self.oWoodColorRL = QtGui.QLabel(translate('magicSettings', 'Wood color (red):'), self)
 			self.oWoodColorRE = QtGui.QLineEdit(self)
@@ -233,6 +232,16 @@ def showQtGUI():
 			# ############################################################################
 			# page 2
 			# ############################################################################
+			
+			# transport width
+			self.oTransportWidthL = QtGui.QLabel(translate('magicSettings', 'Width of transport space:'), self)
+			self.oTransportWidthE = QtGui.QLineEdit(self)
+			self.oTransportWidthE.setText(MagicPanels.unit2gui(0))
+			
+			# transport length
+			self.oTransportLengthL = QtGui.QLabel(translate('magicSettings', 'Length of transport space:'), self)
+			self.oTransportLengthE = QtGui.QLineEdit(self)
+			self.oTransportLengthE.setText(MagicPanels.unit2gui(0))
 			
 			# wood weight
 			self.oWoodWeightL = QtGui.QLabel(translate('magicSettings', 'Wood weight:'), self)
@@ -667,6 +676,14 @@ def showQtGUI():
 			self.groupPage23 = QtGui.QGroupBox(None, self)
 			self.groupPage23.setLayout(self.Page23)
 	
+			self.Page24 = QtGui.QGridLayout()
+			self.Page24.addWidget(self.oTransportWidthL, 0, 0)
+			self.Page24.addWidget(self.oTransportWidthE, 0, 1)
+			self.Page24.addWidget(self.oTransportLengthL, 1, 0)
+			self.Page24.addWidget(self.oTransportLengthE, 1, 1)
+			self.groupPage24 = QtGui.QGroupBox(None, self)
+			self.groupPage24.setLayout(self.Page24)
+	
 			self.Page31 = QtGui.QGridLayout()
 			self.Page31.addWidget(self.oFrontInsideThicknessL, 0, 0)
 			self.Page31.addWidget(self.oFrontInsideThicknessE, 0, 1)
@@ -807,6 +824,7 @@ def showQtGUI():
 			self.layout.addStretch()
 			self.layout.addWidget(self.groupPage11)
 			self.layout.addWidget(self.groupPage12)
+			self.layout.addWidget(self.groupPage24)
 			self.layout.addWidget(self.groupPage21)
 			self.layout.addWidget(self.groupPage22)
 			self.layout.addWidget(self.groupPage23)
@@ -833,6 +851,7 @@ def showQtGUI():
 			self.groupPage21.hide()
 			self.groupPage22.hide()
 			self.groupPage23.hide()
+			self.groupPage24.hide()
 			self.groupPage13.show()
 			self.groupPage14.show()
 			self.groupPage31.hide()
@@ -895,6 +914,7 @@ def showQtGUI():
 				self.groupPage21.hide()
 				self.groupPage22.hide()
 				self.groupPage23.hide()
+				self.groupPage24.hide()
 				
 				self.groupPage31.hide()
 				self.groupPage32.hide()
@@ -920,6 +940,7 @@ def showQtGUI():
 				self.groupPage21.show()
 				self.groupPage22.show()
 				self.groupPage23.show()
+				self.groupPage24.show()
 				
 				self.groupPage31.hide()
 				self.groupPage32.hide()
@@ -945,6 +966,7 @@ def showQtGUI():
 				self.groupPage21.hide()
 				self.groupPage22.hide()
 				self.groupPage23.hide()
+				self.groupPage24.hide()
 				
 				self.groupPage31.show()
 				self.groupPage32.show()
@@ -970,6 +992,7 @@ def showQtGUI():
 				self.groupPage21.hide()
 				self.groupPage22.hide()
 				self.groupPage23.hide()
+				self.groupPage24.hide()
 				
 				self.groupPage31.hide()
 				self.groupPage32.hide()
@@ -1125,6 +1148,20 @@ def showQtGUI():
 			# page 2
 			# ################################################################
 			
+			try:
+				val = MagicPanels.gTransportWidth
+				val = MagicPanels.unit2gui(val)
+				self.oTransportWidthE.setText(val)
+			except:
+				skip = 1
+			
+			try:
+				val = MagicPanels.gTransportLength
+				val = MagicPanels.unit2gui(val)
+				self.oTransportLengthE.setText(val)
+			except:
+				skip = 1
+				
 			try:
 				val = MagicPanels.gWoodWeight
 				val = str(float(val))
@@ -1555,11 +1592,17 @@ def showQtGUI():
 				# current selection
 				wus.SetBool('wCurrentSelection', self.oCurrentSelectionRB1.isChecked())
 				
-				
-				
 				# ################################################################
 				# page 2
 				# ################################################################
+				
+				val = self.oTransportWidthE.text()
+				val = MagicPanels.unit2value(val)
+				wus.SetString('wTransportWidth', str(val))
+				
+				val = self.oTransportLengthE.text()
+				val = MagicPanels.unit2value(val)
+				wus.SetString('wTransportLength', str(val))
 				
 				val = self.oWoodWeightE.text()
 				val = float(val)
