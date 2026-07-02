@@ -558,7 +558,7 @@ def showQtGUI():
 			self.apcCB = QtGui.QCheckBox(translate('getDimensions', '- price column'), self)
 			self.apcCB.setCheckState(QtCore.Qt.Unchecked)
 			
-			self.amaxCB = QtGui.QCheckBox(translate('getDimensions', '- max and min size'), self)
+			self.amaxCB = QtGui.QCheckBox(translate('getDimensions', '- transport space limit'), self)
 			self.amaxCB.setCheckState(QtCore.Qt.Unchecked)
 			
 			# ############################################################################
