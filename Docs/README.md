@@ -217,6 +217,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 3.0 stable:** <br>
+> * 3D view option for Visibility in cut list (getDimensions) <br>
 > * transport range feature for cut list (MagicPanels, magicSettings, getDimensions) <br>
 > * icons and docs improvement <br>
 > * veneer and grain direction improvement by [Julio Cortez](https://github.com/JoKradept) (pull requests: [117](https://github.com/dprojects/Woodworking/pull/117), [118](https://github.com/dprojects/Woodworking/pull/118), [119](https://github.com/dprojects/Woodworking/pull/119), [120](https://github.com/dprojects/Woodworking/pull/120))  <br>
@@ -1438,6 +1439,7 @@ By default the values at report are rounded to have more clear listing. Rounding
   * **parent:** not list object with hidden parent object.
   * **screw:** dedicated mostly to hide the base realistic looking screw.
   * **inherit:** not list elements inside highest hidden container. This is useful to hide whole cabinet inside LinkGroup container. For example you have wardrobe with 5 modules, and each cabinet module inside separate LinkGroup container and you want generate cut-list only for single visible cabinet module and to create it one by one in real-life.
+  * **3D view:** real visibility mode. It tries to determine exactly what the user sees in the 3D viewport. This is an advanced contextual mode designed to handle complex setups like multi-layered nesting, `App::LinkGroup` containers, and parametric variants (e.g., `CopyOnChangeGroup` raised by issue [Double or no count of linked parts](https://github.com/dprojects/Woodworking/issues/123)). It automatically filters out internal template duplicates and ghost objects, ensuring that each unique visible part is calculated exactly once, even if it shares geometry across hidden containers.
   * **special BOM attribute:** if object has `BOM` attribute set to `False` (`App::PropertyBool`) it will be skipped during parsing and not listed at the report. This special attribute is used by [magicCut](#magiccut) and [magicKnife](#magicknife) tools to skip copies at the report. For more details see video tutorial: [Skip copies in cut-list](https://www.youtube.com/watch?v=rFEDLaD8lxM).
 
 > [!TIP]

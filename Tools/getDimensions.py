@@ -199,7 +199,8 @@ sTVFDsc = {
 	"edge" : translate("getDimensions", "simple edge mode, show all but not add hidden to the edge size"),
 	"parent" : translate("getDimensions", "simple nesting, inherit visibility from the nearest container"),
 	"screw" : translate("getDimensions", "to hide base object of the screw inside LinkGroup containers"),
-	"inherit" : translate("getDimensions", "advanced nesting, inherit visibility from the highest container") # no comma
+	"inherit" : translate("getDimensions", "advanced nesting, inherit visibility from the highest container"),
+	"3D view" : translate("getDimensions", "3D view, try to determine real 3D visibility of objects") # no comma
 }
 
 # Part Cut Visibility:
@@ -3778,6 +3779,43 @@ def getScrewVisibility(iObj, iCaller="getScrewVisibility"):
 
 
 # ###################################################################################################################
+def get3DVisibility(iObj, iCaller="get3DVisibility"):
+
+	try:
+		# Link or LinkGroup
+		if iObj.isDerivedFrom("App::Link") or iObj.isDerivedFrom("App::LinkGroup"):
+			if hasattr(iObj, "ViewObject") and iObj.ViewObject is not None:
+				return iObj.ViewObject.isVisible()
+			
+			viewProvider = FreeCADGui.ActiveDocument.getViewProvider(iObj)
+			if viewProvider is not None:
+				return viewProvider.isVisible()
+
+		# objects connected with CopyOnChange
+		if hasattr(iObj, "InList") and iObj.InList:
+			for parent in iObj.InList:
+				if "CopyOnChange" in parent.Name or parent.isDerivedFrom("App::LinkGroup"):
+					if iCaller != "main":
+						return False
+
+		# other root objects
+		if hasattr(iObj, "ViewObject") and iObj.ViewObject is not None:
+			return iObj.ViewObject.isVisible()
+
+		# view provider if not above
+		viewProvider = FreeCADGui.ActiveDocument.getViewProvider(iObj)
+		if viewProvider is not None:
+			return viewProvider.isVisible()
+
+		return False
+	
+	except:
+		return False
+	
+	return True
+
+
+# ###################################################################################################################
 def getAssemblyObject(iObj, iCaller="getAssemblyObject"):
 
 	try:
@@ -3883,7 +3921,12 @@ def scanObjects(iOBs, iCaller="main"):
 		if sTVF == "screw":
 			if getScrewVisibility(obj, iCaller) == False:
 				continue
-				
+		
+		# try to determine real 3D view
+		if sTVF == "3D view":
+			if get3DVisibility(obj, iCaller) == False:
+				continue
+
 		# show only Base objects from Part :: Cut
 		if sPartCut == "base":
 			if getCutContentPath(obj, "Base", iCaller) == False:

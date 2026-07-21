@@ -23,7 +23,7 @@
 
 * `gSettingsPref = 'User parameter:BaseApp/Preferences/Woodworking' `: settings path <br>
 * `gRoundPrecision = 2`: should be set according to the user FreeCAD GUI settings <br>
-* `gSearchLength = 200 `: recursive search depth <br>
+* `gSearchDepth = 200 `: recursive search depth <br>
 * `gKernelVersion = 0 `: FreeCAD version to add support for new kernel changes <br>
 * `gTheme = "default" `: no theme by default <br>
 * `gMainWindowTheme = False `: no theme to main window by default <br>
