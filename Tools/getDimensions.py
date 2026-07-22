@@ -3782,36 +3782,42 @@ def getScrewVisibility(iObj, iCaller="getScrewVisibility"):
 def get3DVisibility(iObj, iCaller="get3DVisibility"):
 
 	try:
-		# Link or LinkGroup
-		if iObj.isDerivedFrom("App::Link") or iObj.isDerivedFrom("App::LinkGroup"):
-			if hasattr(iObj, "ViewObject") and iObj.ViewObject is not None:
-				return iObj.ViewObject.isVisible()
+		v = True
+		
+		v = MagicPanels.isVisible(iObj)
+		if v == False:
+			return v
+		
+		if iObj.isDerivedFrom("App::Link"):
+			return MagicPanels.isVisible(iObj)
+		
+		for o in iObj.InListRecursive:
 			
-			viewProvider = FreeCADGui.ActiveDocument.getViewProvider(iObj)
-			if viewProvider is not None:
-				return viewProvider.isVisible()
+			try:
+				before = o.InListRecursive[0]
+				if before.isDerivedFrom("App::Link"):
+					return MagicPanels.isVisible(before)
+			except:
+				skip = 1
 
-		# objects connected with CopyOnChange
-		if hasattr(iObj, "InList") and iObj.InList:
-			for parent in iObj.InList:
-				if "CopyOnChange" in parent.Name or parent.isDerivedFrom("App::LinkGroup"):
-					if iCaller != "main":
-						return False
+			if (
+				o.isDerivedFrom("App::LinkGroup") or 
+				o.isDerivedFrom("Part::Compound") or 
+				o.isDerivedFrom("Part::Cut") or 
+				o.isDerivedFrom("App::Part") or 
+				o.isDerivedFrom("PartDesign::Body") or 
+				o.isDerivedFrom("App::DocumentObjectGroup") 
+				):
+				
+				v = MagicPanels.isVisible(iObj)
+				if v == False:
+					return v
 
-		# other root objects
-		if hasattr(iObj, "ViewObject") and iObj.ViewObject is not None:
-			return iObj.ViewObject.isVisible()
+		return v
 
-		# view provider if not above
-		viewProvider = FreeCADGui.ActiveDocument.getViewProvider(iObj)
-		if viewProvider is not None:
-			return viewProvider.isVisible()
-
-		return False
-	
 	except:
-		return False
-	
+		return True
+
 	return True
 
 

@@ -4086,7 +4086,7 @@ def isVisible(iObj):
 	'''
 	Description:
 	
-		Returns object visibility, even if object is visible but inside the hidden LinkGroup container.
+		Try to determine the real object visibility.
 		
 	Args:
 	
@@ -4101,24 +4101,32 @@ def isVisible(iObj):
 		Return boolean True or False
 	'''
 	
-	current = iObj
-
-	while True:
 	
-		if current.Visibility == False:
+	v = True
+
+	if hasattr(iObj, "Visibility"):
+		v = iObj.Visibility
+		if v == False:
+			return v
+
+	if hasattr(iObj, "ViewObject"):
+		
+		if hasattr(iObj.ViewObject, "Visibility"):
+			v = iObj.ViewObject.Visibility
+			if v == False:
+				return v
+		
+		if hasattr(iObj.ViewObject, "ShowInTree"):
+			v = iObj.ViewObject.ShowInTree
+			if v == False:
+				return v
+
+	try:
+		visible = iObj.Parents[0][0].isElementVisible(iObj.Parents[0][1]+str(iObj.Name))
+		if visible == 0:
 			return False
-	
-		try:
-			visible = current.Parents[0][0].isElementVisible(current.Parents[0][1]+str(current.Name))
-			if visible == 0:
-				return False
-		except:
-			return True
-
-		try:
-			current = current.Parents[0][0]
-		except:
-			return True
+	except:
+		return True
 
 	return True
 

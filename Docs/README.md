@@ -1432,19 +1432,24 @@ By default the values at report are rounded to have more clear listing. Rounding
 
 ### Visibility
 
-* **All objects:**
-  * **off:** allows hidden content to be calculated and listed at the report. FreeCAD has many complicated objects with hidden content. For PartDesign objects usually, only the objects of last operation is visible but the first Pad with dimensions is hidden. Similar thing is for Cut objects where the content with dimensions is hidden but the Cut object has no information about dimensions of its parts.
-  * **on:** hidden objects will not be listed at the report.
-  * **edge:** hidden objects will be listed but not added to the edge size.
-  * **parent:** not list object with hidden parent object.
-  * **screw:** dedicated mostly to hide the base realistic looking screw.
-  * **inherit:** not list elements inside highest hidden container. This is useful to hide whole cabinet inside LinkGroup container. For example you have wardrobe with 5 modules, and each cabinet module inside separate LinkGroup container and you want generate cut-list only for single visible cabinet module and to create it one by one in real-life.
-  * **3D view:** real visibility mode. It tries to determine exactly what the user sees in the 3D viewport. This is an advanced contextual mode designed to handle complex setups like multi-layered nesting, `App::LinkGroup` containers, and parametric variants (e.g., `CopyOnChangeGroup` raised by issue [Double or no count of linked parts](https://github.com/dprojects/Woodworking/issues/123)). It automatically filters out internal template duplicates and ghost objects, ensuring that each unique visible part is calculated exactly once, even if it shares geometry across hidden containers.
-  * **special BOM attribute:** if object has `BOM` attribute set to `False` (`App::PropertyBool`) it will be skipped during parsing and not listed at the report. This special attribute is used by [magicCut](#magiccut) and [magicKnife](#magicknife) tools to skip copies at the report. For more details see video tutorial: [Skip copies in cut-list](https://www.youtube.com/watch?v=rFEDLaD8lxM).
+> [!CAUTION]
+> Unfortunately, anyone can make changes to FreeCAD, which has caused FreeCAD to break its ability to determine object 
+> visibility due to the LinkStage3 repository merge. Therefore, in the case of more complex structures containing 
+> nested Link or LinkGroup containers, it may be impossible to determine the current 3D view.
+
+* **off:** allows hidden content to be calculated and listed at the report. FreeCAD has many complicated objects with hidden content. For PartDesign objects usually, only the objects of last operation is visible but the first Pad with dimensions is hidden. Similar thing is for Cut objects where the content with dimensions is hidden but the Cut object has no information about dimensions of its parts.
+* **on:** hidden objects will not be listed at the report. This is a simple way to determine an object's visibility based on its Visibility property. While this works well for simple objects, it may not hide some objects from the cut list for more complex and nested structures.
+* **edge:** hidden objects will be listed but not added to the edge size.
+* **parent:** not list object with hidden parent object. This option attempts to determine the visibility of an object based on its parent. In the case of multiple nested structures and links to internal structures, this option may not work correctly.
+* **screw:** dedicated mostly to hide the base realistic looking screw. This option is used to hide the base screw from the cut list and can be used to calculate how many screws are needed. You can use this option together with the [panel2link](#panel2link) tool.
+* **inherit:** not list elements inside highest hidden container. This is useful to hide whole cabinet inside LinkGroup container. For example you have wardrobe with 5 modules, and each cabinet module inside separate LinkGroup container and you want generate cut-list only for single visible cabinet module and to create it one by one in real-life.
+* **3D view:** real visibility mode. It tries to determine exactly what the user sees in the 3D viewport. This is an advanced contextual mode designed to handle complex setups like multi-layered nesting, `App::LinkGroup` containers, and parametric variants (e.g., `CopyOnChangeGroup` raised by issue [Double or no count of linked parts](https://github.com/dprojects/Woodworking/issues/123)). It automatically filters out internal template duplicates and ghost objects, ensuring that each unique visible part is calculated exactly once, even if it shares geometry across hidden containers.
 
 > [!TIP]
 > If you are not able to get it to working, for example you have many deep nesting containers and you do not want to parse 
-> all objects, please try `selected` option in [Report type](#report-type).
+> all objects, please try `selected objects` option in [Search path](#search-path).
+
+* **special BOM attribute:** if object has `BOM` attribute set to `False` (`App::PropertyBool`) it will be skipped during parsing and not listed at the report. This special attribute is used by [magicCut](#magiccut) and [magicKnife](#magicknife) tools to skip copies at the report. For more details see video tutorial: [Skip copies in cut-list](https://www.youtube.com/watch?v=rFEDLaD8lxM).
 
 * **Part :: Cut content:**
   * **all:** shows Base and Tool

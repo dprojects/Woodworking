@@ -1614,7 +1614,7 @@
 	
 ##### Description:
 	
-		Returns object visibility, even if object is visible but inside the hidden LinkGroup container.
+		Try to determine the real object visibility.
 		
 ##### Args:
 	
