@@ -4214,7 +4214,7 @@ def isVisible(iObj, iType="3D view"):
 					):
 					
 					# check container visibility
-					v = isVisible(iObj, "single")
+					v = isVisible(o, "single")
 					if v == False:
 						return v
 
