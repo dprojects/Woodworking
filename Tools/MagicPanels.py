@@ -4082,7 +4082,7 @@ def getPlacementDiff(iStart, iDestination):
 
 
 # ###################################################################################################################
-def isVisible(iObj):
+def isVisible(iObj, iType="3D view"):
 	'''
 	Description:
 	
@@ -4091,10 +4091,17 @@ def isVisible(iObj):
 	Args:
 	
 		iObj: object to search visibility
+		iType: string represents the search way, possible options:
+			* "parent": old simple loop through parent way
+			* "single": single check for object, it is used by "3D view" option below to not duplicate code
+			* "3D view" (default): new approach to determine the real 3D view
 
 	Usage:
 		
 		visible = MagicPanels.isVisible(iObj)
+		visible = MagicPanels.isVisible(iObj, "parent")
+		visible = MagicPanels.isVisible(iObj, "single")
+		visible = MagicPanels.isVisible(iObj, "3D view")
 		
 	Result:
 	
@@ -4102,33 +4109,124 @@ def isVisible(iObj):
 	'''
 	
 	
-	v = True
+	# #################################################################
+	if iType == "parent":
 
-	if hasattr(iObj, "Visibility"):
-		v = iObj.Visibility
-		if v == False:
-			return v
+		# init loop
+		current = iObj
 
-	if hasattr(iObj, "ViewObject"):
+		while True:
 		
-		if hasattr(iObj.ViewObject, "Visibility"):
-			v = iObj.ViewObject.Visibility
-			if v == False:
-				return v
-		
-		if hasattr(iObj.ViewObject, "ShowInTree"):
-			v = iObj.ViewObject.ShowInTree
-			if v == False:
-				return v
+			# simple attribute check
+			if current.Visibility == False:
+				return False
 
-	try:
-		visible = iObj.Parents[0][0].isElementVisible(iObj.Parents[0][1]+str(iObj.Name))
-		if visible == 0:
-			return False
-	except:
+			# check child visibility status using parent
+			try:
+				visible = current.Parents[0][0].isElementVisible(current.Parents[0][1]+str(current.Name))
+				if visible == 0:
+					return False
+			except:
+				return True
+
+			# go deeper
+			try:
+				current = current.Parents[0][0]
+			except:
+				return True
+		
+		# better show than hide
 		return True
 
-	return True
+
+	# #################################################################
+	if iType == "single":
+	
+		# init
+		v = True
+
+		# simple attribute check
+		if hasattr(iObj, "Visibility"):
+			v = iObj.Visibility
+			if v == False:
+				return v
+
+		if hasattr(iObj, "ViewObject"):
+			
+			if hasattr(iObj.ViewObject, "Visibility"):
+				v = iObj.ViewObject.Visibility
+				if v == False:
+					return v
+			
+			if hasattr(iObj.ViewObject, "ShowInTree"):
+				v = iObj.ViewObject.ShowInTree
+				if v == False:
+					return v
+
+		# try confirm with parent
+		try:
+			visible = iObj.Parents[0][0].isElementVisible(iObj.Parents[0][1]+str(iObj.Name))
+			if visible == 0:
+				return False
+		except:
+			return True
+
+		# show if nothing was False
+		return True
+
+
+	# #################################################################
+	if iType == "3D view":
+
+		try:
+			
+			# init
+			v = True
+			
+			# simple attribute check
+			v = isVisible(iObj, "single")
+			if v == False:
+				return v
+			
+			# do not go deeper if this is link, check the link instead
+			if iObj.isDerivedFrom("App::Link"):
+				return isVisible(iObj, "single")
+			
+			# try confirm visibility deeper
+			for o in iObj.InListRecursive:
+				
+				# check if the object is not result of linking
+				try:
+					before = o.InListRecursive[0]
+					if before.isDerivedFrom("App::Link"):
+						return isVisible(before, "single")
+				except:
+					skip = 1
+
+				# try containers only that impact visibility
+				if (
+					o.isDerivedFrom("App::LinkGroup") or 
+					o.isDerivedFrom("Part::Compound") or 
+					o.isDerivedFrom("Part::Cut") or 
+					o.isDerivedFrom("App::Part") or 
+					o.isDerivedFrom("PartDesign::Body") or 
+					o.isDerivedFrom("App::DocumentObjectGroup") 
+					):
+					
+					# check container visibility
+					v = isVisible(iObj, "single")
+					if v == False:
+						return v
+
+			# return value if nothing was returned before
+			return v
+
+		# in case of errors show object
+		except:
+			return True
+
+		# show if nothing was False
+		return True
 
 
 # ###################################################################################################################

@@ -217,6 +217,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 3.0 stable:** <br>
+> * improve visibility recognition (getDimensions, MagicPanels, showPlacement, README) <br>
 > * 3D view option for Visibility in cut list (getDimensions) <br>
 > * transport range feature for cut list (MagicPanels, magicSettings, getDimensions) <br>
 > * icons and docs improvement <br>

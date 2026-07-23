@@ -1609,7 +1609,7 @@
 	
 		Return [ moveX, moveY, moveZ ] array with X, Y, Z floats to move object.
 
-### isVisible(iObj):
+### isVisible(iObj, iType="3D view"):
 
 	
 ##### Description:
@@ -1619,10 +1619,17 @@
 ##### Args:
 	
 		iObj: object to search visibility
+		iType: string represents the search way, possible options:
+			* "parent": old simple loop through parent way
+			* "single": single check for object, it is used by "3D view" option below to not duplicate code
+			* "3D view" (default): new approach to determine the real 3D view
 
 ##### Usage:
 		
 		visible = MagicPanels.isVisible(iObj)
+		visible = MagicPanels.isVisible(iObj, "parent")
+		visible = MagicPanels.isVisible(iObj, "single")
+		visible = MagicPanels.isVisible(iObj, "3D view")
 		
 ##### Result:
 	

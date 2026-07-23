@@ -3779,49 +3779,6 @@ def getScrewVisibility(iObj, iCaller="getScrewVisibility"):
 
 
 # ###################################################################################################################
-def get3DVisibility(iObj, iCaller="get3DVisibility"):
-
-	try:
-		v = True
-		
-		v = MagicPanels.isVisible(iObj)
-		if v == False:
-			return v
-		
-		if iObj.isDerivedFrom("App::Link"):
-			return MagicPanels.isVisible(iObj)
-		
-		for o in iObj.InListRecursive:
-			
-			try:
-				before = o.InListRecursive[0]
-				if before.isDerivedFrom("App::Link"):
-					return MagicPanels.isVisible(before)
-			except:
-				skip = 1
-
-			if (
-				o.isDerivedFrom("App::LinkGroup") or 
-				o.isDerivedFrom("Part::Compound") or 
-				o.isDerivedFrom("Part::Cut") or 
-				o.isDerivedFrom("App::Part") or 
-				o.isDerivedFrom("PartDesign::Body") or 
-				o.isDerivedFrom("App::DocumentObjectGroup") 
-				):
-				
-				v = MagicPanels.isVisible(iObj)
-				if v == False:
-					return v
-
-		return v
-
-	except:
-		return True
-
-	return True
-
-
-# ###################################################################################################################
 def getAssemblyObject(iObj, iCaller="getAssemblyObject"):
 
 	try:
@@ -3930,7 +3887,8 @@ def scanObjects(iOBs, iCaller="main"):
 		
 		# try to determine real 3D view
 		if sTVF == "3D view":
-			if get3DVisibility(obj, iCaller) == False:
+			visible = MagicPanels.isVisible(obj, "3D view")
+			if visible == False:
 				continue
 
 		# show only Base objects from Part :: Cut

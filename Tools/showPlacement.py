@@ -30,18 +30,24 @@ try:
 		try:
 		
 			FreeCAD.Console.PrintMessage("\n")
-			FreeCAD.Console.PrintMessage("\n"+"-----------------------------------------------------"+"\n")
-			FreeCAD.Console.PrintMessage(str(o.Label))
-			FreeCAD.Console.PrintMessage("\n"+"-----------------------------------------------------"+"\n")
+			FreeCAD.Console.PrintMessage("\n"+"--------------------------------------"+"\n")
+			FreeCAD.Console.PrintMessage( "Label: "+str(o.Label)+"\n" )
+			FreeCAD.Console.PrintMessage( "Name: "+str(o.Name)+"\n" )
+			FreeCAD.Console.PrintMessage( "Visible (parent): "+str(MagicPanels.isVisible(o, "parent"))+"\n" )
+			FreeCAD.Console.PrintMessage( "Visible (3D view): "+str(MagicPanels.isVisible(o, "3D view"))+"\n" )
+			FreeCAD.Console.PrintMessage("\n")
 			
 			containers = MagicPanels.getContainers(o)
 			
 			FreeCAD.Console.PrintMessage("Containers: ")
 				
 			for c in containers:
-				FreeCAD.Console.PrintMessage("\n")
-				FreeCAD.Console.PrintMessage(c.Label)
-				FreeCAD.Console.PrintMessage(" | ")
+				
+				FreeCAD.Console.PrintMessage("\n\n")
+				FreeCAD.Console.PrintMessage( "Label: "+str(c.Label)+"\n" )
+				FreeCAD.Console.PrintMessage( "Name: "+str(c.Name)+"\n" )
+				FreeCAD.Console.PrintMessage( "Visible (parent): "+str(MagicPanels.isVisible(c, "parent"))+"\n" )
+				FreeCAD.Console.PrintMessage( "Visible (3D view): "+str(MagicPanels.isVisible(c, "3D view"))+"\n" )
 				FreeCAD.Console.PrintMessage(c.Placement)
 				
 			[ coX, coY, coZ, coR ] = MagicPanels.getContainersOffset(o)
@@ -50,7 +56,7 @@ try:
 			FreeCAD.Console.PrintMessage(" | ")
 			FreeCAD.Console.PrintMessage([ coX, coY, coZ, coR ])
 			
-			FreeCAD.Console.PrintMessage("\n"+"-----------------------------------------------------"+"\n")
+			FreeCAD.Console.PrintMessage("\n"+"--------------------------------------"+"\n")
 			
 		except:
 			skip = 1
