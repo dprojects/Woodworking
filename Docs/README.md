@@ -202,6 +202,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 * [FreeCAD weekly 1.1.0.20251104](https://github.com/FreeCAD/FreeCAD/releases/tag/weekly-2025.11.05): This is the last of the weekly development releases before the `1.2` development release. I have been using this version for a while now to develop new features for Woodworking workbench, so I have had the opportunity to test it quite thoroughly with the Woodworking workbench. A major advantage of the `1.1dev` release is that it eliminates the issues with selecting and deleting objects in `LinkGroup` containers, which significantly improves the user experience. An additional advantage is the new version of `PySide6`, which extends the life of this kernel. Therefore, I decided to add this version to the tested kernels and create an installation package [magicCAD_2.0](https://github.com/dprojects/Woodworking-package/releases/tag/2.0) with this kernel version to keep it working forever.
 * [FreeCAD 1.1.0.20260325](https://github.com/FreeCAD/FreeCAD/releases/tag/1.1.0): This is first release with the new version of `PySide6`, which extends the life of this kernel and Woodworking workbench as well. An additional advantage is that it eliminates the issues with selecting and deleting objects in `LinkGroup` containers, which significantly improves the user experience. Therefore, I decided to add this version to the tested kernels and create an installation package [magicCAD_3.0](https://github.com/dprojects/Woodworking-package/releases/tag/3.0) with this kernel version to keep it working forever.
 * [FreeCAD 1.1.1.20260414](https://github.com/FreeCAD/FreeCAD/releases/tag/1.1.1): Since this is the next official stable release, I decided to add it to the list of supported kernels.
+* [FreeCAD 1.1.3.20260725](https://github.com/FreeCAD/FreeCAD/releases/tag/1.1.3): Since this is the next official stable release, I decided to add it to the list of supported kernels.
   
 > [!NOTE]
 > * Whenever possible, I try to use and test the latest development versions so that I do not have to work so long on fixing 
@@ -217,6 +218,7 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 
 > [!NOTE]
 > **New significant changes since the last release 3.0 stable:** <br>
+> * support for FreeCAD 1.1.3 stable release <br>
 > * improve visibility recognition (getDimensions, MagicPanels, showPlacement, README) <br>
 > * 3D view option for Visibility in cut list (getDimensions) <br>
 > * transport range feature for cut list (MagicPanels, magicSettings, getDimensions) <br>
