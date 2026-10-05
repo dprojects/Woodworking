@@ -203,7 +203,8 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 * [FreeCAD 1.1.0.20260325](https://github.com/FreeCAD/FreeCAD/releases/tag/1.1.0): This is first release with the new version of `PySide6`, which extends the life of this kernel and Woodworking workbench as well. An additional advantage is that it eliminates the issues with selecting and deleting objects in `LinkGroup` containers, which significantly improves the user experience. Therefore, I decided to add this version to the tested kernels and create an installation package [magicCAD_3.0](https://github.com/dprojects/Woodworking-package/releases/tag/3.0) with this kernel version to keep it working forever.
 * [FreeCAD 1.1.1.20260414](https://github.com/FreeCAD/FreeCAD/releases/tag/1.1.1): Since this is the next official stable release, I decided to add it to the list of supported kernels.
 * [FreeCAD 1.1.3.20260725](https://github.com/FreeCAD/FreeCAD/releases/tag/1.1.3): Since this is the next official stable release, I decided to add it to the list of supported kernels.
-  
+* [FreeCAD 1.1.4.20260928](https://github.com/FreeCAD/FreeCAD/releases/tag/1.1.4): Since this is the next official stable release, I decided to add it to the list of supported kernels. Also I have created an installation package [magicCAD_4.0](https://github.com/dprojects/Woodworking-package/releases/tag/4.0) with this kernel version to keep it working forever.
+
 > [!NOTE]
 > * Whenever possible, I try to use and test the latest development versions so that I do not have to work so long on fixing 
 > Woodworking wokbench after the stable kernel version is released. Because of this, backward compatibility for some features 
@@ -316,9 +317,17 @@ This woodworking workbench is delivered with several useful extras:
 | Ukrainian | uk | uk |
 | Vietnamese | vi | vi |
 
-Since Woodworking workbench release `3.0`, translations are automatically created via a script using Google AI for all languages ​​for each stable release and included in the main repository as `.qm` files. This translation also serves as the starting point for translation repositories, which can be modified by the community. Since Woodworking workbench release `0.22` there is `translations update tool` available under drop down menu `Woodworking -> Download and update all translations`. This tool will automatically download all available `.qm` files from [the community repository](https://github.com/dprojects/Woodworking-translations) into `translations` folder for you Woodworking workbench version.
+Since Woodworking workbench release `0.22` there is `translations update tool` available under drop down menu `Woodworking -> Download and update all translations`. This tool will automatically download all available `.qm` files from [the community repository](https://github.com/dprojects/Woodworking-translations) into `translations` folder for you Woodworking workbench version.
 
-Of course, if someone is interested in doing a translation, please create pull request at: [github.com/dprojects/Woodworking-translations](https://github.com/dprojects/Woodworking-translations) repository in exact version branch.
+> [!NOTE]
+> Currently, the automatic translation tools are not working because 
+> Google blocks scripts of this type. My laptop, an Asus X55U, is also 
+> too slow to run an AI neural network locally for translation purposes. 
+> I might have a fast enough computer to handle the translation in the future, 
+> but for now, the "Woodworking workbench" repository contains files with 
+> translation when the scripts were still functional. Therefore, if you are 
+> able to update the translations, please submit a pull request to the 
+> relevant repository: [Woodworking-translations](https://github.com/dprojects/Woodworking-translations).
 
 # Objects, Workflow, Golden rules
 

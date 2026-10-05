@@ -6,7 +6,7 @@ Please see translation repository at: [github.com/dprojects/Woodworking-translat
 
 You can create your own `Woodworking` workbench translation with the following steps:
 
-* Generate `.ts` file. At `Xubuntu 22.04 LTS` in `Woodworking` directory:
+* Generate `.ts` file. At `Xubuntu 22.04 LTS` in `Woodworking/translations` directory:
 	
 	```
 	pylupdate5 `find .. -name "*.py"` -ts ./template.ts

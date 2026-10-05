@@ -234,7 +234,7 @@ def makeTranslation(iTemplate="template.ts", iLang="pl", iDebug="yes"):
 # #############################################################################################################
 
 if len(sys.argv) > 1:
-    makeTranslation("template.ts", sys.argv[1], "no")
+    makeTranslation("../templates/template.ts", sys.argv[1], "no")
 else:
-    makeTranslation("template.ts", "pl", "yes")
+    makeTranslation("../templates/template.ts", "pl", "yes")
     

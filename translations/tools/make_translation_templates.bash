@@ -1,7 +1,7 @@
 #!/bin/bash
 
-mkdir -p ./templates
-pylupdate5 `find .. -name "*.py"` -ts ./templates/template.ts
+mkdir -p ../templates
+pylupdate5 `find ../.. -name "*.py"` -ts ../templates/template.ts
 
 DATA=(
     "Afrikaans" "af" "af"
@@ -55,6 +55,6 @@ for ((i=0; i<${#DATA[@]}; i+=3)); do
     freecad_code="${DATA[i+1]}"
     ai_code="${DATA[i+2]}"
 
-	cp "./templates/template.ts" "./templates/Woodworking_${freecad_code}.ts"
+	cp "../templates/template.ts" "../templates/Woodworking_${freecad_code}.ts"
 
 done

@@ -62,7 +62,7 @@ DATA=(
 )
 
 # ################################################################################################################################
-mkdir -p ./translated
+mkdir -p ../translated
 
 for ((i=0; i<${#DATA[@]}; i+=3)); do
     
@@ -77,20 +77,20 @@ for ((i=0; i<${#DATA[@]}; i+=3)); do
     
     echo -e "[ ${current}/${total} ] Starting: [ ${freecad_name} | ${freecad_code} ] => [ ${ai_code} ] ..."
     
-	if [ -f "./translated/Woodworking_${freecad_code}.ts" ]; then
-		echo -e "  * Creating : ./translated/Woodworking_${freecad_code}.ts ...already exists, skipped."
+	if [ -f "../translated/Woodworking_${freecad_code}.ts" ]; then
+		echo -e "  * Creating : ../translated/Woodworking_${freecad_code}.ts ...already exists, skipped."
 	else
-		echo -n "  * Creating : ./translated/Woodworking_${freecad_code}.ts ..."
+		echo -n "  * Creating : ../translated/Woodworking_${freecad_code}.ts ..."
 		python3 "./make_AI_translation.py" "${ai_code}" >> "./current_status.log" 2>&1
-		mv "./Woodworking_${ai_code}.ts" "./translated/Woodworking_${freecad_code}.ts"
+		mv "./Woodworking_${ai_code}.ts" "../translated/Woodworking_${freecad_code}.ts"
 		echo "done."
 	fi
 	
-	if [ -f "./translated/Woodworking_${freecad_code}.qm" ]; then
-		echo -e "  * Creating : ./translated/Woodworking_${freecad_code}.qm ...already exists, skipped."
+	if [ -f "../translated/Woodworking_${freecad_code}.qm" ]; then
+		echo -e "  * Creating : ../translated/Woodworking_${freecad_code}.qm ...already exists, skipped."
 	else
-		echo -n "  * Creating : ./translated/Woodworking_${freecad_code}.qm ..."
-		/usr/lib/x86_64-linux-gnu/qt5/bin/lrelease "./translated/Woodworking_${freecad_code}.ts" >> "./current_status.log" 2>&1
+		echo -n "  * Creating : ../translated/Woodworking_${freecad_code}.qm ..."
+		/usr/lib/x86_64-linux-gnu/qt5/bin/lrelease "../translated/Woodworking_${freecad_code}.ts" >> "./current_status.log" 2>&1
 		echo "done."
 	fi
 	
