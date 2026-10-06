@@ -218,25 +218,8 @@ I added many tools, and now Woodworking workbench has so many features and simpl
 * For cutting edge features download: [the master branch](https://github.com/dprojects/Woodworking/archive/refs/heads/master.zip) or run command: `git clone https://github.com/dprojects/Woodworking.git`
 
 > [!NOTE]
-> **New significant changes since the last release 3.0 stable:** <br>
-> * support for FreeCAD 1.1.3 stable release <br>
-> * improve visibility recognition (getDimensions, MagicPanels, showPlacement, README) <br>
-> * 3D view option for Visibility in cut list (getDimensions) <br>
-> * transport range feature for cut list (MagicPanels, magicSettings, getDimensions) <br>
-> * icons and docs improvement <br>
-> * veneer and grain direction improvement by [Julio Cortez](https://github.com/JoKradept) (pull requests: [117](https://github.com/dprojects/Woodworking/pull/117), [118](https://github.com/dprojects/Woodworking/pull/118), [119](https://github.com/dprojects/Woodworking/pull/119), [120](https://github.com/dprojects/Woodworking/pull/120))  <br>
-> * IKEA KALLAX sample constructions <br>
-> * support for FreeCAD 1.1.1 stable release <br>
-> * redesign GUI to handle more features (magicManager) <br>
-> * panel along curve feature (magicManager) <br>
-> * sketch from vertices feature (magicManager) <br>
-> * tapered leg feature (panel2taper) <br>
-> * fix to use magicResizer with Pad on Pad (magicResizer, MagicPanels) <br>
-> * fix area calculation for sawmill reports (getDimensions) <br>
-> * custom sort feature for cut-list (getDimensions) <br>
-> * new report type for sawmill based on groups (getDimensions) <br>
-> * summary for r - raw wood report type (getDimensions) <br>
-> * fractions inches option in cut-list (getDimensions) <br>
+> **New significant changes since the last release 4.0 stable:** <br>
+> * nothing yet.. <br>
 
 ## Step 2. Get FreeCAD Mod folder localization
 

@@ -16,7 +16,7 @@ Woodworking workbench was designed primarily for creating simple cabinets for yo
 
 # Installation
 
-**For Linux download and run installation package:** [magicCAD_3.0.AppImage](https://github.com/dprojects/Woodworking-package/releases/download/3.0/magicCAD_3.0.AppImage). 
+**For Linux download and run installation package:** [magicCAD_4.0.AppImage](https://github.com/dprojects/Woodworking-package/releases/download/4.0/magicCAD_4.0.AppImage). 
 
 > [!NOTE]
 > * This is installation package with tested FreeCAD kernel and Woodworking workbench. Installation package was created to lock in a compatible and tested version of the FreeCAD kernel and prevent external "breaking" of Woodworking workbench and keep it working forever.
